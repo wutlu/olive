@@ -1,0 +1,125 @@
+/*
+ \
+ \ olive
+ \
+*/
+
+@import url('https://fonts.googleapis.com/css?family=Ubuntu:300,400,700&subset=latin-ext');
+
+::-moz-selection { background-color: rgba(200, 200, 200, .4); }
+::selection { background-color: rgba(200, 200, 200, .4); }
+
+body * {
+    font-family: 'Ubuntu', sans-serif;
+}
+
+header#main {
+	margin: 0;
+}
+header#main > .parallax-container {
+	min-height: 100vh;
+
+    display: -ms-flexbox;
+    display: flex;
+}
+header#main > .parallax-container > .container > .row > .col > a#logo > img {
+    max-width: 172px;
+    margin: 2rem 0;
+}
+header#main > .parallax-container > .container > .row > .col > p {
+    margin: 0;
+}
+header#main > .parallax-container > .container > .row > .col > a {
+    margin: 2rem 0;
+}
+header#main > .parallax-container > .container > .row > .col > .down-area {
+    position: absolute !important;
+    top: auto;
+    z-index: 4;
+    right: 0;
+    bottom: 4rem;
+    left: 0;
+}
+header#main > .parallax-container > .parallax > video#background-video {
+    min-width: 100%;
+    min-height: 100%;
+}
+
+footer.page-footer {
+	background-color: #fff;
+	background-image: url(../img/bg-1.svg);
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-size: cover;
+}
+footer.page-footer > .container > .row > .col > img#vz-logo {
+	max-width: 128px;
+}
+
+#features > .item {
+	padding: 1rem;
+}
+
+#more-step {
+    padding: 4% 0;
+    min-height: 100vh;
+}
+#more-step > .container > img#vz-logo-top {
+    display: table;
+    max-width: 240px;
+    margin: 4rem 0;
+}
+
+#team > .item {
+    display: -ms-flexbox;
+    display: flex;
+
+    -ms-flex-direction: column;
+    flex-direction: column;
+
+    padding: 1rem;
+}
+#team > .item > img {
+	width: 128px;
+	border-radius: 50% 50% 50% 0;
+	margin: 0 0 1rem;
+
+    -ms-flex-item-align: center;
+    align-self: center;
+}
+#team > .item > h6 {
+	font-size: 20px;
+	margin: 0 0 .5rem;
+
+    -ms-flex-item-align: center;
+    align-self: center;
+}
+#team > .item > p {
+	margin: 0;
+
+    -ms-flex-item-align: center;
+    align-self: center;
+}
+
+ul.partners {
+    display: -ms-flexbox;
+    display: flex;
+
+	-ms-flex-pack: center;
+    justify-content: center;
+
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+
+    margin: 0;
+    padding: 2rem 0;
+}
+ul.partners > li.partner {
+    -ms-flex-item-align: center;
+    align-self: center;
+    padding: 1rem;
+}
+
+#account-card {
+    margin: 2rem 0;
+}
