@@ -19,7 +19,14 @@ class RedirectIfAuthenticated
     {
         if (Auth::guard($guard)->check())
         {
-            return redirect('/?auth=guard');
+            if ($request->input('X-AJAX'))
+            {
+                return response()->json([
+                    'auth' => 'already'
+                ]);
+            }
+
+            return redirect()->route('dashboard');
         }
 
         return $next($request);

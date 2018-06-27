@@ -22,9 +22,12 @@ header#main > .parallax-container {
     display: -ms-flexbox;
     display: flex;
 }
+header#main > .parallax-container > .container > .row > .col > a#logo {
+    display: table;
+    margin: 2rem 0;
+}
 header#main > .parallax-container > .container > .row > .col > a#logo > img {
     max-width: 172px;
-    margin: 2rem 0;
 }
 header#main > .parallax-container > .container > .row > .col > p {
     margin: 0;
@@ -54,6 +57,46 @@ footer.page-footer {
 }
 footer.page-footer > .container > .row > .col > img#vz-logo {
 	max-width: 128px;
+}
+
+/* --- recaptcha --- */
+
+@keyframes captcha-loading {
+    0% {
+        background-position: -200px 0;
+        background-repeat: no-repeat;
+    }
+
+    100% {
+        background-position: 200px 0;
+        background-repeat: no-repeat;
+    }
+}
+
+.captcha {
+    background-color: #f9f9f9;
+
+    background-image:         linear-gradient(to right, #f9f9f9 5%, #f0f0f0 45%, #f9f9f9 90%);
+    background-image: -webkit-linear-gradient(to right, #f9f9f9 5%, #f0f0f0 45%, #f9f9f9 90%);
+
+            animation: captcha-loading 1s cubic-bezier(0, 1, 1, 1) infinite;
+    -webkit-animation: captcha-loading 1s cubic-bezier(0, 1, 1, 1) infinite;
+
+    overflow: hidden;
+
+    width: 200px;
+    height: 4.6rem;
+
+    margin: 0 0 1rem;
+
+    border-radius: .2rem;
+
+    box-shadow: .1rem .1rem .4rem 0 rgba(0, 0, 0, .1);
+}
+.captcha > .g-recaptcha {
+    position: relative;
+    top: -.4rem;
+    left: -.2rem;
 }
 
 #features > .item {

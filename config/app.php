@@ -20,6 +20,8 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
+    'version' => '1.0',
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers

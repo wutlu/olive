@@ -38,7 +38,7 @@ return [
     'dimensions' => ':attribute görsel ölçüleri geçersiz.',
     'distinct' => ':attribute alanı yinelenen bir değere sahip.',
     'email' => ':attribute biçimi geçersiz.',
-    'exists' => 'Seçili :attribute geçersiz.',
+    'exists' => 'Girilen :attribute veritabanında bulunamadı.',
     'file' => ':attribute dosya olmalıdır.',
     'filled' => ':attribute alanının doldurulması zorunludur.',
     'image' => ':attribute alanı resim dosyası olmalıdır.',
@@ -67,7 +67,7 @@ return [
     'numeric' => ':attribute sayı olmalıdır.',
     'present' => ':attribute alanı mevcut olmalıdır.',
     'regex' => ':attribute biçimi geçersiz.',
-    'required' => ':attribute alanı gereklidir.',
+    'required' => ':attribute alanı zorunlu.',
     'required_if' => ':attribute alanı, :other :value değerine sahip olduğunda zorunludur.',
     'required_unless' => ':attribute alanı, :other alanı :value değerlerinden birine sahip olmadığında zorunludur.',
     'required_with' => ':attribute alanı :values varken zorunludur.',
@@ -104,6 +104,8 @@ return [
         ],
     ],
 
+    'authentication' => 'Hatalı şifre.',
+
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Attributes
@@ -116,5 +118,13 @@ return [
     */
 
     'attributes' => [
+        'name'              => 'Ad',
+        'email'             => 'E-posta',
+        'email_login'       => 'E-posta',
+        'email_password'    => 'E-posta',
+        'password'          => 'Şifre',
+        'password_login'    => 'Şifre',
+        'terms'             => 'Kurallar',
+        'gRecaptchaResponse' => 'Güvenlik Doğrulaması'
     ],
 ];

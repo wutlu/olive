@@ -35,4 +35,13 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
+    'google' => [
+        'analytics' => [
+            'code' => env('GOOGLE_ANALYTICS_CODE')
+        ],
+        'recaptcha' => [
+            'site_key' => env('GOOGLE_RECAPTCHA_SITE_KEY'),
+            'secret_key' => env('GOOGLE_RECAPTCHA_SECRET_KEY')
+        ]
+    ],
 ];
