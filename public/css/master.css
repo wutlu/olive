@@ -4,13 +4,55 @@
  \
 */
 
-@import url('https://fonts.googleapis.com/css?family=Ubuntu:300,400,700&subset=latin-ext');
+@font-face {
+    font-family: "gt-eesti";
+    src: url("../fonts/gt-eesti/GT-Eesti-Pro-Display-Regular.eot");
+    src: url("../fonts/gt-eesti/GT-Eesti-Pro-Display-Regular.eot?#iefix") format("embedded-opentype"),
+         url("../fonts/gt-eesti/GT-Eesti-Pro-Display-Regular.woff2") format("woff2"),
+         url("../fonts/gt-eesti/GT-Eesti-Pro-Display-Regular.woff") format("woff"),
+         url("../fonts/gt-eesti/GT-Eesti-Pro-Display-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal
+}
+
+@font-face {
+    font-family: "gt-eesti";
+    src: url("../fonts/gt-eesti/GT-Eesti-Pro-Display-Regular-Italic.eot");
+    src: url("../fonts/gt-eesti/GT-Eesti-Pro-Display-Regular-Italic.eot?#iefix") format("embedded-opentype"),
+         url("../fonts/gt-eesti/GT-Eesti-Pro-Display-Regular-Italic.woff2") format("woff2"),
+         url("../fonts/gt-eesti/GT-Eesti-Pro-Display-Regular-Italic.woff") format("woff"),
+         url("../fonts/gt-eesti/GT-Eesti-Pro-Display-Regular-Italic.ttf") format("truetype");
+    font-weight: 400;
+    font-style: italic
+}
+
+@font-face {
+    font-family: "gt-eesti";
+    src: url("../fonts/gt-eesti/GT-Eesti-Pro-Display-Medium.eot");
+    src: url("../fonts/gt-eesti/GT-Eesti-Pro-Display-Medium.eot?#iefix") format("embedded-opentype"),
+         url("../fonts/gt-eesti/GT-Eesti-Pro-Display-Medium.woff2") format("woff2"),
+         url("../fonts/gt-eesti/GT-Eesti-Pro-Display-Medium.woff") format("woff"),
+         url("../fonts/gt-eesti/GT-Eesti-Pro-Display-Medium.ttf") format("truetype");
+    font-weight: 700;
+    font-style: normal
+}
+
+@font-face {
+    font-family: "gt-eesti";
+    src: url("../fonts/gt-eesti/GT-Eesti-Pro-Display-Medium-Italic.eot");
+    src: url("../fonts/gt-eesti/GT-Eesti-Pro-Display-Medium-Italic.eot?#iefix") format("embedded-opentype"),
+         url("../fonts/gt-eesti/GT-Eesti-Pro-Display-Medium-Italic.woff2") format("woff2"),
+         url("../fonts/gt-eesti/GT-Eesti-Pro-Display-Medium-Italic.woff") format("woff"),
+         url("../fonts/gt-eesti/GT-Eesti-Pro-Display-Medium-Italic.ttf") format("truetype");
+    font-weight: 700;
+    font-style: italic
+}
 
 ::-moz-selection { background-color: rgba(200, 200, 200, .4); }
 ::selection { background-color: rgba(200, 200, 200, .4); }
 
 body * {
-    font-family: 'Ubuntu', sans-serif;
+    font-family: 'gt-eesti', sans-serif;
 }
 
 header#main {
@@ -46,6 +88,10 @@ header#main > .parallax-container > .container > .row > .col > .down-area {
 header#main > .parallax-container > .parallax > video#background-video {
     min-width: 100%;
     min-height: 100%;
+}
+
+main {
+    padding: 1rem 0;
 }
 
 footer.page-footer {

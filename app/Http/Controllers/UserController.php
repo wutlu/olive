@@ -10,8 +10,14 @@ use App\Http\Requests\User\PasswordNewRequest;
 use App\User;
 use App\Notifications\PasswordValidationNotification;
 use App\Notifications\RegisterValidationNotification;
+use App\Notifications\WelcomeNotification;
+use App\Notifications\NewPasswordNotification;
+use App\Notifications\SignInNotification;
 use Auth;
 use Session;
+use Jenssegers\Agent\Agent;
+
+use App\Utilities\UserActivityUtility;
 
 class UserController extends Controller
 {
@@ -22,8 +28,11 @@ class UserController extends Controller
 			'loginPost',
 			'loginView'
 		]);
+        $this->middleware('auth')->only([ 'registerResend' ]);
 
         $this->middleware('throttle:5,5')->only('passwordPost');
+        $this->middleware('throttle:5,1')->only('loginPost');
+        $this->middleware('throttle:1,1')->only('registerResend');
 	}
 
     # login view
@@ -48,6 +57,54 @@ class UserController extends Controller
 
             if ($previous_session)
             {
+                $agent = new Agent();
+
+                $device     = $agent->device();
+                $platform   = $agent->platform();
+                $browser    = $agent->browser();
+                $type       = $agent->isDesktop() ? 'Masaüstü' : $agent->isPhone() ? 'Mobil' : 'Diğer';
+                $ip         = $request->ip();
+                $date       = date('Y-m-d H:i:s');
+
+                $data[] = '| Özellik         | Değer           |';
+                $data[] = '| --------------: |:--------------- |';
+                $data[] = '| IP              | '.$ip.'         |';
+
+            if ($device)
+            {
+                $data[] = '| Cihaz           | '.$device.'     |';
+            }
+
+            if ($platform)
+            {
+                $data[] = '| İşletim Sistemi | '.$platform.'   |';
+            }
+
+            if ($browser)
+            {
+                $data[] = '| Tarayıcı        | '.$browser.'    |';
+            }
+
+                $data[] = '| İşlem Tarihi    | '.$date.'       |';
+
+                # --- [] --- #
+
+                $data = implode(PHP_EOL, $data);
+
+                UserActivityUtility::push(
+                    'Hesabınıza yeni bir ip\'den giriş yapıldı.',
+                    [
+                        'key'       => implode('-', [ 'user', 'auth', $ip ]),
+                        'icon'      => 'accessibility',
+                        'markdown'  => $data
+                    ]
+                );
+
+                if ($user->signin_notification)
+                {
+                    $user->notify(new SignInNotification($user->name, $data));
+                }
+
                 Session::getHandler()->destroy($previous_session);
             }
 
@@ -94,18 +151,6 @@ class UserController extends Controller
         return view('user.password_new', compact('user'));
     }
 
-    # register validate
-    public static function registerValidate(string $id, string $sid)
-    {
-        $user = User::where('id', $id)->where('session_id', $sid)->where('verified', false)->firstOrFail();
-        $user->verified = true;
-        $user->save();
-
-        session()->flash('validate', 'ok');
-
-        return redirect()->route('dashboard');
-    }
-
     # password new patch
     public static function passwordNewPatch(string $id, string $sid, PasswordNewRequest $request)
     {
@@ -127,9 +172,48 @@ class UserController extends Controller
         $user->session_id = Session::getId();
         $user->save();
 
+        $text = 'Eğer bu işlem size ait değilse hemen yeni bir şifre oluşturun, veya destek ekibimizle iletişime geçin.';
+
+        UserActivityUtility::push(
+            'Hesap şifreniz güncellendi!',
+            [
+                'icon'      => 'check',
+                'markdown'  => $text,
+                'user_id'   => $user->id
+            ]
+        );
+
+        $user->notify(new NewPasswordNotification($user->name, $text));
+
         return [
             'status' => 'ok'
         ];
+    }
+
+    # register validate
+    public static function registerValidate(string $id, string $sid)
+    {
+        $user = User::where('id', $id)->where('session_id', $sid)->where('verified', false)->firstOrFail();
+        $user->verified = true;
+        $user->save();
+
+        session()->flash('validate', 'ok');
+
+        $text = 'Sizleri aramızda görmekten şeref duyar, iyi araştırmalar dileriz.';
+
+        UserActivityUtility::push(
+            'Hoşgeldiniz!',
+            [
+                'icon'              => 'check',
+                'markdown'          => $text,
+                'markdown_color'    => '#8bc34a',
+                'user_id'           => $user->id,
+            ]
+        );
+
+        $user->notify(new WelcomeNotification($user->name, $text));
+
+        return redirect()->route('dashboard');
     }
 
     # register put
@@ -137,18 +221,39 @@ class UserController extends Controller
     {
         $request['password'] = bcrypt($request->password);
 
-    	$user = new User;
-    	$user->fill($request->all());
+        $user = new User;
+        $user->fill($request->all());
         $user->session_id = Session::getId();
-    	$user->save();
+        $user->save();
 
         $user->notify(new RegisterValidationNotification($user->id, $user->session_id, $user->name));
 
-    	Auth::login($user);
+        Auth::login($user);
 
-    	return [
-    		'status' => 'ok'
-    	];
+        return [
+            'status' => 'ok'
+        ];
+    }
+
+    # register resend
+    public static function registerResend()
+    {
+        $user = auth()->user();
+
+        if ($user->verified)
+        {
+            return [
+                'status' => 'err'
+            ];
+        }
+        else
+        {
+            $user->notify(new RegisterValidationNotification($user->id, $user->session_id, $user->name));
+        }
+
+        return [
+            'status' => 'ok'
+        ];
     }
 
     # logout

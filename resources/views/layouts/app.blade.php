@@ -19,7 +19,6 @@
 
     <!-- master styles -->
     <link rel="stylesheet" href="{{ asset('css/materialize.css?v='.config('app.version')) }}" />
-    <link rel="stylesheet" href="{{ asset('css/animate.css?v='.config('app.version')) }}" />
     <link rel="stylesheet" href="{{ asset('css/master.css?v='.config('app.version')) }}" />
 
     <!-- external include header -->
@@ -29,11 +28,159 @@
     @stack('local.styles')
 </head>
 <body>
-    @if (@$header != 'hide')
-    test
-    @endif
+    @auth
+        @if (!auth()->user()->verified)
+            <div id="modal-confirmation" class="modal bottom-sheet">
+                <div class="modal-content">
+                    <p>E-posta ({{ auth()->user()->email }}) adresinizi henüz doğrulamadınız.</p>
+                    <a href="#" class="waves-effect btn-flat json" data-href="{{ route('user.register.resend') }}" data-method="post" data-callback="__resend">Tekrar Gönder</a>
+                    <a href="#" class="waves-effect btn modal-close">Tamam</a>
+                </div>
+            </div>
 
-    @yield('content')
+            @push('local.scripts')
+
+            var instance = M.Modal.getInstance($('#modal-confirmation'));
+                instance.open()
+
+            function __resend(__, obj)
+            {
+                if (obj.status == 'ok')
+                {
+                    M.toast({
+                        html: 'Yeni bir doğrulama e-postası gönderildi.',
+                        classes: 'blue',
+                        completeCallback: function() {
+                            M.toast({ html: 'Lütfen e-posta kutunuzu kontrol edin.', classes: 'green' })
+                            instance.close()
+                        }
+                    })
+                }
+                else if (obj.status == 'err')
+                {
+                    M.toast({
+                        html: 'Mevcut hesap daha önceden doğrulanmış.',
+                        classes: 'red',
+                        completeCallback: function() {
+                            instance.close()
+                        }
+                    })
+                }
+            }
+            @endpush
+        @endif
+
+        <div class="navbar-fixed">
+            <ul id="user-top-dropdown" class="dropdown-content">
+                <li>
+                    <a href="#" class="waves-effect">
+                        <i class="material-icons">person</i>
+                        Bilgilerimi Güncelle
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="waves-effect">
+                        <i class="material-icons">attach_money</i>
+                        Ödemeler
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('user.logout') }}" class="waves-effect">
+                        <i class="material-icons">exit_to_app</i>
+                        Çıkış Yap
+                    </a>
+                </li>
+            </ul>
+            <nav class="blue-grey darken-3">
+                <div class="nav-wrapper">
+                    <a href="{{ route('dashboard') }}" class="brand-logo center">
+                        <img alt="{{ config('app.name') }}" src="{{ asset('img/olive-logo-white.svg') }}" />
+                    </a>
+                    <a href="#" data-target="slide-out" class="sidenav-trigger">
+                        <i class="material-icons">menu</i>
+                    </a>
+                    <ul class="right hide-on-med-and-down">
+                        <li>
+                            <a class="waves-effect" href="#">
+                                <i class="material-icons left">people</i> Kullanıcı Yönetimi
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-trigger waves-effect" href="#" data-target="user-top-dropdown">
+                                {{ auth()->user()->name }} <i class="material-icons right">arrow_drop_down</i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+
+        <ul id="slide-out" class="sidenav">
+            <li>
+                <div class="user-view">
+                    <div class="background" style="background-image: url('{{ asset('img/md/21.jpg') }}');"></div>
+
+                    <img class="circle" src="{{ asset(auth()->user()->avatar()) }}" />
+                    <span class="white-text name">{{ auth()->user()->name }}</span>
+                    <span class="white-text email">{{ auth()->user()->email }}</span>
+                </di
+            </li>
+            <li>
+                <a class="waves-effect" href="#">
+                    <i class="material-icons">cloud</i> First Link With Icon
+                </a>
+            </li>
+            <li>
+                <a class="waves-effect" href="#">Second Link</a>
+            </li>
+            <li>
+                <div class="divider"></div>
+            </li>
+            <li>
+                <a class="subheader">Hesap</a>
+            </li>
+            <li>
+                <a class="waves-effect" href="{{ route('user.logout') }}">
+                    <i class="material-icons">exit_to_app</i> Çıkış Yap
+                </a>
+            </li>
+        </ul>
+
+        @push('local.scripts')
+
+        $('.sidenav').sidenav({
+            draggable: true
+        });
+
+        @endpush
+
+        @isset($breadcrumb)
+        <nav class="grey darken-4">
+            <div class="container">
+                <div class="nav-wrapper">
+                    <div class="col s12">
+                        <a href="{{ route('dashboard') }}" class="breadcrumb">Panel</a>
+                        @foreach ($breadcrumb as $row)
+                            @if (@$row['link'])
+                            <a href="{{ $row['link'] }}" class="breadcrumb">{{ $row['text'] }}</a>
+                            @else
+                            <span class="breadcrumb">{{ $row['text'] }}</span>
+                            @endif
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </nav>
+        @endisset
+
+        <main class="blue-grey lighten-5">
+            <div class="container">
+                @yield('content')
+            </div>
+        </main>
+    @else
+        @yield('content')
+    @endauth
 
     <ul class="partners blue-grey darken-4">
         <li class="partner">
@@ -72,16 +219,16 @@
                 </div>
                 <div class="col l2 offset-l2 s12">
                     <ul>
-                        <li><a class="grey-text" href="#!">Hakkımızda</a></li>
-                        <li><a class="grey-text" href="#!">Blog</a></li>
-                        <li><a class="grey-text" href="#!">İletişim</a></li>
-                        <li><a class="grey-text" href="#!">Api</a></li>
+                        <li><a class="grey-text" href="#">Hakkımızda</a></li>
+                        <li><a class="grey-text" href="#">Blog</a></li>
+                        <li><a class="grey-text" href="#">İletişim</a></li>
+                        <li><a class="grey-text" href="#">Api</a></li>
                     </ul>
                 </div>
                 <div class="col l2 s12">
                     <ul>
-                        <li><a class="grey-text" href="#!">Gizlilik Politikası</a></li>
-                        <li><a class="grey-text" href="#!">Kullanım Koşulları</a></li>
+                        <li><a class="grey-text" href="#">Gizlilik Politikası</a></li>
+                        <li><a class="grey-text" href="#">Kullanım Koşulları</a></li>
                     </ul>
                 </div>
             </div>
@@ -107,13 +254,18 @@
     </script>
     <!-- master scripts -->
     <script src="{{ asset('js/jquery.min.js?v='.config('app.version')) }}"></script>
-    <script src="{{ asset('js/materialize.min.js?v='.config('app.version')) }}"></script>
+    <script src="{{ asset('js/materialize.js?v='.config('app.version')) }}"></script>
     <script src="{{ asset('js/jquery.timeago.min.js?v='.config('app.version')) }}"></script>
     <script src="{{ asset('js/jquery.lazy.min.js?v='.config('app.version')) }}"></script>
     <script src="{{ asset('js/core.js?v='.config('app.version')) }}"></script>
 
     <!-- local scripts -->
     <script>
+    $('.modal').modal();
+    $('.dropdown-trigger').dropdown();
+    $('[data-tooltip]').tooltip();
+    $('.collapsible').collapsible();
+
     @stack('local.scripts')
     </script>
 

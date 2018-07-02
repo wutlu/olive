@@ -63,11 +63,6 @@
                                 <form id="register-form" data-callback="__register" action="{{ route('user.register') }}" method="put" class="json">
                                     <div class="row">
                                         <div class="input-field col s12">
-                                            <input name="name" id="name" type="text" class="validate" />
-                                            <label for="name">Ad</label>
-                                            <span class="helper-text">Tam Adınız.</span>
-                                        </div>
-                                        <div class="input-field col s12">
                                             <input name="email" id="email" type="email" class="validate" />
                                             <label for="email">E-posta</label>
                                             <span class="helper-text">E-posta adresiniz.</span>
@@ -76,6 +71,11 @@
                                             <input name="password" id="password" type="password" class="validate" />
                                             <label for="password">Şifre</label>
                                             <span class="helper-text">Hesap şifreniz.</span>
+                                        </div>
+                                        <div class="input-field col s12">
+                                            <input name="name" id="name" type="text" class="validate" />
+                                            <label for="name">Ad</label>
+                                            <span class="helper-text">Tam Adınız.</span>
                                         </div>
                                         <div class="input-field col s12">
                                             <div class="captcha" data-id="register-captcha"></div>

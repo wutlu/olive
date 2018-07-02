@@ -1,4 +1,4 @@
-@extends('layouts.app', [ 'header' => 'hide' ])
+@extends('layouts.app')
 
 @section('content')
 <header id="main">

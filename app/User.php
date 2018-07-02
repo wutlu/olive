@@ -18,7 +18,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'session_id'
+        'session_id',
+
+        'skip_intro',
     ];
 
     /**
@@ -30,4 +32,16 @@ class User extends Authenticatable
         'password',
         'remember_token'
     ];
+
+    # avatar
+    public function avatar()
+    {
+        return $this->avatar ? $this->avatar : asset('img/people.svg');
+    }
+
+    # organizasyon
+    public function organisation()
+    {
+        return $this->hasOne('App\Organisation', 'organisation_id', 'id');
+    }
 }
