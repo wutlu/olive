@@ -46,38 +46,28 @@
                 <i class="large material-icons analytics">poll</i>
                 <h5>Analiz</h5>
                 <ul>
-                    <li>Twitter kullanıcı analizi.</li>
-                    <li>Yerli haber sitelerinden anlık veya tarih bazlı trend bilgisi.</li>
-                    <li>Terli sosyal medya platformlarından anlık veya tarih bazlı trend bilgisi.</li>
-                    <li>Twitter anlık trend 50 bilgisi.</li>
-                    <li>Google anlık trend 50 bilgisi.</li>
+                    <li>-</li>
                 </ul>
             </div>
             <div class="item white-text">
                 <i class="large material-icons realtime">subject</i>
                 <h5>Gerçek Zamanlı Veri</h5>
                 <ul>
-                    <li>Belirlenen kelimelerden gerçek zamanlı veri akışı.</li>
-                    <li>Yerli haber sitelerinden gerçek zamanlı tam veri akışı.</li>
-                    <li>Yerli sosyal medya platformlarından gerçek zamanlı tam veri akışı.</li>
-                    <li>Twitter, Instagram, Yerli Sosyal Medya ve Yerli Medya anahtar kelime alarmı.</li>
+                    <li>-</li>
                 </ul>
             </div>
             <div class="item white-text">
                 <i class="large material-icons rotate">toys</i>
                 <h5>Araçlar</h5>
                 <ul>
-                    <li>Twitter, detaylı Tweet bilgileri.</li>
-                    <li>Twitter, kullanıcı adından ID, ID'den Kullanıcı adı bulucu.</li>
-                    <li>Twitter, kullanıcı Tweetleri dışarı aktarma.</li>
-                    <li>Twitter, kullanıcı takip/takipçi listesi dışarı aktarma.</li>
+                    <li>-</li>
                 </ul>
             </div>
             <div class="item white-text">
                 <i class="large material-icons cloud">cloud</i>
                 <h5>Arşiv</h5>
                 <ul>
-                    <li>Tam veri arşivi.</li>
+                    <li>-</li>
                 </ul>
             </div>
         </div>
@@ -126,7 +116,7 @@
     <div class="container">
         <h2 class="center-align white-text">Planlar</h2>
 
-        <div class="card ">
+        <div class="card">
             <div class="card-content">
                 <span class="card-title">Olive'e kaydolmak ücretsizdir.</span>
                 <p class="grey-text">Tüm araçlardan faydalanabilmek için bir organizasyon satın almalı veya bir organizasyon'a dahil olmalısınız.</p>
@@ -134,432 +124,52 @@
             </div>
             <div class="card-tabs">
                 <ul class="tabs tabs-fixed-width">
+                    @foreach (config('plans') as $key => $plan)
                     <li class="tab">
-                        <a class="active" href="#tab0">Başlangıç</a>
+                        <a href="#tab-{{ $key }}">{{ $plan['name'] }}</a>
                     </li>
-                    <li class="tab">
-                        <a href="#tab1">Şahıs Planı</a>
-                    </li>
-                    <li class="tab">
-                        <a href="#tab2">Ofis Organizasyonu</a>
-                    </li>
-                    <li class="tab">
-                        <a href="#tab3">Kurum Organizasyonu</a>
-                    </li>
+                    @endforeach
                 </ul>
             </div>
             <div class="card-content grey lighten-4">
-                <div id="tab0">
-                    <h3 class="center-align">Ücretsiz</h3>
+                @foreach (config('plans') as $key => $plan)
+                <div id="tab-{{ $key }}">
+                    @if ($plan['price'])
+                    <h3 class="center-align">₺ {{ $plan['price'] }}<sup>.00</sup> <sub>/ Ay</sub></h3>
+                    <p class="center-align grey-text">Yıllık ödemelerde anında <span class="chip">{{ $plan['yearly_discount_rate'] }}%</span> indirim alın.</p>
+                    @else
+                    <h3 class="center-align">Ücretsiz!</h3>
+                    @endif
 
                     <ul class="collection collection-unstyled collection-unstyled-hover">
+                        @foreach ($plan['properties'] as $k => $item)
                         <li class="collection-item">
                             <div>
-                                Plan kapasitesi
-                                <span class="badge grey lighten-2">1</span>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Yerli haber sitelerinden gerçek zamanlı tam veri akışı.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Yerli sosyal medya platformlarından gerçek zamanlı tam veri akışı.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Twitter anlık trend 50 bilgisi.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Google anlık trend 50 bilgisi.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Twitter, detaylı Tweet bilgileri.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Twitter, kullanıcı adından ID, ID'den Kullanıcı adı bulucu.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div class="grey-text">
-                                Api kullanımı.
-                                <i class="material-icons secondary-content red-text">close</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div class="grey-text">
-                                Yerli haber sitelerinden anlık veya tarih bazlı trend bilgisi.
-                                <i class="material-icons secondary-content red-text">close</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div class="grey-text">
-                                Yerli sosyal medya platformlarından anlık veya tarih bazlı trend bilgisi.
-                                <i class="material-icons secondary-content red-text">close</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div class="grey-text">
-                                Twitter kullanıcı analizi.
-                                <i class="material-icons secondary-content red-text">close</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div class="grey-text">
-                                Belirlenen kelimelerden gerçek zamanlı veri akışı.
-                                <i class="material-icons secondary-content red-text">close</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div class="grey-text">
-                                Twitter, Instagram, Yerli Sosyal Medya ve Yerli Medya anahtar kelime alarmı.
-                                <i class="material-icons secondary-content red-text">close</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div class="grey-text">
-                                Twitter, kullanıcı Tweetleri dışarı aktarma.
-                                <i class="material-icons secondary-content red-text">close</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div class="grey-text">
-                                Twitter, kullanıcı takip/takipçi listesi dışarı aktarma.
-                                <i class="material-icons secondary-content red-text">close</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div class="grey-text">
-                                Tam veri erişimi.
-                                <i class="material-icons secondary-content red-text">close</i>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div id="tab1">
-                    <h3 class="center-align">₺ 490<sup>.00</sup> <sub>/ Ay</sub></h3>
-                    <p class="center-align grey-text">Yıllık ödeme seçeneğinde <span class="chip">10%</span> indirim.</p>
+                                <span>
+                                    <p>
+                                        {{ $item['text'] }}
 
-                    <ul class="collection collection-unstyled collection-unstyled-hover">
-                        <li class="collection-item">
-                            <div>
-                                Plan kapasitesi
-                                <span class="badge grey lighten-2">1</span>
+                                        @if ($item['value'] === true)
+                                        <i class="material-icons secondary-content green-text">check</i>
+                                        @elseif ($item['value'] === false)
+                                        <i class="material-icons secondary-content red-text">close</i>
+                                        @elseif (is_integer($item['value']))
+                                        <span class="badge grey lighten-2">{{ $item['value'] }}</span>
+                                        @else
+                                        <i class="material-icons secondary-content teal-text">streetview</i>
+                                        @endif
+                                    </p>
+                                    <p class="grey-text">{{ $item['details'] }}</p>
+                                    @if (is_string($item['value']))
+                                    <p class="teal-text">{{ $item['value'] }}</p>
+                                    @endif
+                                </span>
                             </div>
                         </li>
-                        <li class="collection-item">
-                            <div>
-                                Yerli haber sitelerinden gerçek zamanlı tam veri akışı.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Yerli sosyal medya platformlarından gerçek zamanlı tam veri akışı.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Twitter anlık trend 50 bilgisi.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Google anlık trend 50 bilgisi.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Twitter, detaylı Tweet bilgileri.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Twitter, kullanıcı adından ID, ID'den Kullanıcı adı bulucu.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Api kullanımı.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Yerli haber sitelerinden anlık veya tarih bazlı trend bilgisi.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Yerli sosyal medya platformlarından anlık veya tarih bazlı trend bilgisi.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Twitter kullanıcı analizi.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Belirlenen kelimelerden gerçek zamanlı veri akışı.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Twitter, Instagram, Yerli Sosyal Medya ve Yerli Medya anahtar kelime alarmı.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Twitter, kullanıcı Tweetleri dışarı aktarma.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Twitter, kullanıcı takip/takipçi listesi dışarı aktarma.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Tam veri erişimi.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
+                        @endforeach
                     </ul>
                 </div>
-                <div id="tab2">
-                    <h3 class="center-align">₺ 1,290<sup>.00</sup> <sub>/ Ay</sub></h3>
-                    <p class="center-align grey-text">Yıllık ödeme seçeneğinde <span class="chip">12%</span> indirim.</p>
-
-                    <ul class="collection collection-unstyled collection-unstyled-hover">
-                        <li class="collection-item">
-                            <div>
-                                Plan kapasitesi
-                                <span class="badge blue lighten-2 white-text">3</span>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Yerli haber sitelerinden gerçek zamanlı tam veri akışı.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Yerli sosyal medya platformlarından gerçek zamanlı tam veri akışı.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Twitter anlık trend 50 bilgisi.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Google anlık trend 50 bilgisi.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Twitter, detaylı Tweet bilgileri.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Twitter, kullanıcı adından ID, ID'den Kullanıcı adı bulucu.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Api kullanımı.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Yerli haber sitelerinden anlık veya tarih bazlı trend bilgisi.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Yerli sosyal medya platformlarından anlık veya tarih bazlı trend bilgisi.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Twitter kullanıcı analizi.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Belirlenen kelimelerden gerçek zamanlı veri akışı.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Twitter, Instagram, Yerli Sosyal Medya ve Yerli Medya anahtar kelime alarmı.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Twitter, kullanıcı Tweetleri dışarı aktarma.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Twitter, kullanıcı takip/takipçi listesi dışarı aktarma.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Tam veri erişimi.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div id="tab3">
-                    <h3 class="center-align">₺ 2,190<sup>.00</sup> <sub>/ Ay</sub></h3>
-                    <p class="center-align grey-text">Yıllık ödeme seçeneğinde <span class="chip">14%</span> indirim.</p>
-
-                    <ul class="collection collection-unstyled collection-unstyled-hover">
-                        <li class="collection-item">
-                            <div>
-                                Plan kapasitesi
-                                <span class="badge green lighten-2 white-text">8</span>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Yerli haber sitelerinden gerçek zamanlı tam veri akışı.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Yerli sosyal medya platformlarından gerçek zamanlı tam veri akışı.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Twitter anlık trend 50 bilgisi.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Google anlık trend 50 bilgisi.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Twitter, detaylı Tweet bilgileri.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Twitter, kullanıcı adından ID, ID'den Kullanıcı adı bulucu.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Api kullanımı.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Yerli haber sitelerinden anlık veya tarih bazlı trend bilgisi.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Yerli sosyal medya platformlarından anlık veya tarih bazlı trend bilgisi.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Twitter kullanıcı analizi.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Belirlenen kelimelerden gerçek zamanlı veri akışı.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Twitter, Instagram, Yerli Sosyal Medya ve Yerli Medya anahtar kelime alarmı.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Twitter, kullanıcı Tweetleri dışarı aktarma.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Twitter, kullanıcı takip/takipçi listesi dışarı aktarma.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                        <li class="collection-item">
-                            <div>
-                                Tam veri erişimi.
-                                <i class="material-icons secondary-content green-text">check</i>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+                @endforeach
             </div>
         </div>
 

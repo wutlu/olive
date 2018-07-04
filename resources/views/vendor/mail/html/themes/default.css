@@ -206,11 +206,12 @@ table td {
 }
 
 .button {
+    margin: 0 auto;
     padding: 16px 24px;
     border-radius: 2px;
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.16);
     color: #FFF;
-    display: inline-block;
+    display: table;
     text-decoration: none;
     -webkit-text-size-adjust: none;
     font-size: 16px;

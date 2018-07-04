@@ -29,7 +29,9 @@ class HomeController extends Controller
     # dashboard
     public static function dashboard()
     {
-        return view('dashboard');
+        $user = auth()->user();
+
+        return view('dashboard', compact('user'));
     }
 
     # activities

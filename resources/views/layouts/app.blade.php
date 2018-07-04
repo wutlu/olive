@@ -28,7 +28,7 @@
     @stack('local.styles')
 </head>
 <body>
-    @auth
+    @isset($sidenav_fixed_layout)
         @if (!auth()->user()->verified)
             <div id="modal-confirmation" class="modal bottom-sheet">
                 <div class="modal-content">
@@ -92,57 +92,55 @@
                 </li>
             </ul>
             <nav class="blue-grey darken-3">
-                <div class="nav-wrapper">
-                    <a href="{{ route('dashboard') }}" class="brand-logo center">
-                        <img alt="{{ config('app.name') }}" src="{{ asset('img/olive-logo-white.svg') }}" />
-                    </a>
-                    <a href="#" data-target="slide-out" class="sidenav-trigger">
-                        <i class="material-icons">menu</i>
-                    </a>
-                    <ul class="right hide-on-med-and-down">
-                        <li>
-                            <a class="waves-effect" href="#">
-                                <i class="material-icons left">people</i> Kullanıcı Yönetimi
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-trigger waves-effect" href="#" data-target="user-top-dropdown">
-                                {{ auth()->user()->name }} <i class="material-icons right">arrow_drop_down</i>
-                            </a>
-                        </li>
-                    </ul>
+                <div class="sidenav-fixed-layout">
+                    <div class="nav-wrapper">
+                        <a href="{{ route('dashboard') }}" class="brand-logo center">
+                            <img alt="{{ config('app.name') }}" src="{{ asset('img/olive-logo-white.svg') }}" />
+                        </a>
+                        <a href="#" data-target="slide-out" class="sidenav-trigger">
+                            <i class="material-icons">menu</i>
+                        </a>
+                        <ul class="right hide-on-med-and-down">
+                            <li>
+                                <a class="dropdown-trigger waves-effect" href="#" data-target="user-top-dropdown">
+                                    {{ auth()->user()->name }} <i class="material-icons right">arrow_drop_down</i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </nav>
         </div>
 
-        <ul id="slide-out" class="sidenav">
+        <ul id="slide-out" class="sidenav sidenav-fixed collapsible">
             <li>
                 <div class="user-view">
-                    <div class="background" style="background-image: url('{{ asset('img/md/21.jpg') }}');"></div>
+                    <div class="background" style="background-image: url('{{ asset('img/md/23.jpg') }}');"></div>
 
                     <img class="circle" src="{{ asset(auth()->user()->avatar()) }}" />
                     <span class="white-text name">{{ auth()->user()->name }}</span>
                     <span class="white-text email">{{ auth()->user()->email }}</span>
-                </di
+                </div>
             </li>
             <li>
-                <a class="waves-effect" href="#">
-                    <i class="material-icons">cloud</i> First Link With Icon
-                </a>
+                <a class="subheader">Yönetici Menüsü</a>
             </li>
             <li>
-                <a class="waves-effect" href="#">Second Link</a>
-            </li>
-            <li>
-                <div class="divider"></div>
-            </li>
-            <li>
-                <a class="subheader">Hesap</a>
-            </li>
-            <li>
-                <a class="waves-effect" href="{{ route('user.logout') }}">
-                    <i class="material-icons">exit_to_app</i> Çıkış Yap
-                </a>
+                <div class="collapsible-header waves-effect">
+                    <i class="material-icons">security</i>
+                    <span>Admin</span>
+                    <i class="material-icons arrow">chevron_left</i>
+                </div>
+                <div class="collapsible-body">
+                    <ul>
+                        <li>
+                            <a class="waves-effect" href="#">
+                                <i class="material-icons">people</i>
+                                Kullanıcı Yönetimi
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </li>
         </ul>
 
@@ -156,17 +154,19 @@
 
         @isset($breadcrumb)
         <nav class="grey darken-4">
-            <div class="container">
-                <div class="nav-wrapper">
-                    <div class="col s12">
-                        <a href="{{ route('dashboard') }}" class="breadcrumb">Panel</a>
-                        @foreach ($breadcrumb as $row)
-                            @if (@$row['link'])
-                            <a href="{{ $row['link'] }}" class="breadcrumb">{{ $row['text'] }}</a>
-                            @else
-                            <span class="breadcrumb">{{ $row['text'] }}</span>
-                            @endif
-                        @endforeach
+            <div class="sidenav-fixed-layout">
+                <div class="container">
+                    <div class="nav-wrapper">
+                        <div class="col s12">
+                            <a href="{{ route('dashboard') }}" class="breadcrumb">Panel</a>
+                            @foreach ($breadcrumb as $row)
+                                @if (@$row['link'])
+                                <a href="{{ $row['link'] }}" class="breadcrumb">{{ $row['text'] }}</a>
+                                @else
+                                <span class="breadcrumb">{{ $row['text'] }}</span>
+                                @endif
+                            @endforeach
+                        </div>
                     </div>
                 </div>
             </div>
@@ -174,71 +174,76 @@
         @endisset
 
         <main class="blue-grey lighten-5">
-            <div class="container">
-                @yield('content')
+            <div class="sidenav-fixed-layout">
+                <div class="container">
+                    @yield('content')
+                </div>
             </div>
         </main>
     @else
         @yield('content')
-    @endauth
+    @endisset
 
-    <ul class="partners blue-grey darken-4">
-        <li class="partner">
-            <a href="#">
-                <img alt="client" src="{{ asset('img/clients-logo1.png') }}" />
-            </a>
-        </li>
-        <li class="partner">
-            <a href="#">
-                <img alt="client" src="{{ asset('img/clients-logo2.png') }}" />
-            </a>
-        </li>
-        <li class="partner">
-            <a href="#">
-                <img alt="client" src="{{ asset('img/clients-logo3.png') }}" />
-            </a>
-        </li>
-        <li class="partner">
-            <a href="#">
-                <img alt="client" src="{{ asset('img/clients-logo4.png') }}" />
-            </a>
-        </li>
-        <li class="partner">
-            <a href="#">
-                <img alt="client" src="{{ asset('img/clients-logo5.png') }}" />
-            </a>
-        </li>
-    </ul>
+    <div class="@isset($sidenav_fixed_layout){{ 'sidenav-fixed-layout' }}@endisset">
+        <ul class="partners blue-grey darken-4">
+            <li class="partner">
+                <a href="#">
+                    <img alt="client" src="{{ asset('img/clients-logo1.png') }}" />
+                </a>
+            </li>
+            <li class="partner">
+                <a href="#">
+                    <img alt="client" src="{{ asset('img/clients-logo2.png') }}" />
+                </a>
+            </li>
+            <li class="partner">
+                <a href="#">
+                    <img alt="client" src="{{ asset('img/clients-logo3.png') }}" />
+                </a>
+            </li>
+            <li class="partner">
+                <a href="#">
+                    <img alt="client" src="{{ asset('img/clients-logo4.png') }}" />
+                </a>
+            </li>
+            <li class="partner">
+                <a href="#">
+                    <img alt="client" src="{{ asset('img/clients-logo5.png') }}" />
+                </a>
+            </li>
+        </ul>
 
-    <footer class="page-footer">
-        <div class="container">
-            <div class="row">
-                <div class="col l6 s12">
-                    <img id="vz-logo" src="{{ asset('img/veri.zone-logo.svg') }}" alt="veri.zone-logo" />
-                    <p class="grey-text">veri.zone, açık kaynak internet verilerini toplar ve elde ettiği verilerden anlamlı analizler çıkaran araçlar geliştirir.</p>
-                </div>
-                <div class="col l2 offset-l2 s12">
-                    <ul>
-                        <li><a class="grey-text" href="#">Hakkımızda</a></li>
-                        <li><a class="grey-text" href="#">Blog</a></li>
-                        <li><a class="grey-text" href="#">İletişim</a></li>
-                        <li><a class="grey-text" href="#">Api</a></li>
-                    </ul>
-                </div>
-                <div class="col l2 s12">
-                    <ul>
-                        <li><a class="grey-text" href="#">Gizlilik Politikası</a></li>
-                        <li><a class="grey-text" href="#">Kullanım Koşulları</a></li>
-                    </ul>
+        <footer class="page-footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col l6 s12">
+                        <img id="vz-logo" src="{{ asset('img/veri.zone-logo.svg') }}" alt="veri.zone-logo" />
+                        <p class="grey-text">veri.zone, açık kaynak internet verilerini toplar ve elde ettiği verilerden anlamlı analizler çıkaran araçlar geliştirir.</p>
+                    </div>
+                    <div class="col l2 offset-l2 s12">
+                        <ul>
+                            <li><a class="grey-text" href="#">Hakkımızda</a></li>
+                            <li><a class="grey-text" href="#">Blog</a></li>
+                            <li><a class="grey-text" href="#">İletişim</a></li>
+                            <li><a class="grey-text" href="#">Yardım</a></li>
+                            <li><a class="grey-text" href="#">Api</a></li>
+                        </ul>
+                    </div>
+                    <div class="col l2 s12">
+                        <ul>
+                            <li><a class="grey-text" href="#">Gizlilik Politikası</a></li>
+                            <li><a class="grey-text" href="#">Kullanım Koşulları</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="footer-copyright">
-            <div class="container black-text">
-                © {{ date('Y') }} <a href="http://veri.zone">veri.zone</a> | Tüm hakları saklıdır.
+            <div class="footer-copyright">
+                <div class="container black-text">
+                    © {{ date('Y') }} <a href="http://veri.zone">veri.zone</a> | Tüm hakları saklıdır.
+                </div>
             </div>
-        </div>
-    </footer>
+        </footer>
+    </div>
 
     <!-- scripts -->
     <script>
@@ -259,6 +264,9 @@
     <script src="{{ asset('js/jquery.lazy.min.js?v='.config('app.version')) }}"></script>
     <script src="{{ asset('js/core.js?v='.config('app.version')) }}"></script>
 
+    <!-- external include -->
+    @stack('external.include.footer')
+
     <!-- local scripts -->
     <script>
     $('.modal').modal();
@@ -268,8 +276,5 @@
 
     @stack('local.scripts')
     </script>
-
-    <!-- external include -->
-    @stack('external.include.footer')
 </body>
 </html>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+<title>Ekşi Sözlük @Olive</title>
+<defs>
+    <style>
+      .cls-1 {
+        fill: #7ec344;
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <path id="sour" class="cls-1" d="M257,48S390,245.546,390,319a133,133,0,0,1-266,0C124,245.546,257,48,257,48Z"/>
+</svg>

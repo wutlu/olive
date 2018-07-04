@@ -20,7 +20,7 @@ class CreateUserActivitiesTable extends Migration
 
             $table->string('title');
             $table->string('icon')->default('info');
-            $table->string('markdown')->nullable()->default(null);
+            $table->text('markdown')->nullable()->default(null);
             $table->string('markdown_color')->nullable()->default(null);
 
             $table->enum('button_type', [ 'http', 'ajax' ])->nullable()->default(null);

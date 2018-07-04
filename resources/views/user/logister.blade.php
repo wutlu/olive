@@ -158,6 +158,7 @@
             M.toast({ html: 'Size bir doğrulama bağlantısı gönderdik.', classes: 'green' })
 
             $('#password-form')[0].reset()
+            captcha()
         }
     }
 

@@ -42,6 +42,6 @@ class User extends Authenticatable
     # organizasyon
     public function organisation()
     {
-        return $this->hasOne('App\Organisation', 'organisation_id', 'id');
+        return $this->hasOne('App\Organisation', 'id', 'organisation_id');
     }
 }

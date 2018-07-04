@@ -4,7 +4,7 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::get('panel', 'HomeController@dashboard')->name('dashboard');
 Route::get('aktiviteler', 'HomeController@activity')->name('dashboard.activities');
 
-Route::get('basla', 'OrganisationController@start')->name('start');
+Route::get('baslayin/{step?}', 'OrganisationController@start')->name('start')->where('step', '(1|2|3)');
 Route::get('intro/gec', 'HomeController@skipIntro')->name('intro.skip');
 
 Route::prefix('kullanici')->group(function () {
