@@ -23,6 +23,18 @@ return [
     'version' => '1.0',
 
     /*
+     * vergi oranı
+     */
+
+    'tax' => env('TAX', 18),
+
+    /*
+     * yıllık alımlarda indirim oranı
+     */
+
+    'discount_with_year' => env('DISCOUNT_WITH_YEAR', 10),
+
+    /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers
     |--------------------------------------------------------------------------

@@ -80,8 +80,8 @@
                 </li>
                 <li>
                     <a href="#" class="waves-effect">
-                        <i class="material-icons">attach_money</i>
-                        Ödemeler
+                        <i class="material-icons">settings</i>
+                        Ayarlar
                     </a>
                 </li>
                 <li>

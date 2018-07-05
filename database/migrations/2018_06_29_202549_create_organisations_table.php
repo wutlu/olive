@@ -22,7 +22,6 @@ class CreateOrganisationsTable extends Migration
 
             $table->datetime('start_date');
             $table->unsignedInteger('day')->default(0);
-            $table->boolean('status')->default(0);
 
             $table->unsignedInteger('user_id')->nullable()->default(null);
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

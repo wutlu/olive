@@ -59,7 +59,7 @@
                 <p class="grey-text">Profesyonel bir ortamda tüm modüllerden faydalanabilmek için hemen bir organizasyon oluşturun.</p>
             </div>
             <div class="card-action">
-                <a href="{{ route('start') }}" id="start">Başlayın</a>
+                <a href="{{ route('organisation.create') }}" id="start">Başlayın</a>
             </div>
         </div>
 

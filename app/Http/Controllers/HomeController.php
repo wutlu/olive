@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\UserActivity;
+use App\OrganisationDiscountDay;
 
 use App\Http\Requests\SearchRequest;
 
@@ -23,7 +24,9 @@ class HomeController extends Controller
     # home
     public static function index()
     {
-    	return view('home');
+        $discountDay = OrganisationDiscountDay::where('first_day', '<=', date('Y-m-d'))->where('last_day', '>=', date('Y-m-d'))->first();
+
+    	return view('home', compact('discountDay'));
     }
 
     # dashboard

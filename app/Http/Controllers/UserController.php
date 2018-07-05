@@ -3,21 +3,27 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 use App\Http\Requests\User\RegisterRequest;
 use App\Http\Requests\User\LoginRequest;
 use App\Http\Requests\User\PasswordGetRequest;
 use App\Http\Requests\User\PasswordNewRequest;
-use App\User;
+
 use App\Notifications\PasswordValidationNotification;
 use App\Notifications\RegisterValidationNotification;
 use App\Notifications\WelcomeNotification;
 use App\Notifications\NewPasswordNotification;
 use App\Notifications\SignInNotification;
+use App\Notifications\OrganisationDiscountCouponNotification;
+
+use App\Utilities\UserActivityUtility;
+use App\OrganisationDiscountDay;
+use App\OrganisationDiscountCoupon;
+use App\User;
+
 use Auth;
 use Session;
 use Jenssegers\Agent\Agent;
-
-use App\Utilities\UserActivityUtility;
 
 class UserController extends Controller
 {
@@ -199,7 +205,7 @@ class UserController extends Controller
 
         session()->flash('validate', 'ok');
 
-        $text = 'Sizleri aramızda görmekten şeref duyar, iyi araştırmalar dileriz.';
+        $text = 'Sizleri aramızda görmek çok güzel, iyi araştırmalar dileriz.';
 
         UserActivityUtility::push(
             'Hoşgeldiniz!',
@@ -212,6 +218,43 @@ class UserController extends Controller
         );
 
         $user->notify(new WelcomeNotification($user->name, $text));
+
+        # indirim günü varsa kupon yarat #
+
+        $discountDay = OrganisationDiscountDay::where('first_day', '<=', date('Y-m-d'))->where('last_day', '>=', date('Y-m-d'))->first();
+
+        if (@$discountDay)
+        {
+            $ok = false;
+
+            while ($ok == false) {
+                $generate_key = str_random(8);
+
+                $key = OrganisationDiscountCoupon::where('key', $generate_key)->count();
+
+                if ($key == 0)
+                {
+                    OrganisationDiscountCoupon::create([
+                        'key' => $generate_key,
+                        'rate' => $discountDay->discount_rate
+                    ]);
+
+                    $ok = true;
+
+                    $discount[] = '| Kupon Kodu        | İndirim Oranı                    |';
+                    $discount[] = '| ----------------: |:-------------------------------- |';
+                    $discount[] = '| '.$generate_key.' | '.$discountDay->discount_rate.'% |';
+
+                    # --- [] --- #
+
+                    $discount = implode(PHP_EOL, $discount);
+
+                    $user->notify(new OrganisationDiscountCouponNotification($user->name, $discount));
+                }
+            }
+        }
+
+        # --- #
 
         return redirect()->route('dashboard');
     }

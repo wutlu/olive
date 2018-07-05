@@ -38,7 +38,7 @@ return [
     'dimensions' => ':attribute görsel ölçüleri geçersiz.',
     'distinct' => ':attribute alanı yinelenen bir değere sahip.',
     'email' => ':attribute biçimi geçersiz.',
-    'exists' => 'Girilen :attribute veritabanında bulunamadı.',
+    'exists' => 'Girilen :attribute geçerli değil.',
     'file' => ':attribute dosya olmalıdır.',
     'filled' => ':attribute alanının doldurulması zorunludur.',
     'image' => ':attribute alanı resim dosyası olmalıdır.',
@@ -118,13 +118,16 @@ return [
     */
 
     'attributes' => [
-        'name'              => 'Ad',
-        'email'             => 'E-posta',
-        'email_login'       => 'E-posta',
-        'email_password'    => 'E-posta',
-        'password'          => 'Şifre',
-        'password_login'    => 'Şifre',
-        'terms'             => 'Kurallar',
-        'gRecaptchaResponse' => 'Güvenlik Doğrulaması'
+        'name'               => 'Ad',
+        'email'              => 'E-posta',
+        'email_login'        => 'E-posta',
+        'email_password'     => 'E-posta',
+        'password'           => 'Şifre',
+        'password_login'     => 'Şifre',
+        'terms'              => 'Kurallar',
+        'gRecaptchaResponse' => 'Güvenlik Doğrulaması',
+        'plan'               => 'Plan',
+        'month'              => 'Ay',
+        'coupon'             => 'Kupon',
     ],
 ];

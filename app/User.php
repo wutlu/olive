@@ -21,6 +21,7 @@ class User extends Authenticatable
         'session_id',
 
         'skip_intro',
+        'organisation_id',
     ];
 
     /**

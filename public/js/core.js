@@ -131,6 +131,17 @@ $(document).on('keydown keyup change click', '[data-image-to]', function() {
     target.attr('src', __.val())
 })
 
+/* --- input to html --- */
+
+$(document).on('keydown keyup change click', '[data-input-to]', function() {
+    var __ = $(this);
+
+    var target = __.data('input-to'),
+        target = element(target);
+
+    target.html(__.val())
+})
+
 /* --- submit function --- */
 
 var submitDelay;
@@ -221,6 +232,38 @@ $(document).on('focus', '[data-focus-class]', function() {
             target.toggleClass(__.data('focus-class-toggle'))
         }
     }, __.data('focus-class-delay'))
+
+    return false;
+})
+
+/* --- blur class function --- */
+
+var blurClassDelay;
+
+$(document).on('blur', '[data-blur-class]', function() {
+    var __ = $(this);
+
+    var target = __.data('blur-class'),
+        target = element(target);
+
+    window.clearTimeout(blurClassDelay)
+
+    blurClassDelay = window.setTimeout(function() {
+        if (__.data('blur-class-remove'))
+        {
+            target.removeClass(__.data('blur-class-remove'))
+        }
+
+        if (__.data('blur-class-add'))
+        {
+            target.addClass(__.data('blur-class-add'))
+        }
+
+        if (__.data('blur-class-toggle'))
+        {
+            target.toggleClass(__.data('blur-class-toggle'))
+        }
+    }, __.data('blur-class-delay'))
 
     return false;
 })

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PlanRequest extends FormRequest
+class PlanCalculateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,9 @@ class PlanRequest extends FormRequest
     public function rules()
     {
         return [
-            'plan' => 'sometimes|required|integer|in:1,2,3,4'
+            'plan' => 'required|integer|in:2,3,4',
+            'month' => 'required|integer|min:1|max:48',
+            'coupon' => 'nullable|string|max:16|exists:organisation_discount_coupons,key'
         ];
     }
 }

@@ -1,10 +1,9 @@
 <?php
 
 return [
-	[
+	1 => [
 		'name' => 'Başlangıç',
 		'price' => 0,
-		'yearly_discount_rate' => 0,
 		'properties' => [
 			'capacity' => [
 				'text' => 'Plan Kapasitesi',
@@ -48,10 +47,9 @@ return [
 			]
 		]
 	],
-	[
+	2 => [
 		'name' => 'Şahıs Planı',
 		'price' => 490,
-		'yearly_discount_rate' => 10,
 		'properties' => [
 			'capacity' => [
 				'text' => 'Plan Kapasitesi',
@@ -95,10 +93,9 @@ return [
 			]
 		]
 	],
-	[
+	3 => [
 		'name' => 'Ofis Planı',
 		'price' => 1290,
-		'yearly_discount_rate' => 12,
 		'properties' => [
 			'capacity' => [
 				'text' => 'Plan Kapasitesi',
@@ -142,10 +139,9 @@ return [
 			]
 		]
 	],
-	[
+	4 => [
 		'name' => 'Kurumsal Plan',
 		'price' => 2940,
-		'yearly_discount_rate' => 14,
 		'properties' => [
 			'capacity' => [
 				'text' => 'Plan Kapasitesi',

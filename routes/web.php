@@ -4,7 +4,8 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::get('panel', 'HomeController@dashboard')->name('dashboard');
 Route::get('aktiviteler', 'HomeController@activity')->name('dashboard.activities');
 
-Route::get('baslayin/{step?}', 'OrganisationController@start')->name('start')->where('step', '(1|2|3)');
+Route::match([ 'get', 'post' ], 'baslayin/{step?}', 'OrganisationController@create')->name('organisation.create')->where('step', '(1|2|3|4)');
+Route::post('baslayin/hesap', 'OrganisationController@calculate')->name('organisation.create.calculate');
 Route::get('intro/gec', 'HomeController@skipIntro')->name('intro.skip');
 
 Route::prefix('kullanici')->group(function () {
