@@ -227,7 +227,8 @@ class UserController extends Controller
         {
             $ok = false;
 
-            while ($ok == false) {
+            while ($ok == false)
+            {
                 $generate_key = str_random(8);
 
                 $key = OrganisationDiscountCoupon::where('key', $generate_key)->count();

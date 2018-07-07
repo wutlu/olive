@@ -26,6 +26,8 @@ class CreateOrganisationsTable extends Migration
             $table->unsignedInteger('user_id')->nullable()->default(null);
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
+            $table->boolean('status')->default(0);
+
             $table->timestamps();
         });
     }

@@ -19,6 +19,7 @@ class UserActivity extends Model
 		'button_method',
 		'button_action',
 		'button_class',
+		'button_text',
 		'user_id',
     ];
 

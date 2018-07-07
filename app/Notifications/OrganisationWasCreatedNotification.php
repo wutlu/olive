@@ -46,8 +46,7 @@ class OrganisationWasCreatedNotification extends Notification implements ShouldQ
                     ->subject('Olive: Organizasyonunuz Oluşturuldu!')
                     ->greeting('Merhaba, '.$this->name)
                     ->level('olive')
-                    ->line('Ödemeniz başarılı bir şekilde gerçekleştirildi.')
-                    ->line('Fatura bilgileriniz e-posta adresinize gönderilecektir.')
+                    ->line('Az önce bir organizasyon oluşturdunuz.')
                     ->line('Teşekkürler.');
     }
 

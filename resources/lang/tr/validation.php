@@ -52,7 +52,7 @@ return [
     'max' => [
         'numeric' => ':attribute değeri :max değerinden küçük olmalıdır.',
         'file' => ':attribute değeri :max kilobayt değerinden küçük olmalıdır.',
-        'string' => ':attribute değeri :max karakter değerinden küçük olmalıdır.',
+        'string' => ':attribute değeri :max karakterden kısa olmalıdır.',
         'array' => ':attribute değeri :max adedinden az nesneye sahip olmalıdır.',
     ],
     'mimes' => ':attribute dosya biçimi :values olmalıdır.',
@@ -119,6 +119,7 @@ return [
 
     'attributes' => [
         'name'               => 'Ad',
+        'lastname'           => 'Soyad',
         'email'              => 'E-posta',
         'email_login'        => 'E-posta',
         'email_password'     => 'E-posta',
@@ -129,5 +130,7 @@ return [
         'plan'               => 'Plan',
         'month'              => 'Ay',
         'coupon'             => 'Kupon',
+        'address'            => 'Adres',
+        'notes'              => 'Notlar',
     ],
 ];

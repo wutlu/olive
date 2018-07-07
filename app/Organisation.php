@@ -12,7 +12,8 @@ class Organisation extends Model
 		'capacity',
 		'start_date',
 		'day',
-		'user_id'
+		'user_id',
+        'status'
     ];
 
     # users

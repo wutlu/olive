@@ -27,6 +27,7 @@ class CreateUserActivitiesTable extends Migration
             $table->enum('button_method', [ 'POST', 'GET', 'PUT', 'PATCH' ])->nullable()->default(null);
             $table->string('button_action')->nullable()->default(null);
             $table->string('button_class')->nullable()->default(null);
+            $table->string('button_text')->nullable()->default(null);
 
             $table->unsignedInteger('user_id')->nullable()->default(null);
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

@@ -24,9 +24,14 @@ class PlanCalculateRequest extends FormRequest
     public function rules()
     {
         return [
-            'plan' => 'required|integer|in:2,3,4',
-            'month' => 'required|integer|min:1|max:48',
-            'coupon' => 'nullable|string|max:16|exists:organisation_discount_coupons,key'
+            'plan'     => 'required|integer|in:2,3,4',
+            'month'    => 'required|integer|min:1|max:24',
+            'coupon'   => 'nullable|string|max:16|exists:organisation_discount_coupons,key',
+
+            'name'     => 'required|string|max:32',
+            'lastname' => 'required|string|max:32',
+            'address'  => 'required|string|max:255',
+            'notes'    => 'nullable|string|max:255'
         ];
     }
 }

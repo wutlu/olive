@@ -112,6 +112,30 @@
                                 item.find('.collapsible-body').css({ 'background-color': o.markdown_color })
                             }
 
+                            if (o.button_type)
+                            {
+                                if (o.button_type == 'ajax')
+                                {
+                                    var button = $('<a />', {
+                                        'class': 'json ' + o.button_class,
+                                        'html': o.button_text,
+                                        'data-href': o.button_action,
+                                        'data-method': o.button_method
+                                    });
+                                }
+                                else
+                                {
+                                    var button = $('<a />', {
+                                        'class': o.button_class,
+                                        'html': o.button_text,
+                                        'href': o.button_action,
+                                        'data-method': o.button_method
+                                    });
+                                }
+
+                                item.find('.collapsible-body').children('span').append(button)
+                            }
+
                             item.appendTo(ul)
                     })
                 }
