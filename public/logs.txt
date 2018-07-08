@@ -1,1 +1,54 @@
 mutlu@veri.zone
+₺
+₺
+Fatura
+FTR#34630
+07.07.2018
+23:19:22
+14.07.2018
+Kurumsal Plan
+8 kullanıcı
+Ara Toplam
+KDV 18%
+Genel Toplam
+Ödenmedi
+Bilgi
+"test" kupon kodu ile 22% oranında ₺ 7761.6 değerinde bir indirim sağlandı.
+Hesap Bilgisi
+Ödemenizi; fatura numarası açıklamada olacak şekilde aşağıdaki hesap numaralarından herhangi birine yapabilirsiniz.
+Panelin sağ üst köşesinde bulunan kullanıcı menüsünden ödeme bildirimi sayfasına erişerek ödeme bildirimi yapmayı unutmayın.
+TR 1345 1561 2451 5112 51 - veri.zone LTD.
+TR 1345 1561 2451 5112 51 - veri.zone LTD.
+veri.zone
+Fatura No
+Fatura tarihi
+Fatura zamanı
+Vadesi
+Firma
+Müşteri
+Alper Mutlu Toksöz
+Alper Mutlu TOKSÖZ
+Atayurt Mah. Yapracık Toki Konutları
+Ankara / Polatlı
+B2-16 NO: 41
+B2-16 NO: 41
+ETİMESGUT/ANKARA
+ETİMESGUT/ANKARA
+Ürün
+Adet
+Birim Fiyat
+İndirim
+Tutar
+$
+Billing date
+Billing from
+Billing to
+
+
+Product
+Qty
+Price
+Total
+Ödenmedi
+Sayfa
+/

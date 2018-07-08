@@ -77,7 +77,6 @@ return [
          * Package Service Providers...
          */
         Jenssegers\Agent\AgentServiceProvider::class,
-        Vsmoraes\Pdf\PdfServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -141,7 +140,6 @@ return [
          * Private Classes
          */
         'Term' => App\Utilities\Term::class,
-        'PDF' => Vsmoraes\Pdf\PdfFacade::class,
 
         /*
          * Package Service Providers...
