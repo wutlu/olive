@@ -24,6 +24,67 @@ class AppServiceProvider extends ServiceProvider
 
             return $json->success;
         });
+
+        Validator::extend('tckn', function($attribute, $value, $parameters) {
+            $except = [
+                '11111111110',
+                '22222222220',
+                '33333333330',
+                '44444444440',
+                '55555555550',
+                '66666666660',
+                '7777777770',
+                '88888888880',
+                '99999999990'
+            ];
+
+            if ($value[0] == 0 or !ctype_digit($value) or strlen($value) != 11)
+            {
+                return false;
+            }
+            else
+            { 
+                $ilkt = 0;
+                $sont = 0;
+                $tumt = 0;
+
+                for($a = 0; $a < 9; $a = $a+2)
+                {
+                    $ilkt = $ilkt + $value[$a];
+                }
+
+                for($a = 1; $a < 9; $a = $a+2)
+                {
+                    $sont = $sont + $value[$a];
+                }
+
+                for($a = 0; $a < 10; $a = $a+1)
+                {
+                    $tumt = $tumt + $value[$a];
+                }
+
+                if (($ilkt*7-$sont)%10 != $value[9] or $tumt%10 != $value[10])
+                {
+                    return false;
+                } 
+                else
+                {  
+                    foreach($except as $ex)
+                    {
+                        if ($value == $ex)
+                        {
+                            return false;
+                        }
+                    }
+
+                    return true; 
+                } 
+            }
+        });
+
+        Validator::extend('check_email_verification', function() {
+            return auth()->user()->verified ? true : false;
+        });
     }
 
     /**

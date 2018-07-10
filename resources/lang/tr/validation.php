@@ -67,12 +67,12 @@ return [
     'numeric' => ':attribute sayı olmalıdır.',
     'present' => ':attribute alanı mevcut olmalıdır.',
     'regex' => ':attribute biçimi geçersiz.',
-    'required' => ':attribute alanı zorunlu.',
-    'required_if' => ':attribute alanı, :other :value değerine sahip olduğunda zorunludur.',
-    'required_unless' => ':attribute alanı, :other alanı :value değerlerinden birine sahip olmadığında zorunludur.',
-    'required_with' => ':attribute alanı :values varken zorunludur.',
+    'required' => ':attribute alanı zorunludur.',
+    'required_if' => ':attribute alanını boş bırakamazsınız.', // :attribute alanı, :other :value değerine sahip olduğunda zorunludur.
+    'required_unless' => ':attribute alanını boş bırakamazsınız.', // :attribute alanı, :other alanı :value değerlerinden birine sahip olmadığında zorunludur.
+    'required_with' => ':attribute alanı zorunludur.', // :attribute alanı :values varken zorunludur.
     'required_with_all' => ':attribute alanı herhangi bir :values değeri varken zorunludur.',
-    'required_without' => ':attribute alanı :values yokken zorunludur.',
+    'required_without' => ':attribute alanını boş bırakamazsınız.', // :attribute alanı :values yokken zorunludur.
     'required_without_all' => ':attribute alanı :values değerlerinden herhangi biri yokken zorunludur.',
     'same' => ':attribute ile :other eşleşmelidir.',
     'size' => [
@@ -97,6 +97,9 @@ return [
     | specify a specific custom language line for a given attribute rule.
     |
     */
+
+    'tckn' => ':attribute alanı geçerli değil.',
+    'check_email_verification' => 'E-posta adresinizi doğrulamadan bu işlemi tamamlayamazsınız.',
 
     'custom' => [
         'attribute-name' => [
@@ -127,10 +130,25 @@ return [
         'password_login'     => 'Şifre',
         'terms'              => 'Kurallar',
         'gRecaptchaResponse' => 'Güvenlik Doğrulaması',
-        'plan'               => 'Plan',
+        'plan_id'            => 'Plan',
         'month'              => 'Ay',
-        'coupon'             => 'Kupon',
+        'coupon_code'        => 'Kupon Kodu',
         'address'            => 'Adres',
         'notes'              => 'Notlar',
+
+        'country_id'         => 'Ülke',
+        'state_id'           => 'Şehir',
+        'city'               => 'İlçe',
+        'postal_code'        => 'Posta Kodu',
+
+        'person_name'        => 'Ad',
+        'person_lastname'    => 'Soyad',
+        'person_tckn'        => 'T.C.K.N.',
+        'type'               => 'Tür',
+        'corporate_type'     => 'İşletme Türü',
+        'tckn_without'       => 'T.C.K.N. Girmeyeceğim',
+        'merchant_name'      => 'Ticari Ünvan',
+        'tax_number'         => 'Vergi No',
+        'tax_office'         => 'Vergi Dairesi',
     ],
 ];

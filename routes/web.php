@@ -4,9 +4,19 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::get('panel', 'HomeController@dashboard')->name('dashboard');
 Route::get('aktiviteler', 'HomeController@activity')->name('dashboard.activities');
 
-Route::get('organizasyon-olustur/{step?}', 'OrganisationController@create')->name('organisation.create')->where('step', '(1|2|3)');
-Route::get('fatura/{id}.pdf', 'OrganisationController@invoice')->name('organisation.invoice');
+Route::get('organizasyon/ayarlar', 'OrganisationController@settings')->name('organisation.settings');
+Route::get('organizasyon/plan-secimi', 'OrganisationController@select')->name('organisation.create.select');
+Route::get('organizasyon/plan-detayi/{id}', 'OrganisationController@details')->name('organisation.create.details');
+Route::post('organizasyon/olustur', 'OrganisationController@create')->name('organisation.create');
+Route::get('organizasyon/olustur', 'OrganisationController@result')->name('organisation.create.result');
+
+Route::get('fatura/{id}', 'OrganisationController@invoice')->name('organisation.invoice');
 Route::post('fatura/hesapla', 'OrganisationController@calculate')->name('organisation.create.calculate');
+
+Route::prefix('geo')->group(function () {
+    Route::get('countries', 'GeoController@countries')->name('geo.countries');
+    Route::get('states', 'GeoController@states')->name('geo.states');
+});
 
 Route::get('intro/gec', 'HomeController@skipIntro')->name('intro.skip');
 

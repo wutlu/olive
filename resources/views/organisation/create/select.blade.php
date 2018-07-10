@@ -2,7 +2,10 @@
     'sidenav_fixed_layout' => true,
     'breadcrumb' => [
         [
-            'text' => 'Başlayın'
+            'text' => 'Organizasyon Oluştur'
+        ],
+        [
+            'text' => 'Plan Seçimi'
         ]
     ]
 ])
@@ -13,7 +16,7 @@ $('.tabs').tabs();
 
 @if (session('timeout'))
     @push('local.scripts')
-        M.toast({ html: 'İşlem zaman aşımına uğradı! lütfen tekrar deneyin.', classes: 'red' })
+        M.toast({ html: 'İşlem zaman aşımına uğradı! Lütfen tekrar deneyin.', classes: 'red' })
     @endpush
 @endif
 
@@ -73,7 +76,7 @@ $('.tabs').tabs();
                 </ul>
                 @if ($plan['price'])
                 <div class="center-align">
-                    <a href="{{ route('organisation.create', [ 'step' => 2, 'plan' => $key ]) }}" class="btn-flat btn-large waves-effect">Plan Seç</a>
+                    <a href="{{ route('organisation.create.details', [ $key ]) }}" class="btn-flat btn-large waves-effect">Planı Seç</a>
                 </div>
                 @endif
             </div>

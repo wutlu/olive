@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateOrganisationDiscountCouponsTable extends Migration
+class CreateCountriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,13 @@ class CreateOrganisationDiscountCouponsTable extends Migration
      */
     public function up()
     {
-        Schema::create('organisation_discount_coupons', function (Blueprint $table) {
+        Schema::create('countries', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->increments('id')->unsigned();
-
-            $table->string('key')->default(0)->index();
-
-            $table->unsignedSmallInteger('rate')->default(0);
-
-            $table->timestamps();
-        });
+            $table->string('code')->index();
+            $table->string('name');
+            $table->unsignedInteger('phonecode');
+       });
     }
 
     /**
@@ -31,6 +29,6 @@ class CreateOrganisationDiscountCouponsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('organisation_discounts');
+        Schema::dropIfExists('countries');
     }
 }

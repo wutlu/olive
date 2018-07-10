@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateOrganisationDiscountCouponsTable extends Migration
+class CreateStatesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,12 @@ class CreateOrganisationDiscountCouponsTable extends Migration
      */
     public function up()
     {
-        Schema::create('organisation_discount_coupons', function (Blueprint $table) {
+        Schema::create('states', function (Blueprint $table) {
             $table->increments('id')->unsigned();
+            $table->string('name')->index();
 
-            $table->string('key')->default(0)->index();
-
-            $table->unsignedSmallInteger('rate')->default(0);
-
-            $table->timestamps();
+            $table->unsignedInteger('country_id');
+            $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
         });
     }
 
@@ -31,6 +29,6 @@ class CreateOrganisationDiscountCouponsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('organisation_discounts');
+        Schema::dropIfExists('states');
     }
 }

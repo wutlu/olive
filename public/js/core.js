@@ -403,7 +403,11 @@ $(document).on('change', 'select.json, input[type=radio].json, input[type=checkb
 
 $(window).on('load', function() {
     $('.load').each(function() {
-        vzAjax($(this))
+        var __ = $(this);
+
+        setTimeout(function() {
+            vzAjax(__)
+        }, __.data('load-delay'))
     })
 })
 
@@ -420,45 +424,6 @@ function vzAjax(__)
 {
     if (__.hasClass('disabled'))
     {
-        return false;
-    }
-
-    if (__.data('confirm'))
-    {
-        /*
-        var mdl = modal({
-                'id': 'alert',
-                'status': 'show',
-                'body': __.data('confirm'),
-                'size': 'modal-small'
-            });
-
-            mdl.find('.modal-footer')
-               .html([
-                   $('<a />', {
-                       'href': '#',
-                       'class': 'cancel',
-                       'data-class': '#' + mdl.attr('id'),
-                       'data-class-remove': 'active',
-                       'html': buttons.cancel
-                   }),
-                   $('<a />', {
-                       'href': '#',
-                       'class': 'json ok',
-                       'data-class': '#' + mdl.attr('id'),
-                       'data-href': __.data('href'),
-                       'data-class-remove': 'active',
-                       'data-id': __.data('id'),
-                       'data-method': __.data('method'),
-                       'data-callback': __.data('callback'),
-                       'data-delete': __.data('delete'),
-                       'html': buttons.ok
-                   })
-               ])
-        */
-
-        alert('confirmation olacak')
-
         return false;
     }
 
@@ -538,7 +503,7 @@ function vzAjax(__)
         {
             //
         },
-        error: function(jqXHR, exception, title)
+        error: function(jqXHR, exception, title, test)
         {
             __result(__)
 
@@ -572,7 +537,8 @@ function vzAjax(__)
                             'id': 'err',
                             'body': title,
                             'size': 'modal-small',
-                            'title': keywords.info
+                            'title': keywords.info,
+                            'options': {}
                         });
 
                         mdl.find('.modal-footer')
@@ -587,7 +553,13 @@ function vzAjax(__)
             }
             else if (jqXHR.status == 401)
             {
-                location.href = '/?401';
+                var mdl = modal({
+                            'id': 'soft_in',
+                            'body': jqXHR.responseJSON.view,
+                            'size': 'modal-medium',
+                            'title': keywords.signin,
+                            'options': { dismissible: false }
+                        });
             }
             else if (jqXHR.status == 422)
             {
@@ -595,7 +567,7 @@ function vzAjax(__)
                     key = key.replace(/([0-9.]+)/i, '');
 
                     var element = __.is('form') ? __.find('[name=' + key + ']') :  $('[name=' + key + ']');
-                    var feedback = element.parent('.input-field').children('.helper-text');
+                    var feedback = element.closest('.input-field').find('.helper-text');
 
                     if (feedback.length)
                     {
@@ -642,7 +614,7 @@ function vzAjax(__)
                             ],
                             'size': 'modal-large',
                             'title': title,
-                            'close': true
+                            'options': {}
                         });
 
                     $.each(variables, function(key, val) {
@@ -665,7 +637,8 @@ function vzAjax(__)
                     var mdl = modal({
                         'id': 'err',
                         'body': title,
-                        'size': 'modal-small'
+                        'size': 'modal-small',
+                        'options': {}
                     });
 
                         mdl.find('.modal-footer')
@@ -683,7 +656,8 @@ function vzAjax(__)
                 var mdl = modal({
                         'id': 'err',
                         'body': errors.time_out,
-                        'size': 'modal-small'
+                        'size': 'modal-small',
+                        'options': {}
                     });
 
                     mdl.find('.modal-footer')
@@ -930,13 +904,12 @@ function modal(obj)
 
     modal.data('z-index', z_index).css({ 'z-index': z_index });
 
-    modal.modal()
+    modal.modal(obj.options)
 
     modal.removeClass('modal-large modal-medium modal-small')
     modal.addClass(modal_size)
 
     modal.find('.modal-title').html(obj.title ? obj.title : '')
-    modal.find('.modal-close').html(obj.close ? 'close' : '')
     modal.find('.modal-body').html(obj.body)
 
     modal.modal('open')

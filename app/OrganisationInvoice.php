@@ -8,18 +8,19 @@ class OrganisationInvoice extends Model
 {
 	protected $table = 'organisation_invoices';
 	protected $fillable = [
-		'organisation_id',
 		'invoice_id',
+		'organisation_id',
 		'user_id',
-		'name',
-		'lastname',
-		'address',
-		'json',
-		'notes',
 		'unit_price',
+		'month',
 		'total_price',
+		'amount_of_tax',
 		'discount',
-		'tax',
-		'paid'
+		'customer',
+		'pay_notice',
+		'pay_confirmed',
+		'plan',
 	];
+	public $incrementing = false;
+	protected $primaryKey = 'invoice_id';
 }

@@ -8,8 +8,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, shring-to-fit=no, user-scalable=no" />
 
+    @isset($breadcrumb)
+    @php $title = end($breadcrumb); @endphp
+    @endisset
     <!-- title -->
-    <title>@yield('title', config('app.name'))</title>
+    <title>@yield('title', @$title ? $title['text'] : config('app.name'))</title>
 
     <!-- font styles -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
@@ -25,7 +28,9 @@
     @stack('external.include.header')
 
     <!-- local styles -->
+    <style>
     @stack('local.styles')
+    </style>
 </head>
 <body>
     @isset($sidenav_fixed_layout)
@@ -33,6 +38,7 @@
             <div id="modal-confirmation" class="modal bottom-sheet">
                 <div class="modal-content">
                     <p>E-posta ({{ auth()->user()->email }}) adresinizi henüz doğrulamadınız.</p>
+                    <p>Bu adres size ait değilse Ayarlar/Hesap/E-posta Ayarları sayfasından güncelleyebilirsiniz.</p>
                     <a href="#" class="waves-effect btn-flat json" data-href="{{ route('user.register.resend') }}" data-method="post" data-callback="__resend">Tekrar Gönder</a>
                     <a href="#" class="waves-effect btn modal-close">Tamam</a>
                 </div>
@@ -269,12 +275,20 @@
 
     <!-- local scripts -->
     <script>
-    $('.modal').modal();
-    $('.dropdown-trigger').dropdown();
-    $('[data-tooltip]').tooltip();
-    $('.collapsible').collapsible();
+    $('.modal').modal({})
+    $('.dropdown-trigger').dropdown()
+    $('[data-tooltip]').tooltip()
+    $('.collapsible').collapsible()
 
     @stack('local.scripts')
+
+    function __soft_in(__, obj)
+    {
+        if (obj.status == 'ok')
+        {
+            location.reload()
+        }
+    }
     </script>
 </body>
 </html>

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Geo;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PlanCalculateRequest extends FormRequest
+class StatesRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,7 @@ class PlanCalculateRequest extends FormRequest
     public function rules()
     {
         return [
-            'plan_id'       => 'required|integer|in:2,3,4',
-            'month'         => 'required|integer|min:1|max:24',
-            'coupon_code'   => 'nullable|string|max:16|exists:organisation_discount_coupons,key'
+            'country_id' => 'required|integer|exists:countries,id'
         ];
     }
 }

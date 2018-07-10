@@ -7,6 +7,15 @@
     ]
 ])
 
+@if (session('organisation') == 'have')
+	@push('local.scripts')
+		M.toast({
+            html: 'Zaten bir organizasyonunuz mevcut.',
+            classes: 'blue'
+        })
+	@endpush
+@endif
+
 @section('content')
 
 Bir plan zaten mevcut.

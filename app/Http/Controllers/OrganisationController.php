@@ -13,6 +13,7 @@ use App\OrganisationDiscountCoupon;
 
 use App\Http\Requests\PlanRequest;
 use App\Http\Requests\PlanCalculateRequest;
+use App\Http\Requests\Organisation\BillingRequest;
 
 use Illuminate\Support\Facades\Redis;
 
@@ -21,6 +22,8 @@ use App\Notifications\OrganisationWasCreatedNotification;
 
 use Request as RequestStatic;
 
+use App\BillingInformation;
+
 use Carbon\Carbon;
 
 class OrganisationController extends Controller
@@ -28,235 +31,212 @@ class OrganisationController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('organisation:have_not')->only([ 'select', 'details', 'create' ]);
+        $this->middleware('organisation:have')->only([ 'settings' ]);
     }
 
-    # fatura pdf
-    public static function invoice(int $id)
+    # 
+    # ayarlar
+    # 
+    public static function settings()
     {
-        $oi = OrganisationInvoice::where('invoice_id', $id)->where('user_id', auth()->user()->id)->firstOrFail();
-
-        $json = json_decode($oi->json);
-
-        return view('plan.invoice', compact('oi', 'json'));
+        return view('organisation.settings');
     }
 
-    # başla
-    public static function create(int $step = 1, PlanRequest $request)
+    # 
+    # plan seçimi
+    # 
+    public static function select()
     {
-        if (auth()->user()->organisation_id)
+        return view('organisation.create.select');
+    }
+
+    #
+    # result
+    #
+    public static function result()
+    {
+        return view('organisation.create.result');
+    }
+
+    #
+    # plan detayı
+    #
+    public static function details(int $id)
+    {
+        if (isset(config('plans')[$id]))
         {
-            return view('plan.create.already');
+            if (!auth()->user()->verified)
+            {
+                return view('organisation.create.non-verified');
+            }
+
+            $plan = config('plans')[$id];
+
+            return view('organisation.create.details', compact('plan', 'id'));
         }
         else
         {
-            if (auth()->user()->verified)
-            {
-                $redis_invoice_key = implode(
-                    ':',
-                    [
-                        str_slug(config('app.name')),
-                        'invoice',
-                        'process',
-                        RequestStatic::ip()
-                    ]
-                );
-
-                if ($request->plan)
-                {
-                    session()->flash('plan', $request->plan);
-
-                    return redirect()->route('organisation.create', [ 'step' => $step ]);
-                }
-                else
-                {
-                    if (session('plan'))
-                    {
-                        $plan = config('plans')[session('plan')];
-                    }
-                    else
-                    {
-                        if ($step != 1)
-                        {
-                            session()->flash('timeout', true);
-
-                            Redis::del($redis_invoice_key);
-
-                            return redirect()->route('organisation.create');
-                        }
-                    }
-                }
-
-                $invoice_session = json_decode(Redis::get($redis_invoice_key));
-
-                switch ($step)
-                {
-                    case 1: return view('plan.create.step-1'); break;
-                    case 2: return view('plan.create.step-2', compact('plan')); break;
-                    case 3:
-                        if (@$invoice_session)
-                        {
-                            $user = auth()->user();
-
-                            /*
-                             * Kupon girilmiş fakat son anda farklı
-                             * bir hesap tarafından kullanılmış ise
-                             * işlemi sonlandır.
-                             */
-
-                            if (@$invoice_session->discount)
-                            {
-                                $coupon = OrganisationDiscountCoupon::where('key', $invoice_session->discount->coupon_key)->first();
-
-                                $status = @$coupon ? true : false;
-                            }
-                            else
-                            {
-                                $status = true;
-                            }
-
-                            /* --- */
-
-                            if ($status == true)
-                            {
-                                # organizasyonu oluştur
-                                $organisation = Organisation::create([
-                                    'name'       => 'ORG#1',
-                                    'capacity'   => $invoice_session->plan->capacity,
-                                    'start_date' => date('Y-m-d H:i:s'),
-                                    'day'        => $invoice_session->month * 30,
-                                    'user_id'    => auth()->user()->id
-                                ]);
-
-                                # organizasyonu kullanıcıya bağla
-                                $user->update([
-                                    'organisation_id' => $organisation->id
-                                ]);
-
-                                # kullanılmışsa kuponu sil
-                                if (@$coupon)
-                                {
-                                    $coupon->delete();
-                                }
-
-                                $invoice_id = 0;
-
-                                while ($invoice_id == 0)
-                                {
-                                    $invoice_id = rand(10000, 99999);
-
-                                    $invoice_count = OrganisationInvoice::where('invoice_id', $invoice_id)->count();
-
-                                    if ($invoice_count == 0)
-                                    {
-                                        OrganisationInvoice::create([
-                                            'organisation_id' => $organisation->id,
-                                                 'invoice_id' => $invoice_id,
-                                                    'user_id' => $user->id,
-                                                       'name' => $invoice_session->invoice->name,
-                                                   'lastname' => $invoice_session->invoice->lastname,
-                                                    'address' => $invoice_session->invoice->address,
-                                                       'json' => json_encode($invoice_session->json),
-                                                      'notes' => $invoice_session->invoice->notes,
-
-                                                 'unit_price' => $invoice_session->unit_price,
-                                                'total_price' => $invoice_session->total_price,
-                                                   'discount' => @$invoice_session->discount ? $invoice_session->discount->amount : 0,
-                                                        'tax' => $invoice_session->tax
-                                        ]);
-
-                                        $ok = true;
-
-                                        // pdf oluştur
-                                        // fatura e-postasına ek kaydet
-                                        $user->notify(new OrganisationWasCreatedNotification($user->name));
-                                    }
-                                    else
-                                    {
-                                        $invoice_id = 0;
-                                    }
-                                }
-
-                                # bildirim kaydet
-                                UserActivityUtility::push(
-                                    'Organizasyonunuz oluşturuldu.',
-                                    [
-                                        'icon' => 'flag',
-                                        'markdown' => implode(PHP_EOL, [
-                                            'Ödeme bilgileri ve diğer detaylar e-posta adresinize gönderildi.',
-                                            'Organizasyonunuz ödeme işlemi gerçekleştikten sonra aktif hale gelecektir.'
-                                        ]),
-                                        'button' => [
-                                            'type' => 'http',
-                                            'method' => 'GET',
-                                            'action' => route('organisation.invoice', [ 'id' => $invoice_id ]),
-                                            'class' => 'btn-flat waves-effect',
-                                            'text' => 'Faturayı İndir'
-                                        ]
-                                    ]
-                                );
-                            }
-
-                            Redis::del($redis_invoice_key);
-
-                            return view('plan.create.step-3', compact('plan', 'invoice_session'));
-                        }
-                        else
-                        {
-                            session()->flash('timeout', true);
-
-                            return redirect()->route('organisation.create');
-                        }
-                    break;
-                }
-            }
-            else
-            {
-                return view('plan.create.non-verified');
-            }
+            return abort(404);
         }
     }
 
-    /*
-     * - plan hesaplaması yap
-     * - plan loglarını redis'e al.
-     */
+    #
+    # create
+    #
+    public static function create(BillingRequest $request)
+    {
+        $redis_invoice_key = implode(
+            ':',
+            [
+                str_slug(config('app.name')),
+                'invoice',
+                'process',
+                RequestStatic::ip()
+            ]
+        );
 
+        $invoice_session = json_decode(Redis::get($redis_invoice_key));
+
+        if (!@$invoice_session)
+        {
+            return [
+                'status' => 'ok',
+                'created' => false
+            ];
+        }
+
+        $user = auth()->user();
+        $plan = config('plans')[$request->plan_id];
+
+        $billing_information = new BillingInformation;
+        $billing_information->user_id = $user->id;
+        $billing_information->protected = $request->protected ? true : false;
+        $billing_information->fill($request->all());
+        $billing_information->save();
+
+        if ($request->coupon_key)
+        {
+            $coupon = OrganisationDiscountCoupon::where('key', $request->coupon_key)->delete();
+        }
+
+        $organisation = Organisation::create([
+            'name'       => 'ORG#1',
+            'capacity'   => $plan['properties']['capacity']['value'],
+            'start_date' => date('Y-m-d H:i:s'),
+            'day'        => $request->month * 30,
+            'user_id'    => $user->id
+        ]);
+
+        $user->update([
+            'organisation_id' => $organisation->id
+        ]);
+
+        $invoice_id = 0;
+
+        while ($invoice_id == 0)
+        {
+            $invoice_id = rand(10000, 99999);
+
+            $invoice_count = OrganisationInvoice::where('invoice_id', $invoice_id)->count();
+
+            if ($invoice_count == 0)
+            {
+                OrganisationInvoice::create([
+                         'invoice_id' => $invoice_id,
+                    'organisation_id' => $organisation->id,
+                            'user_id' => $user->id,
+             'billing_information_id' => $billing_information->id,
+
+                         'unit_price' => $invoice_session->unit_price,
+                              'month' => $request->month,
+                        'total_price' => $invoice_session->total_price,
+                      'amount_of_tax' => $invoice_session->amount_of_tax,
+
+                           'discount' => @$invoice_session->discount ? json_encode($invoice_session->discount) : null,
+
+                               'plan' => json_encode($plan)
+                ]);
+
+                $ok = true;
+
+                $user->notify(new OrganisationWasCreatedNotification($user->name));
+
+                UserActivityUtility::push(
+                    'Organizasyon oluşturuldu.',
+                    [
+                        'icon' => 'flag',
+                        'markdown' => implode(PHP_EOL, [
+                            'Ödeme bilgileri ve diğer detaylar e-posta adresinize gönderildi.',
+                            'Sanal faturanız oluşturuldu. Ödemeniz gerçekleştikten sonra sanal faturanız, resmi fatura olarak güncellenecek, organizasyonun ödeme işlemi gerçekleştikten sonra aktif edilecektir.'
+                        ]),
+                        'button' => [
+                            'type' => 'http',
+                            'method' => 'GET',
+                            'action' => route('organisation.invoice', [ 'id' => $invoice_id ]),
+                            'class' => 'btn-flat waves-effect',
+                            'text' => 'Faturayı İndir'
+                        ]
+                    ]
+                );
+            }
+            else
+            {
+                $invoice_id = 0;
+            }
+        }
+
+        Redis::del($redis_invoice_key);
+
+        session()->flash('created', true);
+
+        return [
+            'status' => 'ok',
+            'created' => true
+        ];
+    }
+
+    #
+    # plan hesaplaması
+    #
     public static function calculate(PlanCalculateRequest $request)
     {
-        $plan = (object) config('plans')[$request->plan];
+        $plan = (object) config('plans')[$request->plan_id];
 
-        $session['plan']['name'          ] = $plan->name;
-        $session['plan']['capacity'      ] = $plan->properties['capacity']['value'];
+        $session['plan'] = $plan;
 
-        $session['unit_price'            ] = $plan->price;
-        $session['month'                 ] = $request->month;
-        $session['total_price'           ] = $session['unit_price'] * $request->month;
+        $session['unit_price'] = $plan->price;
+        $session['month'] = $request->month;
+        $session['total_price'] = $session['unit_price'] * $request->month;
 
         # kupon varsa
-        if ($request->coupon)
+        if ($request->coupon_code)
         {
-            $coupon = OrganisationDiscountCoupon::where('key', $request->coupon)->first();
+            $coupon = OrganisationDiscountCoupon::where('key', $request->coupon_code)->first();
 
-            $rate = $request->month >= 12 ? ($coupon->rate + config('app.discount_with_year')) : $coupon->rate;
-            $rate = $rate >= 100 ? 99.9 : $rate;
+            if ($request->month >= config('app.discount_with_year'))
+            {
+                $rate = $coupon->rate + config('app.discount_with_year');
 
-            $session['discount']['rate'      ] = $rate;
-            $session['discount']['amount'    ] = $session['total_price'] * $rate / 100;
+                $session['discount']['rate_extra'] = intval(config('app.discount_with_year'));
+            }
+            else
+            {
+                $rate = $coupon->rate;
+            }
+
+            $rate = $rate >= 100 ? 100 : $rate;
+
+            $session['discount']['rate'] = $rate;
+            $session['discount']['amount'] = $session['total_price'] * $rate / 100;
             $session['discount']['coupon_key'] = $coupon->key;
         }
 
-        $session['discounted_price'      ] = (@$session['discount'] ? $session['total_price'] - $session['discount']['amount'] : $session['total_price']);
-        $session['tax'                   ] = (@$session['discount'] ? $session['discounted_price'] : $session['total_price']) * config('app.tax') / 100;
-        $session['total_price_with_tax'  ] = (@$session['discount'] ? $session['discounted_price'] : $session['total_price']) + $session['tax'];
+        $session['discounted_price'] = (@$session['discount'] ? $session['total_price'] - $session['discount']['amount'] : $session['total_price']);
+        $session['amount_of_tax'] = (@$session['discount'] ? $session['discounted_price'] : $session['total_price']) * config('app.tax') / 100;
+        $session['total_price_with_tax'] = (@$session['discount'] ? $session['discounted_price'] : $session['total_price']) + $session['amount_of_tax'];
 
-        $session['invoice']['ip'         ] = RequestStatic::ip();
-        $session['invoice']['name'       ] = $request->name;
-        $session['invoice']['lastname'   ] = $request->lastname;
-        $session['invoice']['address'    ] = $request->address;
-        $session['invoice']['notes'      ] = $request->notes;
-
-        # tüm detayları json formatında kaydet.
-        $session['json'                  ] = $session;
+        $session['customer']['ip'] = RequestStatic::ip();
 
         $redis_invoice_key = implode(
             ':',
@@ -264,7 +244,7 @@ class OrganisationController extends Controller
                 str_slug(config('app.name')),
                 'invoice',
                 'process',
-                $session['invoice']['ip']
+                $session['customer']['ip']
             ]
         );
 
@@ -275,6 +255,73 @@ class OrganisationController extends Controller
             'status' => 'ok',
             'result' => $session
         ];
+    }
+
+    # 
+    # fatura
+    # 
+    public static function invoice(int $id)
+    {
+        $oi = OrganisationInvoice::where('invoice_id', $id)->where('user_id', auth()->user()->id)->firstOrFail();
+
+        $json = json_decode($oi->log);
+
+        $data = (object) [
+            'invoice' => [
+                'id' => $oi->invoice_id,
+                'formal' => [
+                    'serial' => 'A',
+                    'no' => '567'
+                ]
+            ],
+            'orderDate' => date('d.m.Y', strtotime($oi->created_at)),
+            'paidDate' => date('d.m.Y', strtotime('+30 days', strtotime($oi->created_at))),
+            'dueDate' => date('d.m.Y', strtotime('+30 days', strtotime($oi->created_at))),
+            'consumer' => [
+                'name' => 'OYT Yazılım Teknolojileri A.Ş.',
+                'address' => [
+                    'Tomtom Mah. Nur-i Ziya Sok. 16/1',
+                    '34433 Beyoğlu İstanbul'
+                ]
+            ],
+            'products' => [
+                [
+                    'description' => [ 'Test', 'Test' ],
+                    'quantity' => '1 Ay',
+                    'unitPrice' => 2242,
+                    'total' => 14214,
+                ],
+                [
+                    'description' => [ 'Test', 'Test' ],
+                    'quantity' => '1 Ay',
+                    'unitPrice' => 2242,
+                    'total' => 14214,
+                    'tax' => 10
+                ]
+            ],
+            'subtotal' => 1100,
+            'totalTax' => 114,
+            'total' => 10000,
+            'discount' => 100,
+            'notes' => [
+                [
+                    'title' => 'Bilgi',
+                    'note' => '"'.$json->discount->coupon_key.'" kupon kodu ile '.$json->discount->rate.'% oranında ₺ '.$json->discount->amount.' değerinde bir indirim sağlandı.'
+                ],
+                [
+                    'title' => 'Hesap Bilgisi',
+                    'note' => 'Ödemenizi; fatura numarası açıklamada olacak şekilde aşağıdaki hesap numaralarından herhangi birine yapabilirsiniz.'
+                ],
+                [
+                    'note' => 'Panelin sağ üst köşesinde bulunan kullanıcı menüsünden ödeme bildirimi sayfasına erişerek ödeme bildirimi yapmayı unutmayın.'
+                ],
+                [
+                    'note' => 'TR 1345 1561 2451 5112 51 - veri.zone LTD.'
+                ]
+            ]
+        ];
+
+        return view('plan.invoice', compact('data'));
     }
 
 }

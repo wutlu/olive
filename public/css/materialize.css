@@ -3209,13 +3209,13 @@ table {
 table.invoice thead > tr {
   border-width: 0 0 2px;
   border-style: solid;
-  border-color: rgba(200, 200, 200, .4);
+  border-color: rgba(0, 0, 0, .4);
 }
 
 table.invoice tfoot > tr {
   border-width: 2px 0 0;
   border-style: solid;
-  border-color: rgba(200, 200, 200, .4);
+  border-color: rgba(0, 0, 0, .4);
 }
 
 table.striped tr {
@@ -5394,7 +5394,7 @@ small {
 
 .card .card-content {
   padding: 24px;
-  border-radius: 0 0 2px 2px;
+  border-radius: 2px;
 }
 
 .card .card-content p {
@@ -6083,6 +6083,7 @@ button.btn-floating {
   left: 0;
   top: 0;
   z-index: 9999;
+
   -webkit-transform-origin: 0 0;
           transform-origin: 0 0;
 }
@@ -6141,6 +6142,7 @@ button.btn-floating {
   top: 1px;
   left: 0;
   height: 18px;
+
   -webkit-transform: none;
           transform: none;
 }
@@ -6875,6 +6877,7 @@ input[type=search].valid:not(.browser-default):focus,
 textarea.materialize-textarea.valid,
 textarea.materialize-textarea.valid:focus, .select-wrapper.valid > input.select-dropdown {
   border-bottom: 1px solid #4CAF50;
+
   -webkit-box-shadow: 0 1px 0 0 #4CAF50;
           box-shadow: 0 1px 0 0 #4CAF50;
 }
@@ -6906,6 +6909,7 @@ textarea.materialize-textarea.invalid,
 textarea.materialize-textarea.invalid:focus, .select-wrapper.invalid > input.select-dropdown,
 .select-wrapper.invalid > input.select-dropdown:focus {
   border-bottom: 1px solid #F44336;
+
   -webkit-box-shadow: 0 1px 0 0 #F44336;
           box-shadow: 0 1px 0 0 #F44336;
 }
@@ -7058,6 +7062,9 @@ textarea.materialize-textarea + label:after, .select-wrapper + label:after {
   position: relative;
   margin-top: 1rem;
   margin-bottom: 1rem;
+}
+.input-field.mb-2 {
+  margin-bottom: 2rem;
 }
 
 .input-field.inline {
@@ -7735,10 +7742,12 @@ select {
   margin: 0 0 8px 0;
   padding: 0;
   display: block;
+
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
+
   z-index: 1;
 }
 
@@ -7777,6 +7786,7 @@ select:disabled {
 .select-wrapper input.select-dropdown:disabled {
   color: rgba(0, 0, 0, 0.42);
   cursor: default;
+
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;

@@ -72,26 +72,29 @@ class UserController extends Controller
                 $ip         = $request->ip();
                 $date       = date('Y-m-d H:i:s');
 
-                $data[] = '| Özellik         | Değer           |';
-                $data[] = '| --------------: |:--------------- |';
-                $data[] = '| IP              | '.$ip.'         |';
+                $location   = geoip()->getLocation($ip);
+
+                $data[] = '| Özellik         | Değer                                      |';
+                $data[] = '| --------------: |:------------------------------------------ |';
+                $data[] = '| IP              | '.$ip.'                                    |';
+                $data[] = '| Konum           | '.$location->city.'/'.$location->country.' |';
 
             if ($device)
             {
-                $data[] = '| Cihaz           | '.$device.'     |';
+                $data[] = '| Cihaz           | '.$device.'                                |';
             }
 
             if ($platform)
             {
-                $data[] = '| İşletim Sistemi | '.$platform.'   |';
+                $data[] = '| İşletim Sistemi | '.$platform.'                              |';
             }
 
             if ($browser)
             {
-                $data[] = '| Tarayıcı        | '.$browser.'    |';
+                $data[] = '| Tarayıcı        | '.$browser.'                               |';
             }
 
-                $data[] = '| İşlem Tarihi    | '.$date.'       |';
+                $data[] = '| İşlem Tarihi    | '.$date.'                                  |';
 
                 # --- [] --- #
 

@@ -59,13 +59,10 @@ class Handler extends ExceptionHandler
      */
     protected function unauthenticated($request, AuthenticationException $exception)
     {
-        if ($request->expectsJson())
-        {
-            return [
-                'status' => 'authentication'
-            ];
-        }
-
-        return redirect()->route('user.login');
+        return $request->expectsJson()
+                    ? response()->json([
+                        'view' => view('user.soft_in')->render()
+                    ], 401)
+                    : redirect()->guest(route('user.login'));
     }
 }
