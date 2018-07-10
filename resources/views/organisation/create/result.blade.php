@@ -22,7 +22,7 @@
             <i class="material-icons green-text large">check</i>
             <span class="card-title">Organizasyon Oluşturuldu</span>
             <p class="grey-text">Ödeme bilgileri ve diğer detaylar e-posta adresinize gönderildi.</p>
-            <p class="grey-text">Sanal faturanız oluşturuldu. Ödemeniz gerçekleştikten sonra sanal faturanız, resmi fatura olarak güncellenecek, organizasyonun ödeme işlemi gerçekleştikten sonra aktif edilecektir.</p>
+            <p class="grey-text">Sanal faturanız oluşturuldu. Ödemeniz gerçekleştikten sonra sanal faturanız, resmi fatura olarak güncellenecek ve organizasyon aktif hale gelecektir.</p>
             @else
             <i class="material-icons red-text large">close</i>
             <span class="card-title">Bir şeyler ters gitti :(</span>

@@ -168,14 +168,14 @@ class OrganisationController extends Controller
                         'icon' => 'flag',
                         'markdown' => implode(PHP_EOL, [
                             'Ödeme bilgileri ve diğer detaylar e-posta adresinize gönderildi.',
-                            'Sanal faturanız oluşturuldu. Ödemeniz gerçekleştikten sonra sanal faturanız, resmi fatura olarak güncellenecek, organizasyonun ödeme işlemi gerçekleştikten sonra aktif edilecektir.'
+                            'Sanal faturanız oluşturuldu. Ödemeniz gerçekleştikten sonra sanal faturanız, resmi fatura olarak güncellenecek ve organizasyon aktif hale gelecektir.'
                         ]),
                         'button' => [
                             'type' => 'http',
                             'method' => 'GET',
                             'action' => route('organisation.invoice', [ 'id' => $invoice_id ]),
                             'class' => 'btn-flat waves-effect',
-                            'text' => 'Faturayı İndir'
+                            'text' => 'Fatura'
                         ]
                     ]
                 );
