@@ -11,7 +11,7 @@ return [
         'cancel' => 'Vazgeç',
         'update' => 'Güncelle',
         'info' => 'Bilgi',
-        'signin' => 'Giriş Yapın'
+        'signin' => 'Giriş'
     ],
     'errors' => [
         'disconnected' => 'İnternete bağlı değilsiniz.',

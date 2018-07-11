@@ -158,14 +158,115 @@ $(document).ready(function() {
                 <span class="card-title">Fatura Bilgisi</span>
             </div>
             <div class="input-field col s12 m8 l6 xl4">
-                <select>
+                <select
+                    name="billing-information"
+                    id="billing-information"
+                    class="json"
+                    data-alias="id"
+                    data-href="{{ route('billing.information') }}"
+                    data-callback="__billling_information">
                     <option value="" disabled selected>Seçin</option>
+                    @forelse ($billing_informations as $item)
+                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                    @empty
+                    <option value="" disabled selected>Kayıt Yok</option>
+                    @endforelse
                 </select>
                 <label>Mevcut Kayıtlardan Getir</label>
-                <span class="helper-text">Mevcut kayıtları Ayarlar bölümünden güncelleyebilirsiniz.</span>
+                <span class="helper-text">Mevcut kayıtları Ayarlar/Fatura Bilgileri bölümünden güncelleyebilirsiniz.</span>
             </div>
         </div>
         @push('local.scripts')
+        function __billling_information(__, obj)
+        {
+            if (obj.status == 'ok')
+            {
+                var elements = {
+                    "name": {
+                        "type":"text"
+                    },
+                    "type": {
+                        "type":"radio"
+                    },
+                    "name": {
+                        "type":"text"
+                    },
+                    "person_name": {
+                        "type":"text"
+                    },
+                    "person_lastname": {
+                        "type":"text"
+                    },
+                    "person_tckn": {
+                        "type":"text"
+                    },
+                    "merchant_name": {
+                        "type":"text"
+                    },
+                    "tax_number": {
+                        "type":"text"
+                    },
+                    "tax_office": {
+                        "type":"text"
+                    },
+                    "country_id": {
+                        "type":"select"
+                    },
+                    "state_id": {
+                        "type":"select",
+                        "delay": 1100
+                    },
+                    "city": {
+                        "type":"text"
+                    },
+                    "address": {
+                        "type":"text"
+                    },
+                    "postal_code": {
+                        "type":"text"
+                    },
+                    "created_at": {
+                        "type":"text"
+                    },
+                    "updated_at": {
+                        "type":"text"
+                    }
+                };
+
+                $.each(obj.data, function(name, val) {
+                    var delay = elements[name]['delay'];
+
+                    setTimeout(function() {
+                        if (elements[name]['type'] == 'text')
+                        {
+                            $('form#create-form').find('[name=' + name + ']')
+                                                 .val(val)
+                                                 .next('label')
+                                                 .addClass('active');
+                        }
+                        else if (elements[name]['type'] == 'radio')
+                        {
+                            $('form#create-form').find('[name=' + name + '][value=' + val + ']')
+                                                 .attr('checked', true)
+                                                 .trigger('click');
+                        }
+                        else if (elements[name]['type'] == 'select')
+                        {
+                            $('form#create-form').find('[name=' + name + ']').val(val)
+                                                                             .attr('checked', true)
+                                                                             .trigger('change')
+                                                                             .formSelect();
+                        }
+                    }, delay ? delay : 0)
+                })
+
+                M.toast({
+                    html: 'Form dolduruldu.',
+                    classes: 'blue'
+                })
+            }
+        }
+
         function __create(__, obj)
         {
             if (obj.status == 'ok')

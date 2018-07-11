@@ -4,14 +4,19 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::get('panel', 'HomeController@dashboard')->name('dashboard');
 Route::get('aktiviteler', 'HomeController@activity')->name('dashboard.activities');
 
-Route::get('organizasyon/ayarlar', 'OrganisationController@settings')->name('organisation.settings');
-Route::get('organizasyon/plan-secimi', 'OrganisationController@select')->name('organisation.create.select');
-Route::get('organizasyon/plan-detayi/{id}', 'OrganisationController@details')->name('organisation.create.details');
-Route::post('organizasyon/olustur', 'OrganisationController@create')->name('organisation.create');
-Route::get('organizasyon/olustur', 'OrganisationController@result')->name('organisation.create.result');
+Route::prefix('organizasyon')->group(function () {
+    Route::get('ayarlar', 'OrganisationController@settings')->name('organisation.settings');
+    Route::get('plan-secimi', 'OrganisationController@select')->name('organisation.create.select');
+    Route::get('plan-detayi/{id}', 'OrganisationController@details')->name('organisation.create.details');
+    Route::post('olustur', 'OrganisationController@create')->name('organisation.create');
+    Route::get('olustur', 'OrganisationController@result')->name('organisation.create.result');
+});
 
-Route::get('fatura/{id}', 'OrganisationController@invoice')->name('organisation.invoice');
-Route::post('fatura/hesapla', 'OrganisationController@calculate')->name('organisation.create.calculate');
+Route::prefix('fatura')->group(function () {
+    Route::get('{id}', 'OrganisationController@invoice')->name('organisation.invoice');
+    Route::post('hesapla', 'OrganisationController@calculate')->name('organisation.create.calculate');
+    Route::get('kayitli-bilgi', 'OrganisationController@billingInformation')->name('billing.information');
+});
 
 Route::prefix('geo')->group(function () {
     Route::get('countries', 'GeoController@countries')->name('geo.countries');

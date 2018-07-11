@@ -53,7 +53,7 @@
                                             <label for="password_login">Şifre</label>
                                             <span class="helper-text">Hesap şifreniz.</span>
                                         </div>
-                                        <div class="right-align">
+                                        <div class="col s12 right-align">
                                             <button type="submit" class="waves-effect waves-light btn cyan darken-4">Giriş Yap</button>
                                         </div>
                                     </div>
@@ -86,7 +86,7 @@
                                                 <span>Sayfanın altında bulunan Kullanım Koşulları ve Gizlilik Politikası sayfalarındaki maddeleri okudum, kabul ediyorum.</span>
                                             </label>
                                         </div>
-                                        <div class="right-align">
+                                        <div class="col s12 right-align">
                                             <button type="submit" class="waves-effect waves-light btn cyan darken-4">Kaydol</button>
                                         </div>
                                     </div>
@@ -103,7 +103,7 @@
                                         <div class="input-field col s12">
                                             <div class="captcha" data-id="password-captcha"></div>
                                         </div>
-                                        <div class="right-align">
+                                        <div class="col s12 right-align">
                                             <button type="submit" class="waves-effect waves-light btn cyan darken-4">Şifre Gönder</button>
                                         </div>
                                     </div>

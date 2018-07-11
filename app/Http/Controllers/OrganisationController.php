@@ -14,6 +14,7 @@ use App\OrganisationDiscountCoupon;
 use App\Http\Requests\PlanRequest;
 use App\Http\Requests\PlanCalculateRequest;
 use App\Http\Requests\Organisation\BillingRequest;
+use App\Http\Requests\IdRequest;
 
 use Illuminate\Support\Facades\Redis;
 
@@ -66,19 +67,36 @@ class OrganisationController extends Controller
     {
         if (isset(config('plans')[$id]))
         {
-            if (!auth()->user()->verified)
+            $user = auth()->user();
+
+            if (!$user->verified)
             {
                 return view('organisation.create.non-verified');
             }
 
             $plan = config('plans')[$id];
 
-            return view('organisation.create.details', compact('plan', 'id'));
+            $billing_informations = BillingInformation::where('user_id', $user->id)->where('protected', true)->get();
+
+            return view('organisation.create.details', compact('plan', 'id', 'billing_informations'));
         }
         else
         {
             return abort(404);
         }
+    }
+
+    #
+    # kayıtlı fatura bilgileri
+    #
+    public static function billingInformation(IdRequest $request)
+    {
+        $billing_information = BillingInformation::where('user_id', auth()->user()->id)->where('id', $request->id)->where('protected', true)->firstOrFail();
+
+        return [
+            'status' => 'ok',
+            'data' => $billing_information
+        ];
     }
 
     #
@@ -109,7 +127,10 @@ class OrganisationController extends Controller
         $user = auth()->user();
         $plan = config('plans')[$request->plan_id];
 
-        $billing_information = new BillingInformation;
+        $billing_information = BillingInformation::firstOrNew([
+            'user_id' => $user->id,
+            'name' => $request->name
+        ]);
         $billing_information->user_id = $user->id;
         $billing_information->protected = $request->protected ? true : false;
         $billing_information->fill($request->all());

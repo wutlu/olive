@@ -558,7 +558,7 @@ function vzAjax(__)
                             'body': jqXHR.responseJSON.view,
                             'size': 'modal-medium',
                             'title': keywords.signin,
-                            'options': { dismissible: false }
+                            'options': { dismissible: true }
                         });
             }
             else if (jqXHR.status == 422)

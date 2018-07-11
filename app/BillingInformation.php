@@ -23,4 +23,15 @@ class BillingInformation extends Model
 		'postal_code',
 		'protected'
     ];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'id',
+        'protected',
+        'user_id'
+    ];
 }
