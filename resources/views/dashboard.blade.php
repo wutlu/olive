@@ -6,7 +6,77 @@
 <div class="row">
     <div class="col xl4 l5 s12">
         @if (@auth()->user()->organisation_id)
-        <div class="card">
+        @push('local.scripts')
+        $(document).on('click', '[data-trigger=organisation-name]', function() {
+            var mdl = modal({
+                    'id': 'detail',
+                    'body': $('<div />', {
+                        'class': 'input-field',
+                        'html': [
+                            $('<input />', {
+                                'id': 'organisation_name',
+                                'name': 'organisation_name',
+                                'type': 'text',
+                                'class': 'validate',
+                                'val': '{{ $user->organisation->name }}',
+                                'data-length': 16
+                            }),
+                            $('<label />', {
+                                'for': 'organisation_name',
+                                'html': 'Organizasyon Adı'
+                            }),
+                            $('<span />', {
+                                'class': 'helper-text'
+                            })
+                        ]
+                    }),
+                    'size': 'modal-small',
+                    'title': 'Organizasyon Adı',
+                    'options': { dismissible: false }
+                });
+
+                mdl.find('.modal-footer')
+                   .html([
+                       $('<a />', {
+                           'href': '#',
+                           'class': 'modal-close waves-effect btn-flat',
+                           'html': buttons.cancel
+                       }),
+                       $('<span />', {
+                           'html': ' '
+                       }),
+                       $('<a />', {
+                           'href': '#',
+                           'class': 'waves-effect btn json',
+                           'data-href': '{{ route('organisation.update.name') }}',
+                           'data-method': 'patch',
+                           'data-include': 'organisation_name',
+                           'data-callback': '__update__organisation_name',
+                           'html': buttons.update
+                       })
+                   ])
+
+                M.updateTextFields()
+
+                $('input[name=organisation_name]').characterCounter()
+        })
+
+        function __update__organisation_name(__, obj)
+        {
+            if (obj.status == 'ok')
+            {
+                $('#organisation-card').find('span.card-title').html($('#organisation_name').val())
+
+                $('#modal-detail').modal('close')
+
+                M.toast({
+                    html: 'İsim güncellendi.',
+                    classes: 'green'
+                })
+            }
+        }
+        @endpush
+        <div class="card" id="organisation-card">
             <div class="card-image">
                 <img src="{{ asset('img/md/21.jpg') }}" alt="" />
                 <span class="card-title">{{ $user->organisation->name }}</span>
@@ -16,7 +86,7 @@
 
                 <ul id="organisation-dropdown" class="dropdown-content">
                     <li>
-                        <a href="#" class="waves-effect">
+                        <a href="#" class="waves-effect" data-trigger="organisation-name">
                             <i class="material-icons">create</i>
                             İsmi Güncelle
                         </a>

@@ -244,7 +244,7 @@ $(document).ready(function() {
                     setTimeout(function() {
                         if (elements[name]['type'] == 'text')
                         {
-                            $('form#create-form').find('[name=' + name + ']').val(val).next('label').addClass('active');
+                            $('form#create-form').find('[name=' + name + ']').val(val);
                         }
                         else if (elements[name]['type'] == 'radio')
                         {

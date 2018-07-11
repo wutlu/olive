@@ -348,6 +348,8 @@ $(document).ready(function() {
     {
         $('.cookie-alert').addClass('active')
     }
+
+    M.updateTextFields()
 })
 
 $('.cookie-alert').on('click', '.close', function() {
@@ -750,6 +752,8 @@ function __result(__)
         {
             __.removeAttr('disabled')
         }
+
+        M.updateTextFields()
     }, 100)
 }
 

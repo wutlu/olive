@@ -10,6 +10,8 @@ Route::prefix('organizasyon')->group(function () {
     Route::get('plan-detayi/{id}', 'OrganisationController@details')->name('organisation.create.details');
     Route::post('olustur', 'OrganisationController@create')->name('organisation.create');
     Route::get('olustur', 'OrganisationController@result')->name('organisation.create.result');
+
+    Route::patch('ad', 'OrganisationController@updateName')->name('organisation.update.name');
 });
 
 Route::prefix('fatura')->group(function () {

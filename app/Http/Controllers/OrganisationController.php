@@ -14,6 +14,7 @@ use App\OrganisationDiscountCoupon;
 use App\Http\Requests\PlanRequest;
 use App\Http\Requests\PlanCalculateRequest;
 use App\Http\Requests\Organisation\BillingRequest;
+use App\Http\Requests\Organisation\NameRequest;
 use App\Http\Requests\IdRequest;
 
 use Illuminate\Support\Facades\Redis;
@@ -34,6 +35,17 @@ class OrganisationController extends Controller
         $this->middleware('auth');
         $this->middleware('organisation:have_not')->only([ 'select', 'details', 'create' ]);
         $this->middleware('organisation:have')->only([ 'settings' ]);
+    }
+
+    # 
+    # ad güncelle
+    # 
+    public static function updateName(NameRequest $request)
+    {
+        auth()->user()->organisation->update([ 'name' => $request->organisation_name ]);
+        return [
+            'status' => 'ok'
+        ];
     }
 
     # 

@@ -290,7 +290,7 @@
             </ul>
             <ul class="row mb-0">
                 <li class="row-col p-1 title">GENEL TOPLAM</li>
-                <li class="row-col p-1">{{ config('formal.currency') }} {{ number_format(($invoice->total_price - $discount->amount) + $invoice->amount_of_tax) }}</li>
+                <li class="row-col p-1">{{ config('formal.currency') }} {{ number_format(($discount ? ($invoice->total_price - $discount->amount) : $invoice->total_price) + $invoice->amount_of_tax) }}</li>
             </ul>
         </div>
     </footer>

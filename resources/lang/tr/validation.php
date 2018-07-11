@@ -151,5 +151,6 @@ return [
         'tax_number'         => 'Vergi No',
         'tax_office'         => 'Vergi Dairesi',
         'tos'                => 'Kullanım Koşulları',
+        'organisation_name'  => 'Organizasyon Adı',
     ],
 ];
