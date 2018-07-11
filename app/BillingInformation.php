@@ -34,4 +34,14 @@ class BillingInformation extends Model
         'protected',
         'user_id'
     ];
+
+    public function state()
+    {
+        return $this->hasOne('App\Models\Geo\States', 'id', 'state_id');
+    }
+
+    public function country()
+    {
+        return $this->hasOne('App\Models\Geo\Countries', 'id', 'country_id');
+    }
 }

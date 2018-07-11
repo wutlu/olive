@@ -73,7 +73,7 @@ $(document).ready(function() {
                                 @endfor
                             </select>
                             <label for="month">Plan Süresi</label>
-                            <span class="helper-text">12 aylık ödeme seçeneğinde, varsa indirim kuponunuza ek {{ config('app.discount_with_year') }}% indirim uygulanır.</span>
+                            <span class="helper-text">12 aylık ödeme seçeneğinde, varsa indirim kuponunuza ek {{ config('formal.discount_with_year') }}% indirim uygulanır.</span>
                         </div>
                     </div>
                     <div class="row">
@@ -130,7 +130,7 @@ $(document).ready(function() {
                 </tr>
                 <tr>
                     <td>Vergiler</td>
-                    <td>{{ config('app.tax') }}%</td>
+                    <td>{{ config('formal.tax') }}%</td>
                     <td class="right-align">₺</td>
                     <td class="right-align">
                         <span class="invoice-tax">0</span>
@@ -259,6 +259,22 @@ $(document).ready(function() {
                         }
                     }, delay ? delay : 0)
                 })
+
+                create_form = $('form#create-form');
+                create_form.find('.dynamic-field').addClass('d-none')
+
+                if (obj.data.type == 'corporate')
+                {
+                    create_form.find('.dynamic-field.corporate').removeClass('d-none')
+                }
+                else if (obj.data.type == 'person')
+                {
+                    create_form.find('.dynamic-field.person').removeClass('d-none')
+                }
+                else if (obj.data.type == 'individual')
+                {
+                    create_form.find('.dynamic-field.individual').removeClass('d-none')
+                }
 
                 M.toast({
                     html: 'Form dolduruldu.',

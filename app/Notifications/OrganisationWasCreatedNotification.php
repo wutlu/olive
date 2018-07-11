@@ -12,15 +12,17 @@ class OrganisationWasCreatedNotification extends Notification implements ShouldQ
     use Queueable;
 
     protected $name;
+    protected $organisation_id;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(string $name)
+    public function __construct(string $name, int $id)
     {
         $this->name = $name;
+        $this->organisation_id = $id;
     }
 
     /**
@@ -43,10 +45,12 @@ class OrganisationWasCreatedNotification extends Notification implements ShouldQ
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject('Olive: Organizasyonunuz Oluşturuldu!')
-                    ->greeting('Merhaba, '.$this->name)
-                    ->level('olive')
-                    ->line('Az önce bir organizasyon oluşturdunuz.')
+                    ->subject('Olive: Organizasyon oluşturuldu.')
+                    ->greeting('Tebrikler!')
+                    ->line('Organizasyonunuz başarılı bir şekilde oluşturuldu.')
+                    ->line('Sanal faturanız oluşturuldu. Ödemeniz gerçekleştikten sonra sanal faturanız, resmi fatura olarak güncellenecek ve organizasyon aktif hale gelecektir.')
+                    ->level('success')
+                    ->action('Faturanızı Görüntüleyin', route('organisation.invoice', $this->organisation_id))
                     ->line('Teşekkürler.');
     }
 

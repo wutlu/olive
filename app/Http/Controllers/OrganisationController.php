@@ -136,17 +136,28 @@ class OrganisationController extends Controller
         $billing_information->fill($request->all());
         $billing_information->save();
 
-        if ($request->coupon_key)
+        $billing_information_array = $billing_information->toArray();
+
+        unset($billing_information_array['name']);
+        unset($billing_information_array['created_at']);
+        unset($billing_information_array['updated_at']);
+        unset($billing_information_array['country_id']);
+        unset($billing_information_array['state_id']);
+
+        $billing_information_array['country'] = $billing_information->country->name;
+        $billing_information_array['state'] = $billing_information->state->name;
+
+        if ($request->coupon_code)
         {
-            $coupon = OrganisationDiscountCoupon::where('key', $request->coupon_key)->delete();
+            $coupon = OrganisationDiscountCoupon::where('key', $request->coupon_code)->delete();
         }
 
         $organisation = Organisation::create([
-            'name'       => 'ORG#1',
-            'capacity'   => $plan['properties']['capacity']['value'],
+                  'name' => 'ORG#1',
+              'capacity' => $plan['properties']['capacity']['value'],
             'start_date' => date('Y-m-d H:i:s'),
-            'day'        => $request->month * 30,
-            'user_id'    => $user->id
+                   'day' => $request->month * 30,
+               'user_id' => $user->id
         ]);
 
         $user->update([
@@ -157,7 +168,7 @@ class OrganisationController extends Controller
 
         while ($invoice_id == 0)
         {
-            $invoice_id = rand(10000, 99999);
+            $invoice_id = date('ymdhis').rand(10, 99);
 
             $invoice_count = OrganisationInvoice::where('invoice_id', $invoice_id)->count();
 
@@ -167,7 +178,6 @@ class OrganisationController extends Controller
                          'invoice_id' => $invoice_id,
                     'organisation_id' => $organisation->id,
                             'user_id' => $user->id,
-             'billing_information_id' => $billing_information->id,
 
                          'unit_price' => $invoice_session->unit_price,
                               'month' => $request->month,
@@ -175,13 +185,14 @@ class OrganisationController extends Controller
                       'amount_of_tax' => $invoice_session->amount_of_tax,
 
                            'discount' => @$invoice_session->discount ? json_encode($invoice_session->discount) : null,
+                'billing_information' => json_encode($billing_information_array),
 
                                'plan' => json_encode($plan)
                 ]);
 
                 $ok = true;
 
-                $user->notify(new OrganisationWasCreatedNotification($user->name));
+                $user->notify(new OrganisationWasCreatedNotification($user->name, $invoice_id));
 
                 UserActivityUtility::push(
                     'Organizasyon oluşturuldu.',
@@ -234,12 +245,13 @@ class OrganisationController extends Controller
         if ($request->coupon_code)
         {
             $coupon = OrganisationDiscountCoupon::where('key', $request->coupon_code)->first();
+            $discount_with_year = config('formal.discount_with_year');
 
-            if ($request->month >= config('app.discount_with_year'))
+            if ($request->month >= $discount_with_year)
             {
-                $rate = $coupon->rate + config('app.discount_with_year');
+                $rate = $coupon->rate + $discount_with_year;
 
-                $session['discount']['rate_extra'] = intval(config('app.discount_with_year'));
+                $session['discount']['rate_extra'] = intval($discount_with_year);
             }
             else
             {
@@ -254,7 +266,7 @@ class OrganisationController extends Controller
         }
 
         $session['discounted_price'] = (@$session['discount'] ? $session['total_price'] - $session['discount']['amount'] : $session['total_price']);
-        $session['amount_of_tax'] = (@$session['discount'] ? $session['discounted_price'] : $session['total_price']) * config('app.tax') / 100;
+        $session['amount_of_tax'] = (@$session['discount'] ? $session['discounted_price'] : $session['total_price']) * config('formal.tax') / 100;
         $session['total_price_with_tax'] = (@$session['discount'] ? $session['discounted_price'] : $session['total_price']) + $session['amount_of_tax'];
 
         $session['customer']['ip'] = RequestStatic::ip();
@@ -283,66 +295,22 @@ class OrganisationController extends Controller
     # 
     public static function invoice(int $id)
     {
-        $oi = OrganisationInvoice::where('invoice_id', $id)->where('user_id', auth()->user()->id)->firstOrFail();
+        $invoice = OrganisationInvoice::where('invoice_id', $id)->where('user_id', auth()->user()->id)->firstOrFail();
+        $billing_information = json_decode($invoice->billing_information);
 
-        $json = json_decode($oi->log);
+        $plan = json_decode($invoice->plan);
+        $pay_notice = json_decode($invoice->pay_notice);
+        $formal_paid = json_decode('{"serial":"A","no":34326,"date":"11.07.2018"}');
+        $discount = json_decode($invoice->discount);
 
-        $data = (object) [
-            'invoice' => [
-                'id' => $oi->invoice_id,
-                'formal' => [
-                    'serial' => 'A',
-                    'no' => '567'
-                ]
-            ],
-            'orderDate' => date('d.m.Y', strtotime($oi->created_at)),
-            'paidDate' => date('d.m.Y', strtotime('+30 days', strtotime($oi->created_at))),
-            'dueDate' => date('d.m.Y', strtotime('+30 days', strtotime($oi->created_at))),
-            'consumer' => [
-                'name' => 'OYT Yazılım Teknolojileri A.Ş.',
-                'address' => [
-                    'Tomtom Mah. Nur-i Ziya Sok. 16/1',
-                    '34433 Beyoğlu İstanbul'
-                ]
-            ],
-            'products' => [
-                [
-                    'description' => [ 'Test', 'Test' ],
-                    'quantity' => '1 Ay',
-                    'unitPrice' => 2242,
-                    'total' => 14214,
-                ],
-                [
-                    'description' => [ 'Test', 'Test' ],
-                    'quantity' => '1 Ay',
-                    'unitPrice' => 2242,
-                    'total' => 14214,
-                    'tax' => 10
-                ]
-            ],
-            'subtotal' => 1100,
-            'totalTax' => 114,
-            'total' => 10000,
-            'discount' => 100,
-            'notes' => [
-                [
-                    'title' => 'Bilgi',
-                    'note' => '"'.$json->discount->coupon_key.'" kupon kodu ile '.$json->discount->rate.'% oranında ₺ '.$json->discount->amount.' değerinde bir indirim sağlandı.'
-                ],
-                [
-                    'title' => 'Hesap Bilgisi',
-                    'note' => 'Ödemenizi; fatura numarası açıklamada olacak şekilde aşağıdaki hesap numaralarından herhangi birine yapabilirsiniz.'
-                ],
-                [
-                    'note' => 'Panelin sağ üst köşesinde bulunan kullanıcı menüsünden ödeme bildirimi sayfasına erişerek ödeme bildirimi yapmayı unutmayın.'
-                ],
-                [
-                    'note' => 'TR 1345 1561 2451 5112 51 - veri.zone LTD.'
-                ]
-            ]
-        ];
-
-        return view('plan.invoice', compact('data'));
+        return view('organisation.invoice', compact(
+            'invoice',
+            'billing_information',
+            'plan',
+            'pay_notice',
+            'formal_paid',
+            'discount'
+        ));
     }
 
 }

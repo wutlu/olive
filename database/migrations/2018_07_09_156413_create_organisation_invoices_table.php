@@ -22,18 +22,16 @@ class CreateOrganisationInvoicesTable extends Migration
             $table->unsignedInteger('user_id')->nullable()->default(null);
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
-            $table->unsignedInteger('billing_information_id')->nullable()->default(null);
-            $table->foreign('billing_information_id')->references('id')->on('billing_informations')->onDelete('cascade');
-
-            $table->decimal('unit_price', 9, 3)->default(0);
+            $table->decimal('unit_price', 9, 2)->default(0);
             $table->unsignedSmallInteger('month')->default(1);
-            $table->decimal('total_price', 9, 3)->default(0);
-            $table->decimal('amount_of_tax', 9, 3)->default(0);
+            $table->decimal('total_price', 9, 2)->default(0);
+            $table->decimal('amount_of_tax', 9, 2)->default(0);
 
             $table->json('discount')->nullable()->default(null);
-            $table->json('pay_notice')->nullable()->default(null);
+            $table->json('billing_information');
 
-            $table->boolean('pay_confirmed')->default(0);
+            $table->string('pay_notice')->nullable()->default(null);
+            $table->json('formal_paid')->nullable()->default(null);
 
             $table->json('plan');
 

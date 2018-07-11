@@ -2,7 +2,7 @@
 
 return [
     'currency' => '₺',
-    'tax' => 'K.D.V.',
+    'tax_name' => 'K.D.V.',
     'company' => [
         'logo' => 'img/veri.zone-logo.svg',
         'name' => 'veri.zone A.Ş.',
@@ -20,5 +20,24 @@ return [
             'no' => '0000'
         ],
         'tradeRegisterNo' => '0000'
+    ],
+
+    /*
+     * vergi oranı
+     */
+
+    'tax' => env('TAX', 18),
+
+    /*
+     * yıllık alımlarda indirim oranı
+     */
+
+    'discount_with_year' => env('DISCOUNT_WITH_YEAR', 10),
+
+    'banks' => [
+        [
+            'name' => 'veri.zone LTD.',
+            'iban' => 'TR 1345 1561 2451 5112 51'
+        ]
     ]
 ];

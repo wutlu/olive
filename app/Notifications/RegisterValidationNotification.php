@@ -47,7 +47,7 @@ class RegisterValidationNotification extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject('Olive: Hesabınızı doğrulayın!')
+                    ->subject('Olive: E-posta adresinizi doğrulayın!')
                     ->greeting('Hoşgeldiniz, ' . $this->name)
                     ->level('olive')
                     ->line('Olive hesabınız başarılı bir şekilde oluşturuldu.')

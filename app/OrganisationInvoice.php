@@ -16,9 +16,9 @@ class OrganisationInvoice extends Model
 		'total_price',
 		'amount_of_tax',
 		'discount',
-		'customer',
+		'billing_information',
 		'pay_notice',
-		'pay_confirmed',
+		'formal_paid',
 		'plan',
 	];
 	public $incrementing = false;

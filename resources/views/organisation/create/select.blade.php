@@ -41,7 +41,7 @@ $('.tabs').tabs();
             <div id="tab-{{ $key }}">
                 @if ($plan['price'])
                     <h3 class="center-align">₺ {{ $plan['price'] }}<sup>.00</sup> <sub>/ Ay</sub></h3>
-                    <p class="grey-text center-align">Vergiler hariç fiyat.</p>
+                    <p class="grey-text center-align">Vergiler dahil değildir.</p>
                 @else
                     <h3 class="center-align">Ücretsiz!</h3>
                     <p class="center-align green-text">Mevcut Planınız</p>

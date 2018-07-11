@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
 
     <!-- title -->
-    <title>FATURA #{{ $data->invoice['id'] }}</title>
+    <title>FATURA #{{ $invoice->invoice_id }}</title>
 
     <style>
     * {
@@ -147,6 +147,9 @@
     .red-text {
         color: #e53935;
     }
+    .grey-text {
+        color: #999;
+    }
     p {
         margin: 0;
     }
@@ -183,7 +186,7 @@
             </ul>
             @endisset
         </div>
-        @isset($data->invoice['formal'])
+        @isset($formal_paid)
         <div class="row-col seal">
             <img id="seal" alt="veri.zone-logo" src="{{ asset('img/maliye-damga.svg') }}" />
         </div>
@@ -192,44 +195,59 @@
             <h1>FATURA</h1>
             <ul class="row dashed-line dashed-bottom">
                 <li class="row-col p-1 title">NO</li>
-                <li class="row-col p-1">#{{ $data->invoice['id'] }}</li>
+                <li class="row-col p-1">#{{ $invoice->invoice_id }}</li>
             </ul>
-            @isset($data->invoice['formal'])
+            @isset($formal_paid)
             <ul class="row dashed-line dashed-bottom">
                 <li class="row-col p-1 title">SERİ</li>
-                <li class="row-col p-1">{{ $data->invoice['formal']['serial'] }}</li>
+                <li class="row-col p-1">{{ $formal_paid->serial }}</li>
 
                 <li class="row-col p-1 title">SIRA</li>
-                <li class="row-col p-1">{{ $data->invoice['formal']['no'] }}</li>
+                <li class="row-col p-1">{{ $formal_paid->no }}</li>
             </ul>
             @endisset
             <div class="self-area dashed-line dashed-bottom">
-                <div class="title">MÜŞTERİ</div>
                 <div class="body">
+                    <ul>
+                        <li class="title">{{ $billing_information->type == 'person' ? 'Gerçek (Şahıs Şirketi)' : $billing_information->type == 'individual' ? 'Bireysel' : 'Tüzel (LTD, AŞ vb.)' }}</li>
+                        @if ($billing_information->type == 'person' || $billing_information->type == 'individual')
+                            <li class="title">{{ $billing_information->person_name.' '.$billing_information->person_lastname }}</li>
+                        @endif
+                        @if ($billing_information->type == 'person')
+                        <li>{{ $billing_information->person_tckn }}</li>
+                        @endif
+                        @if ($billing_information->type == 'person' || $billing_information->type == 'corporate')
+                            <li>{{ $billing_information->merchant_name }}</li>
+                        @endif
+                        @if ($billing_information->type == 'corporate')
+                            <li>{{ $billing_information->tax_number }}</li>
+                        @endif
+                        @if ($billing_information->type == 'person')
+                            <li>{{ $billing_information->tax_office }}</li>
+                        @endif
+                    </ul>
                     <ul class="mb-0">
-                        <li class="title">{{ $data->consumer['name'] }}</li>
-                        @foreach ($data->consumer['address'] as $key => $line)
-                        <li>{{ $line }}</li>
-                        @endforeach
+                        <li class="title">Adres</li>
+                        <li>{{ $billing_information->address }}</li>
+                        <li>{{ $billing_information->postal_code }}, {{ $billing_information->city }}</li>
+                        <li>{{ $billing_information->state }}, {{ $billing_information->country }}</li>
                     </ul>
                 </div>
             </div>
             <ul class="row mb-0">
                 <li class="row-col p-1 title">SİPARİŞ TARİHİ</li>
-                <li class="row-col p-1">{{ $data->orderDate }}</li>
+                <li class="row-col p-1">{{ date('d.m.Y', strtotime($invoice->created_at)) }}</li>
             </ul>
-            @isset($data->paidDate)
+            @isset($formal_paid)
             <ul class="row mb-0 green-text">
                 <li class="row-col title">ÖDENDİĞİ TARİH</li>
-                <li class="row-col">{{ $data->paidDate }}</li>
+                <li class="row-col">{{ $formal_paid->date }}</li>
             </ul>
             @endisset
-            @isset($data->dueDate)
             <ul class="row red-text dashed-line dashed-bottom">
                 <li class="row-col p-1 title">SON ÖDEME TARİHİ</li>
-                <li class="row-col p-1">{{ $data->dueDate }}</li>
+                <li class="row-col p-1">{{ date('d.m.Y', strtotime('+30 days', strtotime($invoice->created_at))) }}</li>
             </ul>
-            @endisset
         </div>
     </header>
     <table class="dashed-line dashed-bottom">
@@ -242,59 +260,62 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($data->products as $key => $product)
             <tr>
                 <td class="description">
-                @foreach ($product['description'] as $k => $description)
-                    <p>{{ $description }}</p>
-                @endforeach
+                    <p>{{ $plan->name }} ({{ $plan->properties->capacity->value }} kullanıcı)</p>
                 </td>
-                <td class="quantity">{{ $product['quantity'] }}</td>
+                <td class="quantity">{{ $invoice->month }} Ay</td>
                 <td class="unit-price">
-                    <p>{{ config('formal.currency') }} {{ number_format($product['unitPrice']) }}</p>
-                    @isset($product['tax'])
-                    <p>{{ config('formal.currency') }} {{ number_format($product['tax']) }} <small>({{ config('formal.tax') }})</small></p>
-                    @endisset
+                    <p>{{ config('formal.currency').' '.number_format($invoice->unit_price) }}</p>
                 </td>
-                <td class="total">{{ config('formal.currency') }} {{ number_format($product['total']) }}</td>
+                <td class="total">{{ config('formal.currency').' '.number_format($invoice->total_price) }}</td>
             </tr>
-            @endforeach
         </tbody>
     </table>
     <footer class="row row-end">
         <div class="total static-width">
             <ul class="row mb-0">
                 <li class="row-col p-1 title">ARA TOPLAM</li>
-                <li class="row-col p-1">{{ config('formal.currency') }} {{ number_format($data->subtotal) }}</li>
+                <li class="row-col p-1">{{ config('formal.currency').' '.number_format($invoice->total_price) }}</li>
             </ul>
-            @isset ($data->discount)
+            @isset ($discount)
             <ul class="row mb-0">
                 <li class="row-col p-1 title">İNDİRİM</li>
-                <li class="row-col p-1">(10%) {{ config('formal.currency') }} {{ number_format($data->discount) }}</li>
+                <li class="row-col p-1">({{ @$discount->rate_extra ? ($discount->rate_extra + $discount->rate) : $discount->rate }}%) {{ config('formal.currency').' '.number_format($discount->amount) }}</li>
             </ul>
             @endisset
             <ul class="row mb-0">
-                <li class="row-col title">TOPLAM {{ config('formal.tax') }}</li>
-                <li class="row-col">(18%) {{ config('formal.currency') }} {{ number_format($data->totalTax) }}</li>
+                <li class="row-col title">TOPLAM {{ config('formal.tax_name') }}</li>
+                <li class="row-col">(18%) {{ config('formal.currency').' '.number_format($invoice->amount_of_tax) }}</li>
             </ul>
             <ul class="row mb-0">
                 <li class="row-col p-1 title">GENEL TOPLAM</li>
-                <li class="row-col p-1">{{ config('formal.currency') }} {{ number_format($data->total) }}</li>
+                <li class="row-col p-1">{{ config('formal.currency') }} {{ number_format(($invoice->total_price - $discount->amount) + $invoice->amount_of_tax) }}</li>
             </ul>
         </div>
     </footer>
-    @isset($data->notes)
-        @foreach ($data->notes as $key => $row)
-        <div class="self-area">
-            @isset($row['title'])
-            <div class="title">{{ $row['title'] }}</div>
+    <div class="self-area">
+        @if ($discount)
+        <div class="title">Bilgi</div>
+        <div class="body">{{ $discount->coupon_key }} kupon kodu ile {{ $discount->rate }}% oranında bir indirim kullandınız.</div>
+            @isset($discount->rate_extra)
+            <div class="body">{{ $invoice->month }} aylık ödemeniz için extra {{ config('formal.discount_with_year') }}% oranında bir indirim ekledik.</div>
             @endisset
-            <div class="body">
-                {{ $row['note'] }}
-            </div>
+        @endif
+    </div>
+    <div class="self-area">
+        <div class="title">Hesap Bilgisi</div>
+        <div class="body">Ödemenizi; fatura numarası açıklamada olacak şekilde aşağıdaki hesap numaralarından herhangi birine yapabilirsiniz.</div>
+        <div class="body">Daha sonra Ayarlar/Ödemeler sayfasından ödeme bildirimi yapmayı unutmayın.</div>
+    </div>
+    <div class="self-area">
+        @foreach(config('formal.banks') as $key => $bank)
+        <div class="body">
+            <p>{{ $bank['iban'] }}</p>
+            <p>{{ $bank['name'] }}</p>
         </div>
         @endforeach
-    @endisset
+    </div>
 </div>
 
 </body>

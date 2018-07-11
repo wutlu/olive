@@ -139,7 +139,7 @@
                         @if (@$discountDay)
                         <p class="center-align grey-text">Hemen ücretsiz kaydolun ve bugüne özel <span class="chip">{{ $discountDay->discount_rate }}%</span> indirim kuponuna anında sahip olun.</p>
                         @endif
-                        <p class="grey-text center-align">Vergiler hariç fiyat.</p>
+                        <p class="grey-text center-align">Vergiler dahil değildir.</p>
                     @else
                     <h3 class="center-align">Ücretsiz!</h3>
                     @endif
