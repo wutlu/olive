@@ -150,5 +150,6 @@ return [
         'merchant_name'      => 'Ticari Ünvan',
         'tax_number'         => 'Vergi No',
         'tax_office'         => 'Vergi Dairesi',
+        'tos'                => 'Kullanım Koşulları',
     ],
 ];

@@ -296,12 +296,12 @@ class OrganisationController extends Controller
     public static function invoice(int $id)
     {
         $invoice = OrganisationInvoice::where('invoice_id', $id)->where('user_id', auth()->user()->id)->firstOrFail();
-        $billing_information = json_decode($invoice->billing_information);
 
-        $plan = json_decode($invoice->plan);
-        $pay_notice = json_decode($invoice->pay_notice);
-        $formal_paid = json_decode('{"serial":"A","no":34326,"date":"11.07.2018"}');
-        $discount = json_decode($invoice->discount);
+        $plan                = json_decode($invoice->plan);
+        $pay_notice          = json_decode($invoice->pay_notice);
+        $formal_paid         = json_decode($invoice->formal_paid);
+        $discount            = json_decode($invoice->discount);
+        $billing_information = json_decode($invoice->billing_information);
 
         return view('organisation.invoice', compact(
             'invoice',

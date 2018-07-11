@@ -83,7 +83,7 @@
                                         <div class="col s12">
                                             <label>
                                                 <input name="terms" type="checkbox" value="1" />
-                                                <span>Sayfanın altında bulunan Kullanım Koşulları ve Gizlilik Politikası sayfalarındaki maddeleri okudum, kabul ediyorum.</span>
+                                                <span><a href="#">Kullanım Koşulları</a> ve <a href="#">Gizlilik Politikası</a> sayfalarındaki maddeleri okudum, kabul ediyorum.</span>
                                             </label>
                                         </div>
                                         <div class="col s12 right-align">

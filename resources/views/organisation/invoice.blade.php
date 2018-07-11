@@ -209,7 +209,7 @@
             <div class="self-area dashed-line dashed-bottom">
                 <div class="body">
                     <ul>
-                        <li class="title">{{ $billing_information->type == 'person' ? 'Gerçek (Şahıs Şirketi)' : $billing_information->type == 'individual' ? 'Bireysel' : 'Tüzel (LTD, AŞ vb.)' }}</li>
+                        <li class="title">{{ $billing_information->type == 'person' ? 'Gerçek (Şahıs Şirketi)' : $billing_information->type == 'individual' ? 'Bireysel' : 'Tüzel' }}</li>
                         @if ($billing_information->type == 'person' || $billing_information->type == 'individual')
                             <li class="title">{{ $billing_information->person_name.' '.$billing_information->person_lastname }}</li>
                         @endif

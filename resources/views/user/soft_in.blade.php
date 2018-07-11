@@ -1,7 +1,9 @@
 <form id="soft_in-form" data-callback="__soft_in" action="{{ route('user.login') }}" method="post" class="json">
     <div class="row">
         <div class="col s12">
-            <div class="card-panel teal white-text">Oturum süresi sona erdi. Lütfen tekrar giriş yapın.</div>
+            <div class="card-panel teal">
+                <span class="white-text">Oturum süresi sona erdi. Lütfen tekrar giriş yapın.</span>
+            </div>
         </div>
         <div class="input-field col s12">
             <input name="email_login" id="email_login" type="email" class="validate" />

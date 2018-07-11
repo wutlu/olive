@@ -48,7 +48,9 @@ class BillingRequest extends FormRequest
             'state_id'           => 'required|integer|exists:states,id',
             'city'               => 'required|string|max:32',
             'address'            => 'required|string|max:255',
-            'postal_code'        => 'required|numeric|max:99999'
+            'postal_code'        => 'required|numeric|max:99999',
+
+            'tos'                => 'required|in:on'
         ];
     }
 }

@@ -96,7 +96,7 @@ $(document).ready(function() {
 </div>
 
 <div class="card" id="payment-details">
-    <div class="card-content teal lighten-2">
+    <div class="card-content">
         <span class="card-title">Fatura Önizlemesi</span>
         <table class="highlight invoice">
             <thead>
@@ -151,11 +151,16 @@ $(document).ready(function() {
     </div>
 </div>
 
+<div class="step-title">
+    <span class="step">3</span>
+    <span class="text">Fatura Bilgileri</span>
+</div>
+
 <div class="card card-unstyled">
     <div class="card-content">
         <div class="row">
             <div class="input-field col s12 m4 l6 xl8">
-                <span class="card-title">Fatura Bilgisi</span>
+                <span class="card-title">Fatura Bilgileri</span>
             </div>
             <div class="input-field col s12 m8 l6 xl4">
                 <select
@@ -172,7 +177,7 @@ $(document).ready(function() {
                     <option value="" disabled selected>Kayıt Yok</option>
                     @endforelse
                 </select>
-                <label>Mevcut Kayıtlardan Getir</label>
+                <label>Mevcut Kayıt Yükle</label>
                 <span class="helper-text">Mevcut kayıtları Ayarlar/Fatura Bilgileri bölümünden güncelleyebilirsiniz.</span>
             </div>
         </div>
@@ -239,23 +244,15 @@ $(document).ready(function() {
                     setTimeout(function() {
                         if (elements[name]['type'] == 'text')
                         {
-                            $('form#create-form').find('[name=' + name + ']')
-                                                 .val(val)
-                                                 .next('label')
-                                                 .addClass('active');
+                            $('form#create-form').find('[name=' + name + ']').val(val).next('label').addClass('active');
                         }
                         else if (elements[name]['type'] == 'radio')
                         {
-                            $('form#create-form').find('[name=' + name + '][value=' + val + ']')
-                                                 .attr('checked', true)
-                                                 .trigger('click');
+                            $('form#create-form').find('[name=' + name + '][value=' + val + ']').attr('checked', true).trigger('click');
                         }
                         else if (elements[name]['type'] == 'select')
                         {
-                            $('form#create-form').find('[name=' + name + ']').val(val)
-                                                                             .attr('checked', true)
-                                                                             .trigger('change')
-                                                                             .formSelect();
+                            $('form#create-form').find('[name=' + name + ']').val(val).attr('checked', true).trigger('change').formSelect();
                         }
                     }, delay ? delay : 0)
                 })
@@ -277,7 +274,7 @@ $(document).ready(function() {
                 }
 
                 M.toast({
-                    html: 'Form dolduruldu.',
+                    html: 'Fatura bilgileri yüklendi.',
                     classes: 'blue'
                 })
             }
@@ -501,17 +498,31 @@ $(document).ready(function() {
                 </div>
             </div>
 
+            <div class="card-panel teal">
+                <span class="white-text">
+                    Bu aşama sonrasında Organizasyonunuz sanal fatura ile birlikte oluşturulur. Ödeme işlemi için gerekli talimatlar sanal faturanızda mevcut olacaktır. Ödeme sonrası sanal faturanız resmi olarak güncellenecektir.
+                </span>
+            </div>
+
             <div class="card card-unstyled">
-                <div class="card-content center-align">
+                <div class="card-content">
                     <p>
                         <label>
                             <input type="checkbox" name="protected" id="protected" />
                             <span>Bir sonraki işlemler için bu bilgileri kaydet.</span>
                         </label>
                     </p>
+                    <p>
+                        <label>
+                            <input type="checkbox" name="tos" id="tos" />
+                            <span>
+                                <a href="#">Kullanım Koşulları</a>'nı okudum, anladım ve onaylıyorum.
+                            </span>
+                        </label>
+                    </p>
                 </div>
                 <div class="card-content center-align">
-                    <button type="submit" class="btn teal waves-effect">Sipariş Ver</button>
+                    <button type="submit" class="btn teal waves-effect">Oluştur</button>
                 </div>
             </div>
         </form>
