@@ -5,13 +5,15 @@ Route::get('panel', 'HomeController@dashboard')->name('dashboard');
 Route::get('aktiviteler', 'HomeController@activity')->name('dashboard.activities');
 
 Route::prefix('organizasyon')->group(function () {
-    Route::get('ayarlar', 'OrganisationController@settings')->name('organisation.settings');
-    Route::get('plan-secimi', 'OrganisationController@select')->name('organisation.create.select');
-    Route::get('plan-detayi/{id}', 'OrganisationController@details')->name('organisation.create.details');
-    Route::post('olustur', 'OrganisationController@create')->name('organisation.create');
-    Route::get('olustur', 'OrganisationController@result')->name('organisation.create.result');
+    Route::get('plan', 'OrganisationController@select')->name('organisation.create.select');
+    Route::get('plan/{id}', 'OrganisationController@details')->name('organisation.create.details');
+    Route::post('/', 'OrganisationController@create')->name('organisation.create');
+    Route::get('/', 'OrganisationController@result')->name('organisation.create.result');
+});
 
-    Route::patch('ad', 'OrganisationController@updateName')->name('organisation.update.name');
+Route::prefix('ayarlar')->group(function () {
+    Route::get('/', 'SettingsController@index')->name('settings');
+    Route::get('organizasyon', 'OrganisationController@settings')->name('settings.organisation');
 });
 
 Route::prefix('fatura')->group(function () {

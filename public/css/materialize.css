@@ -3005,20 +3005,24 @@ video.responsive-video {
   }
 }
 
-.breadcrumb {
+#breadcrumb {
+  overflow: hidden;
+}
+#breadcrumb .breadcrumb {
   font-size: 18px;
   color: rgba(255, 255, 255, 0.7);
+  overflow: hidden;
 }
 
-.breadcrumb i,
-.breadcrumb [class^="mdi-"], .breadcrumb [class*="mdi-"],
-.breadcrumb i.material-icons {
+#breadcrumb .breadcrumb i,
+#breadcrumb .breadcrumb [class^="mdi-"], .breadcrumb [class*="mdi-"],
+#breadcrumb .breadcrumb i.material-icons {
   display: inline-block;
   float: left;
   font-size: 24px;
 }
 
-.breadcrumb:before {
+#breadcrumb .breadcrumb:before {
   content: '\E5CC';
   color: rgba(255, 255, 255, 0.7);
   vertical-align: top;
@@ -3031,11 +3035,11 @@ video.responsive-video {
   -webkit-font-smoothing: antialiased;
 }
 
-.breadcrumb:first-child:before {
+#breadcrumb .breadcrumb:first-child:before {
   display: none;
 }
 
-.breadcrumb:last-child {
+#breadcrumb .breadcrumb:last-child {
   color: #fff;
 }
 
@@ -3467,6 +3471,7 @@ td, th {
   left: 0;
   bottom: 0;
   will-change: left, right;
+
   -webkit-animation: indeterminate 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
           animation: indeterminate 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
 }
@@ -9824,4 +9829,50 @@ input[type=range].focused:focus:not(.active)::-ms-thumb {
     position: relative;
     top: -.4rem;
     left: -.2rem;
+}
+
+#dock-content {
+  display: -ms-flexbox;
+  display: flex;
+
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+#dock-content > .content {
+  background: #ff0;
+}
+
+#dock-content > .menu {
+  display: table;
+  min-width: 240px;
+  margin: 0 0 0 1rem;
+
+  -webkit-transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+#dock-content > .menu > .collection > a.collection-item {
+  color: #666;
+}
+
+@media only screen and (max-width: 601px) {
+  #dock-content > .menu {
+    position: fixed;
+    top: 56px;
+    right: 0;
+    bottom: 0;
+    left: auto;
+
+            box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+
+            transform: translateX(100%);
+    -webkit-transform: translateX(100%);
+  }
+
+  #dock-content.active > .menu {
+            transform: translateX(0);
+    -webkit-transform: translateX(0);
+  }
 }

@@ -129,7 +129,7 @@
                 </div>
             </li>
             <li>
-                <a class="subheader">Yönetici Menüsü</a>
+                <a href="#" class="subheader">Yönetici Menüsü</a>
             </li>
             <li>
                 <div class="collapsible-header waves-effect">
@@ -152,28 +152,24 @@
 
         @push('local.scripts')
 
-        $('.sidenav').sidenav({
+        $('#slide-out').sidenav({
             draggable: true
         });
 
         @endpush
 
         @isset($breadcrumb)
-        <nav class="grey darken-4">
+        <nav class="grey darken-4" id="breadcrumb">
             <div class="sidenav-fixed-layout">
                 <div class="container">
-                    <div class="nav-wrapper">
-                        <div class="col s12">
-                            <a href="{{ route('dashboard') }}" class="breadcrumb">Panel</a>
-                            @foreach ($breadcrumb as $row)
-                                @if (@$row['link'])
-                                <a href="{{ $row['link'] }}" class="breadcrumb">{{ $row['text'] }}</a>
-                                @else
-                                <span class="breadcrumb">{{ $row['text'] }}</span>
-                                @endif
-                            @endforeach
-                        </div>
-                    </div>
+                    <a href="{{ route('dashboard') }}" class="breadcrumb">Panel</a>
+                    @foreach ($breadcrumb as $row)
+                        @if (@$row['link'])
+                        <a href="{{ $row['link'] }}" class="breadcrumb">{{ $row['text'] }}</a>
+                        @else
+                        <span class="breadcrumb">{{ $row['text'] }}</span>
+                        @endif
+                    @endforeach
                 </div>
             </div>
         </nav>
@@ -181,8 +177,21 @@
 
         <main class="blue-grey lighten-5">
             <div class="sidenav-fixed-layout">
-                <div class="container">
-                    @yield('content')
+                <div id="dock-content" class="container">
+                    <div class="content">
+                        @yield('content')
+                    </div>
+                    @isset($dock)
+                    <div class="menu blue-grey lighten-5">
+                        <div class="collection">
+                            <a href="#" class="collection-item waves-effect">Organizasyon</a>
+                            <a href="#" class="collection-item waves-effect">E-posta</a>
+                            <a href="#" class="collection-item waves-effect">Hesap</a>
+                            <a href="#" class="collection-item waves-effect">Bildirim</a>
+                            <a href="#" class="collection-item waves-effect">Api</a>
+                        </div>
+                    </div>
+                    @endisset
                 </div>
             </div>
         </main>

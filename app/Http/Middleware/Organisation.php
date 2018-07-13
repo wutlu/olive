@@ -26,7 +26,7 @@ class Organisation
                         'status' => 'ok',
                         'organisation' => 'have'
                     ])
-                    : redirect()->route('organisation.settings');
+                    : redirect()->route('settings.organisation');
             }
             else
             {

@@ -286,7 +286,7 @@ $(document).ready(function() {
             {
                 if (obj.organisation == 'have')
                 {
-                    window.location.href = '{{ route('organisation.settings') }}';
+                    window.location.href = '{{ route('settings.organisation') }}';
 
                     return false;
                 }

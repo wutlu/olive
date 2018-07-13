@@ -2,9 +2,14 @@
     'sidenav_fixed_layout' => true,
     'breadcrumb' => [
         [
-            'text' => 'Başlayın'
+            'text' => 'Ayarlar',
+            'link' => route('settings')
+        ],
+        [
+            'text' => 'Organizasyon Ayarları'
         ]
-    ]
+    ],
+    'dock' => 'settings'
 ])
 
 @if (session('organisation') == 'have')
@@ -17,12 +22,18 @@
 @endif
 
 @section('content')
-
-Bir plan zaten mevcut.
-<p>Ayrıl</p>
-<p>Planı Sil</p>
-<p>Yükselt</p>
-<p>Devret</p>
-<p>Uzat</p>
-
+<a href="#" data-class="#dock-content" data-class-toggle="active">test</a>
+asdsa asd asd asdsadsadasd asdasd ad ad asd asdsad<br />
+asdsa asd asd asdsadsadasd asdasd ad ad asd asdsad
+asdsa asd asd asdsadsadasd asdasd ad ad asd asdsad
+asdsa asd asd asdsadsadasd asdasd ad ad asd asdsad
+asdsa asd asd asdsadsadasd asdasd ad ad asd asdsad
+asdsa asd asd asdsadsadasd asdasd ad ad asd asdsad
+asdsa asd asd asdsadsadasd asdasd ad ad asd asdsad<br />
+asdsa asd asd asdsadsadasd asdasd ad ad asd asdsad<br />
+asdsa asd asd asdsadsadasd asdasd ad ad asd asdsad<br />
+asdsa asd asd asdsadsadasd asdasd ad ad asd asdsad<br />
+asdsa asd asd asdsadsadasd asdasd ad ad asd asdsad<br />
+asdsa asd asd asdsadsadasd asdasd ad ad asd asdsad<br />
+asdsa asd asd asdsadsadasd asdasd ad ad asd asdsad<br />
 @endsection

@@ -6,118 +6,27 @@
 <div class="row">
     <div class="col xl4 l5 s12">
         @if (@auth()->user()->organisation_id)
-        @push('local.scripts')
-        $(document).on('click', '[data-trigger=organisation-name]', function() {
-            var mdl = modal({
-                    'id': 'detail',
-                    'body': $('<div />', {
-                        'class': 'input-field',
-                        'html': [
-                            $('<input />', {
-                                'id': 'organisation_name',
-                                'name': 'organisation_name',
-                                'type': 'text',
-                                'class': 'validate',
-                                'val': '{{ $user->organisation->name }}',
-                                'data-length': 16
-                            }),
-                            $('<label />', {
-                                'for': 'organisation_name',
-                                'html': 'Organizasyon Adı'
-                            }),
-                            $('<span />', {
-                                'class': 'helper-text'
-                            })
-                        ]
-                    }),
-                    'size': 'modal-small',
-                    'title': 'Organizasyon Adı',
-                    'options': { dismissible: false }
-                });
-
-                mdl.find('.modal-footer')
-                   .html([
-                       $('<a />', {
-                           'href': '#',
-                           'class': 'modal-close waves-effect btn-flat',
-                           'html': buttons.cancel
-                       }),
-                       $('<span />', {
-                           'html': ' '
-                       }),
-                       $('<a />', {
-                           'href': '#',
-                           'class': 'waves-effect btn json',
-                           'data-href': '{{ route('organisation.update.name') }}',
-                           'data-method': 'patch',
-                           'data-include': 'organisation_name',
-                           'data-callback': '__update__organisation_name',
-                           'html': buttons.update
-                       })
-                   ])
-
-                M.updateTextFields()
-
-                $('input[name=organisation_name]').characterCounter()
-        })
-
-        function __update__organisation_name(__, obj)
-        {
-            if (obj.status == 'ok')
-            {
-                $('#organisation-card').find('span.card-title').html($('#organisation_name').val())
-
-                $('#modal-detail').modal('close')
-
-                M.toast({
-                    html: 'İsim güncellendi.',
-                    classes: 'green'
-                })
-            }
-        }
-        @endpush
         <div class="card" id="organisation-card">
             <div class="card-image">
                 <img src="{{ asset('img/md/21.jpg') }}" alt="" />
                 <span class="card-title">{{ $user->organisation->name }}</span>
-                <a data-target="organisation-dropdown" class="dropdown-trigger btn-floating btn-large halfway-fab waves-effect waves-teal teal darken-4">
-                    <i class="material-icons">more_vert</i>
+                <a href="{{ route('settings.organisation') }}" class="btn-floating btn-large halfway-fab waves-effect waves-teal teal darken-4">
+                    <i class="material-icons">settings</i>
                 </a>
-
-                <ul id="organisation-dropdown" class="dropdown-content">
-                    <li>
-                        <a href="#" class="waves-effect" data-trigger="organisation-name">
-                            <i class="material-icons">create</i>
-                            İsmi Güncelle
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="waves-effect">
-                            <i class="material-icons">person_add</i>
-                            Kullanıcı Ekle
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="waves-effect">
-                            <i class="material-icons">local_bar</i>
-                            Ayrıl
-                        </a>
-                    </li>
-                </ul>
             </div>
             <div class="card-content">
                 <p class="grey-text">{{ count($user->organisation->users) }}/{{ $user->organisation->capacity }} kullanıcı</p>
             </div>
-            <div class="collection">
+            <ul class="collection">
                 @foreach ($user->organisation->users as $u)
-                <a href="#" class="collection-item avatar waves-effect">
+                <li class="collection-item avatar">
                     <img src="{{ $u->avatar() }}" alt="" class="circle">
                     <span class="title">{{ $u->name }}</span>
-                    <p>{{ $u->email }}</p>
+                    <p class="grey-text">{{ $u->email }}</p>
                     <p class="grey-text">{{ $u->id == $user->organisation->user_id ? 'Organizasyon Sahibi' : 'Kullanıcı' }}</p>
-                </a>
+                </li>
                 @endforeach
-            </div>
+            </ul>
         </div>
         @else
         <div class="card">
