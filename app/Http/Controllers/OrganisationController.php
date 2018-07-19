@@ -10,6 +10,7 @@ use App\UserActivity;
 use App\Organisation;
 use App\OrganisationInvoice;
 use App\OrganisationDiscountCoupon;
+use App\User;
 
 use App\Http\Requests\PlanRequest;
 use App\Http\Requests\PlanCalculateRequest;
@@ -21,6 +22,7 @@ use Illuminate\Support\Facades\Redis;
 
 use App\Notifications\OrganisationInvoiceNotification;
 use App\Notifications\OrganisationWasCreatedNotification;
+use App\Notifications\MessageNotification;
 
 use Request as RequestStatic;
 
@@ -38,39 +40,140 @@ class OrganisationController extends Controller
     }
 
     # 
+    # ayarlar
+    # 
+    public static function settings()
+    {
+        $user = auth()->user();
+
+        return view('organisation.settings', compact('user'));
+    }
+
+    # 
     # ad güncelle
     # 
     public static function updateName(NameRequest $request)
     {
         auth()->user()->organisation->update([ 'name' => $request->organisation_name ]);
+
         return [
             'status' => 'ok'
         ];
     }
 
     # 
-    # ayarlar
+    # ayrıl
     # 
-    public static function settings()
+    public static function leave(Request $request)
     {
-        return view('organisation.settings');
+        $validatedData = $request->validate([
+            'leave_key' => 'required|in:organizasyondan ayrılmak istiyorum',
+        ]);
+
+        $user = auth()->user();
+
+        if ($user->id == $user->organisation->user_id)
+        {
+            $status = 'owner';
+        }
+        else
+        {
+            session()->flash('leaved', true);
+
+            $title = 'Organizasyondan Ayıldınız.';
+            $message = '['.$user->organisation->name.'] adlı organizasyondan kendi isteğinizle ayrıldınız.';
+
+            UserActivityUtility::push(
+                $title,
+                [
+                    'icon' => 'exit_to_app',
+                    'markdown' => implode(PHP_EOL, [
+                        $message
+                    ])
+                ]
+            );
+
+            $user->notify(new MessageNotification('Olive: '.$title, 'Merhaba, '.$user->name, $message));
+
+            $user->update([
+                'organisation_id' => null
+            ]);
+
+            $status = 'ok';
+        }
+
+        return [
+            'status' => $status
+        ];
     }
 
     # 
-    # plan seçimi
+    # sil
     # 
-    public static function select()
+    public static function delete(Request $request)
     {
-        return view('organisation.create.select');
+        $validatedData = $request->validate([
+            'delete_key' => 'required|in:organizasyonu silmek istiyorum',
+        ]);
+
+        $user = auth()->user();
+
+        if ($user->id == $user->organisation->user_id)
+        {
+            session()->flash('deleted', true);
+
+            $users = User::where('organisation_id', $user->organisation_id)->get();
+
+            foreach ($users as $u)
+            {
+                $u->update([
+                    'organisation_id' => null
+                ]);
+
+                $title = 'Organizasyon silindi.';
+
+                if ($user->id == $u->id)
+                {
+                    $message = 'Organizasyonunuz başarılı bir şekilde silindi. Varsa diğer kullanıcılara gerekli açıklama bildirim ve e-posta yoluyla ulaştırıldı.';
+                }
+                else
+                {
+                    $message = '['.$user->organisation->name.'] adlı organizasyon ['.$user->name.'] tarafından silindi.';
+                }
+
+                $u->notify(new MessageNotification('Olive: '.$title, 'Merhaba, '.$u->name, $message));
+
+                UserActivityUtility::push(
+                    $title,
+                    [
+                        'icon' => 'delete',
+                        'markdown' => implode(PHP_EOL, [
+                            $message
+                        ]),
+                        'user_id' => $u->id
+                    ]
+                );
+            }
+
+            $user->organisation->delete();
+
+            $status = 'ok';
+        }
+        else
+        {
+            $status = 'owner';
+        }
+
+        return [
+            'status' => $status
+        ];
     }
 
-    #
-    # result
-    #
-    public static function result()
-    {
-        return view('organisation.create.result');
-    }
+    # 
+    # organizasyon oluştur
+    # 
+    public static function select() { return view('organisation.create.select'); }
+    public static function result() { return view('organisation.create.result'); }
 
     #
     # plan detayı

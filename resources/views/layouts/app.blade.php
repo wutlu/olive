@@ -79,21 +79,15 @@
         <div class="navbar-fixed">
             <ul id="user-top-dropdown" class="dropdown-content">
                 <li>
-                    <a href="#" class="waves-effect">
-                        <i class="material-icons">person</i>
-                        Bilgilerimi Güncelle
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="waves-effect">
+                    <a class="waves-effect" href="#">
                         <i class="material-icons">settings</i>
-                        Ayarlar
+                        Hesap Bilgileri
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('user.logout') }}" class="waves-effect">
+                    <a class="waves-effect" href="{{ route('user.logout') }}">
                         <i class="material-icons">exit_to_app</i>
-                        Çıkış Yap
+                        Çıkış
                     </a>
                 </li>
             </ul>
@@ -106,6 +100,15 @@
                         <a href="#" data-target="slide-out" class="sidenav-trigger">
                             <i class="material-icons">menu</i>
                         </a>
+                        <ul class="right">
+                            @isset($dock)
+                            <li>
+                                <a href="#" data-class="body" data-class-toggle="dock-active" class="dock-menu">
+                                    <i class="material-icons">blur_linear</i>
+                                </a>
+                            </li>
+                            @endisset
+                        </ul>
                         <ul class="right hide-on-med-and-down">
                             <li>
                                 <a class="dropdown-trigger waves-effect" href="#" data-target="user-top-dropdown">
@@ -129,20 +132,26 @@
                 </div>
             </li>
             <li>
-                <a href="#" class="subheader">Yönetici Menüsü</a>
+                <a href="#" class="subheader">Kullanıcı</a>
             </li>
             <li>
                 <div class="collapsible-header waves-effect">
-                    <i class="material-icons">security</i>
-                    <span>Admin</span>
+                    <i class="material-icons">people</i>
+                    <span>{{ auth()->user()->name }}</span>
                     <i class="material-icons arrow">chevron_left</i>
                 </div>
                 <div class="collapsible-body">
                     <ul>
                         <li>
                             <a class="waves-effect" href="#">
-                                <i class="material-icons">people</i>
-                                Kullanıcı Yönetimi
+                                <i class="material-icons">settings</i>
+                                Hesap Bilgileri
+                            </a>
+                        </li>
+                        <li>
+                            <a class="waves-effect" href="{{ route('user.logout') }}">
+                                <i class="material-icons">exit_to_app</i>
+                                Çıkış
                             </a>
                         </li>
                     </ul>
@@ -175,26 +184,26 @@
         </nav>
         @endisset
 
-        <main class="blue-grey lighten-5">
+        <main>
             <div class="sidenav-fixed-layout">
-                <div id="dock-content" class="container">
-                    <div class="content">
-                        @yield('content')
-                    </div>
+                <div class="container">
                     @isset($dock)
-                    <div class="menu blue-grey lighten-5">
-                        <div class="collection">
-                            <a href="#" class="collection-item waves-effect">Organizasyon</a>
-                            <a href="#" class="collection-item waves-effect">E-posta</a>
-                            <a href="#" class="collection-item waves-effect">Hesap</a>
-                            <a href="#" class="collection-item waves-effect">Bildirim</a>
-                            <a href="#" class="collection-item waves-effect">Api</a>
+                    <div id="dock-content">
+                        <div class="content">
+                            @yield('content')
+                        </div>
+                        <div class="menu">
+                            @yield('dock')
                         </div>
                     </div>
+                    @else
+                        @yield('content')
                     @endisset
                 </div>
             </div>
         </main>
+
+        <div class="dock-overlay" data-class="body" data-class-remove="dock-active"></div>
     @else
         @yield('content')
     @endisset

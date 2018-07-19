@@ -244,7 +244,7 @@ $(document).ready(function() {
                     setTimeout(function() {
                         if (elements[name]['type'] == 'text')
                         {
-                            $('form#create-form').find('[name=' + name + ']').val(val);
+                            $('form#create-form').find('[name=' + name + ']').val(val).removeClass('invalid');
                         }
                         else if (elements[name]['type'] == 'radio')
                         {
@@ -275,7 +275,7 @@ $(document).ready(function() {
 
                 M.toast({
                     html: 'Fatura bilgileri yüklendi.',
-                    classes: 'blue'
+                    classes: 'blue darken-4'
                 })
             }
         }

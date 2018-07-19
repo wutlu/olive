@@ -16,7 +16,7 @@
         <span class="text">Sipariş Tamamlandı</span>
     </div>
 
-    <div class="card card-unstyled center-align">
+    <div class="card card-unstyled">
         <div class="card-content">
             @if (session('created') == true)
             <i class="material-icons green-text large">check</i>

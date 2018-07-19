@@ -9,7 +9,7 @@ class UserActivityUtility
     # user activity
     public static function push(string $title, array $array = [])
     {
-        $user_id = auth()->check() ? auth()->user()->id : $array['user_id'];
+        $user_id = @$array['user_id'] ? $array['user_id'] : auth()->user()->id;
 
         $query = new UserActivity;
 

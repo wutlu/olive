@@ -89,6 +89,10 @@ header#main > .parallax-container > .parallax > video#background-video {
 
 main {
     padding: 1rem 0;
+
+    background-image: url(../img/main_bg.jpg);
+    background-repeat: repeat;
+    background-attachment: scroll;
 }
 
 footer.page-footer {

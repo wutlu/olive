@@ -23,12 +23,13 @@ class CreateOrganisationsTable extends Migration
             $table->datetime('start_date');
             $table->unsignedInteger('day')->default(0);
 
-            $table->unsignedInteger('user_id')->nullable()->default(null);
+            $table->unsignedInteger('user_id')->nullable()->default(null)->unique();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
             $table->boolean('status')->default(0);
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

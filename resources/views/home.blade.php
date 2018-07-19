@@ -131,49 +131,47 @@
                     @endforeach
                 </ul>
             </div>
-            <div class="card-content grey lighten-4">
-                @foreach (config('plans') as $key => $plan)
-                <div id="tab-{{ $key }}">
-                    @if ($plan['price'])
-                        <h3 class="center-align">₺ {{ $plan['price'] }}<sup>.00</sup> <sub>/ Ay</sub></h3>
-                        @if (@$discountDay)
-                        <p class="center-align grey-text">Hemen ücretsiz kaydolun ve bugüne özel <span class="chip">{{ $discountDay->discount_rate }}%</span> indirim kuponuna anında sahip olun.</p>
-                        @endif
-                        <p class="grey-text center-align">Vergiler dahil değildir.</p>
-                    @else
-                    <h3 class="center-align">Ücretsiz!</h3>
+            @foreach (config('plans') as $key => $plan)
+            <div class="card-content grey lighten-4" id="tab-{{ $key }}">
+                @if ($plan['price'])
+                    <h3 class="center-align">₺ {{ $plan['price'] }}<sup>.00</sup> <sub>/ Ay</sub></h3>
+                    @if (@$discountDay)
+                    <p class="center-align grey-text">Hemen ücretsiz kaydolun ve bugüne özel <span class="chip">{{ $discountDay->discount_rate }}%</span> indirim kuponuna anında sahip olun.</p>
                     @endif
+                    <p class="grey-text center-align">Vergiler dahil değildir.</p>
+                @else
+                <h3 class="center-align">Ücretsiz!</h3>
+                @endif
 
-                    <ul class="collection collection-unstyled collection-unstyled-hover">
-                        @foreach ($plan['properties'] as $k => $item)
-                        <li class="collection-item">
-                            <div>
-                                <span>
-                                    <p>
-                                        {{ $item['text'] }}
+                <ul class="collection collection-unstyled collection-unstyled-hover">
+                    @foreach ($plan['properties'] as $k => $item)
+                    <li class="collection-item">
+                        <div>
+                            <span>
+                                <p>
+                                    {{ $item['text'] }}
 
-                                        @if ($item['value'] === true)
-                                        <i class="material-icons secondary-content green-text">check</i>
-                                        @elseif ($item['value'] === false)
-                                        <i class="material-icons secondary-content red-text">close</i>
-                                        @elseif (is_integer($item['value']))
-                                        <span class="badge grey lighten-2">{{ $item['value'] }}</span>
-                                        @else
-                                        <i class="material-icons secondary-content teal-text">streetview</i>
-                                        @endif
-                                    </p>
-                                    <p class="grey-text">{{ $item['details'] }}</p>
-                                    @if (is_string($item['value']))
-                                    <p class="teal-text">{{ $item['value'] }}</p>
+                                    @if ($item['value'] === true)
+                                    <i class="material-icons secondary-content green-text">check</i>
+                                    @elseif ($item['value'] === false)
+                                    <i class="material-icons secondary-content red-text">close</i>
+                                    @elseif (is_integer($item['value']))
+                                    <span class="badge grey lighten-2">{{ $item['value'] }}</span>
+                                    @else
+                                    <i class="material-icons secondary-content teal-text">streetview</i>
                                     @endif
-                                </span>
-                            </div>
-                        </li>
-                        @endforeach
-                    </ul>
-                </div>
-                @endforeach
+                                </p>
+                                <p class="grey-text">{{ $item['details'] }}</p>
+                                @if (is_string($item['value']))
+                                <p class="teal-text">{{ $item['value'] }}</p>
+                                @endif
+                            </span>
+                        </div>
+                    </li>
+                    @endforeach
+                </ul>
             </div>
+            @endforeach
         </div>
 
         <div class="center-align">

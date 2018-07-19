@@ -152,5 +152,7 @@ return [
         'tax_office'         => 'Vergi Dairesi',
         'tos'                => 'Kullanım Koşulları',
         'organisation_name'  => 'Organizasyon Adı',
+        'leave_key'          => 'Ayrılma Onayı',
+        'delete_key'         => 'Silme Onayı',
     ],
 ];

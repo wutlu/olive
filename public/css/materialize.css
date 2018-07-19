@@ -45,6 +45,16 @@
   display: inline-flex !important;
 }
 
+.justify-content-between {
+  -ms-flex-pack: justify !important;
+  justify-content: space-between !important;
+}
+
+.align-self-center {
+  -ms-flex-item-align: center !important;
+  align-self: center !important;
+}
+
 .mx-auto {
   margin: 0 auto !important;
   display: table !important;
@@ -2440,10 +2450,16 @@ hr {
   -webkit-box-sizing: content-box;
           box-sizing: content-box;
   /* 1 */
-  height: 0;
+  height: 1px;
   /* 1 */
   overflow: visible;
   /* 2 */
+
+  background-color: #c1c1c1;
+
+  border-width: 0;
+
+  margin: 2rem 0;
 }
 
 /**
@@ -2468,6 +2484,7 @@ a {
   /* 1 */
   -webkit-text-decoration-skip: objects;
   /* 2 */
+  outline: none;
 }
 
 /**
@@ -3213,13 +3230,13 @@ table {
 table.invoice thead > tr {
   border-width: 0 0 2px;
   border-style: solid;
-  border-color: rgba(0, 0, 0, .4);
+  border-color: rgba(0, 0, 0, .1);
 }
 
 table.invoice tfoot > tr {
   border-width: 2px 0 0;
   border-style: solid;
-  border-color: rgba(0, 0, 0, .4);
+  border-color: rgba(0, 0, 0, .1);
 }
 
 table.striped tr {
@@ -3318,7 +3335,6 @@ td, th {
 
 .collection {
   margin: 0 0 1rem;
-  overflow: hidden;
   position: relative;
 }
 
@@ -3616,6 +3632,7 @@ span.badge {
   height: 22px;
   color: #757575;
   float: right;
+
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
 }
@@ -5258,6 +5275,16 @@ small {
   font-weight: 300;
 }
 
+.card .card-title > a.small {
+  vertical-align: super;
+  font-size: 12px;
+}
+
+.card .card-title > a.material-icons {
+  line-height: 100%;
+  vertical-align: middle;
+}
+
 .card .card-title.activator {
   cursor: pointer;
 }
@@ -5577,6 +5604,11 @@ small {
 .tabs.tabs-transparent .tab a:hover,
 .tabs.tabs-transparent .tab a.active {
   color: #fff;
+}
+
+.tabs .tab a > i.material-icons {
+  vertical-align: middle;
+  display: initial;
 }
 
 .tabs.tabs-transparent .indicator {
@@ -6295,7 +6327,7 @@ button.btn-floating {
 
 @media only screen and (max-width: 992px) {
   .modal {
-    width: 80%;
+    width: 90%;
   }
 }
 
@@ -6402,9 +6434,14 @@ button.btn-floating {
   display: flex;
 
   cursor: pointer;
+
   -webkit-tap-highlight-color: transparent;
+
   line-height: 1.5;
+
   padding: 1rem 0;
+
+  outline: none;
 
   position: relative;
 
@@ -9697,100 +9734,6 @@ input[type=range].focused:focus:not(.active)::-ms-thumb {
   color: #8bc34a;
 }
 
-.credit-card {
-  background-color: #f9f9f9;
-  border-radius: .4rem;
-  border-width: 1px;
-  border-style: solid;
-  border-color: #ccc;
-  width: 200px;
-  height: 128px;
-  position: relative;
-
-            transition: all cubic-bezier(.6, .3, .2, .9) .2s;
-    -webkit-transition: all cubic-bezier(.6, .3, .2, .9) .2s;
-}
-.credit-card > .card-item {
-  border-radius: .2rem;
-  background-color: #e9e9e9;
-
-  position: absolute;
-  text-transform: uppercase;
-  font-size: 9px;
-  overflow: hidden;
-  white-space: nowrap;
-
-  padding: 0 0 0 4px;
-}
-.credit-card > .card-item.active {
-  background-color: #ffecb3;
-}
-.credit-card > .card-chip {
-  width: 32px;
-  height: 32px;
-  top: 24px;
-  left: 16px;
-}
-.credit-card > .card-number {
-  width: 170px;
-  height: 16px;
-  line-height: 16px;
-  top: 72px;
-  left: 16px;
-}
-.credit-card > .card-month {
-  width: 24px;
-  height: 16px;
-  line-height: 16px;
-  top: 96px;
-  left: 136px;
-
-          transform: skew(-10deg);
-  -webkit-transform: skew(-10deg);
-}
-.credit-card > .card-year {
-  width: 24px;
-  height: 16px;
-  line-height: 16px;
-  top: 96px;
-  left: 162px;
-
-          transform: skew(-10deg);
-  -webkit-transform: skew(-10deg);
-}
-.credit-card > .card-name {
-  width: 112px;
-  height: 16px;
-  line-height: 16px;
-  top: 96px;
-  left: 16px;
-}
-.credit-card.card-flip {
-          transform: scaleX(-1);
-  -webkit-transform: scaleX(-1);
-}
-.credit-card > .card-ccv {
-  background-color: #ffecb3;
-
-  width: 32px;
-  height: 16px;
-  line-height: 16px;
-  top: 72px;
-  left: 16px;
-
-          transform: scaleX(-1);
-  -webkit-transform: scaleX(-1);
-}
-.credit-card > .card-back {
-  display: none;
-}
-.credit-card.card-flip > .card-back {
-  display: table;
-}
-.credit-card.card-flip > .card-front {
-  display: none;
-}
-
 /* --- recaptcha --- */
 
 @keyframes captcha-loading {
@@ -9840,13 +9783,13 @@ input[type=range].focused:focus:not(.active)::-ms-thumb {
 }
 
 #dock-content > .content {
-  background: #ff0;
+  flex-grow: 1;
 }
-
 #dock-content > .menu {
-  display: table;
   min-width: 240px;
   margin: 0 0 0 1rem;
+
+  overflow-x: auto;
 
   -webkit-transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
           transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -9856,23 +9799,90 @@ input[type=range].focused:focus:not(.active)::-ms-thumb {
   color: #666;
 }
 
-@media only screen and (max-width: 601px) {
+#dock-content > .menu > .collection > a.collection-item:hover {
+  background-color: rgba(0, 0, 0, .1);
+}
+
+#dock-content > .menu > .collection > a.collection-item + a.collection-item {
+  margin: .1rem 0 0;
+}
+
+#dock-content > .menu > .collection > a.collection-item.active {
+          box-shadow: inset 4px 0 0 0 #009688;
+  -webkit-box-shadow: inset 4px 0 0 0 #009688;
+
+  background-color: transparent;
+}
+
+.dock-menu {
+  display: none;
+}
+
+.dock-overlay {
+  -webkit-transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@media only screen and (max-width: 1440px) {
   #dock-content > .menu {
     position: fixed;
-    top: 56px;
+
+    top: 64px;
     right: 0;
     bottom: 0;
     left: auto;
 
-            box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
-    -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+    z-index: 10;
 
-            transform: translateX(100%);
-    -webkit-transform: translateX(100%);
+    background-color: #e9e9e9;
+
+            transform: translateX(240px);
+    -webkit-transform: translateX(240px);
   }
 
-  #dock-content.active > .menu {
+  body.dock-active {
+    overflow-y: hidden;
+  }
+
+  body.dock-active #dock-content > .menu {
             transform: translateX(0);
     -webkit-transform: translateX(0);
+
+            box-shadow: 0 24px 38px 3px rgba(0, 0, 0, 0.14), 0 9px 46px 8px rgba(0, 0, 0, 0.12), 0 11px 15px -7px rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: 0 24px 38px 3px rgba(0, 0, 0, 0.14), 0 9px 46px 8px rgba(0, 0, 0, 0.12), 0 11px 15px -7px rgba(0, 0, 0, 0.2);
+  }
+
+  #dock-content > .menu > .collection > a.collection-item.active {
+            box-shadow: inset 1px 0 0 0 #e9e9e9, inset 6px 0 0 0 #009688;
+    -webkit-box-shadow: inset 1px 0 0 0 #e9e9e9, inset 6px 0 0 0 #009688;
+  }
+
+  body.dock-active > .dock-overlay {
+    position: fixed;
+
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    z-index: 9;
+
+    background-color: rgba(0, 0, 0, .2);
+
+    cursor: pointer;
+  }
+
+  #dock-content > .menu > .collection {
+    margin: 1rem 0;
+  }
+
+  .dock-menu {
+    display: inline-block;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  #dock-content > .menu {
+    top: 56px;
   }
 }

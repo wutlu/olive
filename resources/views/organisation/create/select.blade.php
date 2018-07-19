@@ -60,7 +60,7 @@ $('.tabs').tabs();
                                     @elseif ($item['value'] === false)
                                     <i class="material-icons secondary-content red-text">close</i>
                                     @elseif (is_integer($item['value']))
-                                    <span class="badge grey lighten-2">{{ $item['value'] }}</span>
+                                    <span class="badge">{{ $item['value'] }}</span>
                                     @else
                                     <i class="material-icons secondary-content teal-text">streetview</i>
                                     @endif

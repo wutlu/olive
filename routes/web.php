@@ -9,11 +9,22 @@ Route::prefix('organizasyon')->group(function () {
     Route::get('plan/{id}', 'OrganisationController@details')->name('organisation.create.details');
     Route::post('/', 'OrganisationController@create')->name('organisation.create');
     Route::get('/', 'OrganisationController@result')->name('organisation.create.result');
+
+    Route::patch('update/name', 'OrganisationController@updateName')->name('organisation.update.name');
 });
 
 Route::prefix('ayarlar')->group(function () {
-    Route::get('/', 'SettingsController@index')->name('settings');
-    Route::get('organizasyon', 'OrganisationController@settings')->name('settings.organisation');
+    Route::prefix('organizasyon')->group(function () {
+        Route::get('/', 'OrganisationController@settings')->name('settings.organisation');
+        Route::post('ayril', 'OrganisationController@leave')->name('settings.organisation.leave');
+        Route::post('sil', 'OrganisationController@delete')->name('settings.organisation.delete');
+    });
+
+    Route::get('email', 'OrganisationController@settings')->name('settings.email');
+    Route::get('password', 'OrganisationController@settings')->name('settings.password');
+    Route::get('account', 'OrganisationController@settings')->name('settings.account');
+    Route::get('notification', 'OrganisationController@settings')->name('settings.notification');
+    Route::get('api', 'OrganisationController@settings')->name('settings.api');
 });
 
 Route::prefix('fatura')->group(function () {

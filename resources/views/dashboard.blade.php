@@ -168,5 +168,13 @@
         M.toast({ html: 'Tebrikler! E-posta adresiniz doğrulandı!', classes: 'green' })
     @endif
 
+    @if (session('leaved'))
+        M.toast({ html: 'Organizasyondan başarılı bir şekilde ayrıldınız.', classes: 'green' })
+    @endif
+
+    @if (session('deleted'))
+        M.toast({ html: 'Organizasyon başarılı bir şekilde silindi..', classes: 'green' })
+    @endif
+
 @endpush
  
