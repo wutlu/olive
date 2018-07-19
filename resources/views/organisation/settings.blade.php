@@ -11,16 +11,21 @@
     'dock' => true
 ])
 
+@push('local.scripts')
+
 @if (session('organisation') == 'have')
-	@push('local.scripts')
-		M.toast({
-            html: 'Zaten bir organizasyonunuz mevcut.',
-            classes: 'blue'
-        })
-	@endpush
+    M.toast({
+        html: 'Zaten bir organizasyonunuz mevcut.',
+        classes: 'blue'
+    })
 @endif
 
-@push('local.scripts')
+@if (session('transferred'))
+	M.toast({
+        html: 'Devir gerçekleştirildi.',
+        classes: 'green'
+    })
+@endif
 
 $(document).on('click', 'a.name-change', function() {
     var mdl = modal({
@@ -138,26 +143,88 @@ function __update__organisation_name(__, obj)
                 <img src="{{ $u->avatar() }}" alt="avatar" class="circle">
                 <span class="title">{{ $u->name }}</span>
                 <p class="grey-text">{{ $u->email }}</p>
-                <p class="grey-text">{{ $u->id == $user->organisation->user_id ? 'Organizasyon Sahibi' : 'Kullanıcı' }}</p>
+                <p class="grey-text">{{ ($u->id == $user->organisation->user_id) ? 'Organizasyon Sahibi' : 'Kullanıcı' }}</p>
+
+                @if ($user->id != $u->id && $user->id == $user->organisation->user_id)
                 <a href="#" class="secondary-content dropdown-trigger" data-target="dropdown-user-{{ $u->id }}">
                     <i class="material-icons">more_vert</i>
                 </a>
 
                 <ul id="dropdown-user-{{ $u->id }}" class="dropdown-content">
                     <li>
-                        <a href="#">
+                        <a href="#" data-user-id="{{ $u->id }}" data-button="__remove_user">
                             <i class="material-icons">delete_forever</i> Çıkar
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="#" data-user-id="{{ $u->id }}" data-button="__transfer">
                             <i class="material-icons">fingerprint</i> Devret
                         </a>
                     </li>
                 </ul>
+                @endif
             </li>
             @endforeach
         </ul>
+
+        @push('local.scripts')
+
+        $(document).on('click', '[data-button=__transfer]', function() {
+            var __ = $(this);
+
+            var org_name = $('#organisation-card').find('span.card-title').children('span').html();
+            var user_name = __.closest('li.collection-item').find('span.title').html();
+
+            var mdl = modal({
+                    'id': 'transfer',
+                    'body': 'Sahip olduğunuz [' + org_name + '] adlı organizasyonun, ' + user_name + ' adlı kullanıcıya devretmek üzeresiniz!',
+                    'size': 'modal-small',
+                    'title': 'Devret',
+                    'options': {}
+                });
+
+
+                mdl.find('.modal-footer')
+                   .html([
+                       $('<a />', {
+                           'href': '#',
+                           'class': 'modal-close waves-effect btn-flat',
+                           'html': buttons.cancel
+                       }),
+                       $('<span />', {
+                           'html': ' '
+                       }),
+                       $('<a />', {
+                           'href': '#',
+                           'class': 'waves-effect btn blue darken-4 json',
+                           'data-href': '{{ route('settings.organisation.transfer') }}',
+                           'data-user_id': __.data('user-id'),
+                           'data-method': 'post',
+                           'data-callback': '__transfer',
+                           'html': buttons.ok
+                       })
+                   ])
+        }).on('click', '[data-button=__remove_user]', function() {
+
+        })
+
+        function __transfer(__, obj)
+        {
+            if (obj.status == 'ok')
+            {
+                M.toast({
+                    html: 'Organizasyon devri gerçekleştiriliyor.',
+                    classes: 'blue darken-2'
+                })
+
+                setTimeout(function() {
+                    location.reload()
+                }, 400)
+            }
+        }
+
+        @endpush
+
         @if (count($user->organisation->users) < $user->organisation->capacity)
         <div class="input-field teal-text">
             <input name="email" id="email" type="email" class="validate" />

@@ -18,6 +18,7 @@ Route::prefix('ayarlar')->group(function () {
         Route::get('/', 'OrganisationController@settings')->name('settings.organisation');
         Route::post('ayril', 'OrganisationController@leave')->name('settings.organisation.leave');
         Route::post('sil', 'OrganisationController@delete')->name('settings.organisation.delete');
+        Route::post('devret', 'OrganisationController@transfer')->name('settings.organisation.transfer');
     });
 
     Route::get('email', 'OrganisationController@settings')->name('settings.email');

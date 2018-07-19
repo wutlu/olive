@@ -16,6 +16,7 @@ use App\Http\Requests\PlanRequest;
 use App\Http\Requests\PlanCalculateRequest;
 use App\Http\Requests\Organisation\BillingRequest;
 use App\Http\Requests\Organisation\NameRequest;
+use App\Http\Requests\Organisation\TransferRequest;
 use App\Http\Requests\IdRequest;
 
 use Illuminate\Support\Facades\Redis;
@@ -36,11 +37,11 @@ class OrganisationController extends Controller
     {
         $this->middleware('auth');
         $this->middleware('organisation:have_not')->only([ 'select', 'details', 'create' ]);
-        $this->middleware('organisation:have')->only([ 'settings' ]);
+        $this->middleware('organisation:have')->only([ 'settings', 'updateName', 'leave', 'transfer', 'delete' ]);
     }
 
     # 
-    # ayarlar
+    # organizasyon ayarlar view
     # 
     public static function settings()
     {
@@ -50,7 +51,7 @@ class OrganisationController extends Controller
     }
 
     # 
-    # ad güncelle
+    # organizasyon adı güncelle
     # 
     public static function updateName(NameRequest $request)
     {
@@ -62,7 +63,7 @@ class OrganisationController extends Controller
     }
 
     # 
-    # ayrıl
+    # organizasyondan ayrıl
     # 
     public static function leave(Request $request)
     {
@@ -108,7 +109,73 @@ class OrganisationController extends Controller
     }
 
     # 
-    # sil
+    # organizasyon devret
+    # 
+    public static function transfer(TransferRequest $request)
+    {
+        $user = auth()->user();
+
+        if ($user->id == $user->organisation->user_id)
+        {
+            $transferred_user = User::where('id', $request->user_id)->first();
+
+            $user->organisation->update([ 'user_id' => $transferred_user->id ]);
+
+            //
+            // devreden için bilgilendirme
+            //
+            $title = 'Organizasyon devredildi.';
+            $message = '['.$user->organisation->name.'] adlı organizasyonu ['.$transferred_user->name.'] adlı kullanıcıya devrettiniz.';
+
+            $user->notify(new MessageNotification('Olive: '.$title, 'Merhaba, '.$user->name, $message));
+
+            UserActivityUtility::push(
+                $title,
+                [
+                    'icon' => 'accessibility',
+                    'markdown' => implode(PHP_EOL, [
+                        $message
+                    ])
+                ]
+            );
+            // --- //
+
+            //
+            // devralan için bilgilendirme
+            //
+            $title = 'Organizasyon devredildi.';
+            $message = '['.$user->organisation->name.'] adlı organizasyon ['.$user->name.'] adlı kullanıcı tarafından üzerinize devredildi.';
+
+            $transferred_user->notify(new MessageNotification('Olive: '.$title, 'Merhaba, '.$transferred_user->name, $message));
+
+            UserActivityUtility::push(
+                $title,
+                [
+                    'icon' => 'accessibility',
+                    'markdown' => implode(PHP_EOL, [
+                        $message
+                    ]),
+                    'user_id' => $transferred_user->id
+                ]
+            );
+            // --- //
+
+            session()->flash('transferred', true);
+
+            $status = 'ok';
+        }
+        else
+        {
+            $status = 'owner';
+        }
+
+        return [
+            'status' => $status
+        ];
+    }
+
+    # 
+    # organizasyon sil
     # 
     public static function delete(Request $request)
     {

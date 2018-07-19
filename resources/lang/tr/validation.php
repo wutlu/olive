@@ -63,7 +63,7 @@ return [
         'string' => ':attribute değeri :min karakter değerinden büyük olmalıdır.',
         'array' => ':attribute en az :min nesneye sahip olmalıdır.',
     ],
-    'not_in' => 'Seçili :attribute geçersiz.',
+    'not_in' => ':attribute geçerli değil.',
     'numeric' => ':attribute sayı olmalıdır.',
     'present' => ':attribute alanı mevcut olmalıdır.',
     'regex' => ':attribute biçimi geçersiz.',
@@ -108,6 +108,7 @@ return [
     ],
 
     'authentication' => 'Hatalı şifre.',
+    'user_in_my_organisation' => 'Seçtiğiniz kullanıcıyla aynı organizasyonda olmalısınız.',
 
     /*
     |--------------------------------------------------------------------------
@@ -154,5 +155,6 @@ return [
         'organisation_name'  => 'Organizasyon Adı',
         'leave_key'          => 'Ayrılma Onayı',
         'delete_key'         => 'Silme Onayı',
+        'user_id'            => 'Kullanıcı',
     ],
 ];
