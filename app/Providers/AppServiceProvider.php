@@ -5,7 +5,6 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Validator;
 use Request;
-use App\User;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,20 +22,6 @@ class AppServiceProvider extends ServiceProvider
             $json = json_decode($source);
 
             return $json->success;
-        });
-
-        Validator::extend('user_in_my_organisation', function($attribute, $user_id, $parameters) {
-            $user = auth()->user();
-            $friend = User::where('id', $user_id)->first();
-
-            if (@$friend)
-            {
-                return ($user->organisation_id == $friend->organisation_id) ? true : false;
-            }
-            else
-            {
-                return false;
-            }
         });
 
         Validator::extend('tckn', function($attribute, $value, $parameters) {

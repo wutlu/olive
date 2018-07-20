@@ -12,94 +12,96 @@
 ])
 
 @push('local.scripts')
-
-@if (session('organisation') == 'have')
-    M.toast({
-        html: 'Zaten bir organizasyonunuz mevcut.',
-        classes: 'blue'
-    })
-@endif
-
-@if (session('transferred'))
-	M.toast({
-        html: 'Devir gerçekleştirildi.',
-        classes: 'green'
-    })
-@endif
-
-$(document).on('click', 'a.name-change', function() {
-    var mdl = modal({
-            'id': 'detail',
-            'body': $('<div />', {
-                'class': 'input-field',
-                'html': [
-                    $('<input />', {
-                        'id': 'organisation_name',
-                        'name': 'organisation_name',
-                        'type': 'text',
-                        'class': 'validate',
-                        'val': '{{ $user->organisation->name }}',
-                        'data-length': 16
-                    }),
-                    $('<label />', {
-                        'for': 'organisation_name',
-                        'html': 'Organizasyon Adı'
-                    }),
-                    $('<span />', {
-                        'class': 'helper-text'
-                    })
-                ]
-            }),
-            'size': 'modal-medium',
-            'title': 'Ad Değiştir',
-            'options': {
-                dismissible: false
-            }
-        });
-
-        mdl.find('.modal-footer')
-           .html([
-               $('<a />', {
-                   'href': '#',
-                   'class': 'modal-close waves-effect btn-flat',
-                   'html': buttons.cancel
-               }),
-               $('<span />', {
-                   'html': ' '
-               }),
-               $('<a />', {
-                   'href': '#',
-                   'class': 'waves-effect btn json',
-                   'data-href': '{{ route('organisation.update.name') }}',
-                   'data-method': 'patch',
-                   'data-include': 'organisation_name',
-                   'data-callback': '__update__organisation_name',
-                   'html': buttons.update
-               })
-           ])
-
-    M.updateTextFields()
-
-    $('input[name=organisation_name]').characterCounter()
-})
-
-function __update__organisation_name(__, obj)
-{
-    if (obj.status == 'ok')
-    {
-        var name = $('#organisation_name').val();
-
-        $('#organisation-card').find('span.card-title').children('span').html(name)
-
-        $('#modal-detail').modal('close')
-
+    @if (session('organisation') == 'have')
         M.toast({
-            html: 'Organizasyon adı güncellendi.',
-            classes: 'green darken-2'
+            html: 'Zaten bir organizasyonunuz mevcut!',
+            classes: 'blue'
         })
-    }
-}
+    @endif
 
+    @if (session('transferred'))
+        M.toast({
+            html: 'Devir gerçekleşti',
+            classes: 'green'
+        })
+    @endif
+
+    @if ($user->id == $user->organisation->user_id)
+
+    $(document).on('click', 'a.name-change', function() {
+        var mdl = modal({
+                'id': 'detail',
+                'body': $('<div />', {
+                    'class': 'input-field',
+                    'html': [
+                        $('<input />', {
+                            'id': 'organisation_name',
+                            'name': 'organisation_name',
+                            'type': 'text',
+                            'class': 'validate',
+                            'val': '{{ $user->organisation->name }}',
+                            'data-length': 16
+                        }),
+                        $('<label />', {
+                            'for': 'organisation_name',
+                            'html': 'Organizasyon Adı'
+                        }),
+                        $('<span />', {
+                            'class': 'helper-text'
+                        })
+                    ]
+                }),
+                'size': 'modal-medium',
+                'title': 'Ad Değiştir',
+                'options': {
+                    dismissible: false
+                }
+            });
+
+            mdl.find('.modal-footer')
+               .html([
+                   $('<a />', {
+                       'href': '#',
+                       'class': 'modal-close waves-effect btn-flat',
+                       'html': buttons.cancel
+                   }),
+                   $('<span />', {
+                       'html': ' '
+                   }),
+                   $('<a />', {
+                       'href': '#',
+                       'class': 'waves-effect btn json',
+                       'data-href': '{{ route('organisation.update.name') }}',
+                       'data-method': 'patch',
+                       'data-include': 'organisation_name',
+                       'data-callback': '__update__organisation_name',
+                       'html': buttons.update
+                   })
+               ])
+
+        M.updateTextFields()
+
+        $('input[name=organisation_name]').characterCounter()
+    })
+
+    function __update__organisation_name(__, obj)
+    {
+        if (obj.status == 'ok')
+        {
+            var name = $('#organisation_name').val();
+
+            $('#organisation-card').find('span.card-title').children('span').html(name)
+
+            $('#modal-detail').modal('close')
+
+            M.toast({
+                html: 'Organizasyon Adı güncellendi',
+                classes: 'green darken-2'
+            })
+        }
+    }
+
+    @endif
 @endpush
 
 @section('content')
@@ -107,7 +109,9 @@ function __update__organisation_name(__, obj)
     <div class="card-content">
         <span class="card-title">
             <span>{{ $user->organisation->name }}</span>
+            @if ($user->id == $user->organisation->user_id)
             <a class="name-change material-icons" href="#">create</a>
+            @endif
         </span>
     </div>
 
@@ -133,13 +137,13 @@ function __update__organisation_name(__, obj)
     <div id="tab-1" class="card-content grey lighten-4">
         <div class="card-content">
             <p class="grey-text">
-                {{ count($user->organisation->users) }}/{{ $user->organisation->capacity }} kullanıcı
+                <span class="organisation-capacity">{{ count($user->organisation->users) }}</span>/{{ $user->organisation->capacity }} kullanıcı
             </p>
         </div>
 
-        <ul class="collection">
+        <ul class="collection member-list">
             @foreach ($user->organisation->users as $u)
-            <li class="collection-item avatar">
+            <li class="collection-item avatar" id="organisation-user-{{ $u->id }}">
                 <img src="{{ $u->avatar() }}" alt="avatar" class="circle">
                 <span class="title">{{ $u->name }}</span>
                 <p class="grey-text">{{ $u->email }}</p>
@@ -167,71 +171,208 @@ function __update__organisation_name(__, obj)
             @endforeach
         </ul>
 
+        @if ($user->id == $user->organisation->user_id)
+
+            @push('local.scripts')
+            $(document).on('click', '[data-button=__transfer]', function() {
+                var __ = $(this);
+
+                var org_name = $('#organisation-card').find('span.card-title').children('span').html();
+                var user_name = __.closest('li.collection-item').find('span.title').html();
+
+                var mdl = modal({
+                        'id': 'transfer',
+                        'body': 'Sahip olduğunuz [' + org_name + '] adlı organizasyonu, ' + user_name + ' adlı kullanıcıya devretmek üzeresiniz!',
+                        'size': 'modal-small',
+                        'title': 'Devret',
+                        'options': {}
+                    });
+
+
+                    mdl.find('.modal-footer')
+                       .html([
+                           $('<a />', {
+                               'href': '#',
+                               'class': 'modal-close waves-effect btn-flat',
+                               'html': buttons.cancel
+                           }),
+                           $('<span />', {
+                               'html': ' '
+                           }),
+                           $('<a />', {
+                               'href': '#',
+                               'class': 'waves-effect btn blue darken-4 json',
+                               'data-href': '{{ route('settings.organisation.transfer') }}',
+                               'data-user_id': __.data('user-id'),
+                               'data-method': 'post',
+                               'data-callback': '__transfer',
+                               'html': buttons.ok
+                           })
+                       ])
+            }).on('click', '[data-button=__remove_user]', function() {
+                var __ = $(this);
+
+                var user_name = __.closest('li.collection-item').find('span.title').html();
+                var mdl = modal({
+                        'id': 'remove',
+                        'body': user_name + ' adlı kullanıcıyı organizasyondan çıkarmak üzeresiniz!',
+                        'size': 'modal-small',
+                        'title': 'Çıkar',
+                        'options': {}
+                    });
+
+                    mdl.find('.modal-footer')
+                       .html([
+                           $('<a />', {
+                               'href': '#',
+                               'class': 'modal-close waves-effect btn-flat',
+                               'html': buttons.cancel
+                           }),
+                           $('<span />', {
+                               'html': ' '
+                           }),
+                           $('<a />', {
+                               'href': '#',
+                               'class': 'waves-effect btn blue darken-4 json',
+                               'data-href': '{{ route('settings.organisation.remove') }}',
+                               'data-user_id': __.data('user-id'),
+                               'data-method': 'post',
+                               'data-callback': '__remove_user',
+                               'html': buttons.ok
+                           })
+                       ])
+            })
+
+            function __transfer(__, obj)
+            {
+                if (obj.status == 'ok')
+                {
+                    M.toast({
+                        html: 'Organizasyon devri gerçekleştiriliyor...',
+                        classes: 'blue darken-2'
+                    })
+
+                    setTimeout(function() {
+                        location.reload()
+                    }, 400)
+                }
+                else if (obj.status == 'owner')
+                {
+                    M.toast({
+                        html: 'Organizasyon sahibi değilken devir işlemi yapamazsınız!',
+                        classes: 'yellow darken-2'
+                    })
+                }
+            }
+
+            function __remove_user(__, obj)
+            {
+                if (obj.status == 'ok')
+                {
+                    var count_span = $('span.organisation-capacity');
+                        count_span.html(count_span.html() - 1);
+
+                    $('#organisation-user-' + __.data('user_id')).remove()
+                    $('#modal-remove').modal('close')
+
+                    M.toast({
+                        html: 'Kullanıcı Çıkarıldı',
+                        classes: 'green'
+                    })
+                }
+                else if (obj.status == 'owner')
+                {
+                    M.toast({
+                        html: 'Organizasyon sahibi değilken çıkarma işlemi yapamazsınız!',
+                        classes: 'yellow darken-2'
+                    })
+                }
+            }
+            @endpush
+
+        @endif
+
+        @if (count($user->organisation->users) < $user->organisation->capacity && $user->id == $user->organisation->user_id)
+        <div class="input-field teal-text">
+            <input name="email" id="email" type="email" class="validate" />
+            <label for="email">E-posta</label>
+            <small class="helper-text">Gireceğiniz e-posta adresine bağlı hesap organizasyonunuza eklenir.</small>
+        </div>
+        <a
+            href="#"
+            class="waves-effect waves-dark btn-small json"
+            data-method="post"
+            data-href="{{ route('settings.organisation.invite') }}"
+            data-callback="__invite"
+            data-include="email">Ekle</a>
         @push('local.scripts')
 
-        $(document).on('click', '[data-button=__transfer]', function() {
-            var __ = $(this);
-
-            var org_name = $('#organisation-card').find('span.card-title').children('span').html();
-            var user_name = __.closest('li.collection-item').find('span.title').html();
-
-            var mdl = modal({
-                    'id': 'transfer',
-                    'body': 'Sahip olduğunuz [' + org_name + '] adlı organizasyonun, ' + user_name + ' adlı kullanıcıya devretmek üzeresiniz!',
-                    'size': 'modal-small',
-                    'title': 'Devret',
-                    'options': {}
-                });
-
-
-                mdl.find('.modal-footer')
-                   .html([
-                       $('<a />', {
-                           'href': '#',
-                           'class': 'modal-close waves-effect btn-flat',
-                           'html': buttons.cancel
-                       }),
-                       $('<span />', {
-                           'html': ' '
-                       }),
-                       $('<a />', {
-                           'href': '#',
-                           'class': 'waves-effect btn blue darken-4 json',
-                           'data-href': '{{ route('settings.organisation.transfer') }}',
-                           'data-user_id': __.data('user-id'),
-                           'data-method': 'post',
-                           'data-callback': '__transfer',
-                           'html': buttons.ok
-                       })
-                   ])
-        }).on('click', '[data-button=__remove_user]', function() {
-
-        })
-
-        function __transfer(__, obj)
+        function __invite(__, obj)
         {
             if (obj.status == 'ok')
             {
                 M.toast({
-                    html: 'Organizasyon devri gerçekleştiriliyor.',
-                    classes: 'blue darken-2'
+                    html: 'Kullanıcı Eklendi',
+                    classes: 'green'
                 })
 
-                setTimeout(function() {
-                    location.reload()
-                }, 400)
+                $('<li />', {
+                    'class': 'collection-item avatar',
+                    'id': 'organisation-user-' + obj.data.id,
+                    'html': [
+                        $('<img />', { 'src': obj.data.avatar, 'alt': 'avatar', 'class': 'circle' }),
+                        $('<span />', { 'class': 'title', 'html': obj.data.name  }),
+                        $('<p />', { 'class': 'grey-text', 'html': obj.data.email }),
+                        $('<p />', { 'class': 'grey-text', 'html': 'Kullanıcı' }),
+                        $('<a />', {
+                            'href': '#',
+                            'class': 'secondary-content dropdown-trigger',
+                            'data-target': 'dropdown-user-' + obj.data.id,
+                            'html': $('<i />', { 'class': 'material-icons', 'html': 'more_vert' })
+                        }),
+                        $('<ul />', {
+                            'id': 'dropdown-user-' + obj.data.id,
+                            'class': 'dropdown-content',
+                            'html': [
+                                $('<li />', {
+                                    'html': $('<a />', {
+                                        'href': '#',
+                                        'data-user-id': obj.data.id,
+                                        'data-button': '__remove_user',
+                                        'html': [
+                                            $('<i />', { 'class': 'material-icons', 'html': 'delete_forever' }),
+                                            $('<span />', { 'html': 'Çıkar' })
+                                        ]
+                                    })
+                                }),
+                                $('<li />', {
+                                    'html': $('<a />', {
+                                        'href': '#',
+                                        'data-user-id': obj.data.id,
+                                        'data-button': '__transfer',
+                                        'html': [
+                                            $('<i />', { 'class': 'material-icons', 'html': 'fingerprint' }),
+                                            $('<span />', { 'html': 'Devret' })
+                                        ]
+                                    })
+                                })
+                            ]
+                        })
+                    ]
+                }).appendTo($('ul.member-list'))
+
+                $('a.secondary-content').dropdown({
+                    alignment: 'right'
+                })
+
+                var count_span = $('span.organisation-capacity');
+                    count_span.html(parseInt(count_span.html()) + 1);
+
+                $('input[name=email]').val('')
             }
         }
 
         @endpush
-
-        @if (count($user->organisation->users) < $user->organisation->capacity)
-        <div class="input-field teal-text">
-            <input name="email" id="email" type="email" class="validate" />
-            <label for="email">E-posta</label>
-            <small class="helper-text">Gireceğiniz e-posta adresine organizasyon daveti e-posta yoluyla gönderilir.</small>
-        </div>
-        <a href="#" class="waves-effect waves-dark btn-small">Davet Et</a>
         @endif
     </div>
     <div id="tab-2" class="card-content grey lighten-4">
@@ -263,7 +404,7 @@ function __update__organisation_name(__, obj)
                             'html': 'Organizasyonu silmek için aşağıdaki alana küçük harflerle "{{ $key }}" yazmalısınız.'
                         }),
                         $('<p />', {
-                            'html': 'Bu işlem geri alınamaz.',
+                            'html': 'Bu işlem geri alınamaz!',
                             'class': 'red-text'
                         }),
                         $('<div />', {
@@ -278,13 +419,13 @@ function __update__organisation_name(__, obj)
                                 }),
                                 $('<span />', {
                                     'class': 'helper-text',
-                                    'html': 'Organizasyonu silmek için gerekli kelimeleri girin.'
+                                    'html': 'Organizasyonu silmek için belirlenen kelimeleri girin.'
                                 })
                             ]
                         })
                     ],
                     'size': 'modal-small',
-                    'title': 'Ayrıl',
+                    'title': 'Sil',
                     'options': {}
                 });
 
@@ -329,7 +470,7 @@ function __update__organisation_name(__, obj)
                 else if (obj.status == 'owner')
                 {
                     M.toast({
-                        html: 'Organizasyon sahibi değilken organizasyonu silemezsiniz.',
+                        html: 'Organizasyon sahibi değilken organizasyonu silemezsiniz!',
                         classes: 'yellow darken-2'
                     })
                 }
@@ -337,7 +478,7 @@ function __update__organisation_name(__, obj)
             else
             {
                 M.toast({
-                    html: 'Onay alanı geçerli değil.',
+                    html: 'Onay alanı geçerli değil!',
                     classes: 'red darken-2'
                 })
             }
@@ -366,7 +507,7 @@ function __update__organisation_name(__, obj)
                             'html': 'Organizasyondan ayrılmak için aşağıdaki alana küçük harflerle "{{ $key }}" yazmalısınız.'
                         }),
                         $('<p />', {
-                            'html': 'Bu işlem geri alınamaz.',
+                            'html': 'Bu işlem geri alınamaz!',
                             'class': 'red-text'
                         }),
                         $('<div />', {
@@ -381,7 +522,7 @@ function __update__organisation_name(__, obj)
                                 }),
                                 $('<span />', {
                                     'class': 'helper-text',
-                                    'html': 'Organizasyondan ayrılmak için gerekli kelimeleri girin.'
+                                    'html': 'Organizasyondan ayrılmak için belirlenen kelimeleri girin.'
                                 })
                             ]
                         })
@@ -432,7 +573,7 @@ function __update__organisation_name(__, obj)
                 else if (obj.status == 'owner')
                 {
                     M.toast({
-                        html: 'Organizasyon sahibiyken organizasyondan ayrılamazsınız.',
+                        html: 'Organizasyon sahibiyken organizasyondan ayrılamazsınız!',
                         classes: 'yellow darken-2'
                     })
                 }
@@ -440,7 +581,7 @@ function __update__organisation_name(__, obj)
             else
             {
                 M.toast({
-                    html: 'Onay alanı geçerli değil.',
+                    html: 'Onay alanı geçerli değil!',
                     classes: 'red darken-2'
                 })
             }

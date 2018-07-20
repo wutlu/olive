@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Validator;
 use App\User;
 
-class TransferRequest extends FormRequest
+class InviteRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,7 +26,7 @@ class TransferRequest extends FormRequest
     public function messages()
     {
         return [
-            'user_in_my_organisation' => 'Seçtiğiniz kullanıcıyla aynı organizasyonda olmalısınız.'
+            'user_out_organisation' => 'Bu kullanıcı zaten bir organizasyona dahil.'
         ];
     }
 
@@ -37,23 +37,14 @@ class TransferRequest extends FormRequest
      */
     public function rules()
     {
-        $user = auth()->user();
+        Validator::extend('user_out_organisation', function($attribute, $email) {
+            $user = User::where('email', $email)->first();
 
-        Validator::extend('user_in_my_organisation', function($attribute, $user_id, $parameters) use ($user) {
-            $friend = User::where('id', $user_id)->first();
-
-            if (@$friend)
-            {
-                return ($user->organisation_id == $friend->organisation_id) ? true : false;
-            }
-            else
-            {
-                return false;
-            }
+            return $user->organisation_id ? false : true;
         });
 
         return [
-            'user_id' => 'required|user_in_my_organisation|not_in:'.$user->id
+            'email' => 'required|string|email|exists:users,email|user_out_organisation',
         ];
     }
 }

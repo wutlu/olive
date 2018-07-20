@@ -17,6 +17,7 @@ use App\Http\Requests\PlanCalculateRequest;
 use App\Http\Requests\Organisation\BillingRequest;
 use App\Http\Requests\Organisation\NameRequest;
 use App\Http\Requests\Organisation\TransferRequest;
+use App\Http\Requests\Organisation\InviteRequest;
 use App\Http\Requests\IdRequest;
 
 use Illuminate\Support\Facades\Redis;
@@ -31,13 +32,26 @@ use App\BillingInformation;
 
 use Carbon\Carbon;
 
+use Validator;
+
 class OrganisationController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('organisation:have_not')->only([ 'select', 'details', 'create' ]);
-        $this->middleware('organisation:have')->only([ 'settings', 'updateName', 'leave', 'transfer', 'delete' ]);
+        $this->middleware('organisation:have_not')->only([
+            'select',
+            'details',
+            'create'
+        ]);
+        $this->middleware('organisation:have')->only([
+            'settings',
+            'updateName',
+            'leave',
+            'transfer',
+            'remove',
+            'delete'
+        ]);
     }
 
     # 
@@ -63,11 +77,45 @@ class OrganisationController extends Controller
     }
 
     # 
+    # organizasyona davet
+    # 
+    public static function invite(InviteRequest $request)
+    {
+        $user = User::where('email', $request->email)->first();
+
+        $user->organisation_id = auth()->user()->organisation_id;
+        $user->save();
+
+        $title = 'Organizasyona Eklendiniz';
+        $message = $user->organisation->name.'; '.auth()->user()->name.' tarafından eklendiniz.';
+
+        $user->notify(new MessageNotification('Olive: '.$title, 'Merhaba, '.$user->name, $message));
+
+        UserActivityUtility::push(
+            $title,
+            [
+                'icon' => 'exit_to_app',
+                'markdown' => $message
+            ]
+        );
+
+        return [
+            'status' => 'ok',
+            'data' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'avatar' => $user->avatar()
+            ]
+        ];
+    }
+
+    # 
     # organizasyondan ayrıl
     # 
     public static function leave(Request $request)
     {
-        $validatedData = $request->validate([
+        $request->validate([
             'leave_key' => 'required|in:organizasyondan ayrılmak istiyorum',
         ]);
 
@@ -75,22 +123,22 @@ class OrganisationController extends Controller
 
         if ($user->id == $user->organisation->user_id)
         {
-            $status = 'owner';
+            return [
+                'status' => 'owner'
+            ];
         }
         else
         {
             session()->flash('leaved', true);
 
-            $title = 'Organizasyondan Ayıldınız.';
-            $message = '['.$user->organisation->name.'] adlı organizasyondan kendi isteğinizle ayrıldınız.';
+            $title = 'Organizasyondan Ayrıldınız';
+            $message = $user->organisation->name.'; kendi isteğiniz üzerine ayrıldınız.';
 
             UserActivityUtility::push(
                 $title,
                 [
                     'icon' => 'exit_to_app',
-                    'markdown' => implode(PHP_EOL, [
-                        $message
-                    ])
+                    'markdown' => $message
                 ]
             );
 
@@ -100,12 +148,10 @@ class OrganisationController extends Controller
                 'organisation_id' => null
             ]);
 
-            $status = 'ok';
+            return [
+                'status' => 'ok'
+            ];
         }
-
-        return [
-            'status' => $status
-        ];
     }
 
     # 
@@ -118,14 +164,13 @@ class OrganisationController extends Controller
         if ($user->id == $user->organisation->user_id)
         {
             $transferred_user = User::where('id', $request->user_id)->first();
-
             $user->organisation->update([ 'user_id' => $transferred_user->id ]);
 
-            //
-            // devreden için bilgilendirme
-            //
-            $title = 'Organizasyon devredildi.';
-            $message = '['.$user->organisation->name.'] adlı organizasyonu ['.$transferred_user->name.'] adlı kullanıcıya devrettiniz.';
+            /*
+             * devreden için bilgilendirme
+             */
+            $title = 'Organizasyon Devredildi';
+            $message = $user->organisation->name.', '.$transferred_user->name.' üzerine devredildi.';
 
             $user->notify(new MessageNotification('Olive: '.$title, 'Merhaba, '.$user->name, $message));
 
@@ -133,18 +178,15 @@ class OrganisationController extends Controller
                 $title,
                 [
                     'icon' => 'accessibility',
-                    'markdown' => implode(PHP_EOL, [
-                        $message
-                    ])
+                    'markdown' => $message
                 ]
             );
-            // --- //
 
-            //
-            // devralan için bilgilendirme
-            //
-            $title = 'Organizasyon devredildi.';
-            $message = '['.$user->organisation->name.'] adlı organizasyon ['.$user->name.'] adlı kullanıcı tarafından üzerinize devredildi.';
+            /*
+             * devralan için bilgilendirme
+             */
+            $title = 'Organizasyon Devredildi';
+            $message = $user->organisation->name.', '.$user->name.' tarafından size devredildi.';
 
             $transferred_user->notify(new MessageNotification('Olive: '.$title, 'Merhaba, '.$transferred_user->name, $message));
 
@@ -152,26 +194,61 @@ class OrganisationController extends Controller
                 $title,
                 [
                     'icon' => 'accessibility',
-                    'markdown' => implode(PHP_EOL, [
-                        $message
-                    ]),
+                    'markdown' => $message,
                     'user_id' => $transferred_user->id
                 ]
             );
-            // --- //
 
             session()->flash('transferred', true);
 
-            $status = 'ok';
+            return [
+                'status' => 'ok'
+            ];
         }
         else
         {
-            $status = 'owner';
+            return [
+                'status' => 'owner'
+            ];
         }
+    }
 
-        return [
-            'status' => $status
-        ];
+    # 
+    # organizasyon devret
+    # 
+    public static function remove(TransferRequest $request)
+    {
+        $user = auth()->user();
+
+        if ($user->id == $user->organisation->user_id)
+        {
+            $removed_user = User::where('id', $request->user_id)->first();
+            $removed_user->organisation_id = null;
+            $removed_user->save();
+
+            $title = 'Organizasyondan Çıkarıldınız';
+            $message = $user->organisation->name.'; '.$user->name.' tarafından çıkarıldınız.';
+
+            $removed_user->notify(new MessageNotification('Olive: '.$title, 'Merhaba, '.$removed_user->name, $message));
+
+            UserActivityUtility::push(
+                $title,
+                [
+                    'icon' => 'exit_to_app',
+                    'markdown' => $message
+                ]
+            );
+
+            return [
+                'status' => 'ok'
+            ];
+        }
+        else
+        {
+            return [
+                'status' => 'owner'
+            ];
+        }
     }
 
     # 
@@ -179,7 +256,7 @@ class OrganisationController extends Controller
     # 
     public static function delete(Request $request)
     {
-        $validatedData = $request->validate([
+        $request->validate([
             'delete_key' => 'required|in:organizasyonu silmek istiyorum',
         ]);
 
@@ -197,15 +274,15 @@ class OrganisationController extends Controller
                     'organisation_id' => null
                 ]);
 
-                $title = 'Organizasyon silindi.';
+                $title = 'Organizasyon Silindi';
 
                 if ($user->id == $u->id)
                 {
-                    $message = 'Organizasyonunuz başarılı bir şekilde silindi. Varsa diğer kullanıcılara gerekli açıklama bildirim ve e-posta yoluyla ulaştırıldı.';
+                    $message = 'Organizasyonunuz başarılı bir şekilde silindi. Varsa diğer kullanıcılara gerekli açıklama bildirim ve e-posta yoluyla iletilecektir.';
                 }
                 else
                 {
-                    $message = '['.$user->organisation->name.'] adlı organizasyon ['.$user->name.'] tarafından silindi.';
+                    $message = $user->organisation->name.', '.$user->name.' tarafından silindi.';
                 }
 
                 $u->notify(new MessageNotification('Olive: '.$title, 'Merhaba, '.$u->name, $message));
@@ -214,9 +291,7 @@ class OrganisationController extends Controller
                     $title,
                     [
                         'icon' => 'delete',
-                        'markdown' => implode(PHP_EOL, [
-                            $message
-                        ]),
+                        'markdown' => $message,
                         'user_id' => $u->id
                     ]
                 );
@@ -224,23 +299,25 @@ class OrganisationController extends Controller
 
             $user->organisation->delete();
 
-            $status = 'ok';
+            return [
+                'status' => 'ok'
+            ];
         }
         else
         {
-            $status = 'owner';
+            return [
+                'status' => 'owner'
+            ];
         }
-
-        return [
-            'status' => $status
-        ];
     }
 
     # 
-    # organizasyon oluştur
+    # paket seçimi
     # 
-    public static function select() { return view('organisation.create.select'); }
-    public static function result() { return view('organisation.create.result'); }
+    public static function select()
+    {
+        return view('organisation.create.select');
+    }
 
     #
     # plan detayı
@@ -269,20 +346,69 @@ class OrganisationController extends Controller
     }
 
     #
-    # kayıtlı fatura bilgileri
+    # plan hesapla
     #
-    public static function billingInformation(IdRequest $request)
+    public static function calculate(PlanCalculateRequest $request)
     {
-        $billing_information = BillingInformation::where('user_id', auth()->user()->id)->where('id', $request->id)->where('protected', true)->firstOrFail();
+        $plan = (object) config('plans')[$request->plan_id];
+
+        $session['plan'] = $plan;
+
+        $session['unit_price'] = $plan->price;
+        $session['month'] = $request->month;
+        $session['total_price'] = $session['unit_price'] * $request->month;
+
+        # kupon varsa
+        if ($request->coupon_code)
+        {
+            $coupon = OrganisationDiscountCoupon::where('key', $request->coupon_code)->first();
+            $discount_with_year = config('formal.discount_with_year');
+
+            if ($request->month >= $discount_with_year)
+            {
+                $rate = $coupon->rate + $discount_with_year;
+
+                $session['discount']['rate_extra'] = intval($discount_with_year);
+            }
+            else
+            {
+                $rate = $coupon->rate;
+            }
+
+            $rate = $rate >= 100 ? 100 : $rate;
+
+            $session['discount']['rate'] = $rate;
+            $session['discount']['amount'] = $session['total_price'] * $rate / 100;
+            $session['discount']['coupon_key'] = $coupon->key;
+        }
+
+        $session['discounted_price'] = (@$session['discount'] ? $session['total_price'] - $session['discount']['amount'] : $session['total_price']);
+        $session['amount_of_tax'] = (@$session['discount'] ? $session['discounted_price'] : $session['total_price']) * config('formal.tax') / 100;
+        $session['total_price_with_tax'] = (@$session['discount'] ? $session['discounted_price'] : $session['total_price']) + $session['amount_of_tax'];
+
+        $session['customer']['ip'] = RequestStatic::ip();
+
+        $redis_invoice_key = implode(
+            ':',
+            [
+                str_slug(config('app.name')),
+                'invoice',
+                'process',
+                $session['customer']['ip']
+            ]
+        );
+
+        Redis::set($redis_invoice_key, json_encode($session));
+        Redis::pexpire($redis_invoice_key, 300000);
 
         return [
             'status' => 'ok',
-            'data' => $billing_information
+            'result' => $session
         ];
     }
 
     #
-    # create
+    # organizasyon ve fatura oluştur
     #
     public static function create(BillingRequest $request)
     {
@@ -377,7 +503,7 @@ class OrganisationController extends Controller
                 $user->notify(new OrganisationWasCreatedNotification($user->name, $invoice_id));
 
                 UserActivityUtility::push(
-                    'Organizasyon oluşturuldu.',
+                    'Organizasyon oluşturuldu',
                     [
                         'icon' => 'flag',
                         'markdown' => implode(PHP_EOL, [
@@ -411,64 +537,23 @@ class OrganisationController extends Controller
     }
 
     #
-    # plan hesaplaması
+    # sonuç göster
     #
-    public static function calculate(PlanCalculateRequest $request)
+    public static function result()
     {
-        $plan = (object) config('plans')[$request->plan_id];
+        return view('organisation.create.result');
+    }
 
-        $session['plan'] = $plan;
-
-        $session['unit_price'] = $plan->price;
-        $session['month'] = $request->month;
-        $session['total_price'] = $session['unit_price'] * $request->month;
-
-        # kupon varsa
-        if ($request->coupon_code)
-        {
-            $coupon = OrganisationDiscountCoupon::where('key', $request->coupon_code)->first();
-            $discount_with_year = config('formal.discount_with_year');
-
-            if ($request->month >= $discount_with_year)
-            {
-                $rate = $coupon->rate + $discount_with_year;
-
-                $session['discount']['rate_extra'] = intval($discount_with_year);
-            }
-            else
-            {
-                $rate = $coupon->rate;
-            }
-
-            $rate = $rate >= 100 ? 100 : $rate;
-
-            $session['discount']['rate'] = $rate;
-            $session['discount']['amount'] = $session['total_price'] * $rate / 100;
-            $session['discount']['coupon_key'] = $coupon->key;
-        }
-
-        $session['discounted_price'] = (@$session['discount'] ? $session['total_price'] - $session['discount']['amount'] : $session['total_price']);
-        $session['amount_of_tax'] = (@$session['discount'] ? $session['discounted_price'] : $session['total_price']) * config('formal.tax') / 100;
-        $session['total_price_with_tax'] = (@$session['discount'] ? $session['discounted_price'] : $session['total_price']) + $session['amount_of_tax'];
-
-        $session['customer']['ip'] = RequestStatic::ip();
-
-        $redis_invoice_key = implode(
-            ':',
-            [
-                str_slug(config('app.name')),
-                'invoice',
-                'process',
-                $session['customer']['ip']
-            ]
-        );
-
-        Redis::set($redis_invoice_key, json_encode($session));
-        Redis::pexpire($redis_invoice_key, 300000);
+    #
+    # kayıtlı fatura json
+    #
+    public static function billingInformation(IdRequest $request)
+    {
+        $billing_information = BillingInformation::where('user_id', auth()->user()->id)->where('id', $request->id)->where('protected', true)->firstOrFail();
 
         return [
             'status' => 'ok',
-            'result' => $session
+            'data' => $billing_information
         ];
     }
 

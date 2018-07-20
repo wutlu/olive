@@ -26,7 +26,7 @@ $('.tabs').tabs();
         <span class="text">Plan Seçimi</span>
     </div>
 
-    <div class="card card-unstyled">
+    <div class="card">
         <div class="card-tabs">
             <ul class="tabs tabs-fixed-width">
                 @foreach (config('plans') as $key => $plan)

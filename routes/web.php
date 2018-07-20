@@ -16,9 +16,12 @@ Route::prefix('organizasyon')->group(function () {
 Route::prefix('ayarlar')->group(function () {
     Route::prefix('organizasyon')->group(function () {
         Route::get('/', 'OrganisationController@settings')->name('settings.organisation');
+
         Route::post('ayril', 'OrganisationController@leave')->name('settings.organisation.leave');
         Route::post('sil', 'OrganisationController@delete')->name('settings.organisation.delete');
         Route::post('devret', 'OrganisationController@transfer')->name('settings.organisation.transfer');
+        Route::post('cikar', 'OrganisationController@remove')->name('settings.organisation.remove');
+        Route::post('davet', 'OrganisationController@invite')->name('settings.organisation.invite');
     });
 
     Route::get('email', 'OrganisationController@settings')->name('settings.email');

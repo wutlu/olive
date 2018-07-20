@@ -4,8 +4,8 @@
  * MIT License (https://raw.githubusercontent.com/Dogfalo/materialize/master/LICENSE)
  */
 
-::-moz-selection { background-color: rgba(200, 200, 200, .4); }
-::selection { background-color: rgba(200, 200, 200, .4); }
+::-moz-selection { background-color: rgba(200, 200, 200, .8); }
+::selection { background-color: rgba(200, 200, 200, .8); }
 
 .d-none {
   display: none !important;
@@ -99,7 +99,7 @@
 }
 .not-found > i.material-icons:nth-of-type(1),
 .not-found > i.material-icons:nth-of-type(2) {
-  background: -webkit-linear-gradient(#ddd, #c6c6c6);
+  background: -webkit-linear-gradient(#fff, #c6c6c6);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }

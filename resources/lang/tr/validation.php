@@ -38,7 +38,7 @@ return [
     'dimensions' => ':attribute görsel ölçüleri geçersiz.',
     'distinct' => ':attribute alanı yinelenen bir değere sahip.',
     'email' => ':attribute biçimi geçersiz.',
-    'exists' => 'Girilen :attribute geçerli değil.',
+    'exists' => ':attribute sistemde kayıtlı değil.',
     'file' => ':attribute dosya olmalıdır.',
     'filled' => ':attribute alanının doldurulması zorunludur.',
     'image' => ':attribute alanı resim dosyası olmalıdır.',
@@ -108,7 +108,6 @@ return [
     ],
 
     'authentication' => 'Hatalı şifre.',
-    'user_in_my_organisation' => 'Seçtiğiniz kullanıcıyla aynı organizasyonda olmalısınız.',
 
     /*
     |--------------------------------------------------------------------------
