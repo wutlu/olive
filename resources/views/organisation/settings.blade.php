@@ -137,7 +137,7 @@
     <div id="tab-1" class="card-content grey lighten-4">
         <div class="card-content">
             <p class="grey-text">
-                <span class="organisation-capacity">{{ count($user->organisation->users) }}</span>/{{ $user->organisation->capacity }} kullanıcı
+                <span class="organisation-capacity">{{ count($user->organisation->users) }}</span>/<span class="organisation-max-capacity">{{ $user->organisation->capacity }}</span> kullanıcı
             </p>
         </div>
 
@@ -156,13 +156,13 @@
 
                 <ul id="dropdown-user-{{ $u->id }}" class="dropdown-content">
                     <li>
-                        <a href="#" data-user-id="{{ $u->id }}" data-button="__remove_user">
-                            <i class="material-icons">delete_forever</i> Çıkar
+                        <a href="#" data-user-id="{{ $u->id }}" data-button="__transfer">
+                            <i class="material-icons">fingerprint</i> Devret
                         </a>
                     </li>
                     <li>
-                        <a href="#" data-user-id="{{ $u->id }}" data-button="__transfer">
-                            <i class="material-icons">fingerprint</i> Devret
+                        <a href="#" data-user-id="{{ $u->id }}" data-button="__remove_user">
+                            <i class="material-icons">delete_forever</i> Çıkar
                         </a>
                     </li>
                 </ul>
@@ -269,8 +269,21 @@
             {
                 if (obj.status == 'ok')
                 {
-                    var count_span = $('span.organisation-capacity');
-                        count_span.html(count_span.html() - 1);
+                    var capacity = $('span.organisation-capacity');
+                    var new_capacity = capacity.html() - 1;
+
+                        capacity.html(new_capacity);
+
+                    var max_capacity = $('span.organisation-max-capacity');
+
+                    if (new_capacity >= max_capacity.html())
+                    {
+                        $('form#invite-form').addClass('d-none')
+                    }
+                    else
+                    {
+                        $('form#invite-form').removeClass('d-none')
+                    }
 
                     $('#organisation-user-' + __.data('user_id')).remove()
                     $('#modal-remove').modal('close')
@@ -292,19 +305,20 @@
 
         @endif
 
-        @if (count($user->organisation->users) < $user->organisation->capacity && $user->id == $user->organisation->user_id)
-        <div class="input-field teal-text">
-            <input name="email" id="email" type="email" class="validate" />
-            <label for="email">E-posta</label>
-            <small class="helper-text">Gireceğiniz e-posta adresine bağlı hesap organizasyonunuza eklenir.</small>
-        </div>
-        <a
-            href="#"
-            class="waves-effect waves-dark btn-small json"
-            data-method="post"
-            data-href="{{ route('settings.organisation.invite') }}"
+        @if ($user->id == $user->organisation->user_id)
+        <form
+            id="invite-form"
+            method="post"
+            action="{{ route('settings.organisation.invite') }}"
             data-callback="__invite"
-            data-include="email">Ekle</a>
+            class="json {{ count($user->organisation->users) >= $user->organisation->capacity ? 'd-none' : '' }}">
+            <div class="input-field teal-text">
+                <input name="email" id="email" type="email" class="validate" />
+                <label for="email">E-posta</label>
+                <small class="helper-text">Gireceğiniz e-posta adresine bağlı hesap organizasyonunuza eklenir.</small>
+            </div>
+            <button type="submit" class="waves-effect waves-dark btn-small">Ekle</button>
+        </form>
         @push('local.scripts')
 
         function __invite(__, obj)
@@ -338,10 +352,10 @@
                                     'html': $('<a />', {
                                         'href': '#',
                                         'data-user-id': obj.data.id,
-                                        'data-button': '__remove_user',
+                                        'data-button': '__transfer',
                                         'html': [
-                                            $('<i />', { 'class': 'material-icons', 'html': 'delete_forever' }),
-                                            $('<span />', { 'html': 'Çıkar' })
+                                            $('<i />', { 'class': 'material-icons', 'html': 'fingerprint' }),
+                                            $('<span />', { 'html': 'Devret' })
                                         ]
                                     })
                                 }),
@@ -349,10 +363,10 @@
                                     'html': $('<a />', {
                                         'href': '#',
                                         'data-user-id': obj.data.id,
-                                        'data-button': '__transfer',
+                                        'data-button': '__remove_user',
                                         'html': [
-                                            $('<i />', { 'class': 'material-icons', 'html': 'fingerprint' }),
-                                            $('<span />', { 'html': 'Devret' })
+                                            $('<i />', { 'class': 'material-icons', 'html': 'delete_forever' }),
+                                            $('<span />', { 'html': 'Çıkar' })
                                         ]
                                     })
                                 })
@@ -365,8 +379,21 @@
                     alignment: 'right'
                 })
 
-                var count_span = $('span.organisation-capacity');
-                    count_span.html(parseInt(count_span.html()) + 1);
+                var capacity = $('span.organisation-capacity');
+                var new_capacity = parseInt(capacity.html()) + 1;
+
+                    capacity.html(new_capacity);
+
+                var max_capacity = $('span.organisation-max-capacity');
+
+                if (new_capacity >= max_capacity.html())
+                {
+                    $('form#invite-form').addClass('d-none')
+                }
+                else
+                {
+                    $('form#invite-form').removeClass('d-none')
+                }
 
                 $('input[name=email]').val('')
             }
@@ -383,7 +410,7 @@
         @if ($user->organisation->user_id == $user->id)
         <div class="d-flex justify-content-between">
             <span>
-                <strong>Organizasyonu Silin</strong>
+                <h6>Organizasyonu Silin</h6>
                 <p class="grey-text">- Organizasyona ait tüm etkinlikler kalıcı olarak silinir.</p>
                 <p class="grey-text">- Organizasyona dahil tüm kullanıcıların organizasyon bağlantıları kaldırılır.</p>
                 <p class="grey-text">- Ücret iadesi alamazsınız.</p>
@@ -488,7 +515,7 @@
         @else
         <div class="d-flex justify-content-between">
             <span>
-                <strong>Organizasyondan Ayrılın</strong>
+                <h6>Organizasyondan Ayrılın</h6>
                 <p class="grey-text">Organizasyondan ayrıldıktan sonra yeni bir davet ile tekrar katılabilirsiniz.</p>
             </span>
             <a href="#" class="btn red darken-1 waves-effect" data-button="__leave">Ayrıl</a>

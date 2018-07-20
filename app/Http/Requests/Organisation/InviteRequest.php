@@ -26,7 +26,8 @@ class InviteRequest extends FormRequest
     public function messages()
     {
         return [
-            'user_out_organisation' => 'Bu kullanıcı zaten bir organizasyona dahil.'
+            'user_out_organisation' => 'Bu kullanıcı zaten bir organizasyona dahil.',
+            'organisation_capacity_control' => 'Organizasyon kapasitesi dolu.'
         ];
     }
 
@@ -43,8 +44,14 @@ class InviteRequest extends FormRequest
             return $user->organisation_id ? false : true;
         });
 
+        Validator::extend('organisation_capacity_control', function() {
+            $user = auth()->user();
+
+            return count($user->organisation->users) >= $user->organisation->capacity ? false : true;
+        });
+
         return [
-            'email' => 'required|string|email|exists:users,email|user_out_organisation',
+            'email' => 'required|string|email|exists:users,email|user_out_organisation|organisation_capacity_control',
         ];
     }
 }
