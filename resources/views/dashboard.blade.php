@@ -5,6 +5,7 @@
 @section('content')
 <div class="row">
     <div class="col xl4 l5 s12">
+        Ödeme Bekliyor, Ödemeniz Yaklaşıyor
         @if (@auth()->user()->organisation_id)
         <div class="card" id="organisation-card">
             <div class="card-image">

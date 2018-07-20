@@ -19,6 +19,7 @@ class CreateOrganisationDiscountCouponsTable extends Migration
             $table->string('key')->default(0)->index();
 
             $table->unsignedSmallInteger('rate')->default(0);
+            $table->unsignedInteger('price')->default(0);
 
             $table->timestamps();
         });

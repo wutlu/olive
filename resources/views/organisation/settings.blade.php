@@ -124,11 +124,6 @@
             </li>
             <li class="tab">
                 <a href="#tab-2">
-                    <i class="material-icons">tune</i>
-                </a>
-            </li>
-            <li class="tab">
-                <a href="#tab-3">
                     <i class="material-icons">settings</i>
                 </a>
             </li>
@@ -256,13 +251,6 @@
                         location.reload()
                     }, 400)
                 }
-                else if (obj.status == 'owner')
-                {
-                    M.toast({
-                        html: 'Organizasyon sahibi değilken devir işlemi yapamazsınız!',
-                        classes: 'yellow darken-2'
-                    })
-                }
             }
 
             function __remove_user(__, obj)
@@ -291,13 +279,6 @@
                     M.toast({
                         html: 'Kullanıcı Çıkarıldı',
                         classes: 'green'
-                    })
-                }
-                else if (obj.status == 'owner')
-                {
-                    M.toast({
-                        html: 'Organizasyon sahibi değilken çıkarma işlemi yapamazsınız!',
-                        classes: 'yellow darken-2'
                     })
                 }
             }
@@ -403,17 +384,14 @@
         @endif
     </div>
     <div id="tab-2" class="card-content grey lighten-4">
-        yükselt,
-        toplam ödenen
-    </div>
-    <div id="tab-3" class="card-content grey lighten-4">
         @if ($user->organisation->user_id == $user->id)
         <div class="d-flex justify-content-between">
             <span>
                 <h6>Organizasyonu Silin</h6>
                 <p class="grey-text">- Organizasyona ait tüm etkinlikler kalıcı olarak silinir.</p>
                 <p class="grey-text">- Organizasyona dahil tüm kullanıcıların organizasyon bağlantıları kaldırılır.</p>
-                <p class="grey-text">- Ücret iadesi alamazsınız.</p>
+                <p class="grey-text">- Varsa kalan kullanım tutarı tüm masraflar düşüldükten sonra indirim kuponu olarak e-posta adresinize gönderilecektir.</p>
+                <p class="grey-text">- İndirim kuponlarını sadece yeni bir organizasyon planı oluşturmak veya organizasyon kullanım süresini uzatmak için kullanılabilir.</p>
             </span>
             <a href="#" class="btn red darken-1 waves-effect" data-button="__delete">Sil</a>
         </div>
@@ -449,6 +427,25 @@
                                     'html': 'Organizasyonu silmek için belirlenen kelimeleri girin.'
                                 })
                             ]
+                        }),
+                        $('<div />', {
+                            'class': 'input-field',
+                            'html': [
+                                $('<input />', {
+                                    'id': 'password',
+                                    'name': 'password',
+                                    'type': 'password',
+                                    'class': 'validate'
+                                }),
+                                $('<label />', {
+                                    'for': 'password',
+                                    'html': 'Mevcut Şifreniz'
+                                }),
+                                $('<span />', {
+                                    'class': 'helper-text',
+                                    'html': 'Hesap şifrenizi girin.'
+                                })
+                            ]
                         })
                     ],
                     'size': 'modal-small',
@@ -472,7 +469,7 @@
                            'href': '#',
                            'class': 'waves-effect btn red darken-4 json',
                            'data-href': '{{ route('settings.organisation.delete') }}',
-                           'data-include': 'delete_key',
+                           'data-include': 'delete_key,password',
                            'data-method': 'post',
                            'data-callback': '__delete',
                            'html': buttons.ok
@@ -493,13 +490,6 @@
                     setTimeout(function() {
                         window.location.href = '{{ route('dashboard') }}';
                     }, 400)
-                }
-                else if (obj.status == 'owner')
-                {
-                    M.toast({
-                        html: 'Organizasyon sahibi değilken organizasyonu silemezsiniz!',
-                        classes: 'yellow darken-2'
-                    })
                 }
             }
             else
@@ -596,13 +586,6 @@
                     setTimeout(function() {
                         window.location.href = '{{ route('dashboard') }}';
                     }, 400)
-                }
-                else if (obj.status == 'owner')
-                {
-                    M.toast({
-                        html: 'Organizasyon sahibiyken organizasyondan ayrılamazsınız!',
-                        classes: 'yellow darken-2'
-                    })
                 }
             }
             else

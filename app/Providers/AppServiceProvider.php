@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Validator;
 use Request;
+use Hash;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,6 +23,12 @@ class AppServiceProvider extends ServiceProvider
             $json = json_decode($source);
 
             return $json->success;
+        });
+
+        Validator::extend('password_check', function($attribute, $value) {
+            $user = auth()->user();
+
+            return Hash::check($value , $user->password);
         });
 
         Validator::extend('tckn', function($attribute, $value, $parameters) {

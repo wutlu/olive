@@ -28,6 +28,11 @@ function __calculate(__, obj)
             $('.invoice-discount').html(obj.result.discount.amount)
             $('.invoice-discount_rate').html(obj.result.discount.rate)
 
+            if (obj.result.discount.price)
+            {
+                $('.invoice-discount_price').html('+ ₺ ' + obj.result.discount.price)
+            }
+
             $('tr.discount-row').removeClass('d-none')
         }
         else
@@ -122,6 +127,7 @@ $(document).ready(function() {
                     <td>İndirim</td>
                     <td>
                         <span class="invoice-discount_rate">0</span>%
+                        <span class="invoice-discount_price"></span>
                     </td>
                     <td class="right-align">₺</td>
                     <td class="right-align">

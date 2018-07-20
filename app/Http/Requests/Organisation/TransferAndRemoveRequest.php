@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Validator;
 use App\User;
 
-class TransferRequest extends FormRequest
+class TransferAndRemoveRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,7 +26,8 @@ class TransferRequest extends FormRequest
     public function messages()
     {
         return [
-            'user_in_my_organisation' => 'Seçtiğiniz kullanıcıyla aynı organizasyonda olmalısınız.'
+            'user_in_my_organisation' => 'Seçtiğiniz kullanıcıyla aynı organizasyonda olmalısınız.',
+            'owner' => 'Organizasyon sahibi değilken bu işlemi yapamazsınız!',
         ];
     }
 
@@ -52,8 +53,12 @@ class TransferRequest extends FormRequest
             }
         });
 
+        Validator::extend('owner', function() use ($user) {
+            return $user->id == $user->organisation->user_id ? true : false;
+        });
+
         return [
-            'user_id' => 'required|user_in_my_organisation|not_in:'.$user->id
+            'user_id' => 'required|user_in_my_organisation|not_in:'.$user->id.'|owner'
         ];
     }
 }

@@ -16,14 +16,17 @@ use App\Http\Requests\PlanRequest;
 use App\Http\Requests\PlanCalculateRequest;
 use App\Http\Requests\Organisation\BillingRequest;
 use App\Http\Requests\Organisation\NameRequest;
-use App\Http\Requests\Organisation\TransferRequest;
+use App\Http\Requests\Organisation\TransferAndRemoveRequest;
 use App\Http\Requests\Organisation\InviteRequest;
+use App\Http\Requests\Organisation\LeaveRequest;
+use App\Http\Requests\Organisation\DeleteRequest;
 use App\Http\Requests\IdRequest;
 
 use Illuminate\Support\Facades\Redis;
 
 use App\Notifications\OrganisationInvoiceNotification;
 use App\Notifications\OrganisationWasCreatedNotification;
+use App\Notifications\ReturnedDiscountCouponNotification;
 use App\Notifications\MessageNotification;
 
 use Request as RequestStatic;
@@ -50,7 +53,8 @@ class OrganisationController extends Controller
             'leave',
             'transfer',
             'remove',
-            'delete'
+            'delete',
+            'invite'
         ]);
     }
 
@@ -113,202 +117,201 @@ class OrganisationController extends Controller
     # 
     # organizasyondan ayrıl
     # 
-    public static function leave(Request $request)
+    public static function leave(LeaveRequest $request)
     {
-        $request->validate([
-            'leave_key' => 'required|in:organizasyondan ayrılmak istiyorum',
+        $user = auth()->user();
+
+        session()->flash('leaved', true);
+
+        $title = 'Organizasyondan Ayrıldınız';
+        $message = $user->organisation->name.'; kendi isteğiniz üzerine ayrıldınız.';
+
+        UserActivityUtility::push(
+            $title,
+            [
+                'icon' => 'exit_to_app',
+                'markdown' => $message
+            ]
+        );
+
+        $user->notify(new MessageNotification('Olive: '.$title, 'Merhaba, '.$user->name, $message));
+
+        $user->update([
+            'organisation_id' => null
         ]);
 
-        $user = auth()->user();
-
-        if ($user->id == $user->organisation->user_id)
-        {
-            return [
-                'status' => 'owner'
-            ];
-        }
-        else
-        {
-            session()->flash('leaved', true);
-
-            $title = 'Organizasyondan Ayrıldınız';
-            $message = $user->organisation->name.'; kendi isteğiniz üzerine ayrıldınız.';
-
-            UserActivityUtility::push(
-                $title,
-                [
-                    'icon' => 'exit_to_app',
-                    'markdown' => $message
-                ]
-            );
-
-            $user->notify(new MessageNotification('Olive: '.$title, 'Merhaba, '.$user->name, $message));
-
-            $user->update([
-                'organisation_id' => null
-            ]);
-
-            return [
-                'status' => 'ok'
-            ];
-        }
+        return [
+            'status' => 'ok'
+        ];
     }
 
     # 
     # organizasyon devret
     # 
-    public static function transfer(TransferRequest $request)
+    public static function transfer(TransferAndRemoveRequest $request)
     {
         $user = auth()->user();
 
-        if ($user->id == $user->organisation->user_id)
-        {
-            $transferred_user = User::where('id', $request->user_id)->first();
-            $user->organisation->update([ 'user_id' => $transferred_user->id ]);
+        $transferred_user = User::where('id', $request->user_id)->first();
+        $user->organisation->update([ 'user_id' => $transferred_user->id ]);
 
-            /*
-             * devreden için bilgilendirme
-             */
-            $title = 'Organizasyon Devredildi';
-            $message = $user->organisation->name.', '.$transferred_user->name.' üzerine devredildi.';
+        /*
+         * devreden için bilgilendirme
+         */
+        $title = 'Organizasyon Devredildi';
+        $message = $user->organisation->name.', '.$transferred_user->name.' üzerine devredildi.';
 
-            $user->notify(new MessageNotification('Olive: '.$title, 'Merhaba, '.$user->name, $message));
+        $user->notify(new MessageNotification('Olive: '.$title, 'Merhaba, '.$user->name, $message));
 
-            UserActivityUtility::push(
-                $title,
-                [
-                    'icon' => 'accessibility',
-                    'markdown' => $message
-                ]
-            );
+        UserActivityUtility::push(
+            $title,
+            [
+                'icon' => 'accessibility',
+                'markdown' => $message
+            ]
+        );
 
-            /*
-             * devralan için bilgilendirme
-             */
-            $title = 'Organizasyon Devredildi';
-            $message = $user->organisation->name.', '.$user->name.' tarafından size devredildi.';
+        /*
+         * devralan için bilgilendirme
+         */
+        $title = 'Organizasyon Devredildi';
+        $message = $user->organisation->name.', '.$user->name.' tarafından size devredildi.';
 
-            $transferred_user->notify(new MessageNotification('Olive: '.$title, 'Merhaba, '.$transferred_user->name, $message));
+        $transferred_user->notify(new MessageNotification('Olive: '.$title, 'Merhaba, '.$transferred_user->name, $message));
 
-            UserActivityUtility::push(
-                $title,
-                [
-                    'icon' => 'accessibility',
-                    'markdown' => $message,
-                    'user_id' => $transferred_user->id
-                ]
-            );
+        UserActivityUtility::push(
+            $title,
+            [
+                'icon' => 'accessibility',
+                'markdown' => $message,
+                'user_id' => $transferred_user->id
+            ]
+        );
 
-            session()->flash('transferred', true);
+        session()->flash('transferred', true);
 
-            return [
-                'status' => 'ok'
-            ];
-        }
-        else
-        {
-            return [
-                'status' => 'owner'
-            ];
-        }
+        return [
+            'status' => 'ok'
+        ];
     }
 
     # 
-    # organizasyon devret
+    # kullanıcı çıkar
     # 
-    public static function remove(TransferRequest $request)
+    public static function remove(TransferAndRemoveRequest $request)
     {
         $user = auth()->user();
 
-        if ($user->id == $user->organisation->user_id)
-        {
-            $removed_user = User::where('id', $request->user_id)->first();
-            $removed_user->organisation_id = null;
-            $removed_user->save();
+        $removed_user = User::where('id', $request->user_id)->first();
+        $removed_user->organisation_id = null;
+        $removed_user->save();
 
-            $title = 'Organizasyondan Çıkarıldınız';
-            $message = $user->organisation->name.'; '.$user->name.' tarafından çıkarıldınız.';
+        $title = 'Organizasyondan Çıkarıldınız';
+        $message = $user->organisation->name.'; '.$user->name.' tarafından çıkarıldınız.';
 
-            $removed_user->notify(new MessageNotification('Olive: '.$title, 'Merhaba, '.$removed_user->name, $message));
+        $removed_user->notify(new MessageNotification('Olive: '.$title, 'Merhaba, '.$removed_user->name, $message));
 
-            UserActivityUtility::push(
-                $title,
-                [
-                    'icon' => 'exit_to_app',
-                    'markdown' => $message
-                ]
-            );
+        UserActivityUtility::push(
+            $title,
+            [
+                'icon' => 'exit_to_app',
+                'markdown' => $message,
+                'user_id' => $removed_user->id
+            ]
+        );
 
-            return [
-                'status' => 'ok'
-            ];
-        }
-        else
-        {
-            return [
-                'status' => 'owner'
-            ];
-        }
+        return [
+            'status' => 'ok'
+        ];
     }
 
     # 
     # organizasyon sil
     # 
-    public static function delete(Request $request)
+    public static function delete(DeleteRequest $request)
     {
-        $request->validate([
-            'delete_key' => 'required|in:organizasyonu silmek istiyorum',
-        ]);
-
         $user = auth()->user();
+        $organisation = $user->organisation;
 
-        if ($user->id == $user->organisation->user_id)
+        session()->flash('deleted', true);
+
+        $users = User::where('organisation_id', $user->organisation_id)->get();
+
+        foreach ($users as $u)
         {
-            session()->flash('deleted', true);
+            $u->update([
+                'organisation_id' => null
+            ]);
 
-            $users = User::where('organisation_id', $user->organisation_id)->get();
+            $title = 'Organizasyon Silindi';
 
-            foreach ($users as $u)
+            if ($user->id == $u->id)
             {
-                $u->update([
-                    'organisation_id' => null
-                ]);
-
-                $title = 'Organizasyon Silindi';
-
-                if ($user->id == $u->id)
-                {
-                    $message = 'Organizasyonunuz başarılı bir şekilde silindi. Varsa diğer kullanıcılara gerekli açıklama bildirim ve e-posta yoluyla iletilecektir.';
-                }
-                else
-                {
-                    $message = $user->organisation->name.', '.$user->name.' tarafından silindi.';
-                }
-
-                $u->notify(new MessageNotification('Olive: '.$title, 'Merhaba, '.$u->name, $message));
-
-                UserActivityUtility::push(
-                    $title,
-                    [
-                        'icon' => 'delete',
-                        'markdown' => $message,
-                        'user_id' => $u->id
-                    ]
-                );
+                $message = 'Organizasyonunuz başarılı bir şekilde silindi. Varsa diğer kullanıcılara gerekli açıklama bildirim ve e-posta yoluyla iletilecektir.';
+            }
+            else
+            {
+                $message = $organisation->name.', '.$user->name.' tarafından silindi.';
             }
 
-            $user->organisation->delete();
+            $u->notify(new MessageNotification('Olive: '.$title, 'Merhaba, '.$u->name, $message));
 
-            return [
-                'status' => 'ok'
-            ];
+            UserActivityUtility::push(
+                $title,
+                [
+                    'icon' => 'delete',
+                    'markdown' => $message,
+                    'user_id' => $u->id
+                ]
+            );
         }
-        else
+
+        # 
+        # kalan iade
+        # 
+        if ($organisation->status)
         {
-            return [
-                'status' => 'owner'
-            ];
+            $all_order_prices = OrganisationInvoice::where('organisation_id', $user->organisation_id)->sum('total_price');
+            $amount_of_return = ($all_order_prices/$organisation->day) * ($organisation->day - Carbon::parse($organisation->start_date)->diffInDays(Carbon::now()));
+            $tax = ($amount_of_return*config('formal.tax'))/100;
+            $total_return = $amount_of_return + $tax;
+
+            $ok = false;
+
+            while ($ok == false)
+            {
+                $generate_key = str_random(8);
+
+                $key = OrganisationDiscountCoupon::where('key', $generate_key)->count();
+
+                if ($key == 0)
+                {
+                    OrganisationDiscountCoupon::create([
+                        'key' => $generate_key,
+                        'rate' => 0,
+                        'price' => $total_return
+                    ]);
+
+                    $ok = true;
+
+                    $discount[] = '| Kupon Kodu        | İade Miktarı                     |';
+                    $discount[] = '| ----------------: |:-------------------------------- |';
+                    $discount[] = '| '.$generate_key.' | ₺ '.$total_return.'              |';
+
+                    # --- [] --- #
+
+                    $discount = implode(PHP_EOL, $discount);
+
+                    $user->notify(new ReturnedDiscountCouponNotification($user->name, $discount));
+                }
+            }
         }
+
+        $organisation->delete();
+
+        return [
+            'status' => 'ok'
+        ];
     }
 
     # 
@@ -378,11 +381,13 @@ class OrganisationController extends Controller
             $rate = $rate >= 100 ? 100 : $rate;
 
             $session['discount']['rate'] = $rate;
-            $session['discount']['amount'] = $session['total_price'] * $rate / 100;
+            $session['discount']['price'] = $coupon->price;
+            $session['discount']['amount'] = ($session['total_price'] * $rate / 100) + $session['discount']['price'];
             $session['discount']['coupon_key'] = $coupon->key;
         }
 
         $session['discounted_price'] = (@$session['discount'] ? $session['total_price'] - $session['discount']['amount'] : $session['total_price']);
+        $session['discounted_price'] = $session['discounted_price'] < 0 ? 0 : $session['discounted_price'];
         $session['amount_of_tax'] = (@$session['discount'] ? $session['discounted_price'] : $session['total_price']) * config('formal.tax') / 100;
         $session['total_price_with_tax'] = (@$session['discount'] ? $session['discounted_price'] : $session['total_price']) + $session['amount_of_tax'];
 

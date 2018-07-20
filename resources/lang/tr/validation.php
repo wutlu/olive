@@ -108,6 +108,7 @@ return [
     ],
 
     'authentication' => 'Hatalı şifre.',
+    'password_check' => 'Şifre, hesabınızın şifresiyle uyuşmuyor.',
 
     /*
     |--------------------------------------------------------------------------
