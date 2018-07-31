@@ -6423,7 +6423,7 @@ button.btn-floating {
   background-color: rgba(200, 200, 200, .2);
 }
 .collapsible li > .collapsible-body > span {
-  padding: 2rem;
+  padding: 1rem 2rem;
   display: block;
 }
 
@@ -6439,7 +6439,7 @@ button.btn-floating {
 
   line-height: 1.5;
 
-  padding: 1rem 0;
+  padding: 1rem 0 0;
 
   outline: none;
 

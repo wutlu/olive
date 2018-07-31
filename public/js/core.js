@@ -574,7 +574,7 @@ function vzAjax(__)
                     if (feedback.length)
                     {
                         element.addClass('invalid')
-                        feedback.attr('data-error', text)
+                        feedback.attr('data-error', text.join(' '))
                     }
                     else
                     {

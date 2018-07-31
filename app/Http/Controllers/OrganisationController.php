@@ -37,6 +37,8 @@ use Carbon\Carbon;
 
 use Validator;
 
+use App\Jobs\CheckUpcomingPayments;
+
 class OrganisationController extends Controller
 {
     public function __construct()
@@ -56,6 +58,77 @@ class OrganisationController extends Controller
             'delete',
             'invite'
         ]);
+    }
+
+    # 
+    # organizasyon ayarlar view
+    # 
+    public static function checkUpcomingPayments()
+    {
+        $organisations = Organisation::where('status', true)->get();
+
+        if (count($organisations))
+        {
+            foreach ($organisations as $organisation)
+            {
+                $end_date = Carbon::parse(date('Y-m-d H:i:s', strtotime('+'.$organisation->day.' days', strtotime($organisation->start_date))));
+                $days = $end_date->diffInDays(Carbon::now());
+
+                if ($days <= 0)
+                {
+                    $message = [
+                        'title' => 'Organizasyon Askıya Alındı',
+                        'info' => 'Organizasyon Süreniz Doldu',
+                        'body' => implode(PHP_EOL, [
+                            'Tüm araçlardan tekrar faydalanabilmek için organizasyon süresini uzatmanız gerekiyor.'
+                        ])
+                    ];
+
+                    $organisation->status = false;
+                    $organisation->save();
+                }
+                elseif ($days <= 7)
+                {
+                    $message = [
+                        'title' => 'Süreyi Uzatın',
+                        'info' => 'Organizasyon Süresi Dolmak Üzere',
+                        'body' => implode(PHP_EOL, [
+                            'Kesinti yaşamamak için organizasyon sürenizi uzatmanız gerekiyor.'
+                        ])
+                    ];
+                }
+                else
+                {
+                    echo '[ok]['.$organisation->name.']'.PHP_EOL;
+                }
+
+                if (@$message)
+                {
+                    print_r($message);
+
+                    $organisation->author->notify(new MessageNotification('Olive: '.$message['title'], $message['info'], $message['body']));
+
+                    UserActivityUtility::push(
+                        $message['title'],
+                        [
+                            'icon' => 'access_time',
+                            'markdown' => $message['body'],
+                            'user_id' => $organisation->user_id,
+                            'key' => implode('-', [ $organisation->user_id, 'upcoming_payments' ]),
+                            'button' => [
+                                'type' => 'http',
+                                'method' => 'GET',
+                                'action' => route('settings.organisation').'#tab-3',
+                                'class' => 'btn-flat waves-effect',
+                                'text' => 'Uzatın'
+                            ]
+                        ]
+                    );
+
+                    unset($message);
+                }
+            }
+        }
     }
 
     # 
@@ -99,7 +172,8 @@ class OrganisationController extends Controller
             $title,
             [
                 'icon' => 'exit_to_app',
-                'markdown' => $message
+                'markdown' => $message,
+                'user_id' => $user->id
             ]
         );
 

@@ -41,7 +41,7 @@ class InviteRequest extends FormRequest
         Validator::extend('user_out_organisation', function($attribute, $email) {
             $user = User::where('email', $email)->first();
 
-            return $user->organisation_id ? false : true;
+            return @$user ? ($user->organisation_id ? false : true) : true;
         });
 
         Validator::extend('organisation_capacity_control', function() {

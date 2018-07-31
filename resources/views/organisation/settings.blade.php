@@ -127,6 +127,11 @@
                     <i class="material-icons">settings</i>
                 </a>
             </li>
+            <li class="tab">
+                <a href="#tab-3">
+                    <i class="material-icons">tune</i>
+                </a>
+            </li>
         </ul>
     </div>
     <div id="tab-1" class="card-content grey lighten-4">
@@ -598,6 +603,9 @@
         }
         @endpush
         @endif
+    </div>
+    <div id="tab-3" class="card-content grey lighten-4">
+        Süre ayarları
     </div>
 </div>
 @endsection

@@ -26,4 +26,10 @@ class Organisation extends Model
     {
         return $this->hasMany('App\User', 'organisation_id', 'id');
     }
+
+    # author
+    public function author()
+    {
+        return $this->hasOne('App\User', 'id', 'user_id');
+    }
 }
