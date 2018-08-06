@@ -38,4 +38,14 @@ class Term
 
         return $keywords;
     }
+
+    # cli line
+    public static function line(string $string)
+    {
+        $arr[] = '['.date('H:i:s').']';
+        $arr[] = $string;
+        $arr[] = PHP_EOL;
+
+        return implode(' ', $arr);
+    }
 }

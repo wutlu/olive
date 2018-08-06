@@ -186,51 +186,51 @@
             </ul>
             @endisset
         </div>
-        @isset($formal_paid)
+        @if ($invoice->paid_at)
         <div class="row-col seal">
             <img id="seal" alt="veri.zone-logo" src="{{ asset('img/maliye-damga.svg') }}" />
         </div>
-        @endisset
+        @endif
         <div class="row-col invoice static-width">
             <h1>FATURA</h1>
             <ul class="row dashed-line dashed-bottom">
-                <li class="row-col p-1 title">NO</li>
+                <li class="row-col p-1 title">FATURA</li>
                 <li class="row-col p-1">#{{ $invoice->invoice_id }}</li>
             </ul>
-            @isset($formal_paid)
+            @if ($invoice->paid_at)
             <ul class="row dashed-line dashed-bottom">
                 <li class="row-col p-1 title">SERİ</li>
-                <li class="row-col p-1">{{ $formal_paid->serial }}</li>
+                <li class="row-col p-1">{{ $invoice->serial }}</li>
 
-                <li class="row-col p-1 title">SIRA</li>
-                <li class="row-col p-1">{{ $formal_paid->no }}</li>
+                <li class="row-col p-1 title">NO</li>
+                <li class="row-col p-1">{{ $invoice->no }}</li>
             </ul>
-            @endisset
+            @endif
             <div class="self-area dashed-line dashed-bottom">
                 <div class="body">
                     <ul>
-                        <li class="title">{{ $billing_information->type == 'person' ? 'Gerçek (Şahıs Şirketi)' : $billing_information->type == 'individual' ? 'Bireysel' : 'Tüzel' }}</li>
-                        @if ($billing_information->type == 'person' || $billing_information->type == 'individual')
-                            <li class="title">{{ $billing_information->person_name.' '.$billing_information->person_lastname }}</li>
+                        <li class="title">{{ $invoice->info->type == 'person' ? 'Gerçek (Şahıs Şirketi)' : $invoice->info->type == 'individual' ? 'Bireysel' : 'Tüzel' }}</li>
+                        @if ($invoice->info->type == 'person' || $invoice->info->type == 'individual')
+                            <li class="title">{{ $invoice->info->person_name.' '.$invoice->info->person_lastname }}</li>
                         @endif
-                        @if ($billing_information->type == 'person')
-                        <li>{{ $billing_information->person_tckn }}</li>
+                        @if ($invoice->info->type == 'person')
+                        <li>{{ $invoice->info->person_tckn }}</li>
                         @endif
-                        @if ($billing_information->type == 'person' || $billing_information->type == 'corporate')
-                            <li>{{ $billing_information->merchant_name }}</li>
+                        @if ($invoice->info->type == 'person' || $invoice->info->type == 'corporate')
+                            <li>{{ $invoice->info->merchant_name }}</li>
                         @endif
-                        @if ($billing_information->type == 'corporate')
-                            <li>{{ $billing_information->tax_number }}</li>
+                        @if ($invoice->info->type == 'corporate')
+                            <li>{{ $invoice->info->tax_number }}</li>
                         @endif
-                        @if ($billing_information->type == 'person')
-                            <li>{{ $billing_information->tax_office }}</li>
+                        @if ($invoice->info->type == 'person')
+                            <li>{{ $invoice->info->tax_office }}</li>
                         @endif
                     </ul>
                     <ul class="mb-0">
                         <li class="title">Adres</li>
-                        <li>{{ $billing_information->address }}</li>
-                        <li>{{ $billing_information->postal_code }}, {{ $billing_information->city }}</li>
-                        <li>{{ $billing_information->state }}, {{ $billing_information->country }}</li>
+                        <li>{{ $invoice->info->address }}</li>
+                        <li>{{ $invoice->info->postal_code }}, {{ $invoice->info->city }}</li>
+                        <li>{{ $invoice->info->state->name }}, {{ $invoice->info->country->name }}</li>
                     </ul>
                 </div>
             </div>
@@ -238,16 +238,17 @@
                 <li class="row-col p-1 title">SİPARİŞ TARİHİ</li>
                 <li class="row-col p-1">{{ date('d.m.Y', strtotime($invoice->created_at)) }}</li>
             </ul>
-            @isset($formal_paid)
+            @if ($invoice->paid_at)
             <ul class="row mb-0 green-text">
                 <li class="row-col title">ÖDENDİĞİ TARİH</li>
-                <li class="row-col">{{ $formal_paid->date }}</li>
+                <li class="row-col">{{ date('d.m.Y', strtotime($invoice->paid_at)) }}</li>
             </ul>
-            @endisset
+            @else
             <ul class="row red-text dashed-line dashed-bottom">
                 <li class="row-col p-1 title">SON ÖDEME TARİHİ</li>
                 <li class="row-col p-1">{{ date('d.m.Y', strtotime('+30 days', strtotime($invoice->created_at))) }}</li>
             </ul>
+            @endif
         </div>
     </header>
     <table class="dashed-line dashed-bottom">
@@ -278,35 +279,46 @@
                 <li class="row-col p-1 title">ARA TOPLAM</li>
                 <li class="row-col p-1">{{ config('formal.currency').' '.number_format($invoice->total_price) }}</li>
             </ul>
-            @isset ($discount)
+            @if ($invoice->fee()->discount)
             <ul class="row mb-0">
-                <li class="row-col p-1 title">İNDİRİM</li>
-                <li class="row-col p-1">({{ @$discount->rate_extra ? ($discount->rate_extra + $discount->rate) : $discount->rate }}%) {{ config('formal.currency').' '.number_format($discount->amount) }}</li>
+                <li class="row-col title">İNDİRİM ({{ $invoice->fee()->discount['rate'] }}%)</li>
+                <li class="row-col">{{ config('formal.currency').' -'.number_format($invoice->fee()->discount['amount']) }}</li>
             </ul>
-            @endisset
+                @isset ($invoice->fee()->discount['price'])
+                <ul class="row mb-0">
+                    <li class="row-col title">İNDİRİM</li>
+                    <li class="row-col">{{ config('formal.currency').' -'.number_format($invoice->fee()->discount['price']) }}</li>
+                </ul>
+                @endisset
+            @endif
             <ul class="row mb-0">
                 <li class="row-col title">TOPLAM {{ config('formal.tax_name') }}</li>
-                <li class="row-col">(18%) {{ config('formal.currency').' '.number_format($invoice->amount_of_tax) }}</li>
+                <li class="row-col">({{ $invoice->tax }}%) {{ config('formal.currency').' '.number_format($invoice->fee()->amount_of_tax) }}</li>
             </ul>
             <ul class="row mb-0">
                 <li class="row-col p-1 title">GENEL TOPLAM</li>
-                <li class="row-col p-1">{{ config('formal.currency') }} {{ number_format(($discount ? ($invoice->total_price - $discount->amount) : $invoice->total_price) + $invoice->amount_of_tax) }}</li>
+                <li class="row-col p-1">{{ config('formal.currency').' '.number_format($invoice->fee()->total_price) }}</li>
             </ul>
         </div>
     </footer>
     <div class="self-area">
-        @if ($discount)
-        <div class="title">Bilgi</div>
-        <div class="body">{{ $discount->coupon_key }} kupon kodu ile {{ $discount->rate }}% oranında bir indirim kullandınız.</div>
-            @isset($discount->rate_extra)
-            <div class="body">{{ $invoice->month }} aylık ödemeniz için extra {{ config('formal.discount_with_year') }}% oranında bir indirim ekledik.</div>
-            @endisset
+        @if ($invoice->discountCoupon)
+        <div class="title">({{ $invoice->discountCoupon->key }}) kodu ile bir indirim kuponu kullandınız.</div>
+            @if ($invoice->discountCoupon->rate > 0)
+                <div class="body red-text">-{{ $invoice->discountCoupon->rate }}% (kupon)</div>
+            @endif
+            @if ($invoice->discountCoupon->rate_year > 0)
+                <div class="body red-text">-{{ $invoice->discountCoupon->rate_year }}% (12 ay ve üzeri ödeme)</div>
+            @endif
+            @if ($invoice->discountCoupon->price > 0)
+                <div class="body red-text">{{ config('formal.currency').' -'.$invoice->discountCoupon->price }} (extra)</div>
+            @endif
         @endif
     </div>
     <div class="self-area">
         <div class="title">Hesap Bilgisi</div>
         <div class="body">Ödemenizi; fatura numarası açıklamada olacak şekilde aşağıdaki hesap numaralarından herhangi birine yapabilirsiniz.</div>
-        <div class="body">Daha sonra Ayarlar/Ödemeler sayfasından ödeme bildirimi yapmayı unutmayın.</div>
+        <div class="body">Daha sonra <a href="{{ route('settings.support', [ 'type' => 'payment-receipt' ]) }}"><strong>Ayarlar/Destek</strong></a> sayfasından ödeme bildirimi yapmanız gerekiyor.</div>
     </div>
     <div class="self-area">
         @foreach(config('formal.banks') as $key => $bank)

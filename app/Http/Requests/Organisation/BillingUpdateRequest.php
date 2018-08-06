@@ -3,8 +3,9 @@
 namespace App\Http\Requests\Organisation;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Validator;
 
-class BillingRequest extends FormRequest
+class BillingUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -17,16 +18,37 @@ class BillingRequest extends FormRequest
     }
 
     /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'flood' => 'Henüz ödenmemiş bir faturanız mevcut.',
+            'owner' => 'Bu işlemi sadece organizasyon sahipleri yapabilir.'
+        ];
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
     public function rules()
     {
+        $user = auth()->user();
+
+        Validator::extend('owner', function() use ($user) {
+            return $user->id == $user->organisation->user_id ? true : false;
+        });
+
+        Validator::extend('flood', function() use ($user) {
+            return @$user->organisation->invoices()[0]->paid_at ? true : false;
+        });
+
         return [
-            'plan_id'            => 'required|integer|in:2,3,4|check_email_verification',
             'month'              => 'required|integer|min:1|max:24',
-            'coupon_code'        => 'nullable|string|max:16|coupon_exists',
 
             'type'               => 'required|string|in:individual,corporate,person',
 
@@ -49,7 +71,7 @@ class BillingRequest extends FormRequest
             'address'            => 'required|string|max:255',
             'postal_code'        => 'required|numeric|max:99999',
 
-            'tos'                => 'required|in:on'
+            'tos'                => 'required|in:on|owner|flood'
         ];
     }
 }

@@ -23,9 +23,12 @@ class Organisation
 
                 return $request->expectsJson()
                     ? response()->json([
-                        'status' => 'ok',
+                        'status' => 'warn',
+                        'errors' => [
+                            'global' => [ 'Zaten bir organizasyona dahilsiniz.' ]
+                        ],
                         'organisation' => 'have'
-                    ])
+                    ], 422)
                     : redirect()->route('settings.organisation');
             }
             else
@@ -43,9 +46,12 @@ class Organisation
             {
                 return $request->expectsJson()
                     ? response()->json([
-                        'status' => 'ok',
+                        'status' => 'warn',
+                        'errors' => [
+                            'global' => [ 'Henüz bir organizasyona dahil değilsiniz.' ]
+                        ],
                         'organisation' => 'have_not'
-                    ])
+                    ], 422)
                     : redirect()->route('organisation.create.select');
             }
         }

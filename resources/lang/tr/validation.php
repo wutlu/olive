@@ -109,6 +109,7 @@ return [
 
     'authentication' => 'Hatalı şifre.',
     'password_check' => 'Şifre, hesabınızın şifresiyle uyuşmuyor.',
+    'coupon_exists' => 'Kupon kodu geçersiz.',
 
     /*
     |--------------------------------------------------------------------------

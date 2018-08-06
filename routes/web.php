@@ -7,7 +7,8 @@ Route::get('aktiviteler', 'HomeController@activity')->name('dashboard.activities
 Route::prefix('organizasyon')->group(function () {
     Route::get('plan', 'OrganisationController@select')->name('organisation.create.select');
     Route::get('plan/{id}', 'OrganisationController@details')->name('organisation.create.details');
-    Route::post('/', 'OrganisationController@create')->name('organisation.create');
+    Route::put('/', 'OrganisationController@create')->name('organisation.create');
+    Route::patch('/', 'OrganisationController@update')->name('organisation.update');
     Route::get('/', 'OrganisationController@result')->name('organisation.create.result');
 
     Route::patch('update/name', 'OrganisationController@updateName')->name('organisation.update.name');
@@ -24,17 +25,18 @@ Route::prefix('ayarlar')->group(function () {
         Route::post('davet', 'OrganisationController@invite')->name('settings.organisation.invite');
     });
 
-    Route::get('email', 'OrganisationController@settings')->name('settings.email');
-    Route::get('password', 'OrganisationController@settings')->name('settings.password');
-    Route::get('account', 'OrganisationController@settings')->name('settings.account');
-    Route::get('notification', 'OrganisationController@settings')->name('settings.notification');
+    Route::get('e-posta', 'OrganisationController@settings')->name('settings.email');
+    Route::get('sifre', 'OrganisationController@settings')->name('settings.password');
+    Route::get('hesap-bilgileri', 'OrganisationController@settings')->name('settings.account');
+    Route::get('bildirim-tercihleri', 'OrganisationController@settings')->name('settings.notification');
     Route::get('api', 'OrganisationController@settings')->name('settings.api');
+    Route::get('destek', 'OrganisationController@settings')->name('settings.support');
 });
 
 Route::prefix('fatura')->group(function () {
     Route::get('{id}', 'OrganisationController@invoice')->name('organisation.invoice');
     Route::post('hesapla', 'OrganisationController@calculate')->name('organisation.create.calculate');
-    Route::get('kayitli-bilgi', 'OrganisationController@billingInformation')->name('billing.information');
+    Route::post('hesapla-uzat', 'OrganisationController@calculateRenew')->name('organisation.create.calculate.renew');
 });
 
 Route::prefix('geo')->group(function () {

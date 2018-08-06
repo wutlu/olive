@@ -5,7 +5,6 @@
 @section('content')
 <div class="row">
     <div class="col xl4 l5 s12">
-        Ödeme Bekliyor, Ödemeniz Yaklaşıyor
         @if (@auth()->user()->organisation_id)
         <div class="card" id="organisation-card">
             <div class="card-image">
@@ -17,6 +16,11 @@
             </div>
             <div class="card-content">
                 <p class="grey-text">{{ count($user->organisation->users) }}/{{ $user->organisation->capacity }} kullanıcı</p>
+                @if ($user->organisation->invoices()[0]->paid_at)
+                <p class="grey-text">{{ $user->organisation->days() }} gün kaldı.</p>
+                @else
+                <p class="red-text">Ödeme bekliyor...</p>
+                @endif
             </div>
             <ul class="collection">
                 @foreach ($user->organisation->users as $u)

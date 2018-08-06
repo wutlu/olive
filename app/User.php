@@ -45,4 +45,10 @@ class User extends Authenticatable
     {
         return $this->hasOne('App\Organisation', 'id', 'organisation_id');
     }
+
+    # ödeme bilgileri
+    public function billingInformations(bool $protected = true)
+    {
+        return $this->hasMany('App\BillingInformation', 'user_id', 'id')->where('protected', $protected)->get();
+    }
 }

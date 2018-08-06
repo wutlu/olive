@@ -18,8 +18,6 @@ class CreateBillingInformationsTable extends Migration
 
             $table->enum('type', [ 'individual', 'corporate', 'person' ])->default('individual');
 
-            $table->string('name');
-
             $table->string('person_name')->nullable()->default(null);
             $table->string('person_lastname')->nullable()->default(null);
             $table->unsignedBigInteger('person_tckn')->nullable()->default(null);
@@ -29,19 +27,17 @@ class CreateBillingInformationsTable extends Migration
             $table->string('tax_office')->nullable()->default(null);
 
             $table->unsignedInteger('country_id');
-            $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
+            $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade')->onUpdate('cascade');
 
             $table->unsignedInteger('state_id');
-            $table->foreign('state_id')->references('id')->on('states')->onDelete('cascade');
+            $table->foreign('state_id')->references('id')->on('states')->onDelete('cascade')->onUpdate('cascade');
 
             $table->unsignedInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
 
             $table->string('city');
             $table->string('address');
             $table->unsignedInteger('postal_code');
-
-            $table->boolean('protected')->default(0);
 
             $table->timestamps();
         });

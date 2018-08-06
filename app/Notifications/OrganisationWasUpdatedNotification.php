@@ -7,22 +7,22 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class ReturnedDiscountCouponNotification extends Notification implements ShouldQueue
+class OrganisationWasUpdatedNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
     protected $name;
-    protected $data;
+    protected $organisation_id;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(string $name, string $data)
+    public function __construct(string $name, int $id)
     {
         $this->name = $name;
-        $this->data = $data;
+        $this->organisation_id = $id;
     }
 
     /**
@@ -45,14 +45,12 @@ class ReturnedDiscountCouponNotification extends Notification implements ShouldQ
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject('Olive: İade Kuponunuz!')
+                    ->subject('Olive: Ödeme Bekleniyor')
                     ->greeting('Merhaba, '.$this->name)
-                    ->level('olive')
-                    ->line('Organizasyonunuzun silinmesinden sonra kalan kullanım tutarında oluşturulan indirim kuponunuz aşağıdadır.')
-                    ->with([
-                        'table' => $this->data
-                    ])
-                    ->line('Bu kuponu istediğiniz zaman tüm planlarda kullanabilirsiniz.');
+                    ->line('Sanal faturanız oluşturuldu. Ödemenizi gerçekleştirdikten sonra sanal faturanız, resmi fatura olarak güncellenecek ve organizasyon süresi uzatılacaktır.')
+                    ->level('success')
+                    ->action('Faturanızı Görüntüleyin', route('organisation.invoice', $this->organisation_id))
+                    ->line('Teşekkürler.');
     }
 
     /**

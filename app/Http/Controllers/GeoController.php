@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Models\Geo\Countries;
-use App\Models\Geo\States;
+use App\Models\GEO\Countries;
+use App\Models\GEO\States;
 
-use App\Http\Requests\Geo\StatesRequest;
+use App\Http\Requests\GEO\StatesRequest;
 
 class GeoController extends Controller
 {

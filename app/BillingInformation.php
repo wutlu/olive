@@ -9,7 +9,6 @@ class BillingInformation extends Model
     protected $table = 'billing_informations';
     protected $fillable = [
 		'type',
-		'name',
 		'person_name',
 		'person_lastname',
 		'person_tckn',
@@ -20,8 +19,7 @@ class BillingInformation extends Model
 		'state_id',
 		'city',
 		'address',
-		'postal_code',
-		'protected'
+		'postal_code'
     ];
 
     /**
@@ -31,7 +29,6 @@ class BillingInformation extends Model
      */
     protected $hidden = [
         'id',
-        'protected',
         'user_id'
     ];
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Geo;
+namespace App\Models\GEO;
 
 use Illuminate\Database\Eloquent\Model;
 

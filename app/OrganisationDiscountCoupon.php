@@ -11,7 +11,8 @@ class OrganisationDiscountCoupon extends Model
     protected $fillable = [
 		'key',
 		'rate',
-		'organisation_id',
-		'price'
+		'rate_year',
+		'price',
+		'invoice_id'
     ];
 }

@@ -518,6 +518,7 @@ function vzAjax(__)
                 jqXHR.status == 404 ||
                 jqXHR.status == 405 ||
                 jqXHR.status == 429 ||
+                jqXHR.status == 'warn' ||
                 jqXHR.status == undefined
             )
             {
@@ -532,6 +533,10 @@ function vzAjax(__)
                 else if (jqXHR.status == 404)
                 {
                     title = errors.notfound;
+                }
+                else if (jqXHR.status == 'warn')
+                {
+                    title = jqXHR.reason;
                 }
 
                 error_timer = setTimeout(function() {

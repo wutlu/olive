@@ -17,23 +17,26 @@ class CreateOrganisationInvoicesTable extends Migration
             $table->unsignedBigInteger('invoice_id')->unique();
 
             $table->unsignedInteger('organisation_id')->nullable()->default(null);
-            $table->foreign('organisation_id')->references('id')->on('organisations')->onDelete('cascade');
+            $table->foreign('organisation_id')->references('id')->on('organisations')->onDelete('cascade')->onUpdate('cascade');
 
             $table->unsignedInteger('user_id')->nullable()->default(null);
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
 
             $table->decimal('unit_price', 9, 2)->default(0);
             $table->unsignedSmallInteger('month')->default(1);
             $table->decimal('total_price', 9, 2)->default(0);
-            $table->decimal('amount_of_tax', 9, 2)->default(0);
 
-            $table->json('discount')->nullable()->default(null);
-            $table->json('billing_information');
-
-            $table->string('pay_notice')->nullable()->default(null);
-            $table->json('formal_paid')->nullable()->default(null);
+            $table->unsignedSmallInteger('tax')->default(0);
 
             $table->json('plan');
+
+            $table->timestamp('paid_at')->nullable()->default(null);
+
+            $table->string('no')->nullable()->default(null);
+            $table->string('serial')->nullable()->default(null);
+
+            $table->unsignedInteger('billing_information_id');
+            $table->foreign('billing_information_id')->references('id')->on('billing_informations')->onDelete('cascade')->onUpdate('cascade');
 
             $table->timestamps();
         });

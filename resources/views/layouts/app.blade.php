@@ -38,7 +38,7 @@
             <div id="modal-confirmation" class="modal bottom-sheet">
                 <div class="modal-content">
                     <p>E-posta ({{ auth()->user()->email }}) adresinizi henüz doğrulamadınız.</p>
-                    <p>Bu adres size ait değilse Ayarlar/Hesap/E-posta Ayarları sayfasından güncelleyebilirsiniz.</p>
+                    <p>Bu adres size ait değilse Ayarlar/E-posta Ayarları sayfasından güncelleyebilirsiniz.</p>
                     <a href="#" class="waves-effect btn-flat json" data-href="{{ route('user.register.resend') }}" data-method="post" data-callback="__resend">Tekrar Gönder</a>
                     <a href="#" class="waves-effect btn modal-close">Tamam</a>
                 </div>
@@ -79,12 +79,6 @@
         <div class="navbar-fixed">
             <ul id="user-top-dropdown" class="dropdown-content">
                 <li>
-                    <a class="waves-effect" href="#">
-                        <i class="material-icons">settings</i>
-                        Hesap Bilgileri
-                    </a>
-                </li>
-                <li>
                     <a class="waves-effect" href="{{ route('user.logout') }}">
                         <i class="material-icons">exit_to_app</i>
                         Çıkış
@@ -124,6 +118,7 @@
         <ul id="slide-out" class="sidenav sidenav-fixed collapsible">
             <li>
                 <div class="user-view">
+                    <small class="white-text right">Build {{ config('app.version') }}</small>
                     <div class="background" style="background-image: url('{{ asset('img/md/23.jpg') }}');"></div>
 
                     <img class="circle" src="{{ asset(auth()->user()->avatar()) }}" />
@@ -131,6 +126,25 @@
                     <span class="white-text email">{{ auth()->user()->email }}</span>
                 </div>
             </li>
+
+            <!-- sadece yönetici görecek -->
+            <li>
+                <a href="#" class="subheader">Yönetici Menüsü</a>
+            </li>
+            <li>
+                <a class="waves-effect" href="#">
+                    <i class="material-icons">mail</i>
+                    Destek Talepleri
+                    <span class="badge red white-text">10+</span>
+                </a>
+            </li>
+            <li>
+                <a class="waves-effect" href="#">
+                    <i class="material-icons">group_work</i>
+                    Organizasyon Yönetimi
+                </a>
+            </li>
+
             <li>
                 <a href="#" class="subheader">Kullanıcı</a>
             </li>
@@ -142,12 +156,6 @@
                 </div>
                 <div class="collapsible-body">
                     <ul>
-                        <li>
-                            <a class="waves-effect" href="#">
-                                <i class="material-icons">settings</i>
-                                Hesap Bilgileri
-                            </a>
-                        </li>
                         <li>
                             <a class="waves-effect" href="{{ route('user.logout') }}">
                                 <i class="material-icons">exit_to_app</i>

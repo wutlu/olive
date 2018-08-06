@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Validator;
 use Request;
 use Hash;
+use App\OrganisationDiscountCoupon;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,6 +30,12 @@ class AppServiceProvider extends ServiceProvider
             $user = auth()->user();
 
             return Hash::check($value , $user->password);
+        });
+
+        Validator::extend('coupon_exists', function($attribute, $key) {
+            $coupon = OrganisationDiscountCoupon::whereNull('organisation_id')->where('key', $key)->count();
+
+            return $coupon ? true : false;
         });
 
         Validator::extend('tckn', function($attribute, $value, $parameters) {

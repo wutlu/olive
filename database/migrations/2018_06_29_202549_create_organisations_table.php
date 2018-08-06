@@ -21,10 +21,10 @@ class CreateOrganisationsTable extends Migration
             $table->unsignedSmallInteger('capacity')->default(1);
 
             $table->datetime('start_date');
-            $table->unsignedInteger('day')->default(0);
+            $table->datetime('end_date');
 
-            $table->unsignedInteger('user_id')->nullable()->default(null)->unique();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedInteger('user_id')->nullable()->default(null);
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
 
             $table->boolean('status')->default(0);
 
