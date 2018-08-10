@@ -39,6 +39,7 @@ class CreateOrganisationInvoicesTable extends Migration
             $table->foreign('billing_information_id')->references('id')->on('billing_informations')->onDelete('cascade')->onUpdate('cascade');
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

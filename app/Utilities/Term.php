@@ -48,4 +48,12 @@ class Term
 
         return implode(' ', $arr);
     }
+
+    # markdown
+    public static function markdown(string $text)
+    {
+        $parsedown = new Parsedown;
+
+        return $parsedown->text($text);
+    }
 }

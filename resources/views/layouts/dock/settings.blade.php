@@ -5,5 +5,5 @@
     <a href="{{ route('settings.account') }}" class="collection-item waves-effect {{ $active == 'account' ? 'active' : '' }}">Hesap Bilgileri</a>
     <a href="{{ route('settings.notification') }}" class="collection-item waves-effect {{ $active == 'notification' ? 'active' : '' }}">Bildirim Tercihleri</a>
     <a href="{{ route('settings.api') }}" class="collection-item waves-effect {{ $active == 'api' ? 'active' : '' }}">Api</a>
-    <a href="{{ route('settings.support') }}" class="collection-item waves-effect {{ $active == 'contact' ? 'active' : '' }}">Destek</a>
+    <a href="{{ route('settings.support') }}" class="collection-item waves-effect {{ $active == 'support' ? 'active' : '' }}">Destek</a>
 </div>

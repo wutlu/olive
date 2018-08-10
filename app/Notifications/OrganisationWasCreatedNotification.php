@@ -50,7 +50,7 @@ class OrganisationWasCreatedNotification extends Notification implements ShouldQ
                     ->line('Organizasyonunuz başarılı bir şekilde oluşturuldu.')
                     ->line('Sanal faturanız oluşturuldu. Ödemeniz gerçekleştikten sonra sanal faturanız, resmi fatura olarak güncellenecek ve organizasyon aktif hale gelecektir.')
                     ->level('success')
-                    ->action('Faturanızı Görüntüleyin', route('organisation.invoice', $this->organisation_id))
+                    ->action('Fatura', route('organisation.invoice', $this->organisation_id))
                     ->line('Teşekkürler.');
     }
 

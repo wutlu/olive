@@ -4,8 +4,14 @@
  * MIT License (https://raw.githubusercontent.com/Dogfalo/materialize/master/LICENSE)
  */
 
-::-moz-selection { background-color: rgba(200, 200, 200, .8); }
-::selection { background-color: rgba(200, 200, 200, .8); }
+::-moz-selection {
+  background-color: rgb(255, 255, 255);
+  color: rgba(0, 0, 0, .2);
+}
+::selection {
+  background-color: rgb(255, 255, 255);
+  color: rgba(0, 0, 0, .2);
+}
 
 .d-none {
   display: none !important;
@@ -50,14 +56,14 @@
   justify-content: space-between !important;
 }
 
+.align-content-end {
+    -ms-flex-line-pack: end !important;
+    align-content: flex-end !important;
+}
+
 .align-self-center {
   -ms-flex-item-align: center !important;
   align-self: center !important;
-}
-
-.mx-auto {
-  margin: 0 auto !important;
-  display: table !important;
 }
 
 @keyframes cloud-animation-1 {
@@ -2990,7 +2996,7 @@ video.responsive-video {
 }
 
 .pagination li.active {
-  background-color: #ee6e73;
+  background-color: rgba(0, 0, 0, .2);
 }
 
 .pagination li.disabled a {
@@ -3341,6 +3347,20 @@ td, th {
 .collection .collection-item {
   line-height: 1.5rem;
   padding: 10px 20px;
+  margin: 0;
+}
+.collection .collection-item > i.material-icons {
+  width: 48px;
+  font-size: 32px;
+}
+
+@media (max-width: 36em) {
+  .collection .collection-item > i.material-icons {
+    display: none;
+  }
+}
+
+.collection .collection-item p {
   margin: 0;
 }
 
@@ -6369,6 +6389,10 @@ button.btn-floating {
   margin: 3rem 0 0;
 }
 
+.modal .modal-footer:empty {
+  display: none;
+}
+
 .modal-overlay {
   position: fixed;
   z-index: 999;
@@ -7109,9 +7133,6 @@ textarea.materialize-textarea + label:after, .select-wrapper + label:after {
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
-.input-field.mb-2 {
-  margin-bottom: 2rem;
-}
 
 .input-field.inline {
   display: inline-block;
@@ -7318,6 +7339,8 @@ textarea.materialize-textarea {
 /* Character Counter */
 .character-counter {
   min-height: 18px;
+  position: absolute;
+  right: 0;
 }
 
 /* Radio Buttons
@@ -9885,4 +9908,14 @@ input[type=range].focused:focus:not(.active)::-ms-thumb {
   #dock-content > .menu {
     top: 56px;
   }
+}
+
+.ml-auto,
+.mx-auto {
+    margin-left: auto;
+}
+
+.mr-auto,
+.mx-auto {
+    margin-right: auto;
 }

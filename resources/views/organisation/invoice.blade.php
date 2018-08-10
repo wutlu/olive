@@ -281,19 +281,19 @@
             </ul>
             @if ($invoice->fee()->discount)
             <ul class="row mb-0">
-                <li class="row-col title">İNDİRİM ({{ $invoice->fee()->discount['rate'] }}%)</li>
-                <li class="row-col">{{ config('formal.currency').' -'.number_format($invoice->fee()->discount['amount']) }}</li>
+                <li class="row-col title">İNDİRİM</li>
+                <li class="row-col">({{ $invoice->fee()->discount['rate'] }}%) {{ config('formal.currency').' -'.number_format($invoice->fee()->discount['amount']) }}</li>
             </ul>
-                @isset ($invoice->fee()->discount['price'])
+                @if ($invoice->fee()->discount['price'] > 0)
                 <ul class="row mb-0">
                     <li class="row-col title">İNDİRİM</li>
                     <li class="row-col">{{ config('formal.currency').' -'.number_format($invoice->fee()->discount['price']) }}</li>
                 </ul>
-                @endisset
+                @endif
             @endif
             <ul class="row mb-0">
                 <li class="row-col title">TOPLAM {{ config('formal.tax_name') }}</li>
-                <li class="row-col">({{ $invoice->tax }}%) {{ config('formal.currency').' '.number_format($invoice->fee()->amount_of_tax) }}</li>
+                <li class="row-col">({{ $invoice->tax }}%) {{ config('formal.currency').' +'.number_format($invoice->fee()->amount_of_tax) }}</li>
             </ul>
             <ul class="row mb-0">
                 <li class="row-col p-1 title">GENEL TOPLAM</li>

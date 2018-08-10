@@ -19,18 +19,26 @@ Route::prefix('ayarlar')->group(function () {
         Route::get('/', 'OrganisationController@settings')->name('settings.organisation');
 
         Route::post('ayril', 'OrganisationController@leave')->name('settings.organisation.leave');
-        Route::post('sil', 'OrganisationController@delete')->name('settings.organisation.delete');
+        Route::delete('sil', 'OrganisationController@delete')->name('settings.organisation.delete');
         Route::post('devret', 'OrganisationController@transfer')->name('settings.organisation.transfer');
-        Route::post('cikar', 'OrganisationController@remove')->name('settings.organisation.remove');
+        Route::delete('cikar', 'OrganisationController@remove')->name('settings.organisation.remove');
         Route::post('davet', 'OrganisationController@invite')->name('settings.organisation.invite');
+
+        Route::delete('fatura-iptal', 'OrganisationController@invoiceCancel')->name('settings.organisation.invoice.cancel');
     });
+
+    Route::get('destek/{type?}', 'TicketController@list')->name('settings.support')->where('type', '('.implode('|', array_keys(config('app.ticket.types'))).')');
+    Route::get('destek-talebi/{id}', 'TicketController@view')->name('settings.support.ticket');
+    Route::patch('destek-talebi/{id}/kapat', 'TicketController@close')->name('settings.support.ticket.close');
+    Route::put('destek-talebi/cevap', 'TicketController@reply')->name('settings.support.ticket.reply');
+    Route::post('destek', 'TicketController@submit')->name('settings.support.submit');
 
     Route::get('e-posta', 'OrganisationController@settings')->name('settings.email');
     Route::get('sifre', 'OrganisationController@settings')->name('settings.password');
     Route::get('hesap-bilgileri', 'OrganisationController@settings')->name('settings.account');
     Route::get('bildirim-tercihleri', 'OrganisationController@settings')->name('settings.notification');
     Route::get('api', 'OrganisationController@settings')->name('settings.api');
-    Route::get('destek', 'OrganisationController@settings')->name('settings.support');
+    Route::get('fatura-gecmisi', 'OrganisationController@settings')->name('settings.invoices');
 });
 
 Route::prefix('fatura')->group(function () {

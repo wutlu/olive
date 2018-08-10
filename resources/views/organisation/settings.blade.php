@@ -30,32 +30,32 @@
 
     $(document).on('click', 'a.name-change', function() {
         var mdl = modal({
-                'id': 'detail',
-                'body': $('<div />', {
-                    'class': 'input-field',
-                    'html': [
-                        $('<input />', {
-                            'id': 'organisation_name',
-                            'name': 'organisation_name',
-                            'type': 'text',
-                            'class': 'validate',
-                            'data-length': 16
-                        }),
-                        $('<label />', {
-                            'for': 'organisation_name',
-                            'html': 'Organizasyon Adı'
-                        }),
-                        $('<span />', {
-                            'class': 'helper-text'
-                        })
-                    ]
-                }),
-                'size': 'modal-medium',
-                'title': 'Ad Değiştir',
-                'options': {
-                    dismissible: false
-                }
-            });
+            'id': 'detail',
+            'body': $('<div />', {
+                'class': 'input-field',
+                'html': [
+                    $('<input />', {
+                        'id': 'organisation_name',
+                        'name': 'organisation_name',
+                        'type': 'text',
+                        'class': 'validate',
+                        'data-length': 16
+                    }),
+                    $('<label />', {
+                        'for': 'organisation_name',
+                        'html': 'Organizasyon Adı'
+                    }),
+                    $('<span />', {
+                        'class': 'helper-text'
+                    })
+                ]
+            }),
+            'size': 'modal-medium',
+            'title': 'Ad Değiştir',
+            'options': {
+                dismissible: false
+            }
+        });
 
             mdl.find('.modal-footer')
                .html([
@@ -83,7 +83,7 @@
 
         M.updateTextFields()
 
-        $('input[name=organisation_name]').characterCounter().html('')
+        $('input[name=organisation_name]').characterCounter()
     })
 
     function __update__organisation_name(__, obj)
@@ -115,10 +115,12 @@
             <a class="name-change material-icons" href="#">create</a>
             @endif
         </span>
-        @if ($user->organisation->invoices()[0]->paid_at)
-        <p class="grey-text">{{ $user->organisation->days() }} gün kaldı.</p>
-        @else
-        <p class="red-text">Ödeme bekliyor...</p>
+        @if ($user->id == $user->organisation->user_id)
+            @if ($user->organisation->invoices()[0]->paid_at)
+            <p class="grey-text">{{ $user->organisation->days() }} gün kaldı.</p>
+            @else
+            <p class="red-text">Ödeme bekliyor...</p>
+            @endif
         @endif
     </div>
 
@@ -139,6 +141,11 @@
             <li class="tab">
                 <a href="#tab-3">
                     <i class="material-icons">settings</i>
+                </a>
+            </li>
+            <li class="tab">
+                <a href="#tab-4">
+                    <i class="material-icons">offline_pin</i>
                 </a>
             </li>
         </ul>
@@ -196,7 +203,6 @@
                             'options': {}
                         });
 
-
                         mdl.find('.modal-footer')
                            .html([
                                $('<a />', {
@@ -244,7 +250,7 @@
                                    'class': 'waves-effect btn blue darken-4 json',
                                    'data-href': '{{ route('settings.organisation.remove') }}',
                                    'data-user_id': __.data('user-id'),
-                                   'data-method': 'post',
+                                   'data-method': 'delete',
                                    'data-callback': '__remove_user',
                                    'html': buttons.ok
                                })
@@ -570,36 +576,67 @@
                             location.href = '{{ route('settings.organisation') }}#tab-2';
                             location.reload()
                         }
-                        else
-                        {
-                            var mdl = modal({
-                                    'id': 'err',
-                                    'body': 'Lütfen sayfayı yenileyin ve bir plan süresi belirleyip "Uygula" butonuna basın ve işleminize devam edin. Sorun devam ediyorsa lütfen bizimle iletişime geçin.',
-                                    'size': 'modal-small',
-                                    'title': 'Bir şeyler ters gitti :(',
-                                    'options': { dismissible: false }
-                                });
-
-                                mdl.find('.modal-footer')
-                                   .html([
-                                       $('<a />', {
-                                           'href': '#',
-                                           'class': 'modal-close waves-effect btn-flat',
-                                           'html': buttons.ok
-                                       })
-                                   ])
-                        }
                     }
                 }
             @endpush
         @else
             <div class="center-align">
-                <a href="{{ route('organisation.invoice', [ 'id' => auth()->user()->organisation->invoices()[0]->invoice_id ]) }}" class="waves-effect btn-flat">Faturayı Gör</a>
-                <a href="{{ route('settings.support', [ 'type' => 'payment-receipt' ]) }}" class="waves-effect btn-flat">Ödeme Bildirimi</a>
-                @if (auth()->user()->organisation->invoices(2)->count() == 2)
-                <a href="#" class="waves-effect btn-flat">İptal Et</a>
+                <a href="{{ route('organisation.invoice', [ 'id' => $user->organisation->invoices()[0]->invoice_id ]) }}" class="waves-effect btn-flat">Fatura</a>
+                <a href="{{ route('settings.support', [ 'type' => 'odeme-bildirimi' ]) }}" class="waves-effect btn-flat">Ödeme Bildirimi</a>
+                @if ($user->organisation->invoices(2)->count() == 2)
+                <a href="#" class="waves-effect btn-flat" id="cancel-button">İptal</a>
                 @endif
             </div>
+
+            @push('local.scripts')
+            $(document).on('click', '#cancel-button', function() {
+                var mdl = modal({
+                    'id': 'alert',
+                    'body': 'Şu anda ödeme bildirimi bekliyoruz. Faturayı iptal etmek istiyor musunuz?',
+                    'size': 'modal-small',
+                    'title': 'Onay',
+                    'options': { dismissible: false }
+                });
+
+                mdl.find('.modal-footer')
+                   .html([
+                       $('<a />', {
+                           'href': '#',
+                           'class': 'modal-close waves-effect btn-flat',
+                           'html': buttons.cancel
+                       }),
+                       $('<span />', {
+                           'html': ' '
+                       }),
+                       $('<a />', {
+                           'href': '#',
+                           'class': 'waves-effect btn red json',
+                           'data-href': '{{ route('settings.organisation.invoice.cancel') }}',
+                           'data-method': 'delete',
+                           'data-callback': '__cancel',
+                           'html': buttons.ok
+                       })
+                   ])
+            })
+
+            function __cancel(__, obj)
+            {
+                if (obj.status == 'ok')
+                {
+                    $('#modal-alert').modal('close')
+
+                    M.toast({
+                        html: 'Fatura iptal edildi.',
+                        classes: 'green'
+                    })
+
+                    setTimeout(function() {
+                        location.href = '{{ route('settings.organisation') }}#tab-2';
+                        location.reload()
+                    }, 400)
+                }
+            }
+            @endpush
         @endif
     </div>
     @endif
@@ -608,15 +645,14 @@
         <div class="card card-unstyled">
             <div class="card-content">
                 @if ($user->organisation->user_id == $user->id)
-                    <div class="d-flex justify-content-between">
-                        <span>
-                            <h6>Organizasyonu Silin</h6>
-                            <p class="grey-text">- Organizasyona ait tüm etkinlikler kalıcı olarak silinir.</p>
-                            <p class="grey-text">- Organizasyona dahil tüm kullanıcıların organizasyon bağlantıları kaldırılır.</p>
-                            <p class="grey-text">- Silinen organizasyonlar için ücret iadesi yapılamaz.</p>
-                        </span>
-                        <a href="#" class="btn red darken-1 waves-effect" data-button="__delete">Sil</a>
-                    </div>
+                    <span>
+                        <h6>Organizasyonu Silin</h6>
+                        <p class="grey-text">- Organizasyona ait tüm etkinlikler kalıcı olarak silinir.</p>
+                        <p class="grey-text">- Organizasyona dahil tüm kullanıcıların organizasyon bağlantıları kaldırılır.</p>
+                        <p class="grey-text">- Silinen organizasyonlar için ücret iadesi yapılamaz.</p>
+                    </span>
+                    <br />
+                    <a href="#" class="btn red darken-1 waves-effect" data-button="__delete">Sil</a>
 
                     @push('local.scripts')
                     @php
@@ -692,7 +728,7 @@
                                        'class': 'waves-effect btn red darken-4 json',
                                        'data-href': '{{ route('settings.organisation.delete') }}',
                                        'data-include': 'delete_key,password',
-                                       'data-method': 'post',
+                                       'data-method': 'delete',
                                        'data-callback': '__delete',
                                        'html': buttons.ok
                                    })
@@ -819,6 +855,10 @@
                 @endif
             </div>
         </div>
+    </div>
+
+    <div id="tab-4" class="card-content grey lighten-4">
+        fatura geçmişi
     </div>
 </div>
 @endsection

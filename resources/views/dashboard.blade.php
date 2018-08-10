@@ -16,10 +16,12 @@
             </div>
             <div class="card-content">
                 <p class="grey-text">{{ count($user->organisation->users) }}/{{ $user->organisation->capacity }} kullanıcı</p>
-                @if ($user->organisation->invoices()[0]->paid_at)
-                <p class="grey-text">{{ $user->organisation->days() }} gün kaldı.</p>
-                @else
-                <p class="red-text">Ödeme bekliyor...</p>
+                @if ($user->id == $user->organisation->user_id)
+                    @if ($user->organisation->invoices()[0]->paid_at)
+                    <p class="grey-text">{{ $user->organisation->days() }} gün kaldı.</p>
+                    @else
+                    <p class="red-text">Ödeme bekliyor...</p>
+                    @endif
                 @endif
             </div>
             <ul class="collection">

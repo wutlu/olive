@@ -49,7 +49,7 @@ class OrganisationWasUpdatedNotification extends Notification implements ShouldQ
                     ->greeting('Merhaba, '.$this->name)
                     ->line('Sanal faturanız oluşturuldu. Ödemenizi gerçekleştirdikten sonra sanal faturanız, resmi fatura olarak güncellenecek ve organizasyon süresi uzatılacaktır.')
                     ->level('success')
-                    ->action('Faturanızı Görüntüleyin', route('organisation.invoice', $this->organisation_id))
+                    ->action('Fatura', route('organisation.invoice', $this->organisation_id))
                     ->line('Teşekkürler.');
     }
 

@@ -173,6 +173,11 @@
                         <label for="address">Adres</label>
                         <span class="helper-text">Yazışma adresiniz.</span>
                     </div>
+                    @push('local.scripts')
+                    $(document).ready(function() {
+                        $('textarea#address').characterCounter()
+                    })
+                    @endpush
                 </div>
             </div>
 

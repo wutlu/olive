@@ -51,4 +51,10 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\BillingInformation', 'user_id', 'id')->where('protected', $protected)->get();
     }
+
+    # destek talepleri
+    public function tickets(int $pager = 5)
+    {
+        return $this->hasMany('App\Ticket', 'user_id', 'id')->whereNull('ticket_id')->orderBy('updated_at', 'DESC')->paginate($pager);
+    }
 }

@@ -484,14 +484,14 @@ function vzAjax(__)
     variables = $.extend(variables, { 'X-AJAX': true, 'token': token })
 
     var URL = __.is('form') ? __.attr('action') : __.data('href'),
-        URL = (method == 'POST' || method == 'PATCH' || method == 'PUT') ? URL : URL + '/?' + $.param( variables, true );
+        URL = (method == 'POST' || method == 'PATCH' || method == 'PUT' || method == 'DELETE') ? URL : URL + '/?' + $.param( variables, true );
 
     $.ajax({
         type: method,
         dataType: 'json',
         url: URL,
         crossDomain: URL.substring(0, 4) == 'http' ? true : false,
-        data: (method == 'POST' || method == 'PATCH' || method == 'PUT') ? variables : '',
+        data: (method == 'POST' || method == 'PATCH' || method == 'PUT' || method == 'DELETE') ? variables : '',
         beforeSend: function()
         {
             var callbefore = __.data('callbefore');
@@ -856,7 +856,7 @@ function getElementData(items, target) {
         }
         else if (item.attr('type') == 'file')
         {
-            variables = new FormData(_this[0]);
+            alert(0)
         }
     })
 

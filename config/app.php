@@ -20,11 +20,13 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
-    'version' => '1.0.1000',
+    'version' => '1.0.1022',
 
     'ticket' => [
         'types' => [
-            'payment_receipt'
+            'other' => 'Diğer Konular',
+            'odeme-bildirimi' => 'Ödeme Bildirimi',
+            'payment-receipt-2' => 'Ödeme Bildirimi 2'
         ]
     ],
 

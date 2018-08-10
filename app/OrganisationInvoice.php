@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class OrganisationInvoice extends Model
 {
+    use SoftDeletes;
+
 	protected $table = 'organisation_invoices';
 	protected $fillable = [
 		'invoice_id',
@@ -15,18 +18,17 @@ class OrganisationInvoice extends Model
 		'month',
 		'total_price',
 		'tax',
-
 		'paid_at',
-
 		'serial',
 		'no',
-
 		'plan',
 		'billing_information_id'
 	];
 
 	public $incrementing = false;
 	protected $primaryKey = 'invoice_id';
+
+    protected $dates = [ 'deleted_at', 'paid_at' ];
 
     # fatura bilgileri
     public function info()

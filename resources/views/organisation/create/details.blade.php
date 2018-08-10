@@ -46,10 +46,6 @@
         }
     }
 
-    $(document).ready(function() {
-        $('textarea').characterCounter()
-    })
-
     function __create(__, obj)
     {
         if (obj.status == 'ok')

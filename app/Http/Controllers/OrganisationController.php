@@ -61,7 +61,8 @@ class OrganisationController extends Controller
             'delete',
             'invite',
             'calculateRenew',
-            'update'
+            'update',
+            'invoiceCancel'
         ]);
     }
 
@@ -717,4 +718,19 @@ class OrganisationController extends Controller
         return view('organisation.invoice', compact('invoice', 'plan'));
     }
 
+    # 
+    # fatura iptali
+    # 
+    public static function invoiceCancel()
+    {
+        $user = auth()->user();
+
+        $invoice = OrganisationInvoice::where('invoice_id', $user->organisation->invoices()[0]->invoice_id)->whereNull('paid_at')->delete();
+
+        $user->notify(new MessageNotification('Olive: Fatura İptal Edildi', 'Organizasyon Faturasını İptal Ettiniz!', 'Organizasyon ödemesi için oluşturduğunuz fatura, ödeme tamamlanmadan iptal edildi.'));
+
+        return [
+            'status' => 'ok'
+        ];
+    }
 }

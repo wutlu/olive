@@ -19,20 +19,17 @@ class CreateTicketsTable extends Migration
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
 
-            $table->unsignedInteger('organisation_id')->nullable()->default(null);
-            $table->foreign('organisation_id')->references('id')->on('organisations')->onDelete('cascade')->onUpdate('cascade');
+            $table->unsignedBigInteger('invoice_id')->nullable()->default(null);
+            $table->foreign('invoice_id')->references('invoice_id')->on('organisation_invoices')->onDelete('cascade')->onUpdate('cascade');
 
             $table->unsignedInteger('ticket_id')->nullable()->default(null);
             $table->foreign('ticket_id')->references('id')->on('tickets')->onDelete('cascade')->onUpdate('cascade');
 
-            $table->string('subject');
+            $table->string('subject')->nullable()->default(null);
             $table->text('message');
+            $table->string('type')->nullable()->default(null);
 
-            $table->string('file')->nullable()->default(null);
-
-            $table->string('type');
-
-            $table->enum('status', [ 'closed', 'open' ])->default('open');
+            $table->enum('status', [ 'closed', 'open' ])->nullable()->default(null);
 
             $table->timestamps();
         });
