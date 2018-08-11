@@ -42,6 +42,12 @@ class OrganisationInvoice extends Model
         return $this->hasOne('App\OrganisationDiscountCoupon', 'invoice_id', 'invoice_id');
     }
 
+    # plan
+    public function plan()
+    {
+        return json_decode($this->plan);
+    }
+
     # ücret bilgileri
     public function fee()
     {

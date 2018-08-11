@@ -143,11 +143,13 @@
                     <i class="material-icons">settings</i>
                 </a>
             </li>
+            @if ($user->id == $user->organisation->user_id)
             <li class="tab">
                 <a href="#tab-4">
                     <i class="material-icons">offline_pin</i>
                 </a>
             </li>
+            @endif
         </ul>
     </div>
     <div id="tab-1" class="card-content grey lighten-4">
@@ -857,9 +859,22 @@
         </div>
     </div>
 
-    <div id="tab-4" class="card-content grey lighten-4">
-        fatura geçmişi
+    @if ($user->id == $user->organisation->user_id)
+    <div id="tab-4" class="grey lighten-4">
+        <div class="collection">
+        @foreach ($user->organisation->invoices(20) as $invoice)
+            <a href="{{ route('organisation.invoice', $invoice->invoice_id) }}" class="collection-item d-flex waves-effect {{ $invoice->paid_at ? 'grey-text' : 'red-text' }}">
+                <i class="material-icons align-self-center">history</i>
+                <span class="align-self-center">
+                    <p>{{ $invoice->plan()->name }} ({{ $invoice->plan()->properties->capacity->value }} kullanıcı)</p>
+                    <p class="grey-text">{{ date('d.m.Y H:i', strtotime($invoice->created_at)) }}</p>
+                </span>
+                <small class="badge ml-auto">{{ $invoice->paid_at ? date('d.m.Y H:i', strtotime($invoice->paid_at)) : 'ÖDENMEDİ' }}</small>
+            </a>
+        @endforeach
+        </div>
     </div>
+    @endif
 </div>
 @endsection
 

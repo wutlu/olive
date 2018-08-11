@@ -144,7 +144,7 @@ class OrganisationController extends Controller
     {
         $user = auth()->user();
 
-        $plan = json_decode($user->organisation->invoices(1)[0]->plan);
+        $plan = $user->organisation->invoices(1)[0]->plan();
 
         return view('organisation.settings', compact('user', 'plan'));
     }
@@ -711,11 +711,9 @@ class OrganisationController extends Controller
     # 
     public static function invoice(int $id)
     {
-        $invoice = OrganisationInvoice::where('invoice_id', $id)->where('user_id', auth()->user()->id)->firstOrFail();
+        $invoice = OrganisationInvoice::where('invoice_id', $id)->where('organisation_id', auth()->user()->organisation_id)->firstOrFail();
 
-        $plan = json_decode($invoice->plan);
-
-        return view('organisation.invoice', compact('invoice', 'plan'));
+        return view('organisation.invoice', compact('invoice'));
     }
 
     # 

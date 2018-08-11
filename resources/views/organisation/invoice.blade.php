@@ -263,7 +263,7 @@
         <tbody>
             <tr>
                 <td class="description">
-                    <p>{{ $plan->name }} ({{ $plan->properties->capacity->value }} kullanıcı)</p>
+                    <p>{{ $invoice->plan()->name }} ({{ $invoice->plan()->properties->capacity->value }} kullanıcı)</p>
                 </td>
                 <td class="quantity">{{ $invoice->month }} Ay</td>
                 <td class="unit-price">
@@ -315,10 +315,11 @@
             @endif
         @endif
     </div>
+    @if (!$invoice->paid_at)
     <div class="self-area">
         <div class="title">Hesap Bilgisi</div>
         <div class="body">Ödemenizi; fatura numarası açıklamada olacak şekilde aşağıdaki hesap numaralarından herhangi birine yapabilirsiniz.</div>
-        <div class="body">Daha sonra <a href="{{ route('settings.support', [ 'type' => 'payment-receipt' ]) }}"><strong>Ayarlar/Destek</strong></a> sayfasından ödeme bildirimi yapmanız gerekiyor.</div>
+        <div class="body">Daha sonra <a href="{{ route('settings.support', [ 'type' => 'odeme-bildirimi' ]) }}"><strong>Ayarlar/Destek</strong></a> sayfasından ödeme bildirimi yapmanız gerekiyor.</div>
     </div>
     <div class="self-area">
         @foreach(config('formal.banks') as $key => $bank)
@@ -328,6 +329,7 @@
         </div>
         @endforeach
     </div>
+    @endif
 </div>
 
 </body>

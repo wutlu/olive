@@ -9919,3 +9919,31 @@ input[type=range].focused:focus:not(.active)::-ms-thumb {
 .mx-auto {
     margin-right: auto;
 }
+
+.mb-1 {
+  margin-bottom: 2rem !important;
+}
+.mb-2 {
+  margin-bottom: 2rem !important;
+}
+
+.mt-1 {
+  margin-top: 2rem !important;
+}
+.mt-2 {
+  margin-top: 2rem !important;
+}
+
+.ml-1 {
+  margin-left: 2rem !important;
+}
+.ml-2 {
+  margin-left: 2rem !important;
+}
+
+.mr-1 {
+  margin-right: 2rem !important;
+}
+.mr-2 {
+  margin-right: 2rem !important;
+}
