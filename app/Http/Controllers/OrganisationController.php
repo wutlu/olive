@@ -711,7 +711,13 @@ class OrganisationController extends Controller
     # 
     public static function invoice(int $id)
     {
-        $invoice = OrganisationInvoice::where('invoice_id', $id)->where('organisation_id', auth()->user()->organisation_id)->firstOrFail();
+        $user = auth()->user();
+        $invoice = OrganisationInvoice::where('invoice_id', $id)
+                                      ->where(function ($query) use ($user) {
+                                            $query->orWhere('organisation_id', $user->organisation_id)
+                                                  ->orWhere('user_id', $user->id);
+                                      })
+                                      ->firstOrFail();
 
         return view('organisation.invoice', compact('invoice'));
     }

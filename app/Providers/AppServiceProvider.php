@@ -33,7 +33,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Validator::extend('coupon_exists', function($attribute, $key) {
-            $coupon = OrganisationDiscountCoupon::whereNull('organisation_id')->where('key', $key)->count();
+            $coupon = OrganisationDiscountCoupon::whereNull('invoice_id')->where('key', $key)->count();
 
             return $coupon ? true : false;
         });

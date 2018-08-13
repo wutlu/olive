@@ -44,7 +44,12 @@ class TicketController extends Controller
         $ticket->user_id = $user->id;
         $ticket->status = 'open';
         $ticket->fill($request->all());
-        $ticket->invoice_id = $user->organisation->invoices(1)[0]->paid_at ? null : $user->organisation->invoices(1)[0]->invoice_id;
+
+        if ($user->organisation)
+        {
+            $ticket->invoice_id = $user->organisation->invoices(1)[0]->paid_at ? null : $user->organisation->invoices(1)[0]->invoice_id;
+        }
+
         $ticket->save();
         $ticket->id = $ticket->id.rand(100, 999);
         $ticket->save();

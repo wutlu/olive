@@ -133,7 +133,7 @@
             id="activities"
             data-href="{{ route('dashboard.activities') }}"
             data-skip="0"
-            data-take="5"
+            data-take="10"
             data-more-button="#activities-more_button"
             data-callback="__activities"
             data-nothing>

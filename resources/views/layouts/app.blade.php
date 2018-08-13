@@ -144,6 +144,12 @@
                     Organizasyon Yönetimi
                 </a>
             </li>
+            <li>
+                <a class="waves-effect" href="#">
+                    <i class="material-icons">people</i>
+                    Kullanıcı Yönetimi
+                </a>
+            </li>
 
             <li>
                 <a href="#" class="subheader">Kullanıcı</a>
