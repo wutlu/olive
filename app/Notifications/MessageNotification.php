@@ -22,9 +22,9 @@ class MessageNotification extends Notification implements ShouldQueue
      */
     public function __construct(string $subject, string $greeting, string $text)
     {
-        $this->subject = $subject;
+        $this->subject  = $subject;
         $this->greeting = $greeting;
-        $this->text = $text;
+        $this->text     = $text;
     }
 
     /**

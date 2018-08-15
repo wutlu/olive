@@ -78,7 +78,7 @@
                     ]
                 }),
                 'size': 'modal-medium',
-                'title': 'Destek Talebi',
+                'title': 'Talep Oluştur',
                 'options': {
                     dismissible: false
                 }
@@ -160,6 +160,15 @@
         <div class="card-content">
             <span class="card-title">Destek Taleplerim</span>
             <p class="grey-text">{{ count($tickets).'/'.$tickets->total() }}</p>
+
+            @if (!count($tickets))
+                <div class="not-found">
+                    <i class="material-icons">cloud</i>
+                    <i class="material-icons">cloud</i>
+                    <i class="material-icons">wb_sunny</i>
+                    <p>Talep Yok</p>
+                </div>
+            @endif
         </div>
         @if (count($tickets))
         <div class="collection">
@@ -183,15 +192,6 @@
     </div>
 
     {!! $tickets->links('vendor.pagination.materializecss') !!}
-
-    @if (!count($tickets))
-    <div class="not-found">
-        <i class="material-icons">cloud</i>
-        <i class="material-icons">cloud</i>
-        <i class="material-icons">wb_sunny</i>
-        <p>Talep Bulunamadı.</p>
-    </div>
-    @endif
 @endsection
 
 @section('dock')

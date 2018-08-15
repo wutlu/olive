@@ -24,8 +24,8 @@ class PlanCalculateRequest extends FormRequest
     public function rules()
     {
         return [
-            'plan_id' => 'required|integer|in:2,3,4',
-            'month' => 'required|integer|min:1|max:24',
+            'plan_id'     => 'required|integer|in:2,3,4',
+            'month'       => 'required|integer|min:1|max:24',
             'coupon_code' => 'nullable|string|max:16|coupon_exists'
         ];
     }

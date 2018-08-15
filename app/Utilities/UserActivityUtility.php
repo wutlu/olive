@@ -2,7 +2,7 @@
 
 namespace App\Utilities;
 
-use App\UserActivity;
+use App\Models\User\UserActivity;
 
 class UserActivityUtility
 {

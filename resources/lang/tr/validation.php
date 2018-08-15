@@ -60,7 +60,7 @@ return [
     'min' => [
         'numeric' => ':attribute değeri :min değerinden büyük olmalıdır.',
         'file' => ':attribute değeri :min kilobayt değerinden büyük olmalıdır.',
-        'string' => ':attribute değeri :min karakterden büyük olmalıdır.',
+        'string' => ':attribute değeri :min karakterden uzun olmalıdır.',
         'array' => ':attribute en az :min nesneye sahip olmalıdır.',
     ],
     'not_in' => ':attribute geçerli değil.',
@@ -160,6 +160,10 @@ return [
         'message'            => 'Mesaj',
         'subject'            => 'Konu',
         'file'               => 'Dosya',
-        'ticket_id'          => 'Destek'
+        'ticket_id'          => 'Destek',
+        'avatar'             => 'Avatar',
+        'notification'       => 'Bildirim',
+        'string'             => 'Kelime',
+        'id'                 => 'Kimlik'
     ],
 ];

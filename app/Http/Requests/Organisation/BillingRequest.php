@@ -49,7 +49,7 @@ class BillingRequest extends FormRequest
             'address'            => 'required|string|max:255',
             'postal_code'        => 'required|numeric|max:99999',
 
-            'tos'                => 'required|in:on'
+            'tos'                => 'accepted'
         ];
     }
 }

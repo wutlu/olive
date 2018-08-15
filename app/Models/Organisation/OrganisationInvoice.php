@@ -1,14 +1,11 @@
 <?php
 
-namespace App;
+namespace App\Models\Organisation;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class OrganisationInvoice extends Model
 {
-    use SoftDeletes;
-
 	protected $table = 'organisation_invoices';
 	protected $fillable = [
 		'invoice_id',
@@ -28,18 +25,18 @@ class OrganisationInvoice extends Model
 	public $incrementing = false;
 	protected $primaryKey = 'invoice_id';
 
-    protected $dates = [ 'deleted_at', 'paid_at' ];
+    protected $dates = [ 'paid_at' ];
 
     # fatura bilgileri
     public function info()
     {
-        return $this->hasOne('App\BillingInformation', 'id', 'billing_information_id');
+        return $this->hasOne('App\Models\BillingInformation', 'id', 'billing_information_id');
     }
 
     # indirim kuponu
     public function discountCoupon()
     {
-        return $this->hasOne('App\OrganisationDiscountCoupon', 'invoice_id', 'invoice_id');
+        return $this->hasOne('App\Models\Organisation\OrganisationDiscountCoupon', 'invoice_id', 'invoice_id');
     }
 
     # plan
@@ -76,5 +73,11 @@ class OrganisationInvoice extends Model
     	$arr['total_price'] = $arr['total_price'] + $arr['amount_of_tax'];
 
     	return (object) $arr;
+    }
+
+    # organizasyon
+    public function organisation()
+    {
+        return $this->hasOne('App\Models\Organisation\Organisation', 'id', 'organisation_id');
     }
 }

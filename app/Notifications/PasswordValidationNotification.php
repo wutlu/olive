@@ -21,7 +21,7 @@ class PasswordValidationNotification extends Notification implements ShouldQueue
      */
     public function __construct(int $user_id, string $session_id)
     {
-        $this->user_id = $user_id;
+        $this->user_id    = $user_id;
         $this->session_id = $session_id;
     }
 

@@ -1,15 +1,12 @@
 <?php
 
-namespace App;
+namespace App\Models\Organisation;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
 
 class Organisation extends Model
 {
-    use SoftDeletes;
-
     protected $table = 'organisations';
     protected $fillable = [
 		'name',
@@ -20,24 +17,22 @@ class Organisation extends Model
         'status'
     ];
 
-    protected $dates = [ 'deleted_at' ];
-
     # users
     public function users()
     {
-        return $this->hasMany('App\User', 'organisation_id', 'id');
+        return $this->hasMany('App\Models\User\User', 'organisation_id', 'id');
     }
 
     # author
     public function author()
     {
-        return $this->hasOne('App\User', 'id', 'user_id');
+        return $this->hasOne('App\Models\User\User', 'id', 'user_id');
     }
 
     # faturalar
     public function invoices(int $take = 1)
     {
-        return $this->hasMany('App\OrganisationInvoice', 'organisation_id', 'id')->orderBy('created_at', 'DESC')->limit($take)->get();
+        return $this->hasMany('App\Models\Organisation\OrganisationInvoice', 'organisation_id', 'id')->orderBy('created_at', 'DESC')->limit($take)->get();
     }
 
     # kalan gün

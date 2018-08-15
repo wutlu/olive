@@ -4,6 +4,11 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::get('panel', 'HomeController@dashboard')->name('dashboard');
 Route::get('aktiviteler', 'HomeController@activity')->name('dashboard.activities');
 
+Route::get('route-by-id', 'RouteController@generateById')->name('route.generate.id');
+
+Route::get('panel-monitor', 'HomeController@monitor')->name('dashboard.monitor');
+Route::get('intro/{key}', 'HomeController@intro')->name('intro')->where('key', '('.implode('|', config('app.intro.keys')).')');;
+
 Route::prefix('organizasyon')->group(function () {
     Route::get('plan', 'OrganisationController@select')->name('organisation.create.select');
     Route::get('plan/{id}', 'OrganisationController@details')->name('organisation.create.details');
@@ -12,6 +17,35 @@ Route::prefix('organizasyon')->group(function () {
     Route::get('/', 'OrganisationController@result')->name('organisation.create.result');
 
     Route::patch('update/name', 'OrganisationController@updateName')->name('organisation.update.name');
+});
+
+Route::prefix('admin')->middleware([ 'root' ])->group(function () {
+    Route::prefix('destek-talepleri')->group(function () {
+        Route::get('{status?}', 'TicketController@adminList')->name('admin.tickets')->where('status', '(open|closed)');
+
+        Route::get('talep/{id}', 'TicketController@adminView')->name('admin.ticket');
+        Route::patch('talep/{id}/kapat', 'TicketController@adminClose')->name('admin.ticket.close');
+        Route::put('talep/cevap', 'TicketController@adminReply')->name('admin.ticket.reply');
+    });
+
+    Route::prefix('kullanici-yonetimi')->group(function () {
+        Route::get('kullanicilar', 'UserController@adminListView')->name('admin.user.list');
+        Route::get('kullanicilar/json', 'UserController@adminListViewJson')->name('admin.user.list.json');
+
+        Route::get('kullanici/{id}', 'UserController@adminView')->name('admin.user');
+        Route::post('kullanici/{id}', 'UserController@adminUpdate');
+
+        Route::get('kullanici/{id}/bildirimler', 'UserController@adminNotifications')->name('admin.user.notifications');
+        Route::patch('kullanici/{id}/bildirim', 'UserController@adminNotificationUpdate')->name('admin.user.notification');
+
+        Route::get('kullanici/{id}/fatura-gecmisi', 'UserController@adminInvoiceHistory')->name('admin.user.invoices');
+        Route::get('kullanici/{id}/destek-talepleri', 'UserController@adminTickets')->name('admin.user.tickets');
+    });
+
+    Route::prefix('organizasyon-yonetimi')->group(function () {
+        Route::get('organizasyonlar', 'OrganisationController@adminList')->name('admin.organisation.list');
+        Route::get('organizasyon/{id}', 'OrganisationController@adminView')->name('admin.organisation');
+    });
 });
 
 Route::prefix('ayarlar')->group(function () {
@@ -27,11 +61,13 @@ Route::prefix('ayarlar')->group(function () {
         Route::delete('fatura-iptal', 'OrganisationController@invoiceCancel')->name('settings.organisation.invoice.cancel');
     });
 
-    Route::get('destek/{type?}', 'TicketController@list')->name('settings.support')->where('type', '('.implode('|', array_keys(config('app.ticket.types'))).')');
-    Route::get('destek-talebi/{id}', 'TicketController@view')->name('settings.support.ticket');
-    Route::patch('destek-talebi/{id}/kapat', 'TicketController@close')->name('settings.support.ticket.close');
-    Route::put('destek-talebi/cevap', 'TicketController@reply')->name('settings.support.ticket.reply');
-    Route::post('destek', 'TicketController@submit')->name('settings.support.submit');
+    Route::prefix('destek')->group(function () {
+        Route::get('talepler/{type?}', 'TicketController@list')->name('settings.support')->where('type', '('.implode('|', array_keys(config('app.ticket.types'))).')');
+        Route::get('talep/{id}', 'TicketController@view')->name('settings.support.ticket');
+        Route::patch('talep/{id}/kapat', 'TicketController@close')->name('settings.support.ticket.close');
+        Route::put('talep/cevap', 'TicketController@reply')->name('settings.support.ticket.reply');
+        Route::post('/', 'TicketController@submit')->name('settings.support.submit');
+    });
 
     Route::get('e-posta', 'OrganisationController@settings')->name('settings.email');
     Route::get('sifre', 'OrganisationController@settings')->name('settings.password');
@@ -51,8 +87,6 @@ Route::prefix('geo')->group(function () {
     Route::get('countries', 'GeoController@countries')->name('geo.countries');
     Route::get('states', 'GeoController@states')->name('geo.states');
 });
-
-Route::get('intro/gec', 'HomeController@skipIntro')->name('intro.skip');
 
 Route::prefix('kullanici')->group(function () {
     Route::get('/', 'UserController@loginView')->name('user.login');

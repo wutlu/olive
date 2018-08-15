@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddInvoiceIdColumnForOrganisationInvoicesTable extends Migration
+class AddInvoiceIdToOrganisationInvoicesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -26,6 +26,8 @@ class AddInvoiceIdColumnForOrganisationInvoicesTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('organisation_discount_coupons', function (Blueprint $table) {
+            //
+        });
     }
 }

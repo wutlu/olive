@@ -26,7 +26,7 @@
                     .animate({ 'opacity': 1 }, 1000)
                     .children('.card-image')
                     .children('img')
-                    .attr('src', '{{ asset('img/md-s/34.jpg') }}')
+                    .attr('src', '{{ asset('img/md/34.jpg') }}')
                     .next('a')
                     .removeClass('green')
                     .addClass('disabled')
@@ -72,17 +72,35 @@
     @endpush
     <div class="card ticket-card">
         <div class="card-image">
-            <img src="{{ asset('img/md-s/'.($ticket->status == 'open' ? '7' : '34').'.jpg') }}" alt="Destek Talebi" />
+            <img src="{{ asset('img/md/'.($ticket->status == 'open' ? '7' : '34').'.jpg') }}" alt="Destek Talebi" />
             <a href="javascript:close()" class="btn-floating btn-large halfway-fab waves-effect waves-light {{ $ticket->status == 'open' ? 'green' : 'disabled' }}">
                 <i class="material-icons">{{ $ticket->status == 'open' ? 'lock_open' : 'lock' }}</i>
             </a>
             <span class="card-title">#{{ $ticket->id }}</span>
         </div>
+        <div class="card-content grey lighten-5 rounded-0">
+            <ul class="item-group">
+                <li class="item">
+                    <small class="grey-text">İlgili Organizasyon</small>
+                    <p>{{ @$ticket->invoice ? $ticket->invoice->organisation->name : '-' }}</p>
+                </li>
+                <li class="item">
+                    <small class="grey-text">İlgili Kullanıcı</small>
+                    <p>{{ $ticket->user->name }}</p>
+                </li>
+                <li class="item">
+                    <small class="grey-text">Açıldığı Tarih</small>
+                    <p>{{ date('d.m.Y H:i', strtotime($ticket->created_at)) }}</p>
+                </li>
+                @isset(config('app.ticket.types')[$ticket->type])
+                <li class="item">
+                    <small class="grey-text">İlgili Kategori</small>
+                    <p>{{ @config('app.ticket.types')[$ticket->type] ? config('app.ticket.types')[$ticket->type] : '-' }}</p> 
+                </li>
+                @endisset
+            </ul>
+        </div>
         <div class="card-content">
-            @isset(config('app.ticket.types')[$ticket->type])
-            <p class="grey-text mb-4">{{ config('app.ticket.types')[$ticket->type] }}</p> 
-            @endisset
-            <p class="grey-text mb-4">{{ date('d.m.Y H:i', strtotime($ticket->created_at)) }}</p> 
             <span class="card-title">{{ $ticket->subject }}</span>
             <div class="md-area">{!! Term::markdown($ticket->message) !!}</div>
         </div>
@@ -99,7 +117,7 @@
         <i class="material-icons">cloud</i>
         <i class="material-icons">cloud</i>
         <i class="material-icons">wb_sunny</i>
-        <p>Hiç Cevap Yazılmadı</p>
+        <p>Talep Cevap Bekliyor...</p>
     </div>
     @endforelse
 
@@ -110,7 +128,7 @@
                     <div class="input-field">
                         <textarea name="message" id="message" data-length="500" class="materialize-textarea validate"></textarea>
                         <label for="message">Cevap</label>
-                        <span class="helper-text">Destek için cevap metniniz.</span>
+                        <span class="helper-text">Yanıt verebilir, veya ekeleme yapabilirsiniz.</span>
                     </div>
                     <div class="right-align">
                         <button type="submit" class="btn-flat waves-effect">Gönder</button>

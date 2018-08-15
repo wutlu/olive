@@ -29,7 +29,6 @@ class CreateOrganisationsTable extends Migration
             $table->boolean('status')->default(0);
 
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

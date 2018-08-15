@@ -3,10 +3,12 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+
 use Validator;
 use Request;
 use Hash;
-use App\OrganisationDiscountCoupon;
+
+use App\Models\Organisation\OrganisationDiscountCoupon;
 
 class AppServiceProvider extends ServiceProvider
 {

@@ -30,6 +30,21 @@ return [
         ]
     ],
 
+    'intro' => [
+        'keys' => [
+            'welcome.create.organisation'
+        ]
+    ],
+
+    'notifications' => [
+        'test' => 'X Bildirimleri',
+        'test1' => 'y Bildirimleri',
+        'test2' => 'c Bildirimleri',
+        'test3' => 'd Bildirimleri'
+    ],
+
+    'group_email' => env('GROUP_EMAIL'),
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers

@@ -62,5 +62,6 @@ class Kernel extends HttpKernel
 
         // private middleware
         'organisation' => \App\Http\Middleware\Organisation::class,
+        'root' => \App\Http\Middleware\CheckRootMiddleware::class,
     ];
 }

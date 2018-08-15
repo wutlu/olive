@@ -398,9 +398,9 @@ $(document).on('change', 'select.json, input[type=radio].json, input[type=checkb
     return false;
 }).on('keydown', 'input.json-search', function() {
     var __ = $(this),
-        target = eval(element(__.data('jsonTarget')));
+        target = eval(element(__.data('json-target')));
 
-    target.data('skip', 0).addClass('json-clear')
+        target.data('skip', 0).addClass('json-clear')
 })
 
 $(window).on('load', function() {
@@ -453,6 +453,11 @@ function vzAjax(__)
     else
     {
         __.attr('disabled', true)
+
+        if (__.is('input') && __.attr('type') == 'checkbox')
+        {
+            $('input[name=' + __.attr('name') + ']').attr('disabled', true)
+        }
     }
 
     if (__.is('input') || __.is('select') || __.is('textarea'))
@@ -756,6 +761,11 @@ function __result(__)
         else
         {
             __.removeAttr('disabled')
+
+            if (__.is('input') && __.attr('type') == 'checkbox')
+            {
+                $('input[name=' + __.attr('name') + ']').removeAttr('disabled')
+            }
         }
 
         M.updateTextFields()

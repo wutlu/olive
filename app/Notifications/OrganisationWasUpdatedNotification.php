@@ -21,7 +21,7 @@ class OrganisationWasUpdatedNotification extends Notification implements ShouldQ
      */
     public function __construct(string $name, int $id)
     {
-        $this->name = $name;
+        $this->name            = $name;
         $this->organisation_id = $id;
     }
 

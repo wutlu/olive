@@ -8,6 +8,8 @@ use App\Http\Requests\User\RegisterRequest;
 use App\Http\Requests\User\LoginRequest;
 use App\Http\Requests\User\PasswordGetRequest;
 use App\Http\Requests\User\PasswordNewRequest;
+use App\Http\Requests\User\Admin\UpdateRequest as AdminUpdateRequest;
+use App\Http\Requests\SearchRequest;
 
 use App\Notifications\PasswordValidationNotification;
 use App\Notifications\RegisterValidationNotification;
@@ -17,9 +19,11 @@ use App\Notifications\SignInNotification;
 use App\Notifications\OrganisationDiscountCouponNotification;
 
 use App\Utilities\UserActivityUtility;
-use App\OrganisationDiscountDay;
-use App\OrganisationDiscountCoupon;
-use App\User;
+
+use App\Models\Organisation\OrganisationDiscountDay;
+use App\Models\Organisation\OrganisationDiscountCoupon;
+use App\Models\User\User;
+use App\Models\User\UserNotification;
 
 use Auth;
 use Session;
@@ -109,10 +113,7 @@ class UserController extends Controller
                     ]
                 );
 
-                if ($user->signin_notification)
-                {
-                    $user->notify(new SignInNotification($user->name, $data));
-                }
+                $user->notify(new SignInNotification($user->name, $data));
 
                 Session::getHandler()->destroy($previous_session);
             }
@@ -155,7 +156,10 @@ class UserController extends Controller
     # password new get
     public static function passwordNew(string $id, string $sid)
     {
-        $user = User::where('id', $id)->where('session_id', $sid)->firstOrFail();
+        $user = User::where([
+            'id' => $id,
+            'session_id' => $sid
+        ])->firstOrFail();
 
         return view('user.password_new', compact('user'));
     }
@@ -163,7 +167,10 @@ class UserController extends Controller
     # password new patch
     public static function passwordNewPatch(string $id, string $sid, PasswordNewRequest $request)
     {
-        $user = User::where('id', $id)->where('session_id', $sid)->firstOrFail();
+        $user = User::where([
+            'id' => $id,
+            'session_id' => $sid
+        ])->firstOrFail();
 
         if ($request->email != $user->email)
         {
@@ -202,7 +209,12 @@ class UserController extends Controller
     # register validate
     public static function registerValidate(string $id, string $sid)
     {
-        $user = User::where('id', $id)->where('session_id', $sid)->where('verified', false)->firstOrFail();
+        $user = User::where([
+            'id' => $id,
+            'session_id' => $sid,
+            'verified' => false
+        ])->firstOrFail();
+
         $user->verified = true;
         $user->save();
 
@@ -306,8 +318,140 @@ class UserController extends Controller
     # logout
     public static function logout()
     {
-    	Auth::logout();
+        auth()->logout();
 
-    	return redirect()->route('user.login');
+        return redirect()->route('user.login');
+    }
+
+    # ######################################## [ ADMIN ] ######################################## #
+    # 
+    # admin view
+    # 
+    public static function adminView(int $id)
+    {
+        $user = User::where('id', $id)->firstOrFail();
+
+        return view('user.admin.view', compact('user'));
+    }
+
+    # ######################################## [ ADMIN ] ######################################## #
+    # 
+    # admin update
+    # 
+    public static function adminUpdate(int $id, AdminUpdateRequest $request)
+    {
+        $user = User::where('id', $id)->firstOrFail();
+        $user->name = $request->name;
+        $user->password = $request->password ? bcrypt($request->password) : $user->password;
+        $user->email = $request->email;
+        $user->verified = $request->verified ? true : false;
+        $user->avatar = $request->avatar ? null : $user->avatar;
+        $user->root = $request->root ? true : false;
+        $user->save();
+
+        return [
+            'status' => 'ok'
+        ];
+    }
+
+    # ######################################## [ ADMIN ] ######################################## #
+    # 
+    # admin notifications
+    # 
+    public static function adminNotifications(int $id)
+    {
+        $user = User::where('id', $id)->firstOrFail();
+
+        return view('user.admin.notifications', compact('user'));
+    }
+
+    # ######################################## [ ADMIN ] ######################################## #
+    # 
+    # admin update notification
+    # 
+    public static function adminNotificationUpdate(int $id, Request $request)
+    {
+        $user = User::where('id', $id)->firstOrFail();
+
+        $request->validate([
+            'key' => 'string|in:'.implode(',', array_keys(config('app.notifications')))
+        ]);
+
+        if ($user->notification($request->key))
+        {
+            UserNotification::where([
+                'user_id' => $id,
+                'key' => $request->key
+            ])->delete();
+        }
+        else
+        {
+            UserNotification::create([
+                'user_id' => $id,
+                'key' => $request->key
+            ]);
+        }
+
+        return [
+            'status' => 'ok'
+        ];
+    }
+
+    # ######################################## [ ADMIN ] ######################################## #
+    # 
+    # admin invoice history
+    # 
+    public static function adminInvoiceHistory(int $id)
+    {
+        $user = User::where('id', $id)->firstOrFail();
+        $invoices = $user->invoices()->paginate(5);
+
+        return view('user.admin.invoiceHistory', compact('user', 'invoices'));
+    }
+
+    # ######################################## [ ADMIN ] ######################################## #
+    # 
+    # admin tickets
+    # 
+    public static function adminTickets(int $id)
+    {
+        $user = User::where('id', $id)->firstOrFail();
+        $tickets = $user->tickets();
+
+        return view('user.admin.tickets', compact('user', 'tickets'));
+    }
+
+    # ######################################## [ ADMIN ] ######################################## #
+    # 
+    # admin list view
+    # 
+    public static function adminListView()
+    {
+        return view('user.admin.list');
+    }
+
+    # ######################################## [ ADMIN ] ######################################## #
+    # 
+    # admin list view
+    # 
+    public static function adminListViewJson(SearchRequest $request)
+    {
+        $take = $request->take;
+        $skip = $request->skip;
+
+        $query = new User;
+        $query = $request->string ? $query->where(function ($query) use ($request) {
+                                    $query->orWhere('name', 'ILIKE', '%'.$request->string.'%')
+                                          ->orWhere('email', 'ILIKE', '%'.$request->string.'%');
+                                    }) : $query;
+        $query = $query->skip($skip)
+                       ->take($take)
+                       ->orderBy('id', 'DESC');
+
+        return [
+            'status' => 'ok',
+            'hits' => $query->get(),
+            'total' => $query->count()
+        ];
     }
 }

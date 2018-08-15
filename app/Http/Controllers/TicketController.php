@@ -3,17 +3,27 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 use App\Http\Requests\TicketSubmitRequest;
 use App\Http\Requests\TicketReplyRequest;
-use App\Ticket;
+
+use App\Models\Ticket;
+use App\Jobs\MonitorJob;
 
 use App\Notifications\TicketNotification;
+use App\Notifications\MessageNotification;
+
+use App\Utilities\UserActivityUtility;
 
 class TicketController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('root')->only([
+            'adminList',
+            'adminView'
+        ]);
     }
 
     # 
@@ -54,7 +64,28 @@ class TicketController extends Controller
         $ticket->id = $ticket->id.rand(100, 999);
         $ticket->save();
 
-        $user->notify(new TicketNotification($request->subject, $request->message, $ticket->id));
+        $subject = 'Destek #'.$ticket->id.' [AÇILDI]';
+        $markdown = 'Yeni bir destek talebi oluşturdunuz. Talebiniz, ekibimiz tarafından en kısa sürede incelenip yanıtlanacaktır.';
+
+        $ticket->user->notify(new TicketNotification($subject, $markdown, $ticket->id));
+
+        UserActivityUtility::push(
+            $subject,
+            [
+                'key'       => implode('-', [ 'user', 'support', $ticket->user->id ]),
+                'icon'      => 'message',
+                'markdown'  => $markdown,
+                'button' => [
+                    'type' => 'http',
+                    'method' => 'GET',
+                    'action' => route('settings.support.ticket', $ticket->id),
+                    'class' => 'btn-flat waves-effect',
+                    'text' => 'Talebi Gör'
+                ]
+            ]
+        );
+
+        MonitorJob::dispatch('monitor:ticket:count');
 
         return [
             'status' => 'ok',
@@ -79,6 +110,30 @@ class TicketController extends Controller
         $ticket->id = $ticket->id.rand(100, 999);
         $ticket->save();
 
+        if ($user->root())
+        {
+            $subject = 'Destek #'.$request->ticket_id.' [YANITLANDI]';
+            $markdown = 'Destek talebiniz, '.$user->name.' tarafından yanıtlandı.';
+
+            $ticket->user->notify(new TicketNotification($subject, $markdown, $request->ticket_id));
+
+            UserActivityUtility::push(
+                $subject,
+                [
+                    'key'       => implode('-', [ 'user', 'support', $ticket->user->id ]),
+                    'icon'      => 'message',
+                    'markdown'  => $markdown,
+                    'button' => [
+                        'type' => 'http',
+                        'method' => 'GET',
+                        'action' => route('settings.support.ticket', $request->ticket_id),
+                        'class' => 'btn-flat waves-effect',
+                        'text' => 'Yanıtı Gör'
+                    ]
+                ]
+            );
+        }
+
         return [
             'status' => 'ok',
             'data' => [
@@ -92,7 +147,10 @@ class TicketController extends Controller
     # 
     public static function view(int $id)
     {
-        $ticket = Ticket::where('id', $id)->where('user_id', auth()->user()->id)->firstOrFail();
+        $ticket = Ticket::where([
+            'id' => $id,
+            'user_id' => auth()->user()->id
+        ])->firstOrFail();
 
         return view('ticket.view', compact('ticket'));
     }
@@ -102,12 +160,65 @@ class TicketController extends Controller
     # 
     public static function close(int $id)
     {
-        $ticket = Ticket::where('id', $id)->where('user_id', auth()->user()->id)->firstOrFail();
+        $user = auth()->user();
+
+        $ticket = Ticket::where('id', $id);
+        $ticket = $user->root() ? $ticket : $ticket->where('user_id', $user->id);
+        $ticket = $ticket->firstOrFail();
+
         $ticket->status = 'closed';
         $ticket->save();
+
+        if ($user->root())
+        {
+            $subject = 'Destek #'.$id.' [KAPANDI]';
+            $markdown = 'Destek talebiniz, '.$user->name.' tarafından kapatıldı.';
+
+            $ticket->user->notify(new TicketNotification($subject, $markdown, $id));
+
+            UserActivityUtility::push(
+                $subject,
+                [
+                    'key'       => implode('-', [ 'user', 'support', $ticket->user->id ]),
+                    'icon'      => 'message',
+                    'markdown'  => $markdown,
+                    'button' => [
+                        'type' => 'http',
+                        'method' => 'GET',
+                        'action' => route('settings.support.ticket', $id),
+                        'class' => 'btn-flat waves-effect',
+                        'text' => 'Talebi Gör'
+                    ]
+                ]
+            );
+        }
+
+        MonitorJob::dispatch('monitor:ticket:count');
 
         return [
             'status' => 'ok'
         ];
+    }
+
+    # ######################################## [ ADMIN ] ######################################## #
+    # 
+    # admin list
+    # 
+    public static function adminList(string $status = 'open', int $pager = 10)
+    {
+        $tickets = Ticket::where('status', $status)->orderBy('updated_at', 'DESC')->paginate($pager);
+
+        return view('ticket.admin.list', compact('tickets', 'status'));
+    }
+
+    # ######################################## [ ADMIN ] ######################################## #
+    # 
+    # admin view
+    # 
+    public static function adminView(int $id)
+    {
+        $ticket = Ticket::where('id', $id)->firstOrFail();
+
+        return view('ticket.admin.view', compact('ticket'));
     }
 }

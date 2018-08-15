@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\UserActivity;
-use App\OrganisationDiscountDay;
+use Illuminate\Support\Facades\Redis;
 
 use App\Http\Requests\SearchRequest;
 
-use Auth;
+use App\Models\User\UserActivity;
+use App\Models\Organisation\OrganisationDiscountDay;
+use App\Models\User\UserIntro;
+
+use App\Ticket;
 
 class HomeController extends Controller
 {
@@ -17,8 +20,9 @@ class HomeController extends Controller
 		$this->middleware('auth')->only([
 			'dashboard',
             'activity',
-            'skipIntro'
+            'intro'
 		]);
+        $this->middleware('root')->only('monitor');
 	}
 
     # home
@@ -58,14 +62,25 @@ class HomeController extends Controller
     }
 
     # skip intro
-    public static function skipIntro()
+    public static function intro(string $key)
     {
-        Auth::user()->update([
-            'skip_intro' => true
-        ]);
+        $query = UserIntro::firstOrCreate([ 'user_id' => auth()->user()->id, 'key' => $key ]);
 
         return [
             'status' => 'ok'
+        ];
+    }
+
+    # monitor
+    public static function monitor()
+    {
+        return [
+            'status' => 'ok',
+            'data' => [
+                'ticket' => [
+                    'count' => Redis::get('monitor:ticket:count')
+                ]
+            ]
         ];
     }
 }

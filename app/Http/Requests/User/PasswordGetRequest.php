@@ -24,7 +24,7 @@ class PasswordGetRequest extends FormRequest
     public function rules()
     {
         return [
-            'email_password' => 'required|email|max:64|exists:users,email',
+            'email_password'     => 'required|email|max:64|exists:users,email',
             'gRecaptchaResponse' => 'required|recaptcha'
         ];
     }

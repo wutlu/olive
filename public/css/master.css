@@ -93,6 +93,8 @@ main {
     background-image: url(../img/main_bg.jpg);
     background-repeat: repeat;
     background-attachment: scroll;
+
+    background-color: #ccc;
 }
 
 footer.page-footer {

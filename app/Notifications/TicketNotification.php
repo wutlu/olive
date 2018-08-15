@@ -22,8 +22,8 @@ class TicketNotification extends Notification implements ShouldQueue
      */
     public function __construct(string $subject, string $message, int $ticket_id)
     {
-        $this->subject = $subject;
-        $this->message = $message;
+        $this->subject   = $subject;
+        $this->message   = $message;
         $this->ticket_id = $ticket_id;
     }
 
@@ -47,11 +47,11 @@ class TicketNotification extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject('Olive: Destek Talebi Oluşturuldu')
+                    ->subject($this->subject)
                     ->greeting($this->subject)
                     ->line($this->message)
                     ->level('success')
-                    ->action('Takip', route('settings.support.ticket', [ 'id' => $this->ticket_id ]));
+                    ->action('Talebi Gör', route('settings.support.ticket', [ 'id' => $this->ticket_id ]));
     }
 
     /**

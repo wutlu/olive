@@ -40,14 +40,23 @@ class TicketReplyRequest extends FormRequest
         $user = auth()->user();
 
         Validator::extend('permission', function($attribute, $id, $parameters) use ($user) {
-            $ticket = Ticket::where('user_id', $user->id)->whereNull('ticket_id')->where('status', 'open')->where('id', $id)->first();
+            if ($user->root())
+            {
+                return true;
+            }
+            else
+            {
+                $ticket = Ticket::where([ 'id' => $id, 'user_id' => $user->id, 'status' => 'open' ])
+                                ->whereNull('ticket_id')
+                                ->first();
 
-            return @$ticket ? true : false;
+                return @$ticket ? true : false;
+            }
         });
 
         return [
             'ticket_id' => 'required|integer|permission',
-            'message' => 'required|string|min:10,max:500'
+            'message'   => 'required|string|min:10,max:500'
         ];
     }
 }

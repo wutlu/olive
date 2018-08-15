@@ -146,7 +146,7 @@
             @if ($user->id == $user->organisation->user_id)
             <li class="tab">
                 <a href="#tab-4">
-                    <i class="material-icons">offline_pin</i>
+                    <i class="material-icons">update</i>
                 </a>
             </li>
             @endif
@@ -168,7 +168,7 @@
                 <p class="grey-text">{{ ($u->id == $user->organisation->user_id) ? 'Organizasyon Sahibi' : 'Kullanıcı' }}</p>
 
                 @if ($user->id != $u->id && $user->id == $user->organisation->user_id)
-                <a href="#" class="secondary-content dropdown-trigger" data-target="dropdown-user-{{ $u->id }}">
+                <a href="#" class="secondary-content dropdown-trigger" data-align="right" data-target="dropdown-user-{{ $u->id }}">
                     <i class="material-icons">more_vert</i>
                 </a>
 
@@ -342,6 +342,7 @@
                                     'href': '#',
                                     'class': 'secondary-content dropdown-trigger',
                                     'data-target': 'dropdown-user-' + obj.data.id,
+                                    'data-align': 'right',
                                     'html': $('<i />', { 'class': 'material-icons', 'html': 'more_vert' })
                                 }),
                                 $('<ul />', {
@@ -886,8 +887,5 @@
 
 $('select').formSelect()
 $('.tabs').tabs()
-$('a.secondary-content').dropdown({
-    alignment: 'right'
-})
 
 @endpush

@@ -24,9 +24,7 @@ class CreateUsersTable extends Migration
 
             $table->string('session_id');
 
-            $table->boolean('skip_intro')->default(0);
             $table->boolean('verified')->default(0);
-            $table->boolean('signin_notification')->default(0);
 
             $table->rememberToken();
             $table->timestamps();

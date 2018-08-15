@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Utilities\UserActivityUtility;
+use App\Utilities\UserActivityUtility as Activity;
 use App\Utilities\Term;
 
-use App\UserActivity;
-use App\Organisation;
-use App\OrganisationInvoice;
-use App\OrganisationDiscountCoupon;
-use App\User;
+use App\Models\User\UserActivity;
+use App\Models\Organisation\Organisation;
+use App\Models\Organisation\OrganisationInvoice as Invoice;
+use App\Models\Organisation\OrganisationDiscountCoupon as Coupon;
+use App\Models\User\User;
 
 use App\Http\Requests\PlanRequest;
 use App\Http\Requests\PlanCalculateRequest;
@@ -33,7 +33,7 @@ use App\Notifications\MessageNotification;
 
 use Request as RequestStatic;
 
-use App\BillingInformation;
+use App\Models\BillingInformation;
 
 use Carbon\Carbon;
 
@@ -110,7 +110,7 @@ class OrganisationController extends Controller
 
                     $organisation->author->notify(new MessageNotification('Olive: '.$message['title'], $message['info'], $message['body']));
 
-                    UserActivityUtility::push(
+                    Activity::push(
                         $message['title'],
                         [
                             'icon' => 'access_time',
@@ -176,7 +176,7 @@ class OrganisationController extends Controller
 
         $user->notify(new MessageNotification('Olive: '.$title, 'Merhaba, '.$user->name, $message));
 
-        UserActivityUtility::push(
+        Activity::push(
             $title,
             [
                 'icon' => 'exit_to_app',
@@ -208,7 +208,7 @@ class OrganisationController extends Controller
         $title = 'Organizasyondan Ayrıldınız';
         $message = $user->organisation->name.'; kendi isteğiniz üzerine ayrıldınız.';
 
-        UserActivityUtility::push(
+        Activity::push(
             $title,
             [
                 'icon' => 'exit_to_app',
@@ -246,7 +246,7 @@ class OrganisationController extends Controller
 
         $user->notify(new MessageNotification('Olive: '.$title, 'Merhaba, '.$user->name, $message));
 
-        UserActivityUtility::push(
+        Activity::push(
             $title,
             [
                 'icon' => 'accessibility',
@@ -262,7 +262,7 @@ class OrganisationController extends Controller
 
         $transferred_user->notify(new MessageNotification('Olive: '.$title, 'Merhaba, '.$transferred_user->name, $message));
 
-        UserActivityUtility::push(
+        Activity::push(
             $title,
             [
                 'icon' => 'accessibility',
@@ -294,7 +294,7 @@ class OrganisationController extends Controller
 
         $removed_user->notify(new MessageNotification('Olive: '.$title, 'Merhaba, '.$removed_user->name, $message));
 
-        UserActivityUtility::push(
+        Activity::push(
             $title,
             [
                 'icon' => 'exit_to_app',
@@ -345,7 +345,7 @@ class OrganisationController extends Controller
 
             $u->notify(new MessageNotification('Olive: '.$title, 'Merhaba, '.$u->name, $message));
 
-            UserActivityUtility::push(
+            Activity::push(
                 $title,
                 [
                     'icon' => 'delete',
@@ -408,7 +408,7 @@ class OrganisationController extends Controller
         # kupon varsa
         if ($request->coupon_code)
         {
-            $coupon = OrganisationDiscountCoupon::where('key', $request->coupon_code)->whereNull('organisation_id')->first();
+            $coupon = Coupon::where('key', $request->coupon_code)->whereNull('invoice_id')->first();
             $discount_with_year = config('formal.discount_with_year');
 
             if ($request->month >= 12)
@@ -473,11 +473,11 @@ class OrganisationController extends Controller
         {
             $invoice_id = date('ymdhis').rand(10, 99);
 
-            $invoice_count = OrganisationInvoice::where('invoice_id', $invoice_id)->count();
+            $invoice_count = Invoice::where('invoice_id', $invoice_id)->count();
 
             if ($invoice_count == 0)
             {
-                OrganisationInvoice::create([
+                Invoice::create([
                                 'invoice_id' => $invoice_id,
                            'organisation_id' => $organisation->id,
                                    'user_id' => $user->id,
@@ -496,7 +496,7 @@ class OrganisationController extends Controller
 
                 $user->notify(new OrganisationWasCreatedNotification($user->name, $invoice_id));
 
-                UserActivityUtility::push(
+                Activity::push(
                     'Organizasyon oluşturuldu',
                     [
                         'icon' => 'flag',
@@ -522,9 +522,9 @@ class OrganisationController extends Controller
 
         if ($request->coupon_code)
         {
-            $coupon = OrganisationDiscountCoupon::where('key', $request->coupon_code)->first();
+            $coupon = Coupon::where('key', $request->coupon_code)->first();
 
-            $coupon->organisation_id = $organisation->id;
+            $coupon->invoice_id = $invoice_id;
             $coupon->rate_year = $request->month >= 12 ? config('formal.discount_with_year') : 0;
             $coupon->save();
         }
@@ -538,11 +538,11 @@ class OrganisationController extends Controller
                 {
                     $generate_key = str_random(8);
 
-                    $key = OrganisationDiscountCoupon::where('key', $generate_key)->count();
+                    $key = Coupon::where('key', $generate_key)->count();
 
                     if ($key == 0)
                     {
-                        OrganisationDiscountCoupon::create([
+                        Coupon::create([
                             'key' => $generate_key,
                             'rate_year' => config('formal.discount_with_year'),
                             'invoice_id' => $invoice_id
@@ -622,11 +622,11 @@ class OrganisationController extends Controller
         {
             $invoice_id = date('ymdhis').rand(10, 99);
 
-            $invoice_count = OrganisationInvoice::where('invoice_id', $invoice_id)->count();
+            $invoice_count = Invoice::where('invoice_id', $invoice_id)->count();
 
             if ($invoice_count == 0)
             {
-                OrganisationInvoice::create([
+                Invoice::create([
                                 'invoice_id' => $invoice_id,
                            'organisation_id' => $organisation->id,
                                    'user_id' => $user->id,
@@ -649,11 +649,11 @@ class OrganisationController extends Controller
                     {
                         $generate_key = str_random(8);
 
-                        $key = OrganisationDiscountCoupon::where('key', $generate_key)->count();
+                        $key = Coupon::where('key', $generate_key)->count();
 
                         if ($key == 0)
                         {
-                            OrganisationDiscountCoupon::create([
+                            Coupon::create([
                                 'key' => $generate_key,
                                 'rate_year' => config('formal.discount_with_year'),
                                 'invoice_id' => $invoice_id
@@ -668,7 +668,7 @@ class OrganisationController extends Controller
 
                 $user->notify(new OrganisationWasUpdatedNotification($user->name, $invoice_id));
 
-                UserActivityUtility::push(
+                Activity::push(
                     'Fatura oluşturuldu',
                     [
                         'icon' => 'flag',
@@ -712,12 +712,16 @@ class OrganisationController extends Controller
     public static function invoice(int $id)
     {
         $user = auth()->user();
-        $invoice = OrganisationInvoice::where('invoice_id', $id)
-                                      ->where(function ($query) use ($user) {
-                                            $query->orWhere('organisation_id', $user->organisation_id)
-                                                  ->orWhere('user_id', $user->id);
-                                      })
-                                      ->firstOrFail();
+
+        $invoice = Invoice::where('invoice_id', $id)
+                          ->where(function ($query) use ($user) {
+                                if (!$user->root())
+                                {
+                                    $query->orWhere('organisation_id', $user->organisation_id)
+                                          ->orWhere('user_id', $user->id);
+                                }
+                          })
+                          ->firstOrFail();
 
         return view('organisation.invoice', compact('invoice'));
     }
@@ -729,7 +733,7 @@ class OrganisationController extends Controller
     {
         $user = auth()->user();
 
-        $invoice = OrganisationInvoice::where('invoice_id', $user->organisation->invoices()[0]->invoice_id)->whereNull('paid_at')->delete();
+        $invoice = Invoice::where('invoice_id', $user->organisation->invoices()[0]->invoice_id)->whereNull('paid_at')->delete();
 
         $user->notify(new MessageNotification('Olive: Fatura İptal Edildi', 'Organizasyon Faturasını İptal Ettiniz!', 'Organizasyon ödemesi için oluşturduğunuz fatura, ödeme tamamlanmadan iptal edildi.'));
 

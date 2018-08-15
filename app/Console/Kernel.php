@@ -24,7 +24,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // Her pazartesi ödeme bildirimi gönder.
+        # 
+        # Her pazartesi ödeme bildirimi gönder.
+        # 
         $schedule->command('check:upcoming_payments')
                  ->mondays()
                  ->timezone(config('app.timezone'));

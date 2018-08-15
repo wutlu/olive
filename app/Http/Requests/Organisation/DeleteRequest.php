@@ -4,7 +4,7 @@ namespace App\Http\Requests\Organisation;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Validator;
-use App\User;
+use App\Models\User\User;
 
 class DeleteRequest extends FormRequest
 {

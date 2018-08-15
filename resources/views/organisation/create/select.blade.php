@@ -27,6 +27,9 @@ $('.tabs').tabs();
     </div>
 
     <div class="card">
+        <div class="card-content">
+            Şu an başlangıç planı kullanmaktasınız.
+        </div>
         <div class="card-tabs">
             <ul class="tabs tabs-fixed-width">
                 @foreach (config('plans') as $key => $plan)

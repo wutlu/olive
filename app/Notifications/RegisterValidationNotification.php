@@ -22,9 +22,9 @@ class RegisterValidationNotification extends Notification implements ShouldQueue
      */
     public function __construct(int $user_id, string $session_id, string $name)
     {
-        $this->user_id = $user_id;
+        $this->name       = $name;
+        $this->user_id    = $user_id;
         $this->session_id = $session_id;
-        $this->name = $name;
     }
 
     /**

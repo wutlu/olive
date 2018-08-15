@@ -38,8 +38,8 @@
         @else
         <div class="card">
             <div class="card-image">
-                <img src="{{ asset('img/md/23.jpg') }}" alt="" />
-                <span class="card-title">Organizasyon Oluşturun</span>
+                <img src="{{ asset('img/md-s/23.jpg') }}" alt="" />
+                <span class="card-title">Başlayın</span>
             </div>
             <div class="card-content">
                 <p class="grey-text">Profesyonel bir ortamda tüm modüllerden faydalanabilmek için hemen bir organizasyon oluşturun.</p>
@@ -49,7 +49,7 @@
             </div>
         </div>
 
-        @if (!auth()->user()->skip_intro && auth()->user()->verified)
+        @if (!auth()->user()->intro('welcome.create.organisation') && auth()->user()->verified)
             <div class="tap-target teal white-text" data-target="start">
                 <div class="tap-target-content">
                     <h5>Organizasyon Oluşturun</h5>
@@ -60,9 +60,10 @@
             @push('local.scripts')
             $('.tap-target').tapTarget({
                 'onClose': function() {
-                    $.ajax({
-                        url: '{{ route('intro.skip') }}'
-                    });
+                    vzAjax($('<div />', {
+                        'class': 'json',
+                        'data-href': '{{ route('intro', 'welcome.create.organisation') }}'
+                    }))
                 }
             });
             $('.tap-target').tapTarget('open');
@@ -125,10 +126,13 @@
                             item.appendTo(ul)
                     })
                 }
+
+                $('#home-loader').hide()
             }
         }
 
         @endpush
+
         <ul class="collapsible load json-clear" 
             id="activities"
             data-href="{{ route('dashboard.activities') }}"
@@ -142,7 +146,7 @@
                     <i class="material-icons">cloud</i>
                     <i class="material-icons">cloud</i>
                     <i class="material-icons">wb_sunny</i>
-                    <p>Aktivite Bulunamadı.</p>
+                    <p>Aktivite Yok</p>
                 </div>
             </li>
             <li class="model d-none">
@@ -159,6 +163,12 @@
                 </div>
             </li>
         </ul>
+
+        @component('components.loader')
+            @slot('color', 'purple')
+            @slot('id', 'home-loader')
+        @endcomponent
+
         <div class="center-align">
             <button class="btn-flat waves-effect d-none json"
                     id="activities-more_button"

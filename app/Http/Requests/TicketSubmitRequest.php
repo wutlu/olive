@@ -25,9 +25,9 @@ class TicketSubmitRequest extends FormRequest
     {
         return [
             'invoice_id' => 'nullable|integer|exists:organisation_invoices,id',
-            'subject' => 'required|string|max:100',
-            'message' => 'required|string|min:10,max:500',
-            'type' => 'required|string|in:'.implode(',', array_keys(config('app.ticket.types')))
+            'type'       => 'required|string|in:'.implode(',', array_keys(config('app.ticket.types'))),
+            'subject'    => 'required|string|max:100',
+            'message'    => 'required|string|min:10,max:500'
         ];
     }
 }

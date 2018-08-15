@@ -127,49 +127,108 @@
                 </div>
             </li>
 
-            <!-- sadece yönetici görecek -->
+            @if (auth()->user()->root())
+            <!-- sadece yönetici -->
             <li>
                 <a href="#" class="subheader">Yönetici Menüsü</a>
             </li>
             <li>
-                <a class="waves-effect" href="#">
+                <a class="waves-effect" href="{{ route('admin.tickets') }}">
                     <i class="material-icons">mail</i>
                     Destek Talepleri
-                    <span class="badge red white-text">10+</span>
+                    <span class="badge grey white-text" data-id="ticket-count">0</span>
                 </a>
             </li>
-            <li>
-                <a class="waves-effect" href="#">
-                    <i class="material-icons">group_work</i>
-                    Organizasyon Yönetimi
-                </a>
-            </li>
-            <li>
-                <a class="waves-effect" href="#">
-                    <i class="material-icons">people</i>
-                    Kullanıcı Yönetimi
-                </a>
-            </li>
-
-            <li>
-                <a href="#" class="subheader">Kullanıcı</a>
-            </li>
+            <div class="divider"></div>
             <li>
                 <div class="collapsible-header waves-effect">
-                    <i class="material-icons">people</i>
-                    <span>{{ auth()->user()->name }}</span>
+                    <i class="material-icons">person</i>
+                    <span>Kullanıcı Yönetimi</span>
                     <i class="material-icons arrow">chevron_left</i>
                 </div>
                 <div class="collapsible-body">
                     <ul>
                         <li>
-                            <a class="waves-effect" href="{{ route('user.logout') }}">
-                                <i class="material-icons">exit_to_app</i>
-                                Çıkış
+                            <a class="waves-effect" href="{{ route('admin.organisation.list') }}">
+                                <i class="material-icons">group_work</i>
+                                Organizasyon Listesi
+                            </a>
+                        </li>
+                        <li>
+                            <a class="waves-effect" href="{{ route('admin.user.list') }}">
+                                <i class="material-icons">people</i>
+                                Kullanıcı Listesi
                             </a>
                         </li>
                     </ul>
                 </div>
+            </li>
+            <li>
+                <div class="collapsible-header waves-effect">
+                    <i class="material-icons">computer</i>
+                    <span>Sistem İzleme</span>
+                    <i class="material-icons arrow">chevron_left</i>
+                </div>
+                <div class="collapsible-body">
+                    <ul>
+                        <li>
+                            <a class="waves-effect" href="#">
+                                <i class="material-icons">memory</i>
+                                Sistem Bilgisi
+                            </a>
+                        </li>
+                        <li>
+                            <a class="waves-effect" href="#">
+                                <i class="material-icons">donut_small</i>
+                                Sistem Raporları
+                            </a>
+                        </li>
+                        <li>
+                            <a class="waves-effect" href="#">
+                                <i class="material-icons">hourglass_empty</i>
+                                Arkaplan İşleri
+                            </a>
+                        </li>
+                        <li>
+                            <a class="waves-effect" href="#">
+                                <i class="material-icons">code</i>
+                                Loglar
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            @endif
+
+            <li>
+                <a href="#" class="subheader">Kullanıcı Menüsü</a>
+            </li>
+            @if (auth()->user()->organisation)
+            <li>
+                <a class="waves-effect" href="{{ route('settings.organisation') }}">
+                    <i class="material-icons">group_work</i>
+                    {{ auth()->user()->organisation->name }}
+                </a>
+            </li>
+            <div class="divider"></div>
+            @endif
+            <li>
+                <a class="waves-effect" href="#">
+                    <i class="material-icons">person</i>
+                    Kullanıcı Bilgileri
+                </a>
+            </li>
+            <li>
+                <a class="waves-effect" href="{{ route('settings.support') }}">
+                    <i class="material-icons">help</i>
+                    Destek
+                </a>
+            </li>
+            <li>
+                <a class="waves-effect" href="{{ route('user.logout') }}">
+                    <i class="material-icons">exit_to_app</i>
+                    Çıkış
+                </a>
             </li>
         </ul>
 
@@ -221,6 +280,31 @@
     @else
         @yield('content')
     @endisset
+
+    @auth
+        @if (auth()->user()->root())
+            <div class="load" data-href="{{ route('dashboard.monitor') }}" data-callback="__monitor"></div>
+            @push('local.scripts')
+            function __monitor(__, obj)
+            {
+                var monitorTimer;
+
+                if (obj.status == 'ok')
+                {
+                    $('[data-id=ticket-count]').html(obj.data.ticket.count)
+                                              .addClass(obj.data.ticket.count > 0 ? 'red' : 'grey')
+                                              .removeClass(obj.data.ticket.count > 0 ? 'grey' : 'red')
+
+                    window.clearTimeout(monitorTimer)
+
+                    monitorTimer = setTimeout(function() {
+                        vzAjax($('[data-callback=__monitor]'))
+                    }, 20000)
+                }
+            }
+            @endpush
+        @endif
+    @endauth
 
     <div class="@isset($sidenav_fixed_layout){{ 'sidenav-fixed-layout' }}@endisset">
         <ul class="partners blue-grey darken-4">
@@ -308,7 +392,13 @@
     <!-- local scripts -->
     <script>
     $('.modal').modal({})
-    $('.dropdown-trigger').dropdown()
+    $.each($('.dropdown-trigger'), function() {
+        var __ = $(this);
+
+        __.dropdown({
+            alignment: __.data('align') ? __.data('align') : 'left'
+        })
+    })
     $('[data-tooltip]').tooltip()
     $('.collapsible').collapsible()
 
