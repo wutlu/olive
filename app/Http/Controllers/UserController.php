@@ -232,10 +232,10 @@ class UserController extends Controller
 
         session()->flash('validate', 'ok');
 
-        $text = 'Sizleri aramızda görmek çok güzel, iyi araştırmalar dileriz.';
+        $text = 'E-posta adresinizi başarılı bir şekilde doğruladınız. İyi araştırmalar dileriz...';
 
         UserActivityUtility::push(
-            'Hoşgeldiniz!',
+            'E-posta Doğrulandı!',
             [
                 'icon'              => 'check',
                 'markdown'          => $text,
