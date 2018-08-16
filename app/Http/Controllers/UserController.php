@@ -9,6 +9,7 @@ use App\Http\Requests\User\LoginRequest;
 use App\Http\Requests\User\PasswordGetRequest;
 use App\Http\Requests\User\PasswordNewRequest;
 use App\Http\Requests\User\UpdateRequest as AccountUpdateRequest;
+use App\Http\Requests\User\AvatarRequest;
 use App\Http\Requests\User\Admin\UpdateRequest as AdminUpdateRequest;
 use App\Http\Requests\SearchRequest;
 
@@ -30,6 +31,7 @@ use App\Models\User\UserNotification;
 use Auth;
 use Session;
 use Jenssegers\Agent\Agent;
+use Image;
 
 class UserController extends Controller
 {
@@ -45,7 +47,9 @@ class UserController extends Controller
             'account',
             'accountUpdate',
             'notifications',
-            'notificationUpdate'
+            'notificationUpdate',
+            'avatar',
+            'avatarUpload'
         ]);
 
         $this->middleware('throttle:5,5')->only('passwordPost');
@@ -540,5 +544,31 @@ class UserController extends Controller
         return [
             'status' => 'ok'
         ];
+    }
+
+    # 
+    # avatar
+    # 
+    public static function avatar()
+    {
+        return view('user.avatar');
+    }
+
+    # 
+    # avatar upload
+    # 
+    public static function avatarUpload(AvatarRequest $request)
+    {
+        $user = auth()->user();
+        $name = md5(implode('_', [ config('app.name'), $user->id ]));
+
+        $img = Image::make($request->file);
+        $img->fit(256, 256);
+        $img->save(storage_path('app/public/avatar/'.$name.'.jpg'), 60);
+
+        $user->avatar = 'storage/avatar/'.$name.'.jpg';
+        $user->save();
+
+        return redirect()->route('settings.avatar');
     }
 }

@@ -4,7 +4,7 @@ namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoginRequest extends FormRequest
+class AvatarRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,7 @@ class LoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'email_login'    => 'required|email|max:64',
-            'password_login' => 'required|string|max:32'
+            'file' => 'required|file|mimes:jpeg,jpg,png,svg|max:4096'
         ];
     }
 }

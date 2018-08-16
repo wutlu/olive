@@ -83,7 +83,9 @@ Route::prefix('ayarlar')->group(function () {
     Route::get('e-posta-bildirimleri', 'UserController@notifications')->name('settings.notifications');
     Route::patch('e-posta-bildirimleri', 'UserController@notificationUpdate')->name('settings.notification');
 
-    Route::get('hesap-resmi', 'UserController@account')->name('settings.avatar');
+    Route::get('hesap-resmi', 'UserController@avatar')->name('settings.avatar');
+    Route::post('hesap-resmi', 'UserController@avatarUpload');
+
     Route::get('api', 'UserController@account')->name('settings.api');
 });
 
