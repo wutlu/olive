@@ -21,7 +21,7 @@
         if (obj.status == 'ok')
         {
             M.toast({
-                html: 'Organizasyon bilgileri güncellendi.'
+                html: 'Organizasyon Bilgileri Güncellendi'
             })
         }
     }

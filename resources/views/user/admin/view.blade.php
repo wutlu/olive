@@ -26,7 +26,7 @@
             $('img.user-avatar').attr('src', '{{ asset('img/people.svg') }}')
 
             M.toast({
-                html: 'Kullanıcı bilgileri güncellendi.'
+                html: 'Kullanıcı Bilgileri Güncellendi'
             })
         }
     }
