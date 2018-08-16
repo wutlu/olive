@@ -116,10 +116,10 @@
             @endif
         </span>
         @if ($user->id == $user->organisation->user_id)
-            @if ($user->organisation->lastInvoice->paid_at)
+            @if ($user->organisation->status)
             <p class="grey-text">{{ $user->organisation->days() }} gün kaldı.</p>
             @else
-            <p class="red-text">Ödeme bekliyor...</p>
+            <p class="red-text">Pasif</p>
             @endif
         @endif
     </div>

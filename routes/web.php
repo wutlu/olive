@@ -75,12 +75,14 @@ Route::prefix('ayarlar')->group(function () {
         Route::post('/', 'TicketController@submit')->name('settings.support.submit');
     });
 
-    Route::get('e-posta', 'OrganisationController@settings')->name('settings.email');
-    Route::get('sifre', 'OrganisationController@settings')->name('settings.password');
-    Route::get('hesap-bilgileri', 'OrganisationController@settings')->name('settings.account');
-    Route::get('bildirim-tercihleri', 'OrganisationController@settings')->name('settings.notification');
-    Route::get('api', 'OrganisationController@settings')->name('settings.api');
     Route::get('fatura-gecmisi', 'OrganisationController@settings')->name('settings.invoices');
+
+    Route::get('hesap-bilgileri', 'UserController@account')->name('settings.account');
+    Route::post('hesap-bilgileri', 'UserController@accountUpdate');
+
+    Route::get('hesap-resmi', 'UserController@account')->name('settings.avatar');
+    Route::get('bildirim-tercihleri', 'UserController@account')->name('settings.notification');
+    Route::get('api', 'UserController@account')->name('settings.api');
 });
 
 Route::prefix('fatura')->group(function () {

@@ -7,7 +7,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class RegisterValidationNotification extends Notification implements ShouldQueue
+class EmailValidationNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -47,11 +47,10 @@ class RegisterValidationNotification extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject('Olive: E-posta adresinizi doğrulayın!')
-                    ->greeting('Hoşgeldiniz, ' . $this->name)
+                    ->subject('Olive: E-posta Adresinizi Doğrulayın!')
+                    ->greeting('Merhaba, '.$this->name)
                     ->level('olive')
-                    ->line('Olive hesabınız başarılı bir şekilde oluşturuldu.')
-                    ->line('Son olarak aşağıdaki butona tıklayarak e-posta adresinizi doğrulamanız gerekiyor.')
+                    ->line('Aşağıdaki butona tıklayarak e-posta adresinizi doğrulayabilirsiniz.')
                     ->action('Doğrula', route('user.register.validate', [ 'user_id' => $this->user_id, 'session_id' => $this->session_id ]));
     }
 

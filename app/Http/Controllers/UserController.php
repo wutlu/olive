@@ -8,15 +8,17 @@ use App\Http\Requests\User\RegisterRequest;
 use App\Http\Requests\User\LoginRequest;
 use App\Http\Requests\User\PasswordGetRequest;
 use App\Http\Requests\User\PasswordNewRequest;
+use App\Http\Requests\User\UpdateRequest as AccountUpdateRequest;
 use App\Http\Requests\User\Admin\UpdateRequest as AdminUpdateRequest;
 use App\Http\Requests\SearchRequest;
 
 use App\Notifications\PasswordValidationNotification;
-use App\Notifications\RegisterValidationNotification;
+use App\Notifications\EmailValidationNotification;
 use App\Notifications\WelcomeNotification;
 use App\Notifications\NewPasswordNotification;
-use App\Notifications\SignInNotification;
+use App\Notifications\LoginNotification;
 use App\Notifications\OrganisationDiscountCouponNotification;
+use App\Notifications\MessageNotification;
 
 use App\Utilities\UserActivityUtility;
 
@@ -38,7 +40,11 @@ class UserController extends Controller
 			'loginPost',
 			'loginView'
 		]);
-        $this->middleware('auth')->only([ 'registerResend' ]);
+        $this->middleware('auth')->only([
+            'registerResend',
+            'account',
+            'accountUpdate'
+        ]);
 
         $this->middleware('throttle:5,5')->only('passwordPost');
         $this->middleware('throttle:5,1')->only('loginPost');
@@ -113,7 +119,7 @@ class UserController extends Controller
                     ]
                 );
 
-                $user->notify(new SignInNotification($user->name, $data));
+                $user->notify(new LoginNotification($user->name, $data));
 
                 Session::getHandler()->destroy($previous_session);
             }
@@ -285,7 +291,7 @@ class UserController extends Controller
         $user->session_id = Session::getId();
         $user->save();
 
-        $user->notify(new RegisterValidationNotification($user->id, $user->session_id, $user->name));
+        $user->notify(new EmailValidationNotification($user->id, $user->session_id, $user->name));
 
         Auth::login($user);
 
@@ -307,7 +313,7 @@ class UserController extends Controller
         }
         else
         {
-            $user->notify(new RegisterValidationNotification($user->id, $user->session_id, $user->name));
+            $user->notify(new EmailValidationNotification($user->id, $user->session_id, $user->name));
         }
 
         return [
@@ -451,6 +457,47 @@ class UserController extends Controller
             'status' => 'ok',
             'hits' => $query->get(),
             'total' => $query->count()
+        ];
+    }
+
+    # 
+    # hesap bilgileri
+    # 
+    public static function account()
+    {
+        $user = auth()->user();
+
+        return view('user.account', compact('user'));
+    }
+
+    # 
+    # hesap bilgileri güncelle
+    # 
+    public static function accountUpdate(AccountUpdateRequest $request)
+    {
+        $user = auth()->user();
+
+        $user->name = $request->name;
+
+        if ($user->email != $request->email)
+        {
+            $user->notify(new EmailValidationNotification($user->id, $user->session_id, $user->name));
+
+            $user->email = $request->email;
+            $user->verified = false;
+        }
+
+        if ($request->password)
+        {
+            $user->notify(new MessageNotification('Olive: Şifre Güncellendi!', 'Merhaba, '.$user->name, 'Hesap şifreniz başarılı bir şekilde güncellendi.'));
+
+            $user->password = bcrypt($request->password);
+        }
+
+        $user->save();
+
+        return [
+            'status' => 'ok'
         ];
     }
 }

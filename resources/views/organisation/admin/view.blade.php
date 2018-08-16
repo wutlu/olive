@@ -28,23 +28,23 @@
 @endpush
 
 @section('content')
-<div class="card">
-    <div class="card-image">
-        <img src="{{ asset('img/md-s/14.jpg') }}" alt="Organizasyon Bilgileri" />
-        <span class="card-title">Organizasyon Bilgileri</span>
-    </div>
-    <div class="card-content">
-        <ul class="item-group">
-            <li class="item">
-                <small class="grey-text">Oluşturuldu</small>
-                <p class="d-block">{{ date('d.m.Y H:i', strtotime($organisation->created_at)) }}</p>
-            </li>
-            <li class="item">
-                <small class="grey-text">Güncellendi</small>
-                <p class="d-block">{{ date('d.m.Y H:i', strtotime($organisation->created_at)) }}</p>
-            </li>
-        </ul>
-        <form method="post" action="{{ route('admin.organisation', $organisation->id) }}" class="json" id="details-form" data-callback="__account">
+<form method="post" action="{{ route('admin.organisation', $organisation->id) }}" class="json" id="details-form" data-callback="__account">
+    <div class="card">
+        <div class="card-image">
+            <img src="{{ asset('img/md-s/14.jpg') }}" alt="Organizasyon Bilgileri" />
+            <span class="card-title">Organizasyon Bilgileri</span>
+        </div>
+        <div class="card-content">
+            <ul class="item-group">
+                <li class="item">
+                    <small class="grey-text">Oluşturuldu</small>
+                    <p class="d-block">{{ date('d.m.Y H:i', strtotime($organisation->created_at)) }}</p>
+                </li>
+                <li class="item">
+                    <small class="grey-text">Güncellendi</small>
+                    <p class="d-block">{{ date('d.m.Y H:i', strtotime($organisation->created_at)) }}</p>
+                </li>
+            </ul>
             <div class="collection">
                 <div class="collection-item">
                     <div class="input-field">
@@ -87,12 +87,12 @@
                     <span>Aktif</span>
                 </label>
             </div>
-            <div class="right-align" style="padding: 1rem 0 0;">
-                <button type="submit" class="btn-flat waves-effect">Güncelle</button>
-            </div>
-        </form>
+        </div>
+        <div class="card-action right-align">
+            <button type="submit" class="btn-flat waves-effect">Güncelle</button>
+        </div>
     </div>
-</div>
+</form>
 @endsection
 
 @section('dock')

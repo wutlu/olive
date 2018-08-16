@@ -38,7 +38,7 @@
             <div id="modal-confirmation" class="modal bottom-sheet">
                 <div class="modal-content">
                     <p>E-posta ({{ auth()->user()->email }}) adresinizi henüz doğrulamadınız.</p>
-                    <p>Bu adres size ait değilse Ayarlar/E-posta Ayarları sayfasından güncelleyebilirsiniz.</p>
+                    <p>Bu adres size ait değilse <a href="{{ route('settings.account') }}">Hesap Bilgileri</a> bölümünden size ait bir e-posta tanımlayın.</p>
                     <a href="#" class="waves-effect btn-flat json" data-href="{{ route('user.register.resend') }}" data-method="post" data-callback="__resend">Tekrar Gönder</a>
                     <a href="#" class="waves-effect btn modal-close">Tamam</a>
                 </div>
@@ -78,6 +78,26 @@
 
         <div class="navbar-fixed">
             <ul id="user-top-dropdown" class="dropdown-content">
+                @if (auth()->user()->organisation)
+                <li>
+                    <a class="waves-effect" href="{{ route('settings.organisation') }}">
+                        <i class="material-icons">group_work</i>
+                        {{ auth()->user()->organisation->name }}
+                    </a>
+                </li>
+                @endif
+                <li>
+                    <a class="waves-effect" href="{{ route('settings.account') }}">
+                        <i class="material-icons">person</i>
+                        Hesap Bilgileri
+                    </a>
+                </li>
+                <li>
+                    <a class="waves-effect" href="{{ route('settings.support') }}">
+                        <i class="material-icons">help</i>
+                        Destek
+                    </a>
+                </li>
                 <li>
                     <a class="waves-effect" href="{{ route('user.logout') }}">
                         <i class="material-icons">exit_to_app</i>
@@ -105,7 +125,7 @@
                         </ul>
                         <ul class="right hide-on-med-and-down">
                             <li>
-                                <a class="dropdown-trigger waves-effect" href="#" data-target="user-top-dropdown">
+                                <a class="dropdown-trigger waves-effect" href="#" data-target="user-top-dropdown" data-align="right">
                                     {{ auth()->user()->name }} <i class="material-icons right">arrow_drop_down</i>
                                 </a>
                             </li>
@@ -215,7 +235,7 @@
             <div class="divider"></div>
             @endif
             <li>
-                <a class="waves-effect" href="#">
+                <a class="waves-effect" href="{{ route('settings.account') }}">
                     <i class="material-icons">person</i>
                     Hesap Bilgileri
                 </a>
