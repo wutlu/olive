@@ -48,10 +48,3 @@
 @section('dock')
     @include('user.admin._menu', [ 'active' => 'notifications', 'id' => $user->id ])
 @endsection
-
-@push('local.scripts')
-
-$('select').formSelect()
-$('.tabs').tabs()
-
-@endpush

@@ -80,8 +80,10 @@ Route::prefix('ayarlar')->group(function () {
     Route::get('hesap-bilgileri', 'UserController@account')->name('settings.account');
     Route::post('hesap-bilgileri', 'UserController@accountUpdate');
 
+    Route::get('e-posta-bildirimleri', 'UserController@notifications')->name('settings.notifications');
+    Route::patch('e-posta-bildirimleri', 'UserController@notificationUpdate')->name('settings.notification');
+
     Route::get('hesap-resmi', 'UserController@account')->name('settings.avatar');
-    Route::get('bildirim-tercihleri', 'UserController@account')->name('settings.notification');
     Route::get('api', 'UserController@account')->name('settings.api');
 });
 

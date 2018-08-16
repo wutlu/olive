@@ -43,7 +43,9 @@ class UserController extends Controller
         $this->middleware('auth')->only([
             'registerResend',
             'account',
-            'accountUpdate'
+            'accountUpdate',
+            'notifications',
+            'notificationUpdate'
         ]);
 
         $this->middleware('throttle:5,5')->only('passwordPost');
@@ -495,6 +497,45 @@ class UserController extends Controller
         }
 
         $user->save();
+
+        return [
+            'status' => 'ok'
+        ];
+    }
+
+    # 
+    # bildirim tercihleri
+    # 
+    public static function notifications()
+    {
+        return view('user.notifications');
+    }
+
+    # 
+    # bildirim tercihleri güncelle
+    # 
+    public static function notificationUpdate(Request $request)
+    {
+        $user = auth()->user();
+
+        $request->validate([
+            'key' => 'string|in:'.implode(',', array_keys(config('app.notifications')))
+        ]);
+
+        if ($user->notification($request->key))
+        {
+            UserNotification::where([
+                'user_id' => $user->id,
+                'key' => $request->key
+            ])->delete();
+        }
+        else
+        {
+            UserNotification::create([
+                'user_id' => $user->id,
+                'key' => $request->key
+            ]);
+        }
 
         return [
             'status' => 'ok'
