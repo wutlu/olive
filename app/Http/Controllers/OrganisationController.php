@@ -848,7 +848,20 @@ class OrganisationController extends Controller
             $organisation->end_date = $add_month;
             $organisation->save();
 
-            //e posta gönder
+            $title = 'Olive: Fatura Onayı';
+            $greeting = 'Fatura Onaylandı!';
+            $message = 'Organizasyonu aktif bir şekilde kullanabilirsiniz. İyi araştırmalar...';
+
+            $organisation->author->notify(new MessageNotification($title, $greeting, $message));
+
+            Activity::push(
+                $greeting,
+                [
+                    'user_id' => $organisation->author->id,
+                    'icon' => 'check',
+                    'markdown' => $message
+                ]
+            );
 
             $invoice->paid_at = date('Y-m-d H:i:s');
         }

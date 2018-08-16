@@ -217,7 +217,7 @@
             <li>
                 <a class="waves-effect" href="#">
                     <i class="material-icons">person</i>
-                    Kullanıcı Bilgileri
+                    Hesap Bilgileri
                 </a>
             </li>
             <li>
