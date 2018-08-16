@@ -110,6 +110,7 @@ return [
     'authentication' => 'Hatalı şifre.',
     'password_check' => 'Şifre, hesabınızın şifresiyle uyuşmuyor.',
     'coupon_exists' => 'Kupon kodu geçersiz.',
+    'has_route' => 'Rota oluşturulamadı.',
 
     /*
     |--------------------------------------------------------------------------
@@ -164,6 +165,14 @@ return [
         'avatar'             => 'Avatar',
         'notification'       => 'Bildirim',
         'string'             => 'Kelime',
-        'id'                 => 'Kimlik'
+        'id'                 => 'Kimlik',
+
+        'start_date'         => 'Başlangıç Tarihi',
+        'start_time'         => 'Başlangıç Saati',
+        'end_date'           => 'Bitiş Tarihi',
+        'end_time'           => 'Bitiş Saati',
+
+        'serial'             => 'Seri',
+        'no'                 => 'No'
     ],
 ];

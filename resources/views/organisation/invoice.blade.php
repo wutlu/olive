@@ -193,6 +193,37 @@
         @endif
         <div class="row-col invoice static-width">
             <h1>FATURA</h1>
+            @if (auth()->user()->root())
+            <div class="self-area" style="background-color: #f0f0f0; padding: 1rem;">
+                <div class="body">
+                    <h3>Faturayı Onayla</h3>
+
+                    <form method="post" action="{{ route('admin.organisation.invoice.approve', $invoice->invoice_id) }}">
+                        @csrf
+                        <div style="margin: 0 0 1rem;">
+                            <label for="no" style="display: block;">No</label>
+                            <input type="text" name="no" id="no" value="{{ $invoice->no }}" />
+                            <small class="red-text" style="display: block;">{{ $errors->first('no') }}</small>
+                        </div>
+                        <div style="margin: 0 0 1rem;">
+                            <label for="serial" style="display: block;">Seri</label>
+                            <input type="text" name="serial" id="serial" value="{{ $invoice->serial }}" />
+                            <small class="red-text" style="display: block;">{{ $errors->first('serial') }}</small>
+                        </div>
+                        @if (!$invoice->paid_at)
+                        <div style="margin: 0 0 1rem;">
+                            <label for="approve" style="display: block;">Onayla</label>
+                            <input type="checkbox" name="approve" id="approve" />
+                        </div>
+                        @endif
+                        <button type="submit" style="margin: 0 0 1rem;">Kaydet</button>
+                        @if (!$invoice->paid_at)
+                        <small class="red-text" style="display: block;">Fatura bir defa onaylandıktan sonra bu onay tekrar kaldırılamaz. Seri ve No alanları daha sonra güncellenebilir.</small>
+                        @endif
+                    </form>
+                </div>
+            </div>
+            @endif
             <ul class="row dashed-line dashed-bottom">
                 <li class="row-col p-1 title">FATURA</li>
                 <li class="row-col p-1">#{{ $invoice->invoice_id }}</li>
@@ -319,7 +350,7 @@
     <div class="self-area">
         <div class="title">Hesap Bilgisi</div>
         <div class="body">Ödemenizi; fatura numarası açıklamada olacak şekilde aşağıdaki hesap numaralarından herhangi birine yapabilirsiniz.</div>
-        <div class="body">Daha sonra <a href="{{ route('settings.support', [ 'type' => 'odeme-bildirimi' ]) }}"><strong>Ayarlar/Destek</strong></a> sayfasından ödeme bildirimi yapmanız gerekiyor.</div>
+        <div class="body">Daha sonra <a href="{{ route('settings.support', [ 'type' => 'odeme-bildirimi' ]) }}"><strong>Destek</strong></a> sayfasından ödeme bildirimi yapmanız gerekiyor.</div>
     </div>
     <div class="self-area">
         @foreach(config('formal.banks') as $key => $bank)

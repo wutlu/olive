@@ -14,8 +14,10 @@ use App\Models\Organisation\OrganisationDiscountCoupon as Coupon;
 use App\Models\User\User;
 
 use App\Http\Requests\PlanRequest;
+
 use App\Http\Requests\PlanCalculateRequest;
 use App\Http\Requests\PlanCalculateRenewRequest;
+
 use App\Http\Requests\Organisation\BillingRequest;
 use App\Http\Requests\Organisation\BillingUpdateRequest;
 use App\Http\Requests\Organisation\NameRequest;
@@ -23,7 +25,11 @@ use App\Http\Requests\Organisation\TransferAndRemoveRequest;
 use App\Http\Requests\Organisation\InviteRequest;
 use App\Http\Requests\Organisation\LeaveRequest;
 use App\Http\Requests\Organisation\DeleteRequest;
+use App\Http\Requests\Organisation\Admin\UpdateRequest as AdminUpdateRequest;
+use App\Http\Requests\Organisation\Admin\InvoiceApproveRequest;
+
 use App\Http\Requests\IdRequest;
+use App\Http\Requests\SearchRequest;
 
 use App\Notifications\OrganisationInvoiceNotification;
 use App\Notifications\OrganisationWasCreatedNotification;
@@ -144,7 +150,7 @@ class OrganisationController extends Controller
     {
         $user = auth()->user();
 
-        $plan = $user->organisation->invoices(1)[0]->plan();
+        $plan = $user->organisation->lastInvoice->plan();
 
         return view('organisation.settings', compact('user', 'plan'));
     }
@@ -497,7 +503,7 @@ class OrganisationController extends Controller
                 $user->notify(new OrganisationWasCreatedNotification($user->name, $invoice_id));
 
                 Activity::push(
-                    'Organizasyon oluşturuldu',
+                    'Organizasyon Oluşturuldu',
                     [
                         'icon' => 'flag',
                         'markdown' => implode(PHP_EOL, [
@@ -569,7 +575,7 @@ class OrganisationController extends Controller
     {
         $user = auth()->user();
 
-        $session['plan'] = json_decode($user->organisation->invoices(1)[0]->plan);
+        $session['plan'] = json_decode($user->organisation->lastInvoice->plan);
 
         $session['unit_price'] = $session['plan']->price;
         $session['month'] = $request->month;
@@ -607,7 +613,7 @@ class OrganisationController extends Controller
     {
         $user = auth()->user();
 
-        $plan = json_decode($user->organisation->invoices(1)[0]->plan);
+        $plan = json_decode($user->organisation->lastInvoice->plan);
 
         $billing_information = new BillingInformation;
         $billing_information->user_id = $user->id;
@@ -733,12 +739,122 @@ class OrganisationController extends Controller
     {
         $user = auth()->user();
 
-        $invoice = Invoice::where('invoice_id', $user->organisation->invoices()[0]->invoice_id)->whereNull('paid_at')->delete();
+        $invoice = Invoice::where('invoice_id', $user->organisation->lastInvoice->invoice_id)->whereNull('paid_at')->delete();
 
         $user->notify(new MessageNotification('Olive: Fatura İptal Edildi', 'Organizasyon Faturasını İptal Ettiniz!', 'Organizasyon ödemesi için oluşturduğunuz fatura, ödeme tamamlanmadan iptal edildi.'));
 
         return [
             'status' => 'ok'
         ];
+    }
+
+    # ######################################## [ ADMIN ] ######################################## #
+    # 
+    # admin list view
+    # 
+    public static function adminListView()
+    {
+        return view('organisation.admin.list');
+    }
+
+    # ######################################## [ ADMIN ] ######################################## #
+    # 
+    # admin list view
+    # 
+    public static function adminListViewJson(SearchRequest $request)
+    {
+        $request->validate([
+            'status' => 'nullable|in:on,off'
+        ]);
+
+        $take = $request->take;
+        $skip = $request->skip;
+
+        $query = new Organisation;
+        $query = $query->with('author');
+        $query = $request->status ? $query->where('status', $request->status == 'on' ? true : false) : $query;
+        $query = $request->string ? $query->were('name', 'ILIKE', '%'.$request->string.'%') : $query;
+        $query = $query->skip($skip)
+                       ->take($take)
+                       ->orderBy('id', 'DESC');
+
+        return [
+            'status' => 'ok',
+            'hits' => $query->get(),
+            'total' => $query->count()
+        ];
+    }
+
+    # ######################################## [ ADMIN ] ######################################## #
+    # 
+    # admin view
+    # 
+    public static function adminView(int $id)
+    {
+        $organisation = Organisation::where('id', $id)->firstOrFail();
+
+        return view('organisation.admin.view', compact('organisation'));
+    }
+
+    # ######################################## [ ADMIN ] ######################################## #
+    # 
+    # admin update
+    # 
+    public static function adminUpdate(int $id, AdminUpdateRequest $request)
+    {
+        $organisation = Organisation::where('id', $id)->firstOrFail();
+        $organisation->name = $request->name;
+        $organisation->capacity = $request->capacity;
+        $organisation->status = $request->status ? true : false;
+        $organisation->end_date = $request->end_date.' '.$request->end_time;
+        $organisation->save();
+
+        return [
+            'status' => 'ok'
+        ];
+    }
+
+    # ######################################## [ ADMIN ] ######################################## #
+    # 
+    # admin invoice history
+    # 
+    public static function adminInvoiceHistory(int $id)
+    {
+        $organisation = Organisation::where('id', $id)->firstOrFail();
+
+        return view('organisation.admin.invoiceHistory', compact('organisation'));
+    }
+
+    # ######################################## [ ADMIN ] ######################################## #
+    # 
+    # admin invoice approve
+    # 
+    public static function adminInvoiceApprove(int $id, InvoiceApproveRequest $request)
+    {
+        $invoice = Invoice::where('invoice_id', $id)->firstOrFail();
+
+        $invoice->serial = $request->serial;
+        $invoice->no = $request->no;
+
+        if ($request->approve && $invoice->paid_at == null)
+        {
+            $organisation = $invoice->organisation;
+            $organisation->status = true;
+            $organisation->start_date = $organisation->invoices()->count() == 1 ? date('Y-m-d H:i:s') : $organisation->start_date;
+
+            $add_month = new Carbon($organisation->invoices()->count() == 1 ? $organisation->start_date : $organisation->end_date);
+            $add_month = $add_month->addMonths($invoice->month);
+
+            $organisation->end_date = $add_month;
+            $organisation->save();
+
+            //e posta gönder
+
+            $invoice->paid_at = date('Y-m-d H:i:s');
+        }
+
+        $invoice->save();
+
+        return redirect()->route('organisation.invoice', $invoice->invoice_id);
     }
 }

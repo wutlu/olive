@@ -12,6 +12,7 @@
         Destek Talepleri <span class="badge teal white-text">{{ $user->tickets()->count() }}</span>
     </a>
     @if (@$user->organisation)
+        <div class="divider teal"></div>
         <a href="{{ route('admin.organisation', $user->organisation->id) }}" class="collection-item waves-effect">
             {{ $user->organisation->name }}
         </a>

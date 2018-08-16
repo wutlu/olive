@@ -153,5 +153,5 @@
 @endsection
 
 @section('dock')
-    @include('layouts.dock.settings', [ 'active' => 'support' ])
+    @include('settings._menu', [ 'active' => 'support' ])
 @endsection

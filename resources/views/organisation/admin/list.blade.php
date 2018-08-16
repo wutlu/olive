@@ -5,16 +5,16 @@
             'text' => 'Admin'
         ],
         [
-            'text' => 'Kullanıcı Listesi'
+            'text' => 'Organizasyon Listesi'
         ]
     ]
 ])
 
 @section('content')
     @push('local.scripts')
-        function __users(__, obj)
+        function __organisations(__, obj)
         {
-            var ul = $('#users');
+            var ul = $('#organisations');
             var item_model = ul.children('.model');
     
             if (obj.status == 'ok')
@@ -28,9 +28,9 @@
                             item.removeClass('model d-none').addClass('_tmp d-flex').attr('data-id', o.id)
 
                             item.find('[data-name=name]').html(o.name)
-                            item.find('[data-name=email]').html(o.email)
-                            item.find('[data-name=avatar]').attr('src', o.avatar ? o.avatar : '{{ asset('img/people.svg') }}')
-                            item.find('[data-name=verified]').html(o.verified ? '✓' : '✕').addClass(o.verified ? 'green-text' : 'red-text')
+                            item.find('[data-name=status]').html(o.status ? '✓' : '✕').addClass(o.status ? 'green-text' : 'red-text')
+                            item.find('[data-name=author]').html(o.author.name)
+                            item.find('[data-name=avatar]').attr('src', o.author.avatar ? o.author.avatar : '{{ asset('img/people.svg') }}')
 
                             item.appendTo(ul)
                     })
@@ -40,7 +40,7 @@
             }
         }
 
-        function __go_user(__, obj)
+        function __go_organisation(__, obj)
         {
             if (obj.status == 'ok')
             {
@@ -49,10 +49,21 @@
         }
     @endpush
 
+    <div class="row">
+        <div class="col m4 offset-m8 s6 offset-s6 l2 offset-l10">
+            <div class="input-field">
+                <select name="status" id="status" class="json json-search" data-json-target="#organisations">
+                    <option value="" selected>Tümü</option>
+                    <option value="on">Aktif</option>
+                    <option value="off">Pasif</option>
+                </select>
+            </div>
+        </div>
+    </div>
     <div class="card">
         <div class="card-image">
-            <img src="{{ asset('img/md-s/10.jpg') }}" alt="Kullanıcı Listesi" />
-            <span class="card-title">Kullanıcı Listesi</span>
+            <img src="{{ asset('img/md-s/14.jpg') }}" alt="Organizasyon Listesi" />
+            <span class="card-title">Organizasyon Listesi</span>
         </div>
         <nav class="grey darken-4">
             <div class="nav-wrapper">
@@ -61,7 +72,7 @@
                            name="string"
                            type="search"
                            class="validate json json-search"
-                           data-json-target="#users"
+                           data-json-target="#organisations"
                            placeholder="Arayın" />
                     <label class="label-icon" for="string">
                         <i class="material-icons">search</i>
@@ -71,34 +82,34 @@
             </div>
         </nav>
         <div class="collection load json-clear" 
-             id="users"
-             data-href="{{ route('admin.user.list.json') }}"
+             id="organisations"
+             data-href="{{ route('admin.organisation.list.json') }}"
              data-skip="0"
              data-take="5"
-             data-include="string"
-             data-more-button="#users-more_button"
-             data-callback="__users"
+             data-include="string,status"
+             data-more-button="#organisations-more_button"
+             data-callback="__organisations"
              data-nothing>
             <div class="collection-item nothing d-none">
                 <div class="not-found">
                     <i class="material-icons">cloud</i>
                     <i class="material-icons">cloud</i>
                     <i class="material-icons">wb_sunny</i>
-                    <p>Kullanıcı Yok</p>
+                    <p>Organizasyon Yok</p>
                 </div>
             </div>
             <a
                 href="#"
                 class="collection-item model d-none waves-effect json"
                 data-href="{{ route('route.generate.id') }}"
-                data-name="admin.user"
-                data-callback="__go_user">
+                data-name="admin.organisation"
+                data-callback="__go_organisation">
                 <img alt="Avatar" data-name="avatar" style="width: 48px; margin: 0 1rem 0 0;" />
                 <span class="align-self-center">
                     <p data-name="name"></p>
-                    <p data-name="email" class="grey-text"></p>
+                    <p data-name="author" class="grey-text"></p>
                 </span>
-                <small data-name="verified" class="badge ml-auto"></small>
+                <small data-name="status" class="badge ml-auto"></small>
             </a>
         </div>
     </div>
@@ -110,8 +121,12 @@
 
     <div class="center-align">
         <button class="btn-flat waves-effect d-none json"
-                id="users-more_button"
+                id="organisations-more_button"
                 type="button"
-                data-json-target="#users">Daha Fazla</button>
+                data-json-target="#organisations">Daha Fazla</button>
     </div>
 @endsection
+
+@push('local.scripts')
+$('select').formSelect()
+@endpush

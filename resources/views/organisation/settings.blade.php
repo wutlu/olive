@@ -116,7 +116,7 @@
             @endif
         </span>
         @if ($user->id == $user->organisation->user_id)
-            @if ($user->organisation->invoices()[0]->paid_at)
+            @if ($user->organisation->lastInvoice->paid_at)
             <p class="grey-text">{{ $user->organisation->days() }} gün kaldı.</p>
             @else
             <p class="red-text">Ödeme bekliyor...</p>
@@ -405,7 +405,7 @@
 
     @if ($user->id == $user->organisation->user_id)
     <div id="tab-2" class="card-content grey lighten-4">
-        @if ($user->organisation->invoices()[0]->paid_at)
+        @if ($user->organisation->lastInvoice->paid_at)
             <div class="center-align d-none" data-id="spinner">
                 <div class="preloader-wrapper big active">
                     <div class="spinner-layer spinner-red-only">
@@ -584,9 +584,9 @@
             @endpush
         @else
             <div class="center-align">
-                <a href="{{ route('organisation.invoice', [ 'id' => $user->organisation->invoices()[0]->invoice_id ]) }}" class="waves-effect btn-flat">Fatura</a>
+                <a href="{{ route('organisation.invoice', [ 'id' => $user->organisation->lastInvoice->invoice_id ]) }}" class="waves-effect btn-flat">Fatura</a>
                 <a href="{{ route('settings.support', [ 'type' => 'odeme-bildirimi' ]) }}" class="waves-effect btn-flat">Ödeme Bildirimi</a>
-                @if ($user->organisation->invoices(2)->count() == 2)
+                @if ($user->organisation->invoices()->count() > 1)
                 <a href="#" class="waves-effect btn-flat" id="cancel-button">İptal</a>
                 @endif
             </div>
@@ -863,16 +863,16 @@
     @if ($user->id == $user->organisation->user_id)
     <div id="tab-4" class="grey lighten-4">
         <div class="collection">
-        @foreach ($user->organisation->invoices(20) as $invoice)
-            <a href="{{ route('organisation.invoice', $invoice->invoice_id) }}" class="collection-item d-flex waves-effect {{ $invoice->paid_at ? 'grey-text' : 'red-text' }}">
-                <i class="material-icons align-self-center">history</i>
-                <span class="align-self-center">
-                    <p>{{ $invoice->plan()->name }} ({{ $invoice->plan()->properties->capacity->value }} kullanıcı)</p>
-                    <p class="grey-text">{{ date('d.m.Y H:i', strtotime($invoice->created_at)) }}</p>
-                </span>
-                <small class="badge ml-auto">{{ $invoice->paid_at ? date('d.m.Y H:i', strtotime($invoice->paid_at)) : 'ÖDENMEDİ' }}</small>
-            </a>
-        @endforeach
+            @foreach ($user->organisation->invoices as $invoice)
+                <a href="{{ route('organisation.invoice', $invoice->invoice_id) }}" class="collection-item d-flex waves-effect {{ $invoice->paid_at ? 'grey-text' : 'red-text' }}">
+                    <i class="material-icons align-self-center">history</i>
+                    <span class="align-self-center">
+                        <p>{{ $invoice->plan()->name }} ({{ $invoice->plan()->properties->capacity->value }} kullanıcı)</p>
+                        <p class="grey-text">{{ date('d.m.Y H:i', strtotime($invoice->created_at)) }}</p>
+                    </span>
+                    <small class="badge ml-auto">{{ $invoice->paid_at ? date('d.m.Y H:i', strtotime($invoice->paid_at)) : 'ÖDENMEDİ' }}</small>
+                </a>
+            @endforeach
         </div>
     </div>
     @endif
@@ -880,7 +880,7 @@
 @endsection
 
 @section('dock')
-    @include('layouts.dock.settings', [ 'active' => 'organisation' ])
+    @include('settings._menu', [ 'active' => 'organisation' ])
 @endsection
 
 @push('local.scripts')

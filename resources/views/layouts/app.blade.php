@@ -141,28 +141,24 @@
             </li>
             <div class="divider"></div>
             <li>
-                <div class="collapsible-header waves-effect">
-                    <i class="material-icons">person</i>
-                    <span>Kullanıcı Yönetimi</span>
-                    <i class="material-icons arrow">chevron_left</i>
-                </div>
-                <div class="collapsible-body">
-                    <ul>
-                        <li>
-                            <a class="waves-effect" href="{{ route('admin.organisation.list') }}">
-                                <i class="material-icons">group_work</i>
-                                Organizasyon Listesi
-                            </a>
-                        </li>
-                        <li>
-                            <a class="waves-effect" href="{{ route('admin.user.list') }}">
-                                <i class="material-icons">people</i>
-                                Kullanıcı Listesi
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                <a class="waves-effect" href="{{ route('admin.organisation.list') }}">
+                    <i class="material-icons">group_work</i>
+                    Organizasyon Listesi
+                </a>
             </li>
+            <li>
+                <a class="waves-effect" href="{{ route('admin.user.list') }}">
+                    <i class="material-icons">people</i>
+                    Kullanıcı Listesi
+                </a>
+            </li>
+            <li>
+                <a class="waves-effect" href="#">
+                    <i class="material-icons">card_giftcard</i>
+                    Kupon Yönetimi
+                </a>
+            </li>
+            <div class="divider"></div>
             <li>
                 <div class="collapsible-header waves-effect">
                     <i class="material-icons">computer</i>
@@ -193,6 +189,12 @@
                             <a class="waves-effect" href="#">
                                 <i class="material-icons">code</i>
                                 Loglar
+                            </a>
+                        </li>
+                        <li>
+                            <a class="waves-effect" href="#">
+                                <i class="material-icons">settings_backup_restore</i>
+                                Yedekleme
                             </a>
                         </li>
                     </ul>

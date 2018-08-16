@@ -401,6 +401,11 @@ $(document).on('change', 'select.json, input[type=radio].json, input[type=checkb
         target = eval(element(__.data('json-target')));
 
         target.data('skip', 0).addClass('json-clear')
+}).on('change', 'select.json-search', function() {
+    var __ = $(this),
+        target = eval(element(__.data('json-target')));
+
+        target.data('skip', 0).addClass('json-clear')
 })
 
 $(window).on('load', function() {

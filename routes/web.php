@@ -43,8 +43,14 @@ Route::prefix('admin')->middleware([ 'root' ])->group(function () {
     });
 
     Route::prefix('organizasyon-yonetimi')->group(function () {
-        Route::get('organizasyonlar', 'OrganisationController@adminList')->name('admin.organisation.list');
+        Route::get('organizasyonlar', 'OrganisationController@adminListView')->name('admin.organisation.list');
+        Route::get('organizasyonlar/json', 'OrganisationController@adminListViewJson')->name('admin.organisation.list.json');
+
         Route::get('organizasyon/{id}', 'OrganisationController@adminView')->name('admin.organisation');
+        Route::post('organizasyon/{id}', 'OrganisationController@adminUpdate');
+
+        Route::get('organizasyon/{id}/fatura-gecmisi', 'OrganisationController@adminInvoiceHistory')->name('admin.organisation.invoices');
+        Route::post('organizasyon/{id}/fatura-onay', 'OrganisationController@adminInvoiceApprove')->name('admin.organisation.invoice.approve');
     });
 });
 

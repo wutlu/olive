@@ -44,7 +44,7 @@ class BillingUpdateRequest extends FormRequest
         });
 
         Validator::extend('flood', function() use ($user) {
-            return @$user->organisation->invoices()[0]->paid_at ? true : false;
+            return @$user->organisation->lastInvoice->paid_at ? true : false;
         });
 
         return [

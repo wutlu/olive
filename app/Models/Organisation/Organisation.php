@@ -29,10 +29,16 @@ class Organisation extends Model
         return $this->hasOne('App\Models\User\User', 'id', 'user_id');
     }
 
-    # faturalar
-    public function invoices(int $take = 1)
+    # son fature
+    public function lastInvoice()
     {
-        return $this->hasMany('App\Models\Organisation\OrganisationInvoice', 'organisation_id', 'id')->orderBy('created_at', 'DESC')->limit($take)->get();
+        return $this->hasOne('App\Models\Organisation\OrganisationInvoice', 'organisation_id', 'id')->orderBy('created_at', 'DESC');
+    }
+
+    # faturalar
+    public function invoices()
+    {
+        return $this->hasMany('App\Models\Organisation\OrganisationInvoice', 'organisation_id', 'id');
     }
 
     # kalan gün

@@ -5,7 +5,7 @@
             'text' => 'Admin'
         ],
         [
-            'text' => 'Kullanıcı Yönetimi',
+            'text' => 'Kullanıcı Listesi',
             'link' => route('admin.user.list')
         ],
         [
@@ -46,7 +46,7 @@
 @endsection
 
 @section('dock')
-    @include('layouts.dock.admin.user', [ 'active' => 'notifications', 'id' => $user->id ])
+    @include('user.admin._menu', [ 'active' => 'notifications', 'id' => $user->id ])
 @endsection
 
 @push('local.scripts')

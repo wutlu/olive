@@ -404,9 +404,8 @@ class UserController extends Controller
     public static function adminInvoiceHistory(int $id)
     {
         $user = User::where('id', $id)->firstOrFail();
-        $invoices = $user->invoices()->paginate(5);
 
-        return view('user.admin.invoiceHistory', compact('user', 'invoices'));
+        return view('user.admin.invoiceHistory', compact('user'));
     }
 
     # ######################################## [ ADMIN ] ######################################## #

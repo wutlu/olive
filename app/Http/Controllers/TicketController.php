@@ -57,7 +57,7 @@ class TicketController extends Controller
 
         if ($user->organisation)
         {
-            $ticket->invoice_id = $user->organisation->invoices(1)[0]->paid_at ? null : $user->organisation->invoices(1)[0]->invoice_id;
+            $ticket->invoice_id = $user->organisation->lastInvoice->paid_at ? null : $user->organisation->lastInvoice->invoice_id;
         }
 
         $ticket->save();

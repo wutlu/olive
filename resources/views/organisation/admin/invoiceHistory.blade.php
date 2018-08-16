@@ -5,12 +5,12 @@
             'text' => 'Admin'
         ],
         [
-            'text' => 'Kullanıcı Listesi',
-            'link' => route('admin.user.list')
+            'text' => 'Organizasyon Listesi',
+            'link' => route('admin.organisation.list')
         ],
         [
-            'text' => $user->name,
-            'link' => route('admin.user', $user->id)
+            'text' => $organisation->name,
+            'link' => route('admin.organisation', $organisation->id)
         ],
         [
             'text' => 'Fatura Geçmişi'
@@ -22,12 +22,12 @@
 @section('content')
 <div class="card">
     <div class="card-image">
-        <img src="{{ asset('img/md-s/10.jpg') }}" alt="Fatura Geçmişi" />
+        <img src="{{ asset('img/md-s/14.jpg') }}" alt="Fatura Geçmişi" />
         <span class="card-title">Fatura Geçmişi</span>
     </div>
-    @if ($user->invoices->count())
+    @if ($organisation->invoices->count())
         <div class="collection">
-            @foreach($user->invoices()->paginate(5) as $invoice)
+            @foreach($organisation->invoices()->paginate(5) as $invoice)
             <a href="{{ route('organisation.invoice', $invoice->invoice_id) }}" class="collection-item d-flex waves-effect {{ $invoice->paid_at ? 'grey-text' : 'red-text' }}">
                 <i class="material-icons align-self-center">history</i>
                 <span class="align-self-center">
@@ -49,11 +49,11 @@
         </div>
     @endif
 </div>
-	{!! $user->invoices()->paginate(5)->links('vendor.pagination.materializecss') !!}
+	{!! $organisation->invoices()->paginate(5)->links('vendor.pagination.materializecss') !!}
 @endsection
 
 @section('dock')
-    @include('user.admin._menu', [ 'active' => 'invoices', 'id' => $user->id ])
+    @include('organisation.admin._menu', [ 'active' => 'invoices', 'id' => $organisation->id ])
 @endsection
 
 @push('local.scripts')
