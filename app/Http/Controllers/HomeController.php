@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Redis;
 use App\Http\Requests\SearchRequest;
 
 use App\Models\User\UserActivity;
-use App\Models\Organisation\OrganisationDiscountDay;
+use App\Models\Discount\DiscountDay;
 use App\Models\User\UserIntro;
 
 use App\Ticket;
@@ -28,7 +28,7 @@ class HomeController extends Controller
     # home
     public static function index()
     {
-        $discountDay = OrganisationDiscountDay::where('first_day', '<=', date('Y-m-d'))->where('last_day', '>=', date('Y-m-d'))->first();
+        $discountDay = DiscountDay::where('first_day', '<=', date('Y-m-d'))->where('last_day', '>=', date('Y-m-d'))->first();
 
     	return view('home', compact('discountDay'));
     }

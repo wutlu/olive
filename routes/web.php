@@ -19,7 +19,22 @@ Route::prefix('organizasyon')->group(function () {
     Route::patch('update/name', 'OrganisationController@updateName')->name('organisation.update.name');
 });
 
+# #### [ ADMIN ] #### #
 Route::prefix('admin')->middleware([ 'root' ])->group(function () {
+    Route::prefix('kupon-yonetimi')->group(function () {
+        Route::get('kuponlar', 'DiscountController@adminCouponListView')->name('admin.discount.coupon.list');
+        Route::get('kupon/{id?}', 'DiscountController@adminCouponView')->name('admin.discount.coupon');
+        Route::put('kupon', 'DiscountController@adminCouponCreate');
+        Route::patch('kupon', 'DiscountController@adminCouponUpdate');
+        Route::delete('kupon', 'DiscountController@adminCouponDelete');
+
+        Route::get('indirim-gunleri', 'DiscountController@adminDayListView')->name('admin.discount.day.list');
+        Route::get('indirim-gunu/{id?}', 'DiscountController@adminDayView')->name('admin.discount.day');
+        Route::put('indirim-gunu', 'DiscountController@adminDayCreate');
+        Route::patch('indirim-gunu', 'DiscountController@adminDayUpdate');
+        Route::delete('indirim-gunu', 'DiscountController@adminDayDelete');
+    });
+
     Route::prefix('destek-talepleri')->group(function () {
         Route::get('{status?}', 'TicketController@adminList')->name('admin.tickets')->where('status', '(open|closed)');
 

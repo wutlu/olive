@@ -11,145 +11,145 @@
     'dock' => true
 ])
 
-@section('content')
-    @push('local.scripts')
-        function form()
-        {
-            var mdl = modal({
+@push('local.scripts')
+    function form()
+    {
+        var mdl = modal({
+            'id': 'form',
+            'body': $('<form />', {
+                'method': 'POST',
+                'action': '{{ route('settings.support.submit') }}',
+                'class': 'json',
                 'id': 'form',
-                'body': $('<form />', {
-                    'method': 'POST',
-                    'action': '{{ route('settings.support.submit') }}',
-                    'class': 'json',
-                    'id': 'form',
-                    'data-callback': '__ticket',
-                    'html': [
-                        $('<div />', {
-                            'class': 'input-field',
-                            'html': [
-                                $('<input />', {
-                                    'id': 'subject',
-                                    'name': 'subject',
-                                    'type': 'text',
-                                    'class': 'validate',
-                                    'data-length': 70,
-                                    'val': '{{ @config('app.ticket.types')[session('form')] }}'
-                                }),
-                                $('<label />', {
-                                    'for': 'subject',
-                                    'html': 'Konu'
-                                }),
-                                $('<span />', {
-                                    'class': 'helper-text'
-                                })
-                            ]
-                        }),
-                        $('<div />', {
-                            'class': 'input-field',
-                            'html': [
-                                $('<textarea />', {
-                                    'id': 'message',
-                                    'name': 'message',
-                                    'class': 'materialize-textarea validate',
-                                    'data-length': 500
-                                }),
-                                $('<label />', {
-                                    'for': 'message',
-                                    'html': 'Mesaj'
-                                }),
-                                $('<span />', {
-                                    'class': 'helper-text'
-                                })
-                            ]
-                        }),
-                        $('<div />', {
-                            'class': 'input-field d-table',
-                            'html': [
-                                $('<select />', {
-                                    'name': 'type',
-                                    'id': 'type'
-                                }),
-                                $('<label />', {
-                                    'for': 'type',
-                                    'html': 'Destek Türü'
-                                })
-                            ]
-                        })
-                    ]
-                }),
-                'size': 'modal-medium',
-                'title': 'Talep Oluştur',
-                'options': {
-                    dismissible: false
-                }
+                'data-callback': '__ticket',
+                'html': [
+                    $('<div />', {
+                        'class': 'input-field',
+                        'html': [
+                            $('<input />', {
+                                'id': 'subject',
+                                'name': 'subject',
+                                'type': 'text',
+                                'class': 'validate',
+                                'data-length': 70,
+                                'val': '{{ @config('app.ticket.types')[session('form')] }}'
+                            }),
+                            $('<label />', {
+                                'for': 'subject',
+                                'html': 'Konu'
+                            }),
+                            $('<span />', {
+                                'class': 'helper-text'
+                            })
+                        ]
+                    }),
+                    $('<div />', {
+                        'class': 'input-field',
+                        'html': [
+                            $('<textarea />', {
+                                'id': 'message',
+                                'name': 'message',
+                                'class': 'materialize-textarea validate',
+                                'data-length': 500
+                            }),
+                            $('<label />', {
+                                'for': 'message',
+                                'html': 'Mesaj'
+                            }),
+                            $('<span />', {
+                                'class': 'helper-text'
+                            })
+                        ]
+                    }),
+                    $('<div />', {
+                        'class': 'input-field d-table',
+                        'html': [
+                            $('<select />', {
+                                'name': 'type',
+                                'id': 'type'
+                            }),
+                            $('<label />', {
+                                'for': 'type',
+                                'html': 'Destek Türü'
+                            })
+                        ]
+                    })
+                ]
+            }),
+            'size': 'modal-medium',
+            'title': 'Talep Oluştur',
+            'options': {
+                dismissible: false
+            }
+        });
+
+            mdl.find('.modal-footer')
+               .html([
+                   $('<a />', {
+                       'href': '#',
+                       'class': 'modal-close waves-effect btn-flat',
+                       'html': buttons.cancel
+                   }),
+                   $('<span />', {
+                       'html': ' '
+                   }),
+                   $('<a />', {
+                       'href': '#',
+                       'class': 'waves-effect btn',
+                       'data-submit': 'form#form',
+                       'html': buttons.ok
+                   })
+               ])
+
+        M.updateTextFields()
+
+        $('input[name=subject], textarea[name=message]').characterCounter()
+
+        var select = $('select[name=type]');
+            select.formSelect()
+
+        $.each({!! json_encode(config('app.ticket.types')) !!}, function(key, name) {
+            var option = $('<option />', {
+                'value': key,
+                'html': name
             });
 
-                mdl.find('.modal-footer')
-                   .html([
-                       $('<a />', {
-                           'href': '#',
-                           'class': 'modal-close waves-effect btn-flat',
-                           'html': buttons.cancel
-                       }),
-                       $('<span />', {
-                           'html': ' '
-                       }),
-                       $('<a />', {
-                           'href': '#',
-                           'class': 'waves-effect btn',
-                           'data-submit': 'form#form',
-                           'html': buttons.ok
-                       })
-                   ])
+            var type = '{{ session('form') }}';
 
-            M.updateTextFields()
+            if (type == key)
+            {
+                option.attr('selected', true)
+            }
 
-            $('input[name=subject], textarea[name=message]').characterCounter()
+            $('select[name=type]').append(option)
+        })
 
-            var select = $('select[name=type]');
-                select.formSelect()
+            select.formSelect()
+    }
 
-            $.each({!! json_encode(config('app.ticket.types')) !!}, function(key, name) {
-                var option = $('<option />', {
-                    'value': key,
-                    'html': name
-                });
-
-                var type = '{{ session('form') }}';
-
-                if (type == key)
-                {
-                    option.attr('selected', true)
-                }
-
-                $('select[name=type]').append(option)
+    function __ticket(__, obj)
+    {
+        if (obj.status == 'ok')
+        {
+            M.toast({
+                html: 'Talep oluşturuluyor.',
+                classes: 'blue'
             })
 
-                select.formSelect()
+            __[0].reset()
+
+            $('#modal-form').modal('close')
+
+            window.location.href = obj.data.url;
         }
+    }
 
-        function __ticket(__, obj)
-        {
-            if (obj.status == 'ok')
-            {
-                M.toast({
-                    html: 'Talep oluşturuluyor.',
-                    classes: 'blue'
-                })
+    @if (session('form'))
+    form()
+    @endif
+@endpush
 
-                __[0].reset()
-
-                $('#modal-form').modal('close')
-
-                window.location.href = obj.data.url;
-            }
-        }
-
-        @if (session('form'))
-        form()
-        @endif
-    @endpush
-
+@section('content')
     <div class="card">
         <div class="card-image">
             <img src="{{ asset('img/md-s/9.jpg') }}" alt="Destek Taleplerim" />

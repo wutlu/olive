@@ -173,6 +173,17 @@ return [
         'end_time'           => 'Bitiş Saati',
 
         'serial'             => 'Seri',
-        'no'                 => 'No'
+        'no'                 => 'No',
+
+        'key'                => 'Kod',
+        'rate'               => 'Oran',
+        'price'              => 'Miktar',
+
+        'discount_rate'      => 'İndirim Oranı',
+        'discount_price'     => 'İndirim Miktarı',
+
+        'count'              => 'Adet',
+        'first_day'          => 'Başangıç Günü',
+        'last_day'           => 'Bitiş Günü',
     ],
 ];

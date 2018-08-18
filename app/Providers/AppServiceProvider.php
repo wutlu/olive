@@ -8,7 +8,7 @@ use Validator;
 use Request;
 use Hash;
 
-use App\Models\Organisation\OrganisationDiscountCoupon;
+use App\Models\Discount\DiscountCoupon;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -35,7 +35,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Validator::extend('coupon_exists', function($attribute, $key) {
-            $coupon = OrganisationDiscountCoupon::whereNull('invoice_id')->where('key', $key)->count();
+            $coupon = DiscountCoupon::whereNull('invoice_id')->where('key', $key)->count();
 
             return $coupon ? true : false;
         });

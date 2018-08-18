@@ -65,7 +65,7 @@ class User extends Authenticatable
     # faturalar
     public function invoices()
     {
-        return $this->hasMany('App\Models\Organisation\OrganisationInvoice', 'user_id', 'id');
+        return $this->hasMany('App\Models\Organisation\OrganisationInvoice', 'user_id', 'id')->orderBy('created_at', 'DESC');
     }
 
     # destek talepleri

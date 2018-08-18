@@ -80,7 +80,7 @@ class TicketController extends Controller
                     'method' => 'GET',
                     'action' => route('settings.support.ticket', $ticket->id),
                     'class' => 'btn-flat waves-effect',
-                    'text' => 'Talebi Gör'
+                    'text' => 'Desteği Gör'
                 ]
             ]
         );
@@ -187,7 +187,7 @@ class TicketController extends Controller
                         'method' => 'GET',
                         'action' => route('settings.support.ticket', $id),
                         'class' => 'btn-flat waves-effect',
-                        'text' => 'Talebi Gör'
+                        'text' => 'Desteği Gör'
                     ]
                 ]
             );

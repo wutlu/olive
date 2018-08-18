@@ -51,7 +51,7 @@ class TicketNotification extends Notification implements ShouldQueue
                     ->greeting($this->subject)
                     ->line($this->message)
                     ->level('success')
-                    ->action('Talebi Gör', route('settings.support.ticket', [ 'id' => $this->ticket_id ]));
+                    ->action('Desteği Gör', route('settings.support.ticket', [ 'id' => $this->ticket_id ]));
     }
 
     /**

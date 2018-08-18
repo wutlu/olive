@@ -13,7 +13,7 @@ class AddInvoiceIdToOrganisationInvoicesTable extends Migration
      */
     public function up()
     {
-        Schema::table('organisation_discount_coupons', function (Blueprint $table) {
+        Schema::table('discount_coupons', function (Blueprint $table) {
             $table->unsignedBigInteger('invoice_id')->nullable()->default(null);
             $table->foreign('invoice_id')->references('invoice_id')->on('organisation_invoices')->onDelete('cascade')->onUpdate('cascade');
         });
@@ -26,7 +26,7 @@ class AddInvoiceIdToOrganisationInvoicesTable extends Migration
      */
     public function down()
     {
-        Schema::table('organisation_discount_coupons', function (Blueprint $table) {
+        Schema::table('discount_coupons', function (Blueprint $table) {
             //
         });
     }

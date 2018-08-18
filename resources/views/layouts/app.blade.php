@@ -159,7 +159,7 @@
                     <span class="badge grey white-text" data-id="ticket-count">0</span>
                 </a>
             </li>
-            <div class="divider"></div>
+            <li class="divider"></li>
             <li>
                 <a class="waves-effect" href="{{ route('admin.organisation.list') }}">
                     <i class="material-icons">group_work</i>
@@ -173,12 +173,12 @@
                 </a>
             </li>
             <li>
-                <a class="waves-effect" href="#">
+                <a class="waves-effect" href="{{ route('admin.discount.coupon.list') }}">
                     <i class="material-icons">card_giftcard</i>
-                    Kupon Yönetimi
+                    Kupon Listesi
                 </a>
             </li>
-            <div class="divider"></div>
+            <li class="divider"></li>
             <li>
                 <div class="collapsible-header waves-effect">
                     <i class="material-icons">computer</i>
@@ -232,7 +232,7 @@
                     {{ auth()->user()->organisation->name }}
                 </a>
             </li>
-            <div class="divider"></div>
+            <li class="divider"></li>
             @endif
             <li>
                 <a class="waves-effect" href="{{ route('settings.account') }}">
@@ -266,7 +266,7 @@
         <nav class="grey darken-4" id="breadcrumb">
             <div class="sidenav-fixed-layout">
                 <div class="container">
-                    <a href="{{ route('dashboard') }}" class="breadcrumb">Panel</a>
+                    <a href="{{ route('dashboard') }}" class="breadcrumb">Olive</a>
                     @foreach ($breadcrumb as $row)
                         @if (@$row['link'])
                         <a href="{{ $row['link'] }}" class="breadcrumb">{{ $row['text'] }}</a>

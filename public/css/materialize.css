@@ -5496,6 +5496,9 @@ small {
   padding: 24px;
   border-radius: 2px;
 }
+.card .card-content.card-content-sm {
+  padding: 12px;
+}
 
 .card .card-content p {
   margin: 0;
@@ -5931,6 +5934,7 @@ small {
 
 .btn-floating.btn-large.halfway-fab {
   bottom: -28px;
+  z-index: 10;
 }
 
 .btn-floating.btn-large i {
@@ -6858,7 +6862,7 @@ input[type=search]:not(.browser-default)[readonly="readonly"],
 textarea.materialize-textarea:disabled,
 textarea.materialize-textarea[readonly="readonly"] {
   color: rgba(0, 0, 0, 0.42);
-  border-bottom: 1px dotted rgba(0, 0, 0, 0.42);
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.42);
 }
 
 input:not([type]):disabled + label,

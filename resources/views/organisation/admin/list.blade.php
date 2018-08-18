@@ -10,45 +10,45 @@
     ]
 ])
 
+@push('local.scripts')
+    function __organisations(__, obj)
+    {
+        var ul = $('#organisations');
+        var item_model = ul.children('.model');
+
+        if (obj.status == 'ok')
+        {
+            item_model.addClass('d-none')
+
+            if (obj.hits.length)
+            {
+                $.each(obj.hits, function(key, o) {
+                    var item = item_model.clone();
+                        item.removeClass('model d-none').addClass('_tmp d-flex').attr('data-id', o.id)
+
+                        item.find('[data-name=name]').html(o.name)
+                        item.find('[data-name=status]').html(o.status ? '✓' : '✕').addClass(o.status ? 'green-text' : 'red-text')
+                        item.find('[data-name=author]').html(o.author.name)
+                        item.find('[data-name=avatar]').attr('src', o.author.avatar ? '{{ asset('/') }}' + o.author.avatar : '{{ asset('img/people.svg') }}')
+
+                        item.appendTo(ul)
+                })
+            }
+
+            $('#home-loader').hide()
+        }
+    }
+
+    function __go_organisation(__, obj)
+    {
+        if (obj.status == 'ok')
+        {
+            location.href = obj.route;
+        }
+    }
+@endpush
+
 @section('content')
-    @push('local.scripts')
-        function __organisations(__, obj)
-        {
-            var ul = $('#organisations');
-            var item_model = ul.children('.model');
-    
-            if (obj.status == 'ok')
-            {
-                item_model.addClass('d-none')
-    
-                if (obj.hits.length)
-                {
-                    $.each(obj.hits, function(key, o) {
-                        var item = item_model.clone();
-                            item.removeClass('model d-none').addClass('_tmp d-flex').attr('data-id', o.id)
-
-                            item.find('[data-name=name]').html(o.name)
-                            item.find('[data-name=status]').html(o.status ? '✓' : '✕').addClass(o.status ? 'green-text' : 'red-text')
-                            item.find('[data-name=author]').html(o.author.name)
-                            item.find('[data-name=avatar]').attr('src', o.author.avatar ? '{{ asset('/') }}' + o.author.avatar : '{{ asset('img/people.svg') }}')
-
-                            item.appendTo(ul)
-                    })
-                }
-    
-                $('#home-loader').hide()
-            }
-        }
-
-        function __go_organisation(__, obj)
-        {
-            if (obj.status == 'ok')
-            {
-                location.href = obj.route;
-            }
-        }
-    @endpush
-
     <div class="row">
         <div class="col m4 offset-m8 s6 offset-s6 l2 offset-l10">
             <div class="input-field">
@@ -128,5 +128,5 @@
 @endsection
 
 @push('local.scripts')
-$('select').formSelect()
+    $('select').formSelect()
 @endpush

@@ -15,8 +15,7 @@
     'dock' => true
 ])
 
-@section('content')
-    @push('local.scripts')
+@push('local.scripts')
     function __close(__, obj)
     {
         if (obj.status == 'ok')
@@ -69,7 +68,9 @@
                    })
                ])
     }
-    @endpush
+@endpush
+
+@section('content')
     <div class="card ticket-card">
         <div class="card-image">
             <img src="{{ asset('img/md/'.($ticket->status == 'open' ? '7' : '34').'.jpg') }}" alt="Destek Talebi" />

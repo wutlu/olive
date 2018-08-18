@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Models\Organisation;
+namespace App\Models\Discount;
 
 use Illuminate\Database\Eloquent\Model;
 
-class OrganisationDiscountCoupon extends Model
+class DiscountCoupon extends Model
 {
-    protected $table = 'organisation_discount_coupons';
+    protected $table = 'discount_coupons';
     protected $fillable = [
 		'key',
 		'rate',

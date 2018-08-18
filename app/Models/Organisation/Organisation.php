@@ -38,7 +38,7 @@ class Organisation extends Model
     # faturalar
     public function invoices()
     {
-        return $this->hasMany('App\Models\Organisation\OrganisationInvoice', 'organisation_id', 'id');
+        return $this->hasMany('App\Models\Organisation\OrganisationInvoice', 'organisation_id', 'id')->orderBy('created_at', 'DESC');
     }
 
     # kalan gün

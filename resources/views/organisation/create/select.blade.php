@@ -11,7 +11,7 @@
 ])
 
 @push('local.scripts')
-$('.tabs').tabs();
+    $('.tabs').tabs();
 @endpush
 
 @if (session('timeout'))
@@ -86,5 +86,4 @@ $('.tabs').tabs();
             @endforeach
         </div>
     </div>
-
 @endsection

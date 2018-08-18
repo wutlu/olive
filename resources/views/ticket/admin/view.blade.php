@@ -84,7 +84,7 @@
                 <li class="item">
                     <small class="grey-text">İlgili Organizasyon</small>
                     @isset($ticket->invoice)
-                        <a href="#" class="d-block">{{ $ticket->invoice->organisation->name }}</a>
+                        <a href="{{ route('admin.organisation', $ticket->invoice->organisation->id) }}" class="d-block">{{ $ticket->invoice->organisation->name }}</a>
                     @else
                         <p>-</p>
                     @endisset
@@ -99,7 +99,11 @@
                 </li>
                 <li class="item">
                     <small class="grey-text">İlgili Kategori</small>
-                    <p>{{ @config('app.ticket.types')[$ticket->type] ? config('app.ticket.types')[$ticket->type] : '-' }}</p> 
+                    @isset($ticket->invoice)
+                        <a href="{{ route('organisation.invoice', $ticket->invoice_id) }}" class="d-block">{{ @config('app.ticket.types')[$ticket->type] ? config('app.ticket.types')[$ticket->type] : '-' }}</a>
+                    @else
+                        <p>{{ @config('app.ticket.types')[$ticket->type] ? config('app.ticket.types')[$ticket->type] : '-' }}</p> 
+                    @endisset
                 </li>
             </ul>
         </div>
@@ -152,5 +156,4 @@
         }
         @endpush
     @endif
-
 @endsection

@@ -884,8 +884,6 @@
 @endsection
 
 @push('local.scripts')
-
-$('select').formSelect()
-$('.tabs').tabs()
-
+    $('select').formSelect()
+    $('.tabs').tabs()
 @endpush

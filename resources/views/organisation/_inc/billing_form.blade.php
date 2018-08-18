@@ -213,10 +213,10 @@
 </div>
 
 @push('external.include.footer')
-<script src="{{ asset('js/jquery.maskedinput.min.js?v='.config('app.version')) }}"></script>
-<script>
-$('input#postal_code').mask('99999')
-$('input#person_tckn').mask('99999999999')
-$('input#tax_number').mask('9999999999')
-</script>
+    <script src="{{ asset('js/jquery.maskedinput.min.js?v='.config('app.version')) }}"></script>
+    <script>
+    $('input#postal_code').mask('99999')
+    $('input#person_tckn').mask('99999999999')
+    $('input#tax_number').mask('9999999999')
+    </script>
 @endpush

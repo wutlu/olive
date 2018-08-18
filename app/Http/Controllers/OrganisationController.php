@@ -10,7 +10,7 @@ use App\Utilities\Term;
 use App\Models\User\UserActivity;
 use App\Models\Organisation\Organisation;
 use App\Models\Organisation\OrganisationInvoice as Invoice;
-use App\Models\Organisation\OrganisationDiscountCoupon as Coupon;
+use App\Models\Discount\DiscountCoupon as Coupon;
 use App\Models\User\User;
 
 use App\Http\Requests\PlanRequest;

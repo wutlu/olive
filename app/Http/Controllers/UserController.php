@@ -18,13 +18,13 @@ use App\Notifications\EmailValidationNotification;
 use App\Notifications\WelcomeNotification;
 use App\Notifications\NewPasswordNotification;
 use App\Notifications\LoginNotification;
-use App\Notifications\OrganisationDiscountCouponNotification;
+use App\Notifications\DiscountCouponNotification;
 use App\Notifications\MessageNotification;
 
 use App\Utilities\UserActivityUtility;
 
-use App\Models\Organisation\OrganisationDiscountDay;
-use App\Models\Organisation\OrganisationDiscountCoupon;
+use App\Models\Discount\DiscountDay;
+use App\Models\Discount\DiscountCoupon;
 use App\Models\User\User;
 use App\Models\User\UserNotification;
 
@@ -248,7 +248,7 @@ class UserController extends Controller
 
         # indirim günü varsa kupon yarat #
 
-        $discountDay = OrganisationDiscountDay::where('first_day', '<=', date('Y-m-d'))->where('last_day', '>=', date('Y-m-d'))->first();
+        $discountDay = DiscountDay::where('first_day', '<=', date('Y-m-d'))->where('last_day', '>=', date('Y-m-d'))->first();
 
         if (@$discountDay)
         {
@@ -258,26 +258,33 @@ class UserController extends Controller
             {
                 $generate_key = str_random(8);
 
-                $key = OrganisationDiscountCoupon::where('key', $generate_key)->count();
+                $key = DiscountCoupon::where('key', $generate_key)->count();
 
                 if ($key == 0)
                 {
-                    OrganisationDiscountCoupon::create([
+                    DiscountCoupon::create([
                         'key' => $generate_key,
-                        'rate' => $discountDay->discount_rate
+                        'rate' => $discountDay->discount_rate,
+                        'price' => $discountDay->discount_price
                     ]);
 
                     $ok = true;
 
-                    $discount[] = '| Kupon Kodu        | İndirim Oranı                    |';
-                    $discount[] = '| ----------------: |:-------------------------------- |';
-                    $discount[] = '| '.$generate_key.' | '.$discountDay->discount_rate.'% |';
+                    $discount[] = '| Kupon Kodu        | İndirim Oranı                                              |';
+                    $discount[] = '| ----------------: |:--------------------------------                           |';
+
+                    $discount[] = '| '.$generate_key.' | '.$discountDay->discount_rate.'%                           |';
+
+                if ($discountDay->discount_price)
+                {
+                    $discount[] = '| Ek            | '.config('formal.currency').' '.$discountDay->discount_price.' |';
+                }
 
                     # --- [] --- #
 
                     $discount = implode(PHP_EOL, $discount);
 
-                    $user->notify(new OrganisationDiscountCouponNotification($user->name, $discount));
+                    $user->notify(new DiscountCouponNotification($user->name, $discount));
                 }
             }
         }

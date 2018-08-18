@@ -36,7 +36,7 @@ class OrganisationInvoice extends Model
     # indirim kuponu
     public function discountCoupon()
     {
-        return $this->hasOne('App\Models\Organisation\OrganisationDiscountCoupon', 'invoice_id', 'invoice_id');
+        return $this->hasOne('App\Models\Discount\DiscountCoupon', 'invoice_id', 'invoice_id');
     }
 
     # plan
