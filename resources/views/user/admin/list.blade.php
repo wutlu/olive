@@ -5,7 +5,7 @@
             'text' => 'Admin'
         ],
         [
-            'text' => 'Kullanıcı Listesi'
+            'text' => 'Kullanıcılar'
         ]
     ]
 ])
@@ -51,8 +51,8 @@
 
     <div class="card">
         <div class="card-image">
-            <img src="{{ asset('img/md-s/10.jpg') }}" alt="Kullanıcı Listesi" />
-            <span class="card-title">Kullanıcı Listesi</span>
+            <img src="{{ asset('img/md-s/10.jpg') }}" alt="Kullanıcılar" />
+            <span class="card-title">Kullanıcılar</span>
         </div>
         <nav class="grey darken-4">
             <div class="nav-wrapper">

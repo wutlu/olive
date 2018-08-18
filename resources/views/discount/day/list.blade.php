@@ -5,7 +5,7 @@
             'text' => 'Admin'
         ],
         [
-            'text' => 'İndirim Günü Listesi'
+            'text' => 'İndirim Günleri'
         ]
     ],
     'dock' => true
@@ -23,7 +23,7 @@
 			Belirleyeceğiniz günlerde sisteme kaydolan kullanıcılar için sistem, indirim kuponları üretir.
 		</div>
 	    <div class="card-content">
-	        <span class="card-title">İndirim Günü Listesi</span>
+	        <span class="card-title">İndirim Günleri</span>
 	        <p class="grey-text">{{ count($days).'/'.$days->total() }}</p>
 
 	        @if (!count($days))

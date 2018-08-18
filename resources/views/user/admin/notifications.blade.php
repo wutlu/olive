@@ -5,7 +5,7 @@
             'text' => 'Admin'
         ],
         [
-            'text' => 'Kullanıcı Listesi',
+            'text' => 'Kullanıcılar',
             'link' => route('admin.user.list')
         ],
         [

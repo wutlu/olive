@@ -5,7 +5,7 @@
             'text' => 'Admin'
         ],
         [
-            'text' => 'İndirim Günü Listesi',
+            'text' => 'İndirim Günleri',
             'link' => route('admin.discount.day.list')
         ],
         [

@@ -5,7 +5,7 @@
             'text' => 'Admin'
         ],
         [
-            'text' => 'Organizasyon Listesi',
+            'text' => 'Organizasyonlar',
             'link' => route('admin.organisation.list')
         ],
         [

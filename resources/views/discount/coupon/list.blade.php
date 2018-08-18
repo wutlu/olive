@@ -5,7 +5,7 @@
             'text' => 'Admin'
         ],
         [
-            'text' => 'Kupon Listesi'
+            'text' => 'İndirim Kuponları'
         ]
     ],
     'dock' => true
@@ -26,7 +26,7 @@
             </a>
         </div>
         <div class="card-content">
-            <span class="card-title">Kupon Listesi</span>
+            <span class="card-title">İndirim Kuponları</span>
             <p class="grey-text">{{ count($coupons).'/'.$coupons->total() }}</p>
 
             @if (!count($coupons))

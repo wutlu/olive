@@ -5,7 +5,7 @@
             'text' => 'Admin'
         ],
         [
-            'text' => 'Organizasyon Listesi'
+            'text' => 'Organizasyonlar'
         ]
     ]
 ])
@@ -62,8 +62,8 @@
     </div>
     <div class="card">
         <div class="card-image">
-            <img src="{{ asset('img/md-s/14.jpg') }}" alt="Organizasyon Listesi" />
-            <span class="card-title">Organizasyon Listesi</span>
+            <img src="{{ asset('img/md-s/14.jpg') }}" alt="Organizasyonlar" />
+            <span class="card-title">Organizasyonlar</span>
         </div>
         <nav class="grey darken-4">
             <div class="nav-wrapper">

@@ -163,19 +163,19 @@
             <li>
                 <a class="waves-effect" href="{{ route('admin.organisation.list') }}">
                     <i class="material-icons">group_work</i>
-                    Organizasyon Listesi
+                    Organizasyonlar
                 </a>
             </li>
             <li>
                 <a class="waves-effect" href="{{ route('admin.user.list') }}">
                     <i class="material-icons">people</i>
-                    Kullanıcı Listesi
+                    Kullanıcılar
                 </a>
             </li>
             <li>
                 <a class="waves-effect" href="{{ route('admin.discount.coupon.list') }}">
                     <i class="material-icons">card_giftcard</i>
-                    Kupon Listesi
+                    İndirim Kuponları
                 </a>
             </li>
             <li class="divider"></li>

@@ -5,7 +5,7 @@
             'text' => 'Admin'
         ],
         [
-            'text' => 'Kupon Listesi',
+            'text' => 'İndirim Kuponları',
             'link' => route('admin.discount.coupon.list')
         ],
         [
