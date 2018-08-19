@@ -161,6 +161,13 @@
             </li>
             <li class="divider"></li>
             <li>
+                <a class="waves-effect" href="{{ route('admin.page.list') }}">
+                    <i class="material-icons">pages</i>
+                    Sayfalar
+                </a>
+            </li>
+            <li class="divider"></li>
+            <li>
                 <a class="waves-effect" href="{{ route('admin.organisation.list') }}">
                     <i class="material-icons">group_work</i>
                     Organizasyonlar

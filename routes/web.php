@@ -35,6 +35,14 @@ Route::prefix('admin')->middleware([ 'root' ])->group(function () {
         Route::delete('indirim-gunu', 'DiscountController@adminDayDelete');
     });
 
+    Route::prefix('sayfa-yonetimi')->group(function () {
+        Route::get('sayfalar', 'PageController@adminListView')->name('admin.page.list');
+        Route::get('sayfa/{id?}', 'PageController@adminView')->name('admin.page');
+        Route::put('sayfa', 'PageController@adminCreate');
+        Route::patch('sayfa', 'PageController@adminUpdate');
+        Route::delete('sayfa', 'PageController@adminDelete');
+    });
+
     Route::prefix('destek-talepleri')->group(function () {
         Route::get('{status?}', 'TicketController@adminList')->name('admin.tickets')->where('status', '(open|closed)');
 
@@ -127,3 +135,5 @@ Route::prefix('kullanici')->group(function () {
     Route::get('sifre/{user_id}/{sid}', 'UserController@passwordNew')->name('user.password.new');
     Route::patch('sifre/{user_id}/{sid}', 'UserController@passwordNewPatch');
 });
+
+Route::get('{slug}', 'PageController@view')->name('page.view');

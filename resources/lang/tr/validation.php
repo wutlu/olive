@@ -185,5 +185,11 @@ return [
         'count'              => 'Adet',
         'first_day'          => 'Başangıç Günü',
         'last_day'           => 'Bitiş Günü',
+
+        'body'               => 'Gövde',
+        'slug'               => 'Slug',
+        'title'              => 'Başlık',
+        'keywords'           => 'Anahtar Kelimeler',
+        'description'        => 'Açıklama',
     ],
 ];

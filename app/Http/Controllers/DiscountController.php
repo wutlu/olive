@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\SearchRequest;
 use App\Http\Requests\Discount\Coupon\CreateRequest;
 use App\Http\Requests\Discount\Coupon\UpdateRequest;
 use App\Http\Requests\IdRequest;
@@ -12,7 +11,6 @@ use App\Http\Requests\Discount\Day\UpdateRequest as DayUpdateRequest;
 
 use App\Models\Discount\DiscountCoupon as Coupon;
 use App\Models\Discount\DiscountDay as Day;
-use DB;
 
 class DiscountController extends Controller
 {

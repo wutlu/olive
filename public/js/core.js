@@ -15,6 +15,37 @@ $(function() {
     timeAgo()
 })
 
+
+function slug(str)
+{
+    str = str.toLowerCase();
+
+    var specialChars = [
+        ['ğ', 'g'],
+        ['ü', 'u'],
+        ['ş', 's'],
+        ['ı', 'i'],
+        ['ö', 'o'],
+        ['ç', 'c'],
+        ['Ğ', 'g'],
+        ['Ü', 'u'],
+        ['Ş', 's'],
+        ['İ', 'i'],
+        ['Ö', 'o'],
+        ['Ç', 'c'],
+        ['-', ' ']
+    ];
+
+    for (var i = 0; i < specialChars.length; i++)
+    {
+        str = str.replace(eval('/' + specialChars[i][0] + '/ig'), specialChars[i][1]);
+    }
+
+    str = $.trim(str);
+
+    return str.replace(/\s\s+/g, ' ').replace(/[^a-z0-9-\s]/gi, '').replace(/[^\w]/ig, '-');
+}
+
 /* --- scroll function --- */
 
 function scrollTo(scrollTo)
