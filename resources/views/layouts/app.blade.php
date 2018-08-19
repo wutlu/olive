@@ -373,17 +373,17 @@
                     </div>
                     <div class="col l2 offset-l2 s12">
                         <ul>
-                            <li><a class="grey-text" href="#">Hakkımızda</a></li>
+                            <li><a class="grey-text" href="{{ route('page.view', 'hakkimizda') }}">Hakkımızda</a></li>
                             <li><a class="grey-text" href="#">Blog</a></li>
-                            <li><a class="grey-text" href="#">İletişim</a></li>
+                            <li><a class="grey-text" href="{{ route('page.view', 'iletisim') }}">İletişim</a></li>
                             <li><a class="grey-text" href="#">Yardım</a></li>
                             <li><a class="grey-text" href="#">Api</a></li>
                         </ul>
                     </div>
                     <div class="col l2 s12">
                         <ul>
-                            <li><a class="grey-text" href="#">Gizlilik Politikası</a></li>
-                            <li><a class="grey-text" href="#">Kullanım Koşulları</a></li>
+                            <li><a class="grey-text" href="{{ route('page.view', 'gizlilik-politikasi') }}">Gizlilik Politikası</a></li>
+                            <li><a class="grey-text" href="{{ route('page.view', 'kullanim-kosullari') }}">Kullanım Koşulları</a></li>
                         </ul>
                     </div>
                 </div>

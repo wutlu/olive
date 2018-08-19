@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
         $this->call(CountriesTableSeeder::class)
         	 ->call(StatesTableSeeder::class)
         	 ->call(UserTableSeeder::class)
-             ->call(OrganisationTableSeeder::class);
+             ->call(OrganisationTableSeeder::class)
+             ->call(PageTableSeeder::class);
     }
 }
