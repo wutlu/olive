@@ -83,7 +83,9 @@
                                             <div class="col s12">
                                                 <label>
                                                     <input name="terms" type="checkbox" value="1" />
-                                                    <span><a href="#">Kullanım Koşulları</a> ve <a href="#">Gizlilik Politikası</a> sayfalarındaki maddeleri okudum, kabul ediyorum.</span>
+                                                    <span>
+                                                        <a target="_blank" href="{{ route('page.view', 'kullanim-kosullari') }}">Kullanım Koşulları</a> ve <a target="_blank" href="{{ route('page.view', 'gizlilik-politikasi') }}">Gizlilik Politikası</a> sayfalarındaki maddeleri okudum, kabul ediyorum.
+                                                    </span>
                                                 </label>
                                             </div>
                                             <div class="col s12 right-align">

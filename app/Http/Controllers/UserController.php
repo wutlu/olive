@@ -125,7 +125,10 @@ class UserController extends Controller
                     ]
                 );
 
-                $user->notify(new LoginNotification($user->name, $data));
+                if ($user->notification('login'))
+                {
+                    $user->notify(new LoginNotification($user->name, $data));
+                }
 
                 Session::getHandler()->destroy($previous_session);
             }
@@ -502,7 +505,10 @@ class UserController extends Controller
 
         if ($request->password)
         {
-            $user->notify(new MessageNotification('Olive: Şifre Güncellendi!', 'Merhaba, '.$user->name, 'Hesap şifreniz başarılı bir şekilde güncellendi.'));
+            if ($user->notification('important'))
+            {
+                $user->notify(new MessageNotification('Olive: Şifre Güncellendi!', 'Merhaba, '.$user->name, 'Hesap şifreniz başarılı bir şekilde güncellendi.'));
+            }
 
             $user->password = bcrypt($request->password);
         }

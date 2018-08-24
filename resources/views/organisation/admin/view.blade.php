@@ -21,7 +21,8 @@
         if (obj.status == 'ok')
         {
             M.toast({
-                html: 'Organizasyon Bilgileri Güncellendi'
+                html: 'Organizasyon Bilgileri Güncellendi',
+                classes: 'green'
             })
         }
     }

@@ -25,11 +25,13 @@
             </div>
 
             <div class="container">
-                <img alt="Logo" src="{{ asset('img/olive-logo.svg') }}" style="max-width: 200px;" />
+                <a href="{{ route('home') }}">
+                	<img alt="Logo" src="{{ asset('img/olive-logo.svg') }}" style="max-width: 200px;" />
+                </a>
                 <div class="card card-unstyled">
                     <div class="card-content">
                     	<span class="card-title">{{ $page->title }}</span>
-                        {!! $page->body !!}
+                        {!! nl2br($page->body) !!}
                     </div>
                 </div>
             </div>

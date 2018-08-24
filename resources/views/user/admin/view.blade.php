@@ -26,7 +26,8 @@
             $('img.user-avatar').attr('src', '{{ asset('img/people.svg') }}')
 
             M.toast({
-                html: 'Kullanıcı Bilgileri Güncellendi'
+                html: 'Kullanıcı Bilgileri Güncellendi',
+                classes: 'green'
             })
         }
     }
@@ -81,7 +82,7 @@
                             <input name="avatar" id="avatar" value="on" type="checkbox" />
                             <span>Avatarı Sil</span>
                         </span>
-                        <img alt="Avatar" src="{{ auth()->user()->avatar() }}" class="user-avatar" style="width: 64px;" />
+                        <img alt="Avatar" src="{{ $user->avatar() }}" class="user-avatar" style="width: 64px;" />
                     </label>
                     <label class="collection-item waves-effect d-block">
                         <input name="root" id="root" value="on" type="checkbox" {{ $user->root() ? 'checked' : '' }} />

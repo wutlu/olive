@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+<defs>
+    <style>
+      .cls-1 {
+        fill: #444;
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <path id="Elips_1" data-name="Elips 1" class="cls-1" d="M256,508C116.824,508,4,395.176,4,256S116.824,4,256,4,508,116.824,508,256,395.176,508,256,508ZM172,180a23,23,0,1,0,23,23A23,23,0,0,0,172,180Zm126,18-32,48-23-23-23,37-18-17-53,73H366Z"/>
+</svg>

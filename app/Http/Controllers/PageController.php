@@ -44,7 +44,7 @@ class PageController extends Controller
         }
         else
         {
-            $coupon = [];
+            $page = [];
         }
 
         return view('page.admin.view', compact('page'));

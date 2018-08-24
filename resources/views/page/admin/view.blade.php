@@ -72,6 +72,8 @@
     @if (session('status') == 'created')
         M.toast({ html: 'Sayfa Oluşturuldu', classes: 'green' })
     @endif
+
+    $('[data-length]').characterCounter()
 @endpush
 
 @section('content')
@@ -87,8 +89,8 @@
             <div class="card-content">
                 <div class="collection">
                     <div class="collection-item">
-                        <div class="input-field" style="max-width: 240px;">
-                            <input name="title" id="title" value="{{ @$page->title }}" type="text" class="validate" />
+                        <div class="input-field">
+                            <input name="title" id="title" value="{{ @$page->title }}" type="text" class="validate" data-length="255" />
                             <label for="title">Sayfa Başlığı</label>
                             <small class="helper-text">Arama sayfalarında ve tarayıcı başlık çubuğunda görünecek sayfa başlığı.</small>
                         </div>
@@ -98,34 +100,36 @@
                         var __ = $(this);
 
                         $('input[name=slug]').val(slug(__.val()))
+                        $('span.sample').html(slug(__.val()))
+                        $('span.card-title').html(__.val())
 
                         M.updateTextFields()
                     })
                     @endpush
                     <div class="collection-item">
-                        <div class="input-field" style="max-width: 240px;">
-                            <input name="slug" id="slug" value="{{ @$page->slug }}" type="text" class="validate" />
+                        <div class="input-field">
+                            <input name="slug" id="slug" value="{{ @$page->slug }}" type="text" class="validate" data-length="255" />
                             <label for="slug">Slug</label>
-                            <small class="helper-text">Sayfa adresinden sonra gelecek olan alan. {!! url('/ornek') !!}</small>
+                            <small class="helper-text">Sayfa adresinden sonra gelecek olan alan. {!! url('<span class="sample">'.(@$page->slug ? $page->slug : '/slug').'</span>') !!}</small>
                         </div>
                     </div>
                     <div class="collection-item">
-                        <div class="input-field" style="max-width: 240px;">
-                            <input name="keywords" id="keywords" value="{{ @$page->keywords }}" type="text" class="validate" />
+                        <div class="input-field">
+                            <input name="keywords" id="keywords" value="{{ @$page->keywords }}" type="text" class="validate" data-length="255" />
                             <label for="keywords">Anahtar Kelimeler</label>
-                            <small class="helper-text">Arama sonuçlarında öne çıkartılacak kelimeler.</small>
+                            <small class="helper-text">Arama sonuçlarında öne çıkartılacak kelimeler. (Virgül ile ayırın.)</small>
                         </div>
                     </div>
                     <div class="collection-item">
-                        <div class="input-field" style="max-width: 240px;">
-                            <input name="description" id="description" value="{{ @$page->description }}" type="text" class="validate" />
+                        <div class="input-field">
+                            <input name="description" id="description" value="{{ @$page->description }}" type="text" class="validate" data-length="255" />
                             <label for="description">Sayfa Açıklaması</label>
                             <small class="helper-text">Arama sonuçlarında görünecek açıklama.</small>
                         </div>
                     </div>
                     <div class="collection-item">
                         <div class="input-field">
-                            <textarea name="body" id="body" class="materialize-textarea validate">{{ @$page->body }}</textarea>
+                            <textarea name="body" id="body" class="materialize-textarea validate" data-length="10000">{{ @$page->body }}</textarea>
                             <label for="body">Sayfa Gövdesi</label>
                             <small class="helper-text">Sayfa içeriği. (HTML)</small>
                         </div>

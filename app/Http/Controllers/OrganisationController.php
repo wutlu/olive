@@ -114,7 +114,12 @@ class OrganisationController extends Controller
                 {
                     print_r($message);
 
-                    $organisation->author->notify(new MessageNotification('Olive: '.$message['title'], $message['info'], $message['body']));
+                    $author = $organisation->author;
+
+                    if ($author->notification('important'))
+                    {
+                        $author->notify(new MessageNotification('Olive: '.$message['title'], $message['info'], $message['body']));
+                    }
 
                     Activity::push(
                         $message['title'],
@@ -180,7 +185,10 @@ class OrganisationController extends Controller
         $title = 'Organizasyona Eklendiniz';
         $message = $user->organisation->name.'; '.auth()->user()->name.' tarafından eklendiniz.';
 
-        $user->notify(new MessageNotification('Olive: '.$title, 'Merhaba, '.$user->name, $message));
+        if ($user->notification('important'))
+        {
+            $user->notify(new MessageNotification('Olive: '.$title, 'Merhaba, '.$user->name, $message));
+        }
 
         Activity::push(
             $title,
@@ -222,7 +230,10 @@ class OrganisationController extends Controller
             ]
         );
 
-        $user->notify(new MessageNotification('Olive: '.$title, 'Merhaba, '.$user->name, $message));
+        if ($user->notification('important'))
+        {
+            $user->notify(new MessageNotification('Olive: '.$title, 'Merhaba, '.$user->name, $message));
+        }
 
         $user->update([
             'organisation_id' => null
@@ -250,7 +261,10 @@ class OrganisationController extends Controller
         $title = 'Organizasyon Devredildi';
         $message = $user->organisation->name.', '.$transferred_user->name.' üzerine devredildi.';
 
-        $user->notify(new MessageNotification('Olive: '.$title, 'Merhaba, '.$user->name, $message));
+        if ($user->notification('important'))
+        {
+            $user->notify(new MessageNotification('Olive: '.$title, 'Merhaba, '.$user->name, $message));
+        }
 
         Activity::push(
             $title,
@@ -266,7 +280,10 @@ class OrganisationController extends Controller
         $title = 'Organizasyon Devredildi';
         $message = $user->organisation->name.', '.$user->name.' tarafından size devredildi.';
 
-        $transferred_user->notify(new MessageNotification('Olive: '.$title, 'Merhaba, '.$transferred_user->name, $message));
+        if ($transferred_user->notification('important'))
+        {
+            $transferred_user->notify(new MessageNotification('Olive: '.$title, 'Merhaba, '.$transferred_user->name, $message));
+        }
 
         Activity::push(
             $title,
@@ -298,7 +315,10 @@ class OrganisationController extends Controller
         $title = 'Organizasyondan Çıkarıldınız';
         $message = $user->organisation->name.'; '.$user->name.' tarafından çıkarıldınız.';
 
-        $removed_user->notify(new MessageNotification('Olive: '.$title, 'Merhaba, '.$removed_user->name, $message));
+        if ($removed_user->notification('important'))
+        {
+            $removed_user->notify(new MessageNotification('Olive: '.$title, 'Merhaba, '.$removed_user->name, $message));
+        }
 
         Activity::push(
             $title,
@@ -349,7 +369,10 @@ class OrganisationController extends Controller
                 $message = $organisation->name.', '.$user->name.' tarafından silindi.';
             }
 
-            $u->notify(new MessageNotification('Olive: '.$title, 'Merhaba, '.$u->name, $message));
+            if ($u->notification('important'))
+            {
+                $u->notify(new MessageNotification('Olive: '.$title, 'Merhaba, '.$u->name, $message));
+            }
 
             Activity::push(
                 $title,
@@ -461,17 +484,16 @@ class OrganisationController extends Controller
         $billing_information->fill($request->all());
         $billing_information->save();
 
-        $organisation = Organisation::create([
-                  'name' => 'ORG#1',
-              'capacity' => $plan['properties']['capacity']['value'],
-            'start_date' => date('Y-m-d H:i:s'),
-              'end_date' => Carbon::now()->addMonths($request->month),
-               'user_id' => $user->id
-        ]);
+        $organisation = new Organisation;
+        $organisation->name = 'ORG#1';
+        $organisation->capacity = $plan['properties']['capacity']['value'];
+        $organisation->start_date = date('Y-m-d H:i:s');
+        $organisation->end_date = Carbon::now()->addMonths($request->month);
+        $organisation->user_id = $user->id;
+        $organisation->save();
 
-        $user->update([
-            'organisation_id' => $organisation->id
-        ]);
+        $user->organisation_id = $organisation->id;
+        $user->save();
 
         $invoice_id = 0;
 
@@ -500,7 +522,10 @@ class OrganisationController extends Controller
 
                 $ok = true;
 
-                $user->notify(new OrganisationWasCreatedNotification($user->name, $invoice_id));
+                if ($user->notification('important'))
+                {
+                    $user->notify(new OrganisationWasCreatedNotification($user->name, $invoice_id));
+                }
 
                 Activity::push(
                     'Organizasyon Oluşturuldu',
@@ -672,7 +697,10 @@ class OrganisationController extends Controller
 
                 $ok = true;
 
-                $user->notify(new OrganisationWasUpdatedNotification($user->name, $invoice_id));
+                if ($user->notification('important'))
+                {
+                    $user->notify(new OrganisationWasUpdatedNotification($user->name, $invoice_id));
+                }
 
                 Activity::push(
                     'Fatura oluşturuldu',
@@ -741,7 +769,10 @@ class OrganisationController extends Controller
 
         $invoice = Invoice::where('invoice_id', $user->organisation->lastInvoice->invoice_id)->whereNull('paid_at')->delete();
 
-        $user->notify(new MessageNotification('Olive: Fatura İptal Edildi', 'Organizasyon Faturasını İptal Ettiniz!', 'Organizasyon ödemesi için oluşturduğunuz fatura, ödeme tamamlanmadan iptal edildi.'));
+        if ($user->notification('important'))
+        {
+            $user->notify(new MessageNotification('Olive: Fatura İptal Edildi', 'Organizasyon Faturasını İptal Ettiniz!', 'Organizasyon ödemesi için oluşturduğunuz fatura, ödeme tamamlanmadan iptal edildi.'));
+        }
 
         return [
             'status' => 'ok'
@@ -852,7 +883,10 @@ class OrganisationController extends Controller
             $greeting = 'Fatura Onaylandı!';
             $message = 'Organizasyonu aktif bir şekilde kullanabilirsiniz. İyi araştırmalar...';
 
-            $organisation->author->notify(new MessageNotification($title, $greeting, $message));
+            if ($organisation->author->notification('important'))
+            {
+                $organisation->author->notify(new MessageNotification($title, $greeting, $message));
+            }
 
             Activity::push(
                 $greeting,

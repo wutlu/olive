@@ -44,4 +44,8 @@ return [
             'secret_key' => env('GOOGLE_RECAPTCHA_SECRET_KEY')
         ]
     ],
+
+    'medium' => [
+        'url' => 'http://'
+    ],
 ];

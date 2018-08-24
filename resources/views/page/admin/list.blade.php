@@ -43,7 +43,7 @@
             <a href="{{ route('admin.page', $page->id) }}" class="collection-item d-flex waves-effect">
                 <span>
                     <p>{{ $page->title }}</p>
-                    <p class="grey-text">{{ $page->slug }}</p>
+                    <p class="grey-text">{{ url($page->slug) }}</p>
                 </span>
             </a>
             @endforeach

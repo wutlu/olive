@@ -37,10 +37,8 @@ return [
     ],
 
     'notifications' => [
-        'test' => 'X Bildirimleri',
-        'test1' => 'y Bildirimleri',
-        'test2' => 'c Bildirimleri',
-        'test3' => 'd Bildirimleri'
+        'important' => 'Önemli Olay Bildirimleri',
+        'login' => 'Giriş Bildirimleri'
     ],
 
     'group_email' => env('GROUP_EMAIL'),

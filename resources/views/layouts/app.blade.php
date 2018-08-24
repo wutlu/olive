@@ -374,9 +374,8 @@
                     <div class="col l2 offset-l2 s12">
                         <ul>
                             <li><a class="grey-text" href="{{ route('page.view', 'hakkimizda') }}">Hakkımızda</a></li>
-                            <li><a class="grey-text" href="#">Blog</a></li>
+                            <li><a class="grey-text" href="{{ config('services.medium.url') }}">Blog</a></li>
                             <li><a class="grey-text" href="{{ route('page.view', 'iletisim') }}">İletişim</a></li>
-                            <li><a class="grey-text" href="#">Yardım</a></li>
                             <li><a class="grey-text" href="#">Api</a></li>
                         </ul>
                     </div>

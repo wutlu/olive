@@ -6676,8 +6676,6 @@ button.btn-floating {
   margin: 0 0 8px 0;
   min-height: 45px;
   outline: none;
-  -webkit-transition: all .3s;
-  transition: all .3s;
 }
 
 .chips.focus {
@@ -6705,7 +6703,6 @@ button.btn-floating {
 }
 
 .chips .input:focus {
-  border: 0 !important;
   -webkit-box-shadow: none !important;
           box-shadow: none !important;
 }

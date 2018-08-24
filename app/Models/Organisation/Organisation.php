@@ -9,12 +9,7 @@ class Organisation extends Model
 {
     protected $table = 'organisations';
     protected $fillable = [
-		'name',
-		'capacity',
-		'start_date',
-		'end_date',
-		'user_id',
-        'status'
+		'name'
     ];
 
     # users

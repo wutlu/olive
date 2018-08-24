@@ -57,7 +57,10 @@ class TicketController extends Controller
 
         if ($user->organisation)
         {
-            $ticket->invoice_id = $user->organisation->lastInvoice->paid_at ? null : $user->organisation->lastInvoice->invoice_id;
+            if ($user->organisation->lastInvoice)
+            {
+                $ticket->invoice_id = $user->organisation->lastInvoice->paid_at ? null : $user->organisation->lastInvoice->invoice_id;
+            }
         }
 
         $ticket->save();
@@ -67,7 +70,10 @@ class TicketController extends Controller
         $subject = 'Destek #'.$ticket->id.' [AÇILDI]';
         $markdown = 'Yeni bir destek talebi oluşturdunuz. Talebiniz, ekibimiz tarafından en kısa sürede incelenip yanıtlanacaktır.';
 
-        $ticket->user->notify(new TicketNotification($subject, $markdown, $ticket->id));
+        if ($ticket->user->notification('important'))
+        {
+            $ticket->user->notify(new TicketNotification($subject, $markdown, $ticket->id));
+        }
 
         UserActivityUtility::push(
             $subject,
@@ -115,7 +121,10 @@ class TicketController extends Controller
             $subject = 'Destek #'.$request->ticket_id.' [YANITLANDI]';
             $markdown = 'Destek talebiniz, '.$user->name.' tarafından yanıtlandı.';
 
-            $ticket->user->notify(new TicketNotification($subject, $markdown, $request->ticket_id));
+            if ($ticket->user->notification('important'))
+            {
+                $ticket->user->notify(new TicketNotification($subject, $markdown, $request->ticket_id));
+            }
 
             UserActivityUtility::push(
                 $subject,
@@ -174,7 +183,10 @@ class TicketController extends Controller
             $subject = 'Destek #'.$id.' [KAPANDI]';
             $markdown = 'Destek talebiniz, '.$user->name.' tarafından kapatıldı.';
 
-            $ticket->user->notify(new TicketNotification($subject, $markdown, $id));
+            if ($ticket->user->notification('important'))
+            {
+                $ticket->user->notify(new TicketNotification($subject, $markdown, $id));
+            }
 
             UserActivityUtility::push(
                 $subject,
