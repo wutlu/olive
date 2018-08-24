@@ -15,7 +15,6 @@ class DatabaseSeeder extends Seeder
         	 ->call(StatesTableSeeder::class)
         	 ->call(UserTableSeeder::class)
              ->call(OrganisationTableSeeder::class)
-             ->call(PageTableSeeder::class)
-             ->call(BlogTableSeeder::class);
+             ->call(PageTableSeeder::class);
     }
 }
