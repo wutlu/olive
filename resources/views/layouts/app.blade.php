@@ -22,7 +22,6 @@
 
     <!-- master styles -->
     <link rel="stylesheet" href="{{ asset('css/materialize.css?v='.config('app.version')) }}" />
-    <link rel="stylesheet" href="{{ asset('css/master.css?v='.config('app.version')) }}" />
 
     <!-- external include header -->
     @stack('external.include.header')
@@ -198,12 +197,6 @@
                             <a class="waves-effect" href="#">
                                 <i class="material-icons">memory</i>
                                 Sistem Bilgisi
-                            </a>
-                        </li>
-                        <li>
-                            <a class="waves-effect" href="#">
-                                <i class="material-icons">donut_small</i>
-                                Sistem Raporları
                             </a>
                         </li>
                         <li>

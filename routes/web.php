@@ -21,6 +21,10 @@ Route::prefix('organizasyon')->group(function () {
 
 # #### [ ADMIN ] #### #
 Route::prefix('admin')->middleware([ 'root' ])->group(function () {
+    Route::prefix('sistem-izleme')->group(function () {
+
+    });
+
     Route::prefix('kupon-yonetimi')->group(function () {
         Route::get('kuponlar', 'DiscountController@adminCouponListView')->name('admin.discount.coupon.list');
         Route::get('kupon/{id?}', 'DiscountController@adminCouponView')->name('admin.discount.coupon');

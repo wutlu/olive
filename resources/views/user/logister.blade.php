@@ -22,7 +22,7 @@
                         <p class="grey-text">@lang('global.header.lead-3')</p>
                     </div>
                     <div class="col l6 offset-l2 xl4 offset-xl4">
-                        <div class="card cyan darken-4" id="account-card">
+                        <div class="card cyan darken-4" style="margin: 2rem 0;">
                             <div class="card-content">
                                 <p class="white-text">Hemen bir hesap oluşturun ve bir çok aracı <strong>ücretsiz</strong> bir şekilde kullanmaya başlayın.</p>
                             </div>
