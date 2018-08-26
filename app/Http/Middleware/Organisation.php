@@ -20,16 +20,17 @@ class Organisation
             if (auth()->user()->organisation_id)
             {
                 session()->flash('organisation', 'have');
+                session()->flash('alert', 'Zaten bir organizasyona dahilsiniz.');
 
                 return $request->expectsJson()
                     ? response()->json([
                         'status' => 'warn',
                         'errors' => [
-                            'global' => [ 'Zaten bir organizasyona dahilsiniz.' ]
+                            'global' => [ session('alert') ]
                         ],
                         'organisation' => 'have'
                     ], 422)
-                    : redirect()->route('settings.organisation');
+                    : redirect()->route('settings.organisation.alert');
             }
             else
             {
@@ -44,15 +45,17 @@ class Organisation
             }
             else
             {
+                session()->flash('alert', 'Bu sayfaya erişebilmek için bir organizasyona dahil olmanız gerekiyor.');
+
                 return $request->expectsJson()
                     ? response()->json([
                         'status' => 'warn',
                         'errors' => [
-                            'global' => [ 'Henüz bir organizasyona dahil değilsiniz.' ]
+                            'global' => [ session('alert') ]
                         ],
                         'organisation' => 'have_not'
                     ], 422)
-                    : redirect()->route('organisation.create.select');
+                    : redirect()->route('settings.organisation.alert');
             }
         }
         else

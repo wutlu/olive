@@ -15,22 +15,22 @@ use App\Ticket;
 
 class HomeController extends Controller
 {
-	public function __construct()
-	{
-		$this->middleware('auth')->only([
-			'dashboard',
+    public function __construct()
+    {
+        $this->middleware('auth')->only([
+            'dashboard',
             'activity',
             'intro'
-		]);
+        ]);
         $this->middleware('root')->only('monitor');
-	}
+    }
 
     # home
     public static function index()
     {
         $discountDay = DiscountDay::where('first_day', '<=', date('Y-m-d'))->where('last_day', '>=', date('Y-m-d'))->first();
 
-    	return view('home', compact('discountDay'));
+        return view('home', compact('discountDay'));
     }
 
     # dashboard

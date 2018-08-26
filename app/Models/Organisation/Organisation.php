@@ -36,6 +36,12 @@ class Organisation extends Model
         return $this->hasMany('App\Models\Organisation\OrganisationInvoice', 'organisation_id', 'id')->orderBy('created_at', 'DESC');
     }
 
+    # kelimeler
+    public function keywords()
+    {
+        return $this->hasMany('App\Models\Keyword', 'organisation_id', 'id');
+    }
+
     # kalan gün
     public function days(bool $all = false)
     {

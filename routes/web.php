@@ -19,6 +19,14 @@ Route::prefix('organizasyon')->group(function () {
     Route::patch('update/name', 'OrganisationController@updateName')->name('organisation.update.name');
 });
 
+Route::prefix('kelime-havuzu')->group(function () {
+    Route::get('/', 'KeywordController@listView')->name('keyword.list');
+    Route::get('json', 'KeywordController@listViewJson')->name('keyword.list.json');
+    Route::patch('kelime', 'KeywordController@update')->name('keyword.update');
+    Route::put('kelime', 'KeywordController@create')->name('keyword.create');
+    Route::delete('kelime', 'KeywordController@delete')->name('keyword.delete');
+});
+
 # #### [ ADMIN ] #### #
 Route::prefix('admin')->middleware([ 'root' ])->group(function () {
     Route::prefix('sistem-izleme')->group(function () {
@@ -26,7 +34,7 @@ Route::prefix('admin')->middleware([ 'root' ])->group(function () {
     });
 
     Route::prefix('kupon-yonetimi')->group(function () {
-        Route::get('kuponlar', 'DiscountController@adminCouponListView')->name('admin.discount.coupon.list');
+        Route::get('/', 'DiscountController@adminCouponListView')->name('admin.discount.coupon.list');
         Route::get('kupon/{id?}', 'DiscountController@adminCouponView')->name('admin.discount.coupon');
         Route::put('kupon', 'DiscountController@adminCouponCreate');
         Route::patch('kupon', 'DiscountController@adminCouponUpdate');
@@ -40,7 +48,7 @@ Route::prefix('admin')->middleware([ 'root' ])->group(function () {
     });
 
     Route::prefix('sayfa-yonetimi')->group(function () {
-        Route::get('sayfalar', 'PageController@adminListView')->name('admin.page.list');
+        Route::get('/', 'PageController@adminListView')->name('admin.page.list');
         Route::get('sayfa/{id?}', 'PageController@adminView')->name('admin.page');
         Route::put('sayfa', 'PageController@adminCreate');
         Route::patch('sayfa', 'PageController@adminUpdate');
@@ -56,8 +64,8 @@ Route::prefix('admin')->middleware([ 'root' ])->group(function () {
     });
 
     Route::prefix('kullanici-yonetimi')->group(function () {
-        Route::get('kullanicilar', 'UserController@adminListView')->name('admin.user.list');
-        Route::get('kullanicilar/json', 'UserController@adminListViewJson')->name('admin.user.list.json');
+        Route::get('/', 'UserController@adminListView')->name('admin.user.list');
+        Route::get('json', 'UserController@adminListViewJson')->name('admin.user.list.json');
 
         Route::get('kullanici/{id}', 'UserController@adminView')->name('admin.user');
         Route::post('kullanici/{id}', 'UserController@adminUpdate');
@@ -70,8 +78,8 @@ Route::prefix('admin')->middleware([ 'root' ])->group(function () {
     });
 
     Route::prefix('organizasyon-yonetimi')->group(function () {
-        Route::get('organizasyonlar', 'OrganisationController@adminListView')->name('admin.organisation.list');
-        Route::get('organizasyonlar/json', 'OrganisationController@adminListViewJson')->name('admin.organisation.list.json');
+        Route::get('/', 'OrganisationController@adminListView')->name('admin.organisation.list');
+        Route::get('json', 'OrganisationController@adminListViewJson')->name('admin.organisation.list.json');
 
         Route::get('organizasyon/{id}', 'OrganisationController@adminView')->name('admin.organisation');
         Route::post('organizasyon/{id}', 'OrganisationController@adminUpdate');
@@ -91,11 +99,13 @@ Route::prefix('ayarlar')->group(function () {
         Route::delete('cikar', 'OrganisationController@remove')->name('settings.organisation.remove');
         Route::post('davet', 'OrganisationController@invite')->name('settings.organisation.invite');
 
+        Route::get('uyari', 'OrganisationController@alert')->name('settings.organisation.alert');
+
         Route::delete('fatura-iptal', 'OrganisationController@invoiceCancel')->name('settings.organisation.invoice.cancel');
     });
 
     Route::prefix('destek')->group(function () {
-        Route::get('talepler/{type?}', 'TicketController@list')->name('settings.support')->where('type', '('.implode('|', array_keys(config('app.ticket.types'))).')');
+        Route::get('{type?}', 'TicketController@list')->name('settings.support')->where('type', '('.implode('|', array_keys(config('app.ticket.types'))).')');
         Route::get('talep/{id}', 'TicketController@view')->name('settings.support.ticket');
         Route::patch('talep/{id}/kapat', 'TicketController@close')->name('settings.support.ticket.close');
         Route::put('talep/cevap', 'TicketController@reply')->name('settings.support.ticket.reply');

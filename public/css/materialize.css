@@ -5558,6 +5558,7 @@ small {
 .card > .collection {
   border-radius: 0;
   border-width: 0;
+  margin: 0;
 }
 .card > .collection > .collection-item {
   border-width: 0;

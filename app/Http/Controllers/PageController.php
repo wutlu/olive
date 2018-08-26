@@ -58,7 +58,7 @@ class PageController extends Controller
     {
         $request['slug'] = str_slug($request->slug);
 
-        $page = Page::where('id', $request->id)->firstOrFail();
+        $page = Page::where('id', $request->id)->first();
         $page->fill($request->all());
         $page->save();
 

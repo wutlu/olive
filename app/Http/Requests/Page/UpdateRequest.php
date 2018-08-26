@@ -25,6 +25,7 @@ class UpdateRequest extends FormRequest
     public function rules(Request $request)
     {
         return [
+            'id'           => 'required|integer|exists:pages,id',
             'title'        => 'required|string|max:255',
             'slug'         => 'required|string|max:255|unique:pages,slug,'.$request->id,
             'keywords'     => 'nullable|string|max:255',

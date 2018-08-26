@@ -11,14 +11,16 @@ return [
         'cancel' => 'Vazgeç',
         'update' => 'Güncelle',
         'info' => 'Bilgi',
-        'signin' => 'Giriş'
+        'login' => 'Giriş',
+        'remove' => 'Sil'
     ],
     'errors' => [
         'disconnected' => 'İnternete bağlı değilsiniz.',
         'time_out' => 'Sayfa zaman aşımına uğradı. Lütfen sayfayı yenileyin ve tekrar deneyin.',
         'calm' => 'Birkaç dakika sonra tekrar deneyebilirsiniz.',
         'notfound' => 'Bu sayfaya artık ulaşılamıyor.',
-        'exited' => 'Oturumunuz sona erdi. Lütfen tekrar giriş yapın.'
+        'exited' => 'Oturumunuz sona erdi. Lütfen tekrar giriş yapın.',
+        'permission' => 'Bu sayfaya erişmek için gerekli yetkiye sahip değilsiniz.'
     ],
     'date' => [
         'timeago' => [

@@ -33,8 +33,8 @@ class DiscountController extends Controller
     {
         if ($id)
         {
-            $coupon = Coupon::where('id', $id)->firstOrFail();
-            $coupon->count = Coupon::where('key', $coupon->key)->count();
+            $coupon = Coupon::where('id', $id)->whereNull('invoice_id')->firstOrFail();
+            $coupon->count = Coupon::where('key', $coupon->key)->whereNull('invoice_id')->count();
         }
         else
         {
@@ -50,10 +50,10 @@ class DiscountController extends Controller
     # 
     public static function adminCouponUpdate(UpdateRequest $request)
     {
-        $coupon = Coupon::where('id', $request->id)->firstOrFail();
-        $count  = Coupon::where('key', $coupon->key)->count();
+        $coupon = Coupon::where('id', $request->id)->whereNull('invoice_id')->firstOrFail();
+        $count  = Coupon::where('key', $coupon->key)->whereNull('invoice_id')->count();
 
-        Coupon::where('key', $coupon->key)->update([
+        Coupon::where('key', $coupon->key)->whereNull('invoice_id')->update([
             'key' => $request->key,
             'rate' => $request->rate,
             'price' => $request->price
@@ -63,11 +63,11 @@ class DiscountController extends Controller
         {
             for ($i = 1; $i <= ($request->count - $count); $i++)
             {
-                Coupon::create([
-                    'key' => $request->key,
-                    'rate' => $request->rate,
-                    'price' => $request->price
-                ]);
+                $coupon = new Coupon;
+                $coupon->key = $request->key;
+                $coupon->rate = $request->rate;
+                $coupon->price = $request->price;
+                $coupon->save();
             }
         }
         else if ($request->count < $count)
@@ -103,11 +103,11 @@ class DiscountController extends Controller
     {
         for ($i = 1; $i <= $request->count; $i++)
         {
-            $coupon = Coupon::create([
-                'key' => $request->key,
-                'rate' => $request->rate,
-                'price' => $request->price
-            ]);
+            $coupon = new Coupon;
+            $coupon->key = $request->key;
+            $coupon->rate = $request->rate;
+            $coupon->price = $request->price;
+            $coupon->save();
         }
 
         session()->flash('status', 'created');

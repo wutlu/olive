@@ -12,13 +12,11 @@
 
 @push('local.scripts')
     $('.tabs').tabs();
-@endpush
 
-@if (session('timeout'))
-    @push('local.scripts')
+    @if (session('timeout'))
         M.toast({ html: 'İşlem zaman aşımına uğradı! Lütfen tekrar deneyin.', classes: 'red' })
-    @endpush
-@endif
+    @endif
+@endpush
 
 @section('content')
     <div class="step-title">

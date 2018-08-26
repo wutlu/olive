@@ -173,6 +173,14 @@ class OrganisationController extends Controller
     }
 
     # 
+    # organizasyon uyarı
+    # 
+    public static function alert()
+    {
+        return session('alert') ? view('organisation.alert') : redirect()->route('dashboard');
+    }
+
+    # 
     # organizasyona davet
     # 
     public static function invite(InviteRequest $request)
@@ -554,7 +562,6 @@ class OrganisationController extends Controller
         if ($request->coupon_code)
         {
             $coupon = Coupon::where('key', $request->coupon_code)->first();
-
             $coupon->invoice_id = $invoice_id;
             $coupon->rate_year = $request->month >= 12 ? config('formal.discount_with_year') : 0;
             $coupon->save();
@@ -573,11 +580,11 @@ class OrganisationController extends Controller
 
                     if ($key == 0)
                     {
-                        Coupon::create([
-                            'key' => $generate_key,
-                            'rate_year' => config('formal.discount_with_year'),
-                            'invoice_id' => $invoice_id
-                        ]);
+                        $coupon = new Coupon;
+                        $coupon->key = $generate_key;
+                        $coupon->rate_year = config('formal.discount_with_year');
+                        $coupon->invoice_id = $invoice_id;
+                        $coupon->save();
 
                         $ok = true;
                     }
@@ -684,11 +691,11 @@ class OrganisationController extends Controller
 
                         if ($key == 0)
                         {
-                            Coupon::create([
-                                'key' => $generate_key,
-                                'rate_year' => config('formal.discount_with_year'),
-                                'invoice_id' => $invoice_id
-                            ]);
+                            $coupon = new Coupon;
+                            $coupon->key = $generate_key;
+                            $coupon->rate_year = config('formal.discount_with_year');
+                            $coupon->invoice_id = $invoice_id;
+                            $coupon->save();
 
                             $ok = true;
                         }

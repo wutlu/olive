@@ -10,45 +10,45 @@
     ]
 ])
 
+@push('local.scripts')
+    function __users(__, obj)
+    {
+        var ul = $('#users');
+        var item_model = ul.children('.model');
+
+        if (obj.status == 'ok')
+        {
+            item_model.addClass('d-none')
+
+            if (obj.hits.length)
+            {
+                $.each(obj.hits, function(key, o) {
+                    var item = item_model.clone();
+                        item.removeClass('model d-none').addClass('_tmp d-flex').attr('data-id', o.id)
+
+                        item.find('[data-name=name]').html(o.name)
+                        item.find('[data-name=email]').html(o.email)
+                        item.find('[data-name=avatar]').attr('src', o.avatar ? '{{ asset('/') }}' + o.avatar : '{{ asset('img/people.svg') }}')
+                        item.find('[data-name=verified]').html(o.verified ? '✓' : '✕').addClass(o.verified ? 'green-text' : 'red-text')
+
+                        item.appendTo(ul)
+                })
+            }
+
+            $('#home-loader').hide()
+        }
+    }
+
+    function __go_user(__, obj)
+    {
+        if (obj.status == 'ok')
+        {
+            location.href = obj.route;
+        }
+    }
+@endpush
+
 @section('content')
-    @push('local.scripts')
-        function __users(__, obj)
-        {
-            var ul = $('#users');
-            var item_model = ul.children('.model');
-    
-            if (obj.status == 'ok')
-            {
-                item_model.addClass('d-none')
-    
-                if (obj.hits.length)
-                {
-                    $.each(obj.hits, function(key, o) {
-                        var item = item_model.clone();
-                            item.removeClass('model d-none').addClass('_tmp d-flex').attr('data-id', o.id)
-
-                            item.find('[data-name=name]').html(o.name)
-                            item.find('[data-name=email]').html(o.email)
-                            item.find('[data-name=avatar]').attr('src', o.avatar ? '{{ asset('/') }}' + o.avatar : '{{ asset('img/people.svg') }}')
-                            item.find('[data-name=verified]').html(o.verified ? '✓' : '✕').addClass(o.verified ? 'green-text' : 'red-text')
-
-                            item.appendTo(ul)
-                    })
-                }
-    
-                $('#home-loader').hide()
-            }
-        }
-
-        function __go_user(__, obj)
-        {
-            if (obj.status == 'ok')
-            {
-                location.href = obj.route;
-            }
-        }
-    @endpush
-
     <div class="card">
         <div class="card-image">
             <img src="{{ asset('img/md-s/10.jpg') }}" alt="Kullanıcılar" />

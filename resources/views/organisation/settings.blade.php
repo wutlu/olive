@@ -31,24 +31,31 @@
     $(document).on('click', 'a.name-change', function() {
         var mdl = modal({
             'id': 'detail',
-            'body': $('<div />', {
-                'class': 'input-field',
-                'html': [
-                    $('<input />', {
-                        'id': 'organisation_name',
-                        'name': 'organisation_name',
-                        'type': 'text',
-                        'class': 'validate',
-                        'data-length': 16
-                    }),
-                    $('<label />', {
-                        'for': 'organisation_name',
-                        'html': 'Organizasyon Adı'
-                    }),
-                    $('<span />', {
-                        'class': 'helper-text'
-                    })
-                ]
+            'body': $('<form />', {
+                'method': 'patch',
+                'action': '{{ route('organisation.update.name') }}',
+                'id': 'form',
+                'class': 'json',
+                'data-callback': '__update__organisation_name',
+                'html': $('<div />', {
+                    'class': 'input-field',
+                    'html': [
+                        $('<input />', {
+                            'id': 'organisation_name',
+                            'name': 'organisation_name',
+                            'type': 'text',
+                            'class': 'validate',
+                            'data-length': 16
+                        }),
+                        $('<label />', {
+                            'for': 'organisation_name',
+                            'html': 'Organizasyon Adı'
+                        }),
+                        $('<span />', {
+                            'class': 'helper-text'
+                        })
+                    ]
+                })
             }),
             'size': 'modal-medium',
             'title': 'Ad Değiştir',
@@ -67,13 +74,10 @@
                    $('<span />', {
                        'html': ' '
                    }),
-                   $('<a />', {
-                       'href': '#',
-                       'class': 'waves-effect btn json',
-                       'data-href': '{{ route('organisation.update.name') }}',
-                       'data-method': 'patch',
-                       'data-include': 'organisation_name',
-                       'data-callback': '__update__organisation_name',
+                   $('<button />', {
+                       'type': 'submit',
+                       'class': 'waves-effect btn',
+                       'data-submit': 'form#form',
                        'html': buttons.update
                    })
                ])
@@ -83,7 +87,7 @@
 
         M.updateTextFields()
 
-        $('input[name=organisation_name]').characterCounter()
+        $('input[name=organisation_name]').characterCounter().focus()
     })
 
     function __update__organisation_name(__, obj)

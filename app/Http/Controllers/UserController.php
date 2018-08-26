@@ -265,11 +265,11 @@ class UserController extends Controller
 
                 if ($key == 0)
                 {
-                    DiscountCoupon::create([
-                        'key' => $generate_key,
-                        'rate' => $discountDay->discount_rate,
-                        'price' => $discountDay->discount_price
-                    ]);
+                    $coupon = new DiscountCoupon;
+                    $coupon->key = $generate_key;
+                    $coupon->rate = $discountDay->discount_rate;
+                    $coupon->price = $discountDay->discount_price;
+                    $coupon->save();
 
                     $ok = true;
 
@@ -300,12 +300,20 @@ class UserController extends Controller
     # register put
     public static function registerPut(RegisterRequest $request)
     {
-        $request['password'] = bcrypt($request->password);
-
         $user = new User;
-        $user->fill($request->all());
+        $user->name = $request->name;
+        $user->password = bcrypt($request->password);
+        $user->email = $request->email;
         $user->session_id = Session::getId();
         $user->save();
+
+        foreach (config('app.notifications') as $key => $val)
+        {
+            UserNotification::create([
+                'user_id' => $user->id,
+                'key' => $key
+            ]);
+        }
 
         $user->notify(new EmailValidationNotification($user->id, $user->session_id, $user->name));
 

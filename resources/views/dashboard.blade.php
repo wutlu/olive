@@ -6,25 +6,25 @@
     <div class="row">
         <div class="col s12">
             <div class="fast-menu">
-                <a href="#" class="card-panel waves-effect" data-tooltip="Kelime Havuzu" data-position="right">
+                <a href="{{ route('keyword.list') }}" class="card-panel hoverable waves-effect" data-tooltip="Kelime Havuzu" data-position="right">
                     <img alt="Kelime Havuzu" src="{{ asset('img/icons/keywords.png') }}" />
                 </a>
-                <a href="#" class="card-panel waves-effect" data-tooltip="Monitörler" data-position="right">
+                <a href="#" class="card-panel hoverable waves-effect" data-tooltip="Monitörler" data-position="right">
                     <img alt="Monitorler" src="{{ asset('img/icons/analytics.png') }}" />
                 </a>
-                <a href="#" class="card-panel waves-effect" data-tooltip="Gerçek Zamanlı" data-position="right">
+                <a href="#" class="card-panel hoverable waves-effect" data-tooltip="Gerçek Zamanlı" data-position="right">
                     <img alt="Gerçek Zamanlı" src="{{ asset('img/icons/realtime.png') }}" />
                 </a>
-                <a href="#" class="card-panel waves-effect" data-tooltip="Trendler" data-position="right">
+                <a href="#" class="card-panel hoverable waves-effect" data-tooltip="Trendler" data-position="right">
                     <img alt="Trendler" src="{{ asset('img/icons/trends.png') }}" />
                 </a>
-                <a href="#" class="card-panel waves-effect" data-tooltip="Geçmiş Veri" data-position="right">
+                <a href="#" class="card-panel hoverable waves-effect" data-tooltip="Geçmiş Veri" data-position="right">
                     <img alt="Geçmiş Veri" src="{{ asset('img/icons/archive.png') }}" />
                 </a>
-                <a href="#" class="card-panel waves-effect" data-tooltip="Alarmlar" data-position="right">
+                <a href="#" class="card-panel hoverable waves-effect" data-tooltip="Alarmlar" data-position="right">
                     <img alt="Alarmlar" src="{{ asset('img/icons/alarm.png') }}" />
                 </a>
-                <a href="#" class="card-panel waves-effect" data-tooltip="Araçlar" data-position="right">
+                <a href="#" class="card-panel hoverable waves-effect" data-tooltip="Araçlar" data-position="right">
                     <img alt="Araçlar" src="{{ asset('img/icons/tools.png') }}" />
                 </a>
             </div>

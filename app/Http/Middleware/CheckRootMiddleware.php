@@ -19,12 +19,20 @@ class CheckRootMiddleware
         {
             if (!auth()->user()->root())
             {
-                return redirect()->route('dashboard');
+                return $request->expectsJson()
+                    ? response()->json([
+                        'view' => view('user.permission')->render()
+                    ], 403)
+                    : redirect()->route('dashboard');
             }
         }
         else
         {
-            return redirect()->route('user.login');
+            return $request->expectsJson()
+                    ? response()->json([
+                        'view' => view('user.soft_in')->render()
+                    ], 401)
+                    : redirect()->guest(route('user.login'));
         }
 
         return $next($request);

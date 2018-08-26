@@ -39,7 +39,7 @@
                                     </li>
                                 </ul>
                             </div>
-                            <div class="card-content grey lighten-4">
+                            <div class="card-content rounded-0 grey lighten-4">
                                 <div id="tab-giris">
                                     <form id="login-form" data-callback="__login" action="{{ route('user.login') }}" method="post" class="json">
                                         <div class="row">
@@ -139,7 +139,7 @@
     {
         if (obj.status == 'ok')
         {
-            M.toast({ html: 'Hesap oluşturuluyor...', classes: 'green' })
+            M.toast({ html: 'Hesap Oluşturuluyor...', classes: 'green' })
 
             setTimeout(goDashboard, 1000)
         }

@@ -6,15 +6,8 @@
  |-------------------------------
  */
 $(function() {
-    $('.lazy').each(function() {
-        $(this).lazy({
-            placeholder: "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-        })
-    })
-
     timeAgo()
 })
-
 
 function slug(str)
 {
@@ -575,6 +568,10 @@ function vzAjax(__)
                 {
                     title = errors.notfound;
                 }
+                else if (jqXHR.status == 403)
+                {
+                    title = errors.permission;
+                }
                 else if (jqXHR.status == 'warn')
                 {
                     title = jqXHR.reason;
@@ -605,7 +602,7 @@ function vzAjax(__)
                             'id': 'soft_in',
                             'body': jqXHR.responseJSON.view,
                             'size': 'modal-medium',
-                            'title': keywords.signin,
+                            'title': keywords.login,
                             'options': { dismissible: true }
                         });
             }

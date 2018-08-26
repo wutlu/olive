@@ -52,7 +52,7 @@ return [
     'max' => [
         'numeric' => ':attribute değeri :max değerinden küçük olmalıdır.',
         'file' => ':attribute değeri :max kilobayt değerinden küçük olmalıdır.',
-        'string' => ':attribute değeri :max karakterden kısa olmalıdır.',
+        'string' => ':attribute uzunluğu :max karakterden kısa olmalıdır.',
         'array' => ':attribute değeri :max adedinden az nesneye sahip olmalıdır.',
     ],
     'mimes' => ':attribute dosya biçimi :values olmalıdır.',
@@ -60,7 +60,7 @@ return [
     'min' => [
         'numeric' => ':attribute değeri :min değerinden büyük olmalıdır.',
         'file' => ':attribute değeri :min kilobayt değerinden büyük olmalıdır.',
-        'string' => ':attribute değeri :min karakterden uzun olmalıdır.',
+        'string' => ':attribute uzunluğu :min karakterden uzun olmalıdır.',
         'array' => ':attribute en az :min nesneye sahip olmalıdır.',
     ],
     'not_in' => ':attribute geçerli değil.',
@@ -189,6 +189,7 @@ return [
         'body'               => 'Gövde',
         'slug'               => 'Slug',
         'title'              => 'Başlık',
+        'keyword'            => 'Kelime',
         'keywords'           => 'Anahtar Kelimeler',
         'description'        => 'Açıklama',
     ],

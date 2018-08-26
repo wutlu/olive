@@ -186,6 +186,13 @@
             </li>
             <li class="divider"></li>
             <li>
+                <a class="waves-effect" href="#">
+                    <i class="material-icons">settings</i>
+                    Sistem Yönetimi
+                </a>
+            </li>
+            <li class="divider"></li>
+            <li>
                 <div class="collapsible-header waves-effect">
                     <i class="material-icons">computer</i>
                     <span>Sistem İzleme</span>
@@ -220,6 +227,7 @@
                     </ul>
                 </div>
             </li>
+            <li class="divider"></li>
             @endif
 
             <li>
@@ -307,23 +315,23 @@
         @if (auth()->user()->root())
             <div class="load" data-href="{{ route('dashboard.monitor') }}" data-callback="__monitor"></div>
             @push('local.scripts')
-            function __monitor(__, obj)
-            {
-                var monitorTimer;
-
-                if (obj.status == 'ok')
+                function __monitor(__, obj)
                 {
-                    $('[data-id=ticket-count]').html(obj.data.ticket.count)
-                                              .addClass(obj.data.ticket.count > 0 ? 'red' : 'grey')
-                                              .removeClass(obj.data.ticket.count > 0 ? 'grey' : 'red')
+                    var monitorTimer;
 
-                    window.clearTimeout(monitorTimer)
+                    if (obj.status == 'ok')
+                    {
+                        $('[data-id=ticket-count]').html(obj.data.ticket.count)
+                                                  .addClass(obj.data.ticket.count > 0 ? 'red' : 'grey')
+                                                  .removeClass(obj.data.ticket.count > 0 ? 'grey' : 'red')
 
-                    monitorTimer = setTimeout(function() {
-                        vzAjax($('[data-callback=__monitor]'))
-                    }, 20000)
+                        window.clearTimeout(monitorTimer)
+
+                        monitorTimer = setTimeout(function() {
+                            vzAjax($('[data-callback=__monitor]'))
+                        }, 20000)
+                    }
                 }
-            }
             @endpush
         @endif
     @endauth
@@ -402,9 +410,8 @@
     </script>
     <!-- master scripts -->
     <script src="{{ asset('js/jquery.min.js?v='.config('app.version')) }}"></script>
-    <script src="{{ asset('js/materialize.js?v='.config('app.version')) }}"></script>
+    <script src="{{ asset('js/materialize.min.js?v='.config('app.version')) }}"></script>
     <script src="{{ asset('js/jquery.timeago.min.js?v='.config('app.version')) }}"></script>
-    <script src="{{ asset('js/jquery.lazy.min.js?v='.config('app.version')) }}"></script>
     <script src="{{ asset('js/core.js?v='.config('app.version')) }}"></script>
 
     <!-- external include -->

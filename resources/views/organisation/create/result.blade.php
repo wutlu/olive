@@ -13,7 +13,7 @@
 @section('content')
     <div class="step-title">
         <span class="step">3</span>
-        <span class="text">Sipariş Tamamlandı</span>
+        <span class="text">Bitti</span>
     </div>
 
     <div class="card card-unstyled">

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBlogsTable extends Migration
+class CreateKeywordsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,21 +13,20 @@ class CreateBlogsTable extends Migration
      */
     public function up()
     {
-        Schema::create('blogs', function (Blueprint $table) {
+        Schema::create('keywords', function (Blueprint $table) {
             $table->increments('id')->unsigned();
+
+            $table->string('keyword')->index();
 
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
 
-            $table->string('title');
-            $table->string('slug')->unique();
-            $table->string('image')->nullable()->default(null);
-            $table->string('keywords')->nullable()->default(null);
-            $table->string('description')->nullable()->default(null);
-            $table->text('body');
+            $table->unsignedInteger('organisation_id');
+            $table->foreign('organisation_id')->references('id')->on('organisations')->onDelete('cascade')->onUpdate('cascade');
 
-            $table->unsignedInteger('hit')->default(0);
-            $table->unsignedInteger('like')->default(0);
+            $table->unique([ 'keyword', 'organisation_id' ]);
+
+            $table->boolean('status')->default(0);
 
             $table->timestamps();
         });
@@ -40,6 +39,6 @@ class CreateBlogsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('blogs');
+        Schema::dropIfExists('keywords');
     }
 }

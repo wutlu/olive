@@ -25,8 +25,7 @@ return [
     'ticket' => [
         'types' => [
             'other' => 'Diğer Konular',
-            'odeme-bildirimi' => 'Ödeme Bildirimi',
-            'payment-receipt-2' => 'Ödeme Bildirimi 2'
+            'odeme-bildirimi' => 'Ödeme Bildirimi'
         ]
     ],
 
