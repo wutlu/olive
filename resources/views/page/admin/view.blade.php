@@ -79,7 +79,7 @@
 @section('content')
     <form method="{{ @$page ? 'patch' : 'put' }}" action="{{ route('admin.page') }}" class="json" id="details-form" data-callback="__form">
         @if (@$page)
-        <input type="hidden" value="{{ $page->id }}" name="id" id="id" />
+            <input type="hidden" value="{{ $page->id }}" name="id" id="id" />
         @endif
         <div class="card">
             <div class="card-image">
@@ -96,15 +96,15 @@
                         </div>
                     </div>
                     @push('local.scripts')
-                    $(document).on('keydown keyup', 'input[name=title]', function() {
-                        var __ = $(this);
+                        $(document).on('keydown keyup', 'input[name=title]', function() {
+                            var __ = $(this);
 
-                        $('input[name=slug]').val(slug(__.val()))
-                        $('span.sample').html(slug(__.val()))
-                        $('span.card-title').html(__.val())
+                            $('input[name=slug]').val(slug(__.val()))
+                            $('span.sample').html(slug(__.val()))
+                            $('span.card-title').html(__.val())
 
-                        M.updateTextFields()
-                    })
+                            M.updateTextFields()
+                        })
                     @endpush
                     <div class="collection-item">
                         <div class="input-field">

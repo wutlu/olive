@@ -26,8 +26,10 @@ class HomeController extends Controller
     }
 
     # home
-    public static function index()
+    public static function index(Request $request)
     {
+        return $request->header('User-Agent');
+
         $discountDay = DiscountDay::where('first_day', '<=', date('Y-m-d'))->where('last_day', '>=', date('Y-m-d'))->first();
 
         return view('home', compact('discountDay'));

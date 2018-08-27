@@ -614,8 +614,17 @@ function vzAjax(__)
                     var element = __.is('form') ? __.find('[name=' + key + ']') :  $('[name=' + key + ']');
                     var feedback = element.closest('.input-field').find('.helper-text');
 
+
                     if (feedback.length)
                     {
+                        if (__.is('form'))
+                        {
+                            scrollTo({
+                                'target': '#' + __.attr('id'),
+                                'tolerance': '-72px'
+                            })
+                        }
+
                         element.addClass('invalid')
                         feedback.attr('data-error', text.join(' '))
                     }

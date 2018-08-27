@@ -3,8 +3,8 @@
 namespace App\Http\Requests\Keyword;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Models\Keyword;
 use Illuminate\Http\Request;
+use App\Models\Keyword;
 use Validator;
 
 class UpdateRequest extends FormRequest
@@ -49,7 +49,7 @@ class UpdateRequest extends FormRequest
 
         return [
             'id'      => 'required|integer|private_unique_id',
-            'keyword' => 'required|string|max:32|private_unique'
+            'keyword' => 'required|string|min:3|max:32|private_unique'
         ];
     }
 }

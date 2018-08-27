@@ -191,12 +191,6 @@
                 <div class="card-content">
                     <p>
                         <label>
-                            <input type="checkbox" name="protected" id="protected" />
-                            <span>Sonraki işlemler için bu bilgileri kaydet.</span>
-                        </label>
-                    </p>
-                    <p>
-                        <label>
                             <input type="checkbox" name="tos" id="tos" />
                             <span>
                                 <a href="#">Kullanım Koşulları</a>'nı okudum, anladım ve onaylıyorum.

@@ -30,8 +30,6 @@ class BillingRequest extends FormRequest
 
             'type'               => 'required|string|in:individual,corporate,person',
 
-            'protected'          => 'nullable|in:on',
-
             'person_name'        => 'nullable|string|max:55|required_unless:type,corporate',
             'person_lastname'    => 'nullable|string|max:55|required_unless:type,corporate',
             'person_tckn'        => 'nullable|integer|tckn|required_if:type,person',

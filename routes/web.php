@@ -29,10 +29,6 @@ Route::prefix('kelime-havuzu')->group(function () {
 
 # #### [ ADMIN ] #### #
 Route::prefix('admin')->middleware([ 'root' ])->group(function () {
-    Route::prefix('sistem-izleme')->group(function () {
-
-    });
-
     Route::prefix('kupon-yonetimi')->group(function () {
         Route::get('/', 'DiscountController@adminCouponListView')->name('admin.discount.coupon.list');
         Route::get('kupon/{id?}', 'DiscountController@adminCouponView')->name('admin.discount.coupon');
@@ -45,6 +41,17 @@ Route::prefix('admin')->middleware([ 'root' ])->group(function () {
         Route::put('indirim-gunu', 'DiscountController@adminDayCreate');
         Route::patch('indirim-gunu', 'DiscountController@adminDayUpdate');
         Route::delete('indirim-gunu', 'DiscountController@adminDayDelete');
+    });
+
+    Route::prefix('bot-yonetimi')->group(function () {
+        Route::prefix('meya-botlari')->namespace('Crawlers')->group(function () {
+            Route::get('/', 'MediaController@listView')->name('crawlers.media.list');
+            Route::get('json', 'MediaController@listViewJson')->name('crawlers.media.list.json');
+            Route::get('bot/{id?}', 'MediaController@view')->name('crawlers.media.bot');
+            Route::patch('bot', 'MediaController@update');
+            Route::delete('bot', 'MediaController@delete')->name('crawlers.media.delete');
+            Route::post('bot/durum', 'MediaController@status')->name('crawlers.media.bot.status');
+        });
     });
 
     Route::prefix('sayfa-yonetimi')->group(function () {

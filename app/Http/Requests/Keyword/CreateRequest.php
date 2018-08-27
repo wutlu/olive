@@ -41,7 +41,7 @@ class CreateRequest extends FormRequest
         });
 
         return [
-            'keyword' => 'required|string|max:32|private_unique'
+            'keyword' => 'required|string|min:3|max:32|private_unique'
         ];
     }
 }

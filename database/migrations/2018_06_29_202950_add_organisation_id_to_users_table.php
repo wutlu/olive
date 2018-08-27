@@ -15,7 +15,7 @@ class AddOrganisationIdToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->unsignedInteger('organisation_id')->nullable()->default(null);
-            $table->foreign('organisation_id')->references('id')->on('organisations')->onDelete('restrict')->onUpdate('cascade');
+            $table->foreign('organisation_id')->references('id')->on('organisations')->onDelete('SET NULL')->onUpdate('SET NULL');
         });
     }
 

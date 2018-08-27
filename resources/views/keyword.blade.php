@@ -22,9 +22,9 @@
                 $.each(obj.hits, function(key, o) {
                     var item = item_model.clone();
                         item.removeClass('model d-none')
-                        	.addClass('_tmp d-flex')
-                        	.attr('data-id', o.id)
-                        	.attr('data-keyword', o.keyword)
+                            .addClass('_tmp d-flex')
+                            .attr('data-id', o.id)
+                            .attr('data-keyword', o.keyword)
 
                         item.find('[data-name=keyword]').html(o.keyword)
                         item.find('[data-name=user]').html(o.user.name)
@@ -39,38 +39,38 @@
     }
 
     $(document).on('click', '[data-trigger=form]', function() {
-    	var __ = $(this);
+        var __ = $(this);
 
         var mdl = modal({
             'id': 'detail',
             'body': $('<form />', {
-            	'method': __.data('id') ? 'patch' : 'put',
-            	'action': __.data('id') ? '{{ route('keyword.update') }}' : '{{ route('keyword.create') }}',
-            	'id': 'form',
-            	'data-id': __.data('id'),
+                'method': __.data('id') ? 'patch' : 'put',
+                'action': __.data('id') ? '{{ route('keyword.update') }}' : '{{ route('keyword.create') }}',
+                'id': 'form',
+                'data-id': __.data('id'),
                 'data-callback': __.data('id') ? '__update' : '__create',
                 'class': 'json',
-            	'html': $('<div />', {
-	                'class': 'input-field',
-	                'html': [
-	                    $('<input />', {
-	                        'id': 'keyword',
-	                        'name': 'keyword',
-	                        'type': 'text',
-	                        'class': 'validate',
-	                        'value': __.data('id') ? __.data('keyword') : '',
-	                        'data-length': 32
-	                    }),
-	                    $('<label />', {
-	                        'for': 'keyword',
-	                        'html': 'Kelime'
-	                    }),
-	                    $('<span />', {
-	                        'class': 'helper-text'
-	                    })
-	                ]
-	            })
-        	}),
+                'html': $('<div />', {
+                    'class': 'input-field',
+                    'html': [
+                        $('<input />', {
+                            'id': 'keyword',
+                            'name': 'keyword',
+                            'type': 'text',
+                            'class': 'validate',
+                            'value': __.data('id') ? __.data('keyword') : '',
+                            'data-length': 32
+                        }),
+                        $('<label />', {
+                            'for': 'keyword',
+                            'html': 'Kelime'
+                        }),
+                        $('<span />', {
+                            'class': 'helper-text'
+                        })
+                    ]
+                })
+            }),
             'size': 'modal-medium',
             'title': __.data('id') ? 'Kelime Güncelle' : 'Kelime Oluştur',
             'options': {
@@ -139,7 +139,7 @@
 
             if (!obj.data.count)
             {
-            	vzAjax($('#keywords').data('skip', 0).addClass('json-clear'))
+                vzAjax($('#keywords').data('skip', 0).addClass('json-clear'))
             }
         }
     }
@@ -166,10 +166,10 @@
                 <i class="material-icons black-text">add</i>
             </a>
         </div>
-        <div class="card-content orange lighten-4 rounded-0">
-        	<p>- Eklediğiniz/Ekleyeceğiniz kelimeler bulunduğunuz organizasyona tanımlanır ve depolanacak içeriklerin filtrelenmesini sağlar.</p>
-        	<p>- Filtreleme işleminde veri kirliliğinin en aza indirgenmesi amaçlanır.</p>
-        	<p>- Elde edilen veriler tüm organizasyonlar için ortak bir havuzda toplanarak, daha geniş kapsamlı analizler çıkartılır.</p>
+        <div class="card-content orange lighten-4">
+            <p>- Eklediğiniz/Ekleyeceğiniz kelimeler bulunduğunuz organizasyona tanımlanır ve depolanacak içeriklerin filtrelenmesini sağlar.</p>
+            <p>- Filtreleme işleminde veri kirliliğinin en aza indirgenmesi amaçlanır.</p>
+            <p>- Elde edilen veriler tüm organizasyonlar için ortak bir havuzda toplanarak, daha geniş kapsamlı analizler çıkartılır.</p>
         </div>
         <nav class="grey darken-4">
             <div class="nav-wrapper">

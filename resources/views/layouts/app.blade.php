@@ -186,10 +186,45 @@
             </li>
             <li class="divider"></li>
             <li>
-                <a class="waves-effect" href="#">
+                <div class="collapsible-header waves-effect">
                     <i class="material-icons">settings</i>
-                    Sistem Yönetimi
-                </a>
+                    <span>Bot Yönetimi</span>
+                    <i class="material-icons arrow">chevron_left</i>
+                </div>
+                <div class="collapsible-body">
+                    <ul>
+                        <li>
+                            <a class="waves-effect" href="{{ route('crawlers.media.list') }}">
+                                <i class="material-icons">widgets</i>
+                                Medya Botları
+                            </a>
+                        </li>
+                        <li>
+                            <a class="waves-effect" href="#">
+                                <i class="material-icons">widgets</i>
+                                Sözlük Botları
+                            </a>
+                        </li>
+                        <li>
+                            <a class="waves-effect" href="#">
+                                <i class="material-icons">widgets</i>
+                                Twitter Ayarları
+                            </a>
+                        </li>
+                        <li>
+                            <a class="waves-effect" href="#">
+                                <i class="material-icons">widgets</i>
+                                Youtube Ayarları
+                            </a>
+                        </li>
+                        <li>
+                            <a class="waves-effect" href="#">
+                                <i class="material-icons">widgets</i>
+                                Alışveriş Botları
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </li>
             <li class="divider"></li>
             <li>

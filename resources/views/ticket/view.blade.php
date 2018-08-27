@@ -79,7 +79,7 @@
             </a>
             <span class="card-title">#{{ $ticket->id }}</span>
         </div>
-        <div class="card-content grey lighten-5 rounded-0">
+        <div class="card-content grey lighten-5">
             <ul class="item-group">
                 <li class="item">
                     <small class="grey-text">İlgili Organizasyon</small>
