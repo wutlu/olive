@@ -47,23 +47,6 @@
         }
     }
 
-    function __delete(__, obj)
-    {
-        if (obj.status == 'ok')
-        {
-            $('#modal-detail').modal('close')
-
-            M.toast({ html: 'Bot Silindi', classes: 'green' })
-
-            $('[data-id=' + obj.data.id + ']').remove()
-
-            if (!obj.data.count)
-            {
-                vzAjax($('#crawlers').data('skip', 0).addClass('json-clear'))
-            }
-        }
-    }
-
     function __go_bot(__, obj)
     {
         if (obj.status == 'ok')

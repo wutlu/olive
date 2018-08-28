@@ -14,8 +14,7 @@
         [
             'text' => $crawler->name
         ]
-    ],
-    'dock' => true
+    ]
 ])
 
 @push('local.scripts')
@@ -186,8 +185,8 @@
                         <div class="d-flex flex-wrap">
                             <div style="min-width: 50%; padding: 1rem;">
                                 <div class="input-field">
-                                    <input name="link" id="link" value="{{ $crawler->link }}" type="text" class="validate" data-length="255" />
-                                    <label for="link">Ana Sayfa</label>
+                                    <input name="site" id="site" value="{{ $crawler->site }}" type="text" class="validate" data-length="255" />
+                                    <label for="site">Ana Sayfa</label>
                                     <small class="helper-text">Veri toplanacak sitenin Ana Sayfa http(s) adresi.</small>
                                 </div>
                             </div>
@@ -202,8 +201,8 @@
                     </div>
                     <div class="collection-item">
                         <div class="input-field">
-                            <input name="pattern_url" id="pattern_url" value="{{ $crawler->pattern_url }}" type="text" class="validate" data-length="255" />
-                            <label for="pattern_url">Makale URL Deseni</label>
+                            <input name="url_pattern" id="url_pattern" value="{{ $crawler->url_pattern }}" type="text" class="validate" data-length="255" />
+                            <label for="url_pattern">Makale URL Deseni</label>
                             <small class="helper-text">Kaynak içerik adreslerinin <strong>REGEX</strong> deseni.</small>
                         </div>
                     </div>
@@ -245,6 +244,13 @@
                             </div>
                         </div>
                     </div>
+                    <div class="collection-item">
+                        <div class="input-field" style="max-width: 240px;">
+                            <input name="test_count" id="test_count" value="1" type="number" class="validate" max="100" min="1" />
+                            <label for="test_count">Test Sayısı</label>
+                            <small class="helper-text">Girilen değer kadar içerik üzerinde test yapılır.</small>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="card-action right-align">
@@ -268,87 +274,63 @@
 
     function __test(__, obj)
     {
-        if (obj.status == 'ok')
+        var mdl = modal({
+            'id': 'error',
+            'body': '',
+            'size': 'modal-large',
+            'title': obj.status == 'ok' ? 'Test Başarılı!' : 'Test Başarısız!',
+            'options': {}
+        });
+
+        mdl.removeClass('red green')
+        mdl.addClass(obj.status == 'ok' ? 'green' : 'red')
+
+            mdl.find('.modal-footer')
+               .html([
+                    $('<a />', {
+                        'href': '#',
+                        'class': 'modal-close waves-effect btn-flat',
+                        'html': buttons.ok
+                    })
+               ])
+
+        var textarea = $('<textarea />', {
+            'style': 'border-width:0; resize: none; min-height: 200px; background-color: transparent;'
+        });
+
+        if (obj.status == 'err')
         {
-            var results = $('[data-name=test-results]');
-                results.find('[data-name=count]').html(obj.count.acceptable + '/' + obj.count.total)
-
-                results.children('.collection')
-                       .addClass('d-none')
-                       .children('.collection-item:not(.model)')
-                       .remove()
-
-            if (obj.count.acceptable)
-            {
-                results.children('.collection')
-                       .removeClass('d-none')
-
-                $.each(obj.links, function(key, o) {
-                    var item = results.children('.collection').children('.collection-item.model').clone();
-                        item.removeClass('d-none model')
-                        item.attr('href', o.link)
-                        item.find('[data-name=title]').html(o.title)
-                        item.find('[data-name=description]').html(o.description)
-                        item.find('[data-name=created-at]').html(o.created_at)
-
-                        item.appendTo(results.children('.collection'))
-                })
-
-                scrollTo({
-                    'target': '[data-name=test-results]',
-                    'tolerance': '-72px'
-                })
-            }
-
-            M.toast({ html: 'Test Başarılı!', classes: 'green' })
+            $.each(obj.error_reasons, function(key, reason) {
+                textarea.val(textarea.val() + '--------------------------------\n');
+                textarea.val(textarea.val() + reason + '\n');
+                textarea.val(textarea.val() + '--------------------------------\n\n');
+            })
         }
-        else if (obj.status == 'warn')
+
+        if (obj.items)
         {
-            M.toast({ html: 'Test Başarısız!', classes: 'red' })
+            $.each(obj.items, function(key, o) {
+                textarea.val(textarea.val() + '--------------------------------\n');
+                textarea.val(textarea.val() + o.page + '\n');
+                textarea.val(textarea.val() + '- ' + o.data.title + '\n');
+                textarea.val(textarea.val() + '- ' + o.data.description + '\n');
+                textarea.val(textarea.val() + '- ' + o.data.created_at + '\n');
 
-            if (obj.errors.length)
-            {
-                var mdl = modal({
-                    'id': 'alert',
-                    'body': '',
-                    'size': 'modal-large',
-                    'title': 'Test Hataları',
-                    'options': {}
-                });
+                textarea.val(textarea.val() + '----[ ' + o.status + ' ]----\n');
 
-                $.each(obj.errors, function(key, o) {
-                    $('#modal-alert').find('.modal-content')
-                                     .append(
-                                        $('<pre />', {
-                                            'class': 'red',
-                                            'html': o.reason,
-                                            'style': 'padding: 1rem; overflow: auto;'
-                                        })
-                                     )
-                })
-            }
+                if (o.error_reasons)
+                {
+                    $.each(o.error_reasons, function(key, reason) {
+                        textarea.val(textarea.val() + '+ ' + reason + '\n');
+                    })
+                }
+
+                textarea.val(textarea.val() + '--------------------------------\n\n');
+            })
         }
-        else if (obj.status == 'out_of_date')
-        {
-            M.toast({ html: 'Kaynak sitede bulunan içerikler eski!', classes: 'orange' })
-        }
+
+        $('#modal-error').find('.modal-body').append(textarea)
 
         $('[data-trigger=submit]').html('{{ 'Test ve Kayıt' }}').removeClass('disabled')
     }
 @endpush
-
-@section('dock')
-    <div class="card" data-name="test-results">
-        <div class="card-content">
-            Test Raporu
-            <span class="badge" data-name="count">0/0</span>
-        </div>
-        <div class="collection d-none">
-            <a target="_blank" href="#" class="collection-item waves-effect model d-none">
-                <span data-name="title"></span>
-                <small class="grey-text d-block" data-name="created-at"></small>
-                <p class="grey-text" data-name="description"></p>
-            </a>
-        </div>
-    </div>
-@endsection

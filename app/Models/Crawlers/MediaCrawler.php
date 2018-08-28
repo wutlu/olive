@@ -9,9 +9,9 @@ class MediaCrawler extends Model
     protected $table = 'media_crawlers';
     protected $fillable = [
         'name',
-        'link',
+        'site',
         'base',
-        'pattern_url',
+        'url_pattern',
         'selector_title',
         'selector_description',
 

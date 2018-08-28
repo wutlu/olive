@@ -2,10 +2,8 @@
 
 namespace App\Utilities;
 
-use DateTime;
-
-class DateUtil {
-
+class DateUtility
+{
 	# is date
     public static function isDate($value)
     {
@@ -74,7 +72,7 @@ class DateUtil {
 
         try
         {
-            $date = new DateTime($value);
+            $date = new \DateTime($value);
 
             return $date->format('Y-m-d H:i:s');
         }

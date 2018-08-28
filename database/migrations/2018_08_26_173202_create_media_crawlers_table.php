@@ -17,9 +17,9 @@ class CreateMediaCrawlersTable extends Migration
             $table->increments('id')->unsigned();
 
             $table->string('name')->unique();
-            $table->string('link');
+            $table->string('site');
             $table->string('base')->default('/');
-            $table->string('pattern_url');
+            $table->string('url_pattern');
             $table->string('selector_title');
             $table->string('selector_description');
 

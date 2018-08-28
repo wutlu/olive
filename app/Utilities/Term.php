@@ -2,9 +2,6 @@
 
 namespace App\Utilities;
 
-use File;
-use Parsedown;
-
 class Term
 {
     # common words
@@ -15,7 +12,7 @@ class Term
         $string = preg_replace('/[^a-zA-Z -]/', '', $string);
         $string = strtolower($string);
 
-        $stop_words = explode(PHP_EOL, File::get(database_path('words/stop.txt')));
+        $stop_words = explode(PHP_EOL, \File::get(database_path('words/stop.txt')));
 
         preg_match_all('/\b.*?\b/i', $string, $match_words);
 
@@ -52,7 +49,7 @@ class Term
     # markdown
     public static function markdown(string $text)
     {
-        $parsedown = new Parsedown;
+        $parsedown = new \Parsedown;
 
         return $parsedown->text($text);
     }
