@@ -105,7 +105,7 @@
                     </li>
                     <li class="item">
                         <small class="grey-text d-block">Hata</small>
-                        <span class="grey-text" data-name="error-count">{{ $crawler->error_count }}</span>
+                        <span class="grey-text" data-name="error-count">{{ number_format($crawler->total()->data['count']) }} / {{ $crawler->error_count }}</span>
                     </li>
                     <li class="item">
                         <small class="grey-text d-block">Son Kontrol</small>

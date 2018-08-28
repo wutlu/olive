@@ -74,8 +74,8 @@ class MediaController extends Controller
             $crawler->name = 'Yeni Bot '.rand(999999999999, 9999999999999);
             $crawler->site = 'http://';
             $crawler->url_pattern = 'http://';
-            $crawler->selector_title = 'h1[itemprop="headline"]';
-            $crawler->selector_description = 'p[itemprop="description"]';
+            $crawler->selector_title = '[itemprop="headline"]';
+            $crawler->selector_description = '[itemprop="description"]';
             $crawler->save();
 
             return redirect()->route('crawlers.media.bot', $crawler->id);

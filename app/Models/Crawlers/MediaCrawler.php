@@ -67,4 +67,10 @@ class MediaCrawler extends Model
             ]
         );
     }
+
+    # doc count
+    public function total()
+    {
+        return Indices::getDocCount(implode('-', [ 'articles', $this->id ]), 'article');
+    }
 }
