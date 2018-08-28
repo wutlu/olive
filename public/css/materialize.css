@@ -66,14 +66,29 @@
   display: inline-flex !important;
 }
 
-.justify-content-between {
-  -ms-flex-pack: justify !important;
-  justify-content: space-between !important;
+.justify-content-start {
+    -ms-flex-pack: start;
+    justify-content: flex-start;
 }
 
-.align-content-end {
-  -ms-flex-line-pack: end !important;
-  align-content: flex-end !important;
+.justify-content-end {
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+}
+
+.justify-content-center {
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+
+.justify-content-between {
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+}
+
+.justify-content-around {
+    -ms-flex-pack: distribute;
+    justify-content: space-around;
 }
 
 .align-self-center {

@@ -543,8 +543,6 @@ function vzAjax(__)
         {
             __result(__)
 
-            window.clearTimeout(error_timer);
-
             if
             (
                 jqXHR.status == 0 ||
@@ -577,6 +575,8 @@ function vzAjax(__)
                     title = jqXHR.reason;
                 }
 
+                window.clearTimeout(error_timer);
+
                 error_timer = setTimeout(function() {
                     var mdl = modal({
                             'id': 'err',
@@ -594,7 +594,7 @@ function vzAjax(__)
                                    'html': buttons.ok
                                })
                            ])
-                }, 500)
+                }, jqXHR.status == 0 ? 2000 : 500)
             }
             else if (jqXHR.status == 401)
             {

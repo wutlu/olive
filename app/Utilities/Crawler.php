@@ -139,7 +139,7 @@ class Crawler
             {
                 $data['error_reasons'][] = 'Açıklama çok kısa.';
             }
-            else if (strlen($description) > 360)
+            else if (strlen($description) > 500)
             {
                 $data['error_reasons'][] = 'Açıklama çok uzun.';
             }

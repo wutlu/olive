@@ -13,6 +13,7 @@
     ]
 ])
 
+
 @push('local.scripts')
     function __crawlers(__, obj)
     {
@@ -32,9 +33,9 @@
                             .attr('data-id', o.id)
 
                         item.find('[data-name=name]').html(o.name)
-                        item.find('[data-name=link]').html(o.link)
+                        item.find('[data-name=site]').html(o.site)
                         item.find('[data-name=status]').addClass(o.status ? 'green-text' : 'red-text')
-                        item.find('[data-name=index]').addClass(o.elasticsearch_index_name ? 'green-text' : 'red-text')
+                        item.find('[data-name=index]').addClass(o.elasticsearch_index ? 'green-text' : 'red-text')
                         item.find('[data-name=test]').addClass(o.test ? 'green-text' : 'red-text')
 
                         item.appendTo(ul)
@@ -118,12 +119,12 @@
                 class="collection-item model d-none waves-effect json">
                 <span class="align-self-center">
                     <p data-name="name"></p>
-                    <p data-name="link" class="grey-text"></p>
+                    <p data-name="site" class="grey-text"></p>
                 </span>
                 <small class="badge ml-auto">
                     <i class="material-icons" data-name="test">sentiment_very_satisfied</i>
-                    <i class="material-icons" data-name="status">power</i>
                     <i class="material-icons" data-name="index">storage</i>
+                    <i class="material-icons" data-name="status">power</i>
                 </small>
             </a>
         </div>

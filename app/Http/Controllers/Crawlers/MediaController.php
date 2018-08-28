@@ -13,7 +13,12 @@ use App\Http\Requests\Crawlers\Media\UpdateRequest;
 
 use App\Models\Crawlers\MediaCrawler;
 
+use App\Jobs\Elasticsearch\CreateMediaIndexJob;
+use App\Jobs\Elasticsearch\DropIndexJob;
+
 use App\Utilities\Crawler;
+
+use App\Elasticsearch\Indices;
 
 class MediaController extends Controller
 {
@@ -73,8 +78,6 @@ class MediaController extends Controller
             $crawler->selector_description = 'p[itemprop="description"]';
             $crawler->save();
 
-            // index oluşturma isteği gönder...
-
             return redirect()->route('crawlers.media.bot', $crawler->id);
         }
 
@@ -115,14 +118,18 @@ class MediaController extends Controller
                 }
             }
 
+            $crawler->fill($request->all());
+
             if ($accepted > $total/2)
             {
-                $crawler->fill($request->all());
                 $crawler->test = true;
-                $crawler->save();
 
                 $data['status'] = 'ok';
+
+                CreateMediaIndexJob::dispatch($crawler->id);
             }
+
+            $crawler->save();
         }
         else
         {
@@ -143,35 +150,15 @@ class MediaController extends Controller
 
         if ($crawler->status)
         {
-        	$crawler->error_count = 0;
+            $crawler->error_count = 0;
         }
 
         $crawler->save();
 
         return [
-        	'status' => 'ok',
-        	'data' => [
-        		'status' => $crawler->status
-        	]
-        ];
-    }
-
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # admin delete
-    # 
-    public static function delete(IdRequest $request)
-    {
-        $page = MediaCrawler::where('id', $request->id)->delete();
-
-        session()->flash('status', 'deleted');
-
-        // index sil
-
-        return [
             'status' => 'ok',
             'data' => [
-            	'id' => $request->id
+                'status' => $crawler->status
             ]
         ];
     }

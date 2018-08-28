@@ -49,7 +49,6 @@ Route::prefix('admin')->middleware([ 'root' ])->group(function () {
             Route::get('json', 'MediaController@listViewJson')->name('crawlers.media.list.json');
             Route::get('bot/{id?}', 'MediaController@view')->name('crawlers.media.bot');
             Route::patch('bot', 'MediaController@update');
-            Route::delete('bot', 'MediaController@delete')->name('crawlers.media.delete');
             Route::post('bot/durum', 'MediaController@status')->name('crawlers.media.bot.status');
         });
     });

@@ -26,7 +26,7 @@ class StatusRequest extends FormRequest
     public function messages()
     {
         return [
-            'es_index' => 'Çalıştırmadan önce index oluşturmanız gerekiyor!',
+            'es_index' => 'Index\'in oluşmasını bekleyin.',
             'test' => 'Çalıştırmadan önce test işlemini yapmanız gerekiyor.',
         ];
     }
@@ -46,7 +46,7 @@ class StatusRequest extends FormRequest
                                    });
                                    $query->orWhere(function ($query) {
                                        $query->where('status', false);
-                                       $query->whereNotNull('elasticsearch_index_name');
+                                       $query->where('elasticsearch_index', true);
                                    });
                                })
                                ->exists();
@@ -57,7 +57,7 @@ class StatusRequest extends FormRequest
         });
 
         return [
-            'id' => 'required|integer|exists:media_crawlers|es_index|test'
+            'id' => 'required|integer|exists:media_crawlers|test|es_index'
         ];
     }
 }

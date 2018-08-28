@@ -19,45 +19,6 @@
 
 @push('local.scripts')
     $('[data-length]').characterCounter()
-
-    $(document).on('click', '[data-trigger=delete]', function() {
-        var mdl = modal({
-                'id': 'alert',
-                'body': 'Bu bot silindiğinde, içerdiği tüm veriler de kaybolacaktır. Silme işlemini onaylıyor musunuz?',
-                'size': 'modal-small',
-                'title': 'Sil',
-                'options': {}
-            });
-
-            mdl.find('.modal-footer')
-               .html([
-                    $('<a />', {
-                        'href': '#',
-                        'class': 'modal-close waves-effect btn-flat',
-                        'html': buttons.cancel
-                    }),
-                    $('<span />', {
-                        'html': ' '
-                    }),
-                    $('<a />', {
-                        'href': '#',
-                        'class': 'waves-effect btn red json',
-                        'html': buttons.ok,
-                        'data-include': 'id',
-                        'data-href': '{{ route('crawlers.media.bot') }}',
-                        'data-method': 'delete',
-                        'data-callback': '__delete'
-                    })
-               ])
-    })
-
-    function __delete(__, obj)
-    {
-        if (obj.status == 'ok')
-        {
-            location.href = '{{ route('crawlers.media.list') }}';
-        }
-    }
 @endpush
 
 @section('content')
@@ -136,19 +97,10 @@
                     </li>
                     <li class="item">
                         <small class="grey-text d-block">Elasticsearch</small>
-                        @if ($crawler->elasticsearch_index_name)
-                            <p class="d-block">{{ $crawler->elasticsearch_index_name }}</p>
-                            <p class="grey-text d-block">
-                                <span data-name="data-count">10.124</span> içerik
-                            </p>
-                            <p class="grey-text d-block">
-                                <span data-name="link-count">1.414</span> alınacak
-                            </p>
-                            <p class="grey-text d-block">
-                                <span data-name="index-size">124.562</span> byte
-                            </p>
+                        @if ($crawler->elasticsearch_index)
+                            <i class="material-icons green-text">check</i>
                         @else
-                            <a href="#" class="btn-flat waves-effect">Index Oluştur</a>
+                            <i class="material-icons red-text">close</i>
                         @endif
                     </li>
                     <li class="item">
@@ -244,34 +196,26 @@
                             </div>
                         </div>
                     </div>
-                    <div class="collection-item">
-                        <div class="input-field" style="max-width: 240px;">
-                            <input name="test_count" id="test_count" value="1" type="number" class="validate" max="100" min="1" />
-                            <label for="test_count">Test Sayısı</label>
-                            <small class="helper-text">Girilen değer kadar içerik üzerinde test yapılır.</small>
-                        </div>
-                    </div>
                 </div>
             </div>
             <div class="card-action right-align">
-                <a href="#" class="btn-flat waves-effect waves-red red-text" data-trigger="delete">Sil</a>
-                <button type="submit" class="btn waves-effect" data-tigger="submit">Test ve Kayıt</button>
+                <button type="submit" class="btn waves-effect">
+                    <i class="material-icons">done_all</i>
+                </button>
+
+                <div class="d-flex justify-content-end" style="margin: 1rem 0 0;">
+                    <div class="input-field" style="max-width: 124px;">
+                        <input name="test_count" id="test_count" value="1" type="number" class="validate" max="100" min="1" />
+                        <label for="test_count">Test Sayısı</label>
+                        <small class="helper-text">Girilen değer kadar içerik üzerinde test yapılır.</small>
+                    </div>
+                </div>
             </div>
         </div>
     </form>
 @endsection
 
 @push('local.scripts')
-    $(document).on('click', '[data-trigger=submit]', function() {
-        var __ = $(this);
-
-            __.html('Yükleniyor...').addClass('disabled')
-
-        vzAjax($('<div />', {
-            'data-target': 'form#details-form'
-        }))
-    })
-
     function __test(__, obj)
     {
         var mdl = modal({
@@ -330,7 +274,5 @@
         }
 
         $('#modal-error').find('.modal-body').append(textarea)
-
-        $('[data-trigger=submit]').html('{{ 'Test ve Kayıt' }}').removeClass('disabled')
     }
 @endpush

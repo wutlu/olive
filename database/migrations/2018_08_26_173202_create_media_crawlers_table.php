@@ -32,7 +32,7 @@ class CreateMediaCrawlersTable extends Migration
 
             $table->boolean('status')->default(0);
             $table->boolean('test')->default(0);
-            $table->string('elasticsearch_index_name')->nullable()->default(null);
+            $table->boolean('elasticsearch_index')->default(0);
 
             $table->timestamps();
         });
