@@ -72,7 +72,7 @@ class TicketController extends Controller
 
         if ($ticket->user->notification('important'))
         {
-            $ticket->user->notify(new TicketNotification($subject, $markdown, $ticket->id));
+            $ticket->user->notify((new TicketNotification($subject, $markdown, $ticket->id))->onQueue('email'));
         }
 
         UserActivityUtility::push(
@@ -91,7 +91,7 @@ class TicketController extends Controller
             ]
         );
 
-        MonitorJob::dispatch('monitor:ticket:count');
+        MonitorJob::dispatch('monitor:ticket:count')->onQueue('worker');
 
         return [
             'status' => 'ok',
@@ -123,7 +123,7 @@ class TicketController extends Controller
 
             if ($ticket->user->notification('important'))
             {
-                $ticket->user->notify(new TicketNotification($subject, $markdown, $request->ticket_id));
+                $ticket->user->notify((new TicketNotification($subject, $markdown, $request->ticket_id))->onQueue('email'));
             }
 
             UserActivityUtility::push(
@@ -185,7 +185,7 @@ class TicketController extends Controller
 
             if ($ticket->user->notification('important'))
             {
-                $ticket->user->notify(new TicketNotification($subject, $markdown, $id));
+                $ticket->user->notify((new TicketNotification($subject, $markdown, $id))->onQueue('email'));
             }
 
             UserActivityUtility::push(
@@ -205,7 +205,7 @@ class TicketController extends Controller
             );
         }
 
-        MonitorJob::dispatch('monitor:ticket:count');
+        MonitorJob::dispatch('monitor:ticket:count')->onQueue('worker');
 
         return [
             'status' => 'ok'

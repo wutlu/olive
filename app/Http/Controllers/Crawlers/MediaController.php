@@ -125,7 +125,7 @@ class MediaController extends Controller
 
                 $data['status'] = 'ok';
 
-                CreateMediaIndexJob::dispatch($crawler->id);
+                CreateMediaIndexJob::dispatch($crawler->id)->onQueue('elasticsearch');
             }
 
             $crawler->save();

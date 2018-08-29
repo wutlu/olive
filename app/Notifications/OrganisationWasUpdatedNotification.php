@@ -45,7 +45,7 @@ class OrganisationWasUpdatedNotification extends Notification implements ShouldQ
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject('Olive: Ödeme Bekleniyor')
+                    ->subject('Olive: Ödeme bekliyor.')
                     ->greeting('Merhaba, '.$this->name)
                     ->line('Sanal faturanız oluşturuldu. Ödemenizi gerçekleştirdikten sonra sanal faturanız, resmi fatura olarak güncellenecek ve organizasyon süresi uzatılacaktır.')
                     ->level('success')

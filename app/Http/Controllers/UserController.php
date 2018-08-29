@@ -127,7 +127,7 @@ class UserController extends Controller
 
                 if ($user->notification('login'))
                 {
-                    $user->notify(new LoginNotification($user->name, $data));
+                    $user->notify((new LoginNotification($user->name, $data))->onQueue('email'));
                 }
 
                 Session::getHandler()->destroy($previous_session);
@@ -161,7 +161,7 @@ class UserController extends Controller
     {
         $user = User::where('email', $request->email_password)->first();
 
-        $user->notify(new PasswordValidationNotification($user->id, $user->session_id));
+        $user->notify((new PasswordValidationNotification($user->id, $user->session_id))->onQueue('email'));
 
         return [
             'status' => 'ok'
@@ -214,7 +214,7 @@ class UserController extends Controller
             ]
         );
 
-        $user->notify(new NewPasswordNotification($user->name, $text));
+        $user->notify((new NewPasswordNotification($user->name, $text))->onQueue('email'));
 
         return [
             'status' => 'ok'
@@ -247,7 +247,7 @@ class UserController extends Controller
             ]
         );
 
-        $user->notify(new WelcomeNotification($user->name, $text));
+        $user->notify((new WelcomeNotification($user->name, $text))->onQueue('email'));
 
         # indirim günü varsa kupon yarat #
 
@@ -287,7 +287,7 @@ class UserController extends Controller
 
                     $discount = implode(PHP_EOL, $discount);
 
-                    $user->notify(new DiscountCouponNotification($user->name, $discount));
+                    $user->notify((new DiscountCouponNotification($user->name, $discount))->onQueue('email'));
                 }
             }
         }
@@ -315,7 +315,7 @@ class UserController extends Controller
             ]);
         }
 
-        $user->notify(new EmailValidationNotification($user->id, $user->session_id, $user->name));
+        $user->notify((new EmailValidationNotification($user->id, $user->session_id, $user->name))->onQueue('email'));
 
         Auth::login($user);
 
@@ -337,7 +337,7 @@ class UserController extends Controller
         }
         else
         {
-            $user->notify(new EmailValidationNotification($user->id, $user->session_id, $user->name));
+            $user->notify((new EmailValidationNotification($user->id, $user->session_id, $user->name))->onQueue('email'));
         }
 
         return [
@@ -505,7 +505,7 @@ class UserController extends Controller
 
         if ($user->email != $request->email)
         {
-            $user->notify(new EmailValidationNotification($user->id, $user->session_id, $user->name));
+            $user->notify((new EmailValidationNotification($user->id, $user->session_id, $user->name))->onQueue('email'));
 
             $user->email = $request->email;
             $user->verified = false;
@@ -515,7 +515,7 @@ class UserController extends Controller
         {
             if ($user->notification('important'))
             {
-                $user->notify(new MessageNotification('Olive: Şifre Güncellendi!', 'Merhaba, '.$user->name, 'Hesap şifreniz başarılı bir şekilde güncellendi.'));
+                $user->notify((new MessageNotification('Olive: Şifre Güncellendi!', 'Merhaba, '.$user->name, 'Hesap şifreniz başarılı bir şekilde güncellendi.'))->onQueue('email'));
             }
 
             $user->password = bcrypt($request->password);

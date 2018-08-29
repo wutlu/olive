@@ -118,7 +118,7 @@ class OrganisationController extends Controller
 
                     if ($author->notification('important'))
                     {
-                        $author->notify(new MessageNotification('Olive: '.$message['title'], $message['info'], $message['body']));
+                        $author->notify((new MessageNotification('Olive: '.$message['title'], $message['info'], $message['body']))->onQueue('email'));
                     }
 
                     Activity::push(
@@ -195,7 +195,7 @@ class OrganisationController extends Controller
 
         if ($user->notification('important'))
         {
-            $user->notify(new MessageNotification('Olive: '.$title, 'Merhaba, '.$user->name, $message));
+            $user->notify((new MessageNotification('Olive: '.$title, 'Merhaba, '.$user->name, $message))->onQueue('email'));
         }
 
         Activity::push(
@@ -240,7 +240,7 @@ class OrganisationController extends Controller
 
         if ($user->notification('important'))
         {
-            $user->notify(new MessageNotification('Olive: '.$title, 'Merhaba, '.$user->name, $message));
+            $user->notify((new MessageNotification('Olive: '.$title, 'Merhaba, '.$user->name, $message))->onQueue('email'));
         }
 
         $user->update([
@@ -271,7 +271,7 @@ class OrganisationController extends Controller
 
         if ($user->notification('important'))
         {
-            $user->notify(new MessageNotification('Olive: '.$title, 'Merhaba, '.$user->name, $message));
+            $user->notify((new MessageNotification('Olive: '.$title, 'Merhaba, '.$user->name, $message))->onQueue('email'));
         }
 
         Activity::push(
@@ -290,7 +290,7 @@ class OrganisationController extends Controller
 
         if ($transferred_user->notification('important'))
         {
-            $transferred_user->notify(new MessageNotification('Olive: '.$title, 'Merhaba, '.$transferred_user->name, $message));
+            $transferred_user->notify((new MessageNotification('Olive: '.$title, 'Merhaba, '.$transferred_user->name, $message))->onQueue('email'));
         }
 
         Activity::push(
@@ -325,7 +325,7 @@ class OrganisationController extends Controller
 
         if ($removed_user->notification('important'))
         {
-            $removed_user->notify(new MessageNotification('Olive: '.$title, 'Merhaba, '.$removed_user->name, $message));
+            $removed_user->notify((new MessageNotification('Olive: '.$title, 'Merhaba, '.$removed_user->name, $message))->onQueue('email'));
         }
 
         Activity::push(
@@ -379,7 +379,7 @@ class OrganisationController extends Controller
 
             if ($u->notification('important'))
             {
-                $u->notify(new MessageNotification('Olive: '.$title, 'Merhaba, '.$u->name, $message));
+                $u->notify((new MessageNotification('Olive: '.$title, 'Merhaba, '.$u->name, $message))->onQueue('email'));
             }
 
             Activity::push(
@@ -532,7 +532,7 @@ class OrganisationController extends Controller
 
                 if ($user->notification('important'))
                 {
-                    $user->notify(new OrganisationWasCreatedNotification($user->name, $invoice_id));
+                    $user->notify((new OrganisationWasCreatedNotification($user->name, $invoice_id))->onQueue('email'));
                 }
 
                 Activity::push(
@@ -706,7 +706,7 @@ class OrganisationController extends Controller
 
                 if ($user->notification('important'))
                 {
-                    $user->notify(new OrganisationWasUpdatedNotification($user->name, $invoice_id));
+                    $user->notify((new OrganisationWasUpdatedNotification($user->name, $invoice_id))->onQueue('email'));
                 }
 
                 Activity::push(
@@ -778,7 +778,7 @@ class OrganisationController extends Controller
 
         if ($user->notification('important'))
         {
-            $user->notify(new MessageNotification('Olive: Fatura İptal Edildi', 'Organizasyon Faturasını İptal Ettiniz!', 'Organizasyon ödemesi için oluşturduğunuz fatura, ödeme tamamlanmadan iptal edildi.'));
+            $user->notify((new MessageNotification('Olive: Fatura İptal Edildi', 'Organizasyon Faturasını İptal Ettiniz!', 'Organizasyon ödemesi için oluşturduğunuz fatura, ödeme tamamlanmadan iptal edildi.'))->onQueue('email'));
         }
 
         return [
@@ -892,7 +892,7 @@ class OrganisationController extends Controller
 
             if ($organisation->author->notification('important'))
             {
-                $organisation->author->notify(new MessageNotification($title, $greeting, $message));
+                $organisation->author->notify((new MessageNotification($title, $greeting, $message))->onQueue('email'));
             }
 
             Activity::push(

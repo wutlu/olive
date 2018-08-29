@@ -47,7 +47,7 @@ class EmailValidationNotification extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject('Olive: E-posta Adresinizi Doğrulayın!')
+                    ->subject('Olive: E-posta adresinizi doğrulayın!')
                     ->greeting('Merhaba, '.$this->name)
                     ->level('olive')
                     ->line('Aşağıdaki butona tıklayarak e-posta adresinizi doğrulayabilirsiniz.')

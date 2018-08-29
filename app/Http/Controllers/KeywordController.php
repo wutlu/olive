@@ -70,7 +70,7 @@ class KeywordController extends Controller
         $keyword->status = false;
         $keyword->save();
 
-        KeywordJob::dispatch($keyword->id);
+        // KeywordJob::dispatch($keyword->id);
 
         return [
             'status' => 'ok',
@@ -118,7 +118,7 @@ class KeywordController extends Controller
         $keyword->fill($request->all());
         $keyword->save();
 
-        KeywordJob::dispatch($keyword->id);
+        // KeywordJob::dispatch($keyword->id);
 
         return [
             'status' => 'ok'

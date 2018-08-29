@@ -30,14 +30,6 @@ class Kernel extends ConsoleKernel
         $schedule->command('check:upcoming_payments')
                  ->mondays()
                  ->timezone(config('app.timezone'));
-
-        # 
-        # Kuyruk işlemlerinin sürekli aktif tutulması.
-        # 
-        $schedule->command('queue:work')
-                 ->everyMinute()
-                 ->timezone(config('app.timezone'))
-                 ->withoutOverlapping();
     }
 
     /**
