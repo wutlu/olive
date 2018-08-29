@@ -113,7 +113,7 @@ class Indices
             }
             catch (\Exception $e)
             {
-                System::log($e->getMessage(), 'elasticsearch.index.create');
+                System::log($e->getMessage(), 'elasticsearch.index.create', 10);
 
                 return (object) [
                     'status' => 'error',
