@@ -81,7 +81,11 @@ files = /var/www/olive.veri.zone/supervisor/olive-worker.conf
 
 $ sudo supervisorctl reread
 $ sudo supervisorctl update
+
 $ sudo supervisorctl start olive-worker:*
+$ sudo supervisorctl start olive-elasticsearch:*
+$ sudo supervisorctl start olive-email:*
+$ sudo supervisorctl start olive-trigger:*
 ~~~~
 
 ### Zamanlanmış Görevler Yapılandırması

@@ -46,7 +46,17 @@ class CreateMediaIndexJob implements ShouldQueue
         {
             $indices = $es->indexCreate();
 
-            $es->elasticsearch_index = ($indices->status == 'created' || $indices->status == 'exists') ? true : false;
+            if ($indices->status == 'created' || $indices->status == 'exists')
+            {
+                $es->elasticsearch_index = true;
+            }
+            else
+            {
+                CreateMediaIndexJob::dispatch($this->id)->onQueue('elasticsearch')->delay(now()->addMinutes(10));
+
+                $es->elasticsearch_index = false;
+            }
+
             $es->save();
         }
     }

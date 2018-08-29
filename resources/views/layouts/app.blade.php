@@ -364,7 +364,7 @@
 
                         monitorTimer = setTimeout(function() {
                             vzAjax($('[data-callback=__monitor]'))
-                        }, 20000)
+                        }, 10000)
                     }
                 }
             @endpush

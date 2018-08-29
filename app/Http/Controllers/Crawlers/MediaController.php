@@ -14,7 +14,6 @@ use App\Http\Requests\Crawlers\Media\UpdateRequest;
 use App\Models\Crawlers\MediaCrawler;
 
 use App\Jobs\Elasticsearch\CreateMediaIndexJob;
-use App\Jobs\Elasticsearch\DropIndexJob;
 
 use App\Utilities\Crawler;
 
