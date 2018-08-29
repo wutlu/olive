@@ -20,11 +20,11 @@ class MediaCrawler extends Model
         'control_interval'
     ];
 
-    # index for elasticsearch
-    public function index()
+    # index crate
+    public function indexCreate()
     {
-        return Indices::indicesSchema(
-            implode('-', [ 'articles', $this->id ]),
+        return Indices::indexCreate(
+            [ 'articles', $this->id ],
             [
                 'article' => [
                     'properties' => [
@@ -68,9 +68,9 @@ class MediaCrawler extends Model
         );
     }
 
-    # doc count
-    public function total()
+    # index stats
+    public function indexStats()
     {
-        return Indices::getDocCount(implode('-', [ 'articles', $this->id ]), 'article');
+        return Indices::indexStats([ 'articles', $this->id ]);
     }
 }

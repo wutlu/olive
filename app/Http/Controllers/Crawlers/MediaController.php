@@ -118,10 +118,9 @@ class MediaController extends Controller
                 }
             }
 
-            $crawler->fill($request->all());
-
             if ($accepted > $total/2)
             {
+                $crawler->fill($request->all());
                 $crawler->test = true;
 
                 $data['status'] = 'ok';

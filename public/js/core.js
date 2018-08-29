@@ -598,13 +598,7 @@ function vzAjax(__)
             }
             else if (jqXHR.status == 401)
             {
-                var mdl = modal({
-                            'id': 'soft_in',
-                            'body': jqXHR.responseJSON.view,
-                            'size': 'modal-medium',
-                            'title': keywords.login,
-                            'options': { dismissible: true }
-                        });
+                location.href = jqXHR.responseJSON.redirect;
             }
             else if (jqXHR.status == 422)
             {

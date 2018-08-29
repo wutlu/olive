@@ -61,7 +61,7 @@ class Handler extends ExceptionHandler
     {
         return $request->expectsJson()
                     ? response()->json([
-                        'view' => view('user.soft_in')->render()
+                        'redirect' => route('user.login')
                     ], 401)
                     : redirect()->guest(route('user.login'));
     }

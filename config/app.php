@@ -150,6 +150,7 @@ return [
          * Private Classes
          */
         'Term' => App\Utilities\Term::class,
+        'System' => App\Utilities\SystemUtility::class,
 
         /*
          * Package Service Providers...

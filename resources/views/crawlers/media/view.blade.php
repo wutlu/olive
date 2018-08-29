@@ -96,20 +96,23 @@
                         <a href="#" data-trigger="status" class="btn-flat waves-effect waves-{{ $crawler->status ? 'green green' : 'red red' }}-text">{{ $crawler->status ? 'AKTİF' : 'PASİF' }}</a>
                     </li>
                     <li class="item">
-                        <small class="grey-text d-block">Elasticsearch</small>
                         @if ($crawler->elasticsearch_index)
-                            <i class="material-icons green-text">check</i>
+                            <small class="grey-text d-block">Toplam Döküman</small>
+                            <p class="d-block">{{ number_format($crawler->indexStats()->data['_all']['primaries']['docs']['count']) }}</p>
+                            <small class="grey-text d-block">Kapladığı Alan</small>
+                            <p class="d-block">{{ Term::humanFileSize($crawler->indexStats()->data['_all']['primaries']['store']['size_in_bytes'])->readable }}</p>
                         @else
+                            <small class="grey-text d-block">Elasticsearch</small>
                             <i class="material-icons red-text">close</i>
                         @endif
                     </li>
                     <li class="item">
                         <small class="grey-text d-block">Hata</small>
-                        <span class="grey-text" data-name="error-count">{{ number_format($crawler->total()->data['count']) }} / {{ $crawler->error_count }}</span>
+                        <span class="grey-text">{{ $crawler->error_count }}</span>
                     </li>
                     <li class="item">
                         <small class="grey-text d-block">Son Kontrol</small>
-                        <p class="d-block" data-name="last-control">{{ date('d.m.Y H:i', strtotime($crawler->control_date)) }}</p>
+                        <p class="d-block">{{ date('d.m.Y H:i', strtotime($crawler->control_date)) }}</p>
                     </li>
                 </ul>
                 @if (!$crawler->status && $crawler->off_reason)

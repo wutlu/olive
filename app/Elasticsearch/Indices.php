@@ -13,9 +13,9 @@ class Indices
     }
 
     # elasticsearch index schema
-    public static function indicesSchema(string $name, array $mapping, array $params = [])
+    public static function indexCreate(array $name, array $mapping, array $params = [])
     {
-        $name = self::indexName($name);
+        $name = self::indexName(implode('-', $name));
 
         $default_params = [
             'total_fields_limit' => 5000,
@@ -113,6 +113,8 @@ class Indices
             }
             catch (\Exception $e)
             {
+                System::log($e->getMessage(), 'elasticsearch.index.create');
+
                 return (object) [
                     'status' => 'error',
                     'message' => $e->getMessage()
@@ -122,7 +124,7 @@ class Indices
     }
 
     # elasticsearch index drop
-    public static function dropIndices(string $name)
+    public static function indexDrop(string $name)
     {
         $name = self::indexName($name);
 
@@ -143,6 +145,8 @@ class Indices
         }
         catch (\Exception $e)
         {
+            System::log($e->getMessage(), 'elasticsearch.index.drop');
+
             return [
                 'status' => 'error',
                 'message' => $e->getMessage()
@@ -150,11 +154,9 @@ class Indices
         }
     }
 
-    # elasticsearch doc count
-    public static function getDocCount(string $index, string $type, array $query = [])
+    # elasticsearch index stat
+    public static function indexStats(array $name)
     {
-        $index = Indices::indexName($index);
-
         $client = ClientBuilder::fromConfig([
             'hosts' => config('database.connections.elasticsearch.hosts'),
             'retries' => 5
@@ -162,10 +164,8 @@ class Indices
 
         try
         {
-            $es = $client->count([
-                'index' => $index,
-                'type' => $type,
-                'body' => $query
+            $es = $client->indices()->stats([
+                'index' => self::indexName(implode('-', $name))
             ]);
 
             return (object) [
@@ -175,6 +175,8 @@ class Indices
         }
         catch (\Exception $e)
         {
+            System::log($e->getMessage(), 'elasticsearch.index.stats');
+
             return (object) [
                 'status' => 'error',
                 'message' => $e->getMessage()

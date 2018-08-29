@@ -145,4 +145,28 @@ class Term
 
         return $options['lowercase'] ? mb_strtolower($str, 'UTF-8') : $str;
     }
+
+    # human readable file sizes
+    public static function humanFileSize(int $bytes, int $decimals = 2)
+    {
+        $sizes = [
+            'B',
+            'kB',
+            'MB',
+            'GB',
+            'TB',
+            'PB',
+            'EB',
+            'ZB',
+            'YB'
+        ];
+
+        $factor = floor((strlen($bytes) - 1) / 3);
+        $readable = sprintf("%.{$decimals}f", $bytes / pow(1024, $factor));
+
+        return (object) [
+            'size' => $bytes,
+            'readable' => $readable.@$sizes[$factor]
+        ];
+    }
 }

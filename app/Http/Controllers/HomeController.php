@@ -13,7 +13,9 @@ use App\Models\User\UserIntro;
 
 use App\Ticket;
 
-use App\Elasticsearch\Indices;
+use App\Models\Crawlers\MediaCrawler;
+
+use System;
 
 class HomeController extends Controller
 {
@@ -30,7 +32,9 @@ class HomeController extends Controller
     # home
     public static function index(Request $request)
     {
-        $discountDay = DiscountDay::where('first_day', '<=', date('Y-m-d'))->where('last_day', '>=', date('Y-m-d'))->first();
+        $discountDay = DiscountDay::where('first_day', '<=', date('Y-m-d'))
+                                  ->where('last_day', '>=', date('Y-m-d'))
+                                  ->first();
 
         return view('home', compact('discountDay'));
     }

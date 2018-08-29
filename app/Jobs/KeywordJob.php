@@ -34,12 +34,6 @@ class KeywordJob implements ShouldQueue
      */
     public function handle()
     {
-        $query = Keyword::where('id', $this->id)->first();
 
-        if (@$query)
-        {
-            $query->status = true;
-            $query->save();
-        }
     }
 }

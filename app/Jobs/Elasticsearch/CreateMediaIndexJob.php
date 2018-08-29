@@ -37,7 +37,7 @@ class CreateMediaIndexJob implements ShouldQueue
 
         if (@$es)
         {
-            $indices = $es->index();
+            $indices = $es->indexCreate();
 
             $es->elasticsearch_index = ($indices->status == 'created' || $indices->status == 'exists') ? true : false;
             $es->save();
