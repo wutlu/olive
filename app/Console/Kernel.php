@@ -29,7 +29,16 @@ class Kernel extends ConsoleKernel
         # 
         $schedule->command('check:upcoming_payments')
                  ->mondays()
-                 ->timezone(config('app.timezone'));
+                 ->timezone(config('app.timezone'))
+                 ->withoutOverlapping();
+
+        # 
+        # Medya sitelerini sürekli takip et.
+        # 
+        $schedule->command('media:link_detect')
+                 ->everyMinute()
+                 ->timezone(config('app.timezone'))
+                 ->withoutOverlapping();
     }
 
     /**

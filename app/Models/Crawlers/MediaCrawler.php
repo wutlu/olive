@@ -24,7 +24,9 @@ class MediaCrawler extends Model
     public function indexCreate()
     {
         return Indices::indexCreate(
-            [ 'articles', $this->id ],
+            [
+                'articles', $this->id
+            ],
             [
                 'article' => [
                     'properties' => [

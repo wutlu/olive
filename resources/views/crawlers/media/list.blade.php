@@ -69,8 +69,8 @@
         <div class="card-content grey lighten-2">
             <ul class="item-group">
                 <li class="item">
-                    <small class="grey-text">Toplam Bot</small>
-                    <p class="d-block">{{ $count }}</p>
+                    <small class="grey-text">Aktif/Devre Dışı</small>
+                    <p class="d-block">{{ $active_count.'/'.$disabled_count }}</p>
                 </li>
                 <li class="item">
                     <small class="grey-text">Alınan Veri</small>
@@ -98,7 +98,7 @@
              id="crawlers"
              data-href="{{ route('crawlers.media.list.json') }}"
              data-skip="0"
-             data-take="5"
+             data-take="50"
              data-include="string"
              data-more-button="#crawlers-more_button"
              data-callback="__crawlers"

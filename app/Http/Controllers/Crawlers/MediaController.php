@@ -25,9 +25,10 @@ class MediaController extends Controller
     # 
     public static function listView()
     {
-        $count = MediaCrawler::count();
+        $active_count = MediaCrawler::where('status', true)->count();
+        $disabled_count = MediaCrawler::where('status', false)->count();
 
-        return view('crawlers.media.list', compact('count'));
+        return view('crawlers.media.list', compact('active_count', 'disabled_count'));
     }
 
     # ######################################## [ ADMIN ] ######################################## #
@@ -36,8 +37,7 @@ class MediaController extends Controller
     # 
     public static function listViewJson(SearchRequest $request)
     {
-        $user = auth()->user();
-        $organisation = $user->organisation;
+        $organisation = auth()->user()->organisation;
 
         $take = $request->take;
         $skip = $request->skip;
@@ -119,6 +119,7 @@ class MediaController extends Controller
             {
                 $crawler->fill($request->all());
                 $crawler->test = true;
+                $crawler->error_count = 0;
 
                 $data['status'] = 'ok';
 
@@ -142,13 +143,8 @@ class MediaController extends Controller
     public static function status(StatusRequest $request)
     {
         $crawler = MediaCrawler::where('id', $request->id)->first();
+
         $crawler->status = $crawler->status ? 0 : 1;
-
-        if ($crawler->status)
-        {
-            $crawler->error_count = 0;
-        }
-
         $crawler->save();
 
         return [

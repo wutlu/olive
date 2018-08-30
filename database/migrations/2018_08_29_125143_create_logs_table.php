@@ -17,7 +17,7 @@ class CreateLogsTable extends Migration
             $table->string('uuid')->unique();
 
             $table->string('module');
-            $table->string('message');
+            $table->text('message');
             $table->unsignedSmallInteger('level')->default(1);
             $table->unsignedInteger('hit')->default(0);
 
