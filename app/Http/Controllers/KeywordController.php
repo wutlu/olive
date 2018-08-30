@@ -64,7 +64,7 @@ class KeywordController extends Controller
                 'id' => $request->id,
                 'organisation_id' => $user->organisation_id
             ]
-        )->first();
+        )->firstOrFail();
 
         $keyword->fill($request->all());
         $keyword->status = false;

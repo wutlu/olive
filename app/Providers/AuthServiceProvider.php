@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Organisation;
+
+use App\Policies\OrganisationPolicy;
+
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -13,7 +17,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'App\Model' => 'App\Policies\ModelPolicy',
+        // Organisation::class => OrganisationPolicy::class,
     ];
 
     /**
@@ -25,6 +29,6 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Gate::define('organisation-owner', 'App\Policies\OrganisationPolicy@owner');
     }
 }

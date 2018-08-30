@@ -28,8 +28,7 @@ class TransferAndRemoveRequest extends FormRequest
     public function messages()
     {
         return [
-            'user_in_my_organisation' => 'Seçtiğiniz kullanıcıyla aynı organizasyonda olmalısınız.',
-            'owner' => 'Organizasyon sahibi değilken bu işlemi yapamazsınız!',
+            'user_in_my_organisation' => 'Seçtiğiniz kullanıcıyla aynı organizasyonda olmalısınız.'
         ];
     }
 
@@ -55,12 +54,8 @@ class TransferAndRemoveRequest extends FormRequest
             }
         });
 
-        Validator::extend('owner', function() use ($user) {
-            return $user->id == $user->organisation->user_id ? true : false;
-        });
-
         return [
-            'user_id' => 'required|user_in_my_organisation|not_in:'.$user->id.'|owner'
+            'user_id' => 'required|user_in_my_organisation|not_in:'.$user->id
         ];
     }
 }

@@ -20,7 +20,7 @@ return [
         'calm' => 'Birkaç dakika sonra tekrar deneyebilirsiniz.',
         'notfound' => 'Bu sayfaya artık ulaşılamıyor.',
         'exited' => 'Oturumunuz sona erdi. Lütfen tekrar giriş yapın.',
-        'permission' => 'Bu sayfaya erişmek için gerekli yetkiye sahip değilsiniz.'
+        'permission' => 'Bu işlemi gerçekleştirecek yetkiniz bulunmuyor.'
     ],
     'date' => [
         'timeago' => [

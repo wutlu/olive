@@ -70,6 +70,14 @@ class OrganisationController extends Controller
             'update',
             'invoiceCancel'
         ]);
+        $this->middleware('can:organisation-owner')->only([
+            'invite',
+            'update',
+            'delete',
+            'updateName',
+            'transfer',
+            'remove'
+        ]);
     }
 
     # 
@@ -243,9 +251,8 @@ class OrganisationController extends Controller
             $user->notify((new MessageNotification('Olive: '.$title, 'Merhaba, '.$user->name, $message))->onQueue('email'));
         }
 
-        $user->update([
-            'organisation_id' => null
-        ]);
+        $user->organisation_id = null;
+        $user->save();
 
         return [
             'status' => 'ok'
@@ -261,7 +268,9 @@ class OrganisationController extends Controller
 
         $transferred_user = User::where('id', $request->user_id)->first();
 
-        $user->organisation->update([ 'user_id' => $transferred_user->id ]);
+        $organisation = $user->organisation;
+        $organisation->user_id = $transferred_user->id;
+        $organisation->save();
 
         /*
          * devreden için bilgilendirme
@@ -356,10 +365,6 @@ class OrganisationController extends Controller
 
         foreach ($users as $u)
         {
-            $u->update([
-                'organisation_id' => null
-            ]);
-
             $title = 'Organizasyon Silindi';
 
             if ($user->id == $u->id)

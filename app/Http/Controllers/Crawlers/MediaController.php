@@ -17,8 +17,6 @@ use App\Jobs\Elasticsearch\CreateMediaIndexJob;
 
 use App\Utilities\Crawler;
 
-use App\Elasticsearch\Indices;
-
 class MediaController extends Controller
 {
     # ######################################## [ ADMIN ] ######################################## #
@@ -70,11 +68,11 @@ class MediaController extends Controller
         else
         {
             $crawler = new MediaCrawler;
-            $crawler->name = 'Yeni Bot '.rand(999999999999, 9999999999999);
+            $crawler->name = 'Yeni Bot '.rand(99999, 999999);
             $crawler->site = 'http://';
             $crawler->url_pattern = 'http://';
-            $crawler->selector_title = '[itemprop="headline"]';
-            $crawler->selector_description = '[itemprop="description"]';
+            $crawler->selector_title = 'h1';
+            $crawler->selector_description = 'h2';
             $crawler->save();
 
             return redirect()->route('crawlers.media.bot', $crawler->id);

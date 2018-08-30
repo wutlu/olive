@@ -27,7 +27,6 @@ class UpdateRequest extends FormRequest
     public function messages()
     {
         return [
-            'private_unique_id' => 'Bu kayda artık ulaşılamıyor.',
             'private_unique' => 'Bu kelime havuzunuzda zaten mevcut.'
         ];
     }
@@ -39,16 +38,12 @@ class UpdateRequest extends FormRequest
      */
     public function rules(Request $request)
     {
-        Validator::extend('private_unique_id', function($attribute, $id) {
-            return auth()->user()->organisation->keywords()->where('id', $id)->exists();
-        });
-
         Validator::extend('private_unique', function($attribute, $keyword) use ($request) {
             return auth()->user()->organisation->keywords()->where('keyword', $keyword)->where('id', '<>', $request->id)->doesntExist();
         });
 
         return [
-            'id'      => 'required|integer|private_unique_id',
+            'id'      => 'required|integer',
             'keyword' => 'required|string|min:3|max:32|private_unique'
         ];
     }

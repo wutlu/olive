@@ -40,15 +40,15 @@ class InviteRequest extends FormRequest
      */
     public function rules()
     {
+        $user = auth()->user();
+
         Validator::extend('user_out_organisation', function($attribute, $email) {
             $user = User::where('email', $email)->first();
 
             return @$user ? ($user->organisation_id ? false : true) : true;
         });
 
-        Validator::extend('organisation_capacity_control', function() {
-            $user = auth()->user();
-
+        Validator::extend('organisation_capacity_control', function() use ($user) {
             return count($user->organisation->users) >= $user->organisation->capacity ? false : true;
         });
 

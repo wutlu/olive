@@ -25,8 +25,7 @@ class BillingUpdateRequest extends FormRequest
     public function messages()
     {
         return [
-            'flood' => 'Henüz ödenmemiş bir faturanız mevcut.',
-            'owner' => 'Bu işlemi sadece organizasyon sahipleri yapabilir.'
+            'flood' => 'Henüz ödenmemiş bir faturanız mevcut.'
         ];
     }
 
@@ -38,10 +37,6 @@ class BillingUpdateRequest extends FormRequest
     public function rules()
     {
         $user = auth()->user();
-
-        Validator::extend('owner', function() use ($user) {
-            return $user->id == $user->organisation->user_id ? true : false;
-        });
 
         Validator::extend('flood', function() use ($user) {
             return @$user->organisation->lastInvoice->paid_at ? true : false;
@@ -71,7 +66,7 @@ class BillingUpdateRequest extends FormRequest
             'address'            => 'required|string|max:255',
             'postal_code'        => 'required|numeric|max:99999',
 
-            'tos'                => 'required|in:on|owner|flood'
+            'tos'                => 'required|in:on|flood'
         ];
     }
 }
