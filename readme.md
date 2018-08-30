@@ -82,6 +82,9 @@ files = /var/www/olive.veri.zone/supervisor/olive-worker.conf
 $ sudo supervisorctl reread
 $ sudo supervisorctl reload
 $ sudo supervisorctl update
+$ sudo supervisorctl stop
+$ sudo supervisorctl start
+$ sudo supervisorctl restart
 
 $ sudo supervisorctl start olive-trigger:*
 $ sudo supervisorctl start olive-elasticsearch:*

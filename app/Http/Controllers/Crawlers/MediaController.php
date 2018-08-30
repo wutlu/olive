@@ -120,6 +120,7 @@ class MediaController extends Controller
                 $crawler->fill($request->all());
                 $crawler->test = true;
                 $crawler->error_count = 0;
+                $crawler->off_reason = null;
 
                 $data['status'] = 'ok';
 

@@ -259,9 +259,17 @@
             $.each(obj.items, function(key, o) {
                 textarea.val(textarea.val() + '--------------------------------\n');
                 textarea.val(textarea.val() + o.page + '\n');
-                textarea.val(textarea.val() + '- ' + o.data.title + '\n');
-                textarea.val(textarea.val() + '- ' + o.data.description + '\n');
-                textarea.val(textarea.val() + '- ' + o.data.created_at + '\n');
+
+                if (o.data)
+                {
+                    textarea.val(textarea.val() + '- ' + o.data.title + '\n');
+                    textarea.val(textarea.val() + '- ' + o.data.description + '\n');
+                    textarea.val(textarea.val() + '- ' + o.data.created_at + '\n');
+                }
+                else
+                {
+                    textarea.val(textarea.val() + '- ' + o.error_reasons + '\n');
+                }
 
                 textarea.val(textarea.val() + '----[ ' + o.status + ' ]----\n');
 

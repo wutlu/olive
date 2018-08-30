@@ -30,24 +30,9 @@ class Insert
             }
             else
             {
-                if (@$query->errors)
-                {
-                    foreach ($query->items as $item)
-                    {
-                        System::log(json_encode($item['index']['error']), 'App\Elasticsearch\Insert::bulk()', 10);
-                    }
-
-                    return (object) [
-                        'status' => 'err',
-                        'message' => json_encode(array_pluck($query['items'], 'index.error.reason'))
-                    ];
-                }
-                else
-                {
-                    return (object) [
-                        'status' => 'ok'
-                    ];
-                }
+                return (object) [
+                    'status' => 'ok'
+                ];
             }
         }
         catch (\Exception $e)

@@ -90,7 +90,7 @@ class Crawler
             $description = Term::convertAscii($description);
 
             # date detect
-            preg_match('/(\d{4}|\d{1,2})(\.|-| )(\d{1,2}|([a-zA-ZŞşıİğĞüÜ]{4,7}))(\.|-| )(\d{4}|\d{2})(( |, )[a-zA-ZÇçŞşığĞüÜ]{4,9})?(.| - )(\d{1,2}):(\d{1,2})(:(\d{1,2}))?((.?(\d{1,2}):(\d{1,2}))|Z)?/', $dom, $dates);
+            preg_match('/(\d{4}|\d{1,2})(\.|-| )(\d{1,2}|([a-zA-ZŞşıİğĞüÜ]{4,8}))(\.|-| )(\d{4}|\d{2})(( |, )[a-zA-ZÇçŞşığĞüÜ]{4,10})?(.| - )(\d{1,2}):(\d{1,2})(:(\d{1,2}))?((.?(\d{1,2}):(\d{1,2}))|Z)?/', $dom, $dates);
 
             if (@$dates[0])
             {
@@ -139,7 +139,7 @@ class Crawler
             {
                 $data['error_reasons'][] = 'Açıklama çok kısa.';
             }
-            else if (strlen($description) > 660)
+            else if (strlen($description) > 1500)
             {
                 $data['error_reasons'][] = 'Açıklama çok uzun.';
             }

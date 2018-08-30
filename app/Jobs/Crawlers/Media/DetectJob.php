@@ -49,7 +49,7 @@ class DetectJob implements ShouldQueue
             foreach ($links->links as $link)
             {
                 $chunk['body'][] = [
-                    'index' => [
+                    'create' => [
                         '_index' => Indices::indexName([ 'articles', $this->crawler->id ]),
                         '_type' => 'article',
                         '_id' => md5($link)
