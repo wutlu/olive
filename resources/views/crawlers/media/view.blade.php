@@ -116,8 +116,8 @@
                     </li>
                 </ul>
                 @if (!$crawler->status && $crawler->off_reason)
-                <small class="grey-text">Kapanma Nedeni</small>
-                <p class="d-block">{{ $crawler->off_reason }}</p>
+                    <small class="grey-text">Kapanma Nedeni</small>
+                    <p class="d-block">{{ $crawler->off_reason }}</p>
                 @endif
             </div>
             <div class="card-content">
