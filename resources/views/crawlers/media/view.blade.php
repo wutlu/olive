@@ -97,10 +97,14 @@
                     </li>
                     <li class="item">
                         @if ($crawler->elasticsearch_index)
-                            <small class="grey-text d-block">Toplam Döküman</small>
-                            <p class="d-block">{{ number_format($crawler->indexStats()->data['_all']['primaries']['docs']['count']) }}</p>
-                            <small class="grey-text d-block">Kapladığı Alan</small>
-                            <p class="d-block">{{ Term::humanFileSize($crawler->indexStats()->data['_all']['primaries']['store']['size_in_bytes'])->readable }}</p>
+                            @if (@$crawler->indexStats()->data)
+                                <small class="grey-text d-block">Toplam Döküman</small>
+                                <p class="d-block">{{ number_format($crawler->indexStats()->data['_all']['primaries']['docs']['count']) }}</p>
+                                <small class="grey-text d-block">Kapladığı Alan</small>
+                                <p class="d-block">{{ Term::humanFileSize($crawler->indexStats()->data['_all']['primaries']['store']['size_in_bytes'])->readable }}</p>
+                            @else
+                                <p class="d-block red-text">Elasticsearch server bağlantısı kurulamadı.</p>
+                            @endif
                         @else
                             <small class="grey-text d-block">Elasticsearch</small>
                             <i class="material-icons red-text">close</i>
@@ -173,7 +177,7 @@
                         <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="\/">/</button>
                         <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="([a-z0-9-]{4,128})">SLUG</button>
                         <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="-">-</button>
-                        <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="\.">\.</button>
+                        <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="\.">.</button>
                         <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="(\d{6,9})">ID</button>
                         <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="(\d{4})">\d{4}</button>
                         <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="(\d{2})">\d{2}</button>

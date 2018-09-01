@@ -90,15 +90,29 @@ class Crawler
             $description = Term::convertAscii($description);
 
             # date detect
-            preg_match('/(\d{4}|\d{1,2})(\.|-| )(\d{1,2}|([a-zA-ZŞşıİğĞüÜ]{4,8}))(\.|-| )(\d{4}|\d{2})(( |, )[a-zA-ZÇçŞşığĞüÜ]{4,10})?((.| - )(\d{1,2}):(\d{1,2})(:(\d{1,2}))?((.?(\d{1,2}):(\d{1,2}))|Z)?)?/', $dom, $dates);
+            preg_match_all('/(\d{4}|\d{1,2})(\.|-| )(\d{1,2}|([a-zA-ZŞşıİğĞüÜ]{4,8}))(\.|-| )(\d{4}|\d{2})(( |, )[a-zA-ZÇçŞşığĞüÜ]{4,10})?((.| - )(\d{1,2}):(\d{1,2})(:(\d{1,2}))?((.?(\d{1,2}):(\d{1,2}))|Z)?)?/', $dom, $dates);
+
+            $created_at = null;
 
             if (@$dates[0])
             {
-                $yesterday = Carbon::now()->subDays(2)->format('Y-m-d H:i:s');
+                foreach ($dates[0] as $date)
+                {
+                    $date = DateUtility::isDate($date);
 
-                $created_at = DateUtility::isDate($dates[0]);
+                    if ($date)
+                    {
+                        $created_at = $date;
 
-                # date
+                        break;
+                    }
+                }
+            }
+
+            if ($created_at)
+            {
+                $yesterday = Carbon::now()->subDays(4)->format('Y-m-d H:i:s');
+
                 if ($created_at < $yesterday)
                 {
                     $data['error_reasons'][] = 'Tarih güncel değil.';
@@ -106,7 +120,6 @@ class Crawler
             }
             else
             {
-                $created_at = null;
                 $data['error_reasons'][] = 'Tarih tespit edilemedi.';
             }
 
@@ -139,7 +152,7 @@ class Crawler
             {
                 $data['error_reasons'][] = 'Açıklama çok kısa.';
             }
-            else if (strlen($description) > 1500)
+            else if (strlen($description) > 2600)
             {
                 $data['error_reasons'][] = 'Açıklama çok uzun.';
             }

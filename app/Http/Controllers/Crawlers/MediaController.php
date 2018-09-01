@@ -17,6 +17,8 @@ use App\Jobs\Elasticsearch\CreateMediaIndexJob;
 
 use App\Utilities\Crawler;
 
+use App\Elasticsearch\Indices;
+
 class MediaController extends Controller
 {
     # ######################################## [ ADMIN ] ######################################## #
@@ -28,7 +30,9 @@ class MediaController extends Controller
         $active_count = MediaCrawler::where('status', true)->count();
         $disabled_count = MediaCrawler::where('status', false)->count();
 
-        return view('crawlers.media.list', compact('active_count', 'disabled_count'));
+        $stat = Indices::indexStats([ 'articles', '*' ]);
+
+        return view('crawlers.media.list', compact('active_count', 'disabled_count', 'stat'));
     }
 
     # ######################################## [ ADMIN ] ######################################## #

@@ -75,8 +75,14 @@
                     <p class="d-block">{{ $active_count.'/'.$disabled_count }}</p>
                 </li>
                 <li class="item">
-                    <small class="grey-text">Alınan Veri</small>
-                    <p class="d-block">14.151.231</p>
+                    @if (@$stat->data)
+                        <small class="grey-text d-block">Toplam Döküman</small>
+                        <p class="d-block">{{ number_format($stat->data['_all']['primaries']['docs']['count']) }}</p>
+                        <small class="grey-text d-block">Kapladığı Alan</small>
+                        <p class="d-block">{{ Term::humanFileSize($stat->data['_all']['primaries']['store']['size_in_bytes'])->readable }}</p>
+                    @else
+                        <p class="d-block red-text">Elasticsearch server bağlantısı kurulamadı.</p>
+                    @endif
                 </li>
             </ul>
         </div>
