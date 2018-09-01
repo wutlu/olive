@@ -17,6 +17,9 @@ use System;
 use App\Elasticsearch\Indices;
 use App\Elasticsearch\Insert;
 
+use Mail;
+use App\Mail\ServerAlertMail;
+
 class DetectJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -109,6 +112,8 @@ class DetectJob implements ShouldQueue
                 $this->crawler->off_reason = json_encode($return->message);
                 $this->crawler->status = false;
                 $this->crawler->test = false;
+
+                Mail::queue(new ServerAlertMail($this->crawler->name.' Medya Botu [DURDU]', json_encode($return->message)));
             }
         }
 

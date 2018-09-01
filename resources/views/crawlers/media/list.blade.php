@@ -32,8 +32,7 @@
                             .addClass('_tmp d-flex')
                             .attr('data-id', o.id)
 
-                        item.find('[data-name=display-id]').html(o.id)
-                        item.find('[data-name=control-date]').html(o.control_date)
+                        item.find('[data-name=report]').html('id: ' + o.id + ' err: '+ o.error_count + ' control: ' + o.control_date)
                         item.find('[data-name=name]').html(o.name)
                         item.find('[data-name=site]').html(o.site)
                         item.find('[data-name=status]').addClass(o.status ? 'green-text' : 'red-text')
@@ -128,8 +127,7 @@
                 <span class="align-self-center">
                     <p data-name="name"></p>
                     <p data-name="site" class="grey-text"></p>
-                    <span class="grey-text" data-name="display-id"></span>
-                    <span class="grey-text" data-name="control-date"></span>
+                    <span class="grey-text" data-name="report"></span>
                 </span>
                 <small class="badge ml-auto">
                     <i class="material-icons" data-name="test">sentiment_very_satisfied</i>

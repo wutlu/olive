@@ -51,7 +51,9 @@ class MediaController extends Controller
                                           ->orWhere('site', 'ILIKE', '%'.$request->string.'%') : $query;
         $query = $query->skip($skip)
                        ->take($take)
-                       ->orderBy('status', 'ASC');
+                       ->orderBy('status', 'ASC')
+                       ->orderBy('error_count', 'DESC')
+                       ->orderBy('id', 'ASC');
 
         return [
             'status' => 'ok',

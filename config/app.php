@@ -87,6 +87,7 @@ return [
         Jenssegers\Agent\AgentServiceProvider::class,
         Torann\GeoIP\GeoIPServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
+        Orangehill\Iseed\IseedServiceProvider::class,
 
         /*
          * Application Service Providers...

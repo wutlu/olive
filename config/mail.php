@@ -21,6 +21,8 @@ return [
 
     'sendmail' => '/usr/sbin/sendmail -bs',
 
+    'email_group' => env('GROUP_EMAIL'),
+
     /*
     |--------------------------------------------------------------------------
     | Markdown Mail Settings
