@@ -1,13 +1,16 @@
 @extends('layouts.app', [ 'header' => 'hide' ])
 
+@push('local.styles')
+    #main > .parallax-container > .parallax {
+        background-color: #111;
+    }
+@endpush
+
 @section('content')
     <header id="main">
         <div class="parallax-container">
             <div class="parallax">
-                <img src="{{ asset('img/bg-2.svg') }}" alt="bg-1" />
-                <video autoplay muted loop id="background-video">
-                    <source src="{{ asset('video/world.mp4') }}" type="video/mp4">
-                </video>
+                <img src="{{ asset('img/bg-2.svg') }}" alt="bg-2" />
             </div>
 
             <div class="container">
