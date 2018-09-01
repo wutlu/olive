@@ -154,12 +154,29 @@
                             </div>
                         </div>
                     </div>
-                    <div class="collection-item">
+                    @push('local.scripts')
+                    $(document).on('click', '[data-id=match]', function() {
+                        var __ = $(this);
+                        var url_pattern = $('input[name=url_pattern]');
+                            url_pattern.val(url_pattern.val() + __.data('pattern'))
+
+                            M.updateTextFields()
+                    })
+                    @endpush
+                    <div class="collection-item green lighten-4">
                         <div class="input-field">
                             <input name="url_pattern" id="url_pattern" value="{{ $crawler->url_pattern }}" type="text" class="validate" data-length="255" />
                             <label for="url_pattern">Makale URL Deseni</label>
                             <small class="helper-text">Kaynak içerik adreslerinin <strong>REGEX</strong> deseni.</small>
                         </div>
+                        <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="([a-z0-9-]{4,24})">KATEGORİ</button>
+                        <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="\/">/</button>
+                        <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="([a-z0-9-]{4,128})">SLUG</button>
+                        <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="-">-</button>
+                        <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="\.">\.</button>
+                        <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="(\d{6,9})">ID</button>
+                        <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="(\d{4})">\d{4}</button>
+                        <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="(\d{2})">\d{2}</button>
                     </div>
                     <div class="collection-item">
                         <div class="d-flex flex-wrap">

@@ -76,6 +76,8 @@ class DetectJob implements ShouldQueue
             }
             else if ($bulk->status == 'ok')
             {
+                $this->crawler->error_count = 0;
+
                 $return = (object) [
                     'status' => 'ok'
                 ];

@@ -43,7 +43,8 @@ class MediaController extends Controller
         $skip = $request->skip;
 
         $query = new MediaCrawler;
-        $query = $request->string ? $query->where('name', 'ILIKE', '%'.$request->string.'%') : $query;
+        $query = $request->string ? $query->where('name', 'ILIKE', '%'.$request->string.'%')
+                                          ->orWhere('site', 'ILIKE', '%'.$request->string.'%') : $query;
         $query = $query->skip($skip)
                        ->take($take)
                        ->orderBy('status', 'ASC');
@@ -70,7 +71,7 @@ class MediaController extends Controller
             $crawler = new MediaCrawler;
             $crawler->name = 'Yeni Bot '.rand(99999, 999999);
             $crawler->site = 'http://';
-            $crawler->url_pattern = 'http://';
+            $crawler->url_pattern = '([a-z0-9-]{4,128})';
             $crawler->selector_title = 'h1';
             $crawler->selector_description = 'h2';
             $crawler->save();

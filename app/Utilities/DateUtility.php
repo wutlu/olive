@@ -2,6 +2,9 @@
 
 namespace App\Utilities;
 
+use Carbon\Carbon;
+use DateTime;
+
 class DateUtility
 {
 	# is date
@@ -72,9 +75,16 @@ class DateUtility
 
         try
         {
-            $date = new \DateTime($value);
+            $date = new DateTime($value);
 
-            return $date->format('Y-m-d H:i:s');
+            $full_date = $date->format('Y-m-d H:i:s');
+
+            if (date('H:i:s') != '00:00:00' && $date->format('H:i:s') == '00:00:00')
+            {
+                $full_date = $date->format('Y-m-d').' '.date('H:i:s');
+            }
+
+            return $full_date;
         }
         catch (\Exception $e)
         {
