@@ -95,28 +95,50 @@
                         <small class="grey-text d-block">Durum</small>
                         <a href="#" data-trigger="status" class="btn-flat waves-effect waves-{{ $crawler->status ? 'green green' : 'red red' }}-text">{{ $crawler->status ? 'AKTİF' : 'PASİF' }}</a>
                     </li>
-                    <li class="item">
-                        @if ($crawler->elasticsearch_index)
-                            @if (@$crawler->indexStats()->data)
-                                <small class="grey-text d-block">Toplam Döküman</small>
-                                <p class="d-block">{{ number_format($crawler->indexStats()->data['_all']['primaries']['docs']['count']) }}</p>
-                                <small class="grey-text d-block">Kapladığı Alan</small>
-                                <p class="d-block">{{ Term::humanFileSize($crawler->indexStats()->data['_all']['primaries']['store']['size_in_bytes'])->readable }}</p>
-                            @else
-                                <p class="d-block red-text">Elasticsearch server bağlantısı kurulamadı.</p>
-                            @endif
-                        @else
-                            <small class="grey-text d-block">Elasticsearch</small>
-                            <i class="material-icons red-text">close</i>
-                        @endif
+                    <li id="stats" class="item load" data-href="{{ route('crawlers.media.bot.statistics', $crawler->id) }}" data-callback="__stats">
+                        <small class="grey-text d-block">Toplam Döküman</small>
+                        <p class="d-block" data-name="total-docs"></p>
+                        <small class="grey-text d-block">Kapladığı Alan</small>
+                        <p class="d-block" data-name="total-size"></p>
                     </li>
+                    @push('local.scripts')
+                        var statTimer;
+
+                        function __stats(__, obj)
+                        {
+                            if (obj.status == 'ok')
+                            {
+                                $('[data-name=control-date]').html(obj.data.crawler.control_date)
+                                $('[data-name=error-count]').html(obj.data.crawler.error_count)
+
+                                if (obj.data.elasticsearch.status == 'ok')
+                                {
+                                    $('[data-name=total-docs]').removeClass('red-text').html(number_format(obj.data.elasticsearch.data._all.primaries.docs.count))
+                                    $('[data-name=total-size]').removeClass('red-text').html(humanFileSize(obj.data.elasticsearch.data._all.primaries.store.size_in_bytes))
+                                }
+                                else
+                                {
+                                    var message = $.parseJSON(obj.data.elasticsearch.message);
+
+                                    $('[data-name=total-docs]').addClass('red-text').html(message.status == 404 ? 'Index Oluşturulmadı!' : 'Bağlantı Hatası')
+                                    $('[data-name=total-size]').addClass('red-text').html(message.status == 404 ? 'Index Oluşturulmadı!' : 'Bağlantı Hatası')
+                                }
+
+                                window.clearTimeout(statTimer)
+
+                                statTimer = setTimeout(function() {
+                                    vzAjax($('#stats'))
+                                }, 10000)
+                            }
+                        }
+                    @endpush
                     <li class="item">
                         <small class="grey-text d-block">Hata</small>
-                        <span class="grey-text">{{ $crawler->error_count }}</span>
+                        <span class="grey-text" data-name="error-count"></span>
                     </li>
                     <li class="item">
-                        <small class="grey-text d-block">Son Kontrol</small>
-                        <p class="d-block">{{ date('d.m.Y H:i', strtotime($crawler->control_date)) }}</p>
+                        <small class="grey-text d-block">Kontrol Tarihi</small>
+                        <p class="d-block" data-name="control-date"></p>
                     </li>
                 </ul>
                 @if (!$crawler->status && $crawler->off_reason)

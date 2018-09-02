@@ -27,12 +27,7 @@ class MediaController extends Controller
     # 
     public static function listView()
     {
-        $active_count = MediaCrawler::where('status', true)->count();
-        $disabled_count = MediaCrawler::where('status', false)->count();
-
-        $stat = Indices::indexStats([ 'articles', '*' ]);
-
-        return view('crawlers.media.list', compact('active_count', 'disabled_count', 'stat'));
+        return view('crawlers.media.list');
     }
 
     # ######################################## [ ADMIN ] ######################################## #
@@ -59,6 +54,44 @@ class MediaController extends Controller
             'status' => 'ok',
             'hits' => $query->get(),
             'total' => $query->count()
+        ];
+    }
+
+    # ######################################## [ ADMIN ] ######################################## #
+    # 
+    # admin global statistics
+    # 
+    public static function allStatistics()
+    {
+        $active_count = MediaCrawler::where('status', true)->count();
+        $disabled_count = MediaCrawler::where('status', false)->count();
+
+        return [
+            'status' => 'ok',
+            'data' => [
+                'count' => [
+                    'active' => $active_count,
+                    'disabled' => $disabled_count
+                ],
+                'elasticsearch' => Indices::indexStats([ 'articles', '*' ])
+            ]
+        ];
+    }
+
+    # ######################################## [ ADMIN ] ######################################## #
+    # 
+    # admin global statistics
+    # 
+    public static function botStatistics(int $id)
+    {
+        $crawler = MediaCrawler::where('id', $id)->firstOrFail();
+
+        return [
+            'status' => 'ok',
+            'data' => [
+                'crawler' => $crawler,
+                'elasticsearch' => Indices::indexStats([ 'articles', $crawler->id ])
+            ]
         ];
     }
 

@@ -47,9 +47,13 @@ Route::prefix('admin')->middleware([ 'root' ])->group(function () {
         Route::prefix('meya-botlari')->namespace('Crawlers')->group(function () {
             Route::get('/', 'MediaController@listView')->name('crawlers.media.list');
             Route::get('json', 'MediaController@listViewJson')->name('crawlers.media.list.json');
+
             Route::get('bot/{id?}', 'MediaController@view')->name('crawlers.media.bot');
             Route::patch('bot', 'MediaController@update');
             Route::post('bot/durum', 'MediaController@status')->name('crawlers.media.bot.status');
+
+            Route::get('bot/{id}/istatistik', 'MediaController@botStatistics')->name('crawlers.media.bot.statistics');
+            Route::get('genel-istatistik', 'MediaController@allStatistics')->name('crawlers.media.bot.statistics.all');
         });
     });
 

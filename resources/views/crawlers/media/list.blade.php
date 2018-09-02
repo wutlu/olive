@@ -68,23 +68,47 @@
             </a>
         </div>
         <div class="card-content grey lighten-2">
-            <ul class="item-group">
+            <ul id="stats" class="item-group load" data-href="{{ route('crawlers.media.bot.statistics.all') }}" data-callback="__stats">
                 <li class="item">
                     <small class="grey-text">Aktif/Devre Dışı</small>
-                    <p class="d-block">{{ $active_count.'/'.$disabled_count }}</p>
+                    <p class="d-block" data-name="bots-count"></p>
                 </li>
                 <li class="item">
-                    @if (@$stat->data)
-                        <small class="grey-text d-block">Toplam Döküman</small>
-                        <p class="d-block">{{ number_format($stat->data['_all']['primaries']['docs']['count']) }}</p>
-                        <small class="grey-text d-block">Kapladığı Alan</small>
-                        <p class="d-block">{{ Term::humanFileSize($stat->data['_all']['primaries']['store']['size_in_bytes'])->readable }}</p>
-                    @else
-                        <p class="d-block red-text">Elasticsearch server bağlantısı kurulamadı.</p>
-                    @endif
+                    <small class="grey-text d-block">Toplam Döküman</small>
+                    <p class="d-block" data-name="total-docs"></p>
+                    <small class="grey-text d-block">Kapladığı Alan</small>
+                    <p class="d-block" data-name="total-size"></p>
                 </li>
             </ul>
         </div>
+        @push('local.scripts')
+            var statTimer;
+
+            function __stats(__, obj)
+            {
+                if (obj.status == 'ok')
+                {
+                    $('[data-name=bots-count]').html(obj.data.count.active + ' / ' + obj.data.count.disabled)
+
+                    if (obj.data.elasticsearch.status == 'ok')
+                    {
+                        $('[data-name=total-docs]').removeClass('red-text').html(number_format(obj.data.elasticsearch.data._all.primaries.docs.count))
+                        $('[data-name=total-size]').removeClass('red-text').html(humanFileSize(obj.data.elasticsearch.data._all.primaries.store.size_in_bytes))
+                    }
+                    else
+                    {
+                        $('[data-name=total-docs]').addClass('red-text').html('Bağlantı Hatası')
+                        $('[data-name=total-size]').addClass('red-text').html('Bağlantı Hatası')
+                    }
+
+                    window.clearTimeout(statTimer)
+
+                    statTimer = setTimeout(function() {
+                        vzAjax($('#stats'))
+                    }, 10000)
+                }
+            }
+        @endpush
         <nav class="grey darken-4">
             <div class="nav-wrapper">
                 <div class="input-field">
