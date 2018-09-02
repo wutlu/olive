@@ -32,7 +32,9 @@
                             .addClass('_tmp d-flex')
                             .attr('data-id', o.id)
 
-                        item.find('[data-name=report]').html('id: ' + o.id + ' err: '+ o.error_count + ' control: ' + o.control_date)
+                        item.find('[data-name=id]').html('Id: ' + o.id)
+                        item.find('[data-name=error]').html(o.error_count + ' hata').removeClass(o.error_count ? 'grey-text' : 'red-text').addClass(o.error_count ? 'red-text' : 'grey-text')
+                        item.find('[data-name=control]').html(o.control_date + '/' + o.control_interval + ' dakika')
                         item.find('[data-name=name]').html(o.name)
                         item.find('[data-name=site]').html(o.site)
                         item.find('[data-name=status]').addClass(o.status ? 'green-text' : 'red-text')
@@ -151,12 +153,20 @@
                 <span class="align-self-center">
                     <p data-name="name"></p>
                     <p data-name="site" class="grey-text"></p>
-                    <span class="grey-text" data-name="report"></span>
+                    <p class="grey-text" data-name="id"></p>
+                    <p class="grey-text" data-name="error"></p>
+                    <p class="grey-text" data-name="control"></p>
                 </span>
                 <small class="badge ml-auto">
-                    <i class="material-icons" data-name="test">sentiment_very_satisfied</i>
-                    <i class="material-icons" data-name="index">storage</i>
-                    <i class="material-icons" data-name="status">power</i>
+                    <p>
+                        <i class="material-icons" data-name="test">sentiment_very_satisfied</i>
+                    </p>
+                    <p>
+                        <i class="material-icons" data-name="index">storage</i>
+                    </p>
+                    <p>
+                        <i class="material-icons" data-name="status">power</i>
+                    </p>
                 </small>
             </a>
         </div>

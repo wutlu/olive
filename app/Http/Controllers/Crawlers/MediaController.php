@@ -48,7 +48,7 @@ class MediaController extends Controller
                        ->take($take)
                        ->orderBy('status', 'ASC')
                        ->orderBy('error_count', 'DESC')
-                       ->orderBy('id', 'ASC');
+                       ->orderBy('control_interval', 'ASC');
 
         return [
             'status' => 'ok',
