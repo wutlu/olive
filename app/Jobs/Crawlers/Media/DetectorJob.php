@@ -15,12 +15,12 @@ use App\Utilities\Crawler;
 use System;
 
 use App\Elasticsearch\Indices;
-use App\Elasticsearch\Insert;
+use App\Elasticsearch\Document;
 
 use Mail;
 use App\Mail\ServerAlertMail;
 
-class DetectJob implements ShouldQueue
+class DetectorJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -53,7 +53,7 @@ class DetectJob implements ShouldQueue
             {
                 $chunk['body'][] = [
                     'create' => [
-                        '_index' => Indices::indexName([ 'articles', $this->crawler->id ]),
+                        '_index' => Indices::name([ 'articles', $this->crawler->id ]),
                         '_type' => 'article',
                         '_id' => md5($link)
                     ]
@@ -61,12 +61,13 @@ class DetectJob implements ShouldQueue
 
                 $chunk['body'][] = [
                     'id' => md5($link),
+                    'bot_id' => $this->crawler->id,
                     'url' => $link,
                     'status' => 'buffer'
                 ];
             }
 
-            $bulk = Insert::bulk($chunk);
+            $bulk = Document::bulkInsert($chunk);
 
             if ($bulk->status == 'err')
             {
@@ -103,7 +104,7 @@ class DetectJob implements ShouldQueue
 
         if ($return->status == 'err')
         {
-            System::log(json_encode($return->message), 'App\Jobs\Crawlers\Media\DetectJob::handle(int '.$this->crawler->id.')', 10);
+            System::log(json_encode($return->message), 'App\Jobs\Crawlers\Media\DetectorJob::handle(int '.$this->crawler->id.')', 10);
 
             $this->crawler->error_count = $this->crawler->error_count+1;
 

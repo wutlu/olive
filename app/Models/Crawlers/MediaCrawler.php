@@ -23,7 +23,7 @@ class MediaCrawler extends Model
     # index crate
     public function indexCreate()
     {
-        return Indices::indexCreate(
+        return Indices::create(
             [
                 'articles', $this->id
             ],
@@ -32,6 +32,9 @@ class MediaCrawler extends Model
                     'properties' => [
                         'id' => [
                             'type' => 'keyword'
+                        ],
+                        'bot_id' => [
+                            'type' => 'integer'
                         ],
                         'title' => [
                             'type' => 'text',
@@ -57,6 +60,10 @@ class MediaCrawler extends Model
                         ],
                         'status' => [
                             'type' => 'keyword'
+                        ],
+                        'message' => [
+                            'type' => 'text',
+                            'index' => false
                         ]
                     ]
                 ]
@@ -71,8 +78,8 @@ class MediaCrawler extends Model
     }
 
     # index stats
-    public function indexStats()
+    public function stats()
     {
-        return Indices::indexStats([ 'articles', $this->id ]);
+        return Indices::stats([ 'articles', $this->id ]);
     }
 }

@@ -109,16 +109,7 @@ class Crawler
                 }
             }
 
-            if ($created_at)
-            {
-                $yesterday = Carbon::now()->subDays(4)->format('Y-m-d H:i:s');
-
-                if ($created_at < $yesterday)
-                {
-                    $data['error_reasons'][] = 'Tarih güncel değil.';
-                }
-            }
-            else
+            if (!$created_at)
             {
                 $data['error_reasons'][] = 'Tarih tespit edilemedi.';
             }
@@ -152,7 +143,7 @@ class Crawler
             {
                 $data['error_reasons'][] = 'Açıklama çok kısa.';
             }
-            else if (strlen($description) > 2600)
+            else if (strlen($description) > 5000)
             {
                 $data['error_reasons'][] = 'Açıklama çok uzun.';
             }
@@ -168,7 +159,7 @@ class Crawler
         }
         catch (\Exception $e)
         {
-            $data['status'] = 'err';
+            $data['status'] = 'failed';
             $data['error_reasons'][] = $e->getMessage();
         }
 

@@ -44,7 +44,7 @@ Route::prefix('admin')->middleware([ 'root' ])->group(function () {
     });
 
     Route::prefix('bot-yonetimi')->group(function () {
-        Route::prefix('meya-botlari')->namespace('Crawlers')->group(function () {
+        Route::prefix('medya-botlari')->namespace('Crawlers')->group(function () {
             Route::get('/', 'MediaController@listView')->name('crawlers.media.list');
             Route::get('json', 'MediaController@listViewJson')->name('crawlers.media.list.json');
 

@@ -35,7 +35,15 @@ class Kernel extends ConsoleKernel
         # 
         # Medya sitelerini sürekli takip et.
         # 
-        $schedule->command('media:link_detect')
+        $schedule->command('media:detector')
+                 ->everyMinute()
+                 ->timezone(config('app.timezone'))
+                 ->withoutOverlapping();
+
+        # 
+        # Medya bağlantılarını sürekli topla.
+        # 
+        $schedule->command('media:taker')
                  ->everyMinute()
                  ->timezone(config('app.timezone'))
                  ->withoutOverlapping();

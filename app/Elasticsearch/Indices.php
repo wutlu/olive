@@ -8,15 +8,15 @@ use System;
 class Indices
 {
     # elasticsearch index name
-    public static function indexName(array $name)
+    public static function name(array $name)
     {
         return str_slug(config('app.name')).'__'.implode('-', $name);
     }
 
     # elasticsearch index schema
-    public static function indexCreate(array $name, array $mapping, array $params = [])
+    public static function create(array $name, array $mapping, array $params = [])
     {
-        $name = self::indexName($name);
+        $name = self::name($name);
 
         $default_params = [
             'total_fields_limit' => 5000,
@@ -114,10 +114,10 @@ class Indices
             }
             catch (\Exception $e)
             {
-                System::log(json_encode($e->getMessage()), 'App\Elasticsearch\Indices::indexCreate('.$name.')', 10);
+                System::log(json_encode($e->getMessage()), 'App\Elasticsearch\Indices::create('.$name.')', 10);
 
                 return (object) [
-                    'status' => 'error',
+                    'status' => 'err',
                     'message' => $e->getMessage()
                 ];
             }
@@ -125,9 +125,9 @@ class Indices
     }
 
     # elasticsearch index drop
-    public static function indexDrop(array $name)
+    public static function drop(array $name)
     {
-        $name = self::indexName($name);
+        $name = self::name($name);
 
         $client = ClientBuilder::fromConfig([
             'hosts' => config('database.connections.elasticsearch.hosts'),
@@ -146,19 +146,19 @@ class Indices
         }
         catch (\Exception $e)
         {
-            System::log(json_encode($e->getMessage()), 'App\Elasticsearch\Indices::indexDrop('.$name.')');
+            System::log(json_encode($e->getMessage()), 'App\Elasticsearch\Indices::drop('.$name.')');
 
             return [
-                'status' => 'error',
+                'status' => 'err',
                 'message' => $e->getMessage()
             ];
         }
     }
 
     # elasticsearch index stat
-    public static function indexStats(array $name)
+    public static function stats(array $name)
     {
-        $name = self::indexName($name);
+        $name = self::name($name);
 
         $client = ClientBuilder::fromConfig([
             'hosts' => config('database.connections.elasticsearch.hosts'),
@@ -178,10 +178,10 @@ class Indices
         }
         catch (\Exception $e)
         {
-            System::log(json_encode($e->getMessage()), 'App\Elasticsearch\Indices::indexStats('.$name.')');
+            System::log(json_encode($e->getMessage()), 'App\Elasticsearch\Indices::stats('.$name.')');
 
             return (object) [
-                'status' => 'error',
+                'status' => 'err',
                 'message' => $e->getMessage()
             ];
         }

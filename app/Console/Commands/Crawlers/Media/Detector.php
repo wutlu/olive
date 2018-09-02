@@ -4,27 +4,27 @@ namespace App\Console\Commands\Crawlers\Media;
 
 use Illuminate\Console\Command;
 
-use App\Jobs\Crawlers\Media\DetectJob;
+use App\Jobs\Crawlers\Media\DetectorJob;
 
 use App\Models\Crawlers\MediaCrawler;
 
 use Carbon\Carbon;
 
-class LinkDetect extends Command
+class Detector extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'media:link_detect';
+    protected $signature = 'media:detector';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Medya bağlantıları tespiti.';
+    protected $description = 'Bağlantı tespit edici.';
 
     /**
      * Create a new command instance.
@@ -58,7 +58,7 @@ class LinkDetect extends Command
                 {
                     $this->info($crawler->name);
 
-                    DetectJob::dispatch($crawler)->onQueue('crawler');
+                    DetectorJob::dispatch($crawler)->onQueue('crawler');
                 }
             }
         }

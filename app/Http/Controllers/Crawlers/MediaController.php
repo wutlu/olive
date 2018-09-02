@@ -73,7 +73,7 @@ class MediaController extends Controller
                     'active' => $active_count,
                     'disabled' => $disabled_count
                 ],
-                'elasticsearch' => Indices::indexStats([ 'articles', '*' ])
+                'elasticsearch' => Indices::stats([ 'articles', '*' ])
             ]
         ];
     }
@@ -90,7 +90,7 @@ class MediaController extends Controller
             'status' => 'ok',
             'data' => [
                 'crawler' => $crawler,
-                'elasticsearch' => Indices::indexStats([ 'articles', $crawler->id ])
+                'elasticsearch' => Indices::stats([ 'articles', $crawler->id ])
             ]
         ];
     }
@@ -135,7 +135,6 @@ class MediaController extends Controller
 
         $total = 0;
         $accepted = 0;
-
         if (@$links->links)
         {
             foreach ($links->links as $link)
