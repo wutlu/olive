@@ -205,6 +205,7 @@
                         <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="(\d{2})">\d{2}</button>
                         <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="(?<=href\="\/)">(?<=href\="\/)</button>
                         <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="(?=")">(?=")</button>
+                        <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="(\b(?!yazarlar))">(\b(?!yazarlar))</button>
                     </div>
                     <div class="collection-item">
                         <div class="d-flex flex-wrap">
@@ -246,6 +247,7 @@
                     </div>
                 </div>
             </div>
+            <div class="card-content yellow lighten-4">Bu aşamada girilen değerler test edilir. Test sonucu olumlu olmadığı sürece değerler kaydedilmeyecektir.</div>
             <div class="card-action right-align">
                 <button type="submit" class="btn waves-effect">
                     <i class="material-icons">done_all</i>

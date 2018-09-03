@@ -45,7 +45,7 @@ class Organisation
             }
             else
             {
-                session()->flash('alert', 'Bu sayfaya erişebilmek için bir organizasyona dahil olmanız gerekiyor.');
+                session()->flash('alert', 'Bu modülü kullanabilmek için bir organizasyona dahil olmanız gerekiyor.');
 
                 return $request->expectsJson()
                     ? response()->json([
