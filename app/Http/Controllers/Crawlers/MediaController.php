@@ -80,6 +80,57 @@ class MediaController extends Controller
 
     # ######################################## [ ADMIN ] ######################################## #
     # 
+    # admin global start all
+    # 
+    public static function allStart()
+    {
+        $crawlers = MediaCrawler::where([
+            'status' => false,
+            'elasticsearch_index' => true,
+            'test' => true
+        ])->update([ 'status' => true ]);
+
+        return [
+            'status' => 'ok'
+        ];
+    }
+
+    # ######################################## [ ADMIN ] ######################################## #
+    # 
+    # admin global start all
+    # 
+    public static function allStop()
+    {
+        $crawlers = MediaCrawler::where('status', true)->update([ 'status' => false ]);
+
+        return [
+            'status' => 'ok'
+        ];
+    }
+
+    # ######################################## [ ADMIN ] ######################################## #
+    # 
+    # admin global start all
+    # 
+    public static function allIndex()
+    {
+        $crawlers = MediaCrawler::where('elasticsearch_index', false)->get();
+
+        if (count($crawlers))
+        {
+            foreach ($crawlers as $crawler)
+            {
+                CreateMediaIndexJob::dispatch($crawler->id)->onQueue('elasticsearch');
+            }
+        }
+
+        return [
+            'status' => 'ok'
+        ];
+    }
+
+    # ######################################## [ ADMIN ] ######################################## #
+    # 
     # admin global statistics
     # 
     public static function botStatistics(int $id)

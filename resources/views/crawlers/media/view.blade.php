@@ -111,7 +111,7 @@
                                 $('[data-name=control-date]').html(obj.data.crawler.control_date)
                                 $('[data-name=error-count]').html(obj.data.crawler.error_count)
 
-                                if (obj.data.elasticsearch.status == 'ok')
+                                if (obj.data.elasticsearch.status == 'ok' && obj.data.elasticsearch.data._all.primaries.docs)
                                 {
                                     $('[data-name=total-docs]').removeClass('red-text').html(number_format(obj.data.elasticsearch.data._all.primaries.docs.count))
                                     $('[data-name=total-size]').removeClass('red-text').html(humanFileSize(obj.data.elasticsearch.data._all.primaries.store.size_in_bytes))

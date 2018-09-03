@@ -49,11 +49,14 @@ Route::prefix('admin')->middleware([ 'root' ])->group(function () {
             Route::get('json', 'MediaController@listViewJson')->name('crawlers.media.list.json');
 
             Route::get('bot/{id?}', 'MediaController@view')->name('crawlers.media.bot');
-            Route::patch('bot', 'MediaController@update');
-            Route::post('bot/durum', 'MediaController@status')->name('crawlers.media.bot.status');
-
             Route::get('bot/{id}/istatistik', 'MediaController@botStatistics')->name('crawlers.media.bot.statistics');
-            Route::get('genel-istatistik', 'MediaController@allStatistics')->name('crawlers.media.bot.statistics.all');
+            Route::post('bot/durum', 'MediaController@status')->name('crawlers.media.bot.status');
+            Route::patch('bot', 'MediaController@update');
+
+            Route::get('genel/istatistik', 'MediaController@allStatistics')->name('crawlers.media.bot.statistics.all');
+            Route::post('genel/baslat', 'MediaController@allStart')->name('crawlers.media.bot.start.all');
+            Route::post('genel/durdur', 'MediaController@allStop')->name('crawlers.media.bot.stop.all');
+            Route::post('genel/index-olustur', 'MediaController@allIndex')->name('crawlers.media.bot.index.all');
         });
     });
 

@@ -81,9 +81,101 @@
                     <small class="grey-text d-block">Kapladığı Alan</small>
                     <p class="d-block" data-name="total-size"></p>
                 </li>
+                <li class="item">
+                    <ul>
+                        <li>
+                            <a
+                                href="#"
+                                data-message="Oluşturulmamış indexlerin oluşturulması için istek gönderilecek?"
+                                data-trigger="trigger"
+                                data-href="{{ route('crawlers.media.bot.index.all') }}"
+                                data-callback="__create_all_index">Eksik Indexleri Oluştur</a>
+                        </li>
+                        <li>
+                            <a
+                                href="#"
+                                data-message="Pasif fakat test edilmiş tüm botlar çalıştırılacak?"
+                                data-trigger="trigger"
+                                class="green-text"
+                                data-href="{{ route('crawlers.media.bot.start.all') }}"
+                                data-callback="__start_all">Pasif Botları Çalıştır</a>
+                        </li>
+                        <li>
+                            <a
+                                href="#"
+                                data-message="Aktif tüm botlar durdurulacak?"
+                                data-trigger="trigger"
+                                class="red-text"
+                                data-href="{{ route('crawlers.media.bot.stop.all') }}"
+                                data-callback="__stop_all">Aktif Botları Durdur</a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
         </div>
         @push('local.scripts')
+            $(document).on('click', '[data-trigger=trigger]', function() {
+                var __ = $(this);
+
+                var mdl = modal({
+                        'id': 'trigger',
+                        'body': __.data('message'),
+                        'size': 'modal-small',
+                        'title': 'Uyarı',
+                        'options': {}
+                    });
+
+                    mdl.find('.modal-footer')
+                       .html([
+                            $('<a />', {
+                                'href': '#',
+                                'class': 'modal-close waves-effect btn-flat',
+                                'html': buttons.cancel
+                            }),
+                            $('<span />', {
+                                'html': ' '
+                            }),
+                            $('<a />', {
+                                'href': '#',
+                                'class': 'waves-effect btn json',
+                                'html': buttons.ok,
+                                'data-href': __.data('href'),
+                                'data-method': 'post',
+                                'data-callback': __.data('callback')
+                            })
+                       ])
+            })
+
+            function __create_all_index(__, obj)
+            {
+                if (obj.status == 'ok')
+                {
+                    M.toast({ html: 'Tüm botlar için index oluşturma isteği gönderildi.', classes: 'green' })
+
+                    $('#modal-trigger').modal('close')
+                } 
+            }
+
+            function __stop_all(__, obj)
+            {
+                if (obj.status == 'ok')
+                {
+                    M.toast({ html: 'Aktif tüm botlar durduruldu.', classes: 'green' })
+
+                    $('#modal-trigger').modal('close')
+                } 
+            }
+
+            function __start_all(__, obj)
+            {
+                if (obj.status == 'ok')
+                {
+                    M.toast({ html: 'Pasif ve test edilmiş tüm botlar çalıştırıldı.', classes: 'green' })
+
+                    $('#modal-trigger').modal('close')
+                } 
+            }
+
             var statTimer;
 
             function __stats(__, obj)
@@ -92,7 +184,7 @@
                 {
                     $('[data-name=bots-count]').html(obj.data.count.active + ' / ' + obj.data.count.disabled)
 
-                    if (obj.data.elasticsearch.status == 'ok')
+                    if (obj.data.elasticsearch.status == 'ok' && obj.data.elasticsearch.data._all.primaries.docs)
                     {
                         $('[data-name=total-docs]').removeClass('red-text').html(number_format(obj.data.elasticsearch.data._all.primaries.docs.count))
                         $('[data-name=total-size]').removeClass('red-text').html(humanFileSize(obj.data.elasticsearch.data._all.primaries.store.size_in_bytes))
