@@ -249,6 +249,9 @@
             </div>
             <div class="card-content yellow lighten-4">Bu aşamada girilen değerler test edilir. Test sonucu olumlu olmadığı sürece değerler kaydedilmeyecektir.</div>
             <div class="card-action right-align">
+                <a href="#" class="btn-flat waves-effect" data-trigger="delete">
+                    <i class="material-icons red-text">close</i>
+                </a>
                 <button type="submit" class="btn waves-effect">
                     <i class="material-icons">done_all</i>
                 </button>
@@ -266,6 +269,45 @@
 @endsection
 
 @push('local.scripts')
+    $(document).on('click', '[data-trigger=delete]', function() {
+        var mdl = modal({
+                'id': 'status',
+                'body': 'Bu kaydı silmek üzeresiniz?',
+                'size': 'modal-small',
+                'title': 'Sil',
+                'options': {}
+            });
+
+            mdl.find('.modal-footer')
+               .html([
+                    $('<a />', {
+                        'href': '#',
+                        'class': 'modal-close waves-effect btn-flat',
+                        'html': buttons.cancel
+                    }),
+                    $('<span />', {
+                        'html': ' '
+                    }),
+                    $('<a />', {
+                        'href': '#',
+                        'class': 'waves-effect btn json',
+                        'html': buttons.ok,
+                        'data-href': '{{ route('crawlers.media.bot') }}',
+                        'data-id': '{{ $crawler->id }}',
+                        'data-method': 'delete',
+                        'data-callback': '__delete'
+                    })
+               ])
+    })
+
+    function __delete(__, obj)
+    {
+        if (obj.status == 'ok')
+        {
+            location.href = '{{ route('crawlers.media.list') }}';
+        }
+    }
+
     function __test(__, obj)
     {
         var mdl = modal({

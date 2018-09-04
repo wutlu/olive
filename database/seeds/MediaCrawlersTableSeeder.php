@@ -729,7 +729,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'name' => 'TGRTHABER',
                 'site' => 'http://www.tgrthaber.com.tr',
                 'base' => '/',
-                'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-(\d{6,9})(?=")',
+                'url_pattern' => '(\b(?!fotogaleri))([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-(\d{6,9})(?=")',
                 'selector_title' => 'h1[itemprop="headline"]',
                 'selector_description' => 'h2.haber-spot',
                 'control_interval' => 15,

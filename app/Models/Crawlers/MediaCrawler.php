@@ -19,7 +19,8 @@ class MediaCrawler extends Model
         'off_limit',
         'control_interval',
 
-        'status'
+        'status',
+        'error_count'
     ];
 
     # index crate

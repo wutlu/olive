@@ -44,8 +44,7 @@ class Detector extends Command
     public function handle()
     {
         $crawlers = MediaCrawler::where([
-            'status' => true,
-            'test' => true
+            'status' => true
         ])
         ->orderBy('control_date', 'ASC')
         ->get();

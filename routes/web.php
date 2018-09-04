@@ -49,9 +49,10 @@ Route::prefix('admin')->middleware([ 'root' ])->group(function () {
             Route::get('json', 'MediaController@listViewJson')->name('crawlers.media.list.json');
 
             Route::get('bot/{id?}', 'MediaController@view')->name('crawlers.media.bot');
-            Route::get('bot/{id}/istatistik', 'MediaController@botStatistics')->name('crawlers.media.bot.statistics');
+            Route::get('bot/{id}/istatistik', 'MediaController@statistics')->name('crawlers.media.bot.statistics');
             Route::post('bot/durum', 'MediaController@status')->name('crawlers.media.bot.status');
             Route::patch('bot', 'MediaController@update');
+            Route::delete('bot', 'MediaController@delete');
 
             Route::get('genel/istatistik', 'MediaController@allStatistics')->name('crawlers.media.bot.statistics.all');
             Route::post('genel/baslat', 'MediaController@allStart')->name('crawlers.media.bot.start.all');

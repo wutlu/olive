@@ -9,7 +9,7 @@ class SystemUtility
     # system activity
     public static function log(string $message, string $module, int $level = 1)
     {
-        $uuid = md5(implode('-', [ $message, $module ]));
+        $uuid = md5(implode('.', [ $module, $level ]));
 
         $log = Log::updateOrCreate(
             [
@@ -21,6 +21,7 @@ class SystemUtility
                 'level' => $level
             ]
         );
+
         $log->increment('hit');
     }
 }

@@ -10,10 +10,12 @@ use App\Http\Requests\IdRequest;
 use App\Http\Requests\SearchRequest;
 use App\Http\Requests\Crawlers\Media\StatusRequest;
 use App\Http\Requests\Crawlers\Media\UpdateRequest;
+use App\Http\Requests\Crawlers\Media\DeleteRequest;
 
 use App\Models\Crawlers\MediaCrawler;
 
 use App\Jobs\Elasticsearch\CreateMediaIndexJob;
+use App\Jobs\Elasticsearch\DeleteIndexJob;
 
 use App\Utilities\Crawler;
 
@@ -131,9 +133,24 @@ class MediaController extends Controller
 
     # ######################################## [ ADMIN ] ######################################## #
     # 
+    # admin bot delete
+    # 
+    public static function delete(DeleteRequest $request)
+    {
+        $crawler = MediaCrawler::where('id', $request->id)->delete();
+
+        DeleteIndexJob::dispatch([ 'articles', $request->id ])->onQueue('elasticsearch');
+
+        return [
+            'status' => 'ok'
+        ];
+    }
+
+    # ######################################## [ ADMIN ] ######################################## #
+    # 
     # admin global statistics
     # 
-    public static function botStatistics(int $id)
+    public static function statistics(int $id)
     {
         $crawler = MediaCrawler::where('id', $id)->firstOrFail();
 
@@ -205,7 +222,7 @@ class MediaController extends Controller
                 }
             }
 
-            if ($accepted > $total/2)
+            if ($accepted > $total/3)
             {
                 $crawler->fill($request->all());
                 $crawler->test = true;

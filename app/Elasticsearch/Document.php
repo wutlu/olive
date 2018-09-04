@@ -90,7 +90,7 @@ class Document
 
             if (@$query->status == 'error')
             {
-                System::log(json_encode($query->message), 'App\Elasticsearch\Document::bulkInsert()', 10);
+                System::log(json_encode($query->message), 'App\Elasticsearch\Document::bulkInsert()', 5);
 
                 return (object) [
                     'status' => 'err',
