@@ -100,7 +100,8 @@ class Document
             else
             {
                 return (object) [
-                    'status' => 'ok'
+                    'status' => 'ok',
+                    'result' => $query
                 ];
             }
         }
@@ -141,7 +142,7 @@ class Document
         }
         catch (\Exception $e)
         {
-            System::log(json_encode($e->getMessage()), 'App\Elasticsearch\Document::patch('.$name.', '.$type.')', 10);
+            System::log(json_encode($e->getMessage()), 'App\Elasticsearch\Document::patch('.$name.', '.$type.')', 5);
 
             return (object) [
                 'status' => 'err',

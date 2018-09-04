@@ -49,7 +49,9 @@ class Taker extends Command
         ]);
 
         $query = Document::list(
-            [ 'articles', '*' ],
+            [
+                'articles', '*'
+            ],
             'article',
             [
                 'query' => [
@@ -64,7 +66,7 @@ class Taker extends Command
                     ]
                 ],
                 '_source' => [ 'id', 'url', 'source', 'bot_id' ],
-                'size' => 1000
+                'size' => 400
             ]
         );
 

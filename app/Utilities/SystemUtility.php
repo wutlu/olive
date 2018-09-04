@@ -11,17 +11,24 @@ class SystemUtility
     {
         $uuid = md5(implode('.', [ $module, $level ]));
 
-        $log = Log::updateOrCreate(
-            [
-                'uuid' => $uuid
-            ],
-            [
-                'message' => $message,
-                'module' => $module,
-                'level' => $level
-            ]
-        );
+        try
+        {
+            $log = Log::updateOrCreate(
+                [
+                    'uuid' => $uuid
+                ],
+                [
+                    'message' => $message,
+                    'module' => $module,
+                    'level' => $level
+                ]
+            );
 
-        $log->increment('hit');
+            $log->increment('hit');
+        }
+        catch (\Exception $e)
+        {
+            //
+        }
     }
 }

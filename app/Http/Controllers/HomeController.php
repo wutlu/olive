@@ -18,6 +18,7 @@ use App\Models\Crawlers\MediaCrawler;
 use System;
 
 use App\Elasticsearch\Indices;
+use App\Elasticsearch\Document;
 
 use App\Utilities\Crawler;
 
