@@ -19,8 +19,7 @@ use App\Mail\ServerAlertMail;
 
 use System;
 
-class TakerJob
-//class TakerJob implements ShouldQueue
+class TakerJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -82,13 +81,13 @@ class TakerJob
                     TakerJob::dispatch($this->data)->onQueue('crawler')->delay(now()->addMinutes(10));
                 }
             }
-            else if ($item->status == 'err')
+            else if ($item->status == 'err' || $item->status == 'failed')
             {
                 $insert = Document::patch([ 'articles', $crawler->id ], 'article', $this->data['id'], [
                     'doc' => [
                         'called_at' => date('Y-m-d H:i:s'),
                         'status' => 'failed',
-                        'message' => json_encode($item->error_reasons)
+                        'message' => $item->status == 'err' ? json_encode($item->error_reasons) : 'not_found'
                     ]
                 ]);
 

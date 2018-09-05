@@ -98,5 +98,5 @@ $ sudo supervisorctl start olive-crawler:*
 
 ~~~~
 $ crontab -e
-* * * * * cd /var/www/olive.veri.zone && php artisan schedule:run >> /dev/null 2>&1
+*/1 * * * * php /var/www/olive.veri.zone/artisan schedule:run >> /dev/null 2>&1
 ~~~~

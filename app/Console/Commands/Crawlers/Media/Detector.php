@@ -61,5 +61,9 @@ class Detector extends Command
                 }
             }
         }
+        else
+        {
+            $this->info('test');
+        }
     }
 }

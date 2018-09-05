@@ -20,8 +20,7 @@ use App\Elasticsearch\Document;
 use Mail;
 use App\Mail\ServerAlertMail;
 
-class DetectorJob
-//class DetectorJob implements ShouldQueue
+class DetectorJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -44,7 +43,11 @@ class DetectorJob
      */
     public function handle()
     {
-        $links = Crawler::linkDetection($this->crawler->site, $this->crawler->url_pattern, $this->crawler->base);
+        $links = Crawler::linkDetection(
+            $this->crawler->site,
+            $this->crawler->url_pattern,
+            $this->crawler->base
+        );
 
         if (@$links->links)
         {
@@ -70,16 +73,7 @@ class DetectorJob
 
             $bulk = Document::bulkInsert($chunk);
 
-            if ($bulk->status == 'err')
-            {
-                $this->crawler->error_count = $this->crawler->error_count+1;
-
-                $return = (object) [
-                    'status' => 'err',
-                    'message' => $bulk->message
-                ];
-            }
-            else if ($bulk->status == 'ok')
+            if ($bulk->status == 'ok')
             {
                 $this->crawler->error_count = 0;
 
@@ -91,7 +85,7 @@ class DetectorJob
             {
                 $return = (object) [
                     'status' => 'err',
-                    'message' => 'Bilinmeyen...'
+                    'message' => $bulk->message
                 ];
             }
         }
@@ -105,20 +99,21 @@ class DetectorJob
 
         if ($return->status == 'err')
         {
-            System::log(json_encode($return->message), 'App\Jobs\Crawlers\Media\DetectorJob::handle(int '.$this->crawler->id.')', 10);
+            System::log(
+                json_encode($return->message),
+                'App\Jobs\Crawlers\Media\DetectorJob::handle(int '.$this->crawler->id.')',
+                10
+            );
 
-            $this->crawler->error_count = $this->crawler->error_count+1;
+            $this->crawler->error_count = $this->crawler->error_count + 1;
 
-            if ($this->crawler->error_count >= $this->crawler->off_limit)
+            if ($this->crawler->error_count >= $this->crawler->off_limit && $this->crawler->status == true)
             {
-                if ($this->crawler->status == true)
-                {
-                    Mail::queue(new ServerAlertMail($this->crawler->name.' Medya Botu [DURDU]', json_encode($return->message)));
-                }
+                Mail::queue(new ServerAlertMail($this->crawler->name.' Medya Botu [DURDU]', json_encode($return->message)));
 
+                $this->crawler->test       = false;
+                $this->crawler->status     = false;
                 $this->crawler->off_reason = json_encode($return->message);
-                $this->crawler->status = false;
-                $this->crawler->test = false;
             }
         }
 

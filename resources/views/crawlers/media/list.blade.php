@@ -34,7 +34,8 @@
 
                         item.find('[data-name=id]').html('Id: ' + o.id)
                         item.find('[data-name=error]').html(o.error_count + ' hata').removeClass(o.error_count ? 'grey-text' : 'red-text').addClass(o.error_count ? 'red-text' : 'grey-text')
-                        item.find('[data-name=control]').html(o.control_date + '/' + o.control_interval + ' dakika')
+                        item.find('[data-name=control-time]').attr('data-time', o.control_date).html(o.control_date)
+                        item.find('[data-name=control-interval]').html(o.control_interval + ' dakika')
                         item.find('[data-name=name]').html(o.name)
                         item.find('[data-name=site]').html(o.site)
                         item.find('[data-name=status]').addClass(o.status ? 'green-text' : 'red-text')
@@ -43,6 +44,8 @@
 
                         item.appendTo(ul)
                 })
+
+                timeAgo()
 
                 $('[data-tooltip]').tooltip()
             }
@@ -247,7 +250,9 @@
                     <p data-name="site" class="grey-text"></p>
                     <p class="grey-text" data-name="id"></p>
                     <p class="grey-text" data-name="error"></p>
-                    <p class="grey-text" data-name="control"></p>
+                    <p class="grey-text">
+                        <time class="timeago" data-name="control-time"></time> / <span data-name="control-interval"></span>
+                    </p>
                 </span>
                 <small class="badge ml-auto">
                     <p>

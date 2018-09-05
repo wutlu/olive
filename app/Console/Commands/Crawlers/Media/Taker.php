@@ -66,7 +66,7 @@ class Taker extends Command
                     ]
                 ],
                 '_source' => [ 'id', 'url', 'source', 'bot_id' ],
-                'size' => 400
+                'size' => 200
             ]
         );
 
@@ -83,6 +83,10 @@ class Taker extends Command
                     TakerJob::dispatch($obj->_source)->onQueue('crawler');
                 }
             }
+        }
+        else
+        {
+            $this->info('test');
         }
     }
 }
