@@ -166,7 +166,7 @@ class Term
 
         return (object) [
             'size' => $bytes,
-            'readable' => $readable.@$sizes[$factor]
+            'readable' => $readable.' '.@$sizes[$factor]
         ];
     }
 }

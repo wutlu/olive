@@ -179,75 +179,57 @@ class SystemUtility
     }
 
     /**
-     * Get CPU Load Percentage.
-     *
-     * @return float load percentage
+     * Returns the number of available CPU cores
+     * 
+     *  Should work for Linux, Windows, Mac & BSD
+     * 
+     * @return integer 
      */
-    public static function getCpuLoadPercentage()
+    public static function getCpuNumber()
     {
-        $result = -1;
-        $lines = null;
+        $numCpus = 1;
 
-        if (PHP_OS == 'WINNT')
+        if (is_file('/proc/cpuinfo'))
         {
-            $matches = null;
+            $cpuinfo = file_get_contents('/proc/cpuinfo');
 
-            exec('wmic.exe CPU get loadpercentage /Value', $lines);
+            preg_match_all('/^processor/m', $cpuinfo, $matches);
 
-            if (preg_match('/^LoadPercentage\=(\d+)$/', $lines[2], $matches))
+            $numCpus = count($matches[0]);
+        }
+        else if (PHP_OS == 'WINNT')
+        {
+            $process = @popen('wmic cpu get NumberOfCores', 'rb');
+
+            if (false !== $process)
             {
-                $result = $matches[1];
+                fgets($process);
+
+                $numCpus = intval(fgets($process));
+
+                pclose($process);
             }
         }
         else
         {
-            $checks = [];
+            $process = @popen('sysctl -a', 'rb');
 
-            foreach ([0, 1] as $i)
+            if (false !== $process)
             {
-                $cmd = '/proc/stat';
-                $lines = [];
+                $output = stream_get_contents($process);
 
-                $fh = fopen($cmd, 'r');
+                preg_match('/hw.ncpu: (\d+)/', $output, $matches);
 
-                while ($line = fgets($fh))
+                if ($matches)
                 {
-                    $lines[] = $line;
+                    $numCpus = intval($matches[1][0]);
                 }
 
-                fclose($fh);
-
-                foreach ($lines as $line)
-                {
-                    $ma = [];
-
-                    if (!preg_match('/^cpu  (\d+) (\d+) (\d+) (\d+) (\d+) (\d+) (\d+) (\d+) (\d+) (\d+)$/', $line, $ma))
-                    {
-                        continue;
-                    }
-
-                    $total = $ma[1] + $ma[2] + $ma[3] + $ma[4] + $ma[5] + $ma[6] + $ma[7] + $ma[8] + $ma[9];
-
-                    $ma['total'] = $total;
-                    $checks[] = $ma;
-
-                    break;
-                }
-
-                if ($i == 0)
-                {
-                    sleep(1);
-                }
+                pclose($process);
             }
-
-            $diffIdle = $checks[1][4] - $checks[0][4];
-
-            $diffTotal = $checks[1]['total'] - $checks[0]['total'];
-
-            $diffUsage = (1000 * ($diffTotal - $diffIdle) / $diffTotal + 5) / 10;
-            $result = $diffUsage;
         }
-
-        return (float) $result;
+        
+        return $numCpus;
     }
+
 }

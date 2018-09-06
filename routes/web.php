@@ -91,7 +91,8 @@ Route::prefix('kullanici')->group(function () {
 # #### [ ADMIN ] #### #
 Route::prefix('admin')->middleware([ 'root' ])->group(function () {
     Route::prefix('sistem-izleme')->group(function () {
-        Route::get('/', 'MonitorController@dashboard')->name('admin.monitoring');
+        Route::get('sunucu', 'MonitorController@server')->name('admin.monitoring.server');
+        Route::post('sunucu', 'MonitorController@serverJson');
     });
 
     Route::prefix('kupon-yonetimi')->group(function () {

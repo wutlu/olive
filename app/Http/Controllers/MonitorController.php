@@ -13,19 +13,29 @@ class MonitorController extends Controller
         //
     }
 
-    # İzleme Ekranı
-    public static function dashboard()
+    # ekran
+    public static function server()
+    {
+        $disks = [
+            System::getDiskSize()
+        ];
+
+        return view('monitor.server', compact('disks'));
+    }
+
+    # ekran data
+    public static function serverJson()
     {
         $data['ram']['total'] = System::getRamTotal();
         $data['ram']['free'] = System::getRamFree();
-        $data['disk'] = System::getDiskSize();
-        $data['cpu'] = System::getCpuLoadPercentage();
+        $data['cpu'] = [
+            'core' => System::getCpuNumber(),
+            'usage' => sys_getloadavg()[0]
+        ];
 
         return [
             'status' => 'ok',
             'data' => $data
         ];
-
-        return view('monitor.dashboard');
     }
 }

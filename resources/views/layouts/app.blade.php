@@ -236,9 +236,9 @@
                 <div class="collapsible-body">
                     <ul>
                         <li>
-                            <a class="waves-effect" href="{{ route('admin.monitoring') }}">
+                            <a class="waves-effect" href="{{ route('admin.monitoring.server') }}">
                                 <i class="material-icons">desktop_mac</i>
-                                İzleme Ekranı
+                                Sunucu Bilgisi
                             </a>
                         </li>
                         <li>

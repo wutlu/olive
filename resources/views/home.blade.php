@@ -192,8 +192,8 @@
 
 @push('local.scripts')
     $(document).ready(function() {
-        $('.tabs').tabs();
-        $('.parallax').parallax();
+        $('.tabs').tabs()
+        $('.parallax').parallax()
     });
 
     $('.down-area').on('click', 'a.btn-large', function(e) {

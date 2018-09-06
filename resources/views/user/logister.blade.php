@@ -180,8 +180,8 @@
                     document.title = '{{ config('app.name') }}: Şifre';
                 }
             }
-        });
+        })
 
-        $('.parallax').parallax();
+        $('.parallax').parallax()
     });
 @endpush
