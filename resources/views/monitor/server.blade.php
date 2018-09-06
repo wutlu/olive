@@ -167,7 +167,7 @@
         layout: {
             padding: {
                 top: 20,
-                bottom: 1
+                bottom: 0
             }
         },
         tooltips: {
