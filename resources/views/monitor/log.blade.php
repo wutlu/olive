@@ -75,7 +75,7 @@
 
             logTimer = window.setTimeout(function() {
                 vzAjax($('ul.collection'))
-            }, 1000)
+            }, 10000)
         }
     }
 

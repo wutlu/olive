@@ -915,6 +915,7 @@ class MediaCrawlersTableSeeder extends Seeder
                     'url_pattern' => $item['url_pattern'],
                     'selector_title' => $item['selector_title'],
                     'selector_description' => $item['selector_description'],
+                    'control_interval' => $item['control_interval']
                 ]
             );
         }

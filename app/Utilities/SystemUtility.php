@@ -32,7 +32,7 @@ class SystemUtility
 
             $log->increment('hit');
 
-            if ($log->hit >= 100 && $log->level >= 4)
+            if ($log->hit >= 50 && $log->level >= 4)
             {
                 $option = Option::where('key', 'email_alerts.log')->first();
 
