@@ -149,8 +149,6 @@
 
                                     item.appendTo(ul)
                             })
-
-                            timeAgo()
                         }
 
                         $('#home-loader').hide()

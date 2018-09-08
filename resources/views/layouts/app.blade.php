@@ -248,9 +248,9 @@
                             </a>
                         </li>
                         <li>
-                            <a class="waves-effect" href="#">
+                            <a class="waves-effect" href="{{ route('admin.monitoring.log') }}">
                                 <i class="material-icons">code</i>
-                                Loglar
+                                Log Ekranı
                             </a>
                         </li>
                         <li>

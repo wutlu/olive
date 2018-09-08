@@ -96,6 +96,11 @@
   align-self: center !important;
 }
 
+.align-items-end {
+    -ms-flex-align: end;
+    align-items: flex-end;
+}
+
 @keyframes cloud-animation-1 {
   0% {
     left: 0;

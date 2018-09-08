@@ -14,10 +14,11 @@ use App\Mail\ServerAlertMail;
 use Carbon\Carbon;
 
 use App\Models\Setting;
+use App\Models\Log;
 
 class MonitorController extends Controller
 {
-    # ekran
+    # sunucu ekranı
     public static function server()
     {
         $disks = System::getDiskSize();
@@ -25,7 +26,7 @@ class MonitorController extends Controller
         return view('monitor.server', compact('disks'));
     }
 
-    # ekran data
+    # sunucu ekranı data
     public static function serverJson()
     {
         $data['ram']['total'] = System::getRamTotal();
@@ -80,7 +81,9 @@ class MonitorController extends Controller
 
             if (@$setting)
             {
-                if (Carbon::createFromFormat('Y-m-d H:i:s', $setting->value)->addMinutes(10)->format('Y-m-d H:i:s') <= date('Y-m-d H:i:s'))
+                $date = Carbon::createFromFormat('Y-m-d H:i:s', $setting->value)->addMinutes(10)->format('Y-m-d H:i:s');
+
+                if ($date <= date('Y-m-d H:i:s'))
                 {
                     $setting->update([ 'value' => date('Y-m-d H:i:s') ]);
 
@@ -88,5 +91,24 @@ class MonitorController extends Controller
                 }
             }
         }
+    }
+
+    # log ekranı
+    public static function log()
+    {
+        return view('monitor.log');
+    }
+
+    # log ekranı data
+    public static function logJson()
+    {
+        $date = Carbon::now()->subHours(24)->format('Y-m-d H:i:s');
+
+        $logs = Log::where('updated_at', '>', $date)->orderBy('updated_at', 'DESC')->get();
+
+        return [
+            'status' => 'ok',
+            'data' => $logs
+        ];
     }
 }

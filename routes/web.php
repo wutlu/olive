@@ -93,8 +93,11 @@ Route::prefix('admin')->middleware([ 'root' ])->group(function () {
     Route::patch('ayar', 'System\SystemController@set')->name('admin.set');
 
     Route::prefix('sistem-izleme')->group(function () {
-        Route::get('sunucu', 'MonitorController@server')->name('admin.monitoring.server');
-        Route::post('sunucu', 'MonitorController@serverJson');
+        Route::get('sunucu-bilgisi', 'MonitorController@server')->name('admin.monitoring.server');
+        Route::post('sunucu-bilgisi', 'MonitorController@serverJson');
+
+        Route::get('log-ekrani', 'MonitorController@log')->name('admin.monitoring.log');
+        Route::post('log-ekrani', 'MonitorController@logJson');
     });
 
     Route::prefix('kupon-yonetimi')->group(function () {

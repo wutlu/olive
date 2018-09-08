@@ -45,8 +45,6 @@
                         item.appendTo(ul)
                 })
 
-                timeAgo()
-
                 $('[data-tooltip]').tooltip()
             }
 
