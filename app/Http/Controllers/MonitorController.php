@@ -52,12 +52,12 @@ class MonitorController extends Controller
         $message[] = '| Bileşen | Tüketim |';
         $message[] = '| ------: | :------ |';
 
-        if ($ram_percent > 96)
+        if ($ram_percent > 0)
         {
             $message[] = '| RAM tüketimi | '.$ram_percent.'% |';
         }
 
-        if ($cpu_percent > 96)
+        if ($cpu_percent > 0)
         {
             $message[] = '| CPU tüketimi | '.$cpu_percent.'% |';
         }
@@ -66,7 +66,7 @@ class MonitorController extends Controller
         {
             $hdd_percent = 100-100/$disk['total']->size*$disk['free']->size;
 
-            if ($hdd_percent > 90)
+            if ($hdd_percent > 0)
             {
                 $message[] = '| DISK kullanımı | '.$hdd_percent.'% |';
             }
@@ -82,21 +82,10 @@ class MonitorController extends Controller
             {
                 if (Carbon::createFromFormat('Y-m-d H:i:s', $setting->value)->addMinutes(10)->format('Y-m-d H:i:s') <= date('Y-m-d H:i:s'))
                 {
-                    $alert = true;
-
                     $setting->update([ 'value' => date('Y-m-d H:i:s') ]);
+
+                    Mail::queue(new ServerAlertMail('Yüksek Bileşen Tüketimi!', implode(PHP_EOL, $message)));
                 }
-            }
-            else
-            {
-                Setting::create([ 'key' => 'email_alerts.server', 'value' => date('Y-m-d H:i:s') ]);
-
-                $alert = true;
-            }
-
-            if (@$alert)
-            {
-                Mail::queue(new ServerAlertMail('Yüksek Bileşen Tüketimi!', implode(PHP_EOL, $message)));
             }
         }
     }
