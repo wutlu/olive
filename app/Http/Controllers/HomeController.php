@@ -39,6 +39,7 @@ class HomeController extends Controller
     # home
     public static function index(Request $request)
     {
+        System::log('test2', 'App\Http\Controllers\HomeController(17)', 10);
         $discountDay = DiscountDay::where('first_day', '<=', date('Y-m-d'))
                                   ->where('last_day', '>=', date('Y-m-d'))
                                   ->first();

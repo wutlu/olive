@@ -3,14 +3,19 @@
 namespace App\Utilities;
 
 use App\Models\Log;
-use App\Models\Setting;
+use App\Models\Option;
+
+use Carbon\Carbon;
+
+use Mail;
+use App\Mail\ServerAlertMail;
 
 class SystemUtility
 {
     # system activity
     public static function log(string $message, string $module, int $level = 1)
     {
-        $uuid = md5(implode('.', [ $module, $level ]));
+        $uuid = md5(implode('.', [ $module, $level, date('Y.m.d.H') ]));
 
         try
         {
@@ -26,6 +31,33 @@ class SystemUtility
             );
 
             $log->increment('hit');
+
+            if ($log->hit >= 100 && $log->level >= 4)
+            {
+                $option = Option::where('key', 'email_alerts.log')->first();
+
+                if (@$option)
+                {
+                    $date = Carbon::createFromFormat('Y-m-d H:i:s', $option->value)->addMinutes(10)->format('Y-m-d H:i:s');
+
+                    if ($date <= date('Y-m-d H:i:s'))
+                    {
+                        $option->update([ 'value' => date('Y-m-d H:i:s') ]);
+
+                        Mail::queue(
+                            new ServerAlertMail(
+                                'Tekrar Eden Log!',
+                                implode(
+                                    PHP_EOL.PHP_EOL,
+                                    [
+                                        'Aşağıdaki log son 1 saat içerisinde çok fazla tekrar etti. Lütfen sisteme müdehale edin!', $message
+                                    ]
+                                )
+                            )
+                        );
+                    }
+                }
+            }
         }
         catch (\Exception $e)
         {
@@ -33,10 +65,10 @@ class SystemUtility
         }
     }
 
-    # system setting
-    public static function setting(string $key)
+    # system option
+    public static function option(string $key)
     {
-        return Setting::where('key', $key)->value('value');
+        return Option::where('key', $key)->value('value');
     }
 
     /**

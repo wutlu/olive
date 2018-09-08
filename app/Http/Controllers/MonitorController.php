@@ -13,7 +13,7 @@ use App\Mail\ServerAlertMail;
 
 use Carbon\Carbon;
 
-use App\Models\Setting;
+use App\Models\Option;
 use App\Models\Log;
 
 class MonitorController extends Controller
@@ -53,12 +53,12 @@ class MonitorController extends Controller
         $message[] = '| Bileşen | Tüketim |';
         $message[] = '| ------: | :------ |';
 
-        if ($ram_percent > 0)
+        if ($ram_percent > 96)
         {
             $message[] = '| RAM tüketimi | '.$ram_percent.'% |';
         }
 
-        if ($cpu_percent > 0)
+        if ($cpu_percent > 96)
         {
             $message[] = '| CPU tüketimi | '.$cpu_percent.'% |';
         }
@@ -67,7 +67,7 @@ class MonitorController extends Controller
         {
             $hdd_percent = 100-100/$disk['total']->size*$disk['free']->size;
 
-            if ($hdd_percent > 0)
+            if ($hdd_percent > 90)
             {
                 $message[] = '| DISK kullanımı | '.$hdd_percent.'% |';
             }
@@ -77,15 +77,15 @@ class MonitorController extends Controller
         {
             $message[] = 'Lütfen sunucuya müdehale edin!';
 
-            $setting = Setting::where('key', 'email_alerts.server')->first();
+            $option = Option::where('key', 'email_alerts.server')->first();
 
-            if (@$setting)
+            if (@$option)
             {
-                $date = Carbon::createFromFormat('Y-m-d H:i:s', $setting->value)->addMinutes(10)->format('Y-m-d H:i:s');
+                $date = Carbon::createFromFormat('Y-m-d H:i:s', $option->value)->addMinutes(10)->format('Y-m-d H:i:s');
 
                 if ($date <= date('Y-m-d H:i:s'))
                 {
-                    $setting->update([ 'value' => date('Y-m-d H:i:s') ]);
+                    $option->update([ 'value' => date('Y-m-d H:i:s') ]);
 
                     Mail::queue(new ServerAlertMail('Yüksek Bileşen Tüketimi!', implode(PHP_EOL, $message)));
                 }

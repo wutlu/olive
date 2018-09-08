@@ -23,22 +23,45 @@
             var collection = $('ul.collection');
             var model = collection.children('li.collection-item.d-none');
 
-                collection.find('li.collection-item:not(.d-none)').remove()
-
             if (obj.data.length)
             {
                 $.each(obj.data, function(key, o) {
-                    var item = model.clone();
+                    var m = $('[data-id=' + o.uuid + ']');
+
+                    var item = m.length ? m : model.clone();
                         item.removeClass('d-none')
+                            .attr('data-id', o.uuid)
 
                         item.find('[data-name=level]').html(o.level + '. seviye').addClass(o.level <= 4 ? 'green-text' : o.level <= 7 ? 'orange-text' : 'red-text')
                         item.find('[data-name=repeat]').html(o.hit + ' tekrar').addClass(o.hit <= 10 ? 'green-text' : o.hit <= 20 ? 'orange-text' : 'red-text')
-                        item.find('[data-name=updated-at]').html(o.updated_at).attr('data-time', o.updated_at)
-                        item.find('[data-name=created-at]').html(o.created_at).attr('data-time', o.created_at)
+                        item.find('[data-name=updated-at]').attr('data-time', o.updated_at)
+                        item.find('[data-name=created-at]').attr('data-time', o.created_at)
                         item.find('[data-name=module]').html(o.module)
                         item.find('[data-name=message]').html(o.message)
 
-                    collection.prepend(item)
+                    if (m.length)
+                    {
+                        if (m.attr('data-repeat') != o.hit)
+                        {
+                            item.attr('data-repeat', o.hit)
+                            item.appendTo(collection)
+                        }
+                    }
+                    else
+                    {
+                        item.find('[data-name=updated-at]').html(o.updated_at)
+                        item.find('[data-name=created-at]').html(o.created_at)
+                        item.attr('data-repeat', o.hit)
+
+                        if (__.hasClass('loaded'))
+                        {
+                            item.appendTo(collection)
+                        }
+                        else
+                        {
+                            item.prependTo(collection)
+                        }
+                    }
                 })
 
                 $('[data-callback=__log]').animate({
@@ -46,11 +69,13 @@
                 }, 200);
             }
 
+            __.addClass('loaded')
+
             window.clearTimeout(logTimer)
 
             logTimer = window.setTimeout(function() {
                 vzAjax($('ul.collection'))
-            }, 10000)
+            }, 1000)
         }
     }
 
@@ -81,7 +106,7 @@
             Son 24 saatte alınan hata loglarını dinamik olarak inceleyebilirsiniz.
         </div>
         <ul
-            class="collection black load d-flex align-items-end flex-wrap"
+            class="collection black load d-flex align-items-end flex-wrap no-select"
             data-href="{{ route('admin.monitoring.log') }}"
             data-callback="__log"
             data-method="post">

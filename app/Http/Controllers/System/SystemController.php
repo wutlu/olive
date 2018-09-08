@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests\SetRequest;
 
-use App\Models\Setting;
+use App\Models\Option;
 
 use App\Http\Controllers\MonitorController;
 
@@ -17,7 +17,7 @@ class SystemController extends Controller
     # set
     public static function set(SetRequest $request)
     {
-        Setting::updateOrCreate(
+        Option::updateOrCreate(
             [
                 'key' => $request->key
             ],
