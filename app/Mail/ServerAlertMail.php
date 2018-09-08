@@ -7,6 +7,9 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
+use App\Models\User\User;
+use App\Utilities\UserActivityUtility;
+
 class ServerAlertMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
@@ -33,6 +36,25 @@ class ServerAlertMail extends Mailable implements ShouldQueue
      */
     public function build()
     {
+        $roots = User::where('root', true)->get();
+
+        if (count($roots))
+        {
+            foreach ($roots as $root)
+            {
+                UserActivityUtility::push(
+                    $this->subject,
+                    [
+                        'key'            => implode('.', [ 'warning', $root->id ]),
+                        'icon'           => 'warning',
+                        'markdown'       => $this->body,
+                        'user_id'        => $root->id,
+                        'markdown_color' => '#d32f2f'
+                    ]
+                );
+            }
+        }
+
         return $this->subject('Olive Uyarı: '.$this->subject)
                     ->markdown('emails.server.alert', [
                         'subject' => $this->subject,

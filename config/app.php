@@ -40,6 +40,12 @@ return [
         'login' => 'Giriş Bildirimleri'
     ],
 
+    'settings' => [
+        'notification.ram' => 'in:on,off',
+        'notification.hdd' => 'in:on,off',
+        'notification.cpu' => 'in:on,off',
+    ],
+
     'group_email' => env('GROUP_EMAIL'),
 
     /*

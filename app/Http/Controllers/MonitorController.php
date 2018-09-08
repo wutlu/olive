@@ -3,22 +3,24 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 use System;
+use Mail;
+
 use App\Utilities\Term;
+
+use App\Mail\ServerAlertMail;
+
+use Carbon\Carbon;
+
+use App\Models\Setting;
 
 class MonitorController extends Controller
 {
-    public function __construct()
-    {
-        //
-    }
-
     # ekran
     public static function server()
     {
-        $disks = [
-            System::getDiskSize()
-        ];
+        $disks = System::getDiskSize();
 
         return view('monitor.server', compact('disks'));
     }
@@ -37,5 +39,65 @@ class MonitorController extends Controller
             'status' => 'ok',
             'data' => $data
         ];
+    }
+
+    # alarm kontrolü
+    public static function alarmControl()
+    {
+        $data = self::serverJson();
+
+        $ram_percent = 100-100/$data['data']['ram']['total']->size*$data['data']['ram']['free']->size;
+        $cpu_percent = $data['data']['cpu']['usage'];
+
+        $message[] = '| Bileşen | Tüketim |';
+        $message[] = '| ------: | :------ |';
+
+        if ($ram_percent > 96)
+        {
+            $message[] = '| RAM tüketimi | '.$ram_percent.'% |';
+        }
+
+        if ($cpu_percent > 96)
+        {
+            $message[] = '| CPU tüketimi | '.$cpu_percent.'% |';
+        }
+
+        foreach (System::getDiskSize() as $disk)
+        {
+            $hdd_percent = 100-100/$disk['total']->size*$disk['free']->size;
+
+            if ($hdd_percent > 90)
+            {
+                $message[] = '| DISK kullanımı | '.$hdd_percent.'% |';
+            }
+        }
+
+        if (count($message) > 2)
+        {
+            $message[] = 'Lütfen sunucuya müdehale edin!';
+
+            $setting = Setting::where('key', 'email_alerts.server')->first();
+
+            if (@$setting)
+            {
+                if (Carbon::createFromFormat('Y-m-d H:i:s', $setting->value)->addMinutes(10)->format('Y-m-d H:i:s') <= date('Y-m-d H:i:s'))
+                {
+                    $alert = true;
+
+                    $setting->update([ 'value' => date('Y-m-d H:i:s') ]);
+                }
+            }
+            else
+            {
+                Setting::create([ 'key' => 'email_alerts.server', 'value' => date('Y-m-d H:i:s') ]);
+
+                $alert = true;
+            }
+
+            if (@$alert)
+            {
+                Mail::queue(new ServerAlertMail('Yüksek Bileşen Tüketimi!', implode(PHP_EOL, $message)));
+            }
+        }
     }
 }

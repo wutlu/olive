@@ -47,6 +47,14 @@ class Kernel extends ConsoleKernel
                  ->everyMinute()
                  ->timezone(config('app.timezone'))
                  ->withoutOverlapping();
+
+        # 
+        # Alarmları sürekli kontrol et.
+        # 
+        $schedule->command('alarm:control')
+                 ->everyMinute()
+                 ->timezone(config('app.timezone'))
+                 ->withoutOverlapping();
     }
 
     /**

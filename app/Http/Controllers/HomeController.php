@@ -21,6 +21,8 @@ use App\Elasticsearch\Indices;
 use App\Elasticsearch\Document;
 
 use App\Utilities\Crawler;
+use Mail;
+use App\Mail\ServerAlertMail;
 
 class HomeController extends Controller
 {

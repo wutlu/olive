@@ -3,6 +3,7 @@
 namespace App\Utilities;
 
 use App\Models\Log;
+use App\Models\Setting;
 
 class SystemUtility
 {
@@ -30,6 +31,12 @@ class SystemUtility
         {
             //
         }
+    }
+
+    # system setting
+    public static function setting(string $key)
+    {
+        return Setting::where('key', $key)->value('value');
     }
 
     /**
@@ -124,54 +131,60 @@ class SystemUtility
      * @param sring $path Drive or path
      * @return array Disk info
      */
-    public static function getDiskSize($path = '/')
+    public static function getDiskSize()
     {
+        $paths = [ '/' ];
+
         $result = [];
 
-        $result['size'] = 0;
-        $result['free'] = 0;
-        $result['used'] = 0;
-
-        if (PHP_OS == 'WINNT')
+        foreach ($paths as $key => $path)
         {
-            $lines = null;
 
-            exec('wmic logicaldisk get FreeSpace^,Name^,Size /Value', $lines);
+            $result[$key]['total'] = 0;
+            $result[$key]['free'] = 0;
+            $result[$key]['used'] = 0;
 
-            foreach ($lines as $index => $line)
+            if (PHP_OS == 'WINNT')
             {
-                if ($line != "Name=$path")
+                $lines = null;
+
+                exec('wmic logicaldisk get FreeSpace^,Name^,Size /Value', $lines);
+
+                foreach ($lines as $index => $line)
                 {
-                    continue;
+                    if ($line != "Name=$path")
+                    {
+                        continue;
+                    }
+
+                    $result[$key]['free'] = explode('=', $lines[$index - 1])[1];
+                    $result[$key]['total'] = explode('=', $lines[$index + 1])[1];
+                    $result[$key]['used'] = $result[$key]['total'] - $result[$key]['free'];
+
+                    break;
                 }
-
-                $result['free'] = explode('=', $lines[$index - 1])[1];
-                $result['size'] = explode('=', $lines[$index + 1])[1];
-                $result['used'] = $result['size'] - $result['free'];
-
-                break;
             }
-        }
-        else
-        {
-            $lines = null;
-
-            exec(sprintf('df /P %s', $path), $lines);
-
-            foreach ($lines as $index => $line)
+            else
             {
-                if ($index != 1)
+                $lines = null;
+
+                exec(sprintf('df /P %s', $path), $lines);
+
+                foreach ($lines as $index => $line)
                 {
-                    continue;
+                    if ($index != 1)
+                    {
+                        continue;
+                    }
+
+                    $values = preg_split('/\s{1,}/', $line);
+
+                    $result[$key]['total'] = Term::humanFileSize($values[1] * 1024);
+                    $result[$key]['free'] = Term::humanFileSize($values[3] * 1024);
+                    $result[$key]['used'] = Term::humanFileSize($values[2] * 1024);
+
+                    break;
                 }
-
-                $values = preg_split('/\s{1,}/', $line);
-
-                $result['size'] = Term::humanFileSize($values[1] * 1024);
-                $result['free'] = Term::humanFileSize($values[3] * 1024);
-                $result['used'] = Term::humanFileSize($values[2] * 1024);
-
-                break;
             }
         }
 

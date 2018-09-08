@@ -170,7 +170,7 @@ return [
         'end_time'             => 'Bitiş Saati',
         'serial'               => 'Seri',
         'no'                   => 'No',
-        'key'                  => 'Kod',
+        'key'                  => 'Anahtar',
         'rate'                 => 'Oran',
         'price'                => 'Miktar',
         'discount_rate'        => 'İndirim Oranı',
@@ -190,6 +190,7 @@ return [
         'pattern_url'          => 'URL Deseni',
         'selector_title'       => 'Başlık Seçicisi',
         'selector_description' => 'Açıklama Seçicisi',
-        'test_count'           => 'Test Sayısı'
+        'test_count'           => 'Test Sayısı',
+        'value'                => 'Değer',
     ],
 ];

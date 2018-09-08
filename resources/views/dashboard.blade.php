@@ -114,7 +114,7 @@
                                     item.removeClass('model d-none').addClass('_tmp').attr('data-id', 'list-item-' + o.id)
 
                                     item.find('.collapsible-header > span > p').html(o.title)
-                                    item.find('.collapsible-header > span > small').html(o.updated_at)
+                                    item.find('.collapsible-header > span > time').attr('data-time', o.updated_at).html(o.updated_at)
                                     item.find('.collapsible-header > i.icon').html(o.icon)
                                     item.find('.collapsible-body > span').html(o.markdown)
 
@@ -149,6 +149,8 @@
 
                                     item.appendTo(ul)
                             })
+
+                            timeAgo()
                         }
 
                         $('#home-loader').hide()
@@ -177,7 +179,7 @@
                         <i class="material-icons icon"></i>
                         <span>
                             <p></p>
-                            <small class="grey-text"></small>
+                            <time class="timeago grey-text"></time>
                         </span>
                         <i class="material-icons arrow">keyboard_arrow_down</i>
                     </div>
