@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use System;
 use Mail;
+use Artisan;
 
 use App\Utilities\Term;
 
@@ -106,9 +107,39 @@ class MonitorController extends Controller
 
         $logs = Log::where('updated_at', '>', $date)->orderBy('updated_at', 'DESC')->get();
 
+        $log_files = [];
+
+        foreach (config('app.log_files') as $key => $file)
+        {
+            $log_files[$key] = (object) [
+                'id' => $key,
+                'path' => $file,
+                'size' => Term::humanFileSize(filesize($file))
+            ];
+        }
+
         return [
             'status' => 'ok',
-            'data' => $logs
+            'data' => $logs,
+            'files' => $log_files
+        ];
+    }
+
+    # log ekranı
+    public static function logClear()
+    {
+        foreach (config('app.log_files') as $file)
+        {
+            file_put_contents($file, '');
+        }
+
+        Log::truncate();
+
+        Artisan::call('cache:clear');
+        Artisan::call('view:clear');
+
+        return [
+            'status' => 'ok'
         ];
     }
 }

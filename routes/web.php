@@ -98,6 +98,7 @@ Route::prefix('admin')->middleware([ 'root' ])->group(function () {
 
         Route::get('log-ekrani', 'MonitorController@log')->name('admin.monitoring.log');
         Route::post('log-ekrani', 'MonitorController@logJson');
+        Route::delete('log-ekrani/temizle', 'MonitorController@logClear')->name('admin.monitoring.log.clear');
     });
 
     Route::prefix('kupon-yonetimi')->group(function () {

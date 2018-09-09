@@ -20,7 +20,7 @@
     {
         if (obj.status == 'ok')
         {
-            var collection = $('ul.collection');
+            var collection = $('ul#console');
             var model = collection.children('li.collection-item.d-none');
 
             if (obj.data.length)
@@ -82,8 +82,26 @@
             window.clearTimeout(logTimer)
 
             logTimer = window.setTimeout(function() {
-                vzAjax($('ul.collection'))
+                vzAjax($('ul#console'))
             }, 10000)
+
+            var files = $('#files');
+            var file_model = files.children('.collection-item.d-none');
+
+            if (obj.files.length)
+            {
+                $.each(obj.files, function(key, o) {
+                    var m = $('[data-file-id=' + o.id + ']');
+
+                    var file_item = m.length ? m : file_model.clone();
+                        file_item.removeClass('d-none').attr('data-file-id', o.id)
+
+                        file_item.find('[data-name=path]').html(o.path)
+                        file_item.find('[data-name=size]').html(o.size.readable)
+
+                        file_item.prependTo(files)
+                })
+            }
         }
     }
 
@@ -92,10 +110,53 @@
             scrollTop: $('[data-callback=__log]').prop('scrollHeight')
         }, 200);
     })
+
+    function __clear(__, obj)
+    {
+        if (obj.status == 'ok')
+        {
+            M.toast({ 
+                html: 'Tüm geçici/kullanılmayan kayıtlar silindi.',
+                classes: 'green'
+            })
+
+            $('#modal-clear').modal('close')
+        }
+    }
+
+    $(document).on('click', '[data-trigger=clear]', function() {
+        var mdl = modal({
+                'id': 'clear',
+                'body': 'Log vb. tüm geçici/kullanılmayan kayıtları silmek istediğinizden emin misiniz?',
+                'size': 'modal-small',
+                'title': 'Temizle',
+                'options': {}
+            });
+
+            mdl.find('.modal-footer')
+               .html([
+                    $('<a />', {
+                        'href': '#',
+                        'class': 'modal-close waves-effect btn-flat',
+                        'html': buttons.cancel
+                    }),
+                    $('<span />', {
+                        'html': ' '
+                    }),
+                    $('<a />', {
+                        'href': '#',
+                        'class': 'waves-effect btn json',
+                        'html': buttons.ok,
+                        'data-href': '{{ route('admin.monitoring.log.clear') }}',
+                        'data-method': 'delete',
+                        'data-callback': '__clear'
+                    })
+               ])
+    })
 @endpush
 
 @push('local.styles')
-    .collection {
+    ul#console {
         height: 600px;
         overflow-y: scroll;
         background-image: url('{{ asset('img/olive-logo-opacity.svg') }}');
@@ -109,11 +170,16 @@
         <div class="card-image">
             <img src="{{ asset('img/md-s/22.jpg') }}" alt="Log Ekranı" />
             <span class="card-title">Log Ekranı</span>
-        </div>
-        <div class="card-content yellow lighten-4">
-            Son 24 saatte alınan hata loglarını dinamik olarak inceleyebilirsiniz.
+
+            <a
+                href="#"
+                class="btn-floating btn-large halfway-fab waves-effect white"
+                data-trigger="clear">
+                <i class="material-icons red-text">clear_all</i>
+            </a>
         </div>
         <ul
+            id="console"
             class="collection black load d-flex align-items-end flex-wrap no-select"
             data-href="{{ route('admin.monitoring.log') }}"
             data-callback="__log"
@@ -131,6 +197,14 @@
                     <span data-name="module" class="grey-text text-darken-2"></span>
                 </p>
                 <code data-name="message" class="green-text d-block"></code>
+            </li>
+        </ul>
+    </div>
+    <div class="card">
+        <ul id="files" class="collection">
+            <li class="collection-item d-none" data-href="{{ route('admin.monitoring.log.clear') }}">
+                <span data-name="path"></span>
+                <span data-name="size" class="badge grey darken-4 white-text"></span>
             </li>
         </ul>
     </div>

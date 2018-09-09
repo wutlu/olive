@@ -46,6 +46,14 @@ return [
         'notification.cpu' => 'in:on,off',
     ],
 
+    'log_files' => [
+        base_path('supervisor/logs/crawler.log'),
+        base_path('supervisor/logs/elasticsearch.log'),
+        base_path('supervisor/logs/email.log'),
+        base_path('supervisor/logs/trigger.log'),
+        storage_path('logs/laravel.log')
+    ],
+
     'group_email' => env('GROUP_EMAIL'),
 
     /*
