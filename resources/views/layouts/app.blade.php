@@ -253,12 +253,6 @@
                                 Log Ekranı
                             </a>
                         </li>
-                        <li>
-                            <a class="waves-effect" href="#">
-                                <i class="material-icons">settings_backup_restore</i>
-                                Yedekleme
-                            </a>
-                        </li>
                     </ul>
                 </div>
             </li>
