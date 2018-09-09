@@ -13,6 +13,10 @@
   color: rgba(0, 0, 0, .2);
 }
 
+time {
+  font-size: 14px;
+}
+
 .d-none {
   display: none !important;
 }
@@ -5779,7 +5783,7 @@ small {
         -ms-flex-positive: 1;
             flex-grow: 1;
   }
-  .tabs .tab  
+  .tabs .tab a {
     padding: 0 12px;
   }
 }

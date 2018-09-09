@@ -150,7 +150,7 @@
                         {{ $crawler->name }}
                         <sub data-name="error-count"></sub>
                     </span>
-                    <time class="timeago d-block" data-name="control-date" style="font-size: 16px;"></time>
+                    <time class="timeago d-block" data-name="control-date"></time>
                 </span>
             </div>
             <div class="card-content">
