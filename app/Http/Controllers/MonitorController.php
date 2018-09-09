@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use System;
 use Mail;
 use Artisan;
+use Redis;
 
 use App\Utilities\Term;
 
@@ -16,6 +17,8 @@ use Carbon\Carbon;
 
 use App\Models\Option;
 use App\Models\Log;
+
+use App\Http\Requests\ShellRequest;
 
 class MonitorController extends Controller
 {
@@ -140,6 +143,36 @@ class MonitorController extends Controller
 
         return [
             'status' => 'ok'
+        ];
+    }
+
+    # arkaplan ekranı
+    public static function background()
+    {
+        return view('monitor.background');
+    }
+
+    # arkaplan console
+    public static function backgroundProcess(ShellRequest $request)
+    {
+        $lines = [];
+
+        $redis = new Redis;
+
+        exec('ps axo start,pid,cmd | grep artisan', $output);
+
+        if (count($output))
+        {
+            foreach ($output as $key => $line)
+            {
+                $lines[] = preg_split('/^(\d{2}:\d{2}:\d{2}!?) (\d+) (.+)/', $line, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+            }
+        }
+
+        return [
+            'status' => 'ok',
+            'data' => $lines,
+            'queues' => ''
         ];
     }
 }

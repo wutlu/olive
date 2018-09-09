@@ -138,7 +138,7 @@ class MediaController extends Controller
     # 
     public static function allIndex()
     {
-        $crawlers = MediaCrawler::where('elasticsearch_index', false)->get();
+        $crawlers = MediaCrawler::where('elasticsearch_index', false)->where('test', true)->get();
 
         if (count($crawlers))
         {

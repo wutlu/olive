@@ -20,8 +20,7 @@ use App\Elasticsearch\Document;
 use Mail;
 use App\Mail\ServerAlertMail;
 
-class DetectorJob
-//class DetectorJob implements ShouldQueue
+class DetectorJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 

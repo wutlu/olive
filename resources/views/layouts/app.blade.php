@@ -104,7 +104,7 @@
                     </a>
                 </li>
             </ul>
-            <nav class="blue-grey darken-3">
+            <nav class="cyan darken-4">
                 <div class="sidenav-fixed-layout">
                     <div class="nav-wrapper">
                         <a href="{{ route('dashboard') }}" class="brand-logo center">
@@ -242,7 +242,7 @@
                             </a>
                         </li>
                         <li>
-                            <a class="waves-effect" href="#">
+                            <a class="waves-effect" href="{{ route('admin.monitoring.background') }}">
                                 <i class="material-icons">hourglass_empty</i>
                                 Arkaplan İşleri
                             </a>
