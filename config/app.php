@@ -40,10 +40,9 @@ return [
         'login' => 'Giriş Bildirimleri'
     ],
 
-    'settings' => [
-        'notification.ram' => 'in:on,off',
-        'notification.hdd' => 'in:on,off',
-        'notification.cpu' => 'in:on,off',
+    'options' => [
+        'email_alerts.server' => 'date_format:Y-m-d H:i:s',
+        'email_alerts.log' => 'date_format:Y-m-d H:i:s'
     ],
 
     'log_files' => [
