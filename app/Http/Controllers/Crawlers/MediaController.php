@@ -20,6 +20,7 @@ use App\Jobs\Elasticsearch\DeleteIndexJob;
 use App\Utilities\Crawler;
 
 use App\Elasticsearch\Indices;
+use App\Elasticsearch\Document;
 
 class MediaController extends Controller
 {
@@ -65,15 +66,36 @@ class MediaController extends Controller
     # 
     public static function allStatistics()
     {
-        $active_count = MediaCrawler::where('status', true)->count();
-        $disabled_count = MediaCrawler::where('status', false)->count();
+        $media_crawler = new MediaCrawler;
+        $document = new Document;
 
         return [
             'status' => 'ok',
             'data' => [
                 'count' => [
-                    'active' => $active_count,
-                    'disabled' => $disabled_count
+                    'active' => $media_crawler->where('status', true)->count(),
+                    'disabled' => $media_crawler->where('status', false)->count(),
+                    'buffer' => $document->count([ 'articles', '*' ], 'article', [
+                        'query' => [
+                            'match' => [
+                                'status' => 'buffer'
+                            ]
+                        ]
+                    ]),
+                    'success' => $document->count([ 'articles', '*' ], 'article', [
+                        'query' => [
+                            'match' => [
+                                'status' => 'ok'
+                            ]
+                        ]
+                    ]),
+                    'failed' => $document->count([ 'articles', '*' ], 'article', [
+                        'query' => [
+                            'match' => [
+                                'status' => 'failed'
+                            ]
+                        ]
+                    ])
                 ],
                 'elasticsearch' => Indices::stats([ 'articles', '*' ])
             ]
@@ -153,11 +175,35 @@ class MediaController extends Controller
     public static function statistics(int $id)
     {
         $crawler = MediaCrawler::where('id', $id)->firstOrFail();
+        $document = new Document;
 
         return [
             'status' => 'ok',
             'data' => [
                 'crawler' => $crawler,
+                'count' => [
+                    'buffer' => $document->count([ 'articles', $crawler->id ], 'article', [
+                        'query' => [
+                            'match' => [
+                                'status' => 'buffer'
+                            ]
+                        ]
+                    ]),
+                    'success' => $document->count([ 'articles', $crawler->id ], 'article', [
+                        'query' => [
+                            'match' => [
+                                'status' => 'ok'
+                            ]
+                        ]
+                    ]),
+                    'failed' => $document->count([ 'articles', $crawler->id ], 'article', [
+                        'query' => [
+                            'match' => [
+                                'status' => 'failed'
+                            ]
+                        ]
+                    ])
+                ],
                 'elasticsearch' => Indices::stats([ 'articles', $crawler->id ])
             ]
         ];

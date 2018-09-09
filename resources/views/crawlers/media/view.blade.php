@@ -19,6 +19,94 @@
 
 @push('local.scripts')
     $('[data-length]').characterCounter()
+
+    function __status(__, obj)
+    {
+        if (obj.status == 'ok')
+        {
+            var __ = $('[data-trigger=status]');
+
+                __.removeClass('waves-red red-text waves-green green-text')
+
+            if (obj.data.status)
+            {
+                __.addClass('waves-green green-text').html('AKTİF')
+
+                $('[data-name=error-count]').html('0 hata')
+            }
+            else
+            {
+                __.addClass('waves-red red-text').html('PASİF')
+            }
+
+            $('#modal-status').modal('close')
+        }
+    }
+
+    $(document).on('click', '[data-trigger=status]', function() {
+        var mdl = modal({
+                'id': 'status',
+                'body': 'Bot durumunu değiştirmek istediğinizden emin misiniz?',
+                'size': 'modal-small',
+                'title': 'Durum',
+                'options': {}
+            });
+
+            mdl.find('.modal-footer')
+               .html([
+                    $('<a />', {
+                        'href': '#',
+                        'class': 'modal-close waves-effect btn-flat',
+                        'html': buttons.cancel
+                    }),
+                    $('<span />', {
+                        'html': ' '
+                    }),
+                    $('<a />', {
+                        'href': '#',
+                        'class': 'waves-effect btn json',
+                        'html': buttons.ok,
+                        'data-href': '{{ route('crawlers.media.bot.status') }}',
+                        'data-id': '{{ $crawler->id }}',
+                        'data-method': 'post',
+                        'data-callback': '__status'
+                    })
+               ])
+    })
+
+    var statTimer;
+
+    function __stats(__, obj)
+    {
+        if (obj.status == 'ok')
+        {
+            $('[data-name=control-date]').attr('data-time', obj.data.crawler.control_date)
+            $('[data-name=error-count]').html(obj.data.crawler.error_count + ' hata')
+
+            if (obj.data.elasticsearch.status == 'ok' && obj.data.elasticsearch.data._all.primaries.docs)
+            {
+                $('[data-name=total-docs-success]').html(number_format(obj.data.count.success.data.count))
+                $('[data-name=total-docs-failed]').html(number_format(obj.data.count.failed.data.count))
+                $('[data-name=total-docs-buffer]').html(number_format(obj.data.count.buffer.data.count))
+                $('[data-name=total-size]').html(humanFileSize(obj.data.elasticsearch.data._all.primaries.store.size_in_bytes))
+            }
+            else
+            {
+                var message = $.parseJSON(obj.data.elasticsearch.message);
+
+                $('[data-name=total-docs-success]').html(message.status == 404 ? 'Index Oluşturulmadı!' : 'Bağlantı Hatası')
+                $('[data-name=total-docs-failed]').html(message.status == 404 ? 'Index Oluşturulmadı!' : 'Bağlantı Hatası')
+                $('[data-name=total-docs-buffer]').html(message.status == 404 ? 'Index Oluşturulmadı!' : 'Bağlantı Hatası')
+                $('[data-name=total-size]').html(message.status == 404 ? 'Index Oluşturulmadı!' : 'Bağlantı Hatası')
+            }
+
+            window.clearTimeout(statTimer)
+
+            statTimer = setTimeout(function() {
+                vzAjax($('#stats'))
+            }, 10000)
+        }
+    }
 @endpush
 
 @section('content')
@@ -30,121 +118,40 @@
         data-callback="__test">
         <input type="hidden" value="{{ $crawler->id }}" name="id" id="id" />
         <div class="card">
-            <div class="card-image">
-                <img src="{{ asset('img/md-s/36.jpg') }}" alt="{{ $crawler->name }}" />
-                <span class="card-title">{{ $crawler->name }}</span>
-            </div>
-            <div class="card-content grey lighten-2">
-                <ul class="item-group">
-                    <li class="item">
-                        @push('local.scripts')
-                            function __status(__, obj)
-                            {
-                                if (obj.status == 'ok')
-                                {
-                                    var __ = $('[data-trigger=status]');
+            <table id="stats" class="grey darken-4 load" data-href="{{ route('crawlers.media.bot.statistics', $crawler->id) }}" data-callback="__stats">
+                <tbody>
+                    <tr>
+                        <th class="right-align grey-text">BOYUT</th>
+                        <th class="orange-text" data-name="total-size"></th>
 
-                                        __.removeClass('waves-red red-text waves-green green-text')
+                        <th class="right-align grey-text">KUYRUK</th>
+                        <th class="orange-text" data-name="total-docs-buffer"></th>
 
-                                    if (obj.data.status)
-                                    {
-                                        __.addClass('waves-green green-text').html('AKTİF')
+                        <th class="right-align grey-text">BAŞARILI</th>
+                        <th class="orange-text" data-name="total-docs-success"></th>
 
-                                        $('[data-name=error-count]').html('0')
-                                    }
-                                    else
-                                    {
-                                        __.addClass('waves-red red-text').html('PASİF')
-                                    }
+                        <th class="right-align grey-text">BAŞARISIZ</th>
+                        <th class="orange-text" data-name="total-docs-failed"></th>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="card-content">
+                <a href="#" data-trigger="status" class="btn-flat waves-effect waves-{{ $crawler->status ? 'green green' : 'red red' }}-text">{{ $crawler->status ? 'AKTİF' : 'PASİF' }}</a>
 
-                                    $('#modal-status').modal('close')
-                                }
-                            }
-
-                            $(document).on('click', '[data-trigger=status]', function() {
-                                var mdl = modal({
-                                        'id': 'status',
-                                        'body': 'Bot durumunu değiştirmek istediğinizden emin misiniz?',
-                                        'size': 'modal-small',
-                                        'title': 'Durum',
-                                        'options': {}
-                                    });
-
-                                    mdl.find('.modal-footer')
-                                       .html([
-                                            $('<a />', {
-                                                'href': '#',
-                                                'class': 'modal-close waves-effect btn-flat',
-                                                'html': buttons.cancel
-                                            }),
-                                            $('<span />', {
-                                                'html': ' '
-                                            }),
-                                            $('<a />', {
-                                                'href': '#',
-                                                'class': 'waves-effect btn json',
-                                                'html': buttons.ok,
-                                                'data-href': '{{ route('crawlers.media.bot.status') }}',
-                                                'data-id': '{{ $crawler->id }}',
-                                                'data-method': 'post',
-                                                'data-callback': '__status'
-                                            })
-                                       ])
-                            })
-                        @endpush
-                        <small class="grey-text d-block">Durum</small>
-                        <a href="#" data-trigger="status" class="btn-flat waves-effect waves-{{ $crawler->status ? 'green green' : 'red red' }}-text">{{ $crawler->status ? 'AKTİF' : 'PASİF' }}</a>
-                    </li>
-                    <li id="stats" class="item load" data-href="{{ route('crawlers.media.bot.statistics', $crawler->id) }}" data-callback="__stats">
-                        <small class="grey-text d-block">Toplam Döküman</small>
-                        <p class="d-block" data-name="total-docs"></p>
-                        <small class="grey-text d-block">Kapladığı Alan</small>
-                        <p class="d-block" data-name="total-size"></p>
-                    </li>
-                    @push('local.scripts')
-                        var statTimer;
-
-                        function __stats(__, obj)
-                        {
-                            if (obj.status == 'ok')
-                            {
-                                $('[data-name=control-date]').html(obj.data.crawler.control_date)
-                                $('[data-name=error-count]').html(obj.data.crawler.error_count)
-
-                                if (obj.data.elasticsearch.status == 'ok' && obj.data.elasticsearch.data._all.primaries.docs)
-                                {
-                                    $('[data-name=total-docs]').removeClass('red-text').html(number_format(obj.data.elasticsearch.data._all.primaries.docs.count))
-                                    $('[data-name=total-size]').removeClass('red-text').html(humanFileSize(obj.data.elasticsearch.data._all.primaries.store.size_in_bytes))
-                                }
-                                else
-                                {
-                                    var message = $.parseJSON(obj.data.elasticsearch.message);
-
-                                    $('[data-name=total-docs]').addClass('red-text').html(message.status == 404 ? 'Index Oluşturulmadı!' : 'Bağlantı Hatası')
-                                    $('[data-name=total-size]').addClass('red-text').html(message.status == 404 ? 'Index Oluşturulmadı!' : 'Bağlantı Hatası')
-                                }
-
-                                window.clearTimeout(statTimer)
-
-                                statTimer = setTimeout(function() {
-                                    vzAjax($('#stats'))
-                                }, 10000)
-                            }
-                        }
-                    @endpush
-                    <li class="item">
-                        <small class="grey-text d-block">Hata</small>
-                        <span class="grey-text" data-name="error-count"></span>
-                    </li>
-                    <li class="item">
-                        <small class="grey-text d-block">Kontrol Tarihi</small>
-                        <p class="d-block" data-name="control-date"></p>
-                    </li>
-                </ul>
                 @if (!$crawler->status && $crawler->off_reason)
                     <small class="grey-text">Kapanma Nedeni</small>
                     <p class="d-block">{{ $crawler->off_reason }}</p>
                 @endif
+            </div>
+            <div class="card-image">
+                <img src="{{ asset('img/md-s/36.jpg') }}" alt="{{ $crawler->name }}" />
+                <span class="card-title">
+                    <span>
+                        {{ $crawler->name }}
+                        <sub data-name="error-count"></sub>
+                    </span>
+                    <time class="timeago d-block" data-name="control-date" style="font-size: 16px;"></time>
+                </span>
             </div>
             <div class="card-content">
                 <div class="collection">

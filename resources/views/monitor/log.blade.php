@@ -25,6 +25,8 @@
 
             if (obj.data.length)
             {
+                var scroll = false;
+
                 $.each(obj.data, function(key, o) {
                     var m = $('[data-id=' + o.uuid + ']');
 
@@ -43,6 +45,8 @@
                     {
                         if (m.attr('data-repeat') != o.hit)
                         {
+                            scroll = true;
+
                             item.attr('data-repeat', o.hit)
                             item.appendTo(collection)
                         }
@@ -55,10 +59,14 @@
 
                         if (__.hasClass('loaded'))
                         {
+                            scroll = true;
+
                             item.appendTo(collection)
                         }
                         else
                         {
+                            scroll = true;
+
                             item.prependTo(collection)
                         }
                     }

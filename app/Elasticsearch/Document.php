@@ -8,7 +8,7 @@ use System;
 
 class Document
 {
-    # Tek döküman.
+    # tek döküman
     public static function get(array $name, string $type, string $id)
     {
         $name = Indices::name($name);
@@ -42,7 +42,7 @@ class Document
         }
     }
 
-    # Çok döküman
+    # çok döküman
     public static function list(array $name, string $type, array $query)
     {
         $name = Indices::name($name);
@@ -143,6 +143,40 @@ class Document
         catch (\Exception $e)
         {
             System::log(json_encode($e->getMessage()), 'App\Elasticsearch\Document::patch('.$name.', '.$type.')', 5);
+
+            return (object) [
+                'status' => 'err',
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
+    # döküman sayısı
+    public static function count(array $name, string $type, array $body = [])
+    {
+        $name = Indices::name($name);
+
+        $client = ClientBuilder::fromConfig([
+            'hosts' => config('database.connections.elasticsearch.hosts'),
+            'retries' => 5
+        ]);
+
+        try
+        {
+            $doc = $client->count([
+                'index' => $name,
+                'type' => $type,
+                'body' => $body
+            ]);
+
+            return (object) [
+                'status' => 'ok',
+                'data' => $doc
+            ];
+        }
+        catch (\Exception $e)
+        {
+            System::log(json_encode($e->getMessage()), 'App\Elasticsearch\Document::count('.$name.', '.$type.', '.json_encode($body).')');
 
             return (object) [
                 'status' => 'err',

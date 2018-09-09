@@ -713,7 +713,7 @@
                                         ]
                                     })
                                 ],
-                                'size': 'modal-small',
+                                'size': 'modal-medium',
                                 'title': 'Sil',
                                 'options': {}
                             });
@@ -806,7 +806,7 @@
                                             ]
                                         })
                                     ],
-                                    'size': 'modal-small',
+                                    'size': 'modal-medium',
                                     'title': 'Ayrıl',
                                     'options': {}
                                 });
