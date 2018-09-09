@@ -13,4 +13,16 @@ class Option extends Model
 		'key',
 		'value'
 	];
+
+    # increment
+    public function incr(int $value = 1)
+    {
+        return $this->update([ 'value' => $this->value + $value ]);
+    }
+
+    # decrement
+    public function decr(int $value = 1)
+    {
+        return $this->update([ 'value' => $this->value > $value ? $this->value - $value : 0 ]);
+    }
 }

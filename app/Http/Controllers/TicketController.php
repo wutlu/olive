@@ -8,12 +8,13 @@ use App\Http\Requests\TicketSubmitRequest;
 use App\Http\Requests\TicketReplyRequest;
 
 use App\Models\Ticket;
-use App\Jobs\MonitorJob;
 
 use App\Notifications\TicketNotification;
 use App\Notifications\MessageNotification;
 
 use App\Utilities\UserActivityUtility;
+
+use App\Models\Option;
 
 class TicketController extends Controller
 {
@@ -91,7 +92,7 @@ class TicketController extends Controller
             ]
         );
 
-        MonitorJob::dispatch('monitor:ticket:count')->onQueue('worker');
+        Option::where('key', 'root_alert.support')->first()->incr();
 
         return [
             'status' => 'ok',
@@ -205,7 +206,7 @@ class TicketController extends Controller
             );
         }
 
-        MonitorJob::dispatch('monitor:ticket:count')->onQueue('worker');
+        Option::where('key', 'root_alert.support')->first()->decr();
 
         return [
             'status' => 'ok'

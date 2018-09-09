@@ -30,5 +30,14 @@ class OptionTableSeeder extends Seeder
                 'value' => date('Y-m-d H:i:s')
             ]
         );
+
+        Option::updateOrCreate(
+            [
+                'key' => 'root_alert.support'
+            ],
+            [
+                'value' => 0
+            ]
+        );
     }
 }

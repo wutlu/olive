@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redis;
 
 use App\Http\Requests\SearchRequest;
 
 use App\Models\User\UserActivity;
 use App\Models\Discount\DiscountDay;
 use App\Models\User\UserIntro;
+use App\Models\Option;
 
 use App\Ticket;
 
@@ -89,7 +89,7 @@ class HomeController extends Controller
             'status' => 'ok',
             'data' => [
                 'ticket' => [
-                    'count' => intval(Redis::get('monitor:ticket:count'))
+                    'count' => Option::where('key', 'root_alert.support')->value('value')
                 ]
             ]
         ];
