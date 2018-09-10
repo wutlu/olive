@@ -134,6 +134,22 @@ Route::prefix('admin')->middleware([ 'root' ])->group(function () {
             Route::post('genel/durdur', 'MediaController@allStop')->name('crawlers.media.bot.stop.all');
             Route::post('genel/index-olustur', 'MediaController@allIndex')->name('crawlers.media.bot.index.all');
         });
+
+        Route::prefix('sozluk-botlari')->namespace('Crawlers')->group(function () {
+            Route::get('/', 'SozlukController@listView')->name('crawlers.sozluk.list');
+            Route::get('json', 'SozlukController@listViewJson')->name('crawlers.sozluk.list.json');
+
+            Route::get('bot/{id?}', 'SozlukController@view')->name('crawlers.sozluk.bot');
+            Route::get('bot/{id}/istatistik', 'SozlukController@statistics')->name('crawlers.sozluk.bot.statistics');
+            Route::post('bot/durum', 'SozlukController@status')->name('crawlers.sozluk.bot.status');
+            Route::patch('bot', 'SozlukController@update');
+            Route::delete('bot', 'SozlukController@delete');
+
+            Route::get('genel/istatistik', 'SozlukController@allStatistics')->name('crawlers.sozluk.bot.statistics.all');
+            Route::post('genel/baslat', 'SozlukController@allStart')->name('crawlers.sozluk.bot.start.all');
+            Route::post('genel/durdur', 'SozlukController@allStop')->name('crawlers.sozluk.bot.stop.all');
+            Route::post('genel/index-olustur', 'SozlukController@allIndex')->name('crawlers.sozluk.bot.index.all');
+        });
     });
 
     Route::prefix('sayfa-yonetimi')->group(function () {

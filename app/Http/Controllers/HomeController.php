@@ -14,6 +14,7 @@ use App\Models\Option;
 use App\Ticket;
 
 use App\Models\Crawlers\MediaCrawler;
+use App\Models\Crawlers\SozlukCrawler;
 
 use System;
 

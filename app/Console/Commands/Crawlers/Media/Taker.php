@@ -24,7 +24,7 @@ class Taker extends Command
      *
      * @var string
      */
-    protected $description = 'Bağlantı toplayıcı.';
+    protected $description = 'Medya bağlantı toplayıcı.';
 
     /**
      * Create a new command instance.
@@ -83,10 +83,6 @@ class Taker extends Command
                     TakerJob::dispatch($obj->_source)->onQueue('crawler');
                 }
             }
-        }
-        else
-        {
-            $this->info('test');
         }
     }
 }

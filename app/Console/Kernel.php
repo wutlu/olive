@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Models\Crawlers\SozlukCrawler;
 
 class Kernel extends ConsoleKernel
 {
@@ -55,6 +56,23 @@ class Kernel extends ConsoleKernel
                  ->everyMinute()
                  ->timezone(config('app.timezone'))
                  ->withoutOverlapping();
+
+        /* ---------------------------------------- */
+
+        $crawlers = SozlukCrawler::where('status', true)->get();
+
+        if (count($crawlers))
+        {
+            foreach ($crawlers as $crawler)
+            {
+                $schedule->command('nohup "sozluk:crawler '.$crawler->id.'"')
+                         ->everyMinute()
+                         ->timezone(config('app.timezone'))
+                         ->withoutOverlapping();
+            }
+        }
+
+        /* ---------------------------------------- */
     }
 
     /**

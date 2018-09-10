@@ -20,6 +20,8 @@ use App\Elasticsearch\Document;
 use Mail;
 use App\Mail\ServerAlertMail;
 
+use App\Jobs\Elasticsearch\BulkInsertJob;
+
 class DetectorJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -71,36 +73,26 @@ class DetectorJob implements ShouldQueue
                 ];
             }
 
-            $bulk = Document::bulkInsert($chunk);
+            BulkInsertJob::dispatch($chunk)->onQueue('elasticsearch');
 
-            if ($bulk->status == 'ok')
-            {
-                $this->crawler->error_count = 0;
+            $this->crawler->error_count = 0;
 
-                $return = (object) [
-                    'status' => 'ok'
-                ];
-            }
-            else
-            {
-                $return = (object) [
-                    'status' => 'err',
-                    'message' => $bulk->message
-                ];
-            }
+            $program = (object) [
+                'status' => 'ok'
+            ];
         }
         else
         {
-            $return = (object) [
+            $program = (object) [
                 'status' => 'err',
                 'message' => $links->error_reasons
             ];
         }
 
-        if ($return->status == 'err')
+        if ($program->status == 'err')
         {
             System::log(
-                json_encode($return->message),
+                json_encode($program->message),
                 'App\Jobs\Crawlers\Media\DetectorJob::handle(int '.$this->crawler->id.')',
                 10
             );
@@ -109,11 +101,11 @@ class DetectorJob implements ShouldQueue
 
             if ($this->crawler->error_count >= $this->crawler->off_limit && $this->crawler->status == true)
             {
-                Mail::queue(new ServerAlertMail($this->crawler->name.' Medya Botu [DURDU]', json_encode($return->message)));
+                Mail::queue(new ServerAlertMail($this->crawler->name.' Medya Botu [DURDU]', json_encode($program->message)));
 
                 $this->crawler->test       = false;
                 $this->crawler->status     = false;
-                $this->crawler->off_reason = json_encode($return->message);
+                $this->crawler->off_reason = json_encode($program->message);
             }
         }
 

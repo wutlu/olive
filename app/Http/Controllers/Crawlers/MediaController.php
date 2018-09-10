@@ -39,8 +39,6 @@ class MediaController extends Controller
     # 
     public static function listViewJson(SearchRequest $request)
     {
-        $organisation = auth()->user()->organisation;
-
         $take = $request->take;
         $skip = $request->skip;
 
@@ -249,6 +247,7 @@ class MediaController extends Controller
 
         $total = 0;
         $accepted = 0;
+
         if (@$links->links)
         {
             foreach ($links->links as $link)

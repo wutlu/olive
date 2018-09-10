@@ -200,7 +200,7 @@
                             </a>
                         </li>
                         <li>
-                            <a class="waves-effect" href="#">
+                            <a class="waves-effect" href="{{ route('crawlers.sozluk.list') }}">
                                 <i class="material-icons">widgets</i>
                                 Sözlük Botları
                             </a>

@@ -24,7 +24,7 @@ class Detector extends Command
      *
      * @var string
      */
-    protected $description = 'Bağlantı tespit edici.';
+    protected $description = 'Medya bağlantı tespit edici.';
 
     /**
      * Create a new command instance.
@@ -60,10 +60,6 @@ class Detector extends Command
                     DetectorJob::dispatch($crawler)->onQueue('crawler');
                 }
             }
-        }
-        else
-        {
-            $this->info('test');
         }
     }
 }

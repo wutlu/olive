@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
              ->call(OrganisationTableSeeder::class)
              ->call(PageTableSeeder::class)
              ->call(MediaCrawlersTableSeeder::class)
+             ->call(SozlukCrawlersTableSeeder::class)
              ->call(OptionTableSeeder::class);
     }
 }

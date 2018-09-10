@@ -8,8 +8,8 @@
             'text' => 'Bot Yönetimi'
         ],
         [
-            'text' => 'Medya Botları',
-            'link' => route('crawlers.media.list')
+            'text' => 'Sözlük Botları',
+            'link' => route('crawlers.sozluk.list')
         ],
         [
             'text' => $crawler->name
@@ -66,7 +66,7 @@
                         'href': '#',
                         'class': 'waves-effect btn json',
                         'html': buttons.ok,
-                        'data-href': '{{ route('crawlers.media.bot.status') }}',
+                        'data-href': '{{ route('crawlers.sozluk.bot.status') }}',
                         'data-id': '{{ $crawler->id }}',
                         'data-method': 'post',
                         'data-callback': '__status'
@@ -80,23 +80,23 @@
     {
         if (obj.status == 'ok')
         {
-            $('[data-name=control-date]').attr('data-time', obj.data.crawler.control_date)
+            if (obj.data.crawler.last_id > 1)
+            {
+                $('[data-name=last-id]').val(obj.data.crawler.last_id)
+            }
+
             $('[data-name=error-count]').html(obj.data.crawler.error_count + ' hata')
 
             if (obj.data.elasticsearch.status == 'ok' && obj.data.elasticsearch.data._all.primaries.docs)
             {
-                $('[data-name=total-docs-success]').html(number_format(obj.data.count.success.data.count))
-                $('[data-name=total-docs-failed]').html(number_format(obj.data.count.failed.data.count))
-                $('[data-name=total-docs-buffer]').html(number_format(obj.data.count.buffer.data.count))
+                $('[data-name=total-docs]').html(number_format(obj.data.elasticsearch.data._all.primaries.docs.count))
                 $('[data-name=total-size]').html(humanFileSize(obj.data.elasticsearch.data._all.primaries.store.size_in_bytes))
             }
             else
             {
                 var message = $.parseJSON(obj.data.elasticsearch.message);
 
-                $('[data-name=total-docs-success]').html(message.status == 404 ? 'Index Oluşturulmadı!' : 'Bağlantı Hatası')
-                $('[data-name=total-docs-failed]').html(message.status == 404 ? 'Index Oluşturulmadı!' : 'Bağlantı Hatası')
-                $('[data-name=total-docs-buffer]').html(message.status == 404 ? 'Index Oluşturulmadı!' : 'Bağlantı Hatası')
+                $('[data-name=total-docs]').html(message.status == 404 ? 'Index Oluşturulmadı!' : 'Bağlantı Hatası')
                 $('[data-name=total-size]').html(message.status == 404 ? 'Index Oluşturulmadı!' : 'Bağlantı Hatası')
             }
 
@@ -112,26 +112,20 @@
 @section('content')
     <form
         method="patch"
-        action="{{ route('crawlers.media.bot') }}"
+        action="{{ route('crawlers.sozluk.bot') }}"
         class="json"
         id="details-form"
         data-callback="__test">
         <input type="hidden" value="{{ $crawler->id }}" name="id" id="id" />
         <div class="card">
-            <table id="stats" class="grey darken-4 load" data-href="{{ route('crawlers.media.bot.statistics', $crawler->id) }}" data-callback="__stats">
+            <table id="stats" class="grey darken-4 load" data-href="{{ route('crawlers.sozluk.bot.statistics', $crawler->id) }}" data-callback="__stats">
                 <tbody>
                     <tr>
                         <th class="right-align grey-text">BOYUT</th>
                         <th class="orange-text" data-name="total-size"></th>
 
-                        <th class="right-align grey-text">KUYRUK</th>
-                        <th class="orange-text" data-name="total-docs-buffer"></th>
-
-                        <th class="right-align grey-text">BAŞARILI</th>
-                        <th class="orange-text" data-name="total-docs-success"></th>
-
-                        <th class="right-align grey-text">BAŞARISIZ</th>
-                        <th class="orange-text" data-name="total-docs-failed"></th>
+                        <th class="right-align grey-text">DÖKÜMAN</th>
+                        <th class="orange-text" data-name="total-docs"></th>
                     </tr>
                 </tbody>
             </table>
@@ -139,20 +133,17 @@
                 <a href="#" data-trigger="status" class="btn-flat waves-effect waves-{{ $crawler->status ? 'green green' : 'red red' }}-text">{{ $crawler->status ? 'AKTİF' : 'PASİF' }}</a>
 
                 @if (!$crawler->status && $crawler->off_reason)
-                    <div>
-                        <small class="grey-text">Kapanma Nedeni</small>
-                        <p class="d-block">{{ $crawler->off_reason }}</p>
-                    </div>
+	                <div>
+	                    <small class="grey-text">Kapanma Nedeni</small>
+	                    <p class="d-block">{{ $crawler->off_reason }}</p>
+	                </div>
                 @endif
             </div>
             <div class="card-image">
-                <img src="{{ asset('img/md-s/36.jpg') }}" alt="{{ $crawler->name }}" />
+                <img src="{{ asset('img/md-s/1.jpg') }}" alt="{{ $crawler->name }}" />
                 <span class="card-title">
-                    <span>
-                        <span data-name="crawler-title">{{ $crawler->name }}</span>
-                        <sub data-name="error-count"></sub>
-                    </span>
-                    <time class="timeago d-block" data-name="control-date"></time>
+                    <span data-name="crawler-title">{{ $crawler->name }}</span>
+                    <sub data-name="error-count"></sub>
                 </span>
             </div>
             <div class="card-content">
@@ -182,54 +173,41 @@
                             </div>
                             <div style="min-width: 50%; padding: 1rem;">
                                 <div class="input-field">
-                                    <input name="base" id="base" value="{{ $crawler->base }}" type="text" class="validate" data-length="255" />
-                                    <label for="base">Temel Dizin</label>
-                                    <small class="helper-text">Ana Sayfa alt segmentten oluşuyorsa belirtin.</small>
+                                    <input name="url_pattern" id="url_pattern" value="{{ $crawler->url_pattern }}" type="text" class="validate" data-length="255" />
+                                    <label for="url_pattern">Döküman URL Deseni</label>
+                                    <small class="helper-text">Id kısmını <span class="red-text">__id__</span> olarak belirtin.</small>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    @push('local.scripts')
-                    $(document).on('click', '[data-id=match]', function() {
-                        var __ = $(this);
-                        var url_pattern = $('input[name=url_pattern]');
-                            url_pattern.val(url_pattern.val() + __.data('pattern'))
-
-                            M.updateTextFields()
-                    })
-                    @endpush
-                    <div class="collection-item green lighten-4">
-                        <div class="input-field">
-                            <input name="url_pattern" id="url_pattern" value="{{ $crawler->url_pattern }}" type="text" class="validate" data-length="255" />
-                            <label for="url_pattern">Makale URL Deseni</label>
-                            <small class="helper-text">Kaynak içerik adreslerinin <strong>REGEX</strong> deseni.</small>
-                        </div>
-                        <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="([a-z0-9-]{4,24})">KATEGORİ</button>
-                        <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="\/">/</button>
-                        <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="([a-z0-9-]{4,128})">SLUG</button>
-                        <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="-">-</button>
-                        <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="\.">.</button>
-                        <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="(\d{6,9})">ID</button>
-                        <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="(\d{4})">\d{4}</button>
-                        <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="(\d{2})">\d{2}</button>
-                        <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="(?<=href\="\/)">(?<=href\="\/)</button>
-                        <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="(?=")">(?=")</button>
-                        <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="(\b(?!yazarlar))">(\b(?!yazarlar))</button>
                     </div>
                     <div class="collection-item">
                         <div class="d-flex flex-wrap">
                             <div style="min-width: 50%; padding: 1rem;">
                                 <div class="input-field">
                                     <input name="selector_title" id="selector_title" value="{{ $crawler->selector_title }}" type="text" class="validate" data-length="255" />
-                                    <label for="selector_title">Makale Başlık Seçicisi</label>
-                                    <small class="helper-text">Kaynak içerik başlığının CSS seçicisi.</small>
+                                    <label for="selector_title">Döküman Başlık Seçicisi</label>
+                                    <small class="helper-text">İçerik başlığının CSS seçicisi.</small>
                                 </div>
                             </div>
                             <div style="min-width: 50%; padding: 1rem;">
                                 <div class="input-field">
-                                    <input name="selector_description" id="selector_description" value="{{ $crawler->selector_description }}" type="text" class="validate" data-length="255" />
-                                    <label for="selector_description">Makale Açıklama Seçicisi</label>
-                                    <small class="helper-text">Kaynak içerik açıklamasının CSS seçicisi.</small>
+                                    <input name="selector_entry" id="selector_entry" value="{{ $crawler->selector_entry }}" type="text" class="validate" data-length="255" />
+                                    <label for="selector_entry">Döküman Açıklama Seçicisi</label>
+                                    <small class="helper-text">İçeriğin CSS seçicisi.</small>
+                                </div>
+                            </div>
+                            <div style="min-width: 50%; padding: 1rem;">
+                                <div class="input-field">
+                                    <input name="selector_author" id="selector_author" value="{{ $crawler->selector_author }}" type="text" class="validate" data-length="255" />
+                                    <label for="selector_author">Döküman Yazar Seçicisi</label>
+                                    <small class="helper-text">Yazar adının CSS seçicisi.</small>
+                                </div>
+                            </div>
+                            <div style="min-width: 50%; padding: 1rem;">
+                                <div class="input-field">
+                                    <input data-name="last-id" name="last_id" id="last_id" value="{{ $crawler->last_id }}" type="number" class="validate" min="0" />
+                                    <label for="last_id">Son Id</label>
+                                    <small class="helper-text">Son alınan içeriğin kimlik numarası.</small>
                                 </div>
                             </div>
                         </div>
@@ -247,9 +225,9 @@
                             </div>
                             <div style="width: 50%; padding: 1rem;">
                                 <div class="input-field">
-                                    <input name="control_interval" id="control_interval" value="{{ $crawler->control_interval }}" type="number" class="validate" max="60" min="1" />
-                                    <label for="control_interval">Kontrol Aralığı (Dakika)</label>
-                                    <small class="helper-text" data-name="minute">Girilen değer aralığında içerik kontrolü yapılsın.</small>
+                                    <input name="max_attempt" id="max_attempt" value="{{ $crawler->max_attempt }}" type="number" class="validate" max="10000" min="10" />
+                                    <label for="max_attempt">Hatalı Deneme Sayısı</label>
+                                    <small class="helper-text">Girilen değer kadar içerik kontrol edildikten sonra kontrol tamamlanır.</small>
                                 </div>
                             </div>
                         </div>
@@ -301,7 +279,7 @@
                         'href': '#',
                         'class': 'waves-effect btn json',
                         'html': buttons.ok,
-                        'data-href': '{{ route('crawlers.media.bot') }}',
+                        'data-href': '{{ route('crawlers.sozluk.bot') }}',
                         'data-id': '{{ $crawler->id }}',
                         'data-method': 'delete',
                         'data-callback': '__delete'
@@ -313,7 +291,7 @@
     {
         if (obj.status == 'ok')
         {
-            location.href = '{{ route('crawlers.media.list') }}';
+            location.href = '{{ route('crawlers.sozluk.list') }}';
         }
     }
 
@@ -361,7 +339,8 @@
                 if (o.data)
                 {
                     textarea.val(textarea.val() + '- ' + o.data.title + '\n');
-                    textarea.val(textarea.val() + '- ' + o.data.description + '\n');
+                    textarea.val(textarea.val() + '- ' + o.data.author + '\n');
+                    textarea.val(textarea.val() + '- ' + o.data.entry + '\n');
                     textarea.val(textarea.val() + '- ' + o.data.created_at + '\n');
                 }
                 else
