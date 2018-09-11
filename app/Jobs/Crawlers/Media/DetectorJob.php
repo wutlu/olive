@@ -67,7 +67,7 @@ class DetectorJob implements ShouldQueue
 
                 $chunk['body'][] = [
                     'id' => md5($link),
-                    'bot_id' => $this->crawler->id,
+                    'site_id' => $this->crawler->id,
                     'url' => $link,
                     'status' => 'buffer'
                 ];

@@ -80,9 +80,12 @@
     {
         if (obj.status == 'ok')
         {
-            if (obj.data.crawler.last_id > 1)
+            var data_id_input = $('[data-name=last-id]');
+
+            if (data_id_input.attr('data-id') != obj.data.crawler.last_id)
             {
-                $('[data-name=last-id]').val(obj.data.crawler.last_id)
+                data_id_input.val(obj.data.crawler.last_id)
+                data_id_input.data('id', obj.data.crawler.last_id)
             }
 
             $('[data-name=error-count]').html(obj.data.crawler.error_count + ' hata')
@@ -205,7 +208,7 @@
                             </div>
                             <div style="min-width: 50%; padding: 1rem;">
                                 <div class="input-field">
-                                    <input data-name="last-id" name="last_id" id="last_id" value="{{ $crawler->last_id }}" type="number" class="validate" min="0" />
+                                    <input data-id="{{ $crawler->last_id }}" data-name="last-id" name="last_id" id="last_id" value="{{ $crawler->last_id }}" type="number" class="validate" min="0" />
                                     <label for="last_id">Son Id</label>
                                     <small class="helper-text">Son alınan içeriğin kimlik numarası.</small>
                                 </div>

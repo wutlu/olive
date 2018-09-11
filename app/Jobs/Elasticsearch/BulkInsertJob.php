@@ -47,11 +47,14 @@ class BulkInsertJob implements ShouldQueue
         {
             BulkInsertJob::dispatch($this->chunk)->onQueue('elasticsearch')->delay(now()->addMinutes(10));
 
-            System::log(
-                json_encode($return->message),
-                'App\Jobs\Elasticsearch::handle()',
-                10
-            );
+            if (@$return->message)
+            {
+                System::log(
+                    json_encode($return->message),
+                    'App\Jobs\Elasticsearch::handle()',
+                    10
+                );
+            }
         }
     }
 }

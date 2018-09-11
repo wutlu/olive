@@ -42,7 +42,7 @@ class TakerJob implements ShouldQueue
      */
     public function handle()
     {
-        $crawler = MediaCrawler::where('id', $this->data['bot_id'])->first();
+        $crawler = MediaCrawler::where('id', $this->data['site_id'])->first();
 
         if (@$crawler)
         {
@@ -112,7 +112,7 @@ class TakerJob implements ShouldQueue
         }
         else
         {
-            $insert = Indices::drop([ 'articles', $this->data['bot_id'] ]);
+            $insert = Indices::drop([ 'articles', $this->data['site_id'] ]);
         }
     }
 }

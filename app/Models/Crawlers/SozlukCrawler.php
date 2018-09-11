@@ -41,7 +41,7 @@ class SozlukCrawler extends Model
                         'group_name' => [
                             'type' => 'keyword'
                         ],
-                        'bot_id' => [
+                        'site_id' => [
                             'type' => 'integer'
                         ],
                         'title' => [

@@ -36,7 +36,7 @@ class MediaCrawler extends Model
                         'id' => [
                             'type' => 'keyword'
                         ],
-                        'bot_id' => [
+                        'site_id' => [
                             'type' => 'integer'
                         ],
                         'title' => [

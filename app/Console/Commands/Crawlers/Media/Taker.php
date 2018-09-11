@@ -65,7 +65,7 @@ class Taker extends Command
                         ]
                     ]
                 ],
-                '_source' => [ 'id', 'url', 'source', 'bot_id' ],
+                '_source' => [ 'id', 'url', 'source', 'site_id' ],
                 'size' => 500
             ]
         );

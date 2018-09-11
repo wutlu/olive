@@ -98,7 +98,7 @@ class Crawler extends Command
 						'created_at' => $item->data['created_at'],
 	                    'called_at' => date('Y-m-d H:i:s'),
 
-	                    'bot_id' => $sozluk->id
+	                    'site_id' => $sozluk->id
 	                ];
 
 	                $errors = [];
