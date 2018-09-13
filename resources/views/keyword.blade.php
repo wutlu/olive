@@ -160,7 +160,7 @@
 @section('content')
     <div class="card">
         <div class="card-image">
-            <img src="{{ asset('img/md-s/23.jpg') }}" alt="Kelimeler" />
+            <img src="{{ asset('img/md-s/32.jpg') }}" alt="Kelimeler" />
             <span class="card-title">Kelimeler</span>
             <a href="#" class="btn-floating btn-large halfway-fab waves-effect white" data-trigger="form">
                 <i class="material-icons black-text">add</i>

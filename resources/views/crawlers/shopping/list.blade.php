@@ -8,7 +8,7 @@
             'text' => 'Bot Yönetimi'
         ],
         [
-            'text' => 'Medya Botları'
+            'text' => 'Alışveriş Botları'
         ]
     ]
 ])
@@ -62,7 +62,7 @@
 
 @section('content')
     <div class="card">
-        <table id="stats" class="grey darken-4 load" data-href="{{ route('crawlers.media.bot.statistics.all') }}" data-callback="__stats">
+        <table id="stats" class="grey darken-4 load" data-href="{{ route('crawlers.shopping.bot.statistics.all') }}" data-callback="__stats">
             <tbody>
                 <tr>
                     <th class="right-align grey-text">BOYUT</th>
@@ -80,12 +80,12 @@
             </tbody>
         </table>
         <div class="card-image">
-            <img src="{{ asset('img/md-s/32.jpg') }}" alt="Medya Botları" />
+            <img src="{{ asset('img/md-s/32.jpg') }}" alt="Alışveriş Botları" />
             <span class="card-title">
-                Medya Botları
+                Alışveriş Botları
                 <small class="d-block" data-name="bots-count"></small>
             </span>
-            <a href="{{ route('crawlers.media.bot') }}" class="btn-floating btn-large halfway-fab waves-effect white">
+            <a href="{{ route('crawlers.shopping.bot') }}" class="btn-floating btn-large halfway-fab waves-effect white">
                 <i class="material-icons black-text">add</i>
             </a>
         </div>
@@ -95,21 +95,21 @@
                 class="btn-flat waves-effect"
                 data-message="Oluşturulmamış indexlerin oluşturulması için istek gönderilecek?"
                 data-trigger="trigger"
-                data-href="{{ route('crawlers.media.bot.index.all') }}"
+                data-href="{{ route('crawlers.shopping.bot.index.all') }}"
                 data-callback="__create_all_index">Eksik Indexleri Oluştur</a>
             <a
                 href="#"
                 class="btn-flat waves-effect"
                 data-message="Pasif fakat test edilmiş tüm botlar çalıştırılacak?"
                 data-trigger="trigger"
-                data-href="{{ route('crawlers.media.bot.start.all') }}"
+                data-href="{{ route('crawlers.shopping.bot.start.all') }}"
                 data-callback="__start_all">Pasif Botları Çalıştır</a>
             <a
                 href="#"
                 class="btn-flat waves-effect"
                 data-message="Aktif tüm botlar durdurulacak?"
                 data-trigger="trigger"
-                data-href="{{ route('crawlers.media.bot.stop.all') }}"
+                data-href="{{ route('crawlers.shopping.bot.stop.all') }}"
                 data-callback="__stop_all">Aktif Botları Durdur</a>
         </div>
 
@@ -131,7 +131,7 @@
         </nav>
         <div class="collection load json-clear"
              id="crawlers"
-             data-href="{{ route('crawlers.media.list.json') }}"
+             data-href="{{ route('crawlers.shopping.list.json') }}"
              data-skip="0"
              data-take="50"
              data-include="string"
@@ -149,7 +149,7 @@
             <a
                 href="#"
                 data-href="{{ route('route.generate.id') }}"
-                data-name="crawlers.media.bot"
+                data-name="crawlers.shopping.bot"
                 data-callback="__go_bot"
                 class="collection-item model d-none waves-effect json">
                 <span class="align-self-center">

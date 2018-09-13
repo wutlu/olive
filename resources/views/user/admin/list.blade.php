@@ -51,7 +51,7 @@
 @section('content')
     <div class="card">
         <div class="card-image">
-            <img src="{{ asset('img/md-s/10.jpg') }}" alt="Kullanıcılar" />
+            <img src="{{ asset('img/md-s/32.jpg') }}" alt="Kullanıcılar" />
             <span class="card-title">Kullanıcılar</span>
         </div>
         <nav class="grey darken-4">

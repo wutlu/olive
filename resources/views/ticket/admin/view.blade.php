@@ -27,7 +27,7 @@
                         .children('img')
                         .attr('src', '{{ asset('img/md-s/34.jpg') }}')
                         .next('a')
-                        .removeClass('green')
+                        .removeClass('cyan')
                         .addClass('disabled')
                         .children('i.material-icons')
                         .html('lock')
@@ -71,9 +71,9 @@
     @endpush
     <div class="card ticket-card">
         <div class="card-image">
-            <img src="{{ asset('img/md-s/'.($ticket->status == 'open' ? '7' : '34').'.jpg') }}" alt="Destek Talebi" />
+            <img src="{{ asset('img/md-s/'.($ticket->status == 'open' ? '32' : '34').'.jpg') }}" alt="Destek Talebi" />
 
-            <a href="javascript:close()" class="btn-floating btn-large halfway-fab waves-effect waves-light {{ $ticket->status == 'open' ? 'green' : 'disabled' }}">
+            <a href="javascript:close()" class="btn-floating btn-large halfway-fab waves-effect waves-light {{ $ticket->status == 'open' ? 'cyan' : 'disabled' }}">
                 <i class="material-icons">{{ $ticket->status == 'open' ? 'lock_open' : 'lock' }}</i>
             </a>
 
@@ -113,7 +113,7 @@
         </div>
     </div>
     @forelse ($ticket->replies as $row)
-    <div class="card {{ $row->user_id == auth()->user()->id ? '' : 'green lighten-4' }}" id="message-{{ $row->id }}">
+    <div class="card {{ $row->user_id == auth()->user()->id ? '' : 'cyan lighten-4' }}" id="message-{{ $row->id }}">
         <div class="card-content">
             <small class="mb-4">{{ date('d.m.Y H:i', strtotime($ticket->created_at)) }}</small>
             <div class="md-area">{!! Term::markdown($row->message) !!}</div>

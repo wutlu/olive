@@ -119,6 +119,22 @@ Route::prefix('admin')->middleware([ 'root' ])->group(function () {
     });
 
     Route::prefix('bot-yonetimi')->group(function () {
+        Route::prefix('alisveris-botlari')->namespace('Crawlers')->group(function () {
+            Route::get('/', 'ShoppingController@listView')->name('crawlers.shopping.list');
+            Route::get('json', 'ShoppingController@listViewJson')->name('crawlers.shopping.list.json');
+
+            Route::get('bot/{id?}', 'ShoppingController@view')->name('crawlers.shopping.bot');
+            Route::get('bot/{id}/istatistik', 'ShoppingController@statistics')->name('crawlers.shopping.bot.statistics');
+            Route::post('bot/durum', 'ShoppingController@status')->name('crawlers.shopping.bot.status');
+            Route::patch('bot', 'ShoppingController@update');
+            Route::delete('bot', 'ShoppingController@delete');
+
+            Route::get('genel/istatistik', 'ShoppingController@allStatistics')->name('crawlers.shopping.bot.statistics.all');
+            Route::post('genel/baslat', 'ShoppingController@allStart')->name('crawlers.shopping.bot.start.all');
+            Route::post('genel/durdur', 'ShoppingController@allStop')->name('crawlers.shopping.bot.stop.all');
+            Route::post('genel/index-olustur', 'ShoppingController@allIndex')->name('crawlers.shopping.bot.index.all');
+        });
+
         Route::prefix('medya-botlari')->namespace('Crawlers')->group(function () {
             Route::get('/', 'MediaController@listView')->name('crawlers.media.list');
             Route::get('json', 'MediaController@listViewJson')->name('crawlers.media.list.json');

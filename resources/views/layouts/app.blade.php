@@ -104,7 +104,7 @@
                     </a>
                 </li>
             </ul>
-            <nav class="cyan darken-4">
+            <nav class="purple darken-2">
                 <div class="sidenav-fixed-layout">
                     <div class="nav-wrapper">
                         <a href="{{ route('dashboard') }}" class="brand-logo center">
@@ -206,6 +206,12 @@
                             </a>
                         </li>
                         <li>
+                            <a class="waves-effect" href="{{ route('crawlers.shopping.list') }}">
+                                <i class="material-icons">widgets</i>
+                                Alışveriş Botları
+                            </a>
+                        </li>
+                        <li>
                             <a class="waves-effect" href="#">
                                 <i class="material-icons">widgets</i>
                                 Twitter Ayarları
@@ -215,12 +221,6 @@
                             <a class="waves-effect" href="#">
                                 <i class="material-icons">widgets</i>
                                 Youtube Ayarları
-                            </a>
-                        </li>
-                        <li>
-                            <a class="waves-effect" href="#">
-                                <i class="material-icons">widgets</i>
-                                Alışveriş Botları
                             </a>
                         </li>
                     </ul>

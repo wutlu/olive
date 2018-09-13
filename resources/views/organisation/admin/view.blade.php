@@ -32,7 +32,7 @@
     <form method="post" action="{{ route('admin.organisation', $organisation->id) }}" class="json" id="details-form" data-callback="__account">
         <div class="card">
             <div class="card-image">
-                <img src="{{ asset('img/md-s/14.jpg') }}" alt="Organizasyon Bilgileri" />
+                <img src="{{ asset('img/md-s/32.jpg') }}" alt="Organizasyon Bilgileri" />
                 <span class="card-title">Organizasyon Bilgileri</span>
             </div>
             <div class="card-content">

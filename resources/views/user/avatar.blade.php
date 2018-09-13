@@ -16,7 +16,7 @@
 		@csrf
 		<div class="card">
 		    <div class="card-image">
-		        <img src="{{ asset('img/md-s/10.jpg') }}" alt="Hesap Resmi" />
+		        <img src="{{ asset('img/md-s/32.jpg') }}" alt="Hesap Resmi" />
 		        <span class="card-title">Hesap Resmi</span>
 		    </div>
 			<div class="card-content">
