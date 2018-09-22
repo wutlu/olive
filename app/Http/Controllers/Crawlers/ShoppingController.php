@@ -223,16 +223,12 @@ class ShoppingController extends Controller
             $crawler->name = 'Yeni Bot '.rand(99999, 999999);
             $crawler->site = 'http://';
             $crawler->url_pattern = '([a-z0-9-]{4,128})';
-            $crawler->selector_title = 'x';
-            $crawler->selector_description = 'x';
-            $crawler->selector_categories = 'x';
-            $crawler->selector_address = 'x';
-            $crawler->selector_ul = 'x';
-            $crawler->selector_ul_li = 'x';
-            $crawler->selector_ul_li_key = 'x';
-            $crawler->selector_ul_li_val = 'x';
-            $crawler->selector_seller_name = 'x';
-            $crawler->selector_selles_phones = 'x';
+            $crawler->selector_title = 'h1';
+            $crawler->selector_description = '#classifiedDescription';
+            $crawler->selector_address = 'h2 > a';
+            $crawler->selector_breadcrumb = '.classifiedBreadCrumb .trackId_breadcrumb';
+            $crawler->selector_seller_name = '.username-info-area';
+            $crawler->selector_seller_phones = '.pretty-phone-part';
             $crawler->save();
 
             return redirect()->route('crawlers.shopping.bot', $crawler->id);
@@ -247,7 +243,61 @@ class ShoppingController extends Controller
     # 
     public static function update(UpdateRequest $request)
     {
+        $crawler = ShoppingCrawler::where('id', $request->id)->first();
 
+        $data['status'] = 'err';
+
+        $links = Crawler::googleSearchResultLinkDetection($request->site, $request->url_pattern, $request->google_search_query, $request->google_max_page);
+
+        $total = 0;
+        $accepted = 0;
+
+        if (@$links->links)
+        {
+            foreach ($links->links as $link)
+            {
+                if ($total < $request->test_count)
+                {
+                    $item = Crawler::productDetection($request->site, $link, [
+                        'title'         => $request->selector_title,
+                        'description'   => $request->selector_description,
+                        'address'       => $request->selector_address,
+                        'breadcrumb'    => $request->selector_breadcrumb,
+                        'seller_name'   => $request->selector_seller_name,
+                        'seller_phones' => $request->selector_seller_phones
+                    ]);
+
+                    $data['items'][] = $item;
+
+                    if ($item->status == 'ok')
+                    {
+                        $accepted++;
+                    }
+
+                    $total++;
+                }
+            }
+
+            if ($accepted > $total/3)
+            {
+                $crawler->fill($request->all());
+                $crawler->test = true;
+                $crawler->error_count = 0;
+                $crawler->off_reason = null;
+
+                $data['status'] = 'ok';
+
+                CreateShoppingIndexJob::dispatch($crawler->id)->onQueue('elasticsearch');
+            }
+
+            $crawler->save();
+        }
+        else
+        {
+            $data['error_reasons'] = $links->error_reasons;
+        }
+
+        return $data;
     }
 
     # ######################################## [ ADMIN ] ######################################## #

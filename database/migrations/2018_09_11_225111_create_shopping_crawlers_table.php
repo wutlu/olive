@@ -18,19 +18,16 @@ class CreateShoppingCrawlersTable extends Migration
 
             $table->string('name')->unique();
             $table->string('site');
-            $table->string('google_search_url')->default('https://www.google.com/search?q=site:&tbs=sbd:1,qdr:h');
+            $table->string('google_search_query')->default('site:sahibinden.com/ilan');
+            $table->unsignedSmallInteger('google_max_page')->default(1);
             $table->string('url_pattern')->default('/');
 
             $table->string('selector_title');
             $table->string('selector_description');
-            $table->string('selector_categories');
             $table->string('selector_address');
-            $table->string('selector_ul');
-            $table->string('selector_ul_li');
-            $table->string('selector_ul_li_key');
-            $table->string('selector_ul_li_val');
+            $table->string('selector_breadcrumb');
             $table->string('selector_seller_name');
-            $table->string('selector_selles_phones');
+            $table->string('selector_seller_phones')->nullable()->default(null);
 
             $table->smallInteger('error_count')->default(0);
             $table->smallInteger('off_limit')->default(10);

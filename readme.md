@@ -43,6 +43,20 @@ postgres=# (New Password Repeat)
 postgres=# \q
 ~~~~
 
+### Java Kurulumu
+sudo add-apt-repository ppa:webupd8team/java
+sudo apt update
+sudo apt install oracle-java8-installer
+javac -version
+sudo apt install oracle-java8-set-default
+
+### Elasticsearch Kurulumu
+wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+echo "deb https://artifacts.elastic.co/packages/6.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-6.x.list
+
+sudo apt update
+sudo apt install elasticsearch -y
+
 ### Sistemin Kurulumu Öncesi Yapılandırma
 
 ~~~~

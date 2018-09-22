@@ -241,7 +241,7 @@
                                     <input name="off_limit" id="off_limit" value="{{ $crawler->off_limit }}" type="number" class="validate" max="100" min="10" />
                                     <label for="off_limit">Kapatma Limiti</label>
                                     <small class="helper-text">
-                                        Belirtilen rakam kadar hata alındığı takdirde; hata logu girilir ve bot devre dışı bırakılır.
+                                        Belirtilen değer kadar hata alındığı takdirde; hata logu girilir ve bot devre dışı bırakılır.
                                     </small>
                                 </div>
                             </div>

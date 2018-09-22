@@ -11,19 +11,16 @@ class ShoppingCrawler extends Model
     protected $fillable = [
         'name',
         'site',
-        'google_search_url',
+        'google_search_query',
+        'google_max_page',
         'url_pattern',
 
 		'selector_title',
 		'selector_description',
-		'selector_categories',
 		'selector_address',
-		'selector_ul',
-		'selector_ul_li',
-		'selector_ul_li_key',
-		'selector_ul_li_val',
+		'selector_breadcrumb',
 		'selector_seller_name',
-		'selector_selles_phones',
+		'selector_selles_phone',
 
         'off_limit',
         'control_interval',
@@ -68,10 +65,7 @@ class ShoppingCrawler extends Model
                         		]
                         	]
                         ],
-                        'categories' => [
-                        	'type' => 'nested'
-                        ],
-                        'types' => [
+                        'breadcrumb' => [
                         	'type' => 'nested'
                         ],
                         'address' => [

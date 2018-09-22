@@ -142,10 +142,14 @@ class Wrawler implements IteratorAggregate {
 	public function getDom($asIs = false)
 	{
 		if ($asIs)
+		{
 			return $this->_dom;
+		}
 
 		if ($this->_dom instanceof DOMDocument)
+		{
 			return $this->_dom;
+		}
 		elseif ($this->_dom instanceof DOMNodeList || $this->_dom instanceof DOMElement)
 		{
 			if ($this->_tempDom === null)
@@ -178,7 +182,9 @@ class Wrawler implements IteratorAggregate {
 	protected function getXpath()
 	{
 		if ($this->_xpath === null)
+		{
 			$this->_xpath = new DOMXpath($this->getDom());
+		}
 
 		return $this->_xpath;
 	}
@@ -190,7 +196,9 @@ class Wrawler implements IteratorAggregate {
 			$key = $expression . ($rel ? '>' : '*');
 
 			if (isset(self::$_compiledXpath[$key]))
+			{
 				return self::$_compiledXpath[$key];
+			}
 		}
 
 		$query = '';
@@ -200,27 +208,38 @@ class Wrawler implements IteratorAggregate {
 			$brackets = [];
 
 			if (isset($subs['id']) && '' !== $subs['id'])
+			{
 				$brackets[] = "@id='" . $subs['id'] . "'";
+			}
 
 			if (isset($subs['attr']) && '' !== $subs['attr'])
 			{
 				if (!(isset($subs['value'])))
+				{
 					$brackets[] = "@" . $subs['attr'];
-				else {
+				}
+				else
+				{
 					$attrValue = !empty($subs['value']) ? $subs['value'] : '';
 					$brackets[] = "@" . $subs['attr'] . "='" . $attrValue . "'";
 				}
 			}
 
 			if (isset($subs['class']) && '' !== $subs['class'])
+			{
 				$brackets[] = 'contains(concat(" ", normalize-space(@class), " "), " ' . $subs['class'] . ' ")';
+			}
 
 			if (isset($subs['pseudo']) && '' !== $subs['pseudo'])
 			{
 				if ('first-child' === $subs['pseudo'])
+				{
 					$brackets[] = '1';
+				}
 				elseif ('last-child' === $subs['pseudo'])
+				{
 					$brackets[] = 'last()';
+				}
 				elseif ('nth-child' === $subs['pseudo'])
 				{
 					if (isset($subs['expr']) && '' !== $subs['expr'])
@@ -228,17 +247,27 @@ class Wrawler implements IteratorAggregate {
 						$e = $subs['expr'];
 
 						if('odd' === $e)
+						{
 							$brackets[] = '(position() -1) mod 2 = 0 and position() >= 1';
+						}
 						elseif('even' === $e)
+						{
 							$brackets[] = 'position() mod 2 = 0 and position() >= 0';
+						}
 						elseif(preg_match("/^[0-9]+$/", $e))
+						{
 							$brackets[] = 'position() = ' . $e;
+						}
 						elseif(preg_match("/^((?P<mul>[0-9]+)n\+)(?P<pos>[0-9]+)$/is", $e, $esubs))
 						{
 							if (isset($esubs['mul']))
+							{
 								$brackets[] = '(position() -' . $esubs['pos'] . ') mod ' . $esubs['mul'] . ' = 0 and position() >= ' . $esubs['pos'] . '';
+							}
 							else
+							{
 								$brackets[] = '' . $e . '';
+							}
 						}
 					}
 				}
@@ -248,11 +277,15 @@ class Wrawler implements IteratorAggregate {
 			$left = trim(substr($expression, strlen($subs[0])));
 
 			if ('' !== $left)
+			{
 				$query .= $this->getXpathSubquery($left, isset($subs['rel']) ? '>' === $subs['rel'] : false, $compile);
+			}
 		}
 
 		if ($compile)
+		{
 			self::$_compiledXpath[$key] = $query;
+		}
 
 		return $query;
 	}
@@ -264,7 +297,9 @@ class Wrawler implements IteratorAggregate {
 			$nodeList = $this->getXpath()->query($xpathQuery);
 
 			if ($nodeList === false)
+			{
 				throw new Exception('Malformed xpath');
+			}
 
 			return self::fromDom($nodeList);
 		}
@@ -299,10 +334,14 @@ class Wrawler implements IteratorAggregate {
 			$node = $this->getDom();
 		}
 		else
+		{
 			$node = $xnode;
+		}
 
 		if (in_array($node->nodeType, [XML_TEXT_NODE,XML_COMMENT_NODE]))
+		{
 			return $node->nodeValue;
+		}
 
 		if ($node->hasAttributes())
 		{
@@ -342,7 +381,9 @@ class Wrawler implements IteratorAggregate {
 		$array = [];
 
 		if ($node === null)
+		{
 			$node = $this->getDom();
+		}
 
 		if ($node instanceof DOMNodeList)
 		{
@@ -358,7 +399,9 @@ class Wrawler implements IteratorAggregate {
 		}
 
 		if (XML_TEXT_NODE === $node->nodeType)
+		{
 			return [$node->nodeValue];
+		}
 
 		if (!$skipChildren)
 		{
@@ -367,9 +410,13 @@ class Wrawler implements IteratorAggregate {
 				foreach ($node->childNodes as $childNode)
 				{
 					if ($singleLevel)
+					{
 						$array = array_merge($array, $this->_toTextArray($childNode, $skipChildren, $singleLevel));
+					}
 					else
+					{
 						$array[] = $this->_toTextArray($childNode, $skipChildren, $singleLevel);
+					}
 				}
 			}
 		}
