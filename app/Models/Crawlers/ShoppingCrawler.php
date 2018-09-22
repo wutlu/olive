@@ -61,15 +61,24 @@ class ShoppingCrawler extends Model
                         			'type' => 'keyword'
                         		],
                         		'phones' => [
-                        			'type' => 'nested'
+                        			'type' => 'nested',
+                                    'properties' => [
+                                        'phone' => 'keyword'
+                                    ]
                         		]
                         	]
                         ],
                         'breadcrumb' => [
-                        	'type' => 'nested'
+                        	'type' => 'nested',
+                            'properties' => [
+                                'segment' => 'keyword'
+                            ]
                         ],
                         'address' => [
-                        	'type' => 'nested'
+                        	'type' => 'nested',
+                            'properties' => [
+                                'segment' => 'keyword'
+                            ]
                         ],
                         'created_at' => [
                             'type' => 'date',
