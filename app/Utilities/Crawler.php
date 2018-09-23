@@ -73,7 +73,7 @@ class Crawler
 
             try
             {
-                $dom = $client->get('https://www.google.com/search?q='.$query.'&tbs=sbd:1,qdr:h&tbs=qdr:h&start='.$page, [
+                $dom = $client->get('https://www.google.com/search?q='.$query.'&tbs=qdr:h,sbd:1&start='.$page, [
                     'timeout' => 10,
                     'connect_timeout' => 5,
                     'headers' => [
@@ -234,6 +234,13 @@ class Crawler
                 'connect_timeout' => 5,
                 'headers' => [
                     'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))]
+                ],
+                'allow_redirects' => [
+                    'max' => 2,
+                    'strict' => true,
+                    'referer' => true,
+                    'protocols' => [ 'http', 'https' ],
+                    'track_redirects' => true
                 ]
             ])->getBody();
 
@@ -271,6 +278,35 @@ class Crawler
                 return trim($seller_phones['#text'][0]);
             }, $seller_phones);
 
+            # price detect
+            $price = $saw->get($selector->price)->toText();
+            $price_currency = preg_replace('/([^a-zA-Z\$\€\₺]+)/', '', $price);
+            $price_quantity = preg_replace('/([^\d]+)/', '', $price);
+
+            if ($price_currency && strlen($price_currency) <= 3 && intval($price_quantity) > 0)
+            {
+                $price = [
+                    'currency' => $price_currency,
+                    'quantity' => intval($price_quantity)
+                ];
+            }
+            else
+            {
+                if (!$price_currency)
+                {
+                    $data['error_reasons'][] = 'Ücret birimi tespit edilemedi.';
+                }
+                else if (strlen($price_currency) > 3)
+                {
+                    $data['error_reasons'][] = 'Ücret birimi geçersiz. ('.$price_currency.')';
+                }
+
+                if (!$price_quantity || intval($price_quantity) == 0)
+                {
+                    $data['error_reasons'][] = 'Ücret miktarı tespit edilemedi.';
+                }
+            }
+
             # date detect
             preg_match_all('/(\d{4}|\d{1,2})(\.|-| )(\d{1,2}|([a-zA-ZŞşıİğĞüÜ]{4,8}))(\.|-| )(\d{4}|\d{2})(( |, )[a-zA-ZÇçŞşığĞüÜ]{4,10})?((.| - )(\d{1,2}):(\d{1,2})(:(\d{1,2}))?((.?(\d{1,2}):(\d{1,2}))|Z)?)?/', $dom, $dates);
 
@@ -303,7 +339,8 @@ class Crawler
                 'address' => $address,
                 'breadcrumb' => $breadcrumb,
                 'seller_name' => $seller_name,
-                'seller_phones' => $seller_phones
+                'seller_phones' => $seller_phones,
+                'price' => $price
             ];
 
             # title

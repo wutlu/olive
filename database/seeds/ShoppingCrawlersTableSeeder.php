@@ -16,7 +16,7 @@ class ShoppingCrawlersTableSeeder extends Seeder
         $items = [
             [
                 'name' => 'SAHİBİNDEN',
-                'site' => 'http://www.sahibinden.com',
+                'site' => 'https://www.sahibinden.com',
                 'google_search_query' => 'site:sahibinden.com/ilan',
                 'url_pattern' => 'ilan\/([a-z0-9-]{4,128})-(\d{9,10})\/detay',
                 'selector_title' => 'h1',
@@ -25,8 +25,9 @@ class ShoppingCrawlersTableSeeder extends Seeder
                 'selector_breadcrumb' => '.classifiedBreadCrumb .trackId_breadcrumb',
                 'selector_seller_name' => '.username-info-area',
                 'selector_seller_phones' => '.pretty-phone-part',
-                'google_max_page' => 2,
-                'control_interval' => 15
+                'selector_price' => '.classifiedInfo > h3',
+                'google_max_page' => 1,
+                'control_interval' => 5
             ],
             [
                 'name' => 'MİLLİYET EMLAK',
@@ -39,8 +40,9 @@ class ShoppingCrawlersTableSeeder extends Seeder
                 'selector_breadcrumb' => '.breadcrumb li',
                 'selector_seller_name' => '.estateInformations > p',
                 'selector_seller_phones' => '.pretty-phone-part',
+                'selector_price' => '.gallery-price',
                 'google_max_page' => 2,
-                'control_interval' => 30
+                'control_interval' => 15
             ],
         ];
 
@@ -61,7 +63,8 @@ class ShoppingCrawlersTableSeeder extends Seeder
                     'selector_seller_name' => $item['selector_seller_name'],
                     'selector_seller_phones' => $item['selector_seller_phones'],
                     'google_max_page' => $item['google_max_page'],
-                    'control_interval' => $item['control_interval']
+                    'control_interval' => $item['control_interval'],
+                    'selector_price' => $item['selector_price']
                 ]
             );
         }

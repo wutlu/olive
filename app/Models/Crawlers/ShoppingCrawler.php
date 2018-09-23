@@ -21,6 +21,7 @@ class ShoppingCrawler extends Model
 		'selector_breadcrumb',
 		'selector_seller_name',
 		'selector_seller_phone',
+        'selector_price',
 
         'off_limit',
         'control_interval',
@@ -54,6 +55,12 @@ class ShoppingCrawler extends Model
                             'type' => 'text',
                             'analyzer' => 'turkish',
                             'fielddata' => true
+                        ],
+                        'price' => [
+                            'properties' => [
+                                'currency' => [ 'type' => 'keyword' ],
+                                'quantity' => [ 'type' => 'long' ]
+                            ]
                         ],
                         'seller' => [
                         	'properties' => [

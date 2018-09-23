@@ -221,7 +221,7 @@ class ShoppingController extends Controller
         {
             $crawler = new ShoppingCrawler;
             $crawler->name = 'Yeni Bot '.rand(99999, 999999);
-            $crawler->site = 'http://';
+            $crawler->site = 'https://';
             $crawler->url_pattern = '([a-z0-9-]{4,128})';
             $crawler->selector_title = 'h1';
             $crawler->selector_description = '#classifiedDescription';
@@ -229,6 +229,7 @@ class ShoppingController extends Controller
             $crawler->selector_breadcrumb = '.classifiedBreadCrumb .trackId_breadcrumb';
             $crawler->selector_seller_name = '.username-info-area';
             $crawler->selector_seller_phones = '.pretty-phone-part';
+            $crawler->selector_price = '.classifiedInfo > h3';
             $crawler->save();
 
             return redirect()->route('crawlers.shopping.bot', $crawler->id);
@@ -264,7 +265,8 @@ class ShoppingController extends Controller
                         'address'       => $request->selector_address,
                         'breadcrumb'    => $request->selector_breadcrumb,
                         'seller_name'   => $request->selector_seller_name,
-                        'seller_phones' => $request->selector_seller_phones
+                        'seller_phones' => $request->selector_seller_phones,
+                        'price'         => $request->selector_price,
                     ]);
 
                     $data['items'][] = $item;

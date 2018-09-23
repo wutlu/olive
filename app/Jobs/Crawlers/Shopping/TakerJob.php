@@ -52,7 +52,8 @@ class TakerJob implements ShouldQueue
 				'address' => $crawler->selector_address,
 				'breadcrumb' => $crawler->selector_breadcrumb,
 				'seller_name' => $crawler->selector_seller_name,
-				'seller_phones' => $crawler->selector_seller_phones
+                'seller_phones' => $crawler->selector_seller_phones,
+				'price' => $crawler->selector_price
             ]);
 
             if ($item->status == 'ok')
@@ -70,16 +71,17 @@ class TakerJob implements ShouldQueue
                     'seller' => [
                     	'name' => $item->data['seller_name']
                     ],
+                    'price' => $item->data['price'],
                     'called_at' => date('Y-m-d H:i:s'),
                     'status' => 'ok'
                 ];
 
                 if ($item->data['seller_phones'])
                 {
-	                $params['seller']['phones'] = array_map(function ($value) {
-					    return [ 'phone' => $value ];
-					}, $item->data['seller_phones']);
-				}
+                    $params['seller']['phones'] = array_map(function ($value) {
+                        return [ 'phone' => $value ];
+                    }, $item->data['seller_phones']);
+                }
 
                 $upsert = Document::patch([ 'shopping', $crawler->id ], 'product', $this->data['id'], [
                     'script' => [
@@ -92,6 +94,7 @@ class TakerJob implements ShouldQueue
                             ctx._source.created_at = params.created_at;
                             ctx._source.called_at = params.called_at;
                             ctx._source.status = params.status;
+                            ctx._source.price = params.price;
                         ',
                         'params' => $params
                     ]

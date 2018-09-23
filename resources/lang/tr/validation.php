@@ -200,7 +200,8 @@ return [
         'selector_ul_li'            => 'Bilgi Grubu Satır Seçicisi',
         'selector_ul_li_key'        => 'Bilgi Grubu Satır Anahtarı Seçicisi',
         'selector_ul_li_val'        => 'Bilgi Grubu Satır Değeri Seçicisi',
-        'selector_seller_name'      => 'Satıcı Adı',
-        'selector_seller_phones'    => 'Satıcı Telefonu',
+        'selector_seller_name'      => 'Satıcı Adı Seçicisi',
+        'selector_seller_phones'    => 'Satıcı Telefonu Seçicisi',
+        'selector_price'            => 'Ücret Seçicisi',
     ],
 ];

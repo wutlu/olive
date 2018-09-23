@@ -36,6 +36,7 @@ class UpdateRequest extends FormRequest
             'selector_address'       => 'required|string|max:255',
             'selector_seller_name'   => 'required|string|max:255',
             'selector_seller_phones' => 'required|string|max:255',
+            'selector_price'         => 'required|string|max:255',
             'control_interval'       => 'required|integer|max:60|min:1',
             'off_limit'              => 'required|integer|max:100|min:10',
             'test_count'             => 'required|integer|max:100|min:1'

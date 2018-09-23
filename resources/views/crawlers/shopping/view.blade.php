@@ -273,6 +273,13 @@
                                     <small class="helper-text">Satıcı telefon numarası CSS seçicisi.</small>
                                 </div>
                             </div>
+                            <div style="min-width: 50%; padding: 1rem;">
+                                <div class="input-field">
+                                    <input name="selector_price" id="selector_price" value="{{ $crawler->selector_price }}" type="text" class="validate" data-length="255" />
+                                    <label for="selector_price">Fiyat Seçicisi</label>
+                                    <small class="helper-text">Ürün fiyatı CSS seçicisi.</small>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <hr />
@@ -409,7 +416,10 @@
                     textarea.val(textarea.val() + '- ' + o.data.address + '\n');
 					textarea.val(textarea.val() + '- ' + o.data.breadcrumb + '\n');
 					textarea.val(textarea.val() + '- ' + o.data.seller_name + '\n');
-					textarea.val(textarea.val() + '- ' + o.data.seller_phones + '\n');
+                    textarea.val(textarea.val() + '- ' + o.data.seller_phones + '\n');
+
+					textarea.val(textarea.val() + '- ' + o.data.price.quantity + '\n');
+                    textarea.val(textarea.val() + '- ' + o.data.price.currency + '\n');
                 }
                 else
                 {
