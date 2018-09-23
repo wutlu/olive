@@ -30,7 +30,7 @@ class ShoppingCrawlersTableSeeder extends Seeder
                 'control_interval' => 5
             ],
             [
-                'name' => 'MİLLİYET EMLAK',
+                'name' => 'MİLLİYETEMLAK',
                 'site' => 'https://www.milliyetemlak.com',
                 'google_search_query' => 'site:milliyetemlak.com',
                 'url_pattern' => 'ilan\/(\d{8,9})',
