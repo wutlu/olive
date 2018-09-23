@@ -29,7 +29,7 @@ class Crawler
                 'timeout' => 10,
                 'connect_timeout' => 5,
                 'headers' => [
-                    'User-Agent' => config('crawler.user_agent')
+                    'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))]
                 ]
             ])->getBody();
 
@@ -77,7 +77,7 @@ class Crawler
                     'timeout' => 10,
                     'connect_timeout' => 5,
                     'headers' => [
-                        'User-Agent' => config('crawler.user_agent')
+                        'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))]
                     ]
                 ])->getBody();
 
@@ -122,7 +122,7 @@ class Crawler
                 'timeout' => 10,
                 'connect_timeout' => 5,
                 'headers' => [
-                    'User-Agent' => config('crawler.user_agent')
+                    'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))]
                 ]
             ])->getBody();
 
@@ -233,7 +233,7 @@ class Crawler
                 'timeout' => 10,
                 'connect_timeout' => 5,
                 'headers' => [
-                    'User-Agent' => config('crawler.user_agent')
+                    'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))]
                 ]
             ])->getBody();
 
@@ -382,7 +382,7 @@ class Crawler
                 'timeout' => 10,
                 'connect_timeout' => 5,
                 'headers' => [
-                    'User-Agent' => config('crawler.user_agent')
+                    'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))]
                 ]
             ])->getBody();
 

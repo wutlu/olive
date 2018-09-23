@@ -46,7 +46,7 @@ class HomeController extends Controller
     }
 
     # dashboard
-    public static function dashboard()
+    public static function dashboard(Request $request)
     {
         $user = auth()->user();
 

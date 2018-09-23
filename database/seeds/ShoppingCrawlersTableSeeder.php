@@ -24,10 +24,12 @@ class ShoppingCrawlersTableSeeder extends Seeder
                 'selector_address' => 'h2 > a',
                 'selector_breadcrumb' => '.classifiedBreadCrumb .trackId_breadcrumb',
                 'selector_seller_name' => '.username-info-area',
-                'selector_seller_phones' => '.pretty-phone-part'
+                'selector_seller_phones' => '.pretty-phone-part',
+                'google_max_page' => 2,
+                'control_interval' => 15
             ],
             [
-                'name' => 'MİLLİYET EMLAK ',
+                'name' => 'MİLLİYET EMLAK',
                 'site' => 'https://www.milliyetemlak.com',
                 'google_search_query' => 'site:milliyetemlak.com',
                 'url_pattern' => 'ilan\/(\d{8,9})',
@@ -36,7 +38,9 @@ class ShoppingCrawlersTableSeeder extends Seeder
                 'selector_address' => '.location > a',
                 'selector_breadcrumb' => '.breadcrumb li',
                 'selector_seller_name' => '.estateInformations > p',
-                'selector_seller_phones' => '.pretty-phone-part'
+                'selector_seller_phones' => '.pretty-phone-part',
+                'google_max_page' => 2,
+                'control_interval' => 30
             ],
         ];
 
@@ -55,7 +59,9 @@ class ShoppingCrawlersTableSeeder extends Seeder
                     'selector_address' => $item['selector_address'],
                     'selector_breadcrumb' => $item['selector_breadcrumb'],
                     'selector_seller_name' => $item['selector_seller_name'],
-                    'selector_seller_phones' => $item['selector_seller_phones']
+                    'selector_seller_phones' => $item['selector_seller_phones'],
+                    'google_max_page' => $item['google_max_page'],
+                    'control_interval' => $item['control_interval']
                 ]
             );
         }

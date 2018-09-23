@@ -111,7 +111,7 @@ class TakerJob implements ShouldQueue
             }
             else if ($item->status == 'err' || $item->status == 'failed')
             {
-                $insert = Document::patch([ 'product', $crawler->id ], 'product', $this->data['id'], [
+                $insert = Document::patch([ 'shopping', $crawler->id ], 'product', $this->data['id'], [
                     'doc' => [
                         'called_at' => date('Y-m-d H:i:s'),
                         'status' => 'failed',
