@@ -253,6 +253,12 @@
                                 Log Ekranı
                             </a>
                         </li>
+                        <li>
+                            <a class="waves-effect" href="{{ route('admin.monitoring.queue') }}">
+                                <i class="material-icons">queue</i>
+                                Kuyruk Ekranı
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </li>

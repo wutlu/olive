@@ -146,6 +146,12 @@ class MonitorController extends Controller
         ];
     }
 
+    # kuyruk izleme
+    public static function queue()
+    {
+        return view('monitor.queue');
+    }
+
     # arkaplan ekranı
     public static function background()
     {

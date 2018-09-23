@@ -100,6 +100,8 @@ Route::prefix('admin')->middleware([ 'root' ])->group(function () {
         Route::post('log-ekrani', 'MonitorController@logJson');
         Route::delete('log-ekrani/temizle', 'MonitorController@logClear')->name('admin.monitoring.log.clear');
 
+        Route::get('kuyruk-ekrani', 'MonitorController@queue')->name('admin.monitoring.queue');
+
         Route::get('arkaplan', 'MonitorController@background')->name('admin.monitoring.background');
         Route::post('arkaplan', 'MonitorController@backgroundProcess');
     });
