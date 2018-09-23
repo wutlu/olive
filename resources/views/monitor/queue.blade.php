@@ -8,7 +8,7 @@
             'text' => 'Sistem İzleme'
         ],
         [
-            'text' => 'Kuyruk Ekranı (Horizon)'
+            'text' => 'Kuyruk Ekranı (Laravel Horizon)'
         ]
     ]
 ])
@@ -24,8 +24,8 @@
 @section('content')
     <div class="card">
         <div class="card-image">
-            <img src="{{ asset('img/md-s/6.jpg') }}" alt="Kuyruk Ekranı" />
-            <span class="card-title">Kuyruk Ekranı (Horizon)</span>
+            <img src="{{ asset('img/md-s/6.jpg') }}" alt="Kuyruk Ekranı (Laravel Horizon)" />
+            <span class="card-title">Kuyruk Ekranı (Laravel Horizon)</span>
         </div>
     </div>
     <iframe class="card" src="{{ url('horizon') }}"></iframe>

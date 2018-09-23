@@ -20,7 +20,7 @@ class ShoppingCrawler extends Model
 		'selector_address',
 		'selector_breadcrumb',
 		'selector_seller_name',
-		'selector_selles_phone',
+		'selector_seller_phone',
 
         'off_limit',
         'control_interval',
@@ -57,13 +57,11 @@ class ShoppingCrawler extends Model
                         ],
                         'seller' => [
                         	'properties' => [
-                        		'name' => [
-                        			'type' => 'keyword'
-                        		],
+                        		'name' => [ 'type' => 'keyword' ],
                         		'phones' => [
                         			'type' => 'nested',
                                     'properties' => [
-                                        'phone' => 'keyword'
+                                        'phone' => [ 'type' => 'keyword' ]
                                     ]
                         		]
                         	]
@@ -71,13 +69,13 @@ class ShoppingCrawler extends Model
                         'breadcrumb' => [
                         	'type' => 'nested',
                             'properties' => [
-                                'segment' => 'keyword'
+                                'segment' => [ 'type' => 'keyword' ]
                             ]
                         ],
                         'address' => [
                         	'type' => 'nested',
                             'properties' => [
-                                'segment' => 'keyword'
+                                'segment' => [ 'type' => 'keyword' ]
                             ]
                         ],
                         'created_at' => [

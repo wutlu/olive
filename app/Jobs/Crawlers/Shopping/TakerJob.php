@@ -77,7 +77,7 @@ class TakerJob implements ShouldQueue
                 if ($item->data['seller_phones'])
                 {
 	                $params['seller']['phones'] = array_map(function ($value) {
-					    return [ 'segment' => $value ];
+					    return [ 'phone' => $value ];
 					}, $item->data['seller_phones']);
 				}
 
