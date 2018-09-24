@@ -72,20 +72,30 @@ return [
 
     'environments' => [
         'production' => [
-            'supervisor-1' => [
+            'veri.zone-supervisor' => [
                 'connection' => 'redis',
-                'queue' => ['default'],
-                'balance' => 'simple',
+                'queue' => [
+                    'trigger',
+                    'elasticsearch',
+                    'email',
+                    'crawler',
+                ],
+                'balance' => 'auto',
                 'processes' => 10,
                 'tries' => 3,
             ],
         ],
 
         'local' => [
-            'supervisor-1' => [
+            'veri.zone-supervisor' => [
                 'connection' => 'redis',
-                'queue' => ['default'],
-                'balance' => 'simple',
+                'queue' => [
+                    'trigger',
+                    'elasticsearch',
+                    'email',
+                    'crawler',
+                ],
+                'balance' => 'auto',
                 'processes' => 3,
                 'tries' => 3,
             ],
