@@ -51,15 +51,15 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
+        'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
+        'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
-        'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
-        'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-
+        'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         // private middleware
         'organisation' => \App\Http\Middleware\Organisation::class,
         'root' => \App\Http\Middleware\CheckRootMiddleware::class,
