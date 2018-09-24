@@ -54,16 +54,14 @@ class Taker extends Command
             [
                 'query' => [
                     'bool' => [
-                        'filter' => [
-                            [
-                                'match' => [
-                                    'status' => 'buffer'
-                                ]
-                            ]
+                        'should' => [
+                            [ 'match' => [ 'status' => 'buffer' ] ],
+                            [ 'match' => [ 'status' => 'again' ] ],
+                            [ 'match' => [ 'status' => 'last_time' ] ]
                         ]
                     ]
                 ],
-                '_source' => [ 'id', 'url', 'source', 'site_id' ],
+                '_source' => [ 'id', 'url', 'source', 'site_id', 'status' ],
                 'size' => 500
             ]
         );

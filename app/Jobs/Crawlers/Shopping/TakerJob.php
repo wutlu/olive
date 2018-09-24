@@ -60,7 +60,6 @@ class TakerJob implements ShouldQueue
             {
             	$params = [
                     'title' => $item->data['title'],
-                    'description' => $item->data['description'],
                     'created_at' => $item->data['created_at'],
                     'breadcrumb' => array_map(function ($value) {
 				        return [ 'segment' => $value ];
@@ -76,6 +75,23 @@ class TakerJob implements ShouldQueue
                     'status' => 'ok'
                 ];
 
+                $source = [
+                    'ctx._source.title = params.title;',
+                    'ctx._source.breadcrumb = params.breadcrumb;',
+                    'ctx._source.address = params.address;',
+                    'ctx._source.seller = params.seller;',
+                    'ctx._source.created_at = params.created_at;',
+                    'ctx._source.called_at = params.called_at;',
+                    'ctx._source.status = params.status;',
+                    'ctx._source.price = params.price;',
+                ];
+
+                if (@$item->data['description'])
+                {
+                    $params['description'] = $item->data['description'];
+                    $source[] = 'ctx._source.description = params.description;';
+                }
+
                 if ($item->data['seller_phones'])
                 {
                     $params['seller']['phones'] = array_map(function ($value) {
@@ -85,17 +101,7 @@ class TakerJob implements ShouldQueue
 
                 $upsert = Document::patch([ 'shopping', $crawler->id ], 'product', $this->data['id'], [
                     'script' => [
-                        'source' => '
-                            ctx._source.title = params.title;
-                            ctx._source.description = params.description;
-                            ctx._source.breadcrumb = params.breadcrumb;
-                            ctx._source.address = params.address;
-                            ctx._source.seller = params.seller;
-                            ctx._source.created_at = params.created_at;
-                            ctx._source.called_at = params.called_at;
-                            ctx._source.status = params.status;
-                            ctx._source.price = params.price;
-                        ',
+                        'source' => implode(PHP_EOL, $source),
                         'params' => $params
                     ]
                 ]);
@@ -117,7 +123,7 @@ class TakerJob implements ShouldQueue
                 $insert = Document::patch([ 'shopping', $crawler->id ], 'product', $this->data['id'], [
                     'doc' => [
                         'called_at' => date('Y-m-d H:i:s'),
-                        'status' => 'failed',
+                        'status' => $this->data['status'] == 'buffer' ? 'again' : ($this->data['status'] == 'again' ? 'last_time' : 'failed'),
                         'message' => $item->status == 'err' ? json_encode($item->error_reasons) : 'not_found'
                     ]
                 ]);

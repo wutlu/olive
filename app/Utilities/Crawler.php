@@ -334,7 +334,6 @@ class Crawler
 
             $data['data'] = [
                 'title' => $title,
-                'description' => $description,
                 'created_at' => $created_at,
                 'address' => $address,
                 'breadcrumb' => $breadcrumb,
@@ -356,11 +355,15 @@ class Crawler
             # description
             if ($description == null)
             {
-                $data['error_reasons'][] = 'Açıklama tespit edilemedi.';
+                //
             }
             else if (strlen($description) > 10000)
             {
                 $data['error_reasons'][] = 'Açıklama çok uzun.';
+            }
+            else
+            {
+                $data['data']['description'] = $description;
             }
 
             # address
@@ -394,7 +397,7 @@ class Crawler
                 $data['status'] = 'ok';
             }
         }
-        catch (Exception $e)
+        catch (\Exception $e)
         {
             $data['status'] = 'failed';
             $data['error_reasons'][] = $e->getMessage();
