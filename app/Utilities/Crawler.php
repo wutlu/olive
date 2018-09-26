@@ -236,7 +236,7 @@ class Crawler
                     'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))]
                 ],
                 'allow_redirects' => [
-                    'max' => 2,
+                    'max' => 4,
                     'strict' => true,
                     'referer' => true,
                     'protocols' => [ 'http', 'https' ],
