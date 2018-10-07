@@ -76,7 +76,7 @@ class Taker extends Command
 
                     $this->info($obj->_source['url']);
 
-                    TakerJob::dispatch($obj->_source)->onQueue('crawler')->delay(now()->addSeconds(rand(1, 20)));
+                    TakerJob::dispatch($obj->_source)->onQueue('crawler')->delay(now()->addSeconds(rand(1, 40)));
                 }
             }
         }

@@ -137,6 +137,10 @@ Route::prefix('admin')->middleware([ 'root' ])->group(function () {
             Route::post('genel/index-olustur', 'ShoppingController@allIndex')->name('crawlers.shopping.bot.index.all');
         });
 
+        Route::prefix('youtube')->namespace('Crawlers')->group(function () {
+            Route::get('/', 'YouTubeController@dashboard')->name('admin.youtube.settings');
+        });
+
         Route::prefix('medya-botlari')->namespace('Crawlers')->group(function () {
             Route::get('/', 'MediaController@listView')->name('crawlers.media.list');
             Route::get('json', 'MediaController@listViewJson')->name('crawlers.media.list.json');

@@ -42,6 +42,11 @@ return [
         'recaptcha' => [
             'site_key' => env('GOOGLE_RECAPTCHA_SITE_KEY'),
             'secret_key' => env('GOOGLE_RECAPTCHA_SECRET_KEY')
+        ],
+        'youtube' => [
+            'api' => [
+                'key' => env('YOUTUBE_API_KEY')
+            ]
         ]
     ],
 

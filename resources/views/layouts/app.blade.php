@@ -218,9 +218,9 @@
                             </a>
                         </li>
                         <li>
-                            <a class="waves-effect" href="#">
+                            <a class="waves-effect" href="{{ route('admin.youtube.settings') }}">
                                 <i class="material-icons">widgets</i>
-                                Youtube Ayarları
+                                YouTube Ayarları
                             </a>
                         </li>
                     </ul>
