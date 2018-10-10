@@ -18,6 +18,8 @@ return [
 
     'key' => env('APP_KEY'),
 
+    'password' => env('APP_PASSWORD'),
+
     'cipher' => 'AES-256-CBC',
 
     'version' => '1.0.1022',
@@ -42,7 +44,10 @@ return [
 
     'options' => [
         'email_alerts.server' => 'date_format:Y-m-d H:i:s',
-        'email_alerts.log' => 'date_format:Y-m-d H:i:s'
+        'email_alerts.log' => 'date_format:Y-m-d H:i:s',
+        'youtube.status' => 'string|in:on,off',
+        'youtube.index.video' => 'string|in:on,off',
+        'youtube.index.comment' => 'string|in:on,off',
     ],
 
     'log_files' => [

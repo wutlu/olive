@@ -45,10 +45,15 @@ class YouTubeCrawler
                                     'type' => 'date',
                                     'format' => 'YYYY-MM-dd HH:mm:ss'
                                 ],
-                                'view' => [ 'type' => 'long' ],
-                                'like' => [ 'type' => 'integer' ],
-                                'dislike' => [ 'type' => 'integer' ],
-                                'favorite' => [ 'type' => 'integer' ],
+                                'counts' => [
+                                    'properties' => [
+                                        'view' => [ 'type' => 'long' ],
+                                        'like' => [ 'type' => 'integer' ],
+                                        'dislike' => [ 'type' => 'integer' ],
+                                        'favorite' => [ 'type' => 'integer' ],
+                                        'comment' => [ 'type' => 'integer' ]
+                                    ]
+                                ],
                                 'channel' => [
                                     'properties' => [
                                         'id' => [ 'type' => 'keyword' ],
@@ -59,7 +64,7 @@ class YouTubeCrawler
                         ]
                     ],
                     [
-                        'total_fields_limit' => 22,
+                        'total_fields_limit' => 44,
                         'number_of_shards' => 2,
                         'number_of_replicas' => 1,
                         'refresh_interval' => '10s'
@@ -109,7 +114,7 @@ class YouTubeCrawler
                         ]
                     ],
                     [
-                        'total_fields_limit' => 22,
+                        'total_fields_limit' => 44,
                         'number_of_shards' => 4,
                         'number_of_replicas' => 1,
                         'refresh_interval' => '10s'

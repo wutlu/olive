@@ -275,6 +275,13 @@ $(document).on('click', '[data-class]', function() {
     return false;
 })
 
+/* --- checkbox value toggle function --- */
+
+$('input[type=checkbox][data-checked-value]').change(function() {
+    var __ = $(this);
+        __.val(__.data(this.checked ? 'checked-value' : 'unchecked-value'))
+})
+
 /* --- focus class function --- */
 
 var focusClassDelay;

@@ -75,7 +75,7 @@ Route::prefix('geo')->group(function () {
     Route::get('states', 'GeoController@states')->name('geo.states');
 });
 
-Route::prefix('kullanici')->group(function () {
+Route::prefix('oturum')->group(function () {
     Route::get('/', 'UserController@loginView')->name('user.login');
     Route::post('/', 'UserController@loginPost');
     Route::get('cikis', 'UserController@logout')->name('user.logout');
@@ -139,6 +139,12 @@ Route::prefix('admin')->middleware([ 'root' ])->group(function () {
 
         Route::prefix('youtube')->namespace('Crawlers')->group(function () {
             Route::get('/', 'YouTubeController@dashboard')->name('admin.youtube.settings');
+            Route::patch('ayar', 'YouTubeController@statusSet')->name('admin.youtube.status.set');
+
+            Route::post('log-ekrani', 'YouTubeController@logJson')->name('admin.youtube.monitoring.log');
+
+            Route::get('index-durumu', 'YouTubeController@indexStatus')->name('admin.youtube.index.status');
+            Route::post('index-olustur', 'YouTubeController@indexCreate')->name('admin.youtube.index.create');
         });
 
         Route::prefix('medya-botlari')->namespace('Crawlers')->group(function () {

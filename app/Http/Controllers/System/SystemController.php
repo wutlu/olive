@@ -31,7 +31,7 @@ class SystemController extends Controller
         ];
     }
 
-    # set
+    # alarm
     public static function alarmControl()
     {
         MonitorController::alarmControl();

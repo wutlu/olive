@@ -4,7 +4,9 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+
 use App\Models\Crawlers\SozlukCrawler;
+use App\Models\Option;
 
 class Kernel extends ConsoleKernel
 {
@@ -66,6 +68,18 @@ class Kernel extends ConsoleKernel
                          ->timezone(config('app.timezone'))
                          ->withoutOverlapping();
             }
+        }
+
+        /* ---------------------------------------- */
+
+        $option = Option::where('key', 'youtube.status')->where('value', 'on')->exists();
+
+        if ($option)
+        {
+            $schedule->command('nohup "youtube:trends"')
+                     ->everyFifteenMinutes()
+                     ->timezone(config('app.timezone'))
+                     ->withoutOverlapping();
         }
 
         /* ---------------------------------------- */

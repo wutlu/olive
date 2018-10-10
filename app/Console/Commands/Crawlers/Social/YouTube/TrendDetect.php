@@ -7,10 +7,17 @@ use Illuminate\Console\Command;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use Youtube;
+
 use App\Utilities\Term;
+
 use App\Elasticsearch\Indices;
 
+use App\Jobs\Elasticsearch\BulkInsertJob;
+
 use System;
+
+use Mail;
+use App\Mail\ServerAlertMail;
 
 class TrendDetect extends Command
 {
@@ -45,131 +52,168 @@ class TrendDetect extends Command
      */
     public function handle()
     {
-    	$videoList = Youtube::getPopularVideos('tr', 50);
+        $videoList = Youtube::getPopularVideos('tr', 50);
 
-    	if (count($videoList))
-    	{
-    		$this->info('list['.count($videoList).']');
+        if (count($videoList))
+        {
+            $this->info('list['.count($videoList).']');
 
-            $chunk = [ 'body' => [] ];
+            $videoChunk = [];
+            $commentChunk = [];
 
-    		foreach ($videoList as $video)
-    		{
-    			try
-    			{
-	    			$commentThreads = Youtube::getCommentThreadsByVideoId($video->id, 100);
-	                $comment_count = count($commentThreads);
+            $totalComment = 0;
+            $totalVideo = 0;
 
-    				$this->comment('['.$video->snippet->title.']');
+            foreach ($videoList as $video)
+            {
+                try
+                {
+                    $totalVideo++;
 
-	                $chunk['body'][] = [
-	                    'create' => [
-	                        '_index' => Indices::name([ 'youtube', 'videos' ]),
-	                        '_type' => 'video',
-	                        '_id' => $video->id
-	                    ]
-	                ];
+                    $this->comment('['.$video->snippet->title.']');
 
-	                $arr = [
-	                    'id' => $video->id,
-	                    'title' => $video->snippet->title,
-	                    'created_at' => date('Y-m-d H:i:s', strtotime($video->snippet->publishedAt)),
-	                    'called_at' => date('Y-m-d H:i:s'),
-	                    'view' => $video->statistics->viewCount,
-	                    'like' => $video->statistics->likeCount,
-	                    'dislike' => $video->statistics->dislikeCount,
-	                    'favorite' => $video->statistics->favoriteCount,
-	                    'channel' => [
-	                    	'id' => $video->snippet->channelId,
-	                    	'title' => $video->snippet->channelTitle
-	                    ],
-	                ];
+                    $videoChunk['body'][] = [
+                        'index' => [
+                            '_index' => Indices::name([ 'youtube', 'videos' ]),
+                            '_type' => 'video',
+                            '_id' => $video->id
+                        ]
+                    ];
 
-	                if (@$video->snippet->tags)
-	                {
-	                    $arr['tags'] = json_encode($video->snippet->tags);
-	                }
+                    $arr = [
+                        'id' => $video->id,
+                        'title' => $video->snippet->title,
+                        'created_at' => date('Y-m-d H:i:s', strtotime($video->snippet->publishedAt)),
+                        'called_at' => date('Y-m-d H:i:s'),
+                        'counts' => [
+                            'view' => intval(@$video->statistics->viewCount),
+                            'like' => intval(@$video->statistics->likeCount),
+                            'dislike' => intval(@$video->statistics->dislikeCount),
+                            'favorite' => intval(@$video->statistics->favoriteCount),
+                            'comment' => intval(@$video->statistics->commentCount)
+                        ],
+                        'channel' => [
+                            'id' => $video->snippet->channelId,
+                            'title' => $video->snippet->channelTitle
+                        ],
+                    ];
 
-	                if (@$video->snippet->description)
-	                {
-	                	$arr['description'] = Term::convertAscii($video->snippet->description);
-	                }
+                    if (@$video->snippet->tags)
+                    {
+                        $arr['tags'][] = [
+                            'tag' => $video->snippet->tags
+                        ];
+                    }
 
-	                $chunk['body'][] = $arr;
+                    if (@$video->snippet->description)
+                    {
+                        $arr['description'] = Term::convertAscii($video->snippet->description);
+                    }
 
-	    			if ($comment_count)
-	    			{
-	    				$this->info('comments['.$comment_count.']');
+                    $videoChunk['body'][] = $arr;
 
-	    				foreach ($commentThreads as $comment)
-	    				{
-	    					$reply_count = 0;
+                    if (@$video->statistics->commentCount)
+                    {
+                        $commentThreads = Youtube::getCommentThreadsByVideoId($video->id, 100);
+                        $commentCount = count($commentThreads);
 
-			                $chunk['body'][] = [
-			                    'create' => [
-			                        '_index' => Indices::name([ 'youtube', 'comments' ]),
-			                        '_type' => 'comment',
-			                        '_id' => $comment->id
-			                    ]
-			                ];
+                        if ($commentCount)
+                        {
+                            $this->info('comments['.$commentCount.']');
 
-			                $chunk['body'][] = [
-			                    'id' => $comment->id,
-			                    'text' => $comment->snippet->topLevelComment->snippet->textOriginal,
-			                    'video_id' => $comment->snippet->videoId,
-			                    'channel' => [
-			                    	'id' => $comment->snippet->topLevelComment->snippet->authorChannelId->value,
-			                    	'title' => $comment->snippet->topLevelComment->snippet->authorDisplayName
-			                    ],
-			                    'created_at' => date('Y-m-d H:i:s', strtotime($comment->snippet->topLevelComment->snippet->publishedAt)),
-			                    'called_at' => date('Y-m-d H:i:s')
-			                ];
+                            foreach ($commentThreads as $comment)
+                            {
+                                $totalComment++;
 
-	    					if (@$comment->replies->comments)
-	    					{
-	    						foreach ($comment->replies->comments as $reply)
-	    						{
-	    							$reply_count++;
+                                $replyCount = 0;
 
-					                $chunk['body'][] = [
-					                    'create' => [
-					                        '_index' => Indices::name([ 'youtube', 'comments' ]),
-					                        '_type' => 'comment',
-					                        '_id' => $reply->id
-					                    ]
-					                ];
+                                $commentChunk['body'][] = [
+                                    'create' => [
+                                        '_index' => Indices::name([ 'youtube', 'comments' ]),
+                                        '_type' => 'comment',
+                                        '_id' => $comment->id
+                                    ]
+                                ];
 
-					                $chunk['body'][] = [
-					                    'id' => $reply->id,
-					                    'text' => $reply->snippet->textOriginal,
-					                    'video_id' => $comment->snippet->videoId,
-					                    'comment_id' => $comment->id,
-					                    'channel' => [
-					                    	'id' => $reply->snippet->authorChannelId->value,
-					                    	'title' => $reply->snippet->authorDisplayName
-					                    ],
-					                    'created_at' => date('Y-m-d H:i:s', strtotime($reply->snippet->publishedAt)),
-					                    'called_at' => date('Y-m-d H:i:s')
-					                ];
-	    						}
-	    					}
-	    				}
+                                $commentChunk['body'][] = [
+                                    'id' => $comment->id,
+                                    'text' => $comment->snippet->topLevelComment->snippet->textOriginal,
+                                    'video_id' => $comment->snippet->videoId,
+                                    'channel' => [
+                                        'id' => $comment->snippet->topLevelComment->snippet->authorChannelId->value,
+                                        'title' => $comment->snippet->topLevelComment->snippet->authorDisplayName
+                                    ],
+                                    'created_at' => date('Y-m-d H:i:s', strtotime($comment->snippet->topLevelComment->snippet->publishedAt)),
+                                    'called_at' => date('Y-m-d H:i:s')
+                                ];
 
-	    				if (@$reply_count)
-	    				{
-	    					$this->info('replies['.$reply_count.']');
-	    				}
-	    			}
-    			}
-    			catch (\Exception $e)
-    			{
-    				$this->error($e->getMessage());
+                                if (@$comment->replies->comments)
+                                {
+                                    foreach ($comment->replies->comments as $reply)
+                                    {
+                                        $replyCount++;
+                                        $totalComment++;
 
-    				System::log($e->getMessage(), 'App\Console\Commands\Crawlers\Social\YouTube\TrendDetect::handle()', 2);
-    			}
-    		}
+                                        $commentChunk['body'][] = [
+                                            'create' => [
+                                                '_index' => Indices::name([ 'youtube', 'comments' ]),
+                                                '_type' => 'comment',
+                                                '_id' => $reply->id
+                                            ]
+                                        ];
 
-    		//BulkInsertJob::dispatch($chunk)->onQueue('elasticsearch');
-    	}
+                                        $commentChunk['body'][] = [
+                                            'id' => $reply->id,
+                                            'text' => $reply->snippet->textOriginal,
+                                            'video_id' => $comment->snippet->videoId,
+                                            'comment_id' => $comment->id,
+                                            'channel' => [
+                                                'id' => $reply->snippet->authorChannelId->value,
+                                                'title' => $reply->snippet->authorDisplayName
+                                            ],
+                                            'created_at' => date('Y-m-d H:i:s', strtotime($reply->snippet->publishedAt)),
+                                            'called_at' => date('Y-m-d H:i:s')
+                                        ];
+                                    }
+                                }
+                            }
+
+                            if (@$replyCount)
+                            {
+                                $this->info('replies['.$replyCount.']');
+                            }
+                        }
+
+                        if (count($commentChunk))
+                        {
+                            BulkInsertJob::dispatch($commentChunk)->onQueue('elasticsearch');
+                        }
+
+                        $commentChunk = [];
+                    }
+                }
+                catch (\Exception $e)
+                {
+                    $this->error($e->getMessage());
+
+                    System::log($e->getMessage(), 'App\Console\Commands\Crawlers\Social\YouTube\TrendDetect::handle()', 2);
+                }
+            }
+
+            if (count($videoChunk))
+            {
+                BulkInsertJob::dispatch($videoChunk)->onQueue('elasticsearch');
+            }
+
+            if ($totalComment <= 100)
+            {
+                Mail::queue(new ServerAlertMail('YouTube Yorum [Düşük Verim]', 'YouTube yorum toplama verimliliğinde yoğun bir düşüş yaşandı. Lütfen logları inceleyin.'));
+            }
+
+            if ($totalVideo <= 20)
+            {
+                Mail::queue(new ServerAlertMail('YouTube İçerik [Düşük Verim]', 'YouTube içerik toplama verimliliğinde yoğun bir düşüş yaşandı. Lütfen logları inceleyin.'));
+            }
+        }
     }
 }

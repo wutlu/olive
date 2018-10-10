@@ -169,7 +169,7 @@
         <div class="card-content orange lighten-4">
             <p>- Eklediğiniz/Ekleyeceğiniz kelimeler bulunduğunuz organizasyona tanımlanır ve depolanacak içeriklerin filtrelenmesini sağlar.</p>
             <p>- Filtreleme işleminde veri kirliliğinin en aza indirgenmesi amaçlanır.</p>
-            <p>- Elde edilen veriler tüm organizasyonlar için ortak bir havuzda toplanarak, daha geniş kapsamlı analizler çıkartılır.</p>
+            <p>- Elde edilen veriler tüm organizasyonlar için ortak bir havuzda toplanarak, daha geniş kapsamlı analizler elde edilir.</p>
         </div>
         <nav class="grey darken-4">
             <div class="nav-wrapper">
