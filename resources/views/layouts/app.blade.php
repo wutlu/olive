@@ -229,6 +229,12 @@
                                 Google Ayarları
                             </a>
                         </li>
+                        <li>
+                            <a class="waves-effect" href="#">
+                                <i class="material-icons">widgets</i>
+                                Instagram Ayarları
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </li>
