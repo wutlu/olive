@@ -77,7 +77,7 @@ class GoogleController extends Controller
             'google.index.search'
         ])->where('value', 'on')->count();
 
-        if ($count == 2)
+        if ($count)
         {
             Option::updateOrCreate(
                 [
@@ -90,7 +90,7 @@ class GoogleController extends Controller
         }
 
         return [
-            'status' => $count == 2 ? 'ok' : 'err'
+            'status' => $count ? 'ok' : 'err'
         ];
     }
 

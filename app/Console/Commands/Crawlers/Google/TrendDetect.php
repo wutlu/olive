@@ -105,12 +105,19 @@ class TrendDetect extends Command
             catch (\Exception $e)
             {
                 $this->error($e->getMessage());
+
+                System::log($e->getMessage(), 'App\Console\Commands\Crawlers\Google\TrendDetect::handle()', 2);
             }
         }
 
         if (count($chunk))
         {
             BulkInsertJob::dispatch($chunk)->onQueue('elasticsearch');
+        }
+
+        if (count($chunk) <= 10)
+        {
+            Mail::queue(new ServerAlertMail('Google Arama [Düşük Verim]', 'Google arama toplama verimliliğinde yoğun bir düşüş yaşandı. Lütfen logları inceleyin.'));
         }
     }
 }

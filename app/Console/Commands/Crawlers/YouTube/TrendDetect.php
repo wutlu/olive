@@ -196,7 +196,7 @@ class TrendDetect extends Command
                 {
                     $this->error($e->getMessage());
 
-                    System::log($e->getMessage(), 'App\Console\Commands\Crawlers\Social\YouTube\TrendDetect::handle()', 2);
+                    System::log($e->getMessage(), 'App\Console\Commands\Crawlers\YouTube\TrendDetect::handle()', 2);
                 }
             }
 

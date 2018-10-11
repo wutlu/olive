@@ -48,6 +48,8 @@ return [
         'youtube.status' => 'string|in:on,off',
         'youtube.index.video' => 'string|in:on,off',
         'youtube.index.comment' => 'string|in:on,off',
+        'google.index.search' => 'string|in:on,off',
+        'google.status' => 'string|in:on,off',
     ],
 
     'log_files' => [
