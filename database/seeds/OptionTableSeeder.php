@@ -19,5 +19,7 @@ class OptionTableSeeder extends Seeder
         Option::updateOrCreate( [ 'key' => 'youtube.status'           ], [ 'value' => 'off'               ] );
         Option::updateOrCreate( [ 'key' => 'youtube.index.video'      ], [ 'value' => 'off'               ] );
         Option::updateOrCreate( [ 'key' => 'youtube.index.comment'    ], [ 'value' => 'off'               ] );
+        Option::updateOrCreate( [ 'key' => 'google.status'            ], [ 'value' => 'off'               ] );
+        Option::updateOrCreate( [ 'key' => 'google.index.search'      ], [ 'value' => 'off'               ] );
     }
 }

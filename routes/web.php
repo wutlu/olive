@@ -147,6 +147,16 @@ Route::prefix('admin')->middleware([ 'root' ])->group(function () {
             Route::post('index-olustur', 'YouTubeController@indexCreate')->name('admin.youtube.index.create');
         });
 
+        Route::prefix('google')->namespace('Crawlers')->group(function () {
+            Route::get('/', 'GoogleController@dashboard')->name('admin.google.settings');
+            Route::patch('ayar', 'GoogleController@statusSet')->name('admin.google.status.set');
+
+            Route::post('log-ekrani', 'GoogleController@logJson')->name('admin.google.monitoring.log');
+
+            Route::get('index-durumu', 'GoogleController@indexStatus')->name('admin.google.index.status');
+            Route::post('index-olustur', 'GoogleController@indexCreate')->name('admin.google.index.create');
+        });
+
         Route::prefix('medya-botlari')->namespace('Crawlers')->group(function () {
             Route::get('/', 'MediaController@listView')->name('crawlers.media.list');
             Route::get('json', 'MediaController@listViewJson')->name('crawlers.media.list.json');

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands\Crawlers\Social\YouTube;
+namespace App\Console\Commands\Crawlers\YouTube;
 
 use Illuminate\Console\Command;
 
@@ -26,14 +26,14 @@ class TrendDetect extends Command
      *
      * @var string
      */
-    protected $signature = 'youtube:trends';
+    protected $signature = 'youtube:trend_detect';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'YouTube trend listesini belirler.';
+    protected $description = 'YouTube trend videoları ve videolara atılan yorumları alır.';
 
     /**
      * Create a new command instance.

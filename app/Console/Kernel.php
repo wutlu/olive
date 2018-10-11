@@ -76,8 +76,20 @@ class Kernel extends ConsoleKernel
 
         if ($option)
         {
-            $schedule->command('nohup "youtube:trends"')
+            $schedule->command('nohup "youtube:trend_detect"')
                      ->everyFifteenMinutes()
+                     ->timezone(config('app.timezone'))
+                     ->withoutOverlapping();
+        }
+
+        /* ---------------------------------------- */
+
+        $option = Option::where('key', 'google.status')->where('value', 'on')->exists();
+
+        if ($option)
+        {
+            $schedule->command('nohup "google:trend_detect"')
+                     ->everyThirtyMinutes()
                      ->timezone(config('app.timezone'))
                      ->withoutOverlapping();
         }

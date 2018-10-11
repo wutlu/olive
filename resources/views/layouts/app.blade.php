@@ -223,6 +223,12 @@
                                 YouTube Ayarları
                             </a>
                         </li>
+                        <li>
+                            <a class="waves-effect" href="{{ route('admin.google.settings') }}">
+                                <i class="material-icons">widgets</i>
+                                Google Ayarları
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </li>

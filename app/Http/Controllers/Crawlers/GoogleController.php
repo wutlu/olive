@@ -10,7 +10,7 @@ use App\Http\Requests\IdRequest;
 use App\Http\Requests\SearchRequest;
 use App\Http\Requests\SetRequest;
 
-use App\Jobs\Elasticsearch\CreateYouTubeIndexJob;
+use App\Jobs\Elasticsearch\CreateGoogleIndexJob;
 use App\Jobs\Elasticsearch\DeleteIndexJob;
 
 use App\Elasticsearch\Indices;
@@ -21,7 +21,7 @@ use App\Models\Log;
 
 use Carbon\Carbon;
 
-class YouTubeController extends Controller
+class GoogleController extends Controller
 {
     # ######################################## [ ADMIN ] ######################################## #
     # 
@@ -30,9 +30,8 @@ class YouTubeController extends Controller
     public static function dashboard()
     {
     	$rows = Option::whereIn('key', [
-    		'youtube.status',
-    		'youtube.index.video',
-    		'youtube.index.comment'
+    		'google.status',
+    		'google.index.search'
     	])->get();
 
     	$options = [];
@@ -42,7 +41,7 @@ class YouTubeController extends Controller
     		$options[$row->key] = $row->value;
     	}
 
-        return view('crawlers.youtube.dashboard', compact('options'));
+        return view('crawlers.google.dashboard', compact('options'));
     }
 
     # ######################################## [ ADMIN ] ######################################## #
@@ -51,8 +50,7 @@ class YouTubeController extends Controller
     # 
     public static function indexCreate()
     {
-        CreateYouTubeIndexJob::dispatch('video')->onQueue('elasticsearch');
-        CreateYouTubeIndexJob::dispatch('comment')->onQueue('elasticsearch');
+        CreateGoogleIndexJob::dispatch()->onQueue('elasticsearch');
 
         return [
             'status' => 'ok'
@@ -66,19 +64,17 @@ class YouTubeController extends Controller
     public static function indexStatus()
     {
         $count = Option::whereIn('key', [
-            'youtube.index.video',
-            'youtube.index.comment'
+            'google.index.search'
         ])->where('value', 'on')->count();
 
-    	return $count == 2 ? [ 'status' => 'ok', 'elasticsearch' => Indices::stats([ 'youtube', '*' ]) ] : [ 'status' => 'err' ];
+    	return $count ? [ 'status' => 'ok', 'elasticsearch' => Indices::stats([ 'google', '*' ]) ] : [ 'status' => 'err' ];
     }
 
     # status set
     public static function statusSet(SetRequest $request)
     {
         $count = Option::whereIn('key', [
-            'youtube.index.video',
-            'youtube.index.comment'
+            'google.index.search'
         ])->where('value', 'on')->count();
 
         if ($count == 2)
@@ -103,7 +99,7 @@ class YouTubeController extends Controller
     {
         $date = Carbon::now()->subHours(24)->format('Y-m-d H:i:s');
 
-        $logs = Log::where('module', 'ILIKE', '%youtube%')
+        $logs = Log::where('module', 'ILIKE', '%google%')
                    ->where('updated_at', '>', $date)
                    ->orderBy('updated_at', 'DESC')
                    ->get();
