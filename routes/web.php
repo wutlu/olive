@@ -19,14 +19,6 @@ Route::prefix('organizasyon')->group(function () {
     Route::patch('update/name', 'OrganisationController@updateName')->name('organisation.update.name');
 });
 
-Route::prefix('kelime-havuzu')->group(function () {
-    Route::get('/', 'KeywordController@listView')->name('keyword.list');
-    Route::get('json', 'KeywordController@listViewJson')->name('keyword.list.json');
-    Route::patch('kelime', 'KeywordController@update')->name('keyword.update');
-    Route::put('kelime', 'KeywordController@create')->name('keyword.create');
-    Route::delete('kelime', 'KeywordController@delete')->name('keyword.delete');
-});
-
 Route::prefix('ayarlar')->group(function () {
     Route::prefix('organizasyon')->group(function () {
         Route::get('/', 'OrganisationController@settings')->name('settings.organisation');

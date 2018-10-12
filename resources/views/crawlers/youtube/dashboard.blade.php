@@ -153,6 +153,8 @@
                 data-method="patch"
                 data-delay="1"
                 data-key="youtube.status"
+                data-checked-value="on"
+                data-unchecked-value="off"
                 type="checkbox"
                 data-callback="__status_set"
                 @if ($options['youtube.status'] == 'on'){{ 'checked' }}@endif />

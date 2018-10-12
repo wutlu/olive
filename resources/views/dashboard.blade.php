@@ -6,7 +6,7 @@
     <div class="row">
         <div class="col s12">
             <div class="fast-menu">
-                <a href="{{ route('keyword.list') }}" class="card-panel hoverable waves-effect" data-tooltip="Kelime Havuzu" data-position="right">
+                <a href="#" class="card-panel hoverable waves-effect" data-tooltip="Kelime Havuzu" data-position="right">
                     <img alt="Kelime Havuzu" src="{{ asset('img/icons/keywords.png') }}" />
                 </a>
                 <a href="#" class="card-panel hoverable waves-effect" data-tooltip="Monitörler" data-position="right">

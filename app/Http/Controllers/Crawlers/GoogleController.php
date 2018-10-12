@@ -84,7 +84,7 @@ class GoogleController extends Controller
                     'key' => $request->key
                 ],
                 [
-                    'value' => 'on'
+                    'value' => $request->value
                 ]
             );
         }
