@@ -62,7 +62,7 @@
     </div>
     <div class="card">
         <div class="card-image">
-            <img src="{{ asset('img/md-s/32.jpg') }}" alt="Organizasyonlar" />
+            <img src="{{ asset('img/card-header.jpg') }}" alt="Organizasyonlar" />
             <span class="card-title">Organizasyonlar</span>
         </div>
         <nav class="grey darken-4">

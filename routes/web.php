@@ -7,7 +7,7 @@ Route::get('aktiviteler', 'HomeController@activity')->name('dashboard.activities
 Route::get('route-by-id', 'RouteController@generateById')->name('route.generate.id');
 
 Route::get('panel-monitor', 'HomeController@monitor')->name('dashboard.monitor');
-Route::get('intro/{key}', 'HomeController@intro')->name('intro')->where('key', '('.implode('|', config('app.intro.keys')).')');;
+Route::get('intro/{key}', 'HomeController@intro')->name('intro')->where('key', '('.implode('|', config('app.intro.keys')).')');
 
 Route::prefix('organizasyon')->group(function () {
     Route::get('plan', 'OrganisationController@select')->name('organisation.create.select');
@@ -19,6 +19,8 @@ Route::prefix('organizasyon')->group(function () {
     Route::patch('update/name', 'OrganisationController@updateName')->name('organisation.update.name');
 });
 
+Route::get('uyari', 'HomeController@alert')->name('alert');
+
 Route::prefix('ayarlar')->group(function () {
     Route::prefix('organizasyon')->group(function () {
         Route::get('/', 'OrganisationController@settings')->name('settings.organisation');
@@ -28,8 +30,6 @@ Route::prefix('ayarlar')->group(function () {
         Route::post('devret', 'OrganisationController@transfer')->name('settings.organisation.transfer');
         Route::delete('cikar', 'OrganisationController@remove')->name('settings.organisation.remove');
         Route::post('davet', 'OrganisationController@invite')->name('settings.organisation.invite');
-
-        Route::get('uyari', 'OrganisationController@alert')->name('settings.organisation.alert');
 
         Route::delete('fatura-iptal', 'OrganisationController@invoiceCancel')->name('settings.organisation.invoice.cancel');
     });
@@ -65,6 +65,18 @@ Route::prefix('fatura')->group(function () {
 Route::prefix('geo')->group(function () {
     Route::get('countries', 'GeoController@countries')->name('geo.countries');
     Route::get('states', 'GeoController@states')->name('geo.states');
+});
+
+Route::prefix('twitter')->namespace('Twitter')->group(function () {
+    Route::prefix('oauth')->group(function () {
+        Route::get('/', 'AccountController@connect')->name('twitter.connect');
+        Route::post('redirect', 'AccountController@redirect')->name('twitter.connect.redirect');
+        Route::post('disconnect', 'AccountController@disconnect')->name('twitter.disconnect');
+
+        Route::get('callback', 'AccountController@callback')->name('twitter.connect.callback');
+    });
+
+    Route::get('veri-havuzu', 'DataController@dataPool')->name('twitter.data.pool');
 });
 
 Route::prefix('oturum')->group(function () {

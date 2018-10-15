@@ -22,7 +22,7 @@
 @section('content')
     <div class="card">
         <div class="card-image">
-            <img src="{{ asset('img/md-s/14.jpg') }}" alt="Fatura Geçmişi" />
+            <img src="{{ asset('img/card-header.jpg') }}" alt="Fatura Geçmişi" />
             <span class="card-title">Fatura Geçmişi</span>
         </div>
         @if ($organisation->invoices->count())

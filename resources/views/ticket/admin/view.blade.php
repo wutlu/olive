@@ -25,7 +25,7 @@
                         .animate({ 'opacity': 1 }, 1000)
                         .children('.card-image')
                         .children('img')
-                        .attr('src', '{{ asset('img/md-s/34.jpg') }}')
+                        .attr('src', '{{ asset('img/card-header.jpg') }}')
                         .next('a')
                         .removeClass('cyan')
                         .addClass('disabled')

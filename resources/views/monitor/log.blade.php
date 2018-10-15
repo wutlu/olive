@@ -168,7 +168,7 @@
 @section('content')
     <div class="card">
         <div class="card-image">
-            <img src="{{ asset('img/md-s/6.jpg') }}" alt="Log Ekranı" />
+            <img src="{{ asset('img/card-header.jpg') }}" alt="Log Ekranı" />
             <span class="card-title">Log Ekranı</span>
 
             <a

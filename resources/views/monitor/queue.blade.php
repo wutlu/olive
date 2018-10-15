@@ -24,7 +24,7 @@
 @section('content')
     <div class="card">
         <div class="card-image">
-            <img src="{{ asset('img/md-s/6.jpg') }}" alt="Kuyruk Ekranı (Laravel Horizon)" />
+            <img src="{{ asset('img/card-header.jpg') }}" alt="Kuyruk Ekranı (Laravel Horizon)" />
             <span class="card-title">Kuyruk Ekranı (Laravel Horizon)</span>
         </div>
     </div>

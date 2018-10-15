@@ -14,7 +14,7 @@
 @section('content')
 	<div class="card">
 	    <div class="card-image">
-	        <img src="{{ asset('img/md-s/32.jpg') }}" alt="İndirim Günleri" />
+	        <img src="{{ asset('img/card-header.jpg') }}" alt="İndirim Günleri" />
 	        <a href="{{ route('admin.discount.day') }}" class="btn-floating btn-large halfway-fab waves-effect white">
 	            <i class="material-icons black-text">add</i>
 	        </a>

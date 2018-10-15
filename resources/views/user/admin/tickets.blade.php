@@ -22,7 +22,7 @@
 @section('content')
     <div class="card">
         <div class="card-image">
-            <img src="{{ asset('img/md-s/32.jpg') }}" alt="Destek Talepleri" />
+            <img src="{{ asset('img/card-header.jpg') }}" alt="Destek Talepleri" />
             <span class="card-title">Destek Talepleri</span>
         </div>
         @if (count($tickets))

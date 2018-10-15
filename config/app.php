@@ -109,6 +109,7 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         Orangehill\Iseed\IseedServiceProvider::class,
         Alaouy\Youtube\YoutubeServiceProvider::class,
+        Laravel\Socialite\SocialiteServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -181,6 +182,7 @@ return [
         'GeoIP' => Torann\GeoIP\Facades\GeoIP::class,
         'Image' => Intervention\Image\Facades\Image::class,
         'Youtube' => Alaouy\Youtube\Facades\Youtube::class,
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
 
     ],
 

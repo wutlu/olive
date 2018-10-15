@@ -83,7 +83,7 @@
         @endif
         <div class="card">
             <div class="card-image">
-                <img src="{{ asset('img/md-s/32.jpg') }}" alt="{{ @$page ? $page->title : 'Sayfa Oluştur' }}" />
+                <img src="{{ asset('img/card-header.jpg') }}" alt="{{ @$page ? $page->title : 'Sayfa Oluştur' }}" />
                 <span class="card-title">{{ @$page ? $page->title : 'Sayfa Oluştur' }}</span>
             </div>
             <div class="card-content">

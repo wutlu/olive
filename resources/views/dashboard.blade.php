@@ -6,8 +6,8 @@
     <div class="row">
         <div class="col s12">
             <div class="fast-menu">
-                <a href="#" class="card-panel hoverable waves-effect" data-tooltip="Kelime Havuzu" data-position="right">
-                    <img alt="Kelime Havuzu" src="{{ asset('img/icons/keywords.png') }}" />
+                <a href="{{ route('twitter.data.pool') }}" class="card-panel hoverable waves-effect" data-tooltip="Twitter Veri Havuzu" data-position="right">
+                    <img alt="Twitter Veri Havuzu" src="{{ asset('img/icons/keywords.png') }}" />
                 </a>
                 <a href="#" class="card-panel hoverable waves-effect" data-tooltip="Monitörler" data-position="right">
                     <img alt="Monitorler" src="{{ asset('img/icons/analytics.png') }}" />
@@ -33,9 +33,9 @@
             @if (@auth()->user()->organisation_id)
                 <div class="card" id="organisation-card">
                     <div class="card-image">
-                        <img src="{{ asset('img/md/21.jpg') }}" alt="" />
+                        <img src="{{ asset('img/user-background.jpg') }}" alt="" />
                         <span class="card-title">{{ $user->organisation->name }}</span>
-                        <a href="{{ route('settings.organisation') }}" class="btn-floating btn-large halfway-fab waves-effect waves-teal teal darken-4">
+                        <a href="{{ route('settings.organisation') }}" class="btn-floating btn-large halfway-fab waves-effect waves-teal cyan darken-2">
                             <i class="material-icons">settings</i>
                         </a>
                     </div>
@@ -63,7 +63,7 @@
             @else
                 <div class="card">
                     <div class="card-image">
-                        <img src="{{ asset('img/md-s/23.jpg') }}" alt="" />
+                        <img src="{{ asset('img/card-header.jpg') }}" alt="" />
                         <span class="card-title">Başlayın</span>
                     </div>
                     <div class="card-content">

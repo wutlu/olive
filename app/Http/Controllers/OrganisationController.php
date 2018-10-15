@@ -181,14 +181,6 @@ class OrganisationController extends Controller
     }
 
     # 
-    # organizasyon uyarı
-    # 
-    public static function alert()
-    {
-        return session('alert') ? view('organisation.alert') : redirect()->route('dashboard');
-    }
-
-    # 
     # organizasyona davet
     # 
     public static function invite(InviteRequest $request)

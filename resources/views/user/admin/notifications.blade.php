@@ -22,7 +22,7 @@
 @section('content')
     <div class="card">
         <div class="card-image">
-            <img src="{{ asset('img/md-s/32.jpg') }}" alt="E-posta Bildirimleri" />
+            <img src="{{ asset('img/card-header.jpg') }}" alt="E-posta Bildirimleri" />
             <span class="card-title">E-posta Bildirimleri</span>
         </div>
         <div class="collection">

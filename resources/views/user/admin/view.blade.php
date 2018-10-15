@@ -37,7 +37,7 @@
     <form method="post" action="{{ route('admin.user', $user->id) }}" class="json" id="details-form" data-callback="__account">
         <div class="card">
             <div class="card-image">
-                <img src="{{ asset('img/md-s/32.jpg') }}" alt="Hesap Bilgileri" />
+                <img src="{{ asset('img/card-header.jpg') }}" alt="Hesap Bilgileri" />
                 <span class="card-title">Hesap Bilgileri</span>
             </div>
             <div class="card-content">

@@ -81,7 +81,7 @@
         @endif
         <div class="card">
             <div class="card-image">
-                <img src="{{ asset('img/md-s/32.jpg') }}" alt="{{ @$coupon ? $coupon->key : 'Kupon Oluştur' }}" />
+                <img src="{{ asset('img/card-header.jpg') }}" alt="{{ @$coupon ? $coupon->key : 'Kupon Oluştur' }}" />
                 <span class="card-title">{{ @$coupon ? $coupon->key : 'Kupon Oluştur' }}</span>
             </div>
             <div class="card-content">

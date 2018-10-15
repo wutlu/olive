@@ -104,7 +104,7 @@
                     </a>
                 </li>
             </ul>
-            <nav class="purple darken-2">
+            <nav class="light-blue darken-4">
                 <div class="sidenav-fixed-layout">
                     <div class="nav-wrapper">
                         <a href="{{ route('dashboard') }}" class="brand-logo center">
@@ -138,7 +138,7 @@
             <li>
                 <div class="user-view">
                     <small class="white-text right">Yapı {{ config('app.version') }}</small>
-                    <div class="background" style="background-image: url('{{ asset('img/md/23.jpg') }}');"></div>
+                    <div class="background" style="background-image: url('{{ asset('img/md/1.jpg') }}');"></div>
 
                     <img class="circle" src="{{ asset(auth()->user()->avatar()) }}" />
                     <span class="white-text name">{{ auth()->user()->name }}</span>

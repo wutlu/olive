@@ -32,9 +32,18 @@ class HomeController extends Controller
         $this->middleware('auth')->only([
             'dashboard',
             'activity',
-            'intro'
+            'intro',
+            'alert'
         ]);
         $this->middleware('root')->only('monitor');
+    }
+
+    # 
+    # uyarı
+    # 
+    public static function alert()
+    {
+        return session('alert') ? view('alert') : redirect()->route('dashboard');
     }
 
     # home

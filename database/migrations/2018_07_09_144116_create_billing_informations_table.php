@@ -27,10 +27,10 @@ class CreateBillingInformationsTable extends Migration
             $table->string('tax_office')->nullable()->default(null);
 
             $table->unsignedInteger('country_id');
-            $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('country_id')->references('id')->on('countries')->onDelete('restrict')->onUpdate('cascade');
 
             $table->unsignedInteger('state_id');
-            $table->foreign('state_id')->references('id')->on('states')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('state_id')->references('id')->on('states')->onDelete('restrict')->onUpdate('cascade');
 
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');

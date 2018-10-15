@@ -20,7 +20,7 @@ class CreateOrganisationInvoicesTable extends Migration
             $table->foreign('organisation_id')->references('id')->on('organisations')->onDelete('cascade')->onUpdate('cascade');
 
             $table->unsignedInteger('user_id')->nullable()->default(null);
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('SET NULL')->onUpdate('cascade');
 
             $table->decimal('unit_price', 9, 2)->default(0);
             $table->unsignedSmallInteger('month')->default(1);

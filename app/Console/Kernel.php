@@ -27,74 +27,77 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        # 
-        # Her pazartesi ödeme bildirimi gönder.
-        # 
-        $schedule->command('check:upcoming_payments')
-                 ->mondays()
-                 ->timezone(config('app.timezone'))
-                 ->withoutOverlapping();
-
-        # 
-        # Site Takipçileri.
-        # 
-        $schedule->command('media:detector')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
-        $schedule->command('shopping:detector')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
-
-        # 
-        # Bağlantı Toplayıcıları
-        # 
-        $schedule->command('media:taker')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
-        $schedule->command('shopping:taker')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
-
-        # 
-        # Alarmları sürekli kontrol et.
-        # 
-        $schedule->command('alarm:control')
-                 ->everyMinute()
-                 ->timezone(config('app.timezone'))
-                 ->withoutOverlapping();
-
-        /* ---------------------------------------- */
-
-        $crawlers = SozlukCrawler::where('status', true)->get();
-
-        if (count($crawlers))
+        if (env('FIRST_MIGRATION'))
         {
-            foreach ($crawlers as $crawler)
+            # 
+            # Her pazartesi ödeme bildirimi gönder.
+            # 
+            $schedule->command('check:upcoming_payments')
+                     ->mondays()
+                     ->timezone(config('app.timezone'))
+                     ->withoutOverlapping();
+
+            # 
+            # Site Takipçileri.
+            # 
+            $schedule->command('media:detector')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
+            $schedule->command('shopping:detector')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
+
+            # 
+            # Bağlantı Toplayıcıları
+            # 
+            $schedule->command('media:taker')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
+            $schedule->command('shopping:taker')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
+
+            # 
+            # Alarmları sürekli kontrol et.
+            # 
+            $schedule->command('alarm:control')
+                     ->everyMinute()
+                     ->timezone(config('app.timezone'))
+                     ->withoutOverlapping();
+
+            /* ---------------------------------------- */
+
+            $crawlers = SozlukCrawler::where('status', true)->get();
+
+            if (count($crawlers))
             {
-                $schedule->command('nohup "sozluk:crawler '.$crawler->id.'"')
-                         ->everyMinute()
+                foreach ($crawlers as $crawler)
+                {
+                    $schedule->command('nohup "sozluk:crawler '.$crawler->id.'"')
+                             ->everyMinute()
+                             ->timezone(config('app.timezone'))
+                             ->withoutOverlapping();
+                }
+            }
+
+            /* ---------------------------------------- */
+
+            $option = Option::where('key', 'youtube.status')->where('value', 'on')->exists();
+
+            if ($option)
+            {
+                $schedule->command('nohup "youtube:trend_detect"')
+                         ->everyFifteenMinutes()
                          ->timezone(config('app.timezone'))
                          ->withoutOverlapping();
             }
+
+            /* ---------------------------------------- */
+
+            $option = Option::where('key', 'google.status')->where('value', 'on')->exists();
+
+            if ($option)
+            {
+                $schedule->command('nohup "google:trend_detect"')
+                         ->everyThirtyMinutes()
+                         ->timezone(config('app.timezone'))
+                         ->withoutOverlapping();
+            }
+
+            /* ---------------------------------------- */
         }
-
-        /* ---------------------------------------- */
-
-        $option = Option::where('key', 'youtube.status')->where('value', 'on')->exists();
-
-        if ($option)
-        {
-            $schedule->command('nohup "youtube:trend_detect"')
-                     ->everyFifteenMinutes()
-                     ->timezone(config('app.timezone'))
-                     ->withoutOverlapping();
-        }
-
-        /* ---------------------------------------- */
-
-        $option = Option::where('key', 'google.status')->where('value', 'on')->exists();
-
-        if ($option)
-        {
-            $schedule->command('nohup "google:trend_detect"')
-                     ->everyThirtyMinutes()
-                     ->timezone(config('app.timezone'))
-                     ->withoutOverlapping();
-        }
-
-        /* ---------------------------------------- */
     }
 
     /**

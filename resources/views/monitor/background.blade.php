@@ -64,7 +64,7 @@
 @section('content')
     <div class="card">
         <div class="card-image">
-            <img src="{{ asset('img/md-s/6.jpg') }}" alt="Arkaplan İşleri" />
+            <img src="{{ asset('img/card-header.jpg') }}" alt="Arkaplan İşleri" />
             <span class="card-title">Arkaplan İşleri</span>
         </div>
         <div class="card-content yellow lighten-4">

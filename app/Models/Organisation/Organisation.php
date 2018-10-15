@@ -24,6 +24,12 @@ class Organisation extends Model
         return $this->hasOne('App\Models\User\User', 'id', 'user_id');
     }
 
+    # twitter account
+    public function twitterAccount()
+    {
+        return $this->hasOne('App\Models\Twitter\Account', 'id', 'twitter_account_id');
+    }
+
     # son fature
     public function lastInvoice()
     {

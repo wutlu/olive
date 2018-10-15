@@ -152,7 +152,7 @@
 @section('content')
     <div class="card">
         <div class="card-image">
-            <img src="{{ asset('img/md-s/32.jpg') }}" alt="Destek Taleplerim" />
+            <img src="{{ asset('img/card-header.jpg') }}" alt="Destek Taleplerim" />
             <a href="javascript:form()" class="btn-floating btn-large halfway-fab waves-effect waves-light cyan darken-2">
                 <i class="material-icons">add</i>
             </a>

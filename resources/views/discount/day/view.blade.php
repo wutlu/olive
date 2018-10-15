@@ -81,7 +81,7 @@
         @endif
         <div class="card">
             <div class="card-image">
-                <img src="{{ asset('img/md-s/32.jpg') }}" alt="{{ @$day ? 'İndirim Günü' : 'İndirim Günü Oluştur' }}" />
+                <img src="{{ asset('img/card-header.jpg') }}" alt="{{ @$day ? 'İndirim Günü' : 'İndirim Günü Oluştur' }}" />
                 <span class="card-title">{{ @$day ? 'İndirim Günü' : 'İndirim Günü Oluştur' }}</span>
             </div>
             <div class="card-content">

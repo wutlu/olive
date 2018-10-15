@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class Organisation
+class Twitter
 {
     /**
      * Handle an incoming request.
@@ -17,10 +17,10 @@ class Organisation
     {
         if ($type == 'have_not')
         {
-            if (auth()->user()->organisation_id)
+            if (auth()->user()->organisation->twitterAccount)
             {
-                session()->flash('organisation', 'have');
-                session()->flash('alert', 'Zaten bir organizasyona dahilsiniz.');
+                session()->flash('twitter', 'have');
+                session()->flash('alert', 'Zaten bir Twitter hesabı tanımladınız.');
 
                 return $request->expectsJson()
                     ? response()->json([
@@ -28,9 +28,9 @@ class Organisation
                         'errors' => [
                             'global' => [ session('alert') ]
                         ],
-                        'organisation' => 'have'
+                        'twitter' => 'have'
                     ], 422)
-                    : redirect()->route('alert');
+                    : redirect()->route('twitter.connect');
             }
             else
             {
@@ -39,13 +39,14 @@ class Organisation
         }
         elseif ($type == 'have')
         {
-            if (auth()->user()->organisation_id)
+            if (auth()->user()->organisation->twitterAccount)
             {
                 return $next($request);
             }
             else
             {
-                session()->flash('alert', 'Bu modülü kullanabilmek için bir organizasyona dahil olmanız gerekiyor.');
+                session()->flash('twitter', 'have_not');
+                session()->flash('alert', 'Lütfen bir Twitter hesabı tanımlayın.');
 
                 return $request->expectsJson()
                     ? response()->json([
@@ -53,9 +54,9 @@ class Organisation
                         'errors' => [
                             'global' => [ session('alert') ]
                         ],
-                        'organisation' => 'have_not'
+                        'twitter' => 'have_not'
                     ], 422)
-                    : redirect()->route('alert');
+                    : redirect()->route('twitter.connect');
             }
         }
         else
