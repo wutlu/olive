@@ -52,10 +52,12 @@ class Kernel extends ConsoleKernel
             # 
             # Alarmları sürekli kontrol et.
             # 
-            $schedule->command('alarm:control')
-                     ->everyMinute()
-                     ->timezone(config('app.timezone'))
-                     ->withoutOverlapping();
+            $schedule->command('alarm:control')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
+
+            #
+            # Müşteri Twitter hesaplarının aktifliğini her saat başı kontrol et.
+            #
+            $schedule->command('nohup "twitter:account_control"')->hourly()->timezone(config('app.timezone'))->withoutOverlapping();
 
             /* ---------------------------------------- */
 

@@ -90,7 +90,7 @@ class AccountController extends Controller
                     'screen_name' => $response->nickname,
                     'avatar' => $response->avatar_original,
                     'description' => $response->user['description'],
-                    'suspended' => $response->user['suspended'],
+                    'suspended' => $response->user['suspended'] ? true : false,
                     'status' => $status,
                     'reasons' => $status ? null : implode(PHP_EOL, $reasons)
                 ]

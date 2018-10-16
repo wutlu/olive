@@ -23,7 +23,7 @@
 }
 
 p {
-    padding: 0 0 1rem;
+    padding: 1rem 0;
 }
 
 pre {
@@ -41,9 +41,6 @@ pre {
                     <span class="card-title">Twitter Bağlantısı</span>
                 </div>
                 <div class="card-content">
-                    <p class="grey-text">Sizin adınıza veri elde etmek için herhangi bir Twitter hesabınızı organizasyonunuza bağlamanız gerekiyor.</p>
-                    <p class="grey-text">Twitter hesabınız ile bilginiz dışında hiçbir işlem gerçekleştirmeyeceğiz.</p>
-                    <p class="grey-text">Ayrıca istediğiniz zaman Twitter hesabınızı bizden ayırabilirsiniz.</p>
                     @if (session('denied'))
                         <pre class="red-text red lighten-5">Twitter bağlantısı sağlanılamadı.</pre>
                     @endif
@@ -71,6 +68,10 @@ pre {
                             </button>
                         </form>
                     </div>
+
+                    <p class="grey-text">Sizin adınıza veri elde etmek için herhangi bir Twitter hesabınızı organizasyonunuza bağlamanız gerekiyor.</p>
+                    <p class="grey-text">Twitter hesabınız ile bilginiz dışında hiçbir işlem gerçekleştirmeyeceğiz.</p>
+                    <p class="grey-text">Ayrıca istediğiniz zaman Twitter hesabınızı bizden ayırabilirsiniz.</p>
                 </div>
             </div>
         </div>
