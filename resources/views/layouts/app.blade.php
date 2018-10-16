@@ -212,7 +212,7 @@
                             </a>
                         </li>
                         <li>
-                            <a class="waves-effect" href="#">
+                            <a class="waves-effect" href="{{ route('admin.twitter.settings') }}">
                                 <i class="material-icons">widgets</i>
                                 Twitter Ayarları
                             </a>

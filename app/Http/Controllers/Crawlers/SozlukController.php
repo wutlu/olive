@@ -20,7 +20,6 @@ use App\Jobs\Elasticsearch\DeleteIndexJob;
 use App\Utilities\Crawler;
 
 use App\Elasticsearch\Indices;
-use App\Elasticsearch\Document;
 
 class SozlukController extends Controller
 {
@@ -65,7 +64,6 @@ class SozlukController extends Controller
     public static function allStatistics()
     {
         $sozluk_crawler = new SozlukCrawler;
-        $document = new Document;
 
         return [
             'status' => 'ok',
@@ -152,7 +150,6 @@ class SozlukController extends Controller
     public static function statistics(int $id)
     {
         $crawler = SozlukCrawler::where('id', $id)->firstOrFail();
-        $document = new Document;
 
         return [
             'status' => 'ok',

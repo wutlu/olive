@@ -1,0 +1,161 @@
+@extends('layouts.app', [
+    'sidenav_fixed_layout' => true,
+    'breadcrumb' => [
+        [
+            'text' => 'Admin'
+        ],
+        [
+            'text' => 'Bot Yönetimi'
+        ],
+        [
+            'text' => 'Twitter Ayarları'
+        ]
+    ],
+    'dock' => true
+])
+
+@push('local.scripts')
+	var statisticsTimer;
+
+	function __statistics(__, obj)
+	{
+		if (obj.status == 'ok')
+		{
+			$('[data-name=]').html()
+
+			window.clearTimeout(statisticsTimer)
+
+			statisticsTimer = window.setTimeout(function() {
+				vzAjax($('[data-callback=__statistics]'))
+			}, 10000)
+		}
+	}
+@endpush
+
+@section('content')
+    <div class="card">
+        <div class="card-image">
+            <img src="{{ asset('img/card-header.jpg') }}" alt="Twitter Ayarları" />
+            <span class="card-title">
+                Twitter Ayarları
+            </span>
+        </div>
+        <div class="card-content">
+            <div class="item-group load" data-href="{{ route('admin.twitter.statistics') }}" data-method="get" data-callback="__statistics">
+                <div class="item">
+                    <small class="d-block grey-text">Tweet Sayısı</small>
+                    <p data-name="tweet-count">-</p>
+                </div>
+                <div class="item">
+                    <small class="d-block grey-text">Alınan Trend Başlık</small>
+                    <p data-name="trend-count">-</p>
+                </div>
+                <div class="item">
+                    <small class="d-block grey-text">Index Sayısı</small>
+                    <p data-name="indices-count">-</p>
+                </div>
+                <div class="item">
+                    <small class="d-block grey-text">Kapladığı Alan</small>
+                    <p data-name="tweet-size">-</p>
+                </div>
+            </div>
+        </div>
+        <div class="alert red d-none" data-name="alert"></div>
+    </div>
+    <div class="card">
+        <div class="card-image">
+            <img src="{{ asset('img/card-header.jpg') }}" alt="Hata Logları" />
+            <span class="card-title">Hata Logları</span>
+        </div>
+        <div class="alert orange lighten-4">Log takibini log monitörü bölümünden de yapabilirsiniz. Bu alan sadece "Twitter" modülü ile ilgili logları gösterir.</div>
+        <ul
+            id="console"
+            class="collection black load d-flex align-items-end flex-wrap no-select"
+            data-href="{{ route('admin.twitter.monitoring.log') }}"
+            data-callback="__log"
+            data-method="post">
+            <li class="collection-item d-none" style="width: 100%;">
+                <p>
+                    <span data-name="level"></span>
+                    <span class="grey-text text-lighten-2" style="padding: 0 .2rem;">/</span>
+                    <span data-name="repeat"></span>
+                    <span class="grey-text text-lighten-2" style="padding: 0 .2rem;">/</span>
+                    <time data-name="updated-at" class="timeago grey-text text-darken-2"></time>
+                </p>
+                <p>
+                    <time data-name="created-at" class="timeago grey-text text-darken-2"></time>
+                    <span data-name="module" class="grey-text text-darken-2"></span>
+                </p>
+                <code data-name="message" class="green-text d-block"></code>
+            </li>
+        </ul>
+    </div>
+@endsection
+
+@push('local.scripts')
+    var logTimer;
+
+    function __log(__, obj)
+    {
+        if (obj.status == 'ok')
+        {
+            var collection = $('ul#console');
+            var model = collection.children('li.collection-item.d-none');
+
+            if (obj.data.length)
+            {
+                $.each(obj.data, function(key, o) {
+                    var m = $('[data-id=' + o.uuid + ']');
+
+                    var item = m.length ? m : model.clone();
+                        item.removeClass('d-none')
+                            .attr('data-id', o.uuid)
+
+                        item.find('[data-name=level]').html(o.level + '. seviye').addClass(o.level <= 4 ? 'green-text' : o.level <= 7 ? 'orange-text' : 'red-text')
+                        item.find('[data-name=repeat]').html(o.hit + ' tekrar').addClass(o.hit <= 10 ? 'green-text' : o.hit <= 20 ? 'orange-text' : 'red-text')
+                        item.find('[data-name=updated-at]').attr('data-time', o.updated_at)
+                        item.find('[data-name=created-at]').attr('data-time', o.created_at)
+                        item.find('[data-name=module]').html(o.module)
+                        item.find('[data-name=message]').html(o.message)
+
+                    if (m.length)
+                    {
+                        if (m.attr('data-repeat') != o.hit)
+                        {
+                            item.attr('data-repeat', o.hit)
+                            item.appendTo(collection)
+                        }
+                    }
+                    else
+                    {
+                        item.find('[data-name=updated-at]').html(o.updated_at)
+                        item.find('[data-name=created-at]').html(o.created_at)
+                        item.attr('data-repeat', o.hit)
+
+                        item.appendTo(collection)
+                    }
+                })
+            }
+
+            window.clearTimeout(logTimer)
+
+            logTimer = window.setTimeout(function() {
+                vzAjax($('ul#console'))
+            }, 10000)
+        }
+    }
+@endpush
+
+@push('local.styles')
+    ul#console {
+        height: 600px;
+        overflow-y: scroll;
+        background-image: url('{{ asset('img/olive-logo-opacity.svg') }}');
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+@endpush
+
+@section('dock')
+	@include('crawlers.twitter._menu', [ 'active' => 'dashboard' ])
+@endsection

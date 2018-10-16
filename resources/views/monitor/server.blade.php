@@ -120,9 +120,12 @@
                                     hddChart_{{ $key }} = new Chart(hddChart_{{ $key }}, {
                                         type: 'doughnut',
                                         data: {
-                                            labels: [ 'Kullanılan alan', 'Boş alan' ],
+                                            labels: [
+                                                'Kullanılan {{ Term::humanFileSize($disk['used']->size)->readable }}',
+                                                'Boş {{ Term::humanFileSize($disk['free']->size)->readable }}'
+                                            ],
                                             datasets: [{
-                                                backgroundColor: [ '#424242', '#8bc34a' ],
+                                                backgroundColor: [ '#c00', '#8bc34a' ],
                                                 data: [ {{ $disk['used']->size }}, {{ $disk['free']->size }} ]
                                             }]
                                         },

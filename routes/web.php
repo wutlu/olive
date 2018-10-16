@@ -124,8 +124,8 @@ Route::prefix('admin')->middleware([ 'root' ])->group(function () {
         Route::delete('indirim-gunu', 'DiscountController@adminDayDelete');
     });
 
-    Route::prefix('bot-yonetimi')->group(function () {
-        Route::prefix('alisveris-botlari')->namespace('Crawlers')->group(function () {
+    Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {
+        Route::prefix('alisveris-botlari')->group(function () {
             Route::get('/', 'ShoppingController@listView')->name('crawlers.shopping.list');
             Route::get('json', 'ShoppingController@listViewJson')->name('crawlers.shopping.list.json');
 
@@ -141,7 +141,7 @@ Route::prefix('admin')->middleware([ 'root' ])->group(function () {
             Route::post('genel/index-olustur', 'ShoppingController@allIndex')->name('crawlers.shopping.bot.index.all');
         });
 
-        Route::prefix('youtube')->namespace('Crawlers')->group(function () {
+        Route::prefix('youtube')->group(function () {
             Route::get('/', 'YouTubeController@dashboard')->name('admin.youtube.settings');
             Route::patch('ayar', 'YouTubeController@statusSet')->name('admin.youtube.status.set');
 
@@ -151,7 +151,7 @@ Route::prefix('admin')->middleware([ 'root' ])->group(function () {
             Route::post('index-olustur', 'YouTubeController@indexCreate')->name('admin.youtube.index.create');
         });
 
-        Route::prefix('google')->namespace('Crawlers')->group(function () {
+        Route::prefix('google')->group(function () {
             Route::get('/', 'GoogleController@dashboard')->name('admin.google.settings');
             Route::patch('ayar', 'GoogleController@statusSet')->name('admin.google.status.set');
 
@@ -161,7 +161,14 @@ Route::prefix('admin')->middleware([ 'root' ])->group(function () {
             Route::post('index-olustur', 'GoogleController@indexCreate')->name('admin.google.index.create');
         });
 
-        Route::prefix('medya-botlari')->namespace('Crawlers')->group(function () {
+        Route::prefix('twitter')->group(function () {
+            Route::get('/', 'TwitterController@dashboard')->name('admin.twitter.settings');
+            Route::get('istatistik', 'TwitterController@statistics')->name('admin.twitter.statistics');
+
+            Route::post('log-ekrani', 'TwitterController@logJson')->name('admin.twitter.monitoring.log');
+        });
+
+        Route::prefix('medya-botlari')->group(function () {
             Route::get('/', 'MediaController@listView')->name('crawlers.media.list');
             Route::get('json', 'MediaController@listViewJson')->name('crawlers.media.list.json');
 
@@ -177,7 +184,7 @@ Route::prefix('admin')->middleware([ 'root' ])->group(function () {
             Route::post('genel/index-olustur', 'MediaController@allIndex')->name('crawlers.media.bot.index.all');
         });
 
-        Route::prefix('sozluk-botlari')->namespace('Crawlers')->group(function () {
+        Route::prefix('sozluk-botlari')->group(function () {
             Route::get('/', 'SozlukController@listView')->name('crawlers.sozluk.list');
             Route::get('json', 'SozlukController@listViewJson')->name('crawlers.sozluk.list.json');
 

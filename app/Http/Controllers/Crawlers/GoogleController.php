@@ -14,7 +14,6 @@ use App\Jobs\Elasticsearch\CreateGoogleIndexJob;
 use App\Jobs\Elasticsearch\DeleteIndexJob;
 
 use App\Elasticsearch\Indices;
-use App\Elasticsearch\Document;
 
 use App\Models\Option;
 use App\Models\Log;
@@ -70,7 +69,10 @@ class GoogleController extends Controller
     	return $count ? [ 'status' => 'ok', 'elasticsearch' => Indices::stats([ 'google', '*' ]) ] : [ 'status' => 'err' ];
     }
 
+    # ######################################## [ ADMIN ] ######################################## #
+    # 
     # status set
+    # 
     public static function statusSet(SetRequest $request)
     {
         $count = Option::whereIn('key', [
@@ -94,7 +96,10 @@ class GoogleController extends Controller
         ];
     }
 
+    # ######################################## [ ADMIN ] ######################################## #
+    # 
     # log ekranı data
+    # 
     public static function logJson()
     {
         $date = Carbon::now()->subHours(24)->format('Y-m-d H:i:s');
