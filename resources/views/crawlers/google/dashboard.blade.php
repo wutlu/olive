@@ -35,9 +35,8 @@
         <div class="alert red d-none" data-name="alert"></div>
     </div>
     <div class="card">
-        <div class="card-image">
-            <img src="{{ asset('img/card-header.jpg') }}" alt="Hata Logları" />
-            <span class="card-title">Hata Logları</span>
+        <div class="card-content">
+            <span class="card-title mb-0">Hata Logları</span>
         </div>
         <div class="alert orange lighten-4">Log takibini log monitörü bölümünden de yapabilirsiniz. Bu alan sadece "Google" modülü ile ilgili logları gösterir.</div>
         <ul
@@ -129,55 +128,57 @@
 @endpush
 
 @section('dock')
-    <div
-        class="collection load"
-        data-href="{{ route('admin.google.index.status') }}"
-        data-callback="__status">
-        <label class="collection-item waves-effect d-block">
-            <input
-                name="value"
-                id="value"
-                value="on"
-                class="json"
-                data-href="{{ route('admin.google.status.set') }}"
-                data-method="patch"
-                data-delay="1"
-                data-key="google.status"
-                data-checked-value="on"
-                data-unchecked-value="off"
-                type="checkbox"
-                data-callback="__status_set"
-                @if ($options['google.status'] == 'on'){{ 'checked' }}@endif />
-            <span>Çalışıyor</span>
-        </label>
-        @if ($options['google.index.search'] == 'off')
-            <a
-                href="#"
-                class="collection-item waves-effect d-block json"
-                data-href="{{ route('admin.google.index.create') }}"
-                data-method="post"
-                data-trigger="search-index"
-                data-callback="__index_create">Indexleri Oluştur</a>
-        @endif
+    <div class="card">
+        <div
+            class="collection load"
+            data-href="{{ route('admin.google.index.status') }}"
+            data-callback="__status">
+            <label class="collection-item waves-effect d-block">
+                <input
+                    name="value"
+                    id="value"
+                    value="on"
+                    class="json"
+                    data-href="{{ route('admin.google.status.set') }}"
+                    data-method="patch"
+                    data-delay="1"
+                    data-key="google.status"
+                    data-checked-value="on"
+                    data-unchecked-value="off"
+                    type="checkbox"
+                    data-callback="__status_set"
+                    @if ($options['google.status'] == 'on'){{ 'checked' }}@endif />
+                <span>Çalışıyor</span>
+            </label>
+            @if ($options['google.index.search'] == 'off')
+                <a
+                    href="#"
+                    class="collection-item waves-effect d-block json"
+                    data-href="{{ route('admin.google.index.create') }}"
+                    data-method="post"
+                    data-trigger="search-index"
+                    data-callback="__index_create">Indexleri Oluştur</a>
+            @endif
+        </div>
     </div>
 @endsection
 
 @push('local.scripts')
-	function __status_set(__, obj)
-	{
-		if (obj.status == 'err')
-		{
-			M.toast({ html: 'Önce indexleri oluşturmanız gerekiyor.', classes: 'red' })
+    function __status_set(__, obj)
+    {
+        if (obj.status == 'err')
+        {
+            M.toast({ html: 'Önce indexleri oluşturmanız gerekiyor.', classes: 'red' })
 
-			__.prop('checked', false)
-		}
-	}
+            __.prop('checked', false)
+        }
+    }
 
     function __index_create(__, obj)
     {
         if (obj.status == 'ok')
         {
-            M.toast({ html: 'Index oluşturma isteği gönderildi. Lütfen bekleyin...', classes: 'green' })
+            M.toast({ html: 'Index oluşturma isteği gönderildi. Lütfen bekleyin...', classes: 'orange' })
         }
     }
 

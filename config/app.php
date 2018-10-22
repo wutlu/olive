@@ -50,6 +50,7 @@ return [
         'youtube.index.comment' => 'string|in:on,off',
         'google.index.search' => 'string|in:on,off',
         'google.status' => 'string|in:on,off',
+        'twitter.index.auto' => 'string|in:on,off',
     ],
 
     'log_files' => [

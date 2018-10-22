@@ -164,6 +164,13 @@ Route::prefix('admin')->middleware([ 'root' ])->group(function () {
         Route::prefix('twitter')->group(function () {
             Route::get('/', 'TwitterController@dashboard')->name('admin.twitter.settings');
             Route::get('istatistik', 'TwitterController@statistics')->name('admin.twitter.statistics');
+            Route::get('index-yonetimi', 'TwitterController@indices')->name('admin.twitter.indices');
+            Route::get('index-yonetimi/json', 'TwitterController@indicesJson')->name('admin.twitter.indices.json');
+
+            Route::post('index-olustur', 'TwitterController@indexCreate')->name('admin.twitter.index.create');
+            Route::get('index-durumu', 'TwitterController@indexStatus')->name('admin.twitter.index.status');
+
+            Route::patch('ayar', 'TwitterController@set')->name('admin.twitter.option.set');
 
             Route::post('log-ekrani', 'TwitterController@logJson')->name('admin.twitter.monitoring.log');
         });

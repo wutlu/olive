@@ -6,21 +6,20 @@ use App\Elasticsearch\Indices;
 
 class TwitterCrawler
 {
-    # index crate
-    public function indexCreate(string $type, string $version = '2006-03')
+    # index deseni
+    public function indexCreate(string $type)
     {
         switch ($type)
         {
-            case 'user':
+            case 'users':
                 return Indices::create(
-                    [ 'twitter', 'users' ],
+                    [ 'twitter', $type ],
                     [
                         'user' => [
                             'properties' => [
                                 'id' => [
                                     'type' => 'long'
-                                ],
-                                //----
+                                ]
                             ]
                         ]
                     ],
@@ -33,15 +32,53 @@ class TwitterCrawler
                 );
             break;
 
-            case 'tweet':
+            case 'trends':
                 return Indices::create(
-                    [ 'twitter', 'tweets', $version ],
+                    [ 'twitter', $type ],
+                    [
+                        'trend' => [
+                            'properties' => [
+                                'id' => [
+                                    'type' => 'keyword'
+                                ],
+                                'title' => [
+                                    'type' => 'text',
+                                    'analyzer' => 'turkish',
+                                    'fielddata' => true
+                                ],
+                                'approx_traffic' => [
+                                    'type' => 'integer'
+                                ],
+                                'created_at' => [
+                                    'type' => 'date',
+                                    'format' => 'YYYY-MM-dd HH:mm:ss'
+                                ],
+                                'called_at' => [
+                                    'type' => 'date',
+                                    'format' => 'YYYY-MM-dd HH:mm:ss'
+                                ]
+                            ]
+                        ]
+                    ],
+                    [
+                        'total_fields_limit' => 22,
+                        'number_of_shards' => 2,
+                        'number_of_replicas' => 1,
+                        'refresh_interval' => '10s'
+                    ]
+                );
+            break;
+
+            default:
+                return Indices::create(
+                    [ 'twitter', $type ],
                     [
                         'tweet' => [
                             'properties' => [
                                 'id' => [
                                     'type' => 'long'
                                 ],
+            /*
                                 body
                                 sentiment
                                 lang
@@ -96,6 +133,7 @@ class TwitterCrawler
                                         listed
                                         friends
                                         fllowers
+                */
                             ]
                         ]
                     ],

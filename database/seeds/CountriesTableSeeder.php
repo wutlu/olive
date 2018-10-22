@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Models\Geo\Countries;
 
 class CountriesTableSeeder extends Seeder
 {
@@ -11,8 +12,6 @@ class CountriesTableSeeder extends Seeder
 	*/
 	public function run()
 	{
-		DB::table('countries')->delete();
-
 		$countries = [
 			[ 'id' => 1,'code' => 'AF' ,'name' => "Afghanistan",'phonecode' => 93 ],
 			[ 'id' => 2,'code' => 'AL' ,'name' => "Albania",'phonecode' => 355 ],
@@ -262,6 +261,14 @@ class CountriesTableSeeder extends Seeder
 			[ 'id' => 246,'code' => 'ZW','name' => "Zimbabwe",'phonecode' => 263 ]
 		];
 
-		DB::table('countries')->insert($countries);
+		foreach ($countries as $country)
+		{
+			Countries::updateOrCreate(
+				[
+					'id' => $country['id']
+				],
+				$country
+			);
+		}
 	}
 }

@@ -139,36 +139,38 @@
 @endpush
 
 @section('dock')
-    <div
-        class="collection load"
-        data-href="{{ route('admin.youtube.index.status') }}"
-        data-callback="__status">
-        <label class="collection-item waves-effect d-block">
-            <input
-                name="value"
-                id="value"
-                value="on"
-                class="json"
-                data-href="{{ route('admin.youtube.status.set') }}"
-                data-method="patch"
-                data-delay="1"
-                data-key="youtube.status"
-                data-checked-value="on"
-                data-unchecked-value="off"
-                type="checkbox"
-                data-callback="__status_set"
-                @if ($options['youtube.status'] == 'on'){{ 'checked' }}@endif />
-            <span>Çalışıyor</span>
-        </label>
-        @if ($options['youtube.index.video'] == 'off' && $options['youtube.index.comment'] == 'off')
-            <a
-                href="#"
-                class="collection-item waves-effect d-block json"
-                data-href="{{ route('admin.youtube.index.create') }}"
-                data-method="post"
-                data-trigger="video-index"
-                data-callback="__index_create">Indexleri Oluştur</a>
-        @endif
+    <div class="card">
+        <div
+            class="collection load"
+            data-href="{{ route('admin.youtube.index.status') }}"
+            data-callback="__status">
+            <label class="collection-item waves-effect d-block">
+                <input
+                    name="value"
+                    id="value"
+                    value="on"
+                    class="json"
+                    data-href="{{ route('admin.youtube.status.set') }}"
+                    data-method="patch"
+                    data-delay="1"
+                    data-key="youtube.status"
+                    data-checked-value="on"
+                    data-unchecked-value="off"
+                    type="checkbox"
+                    data-callback="__status_set"
+                    @if ($options['youtube.status'] == 'on'){{ 'checked' }}@endif />
+                <span>Çalışıyor</span>
+            </label>
+            @if ($options['youtube.index.video'] == 'off' && $options['youtube.index.comment'] == 'off')
+                <a
+                    href="#"
+                    class="collection-item waves-effect d-block json"
+                    data-href="{{ route('admin.youtube.index.create') }}"
+                    data-method="post"
+                    data-trigger="video-index"
+                    data-callback="__index_create">Indexleri Oluştur</a>
+            @endif
+        </div>
     </div>
 @endsection
 
@@ -187,7 +189,7 @@
     {
         if (obj.status == 'ok')
         {
-            M.toast({ html: 'Index oluşturma isteği gönderildi. Lütfen bekleyin...', classes: 'green' })
+            M.toast({ html: 'Index oluşturma isteği gönderildi. Lütfen bekleyin...', classes: 'orange' })
         }
     }
 

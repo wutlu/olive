@@ -186,4 +186,36 @@ class Indices
             ];
         }
     }
+
+    # elasticsearch _cat/indices
+    public static function indices(array $name = [])
+    {
+        $name = self::name($name);
+
+        $client = ClientBuilder::fromConfig([
+            'hosts' => config('database.connections.elasticsearch.hosts'),
+            'retries' => 5
+        ]);
+
+        try
+        {
+            $es = $client->indices()->get();
+
+            print_r($es);
+
+            return (object) [
+                'status' => 'ok',
+                'data' => $es
+            ];
+        }
+        catch (\Exception $e)
+        {
+            System::log(json_encode($e->getMessage()), 'App\Elasticsearch\Indices::stats('.$name.')');
+
+            return (object) [
+                'status' => 'err',
+                'message' => $e->getMessage()
+            ];
+        }
+    }
 }

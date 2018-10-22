@@ -24,7 +24,7 @@ class GoogleController extends Controller
 {
     # ######################################## [ ADMIN ] ######################################## #
     # 
-    # admin list view
+    # dashboard
     # 
     public static function dashboard()
     {
@@ -45,7 +45,7 @@ class GoogleController extends Controller
 
     # ######################################## [ ADMIN ] ######################################## #
     # 
-    # admin create index
+    # google trendler için index oluştur.
     # 
     public static function indexCreate()
     {
@@ -58,7 +58,7 @@ class GoogleController extends Controller
 
     # ######################################## [ ADMIN ] ######################################## #
     # 
-    # admin index status
+    # trend index durumu.
     # 
     public static function indexStatus()
     {
@@ -71,7 +71,7 @@ class GoogleController extends Controller
 
     # ######################################## [ ADMIN ] ######################################## #
     # 
-    # status set
+    # ayar güncelle.
     # 
     public static function statusSet(SetRequest $request)
     {
@@ -98,7 +98,7 @@ class GoogleController extends Controller
 
     # ######################################## [ ADMIN ] ######################################## #
     # 
-    # log ekranı data
+    # log ekranı json çıktısı.
     # 
     public static function logJson()
     {

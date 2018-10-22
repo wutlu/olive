@@ -201,6 +201,9 @@
         </ul>
     </div>
     <div class="card">
+        <div class="card-content">
+            <span class="card-title mb-0">Log Dosyaları</span>
+        </div>
         <ul id="files" class="collection">
             <li class="collection-item d-none" data-href="{{ route('admin.monitoring.log.clear') }}">
                 <span data-name="path"></span>

@@ -226,7 +226,7 @@
     {
         if (obj.status == 'ok')
         {
-            M.toast({ html: 'Tüm botlar için index oluşturma isteği gönderildi.', classes: 'green' })
+            M.toast({ html: 'Tüm botlar için index oluşturma isteği gönderildi.', classes: 'orange' })
 
             $('#modal-trigger').modal('close')
         } 

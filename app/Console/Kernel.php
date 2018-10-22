@@ -99,6 +99,18 @@ class Kernel extends ConsoleKernel
             }
 
             /* ---------------------------------------- */
+
+            $option = Option::where('key', 'twitter.index.auto')->where('value', 'on')->exists();
+
+            if ($option)
+            {
+                $schedule->command('twitter:auto_index')
+                         ->everyFiveMinutes()
+                         ->timezone(config('app.timezone'))
+                         ->withoutOverlapping();
+            }
+
+            /* ---------------------------------------- */
         }
     }
 

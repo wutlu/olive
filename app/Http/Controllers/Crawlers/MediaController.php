@@ -26,7 +26,7 @@ class MediaController extends Controller
 {
     # ######################################## [ ADMIN ] ######################################## #
     # 
-    # admin list view
+    # media botları view
     # 
     public static function listView()
     {
@@ -35,7 +35,7 @@ class MediaController extends Controller
 
     # ######################################## [ ADMIN ] ######################################## #
     # 
-    # kelime list view
+    # medya botları json çıktısı.
     # 
     public static function listViewJson(SearchRequest $request)
     {
@@ -60,7 +60,7 @@ class MediaController extends Controller
 
     # ######################################## [ ADMIN ] ######################################## #
     # 
-    # admin global statistics
+    # tüm istatistikler.
     # 
     public static function allStatistics()
     {
@@ -102,7 +102,7 @@ class MediaController extends Controller
 
     # ######################################## [ ADMIN ] ######################################## #
     # 
-    # admin global start all
+    # çalışmayan tüm botları başlat.
     # 
     public static function allStart()
     {
@@ -119,7 +119,7 @@ class MediaController extends Controller
 
     # ######################################## [ ADMIN ] ######################################## #
     # 
-    # admin global start all
+    # çalışan tüm botları durdur.
     # 
     public static function allStop()
     {
@@ -132,7 +132,7 @@ class MediaController extends Controller
 
     # ######################################## [ ADMIN ] ######################################## #
     # 
-    # admin global start all
+    # tüm eksik indexleri oluştur.
     # 
     public static function allIndex()
     {
@@ -153,7 +153,7 @@ class MediaController extends Controller
 
     # ######################################## [ ADMIN ] ######################################## #
     # 
-    # admin bot delete
+    # bot sil.
     # 
     public static function delete(DeleteRequest $request)
     {
@@ -168,7 +168,7 @@ class MediaController extends Controller
 
     # ######################################## [ ADMIN ] ######################################## #
     # 
-    # admin global statistics
+    # index istatistikleri.
     # 
     public static function statistics(int $id)
     {
@@ -209,7 +209,7 @@ class MediaController extends Controller
 
     # ######################################## [ ADMIN ] ######################################## #
     # 
-    # admin view
+    # bot view.
     # 
     public static function view(int $id = 0)
     {
@@ -235,7 +235,7 @@ class MediaController extends Controller
 
     # ######################################## [ ADMIN ] ######################################## #
     # 
-    # admin create
+    # bot oluştur.
     # 
     public static function update(UpdateRequest $request)
     {
@@ -291,7 +291,7 @@ class MediaController extends Controller
 
     # ######################################## [ ADMIN ] ######################################## #
     # 
-    # admin status
+    # bot durumu.
     # 
     public static function status(StatusRequest $request)
     {
