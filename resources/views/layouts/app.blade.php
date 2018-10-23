@@ -80,27 +80,23 @@
                 @if (auth()->user()->organisation)
                 <li>
                     <a class="waves-effect" href="{{ route('settings.organisation') }}">
-                        <i class="material-icons">group_work</i>
-                        {{ auth()->user()->organisation->name }}
+                        <i class="material-icons">group_work</i> {{ auth()->user()->organisation->name }}
                     </a>
                 </li>
                 @endif
                 <li>
                     <a class="waves-effect" href="{{ route('settings.account') }}">
-                        <i class="material-icons">person</i>
-                        Hesap Bilgileri
+                        <i class="material-icons">person</i> Hesap Bilgileri
                     </a>
                 </li>
                 <li>
                     <a class="waves-effect" href="{{ route('settings.support') }}">
-                        <i class="material-icons">help</i>
-                        Destek
+                        <i class="material-icons">help</i> Destek
                     </a>
                 </li>
                 <li>
                     <a class="waves-effect" href="{{ route('user.logout') }}">
-                        <i class="material-icons">exit_to_app</i>
-                        Çıkış
+                        <i class="material-icons">exit_to_app</i> Çıkış
                     </a>
                 </li>
             </ul>
@@ -138,7 +134,7 @@
             <li>
                 <div class="user-view">
                     <small class="white-text right">Yapı {{ config('app.version') }}</small>
-                    <div class="background" style="background-image: url('{{ asset('img/md/1.jpg') }}');"></div>
+                    <div class="background" style="background-image: url('{{ asset('img/md/25.jpg') }}');"></div>
 
                     <img class="circle" src="{{ asset(auth()->user()->avatar()) }}" />
                     <span class="white-text name">{{ auth()->user()->name }}</span>

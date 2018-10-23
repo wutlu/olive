@@ -21,4 +21,15 @@ class Account extends Model
 		'status',
 		'reasons'
     ];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'token',
+        'token_secret',
+        'reasons'
+    ];
 }

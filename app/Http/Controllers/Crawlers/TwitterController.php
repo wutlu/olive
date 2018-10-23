@@ -152,7 +152,7 @@ class TwitterController extends Controller
 
     # ######################################## [ ADMIN ] ######################################## #
     # 
-    # trend başlıklar için index oluştur
+    # trend başlıklar için index oluştur.
     # 
     public static function indexCreate()
     {
@@ -173,6 +173,38 @@ class TwitterController extends Controller
         return [
             'trends' => Indices::stats([ 'twitter', 'trends' ]),
             'users' => Indices::stats([ 'twitter', 'users' ])
+        ];
+    }
+
+    # ######################################## [ ADMIN ] ######################################## #
+    # 
+    # bağlı hesaplar view
+    # 
+    public static function accounts()
+    {
+        return view('crawlers.twitter.accounts');
+    }
+
+    # ######################################## [ ADMIN ] ######################################## #
+    # 
+    # kelime list view
+    # 
+    public static function accountsViewJson(SearchRequest $request)
+    {
+        $take = $request->take;
+        $skip = $request->skip;
+
+        $query = new Account;
+        $query = $request->string ? $query->where('name', 'ILIKE', '%'.$request->string.'%')
+                                          ->orWhere('screen_name', 'ILIKE', '%'.$request->string.'%') : $query;
+        $query = $query->skip($skip)
+                       ->take($take)
+                       ->orderBy('updated_at', 'DESC');
+
+        return [
+            'status' => 'ok',
+            'hits' => $query->get(),
+            'total' => $query->count()
         ];
     }
 }
