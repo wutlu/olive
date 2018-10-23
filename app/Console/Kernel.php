@@ -111,6 +111,18 @@ class Kernel extends ConsoleKernel
             }
 
             /* ---------------------------------------- */
+
+            $option = Option::where('key', 'twitter.trend.status')->where('value', 'on')->exists();
+
+            if ($option)
+            {
+                $schedule->command('twitter:trend_detect')
+                         ->everyTenMinutes()
+                         ->timezone(config('app.timezone'))
+                         ->withoutOverlapping();
+            }
+
+            /* ---------------------------------------- */
         }
     }
 

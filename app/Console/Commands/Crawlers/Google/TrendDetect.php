@@ -86,21 +86,21 @@ class TrendDetect extends Command
 
                 $this->info($title);
 
-            	$chunk['body'][] = [
-            	    'create' => [
-            	        '_index' => Indices::name([ 'google', 'search' ]),
-            	        '_type' => 'search',
-            	        '_id' => $id
-            	    ]
-            	];
+                $chunk['body'][] = [
+                    'create' => [
+                        '_index' => Indices::name([ 'google', 'search' ]),
+                        '_type' => 'search',
+                        '_id' => $id
+                    ]
+                ];
 
-            	$chunk['body'][] = [
-            	    'id' => $id,
-            	    'title' => $title,
-            	    'approx_traffic' => $approx_traffic,
-            	    'created_at' => date('Y-m-d H:i:s', strtotime($pubdate)),
-            	    'called_at' => date('Y-m-d H:i:s')
-            	];
+                $chunk['body'][] = [
+                    'id' => $id,
+                    'title' => $title,
+                    'approx_traffic' => $approx_traffic,
+                    'created_at' => date('Y-m-d H:i:s', strtotime($pubdate)),
+                    'called_at' => date('Y-m-d H:i:s')
+                ];
             }
             catch (\Exception $e)
             {
@@ -110,12 +110,12 @@ class TrendDetect extends Command
             }
         }
 
-        if (count($chunk))
+        if (count(@$chunk['body']))
         {
             BulkInsertJob::dispatch($chunk)->onQueue('elasticsearch');
         }
 
-        if (count($chunk) <= 10)
+        if (count(@$chunk['body']) <= 10)
         {
             Mail::queue(new ServerAlertMail('Google Arama [Düşük Verim]', 'Google arama toplama verimliliğinde yoğun bir düşüş yaşandı. Lütfen logları inceleyin.'));
         }

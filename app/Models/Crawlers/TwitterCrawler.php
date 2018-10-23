@@ -94,10 +94,6 @@ class TwitterCrawler
                                 'created_at' => [
                                     'type' => 'date',
                                     'format' => 'YYYY-MM-dd HH:mm:ss'
-                                ],
-                                'called_at' => [
-                                    'type' => 'date',
-                                    'format' => 'YYYY-MM-dd HH:mm:ss'
                                 ]
                             ]
                         ]

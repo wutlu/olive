@@ -53,7 +53,16 @@ return [
     'twitter' => [
         'client_id' => env('TWITTER_CONSUMER_KEY'),
         'client_secret' => env('TWITTER_CONSUMER_SECRET'),
+        'access_token' => env('TWITTER_ACCESS_TOKEN'),
+        'access_token_secret' => env('TWITTER_ACCESS_TOKEN_SECRET'),
+
         'redirect' => 'http://olive.veri.zone/twitter/oauth/callback',
+
+        'api' => [
+            'trend' => [
+                'id' => env('TWITTER_TREND_ID')
+            ]
+        ]
     ],
 
     'medium' => [
