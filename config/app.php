@@ -51,6 +51,8 @@ return [
         'google.index.search' => 'string|in:on,off',
         'google.status' => 'string|in:on,off',
         'twitter.index.auto' => 'string|in:on,off',
+        'twitter.trend.status' => 'string|in:on,off',
+        'twitter.status' => 'string|in:on,off',
     ],
 
     'log_files' => [

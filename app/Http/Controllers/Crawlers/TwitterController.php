@@ -35,7 +35,19 @@ class TwitterController extends Controller
     # 
     public static function dashboard()
     {
-        return view('crawlers.twitter.dashboard');
+        $rows = Option::whereIn('key', [
+            'twitter.trend.status',
+            'twitter.status'
+        ])->get();
+
+        $options = [];
+
+        foreach ($rows as $row)
+        {
+            $options[$row->key] = $row->value;
+        }
+
+        return view('crawlers.twitter.dashboard', compact('options'));
     }
 
     # ######################################## [ ADMIN ] ######################################## #

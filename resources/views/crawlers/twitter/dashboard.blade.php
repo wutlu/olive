@@ -160,5 +160,41 @@
 @endpush
 
 @section('dock')
+    <div class="card">
+        <div class="collection">
+            <label class="collection-item waves-effect d-block">
+                <input
+                    name="value"
+                    id="value"
+                    value="on"
+                    class="json"
+                    data-href="{{ route('admin.twitter.option.set') }}"
+                    data-method="patch"
+                    data-delay="1"
+                    data-key="twitter.trend.status"
+                    data-checked-value="on"
+                    data-unchecked-value="off"
+                    type="checkbox"
+                    @if ($options['twitter.trend.status'] == 'on'){{ 'checked' }}@endif  />
+                <span>Trend Botu</span>
+            </label>
+            <label class="collection-item waves-effect d-block">
+                <input
+                    name="value"
+                    id="value"
+                    value="on"
+                    class="json"
+                    data-href="{{ route('admin.twitter.option.set') }}"
+                    data-method="patch"
+                    data-delay="1"
+                    data-key="twitter.status"
+                    data-checked-value="on"
+                    data-unchecked-value="off"
+                    type="checkbox"
+                    @if ($options['twitter.status'] == 'on'){{ 'checked' }}@endif  />
+                <span>Tweet Botu</span>
+            </label>
+        </div>
+    </div>
 	@include('crawlers.twitter._menu', [ 'active' => 'dashboard' ])
 @endsection
