@@ -33,12 +33,8 @@ class MediaCrawler extends Model
             [
                 'article' => [
                     'properties' => [
-                        'id' => [
-                            'type' => 'keyword'
-                        ],
-                        'site_id' => [
-                            'type' => 'integer'
-                        ],
+                        'id' => [ 'type' => 'keyword' ],
+                        'site_id' => [ 'type' => 'integer' ],
                         'title' => [
                             'type' => 'text',
                             'analyzer' => 'turkish',
@@ -67,7 +63,8 @@ class MediaCrawler extends Model
                         'message' => [
                             'type' => 'text',
                             'index' => false
-                        ]
+                        ],
+                        'sentiment' => [ 'type' => 'short' ]
                     ]
                 ]
             ],

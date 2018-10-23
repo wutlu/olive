@@ -40,12 +40,8 @@ class ShoppingCrawler extends Model
             [
                 'product' => [
                     'properties' => [
-                        'id' => [
-                            'type' => 'keyword'
-                        ],
-                        'site_id' => [
-                            'type' => 'integer'
-                        ],
+                        'id' => [ 'type' => 'keyword' ],
+                        'site_id' => [ 'type' => 'integer' ],
                         'title' => [
                             'type' => 'text',
                             'analyzer' => 'turkish',
@@ -97,9 +93,7 @@ class ShoppingCrawler extends Model
                             'type' => 'text',
                             'index' => false
                         ],
-                        'status' => [
-                            'type' => 'keyword'
-                        ],
+                        'status' => [ 'type' => 'keyword' ],
                         'message' => [
                             'type' => 'text',
                             'index' => false

@@ -57,7 +57,14 @@ class Stream extends Command
 
         if (array_key_exists($type, $types))
         {
-            $stream = $this->{ $type }($this->option('key'));
+            $key = $this->option('key');
+
+            if (!$key)
+            {
+                $key = $this->ask('Value?');
+            }
+
+            $stream = $this->{ $type }($key);
 
             $i = 0;
 
@@ -65,19 +72,22 @@ class Stream extends Command
             {
                 $i++;
 
+                /*
                 echo "\033[5D";
                 echo str_pad($i, 3, ' ', STR_PAD_LEFT);
+                */
 
                 try
                 {
                     $tweet = json_decode($this->readLine($stream), true);
 
-                    $tweet['text'];
+                    print_r($tweet['place']);
+
                     //echo Term::line($tweet['text']);
                 }
                 catch (\Exception $e)
                 {
-                    print_r($tweet);
+                    //print_r($tweet);
                 }
             }
         }

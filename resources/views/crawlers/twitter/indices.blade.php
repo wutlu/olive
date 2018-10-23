@@ -138,7 +138,7 @@
 
                     function __index_status(__, obj)
                     {
-                        if (obj.trends.status == 'ok' && obj.users.status)
+                        if (obj.trends.status == 'ok' && obj.users.status == 'ok')
                         {
                             $('[data-callback=__index_create]').remove()
 

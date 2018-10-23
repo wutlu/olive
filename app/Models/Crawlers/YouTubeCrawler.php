@@ -19,9 +19,7 @@ class YouTubeCrawler
                     [
                         'video' => [
                             'properties' => [
-                                'id' => [
-                                    'type' => 'keyword'
-                                ],
+                                'id' => [ 'type' => 'keyword' ],
                                 'title' => [
                                     'type' => 'text',
                                     'analyzer' => 'turkish',
@@ -59,7 +57,8 @@ class YouTubeCrawler
                                         'id' => [ 'type' => 'keyword' ],
                                         'title' => [ 'type' => 'keyword' ]
                                     ]
-                                ]
+                                ],
+                                'sentiment' => [ 'type' => 'short' ]
                             ]
                         ]
                     ],
@@ -80,20 +79,14 @@ class YouTubeCrawler
                     [
                         'comment' => [
                             'properties' => [
-                                'id' => [
-                                    'type' => 'keyword'
-                                ],
+                                'id' => [ 'type' => 'keyword' ],
                                 'text' => [
                                     'type' => 'text',
                                     'analyzer' => 'turkish',
                                     'fielddata' => true
                                 ],
-                                'video_id' => [
-                                    'type' => 'keyword'
-                                ],
-                                'comment_id' => [
-                                    'type' => 'keyword'
-                                ],
+                                'video_id' => [ 'type' => 'keyword' ],
+                                'comment_id' => [ 'type' => 'keyword' ],
                                 'created_at' => [
                                     'type' => 'date',
                                     'format' => 'YYYY-MM-dd HH:mm:ss'
@@ -109,7 +102,8 @@ class YouTubeCrawler
                                         'id' => [ 'type' => 'keyword' ],
                                         'title' => [ 'type' => 'keyword' ]
                                     ]
-                                ]
+                                ],
+                                'sentiment' => [ 'type' => 'short' ]
                             ]
                         ]
                     ],

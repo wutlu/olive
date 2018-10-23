@@ -35,15 +35,9 @@ class SozlukCrawler extends Model
             [
                 'entry' => [
                     'properties' => [
-                        'id' => [
-                            'type' => 'long'
-                        ],
-                        'group_name' => [
-                            'type' => 'keyword'
-                        ],
-                        'site_id' => [
-                            'type' => 'integer'
-                        ],
+                        'id' => [ 'type' => 'long' ],
+                        'group_name' => [ 'type' => 'keyword' ],
+                        'site_id' => [ 'type' => 'integer' ],
                         'title' => [
                             'type' => 'text',
                             'analyzer' => 'turkish',
@@ -68,7 +62,8 @@ class SozlukCrawler extends Model
                         'url' => [
                             'type' => 'text',
                             'index' => false
-                        ]
+                        ],
+                        'sentiment' => [ 'type' => 'short' ]
                     ]
                 ]
             ],

@@ -109,6 +109,10 @@ class TwitterController extends Controller
             'status' => 'ok',
             'data' => [
                 'twitter' => [
+                    'tweets' => Indices::stats([ 'twitter', 'tweets', '*' ]),
+                    'trends' => Indices::stats([ 'twitter', 'trends' ]),
+                    'users' => Indices::stats([ 'twitter', 'users' ]),
+                    'size' => Indices::stats([ 'twitter', '*' ])
                 ]
             ]
         ];

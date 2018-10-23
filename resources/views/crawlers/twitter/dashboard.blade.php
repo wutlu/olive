@@ -21,7 +21,10 @@
 	{
 		if (obj.status == 'ok')
 		{
-			$('[data-name=]').html()
+            $('[data-name=tweet-count]').html(obj.data.twitter.tweets.status == 'ok' ? obj.data.twitter.tweets.data._all.total.docs.count : '-')
+            $('[data-name=trend-count]').html(obj.data.twitter.trends.status == 'ok' ? obj.data.twitter.trends.data._all.total.docs.count : '-')
+            $('[data-name=user-count]').html(obj.data.twitter.users.status == 'ok' ? obj.data.twitter.users.data._all.total.docs.count : '-')
+			$('[data-name=total-size]').html(obj.data.twitter.size.status == 'ok' ? humanFileSize(obj.data.twitter.size.data._all.total.store.size_in_bytes) : '-')
 
 			window.clearTimeout(statisticsTimer)
 
@@ -47,16 +50,16 @@
                     <p data-name="tweet-count">-</p>
                 </div>
                 <div class="item">
+                    <small class="d-block grey-text">Kullanıcı Sayısı</small>
+                    <p data-name="user-count">-</p>
+                </div>
+                <div class="item">
                     <small class="d-block grey-text">Alınan Trend Başlık</small>
                     <p data-name="trend-count">-</p>
                 </div>
                 <div class="item">
-                    <small class="d-block grey-text">Index Sayısı</small>
-                    <p data-name="indices-count">-</p>
-                </div>
-                <div class="item">
-                    <small class="d-block grey-text">Kapladığı Alan</small>
-                    <p data-name="tweet-size">-</p>
+                    <small class="d-block grey-text">Tüketilen Alan</small>
+                    <p data-name="total-size">-</p>
                 </div>
             </div>
         </div>
