@@ -8,7 +8,7 @@
             'text' => 'Twitter'
         ],
         [
-            'text' => 'Kelime Havuzu'
+            'text' => 'Kullanıcı Havuzu'
         ]
     ],
     'dock' => true
@@ -21,20 +21,20 @@
 @section('content')
     <div class="card">
         <div class="card-content">
-            <span class="card-title">Kelime Havuzu</span>
+            <span class="card-title">Kullanıcı Havuzu</span>
             <p class="grey-text" data-name="count"></p>
         </div>
         <div class="card-content orange lighten-4">
         	<p>Anlık olarak Twitter'dan belirli kriterlerle veri alıyoruz.</p>
-        	<p>İlgilendiğiniz kelimeleri belirterek veri toplama sonrasında yüksek analiz sonuçları elde edebilirsiniz.</p>
+        	<p>İlgilendiğiniz kullanıcıları belirterek veri toplama sonrasında yüksek analiz sonuçları elde edebilirsiniz.</p>
         	<p>Bu ayarlar bulunduğunuz organizasyon için geçerlidir.</p>
-            <p>Organizasyona dahil tüm kullanıcıların kelime havuzu ortaktır.</p>
+            <p>Organizasyona dahil tüm kullanıcıların kullanıcı havuzu ortaktır.</p>
         	<p>Elde edilen veriler tüm veri.zone kullanıcıları tarafından ortak bir veritabanı üzerinden analize açık olacaktır.</p>
             <p>Twitter üzerinden veri elde etmek için, bağlandığınız Twitter hesabınız kullanılacaktır.</p>
         </div>
         <div class="collection load"
              id="collections"
-             data-href="{{ route('twitter.keyword.list') }}"
+             data-href="{{ route('twitter.account.list') }}"
              data-callback="__collections"
              data-method="post"
              data-nothing>
@@ -43,12 +43,13 @@
                     <i class="material-icons">cloud</i>
                     <i class="material-icons">cloud</i>
                     <i class="material-icons">wb_sunny</i>
-                    <p>Kelime Yok</p>
+                    <p>Kullanıcı Yok</p>
                 </div>
             </div>
             <a href="#" class="collection-item model d-none waves-effect" data-trigger="delete">
                 <span class="align-self-center">
-                    <p data-name="title"></p>
+                    <p data-name="screen-name"></p>
+                    <p data-name="id" class="grey-text"></p>
                     <p data-name="reasons"></p>
                 </span>
                 <small class="badge ml-auto right-align">
@@ -60,13 +61,13 @@
             <form
                 id="collection-form"
                 method="put"
-                action="{{ route('twitter.keyword.create') }}"
+                action="{{ route('twitter.account.create') }}"
                 data-callback="__create"
                 class="json">
                 <div class="input-field">
-                    <input id="keyword" name="keyword" type="text" class="validate" />
-                    <label for="keyword">Kelime Ekleyin</label>
-                    <span class="helper-text">Örnek: "veri.zone, bankacalıkta kampanya"</span>
+                    <input id="screen_name" name="screen_name" type="text" class="validate" />
+                    <label for="screen_name">Twitter Kullanıcı Adı veya ID</label>
+                    <span class="helper-text">Örnek: "rt_erdogan, bigverizone"</span>
                 </div>
             </form>
         </div>
@@ -87,7 +88,7 @@
 @endsection
 
 @section('dock')
-	@include('twitter.data_pool._menu', [ 'active' => 'keywords' ])
+	@include('twitter.data_pool._menu', [ 'active' => 'accounts' ])
 @endsection
 
 @push('local.scripts')
@@ -116,7 +117,7 @@
                         'href': '#',
                         'class': 'waves-effect btn json',
                         'html': buttons.ok,
-                        'data-href': '{{ route('twitter.keyword.delete') }}',
+                        'data-href': '{{ route('twitter.account.delete') }}',
                         'data-id': __.data('id'),
                         'data-method': 'delete',
                         'data-callback': '__delete'
@@ -139,7 +140,7 @@
     {
         if (obj.status == 'ok')
         {
-            __.find('#keyword').val('')
+            __.find('#screen_name').val('')
 
             window.clearTimeout(collection_timer)
 
@@ -171,7 +172,8 @@
                             .addClass('_tmp d-flex')
                             .attr('data-id', o.id)
 
-                        item.find('[data-name=title]').html(o.keyword)
+                        item.find('[data-name=screen-name]').html(o.screen_name)
+                        item.find('[data-name=id]').html(o.user_id)
                         item.find('[data-name=reasons]')
                         	.html(o.reasons ? o.reasons : '-')
                         	.removeClass('green-text red-text')
@@ -193,7 +195,7 @@
 
             $('#home-loader').hide()
 
-            $('[data-name=count]').html(obj.hits.length + '/{{ $user->organisation->twitter_follow_limit_keyword }}')
+            $('[data-name=count]').html(obj.hits.length + '/{{ $user->organisation->twitter_follow_limit_user }}')
         }
 
         window.clearTimeout(collection_timer)

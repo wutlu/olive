@@ -28,7 +28,7 @@ class CreateOrganisationsTable extends Migration
 
             $table->boolean('status')->default(0);
 
-            $table->unsignedInteger('twitter_follow_limit_user')->default(100);
+            $table->unsignedInteger('twitter_follow_limit_user')->default(50);
             $table->unsignedInteger('twitter_follow_limit_keyword')->default(25);
 
             $table->timestamps();

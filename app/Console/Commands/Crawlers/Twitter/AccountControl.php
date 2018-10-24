@@ -12,8 +12,6 @@ use GuzzleHttp\Subscriber\Oauth\Oauth1;
 
 class AccountControl extends Command
 {
-    private $endpoint = "https://api.twitter.com/1.1/";
-
     /**
      * The name and signature of the console command.
      *
@@ -60,37 +58,7 @@ class AccountControl extends Command
 
                     try
                     {
-                        $stack = HandlerStack::create();
-
-                        $oauth = new Oauth1([
-                            'consumer_key' => config('services.twitter.client_id'),
-                            'consumer_secret' => config('services.twitter.client_secret'),
-                            'token' => $account->token,
-                            'token_secret' => $account->token_secret
-                        ]);
-
-                        $stack->push($oauth);
-
-                        $client = new Client(
-                            [
-                                'base_uri' => $this->endpoint,
-                                'handler' => $stack,
-                                'auth' => 'oauth'
-                            ]
-                        );
-
-                        $response = $client->get('users/show.json', [
-                            'query' => [
-                                'user_id' => $account->id
-                            ],
-                            'timeout' => 10,
-                            'connect_timeout' => 5,
-                            'headers' => [
-                                'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))],
-                                'Accept' => 'application/json'
-                            ]
-                        ]);
-                        $response = json_decode($response->getBody());
+                        $response = self::getUser([ 'id' => $account->id ]);
 
                         $account->name = $response->name;
                         $account->screen_name = $response->screen_name;
@@ -142,5 +110,53 @@ class AccountControl extends Command
                 }
             }
         }
+    }
+
+    # twitter kullanıcı profili.
+    public static function getUser(array $user, string $token = null, string $token_secret = null)
+    {
+        $stack = HandlerStack::create();
+
+        $oauth = new Oauth1([
+            'consumer_key' => config('services.twitter.client_id'),
+            'consumer_secret' => config('services.twitter.client_secret'),
+            'token' => $token ? $token : config('services.twitter.access_token'),
+            'token_secret' => $token_secret ? $token_secret : config('services.twitter.access_token_secret')
+        ]);
+
+        $stack->push($oauth);
+
+        $client = new Client(
+            [
+                'base_uri' => 'https://api.twitter.com/1.1/',
+                'handler' => $stack,
+                'auth' => 'oauth'
+            ]
+        );
+
+        if (@$user['id'])
+        {
+            $key = 'id';
+            $val = $user['id'];
+        }
+        else if (@$user['screen_name'])
+        {
+            $key = 'screen_name';
+            $val = $user['screen_name'];
+        }
+
+        $response = $client->get('users/show.json', [
+            'query' => [
+                $key => $val
+            ],
+            'timeout' => 10,
+            'connect_timeout' => 5,
+            'headers' => [
+                'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))],
+                'Accept' => 'application/json'
+            ]
+        ]);
+
+        return json_decode($response->getBody());
     }
 }

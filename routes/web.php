@@ -84,6 +84,12 @@ Route::prefix('veri-havuzu')->group(function () {
 
         Route::put('kelime', 'DataController@keywordCreate')->name('twitter.keyword.create');
         Route::delete('kelime', 'DataController@keywordDelete')->name('twitter.keyword.delete');
+
+        Route::get('kullanici-havuzu', 'DataController@accountList')->name('twitter.account.list');
+        Route::post('kullanici-havuzu', 'DataController@accountListJson');
+
+        Route::put('kullanici', 'DataController@accountCreate')->name('twitter.account.create');
+        Route::delete('kullanici', 'DataController@accountDelete')->name('twitter.account.delete');
     });
 });
 
