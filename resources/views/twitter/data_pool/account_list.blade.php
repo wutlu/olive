@@ -115,7 +115,7 @@
                     }),
                     $('<a />', {
                         'href': '#',
-                        'class': 'waves-effect btn json',
+                        'class': 'waves-effect btn red json',
                         'html': buttons.ok,
                         'data-href': '{{ route('twitter.account.delete') }}',
                         'data-id': __.data('id'),

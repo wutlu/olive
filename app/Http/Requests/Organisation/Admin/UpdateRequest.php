@@ -29,7 +29,9 @@ class UpdateRequest extends FormRequest
             'status'   => 'nullable|string|in:on',
             'capacity' => 'required|integer|max:12|min:1',
             'end_date' => 'required|date_format:Y-m-d',
-            'end_time' => 'required|date_format:H:i'
+            'end_time' => 'required|date_format:H:i',
+            'twitter_follow_limit_user' => 'required|integer|max:400',
+            'twitter_follow_limit_keyword' => 'required|integer|max:4000'
         ];
     }
 }

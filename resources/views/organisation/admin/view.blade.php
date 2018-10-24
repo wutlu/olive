@@ -83,6 +83,20 @@
                             </div>
                         </div>
                     </div>
+                    <div class="collection-item">
+                        <div class="d-flex">
+                            <div class="input-field" style="margin: 0 1rem 0 0;">
+                                <input name="twitter_follow_limit_user" id="twitter_follow_limit_user" value="{{ $organisation->twitter_follow_limit_user }}" type="number" max="400" class="validate" />
+                                <label for="twitter_follow_limit_user">Kullanıcı Takip Limiti</label>
+                                <small class="helper-text">Organizasyonun takip edebileceği maksimum kullanıcı sayısı.</small>
+                            </div>
+                            <div class="input-field" style="margin: 0 1rem 0 0;">
+                                <input name="twitter_follow_limit_keyword" id="twitter_follow_limit_keyword" value="{{ $organisation->twitter_follow_limit_keyword }}" type="number" max="4000" class="validate" />
+                                <label for="twitter_follow_limit_keyword">Kelime Takip Limiti</label>
+                                <small class="helper-text">Organizasyonun takip edebileceği maksimum kelime sayısı.</small>
+                            </div>
+                        </div>
+                    </div>
                     <label class="collection-item waves-effect d-block">
                         <input name="status" id="status" value="on" type="checkbox" {{ $organisation->status ? 'checked' : '' }} />
                         <span>Aktif</span>

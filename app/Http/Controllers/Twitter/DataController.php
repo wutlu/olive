@@ -31,17 +31,9 @@ class DataController extends Controller
     }
 
     # twitter veri havuzu kelime listesi json.
-    public function keywordListJson(SearchRequest $request)
+    public function keywordListJson(int $skip = 0, int $take = 27)
     {
-        $take = 27;
-        $skip = 0;
-
-        $query = new StreamingKeywords;
-        $query = $request->string ? $query->where('keyword', 'ILIKE', '%'.$request->string.'%') : $query;
-        $query = $query->where('organisation_id', auth()->user()->organisation_id);
-        $query = $query->skip($skip)
-                       ->take($take)
-                       ->orderBy('updated_at', 'DESC');
+        $query = StreamingKeywords::where('organisation_id', auth()->user()->organisation_id)->skip($skip)->take($take)->orderBy('updated_at', 'DESC');
 
         return [
             'status' => 'ok',
@@ -85,20 +77,9 @@ class DataController extends Controller
     }
 
     # twitter veri havuzu kullanıcı listesi json.
-    public function accountListJson(SearchRequest $request)
+    public function accountListJson(int $skip = 0, int $take = 27)
     {
-        $take = 52;
-        $skip = 0;
-
-        $query = new StreamingUsers;
-        $query = $request->string ? $query->where(function($query) use ($request) {
-        	$query->orWhere('name', 'ILIKE', '%'.$request->string.'%');
-        	$query->orWhere('screen_name', 'ILIKE', '%'.$request->string.'%');
-        }) : $query;
-        $query = $query->where('organisation_id', auth()->user()->organisation_id);
-        $query = $query->skip($skip)
-                       ->take($take)
-                       ->orderBy('updated_at', 'DESC');
+        $query = StreamingUsers::where('organisation_id', auth()->user()->organisation_id)->skip($skip)->take($take)->orderBy('updated_at', 'DESC');
 
         return [
             'status' => 'ok',
