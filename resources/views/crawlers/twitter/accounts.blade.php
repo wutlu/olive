@@ -22,10 +22,7 @@
     <div class="card">
         <div class="card-image">
             <img src="{{ asset('img/card-header.jpg') }}" alt="Bağlı Hesaplar" />
-            <span class="card-title">
-                Bağlı Hesaplar
-                <small class="d-block" data-name="bots-count"></small>
-            </span>
+            <span class="card-title">Bağlı Hesaplar</span>
         </div>
         <nav class="grey darken-4">
             <div class="nav-wrapper">
@@ -34,7 +31,7 @@
                            name="string"
                            type="search"
                            class="validate json json-search"
-                           data-json-target="#crawlers"
+                           data-json-target="#accounts"
                            placeholder="Arayın" />
                     <label class="label-icon" for="string">
                         <i class="material-icons">search</i>
@@ -44,13 +41,13 @@
             </div>
         </nav>
         <ul class="collection load json-clear"
-             id="crawlers"
+             id="accounts"
              data-href="{{ route('crawlers.twitter.accounts.list.json') }}"
              data-skip="0"
              data-take="5"
              data-include="string"
-             data-more-button="#crawlers-more_button"
-             data-callback="__crawlers"
+             data-more-button="#accounts-more_button"
+             data-callback="__accounts"
              data-nothing>
             <li class="collection-item nothing d-none">
                 <div class="not-found">
@@ -81,9 +78,9 @@
 
     <div class="center-align">
         <button class="btn-flat waves-effect d-none json"
-                id="crawlers-more_button"
+                id="accounts-more_button"
                 type="button"
-                data-json-target="#crawlers">Daha Fazla</button>
+                data-json-target="#accounts">Daha Fazla</button>
     </div>
 @endsection
 
@@ -92,9 +89,9 @@
 @endsection
 
 @push('local.scripts')
-    function __crawlers(__, obj)
+    function __accounts(__, obj)
     {
-        var ul = $('#crawlers');
+        var ul = $('#accounts');
         var item_model = ul.children('.model');
 
         if (obj.status == 'ok')
@@ -109,7 +106,6 @@
                             .addClass('_tmp d-flex')
                             .attr('data-id', o.id)
 
-                        item.find('[data-name=id]').html('Id: ' + o.id)
                         item.find('[data-name=name]').html(o.name)
                         item.find('[data-name=screen-name]').html(o.screen_name)
                         item.find('[data-name=status]').addClass(o.status ? 'green-text' : 'red-text')

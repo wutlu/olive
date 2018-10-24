@@ -1,0 +1,4 @@
+<div class="collection">
+    <a href="{{ route('twitter.keyword.list') }}" class="collection-item waves-effect {{ $active == 'keywords' ? 'active' : '' }}">Kelime Havuzu</a>
+    <a href="#" class="collection-item waves-effect {{ $active == 'accounts' ? 'active' : '' }}">Hesap Havuzu</a>
+</div>

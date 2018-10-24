@@ -48,6 +48,18 @@ class Organisation extends Model
         return $this->hasMany('App\Models\Keyword', 'organisation_id', 'id');
     }
 
+    # takip edilecek kelimeler
+    public function streamingKeywords()
+    {
+        return $this->hasMany('App\Models\Twitter\StreamingKeywords', 'organisation_id', 'id');
+    }
+
+    # takip edilecek kullanıcılar
+    public function streamingUsers()
+    {
+        return $this->hasMany('App\Models\Twitter\StreamingUsers', 'organisation_id', 'id');
+    }
+
     # kalan gün
     public function days(bool $all = false)
     {

@@ -75,8 +75,16 @@ Route::prefix('twitter')->namespace('Twitter')->group(function () {
 
         Route::get('callback', 'AccountController@callback')->name('twitter.connect.callback');
     });
+});
 
-    Route::get('veri-havuzu', 'DataController@dataPool')->name('twitter.data.pool');
+Route::prefix('veri-havuzu')->group(function () {
+    Route::prefix('twitter')->namespace('Twitter')->group(function () {
+        Route::get('kelime-havuzu', 'DataController@keywordList')->name('twitter.keyword.list');
+        Route::post('kelime-havuzu', 'DataController@keywordListJson');
+
+        Route::put('kelime', 'DataController@keywordCreate')->name('twitter.keyword.create');
+        Route::delete('kelime', 'DataController@keywordDelete')->name('twitter.keyword.delete');
+    });
 });
 
 Route::prefix('oturum')->group(function () {

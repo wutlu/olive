@@ -62,6 +62,16 @@ return [
             'trend' => [
                 'id' => env('TWITTER_TREND_ID')
             ]
+        ],
+        /*
+         * belirtilen kelimeler kabul edilmeyecek.
+         * sadece alfa nümerik karakterler ve boşluk geçerli olacaktır.
+         */
+        'unaccepted_keywords' => [
+            'bir',
+            'icin',
+            'cok',
+            'ile'
         ]
     ],
 
