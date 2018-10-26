@@ -122,8 +122,6 @@ class Kernel extends ConsoleKernel
 
             /* ---------------------------------------- */
 
-            /* ---------------------------------------- */
-
             $option = Option::where('key', 'twitter.status')->first();
 
             if (@$option)

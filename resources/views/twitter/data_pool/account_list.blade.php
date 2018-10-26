@@ -29,8 +29,7 @@
         	<p>İlgilendiğiniz kullanıcıları belirterek veri toplama sonrasında yüksek analiz sonuçları elde edebilirsiniz.</p>
         	<p>Bu ayarlar bulunduğunuz organizasyon için geçerlidir.</p>
             <p>Organizasyona dahil tüm kullanıcıların kullanıcı havuzu ortaktır.</p>
-        	<p>Elde edilen veriler tüm veri.zone kullanıcıları tarafından ortak bir veritabanı üzerinden analize açık olacaktır.</p>
-            <p>Twitter üzerinden veri elde etmek için, bağlandığınız Twitter hesabınız kullanılacaktır.</p>
+        	<p>Elde edilen veriler tüm veri.zone kullanıcıları tarafından ortak bir veritabanı üzerinden analize açık halde olacaktır.</p>
         </div>
         <div class="collection load"
              id="collections"

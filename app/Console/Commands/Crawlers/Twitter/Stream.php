@@ -16,6 +16,7 @@ use App\Models\Crawlers\TwitterCrawler;
 use Carbon\Carbon;
 
 use App\Models\Option;
+use App\Models\Organisation\Organisation;
 
 class Stream extends Command
 {
@@ -26,7 +27,7 @@ class Stream extends Command
      *
      * @var string
      */
-    protected $signature = 'twitter:stream {--id=} {--type=}';
+    protected $signature = 'twitter:stream {--type=}';
 
     /**
      * The console command description.
@@ -85,21 +86,7 @@ class Stream extends Command
 
         if (array_key_exists($type, $types))
         {
-            if ($type == 'user' || $type == 'keyword')
-            {
-                $id = $this->option('id');
-
-                if (!$id)
-                {
-                    $id = $this->ask('User ID?');
-                }
-
-                $stream = $this->{ $type }($id);
-            }
-            else if ($type == 'trend')
-            {
-                $stream = $this->{ $type }();
-            }
+            $stream = $this->{ $type }();
 
             $bulk = [];
 
@@ -128,6 +115,8 @@ class Stream extends Command
                         $tweet = TwitterCrawler::pattern($obj);
 
                         $bulk = TwitterCrawler::chunk($tweet, $bulk);
+
+                        $this->info($tweet->text);
                     }
                     else
                     {
@@ -179,20 +168,11 @@ class Stream extends Command
      * keyword streaming function
      * 
     \*******************************/
-    public function keyword(int $id)
+    public function keyword()
     {
-        echo Term::line('Using keyword stream:');
+        echo Term::line('keyword stream');
 
-        $this->header();
-
-        $response = $this->client->post('statuses/filter.json', [
-            'form_params' => [
-                'language' => 'tr',
-                'track' => 'ile'
-            ]
-        ]);
-
-        return $response->getBody();
+        exit();
     }
 
     /*******************************\
@@ -200,9 +180,11 @@ class Stream extends Command
      * user streaming function
      * 
     \*******************************/
-    public function user(int $id)
+    public function user()
     {
         echo Term::line('user stream');
+
+        exit();
     }
 
     /*******************************\

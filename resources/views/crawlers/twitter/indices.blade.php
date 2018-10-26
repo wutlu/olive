@@ -39,7 +39,7 @@
                         item.removeClass('model d-none').addClass('_tmp d-flex').attr('data-id', o.uuid)
 
                         item.find('[data-name=health]').html(o.health)
-                        item.find('[data-name=count]').html(o['docs.count'])
+                        item.find('[data-name=count]').html(number_format(o['docs.count']))
                         item.find('[data-name=size]').html(o['store.size'])
 
                         if (!selector.length)

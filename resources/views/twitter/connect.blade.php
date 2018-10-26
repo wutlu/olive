@@ -23,7 +23,7 @@
     }
 
     p {
-        padding: 1rem 0;
+        padding: .5rem 0;
     }
 
     pre {
@@ -69,9 +69,8 @@
                         </form>
                     </div>
 
-                    <p class="grey-text">Sizin adınıza veri elde etmek için herhangi bir Twitter hesabınızı organizasyonunuza bağlamanız gerekiyor.</p>
                     <p class="grey-text">Twitter hesabınız ile bilginiz dışında hiçbir işlem gerçekleştirmeyeceğiz.</p>
-                    <p class="grey-text">Ayrıca istediğiniz zaman Twitter hesabınızı bizden ayırabilirsiniz.</p>
+                    <p class="grey-text">Ayrıca istediğiniz zaman Twitter hesabınızla olan bağlantımızı koparabilirsiniz.</p>
                 </div>
             </div>
         </div>

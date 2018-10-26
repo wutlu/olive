@@ -19,7 +19,7 @@ class DataController extends Controller
 {
 	public function __construct()
     {
-        $this->middleware([ 'auth', 'organisation:have', 'twitter:have' ]);
+        $this->middleware([ 'auth' ]);
     }
 
     # twitter veri havuzu kelime listesi view.
