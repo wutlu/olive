@@ -118,7 +118,7 @@
         <i class="material-icons">cloud</i>
         <i class="material-icons">cloud</i>
         <i class="material-icons">wb_sunny</i>
-        <p>Talep Cevap Bekliyor...</p>
+        <p>Henüz Cevaplanmadı</p>
     </div>
     @endforelse
 

@@ -12,7 +12,7 @@ class Nohup extends Command
      *
      * @var string
      */
-    protected $signature = 'nohup {cmd}';
+    protected $signature = 'nohup {cmd} {--type=}';
 
     /**
      * The console command description.
@@ -46,29 +46,86 @@ class Nohup extends Command
 
         $process_id = $file ? (posix_getpgid($file->pid) ? $file->pid : null) : null;
 
-        if ($process_id)
+        $type = $this->option('type');
+
+        $types = [
+            'start' => 'Start Process',
+            'restart' => 'Restart Process',
+            'kill' => 'Kill Process'
+        ];
+
+        if (!$type)
         {
-            $this->error('['.$process_id.'] process zaten çalışıyor.');
+            $type = $this->choice('What would you like to do?', $types, $type);
         }
-        else
+
+        if ($type == 'kill' || $type == 'restart')
         {
-            $cmd = implode(' ', [
-                'nohup',
-                'php',
-                base_path('artisan'),
-                $sh,
-                '>>',
-                '/dev/null',
-                '2>&1',
-                '&',
-                'echo $!'
-            ]);
-
-            $pid = trim(shell_exec($cmd));
-
-            Storage::put($key, json_encode([ 'pid' => trim($pid), 'command' => $sh ]));
-
-            $this->info('['.$pid.'] process başlatıldı.');
+            if ($process_id)
+            {
+                $this->error(self::kill($process_id));
+            }
+            else
+            {
+                $this->error('Process is not running.');
+            }
         }
+
+        if ($type == 'start' || $type == 'restart')
+        {
+            sleep(1);
+
+            $process_id = $file ? (posix_getpgid($file->pid) ? $file->pid : null) : null;
+
+            if ($process_id)
+            {
+                $this->info('['.$process_id.'] process already running.');
+            }
+            else
+            {
+                $this->info(self::start($key, $sh));
+            }
+        }
+    }
+
+    # kill
+    public function kill(int $process_id)
+    {
+        $cmd = implode(' ', [
+            'kill',
+            '-9',
+            $process_id,
+            '>>',
+            '/dev/null',
+            '2>&1',
+            '&',
+            'echo $!'
+        ]);
+
+        $pid = trim(shell_exec($cmd));
+
+        return '['.$process_id.'] process killed. ('.$pid.')';
+    }
+
+    # start
+    public function start(string $key, string $sh)
+    {
+        $cmd = implode(' ', [
+            'nohup',
+            'php',
+            base_path('artisan'),
+            $sh,
+            '>>',
+            '/dev/null',
+            '2>&1',
+            '&',
+            'echo $!'
+        ]);
+
+        $pid = trim(shell_exec($cmd));
+
+        Storage::put($key, json_encode([ 'pid' => trim($pid), 'command' => $sh ]));
+
+        return '['.$pid.'] process started.';
     }
 }

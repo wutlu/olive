@@ -119,13 +119,13 @@
                 <span>Otomatik Index</span>
             </label>
             <div class="collection-item blue-text">Otomatik Indexlemede;<br />Twitter için oluşturulan aylık<br /> indexler, veriler<br /> alınmadan önce oluşturulur.</div>
-            @if ($options['twitter.index.trends'] == 'off' || $options['twitter.index.users'] == 'off')
+            @if ($options['twitter.index.trends'] == 'off')
                 <a
                     href="#"
                     class="collection-item waves-effect d-block json"
                     data-href="{{ route('admin.twitter.index.create') }}"
                     data-method="post"
-                    data-callback="__index_create">Eksik Indexleri Oluştur</a>
+                    data-callback="__index_create">Trend Indexini Oluştur</a>
                 <div
                     class="load"
                     data-method="get"
@@ -138,11 +138,11 @@
 
                     function __index_status(__, obj)
                     {
-                        if (obj.trends.status == 'ok' && obj.users.status == 'ok')
+                        if (obj.trends.status == 'ok')
                         {
                             $('[data-callback=__index_create]').remove()
 
-                            M.toast({ html: 'Eksik indexler oluşturuldu.', classes: 'green' })
+                            M.toast({ html: 'Trend indexi oluşturuldu.', classes: 'green' })
                         }
                         else
                         {

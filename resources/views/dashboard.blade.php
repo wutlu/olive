@@ -35,8 +35,8 @@
                     <div class="card-image">
                         <img src="{{ asset('img/user-background.jpg') }}" alt="" />
                         <span class="card-title">{{ $user->organisation->name }}</span>
-                        <a href="{{ route('settings.organisation') }}" class="btn-floating btn-large halfway-fab waves-effect cyan darken-2">
-                            <i class="material-icons">settings</i>
+                        <a href="{{ route('settings.organisation') }}" class="btn-floating btn-large halfway-fab waves-effect white">
+                            <i class="material-icons black-text">settings</i>
                         </a>
                     </div>
                     <div class="card-content">

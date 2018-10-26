@@ -54,7 +54,7 @@ class DetectorJob implements ShouldQueue
 
         if (@$links->links)
         {
-            $chunk = [ 'body' => [] ];
+            $chunk = [];
 
             foreach ($links->links as $link)
             {

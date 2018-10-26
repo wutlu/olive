@@ -22,7 +22,6 @@ class OptionTableSeeder extends Seeder
         Option::updateOrCreate( [ 'key' => 'google.status'            ], [ 'value' => 'off'               ] );
         Option::updateOrCreate( [ 'key' => 'google.index.search'      ], [ 'value' => 'off'               ] );
         Option::updateOrCreate( [ 'key' => 'twitter.index.auto'       ], [ 'value' => 'off'               ] );
-        Option::updateOrCreate( [ 'key' => 'twitter.index.users'      ], [ 'value' => 'off'               ] );
         Option::updateOrCreate( [ 'key' => 'twitter.index.tweets'     ], [ 'value' => '2006.03'           ] );
         Option::updateOrCreate( [ 'key' => 'twitter.index.trends'     ], [ 'value' => 'off'               ] );
         Option::updateOrCreate( [ 'key' => 'twitter.trend.status'     ], [ 'value' => 'off'               ] );

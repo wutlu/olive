@@ -62,7 +62,7 @@ class Crawler extends Command
     		$errors = [];
     		$entry_id = $sozluk->last_id;
 
-    		$chunk = [ 'body' => [] ];
+    		$chunk = [];
 
     		while ($stream)
     		{

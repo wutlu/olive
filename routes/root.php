@@ -31,6 +31,9 @@ Route::prefix('kupon-yonetimi')->group(function () {
 });
 
 Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {
+    # 
+    # ALIŞVERİŞ
+    # 
     Route::prefix('alisveris-botlari')->group(function () {
         Route::get('/', 'ShoppingController@listView')->name('crawlers.shopping.list');
         Route::get('json', 'ShoppingController@listViewJson')->name('crawlers.shopping.list.json');
@@ -47,6 +50,9 @@ Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {
         Route::post('genel/index-olustur', 'ShoppingController@allIndex')->name('crawlers.shopping.bot.index.all');
     });
 
+    # 
+    # YOUTUBE
+    # 
     Route::prefix('youtube')->group(function () {
         Route::get('/', 'YouTubeController@dashboard')->name('admin.youtube.settings');
         Route::patch('ayar', 'YouTubeController@statusSet')->name('admin.youtube.status.set');
@@ -57,6 +63,9 @@ Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {
         Route::post('index-olustur', 'YouTubeController@indexCreate')->name('admin.youtube.index.create');
     });
 
+    # 
+    # GOOGLE
+    # 
     Route::prefix('google')->group(function () {
         Route::get('/', 'GoogleController@dashboard')->name('admin.google.settings');
         Route::patch('ayar', 'GoogleController@statusSet')->name('admin.google.status.set');
@@ -67,6 +76,9 @@ Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {
         Route::post('index-olustur', 'GoogleController@indexCreate')->name('admin.google.index.create');
     });
 
+    # 
+    # TWITTER
+    # 
     Route::prefix('twitter')->group(function () {
         Route::get('/', 'TwitterController@dashboard')->name('admin.twitter.settings');
 
@@ -88,6 +100,9 @@ Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {
         });
     });
 
+    # 
+    # MEDYA
+    # 
     Route::prefix('medya-botlari')->group(function () {
         Route::get('/', 'MediaController@listView')->name('crawlers.media.list');
         Route::get('json', 'MediaController@listViewJson')->name('crawlers.media.list.json');
@@ -104,6 +119,9 @@ Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {
         Route::post('genel/index-olustur', 'MediaController@allIndex')->name('crawlers.media.bot.index.all');
     });
 
+    # 
+    # SÖZLÜK
+    # 
     Route::prefix('sozluk-botlari')->group(function () {
         Route::get('/', 'SozlukController@listView')->name('crawlers.sozluk.list');
         Route::get('json', 'SozlukController@listViewJson')->name('crawlers.sozluk.list.json');

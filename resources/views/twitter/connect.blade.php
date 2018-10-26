@@ -8,28 +8,28 @@
 ])
 
 @push('local.styles')
-.twitter-logo {
-    width: 128px;
-    height: 128px;
+    .twitter-logo {
+        width: 96px;
+        height: 96px;
 
-    margin: 1rem auto;
-    padding: 1rem;
+        margin: 1rem auto;
+        padding: 1rem;
 
-    display: table;
+        display: table;
 
-    background-color: #e1f5fe;
+        background-color: #e1f5fe;
 
-    border-radius: 50%;
-}
+        border-radius: 50%;
+    }
 
-p {
-    padding: 1rem 0;
-}
+    p {
+        padding: 1rem 0;
+    }
 
-pre {
-    margin: 0 0 1rem;
-    padding: 1rem;
-}
+    pre {
+        margin: 0 0 1rem;
+        padding: 1rem;
+    }
 @endpush
 
 @section('content')

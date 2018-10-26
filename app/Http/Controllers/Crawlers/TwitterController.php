@@ -58,8 +58,7 @@ class TwitterController extends Controller
     {
         $rows = Option::whereIn('key', [
             'twitter.index.auto',
-            'twitter.index.trends',
-            'twitter.index.users'
+            'twitter.index.trends'
         ])->get();
 
         $options = [];
@@ -123,8 +122,10 @@ class TwitterController extends Controller
                 'twitter' => [
                     'tweets' => Indices::stats([ 'twitter', 'tweets', '*' ]),
                     'trends' => Indices::stats([ 'twitter', 'trends' ]),
-                    'users' => Indices::stats([ 'twitter', 'users' ]),
-                    'size' => Indices::stats([ 'twitter', '*' ])
+                    'size' => [
+                        'tweet' => Indices::stats([ 'twitter', 'tweets', '*' ]),
+                        'trend' => Indices::stats([ 'twitter', 'trends' ])
+                    ]
                 ]
             ]
         ];
@@ -157,7 +158,6 @@ class TwitterController extends Controller
     public static function indexCreate()
     {
         CreateTwitterIndexJob::dispatch('trends')->onQueue('elasticsearch');
-        CreateTwitterIndexJob::dispatch('users')->onQueue('elasticsearch');
 
         return [
             'status' => 'ok'
@@ -171,8 +171,7 @@ class TwitterController extends Controller
     public static function indexStatus()
     {
         return [
-            'trends' => Indices::stats([ 'twitter', 'trends' ]),
-            'users' => Indices::stats([ 'twitter', 'users' ])
+            'trends' => Indices::stats([ 'twitter', 'trends' ])
         ];
     }
 

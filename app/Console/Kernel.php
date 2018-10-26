@@ -57,7 +57,7 @@ class Kernel extends ConsoleKernel
             #
             # Müşteri Twitter hesaplarının aktifliğini her saat başı kontrol et.
             #
-            $schedule->command('nohup "twitter:account_control"')->hourly()->timezone(config('app.timezone'))->withoutOverlapping();
+            $schedule->command('nohup "twitter:account_control" --type=restart')->hourly()->timezone(config('app.timezone'));
 
             /* ---------------------------------------- */
 
@@ -67,7 +67,7 @@ class Kernel extends ConsoleKernel
             {
                 foreach ($crawlers as $crawler)
                 {
-                    $schedule->command('nohup "sozluk:crawler '.$crawler->id.'"')
+                    $schedule->command('nohup "sozluk:crawler '.$crawler->id.'" --type=start')
                              ->everyMinute()
                              ->timezone(config('app.timezone'))
                              ->withoutOverlapping();
@@ -80,10 +80,9 @@ class Kernel extends ConsoleKernel
 
             if ($option)
             {
-                $schedule->command('nohup "youtube:trend_detect"')
+                $schedule->command('nohup "youtube:trend_detect" --type=restart')
                          ->everyFifteenMinutes()
-                         ->timezone(config('app.timezone'))
-                         ->withoutOverlapping();
+                         ->timezone(config('app.timezone'));
             }
 
             /* ---------------------------------------- */
@@ -92,10 +91,9 @@ class Kernel extends ConsoleKernel
 
             if ($option)
             {
-                $schedule->command('nohup "google:trend_detect"')
+                $schedule->command('nohup "google:trend_detect" --type=restart')
                          ->everyThirtyMinutes()
-                         ->timezone(config('app.timezone'))
-                         ->withoutOverlapping();
+                         ->timezone(config('app.timezone'));
             }
 
             /* ---------------------------------------- */
@@ -123,6 +121,19 @@ class Kernel extends ConsoleKernel
             }
 
             /* ---------------------------------------- */
+
+            /* ---------------------------------------- */
+
+            $option = Option::where('key', 'twitter.status')->first();
+
+            if (@$option)
+            {
+                $status = $option->value == 'on' ? 'restart' : 'kill';
+
+                $schedule->command('nohup "twitter:stream --type=trend" --type='.$status.'')
+                         ->everyFifteenMinutes()
+                         ->timezone(config('app.timezone'));
+            }
         }
     }
 
