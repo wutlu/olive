@@ -25,11 +25,11 @@ class CreateSozlukCrawlersTable extends Migration
             $table->string('selector_entry');
             $table->string('selector_author');
 
-            $table->smallInteger('error_count')->default(0);
-            $table->smallInteger('off_limit')->default(100);
+            $table->unsignedSmallInteger('error_count')->default(0);
+            $table->unsignedSmallInteger('off_limit')->default(100);
             $table->text('off_reason')->nullable()->default(null);
 
-            $table->smallInteger('max_attempt')->default(100);
+            $table->unsignedSmallInteger('max_attempt')->default(100);
 
             $table->boolean('status')->default(0);
             $table->boolean('test')->default(0);

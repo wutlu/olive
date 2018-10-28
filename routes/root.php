@@ -98,6 +98,15 @@ Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {
             Route::get('/', 'TwitterController@accounts')->name('admin.twitter.accounts');
             Route::get('json', 'TwitterController@accountsViewJson')->name('crawlers.twitter.accounts.list.json');
         });
+
+        Route::prefix('token-yonetimi')->group(function () {
+            Route::get('/', 'TwitterController@tokens')->name('admin.twitter.tokens');
+            Route::get('json', 'TwitterController@tokensJson')->name('admin.twitter.tokens.json');
+            Route::get('token', 'TwitterController@token')->name('admin.twitter.token');
+            Route::put('token', 'TwitterController@tokenCreate');
+            Route::patch('token', 'TwitterController@tokenUpdate');
+            Route::delete('token', 'TwitterController@tokenDelete');
+        });
     });
 
     # 

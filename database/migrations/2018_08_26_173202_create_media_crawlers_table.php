@@ -23,11 +23,11 @@ class CreateMediaCrawlersTable extends Migration
             $table->string('selector_title');
             $table->string('selector_description');
 
-            $table->smallInteger('error_count')->default(0);
-            $table->smallInteger('off_limit')->default(10);
+            $table->unsignedSmallInteger('error_count')->default(0);
+            $table->unsignedSmallInteger('off_limit')->default(10);
             $table->text('off_reason')->nullable()->default(null);
 
-            $table->smallInteger('control_interval')->default(10);
+            $table->unsignedSmallInteger('control_interval')->default(10);
             $table->timestamp('control_date')->default(\DB::raw('now()'));
 
             $table->boolean('status')->default(0);

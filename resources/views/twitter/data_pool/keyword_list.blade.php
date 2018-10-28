@@ -163,7 +163,7 @@
             if (obj.hits.length)
             {
                 $.each(obj.hits, function(key, o) {
-                    var selector = $('[data-id=' + o.id + ']'),
+                    var selector = $('[data-id=' + o.id + '].collection-item'),
 
                         item = selector.length ? selector : item_model.clone();
                         item.removeClass('model d-none')

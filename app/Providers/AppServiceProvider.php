@@ -33,15 +33,11 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Validator::extend('password_check', function($attribute, $value) {
-            $user = auth()->user();
-
-            return Hash::check($value , $user->password);
+            return Hash::check($value , auth()->user()->password);
         });
 
         Validator::extend('coupon_exists', function($attribute, $key) {
-            $coupon = DiscountCoupon::whereNull('invoice_id')->where('key', $key)->count();
-
-            return $coupon ? true : false;
+            return DiscountCoupon::whereNull('invoice_id')->where('key', $key)->count();
         });
 
         Validator::extend('tckn', function($attribute, $value, $parameters) {

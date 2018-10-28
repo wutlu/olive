@@ -18,6 +18,8 @@ use Carbon\Carbon;
 use App\Models\Option;
 use App\Models\Organisation\Organisation;
 
+use System;
+
 class Stream extends Command
 {
     private $endpoint = "https://stream.twitter.com/1.1/";
@@ -125,6 +127,11 @@ class Stream extends Command
                 }
                 catch (\Exception $e)
                 {
+                    System::log(
+                        json_encode($e->getMessage()),
+                        'App\Jobs\Crawlers\Twitter\Stream::handle('.$type.')',
+                        5
+                    );
                     $this->error($e->getMessage());
 
                     print_r($e->getMessage());
@@ -217,7 +224,7 @@ class Stream extends Command
                     'unique' => [
                         'terms' => [
                             'field' => 'title',
-                            'size' => 4000,
+                            'size' => 200,
                             'order' => [
                                 '_count' => 'DESC'
                             ]

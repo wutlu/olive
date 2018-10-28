@@ -213,7 +213,7 @@
     @endif
 
     @if (session('deleted'))
-        M.toast({ html: 'Organizasyon başarılı bir şekilde silindi..', classes: 'green' })
+        M.toast({ html: 'Organizasyon silindi.', classes: 'green' })
     @endif
 
 @endpush

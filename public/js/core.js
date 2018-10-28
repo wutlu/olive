@@ -667,10 +667,17 @@ function vzAjax(__)
                     {
                         if (__.is('form'))
                         {
-                            scrollTo({
-                                'target': '#' + __.attr('id'),
-                                'tolerance': '-72px'
-                            })
+                            if ($('#' + __.attr('id')).closest('.model'))
+                            {
+
+                            }
+                            else
+                            {
+                                scrollTo({
+                                    'target': '#' + __.attr('id'),
+                                    'tolerance': '-72px'
+                                })
+                            }
                         }
 
                         element.addClass('invalid')

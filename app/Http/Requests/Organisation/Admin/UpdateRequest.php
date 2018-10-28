@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Organisation\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Request;
 
 class UpdateRequest extends FormRequest
 {
@@ -22,7 +21,7 @@ class UpdateRequest extends FormRequest
      *
      * @return array
      */
-    public function rules(Request $request)
+    public function rules()
     {
         return [
             'name'     => 'required|string|max:100',

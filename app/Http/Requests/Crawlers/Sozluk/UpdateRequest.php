@@ -3,7 +3,7 @@
 namespace App\Http\Requests\Crawlers\Sozluk;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Request;
+use Illuminate\Http\Requests\IdRequest;
 
 class UpdateRequest extends FormRequest
 {
@@ -22,7 +22,7 @@ class UpdateRequest extends FormRequest
      *
      * @return array
      */
-    public function rules(Request $request)
+    public function rules(IdRequest $request)
     {
         return [
             'id'                   => 'required|integer|exists:media_crawlers',

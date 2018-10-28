@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Crawlers\Media;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Request;
 
 use Carbon\Carbon;
 
@@ -40,7 +39,7 @@ class DeleteRequest extends FormRequest
      *
      * @return array
      */
-    public function rules(Request $request)
+    public function rules()
     {
         Validator::extend('private_exists', function($attribute, $id) {
             return MediaCrawler::where('id', $id)

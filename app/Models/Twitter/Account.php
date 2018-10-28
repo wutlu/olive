@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Account extends Model
 {
     protected $table = 'twitter_accounts';
-	public $incrementing = false;
     protected $fillable = [
 		'id',
 		'organisation_id',
@@ -32,4 +31,6 @@ class Account extends Model
         'token_secret',
         'reasons'
     ];
+
+    public $incrementing = false;
 }

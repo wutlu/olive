@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Organisation\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Request;
 
 class InvoiceApproveRequest extends FormRequest
 {
@@ -22,7 +21,7 @@ class InvoiceApproveRequest extends FormRequest
      *
      * @return array
      */
-    public function rules(Request $request)
+    public function rules()
     {
         return [
             'no'       => 'required|string|max:100',

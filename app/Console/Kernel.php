@@ -126,11 +126,16 @@ class Kernel extends ConsoleKernel
 
             if (@$option)
             {
-                $status = $option->value == 'on' ? 'restart' : 'kill';
-
-                $schedule->command('nohup "twitter:stream --type=trend" --type='.$status.'')
-                         ->everyFifteenMinutes()
+                $schedule->command('nohup "twitter:stream --type=trend" --type='.($option->value == 'on' ? 'start' : 'kill').'')
+                         ->everyMinute()
                          ->timezone(config('app.timezone'));
+
+                $schedule->command('nohup "twitter:stream --type=trend" --type=restart')
+                         ->everyFifteenMinutes()
+                         ->timezone(config('app.timezone'))
+                         ->skip(function() use($option) {
+                            return $option->value != 'on';
+                         });
             }
         }
     }

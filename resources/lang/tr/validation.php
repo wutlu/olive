@@ -111,6 +111,7 @@ return [
     'password_check' => 'Şifre, hesabınızın şifresiyle uyuşmuyor.',
     'coupon_exists' => 'Kupon kodu geçersiz.',
     'has_route' => 'Rota oluşturulamadı.',
+    'token_check' => 'Token geçerli değil.',
 
     /*
     |--------------------------------------------------------------------------
@@ -204,6 +205,11 @@ return [
         'selector_seller_phones'       => 'Satıcı Telefonu Seçicisi',
         'selector_price'               => 'Ücret Seçicisi',
         'twitter_follow_limit_user'    => 'Kullanıcı Takip Limiti',
-        'twitter_follow_limit_keyword' => 'Kelime Takip Limiti'
+        'twitter_follow_limit_keyword' => 'Kelime Takip Limiti',
+        'consumer_key'                 => 'Consumer Key',
+        'consumer_secret'              => 'Consumer Secret',
+        'access_token'                 => 'Access Token',
+        'access_token_secret'          => 'Access Token Secret',
+        'off_limit'                    => 'Kapatma Limiti',
     ],
 ];

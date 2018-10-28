@@ -73,8 +73,6 @@ class Nohup extends Command
 
         if ($type == 'start' || $type == 'restart')
         {
-            sleep(1);
-
             $process_id = $file ? (posix_getpgid($file->pid) ? $file->pid : null) : null;
 
             if ($process_id)
@@ -103,6 +101,8 @@ class Nohup extends Command
         ]);
 
         $pid = trim(shell_exec($cmd));
+
+        sleep(1);
 
         return '['.$process_id.'] process killed. ('.$pid.')';
     }

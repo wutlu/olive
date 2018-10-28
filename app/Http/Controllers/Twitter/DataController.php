@@ -17,7 +17,7 @@ use App\Http\Requests\IdRequest;
 
 class DataController extends Controller
 {
-	public function __construct()
+    public function __construct()
     {
         $this->middleware([ 'auth' ]);
     }
@@ -25,7 +25,7 @@ class DataController extends Controller
     # twitter veri havuzu kelime listesi view.
     public function keywordList()
     {
-    	$user = auth()->user();
+        $user = auth()->user();
 
         return view('twitter.data_pool.keyword_list', compact('user'));
     }
@@ -45,13 +45,13 @@ class DataController extends Controller
     # twitter veri havuzu kelime oluşturma.
     public function keywordCreate(CreateKeywordRequest $request)
     {
-    	$query = new StreamingKeywords;
-    	$query->keyword = $request->keyword;
-    	$query->organisation_id = auth()->user()->organisation_id;
-    	$query->save();
+        $query = new StreamingKeywords;
+        $query->keyword = $request->keyword;
+        $query->organisation_id = auth()->user()->organisation_id;
+        $query->save();
 
         return [
-        	'status' => 'ok'
+            'status' => 'ok'
         ];
     }
 
@@ -62,16 +62,16 @@ class DataController extends Controller
 
         return [
             'status' => 'ok',
-        	'data' => [
-        		'id' => $request->id
-        	]
+            'data' => [
+                'id' => $request->id
+            ]
         ];
     }
 
     # twitter veri havuzu kullanıcı listesi view.
     public function accountList()
     {
-    	$user = auth()->user();
+        $user = auth()->user();
 
         return view('twitter.data_pool.account_list', compact('user'));
     }
@@ -91,16 +91,16 @@ class DataController extends Controller
     # twitter veri havuzu kullanıcı oluşturma.
     public function accountCreate(CreateAccountRequest $request)
     {
-    	$account = session('account');
+        $account = session('account');
 
-    	$query = new StreamingUsers;
-    	$query->organisation_id = auth()->user()->organisation_id;
-    	$query->user_id = $account->id_str;
-    	$query->screen_name = $account->screen_name;
-    	$query->save();
+        $query = new StreamingUsers;
+        $query->organisation_id = auth()->user()->organisation_id;
+        $query->user_id = $account->id_str;
+        $query->screen_name = $account->screen_name;
+        $query->save();
 
         return [
-        	'status' => 'ok'
+            'status' => 'ok'
         ];
     }
 
@@ -111,9 +111,9 @@ class DataController extends Controller
 
         return [
             'status' => 'ok',
-        	'data' => [
-        		'id' => $request->id
-        	]
+            'data' => [
+                'id' => $request->id
+            ]
         ];
     }
 }
