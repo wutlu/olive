@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
              ->call(MediaCrawlersTableSeeder::class)
              ->call(SozlukCrawlersTableSeeder::class)
              ->call(ShoppingCrawlersTableSeeder::class)
+             ->call(TwitterTokensTableSeeder::class)
              ->call(OptionTableSeeder::class);
     }
 }

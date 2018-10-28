@@ -177,9 +177,27 @@ class Stream extends Command
     \*******************************/
     public function keyword()
     {
-        echo Term::line('keyword stream');
+        echo Term::line('Using keyword strem:');
 
-        exit();
+        echo Term::line($keywords);
+
+        $this->header(
+            [
+                'client_id' => config('services.twitter.client_id'),
+                'client_secret' => config('services.twitter.client_secret'),
+                'access_token' => config('services.twitter.access_token'),
+                'access_token_secret' => config('services.twitter.access_token_secret')
+            ]
+        );
+
+        $response = $this->client->post('statuses/filter.json', [
+            'form_params' => [
+                'language' => 'tr',
+                'track' => $keywords
+            ]
+        ]);
+
+        return $response->getBody();
     }
 
     /*******************************\
@@ -224,7 +242,7 @@ class Stream extends Command
                     'unique' => [
                         'terms' => [
                             'field' => 'title',
-                            'size' => 200,
+                            'size' => 400,
                             'order' => [
                                 '_count' => 'DESC'
                             ]
@@ -235,7 +253,7 @@ class Stream extends Command
         );
 
         $filtered = array_map(function ($q) {
-            return $q['key'];
+            return Term::convertAscii($q['key']);
         }, $query->data['aggregations']['unique']['buckets']);
 
         $keywords = implode(',', $filtered);
@@ -243,6 +261,7 @@ class Stream extends Command
         if (count($filtered))
         {
             echo Term::line($keywords);
+            echo Term::line('('.count($filtered).') keyword following!');
 
             $this->header(
                 [

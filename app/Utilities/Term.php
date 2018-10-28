@@ -59,13 +59,13 @@ class Term
     {
         $str = mb_convert_encoding((string) $str, 'UTF-8', mb_list_encodings());
 
-        $defaults = array(
+        $defaults = [
             'delimiter' => ' ',
             'limit' => null,
             'lowercase' => false,
             'replacements' => [],
             'transliterate' => false
-        );
+        ];
 
         $options = array_merge($defaults, $options);
 
