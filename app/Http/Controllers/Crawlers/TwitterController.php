@@ -314,6 +314,10 @@ class TwitterController extends Controller
 
         $token = Token::where('id', $request->id)->firstOrFail();
         $token->fill($request->all());
+        //$token->pid = null;
+        //$token->status = 'off';
+        $token->error_count = 0;
+        $token->off_reason = null;
         $token->save();
 
         return [

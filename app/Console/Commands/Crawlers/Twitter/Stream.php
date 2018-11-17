@@ -11,14 +11,21 @@ use GuzzleHttp\Subscriber\Oauth\Oauth1;
 
 use App\Elasticsearch\Document;
 use App\Elasticsearch\Indices;
-use App\Models\Crawlers\TwitterCrawler;
 
 use Carbon\Carbon;
+
+use App\Models\Crawlers\TwitterCrawler;
 
 use App\Models\Option;
 use App\Models\Organisation\Organisation;
 
+use App\Models\Twitter\StreamingKeywords;
+use App\Models\Twitter\Token;
+
 use System;
+use Storage;
+
+use App\Console\Commands\Nohup;
 
 class Stream extends Command
 {
@@ -29,7 +36,7 @@ class Stream extends Command
      *
      * @var string
      */
-    protected $signature = 'twitter:stream {--type=}';
+    protected $signature = 'twitter:stream {--type=} {--streamId=}';
 
     /**
      * The console command description.
@@ -177,27 +184,148 @@ class Stream extends Command
     \*******************************/
     public function keyword()
     {
-        echo Term::line('Using keyword strem:');
+        $stream_id = $this->option('streamId');
 
-        echo Term::line($keywords);
+        if ($stream_id)
+        {
+            echo Term::line('Using keyword stream:');
 
-        $this->header(
-            [
-                'client_id' => config('services.twitter.client_id'),
-                'client_secret' => config('services.twitter.client_secret'),
-                'access_token' => config('services.twitter.access_token'),
-                'access_token_secret' => config('services.twitter.access_token_secret')
-            ]
-        );
+            $this->info($stream_id);
 
-        $response = $this->client->post('statuses/filter.json', [
-            'form_params' => [
-                'language' => 'tr',
-                'track' => $keywords
-            ]
-        ]);
+            $token = Token::where('id', $stream_id);
 
-        return $response->getBody();
+            if ($token->exists())
+            {
+                $token = $token->first();
+
+                $this->info($token->value);
+
+                $this->header(
+                    [
+                        'client_id' => $token->consumer_key,
+                        'client_secret' => $token->consumer_secret,
+                        'access_token' => $token->access_token,
+                        'access_token_secret' => $token->access_token_secret
+                    ]
+                );
+
+                $response = $this->client->post('statuses/filter.json', [
+                    'form_params' => [
+                        'language' => 'tr',
+                        'track' => $token->value
+                    ]
+                ]);
+
+                return $response->getBody();
+            }
+        }
+        else
+        {
+            echo Term::line('Generating keyword stream operations:');
+
+            $kquery = StreamingKeywords::whereNull('reasons');
+
+            if ($kquery->count())
+            {
+                $tokens = Token::whereNotNull('pid')->where('sh', 'ILIKE', '%--type=keyword%');
+
+                if ($tokens->count())
+                {
+                    foreach ($tokens->get() as $t)
+                    {
+                        $cmd = implode(' ', [
+                            'kill',
+                            '-9',
+                            $t->pid,
+                            '>>',
+                            '/dev/null',
+                            '2>&1',
+                            '&',
+                            'echo $!'
+                        ]);
+
+                        $pid = trim(shell_exec($cmd));
+
+                        $this->error('Process Killed: ['.$t->pid.']');
+
+                        $t->pid = null;
+                        $t->sh = null;
+                        $t->value = null;
+                        $t->status = 'off';
+                        $t->save();
+                    }
+
+                    sleep(1);
+                }
+
+                foreach ($kquery->get()->chunk(400) as $query)
+                {
+                    $pkeyword = [];
+
+                    foreach ($query as $keyword)
+                    {
+                        $pkeyword[] = $keyword->keyword;
+                    }
+
+                    $token = Token::whereNull('pid')
+                                  ->where('status', 'off')
+                                  ->orderBy('updated_at', 'ASC');
+
+                    $this->info('Keywords: ['.count($pkeyword).']');
+
+                    if ($token->exists())
+                    {
+                        $token = $token->first();
+
+                        $sh = 'twitter:stream --streamId='.$token->id.' --type=keyword';
+
+                        $key = implode('/', [ 'processes', md5($sh) ]);
+
+                        $cmd = implode(' ', [
+                            'nohup',
+                            'php',
+                            base_path('artisan'),
+                            $sh,
+                            '>>',
+                            '/dev/null',
+                            '2>&1',
+                            '&',
+                            'echo $!'
+                        ]);
+
+                        $pid = trim(shell_exec($cmd));
+
+                        Storage::put($key, json_encode([ 'pid' => trim($pid), 'command' => $sh ]));
+
+                        $this->info('['.$sh.'] process started.');
+
+                        $token->sh = $sh;
+                        $token->value = implode(',', $pkeyword);
+                        $token->status = 'on';
+                        $token->pid = $pid;
+                        $token->save();
+                    }
+                    else
+                    {
+                        $message = 'Twitter kelime akışı için yeterli token bulunamadı.';
+
+                        $this->error($message);
+
+                        System::log(
+                            json_encode($message),
+                            'App\Console\Commands\Crawlers\Twitter\Stream::keyword()',
+                            10
+                        );
+                    }
+                }
+            }
+            else
+            {
+                echo Term::line('Keyword list not found.');
+            }
+
+            exit();
+        }
     }
 
     /*******************************\
