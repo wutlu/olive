@@ -23,6 +23,8 @@ use App\Models\Twitter\StreamingKeywords;
 use App\Models\Twitter\StreamingUsers;
 use App\Models\Twitter\Token;
 
+use App\Jobs\Crawlers\Social\Twitter\DeletedTweetJob;
+
 use System;
 use Storage;
 
@@ -128,6 +130,11 @@ class Stream extends Command
                 {
                     $obj = json_decode($this->read_line($stream), true);
 
+                    if (@$obj['delete'])
+                    {
+                        DeletedTweetJob::dispatch($obj['delete'])->onQueue('crawler')->delay(now()->addMinutes(1));
+                    }
+
                     if (@$obj['id_str'])
                     {
                         if (@$obj['retweeted_status'])
@@ -147,12 +154,6 @@ class Stream extends Command
                         $tweet = TwitterCrawler::pattern($obj);
 
                         $bulk = TwitterCrawler::chunk($tweet, $bulk);
-
-                        $this->info($tweet->text);
-                    }
-                    else
-                    {
-                        print_r($obj);
                     }
                 }
                 catch (\Exception $e)

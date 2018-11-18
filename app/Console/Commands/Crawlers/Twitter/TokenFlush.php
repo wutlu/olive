@@ -12,7 +12,7 @@ use Mail;
 
 use App\Models\Twitter\Token;
 
-class TrendDetect extends Command
+class TokenFlush extends Command
 {
     /**
      * The name and signature of the console command.
