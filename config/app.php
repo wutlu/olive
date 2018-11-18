@@ -60,6 +60,7 @@ return [
         base_path('supervisor/logs/elasticsearch.log'),
         base_path('supervisor/logs/email.log'),
         base_path('supervisor/logs/trigger.log'),
+        base_path('supervisor/logs/horizon.log'),
         storage_path('logs/laravel.log')
     ],
 
