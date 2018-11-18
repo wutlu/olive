@@ -13,4 +13,10 @@ class StreamingUsers extends Model
 		'reasons',
 		'status'
     ];
+
+    # organizasyon
+    public function organisation()
+    {
+        return $this->hasOne('App\Models\Organisation\Organisation', 'id', 'organisation_id');
+    }
 }

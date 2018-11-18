@@ -42,7 +42,7 @@
                             .attr('data-id', o.id)
                         item.addClass(o.status == 'disabled' ? 'red' : (o.pid === false ? 'orange' : (o.pid === null ? 'grey' : 'green')))
 
-                        item.find('[data-name=pid]').val(o.status == 'disabled' ? 'Sorunlu' : (o.pid === false ? 'Yeniden Başlatılıyor' : (o.pid === null ? 'Devre Dışı' : o.pid)))
+                        item.find('[data-name=pid]').val(o.status == 'disabled' ? 'Sorunlu' : (o.pid === false ? 'Görev Tamamlandı' : (o.pid === null ? 'Devre Dışı' : o.pid)))
                         item.find('[data-name=sh]').val(o.sh)
                         item.find('[data-name=value]').val(o.value)
 
@@ -398,7 +398,7 @@
         </div>
         <div class="card-content">
             <p class="green-text">Aktif, çalışıyor.</p>
-            <p class="orange-text">Hata alındı, fakat tekrar çalıştırılacak.</p>
+            <p class="orange-text">İşlem tamamlandı ve kuyruk sonlandırıldı. Token boşa çıkacak.</p>
             <p class="red-text">Hata alındı, ilgilenilmesi gerekiyor.</p>
             <p class="grey-text">İhtiyaç dışı, kullanılmıyor. Gerektiğinde kullanılacak.</p>
         </div>

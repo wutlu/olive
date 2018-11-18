@@ -50,9 +50,6 @@
                     <p data-name="title"></p>
                     <p data-name="reasons"></p>
                 </span>
-                <small class="badge ml-auto right-align">
-                	<i class="material-icons" data-name="status">linear_scale</i>
-                </small>
             </a>
         </div>
         <div class="card-content">
@@ -69,14 +66,6 @@
                 </div>
             </form>
         </div>
-        <div class="card-content grey lighten-4">
-		    <p class="d-flex">
-		    	<i class="material-icons red-text" style="margin: 0 1rem 0 0;">timer</i> Havuzda Değil
-		    </p>
-		    <p class="d-flex">
-		    	<i class="material-icons green-text" style="margin: 0 1rem 0 0;">linear_scale</i> Havuzda
-		    </p>
-	    </div>
     </div>
 
     @component('components.loader')
@@ -175,11 +164,6 @@
                         	.html(o.reasons ? o.reasons : '-')
                         	.removeClass('green-text red-text')
                         	.addClass(o.reasons ? 'red-text' : 'green-text')
-
-                        item.find('[data-name=status]')
-                        	.html(o.status ? 'linear_scale' : 'timer')
-                        	.removeClass('green-text red-text')
-                        	.addClass(o.status ? 'green-text' : 'red-text')
 
                         if (!selector.length)
                         {

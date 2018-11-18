@@ -136,6 +136,18 @@ class Kernel extends ConsoleKernel
                          ->skip(function() use($option) {
                             return $option->value != 'on';
                          });
+
+                $schedule->command('nohup "twitter:stream --type=keyword" --type=restart')
+                         ->hourly()
+                         ->timezone(config('app.timezone'));
+
+                $schedule->command('nohup "twitter:stream --type=user" --type=restart')
+                         ->hourly()
+                         ->timezone(config('app.timezone'));
+
+                $schedule->command('twitter:token_flush')
+                         ->everyMinute()
+                         ->timezone(config('app.timezone'));
             }
         }
     }
