@@ -38,19 +38,19 @@ class Kernel extends ConsoleKernel
                      ->withoutOverlapping();
 
             # 
-            # Site Takipçileri.
+            # Site Takipçisi
             # 
             $schedule->command('media:detector')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
             $schedule->command('shopping:detector')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
 
             # 
-            # Bağlantı Toplayıcıları
+            # Bağlantı Toplayıcı
             # 
             $schedule->command('media:taker')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
             $schedule->command('shopping:taker')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
 
             # 
-            # Alarmları sürekli kontrol et.
+            # Alarmları Kontrolü
             # 
             $schedule->command('alarm:control')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
 

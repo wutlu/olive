@@ -180,6 +180,12 @@
                     İndirim Kuponları
                 </a>
             </li>
+            <li>
+                <a class="waves-effect" href="#">
+                    <i class="material-icons">vpn_key</i>
+                    Proxy Yönetimi
+                </a>
+            </li>
             <li class="divider"></li>
             <li>
                 <div class="collapsible-header waves-effect">
