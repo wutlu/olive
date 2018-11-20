@@ -371,7 +371,7 @@ class TwitterController extends Controller
 
     # ######################################## [ ADMIN ] ######################################## #
     # 
-    # token güncelle.
+    # token sil.
     # 
     public static function tokenDelete(IdRequest $request)
     {

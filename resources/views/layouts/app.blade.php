@@ -181,9 +181,9 @@
                 </a>
             </li>
             <li>
-                <a class="waves-effect" href="#">
+                <a class="waves-effect" href="{{ route('admin.proxies') }}">
                     <i class="material-icons">vpn_key</i>
-                    Proxy Yönetimi
+                    Vekil Sunucu Yönetimi
                 </a>
             </li>
             <li class="divider"></li>

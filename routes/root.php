@@ -30,6 +30,15 @@ Route::prefix('kupon-yonetimi')->group(function () {
     Route::delete('indirim-gunu', 'DiscountController@adminDayDelete');
 });
 
+Route::prefix('vekil-sunucu-yonetimi')->group(function () {
+    Route::get('/', 'ProxyController@proxies')->name('admin.proxies');
+    Route::get('json', 'ProxyController@proxiesJson')->name('admin.proxies.json');
+    Route::get('vekil-sunucu', 'ProxyController@proxy')->name('admin.proxy');
+    Route::put('vekil-sunucu', 'ProxyController@proxyCreate');
+    Route::patch('vekil-sunucu', 'ProxyController@proxyUpdate');
+    Route::delete('vekil-sunucu', 'ProxyController@proxyDelete');
+});
+
 Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {
     # 
     # ALIŞVERİŞ

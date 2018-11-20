@@ -239,40 +239,43 @@ class Stream extends Command
             ]
         );
 
-        $filtered = array_map(function ($q) {
-            return Term::convertAscii($q['key']);
-        }, $query->data['aggregations']['unique']['buckets']);
-
-        $keywords = implode(',', $filtered);
-
-        if (count($filtered))
+        if (@$query->data['aggregations']['unique']['buckets'])
         {
-            echo Term::line($keywords);
-            echo Term::line('('.count($filtered).') keyword following!');
+            $filtered = array_map(function ($q) {
+                return Term::convertAscii($q['key']);
+            }, $query->data['aggregations']['unique']['buckets']);
 
-            $this->header(
-                [
-                    'client_id' => config('services.twitter.client_id'),
-                    'client_secret' => config('services.twitter.client_secret'),
-                    'access_token' => config('services.twitter.access_token'),
-                    'access_token_secret' => config('services.twitter.access_token_secret')
-                ]
-            );
+            $keywords = implode(',', $filtered);
 
-            $response = $this->client->post('statuses/filter.json', [
-                'form_params' => [
-                    'language' => 'tr',
-                    'track' => $keywords
-                ]
-            ]);
+            if (count($filtered))
+            {
+                echo Term::line($keywords);
+                echo Term::line('('.count($filtered).') keyword following!');
 
-            return $response->getBody();
-        }
-        else
-        {
-            $this->error('Trend list not found.');
+                $this->header(
+                    [
+                        'client_id' => config('services.twitter.client_id'),
+                        'client_secret' => config('services.twitter.client_secret'),
+                        'access_token' => config('services.twitter.access_token'),
+                        'access_token_secret' => config('services.twitter.access_token_secret')
+                    ]
+                );
 
-            exit();
+                $response = $this->client->post('statuses/filter.json', [
+                    'form_params' => [
+                        'language' => 'tr',
+                        'track' => $keywords
+                    ]
+                ]);
+
+                return $response->getBody();
+            }
+            else
+            {
+                $this->error('Trend list not found.');
+
+                exit();
+            }
         }
     }
 

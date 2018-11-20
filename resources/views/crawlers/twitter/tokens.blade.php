@@ -340,30 +340,32 @@
 
             if (obj.data.off_reason)
             {
-                var _mdl = modal({
-                        'id': 'off-reason',
-                        'body': [
-                            $('<p />', {
-                                'html': 'Bu token aşağıdaki sebepten dolayı devre dışı bırakıldı.',
-                                'class': 'red-text'
-                            }),
-                            $('<p />', {
-                                'html': obj.data.off_reason
-                            })
-                        ],
-                        'size': 'modal-medium',
-                        'title': 'Kapatma Mesajı',
-                        'options': {}
-                    });
+                setTimeout(function() {
+                    var _mdl = modal({
+                            'id': 'off-reason',
+                            'body': [
+                                $('<p />', {
+                                    'html': 'Bu token aşağıdaki sebepten dolayı devre dışı kaldı.',
+                                    'class': 'red-text'
+                                }),
+                                $('<p />', {
+                                    'html': obj.data.off_reason
+                                })
+                            ],
+                            'size': 'modal-medium',
+                            'title': 'Kapatma Mesajı',
+                            'options': {}
+                        });
 
-                    _mdl.find('.modal-footer')
-                       .html([
-                            $('<a />', {
-                                'href': '#',
-                                'class': 'modal-close waves-effect btn-flat',
-                                'html': buttons.ok
-                            })
-                       ])
+                        _mdl.find('.modal-footer')
+                           .html([
+                                $('<a />', {
+                                    'href': '#',
+                                    'class': 'modal-close waves-effect btn-flat',
+                                    'html': buttons.ok
+                                })
+                           ])
+                }, 500)
             }
         }
     }
