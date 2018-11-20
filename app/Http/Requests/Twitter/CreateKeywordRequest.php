@@ -28,7 +28,8 @@ class CreateKeywordRequest extends FormRequest
         return [
             'unique_keyword' => 'Bu kelime zaten mevcut.',
             'except_list' => 'Bu kelimeyi kullanamazsınız.',
-            'limit' => 'Maksimum kelime limitine ulaştınız.'
+            'limit' => 'Maksimum kelime limitine ulaştınız.',
+            'organisation_status' => 'Organizasyonunuz henüz aktif değil.'
         ];
     }
 
@@ -53,8 +54,12 @@ class CreateKeywordRequest extends FormRequest
             return count($user->organisation->streamingKeywords) < $user->organisation->twitter_follow_limit_keyword;
         });
 
+        Validator::extend('organisation_status', function($attribute) use ($user) {
+            return $user->organisation->status == true;
+        });
+
         return [
-            'keyword' => 'required|bail|string|min:3|max:32|except_list|limit|unique_keyword'
+            'keyword' => 'required|bail|string|min:3|max:32|except_list|limit|unique_keyword|organisation_status'
         ];
     }
 }

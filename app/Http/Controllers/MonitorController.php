@@ -165,13 +165,13 @@ class MonitorController extends Controller
 
         $redis = new Redis;
 
-        exec('ps axo start,pid,cmd | grep artisan', $output);
+        exec('ps axo start,pid,cmd | grep '.base_path('artisan'), $output);
 
         if (count($output))
         {
             foreach ($output as $key => $line)
             {
-                $lines[] = preg_split('/^(\d{2}:\d{2}:\d{2}!?) (\d+) (.+)/', $line, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+                $lines[] = $line;
             }
         }
 

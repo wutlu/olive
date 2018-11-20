@@ -29,9 +29,8 @@
             {
                 $.each(obj.data, function(key, o) {
                     var item = model.clone().removeClass('d-none');
-                        item.find('[data-name=time]').html(o[0])
-                        item.find('[data-name=pid]').html(o[1])
-                        item.find('[data-name=cmd]').html(o[2])
+
+                        item.html(o)
 
                         item.prependTo(terminal)
                 })
@@ -48,8 +47,6 @@
 
 @push('local.styles')
     ul#console {
-        height: 600px;
-        overflow-y: scroll;
         background-image: url('{{ asset('img/olive-logo-opacity.svg') }}');
         background-repeat: no-repeat;
         background-position: center;
@@ -58,6 +55,7 @@
     ul#console > li.collection-item {
         padding-top: .4rem;
         padding-bottom: .4rem;
+        color: #900;
     }
 @endpush
 
@@ -67,9 +65,7 @@
             <img src="{{ asset('img/card-header.jpg') }}" alt="Arkaplan İşleri" />
             <span class="card-title">Arkaplan İşleri</span>
         </div>
-        <div class="card-content yellow lighten-4">
-            Sunucu üzerinde çalışan sisteme özgü işlemleri dinamik olarak izleyebilirsiniz.
-        </div>
+        <div class="card-content yellow lighten-4">Sunucu üzerinde çalışan sisteme özgü işlemleri dinamik olarak izleyebilirsiniz.</div>
         <ul
             id="console"
             class="collection black load d-flex align-items-end flex-wrap"
@@ -77,11 +73,7 @@
             data-callback="__log"
             data-include="cmd"
             data-method="post">
-            <li class="collection-item d-none" style="width: 100%;">
-                <span style="padding: .2rem;" class="orange-text" data-name="time"></span>
-                <span style="padding: .2rem;" class="red-text" data-name="pid"></span>
-                <span style="padding: .2rem;" class="green-text" data-name="cmd"></span>
-            </li>
+            <li class="collection-item d-none" data-name="sh" style="width: 100%;"></li>
         </ul>
     </div>
 @endsection

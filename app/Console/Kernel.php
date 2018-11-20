@@ -137,11 +137,11 @@ class Kernel extends ConsoleKernel
                             return $option->value != 'on';
                          });
 
-                $schedule->command('nohup "twitter:stream --type=keyword" --type=restart')
+                $schedule->command('twitter:stream --type=keyword')
                          ->hourly()
                          ->timezone(config('app.timezone'));
 
-                $schedule->command('nohup "twitter:stream --type=user" --type=restart')
+                $schedule->command('twitter:stream --type=user')
                          ->hourly()
                          ->timezone(config('app.timezone'));
 

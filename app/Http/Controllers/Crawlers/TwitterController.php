@@ -44,7 +44,9 @@ class TwitterController extends Controller
     {
         $rows = Option::whereIn('key', [
             'twitter.trend.status',
-            'twitter.status'
+            'twitter.status',
+            'twitter.index.trends',
+            'twitter.index.tweets'
         ])->get();
 
         $options = [];
@@ -144,6 +146,48 @@ class TwitterController extends Controller
     # 
     public static function set(SetRequest $request)
     {
+        $option = Option::where('key', $request->key);
+        
+        $error = true;
+
+        if ($option->exists())
+        {
+            $option = $option->first();
+
+            if ($request->key == 'twitter.index.tweets')
+            {
+                if ($option->value == date('Y.m', strtotime('+ 1 month')))
+                {
+                    $error = false;
+                }
+            }
+            else if ($request->key == 'twitter.index.trends')
+            {
+                if ($option->value == 'on')
+                {
+                    $error = false;
+                }
+            }
+            else
+            {
+                $error = false;
+            }
+        }
+
+        if ($error)
+        {
+            return response(
+                [
+                    'status' => 'err',
+                    'message' => 'The given data was invalid.',
+                    'errors' => [
+                        'token' => [ 'Önce index oluşturmanız gerekiyor.' ]
+                    ]
+                ],
+                422
+            );
+        }
+
         Option::updateOrCreate(
             [
                 'key' => $request->key
@@ -264,7 +308,7 @@ class TwitterController extends Controller
         $validator = Validator::make($request->all(), [
             'consumer_key' => 'required|token_check'
         ]);
-        
+
         if ($validator->fails())
         {
             return response(
@@ -298,7 +342,7 @@ class TwitterController extends Controller
         $validator = Validator::make($request->all(), [
             'consumer_key' => 'required|token_check'
         ]);
-        
+
         if ($validator->fails())
         {
             return response(

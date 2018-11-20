@@ -29,7 +29,8 @@ class CreateAccountRequest extends FormRequest
         return [
             'unique_account' => 'Bu kullanıcı zaten mevcut.',
             'limit' => 'Maksimum hesap limitine ulaştınız.',
-            'twitter_account' => 'Hesap takip için uygun değil.'
+            'twitter_account' => 'Hesap takip için uygun değil.',
+            'organisation_status' => 'Organizasyonunuz henüz aktif değil.'
         ];
     }
 
@@ -65,8 +66,12 @@ class CreateAccountRequest extends FormRequest
             return count($user->organisation->streamingUsers) < $user->organisation->twitter_follow_limit_user;
         });
 
+        Validator::extend('organisation_status', function($attribute) use ($user) {
+            return $user->organisation->status == true;
+        });
+
         return [
-            'screen_name' => 'required|bail|string|max:48|limit|unique_account|twitter_account'
+            'screen_name' => 'required|bail|string|max:48|limit|unique_account|organisation_status|twitter_account'
         ];
     }
 }

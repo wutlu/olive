@@ -394,7 +394,7 @@ class Stream extends Command
 
                 if ($option->value == 'on')
                 {
-                    $this->info('Using '.$type.' stream operations:');
+                    $this->info('Generating '.$type.' stream operations:');
 
                     sleep(1);
 

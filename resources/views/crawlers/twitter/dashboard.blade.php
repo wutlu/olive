@@ -160,6 +160,12 @@
 @section('dock')
     <div class="card">
         <div class="collection">
+            @if ($options['twitter.index.trends'] == 'off')
+            <div class="collection-item d-block orange-text">
+                <i class="material-icons d-table">warning</i>
+                Trend Indeksinin oluşturulması bekleniyor.
+            </div>
+            @else
             <label class="collection-item waves-effect d-block">
                 <input
                     name="value"
@@ -176,6 +182,8 @@
                     @if ($options['twitter.trend.status'] == 'on'){{ 'checked' }}@endif  />
                 <span>Trend Botu</span>
             </label>
+            @endif
+            @if ($options['twitter.index.tweets'] == date('Y.m', strtotime('+ 1 month')))
             <label class="collection-item waves-effect d-block">
                 <input
                     name="value"
@@ -192,6 +200,12 @@
                     @if ($options['twitter.status'] == 'on'){{ 'checked' }}@endif  />
                 <span>Tweet Botu</span>
             </label>
+            @else
+            <div class="collection-item d-block orange-text">
+                <i class="material-icons d-table">warning</i>
+                Tweet indekslerinin oluşturulması bekleniyor.
+            </div>
+            @endif
         </div>
     </div>
 	@include('crawlers.twitter._menu', [ 'active' => 'dashboard' ])
