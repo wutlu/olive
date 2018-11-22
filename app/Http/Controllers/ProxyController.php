@@ -66,7 +66,7 @@ class ProxyController extends Controller
     {
         $proxy_health = self::getProxyHealth($request->proxy);
 
-        if ($proxy_health <= $request->min_health)
+        if ($proxy_health <= 5)
         {
             return response(
                 [
@@ -99,7 +99,7 @@ class ProxyController extends Controller
     {
         $proxy_health = self::getProxyHealth($request->proxy);
 
-        if ($proxy_health <= $request->min_health)
+        if ($proxy_health <= 5)
         {
             return response(
                 [

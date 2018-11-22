@@ -24,8 +24,7 @@ class CreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'proxy' => 'required|string|max:255|unique:proxies,proxy',
-            'min_health' => 'required|integer|min:1|max:10'
+            'proxy' => 'required|string|max:255|unique:proxies,proxy'
         ];
     }
 }

@@ -35,7 +35,7 @@ class Crawler
                 ]
             ];
 
-            $proxy = Proxy::where('health', '>', 6)->inRandomOrder();
+            $proxy = Proxy::where('health', '>', 5)->inRandomOrder();
 
             if ($proxy->exists())
             {
@@ -92,7 +92,7 @@ class Crawler
                     ]
                 ];
 
-                $proxy = Proxy::where('health', '>', 6)->inRandomOrder();
+                $proxy = Proxy::where('health', '>', 5)->inRandomOrder();
 
                 if ($proxy->exists())
                 {
@@ -146,7 +146,7 @@ class Crawler
                 ]
             ];
 
-            $proxy = Proxy::where('health', '>', 6)->inRandomOrder();
+            $proxy = Proxy::where('health', '>', 5)->inRandomOrder();
 
             if ($proxy->exists())
             {
@@ -273,7 +273,7 @@ class Crawler
                 ]
             ];
 
-            $proxy = Proxy::where('health', '>', 6)->inRandomOrder();
+            $proxy = Proxy::where('health', '>', 5)->inRandomOrder();
 
             if ($proxy->exists())
             {
@@ -464,7 +464,7 @@ class Crawler
                 ]
             ];
 
-            $proxy = Proxy::where('health', '>', 6)->inRandomOrder();
+            $proxy = Proxy::where('health', '>', 5)->inRandomOrder();
 
             if ($proxy->exists())
             {

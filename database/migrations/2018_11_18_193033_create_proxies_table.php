@@ -19,7 +19,6 @@ class CreateProxiesTable extends Migration
             $table->string('proxy')->unique();
 
             $table->unsignedSmallInteger('health')->default(10);
-            $table->unsignedSmallInteger('min_health')->default(8);
 
             $table->timestamps();
         });

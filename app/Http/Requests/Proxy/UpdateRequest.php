@@ -26,8 +26,7 @@ class UpdateRequest extends FormRequest
     {
         return [
             'id' => 'required|integer|exists:proxies,id',
-            'proxy' => 'required|string|max:255|unique:proxies,proxy,'.$request->id.'',
-            'min_health' => 'required|integer|min:1|max:10'
+            'proxy' => 'required|string|max:255|unique:proxies,proxy,'.$request->id.''
         ];
     }
 }

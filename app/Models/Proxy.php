@@ -9,7 +9,6 @@ class Proxy extends Model
     protected $table = 'proxies';
     protected $fillable = [
 		'proxy',
-		'health',
-		'min_health'
+		'health'
     ];
 }

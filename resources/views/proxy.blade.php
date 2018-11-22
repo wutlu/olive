@@ -34,10 +34,10 @@
                             'width': per + '%'
                         })
                         .removeClass('red orange green')
-                        .addClass(o.health <= o.min_health ? 'red' : o.health <= 7 ? 'orange' : 'green')
+                        .addClass(o.health <= 5 ? 'red' : o.health <= 7 ? 'orange' : 'green')
                         .parent('.progress')
                         .removeClass('red orange green')
-                        .addClass(o.health <= o.min_health ? 'red' : o.health <= 7 ? 'orange' : 'green')
+                        .addClass(o.health <= 5 ? 'red' : o.health <= 7 ? 'orange' : 'green')
 
                         item.removeClass('model d-none')
                             .addClass('_tmp')
@@ -86,28 +86,6 @@
                             }),
                             $('<span />', {
                                 'class': 'helper-text'
-                            })
-                        ]
-                    }),
-                    $('<div />', {
-                        'class': 'input-field',
-                        'html': [
-                            $('<input />', {
-                                'id': 'min_health',
-                                'name': 'min_health',
-                                'type': 'number',
-                                'class': 'validate',
-                                'max': 10,
-                                'min': 1,
-                                'value': 8
-                            }),
-                            $('<label />', {
-                                'for': 'min_health',
-                                'html': 'Yaşam Limiti (10 üzerinden)'
-                            }),
-                            $('<span />', {
-                                'class': 'helper-text',
-                                'html': 'Vekil Sunucu durum değeri girilen değerin altına düştüğünde proxy devre dışı kalır.'
                             })
                         ]
                     }),
@@ -189,7 +167,6 @@
         var form = _modal.find('form#form')
 
         $('input[name=proxy]').val('')
-        $('input[name=min_health]').val('8')
 
         $('[data-trigger=delete]').removeAttr('data-id').addClass('d-none')
 
@@ -255,7 +232,6 @@
             var form = _modal.find('form#form')
 
             $('input[name=proxy]').val(obj.data.proxy)
-            $('input[name=min_health]').val(obj.data.min_health)
 
             $('[data-trigger=delete]').data('id', obj.data.id).removeClass('d-none')
 

@@ -71,7 +71,7 @@ class TrendDetect extends Command
             ]
         ];
 
-        $proxy = Proxy::where('health', '>', 6)->inRandomOrder();
+        $proxy = Proxy::where('health', '>', 5)->inRandomOrder();
 
         if ($proxy->exists())
         {
