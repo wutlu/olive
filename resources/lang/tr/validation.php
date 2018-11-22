@@ -212,5 +212,6 @@ return [
         'access_token_secret'          => 'Access Token Secret',
         'off_limit'                    => 'Kapatma Limiti',
         'proxy'                        => 'Vekil Sunucu',
+        'min_health'                   => 'Yaşam Değeri',
     ],
 ];

@@ -11,6 +11,8 @@ use App\Utilities\Term;
 
 use Carbon\Carbon;
 
+use App\Models\Proxy;
+
 class Crawler
 {
     # link detection
@@ -25,13 +27,22 @@ class Crawler
 
         try
         {
-            $dom = $client->get($base, [
+            $arr = [
                 'timeout' => 10,
                 'connect_timeout' => 5,
                 'headers' => [
                     'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))]
                 ]
-            ])->getBody();
+            ];
+
+            $proxy = Proxy::where('health', '>', 6)->inRandomOrder();
+
+            if ($proxy->exists())
+            {
+                $arr['proxy'] = $proxy->first()->proxy;
+            }
+
+            $dom = $client->get($base, $arr)->getBody();
 
             preg_match_all('/'.$url_pattern.'/', $dom, $match);
 
@@ -73,13 +84,22 @@ class Crawler
 
             try
             {
-                $dom = $client->get('https://www.google.com/search?q='.$query.'&tbs=qdr:h,sbd:1&start='.$page, [
+                $arr = [
                     'timeout' => 10,
                     'connect_timeout' => 5,
                     'headers' => [
                         'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))]
                     ]
-                ])->getBody();
+                ];
+
+                $proxy = Proxy::where('health', '>', 6)->inRandomOrder();
+
+                if ($proxy->exists())
+                {
+                    $arr['proxy'] = $proxy->first()->proxy;
+                }
+
+                $dom = $client->get('https://www.google.com/search?q='.$query.'&tbs=qdr:h,sbd:1&start='.$page, $arr)->getBody();
 
                 preg_match_all('/'.$url_pattern.'/', $dom, $match);
 
@@ -118,13 +138,22 @@ class Crawler
 
         try
         {
-            $dom = $client->get($page, [
+            $arr = [
                 'timeout' => 10,
                 'connect_timeout' => 5,
                 'headers' => [
                     'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))]
                 ]
-            ])->getBody();
+            ];
+
+            $proxy = Proxy::where('health', '>', 6)->inRandomOrder();
+
+            if ($proxy->exists())
+            {
+                $arr['proxy'] = $proxy->first()->proxy;
+            }
+
+            $dom = $client->get($page, $arr)->getBody();
 
             $dom = str_replace([ '""' ], [ '"' ], $dom);
 
@@ -229,7 +258,7 @@ class Crawler
 
         try
         {
-            $dom = $client->get($page, [
+            $arr = [
                 'timeout' => 10,
                 'connect_timeout' => 5,
                 'headers' => [
@@ -242,7 +271,16 @@ class Crawler
                     'protocols' => [ 'http', 'https' ],
                     'track_redirects' => true
                 ]
-            ])->getBody();
+            ];
+
+            $proxy = Proxy::where('health', '>', 6)->inRandomOrder();
+
+            if ($proxy->exists())
+            {
+                $arr['proxy'] = $proxy->first()->proxy;
+            }
+
+            $dom = $client->get($page, $arr)->getBody();
 
             $saw = new Wrawler($dom);
 
@@ -418,13 +456,22 @@ class Crawler
 
         try
         {
-            $dom = $client->get($data['page'], [
+            $arr = [
                 'timeout' => 10,
                 'connect_timeout' => 5,
                 'headers' => [
                     'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))]
                 ]
-            ])->getBody();
+            ];
+
+            $proxy = Proxy::where('health', '>', 6)->inRandomOrder();
+
+            if ($proxy->exists())
+            {
+                $arr['proxy'] = $proxy->first()->proxy;
+            }
+
+            $dom = $client->get($data['page'], $arr)->getBody();
 
             $saw = new Wrawler($dom);
 

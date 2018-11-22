@@ -149,6 +149,11 @@ class Kernel extends ConsoleKernel
                          ->everyMinute()
                          ->timezone(config('app.timezone'));
             }
+
+            $schedule->command('nohup "proxy:check"')
+                     ->hourly()
+                     ->timezone(config('app.timezone'))
+                     ->withoutOverlapping();
         }
     }
 

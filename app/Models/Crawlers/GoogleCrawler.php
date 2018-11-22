@@ -39,7 +39,7 @@ class GoogleCrawler
             [
                 'total_fields_limit' => 22,
                 'number_of_shards' => 2,
-                'number_of_replicas' => 1,
+                'number_of_replicas' => 0,
                 'refresh_interval' => '10s'
             ]
         );

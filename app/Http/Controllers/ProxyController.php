@@ -64,7 +64,7 @@ class ProxyController extends Controller
     # 
     public static function proxyCreate(CreateRequest $request)
     {
-        $proxy_health = self::getProxyHealth();
+        $proxy_health = self::getProxyHealth($request->proxy);
 
         if ($proxy_health <= $request->min_health)
         {
@@ -72,7 +72,7 @@ class ProxyController extends Controller
                 [
                     'message' => 'The given data was invalid.',
                     'errors' => [
-                        'proxy' => [ 'Proxy çok yavaş.' ]
+                        'proxy' => [ 'Proxy çok geç yanıt veriyor.' ]
                     ]
                 ],
                 422
@@ -97,7 +97,7 @@ class ProxyController extends Controller
     # 
     public static function proxyUpdate(UpdateRequest $request)
     {
-        $proxy_health = self::getProxyHealth();
+        $proxy_health = self::getProxyHealth($request->proxy);
 
         if ($proxy_health <= $request->min_health)
         {
@@ -105,7 +105,7 @@ class ProxyController extends Controller
                 [
                     'message' => 'The given data was invalid.',
                     'errors' => [
-                        'proxy' => [ 'Proxy çok yavaş.' ]
+                        'proxy' => [ 'Proxy çok geç yanıt veriyor.' ]
                     ]
                 ],
                 422
@@ -148,7 +148,7 @@ class ProxyController extends Controller
     # 
     # proxy kontrol fonksiyonu.
     #
-    public static function getProxyHealth(string $proxy = 'tcp://178.128.31.194:3128')
+    private static function getProxyHealth(string $proxy)
     {
         $starttime = microtime(true);
 

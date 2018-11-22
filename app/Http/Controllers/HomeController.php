@@ -25,6 +25,8 @@ use App\Utilities\Crawler;
 use Mail;
 use App\Mail\ServerAlertMail;
 
+use App\Models\Proxy;
+
 class HomeController extends Controller
 {
     public function __construct()

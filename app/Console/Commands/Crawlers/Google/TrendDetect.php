@@ -21,6 +21,8 @@ use Mail;
 
 use App\Wrawler;
 
+use App\Models\Proxy;
+
 class TrendDetect extends Command
 {
     /**
@@ -61,13 +63,22 @@ class TrendDetect extends Command
 
         // p24 parametresi Türkiye trendlerini temsil eder.
 
-        $source = $client->get('/trends/hottrends/atom/feed?pn=p24', [
+        $arr = [
             'timeout' => 10,
             'connect_timeout' => 5,
             'headers' => [
                 'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))]
             ]
-        ])->getBody();
+        ];
+
+        $proxy = Proxy::where('health', '>', 6)->inRandomOrder();
+
+        if ($proxy->exists())
+        {
+            $arr['proxy'] = $proxy->first()->proxy;
+        }
+
+        $source = $client->get('/trends/hottrends/atom/feed?pn=p24', $arr)->getBody();
 
         $saw = new Wrawler($source);
         $items = $saw->get('item')->toArray();

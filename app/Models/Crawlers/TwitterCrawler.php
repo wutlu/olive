@@ -219,7 +219,7 @@ class TwitterCrawler
                     [
                         'total_fields_limit' => 22,
                         'number_of_shards' => 2,
-                        'number_of_replicas' => 1,
+                        'number_of_replicas' => 0,
                         'refresh_interval' => '10s'
                     ]
                 );
@@ -409,8 +409,8 @@ class TwitterCrawler
                     ],
                     [
                         'total_fields_limit' => 500,
-                        'number_of_shards' => 4,
-                        'number_of_replicas' => 1,
+                        'number_of_shards' => 2,
+                        'number_of_replicas' => 0,
                         'refresh_interval' => '30s'
                     ]
                 );

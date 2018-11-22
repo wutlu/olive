@@ -25,9 +25,19 @@
             if (obj.hits.length)
             {
                 $.each(obj.hits, function(key, o) {
-                    var selector = $('[data-id=' + o.id + '].collection-item'),
+                    var per = o.health * 10;
+                    var selector = $('[data-id=' + o.id + '].collection-item');
+                    var item = selector.length ? selector : item_model.clone();
 
-                        item = selector.length ? selector : item_model.clone();
+                        item.find('[data-name=proxy]').html(o.proxy)
+                        item.find('[data-name=health]').css({
+                            'width': per + '%'
+                        })
+                        .removeClass('red orange green')
+                        .addClass(o.health <= o.min_health ? 'red' : o.health <= 7 ? 'orange' : 'green')
+                        .parent('.progress')
+                        .removeClass('red orange green')
+                        .addClass(o.health <= o.min_health ? 'red' : o.health <= 7 ? 'orange' : 'green')
 
                         item.removeClass('model d-none')
                             .addClass('_tmp')
@@ -287,7 +297,10 @@
                 data-method="get"
                 data-callback="__get"
                 href="#">
-                test
+                <span data-name="proxy"></span>
+                <div class="progress lighten-5">
+                    <div data-name="health" class="determinate"></div>
+                </div>
             </a>
         </div>
     </div>
