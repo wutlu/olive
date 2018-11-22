@@ -157,7 +157,7 @@
                     data-href="{{ route('admin.google.index.create') }}"
                     data-method="post"
                     data-trigger="search-index"
-                    data-callback="__index_create">Indexleri Oluştur</a>
+                    data-callback="__index_create">Indeksleri Oluştur</a>
             @endif
         </div>
     </div>
@@ -168,7 +168,7 @@
     {
         if (obj.status == 'err')
         {
-            M.toast({ html: 'Önce indexleri oluşturmanız gerekiyor.', classes: 'red' })
+            M.toast({ html: 'Önce indeksleri oluşturmanız gerekiyor.', classes: 'red' })
 
             __.prop('checked', false)
         }
@@ -199,7 +199,7 @@
         }
         else if (obj.status == 'err')
         {
-            $('[data-name=alert]').html('Sistemin çalışması için tüm indexlerin oluşturulması gerekiyor.').removeClass('d-none')
+            $('[data-name=alert]').html('Sistemin çalışması için tüm indekslerin oluşturulması gerekiyor.').removeClass('d-none')
         }
 
         window.clearTimeout(statusTimer)

@@ -210,7 +210,7 @@ class Indices
         }
         catch (\Exception $e)
         {
-            System::log(json_encode($e->getMessage()), 'App\Elasticsearch\Indices::stats('.$name.')');
+            System::log(json_encode($e->getMessage()), 'App\Elasticsearch\Indices::indices('.$name.')');
 
             return (object) [
                 'status' => 'err',

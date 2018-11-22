@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 
-use App\Http\Requests\IdRequest;
 use App\Http\Requests\SearchRequest;
 use App\Http\Requests\Crawlers\Media\StatusRequest;
 use App\Http\Requests\Crawlers\Media\UpdateRequest;
@@ -132,7 +131,7 @@ class MediaController extends Controller
 
     # ######################################## [ ADMIN ] ######################################## #
     # 
-    # tüm eksik indexleri oluştur.
+    # tüm eksik indeksleri oluştur.
     # 
     public static function allIndex()
     {
