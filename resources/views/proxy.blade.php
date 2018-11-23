@@ -254,6 +254,10 @@
                 <i class="material-icons black-text">add</i>
             </a>
         </div>
+        <div class="card-content orange lighten-4">
+            <p>Veri toplamada daha yüksek erişim sağlamak için birden fazla vekil sunucu kullanın.</p>
+            <p>Vekil sunucu yaşam değerleri otomatize bir şekilde sürekli olarak kontrol edilir. Yaşam değeri düşük sunucular, yaşam değeri normal duruma gelene kadar kullanılmayacaktır.</p>
+        </div>
         <div class="collection load" 
              id="collections"
              data-href="{{ route('admin.proxies.json') }}"

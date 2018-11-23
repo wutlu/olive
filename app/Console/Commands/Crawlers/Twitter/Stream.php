@@ -166,6 +166,8 @@ class Stream extends Command
                     $this->error($e->getMessage());
                 }
             }
+
+            self::handle();
         }
         else
         {

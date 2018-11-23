@@ -39,6 +39,8 @@
                         item.removeClass('model d-none').addClass('_tmp d-flex').attr('data-id', o.uuid)
 
                         item.find('[data-name=health]').html(o.health)
+                                                       .removeClass('green-text red-text yellow-text')
+                                                       .addClass(o.health + '-text')
                         item.find('[data-name=count]').html(number_format(o['docs.count'] ? o['docs.count'] : 0))
                         item.find('[data-name=size]').html(o['store.size'])
 
@@ -83,7 +85,7 @@
             <li class="collection-item model d-none">
                 <span class="align-self-center">
                 	<p data-name="name"></p>
-                	<p data-name="health" class="green-text"></p>
+                	<p data-name="health"></p>
                 </span>
                 <small class="badge ml-auto right-align">
                 	<p data-name="count"></p>
