@@ -122,34 +122,6 @@ class Kernel extends ConsoleKernel
 
             /* ---------------------------------------- */
 
-            $option = Option::where('key', 'twitter.status')->first();
-
-            if (@$option)
-            {
-                $schedule->command('nohup "twitter:stream --type=trend" --type='.($option->value == 'on' ? 'start' : 'kill').'')
-                         ->everyMinute()
-                         ->timezone(config('app.timezone'));
-
-                $schedule->command('nohup "twitter:stream --type=trend" --type=restart')
-                         ->everyFifteenMinutes()
-                         ->timezone(config('app.timezone'))
-                         ->skip(function() use($option) {
-                            return $option->value != 'on';
-                         });
-
-                $schedule->command('twitter:stream --type=keyword')
-                         ->hourly()
-                         ->timezone(config('app.timezone'));
-
-                $schedule->command('twitter:stream --type=user')
-                         ->hourly()
-                         ->timezone(config('app.timezone'));
-
-                $schedule->command('twitter:token_flush')
-                         ->everyMinute()
-                         ->timezone(config('app.timezone'));
-            }
-
             $schedule->command('nohup "proxy:check"')
                      ->hourly()
                      ->timezone(config('app.timezone'))

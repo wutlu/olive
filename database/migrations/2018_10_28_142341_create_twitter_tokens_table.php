@@ -18,14 +18,15 @@ class CreateTwitterTokensTable extends Migration
 
             $table->integer('pid')->nullable()->default(null);
 
-            $table->enum('status', [ 'on', 'off', 'disabled' ])->default('off');
+            $table->enum('status', [ 'on', 'off', 'disabled', 'restart', 'kill' ])->default('off');
 
             $table->string('consumer_key')->unique();
             $table->string('consumer_secret');
             $table->string('access_token');
             $table->string('access_token_secret');
 
-            $table->string('sh')->nullable()->default(null);
+            $table->enum('type', [ 'follow', 'track', 'locations' ])->nullable()->default(null);
+            $table->string('tmp_key')->nullable()->default(null);
             $table->longText('value')->nullable()->default(null);
 
             $table->unsignedSmallInteger('error_count')->default(0);
