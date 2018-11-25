@@ -163,6 +163,12 @@
         background-repeat: no-repeat;
         background-position: center;
     }
+
+    ul#console > li textarea {
+        border-width: 0;
+        background-color: rgba(255, 0, 0, .1);
+        resize: none;
+    }
 @endpush
 
 @section('content')
@@ -196,7 +202,7 @@
                     <time data-name="created-at" class="timeago grey-text text-darken-2"></time>
                     <span data-name="module" class="grey-text text-darken-2"></span>
                 </p>
-                <code data-name="message" class="green-text d-block"></code>
+                <textarea data-name="message" class="green-text d-block"></textarea>
             </li>
         </ul>
     </div>

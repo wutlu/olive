@@ -142,7 +142,7 @@
 
             logTimer = window.setTimeout(function() {
                 vzAjax($('ul#console'))
-            }, 1000)
+            }, 10000)
         }
     }
 @endpush
