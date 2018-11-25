@@ -213,11 +213,14 @@ class StreamProcess extends Command
                     }
                     else
                     {
-                        System::log(
-                            json_encode($form_params),
-                            'App\Jobs\Crawlers\Twitter\StreamProcess::handle(Rate Limit, '.$token->id.')',
-                            5
-                        );
+                        if ($obj != null)
+                        {
+                            System::log(
+                                json_encode([ $obj, $form_params ]),
+                                'App\Jobs\Crawlers\Twitter\StreamProcess::handle(Rate Limit, '.$token->id.')',
+                                5
+                            );
+                        }
                     }
                 }
             }
