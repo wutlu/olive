@@ -18,7 +18,7 @@ class CreateTwitterTokensTable extends Migration
 
             $table->integer('pid')->nullable()->default(null);
 
-            $table->enum('status', [ 'on', 'off', 'disabled', 'restart', 'kill' ])->default('off');
+            $table->enum('status', [ 'on', 'off', 'disabled', 'restart', 'stop', 'start' ])->default('off');
 
             $table->string('consumer_key')->unique();
             $table->string('consumer_secret');

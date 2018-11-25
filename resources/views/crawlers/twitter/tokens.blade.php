@@ -42,8 +42,8 @@
                             .attr('data-id', o.id)
                         item.addClass(o.status == 'disabled' ? 'red' : (o.pid === false ? 'orange' : (o.pid === null ? 'grey' : 'green')))
 
-                        item.find('[data-name=pid]').val(o.status == 'disabled' ? 'Sorunlu' : (o.pid === false ? 'Görev Tamamlandı' : (o.pid === null ? 'Devre Dışı' : o.pid)))
-                        item.find('[data-name=sh]').val(o.sh)
+                        item.find('[data-name=pid]').val(o.status == 'disabled' ? 'Sorunlu' : (o.pid === false ? 'Yeniden Başlatılacak' : (o.pid === null ? 'Devre Dışı' : o.pid)))
+                        item.find('[data-name=tmp_key]').val(o.tmp_key)
                         item.find('[data-name=value]').val(o.value)
 
                         if (!selector.length)
@@ -400,7 +400,7 @@
         </div>
         <div class="card-content">
             <p class="green-text">Aktif, çalışıyor.</p>
-            <p class="orange-text">İşlem tamamlandı ve kuyruk sonlandırıldı. Token boşa çıkacak.</p>
+            <p class="orange-text">İşlem tamamlandı ve kuyruk sonlandırıldı. İşlem yeniden başlatılacak.</p>
             <p class="red-text">Hata alındı, ilgilenilmesi gerekiyor.</p>
             <p class="grey-text">İhtiyaç dışı, kullanılmıyor. Gerektiğinde kullanılacak.</p>
         </div>
@@ -425,7 +425,7 @@
                 href="#">
                 <input data-name="id" readonly type="text" />
                 <input data-name="pid" readonly type="text" class="right-align" />
-                <input data-name="sh" readonly type="text" class="white-text" />
+                <input data-name="tmp_key" readonly type="text" class="white-text" />
                 <input data-name="value" readonly type="text" class="white-text" />
             </a>
         </div>

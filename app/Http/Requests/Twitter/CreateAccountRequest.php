@@ -27,7 +27,6 @@ class CreateAccountRequest extends FormRequest
     public function messages()
     {
         return [
-            'unique_account' => 'Bu kullanıcı zaten mevcut.',
             'limit' => 'Maksimum hesap limitine ulaştınız.',
             'twitter_account' => 'Hesap takip için uygun değil.',
             'organisation_status' => 'Organizasyonunuz henüz aktif değil.'
@@ -43,10 +42,6 @@ class CreateAccountRequest extends FormRequest
     {
         $user = auth()->user();
 
-        Validator::extend('unique_account', function($attribute, $screen_name) use ($user) {
-            return !StreamingUsers::where('organisation_id', $user->organisation_id)->where('screen_name', $screen_name)->exists();
-        });
-
         Validator::extend('twitter_account', function($attribute, $screen_name) use ($user) {
             try
             {
@@ -54,7 +49,14 @@ class CreateAccountRequest extends FormRequest
 
                 session()->flash('account', $account);
 
-                return true;
+                $stuser = StreamingUsers::where(
+                    [
+                        'organisation_id' => $user->organisation_id,
+                        'user_id' => $account->id_str
+                    ]
+                )->exists();
+
+                return $stuser ? false : true;
             }
             catch (\Exception $e)
             {
@@ -71,7 +73,7 @@ class CreateAccountRequest extends FormRequest
         });
 
         return [
-            'screen_name' => 'required|bail|string|max:48|limit|unique_account|organisation_status|twitter_account'
+            'screen_name' => 'required|bail|string|max:48|limit|organisation_status|twitter_account'
         ];
     }
 }

@@ -87,7 +87,7 @@
                     <time data-name="created-at" class="timeago grey-text text-darken-2"></time>
                     <span data-name="module" class="grey-text text-darken-2"></span>
                 </p>
-                <code data-name="message" class="green-text d-block"></code>
+                <textarea data-name="message" class="green-text d-block"></textarea>
             </li>
         </ul>
     </div>
@@ -117,7 +117,7 @@
                         item.find('[data-name=updated-at]').attr('data-time', o.updated_at)
                         item.find('[data-name=created-at]').attr('data-time', o.created_at)
                         item.find('[data-name=module]').html(o.module)
-                        item.find('[data-name=message]').html(o.message)
+                        item.find('[data-name=message]').val(o.message)
 
                     if (m.length)
                     {
@@ -154,6 +154,12 @@
         background-image: url('{{ asset('img/olive-logo-opacity.svg') }}');
         background-repeat: no-repeat;
         background-position: center;
+    }
+
+    ul#console > li textarea {
+        border-width: 0;
+        background-color: rgba(255, 0, 0, .1);
+        resize: none;
     }
 @endpush
 

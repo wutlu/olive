@@ -8,6 +8,8 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Models\Crawlers\SozlukCrawler;
 use App\Models\Option;
 
+use App\Models\Twitter\Token;
+
 class Kernel extends ConsoleKernel
 {
     /**
@@ -119,6 +121,19 @@ class Kernel extends ConsoleKernel
                          ->timezone(config('app.timezone'))
                          ->withoutOverlapping();
             }
+
+            /* ---------------------------------------- */
+
+            $option = Option::where('key', 'twitter.status')->where('value', 'on')->exists();
+
+            if ($option)
+            {
+                $schedule->command('nohup "twitter:stream:update --type=user" --type=restart')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
+                $schedule->command('nohup "twitter:stream:update --type=keyword" --type=restart')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
+                $schedule->command('nohup "twitter:stream:update --type=trend" --type=restart')->hourly()->timezone(config('app.timezone'))->withoutOverlapping();
+            }
+
+            $schedule->command('twitter:stream:trigger')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
 
             /* ---------------------------------------- */
 

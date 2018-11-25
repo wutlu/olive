@@ -3,33 +3,21 @@
 namespace App\Console\Commands\Crawlers\Twitter;
 
 use Illuminate\Console\Command;
-use App\Utilities\Term;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Subscriber\Oauth\Oauth1;
-
-use App\Elasticsearch\Document;
-use App\Elasticsearch\Indices;
-
-use Carbon\Carbon;
-
-use App\Models\Crawlers\TwitterCrawler;
-
-use App\Models\Option;
-use App\Models\Organisation\Organisation;
 
 use App\Models\Twitter\Token;
 
 use App\Jobs\Crawlers\Social\Twitter\DeletedTweetJob;
 
 use System;
-use Storage;
 use Mail;
 
 use App\Mail\ServerAlertMail;
 
-use App\Console\Commands\Nohup;
+use App\Models\Crawlers\TwitterCrawler;
 
 class StreamProcess extends Command
 {
@@ -221,12 +209,12 @@ class StreamProcess extends Command
 
                         $bulk = $crawler->chunk($tweet, $bulk);
 
-                        //$this->info($obj['text']);
+                        $this->info($obj['text']);
                     }
                     else
                     {
                         System::log(
-                            json_encode([ $obj, $form_params ]),
+                            json_encode($form_params),
                             'App\Jobs\Crawlers\Twitter\StreamProcess::handle(Rate Limit, '.$token->id.')',
                             5
                         );

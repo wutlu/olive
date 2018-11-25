@@ -25,6 +25,12 @@ class TwitterTokensTableSeeder extends Seeder
                 'consumer_secret' => '0TAr4uGvvCb3nMGCtr8rSAroP2XM3ZVuFsAkxw9IcNeQ6jGM0x',
                 'access_token' => '1033402875119058946-B7UaSssoT6aDd6YHy0Yz8ryWSP4o4c',
                 'access_token_secret' => 'C6bpltnXH8bU9Ty5IjRPu5W3EQdV0WEPpYq6ZnHoQiJyu'
+            ],
+            [
+                'consumer_key' => 'k6VJe7V43CXCfEMnORY8h0aa2',
+                'consumer_secret' => '5F2QAzIalmc6Y8HRCTny8r18zxRgqAQY78UrZOITS8IrmJAU8o',
+                'access_token' => '1033402875119058946-0dZxL2GySHE2SnkKv6u1TcwhuyMxcS',
+                'access_token_secret' => 'Awpp5lJkbEnm3vjc03D5aNRLRH54XWBn8BIE8qam5mH12'
             ]
         ];
 

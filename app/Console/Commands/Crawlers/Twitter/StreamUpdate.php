@@ -8,7 +8,13 @@ use App\Models\Twitter\Token;
 use App\Models\Twitter\StreamingKeywords;
 use App\Models\Twitter\StreamingUsers;
 
+use App\Elasticsearch\Document;
+
 use System;
+
+use Carbon\Carbon;
+
+use App\Utilities\Term;
 
 class StreamUpdate extends Command
 {
@@ -58,7 +64,7 @@ class StreamUpdate extends Command
 
         if (array_key_exists($type, $types))
         {
-            self::{$type}();
+            self::stream($type);
         }
         else
         {
@@ -69,105 +75,175 @@ class StreamUpdate extends Command
     # 
     # generate user stream
     # 
-    private function user()
+    private function stream(string $type)
     {
-        $kquery = StreamingUsers::with('organisation')
-                                ->whereNull('reasons')
-                                ->whereHas('organisation', function ($query) {
-                                   $query->where('status', true);
-                                })
-                                ->distinct();
-
-        if ($kquery->count())
+        switch ($type)
         {
-            $chunk_id = 0;
+            case 'user':
+                $kquery = StreamingUsers::with('organisation')
+                                        ->whereNull('reasons')
+                                        ->whereHas('organisation', function ($query) {
+                                           $query->where('status', true);
+                                        })
+                                        ->distinct();
+                $klimit = 5000;
+                $kcolumn = 'user_id';
+            break;
+            case 'keyword':
+                $kquery = StreamingKeywords::with('organisation')
+                                        ->whereNull('reasons')
+                                        ->whereHas('organisation', function ($query) {
+                                           $query->where('status', true);
+                                        })
+                                        ->distinct();
+                $klimit = 400;
+                $kcolumn = 'keyword';
+            break;
+            case 'trend':
+                $klimit = 400;
+            break;
+        }
 
-            foreach ($kquery->get()->chunk(400) as $query)
+        $chunk = [];
+        $chunk_id = 0;
+
+        if ($type == 'trend')
+        {
+            $query = Document::list(
+                [ 'twitter', 'trends' ],
+                'trend',
+                [
+                    'size' => 0,
+                    'query' => [
+                        'bool' => [
+                            'filter' => [
+                                'range' => [
+                                    'created_at' => [
+                                        'format' => 'YYYY-MM-dd',
+                                        'gte' => Carbon::now()->subDays(1)->format('Y-m-d')
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ],
+                    'aggs' => [
+                        'unique' => [
+                            'terms' => [
+                                'field' => 'title',
+                                'size' => $klimit,
+                                'order' => [
+                                    '_count' => 'DESC'
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            );
+
+            if (@$query->data['aggregations']['unique']['buckets'])
             {
-                $chunk = [];
-                $chunk_id++;
-                $tmp_key = implode('_', [ 'chunk', $chunk_id ]);
+                $filtered = array_map(function ($q) {
+                    return Term::convertAscii($q['key']);
+                }, $query->data['aggregations']['unique']['buckets']);
 
-                $this->line($tmp_key);
-
-                foreach ($query as $row)
+                if (count($filtered))
                 {
-                    $chunk[] = $row->user_id;
-                }
-
-                $token = Token::where('tmp_key', $tmp_key);
-
-                if (!$token->exists())
-                {
-                    $token = Token::whereNull('pid')->where('status', 'off')->orderBy('updated_at', 'ASC');
-                }
-
-                $this->info('followed: ['.count($chunk).']');
-
-                if ($token->exists())
-                {
-                    $token = $token->first();
-
-                    $new_value = implode(',', $chunk);
-
-                    $token->type = 'follow';
-                    $token->tmp_key = $tmp_key;
-                    $token->value = $new_value;
-                    $token->status = (md5($token->value) == md5($new_value)) ? 'on' : 'restart';
-                    $token->save();
-                }
-                else
-                {
-                    $message = 'Twitter kullanıcı akışı için yeterli token bulunamadı.';
-
-                    $this->error($message);
-
-                    System::log(
-                        json_encode($message),
-                        'App\Console\Commands\Crawlers\Twitter\Stream::user()',
-                        10
-                    );
-                }
-            }
-
-            for ($i = ($chunk_id+1); $i <= ($chunk_id + 5); $i++)
-            {
-                $tmp_key = implode('_', [ 'chunk', $i ]);
-
-                $this->line($tmp_key);
-
-                $t = Token::where('tmp_key', $tmp_key);
-
-                if ($t->exists())
-                {
-                    $t = $t->first();
-
-                    $t->status = 'kill';
-                    $t->save();
-
-                    $this->info('cleaned');
+                    $chunk = $filtered;
+                    $chunk_id = 1;
                 }
             }
         }
         else
         {
-            $this->error('User list not found.');
+            if ($kquery->count())
+            {
+                foreach ($kquery->get()->chunk($klimit) as $query)
+                {
+                    $chunk_id++;
+
+                    foreach ($query as $row)
+                    {
+                        $chunk[] = $row->{$kcolumn};
+                    }
+                }
+            }
+        }
+
+        if (count($chunk))
+        {
+            self::token($type, $chunk_id, $chunk);
+        }
+        else
+        {
+            $message = 'List not found: ['.$type.']';
+
+            $this->error($message);
+
+            System::log(
+                json_encode($message),
+                'App\Console\Commands\Crawlers\Twitter\Stream::stream('.$type.')',
+                10
+            );
+        }
+
+        for ($i = ($chunk_id+1); $i <= ($chunk_id + 9); $i++)
+        {
+            $tmp_key = implode('_', [ $type, 'chunk', $i ]);
+
+            $this->line($tmp_key);
+
+            $t = Token::where('tmp_key', $tmp_key);
+
+            if ($t->exists())
+            {
+                $t = $t->first();
+
+                $t->status = 'stop';
+                $t->save();
+
+                $this->info('cleaned');
+            }
         }
     }
 
-    # 
-    # generate keyword stream
-    # 
-    private function keyword()
+    private function token(string $type, int $chunk_id, $chunk)
     {
-        $this->info('keyword');
-    }
+        $tmp_key = implode('_', [ $type, 'chunk', $chunk_id ]);
 
-    # 
-    # generate trend stream
-    # 
-    private function trend()
-    {
-        $this->info('trend');
+        $this->line($tmp_key);
+
+        $token = Token::where('tmp_key', $tmp_key);
+
+        if (!$token->exists())
+        {
+            $token = Token::whereNull('pid')->where('status', 'off')->orderBy('updated_at', 'ASC');
+        }
+
+        $this->info('followed: ['.count($chunk).']');
+
+        if ($token->exists())
+        {
+            $token = $token->first();
+
+            $new_value = implode(',', $chunk);
+
+            $token->type = ($type == 'keyword' || $type == 'trend') ? 'track' : 'follow';
+            $token->tmp_key = $tmp_key;
+            $token->status = $token->status == 'off' ? 'start' : ($token->status == 'restart' ? 'restart' : ((md5($token->value) == md5($new_value)) ? 'on' : 'restart'));
+            $token->value = $new_value;
+            $token->save();
+        }
+        else
+        {
+            $message = 'Twitter akış için yeterli token bulunamadı.';
+
+            $this->error($message);
+
+            System::log(
+                json_encode($message),
+                'App\Console\Commands\Crawlers\Twitter\Stream::stream('.$type.')',
+                10
+            );
+        }
     }
 }
