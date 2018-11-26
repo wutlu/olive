@@ -109,7 +109,6 @@ Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {
         });
 
         Route::prefix('token-yonetimi')->group(function () {
-            Route::get('/', 'TokenController@tokens')->name('admin.twitter.tokens');
             Route::get('json', 'TokenController@tokensJson')->name('admin.twitter.tokens.json');
             Route::get('token', 'TokenController@token')->name('admin.twitter.token');
             Route::put('token', 'TokenController@tokenCreate');
