@@ -45,10 +45,7 @@
                     {
                         if (m.attr('data-repeat') != o.hit)
                         {
-                            scroll = true;
-
                             item.attr('data-repeat', o.hit)
-                            item.appendTo(collection)
                         }
                     }
                     else
@@ -56,28 +53,11 @@
                         item.find('[data-name=updated-at]').html(o.updated_at)
                         item.find('[data-name=created-at]').html(o.created_at)
                         item.attr('data-repeat', o.hit)
-
-                        if (__.hasClass('loaded'))
-                        {
-                            scroll = true;
-
-                            item.appendTo(collection)
-                        }
-                        else
-                        {
-                            scroll = true;
-
-                            item.prependTo(collection)
-                        }
                     }
+
+                    item.appendTo(collection)
                 })
-
-                $('[data-callback=__log]').animate({
-                    scrollTop: $('[data-callback=__log]').prop('scrollHeight')
-                }, 200);
             }
-
-            __.addClass('loaded')
 
             window.clearTimeout(logTimer)
 
@@ -104,12 +84,6 @@
             }
         }
     }
-
-    $(window).on('load', function() {
-        $('[data-callback=__log]').animate({
-            scrollTop: $('[data-callback=__log]').prop('scrollHeight')
-        }, 200);
-    })
 
     function __clear(__, obj)
     {

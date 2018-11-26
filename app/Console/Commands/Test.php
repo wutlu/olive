@@ -8,6 +8,8 @@ use Sentiment;
 
 use App\Utilities\Term;
 
+use System;
+
 class Test extends Command
 {
     /**
@@ -41,6 +43,10 @@ class Test extends Command
      */
     public function handle()
     {
-
+                System::log(
+                    'Twitter '.rand(100, 10000),
+                    'App\Jobs\Crawlers\Twitter\StreamProcess::handle('.rand(100, 10000).')',
+                    10
+                );
     }
 }

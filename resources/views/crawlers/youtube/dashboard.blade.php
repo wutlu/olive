@@ -105,7 +105,6 @@
                         if (m.attr('data-repeat') != o.hit)
                         {
                             item.attr('data-repeat', o.hit)
-                            item.appendTo(collection)
                         }
                     }
                     else
@@ -114,8 +113,9 @@
                         item.find('[data-name=created-at]').html(o.created_at)
                         item.attr('data-repeat', o.hit)
 
-                        item.appendTo(collection)
                     }
+
+                    item.appendTo(collection)
                 })
             }
 
