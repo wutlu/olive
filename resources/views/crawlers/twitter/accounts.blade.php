@@ -42,7 +42,7 @@
         </nav>
         <ul class="collection load json-clear"
              id="accounts"
-             data-href="{{ route('crawlers.twitter.accounts.list.json') }}"
+             data-href="{{ route('admin.twitter.accounts.list.json') }}"
              data-skip="0"
              data-take="5"
              data-include="string"

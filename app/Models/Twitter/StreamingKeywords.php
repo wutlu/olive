@@ -9,8 +9,7 @@ class StreamingKeywords extends Model
     protected $table = 'twitter_streaming_keywords';
     protected $fillable = [
 		'keyword',
-		'reasons',
-		'status'
+		'reason'
     ];
 
     # organizasyon

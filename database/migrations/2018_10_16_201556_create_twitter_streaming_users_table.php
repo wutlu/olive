@@ -18,7 +18,7 @@ class CreateTwitterStreamingUsersTable extends Migration
 
             $table->string('screen_name')->nullable()->default(null);
             $table->unsignedBigInteger('user_id');
-            $table->string('reasons')->nullable()->default(null);
+            $table->string('reason')->nullable()->default(null);
 
             $table->boolean('status')->default(0);
 

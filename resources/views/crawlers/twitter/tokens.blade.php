@@ -48,7 +48,7 @@
 
                         if (!selector.length)
                         {
-                            item.find('[data-name=id]').val(o.id)
+                            item.find('[data-name=error]').val(o.error_count + ' / ' + o.off_limit + ' hata')
                             item.appendTo(ul)
                         }
                 })
@@ -423,7 +423,7 @@
                 data-method="get"
                 data-callback="__get"
                 href="#">
-                <input data-name="id" readonly type="text" />
+                <input data-name="error" readonly type="text" />
                 <input data-name="pid" readonly type="text" class="right-align" />
                 <input data-name="tmp_key" readonly type="text" class="white-text" />
                 <input data-name="value" readonly type="text" class="white-text" />

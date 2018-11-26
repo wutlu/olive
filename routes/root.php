@@ -88,7 +88,7 @@ Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {
     # 
     # TWITTER
     # 
-    Route::prefix('twitter')->group(function () {
+    Route::prefix('twitter')->namespace('Twitter')->group(function () {
         Route::get('/', 'TwitterController@dashboard')->name('admin.twitter.settings');
 
         Route::get('istatistik', 'TwitterController@statistics')->name('admin.twitter.statistics');
@@ -105,16 +105,26 @@ Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {
 
         Route::prefix('bagli-hesaplar')->group(function () {
             Route::get('/', 'TwitterController@accounts')->name('admin.twitter.accounts');
-            Route::get('json', 'TwitterController@accountsViewJson')->name('crawlers.twitter.accounts.list.json');
+            Route::get('json', 'TwitterController@accountsViewJson')->name('admin.twitter.accounts.list.json');
         });
 
         Route::prefix('token-yonetimi')->group(function () {
-            Route::get('/', 'TwitterController@tokens')->name('admin.twitter.tokens');
-            Route::get('json', 'TwitterController@tokensJson')->name('admin.twitter.tokens.json');
-            Route::get('token', 'TwitterController@token')->name('admin.twitter.token');
-            Route::put('token', 'TwitterController@tokenCreate');
-            Route::patch('token', 'TwitterController@tokenUpdate');
-            Route::delete('token', 'TwitterController@tokenDelete');
+            Route::get('/', 'TokenController@tokens')->name('admin.twitter.tokens');
+            Route::get('json', 'TokenController@tokensJson')->name('admin.twitter.tokens.json');
+            Route::get('token', 'TokenController@token')->name('admin.twitter.token');
+            Route::put('token', 'TokenController@tokenCreate');
+            Route::patch('token', 'TokenController@tokenUpdate');
+            Route::delete('token', 'TokenController@tokenDelete');
+        });
+
+        Route::prefix('veri-havuzu')->group(function () {
+            Route::get('kelime-havuzu', 'DataController@keywordList')->name('admin.twitter.stream.keywords');
+            Route::post('kelime-havuzu', 'DataController@keywordListJson');
+            Route::patch('kelime-havuzu', 'DataController@keywordReason')->name('admin.twitter.stream.keywords.reason');
+
+            Route::get('kullanici-havuzu', 'DataController@accountList')->name('admin.twitter.stream.accounts');
+            Route::post('kullanici-havuzu', 'DataController@accountListJson');
+            Route::patch('kullanici-havuzu', 'DataController@accountReason')->name('admin.twitter.stream.accounts.reason');
         });
     });
 

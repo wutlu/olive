@@ -213,5 +213,6 @@ return [
         'off_limit'                    => 'Kapatma Limiti',
         'proxy'                        => 'Vekil Sunucu',
         'min_health'                   => 'Yaşam Değeri',
+        'reason'                       => 'Neden',
     ],
 ];

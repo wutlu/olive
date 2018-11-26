@@ -25,11 +25,11 @@
             <p class="grey-text" data-name="count"></p>
         </div>
         <div class="card-content orange lighten-4">
-        	<p>Anlık olarak Twitter'dan belirli kriterlerle veri alıyoruz.</p>
-        	<p>İlgilendiğiniz kullanıcıları belirterek veri toplama sonrasında yüksek analiz sonuçları elde edebilirsiniz.</p>
-        	<p>Bu ayarlar bulunduğunuz organizasyon için geçerlidir.</p>
-            <p>Organizasyona dahil tüm kullanıcıların kullanıcı havuzu ortaktır.</p>
-        	<p>Elde edilen veriler tüm veri.zone kullanıcıları tarafından ortak bir veritabanı üzerinden analize açık halde olacaktır.</p>
+            <h6>Daha İyi Sonuçlar Elde Edin</h6>
+            <p>İlgilendiğiniz kullanıcıları belirterek veri toplama esnasında yüksek analiz sonuçları elde edebilirsiniz.</p>
+            <p>Bu ayarlar bulunduğunuz organizasyon için geçerlidir.</p>
+            <p>Organizasyona dahil tüm kullanıcıların takip havuzu ortaktır.</p>
+            <p>Elde edilen veriler tüm veri.zone kullanıcıları tarafından ortak veritabanından analize açık halde olacaktır.</p>
         </div>
         <div class="collection load"
              id="collections"
@@ -49,7 +49,7 @@
                 <span class="align-self-center">
                     <p data-name="screen-name"></p>
                     <p data-name="id" class="grey-text"></p>
-                    <p data-name="reasons"></p>
+                    <p data-name="reason"></p>
                 </span>
             </a>
         </div>
@@ -162,10 +162,10 @@
 
                         item.find('[data-name=screen-name]').html(o.screen_name)
                         item.find('[data-name=id]').html(o.user_id)
-                        item.find('[data-name=reasons]')
-                        	.html(o.reasons ? o.reasons : '-')
+                        item.find('[data-name=reason]')
+                        	.html(o.reason ? o.reason : '-')
                         	.removeClass('green-text red-text')
-                        	.addClass(o.reasons ? 'red-text' : 'green-text')
+                        	.addClass(o.reason ? 'red-text' : 'green-text')
 
                         if (!selector.length)
                         {

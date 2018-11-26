@@ -30,7 +30,7 @@ class StreamUpdate extends Command
      *
      * @var string
      */
-    protected $description = 'Twitter gerçek zamanlı işlem derleyici.';
+    protected $description = 'Twitter gerçek zamanlı işlem ön planlayıcı.';
 
     /**
      * Create a new command instance.
@@ -81,7 +81,7 @@ class StreamUpdate extends Command
         {
             case 'user':
                 $kquery = StreamingUsers::with('organisation')
-                                        ->whereNull('reasons')
+                                        ->whereNull('reason')
                                         ->whereHas('organisation', function ($query) {
                                            $query->where('status', true);
                                         })
@@ -91,7 +91,7 @@ class StreamUpdate extends Command
             break;
             case 'keyword':
                 $kquery = StreamingKeywords::with('organisation')
-                                        ->whereNull('reasons')
+                                        ->whereNull('reason')
                                         ->whereHas('organisation', function ($query) {
                                            $query->where('status', true);
                                         })
@@ -100,7 +100,7 @@ class StreamUpdate extends Command
                 $kcolumn = 'keyword';
             break;
             case 'trend':
-                $klimit = 400;
+                $klimit = 200;
             break;
         }
 

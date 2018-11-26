@@ -10,8 +10,7 @@ class StreamingUsers extends Model
     protected $fillable = [
 		'screen_name',
 		'user_id',
-		'reasons',
-		'status'
+		'reason'
     ];
 
     # organizasyon

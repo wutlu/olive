@@ -17,7 +17,7 @@ class CreateTwitterStreamingKeywordsTable extends Migration
             $table->increments('id')->unsigned();
 
             $table->string('keyword')->index();
-            $table->string('reasons')->nullable()->default(null);
+            $table->string('reason')->nullable()->default(null);
 
             $table->boolean('status')->default(0);
 

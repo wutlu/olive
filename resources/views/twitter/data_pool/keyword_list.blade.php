@@ -25,11 +25,11 @@
             <p class="grey-text" data-name="count"></p>
         </div>
         <div class="card-content orange lighten-4">
-        	<p>Anlık olarak Twitter'dan belirli kriterlerle veri alıyoruz.</p>
-        	<p>İlgilendiğiniz kelimeleri belirterek veri toplama sonrasında yüksek analiz sonuçları elde edebilirsiniz.</p>
+        	<h6>Daha İyi Sonuçlar Elde Edin</h6>
+        	<p>İlgilendiğiniz kelimeleri belirterek veri toplama esnasında yüksek analiz sonuçları elde edebilirsiniz.</p>
         	<p>Bu ayarlar bulunduğunuz organizasyon için geçerlidir.</p>
             <p>Organizasyona dahil tüm kullanıcıların kelime havuzu ortaktır.</p>
-        	<p>Elde edilen veriler tüm veri.zone kullanıcıları tarafından ortak bir veritabanı üzerinden analize açık halde olacaktır.</p>
+        	<p>Elde edilen veriler tüm veri.zone kullanıcıları tarafından ortak veritabanından analize açık halde olacaktır.</p>
         </div>
         <div class="collection load"
              id="collections"
@@ -48,7 +48,7 @@
             <a href="#" class="collection-item model d-none waves-effect" data-trigger="delete">
                 <span class="align-self-center">
                     <p data-name="title"></p>
-                    <p data-name="reasons"></p>
+                    <p data-name="reason"></p>
                 </span>
             </a>
         </div>
@@ -160,10 +160,10 @@
                             .attr('data-id', o.id)
 
                         item.find('[data-name=title]').html(o.keyword)
-                        item.find('[data-name=reasons]')
-                        	.html(o.reasons ? o.reasons : '-')
+                        item.find('[data-name=reason]')
+                        	.html(o.reason ? o.reason : '-')
                         	.removeClass('green-text red-text')
-                        	.addClass(o.reasons ? 'red-text' : 'green-text')
+                        	.addClass(o.reason ? 'red-text' : 'green-text')
 
                         if (!selector.length)
                         {
