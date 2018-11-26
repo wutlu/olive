@@ -85,7 +85,8 @@ class StreamUpdate extends Command
                                         ->whereHas('organisation', function ($query) {
                                            $query->where('status', true);
                                         })
-                                        ->distinct();
+                                        ->distinct()
+                                        ->orderBy('user_id', 'ASC');
                 $klimit = 5000;
                 $kcolumn = 'user_id';
             break;
@@ -95,7 +96,8 @@ class StreamUpdate extends Command
                                         ->whereHas('organisation', function ($query) {
                                            $query->where('status', true);
                                         })
-                                        ->distinct();
+                                        ->distinct()
+                                        ->orderBy('keyword', 'ASC');
                 $klimit = 400;
                 $kcolumn = 'keyword';
             break;

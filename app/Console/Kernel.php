@@ -133,7 +133,7 @@ class Kernel extends ConsoleKernel
                 $schedule->command('nohup "twitter:stream:update --type=trend" --type=restart')->hourly()->timezone(config('app.timezone'))->withoutOverlapping();
             }
 
-            $schedule->command('twitter:stream:trigger')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
+            $schedule->command('nohup "twitter:stream:trigger" --type=start')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
 
             /* ---------------------------------------- */
 
