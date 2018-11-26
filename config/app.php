@@ -187,7 +187,7 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         'Youtube' => Alaouy\Youtube\Facades\Youtube::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
-        'Sentiment' => PHPInsight\Sentiment::class,
+        'Sentiment' => PHPSentiment\Sentiment::class,
 
     ],
 
