@@ -38,7 +38,7 @@
         <div class="card-content">
             <span class="card-title mb-0">Hata Logları</span>
         </div>
-        <div class="card-content orange lighten-4">Log takibini log monitörü bölümünden de yapabilirsiniz. Bu alan sadece "Google" modülü ile ilgili logları gösterir.</div>
+        <div class="card-content red lighten-5">Log takibini log monitörü bölümünden de yapabilirsiniz. Bu alan sadece "Google" modülü ile ilgili logları gösterir.</div>
         <ul
             id="console"
             class="collection black load d-flex align-items-end flex-wrap no-select"

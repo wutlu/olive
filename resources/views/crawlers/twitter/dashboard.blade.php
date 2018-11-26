@@ -396,51 +396,88 @@
                 <i class="material-icons black-text">add</i>
             </a>
         </div>
-        <div class="card-content">
-            <div class="item-group load" data-href="{{ route('admin.twitter.statistics') }}" data-method="get" data-callback="__statistics">
-                <div class="item">
-                    <small class="d-block grey-text">Tweet Sayısı</small>
-                    <p data-name="tweet-count">-</p>
+
+        <div class="card-tabs">
+            <ul class="tabs tabs-fixed-width">
+                <li class="tab">
+                    <a href="#stats" class="active">Token</a>
+                </li>
+                <li class="tab">
+                    <a href="#logs">Log</a>
+                </li>
+            </ul>
+        </div>
+        <div id="stats">
+            <div class="card-content red lighten-5">
+                <div class="item-group load" data-href="{{ route('admin.twitter.statistics') }}" data-method="get" data-callback="__statistics">
+                    <div class="item">
+                        <small class="d-block grey-text">Tweet Sayısı</small>
+                        <p data-name="tweet-count">-</p>
+                    </div>
+                    <div class="item">
+                        <small class="d-block grey-text">Kullanılan Alan</small>
+                        <p data-name="tweet-size">-</p>
+                    </div>
+                    <div class="item">
+                        <small class="d-block grey-text">Alınan Trend Başlık</small>
+                        <p data-name="trend-count">-</p>
+                    </div>
+                    <div class="item">
+                        <small class="d-block grey-text">Kullanılan Alan</small>
+                        <p data-name="trend-size">-</p>
+                    </div>
                 </div>
-                <div class="item">
-                    <small class="d-block grey-text">Kullanılan Alan</small>
-                    <p data-name="tweet-size">-</p>
+            </div>
+            <div class="card-content red d-none" data-name="alert"></div>
+            <div class="collection load" 
+                 id="collections"
+                 data-href="{{ route('admin.twitter.tokens.json') }}"
+                 data-callback="__collections"
+                 data-nothing>
+                <div class="collection-item nothing d-none">
+                    <div class="not-found">
+                        <i class="material-icons">cloud</i>
+                        <i class="material-icons">cloud</i>
+                        <i class="material-icons">wb_sunny</i>
+                        <p>Token Yok</p>
+                    </div>
                 </div>
-                <div class="item">
-                    <small class="d-block grey-text">Alınan Trend Başlık</small>
-                    <p data-name="trend-count">-</p>
-                </div>
-                <div class="item">
-                    <small class="d-block grey-text">Kullanılan Alan</small>
-                    <p data-name="trend-size">-</p>
-                </div>
+                <a
+                    class="collection-item model d-none flex-wrap red z-depth-4 waves-effect json"
+                    data-href="{{ route('admin.twitter.token') }}"
+                    data-method="get"
+                    data-callback="__get"
+                    href="#">
+                    <input data-name="error" readonly type="text" />
+                    <input data-name="pid" readonly type="text" class="right-align" />
+                    <input data-name="tmp_key" readonly type="text" class="white-text" />
+                    <input data-name="value" readonly type="text" class="white-text" />
+                </a>
             </div>
         </div>
-        <div class="card-content red d-none" data-name="alert"></div>
-        <div class="collection load" 
-             id="collections"
-             data-href="{{ route('admin.twitter.tokens.json') }}"
-             data-callback="__collections"
-             data-nothing>
-            <div class="collection-item nothing d-none">
-                <div class="not-found">
-                    <i class="material-icons">cloud</i>
-                    <i class="material-icons">cloud</i>
-                    <i class="material-icons">wb_sunny</i>
-                    <p>Token Yok</p>
-                </div>
-            </div>
-            <a
-                class="collection-item model d-none flex-wrap red z-depth-4 waves-effect json"
-                data-href="{{ route('admin.twitter.token') }}"
-                data-method="get"
-                data-callback="__get"
-                href="#">
-                <input data-name="error" readonly type="text" />
-                <input data-name="pid" readonly type="text" class="right-align" />
-                <input data-name="tmp_key" readonly type="text" class="white-text" />
-                <input data-name="value" readonly type="text" class="white-text" />
-            </a>
+        <div id="logs">
+            <div class="card-content red lighten-5">Log takibini log monitörü bölümünden de yapabilirsiniz. Bu alan sadece "Twitter" modülü ile ilgili logları gösterir.</div>
+            <ul
+                id="console"
+                class="collection black load d-flex align-items-end flex-wrap no-select"
+                data-href="{{ route('admin.twitter.monitoring.log') }}"
+                data-callback="__log"
+                data-method="post">
+                <li class="collection-item d-none" style="width: 100%;">
+                    <p>
+                        <span data-name="level"></span>
+                        <span class="grey-text text-lighten-2" style="padding: 0 .2rem;">/</span>
+                        <span data-name="repeat"></span>
+                        <span class="grey-text text-lighten-2" style="padding: 0 .2rem;">/</span>
+                        <time data-name="updated-at" class="timeago grey-text text-darken-2"></time>
+                    </p>
+                    <p>
+                        <time data-name="created-at" class="timeago grey-text text-darken-2"></time>
+                        <span data-name="module" class="grey-text text-darken-2"></span>
+                    </p>
+                    <textarea data-name="message" class="green-text d-block"></textarea>
+                </li>
+            </ul>
         </div>
     </div>
 
@@ -448,38 +485,13 @@
         @slot('color', 'purple')
         @slot('id', 'home-loader')
     @endcomponent
-
-    <div class="card">
-        <div class="card-image">
-            <img src="{{ asset('img/card-header.jpg') }}" alt="Hata Logları" />
-            <span class="card-title">Hata Logları</span>
-        </div>
-        <div class="card-content orange lighten-4">Log takibini log monitörü bölümünden de yapabilirsiniz. Bu alan sadece "Twitter" modülü ile ilgili logları gösterir.</div>
-        <ul
-            id="console"
-            class="collection black load d-flex align-items-end flex-wrap no-select"
-            data-href="{{ route('admin.twitter.monitoring.log') }}"
-            data-callback="__log"
-            data-method="post">
-            <li class="collection-item d-none" style="width: 100%;">
-                <p>
-                    <span data-name="level"></span>
-                    <span class="grey-text text-lighten-2" style="padding: 0 .2rem;">/</span>
-                    <span data-name="repeat"></span>
-                    <span class="grey-text text-lighten-2" style="padding: 0 .2rem;">/</span>
-                    <time data-name="updated-at" class="timeago grey-text text-darken-2"></time>
-                </p>
-                <p>
-                    <time data-name="created-at" class="timeago grey-text text-darken-2"></time>
-                    <span data-name="module" class="grey-text text-darken-2"></span>
-                </p>
-                <textarea data-name="message" class="green-text d-block"></textarea>
-            </li>
-        </ul>
-    </div>
 @endsection
 
 @push('local.scripts')
+    $(document).ready(function() {
+        $('.tabs').tabs()
+    })
+
     var logTimer;
 
     function __log(__, obj)
