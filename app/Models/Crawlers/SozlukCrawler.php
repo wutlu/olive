@@ -63,7 +63,13 @@ class SozlukCrawler extends Model
                             'type' => 'text',
                             'index' => false
                         ],
-                        'sentiment' => [ 'type' => 'short' ]
+                        'sentiment' => [
+                            'properties' => [
+                                'neg' => [ 'type' => 'float' ],
+                                'pos' => [ 'type' => 'float' ],
+                                'neu' => [ 'type' => 'float' ]
+                            ]
+                        ]
                     ]
                 ]
             ],

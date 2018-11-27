@@ -1,5 +1,9 @@
 <?php
 $pos = [
+  'neşe',
+  'neşeli',
+  'neşeliyim',
+  'neşeliyiz',
   '%-)',
   '(-:',
   '(:',

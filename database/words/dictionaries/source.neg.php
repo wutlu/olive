@@ -1,5 +1,7 @@
 <?php
 $neg = [
+  'berbat',
+  'sevmeyeceğim',
   '%-(',
   ')-:',
   '):',

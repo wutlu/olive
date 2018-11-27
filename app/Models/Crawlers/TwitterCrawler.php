@@ -237,7 +237,13 @@ class TwitterCrawler
                                     'analyzer' => 'turkish',
                                     'fielddata' => true
                                 ],
-                                'sentiment' => [ 'type' => 'short' ],
+                                'sentiment' => [
+                                    'properties' => [
+                                        'neg' => [ 'type' => 'float' ],
+                                        'pos' => [ 'type' => 'float' ],
+                                        'neu' => [ 'type' => 'float' ]
+                                    ]
+                                ],
                                 'lang' => [
                                     'type' => 'text',
                                     'analyzer' => 'keyword',
