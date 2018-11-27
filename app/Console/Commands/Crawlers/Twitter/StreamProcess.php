@@ -13,10 +13,10 @@ use App\Models\Twitter\Token;
 use App\Jobs\Crawlers\Social\Twitter\DeletedTweetJob;
 
 use System;
+use Sentiment;
+
 use Mail;
-
 use App\Mail\ServerAlertMail;
-
 use App\Models\Crawlers\TwitterCrawler;
 
 class StreamProcess extends Command
@@ -174,6 +174,7 @@ class StreamProcess extends Command
             $this->info($token->value);
 
             $crawler = new TwitterCrawler;
+            $sentiment = new Sentiment;
 
             $bulk = [];
 
@@ -194,6 +195,8 @@ class StreamProcess extends Command
                         if (@$obj['retweeted_status'])
                         {
                             $tweet = $crawler->pattern($obj['retweeted_status']);
+                            $tweet['sentiment'] = $sentiment->score($tweet['text']);
+                            $tweet = (object) $tweet;
 
                             $bulk = $crawler->chunk($tweet, $bulk);
                         }
@@ -201,11 +204,15 @@ class StreamProcess extends Command
                         if (@$obj['quoted_status'])
                         {
                             $tweet = $crawler->pattern($obj['quoted_status']);
+                            $tweet['sentiment'] = $sentiment->score($tweet['text']);
+                            $tweet = (object) $tweet;
 
                             $bulk = $crawler->chunk($tweet, $bulk);
                         }
-                 
+
                         $tweet = $crawler->pattern($obj);
+                        $tweet['sentiment'] = $sentiment->score($tweet['text']);
+                        $tweet = (object) $tweet;
 
                         $bulk = $crawler->chunk($tweet, $bulk);
 

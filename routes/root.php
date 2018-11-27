@@ -40,6 +40,8 @@ Route::prefix('vekil-sunucu-yonetimi')->group(function () {
 });
 
 Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {
+    Route::get('/', function () { return view('crawlers.dashboard'); })->name('crawlers');
+
     # 
     # ALIŞVERİŞ
     # 

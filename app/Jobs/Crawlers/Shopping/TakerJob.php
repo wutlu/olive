@@ -18,6 +18,7 @@ use Mail;
 use App\Mail\ServerAlertMail;
 
 use System;
+use Sentiment;
 
 class TakerJob implements ShouldQueue
 {
@@ -46,6 +47,8 @@ class TakerJob implements ShouldQueue
 
         if (@$crawler)
         {
+            $sentiment = new Sentiment;
+
             $item = Crawler::productDetection($crawler->site, $this->data['url'], [
 				'title' => $crawler->selector_title,
 				'description' => $crawler->selector_description,
@@ -89,7 +92,9 @@ class TakerJob implements ShouldQueue
                 if (@$item->data['description'])
                 {
                     $params['description'] = $item->data['description'];
+                    $params['sentiment'] = $sentiment->score($item->data['description']);
                     $source[] = 'ctx._source.description = params.description;';
+                    $source[] = 'ctx._source.sentiment = params.sentiment;';
                 }
 
                 if ($item->data['seller_phones'])

@@ -18,6 +18,7 @@ use Mail;
 use App\Mail\ServerAlertMail;
 
 use System;
+use Sentiment;
 
 class TakerJob implements ShouldQueue
 {
@@ -50,6 +51,8 @@ class TakerJob implements ShouldQueue
 
             if ($item->status == 'ok')
             {
+                $sentiment = new Sentiment;
+
                 $upsert = Document::patch([ 'articles', $crawler->id ], 'article', $this->data['id'], [
                     'script' => [
                         'source' => '
@@ -58,13 +61,15 @@ class TakerJob implements ShouldQueue
                             ctx._source.created_at = params.created_at;
                             ctx._source.called_at = params.called_at;
                             ctx._source.status = params.status;
+                            ctx._source.sentiment = params.sentiment;
                         ',
                         'params' => [
                             'title' => $item->data['title'],
                             'description' => $item->data['description'],
                             'created_at' => $item->data['created_at'],
                             'called_at' => date('Y-m-d H:i:s'),
-                            'status' => 'ok'
+                            'status' => 'ok',
+                            'sentiment' => $sentiment->score($item->data['description'])
                         ]
                     ]
                 ]);

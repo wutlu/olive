@@ -5,7 +5,8 @@
             'text' => 'Admin'
         ],
         [
-            'text' => 'Bot Yönetimi'
+            'text' => 'Bot Yönetimi',
+            'link' => route('crawlers')
         ],
         [
             'text' => 'YouTube Ayarları'

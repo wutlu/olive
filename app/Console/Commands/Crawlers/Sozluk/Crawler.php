@@ -15,8 +15,10 @@ use App\Utilities\Crawler as CrawlerUtility;
 
 use App\Jobs\Elasticsearch\BulkInsertJob;
 
+use Sentiment;
 use System;
 use Mail;
+
 use App\Mail\ServerAlertMail;
 
 class Crawler extends Command
@@ -85,6 +87,8 @@ class Crawler extends Command
 	                    ]
 	                ];
 
+                    $sentiment = new Sentiment;
+
 	                $chunk['body'][] = [
 	                    'id' => $entry_id,
 
@@ -98,7 +102,9 @@ class Crawler extends Command
 						'created_at' => $item->data['created_at'],
 	                    'called_at' => date('Y-m-d H:i:s'),
 
-	                    'site_id' => $sozluk->id
+	                    'site_id' => $sozluk->id,
+
+                        'sentiment' => $sentiment->score($item->data['entry'])
 	                ];
 
 	                $errors = [];

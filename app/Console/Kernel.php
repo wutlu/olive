@@ -42,14 +42,14 @@ class Kernel extends ConsoleKernel
             # 
             # Site Takipçisi
             # 
-            $schedule->command('media:detector')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
-            $schedule->command('shopping:detector')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
+            $schedule->command('nohup "media:detector" --type=start')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
+            $schedule->command('nohup "shopping:detector" --type=start')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
 
             # 
             # Bağlantı Toplayıcı
             # 
-            $schedule->command('media:taker')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
-            $schedule->command('shopping:taker')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
+            $schedule->command('nohup "media:taker" --type=start')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
+            $schedule->command('nohup "shopping:taker" --type=start')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
 
             # 
             # Alarmları Kontrolü

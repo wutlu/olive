@@ -134,9 +134,11 @@
             <li>
                 <div class="user-view">
                     <small class="white-text right">Yapı {{ config('app.version') }}</small>
+
                     <div class="background" style="background-image: url('{{ asset('img/md/25.jpg') }}');"></div>
 
-                    <img class="circle" src="{{ asset(auth()->user()->avatar()) }}" />
+                    <img alt="{{ auth()->user()->name }}" class="circle" src="{{ asset(auth()->user()->avatar()) }}" />
+
                     <span class="white-text name">{{ auth()->user()->name }}</span>
                     <span class="white-text email">{{ auth()->user()->email }}</span>
                 </div>

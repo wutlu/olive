@@ -15,6 +15,7 @@ use App\Elasticsearch\Indices;
 use App\Jobs\Elasticsearch\BulkInsertJob;
 
 use System;
+use Sentiment;
 
 use Mail;
 use App\Mail\ServerAlertMail;
@@ -64,6 +65,8 @@ class TrendDetect extends Command
             $totalComment = 0;
             $totalVideo = 0;
 
+            $sentiment = new Sentiment;
+
             foreach ($videoList as $video)
             {
                 try
@@ -95,7 +98,7 @@ class TrendDetect extends Command
                         'channel' => [
                             'id' => $video->snippet->channelId,
                             'title' => $video->snippet->channelTitle
-                        ],
+                        ]
                     ];
 
                     if (@$video->snippet->tags)
@@ -107,7 +110,10 @@ class TrendDetect extends Command
 
                     if (@$video->snippet->description)
                     {
-                        $arr['description'] = Term::convertAscii($video->snippet->description);
+                        //$arr['description'] = Term::convertAscii($video->snippet->description);
+
+                        $arr['description'] = $video->snippet->description;
+                        $arr['sentiment'] = $sentiment->score($video->snippet->description);
                     }
 
                     $videoChunk['body'][] = $arr;
@@ -144,7 +150,8 @@ class TrendDetect extends Command
                                         'title' => $comment->snippet->topLevelComment->snippet->authorDisplayName
                                     ],
                                     'created_at' => date('Y-m-d H:i:s', strtotime($comment->snippet->topLevelComment->snippet->publishedAt)),
-                                    'called_at' => date('Y-m-d H:i:s')
+                                    'called_at' => date('Y-m-d H:i:s'),
+                                    'sentiment' => $sentiment->score($comment->snippet->topLevelComment->snippet->textOriginal)
                                 ];
 
                                 if (@$comment->replies->comments)
@@ -172,7 +179,8 @@ class TrendDetect extends Command
                                                 'title' => $reply->snippet->authorDisplayName
                                             ],
                                             'created_at' => date('Y-m-d H:i:s', strtotime($reply->snippet->publishedAt)),
-                                            'called_at' => date('Y-m-d H:i:s')
+                                            'called_at' => date('Y-m-d H:i:s'),
+                                            'sentiment' => $sentiment->score($reply->snippet->textOriginal)
                                         ];
                                     }
                                 }

@@ -41,7 +41,6 @@ class TwitterCrawler
             'id' => $object['id_str'],
             'text' => @$object['extended_tweet']['full_text'] ? $object['extended_tweet']['full_text'] : $object['text'],
             'platform' => strip_tags($object['source']),
-            'sentiment' => 0,
             'lang' => $object['lang'],
             'counts' => (object) [
                 'rt' => intval($object['retweet_count']),
@@ -184,7 +183,7 @@ class TwitterCrawler
             }, $object['extended_entities']['media']);
         }
 
-        return (object) $arr;
+        return $arr;
     }
 
     # index deseni

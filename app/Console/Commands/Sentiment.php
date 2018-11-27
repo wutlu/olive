@@ -52,7 +52,7 @@ class Sentiment extends Command
             'Neden böyle oldu ki?'
         ];
 
-        $sentiment = new SentimentLib();
+        $sentiment = new SentimentLib;
 
         foreach ($strings as $string)
         {
