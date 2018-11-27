@@ -228,7 +228,7 @@
     {
         if (obj.status == 'ok')
         {
-            M.toast({ html: 'Aktif tüm botlar durduruldu.', classes: 'green' })
+            M.toast({ html: 'Aktif tüm botlar durduruldu.', classes: 'green darken-2' })
 
             $('#modal-trigger').modal('close')
         } 
@@ -238,7 +238,7 @@
     {
         if (obj.status == 'ok')
         {
-            M.toast({ html: 'Pasif ve test edilmiş tüm botlar çalıştırıldı.', classes: 'green' })
+            M.toast({ html: 'Pasif ve test edilmiş tüm botlar çalıştırıldı.', classes: 'green darken-2' })
 
             $('#modal-trigger').modal('close')
         } 

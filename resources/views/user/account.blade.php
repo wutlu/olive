@@ -20,7 +20,7 @@
 
             M.toast({
                 html: 'Hesap Bilgileri Güncellendi',
-                classes: 'green'
+                classes: 'green darken-2'
             })
         }
     }

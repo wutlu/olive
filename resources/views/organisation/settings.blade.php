@@ -22,7 +22,7 @@
     @if (session('transferred'))
         M.toast({
             html: 'Devir gerçekleşti',
-            classes: 'green'
+            classes: 'green darken-2'
         })
     @endif
 
@@ -303,7 +303,7 @@
 
                         M.toast({
                             html: 'Kullanıcı Çıkarıldı',
-                            classes: 'green'
+                            classes: 'green darken-2'
                         })
                     }
                 }
@@ -331,7 +331,7 @@
                     {
                         M.toast({
                             html: 'Kullanıcı Eklendi',
-                            classes: 'green'
+                            classes: 'green darken-2'
                         })
 
                         $('<li />', {
@@ -574,7 +574,7 @@
                         {
                             M.toast({
                                 html: 'Fatura oluşturuluyor...',
-                                classes: 'green'
+                                classes: 'green darken-2'
                             })
 
                             $('#tab-2').children('.parent-form').addClass('d-none')
@@ -634,7 +634,7 @@
 
                     M.toast({
                         html: 'Fatura iptal edildi.',
-                        classes: 'green'
+                        classes: 'green darken-2'
                     })
 
                     setTimeout(function() {

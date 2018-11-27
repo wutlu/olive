@@ -56,7 +56,7 @@
                         html: 'Yeni bir doğrulama e-postası gönderildi.',
                         classes: 'blue',
                         completeCallback: function() {
-                            M.toast({ html: 'Lütfen e-posta kutunuzu kontrol edin.', classes: 'green' })
+                            M.toast({ html: 'Lütfen e-posta kutunuzu kontrol edin.', classes: 'green darken-2' })
                             instance.close()
                         }
                     })

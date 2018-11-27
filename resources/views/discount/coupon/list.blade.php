@@ -13,7 +13,7 @@
 
 @push('local.scripts')
     @if (session('status') == 'deleted')
-        M.toast({ html: 'Kupon Silindi', classes: 'green' })
+        M.toast({ html: 'Kupon Silindi', classes: 'green darken-2' })
     @endif
 @endpush
 

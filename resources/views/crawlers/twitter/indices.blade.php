@@ -145,7 +145,7 @@
                         {
                             $('[data-callback=__index_create]').remove()
 
-                            M.toast({ html: 'Trend indeksi oluşturuldu.', classes: 'green' })
+                            M.toast({ html: 'Trend indeksi oluşturuldu.', classes: 'green darken-2' })
                         }
                         else
                         {

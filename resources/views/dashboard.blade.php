@@ -205,15 +205,15 @@
 @push('local.scripts')
 
     @if (session('validate'))
-        M.toast({ html: 'Tebrikler! E-posta adresiniz doğrulandı!', classes: 'green' })
+        M.toast({ html: 'Tebrikler! E-posta adresiniz doğrulandı!', classes: 'green darken-2' })
     @endif
 
     @if (session('leaved'))
-        M.toast({ html: 'Organizasyondan başarılı bir şekilde ayrıldınız.', classes: 'green' })
+        M.toast({ html: 'Organizasyondan başarılı bir şekilde ayrıldınız.', classes: 'green darken-2' })
     @endif
 
     @if (session('deleted'))
-        M.toast({ html: 'Organizasyon silindi.', classes: 'green' })
+        M.toast({ html: 'Organizasyon silindi.', classes: 'green darken-2' })
     @endif
 
 @endpush

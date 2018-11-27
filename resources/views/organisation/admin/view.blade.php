@@ -22,7 +22,7 @@
         {
             M.toast({
                 html: 'Organizasyon Bilgileri Güncellendi',
-                classes: 'green'
+                classes: 'green darken-2'
             })
         }
     }

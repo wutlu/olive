@@ -31,7 +31,13 @@ class TwitterTokensTableSeeder extends Seeder
                 'consumer_secret' => '5F2QAzIalmc6Y8HRCTny8r18zxRgqAQY78UrZOITS8IrmJAU8o',
                 'access_token' => '1033402875119058946-0dZxL2GySHE2SnkKv6u1TcwhuyMxcS',
                 'access_token_secret' => 'Awpp5lJkbEnm3vjc03D5aNRLRH54XWBn8BIE8qam5mH12'
-            ]
+            ],
+            [
+                'consumer_key' => 'z2dFPxVVHaj99rwmS9ytu3EUH',
+                'consumer_secret' => '2WQwFCS3fCSYcZumiQGxNGmPvU0HqtkfDdku5gl01rA2p5cVE5',
+                'access_token' => '1033402875119058946-zpHa3k5124L9rBBfMhcnEy30Ti25Ao',
+                'access_token_secret' => 'EeIaHIDa6hq4gse6zgL7ZJlMoTW6aOljrh2Gf7se5w5Lb'
+            ],
         ];
 
         foreach ($items as $item)

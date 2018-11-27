@@ -50,7 +50,7 @@
     {
         if (obj.status == 'ok')
         {
-            M.toast({ html: 'Şifreniz güncellendi.', classes: 'green' })
+            M.toast({ html: 'Şifreniz güncellendi.', classes: 'green darken-2' })
 
             setTimeout(goHome, 1000)
         }

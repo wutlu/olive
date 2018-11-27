@@ -132,7 +132,7 @@
     {
         if (obj.status == 'ok')
         {
-            M.toast({ html: 'Giriş gerçekleştiriliyor...', classes: 'green' })
+            M.toast({ html: 'Giriş gerçekleştiriliyor...', classes: 'green darken-2' })
 
             setTimeout(goDashboard, 1000)
         }
@@ -142,7 +142,7 @@
     {
         if (obj.status == 'ok')
         {
-            M.toast({ html: 'Hesap Oluşturuluyor...', classes: 'green' })
+            M.toast({ html: 'Hesap Oluşturuluyor...', classes: 'green darken-2' })
 
             setTimeout(goDashboard, 1000)
         }
@@ -157,7 +157,7 @@
     {
         if (obj.status == 'ok')
         {
-            M.toast({ html: 'Size bir doğrulama bağlantısı gönderdik.', classes: 'green' })
+            M.toast({ html: 'Size bir doğrulama bağlantısı gönderdik.', classes: 'green darken-2' })
 
             $('#password-form')[0].reset()
             captcha()

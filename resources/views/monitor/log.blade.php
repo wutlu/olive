@@ -91,7 +91,7 @@
         {
             M.toast({ 
                 html: 'Tüm geçici/kullanılmayan kayıtlar silindi.',
-                classes: 'green'
+                classes: 'green darken-2'
             })
 
             $('#modal-clear').modal('close')

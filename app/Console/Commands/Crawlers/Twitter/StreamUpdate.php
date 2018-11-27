@@ -100,7 +100,7 @@ class StreamUpdate extends Command
                 $kcolumn = 'keyword';
             break;
             case 'trend':
-                $klimit = 200;
+                $klimit = 100;
             break;
         }
 

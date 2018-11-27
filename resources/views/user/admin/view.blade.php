@@ -27,7 +27,7 @@
 
             M.toast({
                 html: 'Kullanıcı Bilgileri Güncellendi',
-                classes: 'green'
+                classes: 'green darken-2'
             })
         }
     }

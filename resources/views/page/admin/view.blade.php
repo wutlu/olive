@@ -25,7 +25,7 @@
             }
             else if (obj.data.status == 'updated')
             {
-                M.toast({ html: 'Sayfa Güncellendi', classes: 'green' })
+                M.toast({ html: 'Sayfa Güncellendi', classes: 'green darken-2' })
             }
         }
     }
@@ -70,7 +70,7 @@
     }
 
     @if (session('status') == 'created')
-        M.toast({ html: 'Sayfa Oluşturuldu', classes: 'green' })
+        M.toast({ html: 'Sayfa Oluşturuldu', classes: 'green darken-2' })
     @endif
 
     $('[data-length]').characterCounter()

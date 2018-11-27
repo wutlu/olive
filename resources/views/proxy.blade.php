@@ -191,7 +191,7 @@
 
             M.toast({
                 html: 'Vekil Sunucu silindi.',
-                classes: 'green'
+                classes: 'green darken-2'
             })
         }
     }
@@ -202,7 +202,7 @@
         {
             M.toast({
                 html: 'Vekil Sunucu Güncellendi',
-                classes: 'green'
+                classes: 'green darken-2'
             })
 
             $('#modal-proxy').modal('close')
@@ -215,7 +215,7 @@
         {
             M.toast({
                 html: 'Vekil Sunucu Oluşturuldu',
-                classes: 'green'
+                classes: 'green darken-2'
             })
 
             $('#modal-proxy').modal('close')

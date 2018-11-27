@@ -293,7 +293,7 @@
 
             M.toast({
                 html: 'Token silindi.',
-                classes: 'green'
+                classes: 'green darken-2'
             })
         }
         else if (obj.status == 'err')
@@ -311,7 +311,7 @@
         {
             M.toast({
                 html: 'Token Güncellendi',
-                classes: 'green'
+                classes: 'green darken-2'
             })
 
             $('#modal-token').modal('close')
@@ -324,7 +324,7 @@
         {
             M.toast({
                 html: 'Token Oluşturuldu',
-                classes: 'green'
+                classes: 'green darken-2'
             })
 
             $('#modal-token').modal('close')
