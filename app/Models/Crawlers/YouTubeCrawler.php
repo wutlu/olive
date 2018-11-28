@@ -69,10 +69,10 @@ class YouTubeCrawler
                         ]
                     ],
                     [
-                        'total_fields_limit' => 44,
-                        'number_of_shards' => 2,
-                        'number_of_replicas' => 1,
-                        'refresh_interval' => '10s'
+                        'total_fields_limit' => config('database.elasticserach.youtube.video.settings.total_fields_limit'),
+                        'number_of_shards' => config('database.elasticserach.youtube.video.settings.number_of_shards'),
+                        'number_of_replicas' => config('database.elasticserach.youtube.video.settings.number_of_replicas'),
+                        'refresh_interval' => config('database.elasticserach.youtube.video.settings.refresh_interval')
                     ]
                 );
             break;
@@ -120,10 +120,10 @@ class YouTubeCrawler
                         ]
                     ],
                     [
-                        'total_fields_limit' => 44,
-                        'number_of_shards' => 2,
-                        'number_of_replicas' => 1,
-                        'refresh_interval' => '10s'
+                        'total_fields_limit' => config('database.elasticserach.youtube.comment.settings.total_fields_limit'),
+                        'number_of_shards' => config('database.elasticserach.youtube.comment.settings.number_of_shards'),
+                        'number_of_replicas' => config('database.elasticserach.youtube.comment.settings.number_of_replicas'),
+                        'refresh_interval' => config('database.elasticserach.youtube.comment.settings.refresh_interval')
                     ]
                 );
             break;

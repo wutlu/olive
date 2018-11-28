@@ -37,10 +37,10 @@ class GoogleCrawler
                 ]
             ],
             [
-                'total_fields_limit' => 22,
-                'number_of_shards' => 2,
-                'number_of_replicas' => 1,
-                'refresh_interval' => '10s'
+                'total_fields_limit' => config('database.elasticserach.google.search.settings.total_fields_limit'),
+                'number_of_shards' => config('database.elasticserach.google.search.settings.number_of_shards'),
+                'number_of_replicas' => config('database.elasticserach.google.search.settings.number_of_replicas'),
+                'refresh_interval' => config('database.elasticserach.google.search.settings.refresh_interval')
             ]
         );
     }

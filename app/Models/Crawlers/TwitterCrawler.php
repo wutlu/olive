@@ -216,10 +216,10 @@ class TwitterCrawler
                         ]
                     ],
                     [
-                        'total_fields_limit' => 22,
-                        'number_of_shards' => 2,
-                        'number_of_replicas' => 1,
-                        'refresh_interval' => '10s'
+                        'total_fields_limit' => config('database.elasticserach.twitter.trend.settings.total_fields_limit'),
+                        'number_of_shards' => config('database.elasticserach.twitter.trend.settings.number_of_shards'),
+                        'number_of_replicas' => config('database.elasticserach.twitter.trend.settings.number_of_replicas'),
+                        'refresh_interval' => config('database.elasticserach.twitter.trend.settings.refresh_interval')
                     ]
                 );
             break;
@@ -413,10 +413,10 @@ class TwitterCrawler
                         ]
                     ],
                     [
-                        'total_fields_limit' => 500,
-                        'number_of_shards' => 2,
-                        'number_of_replicas' => 1,
-                        'refresh_interval' => '30s'
+                        'total_fields_limit' => config('database.elasticserach.twitter.tweet.settings.total_fields_limit'),
+                        'number_of_shards' => config('database.elasticserach.twitter.tweet.settings.number_of_shards'),
+                        'number_of_replicas' => config('database.elasticserach.twitter.tweet.settings.number_of_replicas'),
+                        'refresh_interval' => config('database.elasticserach.twitter.tweet.settings.refresh_interval')
                     ]
                 );
             break;

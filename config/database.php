@@ -84,6 +84,85 @@ return [
 
     ],
 
+    'elasticsearch' => [
+        'google' => [
+            'search' => [
+                'settings' => [
+                    'total_fields_limit' => 22,
+                    'number_of_shards' => 2,
+                    'number_of_replicas' => 1,
+                    'refresh_interval' => '10s'
+                ]
+            ]
+        ],
+        'media' => [
+            'article' => [
+                'settings' => [
+                    'total_fields_limit' => 22,
+                    'number_of_shards' => 2,
+                    'number_of_replicas' => 1,
+                    'refresh_interval' => '5s'
+                ]
+            ]
+        ],
+        'shopping' => [
+            'article' => [
+                'settings' => [
+                    'total_fields_limit' => 40,
+                    'number_of_shards' => 2,
+                    'number_of_replicas' => 1,
+                    'refresh_interval' => '5s'
+                ]
+            ]
+        ],
+        'sozluk' => [
+            'entry' => [
+                'settings' => [
+                    'total_fields_limit' => 22,
+                    'number_of_shards' => 2,
+                    'number_of_replicas' => 1,
+                    'refresh_interval' => '10s'
+                ]
+            ]
+        ],
+        'twitter' => [
+            'trend' => [
+                'settings' => [
+                    'total_fields_limit' => 22,
+                    'number_of_shards' => 2,
+                    'number_of_replicas' => 1,
+                    'refresh_interval' => '10s'
+                ]
+            ],
+            'tweet' => [
+                'settings' => [
+                    'total_fields_limit' => 500,
+                    'number_of_shards' => 2,
+                    'number_of_replicas' => 1,
+                    'refresh_interval' => '30s'
+                ]
+            ]
+        ],
+        'youtube' => [
+            'video' => [
+                'settings' => [
+                    'total_fields_limit' => 44,
+                    'number_of_shards' => 2,
+                    'number_of_replicas' => 1,
+                    'refresh_interval' => '10s'
+                ]
+            ],
+            'comment' => [
+                'settings' => [
+                    'total_fields_limit' => 44,
+                    'number_of_shards' => 2,
+                    'number_of_replicas' => 1,
+                    'refresh_interval' => '30s'
+                ]
+            ]
+        ]
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Migration Repository Table

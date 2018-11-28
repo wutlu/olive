@@ -107,7 +107,7 @@ class Document
         }
         catch (\Exception $e)
         {
-            System::log(json_encode($e->getMessage()), 'App\Elasticsearch\Document::bulkInsert()', 10);
+            System::log(json_encode([ $e->getMessage(), $chunk ]), 'App\Elasticsearch\Document::bulkInsert()', 10);
 
             return (object) [
                 'status' => 'err',
