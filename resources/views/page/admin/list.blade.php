@@ -33,7 +33,6 @@
                     <i class="material-icons">cloud</i>
                     <i class="material-icons">cloud</i>
                     <i class="material-icons">wb_sunny</i>
-                    <p>Sayfa Yok</p>
                 </div>
             @endif
         </div>

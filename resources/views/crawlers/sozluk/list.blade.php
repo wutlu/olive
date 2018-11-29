@@ -137,7 +137,6 @@
                     <i class="material-icons">cloud</i>
                     <i class="material-icons">cloud</i>
                     <i class="material-icons">wb_sunny</i>
-                    <p>Bot Yok</p>
                 </div>
             </div>
             <a

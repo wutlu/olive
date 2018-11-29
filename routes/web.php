@@ -21,8 +21,17 @@ Route::prefix('organizasyon')->group(function () {
 
 Route::get('uyari', 'HomeController@alert')->name('alert');
 
-Route::prefix('gercek-zamanli')->group(function () {
+Route::prefix('gercek-zamanli')->namespace('RealTime')->group(function () {
     Route::get('/', 'RealTimeController@dashboard')->name('realtime');
+
+    Route::prefix('kelime')->group(function () {
+        Route::get('/', 'KeywordController@groups')->name('realtime.keyword.groups');
+
+        Route::get('grup', 'KeywordController@groupGet')->name('realtime.keyword');
+        Route::put('grup', 'KeywordController@groupCreate');
+        Route::patch('grup', 'KeywordController@groupUpdate');
+        Route::delete('grup', 'KeywordController@groupDelete');
+    });
 });
 
 Route::prefix('ayarlar')->group(function () {

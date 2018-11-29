@@ -264,10 +264,10 @@
 
         var form = _modal.find('form#form')
 
-        $('input[name=consumer_key]').val('')
-        $('input[name=consumer_secret]').val('')
-        $('input[name=access_token]').val('')
-        $('input[name=access_token_secret]').val('')
+        $('input[name=consumer_key]').val('').characterCounter()
+        $('input[name=consumer_secret]').val('').characterCounter()
+        $('input[name=access_token]').val('').characterCounter()
+        $('input[name=access_token_secret]').val('').characterCounter()
         $('input[name=off_limit]').val('10')
 
         $('[data-trigger=delete]').removeAttr('data-id').addClass('d-none')
@@ -340,10 +340,10 @@
 
             var form = _modal.find('form#form')
 
-            $('input[name=consumer_key]').val(obj.data.consumer_key)
-            $('input[name=consumer_secret]').val(obj.data.consumer_secret)
-            $('input[name=access_token]').val(obj.data.access_token)
-            $('input[name=access_token_secret]').val(obj.data.access_token_secret)
+            $('input[name=consumer_key]').val(obj.data.consumer_key).characterCounter()
+            $('input[name=consumer_secret]').val(obj.data.consumer_secret).characterCounter()
+            $('input[name=access_token]').val(obj.data.access_token).characterCounter()
+            $('input[name=access_token_secret]').val(obj.data.access_token_secret).characterCounter()
             $('input[name=off_limit]').val(obj.data.off_limit)
 
             $('[data-trigger=delete]').data('id', obj.data.id).removeClass('d-none')
@@ -439,7 +439,6 @@
                         <i class="material-icons">cloud</i>
                         <i class="material-icons">cloud</i>
                         <i class="material-icons">wb_sunny</i>
-                        <p>Token Yok</p>
                     </div>
                 </div>
                 <a

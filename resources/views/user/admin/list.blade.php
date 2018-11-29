@@ -84,7 +84,6 @@
                     <i class="material-icons">cloud</i>
                     <i class="material-icons">cloud</i>
                     <i class="material-icons">wb_sunny</i>
-                    <p>Kullanıcı Yok</p>
                 </div>
             </div>
             <a

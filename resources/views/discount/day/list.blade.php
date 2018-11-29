@@ -31,7 +31,6 @@
 	                <i class="material-icons">cloud</i>
 	                <i class="material-icons">cloud</i>
 	                <i class="material-icons">wb_sunny</i>
-	                <p>İndirim Günü Yok</p>
 	            </div>
 	        @endif
 	    </div>

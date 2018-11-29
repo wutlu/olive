@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateGroupKeywordsTable extends Migration
+class CreateRealTimePinsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,21 @@ class CreateGroupKeywordsTable extends Migration
      */
     public function up()
     {
-        Schema::create('group_keywords', function (Blueprint $table) {
+        Schema::create('real_time_pins', function (Blueprint $table) {
             $table->increments('id')->unsigned();
 
-            $table->string('keyword');
+            $table->string('comment')->nullable()->default(null);
+
+            $table->string('index');
+            $table->string('content_id');
+
+            $table->index([ 'index', 'id' ]);
+
+            $table->unsignedInteger('organisation_id')->index();
+            $table->foreign('organisation_id')->references('id')->on('organisations')->onDelete('cascade')->onUpdate('cascade');
 
             $table->unsignedInteger('group_id')->index();
-            $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('group_id')->references('id')->on('real_time_groups')->onDelete('cascade')->onUpdate('cascade');
 
             $table->unsignedInteger('user_id')->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
@@ -35,6 +43,6 @@ class CreateGroupKeywordsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('group_keywords');
+        Schema::dropIfExists('real_time_pins');
     }
 }

@@ -55,6 +55,14 @@ return [
         'twitter.status' => 'string|in:on,off',
     ],
 
+    'modules' => [
+        'youtube' => 'YouTube',
+        'twitter' => 'Twitter',
+        'sozluk' => 'Sözlük',
+        'news' => 'Haber',
+        'shopping' => 'Alışveriş',
+    ],
+
     'log_files' => [
         base_path('supervisor/logs/crawler.log'),
         base_path('supervisor/logs/elasticsearch.log'),

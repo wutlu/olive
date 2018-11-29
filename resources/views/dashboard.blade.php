@@ -169,7 +169,6 @@
                         <i class="material-icons">cloud</i>
                         <i class="material-icons">cloud</i>
                         <i class="material-icons">wb_sunny</i>
-                        <p>Aktivite Yok</p>
                     </div>
                 </li>
                 <li class="model d-none">

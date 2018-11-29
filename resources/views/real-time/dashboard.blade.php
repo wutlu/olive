@@ -61,9 +61,7 @@
                     item.find('[data-name=platform]').html(obj.module)
 
                     item.attr('id', obj.module + '-' + obj.id)
-                        .hide()
-                        .removeClass('model d-none')
-                        .slideDown(200);
+                        .removeClass('model d-none');
 
                     item.prependTo(bucket)
             }
@@ -90,7 +88,7 @@
 
     function __collections(__, obj)
     {
-        var ul = $('#users');
+        var ul = $('#pins');
         var item_model = ul.children('.model');
 
         if (obj.status == 'ok')
@@ -123,11 +121,9 @@
         }
     }
 
-    var collection_timer;
-
     function __groups(__, obj)
     {
-        var ul = $('#indices');
+        var ul = $('#groups');
         var item_model = ul.children('.model');
 
         if (obj.status == 'ok')
@@ -137,40 +133,32 @@
             if (obj.hits.length)
             {
                 $.each(obj.hits, function(key, o) {
-                    var selector = $('[data-id=' + o.uuid + ']'),
+                    var selector = $('[data-id=' + o.id + ']'),
 
                         item = selector.length ? selector : item_model.clone();
-                        item.removeClass('model d-none').addClass('_tmp d-flex').attr('data-id', o.uuid)
+                        item.removeClass('model d-none').addClass('_tmp d-flex').attr('data-id', o.id)
 
-                        item.find('[data-name=health]').html(o.health)
-                                                       .removeClass('green-text red-text yellow-text')
-                                                       .addClass(o.health + '-text')
-                        item.find('[data-name=count]').html(number_format(o['docs.count'] ? o['docs.count'] : 0))
-                        item.find('[data-name=size]').html(o['store.size'])
+                        item.find('[data-name=name]').html(o.name)
 
-                        if (!selector.length)
-                        {
-                            item.find('[data-name=name]').html(o.index)
-                            item.appendTo(ul)
-                        }
+                    if (!selector.length)
+                    {
+                        item.appendTo(ul)
+                    }
                 })
             }
 
-            $('#home-loader').hide()
+            $('[data-name=group-count]').html(obj.hits.length)
+            $('[data-name=group-limit]').html(obj.limit)
+
+            $('#group-loader').hide()
         }
-
-        window.clearTimeout(collection_timer)
-
-        collection_timer = window.setTimeout(function() {
-            vzAjax($('#indices'))
-        }, 10000)
     }
 @endpush
 
 @section('content')
     <div class="card">
         <div class="card-content card-content-image" style="background-image: url({{ asset('img/md/9.jpg') }});">
-            <span class="card-title white-text mb-0">Pinleme Geçmişi</span>
+            <span class="card-title white-text mb-0">Pin Grupları</span>
         </div>
         <div class="card-image">
             <a href="#" class="btn-floating btn-large halfway-fab waves-effect white" data-trigger="create">
@@ -188,7 +176,7 @@
                            name="string"
                            type="search"
                            class="validate json json-search"
-                           data-json-target="#users"
+                           data-json-target="#pins"
                            placeholder="Ara" />
                     <label class="label-icon" for="string">
                         <i class="material-icons">search</i>
@@ -198,12 +186,12 @@
             </div>
         </nav>
         <div class="collection load json-clear" 
-             id="users"
+             id="pins"
              data-href="{{ route('admin.user.list.json') }}"
              data-skip="0"
              data-take="5"
              data-include="string"
-             data-more-button="#users-more_button"
+             data-more-button="#pins-more_button"
              data-callback="__collections"
              data-nothing>
             <div class="collection-item nothing d-none">
@@ -211,7 +199,6 @@
                     <i class="material-icons">cloud</i>
                     <i class="material-icons">cloud</i>
                     <i class="material-icons">wb_sunny</i>
-                    <p>Pinleme Yok</p>
                 </div>
             </div>
             <a
@@ -235,9 +222,9 @@
     @endcomponent
     <div class="center-align">
         <button class="btn-flat waves-effect d-none json"
-                id="users-more_button"
+                id="pins-more_button"
                 type="button"
-                data-json-target="#users">Öncekiler</button>
+                data-json-target="#pins">Öncekiler</button>
     </div>
 
     <div class="card time-line">
@@ -247,7 +234,7 @@
         <div class="card-content cyan lighten-5">
             <p class="d-flex">
                 <img alt="Pin" src="{{ asset('img/pin.svg') }}" style="width: 32px; height: 32px; margin: 0 .2rem 0 0;" />
-                <span class="align-self-center">Pinlemek istedğiniz içeriğe tıklayın.</span>
+                <span class="align-self-center">Pinlemek istediğiniz içeriğe tıklayın.</span>
             </p>
             <p class="d-flex">
                 <img alt="Pin" src="{{ asset('img/cold-plant.svg') }}" style="width: 32px; height: 32px; margin: 0 .2rem 0 0;" />
@@ -269,16 +256,16 @@
             <span class="card-title white-text mb-0">Kelime Grupları</span>
         </div>
         <div class="card-image">
-            <a href="#" class="btn-floating btn-large halfway-fab waves-effect white" data-trigger="create">
+            <a href="#" class="btn-floating btn-large halfway-fab waves-effect white" data-trigger="create-group">
                 <i class="material-icons black-text">add</i>
             </a>
         </div>
         <div class="card-content" style="padding-bottom: 0;">
-            <span data-name="group-count">1</span> / <span data-name="group-limit">8</span>
+            <span data-name="group-count">0</span> / <span data-name="group-limit">0</span>
         </div>
         <ul class="collection groups load" 
-             id="indices"
-             data-href="{{ route('admin.twitter.indices.json') }}"
+             id="groups"
+             data-href="{{ route('realtime.keyword.groups') }}"
              data-callback="__groups"
              data-nothing>
             <li class="collection-item nothing d-none">
@@ -286,13 +273,12 @@
                     <i class="material-icons">cloud</i>
                     <i class="material-icons">cloud</i>
                     <i class="material-icons">wb_sunny</i>
-                    <p>Group Yok</p>
                 </div>
             </li>
             <li class="collection-item model d-none">
                 <div class="d-flex justify-content-between">
                     <a class="material-icons" href="#">create</a>
-                    <span class="group-name">test</span>
+                    <span class="group-name" data-name="name"></span>
                     @isset ($stream)
                     <div class="switch ml-auto">
                         <label>
@@ -310,6 +296,133 @@
 
     @component('components.loader')
         @slot('color', 'red')
-        @slot('id', 'home-loader')
+        @slot('id', 'group-loader')
     @endcomponent
 @endsection
+
+@push('local.scripts')
+    function group_modal()
+    {
+        var mdl = modal({
+            'id': 'group-form',
+            'body': $('<form />', {
+                'action': '{{ route('realtime.keyword') }}',
+                'id': 'group-form',
+                'class': 'json',
+                'data-callback': '__group_update',
+                'html': [
+                    $('<div />', {
+                        'class': 'input-field',
+                        'html': [
+                            $('<input />', {
+                                'id': 'name',
+                                'name': 'name',
+                                'type': 'text',
+                                'class': 'validate',
+                                'data-length': 16
+                            }),
+                            $('<label />', {
+                                'for': 'name',
+                                'html': 'Grup Adı'
+                            }),
+                            $('<span />', {
+                                'class': 'helper-text'
+                            })
+                        ]
+                    }),
+                    $('<p />', {
+                        'class': 'teal-text',
+                        'html': 'İçerik akışının sağlanacağı platformları seçin.'
+                    }),
+                    $('<div />', {
+                        'class': 'collection',
+                        'html': [
+                        @foreach (config('app.modules') as $key => $module)
+                            $('<label />', {
+                                'class': 'collection-item waves-effect d-block',
+                                'html': [
+                                    $('<input />', {
+                                        'name': 'module_{{ $key }}',
+                                        'id': 'module_{{ $key }}',
+                                        'value': '1',
+                                        'type': 'checkbox'
+                                    }),
+                                    $('<span />', {
+                                        'html': '{{ title_case($module) }} Verileri'
+                                    })
+                                ]
+                            }),
+                        @endforeach
+                        ]
+                    }),
+
+                    $('<br />'),
+                    $('<div />', {
+                        'class': 'right-align',
+                        'html': [
+                           $('<a />', {
+                               'href': '#',
+                               'class': 'modal-close waves-effect btn-flat',
+                               'html': buttons.cancel
+                           }),
+                           $('<span />', {
+                               'html': ' '
+                           }),
+                           $('<a />', {
+                               'data-trigger': 'delete',
+                               'href': '#',
+                               'class': 'waves-effect btn-flat red-text d-none',
+                               'html': buttons.remove
+                           }),
+                           $('<span />', {
+                               'html': ' '
+                           }),
+                           $('<button />', {
+                               'type': 'submit',
+                               'class': 'waves-effect btn',
+                               'data-submit': 'form#group-form',
+                               'html': buttons.ok
+                           })
+                        ]
+                    })
+                ]
+            }),
+            'size': 'modal-medium',
+            'options': {
+                dismissible: false
+            }
+        });
+
+        mdl.find('input[name=name]').characterCounter()
+
+        M.updateTextFields()
+
+        return mdl;
+    }
+
+    $(document).on('click', '[data-trigger=create-group]', function() {
+        var mdl = group_modal();
+            mdl.find('.modal-title').html('Grup Oluştur')
+            mdl.find('form#group-form').data('method', 'put')
+    }).on('click', '[data-trigger=update-group]', function() {
+        var mdl = group_modal();
+            mdl.find('.modal-title').html('Grup Güncelle')
+            mdl.find('form#group-form').data('id', $(this).data('id'))
+                                       .data('method', 'patch')
+    })
+
+    function __group_update(__, obj)
+    {
+        if (obj.status == 'ok')
+        {
+            $('#modal-group-form').modal('close')
+
+            vzAjax($('#groups'))
+
+            M.toast({
+                html: 'Grup Oluşturuldu',
+                classes: 'green darken-2'
+            })
+        }
+    }
+@endpush

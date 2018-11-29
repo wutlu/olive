@@ -214,5 +214,11 @@ return [
         'proxy'                        => 'Vekil Sunucu',
         'min_health'                   => 'Yaşam Değeri',
         'reason'                       => 'Neden',
+
+        'module_youtube'               => 'YouTube Modülü',
+        'module_twitter'               => 'Twitter Modülü',
+        'module_sozluk'                => 'Sözlük Modülü',
+        'module_news'                  => 'Haber Modülü',
+        'module_shopping'              => 'Alışveriş Modülü',
     ],
 ];

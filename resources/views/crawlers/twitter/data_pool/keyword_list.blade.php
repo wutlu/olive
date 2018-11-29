@@ -60,7 +60,6 @@
                     <i class="material-icons">cloud</i>
                     <i class="material-icons">cloud</i>
                     <i class="material-icons">wb_sunny</i>
-                    <p>Kelime Yok</p>
                 </div>
             </div>
             <a

@@ -80,7 +80,6 @@
                     <i class="material-icons">cloud</i>
                     <i class="material-icons">cloud</i>
                     <i class="material-icons">wb_sunny</i>
-                    <p>Index Yok</p>
                 </div>
             </li>
             <li class="collection-item model d-none">

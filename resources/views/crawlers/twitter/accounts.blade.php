@@ -55,7 +55,6 @@
                     <i class="material-icons">cloud</i>
                     <i class="material-icons">cloud</i>
                     <i class="material-icons">wb_sunny</i>
-                    <p>Hesap Yok</p>
                 </div>
             </li>
             <li class="collection-item avatar model d-none">

@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\RealTime;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class RealTimeController extends Controller
 {
@@ -16,6 +17,6 @@ class RealTimeController extends Controller
     # 
     public function dashboard()
     {
-    	return view('realtime.dashboard');
+    	return view('real-time.dashboard');
     }
 }

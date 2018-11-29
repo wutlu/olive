@@ -44,7 +44,6 @@
                     <i class="material-icons">cloud</i>
                     <i class="material-icons">cloud</i>
                     <i class="material-icons">wb_sunny</i>
-                    <p>Fatura Geçmişi Yok</p>
                 </div>
             </div>
         @endif
