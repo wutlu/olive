@@ -17,12 +17,12 @@ class CreateTwitterStreamingUsersTable extends Migration
             $table->increments('id')->unsigned();
 
             $table->string('screen_name')->nullable()->default(null);
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id')->index();
             $table->string('reason')->nullable()->default(null);
 
             $table->boolean('status')->default(0);
 
-            $table->unsignedInteger('organisation_id')->nullable()->default(null);
+            $table->unsignedInteger('organisation_id')->nullable()->default(null)->index();
             $table->foreign('organisation_id')->references('id')->on('organisations')->onDelete('cascade')->onUpdate('cascade');
 
             $table->unique([ 'user_id', 'organisation_id' ]);

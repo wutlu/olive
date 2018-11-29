@@ -26,13 +26,13 @@ class CreateBillingInformationsTable extends Migration
             $table->unsignedBigInteger('tax_number')->nullable()->default(null);
             $table->string('tax_office')->nullable()->default(null);
 
-            $table->unsignedInteger('country_id');
+            $table->unsignedInteger('country_id')->index();
             $table->foreign('country_id')->references('id')->on('countries')->onDelete('restrict')->onUpdate('cascade');
 
-            $table->unsignedInteger('state_id');
+            $table->unsignedInteger('state_id')->index();
             $table->foreign('state_id')->references('id')->on('states')->onDelete('restrict')->onUpdate('cascade');
 
-            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('user_id')->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
 
             $table->string('city');

@@ -33,7 +33,7 @@
                            type="search"
                            class="validate json json-search"
                            data-json-target="#accounts"
-                           placeholder="Arayın" />
+                           placeholder="Ara" />
                     <label class="label-icon" for="string">
                         <i class="material-icons">search</i>
                     </label>

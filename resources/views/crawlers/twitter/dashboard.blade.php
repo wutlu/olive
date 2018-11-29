@@ -397,7 +397,6 @@
                 <i class="material-icons black-text">add</i>
             </a>
         </div>
-
         <div class="card-tabs">
             <ul class="tabs tabs-fixed-width">
                 <li class="tab">
@@ -409,7 +408,7 @@
             </ul>
         </div>
         <div id="stats">
-            <div class="card-content red lighten-5">
+            <div class="card-content grey-text red lighten-5">
                 <div class="item-group load" data-href="{{ route('admin.twitter.statistics') }}" data-method="get" data-callback="__statistics">
                     <div class="item">
                         <small class="d-block grey-text">Tweet Sayısı</small>
@@ -457,7 +456,7 @@
             </div>
         </div>
         <div id="logs">
-            <div class="card-content red lighten-5">Log takibini log monitörü bölümünden de yapabilirsiniz. Bu alan sadece "Twitter" modülü ile ilgili logları gösterir.</div>
+            <div class="card-content grey-text">Log takibini log monitörü bölümünden de yapabilirsiniz. Bu alan sadece "Twitter" modülü ile ilgili logları gösterir.</div>
             <ul
                 id="console"
                 class="collection black load d-flex align-items-end flex-wrap no-select"

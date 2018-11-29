@@ -66,6 +66,7 @@ class TrendDetect extends Command
             $totalVideo = 0;
 
             $sentiment = new Sentiment;
+            $term = new Term;
 
             foreach ($videoList as $video)
             {
@@ -110,7 +111,7 @@ class TrendDetect extends Command
 
                     if (@$video->snippet->description)
                     {
-                        $arr['description'] = Term::convertAscii($video->snippet->description);
+                        $arr['description'] = $term->convertAscii($video->snippet->description);
                         $arr['sentiment'] = $sentiment->score($arr['description']);
                     }
 
@@ -141,7 +142,7 @@ class TrendDetect extends Command
 
                                 $commentChunk['body'][] = [
                                     'id' => $comment->id,
-                                    'text' => $comment->snippet->topLevelComment->snippet->textOriginal,
+                                    'text' => $term->convertAscii($comment->snippet->topLevelComment->snippet->textOriginal),
                                     'video_id' => $comment->snippet->videoId,
                                     'channel' => [
                                         'id' => $comment->snippet->topLevelComment->snippet->authorChannelId->value,
@@ -169,7 +170,7 @@ class TrendDetect extends Command
 
                                         $commentChunk['body'][] = [
                                             'id' => $reply->id,
-                                            'text' => $reply->snippet->textOriginal,
+                                            'text' => $term->convertAscii($reply->snippet->textOriginal),
                                             'video_id' => $comment->snippet->videoId,
                                             'comment_id' => $comment->id,
                                             'channel' => [

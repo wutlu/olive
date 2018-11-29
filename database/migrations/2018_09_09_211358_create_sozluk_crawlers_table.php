@@ -19,6 +19,7 @@ class CreateSozlukCrawlersTable extends Migration
             $table->string('name')->unique();
             $table->string('site');
             $table->string('url_pattern')->default('/');
+
             $table->unsignedBigInteger('last_id')->default(1);
 
             $table->string('selector_title');

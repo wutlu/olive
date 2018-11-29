@@ -254,7 +254,7 @@
                 <i class="material-icons black-text">add</i>
             </a>
         </div>
-        <div class="card-content red lighten-5">
+        <div class="card-content grey-text">
             <p>Veri toplamada daha yüksek erişim sağlamak için birden fazla vekil sunucu kullanın.</p>
             <p>Vekil sunucu yaşam değerleri otomatize bir şekilde sürekli olarak kontrol edilir. Yaşam değeri düşük sunucular, yaşam değeri normal duruma gelene kadar kullanılmayacaktır.</p>
         </div>

@@ -14,7 +14,7 @@ class AddTwitterAccountToOrganisationsTable extends Migration
     public function up()
     {
         Schema::table('organisations', function (Blueprint $table) {
-            $table->unsignedBigInteger('twitter_account_id')->nullable()->default(null);
+            $table->unsignedBigInteger('twitter_account_id')->nullable()->default(null)->index();
             $table->foreign('twitter_account_id')->references('id')->on('twitter_accounts')->onDelete('SET NULL')->onUpdate('cascade');
         });
     }

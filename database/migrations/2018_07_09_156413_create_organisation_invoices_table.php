@@ -16,10 +16,10 @@ class CreateOrganisationInvoicesTable extends Migration
         Schema::create('organisation_invoices', function (Blueprint $table) {
             $table->unsignedBigInteger('invoice_id')->unique();
 
-            $table->unsignedInteger('organisation_id')->nullable()->default(null);
+            $table->unsignedInteger('organisation_id')->nullable()->default(null)->index();
             $table->foreign('organisation_id')->references('id')->on('organisations')->onDelete('cascade')->onUpdate('cascade');
 
-            $table->unsignedInteger('user_id')->nullable()->default(null);
+            $table->unsignedInteger('user_id')->nullable()->default(null)->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('SET NULL')->onUpdate('cascade');
 
             $table->decimal('unit_price', 9, 2)->default(0);
@@ -35,7 +35,7 @@ class CreateOrganisationInvoicesTable extends Migration
             $table->string('no')->nullable()->default(null);
             $table->string('serial')->nullable()->default(null);
 
-            $table->unsignedInteger('billing_information_id');
+            $table->unsignedInteger('billing_information_id')->index();
             $table->foreign('billing_information_id')->references('id')->on('billing_informations')->onDelete('cascade')->onUpdate('cascade');
 
             $table->timestamps();

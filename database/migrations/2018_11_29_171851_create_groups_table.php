@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateStatesTable extends Migration
+class CreateGroupsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,17 @@ class CreateStatesTable extends Migration
      */
     public function up()
     {
-        Schema::create('states', function (Blueprint $table) {
+        Schema::create('groups', function (Blueprint $table) {
             $table->increments('id')->unsigned();
+
             $table->string('name')->index();
 
-            $table->unsignedInteger('country_id')->index();
-            $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade')->onUpdate('cascade');
+            $table->unsignedInteger('organisation_id')->index();
+            $table->foreign('organisation_id')->references('id')->on('organisations')->onDelete('cascade')->onUpdate('cascade');
+
+            $table->timestamp('pdf_completed_at')->nullable()->default(null);
+
+            $table->timestamps();
         });
     }
 
@@ -29,6 +34,6 @@ class CreateStatesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('states');
+        Schema::dropIfExists('groups');
     }
 }

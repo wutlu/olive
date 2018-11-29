@@ -65,7 +65,7 @@
             <img src="{{ asset('img/card-header.jpg') }}" alt="Arkaplan İşleri" />
             <span class="card-title">Arkaplan İşleri</span>
         </div>
-        <div class="card-content red lighten-5">Sunucu üzerinde çalışan sisteme özgü işlemleri dinamik olarak izleyebilirsiniz.</div>
+        <div class="card-content grey-text">Sunucu üzerinde çalışan sisteme özgü işlemleri dinamik olarak izleyebilirsiniz.</div>
         <ul
             id="console"
             class="collection black load d-flex align-items-end flex-wrap"

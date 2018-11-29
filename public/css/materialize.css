@@ -5555,15 +5555,15 @@ small {
 }
 
 .card .card-action a:not(.btn):not(.btn-large):not(.btn-small):not(.btn-large):not(.btn-floating) {
-  color: #ffab40;
-  margin-right: 24px;
+  color: #646464;
+  margin-left: 24px;
   -webkit-transition: color .3s ease;
   transition: color .3s ease;
   text-transform: uppercase;
 }
 
 .card .card-action a:not(.btn):not(.btn-large):not(.btn-small):not(.btn-large):not(.btn-floating):hover {
-  color: #ffd8a6;
+  color: #646464;
 }
 
 .card .card-reveal {

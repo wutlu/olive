@@ -21,7 +21,7 @@ class CreateTwitterStreamingKeywordsTable extends Migration
 
             $table->boolean('status')->default(0);
 
-            $table->unsignedInteger('organisation_id')->nullable()->default(null);
+            $table->unsignedInteger('organisation_id')->nullable()->default(null)->index();
             $table->foreign('organisation_id')->references('id')->on('organisations')->onDelete('cascade')->onUpdate('cascade');
 
             $table->unique([ 'keyword', 'organisation_id' ]);

@@ -122,7 +122,7 @@
                            type="search"
                            class="validate json json-search"
                            data-json-target="#crawlers"
-                           placeholder="Arayın" />
+                           placeholder="Ara" />
                     <label class="label-icon" for="string">
                         <i class="material-icons">search</i>
                     </label>

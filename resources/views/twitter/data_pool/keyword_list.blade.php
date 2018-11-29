@@ -24,7 +24,7 @@
             <span class="card-title">Kelime Havuzu</span>
             <p class="grey-text" data-name="count"></p>
         </div>
-        <div class="card-content red lighten-5">
+        <div class="card-content grey-text">
         	<h6>Daha İyi Sonuçlar Elde Edin</h6>
         	<p>İlgilendiğiniz kelimeleri belirterek veri toplama esnasında yüksek analiz sonuçları elde edebilirsiniz.</p>
         	<p>Bu ayarlar bulunduğunuz organizasyon için geçerlidir.</p>

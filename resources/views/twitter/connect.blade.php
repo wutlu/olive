@@ -42,11 +42,11 @@
                 </div>
                 <div class="card-content">
                     @if (session('denied'))
-                        <pre class="red-text red lighten-5">Twitter bağlantısı sağlanılamadı.</pre>
+                        <pre class="red-text grey-text">Twitter bağlantısı sağlanılamadı.</pre>
                     @endif
 
                     @if (@$organisation->twitterAccount->status === false)
-                        <pre class="red-text red lighten-5">{{ $organisation->twitterAccount->reasons }}.</pre>
+                        <pre class="red-text grey-text">{{ $organisation->twitterAccount->reasons }}.</pre>
                     @endif
 
                     <div class="center-align">

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateOrganisationsTable extends Migration
+class CreateGroupKeywordsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,23 +13,16 @@ class CreateOrganisationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('organisations', function (Blueprint $table) {
+        Schema::create('group_keywords', function (Blueprint $table) {
             $table->increments('id')->unsigned();
 
-            $table->string('name');
+            $table->string('keyword');
 
-            $table->unsignedSmallInteger('capacity')->default(1);
-
-            $table->datetime('start_date');
-            $table->datetime('end_date');
+            $table->unsignedInteger('group_id')->index();
+            $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade')->onUpdate('cascade');
 
             $table->unsignedInteger('user_id')->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-
-            $table->boolean('status')->default(0);
-
-            $table->unsignedInteger('twitter_follow_limit_user')->default(25);
-            $table->unsignedInteger('twitter_follow_limit_keyword')->default(25);
 
             $table->timestamps();
         });
@@ -42,6 +35,6 @@ class CreateOrganisationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('organisations');
+        Schema::dropIfExists('group_keywords');
     }
 }
