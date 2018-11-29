@@ -21,6 +21,10 @@ Route::prefix('organizasyon')->group(function () {
 
 Route::get('uyari', 'HomeController@alert')->name('alert');
 
+Route::prefix('gercek-zamanli')->group(function () {
+    Route::get('/', 'RealTimeController@dashboard')->name('realtime');
+});
+
 Route::prefix('ayarlar')->group(function () {
     Route::prefix('organizasyon')->group(function () {
         Route::get('/', 'OrganisationController@settings')->name('settings.organisation');

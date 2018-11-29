@@ -131,7 +131,7 @@
 
 @push('local.styles')
     ul#console {
-        height: 600px;
+        height: 400px;
         overflow-y: scroll;
         background-image: url('{{ asset('img/olive-logo-opacity.svg') }}');
         background-repeat: no-repeat;
@@ -140,7 +140,6 @@
 
     ul#console > li textarea {
         border-width: 0;
-        background-color: rgba(255, 0, 0, .1);
         resize: none;
     }
 @endpush

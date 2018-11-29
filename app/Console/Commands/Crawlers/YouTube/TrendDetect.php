@@ -110,10 +110,8 @@ class TrendDetect extends Command
 
                     if (@$video->snippet->description)
                     {
-                        //$arr['description'] = Term::convertAscii($video->snippet->description);
-
-                        $arr['description'] = $video->snippet->description;
-                        $arr['sentiment'] = $sentiment->score($video->snippet->description);
+                        $arr['description'] = Term::convertAscii($video->snippet->description);
+                        $arr['sentiment'] = $sentiment->score($arr['description']);
                     }
 
                     $videoChunk['body'][] = $arr;

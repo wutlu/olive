@@ -34,7 +34,7 @@ class UpdateRequest extends FormRequest
             'selector_author'      => 'required|string|max:255',
             'last_id'              => 'required|integer|min:0',
             'max_attempt'          => 'required|integer|max:10000|min:10',
-            'off_limit'            => 'required|integer|max:100|min:10',
+            'off_limit'            => 'required|integer|max:1000|min:10',
             'test_count'           => 'required|integer|max:100|min:1'
         ];
     }

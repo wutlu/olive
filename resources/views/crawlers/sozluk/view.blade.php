@@ -220,7 +220,7 @@
                         <div class="d-flex flex-wrap">
                             <div style="width: 50%; padding: 1rem;">
                                 <div class="input-field">
-                                    <input name="off_limit" id="off_limit" value="{{ $crawler->off_limit }}" type="number" class="validate" max="100" min="10" />
+                                    <input name="off_limit" id="off_limit" value="{{ $crawler->off_limit }}" type="number" class="validate" max="1000" min="10" />
                                     <label for="off_limit">Kapatma Limiti</label>
                                     <small class="helper-text">
                                         Belirtilen değer kadar hata alındığı takdirde; hata logu girilir ve bot devre dışı bırakılır.

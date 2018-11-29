@@ -121,7 +121,7 @@
                     @if ($options['twitter.index.auto'] == 'on'){{ 'checked' }}@endif  />
                 <span>Otomatik Index</span>
             </label>
-            <div class="collection-item blue-text">Otomatik Indexlemede;<br />Twitter için oluşturulan aylık<br /> indexler, veriler<br /> alınmadan önce oluşturulur.</div>
+            <div class="collection-item grey lighten-4">Otomatik Indexlemede;<br />Twitter için oluşturulan aylık<br /> indexler, veriler<br /> alınmadan önce oluşturulur.</div>
             @if ($options['twitter.index.trends'] == 'off')
                 <a
                     href="#"
