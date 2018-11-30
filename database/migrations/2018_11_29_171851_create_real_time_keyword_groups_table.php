@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRealTimeGroupsTable extends Migration
+class CreateRealTimeKeywordGroupsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,14 @@ class CreateRealTimeGroupsTable extends Migration
      */
     public function up()
     {
-        Schema::create('real_time_groups', function (Blueprint $table) {
+        Schema::create('real_time_keyword_groups', function (Blueprint $table) {
             $table->increments('id')->unsigned();
 
             $table->string('name')->index();
+            $table->text('keywords');
 
             $table->unsignedInteger('organisation_id')->index();
             $table->foreign('organisation_id')->references('id')->on('organisations')->onDelete('cascade')->onUpdate('cascade');
-
-            $table->timestamp('pdf_completed_at')->nullable()->default(null);
 
             $table->boolean('module_youtube')->default(0);
             $table->boolean('module_twitter')->default(0);
@@ -40,6 +39,6 @@ class CreateRealTimeGroupsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('real_time_groups');
+        Schema::dropIfExists('real_time_keyword_groups');
     }
 }

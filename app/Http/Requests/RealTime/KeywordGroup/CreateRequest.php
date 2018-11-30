@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\RealTime\Group;
+namespace App\Http\Requests\RealTime\KeywordGroup;
 
 use Illuminate\Foundation\Http\FormRequest;
 
 use Validator;
 
-use App\Models\RealTime\Group;
+use App\Models\RealTime\KeywordGroup;
 
 class CreateRequest extends FormRequest
 {
@@ -28,7 +28,9 @@ class CreateRequest extends FormRequest
     public function messages()
     {
         return [
-            'limit' => 'Grup limitiniz doldu.'
+            'limit' => 'Grup limitiniz doldu.',
+            'keyword_max_line' => 'Kelime satırı çok fazla.',
+            'empty_lines' => 'Her kelime satırı en az 3 karakter olabilir.'
         ];
     }
 
@@ -42,13 +44,32 @@ class CreateRequest extends FormRequest
         $user = auth()->user();
 
         Validator::extend('limit', function($attribute) use ($user) {
-            $total_group = Group::where('organisation_id', $user->organisation_id)->count();
+            $total_group = KeywordGroup::where('organisation_id', $user->organisation_id)->count();
 
             return $total_group < $user->organisation->capacity;
         });
 
+        Validator::extend('keyword_max_line', function($attribute, $value) {
+            return count(explode(PHP_EOL, $value)) <= 10 ? true : false;
+        });
+
+        Validator::extend('empty_lines', function($attribute, $value) {
+            $return = true;
+
+            foreach (explode(PHP_EOL, $value) as $line)
+            {
+                if (strlen($line) < 3)
+                {
+                    $return = false;
+                }
+            }
+
+            return $return;
+        });
+
         return [
-            'name' => 'required|string|max:16|limit',
+            'name' => 'required|string|max:10|limit',
+            'keywords' => 'bail|required|string|max:64|keyword_max_line|empty_lines',
 
             'module_youtube' => 'sometimes|boolean',
             'module_twitter' => 'sometimes|boolean',

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\RealTime;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use App\Models\RealTime\PinGroup;
+
 class RealTimeController extends Controller
 {
     public function __construct()
@@ -15,8 +17,22 @@ class RealTimeController extends Controller
     # 
     # gerçek zamanlı ekranı.
     # 
-    public function dashboard()
+    public function dashboard(int $id = 0)
     {
-    	return view('real-time.dashboard');
+        $organisation = auth()->user()->organisation;
+
+        if ($id)
+        {
+            $pin_group = PinGroup::where([
+                'id' => $id,
+                'organisation_id' => $organisation->id
+            ])->firstOrFail();
+        }
+        else
+        {
+            $pin_group = null;
+        }
+
+    	return view('real-time.dashboard', compact('id', 'pin_group'));
     }
 }

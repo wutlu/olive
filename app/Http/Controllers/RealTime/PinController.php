@@ -5,13 +5,15 @@ namespace App\Http\Controllers\RealTime;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-use App\Models\RealTime\KeywordGroup;
-
-use App\Http\Requests\RealTime\KeywordGroup\CreateRequest as GroupCreateRequest;
-use App\Http\Requests\RealTime\KeywordGroup\UpdateRequest as GroupUpdateRequest;
 use App\Http\Requests\IdRequest;
+use App\Http\Requests\SearchRequest;
 
-class KeywordController extends Controller
+use App\Http\Requests\RealTime\PinGroup\CreateRequest as GroupCreateRequest;
+use App\Http\Requests\RealTime\PinGroup\UpdateRequest as GroupUpdateRequest;
+
+use App\Models\RealTime\PinGroup;
+
+class PinController extends Controller
 {
     public function __construct()
     {
@@ -19,18 +21,23 @@ class KeywordController extends Controller
     }
 
     # 
-    # kelime grupları
+    # pinler (json)
     # 
-    public function groups()
+    public function groups(SearchRequest $request)
     {
-        $organisation = auth()->user()->organisation;
+        $take = $request->take;
+        $skip = $request->skip;
 
-        $data = KeywordGroup::select('name', 'id')->where('organisation_id', $organisation->id)->orderBy('id', 'DESC')->get();
+        $query = PinGroup::with('pins');
+        $query = $request->string ? $query->where('name', 'ILIKE', '%'.$request->string.'%') : $query;
+        $query = $query->skip($skip)
+                       ->take($take)
+                       ->orderBy('id', 'DESC');
 
         return [
             'status' => 'ok',
-            'hits' => $data,
-            'limit' => $organisation->capacity
+            'hits' => $query->get(),
+            'total' => $query->count()
         ];
     }
 
@@ -41,15 +48,9 @@ class KeywordController extends Controller
     {
         $organisation = auth()->user()->organisation;
 
-        $data = KeywordGroup::select(
+        $data = PinGroup::select(
             'id',
-            'name',
-            'keywords',
-            'module_youtube',
-            'module_twitter',
-            'module_sozluk',
-            'module_news',
-            'module_shopping'
+            'name'
         )->where([
             'id' => $request->id,
             'organisation_id' => $organisation->id
@@ -68,18 +69,11 @@ class KeywordController extends Controller
     {
         $organisation = auth()->user()->organisation;
 
-        $data = new KeywordGroup;
+        $data = new PinGroup;
 
         $data->organisation_id = $organisation->id;
 
         $data->name = $request->name;
-        $data->keywords = trim($request->keywords);
-
-        $data->module_youtube = $request->module_youtube ? true : false;
-        $data->module_twitter = $request->module_twitter ? true : false;
-        $data->module_sozluk = $request->module_sozluk ? true : false;
-        $data->module_news = $request->module_news ? true : false;
-        $data->module_shopping = $request->module_shopping ? true : false;
         $data->save();
 
         return [
@@ -95,24 +89,21 @@ class KeywordController extends Controller
     {
         $organisation = auth()->user()->organisation;
 
-        $data = KeywordGroup::where([
+        $data = PinGroup::where([
             'id' => $request->id,
             'organisation_id' => $organisation->id
         ])->firstOrFail();
 
         $data->name = $request->name;
-        $data->keywords = trim($request->keywords);
-
-        $data->module_youtube = $request->module_youtube ? true : false;
-        $data->module_twitter = $request->module_twitter ? true : false;
-        $data->module_sozluk = $request->module_sozluk ? true : false;
-        $data->module_news = $request->module_news ? true : false;
-        $data->module_shopping = $request->module_shopping ? true : false;
         $data->save();
 
         return [
             'status' => 'ok',
-            'type' => 'updated'
+            'type' => 'updated',
+            'data' => [
+                'id' => $data->id,
+                'name' => $data->name
+            ]
         ];
     }
 
@@ -123,7 +114,7 @@ class KeywordController extends Controller
     {
         $organisation = auth()->user()->organisation;
 
-        $data = KeywordGroup::where([
+        $data = PinGroup::where([
             'id' => $request->id,
             'organisation_id' => $organisation->id
         ])->firstOrFail();

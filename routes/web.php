@@ -23,14 +23,28 @@ Route::get('uyari', 'HomeController@alert')->name('alert');
 
 Route::prefix('gercek-zamanli')->namespace('RealTime')->group(function () {
     Route::get('/', 'RealTimeController@dashboard')->name('realtime');
+    Route::get('akis/{id}', 'RealTimeController@dashboard')->name('realtime.stream');
 
     Route::prefix('kelime')->group(function () {
-        Route::get('/', 'KeywordController@groups')->name('realtime.keyword.groups');
+        Route::prefix('gruplar')->group(function () {
+            Route::get('/', 'KeywordController@groups')->name('realtime.keyword.groups');
 
-        Route::get('grup', 'KeywordController@groupGet')->name('realtime.keyword');
-        Route::put('grup', 'KeywordController@groupCreate');
-        Route::patch('grup', 'KeywordController@groupUpdate');
-        Route::delete('grup', 'KeywordController@groupDelete');
+            Route::get('grup', 'KeywordController@groupGet')->name('realtime.keyword.group');
+            Route::put('grup', 'KeywordController@groupCreate');
+            Route::patch('grup', 'KeywordController@groupUpdate');
+            Route::delete('grup', 'KeywordController@groupDelete');
+        });
+    });
+
+    Route::prefix('pin')->group(function () {
+        Route::prefix('gruplar')->group(function () {
+            Route::get('/', 'PinController@groups')->name('realtime.pin.groups');
+
+            Route::get('grup', 'PinController@groupGet')->name('realtime.pin.group');
+            Route::put('grup', 'PinController@groupCreate');
+            Route::patch('grup', 'PinController@groupUpdate');
+            Route::delete('grup', 'PinController@groupDelete');
+        });
     });
 });
 

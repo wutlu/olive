@@ -27,7 +27,7 @@ class CreateRealTimePinsTable extends Migration
             $table->foreign('organisation_id')->references('id')->on('organisations')->onDelete('cascade')->onUpdate('cascade');
 
             $table->unsignedInteger('group_id')->index();
-            $table->foreign('group_id')->references('id')->on('real_time_groups')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('group_id')->references('id')->on('real_time_pin_groups')->onDelete('cascade')->onUpdate('cascade');
 
             $table->unsignedInteger('user_id')->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
