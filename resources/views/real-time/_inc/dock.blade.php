@@ -29,7 +29,7 @@
                 @isset ($pin_group)
                 <div class="switch align-self-center">
                     <label>
-                        <input type="checkbox" name="keyword_group" />
+                        <input type="checkbox" name="keyword_group" data-multiple="true" />
                         <span class="lever"></span>
                     </label>
                 </div>
@@ -144,7 +144,7 @@
                             }),
                             $('<span />', {
                                 'class': 'helper-text',
-                                'html': 'Birden fazla anahtar kelime veya cümle için birden fazla satır kullanabilirsiniz.'
+                                'html': 'Birden fazla anahtar kelime veya cümle için birden fazla satır kullanabilirsiniz. Ayrıca OR, AND ve (parantez) parametrelerini de kullanabilirsiniz.'
                             })
                         ]
                     }),

@@ -948,16 +948,27 @@ function getElementData(items, target) {
             var checkboxes = target ? eval(element(target + '->find(input[name="' + name + '"]:checked)')) : $('input[name="' + name + '"]:checked'),
                 arr = [];
 
-            if (checkboxes.length == 1)
-            {
-                array.data(item.data('alias') ? item.data('alias') : name, target ? eval(element(target + '->find(input[name="' + name + '"]:checked)')).val() : $('input[name="' + name + '"]:checked').val());
-            }
-            else
+            if (item.data('multiple') == true)
             {
                 for (i = 0; i < checkboxes.length; i++)
                 {
                     arr[i] = checkboxes.eq(i).val();
                     array.data(item.data('alias') ? item.data('alias') : name, arr);
+                }
+            }
+            else
+            {
+                if (checkboxes.length == 1)
+                {
+                    array.data(item.data('alias') ? item.data('alias') : name, target ? eval(element(target + '->find(input[name="' + name + '"]:checked)')).val() : $('input[name="' + name + '"]:checked').val());
+                }
+                else
+                {
+                    for (i = 0; i < checkboxes.length; i++)
+                    {
+                        arr[i] = checkboxes.eq(i).val();
+                        array.data(item.data('alias') ? item.data('alias') : name, arr);
+                    }
                 }
             }
         }

@@ -49,7 +49,7 @@ class RealTimeRequest extends FormRequest
         });
 
         return [
-            'keyword_group' => 'nullable|array',
+            'keyword_group' => 'required|array',
             'keyword_group.*' => 'required|integer|group_owner'
         ];
     }
