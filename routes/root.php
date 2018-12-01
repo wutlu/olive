@@ -186,7 +186,7 @@ Route::prefix('destek-talepleri')->group(function () {
 
 Route::prefix('kullanici-yonetimi')->group(function () {
     Route::get('/', 'UserController@adminListView')->name('admin.user.list');
-    Route::get('json', 'UserController@adminListViewJson')->name('admin.user.list.json');
+    Route::post('json', 'UserController@adminListViewJson')->name('admin.user.list.json');
 
     Route::get('kullanici/{id}', 'UserController@adminView')->name('admin.user');
     Route::post('kullanici/{id}', 'UserController@adminUpdate');
@@ -200,7 +200,7 @@ Route::prefix('kullanici-yonetimi')->group(function () {
 
 Route::prefix('organizasyon-yonetimi')->group(function () {
     Route::get('/', 'OrganisationController@adminListView')->name('admin.organisation.list');
-    Route::get('json', 'OrganisationController@adminListViewJson')->name('admin.organisation.list.json');
+    Route::post('json', 'OrganisationController@adminListViewJson')->name('admin.organisation.list.json');
 
     Route::get('organizasyon/{id}', 'OrganisationController@adminView')->name('admin.organisation');
     Route::post('organizasyon/{id}', 'OrganisationController@adminUpdate');

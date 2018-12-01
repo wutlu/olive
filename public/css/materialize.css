@@ -4,6 +4,28 @@
  * MIT License (https://raw.githubusercontent.com/Dogfalo/materialize/master/LICENSE)
  */
 
+.window-size {
+  position: fixed;
+  top: auto;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 9999999;
+  background-color: rgba(255, 255, 255, .8);
+  text-align: center;
+  display: none;
+}
+.window-size > p {
+  margin: 0;
+  padding: 1rem;
+}
+
+@media (max-width: 700px) {
+  .window-size {
+    display: initial;
+  }
+}
+
 ::-moz-selection {
   background-color: rgb(255, 255, 255);
   color: rgba(0, 0, 0, .2);

@@ -73,6 +73,7 @@
         <div class="collection load json-clear" 
              id="users"
              data-href="{{ route('admin.user.list.json') }}"
+             data-method="post"
              data-skip="0"
              data-take="5"
              data-include="string"

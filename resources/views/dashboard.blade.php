@@ -87,6 +87,7 @@
                         'onClose': function() {
                             vzAjax($('<div />', {
                                 'class': 'json',
+                                'data-method': 'post',
                                 'data-href': '{{ route('intro', 'welcome.create.organisation') }}'
                             }))
                         }

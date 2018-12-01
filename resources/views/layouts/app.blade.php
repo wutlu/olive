@@ -32,6 +32,9 @@
     </style>
 </head>
 <body>
+    <div class="window-size z-depth-1">
+        <p>Ekran çözünürlüğünüz çok küçük. Tam manasıyla bir Olive için çözünürlüğünüzü yükseltmeniz gerekiyor.</p>
+    </div> 
     @isset($sidenav_fixed_layout)
         @if (!auth()->user()->verified)
             <div id="modal-confirmation" class="modal bottom-sheet">
@@ -358,7 +361,7 @@
 
     @auth
         @if (auth()->user()->root())
-            <div class="load" data-href="{{ route('dashboard.monitor') }}" data-callback="__monitor"></div>
+            <div class="load" data-href="{{ route('dashboard.monitor') }}" data-method="post" data-callback="__monitor"></div>
             @push('local.scripts')
                 function __monitor(__, obj)
                 {

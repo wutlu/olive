@@ -6,8 +6,6 @@ use Illuminate\Console\Command;
 
 use App\Elasticsearch\Document;
 
-use Elasticsearch\ClientBuilder;
-
 use App\Jobs\Crawlers\Shopping\TakerJob;
 
 class Taker extends Command
@@ -43,11 +41,6 @@ class Taker extends Command
      */
     public function handle()
     {
-        $elasticsearch = ClientBuilder::fromConfig([
-            'hosts' => config('database.connections.elasticsearch.hosts'),
-            'retries' => 5
-        ]);
-
         $query = Document::list(
             [ 'shopping', '*' ],
             'product',

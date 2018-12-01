@@ -84,6 +84,7 @@
         <div class="collection load json-clear" 
              id="organisations"
              data-href="{{ route('admin.organisation.list.json') }}"
+             data-method="post"
              data-skip="0"
              data-take="5"
              data-include="string,status"

@@ -25,10 +25,13 @@ class PinController extends Controller
     # 
     public function groups(SearchRequest $request)
     {
+        $organisation = auth()->user()->organisation;
+
         $take = $request->take;
         $skip = $request->skip;
 
         $query = PinGroup::with('pins');
+        $query = $query->where('organisation_id', $organisation->id);
         $query = $request->string ? $query->where('name', 'ILIKE', '%'.$request->string.'%') : $query;
         $query = $query->skip($skip)
                        ->take($take)

@@ -6,8 +6,8 @@ Route::get('aktiviteler', 'HomeController@activity')->name('dashboard.activities
 
 Route::get('route-by-id', 'RouteController@generateById')->name('route.generate.id');
 
-Route::get('panel-monitor', 'HomeController@monitor')->name('dashboard.monitor');
-Route::get('intro/{key}', 'HomeController@intro')->name('intro')->where('key', '('.implode('|', config('app.intro.keys')).')');
+Route::post('panel-monitor', 'HomeController@monitor')->name('dashboard.monitor');
+Route::post('intro/{key}', 'HomeController@intro')->name('intro')->where('key', '('.implode('|', config('app.intro.keys')).')');
 
 Route::prefix('organizasyon')->group(function () {
     Route::get('plan', 'OrganisationController@select')->name('organisation.create.select');
@@ -23,13 +23,15 @@ Route::get('uyari', 'HomeController@alert')->name('alert');
 
 Route::prefix('gercek-zamanli')->namespace('RealTime')->group(function () {
     Route::get('/', 'RealTimeController@dashboard')->name('realtime');
-    Route::get('akis/{id}', 'RealTimeController@dashboard')->name('realtime.stream');
+    Route::get('akis/{id}', 'RealTimeController@stream')->name('realtime.stream');
+
+    Route::post('sorgu', 'RealTimeController@query')->name('realtime.query');
 
     Route::prefix('kelime')->group(function () {
         Route::prefix('gruplar')->group(function () {
-            Route::get('/', 'KeywordController@groups')->name('realtime.keyword.groups');
+            Route::post('/', 'KeywordController@groups')->name('realtime.keyword.groups');
 
-            Route::get('grup', 'KeywordController@groupGet')->name('realtime.keyword.group');
+            Route::post('grup', 'KeywordController@groupGet')->name('realtime.keyword.group');
             Route::put('grup', 'KeywordController@groupCreate');
             Route::patch('grup', 'KeywordController@groupUpdate');
             Route::delete('grup', 'KeywordController@groupDelete');
@@ -38,9 +40,9 @@ Route::prefix('gercek-zamanli')->namespace('RealTime')->group(function () {
 
     Route::prefix('pin')->group(function () {
         Route::prefix('gruplar')->group(function () {
-            Route::get('/', 'PinController@groups')->name('realtime.pin.groups');
+            Route::post('/', 'PinController@groups')->name('realtime.pin.groups');
 
-            Route::get('grup', 'PinController@groupGet')->name('realtime.pin.group');
+            Route::post('grup', 'PinController@groupGet')->name('realtime.pin.group');
             Route::put('grup', 'PinController@groupCreate');
             Route::patch('grup', 'PinController@groupUpdate');
             Route::delete('grup', 'PinController@groupDelete');

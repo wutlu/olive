@@ -220,5 +220,8 @@ return [
         'module_sozluk'                => 'Sözlük Modülü',
         'module_news'                  => 'Haber Modülü',
         'module_shopping'              => 'Alışveriş Modülü',
+
+        'keyword_group'                => 'Kelime Grubu',
+        'keyword_group.*'              => 'Kelime Grubu',
     ],
 ];
