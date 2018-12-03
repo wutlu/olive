@@ -35,6 +35,11 @@
         line-height: 32px;
         text-align: right;
     }
+
+    .marked {
+        padding: .6rem;
+        border-radius: .2rem;
+    }
 @endpush
 
 @section('content')
@@ -77,8 +82,13 @@
 
 @include('real-time._inc.dock')
 
+@push('external.include.footer')
+    <script src="{{ asset('js/jquery.mark.min.js?v='.config('app.version')) }}" charset="UTF-8"></script>
+@endpush
+
 @push('local.scripts')
     var buffer = [];
+    var words = [];
 
     var time = 100;
     var liveTimer;
@@ -134,6 +144,12 @@
                         item.find('[data-name=title]').html(obj.title)
                     }
 
+                    item.find('[data-name=title], [data-name=text]').mark(words, {
+                        'element': 'span',
+                        'className': 'marked yellow black-text',
+                        'accuracy': 'complementary'
+                    })
+
                     item.attr('id', obj.uuid)
                         .removeClass('model d-none')
 
@@ -175,6 +191,8 @@
     {
         if (obj.status == 'ok')
         {
+            words = obj.words;
+
             $.each(obj.data, function(key, o) {
                 if (!$('#' + o.uuid).length)
                 {

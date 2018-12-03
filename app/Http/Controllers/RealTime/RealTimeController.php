@@ -56,6 +56,7 @@ class RealTimeController extends Controller
         $user = auth()->user();
 
         $data = [];
+        $words = [];
 
         $groups = KeywordGroup::whereIn('id', $request->keyword_group)->where('organisation_id', $user->organisation_id)->get();
 
@@ -70,6 +71,7 @@ class RealTimeController extends Controller
                     foreach (explode(PHP_EOL, $group->keywords) as $k)
                     {
                         $keywords[] = '('.$k.')';
+                        $words[] = $k;
                     }
                 }
 
@@ -342,7 +344,8 @@ class RealTimeController extends Controller
 
         return [
             'status' => 'ok',
-            'data' => array_reverse($data)
+            'data' => array_reverse($data),
+            'words' => $words
         ];
     }
 }

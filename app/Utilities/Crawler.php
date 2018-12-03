@@ -16,7 +16,7 @@ use App\Models\Proxy;
 class Crawler
 {
     # link detection
-    public static function linkDetection(string $site, string $url_pattern, string $base = '/')
+    public static function mediaLinkDetection(string $site, string $url_pattern, string $base = '/')
     {
         $data = [];
 
@@ -35,12 +35,14 @@ class Crawler
                 ]
             ];
 
+            /*
             $proxy = Proxy::where('health', '>', 5)->inRandomOrder()->first();
 
             if (@$proxy)
             {
                 $arr['proxy'] = $proxy->proxy;
             }
+            */
 
             $dom = $client->get($base, $arr)->getBody();
 
@@ -146,12 +148,14 @@ class Crawler
                 ]
             ];
 
+            /*
             $proxy = Proxy::where('health', '>', 5)->inRandomOrder()->first();
 
             if (@$proxy)
             {
                 $arr['proxy'] = $proxy->proxy;
             }
+            */
 
             $dom = $client->get($page, $arr)->getBody();
 
@@ -464,12 +468,14 @@ class Crawler
                 ]
             ];
 
+            /*
             $proxy = Proxy::where('health', '>', 5)->inRandomOrder()->first();
 
             if (@$proxy)
             {
                 $arr['proxy'] = $proxy->proxy;
             }
+            */
 
             $dom = $client->get($data['page'], $arr)->getBody();
 

@@ -242,7 +242,7 @@ class MediaController extends Controller
 
         $data['status'] = 'err';
 
-        $links = Crawler::linkDetection($request->site, $request->url_pattern, $request->base);
+        $links = Crawler::mediaLinkDetection($request->site, $request->url_pattern, $request->base);
 
         $total = 0;
         $accepted = 0;

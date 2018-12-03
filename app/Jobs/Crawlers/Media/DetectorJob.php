@@ -45,7 +45,7 @@ class DetectorJob implements ShouldQueue
      */
     public function handle()
     {
-        $links = Crawler::linkDetection(
+        $links = Crawler::mediaLinkDetection(
             $this->crawler->site,
             $this->crawler->url_pattern,
             $this->crawler->base
