@@ -25,7 +25,7 @@ class MediaController extends Controller
 {
     # ######################################## [ ADMIN ] ######################################## #
     # 
-    # media botları view
+    # medya botları view
     # 
     public static function listView()
     {

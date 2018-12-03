@@ -33,7 +33,6 @@
                             .attr('data-id', o.id)
 
                         item.find('[data-name=id]').html('Id: ' + o.id)
-                        item.find('[data-name=error]').html(o.error_count + ' hata').removeClass(o.error_count ? 'grey-text' : 'red-text').addClass(o.error_count ? 'red-text' : 'grey-text')
                         item.find('[data-name=last-id]').html(o.last_id + ' girdi')
                         item.find('[data-name=name]').html(o.name)
                         item.find('[data-name=site]').html(o.site)

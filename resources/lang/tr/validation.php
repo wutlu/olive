@@ -211,6 +211,8 @@ return [
         'access_token'                 => 'Access Token',
         'access_token_secret'          => 'Access Token Secret',
         'off_limit'                    => 'Kapatma Limiti',
+        'max_attempt'                  => 'Maksimum Deneme',
+        'deep_try'                     => 'Derin Deneme',
         'proxy'                        => 'Vekil Sunucu',
         'min_health'                   => 'Yaşam Değeri',
         'reason'                       => 'Neden',

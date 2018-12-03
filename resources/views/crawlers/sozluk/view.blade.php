@@ -89,8 +89,6 @@
                 data_id_input.data('id', obj.data.crawler.last_id)
             }
 
-            $('[data-name=error-count]').html(obj.data.crawler.error_count + ' hata')
-
             if (obj.data.elasticsearch.status == 'ok' && obj.data.elasticsearch.data._all.primaries.docs)
             {
                 $('[data-name=total-docs]').html(number_format(obj.data.elasticsearch.data._all.primaries.docs.count))
@@ -103,6 +101,8 @@
                 $('[data-name=total-docs]').html(message.status == 404 ? 'Index Oluşturulmadı!' : 'Bağlantı Hatası')
                 $('[data-name=total-size]').html(message.status == 404 ? 'Index Oluşturulmadı!' : 'Bağlantı Hatası')
             }
+
+            $('[data-name=pid]').html(obj.data.pid ? obj.data.pid : 'Yok')
 
             window.clearTimeout(statTimer)
 
@@ -122,7 +122,12 @@
         data-callback="__test">
         <input type="hidden" value="{{ $crawler->id }}" name="id" id="id" />
         <div class="card">
-            <table id="stats" class="grey darken-4 load" data-href="{{ route('crawlers.sozluk.bot.statistics', $crawler->id) }}" data-callback="__stats">
+            <table
+                id="stats"
+                class="grey darken-4 load"
+                data-href="{{ route('crawlers.sozluk.bot.statistics', $crawler->id) }}"
+                data-method="post"
+                data-callback="__stats">
                 <tbody>
                     <tr>
                         <th class="right-align grey-text">BOYUT</th>
@@ -130,6 +135,9 @@
 
                         <th class="right-align grey-text">DÖKÜMAN</th>
                         <th class="orange-text" data-name="total-docs"></th>
+
+                        <th class="right-align grey-text">PID</th>
+                        <th class="orange-text" data-name="pid"></th>
                     </tr>
                 </tbody>
             </table>
@@ -147,7 +155,6 @@
                 <img src="{{ asset('img/card-header.jpg') }}" alt="{{ $crawler->name }}" />
                 <span class="card-title">
                     <span data-name="crawler-title">{{ $crawler->name }}</span>
-                    <sub data-name="error-count"></sub>
                 </span>
             </div>
             <div class="card-content">
@@ -220,18 +227,30 @@
                         <div class="d-flex flex-wrap">
                             <div style="width: 50%; padding: 1rem;">
                                 <div class="input-field">
-                                    <input name="off_limit" id="off_limit" value="{{ $crawler->off_limit }}" type="number" class="validate" max="1000" min="10" />
+                                    <input name="off_limit" id="off_limit" value="{{ $crawler->off_limit }}" type="number" class="validate" max="100" min="10" />
                                     <label for="off_limit">Kapatma Limiti</label>
-                                    <small class="helper-text">
-                                        Belirtilen değer kadar hata alındığı takdirde; hata logu girilir ve bot devre dışı bırakılır.
-                                    </small>
+                                    <small class="helper-text">Belirtilen değer kadar hata alındığı takdirde; hata logu girilir ve bot devre dışı bırakılır.</small>
                                 </div>
                             </div>
                             <div style="width: 50%; padding: 1rem;">
                                 <div class="input-field">
-                                    <input name="max_attempt" id="max_attempt" value="{{ $crawler->max_attempt }}" type="number" class="validate" max="10000" min="10" />
-                                    <label for="max_attempt">Hatalı Deneme Sayısı</label>
-                                    <small class="helper-text">Girilen değer kadar içerik kontrol edildikten sonra kontrol tamamlanır.</small>
+                                    <input name="chunk" id="chunk" value="{{ $crawler->chunk }}" type="number" class="validate" max="255" min="10" />
+                                    <label for="chunk">Chunk</label>
+                                    <small class="helper-text">Veritabanına gönderim sayısı.</small>
+                                </div>
+                            </div>
+                            <div style="width: 50%; padding: 1rem;">
+                                <div class="input-field">
+                                    <input name="max_attempt" id="max_attempt" value="{{ $crawler->max_attempt }}" type="number" class="validate" max="1000" min="10" />
+                                    <label for="max_attempt">Kontrol Sayısı</label>
+                                    <small class="helper-text">Girilen değer kadar içerik son alınan içeriğin üzerine kontrol edilir.</small>
+                                </div>
+                            </div>
+                            <div style="width: 50%; padding: 1rem;">
+                                <div class="input-field">
+                                    <input name="deep_try" id="deep_try" value="{{ $crawler->deep_try }}" type="number" class="validate" max="100" min="1" />
+                                    <label for="deep_try">Derin Deneme Sayısı</label>
+                                    <small class="helper-text">Kontrol Sayısı sonuç vermediği taktirde işlem girilen değer kadar katlanarak denenir.</small>
                                 </div>
                             </div>
                         </div>
@@ -309,8 +328,13 @@
             'options': {}
         });
 
-        mdl.removeClass('red green')
-        mdl.addClass(obj.status == 'ok' ? 'green' : 'red')
+            mdl.removeClass('red green')
+            mdl.addClass(obj.status == 'ok' ? 'green' : 'red')
+
+        if (obj.status == 'ok')
+        {
+            $('[data-trigger=status]').removeClass('waves-green green-text').addClass('waves-red red-text').html('PASİF')
+        }
 
             mdl.find('.modal-footer')
                .html([

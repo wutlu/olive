@@ -57,11 +57,11 @@ class RealTimeController extends Controller
 
         $data = [];
 
-        $groups = KeywordGroup::whereIn('id', $request->keyword_group)->where('organisation_id', $user->organisation_id);
+        $groups = KeywordGroup::whereIn('id', $request->keyword_group)->where('organisation_id', $user->organisation_id)->get();
 
-        if ($groups->exists())
+        if (count($groups))
         {
-            foreach ($groups->get() as $group)
+            foreach ($groups as $group)
             {
                 $keywords = [];
 

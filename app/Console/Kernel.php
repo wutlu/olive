@@ -6,6 +6,8 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 use App\Models\Crawlers\SozlukCrawler;
+use App\Jobs\Crawlers\Sozluk\TriggerJob as SozlukTriggerJob;
+
 use App\Models\Option;
 
 use App\Models\Twitter\Token;
@@ -69,7 +71,7 @@ class Kernel extends ConsoleKernel
             {
                 foreach ($crawlers as $crawler)
                 {
-                    $schedule->command('nohup "sozluk:crawler '.$crawler->id.'" --type=start')
+                    $schedule->job((new SozlukTriggerJob($crawler->id))->onQueue('trigger'))
                              ->everyMinute()
                              ->timezone(config('app.timezone'))
                              ->withoutOverlapping();

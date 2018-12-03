@@ -156,7 +156,7 @@ Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {
         Route::get('json', 'SozlukController@listViewJson')->name('crawlers.sozluk.list.json');
 
         Route::get('bot/{id?}', 'SozlukController@view')->name('crawlers.sozluk.bot');
-        Route::get('bot/{id}/istatistik', 'SozlukController@statistics')->name('crawlers.sozluk.bot.statistics');
+        Route::post('bot/{id}/istatistik', 'SozlukController@statistics')->name('crawlers.sozluk.bot.statistics');
         Route::post('bot/durum', 'SozlukController@status')->name('crawlers.sozluk.bot.status');
         Route::patch('bot', 'SozlukController@update');
         Route::delete('bot', 'SozlukController@delete');

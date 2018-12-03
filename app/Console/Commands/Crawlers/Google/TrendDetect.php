@@ -71,11 +71,11 @@ class TrendDetect extends Command
             ]
         ];
 
-        $proxy = Proxy::where('health', '>', 5)->inRandomOrder();
+        $proxy = Proxy::where('health', '>', 5)->inRandomOrder()->first();
 
-        if ($proxy->exists())
+        if (@$proxy)
         {
-            $arr['proxy'] = $proxy->first()->proxy;
+            $arr['proxy'] = $proxy->proxy;
         }
 
         $source = $client->get('/trends/hottrends/atom/feed?pn=p24', $arr)->getBody();

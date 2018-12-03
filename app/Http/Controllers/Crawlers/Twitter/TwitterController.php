@@ -135,14 +135,12 @@ class TwitterController extends Controller
     # 
     public static function set(SetRequest $request)
     {
-        $option = Option::where('key', $request->key);
+        $option = Option::where('key', $request->key)->first();
         
         $error = true;
 
-        if ($option->exists())
+        if (@$option)
         {
-            $option = $option->first();
-
             if ($request->key == 'twitter.index.tweets')
             {
                 if ($option->value == date('Y.m', strtotime('+ 1 month')))

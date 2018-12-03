@@ -28,14 +28,14 @@ class Crawler extends Command
      *
      * @var string
      */
-    protected $signature = 'sozluk:crawler {id}';
+    protected $signature = 'sozluk:crawler {--id=}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Sözlük entry toplayıcısı.';
+    protected $description = 'Sözlük entry toplayıcı.';
 
     /**
      * Create a new command instance.
@@ -54,83 +54,148 @@ class Crawler extends Command
      */
     public function handle()
     {
-    	$sozluk = SozlukCrawler::where('id', $this->argument('id'))->where('status', true)->first();
+        $id = $this->option('id');
 
-    	if (@$sozluk)
-    	{
-    		$i = 1;
+        $id = $id ? $id : $this->ask('Enter a sözlük id');
 
-    		$stream = true;
-    		$errors = [];
-    		$entry_id = $sozluk->last_id;
+        $sozluk = SozlukCrawler::where('id', $id)->where('status', true)->first();
 
-    		$chunk = [];
+        if (@$sozluk)
+        {
+            $timeStart = time()-20;
 
-    		while ($stream)
-    		{
-				$item = CrawlerUtility::entryDetection(
-				    $sozluk->site,
-				    $sozluk->url_pattern,
-				    $entry_id,
-				    $sozluk->selector_title,
-				    $sozluk->selector_entry,
-				    $sozluk->selector_author
-				);
+            $entry_id = $sozluk->last_id;
+            $max_attempt = $sozluk->max_attempt;
+            $errors = [];
+            $chunk = [ 'body' => [] ];
+            $chunk_count = 0;
+            $stream = true;
+            $tmp_error = 0;
+            $deep_try = 1;
+            $last_entry_id = $entry_id;
 
-				if ($item->status == 'ok')
-				{
-	                $chunk['body'][] = [
-	                    'create' => [
-	                        '_index' => Indices::name([ 'sozluk', $sozluk->id ]),
-	                        '_type' => 'entry',
-	                        '_id' => $entry_id
-	                    ]
-	                ];
+            while ($stream)
+            {
+                $save = false;
+                $max_try = $deep_try*$max_attempt;
+                $timeNow = time();
+                $second = $timeNow - $timeStart;
 
-                    $sentiment = new Sentiment;
+                if ($second >= 10)
+                {
+                    SozlukCrawler::where('id', $id)->update([
+                        'pid' => getmypid(),
+                        'status' => true
+                    ]);
 
-	                $chunk['body'][] = [
-	                    'id' => $entry_id,
+                    $timeStart = time();
+                }
 
-	                    'url' => $item->page,
-						'group_name' => $item->group_name,
+                $this->line($second);
 
-						'title' => $item->data['title'],
-						'entry' => $item->data['entry'],
-						'author' => $item->data['author'],
+                $item = CrawlerUtility::entryDetection(
+                    $sozluk->site,
+                    $sozluk->url_pattern,
+                    $entry_id,
+                    $sozluk->selector_title,
+                    $sozluk->selector_entry,
+                    $sozluk->selector_author
+                );
 
-						'created_at' => $item->data['created_at'],
-	                    'called_at' => date('Y-m-d H:i:s'),
+                if ($item->status == 'ok')
+                {
+                    if ($entry_id >= $last_entry_id)
+                    {
+                        $chunk['body'][] = [
+                            'create' => [
+                                '_index' => Indices::name([ 'sozluk', $sozluk->id ]),
+                                '_type' => 'entry',
+                                '_id' => $entry_id
+                            ]
+                        ];
 
-	                    'site_id' => $sozluk->id,
+                        $sentiment = new Sentiment;
 
-                        'sentiment' => $sentiment->score($item->data['entry'])
-	                ];
+                        $chunk['body'][] = [
+                            'id' => $entry_id,
 
-	                $errors = [];
+                            'url' => $item->page,
+                            'group_name' => $item->group_name,
 
-	                $sozluk->error_count = 0;
-	                $sozluk->last_id = $entry_id;
+                            'title' => $item->data['title'],
+                            'entry' => $item->data['entry'],
+                            'author' => $item->data['author'],
 
-	                $this->info($entry_id);
+                            'created_at' => $item->data['created_at'],
+                            'called_at' => date('Y-m-d H:i:s'),
+
+                            'site_id' => $sozluk->id,
+
+                            'sentiment' => $sentiment->score($item->data['entry'])
+                        ];
+
+                        $chunk_count++;
+
+                        $tmp_error = 0;
+                        $deep_try = 1;
+
+                        unset($errors);
+                        $errors = [];
+
+                        $last_entry_id++;
+                    }
+
+                    $this->info('['.$entry_id.']');
+
+                    if ($chunk_count >= $sozluk->chunk)
+                    {
+                        $sozluk->last_id = $entry_id;
+
+                        $save = true;
+
+                        BulkInsertJob::dispatch($chunk)->onQueue('elasticsearch');
+
+                        unset($chunk);
+                        $chunk = [ 'body' => [] ];
+
+                        $chunk_count = 0;
+
+                        $this->info('chunk saved');
+                    }
                 }
                 else
                 {
-                	$sozluk->error_count = $sozluk->error_count+1;
-    				$errors[] = $item->error_reasons;
+                    $tmp_error++;
 
-                	$this->error($entry_id.' - '.count($errors));
+                    $this->error('['.$entry_id.']');
                 }
 
-                /* ---- */
+                $entry_id++;
 
-    			if (count($errors) >= $sozluk->max_attempt || $i >= 1000)
-    			{
-    				if ($sozluk->error_count >= $sozluk->off_limit)
-    				{
-    					$sozluk->status = false;
-    					$sozluk->test = false;
-    					$sozluk->off_reason = json_encode($errors);
+                $this->line('error: ['.$tmp_error.'/'.$max_try.' deep: '.$deep_try.'] chunk: ['.$chunk_count.']');
+
+                if ($tmp_error >= $max_try)
+                {
+                    $errors[] = $item->error_reasons;
+
+                    if ($deep_try < $sozluk->deep_try)
+                    {
+                        $entry_id = $sozluk->last_id;
+                        $deep_try++;
+                        $tmp_error = 0;
+
+                        $this->line('waiting');
+
+                        sleep(10);
+                    }
+                    else
+                    {
+                        $sozluk->status = false;
+                        $sozluk->test = false;
+                        $sozluk->pid = null;
+                        $sozluk->off_reason = json_encode($errors);
+
+                        $save = true;
 
                         System::log(
                             $sozluk->off_reason,
@@ -139,21 +204,20 @@ class Crawler extends Command
                         );
 
                         Mail::queue(new ServerAlertMail($sozluk->name.' Sözlük Botu [DURDU]', $sozluk->off_reason));
-    				}
 
-    				$sozluk->save();
+                        $stream = false;
+                    }
+                }
 
-    				BulkInsertJob::dispatch($chunk)->onQueue('elasticsearch');
-
-    				$stream = false;
-    			}
-    			else
-    			{
-	    			$entry_id++;
-    			}
-
-    			$i++;
-    		}
-    	}
+                if ($save)
+                {
+                    $sozluk->save();
+                }
+            }
+        }
+        else
+        {
+            $this->error('İşlemin gerçekleşmesi için botu aktif edin.');
+        }
     }
 }

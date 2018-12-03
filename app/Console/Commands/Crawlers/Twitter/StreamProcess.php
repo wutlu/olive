@@ -58,12 +58,10 @@ class StreamProcess extends Command
 
         $token_id = $token_id ? $token_id : $this->ask('Enter a token id');
 
-        $token = Token::where('id', $token_id);
+        $token = Token::where('id', $token_id)->first();
 
-        if ($token->exists())
+        if (@$token)
         {
-            $token = $token->first();
-
             if (!$token->value)
             {
                 $die = true; $this->error('Value not found.');
@@ -216,7 +214,7 @@ class StreamProcess extends Command
 
                         $bulk = $crawler->chunk($tweet, $bulk);
 
-                        $this->info($obj['text']);
+                        //$this->info($obj['text']);
                     }
                     else
                     {

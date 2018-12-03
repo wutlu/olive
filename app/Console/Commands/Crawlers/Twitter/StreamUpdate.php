@@ -85,7 +85,8 @@ class StreamUpdate extends Command
                                         ->whereHas('organisation', function ($query) {
                                            $query->where('status', true);
                                         })
-                                        ->orderBy('user_id', 'ASC');
+                                        ->orderBy('user_id', 'ASC')
+                                        ->get();
                 $klimit = 5000;
                 $kcolumn = 'user_id';
             break;
@@ -95,7 +96,8 @@ class StreamUpdate extends Command
                                         ->whereHas('organisation', function ($query) {
                                            $query->where('status', true);
                                         })
-                                        ->orderBy('keyword', 'ASC');
+                                        ->orderBy('keyword', 'ASC')
+                                        ->get();
                 $klimit = 400;
                 $kcolumn = 'keyword';
             break;
@@ -155,9 +157,9 @@ class StreamUpdate extends Command
         }
         else
         {
-            if ($kquery->count())
+            if (count($kquery))
             {
-                foreach ($kquery->get()->chunk($klimit) as $query)
+                foreach ($kquery->chunk($klimit) as $query)
                 {
                     $chunk_id++;
 
@@ -192,12 +194,10 @@ class StreamUpdate extends Command
 
             $this->line($tmp_key);
 
-            $t = Token::where('tmp_key', $tmp_key);
+            $t = Token::where('tmp_key', $tmp_key)->first();
 
-            if ($t->exists())
+            if (@$t)
             {
-                $t = $t->first();
-
                 $t->status = 'stop';
                 $t->save();
 
@@ -212,19 +212,17 @@ class StreamUpdate extends Command
 
         $this->line($tmp_key);
 
-        $token = Token::where('tmp_key', $tmp_key);
+        $token = Token::where('tmp_key', $tmp_key)->first();
 
-        if (!$token->exists())
+        if (!@$token)
         {
-            $token = Token::whereNull('pid')->where('status', 'off')->orderBy('updated_at', 'ASC');
+            $token = Token::whereNull('pid')->where('status', 'off')->orderBy('updated_at', 'ASC')->first();
         }
 
         $this->info('followed: ['.count($chunk).']');
 
-        if ($token->exists())
+        if (@$token)
         {
-            $token = $token->first();
-
             $new_value = implode(',', $chunk);
 
             $token->type = ($type == 'keyword' || $type == 'trend') ? 'track' : 'follow';

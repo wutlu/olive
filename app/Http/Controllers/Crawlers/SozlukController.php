@@ -16,6 +16,8 @@ use App\Models\Crawlers\SozlukCrawler;
 
 use App\Jobs\Elasticsearch\CreateSozlukIndexJob;
 use App\Jobs\Elasticsearch\DeleteIndexJob;
+use App\Jobs\KillProcessJob;
+use App\Jobs\Crawlers\Sozluk\TriggerJob as SozlukTriggerJob;
 
 use App\Utilities\Crawler;
 
@@ -25,7 +27,7 @@ class SozlukController extends Controller
 {
     # ######################################## [ ADMIN ] ######################################## #
     # 
-    # admin list view
+    # sözlük botları view
     # 
     public static function listView()
     {
@@ -34,7 +36,7 @@ class SozlukController extends Controller
 
     # ######################################## [ ADMIN ] ######################################## #
     # 
-    # kelime list view
+    # sözlük botları json çıktısı.
     # 
     public static function listViewJson(SearchRequest $request)
     {
@@ -47,7 +49,6 @@ class SozlukController extends Controller
         $query = $query->skip($skip)
                        ->take($take)
                        ->orderBy('status', 'ASC')
-                       ->orderBy('error_count', 'DESC')
                        ->orderBy('max_attempt', 'ASC');
 
         return [
@@ -59,7 +60,7 @@ class SozlukController extends Controller
 
     # ######################################## [ ADMIN ] ######################################## #
     # 
-    # admin global statistics
+    # tüm istatistikler.
     # 
     public static function allStatistics()
     {
@@ -79,7 +80,7 @@ class SozlukController extends Controller
 
     # ######################################## [ ADMIN ] ######################################## #
     # 
-    # admin global start all
+    # çalışmayan tüm botları başlat.
     # 
     public static function allStart()
     {
@@ -87,7 +88,17 @@ class SozlukController extends Controller
             'status' => false,
             'elasticsearch_index' => true,
             'test' => true
-        ])->update([ 'status' => true ]);
+        ])->get();
+
+        if (count($crawlers))
+        {
+            foreach ($crawlers as $crawler)
+            {
+                SozlukTriggerJob::dispatch($crawler->id)->onQueue('trigger');
+
+                $crawler->update([ 'status' => true ]);
+            }
+        }
 
         return [
             'status' => 'ok'
@@ -96,11 +107,23 @@ class SozlukController extends Controller
 
     # ######################################## [ ADMIN ] ######################################## #
     # 
-    # admin global start all
+    # çalışan tüm botları durdur.
     # 
     public static function allStop()
     {
-        $crawlers = SozlukCrawler::where('status', true)->update([ 'status' => false ]);
+        $crawlers = SozlukCrawler::where('status', true)->get();
+
+        if (count($crawlers))
+        {
+            foreach ($crawlers as $crawler)
+            {
+                KillProcessJob::dispatch($crawler->pid)->onQueue('trigger');
+
+                $crawler->pid = null;
+                $crawler->status = false;
+                $crawler->save();
+            }
+        }
 
         return [
             'status' => 'ok'
@@ -109,7 +132,7 @@ class SozlukController extends Controller
 
     # ######################################## [ ADMIN ] ######################################## #
     # 
-    # admin global start all
+    # tüm eksik indeksleri oluştur.
     # 
     public static function allIndex()
     {
@@ -130,7 +153,7 @@ class SozlukController extends Controller
 
     # ######################################## [ ADMIN ] ######################################## #
     # 
-    # admin bot delete
+    # bot sil.
     # 
     public static function delete(DeleteRequest $request)
     {
@@ -145,7 +168,7 @@ class SozlukController extends Controller
 
     # ######################################## [ ADMIN ] ######################################## #
     # 
-    # admin global statistics
+    # index istatistikleri.
     # 
     public static function statistics(int $id)
     {
@@ -155,6 +178,7 @@ class SozlukController extends Controller
             'status' => 'ok',
             'data' => [
                 'crawler' => $crawler,
+                'pid' => $crawler->pid,
                 'elasticsearch' => Indices::stats([ 'sozluk', $crawler->id ])
             ]
         ];
@@ -162,7 +186,7 @@ class SozlukController extends Controller
 
     # ######################################## [ ADMIN ] ######################################## #
     # 
-    # admin view
+    # bot view.
     # 
     public static function view(int $id = 0)
     {
@@ -188,7 +212,7 @@ class SozlukController extends Controller
 
     # ######################################## [ ADMIN ] ######################################## #
     # 
-    # admin create
+    # bot oluştur.
     # 
     public static function update(UpdateRequest $request)
     {
@@ -224,12 +248,17 @@ class SozlukController extends Controller
         {
             $crawler->fill($request->all());
             $crawler->test = true;
-            $crawler->error_count = 0;
             $crawler->off_reason = null;
+            $crawler->status = false;
 
             $data['status'] = 'ok';
 
             CreateSozlukIndexJob::dispatch($crawler->id)->onQueue('elasticsearch');
+
+            if ($crawler->pid)
+            {
+                KillProcessJob::dispatch($crawler->pid)->onQueue('trigger');
+            }
         }
 
         $crawler->save();
@@ -239,13 +268,30 @@ class SozlukController extends Controller
 
     # ######################################## [ ADMIN ] ######################################## #
     # 
-    # admin status
+    # bot durumu.
     # 
     public static function status(StatusRequest $request)
     {
         $crawler = SozlukCrawler::where('id', $request->id)->first();
 
-        $crawler->status = $crawler->status ? 0 : 1;
+        if ($crawler->status)
+        {
+            $crawler->status = false;
+
+            if ($crawler->pid)
+            {
+                KillProcessJob::dispatch($crawler->pid)->onQueue('trigger');
+
+                $crawler->pid = null;
+            }
+        }
+        else
+        {
+            SozlukTriggerJob::dispatch($crawler->id)->onQueue('trigger');
+
+            $crawler->update([ 'status' => true ]);
+        }
+
         $crawler->save();
 
         return [

@@ -21,8 +21,10 @@ class SozlukCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1#title',
                 'selector_entry' => '.content',
                 'selector_author' => '.entry-author',
-                'off_limit' => 100,
-                'max_attempt' => 10000
+                'off_limit' => 10,
+                'max_attempt' => 10,
+                'deep_try' => 100,
+                'chunk' => 25
             ],
             [
                 'name' => 'UludağSözlük',
@@ -31,8 +33,10 @@ class SozlukCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1.tekentry-baslik',
                 'selector_entry' => 'li.li_capsul_entry > .entry > .entry-p',
                 'selector_author' => 'a.yazar',
-                'off_limit' => 100,
-                'max_attempt' => 10000
+                'off_limit' => 10,
+                'max_attempt' => 100,
+                'deep_try' => 100,
+                'chunk' => 25
             ],
             [
                 'name' => 'İnciSözlük',
@@ -41,8 +45,10 @@ class SozlukCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1.title',
                 'selector_entry' => '#middle-block > ol.entry-list > li.entry .entry-text-wrap',
                 'selector_author' => '#middle-block > ol.entry-list > li.entry a.username',
-                'off_limit' => 100,
-                'max_attempt' => 10000
+                'off_limit' => 10,
+                'max_attempt' => 100,
+                'deep_try' => 100,
+                'chunk' => 25
             ]
 
         ];

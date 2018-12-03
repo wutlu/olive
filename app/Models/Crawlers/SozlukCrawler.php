@@ -20,10 +20,19 @@ class SozlukCrawler extends Model
 
         'off_limit',
         'max_attempt',
+        'deep_try',
+        'chunk',
 
         'status',
-        'error_count'
+        'pid'
     ];
+
+    public function getPidAttribute($pid)
+    {
+        $pid_term = posix_getpgid($pid);
+
+        return $pid ? ($pid_term ? $pid : false) : null;
+    }
 
     # index crate
     public function indexCreate()

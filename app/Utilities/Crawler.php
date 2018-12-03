@@ -35,11 +35,11 @@ class Crawler
                 ]
             ];
 
-            $proxy = Proxy::where('health', '>', 5)->inRandomOrder();
+            $proxy = Proxy::where('health', '>', 5)->inRandomOrder()->first();
 
-            if ($proxy->exists())
+            if (@$proxy)
             {
-                $arr['proxy'] = $proxy->first()->proxy;
+                $arr['proxy'] = $proxy->proxy;
             }
 
             $dom = $client->get($base, $arr)->getBody();
@@ -92,11 +92,11 @@ class Crawler
                     ]
                 ];
 
-                $proxy = Proxy::where('health', '>', 5)->inRandomOrder();
+                $proxy = Proxy::where('health', '>', 5)->inRandomOrder()->first();
 
-                if ($proxy->exists())
+                if (@$proxy)
                 {
-                    $arr['proxy'] = $proxy->first()->proxy;
+                    $arr['proxy'] = $proxy->proxy;
                 }
 
                 $dom = $client->get('https://www.google.com/search?q='.$query.'&tbs=qdr:h,sbd:1&start='.$page, $arr)->getBody();
@@ -146,11 +146,11 @@ class Crawler
                 ]
             ];
 
-            $proxy = Proxy::where('health', '>', 5)->inRandomOrder();
+            $proxy = Proxy::where('health', '>', 5)->inRandomOrder()->first();
 
-            if ($proxy->exists())
+            if (@$proxy)
             {
-                $arr['proxy'] = $proxy->first()->proxy;
+                $arr['proxy'] = $proxy->proxy;
             }
 
             $dom = $client->get($page, $arr)->getBody();
@@ -273,11 +273,11 @@ class Crawler
                 ]
             ];
 
-            $proxy = Proxy::where('health', '>', 5)->inRandomOrder();
+            $proxy = Proxy::where('health', '>', 5)->inRandomOrder()->first();
 
-            if ($proxy->exists())
+            if (@$proxy)
             {
-                $arr['proxy'] = $proxy->first()->proxy;
+                $arr['proxy'] = $proxy->proxy;
             }
 
             $dom = $client->get($page, $arr)->getBody();
@@ -464,11 +464,11 @@ class Crawler
                 ]
             ];
 
-            $proxy = Proxy::where('health', '>', 5)->inRandomOrder();
+            $proxy = Proxy::where('health', '>', 5)->inRandomOrder()->first();
 
-            if ($proxy->exists())
+            if (@$proxy)
             {
-                $arr['proxy'] = $proxy->first()->proxy;
+                $arr['proxy'] = $proxy->proxy;
             }
 
             $dom = $client->get($data['page'], $arr)->getBody();
