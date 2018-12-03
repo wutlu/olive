@@ -29,8 +29,8 @@ class CreateRequest extends FormRequest
     {
         return [
             'limit' => 'Grup limitiniz doldu.',
-            'keyword_max_line' => 'Kelime satırı çok fazla.',
-            'empty_lines' => 'Her kelime satırı en az 3 karakter olabilir.'
+            'empty_lines' => 'Her kelime satırı en az 3 karakter olabilir. (bir, ile... vb. kaçamak kelimeler kullanamazsınız!)',
+            'except_list' => 'Bu kelimeyi kullanamazsınız.'
         ];
     }
 
@@ -62,6 +62,8 @@ class CreateRequest extends FormRequest
                 {
                     $return = false;
                 }
+
+                $return = !in_array(str_slug($line, ' '), config('services.twitter.unaccepted_keywords'));
             }
 
             return $return;

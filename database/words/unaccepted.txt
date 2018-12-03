@@ -52,7 +52,6 @@ hep
 iki
 kendi
 eden
-turkiye
 bunu
 olmak
 yil
@@ -144,7 +143,6 @@ cocuk
 ona
 yoksa
 milyon
-cumhurbaskani
 veya
 yani
 hem
