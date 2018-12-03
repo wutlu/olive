@@ -225,32 +225,25 @@
                     </div>
                     <div class="collection-item">
                         <div class="d-flex flex-wrap">
-                            <div style="width: 50%; padding: 1rem;">
-                                <div class="input-field">
-                                    <input name="off_limit" id="off_limit" value="{{ $crawler->off_limit }}" type="number" class="validate" max="100" min="10" />
-                                    <label for="off_limit">Kapatma Limiti</label>
-                                    <small class="helper-text">Belirtilen değer kadar hata alındığı takdirde; hata logu girilir ve bot devre dışı bırakılır.</small>
-                                </div>
-                            </div>
-                            <div style="width: 50%; padding: 1rem;">
+                            <div style="width: 30%; padding: 1rem;">
                                 <div class="input-field">
                                     <input name="chunk" id="chunk" value="{{ $crawler->chunk }}" type="number" class="validate" max="255" min="10" />
                                     <label for="chunk">Chunk</label>
                                     <small class="helper-text">Veritabanına gönderim sayısı.</small>
                                 </div>
                             </div>
-                            <div style="width: 50%; padding: 1rem;">
+                            <div style="width: 30%; padding: 1rem;">
                                 <div class="input-field">
                                     <input name="max_attempt" id="max_attempt" value="{{ $crawler->max_attempt }}" type="number" class="validate" max="1000" min="10" />
                                     <label for="max_attempt">Kontrol Sayısı</label>
                                     <small class="helper-text">Girilen değer kadar içerik son alınan içeriğin üzerine kontrol edilir.</small>
                                 </div>
                             </div>
-                            <div style="width: 50%; padding: 1rem;">
+                            <div style="width: 40%; padding: 1rem;">
                                 <div class="input-field">
                                     <input name="deep_try" id="deep_try" value="{{ $crawler->deep_try }}" type="number" class="validate" max="100" min="1" />
                                     <label for="deep_try">Derin Deneme Sayısı</label>
-                                    <small class="helper-text">Kontrol Sayısı sonuç vermediği taktirde işlem girilen değer kadar katlanarak denenir.</small>
+                                    <small class="helper-text">Kontrol Sayısı alanına girilen değer sonuç vermezse, bu alana girilen değer kadar "Kontrol Sayısı" alanı katlanarak deneme yapılır.</small>
                                 </div>
                             </div>
                         </div>

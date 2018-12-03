@@ -18,7 +18,6 @@ class SozlukCrawler extends Model
         'selector_entry',
         'selector_author',
 
-        'off_limit',
         'max_attempt',
         'deep_try',
         'chunk',

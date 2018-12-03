@@ -28,7 +28,6 @@ class CreateSozlukCrawlersTable extends Migration
 
             $table->integer('pid')->nullable()->default(null);
 
-            $table->unsignedSmallInteger('off_limit')->default(100);
             $table->text('off_reason')->nullable()->default(null);
             $table->unsignedSmallInteger('deep_try')->default(100);
 
