@@ -106,8 +106,9 @@ class RealTimeController extends Controller
                             {
                                 $data[] = [
                                     'uuid' => md5($object['_id'].'.'.$object['_index']),
-                                    'id' => $object['_id'],
-                                    'index' => $object['_index'],
+                                    '_id' => $object['_id'],
+                                    '_type' => $object['_type'],
+                                    '_index' => $object['_index'],
                                     'module' => 'twitter',
                                     'user' => [
                                         'name' => $object['_source']['user']['name'],
@@ -153,8 +154,9 @@ class RealTimeController extends Controller
                             {
                                 $data[] = [
                                     'uuid' => md5($object['_id'].'.'.$object['_index']),
-                                    'id' => $object['_id'],
-                                    'index' => $object['_index'],
+                                    '_id' => $object['_id'],
+                                    '_type' => $object['_type'],
+                                    '_index' => $object['_index'],
                                     'module' => 'haber',
                                     'url' => $object['_source']['url'],
                                     'title' => $object['_source']['title'],
@@ -197,8 +199,9 @@ class RealTimeController extends Controller
                             {
                                 $data[] = [
                                     'uuid' => md5($object['_id'].'.'.$object['_index']),
-                                    'id' => $object['_id'],
-                                    'index' => $object['_index'],
+                                    '_id' => $object['_id'],
+                                    '_type' => $object['_type'],
+                                    '_index' => $object['_index'],
                                     'module' => 'sozluk',
                                     'url' => $object['_source']['url'],
                                     'title' => $object['_source']['title'],
@@ -243,8 +246,9 @@ class RealTimeController extends Controller
                             {
                                 $data[] = [
                                     'uuid' => md5($object['_id'].'.'.$object['_index']),
-                                    'id' => $object['_id'],
-                                    'index' => $object['_index'],
+                                    '_id' => $object['_id'],
+                                    '_type' => $object['_type'],
+                                    '_index' => $object['_index'],
                                     'module' => 'alisveris',
                                     'url' => $object['_source']['url'],
                                     'title' => $object['_source']['title'],
@@ -288,8 +292,9 @@ class RealTimeController extends Controller
                             {
                                 $data[] = [
                                     'uuid' => md5($object['_id'].'.'.$object['_index']),
-                                    'id' => $object['_id'],
-                                    'index' => $object['_index'],
+                                    '_id' => $object['_id'],
+                                    '_type' => $object['_type'],
+                                    '_index' => $object['_index'],
                                     'module' => 'youtube-video',
                                     'title' => $object['_source']['title'],
                                     'text' => $object['_source']['description'],
@@ -329,8 +334,9 @@ class RealTimeController extends Controller
                             {
                                 $data[] = [
                                     'uuid' => md5($object['_id'].'.'.$object['_index']),
-                                    'id' => $object['_id'],
-                                    'index' => $object['_index'],
+                                    '_id' => $object['_id'],
+                                    '_type' => $object['_type'],
+                                    '_index' => $object['_index'],
                                     'module' => 'youtube-yorum',
                                     'channel' => [
                                         'title' => $object['_source']['channel']['title']

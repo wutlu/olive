@@ -5685,8 +5685,7 @@ small {
 .toast .toast-action {
   color: #eeff41;
   font-weight: 500;
-  margin-right: -25px;
-  margin-left: 3rem;
+  margin-left: 4rem;
 }
 
 .toast.rounded {

@@ -184,4 +184,39 @@ class Document
             ];
         }
     }
+
+    # döküman var mı?
+    public static function exists($name, string $type, string $id)
+    {
+        if (is_array($name))
+        {
+            $name = Indices::name($name);
+        }
+
+        $client = ClientBuilder::fromConfig([
+            'hosts' => config('database.connections.elasticsearch.hosts'),
+            'retries' => 5
+        ]);
+
+        try
+        {
+            $doc = $client->get([
+                'index' => $name,
+                'type' => $type,
+                'id' => $id
+            ]);
+
+            return (object) [
+                'status' => 'ok',
+                'data' => $doc
+            ];
+        }
+        catch (\Exception $e)
+        {
+            return (object) [
+                'status' => 'err',
+                'message' => $e->getMessage()
+            ];
+        }
+    }
 }

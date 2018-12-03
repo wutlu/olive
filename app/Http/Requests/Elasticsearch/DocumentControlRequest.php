@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Http\Requests\RealTime;
+namespace App\Http\Requests\Elasticsearch;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-use Validator;
-
-use App\Models\RealTime\KeywordGroup;
 use App\Models\RealTime\PinGroup;
 
-class RealTimeRequest extends FormRequest
+use Validator;
+
+class DocumentControlRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,7 +28,7 @@ class RealTimeRequest extends FormRequest
     public function messages()
     {
         return [
-            'keyword_group_owner' => 'Geçersiz bir grup seçtiniz. Lütfen sayfayı yenileyin.'
+            'group_have' => 'Destek konusu artık aktif değil.'
         ];
     }
 
@@ -42,16 +41,19 @@ class RealTimeRequest extends FormRequest
     {
         $user = auth()->user();
 
-        Validator::extend('keyword_group_owner', function($attribute, $id) use ($user) {
-            return KeywordGroup::where([
+        Validator::extend('group_have', function($attribute, $id) use ($user) {
+            return PinGroup::where([
                 'id' => $id,
                 'organisation_id' => $user->organisation_id
             ])->exists();
         });
 
         return [
-            'keyword_group' => 'required|array',
-            'keyword_group.*' => 'required|integer|keyword_group_owner'
+            'id' => 'required|alpha_num|max:128',
+            'index' => 'required|string|max:128',
+            'type' => 'required|string|max:64',
+
+            'group_id' => 'required|integer|group_have'
         ];
     }
 }

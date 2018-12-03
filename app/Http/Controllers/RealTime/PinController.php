@@ -10,8 +10,12 @@ use App\Http\Requests\SearchRequest;
 
 use App\Http\Requests\RealTime\PinGroup\CreateRequest as GroupCreateRequest;
 use App\Http\Requests\RealTime\PinGroup\UpdateRequest as GroupUpdateRequest;
+use App\Http\Requests\Elasticsearch\DocumentControlRequest;
+
+use App\Elasticsearch\Document;
 
 use App\Models\RealTime\PinGroup;
+use App\Models\RealTime\Pin;
 
 class PinController extends Controller
 {
@@ -19,7 +23,8 @@ class PinController extends Controller
     {
         $this->middleware([ 'auth', 'organisation:have' ]);
         $this->middleware('can:organisation-status')->only([
-            'groupCreate'
+            'groupCreate',
+            'pin'
         ]);
     }
 
@@ -135,5 +140,57 @@ class PinController extends Controller
         $data->delete();
 
         return $arr;
+    }
+
+    # 
+    # pin işlemleri.
+    # 
+    public function pin(string $type, DocumentControlRequest $request)
+    {
+        $user = auth()->user();
+
+        $status = 'failed';
+
+        $pin = Pin::where([
+            'index' => $request->index,
+            'type' => $request->type,
+            'id' => $request->id,
+        ])->where('organisation_id', $user->organisation_id)->first();
+
+        if ($type == 'add')
+        {
+            if (@$pin)
+            {
+                $pin->delete();
+                $status = 'removed';
+            }
+            else
+            {
+                $document = Document::exists($request->index, $request->type, $request->id);
+
+                if ($document->status == 'ok')
+                {
+                    $status = 'pinned';
+
+                    $p = new Pin;
+                    $p->fill($request->all());
+                    $p->user_id = $user->id;
+                    $p->organisation_id = $user->organisation_id;
+                    $p->save();
+                }
+            }
+        }
+        else if ($type == 'remove')
+        {
+            if (@$pin)
+            {
+                $pin->delete();
+                $status = 'removed';
+            }
+        }
+
+        return [
+            'status' => $status
+        ];
     }
 }

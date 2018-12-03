@@ -8,10 +8,21 @@ class Pin extends Model
 {
     protected $table = 'real_time_pins';
     protected $hidden = [
-    	'index',
-    	'content_id',
-    	'organisation_id',
-    	'group_id',
-    	'user_id'
+        'index',
+        'type',
+        'id',
+
+        'organisation_id',
+        'group_id',
+        'user_id'
+    ];
+    protected $fillable = [
+        'comment',
+
+        'index',
+        'type',
+        'id',
+
+        'group_id'
     ];
 }

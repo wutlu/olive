@@ -15,7 +15,7 @@
 @push('local.styles')
     .time-line > .collection {
         min-height: 800px;
-        max-height: 4320px;
+        max-height: 6320px;
 
         overflow: hidden;
     }
@@ -52,7 +52,7 @@
         <div class="card-content">
             <div class="d-flex justify-content-between">
                 <span class="card-title mb-0 align-self-center">{{ $pin_group->name }}</span>
-                <a class="btn-flat waves-effect" data-name="pins-button" href="#">Pinler (<span class="count">0</span>)</a>
+                <a class="btn-flat waves-effect" data-name="pins-button" href="#">Pinler (<span class="count">{{ count($pin_group->pins) }}</span>)</a>
             </div>
         </div>
         <div class="card-content list-alert cyan lighten-5">
@@ -65,9 +65,14 @@
                 <span class="align-self-center">Akışı yavaşlatmak için fareyi akışın üzerine getirin.</span>
             </p>
         </div>
-        <div data-name="buffer-count" data-tooltip="Ön Bellek" data-position="right">0</div>
+        <div data-name="buffer-count" data-tooltip="Kriter Havuzunuz" data-position="right">0</div>
         <div class="collection">
-            <a href="#" class="collection-item waves-effect d-none model grey-text">
+            <a
+                href="#"
+                class="collection-item waves-effect d-none model grey-text json"
+                data-href="{{ route('realtime.pin', 'add') }}"
+                data-method="post"
+                data-callback="__pin">
                 <p data-name="module" class="orange-text text-darken-4"></p>
                 <time data-name="created-at"></time>
                 <p data-name="url" class="grey-text text-darken-2"></p>
@@ -84,9 +89,52 @@
 
 @push('external.include.footer')
     <script src="{{ asset('js/jquery.mark.min.js?v='.config('app.version')) }}" charset="UTF-8"></script>
+    <script src="{{ asset('js/jquery.ui.min.js?v='.config('app.version')) }}"></script>
 @endpush
 
 @push('local.scripts')
+    function __pin(__, obj)
+    {
+        var pins_button = $('[data-name=pins-button]');
+        var pin_count = pins_button.children('span.count');
+
+        if (obj.status == 'removed')
+        {
+            M.toast({ html: 'Pin Kaldırıldı', classes: 'red darken-2' })
+
+            pin_count.html(parseInt(pin_count.html()) - 1)
+        }
+        else if (obj.status == 'pinned')
+        {
+            var toastHTML = $('<div />', {
+                'html': [
+                    $('<span />', { 'html': 'İçerik Pinlendi' }),
+                    $('<a />', {
+                        'href': '#',
+                        'class': 'btn-flat toast-action json',
+                        'html': 'Geri Al',
+                        'data-undo': 'true',
+                        'data-href': '{{ route('realtime.pin', 'remove') }}',
+                        'data-method': 'post',
+                        'data-callback': '__pin',
+                        'data-id': __.data('id'),
+                        'data-type': __.data('type'),
+                        'data-index': __.data('index'),
+                        'data-group_id': __.data('group_id')
+                    })
+                ]
+            });
+
+            M.toast({ html: toastHTML.get(0).outerHTML })
+
+            pin_count.html(parseInt(pin_count.html()) + 1)
+        }
+        else if (obj.status == 'failed')
+        {
+            M.toast({ html: 'Hay aksi, beklenmedik bir durum.', classes: 'orange darken-2' })
+        }
+    }
+
     var buffer = [];
     var words = [];
 
@@ -151,7 +199,13 @@
                     })
 
                     item.attr('id', obj.uuid)
+                        .attr('data-id', obj._id)
+                        .attr('data-index', obj._index)
+                        .attr('data-type', obj._type)
+                        .attr('data-group_id', {{ $pin_group->id }})
+                        .hide()
                         .removeClass('model d-none')
+                        .show( 'highlight', {}, 200 );
 
                     item.prependTo(bucket)
             }
@@ -177,12 +231,6 @@
         time = 600;
     }).on('mouseleave', '.time-line', function() {
         time = 100;
-    }).on('click', '.time-line > .collection > a.collection-item', function() {
-        M.toast({ html: 'İçerik Pinlendi!', classes: 'orange darken-2' })
-
-        var pins_button = $('[data-name=pins-button]');
-        var pin_count = pins_button.children('span.count');
-            pin_count.html(parseInt(pin_count.html()) + 1)
     })
 
     var streamTimer;

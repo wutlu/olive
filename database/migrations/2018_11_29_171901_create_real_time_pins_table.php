@@ -14,14 +14,13 @@ class CreateRealTimePinsTable extends Migration
     public function up()
     {
         Schema::create('real_time_pins', function (Blueprint $table) {
-            $table->increments('id')->unsigned();
-
             $table->string('comment')->nullable()->default(null);
 
             $table->string('index');
-            $table->string('content_id');
+            $table->string('type');
+            $table->string('id');
 
-            $table->index([ 'index', 'id' ]);
+            $table->index([ 'index', 'type', 'id' ]);
 
             $table->unsignedInteger('organisation_id')->index();
             $table->foreign('organisation_id')->references('id')->on('organisations')->onDelete('cascade')->onUpdate('cascade');
