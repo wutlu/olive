@@ -488,7 +488,7 @@ class OrganisationController extends Controller
         $billing_information->save();
 
         $organisation = new Organisation;
-        $organisation->name = 'ORG#1';
+        $organisation->name = 'ORG: '.$user->name;
         $organisation->capacity = $plan['properties']['capacity']['value'];
         $organisation->start_date = date('Y-m-d H:i:s');
         $organisation->end_date = Carbon::now()->addMonths($request->month);

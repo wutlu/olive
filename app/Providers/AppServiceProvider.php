@@ -40,10 +40,6 @@ class AppServiceProvider extends ServiceProvider
             return DiscountCoupon::whereNull('invoice_id')->where('key', $key)->count();
         });
 
-        Validator::extend('organisation_status', function($attribute) {
-            return auth()->user()->organisation->status == true;
-        });
-
         Validator::extend('tckn', function($attribute, $value, $parameters) {
             $except = [
                 '11111111110',

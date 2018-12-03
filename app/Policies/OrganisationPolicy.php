@@ -17,4 +17,11 @@ class OrganisationPolicy
 
         return $user->id === $user->organisation->user_id;
     }
+
+    public function status()
+    {
+        $user = auth()->user();
+
+    	return $user->organisation->status == true;
+    }
 }

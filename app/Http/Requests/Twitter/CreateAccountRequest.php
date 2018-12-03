@@ -68,7 +68,7 @@ class CreateAccountRequest extends FormRequest
         });
 
         return [
-            'screen_name' => 'required|bail|string|max:48|limit|organisation_status|twitter_account'
+            'screen_name' => 'required|bail|string|max:48|limit|twitter_account'
         ];
     }
 }
