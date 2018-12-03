@@ -48,6 +48,7 @@ Route::prefix('gercek-zamanli')->namespace('RealTime')->group(function () {
             Route::delete('grup', 'PinController@groupDelete');
         });
 
+        Route::get('pinler/{id}', 'PinController@pins')->name('realtime.pins');
         Route::post('{type}', 'PinController@pin')->name('realtime.pin')->where('type', '(add|remove)');
     });
 });

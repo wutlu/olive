@@ -52,7 +52,7 @@
         <div class="card-content">
             <div class="d-flex justify-content-between">
                 <span class="card-title mb-0 align-self-center">{{ $pin_group->name }}</span>
-                <a class="btn-flat waves-effect" data-name="pins-button" href="#">Pinler (<span class="count">{{ count($pin_group->pins) }}</span>)</a>
+                <a class="btn-flat waves-effect" data-name="pins-button" href="{{ route('realtime.pins', $pin_group->id) }}">Pinler (<span class="count">{{ count($pin_group->pins) }}</span>)</a>
             </div>
         </div>
         <div class="card-content list-alert cyan lighten-5">
@@ -108,7 +108,7 @@
         {
             var toastHTML = $('<div />', {
                 'html': [
-                    $('<span />', { 'html': 'İçerik Pinlendi' }),
+                    $('<span />', { 'html': 'İçerik Pinlendi', 'classes': 'grey lighten-4' }),
                     $('<a />', {
                         'href': '#',
                         'class': 'btn-flat toast-action json',

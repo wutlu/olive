@@ -353,7 +353,7 @@ class RealTimeController extends Controller
 
         return [
             'status' => 'ok',
-            'data' => array_reverse($data),
+            'data' => $data,
             'words' => $words
         ];
     }

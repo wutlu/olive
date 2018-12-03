@@ -2991,9 +2991,9 @@ nav,
 
 .hoverable {
   -webkit-transition: -webkit-box-shadow .25s;
-  transition: -webkit-box-shadow .25s;
-  transition: box-shadow .25s;
-  transition: box-shadow .25s, -webkit-box-shadow .25s;
+          transition: -webkit-box-shadow .25s;
+          transition: box-shadow .25s;
+          transition: box-shadow .25s, -webkit-box-shadow .25s;
 }
 
 .hoverable:hover {
@@ -6004,6 +6004,8 @@ small {
   position: absolute;
   right: 24px;
   bottom: -20px;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .btn-floating.halfway-fab.left {

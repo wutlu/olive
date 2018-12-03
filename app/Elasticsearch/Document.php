@@ -9,9 +9,12 @@ use System;
 class Document
 {
     # tek döküman
-    public static function get(array $name, string $type, string $id)
+    public static function get($name, string $type, string $id)
     {
-        $name = Indices::name($name);
+        if (is_array($name))
+        {
+            $name = Indices::name($name);
+        }
 
         $client = ClientBuilder::fromConfig([
             'hosts' => config('database.connections.elasticsearch.hosts'),

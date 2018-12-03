@@ -193,4 +193,19 @@ class PinController extends Controller
             'status' => $status
         ];
     }
+
+    # 
+    # pin grubu içerisindeki pinler
+    # 
+    public function pins(int $id)
+    {
+        $pin_group = PinGroup::where([
+            'id' => $id,
+            'organisation_id' => auth()->user()->organisation_id
+        ])->firstOrFail();
+
+        $pins = $pin_group->pins()->orderBy('created_at', 'DESC')->paginate(10);
+
+        return view('real-time.pins', compact('pin_group', 'pins'));
+    }
 }
