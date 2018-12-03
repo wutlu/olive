@@ -28,8 +28,7 @@ class CreateKeywordRequest extends FormRequest
         return [
             'unique_keyword' => 'Bu kelime zaten mevcut.',
             'except_list' => 'Bu kelimeyi kullanamazsınız.',
-            'limit' => 'Maksimum kelime limitine ulaştınız.',
-            'organisation_status' => 'Organizasyonunuz henüz aktif değil.'
+            'limit' => 'Maksimum kelime limitine ulaştınız.'
         ];
     }
 
@@ -52,10 +51,6 @@ class CreateKeywordRequest extends FormRequest
 
         Validator::extend('limit', function($attribute) use ($user) {
             return count($user->organisation->streamingKeywords) < $user->organisation->twitter_follow_limit_keyword;
-        });
-
-        Validator::extend('organisation_status', function($attribute) use ($user) {
-            return $user->organisation->status == true;
         });
 
         return [

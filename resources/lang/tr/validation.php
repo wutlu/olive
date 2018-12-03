@@ -112,6 +112,7 @@ return [
     'coupon_exists' => 'Kupon kodu geçersiz.',
     'has_route' => 'Rota oluşturulamadı.',
     'token_check' => 'Token geçerli değil.',
+    'organisation_status' => 'Organizasyonunuz henüz aktif değil.',
 
     /*
     |--------------------------------------------------------------------------

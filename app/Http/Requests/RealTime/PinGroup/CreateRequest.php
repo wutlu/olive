@@ -24,7 +24,7 @@ class CreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|max:32'
+            'name' => 'required|string|max:32|organisation_status'
         ];
     }
 }

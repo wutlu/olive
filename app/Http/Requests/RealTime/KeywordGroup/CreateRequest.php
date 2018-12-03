@@ -70,7 +70,7 @@ class CreateRequest extends FormRequest
         });
 
         return [
-            'name' => 'required|string|max:10|limit',
+            'name' => 'required|string|max:10|limit|organisation_status',
             'keywords' => 'bail|required|string|max:64|keyword_max_line|empty_lines',
 
             'module_youtube' => 'sometimes|boolean',
