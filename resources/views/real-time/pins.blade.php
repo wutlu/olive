@@ -105,11 +105,20 @@
                 </li>
                 <li class="divider" tabindex="-1"></li>
                 <li>
-                    <a href="#" class="waves-effect">Pin'i Kaldır</a>
+                    <a
+                        href="#"
+                        class="waves-effect json"
+                        data-href="{{ route('realtime.pin', 'remove') }}"
+                        data-method="post"
+                        data-id="{{ $document->data['_id'] }}"
+                        data-type="{{ $document->data['_type'] }}"
+                        data-index="{{ $document->data['_index'] }}"
+                        data-group_id="{{ $pin_group->id }}"
+                        data-callback="__pin">Pin'i Kaldır</a>
                 </li>
             </ul>
 
-            <div class="card card-data {{ $type }} hoverable">
+            <div class="card card-data {{ $type }} hoverable" data-id="card-{{ $id }}">
                 <div class="card-content">
                     <span class="card-title">
                         {{ $type }}
@@ -272,3 +281,19 @@
     {!! $pins->links('vendor.pagination.materializecss') !!}
 
 @endsection
+
+@push('local.scripts')
+    function __pin(__, obj)
+    {
+        if (obj.status == 'removed')
+        {
+            __.closest('.card.card-data').slideUp();
+
+            M.toast({ html: 'Pin Kaldırıldı', classes: 'red darken-2' })
+        }
+        else if (obj.status == 'failed')
+        {
+            M.toast({ html: 'Hay aksi, beklenmedik bir durum.', classes: 'orange darken-2' })
+        }
+    }
+@endpush

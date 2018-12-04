@@ -49,7 +49,7 @@ class DocumentControlRequest extends FormRequest
         });
 
         return [
-            'id' => 'required|alpha_num|max:128',
+            'id' => 'required|string|max:128',
             'type' => 'required|string|max:64',
             'index' => 'required|string|max:128',
 
