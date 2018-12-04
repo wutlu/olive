@@ -62,7 +62,7 @@ class ShoppingCrawler extends Model
                         'price' => [
                             'properties' => [
                                 'currency' => [ 'type' => 'keyword' ],
-                                'quantity' => [ 'type' => 'long' ]
+                                'amount' => [ 'type' => 'long' ]
                             ]
                         ],
                         'seller' => [

@@ -419,7 +419,7 @@
 					textarea.val(textarea.val() + '- ' + o.data.seller_name + '\n');
                     textarea.val(textarea.val() + '- ' + o.data.seller_phones + '\n');
 
-					textarea.val(textarea.val() + '- ' + o.data.price.quantity + '\n');
+					textarea.val(textarea.val() + '- ' + o.data.price.amount + '\n');
                     textarea.val(textarea.val() + '- ' + o.data.price.currency + '\n');
                 }
                 else

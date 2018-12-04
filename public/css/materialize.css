@@ -5622,6 +5622,76 @@ small {
   background-color: transparent;
 }
 
+.card > .card-sentiment > .sentiment-item {
+  padding: 0 .6rem .6rem;
+  border-width: 0 0 4px;
+  border-style: solid;
+  border-color: inline;
+}
+
+.card.card-data > .card-content {
+  padding: 24px 24px 24px 72px;
+}
+.card.card-data {
+  background-repeat: no-repeat;
+  background-position: -64px 0;
+  background-size: 128px 128px;
+}
+.card.card-data.tweet {
+  background-image: url('../img/icons/twitter-circled.png');
+  background-color: #E3F2FD;
+}
+.card.card-data.article {
+  background-image: url('../img/icons/globe-earth.png');
+  background-color: #ffebee;
+}
+.card.card-data.video {
+  background-image: url('../img/icons/youtube.png');
+}
+.card.card-data.entry {
+  background-image: url('../img/icons/dictionary.png');
+  background-color: #ccff90;
+}
+.card.card-data.product {
+  background-image: url('../img/icons/shopping-bag.png');
+  background-color: #fff9c4;
+}
+.card.card-data.comment {
+  background-image: url('../img/icons/speech-bubble-with-dots.png');
+  background-color: #efebe9;
+}
+
+.card.card-data > .card-comment {
+  padding: 0 24px 0 72px;
+}
+.card.card-data > .card-comment > .input-field {
+  margin: 0;
+}
+.card.card-data > .card-comment > .input-field > .materialize-textarea {
+  margin: 0;
+  box-shadow: none !important;
+  border-width: 0 !important;
+}
+.card.card-data > .card-content > .text {
+  padding: 1rem 0 0;
+}
+.card.card-data > .card-content > ul.horizontal {
+  margin: 0;
+
+  display: -ms-flexbox !important;
+  display: flex !important;
+}
+.card.card-data > .card-content > ul.horizontal > li + li {
+  margin: 0 0 0 1rem;
+}
+.card.card-data > .card-content > ul.horizontal > li + li:before {
+  content: attr(data-icon);
+  margin: 0 1rem 0 0;
+}
+
+/*
+ * Toast
+ */
 #toast-container {
   display: block;
   position: fixed;
@@ -6006,6 +6076,7 @@ small {
   bottom: -20px;
   background-repeat: no-repeat;
   background-position: center;
+  background-size: 50%;
 }
 
 .btn-floating.halfway-fab.left {
@@ -6241,7 +6312,7 @@ button.btn-floating {
   background-color: #fff;
   margin: 0;
   display: none;
-  min-width: 100px;
+  min-width: 148px;
   overflow-y: auto;
   opacity: 0;
   position: absolute;

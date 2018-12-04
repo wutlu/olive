@@ -21,6 +21,10 @@ Route::prefix('organizasyon')->group(function () {
 
 Route::get('uyari', 'HomeController@alert')->name('alert');
 
+Route::prefix('icerik')->group(function () {
+    Route::get('{index}/{type}/{id}', 'RealTimeController@dashboard')->name('elasticsearch.document');
+});
+
 Route::prefix('gercek-zamanli')->namespace('RealTime')->group(function () {
     Route::get('/', 'RealTimeController@dashboard')->name('realtime');
     Route::get('akis/{id}', 'RealTimeController@stream')->name('realtime.stream');

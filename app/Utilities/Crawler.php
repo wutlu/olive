@@ -323,13 +323,13 @@ class Crawler
             # price detect
             $price = $saw->get($selector->price)->toText();
             $price_currency = preg_replace('/([^a-zA-Z\$\€\₺]+)/', '', $price);
-            $price_quantity = preg_replace('/([^\d]+)/', '', $price);
+            $price_amount = preg_replace('/([^\d]+)/', '', $price);
 
-            if ($price_currency && strlen($price_currency) <= 3 && intval($price_quantity) > 0)
+            if ($price_currency && strlen($price_currency) <= 3 && intval($price_amount) > 0)
             {
                 $price = [
                     'currency' => $price_currency,
-                    'quantity' => intval($price_quantity)
+                    'amount' => intval($price_amount)
                 ];
             }
             else
@@ -343,9 +343,9 @@ class Crawler
                     $data['error_reasons'][] = 'Ücret birimi geçersiz. ('.$price_currency.')';
                 }
 
-                if (!$price_quantity || intval($price_quantity) == 0)
+                if (!$price_amount || intval($price_amount) == 0)
                 {
-                    $data['error_reasons'][] = 'Ücret miktarı tespit edilemedi.';
+                    $data['error_reasons'][] = 'Ücret tutarı tespit edilemedi.';
                 }
             }
 

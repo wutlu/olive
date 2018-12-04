@@ -37,7 +37,7 @@
     }
 
     .marked {
-        padding: .6rem;
+        padding: .4rem;
         border-radius: .2rem;
     }
 @endpush
@@ -57,15 +57,15 @@
         </div>
         <div class="card-content list-alert cyan lighten-5">
             <p class="d-flex">
-                <img alt="Pin" src="{{ asset('img/pin.svg') }}" style="width: 32px; height: 32px; margin: 0 .2rem 0 0;" />
+                <img alt="Pin" src="{{ asset('img/icons/pin.png') }}" style="width: 32px; height: 32px; margin: 0 .2rem 0 0;" />
                 <span class="align-self-center">Pinlemek istediğiniz içeriğe tıklayın.</span>
             </p>
             <p class="d-flex">
-                <img alt="Pin" src="{{ asset('img/cold-plant.svg') }}" style="width: 32px; height: 32px; margin: 0 .2rem 0 0;" />
+                <img alt="Pin" src="{{ asset('img/icons/snowflake.png') }}" style="width: 32px; height: 32px; margin: 0 .2rem 0 0;" />
                 <span class="align-self-center">Akışı yavaşlatmak için fareyi akışın üzerine getirin.</span>
             </p>
         </div>
-        <div data-name="buffer-count" data-tooltip="Kriter Havuzunuz" data-position="right">0</div>
+        <div data-name="buffer-count" data-tooltip="Ön Bellek" data-position="right">0</div>
         <div class="collection">
             <a
                 href="#"
@@ -73,10 +73,9 @@
                 data-href="{{ route('realtime.pin', 'add') }}"
                 data-method="post"
                 data-callback="__pin">
-                <p data-name="module" class="orange-text text-darken-4"></p>
                 <time data-name="created-at"></time>
                 <p data-name="url" class="grey-text text-darken-2"></p>
-                <p data-name="author" class="cyan-text"></p>
+                <p data-name="author" class="red-text"></p>
                 <p data-name="title" class="black-text strong"></p>
                 <p data-name="text"></p>
             </a>
@@ -108,7 +107,11 @@
         {
             var toastHTML = $('<div />', {
                 'html': [
-                    $('<span />', { 'html': 'İçerik Pinlendi', 'classes': 'grey lighten-4' }),
+                    $('<a />', {
+                        'href': '{{ route('realtime.pins', $pin_group->id) }}',
+                        'html': 'İçerik Pinlendi',
+                        'class': 'white-text'
+                    }),
                     $('<a />', {
                         'href': '#',
                         'class': 'btn-flat toast-action json',
@@ -158,12 +161,12 @@
             {
                 var item = model.clone();
                     item.find('[data-name=text]').html(obj.text)
-                    item.find('[data-name=module]').html(obj.module)
                     item.find('[data-name=created-at]').html(obj.created_at)
 
                     if (obj.module == 'twitter')
                     {
                         item.find('[data-name=author]').html(obj.user.name + ' @' + obj.user.screen_name)
+                        item.find('[data-name=url]').html('https://twitter.com/' + obj.user.screen_name + '/status/' + obj._id)
                     }
                     else if (obj.module == 'haber')
                     {
@@ -212,7 +215,7 @@
 
             buffer.shift()
 
-            if (bucket.children('.collection-item').length > 200)
+            if (bucket.children('.collection-item').length > 1000)
             {
                 bucket.children('.collection-item:last-child').remove()
             }

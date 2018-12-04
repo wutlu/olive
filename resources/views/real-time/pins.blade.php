@@ -15,24 +15,6 @@
     ]
 ])
 
-@push('local.styles')
-    textarea[name=comment] {
-        margin: 0;
-        border-width: 0 !important;
-        box-shadow: none !important;
-    }
-
-    .document .card-title,
-    .document p {
-        margin: 0 !important;
-    }
-
-    .sentiment-analysis {
-        margin: 0 1rem 0 0;
-        min-width: 100px;
-    }
-@endpush
-
 @section('content')
 
     <div class="card">
@@ -40,103 +22,244 @@
             <img src="{{ asset('img/card-header.jpg') }}" alt="Pinlemeler" />
             <span class="card-title">Pinlemeler</span>
             <a
-                href="{{ route('crawlers.media.bot') }}"
+                href="#"
                 class="btn-floating btn-large halfway-fab waves-effect white"
                 data-tooltip="Pdf Dökümü Al"
                 data-position="left"
-                style="background-image: url('{{ asset('img/pdf.svg') }}');"></a>
+                style="background-image: url('{{ asset('img/icons/pdf.png') }}');"></a>
         </div>
-        <div class="card-content red lighten-5">
+        <div class="card-content">
             Ekleyeceğiniz yorumlar, PDF çıktılarda analiz sonucu olarak yer alacaktır.
-        </div> 
+        </div>
+    </div>
+
     @forelse ($pins as $pin)
+
         @php
         $document = $pin->document();
         @endphp
 
         @if ($document->status == 'ok')
             @php
-            $sentiment = $document->data['_source']['sentiment'];
+            $id = $document->data['_index'].'_'.$document->data['_type'].'_'.$document->data['_id'];
+            $type = $document->data['_type'];
+            $source = $document->data['_source'];
 
+            $sentiment = @$source['sentiment'];
             @endphp
-            <div class="card-content document z-depth-1 hoverable">
-                <time class="grey-text d-block right-align">{{ date('d.m.Y H:i:s', strtotime($document->data['_source']['created_at'])) }}</time>
-                <div class="d-flex">
-                    <ul class="sentiment-analysis">
-                        <li class="d-flex justify-content-between green-text">
-                            <i class="material-icons align-self-center">sentiment_very_satisfied</i>
-                            <span class="align-self-center">{{ $sentiment['pos']*100 }}%</span>
-                        </li>
-                        <li class="d-flex justify-content-between grey-text">
-                            <i class="material-icons align-self-center">sentiment_neutral</i>
-                            <span class="align-self-center">{{ $sentiment['neu']*100 }}%</span>
-                        </li>
-                        <li class="d-flex justify-content-between red-text">
-                            <i class="material-icons align-self-center">sentiment_very_dissatisfied</i>
-                            <span class="align-self-center">{{ $sentiment['neg']*100 }}%</span>
-                        </li>
-                    </ul>
-                    <div> 
-                        @if ($document->data['_type'] == 'tweet')
-                            <a href="#" class="cyan-text">{{ $document->data['_source']['user']['name'] }} {{ '@'.$document->data['_source']['user']['screen_name'] }}</a>
-                            <p>
-                                <a href="https://twitter.com/{{ $document->data['_source']['user']['screen_name'] }}/{{ $document->data['_source']['id'] }}" target="_blank" class="grey-text">https://twitter.com/{{ $document->data['_source']['user']['screen_name'] }}/{{ $document->data['_source']['id'] }}</a>
-                            </p>
-                            <p>{!! nl2br($document->data['_source']['text']) !!}</p>
-                        @elseif ($document->data['_type'] == 'video')
-                            <a href="#" class="card-title">{{ $document->data['_source']['title'] }}</a>
-                            <a href="#" class="cyan-text">{{ '@'.$document->data['_source']['channel']['title'] }}</a>
-                            <p>
-                                <a href="https://www.youtube.com/watch?v={{ $document->data['_source']['id'] }}" target="_blank" class="grey-text">https://www.youtube.com/watch?v={{ $document->data['_source']['id'] }}</a>
-                            </p>
-                            @isset($document->data['_source']['description'])
-                                <p>{!! nl2br($document->data['_source']['description']) !!}</p>
+
+            <ul id="dropdown-{{ $id }}" class="dropdown-content">
+                @if ($type == 'tweet')
+                    <li>
+                        <a href="#" class="waves-effect">Kullanıcının Alınan Tüm Tweetleri</a>
+                    </li>
+                    <li>
+                        <a href="#" class="waves-effect">Kullanıcı Bilgileri</a>
+                    </li>
+                @elseif ($type == 'article')
+                    <li>
+                        <a href="#" class="waves-effect">Sitenin Tüm Haberleri</a>
+                    </li>
+                    <li>
+                        <a href="#" class="waves-effect">Site Bilgileri</a>
+                    </li>
+                @elseif ($type == 'entry')
+                    <li>
+                        <a href="#" class="waves-effect">Başlığa Git</a>
+                    </li>
+                    <li>
+                        <a href="#" class="waves-effect">Kullanıcının Tüm Girdileri</a>
+                    </li>
+                    <li>
+                        <a href="#" class="waves-effect">Kullanıcı Bilgileri</a>
+                    </li>
+                @elseif ($type == 'product')
+                    <li>
+                        <a href="#" class="waves-effect">Kullanıcının Tüm Ürünleri</a>
+                    </li>
+                @elseif ($type == 'comment')
+                    <li>
+                        <a href="#" class="waves-effect">Kullanıcının Tüm Yorumları</a>
+                    </li>
+                    <li>
+                        <a href="#" class="waves-effect">Kullanıcının Trend'e Giren Videoları</a>
+                    </li>
+                    <li>
+                        <a href="#" class="waves-effect">Video'ya Yapılan Diğer Yorumlar</a>
+                    </li>
+                @elseif ($type == 'video')
+                    <li>
+                        <a href="#" class="waves-effect">Kullanıcının Trend'e Giren Videoları</a>
+                    </li>
+                    <li>
+                        <a href="#" class="waves-effect">Video'ya Yapılan Yorumlar</a>
+                    </li>
+                @endif
+                <li class="divider" tabindex="-1"></li>
+                <li>
+                    <a href="{{ route('elasticsearch.document', [
+                        'index' => $document->data['_index'],
+                        'type' => $document->data['_type'],
+                        'id' => $document->data['_id']
+                    ]) }}" class="waves-effect">İçeriği Detaylı İncele</a>
+                </li>
+                <li class="divider" tabindex="-1"></li>
+                <li>
+                    <a href="#" class="waves-effect">Pin'i Kaldır</a>
+                </li>
+            </ul>
+
+            <div class="card card-data {{ $type }} hoverable">
+                <div class="card-content">
+                    <span class="card-title">
+                        {{ $type }}
+                        <a href="#" class="dropdown-trigger right" data-target="dropdown-{{ $id }}" data-align="right">
+                            <i class="material-icons">more_vert</i>
+                        </a>
+                    </span>
+
+                    <time class="grey-text d-block">{{ date('d.m.Y H:i:s', strtotime($source['created_at'])) }}</time>
+
+                    @isset ($source['title'])
+                        <h6 class="teal-text">{{ title_case($source['title']) }}</h6>
+                    @endisset
+
+                    @if ($type == 'tweet')
+                        <a href="https://twitter.com/{{ $source['user']['screen_name'] }}/status/{{ $source['id'] }}" target="_blank">https://twitter.com/{{ $source['user']['screen_name'] }}/status/{{ $source['id'] }}</a>
+                        <p>
+                            <a href="https://twitter.com/intent/user?user_id={{ $source['user']['id'] }}" target="_blank" class="red-text">{{ '@'.$source['user']['screen_name'] }}</a>
+                            <span class="grey-text">{{ $source['user']['name'] }}</span>
+                            <span class="grey-text">({{ $source['platform'] }})</span>
+                        </p>
+                        <div class="text grey-text text-darken-2">{!! nl2br($source['text']) !!}</div>
+
+                        @isset ($source['external'])
+                            @php
+                            $external_source = $pin->document($source['external']['id']);
+                            @endphp
+
+                            @if ($external_source)
+                                <ul class="collapsible">
+                                    <li>
+                                        <div class="collapsible-header">Orjinal Tweet</div>
+                                        <div class="card collapsible-body">
+                                            <div class="card-content">
+                                                <a href="https://twitter.com/{{ $external_source['_source']['user']['screen_name'] }}/status/{{ $external_source['_source']['id'] }}" target="_blank">https://twitter.com/{{ $external_source['_source']['user']['screen_name'] }}/status/{{ $external_source['_source']['id'] }}</a>
+                                                <p>
+                                                    <a href="https://twitter.com/intent/user?user_id={{ $external_source['_source']['user']['id'] }}" target="_blank" class="red-text">{{ '@'.$external_source['_source']['user']['screen_name'] }}</a>
+                                                    <span class="grey-text">{{ $external_source['_source']['user']['name'] }}</span>
+                                                    <span class="grey-text">({{ $external_source['_source']['platform'] }})</span>
+                                                </p>
+                                                <div class="text grey-text text-darken-2">{!! nl2br($external_source['_source']['text']) !!}</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            @endif
+                        @endif
+                    @elseif ($type == 'article')
+                        <a href="{{ $source['url'] }}" target="_blank">{{ str_limit($source['url'], 96) }}</a>
+                        <div class="text grey-text text-darken-2">{!! nl2br($source['description']) !!}</div>
+                    @elseif ($type == 'entry')
+                        <a href="{{ $source['url'] }}" target="_blank">{{ str_limit($source['url'], 96) }}</a>
+                        <div class="text grey-text text-darken-2">{!! nl2br($source['entry']) !!}</div>
+                    @elseif ($type == 'product')
+                        @isset ($source['address'])
+                        <ul class="horizontal">
+                            @foreach ($source['address'] as $key => $segment)
+                                <li class="grey-text" data-icon="»">{{ $segment['segment'] }}</li>
+                            @endforeach
+                        </ul>
+                        @endisset
+                        @isset ($source['breadcrumb'])
+                        <ul class="horizontal">
+                            @foreach ($source['breadcrumb'] as $key => $segment)
+                                <li class="grey-text" data-icon="»">{{ $segment['segment'] }}</li>
+                            @endforeach
+                        </ul>
+                        @endisset
+                        <a href="{{ $source['url'] }}" target="_blank">{{ str_limit($source['url'], 96) }}</a>
+                        <p>
+                            <span class="red-text">{{ title_case($source['seller']['name']) }}</span>
+                            @isset ($source['seller']['phones'])
+                                <ul class="horizontal"> 
+                                    @foreach ($source['seller']['phones'] as $key => $phone)
+                                        <li class="grey-text" data-icon="|">{{ $phone['phone'] }}</li>
+                                    @endforeach
+                                </ul>
                             @endisset
-                        @elseif ($document->data['_type'] == 'comment')
-                        yorum
-                        @elseif ($document->data['_type'] == 'entry')
-                            <a href="#" class="card-title">{{ $document->data['_source']['title'] }}</a>
-                            <a href="#" class="cyan-text">{{ '@'.$document->data['_source']['author'] }}</a>
-                            <p>
-                                <a href="{{ $document->data['_source']['url'] }}" target="_blank" class="grey-text">{{ $document->data['_source']['url'] }}</a>
-                            </p>
-                            <p>{!! nl2br($document->data['_source']['entry']) !!}</p>
-                        @elseif ($document->data['_type'] == 'article')
-                        haber
-                        @elseif ($document->data['_type'] == 'product')
-                        ürün
-                        @else
-                        test
+                        </p>
+                        @isset ($source['description'])
+                            <div class="text grey-text text-darken-2">{!! nl2br($source['description']) !!}</div>
+                        @endisset
+                        <p>
+                            <span class="grey-text text-darken-4">{{ number_format($source['price']['amount']) }}</span>
+                            <span class="grey-text">{{ $source['price']['currency'] }}</span>
+                        </p>
+                    @elseif ($type == 'comment')
+                        <a href="https://www.youtube.com/watch?v={{ $source['video_id'] }}" target="_blank">https://www.youtube.com/watch?v={{ $source['video_id'] }}</a>
+                        <p>
+                            <a href="https://www.youtube.com/channel/{{ $source['channel']['id'] }}" target="_blank" class="red-text">{{ '@'.$source['channel']['title'] }}</a>
+                        </p>
+                        <div class="text grey-text text-darken-2">{!! nl2br($source['text']) !!}</div>
+                    @elseif ($type == 'video')
+                        <a href="https://www.youtube.com/watch?v={{ $source['id'] }}" target="_blank">https://www.youtube.com/watch?v={{ $source['id'] }}</a>
+                        <p>
+                            <a href="https://www.youtube.com/channel/{{ $source['channel']['id'] }}" target="_blank" class="red-text">{{ '@'.$source['channel']['title'] }}</a>
+                        </p>
+                        @isset ($source['description'])
+                            <div class="text grey-text text-darken-2">{!! nl2br($source['description']) !!}</div>
+                        @endisset
+                    @endif
+                </div>
+                <div class="card-comment">
+                    <div class="input-field">
+                        <textarea id="textarea-{{ $id }}" name="comment" class="materialize-textarea"></textarea>
+                        <label for="textarea-{{ $id }}">Yorum Girin</label>
+                    </div>
+                </div>
+                @if ($sentiment)
+                <div class="card-sentiment d-flex justify-content-between">
+                    <div style="width: {{ $sentiment['pos']*100 }}%;" class="sentiment-item light-green-text accent-4 d-flex">
+                        @if ($sentiment['pos'] > 0.2)
+                        <i class="material-icons light-green-text align-self-center">sentiment_very_satisfied</i>
+                        <span class="badge light-green-text align-self-center">{{ $sentiment['pos']*100 }}%</span>
+                        @endif
+                    </div>
+                    <div style="width: {{ $sentiment['neu']*100 }}%;" class="sentiment-item grey-text d-flex">
+                        @if ($sentiment['neu'] > 0.2)
+                        <i class="material-icons grey-text align-self-center">sentiment_neutral</i>
+                        <span class="badge grey-text align-self-center">{{ $sentiment['neu']*100 }}%</span>
+                        @endif
+                    </div>
+                    <div style="width: {{ $sentiment['neg']*100 }}%;" class="sentiment-item red-text accent-4 d-flex">
+                        @if ($sentiment['neg'] > 0.2)
+                        <i class="material-icons red-text align-self-center">sentiment_very_dissatisfied</i>
+                        <span class="badge red-text align-self-center">{{ $sentiment['neg']*100 }}%</span>
                         @endif
                     </div>
                 </div>
-
-                <div class="input-field mb-0">
-                    <textarea id="textarea-{{ $pin->index.'-'.$pin->type.'-'.$pin->id }}" name="comment" class="materialize-textarea"></textarea>
-                    <label for="textarea-{{ $pin->index.'-'.$pin->type.'-'.$pin->id }}">Yorum Girin</label>
-                </div>
+                @endif
             </div>
         @else
-            <div class="card-content">
+            <div class="card-panel red">
                 <div class="not-found">
-                    <i class="material-icons">cloud_off</i>
-                    <i class="material-icons">cloud_off</i>
-                    <i class="material-icons red-text">sentiment_very_dissatisfied</i>
-                    <p>Kaynak Okunamadı</p>
+                    <i class="material-icons white-text">cloud_off</i>
+                    <i class="material-icons white-text">cloud_off</i>
+                    <i class="material-icons">sentiment_very_dissatisfied</i>
+                    <p class="white-text">Kaynak Okunamadı</p>
                 </div>
             </div>
         @endif
+
     @empty
-        <div class="card-content">
-            <div class="not-found">
-                <i class="material-icons">cloud</i>
-                <i class="material-icons">cloud</i>
-                <i class="material-icons">wb_sunny</i>
-                <p>Pinleme Yok</p>
-            </div>
+        <div class="not-found">
+            <i class="material-icons white-text">cloud</i>
+            <i class="material-icons white-text">cloud</i>
+            <i class="material-icons">wb_sunny</i>
+            <p>Pinleme Yok</p>
         </div>
-    @endif
-    </div>
+    @endforelse
 
     {!! $pins->links('vendor.pagination.materializecss') !!}
 

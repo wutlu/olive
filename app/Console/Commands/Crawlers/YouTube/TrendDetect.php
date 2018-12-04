@@ -104,9 +104,12 @@ class TrendDetect extends Command
 
                     if (@$video->snippet->tags)
                     {
-                        $arr['tags'][] = [
-                            'tag' => $video->snippet->tags
-                        ];
+                        foreach ($video->snippet->tags as $tag)
+                        {
+                            $arr['tags'][] = [
+                                'tag' => $tag
+                            ];
+                        }
                     }
 
                     if (@$video->snippet->description)

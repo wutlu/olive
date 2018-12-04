@@ -29,8 +29,15 @@ class Pin extends Model
         'group_id'
     ];
 
-    public function document()
+    public function document(int $id = 0)
     {
-        return Document::get($this->index, $this->type, $this->id);
+        if ($id)
+        {
+            return @Document::list([ 'twitter', 'tweets', '*' ], 'tweet', [ 'query' => [ 'match' => [ 'id' => $id ] ] ])->data['hits']['hits'][0];
+        }
+        else
+        {
+            return Document::get($this->index, $this->type, $this->id);
+        }
     }
 }
