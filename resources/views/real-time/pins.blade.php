@@ -141,7 +141,7 @@
                             @if ($external_source)
                                 <ul class="collapsible">
                                     <li>
-                                        <div class="collapsible-header">Orjinal Tweet</div>
+                                        <div class="collapsible-header">Asıl Tweet</div>
                                         <div class="card collapsible-body">
                                             <div class="card-content">
                                                 <a href="https://twitter.com/{{ $external_source['_source']['user']['screen_name'] }}/status/{{ $external_source['_source']['id'] }}" target="_blank">https://twitter.com/{{ $external_source['_source']['user']['screen_name'] }}/status/{{ $external_source['_source']['id'] }}</a>
@@ -214,7 +214,15 @@
                 </div>
                 <div class="card-comment">
                     <div class="input-field">
-                        <textarea id="textarea-{{ $id }}" name="comment" class="materialize-textarea"></textarea>
+                        <textarea
+                            id="textarea-{{ $id }}"
+                            name="comment"
+                            class="materialize-textarea json"
+                            data-href="{{ route('realtime.pin.comment') }}"
+                            data-method="post"
+                            data-index="{{ $document->data['_index'] }}"
+                            data-type="{{ $document->data['_type'] }}"
+                            data-id="{{ $document->data['_id'] }}">{{ $pin->comment }}</textarea>
                         <label for="textarea-{{ $id }}">Yorum Girin</label>
                     </div>
                 </div>

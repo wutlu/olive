@@ -28,7 +28,7 @@ class DocumentControlRequest extends FormRequest
     public function messages()
     {
         return [
-            'group_have' => 'Destek konusu artık aktif değil.'
+            'group_have' => 'Pin grubu artık yok.'
         ];
     }
 
@@ -50,8 +50,8 @@ class DocumentControlRequest extends FormRequest
 
         return [
             'id' => 'required|alpha_num|max:128',
-            'index' => 'required|string|max:128',
             'type' => 'required|string|max:64',
+            'index' => 'required|string|max:128',
 
             'group_id' => 'required|integer|group_have'
         ];

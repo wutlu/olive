@@ -10,6 +10,7 @@ use App\Http\Requests\SearchRequest;
 
 use App\Http\Requests\RealTime\PinGroup\CreateRequest as GroupCreateRequest;
 use App\Http\Requests\RealTime\PinGroup\UpdateRequest as GroupUpdateRequest;
+use App\Http\Requests\RealTime\PinCommentRequest;
 use App\Http\Requests\Elasticsearch\DocumentControlRequest;
 
 use App\Elasticsearch\Document;
@@ -24,7 +25,8 @@ class PinController extends Controller
         $this->middleware([ 'auth', 'organisation:have' ]);
         $this->middleware('can:organisation-status')->only([
             'groupCreate',
-            'pin'
+            'pin',
+            'comment'
         ]);
     }
 
@@ -207,5 +209,26 @@ class PinController extends Controller
         $pins = $pin_group->pins()->orderBy('created_at', 'DESC')->paginate(10);
 
         return view('real-time.pins', compact('pin_group', 'pins'));
+    }
+
+    # 
+    # pin için yorum gir
+    # 
+    public function comment(PinCommentRequest $request)
+    {
+        $user = auth()->user();
+
+        $pin = Pin::where([
+            'index' => $request->index,
+            'type' => $request->type,
+            'id' => $request->id
+        ])->where('organisation_id', $user->organisation_id)->firstOrFail();
+
+        $pin->comment = $request->comment;
+        $pin->save();
+
+        return [
+            'status' => 'ok'
+        ];
     }
 }

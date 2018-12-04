@@ -53,6 +53,8 @@ Route::prefix('gercek-zamanli')->namespace('RealTime')->group(function () {
         });
 
         Route::get('pinler/{id}', 'PinController@pins')->name('realtime.pins');
+        Route::post('yorum', 'PinController@comment')->name('realtime.pin.comment');
+
         Route::post('{type}', 'PinController@pin')->name('realtime.pin')->where('type', '(add|remove)');
     });
 });
