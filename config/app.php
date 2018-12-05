@@ -122,6 +122,7 @@ return [
         Orangehill\Iseed\IseedServiceProvider::class,
         Alaouy\Youtube\YoutubeServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -196,6 +197,7 @@ return [
         'Youtube' => Alaouy\Youtube\Facades\Youtube::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'Sentiment' => PHPSentiment\Sentiment::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
 
     ],
 

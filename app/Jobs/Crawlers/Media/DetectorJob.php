@@ -101,11 +101,16 @@ class DetectorJob implements ShouldQueue
 
             if ($this->crawler->error_count >= $this->crawler->off_limit && $this->crawler->status == true)
             {
-                Mail::queue(new ServerAlertMail($this->crawler->name.' Medya Botu [DURDU]', json_encode($program->message)));
+                $recr = MediaCrawler::where('id', $this->crawler->id)->where('status', true)->exists();
 
-                $this->crawler->test       = false;
-                $this->crawler->status     = false;
-                $this->crawler->off_reason = json_encode($program->message);
+                if ($recr)
+                {
+                    Mail::queue(new ServerAlertMail($this->crawler->name.' Medya Botu [DURDU]', json_encode($program->message)));
+
+                    $this->crawler->test       = false;
+                    $this->crawler->status     = false;
+                    $this->crawler->off_reason = json_encode($program->message);
+                }
             }
         }
 

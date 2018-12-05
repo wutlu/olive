@@ -33,7 +33,7 @@ class RealTimeController extends Controller
     # 
     public function dashboard()
     {
-        return view('real-time.dashboard');
+        return view('realTime.dashboard');
     }
 
     # 
@@ -48,7 +48,7 @@ class RealTimeController extends Controller
             'organisation_id' => $organisation->id
         ])->firstOrFail();
 
-        return view('real-time.stream', compact('pin_group'));
+        return view('realTime.stream', compact('pin_group'));
     }
 
     # 

@@ -18,7 +18,7 @@ return [
         'disconnected' => 'İnternete bağlı değilsiniz.',
         'time_out' => 'Sayfa zaman aşımına uğradı. Lütfen sayfayı yenileyin ve tekrar deneyin.',
         'calm' => 'Birkaç dakika sonra tekrar deneyebilirsiniz.',
-        'notfound' => 'Bu sayfaya artık ulaşılamıyor.',
+        'notfound' => 'Kaynak bulunamadı.',
         'exited' => 'Oturumunuz sona erdi. Lütfen tekrar giriş yapın.',
         'permission' => 'Organizasyonunuz henüz aktif edilmedi.'
     ],

@@ -6,8 +6,8 @@
             'link' => route('realtime')
         ],
         [
-            'text' => $pin_group->name,
-            'link' => route('realtime.stream', $pin_group->id)
+            'text' => $pg->name,
+            'link' => route('realtime.stream', $pg->id)
         ],
         [
             'text' => 'Pinlemeler'
@@ -15,22 +15,44 @@
     ]
 ])
 
-@section('content')
+@push('local.scripts')
+    function __pdf(__, obj)
+    {
+        if (obj.status == 'ok')
+        {
+            M.toast({
+                html: 'Rapor isteğiniz alındı.<br />Biz raporunuzu hazırlarken,<br />araştırmanıza devam edebilirsiniz.',
+                classes: 'green darken-2'
+            })
+        }
+    }
+@endpush
 
+@section('content')
     <div class="card">
         <div class="card-image">
             <img src="{{ asset('img/card-header.jpg') }}" alt="Pinlemeler" />
             <span class="card-title">Pinlemeler</span>
             <a
                 href="#"
-                class="btn-floating btn-large halfway-fab waves-effect white"
+                class="btn-floating btn-large halfway-fab waves-effect white json"
                 data-tooltip="Pdf Dökümü Al"
                 data-position="left"
+                data-href="{{ route('realtime.pin.pdf') }}"
+                data-id="{{ $pg->id }}"
+                data-method="post"
+                data-callback="__pdf"
                 style="background-image: url('{{ asset('img/icons/pdf.png') }}');"></a>
         </div>
         <div class="card-content">
-            Ekleyeceğiniz yorumlar, PDF çıktılarda analiz sonucu olarak yer alacaktır.
+            Ekleyeceğiniz yorumlar, PDF raporlarınızda analiz sonucu olarak yer alacaktır.
         </div>
+        @if ($pg->html_to_pdf)
+            <div class="card-action d-flex justify-content-between">
+                <span class="align-self-center">2018.11.12</span>
+                <a href="{{ url($pg->pdf_path) }}" class="btn-flat waves-effect align-self-center">Pdf İndir</a>
+            </div>
+        @endif
     </div>
 
     @forelse ($pins as $pin)
@@ -113,7 +135,7 @@
                         data-id="{{ $document->data['_id'] }}"
                         data-type="{{ $document->data['_type'] }}"
                         data-index="{{ $document->data['_index'] }}"
-                        data-group_id="{{ $pin_group->id }}"
+                        data-group_id="{{ $pg->id }}"
                         data-callback="__pin">Pin'i Kaldır</a>
                 </li>
             </ul>
@@ -288,8 +310,6 @@
         if (obj.status == 'removed')
         {
             __.closest('.card.card-data').slideUp();
-
-            M.toast({ html: 'Pin Kaldırıldı', classes: 'red darken-2' })
         }
         else if (obj.status == 'failed')
         {

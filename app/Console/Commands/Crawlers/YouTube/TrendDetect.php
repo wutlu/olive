@@ -163,27 +163,34 @@ class TrendDetect extends Command
                                         $replyCount++;
                                         $totalComment++;
 
-                                        $commentChunk['body'][] = [
-                                            'create' => [
-                                                '_index' => Indices::name([ 'youtube', 'comments' ]),
-                                                '_type' => 'comment',
-                                                '_id' => $reply->id
-                                            ]
-                                        ];
+                                        try
+                                        {
+                                            $commentChunk['body'][] = [
+                                                'create' => [
+                                                    '_index' => Indices::name([ 'youtube', 'comments' ]),
+                                                    '_type' => 'comment',
+                                                    '_id' => $reply->id
+                                                ]
+                                            ];
 
-                                        $commentChunk['body'][] = [
-                                            'id' => $reply->id,
-                                            'text' => $term->convertAscii($reply->snippet->textOriginal),
-                                            'video_id' => $comment->snippet->videoId,
-                                            'comment_id' => $comment->id,
-                                            'channel' => [
-                                                'id' => $reply->snippet->authorChannelId->value,
-                                                'title' => $reply->snippet->authorDisplayName
-                                            ],
-                                            'created_at' => date('Y-m-d H:i:s', strtotime($reply->snippet->publishedAt)),
-                                            'called_at' => date('Y-m-d H:i:s'),
-                                            'sentiment' => $sentiment->score($reply->snippet->textOriginal)
-                                        ];
+                                            $commentChunk['body'][] = [
+                                                'id' => $reply->id,
+                                                'text' => $term->convertAscii($reply->snippet->textOriginal),
+                                                'video_id' => $comment->snippet->videoId,
+                                                'comment_id' => $comment->id,
+                                                'channel' => [
+                                                    'id' => $reply->snippet->authorChannelId->value,
+                                                    'title' => $reply->snippet->authorDisplayName
+                                                ],
+                                                'created_at' => date('Y-m-d H:i:s', strtotime($reply->snippet->publishedAt)),
+                                                'called_at' => date('Y-m-d H:i:s'),
+                                                'sentiment' => $sentiment->score($reply->snippet->textOriginal)
+                                            ];
+                                        }
+                                        catch (\Exception $e)
+                                        {
+                                            print_r($e->getMessage());
+                                        }
                                     }
                                 }
                             }
@@ -202,7 +209,7 @@ class TrendDetect extends Command
                         $commentChunk = [];
                     }
                 }
-                catch (\Exception $e)
+                catch (Exception $e)
                 {
                     $this->error($e->getMessage());
 

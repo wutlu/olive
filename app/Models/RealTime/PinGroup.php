@@ -16,4 +16,10 @@ class PinGroup extends Model
     {
         return $this->hasMany('App\Models\RealTime\Pin', 'group_id', 'id');
     }
+
+    # organisation
+    public function organisation()
+    {
+        return $this->hasOne('App\Models\Organisation\Organisation', 'id', 'organisation_id');
+    }
 }

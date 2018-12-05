@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\RealTime;
+namespace App\Http\Requests\RealTime\Pin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PinCommentRequest extends FormRequest
+class CommentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

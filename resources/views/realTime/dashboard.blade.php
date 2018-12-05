@@ -4,8 +4,7 @@
         [
             'text' => 'Gerçek Zamanlı'
         ]
-    ],
-    'dock' => true
+    ]
 ])
 
 @push('local.scripts')
@@ -304,5 +303,3 @@
                 data-json-target="#pin-groups">Öncekiler</button>
     </div>
 @endsection
-
-@include('real-time._inc.dock')

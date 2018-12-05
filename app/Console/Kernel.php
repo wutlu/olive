@@ -65,6 +65,10 @@ class Kernel extends ConsoleKernel
 
             /* ---------------------------------------- */
 
+
+
+            /* ---------------------------------------- */
+
             $crawlers = SozlukCrawler::where('status', true)->get();
 
             if (count($crawlers))

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Elasticsearch;
+namespace App\Http\Requests\RealTime\Pin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -8,7 +8,7 @@ use App\Models\RealTime\PinGroup;
 
 use Validator;
 
-class DocumentControlRequest extends FormRequest
+class PinRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,7 +28,7 @@ class DocumentControlRequest extends FormRequest
     public function messages()
     {
         return [
-            'group_have' => 'Pin grubu artık yok.'
+            'group_have' => 'Bulunduğunuz pin grubu artık yok.'
         ];
     }
 

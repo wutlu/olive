@@ -10,13 +10,20 @@ use App\Http\Requests\SearchRequest;
 
 use App\Http\Requests\RealTime\PinGroup\CreateRequest as GroupCreateRequest;
 use App\Http\Requests\RealTime\PinGroup\UpdateRequest as GroupUpdateRequest;
-use App\Http\Requests\RealTime\PinCommentRequest;
-use App\Http\Requests\Elasticsearch\DocumentControlRequest;
+use App\Http\Requests\RealTime\PinGroup\PdfRequest as GrupPdfRequest;
+use App\Http\Requests\RealTime\Pin\CommentRequest;
+use App\Http\Requests\RealTime\Pin\PinRequest;
 
 use App\Elasticsearch\Document;
 
 use App\Models\RealTime\PinGroup;
 use App\Models\RealTime\Pin;
+
+use App\Jobs\RealTime\PdfJob as PinGroupPdfJob;
+
+use Carbon\Carbon;
+
+use App\Utilities\Term;
 
 class PinController extends Controller
 {
@@ -147,7 +154,7 @@ class PinController extends Controller
     # 
     # pin işlemleri.
     # 
-    public function pin(string $type, DocumentControlRequest $request)
+    public function pin(string $type, PinRequest $request)
     {
         $user = auth()->user();
 
@@ -201,20 +208,60 @@ class PinController extends Controller
     # 
     public function pins(int $id)
     {
-        $pin_group = PinGroup::where([
+        $user = auth()->user();
+
+        $pg = PinGroup::where([
             'id' => $id,
-            'organisation_id' => auth()->user()->organisation_id
+            'organisation_id' => $user->organisation_id
         ])->firstOrFail();
 
-        $pins = $pin_group->pins()->orderBy('created_at', 'DESC')->paginate(10);
+        $pins = $pg->pins()->orderBy('created_at', 'DESC')->paginate(10);
 
-        return view('real-time.pins', compact('pin_group', 'pins'));
+        return view('realTime.pins', compact('pg', 'pins'));
+    }
+
+    # 
+    # pin grubu pdf çıktı tanımlama
+    # 
+    public function pdf(GrupPdfRequest $request)
+    {
+        $pg = PinGroup::where('id', $request->id)->first();
+
+        $pg->html_to_pdf = 'process';
+        $pg->completed_at = date('Y-m-d H:i:s');
+        $pg->save();
+
+        return [
+            'status' => 'ok'
+        ];
+    }
+
+    # 
+    # pin grubu pdf çıktı tetikleyici
+    # 
+    public static function pdfTrigger()
+    {
+        $date = Carbon::now()->subMinutes(10)->format('Y-m-d H:i:s');
+        $groups = PinGroup::where('html_to_pdf', 'success')->get();//->where('completed_at', '<', $date)->get();
+
+        if (count($groups))
+        {
+            foreach ($groups as $group)
+            {
+                echo Term::line('['.$group->organisation->name.']['.$group->name.']');
+
+                $group->completed_at = date('Y-m-d H:i:s');
+                $group->save();
+
+                PinGroupPdfJob::dispatch($group->id)->onQueue('process');
+            }
+        }
     }
 
     # 
     # pin için yorum gir
     # 
-    public function comment(PinCommentRequest $request)
+    public function comment(CommentRequest $request)
     {
         $user = auth()->user();
 

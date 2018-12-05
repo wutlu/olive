@@ -101,8 +101,6 @@ class YouTubeCrawler
                                     'type' => 'date',
                                     'format' => 'YYYY-MM-dd HH:mm:ss'
                                 ],
-                                'like' => [ 'type' => 'integer' ],
-                                'dislike' => [ 'type' => 'integer' ],
                                 'channel' => [
                                     'properties' => [
                                         'id' => [ 'type' => 'keyword' ],

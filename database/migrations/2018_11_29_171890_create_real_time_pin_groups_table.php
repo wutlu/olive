@@ -21,7 +21,10 @@ class CreateRealTimePinGroupsTable extends Migration
             $table->unsignedInteger('organisation_id')->index();
             $table->foreign('organisation_id')->references('id')->on('organisations')->onDelete('cascade')->onUpdate('cascade');
 
-            $table->timestamp('pdf_completed_at')->nullable()->default(null);
+            $table->enum('html_to_pdf', [ 'process', 'success' ])->nullable()->default(null);
+            $table->string('html_path')->nullable()->default(null);
+            $table->string('pdf_path')->nullable()->default(null);
+            $table->timestamp('completed_at')->nullable()->default(null);
 
             $table->timestamps();
         });
