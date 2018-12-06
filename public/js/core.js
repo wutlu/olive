@@ -29,6 +29,16 @@ function number_format(number)
     return result;
 }
 
+/* --- routing go function --- */
+
+function __go(__, obj)
+{
+    if (obj.status == 'ok')
+    {
+        location.href = obj.route;
+    }
+}
+
 /* --- human readable file sizes --- */
 
 function humanFileSize(bytes, si)

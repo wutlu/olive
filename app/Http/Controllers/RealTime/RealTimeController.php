@@ -5,7 +5,7 @@ namespace App\Http\Controllers\RealTime;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-use App\Models\RealTime\PinGroup;
+use App\Models\Pin\Group as PinGroup;
 use App\Models\RealTime\KeywordGroup;
 use App\Http\Requests\RealTime\RealTimeRequest;
 
@@ -29,26 +29,13 @@ class RealTimeController extends Controller
     }
 
     # 
-    # gerçek zamanlı ekranı.
-    # 
-    public function dashboard()
-    {
-        return view('realTime.dashboard');
-    }
-
-    # 
     # gerçek zamanlı akış ekranı.
     # 
-    public function stream(int $id)
+    public function stream()
     {
-        $organisation = auth()->user()->organisation;
+        $pin_groups = PinGroup::where('organisation_id', auth()->user()->organisation_id)->get();
 
-        $pin_group = PinGroup::where([
-            'id' => $id,
-            'organisation_id' => $organisation->id
-        ])->firstOrFail();
-
-        return view('realTime.stream', compact('pin_group'));
+        return view('realTime.stream', compact('pin_groups'));
     }
 
     # 

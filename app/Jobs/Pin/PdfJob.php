@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Jobs\RealTime;
+namespace App\Jobs\Pin;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -8,7 +8,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
-use App\Models\RealTime\PinGroup;
+use App\Models\Pin\Group as PinGroup;
 
 use PDF;
 use System;
@@ -44,7 +44,7 @@ class PdfJob implements ShouldQueue
         {
             $pins = $pg->pins;
 
-            if (count($pins))
+            if (count($pins) >= 1 && count($pins) <= 100)
             {
                 $name = implode('.', [
                     $this->id,
@@ -358,7 +358,7 @@ class PdfJob implements ShouldQueue
                         $html.= '</div>';
                     }
 
-                    $html.= '<div class="page-break"></div>';
+                    //$html.= '<div class="page-break"></div>';
 
                     file_put_contents(public_path($html_path), $html, FILE_APPEND | LOCK_EX);
                 }
@@ -382,7 +382,7 @@ class PdfJob implements ShouldQueue
                     foreach ($pg->organisation->users as $user)
                     {
                         Activity::push(
-                            'Pin grubu PDF dökümünüz hazırlandı.',
+                            'Pinleme PDF dökümünüz hazırlandı.',
                             [
                                 'push' => true,
                                 'icon' => 'picture_as_pdf',
@@ -406,7 +406,7 @@ class PdfJob implements ShouldQueue
                     foreach ($pg->organisation->users as $user)
                     {
                         Activity::push(
-                            'PDF dökümü alınırken bir sorun oluştu.',
+                            'Pinleme PDF dökümü alınırken bir sorun oluştu.',
                             [
                                 'markdown' => 'Pin Grubu PDF dökümünüzü hazırlarken bir problemle karşılaştık. Lütfen tekrar deneyin.',
                                 'push' => true,

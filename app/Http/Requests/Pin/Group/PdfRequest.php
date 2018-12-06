@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\RealTime\PinGroup;
+namespace App\Http\Requests\Pin\Group;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-use App\Models\RealTime\PinGroup;
+use App\Models\Pin\Group as PinGroup;
 
 use Validator;
 

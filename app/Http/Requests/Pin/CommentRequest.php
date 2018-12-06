@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\RealTime\Pin;
+namespace App\Http\Requests\Pin;
 
 use Illuminate\Foundation\Http\FormRequest;
 

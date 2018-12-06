@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRealTimePinGroupsTable extends Migration
+class CreatePinGroupsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateRealTimePinGroupsTable extends Migration
      */
     public function up()
     {
-        Schema::create('real_time_pin_groups', function (Blueprint $table) {
+        Schema::create('pin_groups', function (Blueprint $table) {
             $table->increments('id')->unsigned();
 
             $table->string('name')->index();
@@ -37,6 +37,6 @@ class CreateRealTimePinGroupsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('real_time_pin_groups');
+        Schema::dropIfExists('pin_groups');
     }
 }

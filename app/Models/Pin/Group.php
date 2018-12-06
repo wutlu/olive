@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Models\RealTime;
+namespace App\Models\Pin;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PinGroup extends Model
+class Group extends Model
 {
-    protected $table = 'real_time_pin_groups';
+    protected $table = 'pin_groups';
     protected $fillable = [
     	'name'
     ];
@@ -14,7 +14,7 @@ class PinGroup extends Model
     # pins
     public function pins()
     {
-        return $this->hasMany('App\Models\RealTime\Pin', 'group_id', 'id');
+        return $this->hasMany('App\Models\Pin\Pin', 'group_id', 'id');
     }
 
     # organisation

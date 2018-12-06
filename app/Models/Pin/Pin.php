@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\RealTime;
+namespace App\Models\Pin;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -8,7 +8,7 @@ use App\Elasticsearch\Document;
 
 class Pin extends Model
 {
-    protected $table = 'real_time_pins';
+    protected $table = 'pins';
     public $incrementing = false;
     protected $hidden = [
         'index',

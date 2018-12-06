@@ -10,6 +10,13 @@ use App\Models\RealTime\KeywordGroup;
 
 class CreateRequest extends FormRequest
 {
+    private $max_line;
+
+    public function __construct()
+    {
+        $this->max_line = auth()->user()->organisation->capacity * 2;
+    }
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -28,6 +35,7 @@ class CreateRequest extends FormRequest
     public function messages()
     {
         return [
+            'keyword_max_line' => 'Her grup için en fazla '.$this->max_line.' satır girebilirsiniz.',
             'limit' => 'Grup limitiniz doldu.',
             'empty_lines' => 'Her kelime satırı en az 3 karakter olabilir. (bir, ile... vb. kaçamak kelimeler kullanamazsınız!)',
             'except_list' => 'Bu kelimeyi kullanamazsınız.'
@@ -50,7 +58,7 @@ class CreateRequest extends FormRequest
         });
 
         Validator::extend('keyword_max_line', function($attribute, $value) {
-            return count(explode(PHP_EOL, $value)) <= 10 ? true : false;
+            return count(explode(PHP_EOL, $value)) <= $this->max_line ? true : false;
         });
 
         Validator::extend('empty_lines', function($attribute, $value) {

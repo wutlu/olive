@@ -12,7 +12,7 @@
                 <a href="#" class="card-panel hoverable waves-effect" data-tooltip="Monitörler" data-position="right">
                     <img alt="Monitorler" src="{{ asset('img/icons/analytics.png') }}" />
                 </a>
-                <a href="{{ route('realtime') }}" class="card-panel hoverable waves-effect" data-tooltip="Gerçek Zamanlı" data-position="right">
+                <a href="{{ route('realtime.stream') }}" class="card-panel hoverable waves-effect" data-tooltip="Gerçek Zamanlı" data-position="right">
                     <img alt="Gerçek Zamanlı" src="{{ asset('img/icons/realtime.png') }}" />
                 </a>
                 <a href="#" class="card-panel hoverable waves-effect" data-tooltip="Trendler" data-position="right">

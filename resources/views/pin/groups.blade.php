@@ -2,7 +2,7 @@
     'sidenav_fixed_layout' => true,
     'breadcrumb' => [
         [
-            'text' => 'Gerçek Zamanlı'
+            'text' => 'Pin Grupları'
         ]
     ]
 ])
@@ -23,8 +23,8 @@
                     var item = item_model.clone();
                         item.removeClass('model d-none').addClass('_tmp d-flex').attr('data-id', o.id)
 
-                        item.find('.name').html(o.name).attr('data-id', o.id)
-                        item.find('[data-name=edit]').attr('data-id', o.id)
+                        item.find('[data-name=edit]').attr('data-group_id', o.id)
+                        item.find('[data-trigger=pin-go]').html(o.name).attr('data-id', o.id)
                         item.find('[data-name=created-at]').attr('data-time', o.created_at).html(o.created_at)
                         item.find('[data-name=count]').html(o.pins.length + ' pin')
 
@@ -41,7 +41,7 @@
         var mdl = modal({
             'id': 'pin-group',
             'body': $('<form />', {
-                'action': '{{ route('realtime.pin.group') }}',
+                'action': '{{ route('pin.group') }}',
                 'id': 'pin-group-form',
                 'class': 'json',
                 'data-method': 'post',
@@ -147,7 +147,7 @@
             }
             else if (obj.type == 'updated')
             {
-                $('#pin-groups').children('[data-id=' + obj.data.id + ']').find('.name').html(obj.data.name)
+                $('#pin-groups').children('[data-id=' + obj.data.id + ']').find('[data-name=name]').html(obj.data.name)
             }
 
             M.toast({
@@ -180,7 +180,7 @@
                         'href': '#',
                         'class': 'waves-effect btn red json',
                         'html': buttons.ok,
-                        'data-href': '{{ route('realtime.pin.group') }}',
+                        'data-href': '{{ route('pin.group') }}',
                         'data-method': 'delete',
                         'data-id': $(this).data('id'),
                         'data-callback': '__delete_pin_group'
@@ -208,29 +208,19 @@
             vzAjax($('#pin-groups').data('skip', 0).addClass('json-clear'))
         }
     }
-
-    function __go_pins(__, obj)
-    {
-        if (obj.status == 'ok')
-        {
-            location.href = obj.route;
-        }
-    }
 @endpush
 
 @section('content')
     <div class="card">
-        <div class="card-content card-content-image" style="background-image: url({{ asset('img/md/9.jpg') }});">
-            <span class="card-title white-text mb-0">Pin Grupları</span>
-        </div>
         <div class="card-image">
+            <img src="{{ asset('img/card-header.jpg') }}" alt="Pin Grupları" />
+            <span class="card-title">Pin Grupları</span>
             <a href="#" class="btn-floating btn-large halfway-fab waves-effect white" data-trigger="create-pin-group">
                 <i class="material-icons black-text">add</i>
             </a>
         </div>
         <div class="card-content">
-            <p class="grey-text">Pinleme başlığı altında gerçek zamanlı verileri kalıcı olarak tutabilirsiniz.</p>
-            <p class="grey-text">Pinleme başlıklarını istediğiniz zaman PDF halinde rapor olarak alabilirsiniz.</p>
+            <p class="grey-text">Araştırmalarınız sonucu elde ettiğiniz ham verileri pinleme gruplarında saklayabilirsiniz. Ayrıca pinlediğiniz verileri PDF halinde rapor alabilirsiniz.</p>
         </div>
         <nav class="grey darken-4">
             <div class="nav-wrapper">
@@ -250,7 +240,7 @@
         </nav>
         <ul id="pin-groups"
              class="collection load json-clear" 
-             data-href="{{ route('realtime.pin.groups') }}"
+             data-href="{{ route('pin.groups') }}"
              data-skip="0"
              data-take="5"
              data-include="string"
@@ -265,26 +255,28 @@
                     <i class="material-icons">wb_sunny</i>
                 </div>
             </li>
-            <li class="collection-item model d-none">
+            <li data-name="item" class="collection-item model d-none">
                 <span>
-                    <span class="d-flex">
-                        <a
-                            class="btn-floating btn-small waves-effect red darken-1 json align-self-center"
-                            href="#"
-                            data-href="{{ route('realtime.pin.group') }}"
-                            data-method="post"
-                            data-callback="__get_pin_group"
-                            data-name="edit">
-                            <i class="material-icons">create</i>
-                        </a>
-                        <a
-                            href="#"
-                            class="align-self-center json name"
-                            style="margin: 0 0 0 .4rem;"
-                            data-href="{{ route('route.generate.id') }}"
-                            data-name="realtime.stream"
-                            data-callback="__go_pins"></a>
-                    </span>
+                    <a
+                        style="margin: 0 .4rem 0 0;"
+                        class="btn-floating btn-small waves-effect cyan darken-2 json"
+                        data-name="edit"
+                        data-href="{{ route('pin.group') }}"
+                        data-method="post"
+                        data-callback="__get_pin_group"
+                        href="#">
+                        <i class="material-icons">create</i>        
+                    </a>
+                </span>
+                <span>
+                	<a
+                        data-trigger="pin-go"
+                        data-name="pin.pins"
+                        data-href="{{ route('route.generate.id') }}"
+                        data-method="post"
+                        data-callback="__go"
+                        class="json d-table"
+                        href="#"></a>
                     <time data-name="created-at" class="timeago grey-text"></time>
                 </span>
                 <small data-name="count" class="badge ml-auto"></small>

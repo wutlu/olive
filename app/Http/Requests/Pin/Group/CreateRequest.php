@@ -1,16 +1,22 @@
 <?php
 
-namespace App\Http\Requests\RealTime;
+namespace App\Http\Requests\Pin\Group;
 
 use Illuminate\Foundation\Http\FormRequest;
 
 use Validator;
 
-use App\Models\RealTime\KeywordGroup;
 use App\Models\Pin\Group as PinGroup;
 
-class RealTimeRequest extends FormRequest
+class CreateRequest extends FormRequest
 {
+    private $max_item;
+
+    public function __construct()
+    {
+        $this->max_item = auth()->user()->organisation->capacity * 2;
+    }
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -29,7 +35,7 @@ class RealTimeRequest extends FormRequest
     public function messages()
     {
         return [
-            'keyword_group_owner' => 'Geçersiz bir grup seçtiniz. Lütfen sayfayı yenileyin.'
+            'max_item' => 'En fazla '.$this->max_item.' grup oluşturabilirsiniz.',
         ];
     }
 
@@ -42,16 +48,12 @@ class RealTimeRequest extends FormRequest
     {
         $user = auth()->user();
 
-        Validator::extend('keyword_group_owner', function($attribute, $id) use ($user) {
-            return KeywordGroup::where([
-                'id' => $id,
-                'organisation_id' => $user->organisation_id
-            ])->exists();
+        Validator::extend('max_item', function($attribute) use ($user) {
+            return PinGroup::where('organisation_id', $user->organisation_id)->count() <= $this->max_item;
         });
 
         return [
-            'keyword_group' => 'required|array',
-            'keyword_group.*' => 'required|integer|keyword_group_owner'
+            'name' => 'required|string|max:32|max_item'
         ];
     }
 }

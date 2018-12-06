@@ -23,7 +23,7 @@
             $('input[name=password]').val('')
             $('input[name=avatar]').prop('checked', false)
 
-            $('img.user-avatar').attr('src', '{{ asset('img/people.svg') }}')
+            $('img.user-avatar').attr('src', '{{ asset('img/icons/people.png') }}')
 
             M.toast({
                 html: 'Kullanıcı Bilgileri Güncellendi',

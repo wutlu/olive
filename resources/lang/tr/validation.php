@@ -225,7 +225,7 @@ return [
         'keyword_group'                => 'Kelime Grubu',
         'pin_group'                    => 'Pin Grubu',
         'keyword_group.*'              => 'Kelime Grubu',
-        'group_id'                     => 'Grup Numarası',
+        'group_id'                     => 'Grup',
         'index'                        => 'Indeks',
     ],
 ];

@@ -4,7 +4,7 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::get('panel', 'HomeController@dashboard')->name('dashboard');
 Route::post('aktiviteler', 'HomeController@activity')->name('dashboard.activities');
 
-Route::get('route-by-id', 'RouteController@generateById')->name('route.generate.id');
+Route::post('route-by-id', 'RouteController@generateById')->name('route.generate.id');
 
 Route::post('panel-monitor', 'HomeController@monitor')->name('dashboard.monitor');
 Route::post('intro/{key}', 'HomeController@intro')->name('intro')->where('key', '('.implode('|', config('app.intro.keys')).')');
@@ -26,8 +26,7 @@ Route::prefix('icerik')->group(function () {
 });
 
 Route::prefix('gercek-zamanli')->namespace('RealTime')->group(function () {
-    Route::get('/', 'RealTimeController@dashboard')->name('realtime');
-    Route::get('akis/{id}', 'RealTimeController@stream')->name('realtime.stream');
+    Route::get('akis', 'RealTimeController@stream')->name('realtime.stream');
 
     Route::post('sorgu', 'RealTimeController@query')->name('realtime.query');
 
@@ -41,22 +40,23 @@ Route::prefix('gercek-zamanli')->namespace('RealTime')->group(function () {
             Route::delete('grup', 'KeywordController@groupDelete');
         });
     });
+});
 
-    Route::prefix('pin')->group(function () {
-        Route::prefix('gruplar')->group(function () {
-            Route::post('/', 'PinController@groups')->name('realtime.pin.groups');
+Route::prefix('pinleme')->group(function () {
+    Route::prefix('gruplar')->group(function () {
+        Route::get('/', 'PinController@groups')->name('pin.groups');
+        Route::post('/', 'PinController@groupListJson');
 
-            Route::post('grup', 'PinController@groupGet')->name('realtime.pin.group');
-            Route::put('grup', 'PinController@groupCreate');
-            Route::patch('grup', 'PinController@groupUpdate');
-            Route::delete('grup', 'PinController@groupDelete');
-        });
-
-        Route::get('pinler/{id}', 'PinController@pins')->name('realtime.pins');
-        Route::post('yorum', 'PinController@comment')->name('realtime.pin.comment');
-        Route::post('pdf', 'PinController@pdf')->name('realtime.pin.pdf');
-        Route::post('{type}', 'PinController@pin')->name('realtime.pin')->where('type', '(add|remove)');
+        Route::post('grup', 'PinController@groupGet')->name('pin.group');
+        Route::put('grup', 'PinController@groupCreate');
+        Route::patch('grup', 'PinController@groupUpdate');
+        Route::delete('grup', 'PinController@groupDelete');
     });
+
+    Route::get('{id}', 'PinController@pins')->name('pin.pins');
+    Route::post('yorum', 'PinController@comment')->name('pin.comment');
+    Route::post('pdf', 'PinController@pdf')->name('pin.pdf');
+    Route::post('{type}', 'PinController@pin')->name('pin')->where('type', '(add|remove)');
 });
 
 Route::prefix('ayarlar')->group(function () {

@@ -1,25 +1,25 @@
 <?php
 
-namespace App\Http\Controllers\RealTime;
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
 use App\Http\Requests\IdRequest;
 use App\Http\Requests\SearchRequest;
 
-use App\Http\Requests\RealTime\PinGroup\CreateRequest as GroupCreateRequest;
-use App\Http\Requests\RealTime\PinGroup\UpdateRequest as GroupUpdateRequest;
-use App\Http\Requests\RealTime\PinGroup\PdfRequest as GrupPdfRequest;
-use App\Http\Requests\RealTime\Pin\CommentRequest;
-use App\Http\Requests\RealTime\Pin\PinRequest;
+use App\Http\Requests\Pin\Group\GetRequest as GroupGetRequest;
+use App\Http\Requests\Pin\Group\CreateRequest as GroupCreateRequest;
+use App\Http\Requests\Pin\Group\UpdateRequest as GroupUpdateRequest;
+use App\Http\Requests\Pin\Group\PdfRequest as GrupPdfRequest;
+use App\Http\Requests\Pin\CommentRequest;
+use App\Http\Requests\Pin\PinRequest;
 
 use App\Elasticsearch\Document;
 
-use App\Models\RealTime\PinGroup;
-use App\Models\RealTime\Pin;
+use App\Models\Pin\Group as PinGroup;
+use App\Models\Pin\Pin;
 
-use App\Jobs\RealTime\PdfJob as PinGroupPdfJob;
+use App\Jobs\Pin\PdfJob as PinGroupPdfJob;
 
 use Carbon\Carbon;
 
@@ -38,9 +38,17 @@ class PinController extends Controller
     }
 
     # 
-    # pinler (json)
+    # pin grupları
     # 
-    public function groups(SearchRequest $request)
+    public function groups()
+    {
+        return view('pin.groups');
+    }
+
+    # 
+    # pin grupları json çıktısı
+    # 
+    public function groupListJson(SearchRequest $request)
     {
         $organisation = auth()->user()->organisation;
 
@@ -64,15 +72,16 @@ class PinController extends Controller
     # 
     # grup bilgileri
     # 
-    public function groupGet(IdRequest $request)
+    public function groupGet(GroupGetRequest $request)
     {
         $organisation = auth()->user()->organisation;
 
         $data = PinGroup::select(
             'id',
             'name'
-        )->where([
-            'id' => $request->id,
+        )->with('pins')
+         ->where([
+            'id' => $request->group_id,
             'organisation_id' => $organisation->id
         ])->firstOrFail();
 
@@ -152,7 +161,7 @@ class PinController extends Controller
     }
 
     # 
-    # pin işlemleri.
+    # pinleme
     # 
     public function pin(string $type, PinRequest $request)
     {
@@ -204,7 +213,7 @@ class PinController extends Controller
     }
 
     # 
-    # pin grubu içerisindeki pinler
+    # pin grubundaki pinler
     # 
     public function pins(int $id)
     {
@@ -217,7 +226,7 @@ class PinController extends Controller
 
         $pins = $pg->pins()->orderBy('created_at', 'DESC')->paginate(10);
 
-        return view('realTime.pins', compact('pg', 'pins'));
+        return view('pin.pins', compact('pg', 'pins'));
     }
 
     # 

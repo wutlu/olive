@@ -62,8 +62,9 @@ class SozlukCrawlersTableSeeder extends Seeder
                     'selector_title' => $item['selector_title'],
                     'selector_entry' => $item['selector_entry'],
                     'selector_author' => $item['selector_author'],
-                    'off_limit' => $item['off_limit'],
-                    'max_attempt' => $item['max_attempt']
+                    'max_attempt' => $item['max_attempt'],
+                    'deep_try' => $item['deep_try'],
+                    'chunk' => $item['chunk']
                 ]
             );
         }

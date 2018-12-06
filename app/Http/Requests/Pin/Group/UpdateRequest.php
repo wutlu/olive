@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\RealTime\PinGroup;
+namespace App\Http\Requests\Pin\Group;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -24,7 +24,7 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => 'required|integer|exists:real_time_pin_groups,id',
+            'id' => 'required|integer|exists:pin_groups,id',
 
             'name' => 'required|string|max:32'
         ];

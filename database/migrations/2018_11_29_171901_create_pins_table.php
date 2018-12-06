@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRealTimePinsTable extends Migration
+class CreatePinsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateRealTimePinsTable extends Migration
      */
     public function up()
     {
-        Schema::create('real_time_pins', function (Blueprint $table) {
+        Schema::create('pins', function (Blueprint $table) {
             $table->string('comment')->nullable()->default(null);
 
             $table->string('index');
@@ -26,7 +26,7 @@ class CreateRealTimePinsTable extends Migration
             $table->foreign('organisation_id')->references('id')->on('organisations')->onDelete('cascade')->onUpdate('cascade');
 
             $table->unsignedInteger('group_id')->index();
-            $table->foreign('group_id')->references('id')->on('real_time_pin_groups')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('group_id')->references('id')->on('pin_groups')->onDelete('cascade')->onUpdate('cascade');
 
             $table->unsignedInteger('user_id')->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
@@ -42,6 +42,6 @@ class CreateRealTimePinsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('real_time_pins');
+        Schema::dropIfExists('pins');
     }
 }

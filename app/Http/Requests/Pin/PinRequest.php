@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\RealTime\Pin;
+namespace App\Http\Requests\Pin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-use App\Models\RealTime\PinGroup;
+use App\Models\Pin\Group as PinGroup;
 
 use Validator;
 
@@ -28,7 +28,7 @@ class PinRequest extends FormRequest
     public function messages()
     {
         return [
-            'group_have' => 'Bulunduğunuz pin grubu artık yok.'
+            'group_have' => 'Seçtiğiniz pin grubu artık yok.'
         ];
     }
 

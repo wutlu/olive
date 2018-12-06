@@ -8,6 +8,13 @@ use Validator;
 
 class UpdateRequest extends FormRequest
 {
+    private $max_line;
+
+    public function __construct()
+    {
+        $this->max_line = auth()->user()->organisation->capacity * 2;
+    }
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -26,7 +33,7 @@ class UpdateRequest extends FormRequest
     public function messages()
     {
         return [
-            'keyword_max_line' => 'Kelime satırı çok fazla.',
+            'keyword_max_line' => 'Her grup için en fazla '.$this->max_line.' satır girebilirsiniz.',
             'empty_lines' => 'Her kelime satırı en az 3 karakter olabilir. (bir, ile... vb. kaçamak kelimeler kullanamazsınız!)'
         ];
     }
@@ -39,7 +46,7 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         Validator::extend('keyword_max_line', function($attribute, $value) {
-            return count(explode(PHP_EOL, $value)) <= 10;
+            return count(explode(PHP_EOL, $value)) <= $this->max_line ? true : false;
         });
 
         Validator::extend('empty_lines', function($attribute, $value) {

@@ -29,21 +29,13 @@
                         item.find('[data-name=name]').html(o.name)
                         item.find('[data-name=status]').html(o.status ? '✓' : '✕').addClass(o.status ? 'green-text' : 'red-text')
                         item.find('[data-name=author]').html(o.author.name)
-                        item.find('[data-name=avatar]').attr('src', o.author.avatar ? '{{ asset('/') }}' + o.author.avatar : '{{ asset('img/people.svg') }}')
+                        item.find('[data-name=avatar]').attr('src', o.author.avatar ? '{{ asset('/') }}' + o.author.avatar : '{{ asset('img/icons/people.png') }}')
 
                         item.appendTo(ul)
                 })
             }
 
             $('#home-loader').hide()
-        }
-    }
-
-    function __go_organisation(__, obj)
-    {
-        if (obj.status == 'ok')
-        {
-            location.href = obj.route;
         }
     }
 @endpush
@@ -102,8 +94,9 @@
                 href="#"
                 class="collection-item model d-none waves-effect json"
                 data-href="{{ route('route.generate.id') }}"
+                data-method="post"
                 data-name="admin.organisation"
-                data-callback="__go_organisation">
+                data-callback="__go">
                 <img alt="Avatar" data-name="avatar" style="width: 48px; margin: 0 1rem 0 0;" />
                 <span class="align-self-center">
                     <p data-name="name"></p>

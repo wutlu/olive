@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\OrganisationController;
 use App\Http\Controllers\System\SystemController;
-use App\Http\Controllers\RealTime\PinController;
+use App\Http\Controllers\PinController;
 use App\Console\Commands\Sentiment;
 
 Artisan::command('check:upcoming_payments', function () {

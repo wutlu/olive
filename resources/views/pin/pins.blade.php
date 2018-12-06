@@ -2,15 +2,11 @@
     'sidenav_fixed_layout' => true,
     'breadcrumb' => [
         [
-            'text' => 'Gerçek Zamanlı',
-            'link' => route('realtime')
+            'text' => 'Pin Grupları',
+            'link' => route('pin.groups')
         ],
         [
-            'text' => $pg->name,
-            'link' => route('realtime.stream', $pg->id)
-        ],
-        [
-            'text' => 'Pinlemeler'
+            'text' => $pg->name
         ]
     ]
 ])
@@ -38,7 +34,7 @@
                 class="btn-floating btn-large halfway-fab waves-effect white json"
                 data-tooltip="Pdf Dökümü Al"
                 data-position="left"
-                data-href="{{ route('realtime.pin.pdf') }}"
+                data-href="{{ route('pin.pdf') }}"
                 data-id="{{ $pg->id }}"
                 data-method="post"
                 data-callback="__pdf"
@@ -130,7 +126,7 @@
                     <a
                         href="#"
                         class="waves-effect json"
-                        data-href="{{ route('realtime.pin', 'remove') }}"
+                        data-href="{{ route('pin', 'remove') }}"
                         data-method="post"
                         data-id="{{ $document->data['_id'] }}"
                         data-type="{{ $document->data['_type'] }}"
@@ -249,7 +245,7 @@
                             id="textarea-{{ $id }}"
                             name="comment"
                             class="materialize-textarea json"
-                            data-href="{{ route('realtime.pin.comment') }}"
+                            data-href="{{ route('pin.comment') }}"
                             data-method="post"
                             data-index="{{ $document->data['_index'] }}"
                             data-type="{{ $document->data['_type'] }}"

@@ -51,14 +51,6 @@
             $('#home-loader').hide()
         }
     }
-
-    function __go_bot(__, obj)
-    {
-        if (obj.status == 'ok')
-        {
-            location.href = obj.route;
-        }
-    }
 @endpush
 
 @section('content')
@@ -149,8 +141,9 @@
             <a
                 href="#"
                 data-href="{{ route('route.generate.id') }}"
+                data-method="post"
                 data-name="crawlers.media.bot"
-                data-callback="__go_bot"
+                data-callback="__go"
                 class="collection-item model d-none waves-effect json">
                 <span class="align-self-center">
                     <p data-name="name"></p>

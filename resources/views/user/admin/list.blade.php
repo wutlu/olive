@@ -28,7 +28,7 @@
 
                         item.find('[data-name=name]').html(o.name)
                         item.find('[data-name=email]').html(o.email)
-                        item.find('[data-name=avatar]').attr('src', o.avatar ? '{{ asset('/') }}' + o.avatar : '{{ asset('img/people.svg') }}')
+                        item.find('[data-name=avatar]').attr('src', o.avatar ? '{{ asset('/') }}' + o.avatar : '{{ asset('img/icons/people.png') }}')
                         item.find('[data-name=verified]').html(o.verified ? '✓' : '✕').addClass(o.verified ? 'green-text' : 'red-text')
 
                         item.appendTo(ul)
@@ -36,14 +36,6 @@
             }
 
             $('#home-loader').hide()
-        }
-    }
-
-    function __go_user(__, obj)
-    {
-        if (obj.status == 'ok')
-        {
-            location.href = obj.route;
         }
     }
 @endpush
@@ -91,8 +83,9 @@
                 href="#"
                 class="collection-item model d-none waves-effect json"
                 data-href="{{ route('route.generate.id') }}"
+                data-method="post"
                 data-name="admin.user"
-                data-callback="__go_user">
+                data-callback="__go">
                 <img alt="Avatar" data-name="avatar" style="width: 48px; margin: 0 1rem 0 0;" />
                 <span class="align-self-center">
                     <p data-name="name"></p>

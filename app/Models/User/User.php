@@ -44,7 +44,7 @@ class User extends Authenticatable
     # avatar
     public function avatar()
     {
-        return asset($this->avatar ? $this->avatar : 'img/people.svg');
+        return asset($this->avatar ? $this->avatar : 'img/icons/people.png');
     }
 
     # organizasyon

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\RealTime\PinGroup;
+namespace App\Http\Requests\Pin\Group;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateRequest extends FormRequest
+class GetRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,7 @@ class CreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|max:32'
+            'group_id' => 'required|integer|exists:pin_groups,id'
         ];
     }
 }

@@ -2,11 +2,7 @@
     'sidenav_fixed_layout' => true,
     'breadcrumb' => [
         [
-            'text' => 'Gerçek Zamanlı',
-            'link' => route('realtime')
-        ],
-        [
-            'text' => $pin_group->name
+            'text' => 'Gerçek Zamanlı'
         ]
     ],
     'dock' => true
@@ -26,9 +22,10 @@
     }
 
     [data-name=buffer-count] {
-        background-image: url({{ asset('img/next.gif') }});
+        background-image: url({{ asset('img/icons/filter.png') }});
         background-repeat: no-repeat;
-        background-position: left center;
+        background-position: 16px center;
+        background-size: 24px 24px;
         display: table;
         width: 96px;
         height: 32px;
@@ -51,14 +48,23 @@
         data-include="keyword_group">
         <div class="card-content">
             <div class="d-flex justify-content-between">
-                <span class="card-title mb-0 align-self-center">{{ $pin_group->name }}</span>
-                <a class="btn-flat waves-effect" data-name="pins-button" href="{{ route('realtime.pins', $pin_group->id) }}">Pinler (<span class="count">{{ count($pin_group->pins) }}</span>)</a>
+                <span class="card-title mb-0 align-self-center">Gerçek Zamanlı</span>
+
+                <a
+                    class="btn-flat waves-effect json"
+                    disabled
+                    data-button="pins-button"
+                    data-href="{{ route('route.generate.id') }}"
+                    data-method="post"
+                    data-name="pin.pins"
+                    data-callback="__go"
+                    href="#">Pinler (<span class="count">0</span>)</a>
             </div>
         </div>
         <div class="card-content list-alert cyan lighten-5">
             <p class="d-flex">
                 <img alt="Pin" src="{{ asset('img/icons/pin.png') }}" style="width: 32px; height: 32px; margin: 0 .2rem 0 0;" />
-                <span class="align-self-center">Pinlemek istediğiniz içeriğe tıklayın.</span>
+                <span class="align-self-center">Sağdaki menüden bir pin grubu seçin. Pin grubunuz yoksa oluşturabilirsiniz. Pinlemek için ilgilendiğiniz içeriğe tıklamanız yeterli.</span>
             </p>
             <p class="d-flex">
                 <img alt="Pin" src="{{ asset('img/icons/snowflake.png') }}" style="width: 32px; height: 32px; margin: 0 .2rem 0 0;" />
@@ -70,8 +76,9 @@
             <a
                 href="#"
                 class="collection-item waves-effect d-none model grey-text json"
-                data-href="{{ route('realtime.pin', 'add') }}"
+                data-href="{{ route('pin', 'add') }}"
                 data-method="post"
+                data-include="group_id"
                 data-callback="__pin">
                 <time data-name="created-at"></time>
                 <p data-name="url" class="grey-text text-darken-2"></p>
@@ -90,9 +97,12 @@
 @endpush
 
 @push('local.scripts')
+    var group_select = $('select[name=group_id]');
+        group_select.formSelect()
+
     function __pin(__, obj)
     {
-        var pins_button = $('[data-name=pins-button]');
+        var pins_button = $('[data-button=pins-button]');
         var pin_count = pins_button.children('span.count');
 
         if (obj.status == 'removed')
@@ -105,8 +115,7 @@
         {
             var toastHTML = $('<div />', {
                 'html': [
-                    $('<a />', {
-                        'href': '{{ route('realtime.pins', $pin_group->id) }}',
+                    $('<span />', {
                         'html': 'İçerik Pinlendi',
                         'class': 'white-text'
                     }),
@@ -115,13 +124,13 @@
                         'class': 'btn-flat toast-action json',
                         'html': 'Geri Al',
                         'data-undo': 'true',
-                        'data-href': '{{ route('realtime.pin', 'remove') }}',
+                        'data-href': '{{ route('pin', 'remove') }}',
                         'data-method': 'post',
                         'data-callback': '__pin',
                         'data-id': __.data('id'),
                         'data-type': __.data('type'),
                         'data-index': __.data('index'),
-                        'data-group_id': __.data('group_id')
+                        'data-include': 'group_id'
                     })
                 ]
             });
@@ -203,7 +212,6 @@
                         .attr('data-id', obj._id)
                         .attr('data-index', obj._index)
                         .attr('data-type', obj._type)
-                        .attr('data-group_id', {{ $pin_group->id }})
                         .hide()
                         .removeClass('model d-none')
                         .show( 'highlight', {}, 200 );
@@ -229,7 +237,7 @@
     }
 
     $(document).on('mouseenter', '.time-line > .collection', function() {
-        time = 600;
+        time = 1000;
     }).on('mouseleave', '.time-line', function() {
         time = 100;
     })
@@ -296,6 +304,27 @@
 
 @section('dock')
     <div class="card">
+        <div class="card-content">
+            <div class="input-field">
+                <select
+                    name="group_id"
+                    id="group_id"
+                    autocomplete="off"
+                    class="json"
+                    data-href="{{ route('pin.group') }}"
+                    data-method="post"
+                    data-callback="__pin_group">
+                    <option value="" disabled selected>Grup Seçin</option>
+                    @forelse ($pin_groups as $group)
+                        <option value="{{ $group->id }}">{{ str_limit($group->name, 10) }}</option>
+                    @empty
+                        <option value="" disabled>Henüz Grup Oluşturmadınız!</option>
+                    @endforelse
+                </select>
+                <label>Pin Grubu</label>
+            </div>
+            <a class="btn-flat waves-effect" href="{{ route('pin.groups') }}">Pin Grupları</a>
+        </div>
         <div class="card-content card-content-image" style="background-image: url({{ asset('img/md/21.jpg') }});">
             <span class="card-title white-text mb-0">Kelime Grupları</span>
         </div>
@@ -356,6 +385,14 @@
 @endpush
 
 @push('local.scripts')
+    function __pin_group(__, obj)
+    {
+        if (obj.status == 'ok')
+        {
+            $('[data-button=pins-button]').removeAttr('disabled').attr('data-id', obj.data.id).children('span.count').html(obj.data.pins.length)
+        }
+    }
+
     function __keyword_groups(__, obj)
     {
         var ul = $('#keyword-groups');
