@@ -282,7 +282,7 @@ class RealTimeController extends Controller
                                     ]
                                 ],
                                 'sort' => [ 'created_at' => 'DESC' ],
-                                '_source' => [ 'title', 'description', 'created_at' ]
+                                '_source' => [ 'title', 'description', 'created_at', 'channel.title', 'channel.id' ]
                             ]
                         )->data['hits']['hits'];
 
@@ -353,7 +353,7 @@ class RealTimeController extends Controller
 
         return [
             'status' => 'ok',
-            'data' => $data,
+            'data' => array_reverse($data),
             'words' => $words
         ];
     }

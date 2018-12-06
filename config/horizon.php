@@ -40,7 +40,7 @@ return [
     */
 
     'waits' => [
-        'redis:default' => 60,
+        'redis:default' => 300,
     ],
 
     /*
@@ -79,6 +79,7 @@ return [
                     'elasticsearch',
                     'email',
                     'crawler',
+                    'process',
                 ],
                 'balance' => 'auto',
                 'processes' => 10,
@@ -94,6 +95,7 @@ return [
                     'elasticsearch',
                     'email',
                     'crawler',
+                    'process',
                 ],
                 'balance' => 'auto',
                 'processes' => 3,

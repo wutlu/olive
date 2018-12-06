@@ -47,9 +47,9 @@
         <div class="card-content">
             Ekleyeceğiniz yorumlar, PDF raporlarınızda analiz sonucu olarak yer alacaktır.
         </div>
-        @if ($pg->html_to_pdf)
+        @if ($pg->html_to_pdf == 'success')
             <div class="card-action d-flex justify-content-between">
-                <span class="align-self-center">2018.11.12</span>
+                <span class="align-self-center">{{ date('d.m.Y H:i', strtotime($pg->completed_at)) }}</span>
                 <a href="{{ url($pg->pdf_path) }}" class="btn-flat waves-effect align-self-center">Pdf İndir</a>
             </div>
         @endif
@@ -257,27 +257,28 @@
                         <label for="textarea-{{ $id }}">Yorum Girin</label>
                     </div>
                 </div>
+
                 @if ($sentiment)
-                <div class="card-sentiment d-flex justify-content-between">
-                    <div style="width: {{ $sentiment['pos']*100 }}%;" class="sentiment-item light-green-text accent-4 d-flex">
-                        @if ($sentiment['pos'] > 0.2)
-                        <i class="material-icons light-green-text align-self-center">sentiment_very_satisfied</i>
-                        <span class="badge light-green-text align-self-center">{{ $sentiment['pos']*100 }}%</span>
-                        @endif
+                    <div class="card-sentiment d-flex justify-content-between">
+                        <div style="width: {{ $sentiment['pos']*100 }}%;" class="sentiment-item light-green-text accent-4 d-flex">
+                            @if ($sentiment['pos'] > 0.2)
+                            <i class="material-icons light-green-text align-self-center">sentiment_very_satisfied</i>
+                            <span class="badge light-green-text align-self-center">{{ $sentiment['pos']*100 }}%</span>
+                            @endif
+                        </div>
+                        <div style="width: {{ $sentiment['neu']*100 }}%;" class="sentiment-item grey-text d-flex">
+                            @if ($sentiment['neu'] > 0.2)
+                            <i class="material-icons grey-text align-self-center">sentiment_neutral</i>
+                            <span class="badge grey-text align-self-center">{{ $sentiment['neu']*100 }}%</span>
+                            @endif
+                        </div>
+                        <div style="width: {{ $sentiment['neg']*100 }}%;" class="sentiment-item red-text accent-4 d-flex">
+                            @if ($sentiment['neg'] > 0.2)
+                            <i class="material-icons red-text align-self-center">sentiment_very_dissatisfied</i>
+                            <span class="badge red-text align-self-center">{{ $sentiment['neg']*100 }}%</span>
+                            @endif
+                        </div>
                     </div>
-                    <div style="width: {{ $sentiment['neu']*100 }}%;" class="sentiment-item grey-text d-flex">
-                        @if ($sentiment['neu'] > 0.2)
-                        <i class="material-icons grey-text align-self-center">sentiment_neutral</i>
-                        <span class="badge grey-text align-self-center">{{ $sentiment['neu']*100 }}%</span>
-                        @endif
-                    </div>
-                    <div style="width: {{ $sentiment['neg']*100 }}%;" class="sentiment-item red-text accent-4 d-flex">
-                        @if ($sentiment['neg'] > 0.2)
-                        <i class="material-icons red-text align-self-center">sentiment_very_dissatisfied</i>
-                        <span class="badge red-text align-self-center">{{ $sentiment['neg']*100 }}%</span>
-                        @endif
-                    </div>
-                </div>
                 @endif
             </div>
         @else

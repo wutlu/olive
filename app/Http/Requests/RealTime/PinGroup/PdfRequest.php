@@ -50,17 +50,17 @@ class PdfRequest extends FormRequest
             }
             else
             {
-                $pins = count($pg->pins());
+                $pins = $pg->pins()->count();
 
                 if ($pins < 1)
                 {
                     $id_rules[] = 'min_rule';
                     Validator::extend('min_rule', false, 'PDF alabilmek için grupta en az 1 pin olması gerekiyor.');
                 }
-                else if ($pins > 1000)
+                else if ($pins > 100)
                 {
                     $id_rules[] = 'max_rule';
-                    Validator::extend('max_rule', false, 'PDF alabilmek için grupta en fazla 1 pin olması gerekiyor.');
+                    Validator::extend('max_rule', false, 'PDF alabilmek için grupta en fazla 100 pin olabilir.');
                 }
             }
         }

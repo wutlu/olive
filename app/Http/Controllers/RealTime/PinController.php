@@ -228,8 +228,10 @@ class PinController extends Controller
         $pg = PinGroup::where('id', $request->id)->first();
 
         $pg->html_to_pdf = 'process';
-        $pg->completed_at = date('Y-m-d H:i:s');
+        $pg->updated_at = date('Y-m-d H:i:s');
         $pg->save();
+
+        PinGroupPdfJob::dispatch($pg->id)->onQueue('process');
 
         return [
             'status' => 'ok'
@@ -242,18 +244,29 @@ class PinController extends Controller
     public static function pdfTrigger()
     {
         $date = Carbon::now()->subMinutes(10)->format('Y-m-d H:i:s');
-        $groups = PinGroup::where('html_to_pdf', 'success')->get();//->where('completed_at', '<', $date)->get();
+        $groups = PinGroup::where('html_to_pdf', 'process')->where('updated_at', '<', $date)->get();
 
         if (count($groups))
         {
             foreach ($groups as $group)
             {
-                echo Term::line('['.$group->organisation->name.']['.$group->name.']');
+                $pins = $group->pins()->count();
 
-                $group->completed_at = date('Y-m-d H:i:s');
+                if ($pins > 100)
+                {
+                    echo Term::line('failed: many pins');
+
+                    $pg->html_to_pdf = null;
+                }
+                else
+                {
+                    echo Term::line('['.$group->organisation->name.']['.$group->name.']');
+
+                    PinGroupPdfJob::dispatch($group->id)->onQueue('process');
+                }
+
+                $group->updated_at = date('Y-m-d H:i:s');
                 $group->save();
-
-                PinGroupPdfJob::dispatch($group->id)->onQueue('process');
             }
         }
     }

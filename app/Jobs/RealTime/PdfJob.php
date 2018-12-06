@@ -11,9 +11,9 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use App\Models\RealTime\PinGroup;
 
 use PDF;
+use System;
 
-//class PdfJob implements ShouldQueue
-class PdfJob
+class PdfJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -54,193 +54,341 @@ class PdfJob
                 $pdf_path = $pg->pdf_path ? $pg->pdf_path : 'storage/outputs/pdf/'.$name.'.pdf';
                 $html_path = $pg->html_path ? $pg->html_path : 'storage/outputs/html/'.$name.'.html';
 
-                $html = '<!DOCTYPE html>'.PHP_EOL;
-                $html.= '<html lang="'.app()->getLocale().'">'.PHP_EOL;
-                $html.= '<head>'.PHP_EOL;
-                $html.= '  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>'.PHP_EOL;
-                $html.= '  <style>'.PHP_EOL;
-                $html.= '    body { font-family: DejaVu Sans, sans-serif; }'.PHP_EOL;
-                $html.= '  </style>'.PHP_EOL;
-                $html.= '</head>'.PHP_EOL;
-                $html.= '<body>'.PHP_EOL;
+                $html = '
+                    <!DOCTYPE html>
+                    <html lang="'.app()->getLocale().'">
+                        <head>
+                            <title>'.$pg->name.'</title>
+                            <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+                            <style>
+                                body { font-family: DejaVu Sans, sans-serif; }
+
+                                .clearfix:after {
+                                    display: block;
+                                    clear: both;
+                                    content: "";
+                                }
+                                .clearfix > .left { float: left; }
+                                .clearfix > .right { float: right; }
+
+                                time {
+                                    color: #999;
+                                    font-style: italic;
+                                    font-size: 14px;
+                                }
+
+                                a {
+                                    text-decoration: none;
+                                }
+
+                                header {
+                                    padding: 1rem;
+                                    margin: 0;
+                                }
+                                header h1 {
+                                    text-align: center;
+                                    margin: 0;
+                                }
+                                header img.logo { width: 128px; }
+
+                                .data {
+                                    margin: 0 0 12px;
+                                    padding: 24px;
+                                }
+                                .data > h3 {
+                                    margin: 0;
+                                }
+                                .data time {
+                                    display: block;
+                                }
+                                .data > a.url {
+                                    font-style: italic;
+                                    font-size: 14px;
+                                }
+
+                               .data > .pin-comment {
+                                    background-color: #fbc02d;
+                                    margin: 0 0 12px;
+                                    padding: 24px;
+                                    font-size: 14px;
+                                }
+
+                               .data .text {
+                                    background-color: #f6f6f6;
+                                    color: #666;
+                                    margin: 0 0 12px;
+                                    padding: 24px;
+                                }
+
+                                .sentiment > .sentiment-item.green {
+                                    color: #64dd17;
+                                    border-color: #64dd17;
+                                }
+                                .sentiment > .sentiment-item.red {
+                                    color: #D50000;
+                                    border-color: #D50000;
+                                }
+                                .sentiment > .sentiment-item.grey {
+                                    color: #9e9e9e;
+                                    border-color: #9e9e9e;
+                                }
+
+                                .sentiment > .sentiment-item {
+                                    border-width: 0 0 4px;
+                                    border-style: solid;
+                                }
+
+                                .page-break {
+                                    page-break-after: always;
+                                }
+                            </style>
+                        </head>
+                    <body>
+                    <header>
+                        <div class="clearfix">
+                            <div class="left">
+                                <a href="'.config('app.url').'" target="_blank">
+                                    <img class="logo" alt="Logo" src="'.asset('img/olive-logo.png').'" />
+                                </a>
+                            </div>
+                            <div class="right">
+                                <time>'.date('d.m.Y H:i').'</time>
+                            </div>
+                        </div>
+                        <h1>'.$pg->name.'</h1>
+                    </header>
+                ';
 
                 file_put_contents(public_path($html_path), $html, LOCK_EX);
 
                 foreach ($pins as $pin)
                 {
-                    $document = $pin->document();
-
-                    if ($document->status == 'ok')
+                    if ($pin->document()->status == 'ok')
                     {
-                        $type = $document->data['_type'];
-                        $source = $document->data['_source'];
+                        $source = $pin->document()->data['_source'];
 
-                        $sentiment = @$source['sentiment'];
-
-                        $html = '<div class="'.$type.'">'.PHP_EOL;
-                        $html.= '<h3>'.$type.'</h3>'.PHP_EOL;
-                        $html.= '<time>'.date('d.m.Y H:i:s', strtotime($source['created_at'])).'</time>'.PHP_EOL;
+                        $html = '<div class="data '.$pin->document()->data['_type'].'">';
 
                         if (@$source['title'])
                         {
-                            $html.= '<h6 class="teal-text">'.title_case($source['title']).'</h6>'.PHP_EOL;
+                            $html.= '<h3>'.title_case($source['title']).'</h3>';
                         }
 
-                        if ($type == 'tweet')
+                        $html.= '<time>'.date('d.m.Y H:i:s', strtotime($source['created_at'])).'</time>';
+
+                        switch ($pin->document()->data['_type'])
                         {
-                            $html.= '<a href="https://twitter.com/'.$source['user']['screen_name'].'/status/'.$source['id'].'" target="_blank">https://twitter.com/'.$source['user']['screen_name'].'/status/'.$source['id'].'</a>'.PHP_EOL;
-                            $html.= '<p>'.PHP_EOL;
-                            $html.= '    <a href="https://twitter.com/intent/user?user_id='.$source['user']['id'].'" target="_blank">@'.$source['user']['screen_name'].'</a>'.PHP_EOL;
-                            $html.= '    <span>'.$source['user']['name'].'</span>'.PHP_EOL;
-                            $html.= '    <span>('.$source['platform'].')</span>'.PHP_EOL;
-                            $html.= '</p>'.PHP_EOL;
-                            $html.= '<div>'.nl2br($source['text']).'</div>'.PHP_EOL;
+                            case 'tweet':
 
-                            if (@$source['external'])
-                            {
-                                $external_source = $pin->document($source['external']['id']);
+                                $html.= '
+                                    <a class="url" href="https://twitter.com/'.$source['user']['screen_name'].'/status/'.$source['id'].'" target="_blank">https://twitter.com/'.$source['user']['screen_name'].'/status/'.$source['id'].'</a>
+                                    <p>
+                                        <a href="https://twitter.com/intent/user?user_id='.$source['user']['id'].'" target="_blank">@'.$source['user']['screen_name'].'</a>
+                                        <span>'.$source['user']['name'].'</span>
+                                        <span>('.$source['platform'].')</span>
+                                    </p>
+                                    <div class="text">'.nl2br($source['text']).'</div>
+                                ';
 
-                                if ($external_source)
+                                if (@$source['external'])
                                 {
-                                    $html.= '<ul>'.PHP_EOL;
-                                    $html.= '  <li>'.PHP_EOL;
-                                    $html.= '    <div>Asıl Tweet</div>'.PHP_EOL;
-                                    $html.= '    <div>'.PHP_EOL;
-                                    $html.= '      <div>'.PHP_EOL;
-                                    $html.= '        <a href="https://twitter.com/'.$external_source['_source']['user']['screen_name'].'/status/'.$external_source['_source']['id'].'" target="_blank">https://twitter.com/'.$external_source['_source']['user']['screen_name'].'/status/'.$external_source['_source']['id'].'</a>'.PHP_EOL;
-                                    $html.= '        <p>'.PHP_EOL;
-                                    $html.= '          <a href="https://twitter.com/intent/user?user_id='.$external_source['_source']['user']['id'].'" target="_blank" class="red-text">@'.$external_source['_source']['user']['screen_name'].'</a>'.PHP_EOL;
-                                    $html.= '          <span>'.$external_source['_source']['user']['name'].'</span>'.PHP_EOL;
-                                    $html.= '          <span>('.$external_source['_source']['platform'].')</span>'.PHP_EOL;
-                                    $html.= '        </p>'.PHP_EOL;
-                                    $html.= '        <div>'.nl2br($external_source['_source']['text']).'</div>'.PHP_EOL;
-                                    $html.= '      </div>'.PHP_EOL;
-                                    $html.= '    </div>'.PHP_EOL;
-                                    $html.= '  </li>'.PHP_EOL;
-                                    $html.= '</ul>'.PHP_EOL;
-                                }
-                            }
-                        }
-                        elseif ($type == 'article')
-                        {
-                            $html.= '<a href="'.$source['url'].'" target="_blank">'.str_limit($source['url'], 96).'</a>'.PHP_EOL;
-                            $html.= '<div>'.nl2br($source['description']).'</div>'.PHP_EOL;
-                        }
-                        elseif ($type == 'entry')
-                        {
-                            $html.= '<a href="'.$source['url'].'" target="_blank">'.str_limit($source['url'], 96).'</a>'.PHP_EOL;
-                            $html.= '<div>'.nl2br($source['entry']).'</div>'.PHP_EOL;
-                        }
-                        elseif ($type == 'product')
-                        {
-                            if (@$source['address'])
-                            {
-                                $html.= '<ul>'.PHP_EOL;
+                                    $external_source = $pin->document($source['external']['id']);
 
-                                foreach ($source['address'] as $key => $segment)
-                                {
-                                    $html.= '<li>'.$segment['segment'].'</li>'.PHP_EOL;
+                                    if ($external_source)
+                                    {
+                                        $html.= '
+                                            <ul>
+                                                <li>
+                                                    <span>Asıl Tweet</span>
+                                                    <time>'.date('d.m.Y H:i:s', strtotime($external_source['_source']['created_at'])).'</time>
+                                                    <a class="url" href="https://twitter.com/'.$external_source['_source']['user']['screen_name'].'/status/'.$external_source['_source']['id'].'" target="_blank">https://twitter.com/'.$external_source['_source']['user']['screen_name'].'/status/'.$external_source['_source']['id'].'</a>
+                                                    <p>
+                                                        <a href="https://twitter.com/intent/user?user_id='.$external_source['_source']['user']['id'].'" target="_blank" class="red-text">@'.$external_source['_source']['user']['screen_name'].'</a>
+                                                        <span>'.$external_source['_source']['user']['name'].'</span>
+                                                        <span>('.$external_source['_source']['platform'].')</span>
+                                                    </p>
+                                                    <div class="text">'.nl2br($external_source['_source']['text']).'</div>
+                                                </li>
+                                            </ul>
+                                        ';
+                                    }
                                 }
 
-                                $html.= '</ul>'.PHP_EOL;
-                            }
+                            break;
+                            case 'article':
 
-                            if ($source['breadcrumb'])
-                            {
-                                $html.= '<ul>'.PHP_EOL;
+                                $html.= '<a class="url" href="'.$source['url'].'" target="_blank">'.$source['url'].'</a>';
+                                $html.= '<div class="text">'.nl2br($source['description']).'</div>';
 
-                                foreach ($source['breadcrumb'] as $key => $segment)
+                            break;
+                            case 'entry':
+
+                                $html.= '<a class="url" href="'.$source['url'].'" target="_blank">'.$source['url'].'</a>';
+                                $html.= '<div class="text">'.nl2br($source['entry']).'</div>';
+
+                            break;
+                            case 'product':
+
+                                if (@$source['address'])
                                 {
-                                    $html.= '<li>'.$segment['segment'].'</li>'.PHP_EOL;
+                                    $html.= '<ul>';
+
+                                    foreach ($source['address'] as $key => $segment)
+                                    {
+                                        $html.= '<li>'.$segment['segment'].'</li>';
+                                    }
+
+                                    $html.= '</ul>';
                                 }
 
-                                $html.= '</ul>'.PHP_EOL;
-                            }
-
-                            $html.= '<a href="'.$source['url'].'" target="_blank">'.str_limit($source['url'], 96).'</a>'.PHP_EOL;
-                            $html.= '<div>'.PHP_EOL;
-                            $html.= '<span>'.title_case($source['seller']['name']).'</span>'.PHP_EOL;
-
-                            if (@$source['seller']['phones'])
-                            {
-                                $html.= '<ul>'.PHP_EOL;
-
-                                foreach ($source['seller']['phones'] as $key => $phone)
+                                if ($source['breadcrumb'])
                                 {
-                                    $html.= '<li>'.$phone['phone'].'</li>'.PHP_EOL;
+                                    $html.= '<ul>';
+
+                                    foreach ($source['breadcrumb'] as $key => $segment)
+                                    {
+                                        $html.= '<li>'.$segment['segment'].'</li>';
+                                    }
+
+                                    $html.= '</ul>';
                                 }
 
-                                $html.= '</ul>'.PHP_EOL;
-                            }
+                                $html.= '<a href="'.$source['url'].'" target="_blank">'.$source['url'].'</a>';
+                                $html.= '<div>';
+                                $html.= '<span>'.title_case($source['seller']['name']).'</span>';
 
-                            $html.= '</div>'.PHP_EOL;
+                                if (@$source['seller']['phones'])
+                                {
+                                    $html.= '<ul>';
 
-                            if ($source['description'])
-                            {
-                                $html.= '<div>'.nl2br($source['description']).'</div>'.PHP_EOL;
-                            }
+                                    foreach ($source['seller']['phones'] as $key => $phone)
+                                    {
+                                        $html.= '<li>'.$phone['phone'].'</li>';
+                                    }
 
-                            $html.= '<p>'.PHP_EOL;
-                            $html.= '  <span>'.number_format($source['price']['amount']).'</span>'.PHP_EOL;
-                            $html.= '  <span>'.$source['price']['currency'].'</span>'.PHP_EOL;
-                            $html.= '</p>'.PHP_EOL;
+                                    $html.= '</ul>';
+                                }
+
+                                $html.= '</div>';
+
+                                if ($source['description'])
+                                {
+                                    $html.= '<div class="text">'.nl2br($source['description']).'</div>';
+                                }
+
+                                $html.= '<p>';
+                                $html.= '   <span>'.number_format($source['price']['amount']).'</span>';
+                                $html.= '   <span>'.$source['price']['currency'].'</span>';
+                                $html.= '</p>';
+
+                            break;
+                            case 'comment':
+
+                                $html.= '<a class="url" href="https://www.youtube.com/watch?v='.$source['video_id'].'" target="_blank">https://www.youtube.com/watch?v='.$source['video_id'].'</a>';
+                                $html.= '<p>';
+                                $html.= '   <a href="https://www.youtube.com/channel/'.$source['channel']['id'].'" target="_blank">@'.$source['channel']['title'].'</a>';
+                                $html.= '</p>';
+                                $html.= '<div class="text">'.nl2br($source['text']).'</div>';
+
+                            break;
+                            case 'video':
+
+                                $html.= '<a class="url" href="https://www.youtube.com/watch?v='.$source['id'].'" target="_blank">https://www.youtube.com/watch?v='.$source['id'].'</a>';
+                                $html.= '<p>';
+                                $html.= '   <a href="https://www.youtube.com/channel/'.$source['channel']['id'].'" target="_blank">@'.$source['channel']['title'].'</a>';
+                                $html.= '</p>';
+
+                                if ($source['description'])
+                                {
+                                    $html.= '<div class="text">'.nl2br($source['description']).'</div>';
+                                }
+
+                            break;
                         }
-                        elseif ($type == 'comment')
-                        {
-                            $html.= '<a href="https://www.youtube.com/watch?v='.$source['video_id'].'" target="_blank">https:\/\/www.youtube.com/watch?v='.$source['video_id'].'</a>'.PHP_EOL;
-                            $html.= '<p>'.PHP_EOL;
-                            $html.= '  <a href="https://www.youtube.com/channel/'.$source['channel']['id'].'" target="_blank">@'.$source['channel']['title'].'</a>'.PHP_EOL;
-                            $html.= '</p>'.PHP_EOL;
-                            $html.= '<div>'.nl2br($source['text']).'</div>'.PHP_EOL;
-                        }
-                        elseif ($type == 'video')
-                        {
-                            $html.= '<a href="https://www.youtube.com/watch?v='.$source['id'].'" target="_blank">https://www.youtube.com/watch?v='.$source['id'].'</a>'.PHP_EOL;
-                            $html.= '<p>'.PHP_EOL;
-                            $html.= '  <a href="https://www.youtube.com/channel/'.$source['channel']['id'].'" target="_blank">@'.$source['channel']['title'].'</a>'.PHP_EOL;
-                            $html.= '</p>'.PHP_EOL;
 
-                            if ($source['description'])
-                            {
-                                $html.= '<div>'.nl2br($source['description']).'</div>'.PHP_EOL;
-                            }
-                        }
-
-                        $html.= '<div>'.$pin->comment.'</div>'.PHP_EOL;
+                        $sentiment = @$source['sentiment'];
 
                         if ($sentiment)
                         {
-                            $html.= '<div>'.PHP_EOL;
-                            $html.= '  <div style="width: '.($sentiment['pos']*100).'%;"></div>'.PHP_EOL;
-                            $html.= '  <div style="width: '.($sentiment['neu']*100).'%;"></div>'.PHP_EOL;
-                            $html.= '  <div style="width: '.($sentiment['neg']*100).'%;"></div>'.PHP_EOL;
-                            $html.= '</div>'.PHP_EOL;
+                            $html.= '<div class="sentiment clearfix">';
+                            $html.= '  <div style="width: '.intval($sentiment['pos']*100).'%;" class="sentiment-item green left">';
+
+                            if ($sentiment['pos'] > 0.2)
+                            {
+                                $html.= '  <span>Pozitif</span>';
+                                $html.= '  <span>'.($sentiment['pos']*100).'%</span>';
+                            }
+                            $html.= '  </div>';
+
+                            $html.= '  <div style="width: '.intval($sentiment['neu']*100).'%;" class="sentiment-item grey left">';
+
+                            if ($sentiment['neu'] > 0.2)
+                            {
+                                $html.= '  <span>Nötr</span>';
+                                $html.= '  <span>'.($sentiment['neu']*100).'%</span>';
+                            }
+
+                            $html.= '  </div>';
+
+                            $html.= '  <div style="width: '.intval($sentiment['neg']*100).'%;" class="sentiment-item red left">';
+
+                            if ($sentiment['neg'] > 0.2)
+                            {
+                                $html.= '  <span>Negatif</span>';
+                                $html.= '  <span>'.($sentiment['neg']*100).'%</span>';
+                            }
+
+                            $html.= '  </div>';
+                            $html.= '</div>';
                         }
 
-                        $html.= '</div>'.PHP_EOL;
+                        if ($pin->comment)
+                        {
+                            $html.= '<div class="pin-comment">'.nl2br($pin->comment).'</div>';
+                        }
+
+                        $html.= '</div>';
                     }
                     else
                     {
-                        $html.= '<p>Kaynak Okunamadı.</p>'.PHP_EOL;
+                        $html = '<div class="data">';
+                        $html.= '   <p>Kaynak Okunamadı.</p>';
+                        $html.= '</div>';
                     }
+
+                    $html.= '<div class="page-break"></div>';
 
                     file_put_contents(public_path($html_path), $html, FILE_APPEND | LOCK_EX);
                 }
 
-                file_put_contents(public_path($html_path), $html, FILE_APPEND | LOCK_EX);
+                $html = '
+                    </body>
+                    </html>
+                ';
 
-                $pdf = PDF::loadFile(public_path($html_path))->save(public_path($pdf_path));
+                file_put_contents(public_path($html_path), $html, FILE_APPEND | LOCK_EX);
 
                 $pg->html_path = $html_path;
                 $pg->pdf_path = $pdf_path;
+
+                try
+                {
+                    $pdf = PDF::loadFile(public_path($html_path))->save(public_path($pdf_path));
+
+                    $pg->html_to_pdf = 'success';
+
+                    // tamamlandı push
+                }
+                catch (\Exception $e)
+                {
+                    System::log(json_encode([ $e->getMessage() ]), 'App\Jobs\RealTime::handle('.$this->id.')', 10);
+
+                    // tamamlanamadı push
+                }
             }
 
-            $pg->html_to_pdf = 'success';
             $pg->completed_at = date('Y-m-d H:i:s');
-
             $pg->save();
-
-            // push bildirim.
         }
     }
 }

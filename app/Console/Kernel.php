@@ -63,6 +63,11 @@ class Kernel extends ConsoleKernel
             #
             $schedule->command('nohup "twitter:account_control" --type=restart')->hourly()->timezone(config('app.timezone'));
 
+            #
+            # Pinlemeler için pdf çıktı al.
+            #
+            # $schedule->command('trigger:pdf:pin_groups')->everyMinute()->timezone(config('app.timezone'));
+
             /* ---------------------------------------- */
 
 
