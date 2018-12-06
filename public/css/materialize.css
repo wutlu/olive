@@ -10371,7 +10371,7 @@ ul.partners > li.partner {
 }
 
 .fast-menu {
-  margin-bottom: 1rem;
+  margin-bottom: 12px;
 
   display: -ms-flexbox;
   display: flex;
@@ -10382,9 +10382,6 @@ ul.partners > li.partner {
   -ms-flex-pack: justify;
   justify-content: space-between;
 }
-.fast-menu > a.card-panel {
-
-}
 .fast-menu > a.card-panel > img {
   max-width: 64px;
 }
@@ -10393,6 +10390,25 @@ ul.partners > li.partner {
   .fast-menu > a.card-panel > img {
     max-width: 24px;
   }
+}
+
+/*
+ * Arama
+ */
+.search-wrapper {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100000;
+  background-color: rgba(255, 255, 255, .9);
+  padding: 10% 20%;
+  display: none;
+}
+.search-wrapper > .search-content > input[type=search] {
+  background-color: #fff;
+  padding: 1rem;
 }
 
 /*

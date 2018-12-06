@@ -63,6 +63,27 @@ return [
         'shopping' => 'Alışveriş',
     ],
 
+    'search' => [
+        'modules' => [
+            1 => [
+                'name' => 'Gerçek Zamanlı',
+                'route' => 'realtime.stream'
+            ],
+            2 => [
+                'name' => 'Pin Grupları',
+                'route' => 'pin.groups'
+            ],
+            3 => [
+                'name' => 'Twitter Kelime Takip Havuzu',
+                'route' => 'twitter.keyword.list'
+            ],
+            4 => [
+                'name' => 'Twitter Kullanıcı Takip Havuzu',
+                'route' => 'twitter.account.list'
+            ]
+        ]
+    ],
+
     'log_files' => [
         base_path('supervisor/logs/crawler.log'),
         base_path('supervisor/logs/elasticsearch.log'),

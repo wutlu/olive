@@ -9,6 +9,9 @@ Route::post('route-by-id', 'RouteController@generateById')->name('route.generate
 Route::post('panel-monitor', 'HomeController@monitor')->name('dashboard.monitor');
 Route::post('intro/{key}', 'HomeController@intro')->name('intro')->where('key', '('.implode('|', config('app.intro.keys')).')');
 
+Route::post('modul-ara', 'ModuleSearchController@search')->name('module.search');
+Route::post('modul-git', 'ModuleSearchController@go')->name('module.go');
+
 Route::prefix('organizasyon')->group(function () {
     Route::get('plan', 'OrganisationController@select')->name('organisation.create.select');
     Route::get('plan/{id}', 'OrganisationController@details')->name('organisation.create.details');

@@ -21,7 +21,8 @@ class DatabaseSeeder extends Seeder
             SozlukCrawlersTableSeeder::class,
             ShoppingCrawlersTableSeeder::class,
             TwitterTokensTableSeeder::class,
-            OptionTableSeeder::class
+            OptionTableSeeder::class,
+            ModuleSearchTableSeeder::class
         ]);
     }
 }

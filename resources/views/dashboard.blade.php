@@ -2,6 +2,13 @@
     'sidenav_fixed_layout' => true
 ])
 
+@push('local.scripts')
+    $('.carousel.carousel-slider').carousel({
+        fullWidth: true,
+        indicators: true
+    })
+@endpush
+
 @section('content')
     <div class="row">
         <div class="col s12">
@@ -33,7 +40,7 @@
             @if (@auth()->user()->organisation_id)
                 <div class="card" id="organisation-card">
                     <div class="card-image">
-                        <img src="{{ asset('img/user-background.jpg') }}" alt="" />
+                        <img src="{{ asset('img/md/24.jpg') }}" alt="" />
                         <span class="card-title">{{ $user->organisation->name }}</span>
                         <a href="{{ route('settings.organisation') }}" class="btn-floating btn-large halfway-fab waves-effect white">
                             <i class="material-icons black-text">settings</i>

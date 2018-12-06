@@ -392,7 +392,7 @@ class PdfJob implements ShouldQueue
                                     'type' => 'http',
                                     'method' => 'GET',
                                     'action' => url($pg->pdf_path),
-                                    'class' => 'btn green waves-effect',
+                                    'class' => 'btn cyan waves-effect',
                                     'text' => 'İndir'
                                 ]
                             ]

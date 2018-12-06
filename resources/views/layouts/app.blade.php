@@ -103,7 +103,7 @@
                     </a>
                 </li>
             </ul>
-            <nav class="light-blue darken-4">
+            <nav class="cyan">
                 <div class="sidenav-fixed-layout">
                     <div class="nav-wrapper">
                         <a href="{{ route('dashboard') }}" class="brand-logo center">
@@ -138,7 +138,7 @@
                 <div class="user-view">
                     <small class="white-text right">Yapı {{ config('app.version') }}</small>
 
-                    <div class="background" style="background-image: url('{{ asset('img/md/25.jpg') }}');"></div>
+                    <div class="background" style="background-image: url('{{ asset('img/md/24.jpg') }}');"></div>
 
                     <img alt="{{ auth()->user()->name }}" class="circle" src="{{ asset(auth()->user()->avatar()) }}" />
 
@@ -319,7 +319,7 @@
         @endpush
 
         @isset($breadcrumb)
-        <nav class="grey darken-4" id="breadcrumb">
+        <nav class="cyan darken-2" id="breadcrumb">
             <div class="sidenav-fixed-layout">
                 <div class="container">
                     <a href="{{ route('dashboard') }}" class="breadcrumb">Olive</a>
@@ -360,6 +360,93 @@
     @endisset
 
     @auth
+        <div class="fixed-action-btn">
+            <a data-trigger="module-search" class="btn-floating btn-large cyan darken-2 waves-effect" data-tooltip="Modül Ara (CTRL + G)" data-position="left">
+                <i class="large material-icons">search</i>
+            </a>
+        </div>
+
+        <div class="search-wrapper" id="module-search">
+            <div class="search-content">
+                <div class="input-field">
+                    <i class="material-icons prefix">search</i>
+                    <input
+                        name="search_input"
+                        id="search_input"
+                        type="text"
+                        class="validate json"
+                        data-href="{{ route('module.search') }}"
+                        data-method="post"
+                        data-callback="__module_search" />
+                    <label for="search_input">Arayın</label>
+                </div>
+                <div class="collection" id="module_search_results"></div>
+                <div class="right-align">
+                    <a href="#" class="btn-flat waves-effect" data-trigger="module-search-close">Tamam</a>
+                </div>
+            </div>
+        </div>
+
+        @push('local.scripts')
+            $(document).keypress('g',function(e) {
+                if (e.ctrlKey)
+                {
+                    $('[data-trigger=module-search]').click()
+
+                    e.preventDefault()
+                }
+            })
+
+            $(document).on('click', '[data-trigger=module-search]', function() {
+                var search_wrapper = $('#module-search');
+                var input = search_wrapper.find('input[name=search_input]');
+                    search_wrapper.fadeIn(200)
+                    vzAjax(input)
+
+                    setTimeout(function() {
+                        input.focus()
+                    }, 200)
+            }).on('keyup', '[name=search_input]', function(e) {
+                if (e.which == 27)
+                {
+                    $('#module-search').fadeOut(200)
+                }
+            }).on('click', '[data-trigger=module-search-close]', function() {
+                $('#module-search').fadeOut(200)
+            }).on('click', '.search-wrapper', function() {
+                var search_wrapper = $('#module-search');
+                    search_wrapper.find('input[name=search_input]').focus();
+            })
+
+            function __module_search(__, obj)
+            {
+                if (obj.status == 'ok')
+                {
+                    var collections = $('#module_search_results');
+
+                    if (obj.data.length)
+                    {
+                        collections.html('')
+                    }
+
+                    if (obj.data.length)
+                    {
+                        $.each (obj.data, function(key, o) {
+                            $('<a />', {
+                                'class': 'collection-item waves-effect json',
+                                'data-href': '{{ route('module.go') }}',
+                                'data-method': 'post',
+                                'data-callback': '__go',
+                                'html': o.name,
+                                'data-module_id': o.module_id,
+                                'data-include': 'search_input'
+                            }).appendTo(collections)
+                        })
+                    }
+                }
+            }
+        @endpush
+
         <div class="load" data-href="{{ route('dashboard.monitor') }}" data-method="post" data-callback="__monitor"></div>
         <div class="push-notifications">
             <div class="notification d-none _model">

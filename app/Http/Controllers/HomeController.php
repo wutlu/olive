@@ -13,20 +13,6 @@ use App\Models\Option;
 
 use App\Ticket;
 
-use App\Models\Crawlers\MediaCrawler;
-use App\Models\Crawlers\SozlukCrawler;
-
-use System;
-
-use App\Elasticsearch\Indices;
-use App\Elasticsearch\Document;
-
-use App\Utilities\Crawler;
-use Mail;
-use App\Mail\ServerAlertMail;
-
-use App\Models\Proxy;
-
 class HomeController extends Controller
 {
     public function __construct()
