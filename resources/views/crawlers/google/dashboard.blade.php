@@ -36,8 +36,9 @@
         <div class="card-content red d-none" data-name="alert"></div>
     </div>
     <div class="card">
-        <div class="card-content">
-            <span class="card-title mb-0">Hata Logları</span>
+        <div class="card-image">
+            <img src="{{ asset('img/card-header.jpg') }}" alt="Hata Logları" />
+            <span class="card-title">Hata Logları</span>
         </div>
         <div class="card-content grey-text">Log takibini log monitörü bölümünden de yapabilirsiniz. Bu alan sadece "Google" modülü ile ilgili logları gösterir.</div>
         <ul

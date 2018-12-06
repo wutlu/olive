@@ -388,8 +388,8 @@
         </div>
 
         @push('local.scripts')
-            $(document).keypress('g',function(e) {
-                if (e.ctrlKey)
+            $(document).keydown(function(e) {
+                if (e.ctrlKey && e.keyCode == 71)
                 {
                     $('[data-trigger=module-search]').click()
 

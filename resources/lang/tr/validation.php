@@ -227,5 +227,6 @@ return [
         'keyword_group.*'              => 'Kelime Grubu',
         'group_id'                     => 'Grup',
         'index'                        => 'Indeks',
+        'comment'                      => 'Yorum',
     ],
 ];

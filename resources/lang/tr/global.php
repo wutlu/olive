@@ -16,7 +16,7 @@ return [
     ],
     'errors' => [
         'disconnected' => 'İnternete bağlı değilsiniz.',
-        'time_out' => 'Sayfa zaman aşımına uğradı. Lütfen sayfayı yenileyin ve tekrar deneyin.',
+        'time_out' => 'Oturumunuz sona erdi. Lütfen tekrar giriş yapın.',
         'calm' => 'Birkaç dakika sonra tekrar deneyebilirsiniz.',
         'notfound' => 'Kaynak bulunamadı.',
         'exited' => 'Oturumunuz sona erdi. Lütfen tekrar giriş yapın.',
