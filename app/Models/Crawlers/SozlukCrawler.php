@@ -23,7 +23,8 @@ class SozlukCrawler extends Model
         'chunk',
 
         'status',
-        'pid'
+        'pid',
+        'proxy',
     ];
 
     public function getPidAttribute($pid)

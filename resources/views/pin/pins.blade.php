@@ -159,31 +159,6 @@
                             <span class="grey-text">({{ $source['platform'] }})</span>
                         </p>
                         <div class="text grey-text text-darken-2">{!! nl2br($source['text']) !!}</div>
-
-                        @isset ($source['external'])
-                            @php
-                            $external_source = $pin->document($source['external']['id']);
-                            @endphp
-
-                            @if ($external_source)
-                                <ul class="collapsible">
-                                    <li>
-                                        <div class="collapsible-header">Asıl Tweet</div>
-                                        <div class="card collapsible-body">
-                                            <div class="card-content">
-                                                <a href="https://twitter.com/{{ $external_source['_source']['user']['screen_name'] }}/status/{{ $external_source['_source']['id'] }}" target="_blank">https://twitter.com/{{ $external_source['_source']['user']['screen_name'] }}/status/{{ $external_source['_source']['id'] }}</a>
-                                                <p>
-                                                    <a href="https://twitter.com/intent/user?user_id={{ $external_source['_source']['user']['id'] }}" target="_blank" class="red-text">{{ '@'.$external_source['_source']['user']['screen_name'] }}</a>
-                                                    <span class="grey-text">{{ $external_source['_source']['user']['name'] }}</span>
-                                                    <span class="grey-text">({{ $external_source['_source']['platform'] }})</span>
-                                                </p>
-                                                <div class="text grey-text text-darken-2">{!! nl2br($external_source['_source']['text']) !!}</div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            @endif
-                        @endif
                     @elseif ($type == 'article')
                         <a href="{{ $source['url'] }}" target="_blank">{{ str_limit($source['url'], 96) }}</a>
                         <div class="text grey-text text-darken-2">{!! nl2br($source['description']) !!}</div>
@@ -239,6 +214,33 @@
                         @endisset
                     @endif
                 </div>
+                @isset ($source['external'])
+                    <div class="card-content">
+                        @php
+                        $external_source = $pin->document($source['external']['id']);
+                        @endphp
+
+                        @if ($external_source)
+                            <ul class="collapsible">
+                                <li>
+                                    <div class="collapsible-header">
+                                        <span>
+                                            <span class="red-text">{{ '@'.$external_source['_source']['user']['screen_name'] }}</span>
+                                            <span class="grey-text">{{ $external_source['_source']['user']['name'] }}</span>
+                                            <span class="grey-text">({{ $external_source['_source']['platform'] }})</span>
+                                        </span>
+                                    </div>
+                                    <div class="collapsible-body">
+                                        <div style="padding: 24px;">
+                                            <a href="https://twitter.com/{{ $external_source['_source']['user']['screen_name'] }}/status/{{ $external_source['_source']['id'] }}" target="_blank">https://twitter.com/{{ $external_source['_source']['user']['screen_name'] }}/status/{{ $external_source['_source']['id'] }}</a>
+                                            <div class="text grey-text text-darken-2">{!! nl2br($external_source['_source']['text']) !!}</div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        @endif
+                    </div>
+                @endif
                 <div class="card-comment">
                     <div class="input-field">
                         <textarea

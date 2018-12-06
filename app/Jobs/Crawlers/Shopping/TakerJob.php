@@ -57,7 +57,7 @@ class TakerJob implements ShouldQueue
 				'seller_name' => $crawler->selector_seller_name,
                 'seller_phones' => $crawler->selector_seller_phones,
 				'price' => $crawler->selector_price
-            ]);
+            ], $crawler->proxy);
 
             if ($item->status == 'ok')
             {

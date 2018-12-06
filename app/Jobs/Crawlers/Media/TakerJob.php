@@ -47,7 +47,13 @@ class TakerJob implements ShouldQueue
 
         if (@$crawler)
         {
-            $item = Crawler::articleDetection($crawler->site, $this->data['url'], $crawler->selector_title, $crawler->selector_description);
+            $item = Crawler::articleDetection(
+                $crawler->site,
+                $this->data['url'],
+                $crawler->selector_title,
+                $crawler->selector_description,
+                $crawler->proxy
+            );
 
             if ($item->status == 'ok')
             {

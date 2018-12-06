@@ -35,7 +35,8 @@ class UpdateRequest extends FormRequest
             'last_id'              => 'required|integer|min:0',
             'max_attempt'          => 'required|integer|max:1000|min:10',
             'deep_try'             => 'required|integer|max:100|min:1',
-            'test_count'           => 'required|integer|max:100|min:1'
+            'test_count'           => 'required|integer|max:100|min:1',
+            'proxy'                => 'nullable|string|in:on',
         ];
     }
 }

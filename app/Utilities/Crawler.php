@@ -16,7 +16,7 @@ use App\Models\Proxy;
 class Crawler
 {
     # link detection
-    public static function mediaLinkDetection(string $site, string $url_pattern, string $base = '/')
+    public static function mediaLinkDetection(string $site, string $url_pattern, string $base = '/', bool $proxy = false)
     {
         $data = [];
 
@@ -35,14 +35,15 @@ class Crawler
                 ]
             ];
 
-            /*
-            $proxy = Proxy::where('health', '>', 5)->inRandomOrder()->first();
-
-            if (@$proxy)
+            if ($proxy)
             {
-                $arr['proxy'] = $proxy->proxy;
+                $p = Proxy::where('health', '>', 7)->inRandomOrder()->first();
+
+                if (@$p)
+                {
+                    $arr['proxy'] = $p->proxy;
+                }
             }
-            */
 
             $dom = $client->get($base, $arr)->getBody();
 
@@ -94,7 +95,7 @@ class Crawler
                     ]
                 ];
 
-                $proxy = Proxy::where('health', '>', 5)->inRandomOrder()->first();
+                $proxy = Proxy::where('health', '>', 7)->inRandomOrder()->first();
 
                 if (@$proxy)
                 {
@@ -129,7 +130,7 @@ class Crawler
     }
 
     # article detection
-    public static function articleDetection(string $site, string $page, string $title_selector, string $description_selector)
+    public static function articleDetection(string $site, string $page, string $title_selector, string $description_selector, bool $proxy = false)
     {
         $data['page'] = $page;
 
@@ -148,14 +149,15 @@ class Crawler
                 ]
             ];
 
-            /*
-            $proxy = Proxy::where('health', '>', 5)->inRandomOrder()->first();
-
-            if (@$proxy)
+            if ($proxy)
             {
-                $arr['proxy'] = $proxy->proxy;
+                $p = Proxy::where('health', '>', 7)->inRandomOrder()->first();
+
+                if (@$p)
+                {
+                    $arr['proxy'] = $p->proxy;
+                }
             }
-            */
 
             $dom = $client->get($page, $arr)->getBody();
 
@@ -249,7 +251,7 @@ class Crawler
     }
 
     # article detection
-    public static function productDetection(string $site, string $page, array $selector)
+    public static function productDetection(string $site, string $page, array $selector, bool $proxy = false)
     {
         $selector = (object) $selector;
 
@@ -277,11 +279,14 @@ class Crawler
                 ]
             ];
 
-            $proxy = Proxy::where('health', '>', 5)->inRandomOrder()->first();
-
-            if (@$proxy)
+            if ($proxy)
             {
-                $arr['proxy'] = $proxy->proxy;
+                $p = Proxy::where('health', '>', 7)->inRandomOrder()->first();
+
+                if (@$p)
+                {
+                    $arr['proxy'] = $p->proxy;
+                }
             }
 
             $dom = $client->get($page, $arr)->getBody();
@@ -449,7 +454,7 @@ class Crawler
     }
 
     # entry detection
-    public static function entryDetection(string $site, string $page, int $id, string $title_selector, string $entry_selector, string $author_selector)
+    public static function entryDetection(string $site, string $page, int $id, string $title_selector, string $entry_selector, string $author_selector, bool $proxy = false)
     {
         $data['page'] = $site.'/'.str_replace('__id__', $id, $page);
 
@@ -468,14 +473,15 @@ class Crawler
                 ]
             ];
 
-            /*
-            $proxy = Proxy::where('health', '>', 5)->inRandomOrder()->first();
-
-            if (@$proxy)
+            if ($proxy)
             {
-                $arr['proxy'] = $proxy->proxy;
+                $p = Proxy::where('health', '>', 7)->inRandomOrder()->first();
+
+                if (@$p)
+                {
+                    $arr['proxy'] = $p->proxy;
+                }
             }
-            */
 
             $dom = $client->get($data['page'], $arr)->getBody();
 

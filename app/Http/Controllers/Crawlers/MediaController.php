@@ -269,6 +269,7 @@ class MediaController extends Controller
             if ($accepted > $total/3)
             {
                 $crawler->fill($request->all());
+                $crawler->proxy = $request->proxy ? true : false;
                 $crawler->test = true;
                 $crawler->error_count = 0;
                 $crawler->off_reason = null;

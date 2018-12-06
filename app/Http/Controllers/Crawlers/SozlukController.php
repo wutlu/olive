@@ -231,7 +231,8 @@ class SozlukController extends Controller
                 $i,
                 $request->selector_title,
                 $request->selector_entry,
-                $request->selector_author
+                $request->selector_author,
+                $crawler->proxy
             );
 
             $data['items'][] = $item;
@@ -247,6 +248,7 @@ class SozlukController extends Controller
         if ($accepted > $total/3)
         {
             $crawler->fill($request->all());
+            $crawler->proxy = $request->proxy ? true : false;
             $crawler->test = true;
             $crawler->off_reason = null;
             $crawler->status = false;

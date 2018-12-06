@@ -255,6 +255,15 @@
                             </div>
                         </div>
                     </div>
+                    <label class="collection-item waves-effect d-block">
+                        <input
+                            name="proxy"
+                            id="proxy"
+                            value="on"
+                            type="checkbox"
+                            {{ $crawler->proxy ? 'checked' : '' }} />
+                        <span>Proxy Kullan</span>
+                    </label>
                 </div>
             </div>
             <div class="card-content yellow lighten-4">Bu aşamada girilen değerler test edilir. Test sonucu olumlu olmadığı sürece değerler kaydedilmeyecektir.</div>
