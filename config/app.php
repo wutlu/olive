@@ -80,6 +80,10 @@ return [
             4 => [
                 'name' => 'Twitter Kullanıcı Takip Havuzu',
                 'route' => 'twitter.account.list'
+            ],
+            5 => [
+                'name' => 'Destek',
+                'route' => 'settings.support'
             ]
         ]
     ],

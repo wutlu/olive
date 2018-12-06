@@ -400,7 +400,9 @@
             $(document).on('click', '[data-trigger=module-search]', function() {
                 var search_wrapper = $('#module-search');
                 var input = search_wrapper.find('input[name=search_input]');
-                    search_wrapper.fadeIn(200)
+
+                $('body').addClass('module-search-active')
+
                     vzAjax(input)
 
                     setTimeout(function() {
@@ -409,10 +411,10 @@
             }).on('keyup', '[name=search_input]', function(e) {
                 if (e.which == 27)
                 {
-                    $('#module-search').fadeOut(200)
+                    $('body').removeClass('module-search-active')
                 }
             }).on('click', '[data-trigger=module-search-close]', function() {
-                $('#module-search').fadeOut(200)
+                $('body').removeClass('module-search-active')
             }).on('click', '.search-wrapper', function() {
                 var search_wrapper = $('#module-search');
                     search_wrapper.find('input[name=search_input]').focus();

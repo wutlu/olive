@@ -10402,13 +10402,23 @@ ul.partners > li.partner {
   bottom: 0;
   left: 0;
   z-index: 100000;
-  background-color: rgba(255, 255, 255, .9);
+
   padding: 10% 20%;
+  background-color: rgba(255, 255, 255, .9);
   display: none;
+
+  overflow: auto;
 }
 .search-wrapper > .search-content > input[type=search] {
   background-color: #fff;
   padding: 1rem;
+}
+
+body.module-search-active {
+  overflow: hidden;
+}
+body.module-search-active > .search-wrapper {
+  display: initial;
 }
 
 /*
