@@ -35,9 +35,9 @@ class HomeController extends Controller
             'dashboard',
             'activity',
             'intro',
-            'alert'
+            'alert',
+            'monitor'
         ]);
-        $this->middleware('root')->only('monitor');
     }
 
     # 
@@ -97,13 +97,44 @@ class HomeController extends Controller
     # monitor
     public static function monitor()
     {
+        $data = [
+            'ticket' => [
+                'count' => 0
+            ],
+            'push_notifications' => []
+        ];
+        $user = auth()->user();
+
+        if ($user->root())
+        {
+            $data['ticket']['count'] = Option::where('key', 'root_alert.support')->value('value');
+        }
+
+        $activities = UserActivity::where('user_id', $user->id)->where('push_notification', 'on')->limit(3)->get();
+
+        if (count($activities))
+        {
+            foreach ($activities as $activity)
+            {
+                $data['push_notifications'][] = [
+                    'title' => $activity->title,
+                    'button' => $activity->button_type ? [
+                        'type' => $activity->button_type,
+                        'method' => $activity->button_method,
+                        'action' => $activity->button_action,
+                        'class' => $activity->button_class,
+                        'text' => $activity->button_text,
+                    ] : false
+                ];
+
+                $activity->push_notification = 'ok';
+                $activity->save();
+            }
+        }
+
         return [
             'status' => 'ok',
-            'data' => [
-                'ticket' => [
-                    'count' => Option::where('key', 'root_alert.support')->value('value')
-                ]
-            ]
+            'data' => $data
         ];
     }
 }

@@ -13,6 +13,8 @@ use App\Models\RealTime\PinGroup;
 use PDF;
 use System;
 
+use App\Utilities\UserActivityUtility as Activity;
+
 class PdfJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -377,13 +379,43 @@ class PdfJob implements ShouldQueue
 
                     $pg->html_to_pdf = 'success';
 
-                    // tamamlandı push
+                    foreach ($pg->organisation->users as $user)
+                    {
+                        Activity::push(
+                            'Pin grubu PDF dökümünüz hazırlandı.',
+                            [
+                                'push' => true,
+                                'icon' => 'picture_as_pdf',
+                                'user_id' => $user->id,
+                                'key' => implode('-', [ $user->id, 'pdf', 'export', $pg->id ]),
+                                'button' => [
+                                    'type' => 'http',
+                                    'method' => 'GET',
+                                    'action' => url($pg->pdf_path),
+                                    'class' => 'btn green waves-effect',
+                                    'text' => 'İndir'
+                                ]
+                            ]
+                        );
+                    }
                 }
                 catch (\Exception $e)
                 {
                     System::log(json_encode([ $e->getMessage() ]), 'App\Jobs\RealTime::handle('.$this->id.')', 10);
 
-                    // tamamlanamadı push
+                    foreach ($pg->organisation->users as $user)
+                    {
+                        Activity::push(
+                            'PDF dökümü alınırken bir sorun oluştu.',
+                            [
+                                'markdown' => 'Pin Grubu PDF dökümünüzü hazırlarken bir problemle karşılaştık. Lütfen tekrar deneyin.',
+                                'push' => true,
+                                'icon' => 'picture_as_pdf',
+                                'user_id' => $user->id,
+                                'key' => implode('-', [ $user->id, 'pdf', 'export', $pg->id ])
+                            ]
+                        );
+                    }
                 }
             }
 

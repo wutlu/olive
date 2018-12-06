@@ -41,6 +41,11 @@ class UserActivityUtility
             $query->markdown_color = $array['markdown_color'];
         }
 
+        if (@$array['push'])
+        {
+            $query->push_notification = 'on';
+        }
+
 		if (@$array['button'])
 		{
 			$query->button_type = $array['button']['type'];

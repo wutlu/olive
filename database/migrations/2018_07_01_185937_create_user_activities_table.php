@@ -30,7 +30,9 @@ class CreateUserActivitiesTable extends Migration
             $table->string('button_class')->nullable()->default(null);
             $table->string('button_text')->nullable()->default(null);
 
-            $table->unsignedInteger('user_id')->nullable()->default(null)->index();
+            $table->enum('push_notification', [ 'on', 'ok', 'off' ])->default('off');
+
+            $table->unsignedInteger('user_id')->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
 
             $table->timestamps();

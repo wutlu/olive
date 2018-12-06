@@ -10394,3 +10394,32 @@ ul.partners > li.partner {
     max-width: 24px;
   }
 }
+
+/*
+ * Push Bildirimler
+ */
+.push-notifications {
+  position: fixed;
+
+  top: auto;
+  right: 2rem;
+  bottom: 2rem;
+  left: auto;
+
+  z-index: 99999;
+}
+
+.push-notifications > .notification {
+  min-width: 256px;
+  max-width: 356px;
+}
+
+@media (max-width: 700px) {
+  .push-notifications {
+    bottom: 6rem;
+  }
+}
+
+.push-notifications > .notification > .card > .card-content > .card-title > .material-icons {
+  margin: 0 .4rem 0 0;
+}

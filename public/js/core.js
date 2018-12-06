@@ -428,6 +428,27 @@ $(document).ready(function() {
     }
 
     M.updateTextFields()
+
+    $.extend({
+        playSound: function () {
+            return $('<audio />', {
+                'class': 'sound-player d-none',
+                'autoplay': 'autoplay',
+                'html': $('<source />', {
+                    'src': arguments[0],
+                    'html': $('<embed />', {
+                        'src': arguments[0],
+                        'hidden': 'true',
+                        'autostart': 'true',
+                        'loop': 'false'
+                    })
+                })
+            }).appendTo('body')
+        },
+        stopSound: function () {
+            $('.sound-player').remove();
+        }
+    });
 })
 
 $('.cookie-alert').on('click', '.close', function() {

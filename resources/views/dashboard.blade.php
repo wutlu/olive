@@ -140,8 +140,7 @@
                                             var button = $('<a />', {
                                                 'class': o.button_class,
                                                 'html': o.button_text,
-                                                'href': o.button_action,
-                                                'data-method': o.button_method
+                                                'href': o.button_action
                                             });
                                         }
 
@@ -164,11 +163,12 @@
                 data-take="10"
                 data-more-button="#activities-more_button"
                 data-callback="__activities"
+                data-method="post"
                 data-nothing>
                 <li class="nothing d-none">
                     <div class="not-found">
-                        <i class="material-icons">cloud</i>
-                        <i class="material-icons">cloud</i>
+                        <i class="material-icons white-text">cloud</i>
+                        <i class="material-icons white-text">cloud</i>
                         <i class="material-icons">wb_sunny</i>
                     </div>
                 </li>

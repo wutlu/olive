@@ -360,28 +360,82 @@
     @endisset
 
     @auth
-        @if (auth()->user()->root())
-            <div class="load" data-href="{{ route('dashboard.monitor') }}" data-method="post" data-callback="__monitor"></div>
-            @push('local.scripts')
-                function __monitor(__, obj)
+        <div class="load" data-href="{{ route('dashboard.monitor') }}" data-method="post" data-callback="__monitor"></div>
+        <div class="push-notifications">
+            <div class="notification d-none _model">
+                <div class="card">
+                    <div class="card-content">
+                        <p data-name="text"></p>
+                    </div>
+                    <div class="card-action right-align">
+                        <a href="#" data-name="ok" class="btn-flat waves-effect">Tamam</a>
+                        <a href="#" data-name="action" class="d-none"></a>
+                    </div>
+                </div>
+            </div>
+        </div> 
+        @push('local.scripts')
+            function __monitor(__, obj)
+            {
+                var monitorTimer;
+
+                if (obj.status == 'ok')
                 {
-                    var monitorTimer;
+                    @if (auth()->user()->root())
+                        $('[data-id=ticket-count]').html(obj.data.ticket.count).addClass(obj.data.ticket.count > 0 ? 'red' : 'grey').removeClass(obj.data.ticket.count > 0 ? 'grey' : 'red')
+                    @endif
 
-                    if (obj.status == 'ok')
+                    if (obj.data.push_notifications.length)
                     {
-                        $('[data-id=ticket-count]').html(obj.data.ticket.count)
-                                                  .addClass(obj.data.ticket.count > 0 ? 'red' : 'grey')
-                                                  .removeClass(obj.data.ticket.count > 0 ? 'grey' : 'red')
+                        var pn = $('.push-notifications');
+                            pn_model = pn.children('.notification._model')
 
-                        window.clearTimeout(monitorTimer)
+                        $.each(obj.data.push_notifications, function(key, o) {
+                            var item = pn_model.clone();
+                                item.removeClass('_model d-none')
+                                item.find('[data-name=text]').html(o.title)
 
-                        monitorTimer = setTimeout(function() {
-                            vzAjax($('[data-callback=__monitor]'))
-                        }, 10000)
+                            if (o.button)
+                            {
+                                var button = item.find('[data-name=action]');
+
+                                if (o.button_type == 'ajax')
+                                {
+                                    button.addClass('json ' + o.button.class)
+                                          .html(o.button.text)
+                                          .attr('data-method', o.button.method)
+                                          .attr('data-href', o.button.action)
+                                }
+                                else
+                                {
+                                    button.addClass(o.button.class)
+                                          .html(o.button.text)
+                                          .attr('href', o.button.action)
+                                }
+
+                                button.removeClass('d-none')
+                            }
+
+                            item.appendTo(pn)
+                        })
+
+                        $.playSound('{{ asset('push-notification.mp3') }}')
                     }
+
+                    window.clearTimeout(monitorTimer)
+
+                    monitorTimer = setTimeout(function() {
+                        vzAjax($('[data-callback=__monitor]'))
+                    }, 10000)
                 }
-            @endpush
-        @endif
+            }
+
+            $('.push-notifications').on('click', '[data-name=ok]', function() {
+                var __ = $(this);
+                    __.closest('.notification').remove()
+
+            })
+        @endpush
     @endauth
 
     <div class="@isset($sidenav_fixed_layout){{ 'sidenav-fixed-layout' }}@endisset">

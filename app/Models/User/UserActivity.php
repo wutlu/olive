@@ -21,6 +21,7 @@ class UserActivity extends Model
 		'button_class',
 		'button_text',
 		'user_id',
+		'push_notification'
     ];
 
     public function getMarkdownAttribute($value)

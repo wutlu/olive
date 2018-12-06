@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Utilities\UserActivityUtility as Activity;
 use App\Utilities\Term;
 
-use App\Models\User\UserActivity;
 use App\Models\Organisation\Organisation;
 use App\Models\Organisation\OrganisationInvoice as Invoice;
 use App\Models\Discount\DiscountCoupon as Coupon;
