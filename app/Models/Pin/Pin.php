@@ -9,7 +9,7 @@ use App\Elasticsearch\Document;
 class Pin extends Model
 {
     protected $table = 'pins';
-    public $incrementing = false;
+    protected $primaryKey = 'tmp_id';
     protected $hidden = [
         'index',
         'type',

@@ -197,15 +197,15 @@
                     var currentValue = dataset.data[tooltipItem.index];
                     var percentage = Math.floor(((currentValue/total) * 100)+0.5);
 
-                    return percentage + "%";
+                    return percentage + '%';
                 }
             }
         },
         cutoutPercentage: 80
     };
 
-    var ramChart = $("#ram-chart");
-    var cpuChart = $("#cpu-chart");
+    var ramChart = $('#ram-chart');
+    var cpuChart = $('#cpu-chart');
 
     $(document).ready(function() {
         ramChart = new Chart(ramChart, {

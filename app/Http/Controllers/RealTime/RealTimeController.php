@@ -33,7 +33,7 @@ class RealTimeController extends Controller
     # 
     public function stream()
     {
-        $pin_groups = PinGroup::where('organisation_id', auth()->user()->organisation_id)->get();
+        $pin_groups = PinGroup::where('organisation_id', auth()->user()->organisation_id)->orderBy('updated_at', 'DESC')->get();
 
         return view('realTime.stream', compact('pin_groups'));
     }
@@ -113,27 +113,31 @@ class RealTimeController extends Controller
                     # 
                     if ($group->module_news)
                     {
-                        $query = @Document::list(
-                            [ 'articles', '*' ], 'article',
-                            [
-                                'size' => 100,
-                                'query' => [
-                                    'bool' => [
-                                        'must' => [
-                                            [
-                                                'query_string' => [ 'default_field' => 'description', 'query' => implode(' OR ', $keywords) ] // title
-                                            ]
-                                        ],
-                                        'filter' => [
-                                            [ 'range' => [ 'created_at' => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ],
-                                            [ 'match' => [ 'status' => 'ok' ] ]
+                        $q = [
+                            'size' => 100,
+                            'query' => [
+                                'bool' => [
+                                    'must' => [
+                                        [
+                                            'query_string' => [ 'fields' => [ 'description', 'title' ], 'query' => implode(' OR ', $keywords) ]
                                         ]
+                                    ],
+                                    'filter' => [
+                                        [ 'range' => [ 'created_at' => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ],
+                                        [ 'match' => [ 'status' => 'ok' ] ]
                                     ]
-                                ],
-                                'sort' => [ 'created_at' => 'DESC' ],
-                                '_source' => [ 'url', 'title', 'description', 'created_at' ]
-                            ]
-                        )->data['hits']['hits'];
+                                ]
+                            ],
+                            'sort' => [ 'created_at' => 'DESC' ],
+                            '_source' => [ 'url', 'title', 'description', 'created_at' ]
+                        ];
+
+                        if ($request->sentiment)
+                        {
+                            $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
+                        }
+
+                        $query = @Document::list([ 'articles', '*' ], 'article', $q)->data['hits']['hits'];
 
                         if ($query)
                         {
@@ -159,26 +163,30 @@ class RealTimeController extends Controller
                     # 
                     if ($group->module_sozluk)
                     {
-                        $query = @Document::list(
-                            [ 'sozluk', '*' ], 'entry',
-                            [
-                                'size' => 100,
-                                'query' => [
-                                    'bool' => [
-                                        'must' => [
-                                            [
-                                                'query_string' => [ 'default_field' => 'entry', 'query' => implode(' OR ', $keywords) ] // title
-                                            ]
-                                        ],
-                                        'filter' => [
-                                            [ 'range' => [ 'created_at' => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ]
+                        $q = [
+                            'size' => 100,
+                            'query' => [
+                                'bool' => [
+                                    'must' => [
+                                        [
+                                            'query_string' => [ 'fields' => [ 'description', 'title' ], 'query' => implode(' OR ', $keywords) ]
                                         ]
+                                    ],
+                                    'filter' => [
+                                        [ 'range' => [ 'created_at' => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ]
                                     ]
-                                ],
-                                'sort' => [ 'created_at' => 'DESC' ],
-                                '_source' => [ 'url', 'title', 'entry', 'author', 'created_at' ]
-                            ]
-                        )->data['hits']['hits'];
+                                ]
+                            ],
+                            'sort' => [ 'created_at' => 'DESC' ],
+                            '_source' => [ 'url', 'title', 'entry', 'author', 'created_at' ]
+                        ];
+
+                        if ($request->sentiment)
+                        {
+                            $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
+                        }
+
+                        $query = @Document::list([ 'sozluk', '*' ], 'entry', $q)->data['hits']['hits'];
 
                         if ($query)
                         {
@@ -205,27 +213,31 @@ class RealTimeController extends Controller
                     # 
                     if ($group->module_shopping)
                     {
-                        $query = @Document::list(
-                            [ 'shopping', '*' ], 'product',
-                            [
-                                'size' => 100,
-                                'query' => [
-                                    'bool' => [
-                                        'must' => [
-                                            [
-                                                'query_string' => [ 'default_field' => 'title', 'query' => implode(' OR ', $keywords) ] // description
-                                            ]
-                                        ],
-                                        'filter' => [
-                                            [ 'range' => [ 'created_at' => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ],
-                                            [ 'match' => [ 'status' => 'ok' ] ]
+                        $q = [
+                            'size' => 100,
+                            'query' => [
+                                'bool' => [
+                                    'must' => [
+                                        [
+                                            'query_string' => [ 'fields' => [ 'description', 'title' ], 'query' => implode(' OR ', $keywords) ]
                                         ]
+                                    ],
+                                    'filter' => [
+                                        [ 'range' => [ 'created_at' => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ],
+                                        [ 'match' => [ 'status' => 'ok' ] ]
                                     ]
-                                ],
-                                'sort' => [ 'created_at' => 'DESC' ],
-                                '_source' => [ 'url', 'title', 'description', 'created_at' ]
-                            ]
-                        )->data['hits']['hits'];
+                                ]
+                            ],
+                            'sort' => [ 'created_at' => 'DESC' ],
+                            '_source' => [ 'url', 'title', 'description', 'created_at' ]
+                        ];
+
+                        if ($request->sentiment)
+                        {
+                            $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
+                        }
+
+                        $query = @Document::list([ 'shopping', '*' ], 'product', $q)->data['hits']['hits'];
 
                         if ($query)
                         {
@@ -251,27 +263,31 @@ class RealTimeController extends Controller
                     # 
                     if ($group->module_youtube)
                     {
-                        // video
-                        $query = @Document::list(
-                            [ 'youtube', 'videos' ], 'video',
-                            [
-                                'size' => 100,
-                                'query' => [
-                                    'bool' => [
-                                        'must' => [
-                                            [
-                                                'query_string' => [ 'default_field' => 'description', 'query' => implode(' OR ', $keywords) ] // title
-                                            ]
-                                        ],
-                                        'filter' => [
-                                            [ 'range' => [ 'created_at' => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ]
+                        $q = [
+                            'size' => 100,
+                            'query' => [
+                                'bool' => [
+                                    'must' => [
+                                        [
+                                            'query_string' => [ 'fields' => [ 'description', 'title' ], 'query' => implode(' OR ', $keywords) ]
                                         ]
+                                    ],
+                                    'filter' => [
+                                        [ 'range' => [ 'created_at' => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ]
                                     ]
-                                ],
-                                'sort' => [ 'created_at' => 'DESC' ],
-                                '_source' => [ 'title', 'description', 'created_at', 'channel.title', 'channel.id' ]
-                            ]
-                        )->data['hits']['hits'];
+                                ]
+                            ],
+                            'sort' => [ 'created_at' => 'DESC' ],
+                            '_source' => [ 'title', 'description', 'created_at', 'channel.title', 'channel.id' ]
+                        ];
+
+                        if ($request->sentiment)
+                        {
+                            $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
+                        }
+
+                        // video
+                        $query = @Document::list([ 'youtube', 'videos' ], 'video', $q)->data['hits']['hits'];
 
                         if ($query)
                         {
@@ -293,27 +309,31 @@ class RealTimeController extends Controller
                             }
                         }
 
-                        // yorum
-                        $query = @Document::list(
-                            [ 'youtube', 'comments' ], 'comment',
-                            [
-                                'size' => 200,
-                                'query' => [
-                                    'bool' => [
-                                        'must' => [
-                                            [
-                                                'query_string' => [ 'default_field' => 'text', 'query' => implode(' OR ', $keywords) ]
-                                            ]
-                                        ],
-                                        'filter' => [
-                                            [ 'range' => [ 'created_at' => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ]
+                        $q = [
+                            'size' => 200,
+                            'query' => [
+                                'bool' => [
+                                    'must' => [
+                                        [
+                                            'query_string' => [ 'default_field' => 'text', 'query' => implode(' OR ', $keywords) ]
                                         ]
+                                    ],
+                                    'filter' => [
+                                        [ 'range' => [ 'created_at' => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ]
                                     ]
-                                ],
-                                'sort' => [ 'created_at' => 'DESC' ],
-                                '_source' => [ 'text', 'channel.title', 'created_at' ]
-                            ]
-                        )->data['hits']['hits'];
+                                ]
+                            ],
+                            'sort' => [ 'created_at' => 'DESC' ],
+                            '_source' => [ 'text', 'channel.title', 'created_at' ]
+                        ];
+
+                        if ($request->sentiment)
+                        {
+                            $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
+                        }
+
+                        // yorum
+                        $query = @Document::list([ 'youtube', 'comments' ], 'comment', $q)->data['hits']['hits'];
 
                         if ($query)
                         {

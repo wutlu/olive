@@ -21,18 +21,6 @@
         margin: 1rem !important;
     }
 
-    [data-name=buffer-count] {
-        background-image: url({{ asset('img/icons/filter.png') }});
-        background-repeat: no-repeat;
-        background-position: 16px center;
-        background-size: 24px 24px;
-        display: table;
-        width: 96px;
-        height: 32px;
-        line-height: 32px;
-        text-align: right;
-    }
-
     .marked {
         padding: .4rem;
         border-radius: .2rem;
@@ -85,7 +73,7 @@
         data-href="{{ route('realtime.query') }}"
         data-callback="__realtime"
         data-method="post"
-        data-include="keyword_group">
+        data-include="keyword_group,sentiment">
         <div class="card-content">
             <div class="d-flex justify-content-between">
                 <span class="card-title mr-auto mb-0 align-self-center">Gerçek Zamanlı</span>
@@ -111,7 +99,6 @@
                 <span class="align-self-center">Akışı yavaşlatmak için fareyi akışın üzerine getirin.</span>
             </p>
         </div>
-        <div data-name="buffer-count" data-tooltip="Ön Bellek" data-position="right">0</div>
         <div class="collection">
             <a
                 href="#"
@@ -289,8 +276,6 @@
             {
                 bucket.children('.collection-item:last-child').remove()
             }
-
-            $('[data-name=buffer-count]').html(buffer.length)
         }
 
         window.clearTimeout(liveTimer);
@@ -360,8 +345,8 @@
         else
         {
             buffer = [];
+
             window.clearTimeout(streamTimer)
-            $('[data-name=buffer-count]').html(0)
         }
     })
 @endpush
@@ -440,11 +425,34 @@
                     <span>{{ str_limit($group->name, 10) }}</span>
                 </label>
             @empty
-                <div class="collection-item">Pin grubu oluşturmadınız.</div>
+                <div class="collection-item red-text">Henüz pin grubu oluşturmadınız.</div>
             @endforelse
             <a class="collection-item waves-effect d-block" href="{{ route('pin.groups') }}">Tümü</a>
         </div>
-    </div> 
+    </div>
+
+    <div class="card">
+        <div class="card-content card-content-image" style="background-image: url({{ asset('img/md/31.jpg') }});">
+            <span class="card-title white-text mb-0">Duygu Analizi <sup>Beta</sup></span>
+        </div>
+        <div class="collection collection-bordered">
+            <label class="collection-item waves-effect d-block" style="padding: 12px 24px;">
+                <input autocomplete="off" name="sentiment" value="pos" class="with-gap" type="radio" />
+                <span>Pozitif</span>
+            </label>
+            <label class="collection-item waves-effect d-block" style="padding: 12px 24px;">
+                <input autocomplete="off" name="sentiment" value="neg" class="with-gap" type="radio" />
+                <span>Negatif</span>
+            </label><label class="collection-item waves-effect d-block" style="padding: 12px 24px;">
+                <input autocomplete="off" name="sentiment" value="neu" class="with-gap" type="radio" />
+                <span>Nötr</span>
+            </label>
+            <label class="collection-item waves-effect d-block" style="padding: 12px 24px;">
+                <input checked name="sentiment" value="" class="with-gap" type="radio" />
+                <span>Tümü</span>
+            </label>
+        </div>
+    </div>
 @endsection
 
 @push('local.styles')

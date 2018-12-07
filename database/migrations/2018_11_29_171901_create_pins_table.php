@@ -14,19 +14,21 @@ class CreatePinsTable extends Migration
     public function up()
     {
         Schema::create('pins', function (Blueprint $table) {
+            $table->increments('tmp_id')->unsigned();
+
             $table->string('comment')->nullable()->default(null);
 
             $table->string('index');
             $table->string('type');
             $table->string('id');
 
-            $table->index([ 'index', 'type', 'id' ]);
+            $table->unsignedInteger('group_id')->index();
+            $table->foreign('group_id')->references('id')->on('pin_groups')->onDelete('cascade')->onUpdate('cascade');
+
+            $table->unique([ 'index', 'type', 'id', 'group_id' ]);
 
             $table->unsignedInteger('organisation_id')->index();
             $table->foreign('organisation_id')->references('id')->on('organisations')->onDelete('cascade')->onUpdate('cascade');
-
-            $table->unsignedInteger('group_id')->index();
-            $table->foreign('group_id')->references('id')->on('pin_groups')->onDelete('cascade')->onUpdate('cascade');
 
             $table->unsignedInteger('user_id')->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
