@@ -172,8 +172,10 @@ class PinController extends Controller
         $pin = Pin::where([
             'index' => $request->index,
             'type' => $request->type,
-            'id' => $request->id,
-        ])->where('organisation_id', $user->organisation_id)->first();
+            'id' => $request->id
+        ])->where('organisation_id', $user->organisation_id)
+          ->where('group_id', $request->group_id)
+          ->first();
 
         if ($type == 'add')
         {

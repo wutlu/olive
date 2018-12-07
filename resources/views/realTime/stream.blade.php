@@ -37,7 +37,47 @@
         padding: .4rem;
         border-radius: .2rem;
     }
+
+    .pin-history-link {
+        background-image: url({{ asset('img/icons/pin.png') }});
+        background-repeat: no-repeat;
+        background-position: left center;
+        background-size: 32px 32px;
+        padding: 1rem 1rem 1rem 32px;
+        display: table;
+    }
 @endpush
+
+@push('external.include.header')
+    <link rel="stylesheet" href="{{ asset('css/owl.carousel.min.css?v='.config('app.version')) }}" />
+@endpush
+
+@push('external.include.footer')
+    <script src="{{ asset('js/owl.carousel.min.js?v='.config('app.version')) }}"></script>
+@endpush
+
+@push('local.scripts')
+    $('.owl-carousel').owlCarousel({
+        responsiveClass:true,
+        responsive:{
+            0:{
+                items:1
+            },
+            600:{
+                items:2
+            },
+            1440:{
+                items:3
+            }
+        },
+        autoWidth:true,
+        dotClass: 'd-none'
+    })
+@endpush
+
+@section('wildcard')
+    <div id="wildcard-pin-history" class="owl-carousel z-depth-2 d-none"></div>
+@endsection
 
 @section('content')
     <div
@@ -48,7 +88,7 @@
         data-include="keyword_group">
         <div class="card-content">
             <div class="d-flex justify-content-between">
-                <span class="card-title mb-0 align-self-center">Gerçek Zamanlı</span>
+                <span class="card-title mr-auto mb-0 align-self-center">Gerçek Zamanlı</span>
 
                 <a
                     class="btn-flat waves-effect json"
@@ -135,6 +175,15 @@
                 ]
             });
 
+            $('#wildcard-pin-history').removeClass('d-none')
+
+            $('.owl-carousel').trigger('add.owl.carousel', [$('<a />', {
+                'href': __.data('url'),
+                'class': 'pin-history-link',
+                'target': '_blank',
+                'html': str_limit(__.data('url'), 100)
+            }), 0]).trigger('refresh.owl.carousel');
+
             M.toast({ html: toastHTML.get(0).outerHTML })
 
             pin_count.html(parseInt(pin_count.html()) + 1)
@@ -169,38 +218,53 @@
                 var item = model.clone();
                     item.find('[data-name=text]').html(obj.text)
                     item.find('[data-name=created-at]').html(obj.created_at)
+                var url = '';
 
                     if (obj.module == 'twitter')
                     {
+                        url = 'https://twitter.com/' + obj.user.screen_name + '/status/' + obj._id;
+
                         item.find('[data-name=author]').html(obj.user.name + ' @' + obj.user.screen_name)
-                        item.find('[data-name=url]').html('https://twitter.com/' + obj.user.screen_name + '/status/' + obj._id)
+                        item.find('[data-name=url]').html(url)
                     }
                     else if (obj.module == 'haber')
                     {
+                        url = obj.url;
+
                         item.find('[data-name=url]').html(obj.url)
                         item.find('[data-name=title]').html(obj.title)
                     }
                     else if (obj.module == 'sozluk')
                     {
+                        url = obj.url;
+
                         item.find('[data-name=author]').html(obj.author)
                         item.find('[data-name=url]').html(obj.url)
                         item.find('[data-name=title]').html(obj.title)
                     }
                     else if (obj.module == 'alisveris')
                     {
+                        url = obj.url;
+
                         item.find('[data-name=url]').html(obj.url)
                         item.find('[data-name=title]').html(obj.title)
                     }
                     else if (obj.module == 'youtube-video')
                     {
+                        url = 'https://www.youtube.com/watch?v=' + obj._id;
+
                         item.find('[data-name=author]').html(obj.channel.title)
                         item.find('[data-name=title]').html(obj.title)
                     }
                     else if (obj.module == 'youtube-yorum')
                     {
+                        url = 'https://www.youtube.com/channel/' + obj.channel.id;
+
                         item.find('[data-name=author]').html(obj.channel.title)
                         item.find('[data-name=title]').html(obj.title)
                     }
+
+                    item.attr('data-url', url)
 
                     item.find('[data-name=title], [data-name=text]').mark(words, {
                         'element': 'span',
@@ -304,27 +368,6 @@
 
 @section('dock')
     <div class="card">
-        <div class="card-content">
-            <div class="input-field">
-                <select
-                    name="group_id"
-                    id="group_id"
-                    autocomplete="off"
-                    class="json"
-                    data-href="{{ route('pin.group') }}"
-                    data-method="post"
-                    data-callback="__pin_group">
-                    <option value="" disabled selected>Grup Seçin</option>
-                    @forelse ($pin_groups as $group)
-                        <option value="{{ $group->id }}">{{ str_limit($group->name, 10) }}</option>
-                    @empty
-                        <option value="" disabled>Henüz Grup Oluşturmadınız!</option>
-                    @endforelse
-                </select>
-                <label>Pin Grubu</label>
-            </div>
-            <a class="btn-flat waves-effect" href="{{ route('pin.groups') }}">Pin Grupları</a>
-        </div>
         <div class="card-content card-content-image" style="background-image: url({{ asset('img/md/21.jpg') }});">
             <span class="card-title white-text mb-0">Kelime Grupları</span>
         </div>
@@ -375,6 +418,33 @@
     @endcomponent
 
     <div class="card-panel teal">Takip etmek istediğiniz<br/>Kelime Grubunu aktif edin.</div>
+
+    <div class="card">
+        <div class="card-content card-content-image" style="background-image: url({{ asset('img/md/25.jpg') }});">
+            <span class="card-title white-text mb-0">Pin Grupları</span>
+        </div>
+        <div class="collection collection-bordered">
+            @forelse ($pin_groups as $group)
+                <label class="collection-item waves-effect d-block" style="padding: 12px 24px;">
+                    <input
+                        autocomplete="off"
+                        name="group_id"
+                        id="group_id-{{ $group->id }}"
+                        value="{{ $group->id }}"
+                        class="json with-gap"
+                        data-href="{{ route('pin.group') }}"
+                        data-method="post"
+                        data-delay="1"
+                        type="radio"
+                        data-callback="__pin_group" />
+                    <span>{{ str_limit($group->name, 10) }}</span>
+                </label>
+            @empty
+                <div class="collection-item">Pin grubu oluşturmadınız.</div>
+            @endforelse
+            <a class="collection-item waves-effect d-block" href="{{ route('pin.groups') }}">Tümü</a>
+        </div>
+    </div> 
 @endsection
 
 @push('local.styles')

@@ -9,13 +9,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, shring-to-fit=no, user-scalable=no" />
 
     @isset($breadcrumb)
-    @php $title = end($breadcrumb); @endphp
+        @php $title = end($breadcrumb); @endphp
     @endisset
     <!-- title -->
     <title>@yield('title', @$title ? $title['text'] : config('app.name'))</title>
-
-    <!-- font styles -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
 
     <!-- favicon -->
     <link rel="icon" href="{{ asset('img/favicon.png?v='.config('app.version')) }}" />
@@ -337,6 +334,12 @@
 
         <main>
             <div class="sidenav-fixed-layout">
+                @if (trim($__env->yieldContent('wildcard')))
+                    <div class="wildcard">
+                        @yield('wildcard')
+                    </div>
+                @endif
+
                 <div class="container">
                     @isset($dock)
                     <div id="dock-content">

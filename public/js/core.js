@@ -29,6 +29,12 @@ function number_format(number)
     return result;
 }
 
+/* --- str limit --- */
+function str_limit(text, size)
+{
+    return text.length > size ? text.slice(0, size - 1) + '...' : text;
+}
+
 /* --- routing go function --- */
 
 function __go(__, obj)
