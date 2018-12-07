@@ -241,7 +241,7 @@
     {
         if (obj.status == 'ok')
         {
-            $('[data-name=bots-count]').html(obj.data.count.active + ' / ' + obj.data.count.disabled)
+            $('[data-name=bots-count]').html(obj.data.count.active + ' / ' + (obj.data.count.active + obj.data.count.disabled))
 
             if (obj.data.elasticsearch.status == 'ok' && obj.data.elasticsearch.data._all.primaries.docs)
             {
