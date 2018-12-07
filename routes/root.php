@@ -12,8 +12,11 @@ Route::prefix('sistem-izleme')->group(function () {
 
     Route::get('kuyruk-ekrani', 'MonitorController@queue')->name('admin.monitoring.queue');
 
-    Route::get('arkaplan', 'MonitorController@background')->name('admin.monitoring.background');
-    Route::post('arkaplan', 'MonitorController@backgroundProcess');
+    Route::prefix('arkaplan')->group(function () {
+        Route::get('/', 'MonitorController@background')->name('admin.monitoring.background');
+        Route::post('islemler', 'MonitorController@backgroundProcesses')->name('admin.monitoring.background.processes');
+        Route::post('sonlandir', 'MonitorController@processKill')->name('admin.monitoring.process.kill');
+    });
 });
 
 Route::prefix('kupon-yonetimi')->group(function () {

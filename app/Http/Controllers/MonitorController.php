@@ -20,6 +20,8 @@ use App\Models\Log;
 
 use App\Http\Requests\ShellRequest;
 
+use App\Jobs\KillProcessJob;
+
 class MonitorController extends Controller
 {
     # sunucu ekranı
@@ -57,12 +59,12 @@ class MonitorController extends Controller
         $message[] = '| Bileşen | Tüketim |';
         $message[] = '| ------: | :------ |';
 
-        if ($ram_percent > 96)
+        if ($ram_percent > 90)
         {
             $message[] = '| RAM tüketimi | '.$ram_percent.'% |';
         }
 
-        if ($cpu_percent > 96)
+        if ($cpu_percent > 90)
         {
             $message[] = '| CPU tüketimi | '.$cpu_percent.'% |';
         }
@@ -128,7 +130,7 @@ class MonitorController extends Controller
         ];
     }
 
-    # log ekranı
+    # log temizle
     public static function logClear()
     {
         foreach (config('app.log_files') as $file)
@@ -146,7 +148,7 @@ class MonitorController extends Controller
         ];
     }
 
-    # kuyruk izleme
+    # kuyruk izleme (horizon)
     public static function queue()
     {
         return view('monitor.queue');
@@ -158,9 +160,10 @@ class MonitorController extends Controller
         return view('monitor.background');
     }
 
-    # arkaplan console
-    public static function backgroundProcess(ShellRequest $request)
+    # arkaplan işlemleri
+    public static function backgroundProcesses()
     {
+        $pids = [];
         $lines = [];
 
         $redis = new Redis;
@@ -171,14 +174,34 @@ class MonitorController extends Controller
         {
             foreach ($output as $key => $line)
             {
-                $lines[] = $line;
+                $split = preg_split('/(\w{2}:\w{2}:\w{2})[ ]+(\w+)[ ]+(.+)/i', $line, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+
+                $lines[] = [
+                    'time' => @$split[0],
+                    'pid' => @$split[1],
+                    'command' => @$split[2]
+                ];
+
+                $pids[@$split[1]] = true;
             }
         }
+
+        session()->flash('pids', $pids);
 
         return [
             'status' => 'ok',
             'data' => $lines,
             'queues' => ''
+        ];
+    }
+
+    # arkaplan işlem öldür
+    public static function processKill(ShellRequest $request)
+    {
+        KillProcessJob::dispatch($request->pid)->onQueue('trigger');
+
+        return [
+            'status' => 'ok'
         ];
     }
 }
