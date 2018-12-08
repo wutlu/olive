@@ -139,6 +139,8 @@ class Crawler
             'handler' => HandlerStack::create()
         ]);
 
+        $dateUtility = new DateUtility;
+
         try
         {
             $arr = [
@@ -165,16 +167,52 @@ class Crawler
 
             $saw = new Wrawler($dom);
 
+            $meta_property = $saw->get('meta[property]')->toArray();
+            $meta_name = $saw->get('meta[name]')->toArray();
+
             # title detect
             $title = $saw->get($title_selector)->toText();
+
+            if (!$title)
+            {
+                $data['status'] = 'err';
+                $data['error_reasons'][] = 'Başlık tespit edilemedi. Alternatif denendi.';
+
+                $title = @array_first($meta_property, function ($value, $key) { return @$value['property'] == 'og:title'; })['content'];
+
+                if (!$title)
+                {
+                    $title = @array_first($meta_name, function ($value, $key) { return @$value['name'] == 'twitter:title'; })['content'];
+                }
+            }
+
             $title = Term::convertAscii($title);
 
             # description detect
             $description = $saw->get($description_selector)->toText();
+
+            if (!$description)
+            {
+                $data['status'] = 'err';
+                $data['error_reasons'][] = 'Açıklama tespit edilemedi. Alternatif denendi.';
+
+                $description = @array_first($meta_property, function ($value, $key) { return @$value['property'] == 'og:description'; })['content'];
+
+                if (!$description)
+                {
+                    $description = @array_first($meta_name, function ($value, $key) { return @$value['name'] == 'twitter:description'; })['content'];
+                }
+
+                if (!$description)
+                {
+                    $description = @array_first($meta_name, function ($value, $key) { return @$value['name'] == 'description'; })['content'];
+                }
+            }
+
             $description = Term::convertAscii($description);
 
             # date detect
-            preg_match_all('/(\d{4}|\d{1,2})(\.|-| )(\d{1,2}|([a-zA-ZŞşıİğĞüÜ]{4,8}))(\.|-| )(\d{4}|\d{2})(( |, )[a-zA-ZÇçŞşığĞüÜ]{4,10})?((.| - )(\d{1,2}):(\d{1,2})(:(\d{1,2}))?((.?(\d{1,2}):(\d{1,2}))|Z)?)?/', $dom, $dates);
+            preg_match_all($dateUtility->datePattern(), $dom, $dates);
 
             $created_at = null;
 
@@ -182,7 +220,7 @@ class Crawler
             {
                 foreach ($dates[0] as $date)
                 {
-                    $date = DateUtility::isDate($date);
+                    $date = $dateUtility->isDate($date);
 
                     if ($date)
                     {
@@ -193,52 +231,51 @@ class Crawler
                 }
             }
 
-            if (!$created_at)
-            {
-                $data['error_reasons'][] = 'Tarih tespit edilemedi.';
-            }
-
             $data['data'] = [
                 'title' => $title,
                 'description' => $description,
                 'created_at' => $created_at
             ];
+            $data['status'] = 'ok';
+
+            if (!$created_at)
+            {
+                $data['error_reasons'][] = 'Tarih tespit edilemedi.';
+                $data['status'] = 'err';
+            }
 
             # title
             if ($title == null)
             {
-                $data['error_reasons'][] = 'Başlık tespit edilemedi.';
+                $data['error_reasons'][] = 'Kesinlikle başlık tespit edilemedi.';
+                $data['status'] = 'err';
             }
             else if (strlen($title) < 6)
             {
                 $data['error_reasons'][] = 'Başlık çok kısa.';
+                $data['status'] = 'err';
             }
-            else if (strlen($title) > 155)
+            else if (strlen($title) > 200)
             {
                 $data['error_reasons'][] = 'Başlık çok uzun.';
+                $data['status'] = 'err';
             }
 
             # description
             if ($description == null)
             {
-                $data['error_reasons'][] = 'Açıklama tespit edilemedi.';
+                $data['error_reasons'][] = 'Kesinlikle açıklama tespit edilemedi.';
+                $data['status'] = 'err';
             }
             else if (strlen($description) < 20)
             {
                 $data['error_reasons'][] = 'Açıklama çok kısa.';
+                $data['status'] = 'err';
             }
             else if (strlen($description) > 5000)
             {
                 $data['error_reasons'][] = 'Açıklama çok uzun.';
-            }
-
-            if (count(@$data['error_reasons']))
-            {
                 $data['status'] = 'err';
-            }
-            else
-            {
-                $data['status'] = 'ok';
             }
         }
         catch (\Exception $e)
@@ -253,6 +290,8 @@ class Crawler
     # article detection
     public static function productDetection(string $site, string $page, array $selector, bool $proxy = false)
     {
+        $dateUtility = new DateUtility;
+
         $selector = (object) $selector;
 
         $data['page'] = $page;
@@ -355,7 +394,7 @@ class Crawler
             }
 
             # date detect
-            preg_match_all('/(\d{4}|\d{1,2})(\.|-| )(\d{1,2}|([a-zA-ZŞşıİğĞüÜ]{4,8}))(\.|-| )(\d{4}|\d{2})(( |, )[a-zA-ZÇçŞşığĞüÜ]{4,10})?((.| - )(\d{1,2}):(\d{1,2})(:(\d{1,2}))?((.?(\d{1,2}):(\d{1,2}))|Z)?)?/', $dom, $dates);
+            preg_match_all($dateUtility->datePattern(), $dom, $dates);
 
             $created_at = null;
 
@@ -363,7 +402,7 @@ class Crawler
             {
                 foreach ($dates[0] as $date)
                 {
-                    $date = DateUtility::isDate($date);
+                    $date = $dateUtility->isDate($date);
 
                     if ($date)
                     {
@@ -372,11 +411,6 @@ class Crawler
                         break;
                     }
                 }
-            }
-
-            if (!$created_at)
-            {
-                $data['error_reasons'][] = 'Tarih tespit edilemedi.';
             }
 
             $data['data'] = [
@@ -388,15 +422,24 @@ class Crawler
                 'seller_phones' => $seller_phones,
                 'price' => $price
             ];
+            $data['status'] = 'ok';
+
+            if (!$created_at)
+            {
+                $data['error_reasons'][] = 'Tarih tespit edilemedi.';
+                $data['status'] = 'err';
+            }
 
             # title
             if ($title == null)
             {
                 $data['error_reasons'][] = 'Başlık tespit edilemedi.';
+                $data['status'] = 'err';
             }
             else if (strlen($title) > 155)
             {
                 $data['error_reasons'][] = 'Başlık çok uzun.';
+                $data['status'] = 'err';
             }
 
             # description
@@ -407,6 +450,7 @@ class Crawler
             else if (strlen($description) > 10000)
             {
                 $data['error_reasons'][] = 'Açıklama çok uzun.';
+                $data['status'] = 'err';
             }
             else
             {
@@ -417,31 +461,26 @@ class Crawler
             if (count($address) <= 1)
             {
                 $data['error_reasons'][] = 'Adres tespit edilemedi.';
+                $data['status'] = 'err';
             }
 
             # breadcrumb
             if (count($breadcrumb) <= 1)
             {
                 $data['error_reasons'][] = 'Mini harita tespit edilemedi.';
+                $data['status'] = 'err';
             }
 
             # seller name
             if ($seller_name == null)
             {
                 $data['error_reasons'][] = 'Satıcı adı tespit edilemedi.';
+                $data['status'] = 'err';
             }
             else if (strlen($seller_name) > 48)
             {
                 $data['error_reasons'][] = 'Satıcı adı çok uzun.';
-            }
-
-            if (count(@$data['error_reasons']))
-            {
                 $data['status'] = 'err';
-            }
-            else
-            {
-                $data['status'] = 'ok';
             }
         }
         catch (\Exception $e)
@@ -456,6 +495,8 @@ class Crawler
     # entry detection
     public static function entryDetection(string $site, string $page, int $id, string $title_selector, string $entry_selector, string $author_selector, bool $proxy = false)
     {
+        $dateUtility = new DateUtility;
+
         $data['page'] = $site.'/'.str_replace('__id__', $id, $page);
 
         $client = new Client([
@@ -508,7 +549,7 @@ class Crawler
             {
                 foreach ($dates[0] as $date)
                 {
-                    $date = DateUtility::isDate($date);
+                    $date = $dateUtility->isDate($date);
 
                     if ($date)
                     {
@@ -519,11 +560,6 @@ class Crawler
                 }
             }
 
-            if (!$created_at)
-            {
-                $data['error_reasons'][] = 'Tarih tespit edilemedi.';
-            }
-
             $data['data'] = [
                 'title' => $title,
                 'entry' => $entry,
@@ -531,44 +567,49 @@ class Crawler
                 'created_at' => $created_at
             ];
 
+            $data['group_name'] = md5($title);
+            $data['status'] = 'ok';
+
+            if (!$created_at)
+            {
+                $data['error_reasons'][] = 'Tarih tespit edilemedi.';
+                $data['status'] = 'err';
+            }
+
             # title
             if ($title == null)
             {
                 $data['error_reasons'][] = 'Başlık tespit edilemedi.';
+                $data['status'] = 'err';
             }
             else if (strlen($title) > 155)
             {
                 $data['error_reasons'][] = 'Başlık çok uzun.';
+                $data['status'] = 'err';
             }
 
             # entry
             if ($entry == null)
             {
                 $data['error_reasons'][] = 'Entry tespit edilemedi.';
+                $data['status'] = 'err';
             }
             else if (strlen($entry) > 5000)
             {
                 $data['error_reasons'][] = 'Entry çok uzun.';
+                $data['status'] = 'err';
             }
 
             # author
             if ($author == null)
             {
                 $data['error_reasons'][] = 'Yazar adı tespit edilemedi.';
+                $data['status'] = 'err';
             }
             else if (strlen($author) > 32)
             {
                 $data['error_reasons'][] = 'Yazar adı çok uzun.';
-            }
-
-            if (count(@$data['error_reasons']))
-            {
                 $data['status'] = 'err';
-            }
-            else
-            {
-                $data['group_name'] = md5($title);
-                $data['status'] = 'ok';
             }
         }
         catch (\Exception $e)

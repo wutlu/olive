@@ -27,14 +27,21 @@ class ModuleSearchController extends Controller
         $query = ModuleSearch::selectRaw('count(*) as total, module_id')
                              ->groupBy('module_id')
                              ->where(function ($query) use ($keywords) {
-            foreach ($keywords as $keyword)
-            {
-                if (strlen($keyword) >= 2)
-                {
-                    $query->orWhere('keyword', 'ILIKE', '%'.$keyword.'%');
-                }
-            }
-        })->orderBy('total', 'DESC')->limit(10)->get();
+                                foreach ($keywords as $keyword)
+                                {
+                                    if (strlen($keyword) >= 2)
+                                    {
+                                        $query->orWhere('keyword', 'ILIKE', '%'.$keyword.'%');
+                                    }
+                                }
+                             })->where(function ($query) {
+                                if (!auth()->user()->root())
+                                {
+                                    $query->where('keyword', 'NOT ILIKE', '[root]%');
+                                }
+                             })->orderBy('total', 'DESC')
+                               ->limit(5)
+                               ->get();
 
         if (count($query))
         {

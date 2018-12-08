@@ -72,20 +72,24 @@ class RealTimeController extends Controller
                     # 
                     if ($group->module_twitter)
                     {
-                        $query = @Document::list(
-                            [ 'twitter', 'tweets', date('Y.m') ], 'tweet',
-                            [
-                                'size' => 1000,
-                                'query' => [
-                                    'bool' => [
-                                        'must' => [ [ 'query_string' => [ 'default_field' => 'text', 'query' => implode(' OR ', $keywords) ] ] ],
-                                        'filter' => [ 'range' => [ 'created_at' => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ]
-                                    ]
-                                ],
-                                'sort' => [ 'created_at' => 'DESC' ],
-                                '_source' => [ 'user.name', 'user.screen_name', 'text', 'created_at' ]
-                            ]
-                        )->data['hits']['hits'];
+                        $q = [
+                            'size' => 1000,
+                            'query' => [
+                                'bool' => [
+                                    'must' => [ [ 'query_string' => [ 'default_field' => 'text', 'query' => implode(' OR ', $keywords) ] ] ],
+                                    'filter' => [ 'range' => [ 'created_at' => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ]
+                                ]
+                            ],
+                            'sort' => [ 'created_at' => 'DESC' ],
+                            '_source' => [ 'user.name', 'user.screen_name', 'text', 'created_at' ]
+                        ];
+
+                        if ($request->sentiment != 'all')
+                        {
+                            $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
+                        }
+
+                        $query = @Document::list([ 'twitter', 'tweets', date('Y.m') ], 'tweet', $q)->data['hits']['hits'];
 
                         if ($query)
                         {
@@ -132,7 +136,7 @@ class RealTimeController extends Controller
                             '_source' => [ 'url', 'title', 'description', 'created_at' ]
                         ];
 
-                        if ($request->sentiment)
+                        if ($request->sentiment != 'all')
                         {
                             $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
                         }
@@ -181,7 +185,7 @@ class RealTimeController extends Controller
                             '_source' => [ 'url', 'title', 'entry', 'author', 'created_at' ]
                         ];
 
-                        if ($request->sentiment)
+                        if ($request->sentiment != 'all')
                         {
                             $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
                         }
@@ -232,7 +236,7 @@ class RealTimeController extends Controller
                             '_source' => [ 'url', 'title', 'description', 'created_at' ]
                         ];
 
-                        if ($request->sentiment)
+                        if ($request->sentiment != 'all')
                         {
                             $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
                         }
@@ -243,7 +247,7 @@ class RealTimeController extends Controller
                         {
                             foreach ($query as $object)
                             {
-                                $data[] = [
+                                $arr = [
                                     'uuid' => md5($object['_id'].'.'.$object['_index']),
                                     '_id' => $object['_id'],
                                     '_type' => $object['_type'],
@@ -251,9 +255,15 @@ class RealTimeController extends Controller
                                     'module' => 'alisveris',
                                     'url' => $object['_source']['url'],
                                     'title' => $object['_source']['title'],
-                                    'text' => $object['_source']['description'],
                                     'created_at' => date('d.m.Y H:i:s', strtotime($object['_source']['created_at']))
                                 ];
+
+                                if (@$object['_source']['description'])
+                                {
+                                    $arr['text'] = $object['_source']['description'];
+                                }
+
+                                $data[] = $arr;
                             }
                         }
                     }
@@ -281,7 +291,7 @@ class RealTimeController extends Controller
                             '_source' => [ 'title', 'description', 'created_at', 'channel.title', 'channel.id' ]
                         ];
 
-                        if ($request->sentiment)
+                        if ($request->sentiment != 'all')
                         {
                             $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
                         }
@@ -327,7 +337,7 @@ class RealTimeController extends Controller
                             '_source' => [ 'text', 'channel.title', 'created_at' ]
                         ];
 
-                        if ($request->sentiment)
+                        if ($request->sentiment != 'all')
                         {
                             $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
                         }

@@ -44,7 +44,7 @@
 
             logTimer = window.setTimeout(function() {
                 vzAjax(collection)
-            }, 2000)
+            }, 5000)
         }
     }
 
@@ -64,6 +64,9 @@
         background-position: center;
         padding: 1rem 0;
     }
+    #console.collection > .collection-item {
+        color: rgba(255, 255, 255, .6);
+    }
     #console.collection > .collection-item:hover {
         background-color: rgba(255, 255, 255, .2);
         color: #fff;
@@ -82,7 +85,7 @@
         </div>
         <div
             id="console"
-            class="collection black load d-flex align-items-end flex-wrap"
+            class="collection black load"
             data-href="{{ route('admin.monitoring.background.processes') }}"
             data-callback="__log"
             data-method="post">
@@ -91,11 +94,12 @@
                 class="collection-item waves-effect d-none json waves-red"
                 data-href="{{ route('admin.monitoring.process.kill') }}"
                 data-method="post"
-                data-callback="__kill"
-                style="width: 100%;">
-                <span data-name="command"></span>
-                <span data-name="time"></span>
-                <span data-name="pid"></span>
+                data-callback="__kill">
+                <div class="d-flex justify-content-end">
+                    <span data-name="command" class="mr-auto"></span>
+                    <span data-name="pid" style="padding: 0 1rem;"></span>
+                    <span data-name="time"></span>
+                </div>
             </a>
         </div>
     </div>

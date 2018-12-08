@@ -437,18 +437,18 @@
         </div>
         <div class="collection collection-bordered">
             <label class="collection-item waves-effect d-block" style="padding: 12px 24px;">
-                <input autocomplete="off" name="sentiment" value="pos" class="with-gap" type="radio" />
+                <input name="sentiment" value="pos" class="with-gap" type="radio" />
                 <span>Pozitif</span>
             </label>
             <label class="collection-item waves-effect d-block" style="padding: 12px 24px;">
-                <input autocomplete="off" name="sentiment" value="neg" class="with-gap" type="radio" />
+                <input name="sentiment" value="neg" class="with-gap" type="radio" />
                 <span>Negatif</span>
             </label><label class="collection-item waves-effect d-block" style="padding: 12px 24px;">
-                <input autocomplete="off" name="sentiment" value="neu" class="with-gap" type="radio" />
+                <input name="sentiment" value="neu" class="with-gap" type="radio" />
                 <span>Nötr</span>
             </label>
             <label class="collection-item waves-effect d-block" style="padding: 12px 24px;">
-                <input checked name="sentiment" value="" class="with-gap" type="radio" />
+                <input checked name="sentiment" value="all" class="with-gap" type="radio" />
                 <span>Tümü</span>
             </label>
         </div>

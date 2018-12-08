@@ -98,7 +98,7 @@ Route::prefix('ayarlar')->group(function () {
 });
 
 Route::prefix('fatura')->group(function () {
-    Route::get('{id}', 'OrganisationController@invoice')->name('organisation.invoice');
+    Route::get('{id}/{key?}', 'OrganisationController@invoice')->name('organisation.invoice');
     Route::post('hesapla', 'OrganisationController@calculate')->name('organisation.create.calculate');
     Route::post('hesapla-uzat', 'OrganisationController@calculateRenew')->name('organisation.create.calculate.renew');
 });

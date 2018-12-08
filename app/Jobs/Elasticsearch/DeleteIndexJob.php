@@ -28,7 +28,7 @@ class DeleteIndexJob implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(array $name)
+    public function __construct($name)
     {
         $this->name = $name;
     }

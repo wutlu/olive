@@ -7,6 +7,18 @@ use DateTime;
 
 class DateUtility
 {
+    /*
+     * tarih deseni
+     * ---------------[ DİKKAT ]------------------------------
+     * BU DESEN 2028'E KADAR GEÇERLİDİR.
+     * EN GEÇ 2027 ARALIK AYINDA GÜNCELLENMESİ GEREKİR.
+     * -------------------------------------------------------
+     */
+    public static function datePattern()
+    {
+        return '/((201[89]|202[0-8])|\d{1,2})(\.|-| )(\d{1,2}|([a-zA-ZŞşıİğĞüÜ]{4,8}))(\.|-| )(\d{4}|\d{2})(( |, )[a-zA-ZÇçŞşığĞüÜ]{4,10})?((.| - )(\d{1,2}):(\d{1,2})(:(\d{1,2}))?((.?(\d{1,2}):(\d{1,2}))|Z)?)?/';
+    }
+
 	# is date
     public static function isDate($value)
     {

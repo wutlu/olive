@@ -409,7 +409,7 @@
         </div>
         <div id="stats">
             <div class="card-content grey-text red lighten-5">
-                <div class="item-group load" data-href="{{ route('admin.twitter.statistics') }}" data-method="get" data-callback="__statistics">
+                <div class="item-group load" data-href="{{ route('admin.twitter.statistics') }}" data-method="post" data-callback="__statistics">
                     <div class="item">
                         <small class="d-block grey-text">Tweet Sayısı</small>
                         <p data-name="tweet-count">-</p>
@@ -433,6 +433,7 @@
                  id="collections"
                  data-href="{{ route('admin.twitter.tokens.json') }}"
                  data-callback="__collections"
+                 data-method="post"
                  data-nothing>
                 <div class="collection-item nothing d-none">
                     <div class="not-found">

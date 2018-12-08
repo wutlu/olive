@@ -59,12 +59,12 @@ class MonitorController extends Controller
         $message[] = '| Bileşen | Tüketim |';
         $message[] = '| ------: | :------ |';
 
-        if ($ram_percent > 90)
+        if ($ram_percent > 96)
         {
             $message[] = '| RAM tüketimi | '.$ram_percent.'% |';
         }
 
-        if ($cpu_percent > 90)
+        if ($cpu_percent > 96)
         {
             $message[] = '| CPU tüketimi | '.$cpu_percent.'% |';
         }
@@ -73,7 +73,7 @@ class MonitorController extends Controller
         {
             $hdd_percent = 100-100/$disk['total']->size*$disk['free']->size;
 
-            if ($hdd_percent > 90)
+            if ($hdd_percent > 96)
             {
                 $message[] = '| DISK kullanımı | '.$hdd_percent.'% |';
             }
@@ -174,7 +174,7 @@ class MonitorController extends Controller
         {
             foreach ($output as $key => $line)
             {
-                $split = preg_split('/(\w{2}:\w{2}:\w{2})[ ]+(\w+)[ ]+(.+)/i', $line, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+                $split = preg_split('/(\d{2}:\d{2}:\d{2})[ ]+(\d+)[ ]+(.+)/i', $line, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
 
                 $lines[] = [
                     'time' => @$split[0],

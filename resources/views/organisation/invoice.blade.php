@@ -193,7 +193,7 @@
         @endif
         <div class="row-col invoice static-width">
             <h1>FATURA</h1>
-            @if (auth()->user()->root())
+            @if (auth()->check() && auth()->user()->root())
             <div class="self-area" style="background-color: #f0f0f0; padding: 1rem;">
                 <div class="body">
                     <h3>Faturayı Onayla</h3>

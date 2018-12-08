@@ -222,4 +222,39 @@ class Document
             ];
         }
     }
+
+    # sorguyla döküman sil
+    public static function deleteByQUery($name, string $type, array $body)
+    {
+        if (is_array($name))
+        {
+            $name = Indices::name($name);
+        }
+
+        $client = ClientBuilder::fromConfig([
+            'hosts' => config('database.connections.elasticsearch.hosts'),
+            'retries' => 5
+        ]);
+
+        try
+        {
+            $doc = $client->deleteByQuery([
+                'index' => $name,
+                'type' => $type,
+                'body' => $body
+            ]);
+
+            return (object) [
+                'status' => 'ok',
+                'data' => $doc
+            ];
+        }
+        catch (\Exception $e)
+        {
+            return (object) [
+                'status' => 'err',
+                'message' => $e->getMessage()
+            ];
+        }
+    }
 }

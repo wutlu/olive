@@ -122,12 +122,11 @@ class TrendDetect extends Command
 
                     if (@$video->statistics->commentCount)
                     {
-                        $commentThreads = Youtube::getCommentThreadsByVideoId($video->id, 100);
-                        $commentCount = count($commentThreads);
+                        $commentThreads = @Youtube::getCommentThreadsByVideoId($video->id, 100);
 
-                        if ($commentCount)
+                        if ($commentThreads)
                         {
-                            $this->info('comments['.$commentCount.']');
+                            $this->info('comments['.count($commentThreads).']');
 
                             foreach ($commentThreads as $comment)
                             {
@@ -163,34 +162,27 @@ class TrendDetect extends Command
                                         $replyCount++;
                                         $totalComment++;
 
-                                        try
-                                        {
-                                            $commentChunk['body'][] = [
-                                                'create' => [
-                                                    '_index' => Indices::name([ 'youtube', 'comments' ]),
-                                                    '_type' => 'comment',
-                                                    '_id' => $reply->id
-                                                ]
-                                            ];
+                                        $commentChunk['body'][] = [
+                                            'create' => [
+                                                '_index' => Indices::name([ 'youtube', 'comments' ]),
+                                                '_type' => 'comment',
+                                                '_id' => $reply->id
+                                            ]
+                                        ];
 
-                                            $commentChunk['body'][] = [
-                                                'id' => $reply->id,
-                                                'text' => $term->convertAscii($reply->snippet->textOriginal),
-                                                'video_id' => $comment->snippet->videoId,
-                                                'comment_id' => $comment->id,
-                                                'channel' => [
-                                                    'id' => $reply->snippet->authorChannelId->value,
-                                                    'title' => $reply->snippet->authorDisplayName
-                                                ],
-                                                'created_at' => date('Y-m-d H:i:s', strtotime($reply->snippet->publishedAt)),
-                                                'called_at' => date('Y-m-d H:i:s'),
-                                                'sentiment' => $sentiment->score($reply->snippet->textOriginal)
-                                            ];
-                                        }
-                                        catch (\Exception $e)
-                                        {
-                                            print_r($e->getMessage());
-                                        }
+                                        $commentChunk['body'][] = [
+                                            'id' => $reply->id,
+                                            'text' => $term->convertAscii($reply->snippet->textOriginal),
+                                            'video_id' => $comment->snippet->videoId,
+                                            'comment_id' => $comment->id,
+                                            'channel' => [
+                                                'id' => $reply->snippet->authorChannelId->value,
+                                                'title' => $reply->snippet->authorDisplayName
+                                            ],
+                                            'created_at' => date('Y-m-d H:i:s', strtotime($reply->snippet->publishedAt)),
+                                            'called_at' => date('Y-m-d H:i:s'),
+                                            'sentiment' => $sentiment->score($reply->snippet->textOriginal)
+                                        ];
                                     }
                                 }
                             }
@@ -209,11 +201,11 @@ class TrendDetect extends Command
                         $commentChunk = [];
                     }
                 }
-                catch (Exception $e)
+                catch (\Exception $e)
                 {
                     $this->error($e->getMessage());
 
-                    System::log($e->getMessage(), 'App\Console\Commands\Crawlers\YouTube\TrendDetect::handle()', 2);
+                    System::log(json_encode([ $e->getMessage(), $video ]), 'App\Console\Commands\Crawlers\YouTube\TrendDetect::handle()', 2);
                 }
             }
 

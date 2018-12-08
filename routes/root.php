@@ -96,10 +96,10 @@ Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {
     Route::prefix('twitter')->namespace('Twitter')->group(function () {
         Route::get('/', 'TwitterController@dashboard')->name('admin.twitter.settings');
 
-        Route::get('istatistik', 'TwitterController@statistics')->name('admin.twitter.statistics');
+        Route::post('istatistik', 'TwitterController@statistics')->name('admin.twitter.statistics');
 
         Route::get('index-yonetimi', 'TwitterController@indices')->name('admin.twitter.indices');
-        Route::get('index-yonetimi/json', 'TwitterController@indicesJson')->name('admin.twitter.indices.json');
+        Route::post('index-yonetimi/json', 'TwitterController@indicesJson')->name('admin.twitter.indices.json');
 
         Route::post('index-olustur', 'TwitterController@indexCreate')->name('admin.twitter.index.create');
         Route::get('index-durumu', 'TwitterController@indexStatus')->name('admin.twitter.index.status');
@@ -114,7 +114,7 @@ Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {
         });
 
         Route::prefix('token-yonetimi')->group(function () {
-            Route::get('json', 'TokenController@tokensJson')->name('admin.twitter.tokens.json');
+            Route::post('json', 'TokenController@tokensJson')->name('admin.twitter.tokens.json');
             Route::get('token', 'TokenController@token')->name('admin.twitter.token');
             Route::put('token', 'TokenController@tokenCreate');
             Route::patch('token', 'TokenController@tokenUpdate');

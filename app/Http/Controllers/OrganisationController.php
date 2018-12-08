@@ -48,7 +48,7 @@ class OrganisationController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->except([ 'invoice' ]);
         $this->middleware('organisation:have_not')->only([
             'select',
             'details',
@@ -744,16 +744,24 @@ class OrganisationController extends Controller
     # 
     # fatura
     # 
-    public static function invoice(int $id)
+    public static function invoice(int $id, string $key = '')
     {
-        $user = auth()->user();
+        if (auth()->guest() && $key != md5(config('app.key')))
+        {
+            abort(404);
+        }
 
         $invoice = Invoice::where('invoice_id', $id)
-                          ->where(function ($query) use ($user) {
-                                if (!$user->root())
+                          ->where(function ($query) use ($key) {
+                                if (auth()->check())
                                 {
-                                    $query->orWhere('organisation_id', $user->organisation_id)
-                                          ->orWhere('user_id', $user->id);
+                                    $user = auth()->user();
+
+                                    if (!$user->root())
+                                    {
+                                        $query->orWhere('organisation_id', $user->organisation_id)
+                                              ->orWhere('user_id', $user->id);
+                                    }
                                 }
                           })
                           ->firstOrFail();

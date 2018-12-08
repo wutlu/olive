@@ -13,6 +13,8 @@ use App\Models\Option;
 
 use App\Ticket;
 
+use App\Utilities\DateUtility;
+
 class HomeController extends Controller
 {
     public function __construct()
@@ -43,7 +45,7 @@ class HomeController extends Controller
     }
 
     # dashboard
-    public static function dashboard(Request $request)
+    public static function dashboard()
     {
         $user = auth()->user();
 

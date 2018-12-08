@@ -11,7 +11,6 @@ use App\Http\Requests\SearchRequest;
 use App\Http\Requests\SetRequest;
 
 use App\Jobs\Elasticsearch\CreateGoogleIndexJob;
-use App\Jobs\Elasticsearch\DeleteIndexJob;
 
 use App\Elasticsearch\Indices;
 

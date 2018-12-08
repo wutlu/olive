@@ -19,7 +19,7 @@ use App\Elasticsearch\Document;
 use App\Models\Pin\Group as PinGroup;
 use App\Models\Pin\Pin;
 
-use App\Jobs\Pin\PdfJob as PinGroupPdfJob;
+use App\Jobs\PDF\PinGroupJob as PinGroupPdfJob;
 
 use Carbon\Carbon;
 

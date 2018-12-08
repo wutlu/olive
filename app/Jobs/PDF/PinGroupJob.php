@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Jobs\Pin;
+namespace App\Jobs\PDF;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -15,7 +15,7 @@ use System;
 
 use App\Utilities\UserActivityUtility as Activity;
 
-class PdfJob implements ShouldQueue
+class PinGroupJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -53,8 +53,8 @@ class PdfJob implements ShouldQueue
                     str_random(32)
                 ]);
 
-                $pdf_path = $pg->pdf_path ? $pg->pdf_path : 'storage/outputs/pdf/'.$name.'.pdf';
                 $html_path = $pg->html_path ? $pg->html_path : 'storage/outputs/html/'.$name.'.html';
+                $pdf_path = $pg->pdf_path ? $pg->pdf_path : 'storage/outputs/pdf/'.$name.'.pdf';
 
                 $html = '
                     <!DOCTYPE html>
@@ -401,7 +401,7 @@ class PdfJob implements ShouldQueue
                 }
                 catch (\Exception $e)
                 {
-                    System::log(json_encode([ $e->getMessage() ]), 'App\Jobs\RealTime::handle('.$this->id.')', 10);
+                    System::log(json_encode([ $e->getMessage() ]), 'App\Jobs\PDF\PinGroupJob::handle('.$this->id.')', 10);
 
                     foreach ($pg->organisation->users as $user)
                     {

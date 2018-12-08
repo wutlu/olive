@@ -49,7 +49,7 @@ class DetectorJob implements ShouldQueue
             $this->crawler->site,
             $this->crawler->url_pattern,
             $this->crawler->base,
-            $this->proxy
+            $this->crawler->proxy
         );
 
         if (@$links->links)

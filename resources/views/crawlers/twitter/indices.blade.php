@@ -74,6 +74,7 @@
              id="indices"
              data-href="{{ route('admin.twitter.indices.json') }}"
              data-callback="__indices"
+             data-method="post"
              data-nothing>
             <li class="collection-item nothing d-none">
                 <div class="not-found">
