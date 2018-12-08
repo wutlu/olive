@@ -437,7 +437,7 @@
                     if (obj.data.length)
                     {
                         $.each (obj.data, function(key, o) {
-                            $('<a />', {
+                            var item = $('<a />', {
                                 'class': 'collection-item waves-effect json',
                                 'data-href': '{{ route('module.go') }}',
                                 'data-method': 'post',
@@ -445,7 +445,10 @@
                                 'html': o.name,
                                 'data-module_id': o.module_id,
                                 'data-include': 'search_input'
-                            }).appendTo(collections)
+                            });
+
+                            item.addClass(o.root ? 'red-text' : '')
+                            item.appendTo(collections)
                         })
                     }
                 }

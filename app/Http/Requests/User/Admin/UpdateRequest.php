@@ -3,7 +3,7 @@
 namespace App\Http\Requests\User\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Requests\IdRequest;
+use App\Http\Requests\IdRequest;
 
 class UpdateRequest extends FormRequest
 {
@@ -25,6 +25,7 @@ class UpdateRequest extends FormRequest
     public function rules(IdRequest $request)
     {
         return [
+            'id'       => 'required|integer|exists:users,id',
             'name'     => 'required|string|max:100',
             'root'     => 'nullable|string|in:on',
             'password' => 'nullable|string|max:32',

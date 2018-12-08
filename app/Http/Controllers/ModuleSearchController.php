@@ -37,7 +37,17 @@ class ModuleSearchController extends Controller
                              })->where(function ($query) {
                                 if (!auth()->user()->root())
                                 {
-                                    $query->where('keyword', 'NOT ILIKE', '[root]%');
+                                    $query->whereNotIn(
+                                        'module_id',
+                                        array_keys(
+                                            array_where(
+                                                config('app.search.modules'),
+                                                function ($value, $key) {
+                                                    return @$value['root'] == true;
+                                                }
+                                            )
+                                        )
+                                    );
                                 }
                              })->orderBy('total', 'DESC')
                                ->limit(5)
@@ -52,7 +62,8 @@ class ModuleSearchController extends Controller
                 $data[] = [
                     'module_id' => $q->module_id,
                     'name' => $module['name'],
-                    'route' => route($module['route'])
+                    'route' => route($module['route']),
+                    'root' => @$module['root'] ? true : false
                 ];
             }
         }

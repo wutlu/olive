@@ -3,7 +3,7 @@
 namespace App\Http\Requests\Page;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Requests\IdRequest;
+use App\Http\Requests\IdRequest;
 
 class UpdateRequest extends FormRequest
 {

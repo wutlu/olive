@@ -34,7 +34,13 @@
 @endpush
 
 @section('content')
-    <form method="post" action="{{ route('admin.user', $user->id) }}" class="json" id="details-form" data-callback="__account">
+    <form
+        method="post"
+        action="{{ route('admin.user', $user->id) }}"
+        class="json"
+        id="details-form"
+        data-id="{{ $user->id }}"
+        data-callback="__account">
         <div class="card">
             <div class="card-image">
                 <img src="{{ asset('img/card-header.jpg') }}" alt="Hesap Bilgileri" />
