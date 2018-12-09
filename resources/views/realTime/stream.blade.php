@@ -268,6 +268,11 @@
                         .show( 'highlight', {}, 200 );
 
                     item.prependTo(bucket)
+
+                if ($('input[name=sound_alert]').prop("checked") == true)
+                {
+                    $.playSound('{{ asset('push-notification.mp3') }}')
+                }
             }
 
             buffer.shift()
@@ -427,7 +432,7 @@
             @empty
                 <div class="collection-item red-text">Henüz pin grubu oluşturmadınız.</div>
             @endforelse
-            <a class="collection-item waves-effect d-block" href="{{ route('pin.groups') }}">Tümü</a>
+            <a class="collection-item waves-effect d-block" href="{{ route('pin.groups') }}" style="padding: 12px 24px;">Tümü</a>
         </div>
     </div>
 
@@ -443,13 +448,23 @@
             <label class="collection-item waves-effect d-block" style="padding: 12px 24px;">
                 <input name="sentiment" value="neg" class="with-gap" type="radio" />
                 <span>Negatif</span>
-            </label><label class="collection-item waves-effect d-block" style="padding: 12px 24px;">
+            </label>
+            <label class="collection-item waves-effect d-block" style="padding: 12px 24px;">
                 <input name="sentiment" value="neu" class="with-gap" type="radio" />
                 <span>Nötr</span>
             </label>
             <label class="collection-item waves-effect d-block" style="padding: 12px 24px;">
                 <input checked name="sentiment" value="all" class="with-gap" type="radio" />
                 <span>Tümü</span>
+            </label>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="collection collection-bordered">
+            <label class="collection-item waves-effect d-block" style="padding: 12px 24px;">
+                <input name="sound_alert" value="on" type="checkbox" />
+                <span>Sesli Uyarı</span>
             </label>
         </div>
     </div>
