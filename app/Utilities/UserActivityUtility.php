@@ -48,8 +48,6 @@ class UserActivityUtility
 
 		if (@$array['button'])
 		{
-			$query->button_type = $array['button']['type'];
-			$query->button_method = $array['button']['method'];
 			$query->button_action = $array['button']['action'];
             $query->button_class = $array['button']['class'];
 			$query->button_text = $array['button']['text'];

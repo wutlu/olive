@@ -33,7 +33,7 @@ class RealTimeController extends Controller
     # 
     public function stream()
     {
-        $pin_groups = PinGroup::where('organisation_id', auth()->user()->organisation_id)->orderBy('updated_at', 'DESC')->get();
+        $pin_groups = PinGroup::where('organisation_id', auth()->user()->organisation_id)->orderBy('updated_at', 'DESC')->limit(4)->get();
 
         return view('realTime.stream', compact('pin_groups'));
     }

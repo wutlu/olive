@@ -35,11 +35,21 @@ Route::prefix('kupon-yonetimi')->group(function () {
 
 Route::prefix('vekil-sunucu-yonetimi')->group(function () {
     Route::get('/', 'ProxyController@proxies')->name('admin.proxies');
-    Route::get('json', 'ProxyController@proxiesJson')->name('admin.proxies.json');
-    Route::get('vekil-sunucu', 'ProxyController@proxy')->name('admin.proxy');
+    Route::post('json', 'ProxyController@proxiesJson')->name('admin.proxies.json');
+    Route::post('vekil-sunucu', 'ProxyController@proxy')->name('admin.proxy');
     Route::put('vekil-sunucu', 'ProxyController@proxyCreate');
     Route::patch('vekil-sunucu', 'ProxyController@proxyUpdate');
     Route::delete('vekil-sunucu', 'ProxyController@proxyDelete');
+});
+
+Route::prefix('carousel-yonetimi')->group(function () {
+    Route::get('/', 'CarouselController@carousels')->name('admin.carousels');
+    Route::post('json', 'CarouselController@carouselsJson')->name('admin.carousels.json');
+    Route::post('carousel', 'CarouselController@carousel')->name('admin.carousel');
+    Route::put('carousel', 'CarouselController@carouselCreate');
+    Route::patch('carousel', 'CarouselController@carouselUpdate');
+    Route::delete('carousel', 'CarouselController@carouselDelete');
+    Route::post('siralama', 'CarouselController@sortable')->name('admin.carousel.sortable');
 });
 
 Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {

@@ -62,14 +62,18 @@ class DataController extends Controller
     # twitter veri havuzu kelime silme.
     public static function keywordDelete(IdRequest $request)
     {
-        StreamingKeywords::where('organisation_id', auth()->user()->organisation_id)->where('id', $request->id)->delete();
+        $query = StreamingKeywords::where('organisation_id', auth()->user()->organisation_id)->where('id', $request->id)->firstOrFail();
 
-        return [
+        $arr = [
             'status' => 'ok',
             'data' => [
-                'id' => $request->id
+                'id' => $query->id
             ]
         ];
+
+        $query->delete();
+
+        return $arr;
     }
 
     # twitter veri havuzu kullanıcı listesi view.

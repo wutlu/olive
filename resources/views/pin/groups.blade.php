@@ -258,7 +258,7 @@
             <li data-name="item" class="collection-item model d-none">
                 <span>
                     <a
-                        style="margin: 0 .4rem 0 0;"
+                        style="margin: 0 1rem 0 0;"
                         class="btn-floating btn-small waves-effect cyan darken-2 json"
                         data-name="edit"
                         data-href="{{ route('pin.group') }}"

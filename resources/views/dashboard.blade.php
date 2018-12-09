@@ -11,6 +11,31 @@
 
 @section('content')
     <div class="row">
+        @if (count($carousels))
+            <div class="col s12">
+                <div class="card grey lighten-4 carousel carousel-slider center">
+                    @php
+                    $i = 0;
+                    @endphp
+                    @foreach ($carousels as $carousel)
+                    <div class="{{ implode(' ', [ 'carousel-item', $i == 0 ? 'active' : '' ]) }}">
+                        <h2>{{ $carousel->title }}</h2>
+                        <p>{!! nl2br($carousel->description) !!}</p>
+                        <div class="{{ implode(' ', [ 'anim', $carousel->pattern ]) }}"></div>
+
+                        @if ($carousel->button_text)
+                            <a href="{{ $carousel->button_action }}" class="btn waves-effect white grey-text darken-text-2">
+                                {{ $carousel->button_text }}
+                            </a>
+                        @endif
+                    </div>
+                    @php
+                    $i++;
+                    @endphp
+                    @endforeach
+                </div>
+            </div>
+        @endif
         <div class="col s12">
             <div class="fast-menu">
                 <a href="{{ route('twitter.keyword.list') }}" class="card-panel hoverable waves-effect" data-tooltip="Twitter Veri Havuzu" data-position="right">
@@ -131,25 +156,13 @@
                                         item.find('.collapsible-body').css({ 'background-color': o.markdown_color })
                                     }
 
-                                    if (o.button_type)
+                                    if (o.button_text)
                                     {
-                                        if (o.button_type == 'ajax')
-                                        {
-                                            var button = $('<a />', {
-                                                'class': 'json ' + o.button_class,
-                                                'html': o.button_text,
-                                                'data-href': o.button_action,
-                                                'data-method': o.button_method
-                                            });
-                                        }
-                                        else
-                                        {
-                                            var button = $('<a />', {
-                                                'class': o.button_class,
-                                                'html': o.button_text,
-                                                'href': o.button_action
-                                            });
-                                        }
+                                        var button = $('<a />', {
+                                            'class': o.button_class,
+                                            'html': o.button_text,
+                                            'href': o.button_action
+                                        });
 
                                         item.find('.collapsible-body').children('span').append(button)
                                     }

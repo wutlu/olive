@@ -89,7 +89,7 @@
                     href="#">Pinler (<span class="count">0</span>)</a>
             </div>
         </div>
-        <div class="card-content list-alert cyan lighten-5">
+        <div class="card-content">
             <p class="d-flex">
                 <img alt="Pin" src="{{ asset('img/icons/pin.png') }}" style="width: 32px; height: 32px; margin: 0 .2rem 0 0;" />
                 <span class="align-self-center">Sağdaki menüden bir pin grubu seçin. Pin grubunuz yoksa oluşturabilirsiniz. Pinlemek için ilgilendiğiniz içeriğe tıklamanız yeterli.</span>
@@ -113,7 +113,7 @@
                 <p data-name="title" class="black-text strong"></p>
                 <p data-name="text"></p>
             </a>
-            <div class="collection-item yellow lighten-4 list-alert">Bir kelime grubu oluşturun ve aktif edin.</div>
+            <div class="collection-item yellow lighten-5">Bir kelime grubu oluşturun ve aktif edin.</div>
         </div>
     </div>
 @endsection
@@ -402,7 +402,7 @@
         @slot('id', 'keyword-group-loader')
     @endcomponent
 
-    <div class="card-panel teal">Takip etmek istediğiniz<br/>Kelime Grubunu aktif edin.</div>
+    <div class="card-panel teal white-text">Takip etmek istediğiniz<br/>Kelime Grubunu aktif edin.</div>
 
     <div class="card">
         <div class="card-content card-content-image" style="background-image: url({{ asset('img/md/25.jpg') }});">

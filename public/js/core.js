@@ -700,7 +700,6 @@ function vzAjax(__)
                     var element = __.is('form') ? __.find('[name=' + key + ']') :  $('[name=' + key + ']');
                     var feedback = element.closest('.input-field').find('.helper-text');
 
-
                     if (feedback.length)
                     {
                         if (__.is('form'))

@@ -51,7 +51,7 @@ class BulkInsertJob implements ShouldQueue
             {
                 System::log(
                     json_encode($return->message),
-                    'App\Jobs\Elasticsearch::handle()',
+                    'App\Jobs\Elasticsearch\BulkInsertJob::handle()',
                     10
                 );
             }

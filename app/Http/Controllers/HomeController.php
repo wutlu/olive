@@ -10,6 +10,7 @@ use App\Models\User\UserActivity;
 use App\Models\Discount\DiscountDay;
 use App\Models\User\UserIntro;
 use App\Models\Option;
+use App\Models\Carousel;
 
 use App\Ticket;
 
@@ -49,7 +50,9 @@ class HomeController extends Controller
     {
         $user = auth()->user();
 
-        return view('dashboard', compact('user'));
+        $carousels = Carousel::where('visibility', true)->orderBy('updated_at', 'DESC')->get();
+
+        return view('dashboard', compact('user', 'carousels'));
     }
 
     # activities
@@ -106,9 +109,7 @@ class HomeController extends Controller
             {
                 $data['push_notifications'][] = [
                     'title' => $activity->title,
-                    'button' => $activity->button_type ? [
-                        'type' => $activity->button_type,
-                        'method' => $activity->button_method,
+                    'button' => $activity->button_text ? [
                         'action' => $activity->button_action,
                         'class' => $activity->button_class,
                         'text' => $activity->button_text,

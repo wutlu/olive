@@ -15,8 +15,6 @@ use App\Models\Proxy;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 
-use Validator;
-
 class ProxyController extends Controller
 {
     # ######################################## [ ADMIN ] ######################################## #

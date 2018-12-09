@@ -15,8 +15,6 @@ class UserActivity extends Model
 		'icon',
 		'markdown',
 		'markdown_color',
-		'button_type',
-		'button_method',
 		'button_action',
 		'button_class',
 		'button_text',

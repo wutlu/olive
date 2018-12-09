@@ -45,7 +45,6 @@
 
                         if (!selector.length)
                         {
-                            item.find('[data-name=id]').val(o.id)
                             item.appendTo(ul)
                         }
                 })
@@ -262,6 +261,7 @@
              id="collections"
              data-href="{{ route('admin.proxies.json') }}"
              data-callback="__collections"
+             data-method="post"
              data-nothing>
             <div class="collection-item nothing d-none">
                 <div class="not-found">
@@ -273,7 +273,7 @@
             <a
                 class="collection-item model d-none waves-effect json"
                 data-href="{{ route('admin.proxy') }}"
-                data-method="get"
+                data-method="post"
                 data-callback="__get"
                 href="#">
                 <span data-name="proxy"></span>

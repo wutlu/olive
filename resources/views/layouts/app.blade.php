@@ -100,7 +100,7 @@
                     </a>
                 </li>
             </ul>
-            <nav class="cyan">
+            <nav class="cyan lighten-2">
                 <div class="sidenav-fixed-layout">
                     <div class="nav-wrapper">
                         <a href="{{ route('dashboard') }}" class="brand-logo center">
@@ -135,7 +135,7 @@
                 <div class="user-view">
                     <small class="white-text right">Yapı {{ config('app.version') }}</small>
 
-                    <div class="background" style="background-image: url('{{ asset('img/md/24.jpg') }}');"></div>
+                    <div class="background" style="background-image: url('{{ asset('img/user-background.jpg') }}');"></div>
 
                     <img alt="{{ auth()->user()->name }}" class="circle" src="{{ asset(auth()->user()->avatar()) }}" />
 
@@ -180,6 +180,12 @@
                 <a class="waves-effect" href="{{ route('admin.discount.coupon.list') }}">
                     <i class="material-icons">card_giftcard</i>
                     İndirim Kuponları
+                </a>
+            </li>
+            <li>
+                <a class="waves-effect" href="{{ route('admin.carousels') }}">
+                    <i class="material-icons">view_carousel</i>
+                    Carousel Yönetimi
                 </a>
             </li>
             <li>
@@ -316,20 +322,20 @@
         @endpush
 
         @isset($breadcrumb)
-        <nav class="cyan darken-2" id="breadcrumb">
-            <div class="sidenav-fixed-layout">
-                <div class="container">
-                    <a href="{{ route('dashboard') }}" class="breadcrumb">Olive</a>
-                    @foreach ($breadcrumb as $row)
-                        @if (@$row['link'])
-                        <a href="{{ $row['link'] }}" class="breadcrumb">{{ $row['text'] }}</a>
-                        @else
-                        <span class="breadcrumb">{{ $row['text'] }}</span>
-                        @endif
-                    @endforeach
+            <nav class="grey darken-4" id="breadcrumb">
+                <div class="sidenav-fixed-layout">
+                    <div class="container">
+                        <a href="{{ route('dashboard') }}" class="breadcrumb">Olive</a>
+                        @foreach ($breadcrumb as $row)
+                            @if (@$row['link'])
+                            <a href="{{ $row['link'] }}" class="breadcrumb">{{ $row['text'] }}</a>
+                            @else
+                            <span class="breadcrumb">{{ $row['text'] }}</span>
+                            @endif
+                        @endforeach
+                    </div>
                 </div>
-            </div>
-        </nav>
+            </nav>
         @endisset
 
         <main>
@@ -447,7 +453,7 @@
                                 'data-include': 'search_input'
                             });
 
-                            item.addClass(o.root ? 'red-text' : '')
+                            item.addClass(o.root ? 'orange-text' : '')
                             item.appendTo(collections)
                         })
                     }
@@ -494,14 +500,7 @@
                             {
                                 var button = item.find('[data-name=action]');
 
-                                if (o.button_type == 'ajax')
-                                {
-                                    button.addClass('json ' + o.button.class)
-                                          .html(o.button.text)
-                                          .attr('data-method', o.button.method)
-                                          .attr('data-href', o.button.action)
-                                }
-                                else
+                                if (o.button.text)
                                 {
                                     button.addClass(o.button.class)
                                           .html(o.button.text)

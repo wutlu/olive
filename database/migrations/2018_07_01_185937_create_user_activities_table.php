@@ -23,9 +23,6 @@ class CreateUserActivitiesTable extends Migration
             $table->text('markdown')->nullable()->default(null);
             $table->string('markdown_color')->nullable()->default(null);
 
-            $table->enum('button_type', [ 'http', 'ajax' ])->nullable()->default(null);
-            $table->enum('button_method', [ 'POST', 'GET', 'PUT', 'PATCH' ])->nullable()->default(null);
-
             $table->string('button_action')->nullable()->default(null);
             $table->string('button_class')->nullable()->default(null);
             $table->string('button_text')->nullable()->default(null);

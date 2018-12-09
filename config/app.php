@@ -63,6 +63,15 @@ return [
         'shopping' => 'Alışveriş',
     ],
 
+    'carousel' => [
+        'patterns' => [
+            'sphere-1' => 'AI 1',
+            'sphere-2' => 'AI 2',
+            'sphere-3' => 'AI 3',
+            'sphere-4' => 'AI 4',
+        ]
+    ],
+
     'search' => [
         'modules' => [
             1 => [
@@ -90,107 +99,107 @@ return [
              * root modülleri
              */
             6 => [
-                'name' => '[root] Sistem İzleme » Sunucu Bilgisi',
+                'name' => '✨ Sistem İzleme » Sunucu Bilgisi',
                 'route' => 'admin.monitoring.server',
                 'root' => true
             ],
             7 => [
-                'name' => '[root] Sistem İzleme » Log Ekranı',
+                'name' => '✨ Sistem İzleme » Log Ekranı',
                 'route' => 'admin.monitoring.log',
                 'root' => true
             ],
             8 => [
-                'name' => '[root] Sistem İzleme » Kuyruk Ekranı',
+                'name' => '✨ Sistem İzleme » Kuyruk Ekranı',
                 'route' => 'admin.monitoring.queue',
                 'root' => true
             ],
             9 => [
-                'name' => '[root] Sistem İzleme » Arkaplan İşlemleri',
+                'name' => '✨ Sistem İzleme » Arkaplan İşlemleri',
                 'route' => 'admin.monitoring.background',
                 'root' => true
             ],
             10 => [
-                'name' => '[root] Organizasyon » Kupon Yönetimi',
+                'name' => '✨ Organizasyon » Kupon Yönetimi',
                 'route' => 'admin.discount.coupon.list',
                 'root' => true
             ],
             11 => [
-                'name' => '[root] Organizasyon » İndirim Günleri',
+                'name' => '✨ Organizasyon » İndirim Günleri',
                 'route' => 'admin.discount.day.list',
                 'root' => true
             ],
             12 => [
-                'name' => '[root] Vekil Sunucu Yönetimi',
+                'name' => '✨ Vekil Sunucu Yönetimi',
                 'route' => 'admin.proxies',
                 'root' => true
             ],
             13 => [
-                'name' => '[root] Bot Yönetimi » Alışveriş Botları',
+                'name' => '✨ Bot Yönetimi » Alışveriş Botları',
                 'route' => 'crawlers.shopping.list',
                 'root' => true
             ],
             14 => [
-                'name' => '[root] Bot Yönetimi » YouTube Ayarları',
+                'name' => '✨ Bot Yönetimi » YouTube Ayarları',
                 'route' => 'admin.youtube.settings',
                 'root' => true
             ],
             15 => [
-                'name' => '[root] Bot Yönetimi » Google Ayarları',
+                'name' => '✨ Bot Yönetimi » Google Ayarları',
                 'route' => 'admin.google.settings',
                 'root' => true
             ],
             16 => [
-                'name' => '[root] Bot Yönetimi » Twitter Ayarları',
+                'name' => '✨ Bot Yönetimi » Twitter Ayarları',
                 'route' => 'admin.twitter.settings',
                 'root' => true
             ],
             17 => [
-                'name' => '[root] Twitter » Müşteri Hesapları',
+                'name' => '✨ Twitter » Müşteri Hesapları',
                 'route' => 'admin.twitter.accounts',
                 'root' => true
             ],
             18 => [
-                'name' => '[root] Twitter » Token Yönetimi',
+                'name' => '✨ Twitter » Token Yönetimi',
                 'route' => 'admin.twitter.tokens.json',
                 'root' => true
             ],
             19 => [
-                'name' => '[root] Twitter » Veri Havuzu » Kelime Havuzu',
+                'name' => '✨ Twitter » Veri Havuzu » Kelime Havuzu',
                 'route' => 'admin.twitter.stream.keywords',
                 'root' => true
             ],
             20 => [
-                'name' => '[root] Twitter » Veri Havuzu » Kullanıcı Havuzu',
+                'name' => '✨ Twitter » Veri Havuzu » Kullanıcı Havuzu',
                 'route' => 'admin.twitter.stream.accounts',
                 'root' => true
             ],
             17 => [
-                'name' => '[root] Bot Yönetimi » Medya Botları',
+                'name' => '✨ Bot Yönetimi » Medya Botları',
                 'route' => 'crawlers.media.list',
                 'root' => true
             ],
             18 => [
-                'name' => '[root] Bot Yönetimi » Sözlük Botları',
+                'name' => '✨ Bot Yönetimi » Sözlük Botları',
                 'route' => 'crawlers.sozluk.list',
                 'root' => true
             ],
             19 => [
-                'name' => '[root] Sayfa Yönetimi',
+                'name' => '✨ Sayfa Yönetimi',
                 'route' => 'admin.page.list',
                 'root' => true
             ],
             20 => [
-                'name' => '[root] Destek Talepleri',
+                'name' => '✨ Destek Talepleri',
                 'route' => 'admin.tickets',
                 'root' => true
             ],
             21 => [
-                'name' => '[root] Kullanıcı Yönetimi',
+                'name' => '✨ Kullanıcı Yönetimi',
                 'route' => 'admin.user.list',
                 'root' => true
             ],
             22 => [
-                'name' => '[root] Organizasyon Yönetimi',
+                'name' => '✨ Organizasyon Yönetimi',
                 'route' => 'admin.organisation.list',
                 'root' => true
             ],

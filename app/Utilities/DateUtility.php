@@ -22,11 +22,7 @@ class DateUtility
 	# is date
     public static function isDate($value)
     {
-        if (!$value)
-        {
-            return false;
-        }
-        else
+        if ($value)
         {
             $value = mb_strtolower($value);
 
@@ -84,6 +80,10 @@ class DateUtility
                 $value
             );
         }
+        else
+        {
+            return false;
+        }
 
         try
         {
@@ -94,6 +94,11 @@ class DateUtility
             if (date('H:i:s') != '00:00:00' && $date->format('H:i:s') == '00:00:00')
             {
                 $full_date = $date->format('Y-m-d').' '.date('H:i:s');
+            }
+
+            if ($full_date > date('Y-m-d H:i:s', strtotime('+ 10 minute')) && $full_date < date('Y-m-d H:i:s', strtotime('- 2 day')))
+            {
+                return false;
             }
 
             return $full_date;

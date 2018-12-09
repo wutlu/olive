@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+
 use App\Models\Geo\States;
 
 class StatesTableSeeder extends Seeder

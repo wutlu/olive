@@ -70,7 +70,7 @@ return [
     'required' => ':attribute alanı zorunludur.',
     'required_if' => ':attribute alanını boş bırakamazsınız.', // :attribute alanı, :other :value değerine sahip olduğunda zorunludur.
     'required_unless' => ':attribute alanını boş bırakamazsınız.', // :attribute alanı, :other alanı :value değerlerinden birine sahip olmadığında zorunludur.
-    'required_with' => ':attribute alanı zorunludur.', // :attribute alanı :values varken zorunludur.
+    'required_with' => ':attribute alanı :values varken zorunludur.',
     'required_with_all' => ':attribute alanı herhangi bir :values değeri varken zorunludur.',
     'required_without' => ':attribute alanını boş bırakamazsınız.', // :attribute alanı :values yokken zorunludur.
     'required_without_all' => ':attribute alanı :values değerlerinden herhangi biri yokken zorunludur.',
@@ -189,6 +189,7 @@ return [
         'link'                         => 'Bağlantı',
         'site'                         => 'Site',
         'base'                         => 'Temel',
+        'pattern'                      => 'Desen',
         'pattern_url'                  => 'URL Deseni',
         'selector_title'               => 'Başlık Seçicisi',
         'selector_description'         => 'Açıklama Seçicisi',
@@ -228,5 +229,9 @@ return [
         'group_id'                     => 'Grup',
         'index'                        => 'Indeks',
         'comment'                      => 'Yorum',
+        'button_action'                => 'Aksiyon Adresi',
+        'button_text'                  => 'Buton Yazısı',
+        'visibility'                   => 'Görünürlük',
+        'sort'                         => 'Sıra',
     ],
 ];
