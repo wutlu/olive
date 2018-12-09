@@ -203,6 +203,11 @@ return [
                 'route' => 'admin.organisation.list',
                 'root' => true
             ],
+            23 => [
+                'name' => '✨ Carousel Yönetimi',
+                'route' => 'admin.carousels',
+                'root' => true
+            ],
         ]
     ],
 

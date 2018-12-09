@@ -21,10 +21,10 @@
 @section('content')
     <div class="card">
         <div class="card-content">
-            <span class="card-title">Kullanıcı Havuzu</span>
+            <span class="card-title mb-0">Kullanıcı Havuzu</span>
             <p class="grey-text" data-name="count"></p>
         </div>
-        <div class="card-content grey-text">
+        <div class="card-content grey-text grey lighten-5">
             <h6>Daha İyi Sonuçlar Elde Edin</h6>
             <p>İlgilendiğiniz kullanıcıları belirterek veri toplama esnasında yüksek analiz sonuçları elde edebilirsiniz.</p>
             <p>Bu ayarlar bulunduğunuz organizasyon için geçerlidir.</p>
@@ -62,7 +62,7 @@
                 <div class="input-field">
                     <input id="screen_name" name="screen_name" type="text" class="validate" />
                     <label for="screen_name">Twitter Kullanıcı Adı veya ID</label>
-                    <span class="helper-text">Örnek: "rt_erdogan, bigverizone"</span>
+                    <span class="helper-text">Örnek: "ntv, bigverizone"</span>
                 </div>
             </form>
         </div>

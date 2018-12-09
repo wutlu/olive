@@ -266,8 +266,8 @@
                         </div>
                         <div style="width: {{ $sentiment['neu']*100 }}%;" class="sentiment-item grey-text d-flex">
                             @if ($sentiment['neu'] > 0.2)
-                            <i class="material-icons grey-text align-self-center">sentiment_neutral</i>
-                            <span class="badge grey-text align-self-center">{{ $sentiment['neu']*100 }}%</span>
+                            <i class="material-icons grey-text text-darken-2 align-self-center">sentiment_neutral</i>
+                            <span class="badge grey-text text-darken-2 align-self-center">{{ $sentiment['neu']*100 }}%</span>
                             @endif
                         </div>
                         <div style="width: {{ $sentiment['neg']*100 }}%;" class="sentiment-item red-text accent-4 d-flex">

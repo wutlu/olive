@@ -21,10 +21,10 @@
 @section('content')
     <div class="card">
         <div class="card-content">
-            <span class="card-title">Kelime Havuzu</span>
+            <span class="card-title mb-0">Kelime Havuzu</span>
             <p class="grey-text" data-name="count"></p>
         </div>
-        <div class="card-content grey-text">
+        <div class="card-content grey-text grey lighten-5">
         	<h6>Daha İyi Sonuçlar Elde Edin</h6>
         	<p>İlgilendiğiniz kelimeleri belirterek veri toplama esnasında yüksek analiz sonuçları elde edebilirsiniz.</p>
         	<p>Bu ayarlar bulunduğunuz organizasyon için geçerlidir.</p>

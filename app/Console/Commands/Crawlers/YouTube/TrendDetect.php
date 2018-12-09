@@ -57,7 +57,7 @@ class TrendDetect extends Command
 
         if (count($videoList))
         {
-            $this->info('list['.count($videoList).']');
+            $this->line('alıcak video ['.count($videoList).']');
 
             $videoChunk = [];
             $commentChunk = [];
@@ -72,9 +72,9 @@ class TrendDetect extends Command
             {
                 try
                 {
-                    $totalVideo++;
+                    $this->info('video ['.$video->snippet->title.']');
 
-                    $this->comment('['.$video->snippet->title.']');
+                    $totalVideo++;
 
                     $videoChunk['body'][] = [
                         'index' => [
@@ -126,7 +126,7 @@ class TrendDetect extends Command
 
                         if ($commentThreads)
                         {
-                            $this->info('comments['.count($commentThreads).']');
+                            $this->info('yorum ['.count($commentThreads).']');
 
                             foreach ($commentThreads as $comment)
                             {
@@ -134,62 +134,77 @@ class TrendDetect extends Command
 
                                 $replyCount = 0;
 
-                                $commentChunk['body'][] = [
-                                    'create' => [
-                                        '_index' => Indices::name([ 'youtube', 'comments' ]),
-                                        '_type' => 'comment',
-                                        '_id' => $comment->id
-                                    ]
-                                ];
+                                try
+                                {
+                                    $commentChunk['body'][] = [
+                                        'create' => [
+                                            '_index' => Indices::name([ 'youtube', 'comments' ]),
+                                            '_type' => 'comment',
+                                            '_id' => $comment->id
+                                        ]
+                                    ];
 
-                                $commentChunk['body'][] = [
-                                    'id' => $comment->id,
-                                    'text' => $term->convertAscii($comment->snippet->topLevelComment->snippet->textOriginal),
-                                    'video_id' => $comment->snippet->videoId,
-                                    'channel' => [
-                                        'id' => $comment->snippet->topLevelComment->snippet->authorChannelId->value,
-                                        'title' => $comment->snippet->topLevelComment->snippet->authorDisplayName
-                                    ],
-                                    'created_at' => date('Y-m-d H:i:s', strtotime($comment->snippet->topLevelComment->snippet->publishedAt)),
-                                    'called_at' => date('Y-m-d H:i:s'),
-                                    'sentiment' => $sentiment->score($comment->snippet->topLevelComment->snippet->textOriginal)
-                                ];
+                                    $commentChunk['body'][] = [
+                                        'id' => $comment->id,
+                                        'text' => $term->convertAscii($comment->snippet->topLevelComment->snippet->textOriginal),
+                                        'video_id' => $comment->snippet->videoId,
+                                        'channel' => [
+                                            'id' => $comment->snippet->topLevelComment->snippet->authorChannelId->value,
+                                            'title' => $comment->snippet->topLevelComment->snippet->authorDisplayName
+                                        ],
+                                        'created_at' => date('Y-m-d H:i:s', strtotime($comment->snippet->topLevelComment->snippet->publishedAt)),
+                                        'called_at' => date('Y-m-d H:i:s'),
+                                        'sentiment' => $sentiment->score($comment->snippet->topLevelComment->snippet->textOriginal)
+                                    ];
+                                }
+                                catch (\Exception $e)
+                                {
+                                    $this->error($e->getMessage());
+
+                                    System::log(json_encode([ $e->getMessage(), $comment ]), 'App\Console\Commands\Crawlers\YouTube\TrendDetect::handle(comment-1)', 2);
+                                }
 
                                 if (@$comment->replies->comments)
                                 {
+                                    $this->info('yoruma cevap ['.count($comment->replies->comments).']');
+
                                     foreach ($comment->replies->comments as $reply)
                                     {
                                         $replyCount++;
                                         $totalComment++;
 
-                                        $commentChunk['body'][] = [
-                                            'create' => [
-                                                '_index' => Indices::name([ 'youtube', 'comments' ]),
-                                                '_type' => 'comment',
-                                                '_id' => $reply->id
-                                            ]
-                                        ];
+                                        try
+                                        {
+                                            $commentChunk['body'][] = [
+                                                'create' => [
+                                                    '_index' => Indices::name([ 'youtube', 'comments' ]),
+                                                    '_type' => 'comment',
+                                                    '_id' => $reply->id
+                                                ]
+                                            ];
 
-                                        $commentChunk['body'][] = [
-                                            'id' => $reply->id,
-                                            'text' => $term->convertAscii($reply->snippet->textOriginal),
-                                            'video_id' => $comment->snippet->videoId,
-                                            'comment_id' => $comment->id,
-                                            'channel' => [
-                                                'id' => $reply->snippet->authorChannelId->value,
-                                                'title' => $reply->snippet->authorDisplayName
-                                            ],
-                                            'created_at' => date('Y-m-d H:i:s', strtotime($reply->snippet->publishedAt)),
-                                            'called_at' => date('Y-m-d H:i:s'),
-                                            'sentiment' => $sentiment->score($reply->snippet->textOriginal)
-                                        ];
+                                            $commentChunk['body'][] = [
+                                                'id' => $reply->id,
+                                                'text' => $term->convertAscii($reply->snippet->textOriginal),
+                                                'video_id' => $comment->snippet->videoId,
+                                                'comment_id' => $comment->id,
+                                                'channel' => [
+                                                    'id' => $reply->snippet->authorChannelId->value,
+                                                    'title' => $reply->snippet->authorDisplayName
+                                                ],
+                                                'created_at' => date('Y-m-d H:i:s', strtotime($reply->snippet->publishedAt)),
+                                                'called_at' => date('Y-m-d H:i:s'),
+                                                'sentiment' => $sentiment->score($reply->snippet->textOriginal)
+                                            ];
+                                        }
+                                        catch (\Exception $e)
+                                        {
+                                            $this->error($e->getMessage());
+
+                                            System::log(json_encode([ $e->getMessage(), $reply ]), 'App\Console\Commands\Crawlers\YouTube\TrendDetect::handle(comment-2)', 2);
+                                        }
                                     }
                                 }
-                            }
-
-                            if (@$replyCount)
-                            {
-                                $this->info('replies['.$replyCount.']');
                             }
                         }
 

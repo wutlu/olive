@@ -5645,7 +5645,7 @@ small {
 
 .card > .card-sentiment > .sentiment-item {
   padding: 0 .6rem .6rem;
-  border-width: 0 0 4px;
+  border-width: 0 0 1rem;
   border-style: solid;
   border-color: inline;
 }
@@ -5660,26 +5660,21 @@ small {
 }
 .card.card-data.tweet {
   background-image: url('../img/icons/twitter-circled.png');
-  background-color: #E3F2FD;
 }
 .card.card-data.article {
   background-image: url('../img/icons/globe-earth.png');
-  background-color: #ffebee;
 }
 .card.card-data.video {
   background-image: url('../img/icons/youtube.png');
 }
 .card.card-data.entry {
   background-image: url('../img/icons/dictionary.png');
-  background-color: #ccff90;
 }
 .card.card-data.product {
   background-image: url('../img/icons/shopping-bag.png');
-  background-color: #fff9c4;
 }
 .card.card-data.comment {
   background-image: url('../img/icons/speech-bubble-with-dots.png');
-  background-color: #efebe9;
 }
 
 .card.card-data > .card-comment {

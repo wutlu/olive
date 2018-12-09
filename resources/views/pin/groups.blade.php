@@ -259,7 +259,7 @@
                 <span>
                     <a
                         style="margin: 0 1rem 0 0;"
-                        class="btn-floating btn-small waves-effect cyan darken-2 json"
+                        class="json"
                         data-name="edit"
                         data-href="{{ route('pin.group') }}"
                         data-method="post"
