@@ -132,14 +132,15 @@ class Crawler
     # article detection
     public static function articleDetection(string $site, string $page, string $title_selector, string $description_selector, bool $proxy = false)
     {
-        $data['page'] = $page;
+        $data = [
+            'page' => $page,
+            'status' => 'ok'
+        ];
 
         $client = new Client([
             'base_uri' => $site,
             'handler' => HandlerStack::create()
         ]);
-
-        $dateUtility = new DateUtility;
 
         try
         {
@@ -175,7 +176,6 @@ class Crawler
 
             if (!$title)
             {
-                $data['status'] = 'err';
                 $data['error_reasons'][] = 'Başlık tespit edilemedi. Alternatif denendi.';
 
                 $title = @array_first($meta_property, function ($value, $key) { return @$value['property'] == 'og:title'; })['content'];
@@ -193,7 +193,6 @@ class Crawler
 
             if (!$description)
             {
-                $data['status'] = 'err';
                 $data['error_reasons'][] = 'Açıklama tespit edilemedi. Alternatif denendi.';
 
                 $description = @array_first($meta_property, function ($value, $key) { return @$value['property'] == 'og:description'; })['content'];
@@ -211,33 +210,15 @@ class Crawler
 
             $description = Term::convertAscii($description);
 
-            # date detect
-            preg_match_all($dateUtility->datePattern(), $dom, $dates);
-
-            $created_at = null;
-
-            if (@$dates[0])
-            {
-                foreach ($dates[0] as $date)
-                {
-                    $date = $dateUtility->isDate($date);
-
-                    if ($date)
-                    {
-                        $created_at = $date;
-
-                        break;
-                    }
-                }
-            }
+            $created_at = DateUtility::getDateInDom($dom);
 
             $data['data'] = [
                 'title' => $title,
                 'description' => $description,
                 'created_at' => $created_at
             ];
-            $data['status'] = 'ok';
 
+            # date
             if (!$created_at)
             {
                 $data['error_reasons'][] = 'Tarih tespit edilemedi.';
@@ -290,11 +271,12 @@ class Crawler
     # article detection
     public static function productDetection(string $site, string $page, array $selector, bool $proxy = false)
     {
-        $dateUtility = new DateUtility;
-
         $selector = (object) $selector;
 
-        $data['page'] = $page;
+        $data = [
+            'page' => $page,
+            'status' => 'ok'
+        ];
 
         $client = new Client([
             'base_uri' => $site,
@@ -393,25 +375,9 @@ class Crawler
                 }
             }
 
-            # date detect
-            preg_match_all($dateUtility->datePattern(), $dom, $dates);
-
-            $created_at = null;
-
-            if (@$dates[0])
-            {
-                foreach ($dates[0] as $date)
-                {
-                    $date = $dateUtility->isDate($date);
-
-                    if ($date)
-                    {
-                        $created_at = $date;
-
-                        break;
-                    }
-                }
-            }
+            # date
+            $created_at = DateUtility::getDateInDom($dom);
+            $created_at = $created_at ? $created_at : date('Y-m-d H:i:s');
 
             $data['data'] = [
                 'title' => $title,
@@ -422,7 +388,6 @@ class Crawler
                 'seller_phones' => $seller_phones,
                 'price' => $price
             ];
-            $data['status'] = 'ok';
 
             if (!$created_at)
             {
@@ -445,7 +410,7 @@ class Crawler
             # description
             if ($description == null)
             {
-                //
+                $data['error_reasons'][] = 'Açıklama tespit edilemedi.';
             }
             else if (strlen($description) > 10000)
             {
@@ -495,8 +460,6 @@ class Crawler
     # entry detection
     public static function entryDetection(string $site, string $page, int $id, string $title_selector, string $entry_selector, string $author_selector, bool $proxy = false)
     {
-        $dateUtility = new DateUtility;
-
         $data['page'] = $site.'/'.str_replace('__id__', $id, $page);
 
         $client = new Client([
@@ -540,25 +503,8 @@ class Crawler
             $author = $saw->get($author_selector)->toText();
             $author = Term::convertAscii($author);
 
-            # date detect
-            preg_match_all('/(\d{2}\.\d{2}\.\d{4})( \d{2}:\d{2}(:\d{2})?)?/', $dom, $dates);
-
-            $created_at = null;
-
-            if (@$dates[0])
-            {
-                foreach ($dates[0] as $date)
-                {
-                    $date = $dateUtility->isDate($date);
-
-                    if ($date)
-                    {
-                        $created_at = $date;
-
-                        break;
-                    }
-                }
-            }
+            # date
+            $created_at = DateUtility::getDateInDom($dom, '/(\d{2}\.\d{2}\.\d{4})( \d{2}:\d{2}(:\d{2})?)?/');
 
             $data['data'] = [
                 'title' => $title,

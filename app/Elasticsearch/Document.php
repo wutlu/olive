@@ -223,6 +223,21 @@ class Document
         }
     }
 
+    /*
+     *   curl -X POST "192.168.44.1:9200/ * /_delete_by_query?pretty" -H 'Content-Type: application/json' -d'
+     *   {
+     *       "query": { 
+     *           "bool": {
+     *               "filter": {
+     *                   "range": {
+     *                       "created_at": { "format": "YYYY-MM-dd", "gte": "2018-12-10" }
+     *                   }
+     *               }
+     *           }
+     *       }
+     *   }
+     *   '
+     */
     # sorguyla döküman sil
     public static function deleteByQUery($name, string $type, array $body)
     {

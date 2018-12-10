@@ -271,7 +271,7 @@
 
                 if ($('input[name=sound_alert]').prop("checked") == true)
                 {
-                    $.playSound('{{ asset('push-notification.mp3') }}')
+                    $.playSound('{{ asset('alert-message.mp3') }}')
                 }
             }
 
@@ -464,7 +464,7 @@
         <div class="collection collection-bordered">
             <label class="collection-item waves-effect d-block" style="padding: 12px 24px;">
                 <input name="sound_alert" value="on" type="checkbox" />
-                <span>Sesli Uyarı</span>
+                <span>Uyarı Sesleri</span>
             </label>
         </div>
     </div>

@@ -419,17 +419,17 @@
 
                 if (o.data)
                 {
-                    textarea.val(textarea.val() + '- ' + o.data.title + '\n');
-                    textarea.val(textarea.val() + '- ' + o.data.description + '\n');
-                    textarea.val(textarea.val() + '- ' + o.data.created_at + '\n');
+                    textarea.val(textarea.val() + '- 1: ' + o.data.title + '\n');
+                    textarea.val(textarea.val() + '- 2: ' + o.data.description + '\n');
+                    textarea.val(textarea.val() + '- 3: ' + o.data.created_at + '\n');
 
-                    textarea.val(textarea.val() + '- ' + o.data.address + '\n');
-					textarea.val(textarea.val() + '- ' + o.data.breadcrumb + '\n');
-					textarea.val(textarea.val() + '- ' + o.data.seller_name + '\n');
-                    textarea.val(textarea.val() + '- ' + o.data.seller_phones + '\n');
+                    textarea.val(textarea.val() + '- 4: ' + o.data.address + '\n');
+					textarea.val(textarea.val() + '- 5: ' + o.data.breadcrumb + '\n');
+					textarea.val(textarea.val() + '- 6: ' + o.data.seller_name + '\n');
+                    textarea.val(textarea.val() + '- 7: ' + o.data.seller_phones + '\n');
 
-					textarea.val(textarea.val() + '- ' + o.data.price.amount + '\n');
-                    textarea.val(textarea.val() + '- ' + o.data.price.currency + '\n');
+					textarea.val(textarea.val() + '- 8: ' + o.data.price.amount + '\n');
+                    textarea.val(textarea.val() + '- 9: ' + o.data.price.currency + '\n');
                 }
                 else
                 {

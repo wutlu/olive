@@ -416,7 +416,7 @@
 
                     setTimeout(function() {
                         input.focus()
-                    }, 200)
+                    }, 500)
             }).on('keyup', '[name=search_input]', function(e) {
                 if (e.which == 27)
                 {
