@@ -13,24 +13,24 @@
                     $('input[name=type]').change(function() {
                         var __ = $(this),
                             create_form = $('form#create-form');
-                            create_form.find('.dynamic-field').addClass('d-none')
+                            create_form.find('.dynamic-field').addClass('hide')
 
                         if (__.val() == 'corporate')
                         {
-                            create_form.find('.dynamic-field.corporate').removeClass('d-none')
+                            create_form.find('.dynamic-field.corporate').removeClass('hide')
                         }
                         else if (__.val() == 'person')
                         {
-                            create_form.find('.dynamic-field.person').removeClass('d-none')
+                            create_form.find('.dynamic-field.person').removeClass('hide')
                         }
                         else if (__.val() == 'individual')
                         {
-                            create_form.find('.dynamic-field.individual').removeClass('d-none')
+                            create_form.find('.dynamic-field.individual').removeClass('hide')
                         }
                     })
 
                     $(window).on('load', function() {
-                        $('.dynamic-field.individual').removeClass('d-none')
+                        $('.dynamic-field.individual').removeClass('hide')
                     })
                 @endpush
 
@@ -54,32 +54,32 @@
                         </label>
                     </p>
                     <br />
-                    <div class="input-field dynamic-field d-none individual person">
+                    <div class="input-field dynamic-field hide individual person">
                         <input name="person_name" id="person_name" type="text" class="validate" />
                         <label for="person_name">Ad</label>
                         <span class="helper-text"></span>
                     </div>
-                    <div class="input-field dynamic-field d-none individual person">
+                    <div class="input-field dynamic-field hide individual person">
                         <input name="person_lastname" id="person_lastname" type="text" class="validate" />
                         <label for="person_lastname">Soyad</label>
                         <span class="helper-text"></span>
                     </div>
-                    <div class="input-field dynamic-field d-none person">
+                    <div class="input-field dynamic-field hide person">
                         <input name="person_tckn" id="person_tckn" type="text" class="validate" />
                         <label for="person_tckn">T.C. Kimlik No</label>
                         <span class="helper-text"></span>
                     </div>
-                    <div class="input-field dynamic-field d-none corporate person">
+                    <div class="input-field dynamic-field hide corporate person">
                         <input name="merchant_name" id="merchant_name" type="text" class="validate" />
                         <label for="merchant_name">Ticari Ünvan</label>
                         <span class="helper-text"></span>
                     </div>
-                    <div class="input-field dynamic-field d-none corporate">
+                    <div class="input-field dynamic-field hide corporate">
                         <input name="tax_number" id="tax_number" type="text" class="validate" />
                         <label for="tax_number">Vergi No</label>
                         <span class="helper-text"></span>
                     </div>
-                    <div class="input-field dynamic-field d-none corporate person">
+                    <div class="input-field dynamic-field hide corporate person">
                         <input name="tax_office" id="tax_office" type="text" class="validate" />
                         <label for="tax_office">Vergi Dairesi</label>
                         <span class="helper-text"></span>

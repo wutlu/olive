@@ -18,7 +18,8 @@
     <link rel="icon" href="{{ asset('img/favicon.png?v='.config('app.version')) }}" />
 
     <!-- master styles -->
-    <link rel="stylesheet" href="{{ asset('css/materialize.css?v='.config('app.version')) }}" />
+    <link rel="stylesheet" href="{{ asset('css/materialize.min.css?v='.config('app.version')) }}" />
+    <link rel="stylesheet" href="{{ asset('css/theme.css?v='.config('app.version')) }}" />
 
     <!-- external include header -->
     @stack('external.include.header')
@@ -134,11 +135,8 @@
             <li>
                 <div class="user-view">
                     <small class="white-text right">Yapı {{ config('app.version') }}</small>
-
                     <div class="background" style="background-image: url('{{ asset('img/user-background.jpg') }}');"></div>
-
                     <img alt="{{ auth()->user()->name }}" class="circle" src="{{ asset(auth()->user()->avatar()) }}" />
-
                     <span class="white-text name">{{ auth()->user()->name }}</span>
                     <span class="white-text email">{{ auth()->user()->email }}</span>
                 </div>
@@ -199,7 +197,7 @@
                 <div class="collapsible-header waves-effect">
                     <i class="material-icons">settings</i>
                     <span>Bot Yönetimi</span>
-                    <i class="material-icons arrow">chevron_left</i>
+                    <i class="material-icons arrow">keyboard_arrow_down</i>
                 </div>
                 <div class="collapsible-body">
                     <ul>
@@ -221,6 +219,7 @@
                                 Alışveriş Botları
                             </a>
                         </li>
+                        <li class="divider"></li>
                         <li>
                             <a class="waves-effect" href="{{ route('admin.twitter.settings') }}">
                                 <i class="material-icons">widgets</i>
@@ -247,7 +246,7 @@
                 <div class="collapsible-header waves-effect">
                     <i class="material-icons">computer</i>
                     <span>Sistem İzleme</span>
-                    <i class="material-icons arrow">chevron_left</i>
+                    <i class="material-icons arrow">keyboard_arrow_down</i>
                 </div>
                 <div class="collapsible-body">
                     <ul>
@@ -370,13 +369,18 @@
 
     @auth
         <div class="fixed-action-btn">
-            <a data-trigger="module-search" class="btn-floating btn-large cyan darken-2 waves-effect" data-tooltip="Modül Ara (CTRL + G)" data-position="left">
-                <i class="large material-icons">search</i>
+            <a data-trigger="module-search" id="search-trigger" class="btn-floating btn-large red darken-2 waves-effect" data-tooltip="Modül Ara (CTRL + G)" data-position="left">
+                <i class="material-icons">search</i>
             </a>
         </div>
 
         <div class="search-wrapper" id="module-search">
             <div class="search-content">
+                <div class="right-align">
+                    <a href="#" class="btn-flat red-text waves-effect" data-trigger="module-search-close">
+                        <i class="material-icons">close</i>
+                    </a>
+                </div>
                 <div class="input-field">
                     <i class="material-icons prefix">search</i>
                     <input
@@ -390,9 +394,6 @@
                     <label for="search_input">Arayın</label>
                 </div>
                 <div class="collection" id="module_search_results"></div>
-                <div class="right-align">
-                    <a href="#" class="btn-flat waves-effect" data-trigger="module-search-close">Tamam</a>
-                </div>
             </div>
         </div>
 
@@ -463,14 +464,14 @@
 
         <div class="load" data-href="{{ route('dashboard.monitor') }}" data-method="post" data-callback="__monitor"></div>
         <div class="push-notifications">
-            <div class="notification d-none _model">
+            <div class="notification hide _model">
                 <div class="card">
                     <div class="card-content">
                         <p data-name="text"></p>
                     </div>
                     <div class="card-action right-align">
                         <a href="#" data-name="ok" class="btn-flat waves-effect">Tamam</a>
-                        <a href="#" data-name="action" class="d-none"></a>
+                        <a href="#" data-name="action" class="hide"></a>
                     </div>
                 </div>
             </div>
@@ -493,7 +494,7 @@
 
                         $.each(obj.data.push_notifications, function(key, o) {
                             var item = pn_model.clone();
-                                item.removeClass('_model d-none')
+                                item.removeClass('_model hide')
                                 item.find('[data-name=text]').html(o.title)
 
                             if (o.button)
@@ -507,7 +508,7 @@
                                           .attr('href', o.button.action)
                                 }
 
-                                button.removeClass('d-none')
+                                button.removeClass('hide')
                             }
 
                             item.appendTo(pn)

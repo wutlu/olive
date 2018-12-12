@@ -449,7 +449,7 @@ $(document).ready(function() {
     $.extend({
         playSound: function () {
             return $('<audio />', {
-                'class': 'sound-player d-none',
+                'class': 'sound-player hide',
                 'autoplay': 'autoplay',
                 'html': $('<source />', {
                     'src': arguments[0],
@@ -844,13 +844,13 @@ function vzAjax(__)
 
                 if (__.data('take') > obj.hits.length)
                 {
-                    more_button.addClass('d-none')
-                    more_button.parent('.card-footer').addClass('d-none')
+                    more_button.addClass('hide')
+                    more_button.parent('.card-footer').addClass('hide')
                 }
                 else
                 {
-                    more_button.removeClass('d-none')
-                    more_button.parent('.card-footer').removeClass('d-none')
+                    more_button.removeClass('hide')
+                    more_button.parent('.card-footer').removeClass('hide')
                 }
             }
 
@@ -860,11 +860,11 @@ function vzAjax(__)
                 {
                     if (obj.hits.length)
                     {
-                        __.children('.nothing').addClass('d-none')
+                        __.children('.nothing').addClass('hide')
                     }
                     else
                     {
-                        __.children('.nothing').removeClass('d-none')
+                        __.children('.nothing').removeClass('hide')
                     }
                 }
             }

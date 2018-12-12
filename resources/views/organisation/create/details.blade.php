@@ -32,11 +32,11 @@
                     $('.invoice-discount_price').html('+ ₺ ' + obj.result.discount.price)
                 }
 
-                $('tr.discount-row').removeClass('d-none')
+                $('tr.discount-row').removeClass('hide')
             }
             else
             {
-                $('tr.discount-row').addClass('d-none')
+                $('tr.discount-row').addClass('hide')
             }
 
             scrollTo({
@@ -135,7 +135,7 @@
                             <span class="invoice-total_price">-</span>
                         </td>
                     </tr>
-                    <tr class="discount-row d-none">
+                    <tr class="discount-row hide">
                         <td>İndirim</td>
                         <td>
                             <span class="invoice-discount_rate">0</span>%

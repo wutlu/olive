@@ -63,6 +63,27 @@
         </div>
         <div class="col xl4 l5 s12">
             @if (@auth()->user()->organisation_id)
+                @if (!auth()->user()->intro('search.module'))
+                    <div class="tap-target red white-text" data-target="search-trigger">
+                        <div class="tap-target-content">
+                            <h5>Pratiklik Kazanın</h5>
+                            <p>Modüller arasında daha hızlı gezinebilirsiniz.</p>
+                        </div>
+                    </div>
+                    @push('local.scripts')
+                        $('[data-target=search-trigger]').tapTarget({
+                            'onClose': function() {
+                                vzAjax($('<div />', {
+                                    'class': 'json',
+                                    'data-method': 'post',
+                                    'data-href': '{{ route('intro', 'search.module') }}'
+                                }))
+                            }
+                        });
+
+                        $('[data-target=search-trigger]').tapTarget('open');
+                    @endpush
+                @endif
                 <div class="card" id="organisation-card">
                     <div class="card-image">
                         <img src="{{ asset('img/user-background.jpg') }}" alt="{{ $user->organisation->name }}" />
@@ -115,16 +136,16 @@
                     </div>
 
                     @push('local.scripts')
-                    $('.tap-target').tapTarget({
-                        'onClose': function() {
-                            vzAjax($('<div />', {
-                                'class': 'json',
-                                'data-method': 'post',
-                                'data-href': '{{ route('intro', 'welcome.create.organisation') }}'
-                            }))
-                        }
-                    });
-                    $('.tap-target').tapTarget('open');
+                        $('[data-target=start]').tapTarget({
+                            'onClose': function() {
+                                vzAjax($('<div />', {
+                                    'class': 'json',
+                                    'data-method': 'post',
+                                    'data-href': '{{ route('intro', 'welcome.create.organisation') }}'
+                                }))
+                            }
+                        });
+                        $('[data-target=start]').tapTarget('open');
                     @endpush
                 @endif
             @endif
@@ -138,17 +159,17 @@
 
                     if (obj.status == 'ok')
                     {
-                        item_model.addClass('d-none')
+                        item_model.addClass('hide')
 
                         if (obj.hits.length)
                         {
                             $.each(obj.hits, function(key, o) {
                                 var item = item_model.clone();
-                                    item.removeClass('model d-none').addClass('_tmp').attr('data-id', 'list-item-' + o.id)
+                                    item.removeClass('model hide').addClass('_tmp').attr('data-id', 'list-item-' + o.id)
 
                                     item.find('.collapsible-header > span > p').html(o.title)
                                     item.find('.collapsible-header > span > time').attr('data-time', o.updated_at).html(o.updated_at)
-                                    item.find('.collapsible-header > i.icon').html(o.icon)
+                                    item.find('.collapsible-header > [data-name=icon]').html(o.icon)
                                     item.find('.collapsible-body > span').html(o.markdown)
 
                                     if (o.markdown_color)
@@ -185,16 +206,16 @@
                 data-callback="__activities"
                 data-method="post"
                 data-nothing>
-                <li class="nothing d-none">
+                <li class="nothing hide">
                     <div class="not-found">
                         <i class="material-icons white-text">cloud</i>
                         <i class="material-icons white-text">cloud</i>
                         <i class="material-icons">wb_sunny</i>
                     </div>
                 </li>
-                <li class="model d-none">
+                <li class="model hide">
                     <div class="collapsible-header">
-                        <i class="material-icons icon"></i>
+                        <i class="material-icons" data-name="icon"></i>
                         <span>
                             <p></p>
                             <time class="timeago grey-text"></time>
@@ -208,12 +229,12 @@
             </ul>
 
             @component('components.loader')
-                @slot('color', 'purple')
+                @slot('color', 'cyan')
                 @slot('id', 'home-loader')
             @endcomponent
 
             <div class="center-align">
-                <button class="btn-flat waves-effect d-none json"
+                <button class="btn-flat waves-effect hide json"
                         id="activities-more_button"
                         type="button"
                         data-json-target="ul#activities">Daha Fazla</button>

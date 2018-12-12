@@ -59,12 +59,12 @@
             }
         },
         autoWidth:true,
-        dotClass: 'd-none'
+        dotClass: 'hide'
     })
 @endpush
 
 @section('wildcard')
-    <div id="wildcard-pin-history" class="owl-carousel z-depth-2 d-none"></div>
+    <div id="wildcard-pin-history" class="owl-carousel z-depth-2 hide"></div>
 @endsection
 
 @section('content')
@@ -102,7 +102,7 @@
         <div class="collection">
             <a
                 href="#"
-                class="collection-item waves-effect d-none model grey-text json"
+                class="collection-item waves-effect hide model grey-text json"
                 data-href="{{ route('pin', 'add') }}"
                 data-method="post"
                 data-include="group_id"
@@ -162,7 +162,7 @@
                 ]
             });
 
-            $('#wildcard-pin-history').removeClass('d-none')
+            $('#wildcard-pin-history').removeClass('hide')
 
             $('.owl-carousel').trigger('add.owl.carousel', [$('<a />', {
                 'href': __.data('url'),
@@ -264,7 +264,7 @@
                         .attr('data-index', obj._index)
                         .attr('data-type', obj._type)
                         .hide()
-                        .removeClass('model d-none')
+                        .removeClass('model hide')
                         .show( 'highlight', {}, 200 );
 
                     item.prependTo(bucket)
@@ -358,7 +358,7 @@
 
 @section('dock')
     <div class="card">
-        <div class="card-content card-content-image" style="background-image: url({{ asset('img/md/21.jpg') }});">
+        <div class="card-content card-content-image" style="background-image: url({{ asset('img/md/32.jpg') }});">
             <span class="card-title white-text mb-0">Kelime Grupları</span>
         </div>
         <div class="card-image">
@@ -366,7 +366,7 @@
                 <i class="material-icons black-text">add</i>
             </a>
         </div>
-        <div class="card-content" style="padding-bottom: 0;">
+        <div class="card-content">
             <span data-name="keyword-group-count">0</span> / <span data-name="keyword-group-limit">0</span>
         </div>
         <ul class="collection load" 
@@ -375,14 +375,14 @@
              data-callback="__keyword_groups"
              data-method="post"
              data-nothing>
-            <li class="collection-item nothing d-none">
+            <li class="collection-item nothing hide">
                 <div class="not-found">
                     <i class="material-icons">cloud</i>
                     <i class="material-icons">cloud</i>
                     <i class="material-icons">wb_sunny</i>
                 </div>
             </li>
-            <li class="collection-item model d-none justify-content-between">
+            <li class="collection-item model hide justify-content-between">
                 <span data-name="name" class="align-self-center mr-auto"></span>
                 <div class="switch align-self-center">
                     <label>
@@ -391,7 +391,7 @@
                     </label>
                 </div>
                 <a
-                    class="btn-floating btn-small waves-effect json teal align-self-center"
+                    class="btn-floating btn-small waves-effect json align-self-center"
                     data-href="{{ route('realtime.keyword.group') }}"
                     data-method="post"
                     data-callback="__get_keyword_group"
@@ -403,14 +403,12 @@
     </div>
 
     @component('components.loader')
-        @slot('color', 'red')
+        @slot('color', 'cyan')
         @slot('id', 'keyword-group-loader')
     @endcomponent
 
-    <div class="card-panel teal white-text">Takip etmek istediğiniz<br/>Kelime Grubunu aktif edin.</div>
-
     <div class="card">
-        <div class="card-content card-content-image" style="background-image: url({{ asset('img/md/25.jpg') }});">
+        <div class="card-content card-content-image" style="background-image: url({{ asset('img/md/32.jpg') }});">
             <span class="card-title white-text mb-0">Pin Grupları</span>
         </div>
         <div class="collection collection-bordered">
@@ -432,28 +430,28 @@
             @empty
                 <div class="collection-item red-text">Henüz pin grubu oluşturmadınız.</div>
             @endforelse
-            <a class="collection-item waves-effect d-block" href="{{ route('pin.groups') }}" style="padding: 12px 24px;">Tümü</a>
+            <a class="collection-item waves-effect d-block" href="{{ route('pin.groups') }}">Tümü</a>
         </div>
     </div>
 
     <div class="card">
-        <div class="card-content card-content-image" style="background-image: url({{ asset('img/md/31.jpg') }});">
+        <div class="card-content card-content-image" style="background-image: url({{ asset('img/md/32.jpg') }});">
             <span class="card-title white-text mb-0">Duygu Analizi <sup>Beta</sup></span>
         </div>
         <div class="collection collection-bordered">
-            <label class="collection-item waves-effect d-block" style="padding: 12px 24px;">
+            <label class="collection-item waves-effect d-block">
                 <input name="sentiment" value="pos" class="with-gap" type="radio" />
                 <span>Pozitif</span>
             </label>
-            <label class="collection-item waves-effect d-block" style="padding: 12px 24px;">
+            <label class="collection-item waves-effect d-block">
                 <input name="sentiment" value="neg" class="with-gap" type="radio" />
                 <span>Negatif</span>
             </label>
-            <label class="collection-item waves-effect d-block" style="padding: 12px 24px;">
+            <label class="collection-item waves-effect d-block">
                 <input name="sentiment" value="neu" class="with-gap" type="radio" />
                 <span>Nötr</span>
             </label>
-            <label class="collection-item waves-effect d-block" style="padding: 12px 24px;">
+            <label class="collection-item waves-effect d-block">
                 <input checked name="sentiment" value="all" class="with-gap" type="radio" />
                 <span>Tümü</span>
             </label>
@@ -462,7 +460,7 @@
 
     <div class="card">
         <div class="collection collection-bordered">
-            <label class="collection-item waves-effect d-block" style="padding: 12px 24px;">
+            <label class="collection-item waves-effect d-block">
                 <input name="sound_alert" value="on" type="checkbox" />
                 <span>Uyarı Sesleri</span>
             </label>
@@ -493,15 +491,13 @@
 
         if (obj.status == 'ok')
         {
-            item_model.addClass('d-none')
-
             if (obj.hits.length)
             {
                 $.each(obj.hits, function(key, o) {
                     var selector = ul.children('[data-id=' + o.id + ']'),
 
                         item = selector.length ? selector : item_model.clone();
-                        item.removeClass('model d-none').addClass('_tmp d-flex').attr('data-id', o.id)
+                        item.removeClass('model hide').addClass('_tmp d-flex').attr('data-id', o.id)
 
                         item.find('[data-name=name]').html(o.name)
                         item.find('[data-callback=__get_keyword_group]').attr('data-id', o.id)
@@ -609,7 +605,7 @@
                            $('<a />', {
                                'data-trigger': 'delete-keyword-group',
                                'href': '#',
-                               'class': 'waves-effect btn-flat red-text d-none',
+                               'class': 'waves-effect btn-flat red-text hide',
                                'html': buttons.remove
                            }),
                            $('<span />', {
@@ -652,7 +648,7 @@
             mdl.find('[name=name]').val('')
             mdl.find('[name=keywords]').val('')
 
-        $('[data-trigger=delete-keyword-group]').removeAttr('data-id').addClass('d-none')
+        $('[data-trigger=delete-keyword-group]').removeAttr('data-id').addClass('hide')
     })
 
     function __get_keyword_group(__, obj)
@@ -674,7 +670,7 @@
                 mdl.find('[name=module_news]').prop('checked', obj.data.module_news)
                 mdl.find('[name=module_shopping]').prop('checked', obj.data.module_shopping)
 
-            $('[data-trigger=delete-keyword-group]').data('id', obj.data.id).removeClass('d-none')
+            $('[data-trigger=delete-keyword-group]').data('id', obj.data.id).removeClass('hide')
         }
     }
 

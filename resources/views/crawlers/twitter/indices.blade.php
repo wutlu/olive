@@ -29,7 +29,7 @@
 
         if (obj.status == 'ok')
         {
-            item_model.addClass('d-none')
+            item_model.addClass('hide')
 
             if (obj.hits.length)
             {
@@ -37,7 +37,7 @@
                     var selector = $('[data-id=' + o.uuid + ']'),
 
                         item = selector.length ? selector : item_model.clone();
-                        item.removeClass('model d-none').addClass('_tmp d-flex').attr('data-id', o.uuid)
+                        item.removeClass('model hide').addClass('_tmp d-flex').attr('data-id', o.uuid)
 
                         item.find('[data-name=health]').html(o.health)
                                                        .removeClass('green-text red-text yellow-text')
@@ -76,14 +76,14 @@
              data-callback="__indices"
              data-method="post"
              data-nothing>
-            <li class="collection-item nothing d-none">
+            <li class="collection-item nothing hide">
                 <div class="not-found">
                     <i class="material-icons">cloud</i>
                     <i class="material-icons">cloud</i>
                     <i class="material-icons">wb_sunny</i>
                 </div>
             </li>
-            <li class="collection-item model d-none">
+            <li class="collection-item model hide">
                 <span class="align-self-center">
                 	<p data-name="name"></p>
                 	<p data-name="health"></p>

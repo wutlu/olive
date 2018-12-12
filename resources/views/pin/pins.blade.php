@@ -31,7 +31,7 @@
             <span class="card-title">Pinlemeler</span>
             <a
                 href="#"
-                class="btn-floating btn-large halfway-fab waves-effect white json"
+                class="btn-floating btn-large halfway-fab waves-effect white json btn-image"
                 data-tooltip="Pdf Dökümü Al"
                 data-position="left"
                 data-href="{{ route('pin.pdf') }}"

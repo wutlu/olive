@@ -55,7 +55,7 @@
              data-callback="__accounts"
              data-method="post"
              data-nothing>
-            <div class="collection-item nothing d-none">
+            <div class="collection-item nothing hide">
                 <div class="not-found">
                     <i class="material-icons">cloud</i>
                     <i class="material-icons">cloud</i>
@@ -64,7 +64,7 @@
             </div>
             <a
                 href="#"
-                class="collection-item model d-none waves-effect"
+                class="collection-item model hide waves-effect"
                 data-trigger="textarea">
                 <span class="align-self-center">
                     <p data-name="screen-name"></p>
@@ -82,7 +82,7 @@
     @endcomponent
 
     <div class="center-align">
-        <button class="btn-flat waves-effect d-none json"
+        <button class="btn-flat waves-effect hide json"
                 id="users-more_button"
                 type="button"
                 data-json-target="#users">Daha Fazla</button>
@@ -101,13 +101,13 @@
 
         if (obj.status == 'ok')
         {
-            item_model.addClass('d-none')
+            item_model.addClass('hide')
 
             if (obj.hits.length)
             {
                 $.each(obj.hits, function(key, o) {
                     var item = item_model.clone();
-                        item.removeClass('model d-none').addClass('_tmp d-flex').attr('data-user_id', o.user_id)
+                        item.removeClass('model hide').addClass('_tmp d-flex').attr('data-user_id', o.user_id)
 
                         item.find('[data-name=screen-name]').html(o.screen_name)
                         item.find('[data-name=user-id]').html(o.user_id)

@@ -33,7 +33,7 @@
                 </div>
             </div>
         </div>
-        <div class="card-content red d-none" data-name="alert"></div>
+        <div class="card-content red hide" data-name="alert"></div>
     </div>
     <div class="card">
         <div class="card-image">
@@ -47,7 +47,7 @@
             data-href="{{ route('admin.google.monitoring.log') }}"
             data-callback="__log"
             data-method="post">
-            <li class="collection-item d-none" style="width: 100%;">
+            <li class="collection-item hide" style="width: 100%;">
                 <p>
                     <span data-name="level"></span>
                     <span class="grey-text text-lighten-2" style="padding: 0 .2rem;">/</span>
@@ -73,7 +73,7 @@
         if (obj.status == 'ok')
         {
             var collection = $('ul#console');
-            var model = collection.children('li.collection-item.d-none');
+            var model = collection.children('li.collection-item.hide');
 
             if (obj.data.length)
             {
@@ -81,7 +81,7 @@
                     var m = $('[data-id=' + o.uuid + ']');
 
                     var item = m.length ? m : model.clone();
-                        item.removeClass('d-none')
+                        item.removeClass('hide')
                             .attr('data-id', o.uuid)
 
                         item.find('[data-name=level]').html(o.level + '. seviye').addClass(o.level <= 4 ? 'green-text' : o.level <= 7 ? 'orange-text' : 'red-text')
@@ -200,13 +200,13 @@
             $('[data-name=search-count]').html(number_format(vid.docs.count))
             $('[data-name=search-size]').html(humanFileSize(vid.store.size_in_bytes))
 
-            $('[data-name=alert]').addClass('d-none')
+            $('[data-name=alert]').addClass('hide')
 
             $('[data-trigger=search-index]').remove()
         }
         else if (obj.status == 'err')
         {
-            $('[data-name=alert]').html('Sistemin çalışması için tüm indekslerin oluşturulması gerekiyor.').removeClass('d-none')
+            $('[data-name=alert]').html('Sistemin çalışması için tüm indekslerin oluşturulması gerekiyor.').removeClass('hide')
         }
 
         window.clearTimeout(statusTimer)

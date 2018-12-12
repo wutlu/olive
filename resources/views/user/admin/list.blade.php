@@ -18,13 +18,13 @@
 
         if (obj.status == 'ok')
         {
-            item_model.addClass('d-none')
+            item_model.addClass('hide')
 
             if (obj.hits.length)
             {
                 $.each(obj.hits, function(key, o) {
                     var item = item_model.clone();
-                        item.removeClass('model d-none').addClass('_tmp d-flex').attr('data-id', o.id)
+                        item.removeClass('model hide').addClass('_tmp d-flex').attr('data-id', o.id)
 
                         item.find('[data-name=name]').html(o.name)
                         item.find('[data-name=email]').html(o.email)
@@ -72,7 +72,7 @@
              data-more-button="#users-more_button"
              data-callback="__users"
              data-nothing>
-            <div class="collection-item nothing d-none">
+            <div class="collection-item nothing hide">
                 <div class="not-found">
                     <i class="material-icons">cloud</i>
                     <i class="material-icons">cloud</i>
@@ -81,12 +81,12 @@
             </div>
             <a
                 href="#"
-                class="collection-item model d-none waves-effect json"
+                class="collection-item avatar model hide waves-effect json"
                 data-href="{{ route('route.generate.id') }}"
                 data-method="post"
                 data-name="admin.user"
                 data-callback="__go">
-                <img alt="Avatar" data-name="avatar" style="width: 48px; margin: 0 1rem 0 0;" />
+                <img alt="Avatar" data-name="avatar" class="circle" />
                 <span class="align-self-center">
                     <p data-name="name"></p>
                     <p data-name="email" class="grey-text"></p>
@@ -102,7 +102,7 @@
     @endcomponent
 
     <div class="center-align">
-        <button class="btn-flat waves-effect d-none json"
+        <button class="btn-flat waves-effect hide json"
                 id="users-more_button"
                 type="button"
                 data-json-target="#users">Daha Fazla</button>

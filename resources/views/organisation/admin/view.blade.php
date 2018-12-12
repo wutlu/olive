@@ -61,7 +61,7 @@
                                 <option value="{{ $i }}" @if ($i == $organisation->capacity){{ 'selected' }}@endif>{{ $i }}</option>
                                 @endfor
                             </select>
-                            <label>Organizasyon Kapasitesi</label>
+                            <label>Kapasite</label>
                             <small class="helper-text">Organizasyonun alabileceği maksimum kullanıcı sayısı.</small>
                         </div>
                     </div>

@@ -65,7 +65,12 @@ class TokenController extends Controller
     # 
     public static function tokenCreate(CreateTokenRequest $request)
     {
-        self::tokenRequest($request);
+        self::tokenRequest(
+            $request->consumer_key,
+            $request->consumer_secret,
+            $request->access_token,
+            $request->access_token_secret
+        );
 
         $validator = Validator::make($request->all(), [
             'consumer_key' => 'required|token_check'
@@ -99,7 +104,12 @@ class TokenController extends Controller
     # 
     public static function tokenUpdate(UpdateTokenRequest $request)
     {
-        self::tokenRequest($request);
+        self::tokenRequest(
+            $request->consumer_key,
+            $request->consumer_secret,
+            $request->access_token,
+            $request->access_token_secret
+        );
 
         $validator = Validator::make($request->all(), [
             'consumer_key' => 'required|token_check'
@@ -162,16 +172,16 @@ class TokenController extends Controller
     # 
     # token kontrol fonksiyonu.
     #
-    private static function tokenRequest(Request $request)
+    private static function tokenRequest(string $consumer_key, string $consumer_secret, string $access_token, string $access_token_secret)
     {
-        Validator::extend('token_check', function($attribute, $value, $parameters) use($request) {
+        Validator::extend('token_check', function($attribute) use($consumer_key, $consumer_secret, $access_token, $access_token_secret) {
             $stack = HandlerStack::create();
 
             $oauth = new Oauth1([
-                'consumer_key' => $request->consumer_key,
-                'consumer_secret' => $request->consumer_secret,
-                'token' => $request->access_token,
-                'token_secret' => $request->access_token_secret
+                'consumer_key' => $consumer_key,
+                'consumer_secret' => $consumer_secret,
+                'token' => $access_token,
+                'token_secret' => $access_token_secret
             ]);
 
             $stack->push($oauth);

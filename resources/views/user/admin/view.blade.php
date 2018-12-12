@@ -88,7 +88,7 @@
                             <input name="avatar" id="avatar" value="on" type="checkbox" />
                             <span>Avatarı Sil</span>
                         </span>
-                        <img alt="Avatar" src="{{ $user->avatar() }}" class="user-avatar" style="width: 64px;" />
+                        <img alt="Avatar" src="{{ $user->avatar() }}" class="user-avatar" style="width: 64px; height: 64px;" />
                     </label>
                     <label class="collection-item waves-effect d-block">
                         <input name="root" id="root" value="on" type="checkbox" {{ $user->root() ? 'checked' : '' }} />

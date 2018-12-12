@@ -18,7 +18,7 @@
 
         if (obj.status == 'ok')
         {
-            item_model.addClass('d-none')
+            item_model.addClass('hide')
 
             if (obj.hits.length)
             {
@@ -28,7 +28,7 @@
                     var selector = $('[data-id=' + o.id + '].collection-item');
                     var item = selector.length ? selector : item_model.clone();
 
-                        item.removeClass('model d-none red-text')
+                        item.removeClass('model hide red-text')
                             .addClass('_tmp d-flex')
                             .addClass(o.visibility ? '' : 'red-text')
                             .attr('data-id', o.id)
@@ -203,7 +203,7 @@
                            $('<a />', {
                                'data-trigger': 'delete',
                                'href': '#',
-                               'class': 'waves-effect btn-flat red-text d-none',
+                               'class': 'waves-effect btn-flat red-text hide',
                                'html': buttons.remove
                            }),
                            $('<span />', {
@@ -272,7 +272,7 @@
         $('select[name=pattern]').val('').formSelect()
         $('input[name=visibility]').prop('checked', false)
 
-        $('[data-trigger=delete]').removeAttr('data-id').addClass('d-none')
+        $('[data-trigger=delete]').removeAttr('data-id').addClass('hide')
 
         form.removeAttr('data-id')
         form.attr('method', 'put')
@@ -348,7 +348,7 @@
             $('select[name=pattern]').val(obj.data.pattern).formSelect()
             $('input[name=visibility]').prop('checked', obj.data.visibility)
 
-            $('[data-trigger=delete]').data('id', obj.data.id).removeClass('d-none')
+            $('[data-trigger=delete]').data('id', obj.data.id).removeClass('hide')
 
             form.data('id', obj.data.id)
             form.attr('method', 'patch')
@@ -378,14 +378,14 @@
              data-callback="__collections"
              data-method="post"
              data-nothing>
-            <li class="collection-item nothing d-none">
+            <li class="collection-item nothing hide">
                 <div class="not-found">
                     <i class="material-icons">cloud</i>
                     <i class="material-icons">cloud</i>
                     <i class="material-icons">wb_sunny</i>
                 </div>
             </li>
-            <li class="collection-item model d-none justify-content-between">
+            <li class="collection-item model hide justify-content-between">
                 <div>
                     <p data-name="title"></p>
                     <time data-name="created-at" class="timeago grey-text"></time>

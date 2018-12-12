@@ -15,13 +15,13 @@
 
         if (obj.status == 'ok')
         {
-            item_model.addClass('d-none')
+            item_model.addClass('hide')
 
             if (obj.hits.length)
             {
                 $.each(obj.hits, function(key, o) {
                     var item = item_model.clone();
-                        item.removeClass('model d-none').addClass('_tmp d-flex').attr('data-id', o.id)
+                        item.removeClass('model hide').addClass('_tmp d-flex').attr('data-id', o.id)
 
                         item.find('[data-name=edit]').attr('data-group_id', o.id)
                         item.find('[data-trigger=pin-go]').html(o.name).attr('data-id', o.id)
@@ -82,7 +82,7 @@
                            $('<a />', {
                                'data-trigger': 'delete-pin-group',
                                'href': '#',
-                               'class': 'waves-effect btn-flat red-text d-none',
+                               'class': 'waves-effect btn-flat red-text hide',
                                'html': buttons.remove
                            }),
                            $('<span />', {
@@ -118,7 +118,7 @@
 
             mdl.find('[name=name]').val('')
 
-        $('[data-trigger=delete-pin-group]').removeAttr('data-id').addClass('d-none')
+        $('[data-trigger=delete-pin-group]').removeAttr('data-id').addClass('hide')
     })
 
     function __get_pin_group(__, obj)
@@ -131,7 +131,7 @@
                                                .data('method', 'patch')
                 mdl.find('[name=name]').val(obj.data.name)
 
-            $('[data-trigger=delete-pin-group]').data('id', obj.data.id).removeClass('d-none')
+            $('[data-trigger=delete-pin-group]').data('id', obj.data.id).removeClass('hide')
         }
     }
 
@@ -248,14 +248,14 @@
              data-callback="__pin_groups"
              data-method="post"
              data-nothing>
-            <li class="collection-item nothing d-none">
+            <li class="collection-item nothing hide">
                 <div class="not-found">
                     <i class="material-icons">cloud</i>
                     <i class="material-icons">cloud</i>
                     <i class="material-icons">wb_sunny</i>
                 </div>
             </li>
-            <li data-name="item" class="collection-item model d-none">
+            <li data-name="item" class="collection-item model hide">
                 <span>
                     <a
                         style="margin: 0 1rem 0 0;"
@@ -285,11 +285,11 @@
     </div>
 
     @component('components.loader')
-        @slot('color', 'red')
+        @slot('color', 'cyan')
         @slot('id', 'home-loader')
     @endcomponent
     <div class="center-align">
-        <button class="btn-flat waves-effect d-none json"
+        <button class="btn-flat waves-effect hide json"
                 id="pin-groups-more_button"
                 type="button"
                 data-json-target="#pin-groups">Öncekiler</button>

@@ -37,14 +37,14 @@
              data-callback="__collections"
              data-method="post"
              data-nothing>
-            <div class="collection-item nothing d-none">
+            <div class="collection-item nothing hide">
                 <div class="not-found">
                     <i class="material-icons">cloud</i>
                     <i class="material-icons">cloud</i>
                     <i class="material-icons">wb_sunny</i>
                 </div>
             </div>
-            <a href="#" class="collection-item model d-none waves-effect" data-trigger="delete">
+            <a href="#" class="collection-item model hide waves-effect" data-trigger="delete">
                 <span class="align-self-center">
                     <p data-name="title"></p>
                     <p data-name="reason"></p>
@@ -146,7 +146,7 @@
 
         if (obj.status == 'ok')
         {
-            item_model.addClass('d-none')
+            item_model.addClass('hide')
 
             if (obj.hits.length)
             {
@@ -154,7 +154,7 @@
                     var selector = $('[data-id=' + o.id + '].collection-item'),
 
                         item = selector.length ? selector : item_model.clone();
-                        item.removeClass('model d-none')
+                        item.removeClass('model hide')
                             .addClass('_tmp d-flex')
                             .attr('data-id', o.id)
 

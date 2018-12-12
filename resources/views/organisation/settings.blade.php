@@ -291,11 +291,11 @@
 
                         if (new_capacity >= max_capacity.html())
                         {
-                            $('form#invite-form').addClass('d-none')
+                            $('form#invite-form').addClass('hide')
                         }
                         else
                         {
-                            $('form#invite-form').removeClass('d-none')
+                            $('form#invite-form').removeClass('hide')
                         }
 
                         $('#organisation-user-' + __.data('user_id')).remove()
@@ -316,7 +316,7 @@
                 method="post"
                 action="{{ route('settings.organisation.invite') }}"
                 data-callback="__invite"
-                class="json {{ count($user->organisation->users) >= $user->organisation->capacity ? 'd-none' : '' }}">
+                class="json {{ count($user->organisation->users) >= $user->organisation->capacity ? 'hide' : '' }}">
                 <div class="input-field teal-text">
                     <input name="email" id="email" type="email" class="validate" />
                     <label for="email">E-posta</label>
@@ -393,11 +393,11 @@
 
                         if (new_capacity >= max_capacity.html())
                         {
-                            $('form#invite-form').addClass('d-none')
+                            $('form#invite-form').addClass('hide')
                         }
                         else
                         {
-                            $('form#invite-form').removeClass('d-none')
+                            $('form#invite-form').removeClass('hide')
                         }
 
                         $('input[name=email]').val('')
@@ -410,7 +410,7 @@
     @if ($user->id == $user->organisation->user_id)
     <div id="tab-2" class="card-content grey lighten-4">
         @if ($user->organisation->lastInvoice->paid_at)
-            <div class="center-align d-none" data-id="spinner">
+            <div class="center-align hide" data-id="spinner">
                 <div class="preloader-wrapper big active">
                     <div class="spinner-layer spinner-red-only">
                         <div class="circle-clipper left">
@@ -477,7 +477,7 @@
                                         <span class="invoice-total_price">-</span>
                                     </td>
                                 </tr>
-                                <tr class="discount-row d-none">
+                                <tr class="discount-row hide">
                                     <td>İndirim</td>
                                     <td>
                                         <span class="invoice-discount_rate">0</span>%
@@ -545,11 +545,11 @@
                                 $('.invoice-discount_price').html('+ ₺ ' + obj.result.discount.price)
                             }
 
-                            $('tr.discount-row').removeClass('d-none')
+                            $('tr.discount-row').removeClass('hide')
                         }
                         else
                         {
-                            $('tr.discount-row').addClass('d-none')
+                            $('tr.discount-row').addClass('hide')
                         }
 
                         scrollTo({
@@ -577,8 +577,8 @@
                                 classes: 'green darken-2'
                             })
 
-                            $('#tab-2').children('.parent-form').addClass('d-none')
-                            $('#tab-2').children('[data-id=spinner]').removeClass('d-none')
+                            $('#tab-2').children('.parent-form').addClass('hide')
+                            $('#tab-2').children('[data-id=spinner]').removeClass('hide')
 
                             location.href = '{{ route('settings.organisation') }}#tab-2';
                             location.reload()
@@ -732,7 +732,7 @@
                                    }),
                                    $('<a />', {
                                        'href': '#',
-                                       'class': 'waves-effect btn red darken-4 json',
+                                       'class': 'waves-effect btn red json',
                                        'data-href': '{{ route('settings.organisation.delete') }}',
                                        'data-include': 'delete_key,password',
                                        'data-method': 'delete',
@@ -825,7 +825,7 @@
                                        }),
                                        $('<a />', {
                                            'href': '#',
-                                           'class': 'waves-effect btn red darken-4 json',
+                                           'class': 'waves-effect btn red json',
                                            'data-href': '{{ route('settings.organisation.leave') }}',
                                            'data-include': 'leave_key',
                                            'data-method': 'post',

@@ -9,12 +9,15 @@ return [
     'debug' => env('APP_DEBUG', false),
 
     'url' => env('APP_URL', 'http://localhost'),
+    'asset_url' => env('ASSET_URL', null),
 
     'timezone' => 'Europe/Istanbul',
 
     'locale' => 'tr',
 
     'fallback_locale' => 'tr',
+
+    'faker_locale' => 'tr_TR',
 
     'key' => env('APP_KEY'),
 
@@ -33,7 +36,8 @@ return [
 
     'intro' => [
         'keys' => [
-            'welcome.create.organisation'
+            'welcome.create.organisation',
+            'search.module'
         ]
     ],
 

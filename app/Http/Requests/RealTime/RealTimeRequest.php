@@ -51,7 +51,7 @@ class RealTimeRequest extends FormRequest
 
         return [
             'keyword_group' => 'required|array',
-            'keyword_group.*' => 'required|integer|keyword_group_owner',
+            'keyword_group.*' => 'bail|required|integer|keyword_group_owner',
             'sentiment' => 'required|string|in:pos,neu,neg,all'
         ];
     }

@@ -44,7 +44,7 @@
 
         if (obj.status == 'ok')
         {
-            item_model.addClass('d-none')
+            item_model.addClass('hide')
 
             if (obj.hits.length)
             {
@@ -53,7 +53,7 @@
 
                         item = selector.length ? selector : item_model.clone();
 
-                        item.removeClass('model d-none red green orange grey')
+                        item.removeClass('model hide red green orange grey')
                             .addClass('_tmp d-flex')
                             .attr('data-id', o.id)
                         item.addClass(o.status == 'disabled' ? 'red' : (o.pid === false ? 'orange' : (o.pid === null ? 'grey' : 'green')))
@@ -202,7 +202,7 @@
                            $('<a />', {
                                'data-trigger': 'delete',
                                'href': '#',
-                               'class': 'waves-effect btn-flat red-text d-none',
+                               'class': 'waves-effect btn-flat red-text hide',
                                'html': buttons.remove
                            }),
                            $('<span />', {
@@ -270,7 +270,7 @@
         $('input[name=access_token_secret]').val('').characterCounter()
         $('input[name=off_limit]').val('10')
 
-        $('[data-trigger=delete]').removeAttr('data-id').addClass('d-none')
+        $('[data-trigger=delete]').removeAttr('data-id').addClass('hide')
 
         form.removeAttr('data-id')
         form.attr('method', 'put')
@@ -346,7 +346,7 @@
             $('input[name=access_token_secret]').val(obj.data.access_token_secret).characterCounter()
             $('input[name=off_limit]').val(obj.data.off_limit)
 
-            $('[data-trigger=delete]').data('id', obj.data.id).removeClass('d-none')
+            $('[data-trigger=delete]').data('id', obj.data.id).removeClass('hide')
 
             form.data('id', obj.data.id)
             form.attr('method', 'patch')
@@ -428,14 +428,14 @@
                     </div>
                 </div>
             </div>
-            <div class="card-content red d-none" data-name="alert"></div>
+            <div class="card-content red hide" data-name="alert"></div>
             <div class="collection load" 
                  id="collections"
                  data-href="{{ route('admin.twitter.tokens.json') }}"
                  data-callback="__collections"
                  data-method="post"
                  data-nothing>
-                <div class="collection-item nothing d-none">
+                <div class="collection-item nothing hide">
                     <div class="not-found">
                         <i class="material-icons">cloud</i>
                         <i class="material-icons">cloud</i>
@@ -443,7 +443,7 @@
                     </div>
                 </div>
                 <a
-                    class="collection-item model d-none flex-wrap red z-depth-4 waves-effect json"
+                    class="collection-item model hide flex-wrap red z-depth-4 waves-effect json"
                     data-href="{{ route('admin.twitter.token') }}"
                     data-method="get"
                     data-callback="__get"
@@ -463,7 +463,7 @@
                 data-href="{{ route('admin.twitter.monitoring.log') }}"
                 data-callback="__log"
                 data-method="post">
-                <li class="collection-item d-none" style="width: 100%;">
+                <li class="collection-item hide" style="width: 100%;">
                     <p>
                         <span data-name="level"></span>
                         <span class="grey-text text-lighten-2" style="padding: 0 .2rem;">/</span>
@@ -499,7 +499,7 @@
         if (obj.status == 'ok')
         {
             var collection = $('ul#console');
-            var model = collection.children('li.collection-item.d-none');
+            var model = collection.children('li.collection-item.hide');
 
             if (obj.data.length)
             {
@@ -507,7 +507,7 @@
                     var m = $('[data-id=' + o.uuid + ']');
 
                     var item = m.length ? m : model.clone();
-                        item.removeClass('d-none')
+                        item.removeClass('hide')
                             .attr('data-id', o.uuid)
 
                         item.find('[data-name=level]').html(o.level + '. seviye').addClass(o.level <= 4 ? 'green-text' : o.level <= 7 ? 'orange-text' : 'red-text')

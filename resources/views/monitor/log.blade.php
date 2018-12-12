@@ -21,7 +21,7 @@
         if (obj.status == 'ok')
         {
             var collection = $('ul#console');
-            var model = collection.children('li.collection-item.d-none');
+            var model = collection.children('li.collection-item.hide');
 
             if (obj.data.length)
             {
@@ -31,7 +31,7 @@
                     var m = $('[data-id=' + o.uuid + ']');
 
                     var item = m.length ? m : model.clone();
-                        item.removeClass('d-none')
+                        item.removeClass('hide')
                             .attr('data-id', o.uuid)
 
                         item.find('[data-name=level]').html(o.level + '. seviye').addClass(o.level <= 4 ? 'green-text' : o.level <= 7 ? 'orange-text' : 'red-text')
@@ -66,7 +66,7 @@
             }, 10000)
 
             var files = $('#files');
-            var file_model = files.children('.collection-item.d-none');
+            var file_model = files.children('.collection-item.hide');
 
             if (obj.files.length)
             {
@@ -74,7 +74,7 @@
                     var m = $('[data-file-id=' + o.id + ']');
 
                     var file_item = m.length ? m : file_model.clone();
-                        file_item.removeClass('d-none').attr('data-file-id', o.id)
+                        file_item.removeClass('hide').attr('data-file-id', o.id)
 
                         file_item.find('[data-name=path]').html(o.path)
                         file_item.find('[data-name=size]').html(o.size.readable)
@@ -154,7 +154,7 @@
                 href="#"
                 class="btn-floating btn-large halfway-fab waves-effect white"
                 data-trigger="clear">
-                <i class="material-icons red-text">clear_all</i>
+                <i class="material-icons black-text">clear_all</i>
             </a>
         </div>
         <ul
@@ -163,7 +163,7 @@
             data-href="{{ route('admin.monitoring.log') }}"
             data-callback="__log"
             data-method="post">
-            <li class="collection-item d-none" style="width: 100%;">
+            <li class="collection-item hide" style="width: 100%;">
                 <p>
                     <span data-name="level"></span>
                     <span class="grey-text text-lighten-2" style="padding: 0 .2rem;">/</span>
@@ -184,7 +184,7 @@
             <span class="card-title mb-0">Log Dosyaları</span>
         </div>
         <ul id="files" class="collection">
-            <li class="collection-item d-none" data-href="{{ route('admin.monitoring.log.clear') }}">
+            <li class="collection-item hide" data-href="{{ route('admin.monitoring.log.clear') }}">
                 <span data-name="path"></span>
                 <span data-name="size" class="badge grey darken-4 white-text"></span>
             </li>

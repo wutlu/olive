@@ -50,14 +50,14 @@
              data-more-button="#accounts-more_button"
              data-callback="__accounts"
              data-nothing>
-            <li class="collection-item nothing d-none">
+            <li class="collection-item nothing hide">
                 <div class="not-found">
                     <i class="material-icons">cloud</i>
                     <i class="material-icons">cloud</i>
                     <i class="material-icons">wb_sunny</i>
                 </div>
             </li>
-            <li class="collection-item avatar model d-none">
+            <li class="collection-item avatar model hide">
                 <img alt="avatar" class="circle" data-name="avatar" />
                 <span class="align-self-center">
                     <p data-name="name"></p>
@@ -77,7 +77,7 @@
     @endcomponent
 
     <div class="center-align">
-        <button class="btn-flat waves-effect d-none json"
+        <button class="btn-flat waves-effect hide json"
                 id="accounts-more_button"
                 type="button"
                 data-json-target="#accounts">Daha Fazla</button>
@@ -96,13 +96,13 @@
 
         if (obj.status == 'ok')
         {
-            item_model.addClass('d-none')
+            item_model.addClass('hide')
 
             if (obj.hits.length)
             {
                 $.each(obj.hits, function(key, o) {
                     var item = item_model.clone();
-                        item.removeClass('model d-none')
+                        item.removeClass('model hide')
                             .addClass('_tmp d-flex')
                             .attr('data-id', o.id)
 

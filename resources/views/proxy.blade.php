@@ -20,7 +20,7 @@
 
         if (obj.status == 'ok')
         {
-            item_model.addClass('d-none')
+            item_model.addClass('hide')
 
             if (obj.hits.length)
             {
@@ -39,7 +39,7 @@
                         .removeClass('red orange green')
                         .addClass(o.health <= 5 ? 'red' : o.health <= 7 ? 'orange' : 'green')
 
-                        item.removeClass('model d-none')
+                        item.removeClass('model hide')
                             .addClass('_tmp')
                             .attr('data-id', o.id)
 
@@ -103,7 +103,7 @@
                            $('<a />', {
                                'data-trigger': 'delete',
                                'href': '#',
-                               'class': 'waves-effect btn-flat red-text d-none',
+                               'class': 'waves-effect btn-flat red-text hide',
                                'html': buttons.remove
                            }),
                            $('<span />', {
@@ -167,7 +167,7 @@
 
         $('input[name=proxy]').val('')
 
-        $('[data-trigger=delete]').removeAttr('data-id').addClass('d-none')
+        $('[data-trigger=delete]').removeAttr('data-id').addClass('hide')
 
         form.removeAttr('data-id')
         form.attr('method', 'put')
@@ -232,7 +232,7 @@
 
             $('input[name=proxy]').val(obj.data.proxy)
 
-            $('[data-trigger=delete]').data('id', obj.data.id).removeClass('d-none')
+            $('[data-trigger=delete]').data('id', obj.data.id).removeClass('hide')
 
             form.data('id', obj.data.id)
             form.attr('method', 'patch')
@@ -263,7 +263,7 @@
              data-callback="__collections"
              data-method="post"
              data-nothing>
-            <div class="collection-item nothing d-none">
+            <div class="collection-item nothing hide">
                 <div class="not-found">
                     <i class="material-icons">cloud</i>
                     <i class="material-icons">cloud</i>
@@ -271,7 +271,7 @@
                 </div>
             </div>
             <a
-                class="collection-item model d-none waves-effect json"
+                class="collection-item model hide waves-effect json"
                 data-href="{{ route('admin.proxy') }}"
                 data-method="post"
                 data-callback="__get"

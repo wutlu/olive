@@ -21,16 +21,16 @@
         if (obj.status == 'ok')
         {
             var collection = $('#console.collection'),
-                model = collection.children('.collection-item.d-none');
+                model = collection.children('.collection-item.hide');
 
-            collection.children('.collection-item:not(.d-none)').remove()
+            collection.children('.collection-item:not(.hide)').remove()
 
             if (obj.data.length)
             {
                 $.each(obj.data, function(key, o) {
                     var item = model.clone();
 
-                        item.removeClass('d-none').attr('data-pid', o.pid)
+                        item.removeClass('hide').attr('data-pid', o.pid)
 
                         item.find('[data-name=time]').html(o.time)
                         item.find('[data-name=pid]').html(o.pid)
@@ -39,6 +39,10 @@
                         item.prependTo(collection)
                 })
             }
+
+            $('#home-loader').hide()
+
+            collection.removeClass('hide')
 
             window.clearTimeout(logTimer)
 
@@ -85,13 +89,13 @@
         </div>
         <div
             id="console"
-            class="collection black load"
+            class="collection black load hide"
             data-href="{{ route('admin.monitoring.background.processes') }}"
             data-callback="__log"
             data-method="post">
             <a
                 href="#"
-                class="collection-item waves-effect d-none json waves-red"
+                class="collection-item waves-effect hide json waves-red"
                 data-href="{{ route('admin.monitoring.process.kill') }}"
                 data-method="post"
                 data-callback="__kill">
@@ -103,4 +107,9 @@
             </a>
         </div>
     </div>
+
+    @component('components.loader')
+        @slot('color', 'cyan')
+        @slot('id', 'home-loader')
+    @endcomponent
 @endsection
