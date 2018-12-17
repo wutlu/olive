@@ -73,7 +73,7 @@
             </tbody>
         </table>
         <div class="card-image">
-            <img src="{{ asset('img/card-header.jpg') }}" alt="Medya Botları" />
+            <img src="{{ asset('img/card-header.jpg') }}" alt="Medya Botları" class="r-0" />
             <span class="card-title">
                 Medya Botları
                 <small class="d-block" data-name="bots-count"></small>

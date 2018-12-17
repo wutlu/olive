@@ -617,6 +617,10 @@ i.large {
   font-size: 6rem;
 }
 
+.r-0 {
+  border-radius: 0 !important;
+}
+
 table.invoice thead > tr {
   border-width: 0 0 2px;
   border-style: solid;

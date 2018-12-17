@@ -65,7 +65,7 @@
             </tbody>
         </table>
         <div class="card-image">
-            <img src="{{ asset('img/card-header.jpg') }}" alt="Sözlük Botları" />
+            <img src="{{ asset('img/card-header.jpg') }}" alt="Sözlük Botları" class="r-0" />
             <span class="card-title">
                 Sözlük Botları
                 <small class="d-block" data-name="bots-count"></small>

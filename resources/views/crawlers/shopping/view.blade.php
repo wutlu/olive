@@ -147,7 +147,7 @@
                 @endif
             </div>
             <div class="card-image">
-                <img src="{{ asset('img/card-header.jpg') }}" alt="{{ $crawler->name }}" />
+                <img src="{{ asset('img/card-header.jpg') }}" alt="{{ $crawler->name }}" class="r-0" />
                 <span class="card-title">
                     <span>
                         <span data-name="crawler-title">{{ $crawler->name }}</span>
