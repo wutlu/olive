@@ -25,5 +25,6 @@ class DatabaseSeeder extends Seeder
             ModuleSearchesTableSeeder::class,
             CarouselsTableSeeder::class
         ]);
+        $this->call(MediaCrawlersTableSeeder::class);
     }
 }

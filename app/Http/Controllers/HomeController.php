@@ -16,6 +16,12 @@ use App\Ticket;
 
 use App\Utilities\DateUtility;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\HandlerStack;
+use App\Wrawler;
+
+use App\Utilities\Crawler;
+
 class HomeController extends Controller
 {
     public function __construct()

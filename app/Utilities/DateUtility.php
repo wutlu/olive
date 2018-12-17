@@ -3,7 +3,6 @@
 namespace App\Utilities;
 
 use Carbon\Carbon;
-use DateTime;
 
 class DateUtility
 {
@@ -65,63 +64,83 @@ class DateUtility
             $dom
         );
 
-        $year = (object) [
-            'before' => date('Y', strtotime('- 1 year')),
-            'now' => date('Y'),
-            'after' => date('Y', strtotime('+ 1 year'))
+        $years = [
+            date('Y', strtotime('- 1 year')),
+            date('Y'),
+            date('Y', strtotime('+ 1 year')),
         ];
-        $month = (object) [
-            'before' => date('m', strtotime('- 1 month')),
-            'now' => date('m'),
-            'after' => date('m', strtotime('+ 1 month'))
+        $months = [
+            date('m', strtotime('- 1 month')),
+            date('m'),
+            date('m', strtotime('+ 1 month')),
         ];
-        $day = (object) [
-            'before' => date('d', strtotime('- 1 day')),
-            'now' => date('d'),
-            'after' => date('d', strtotime('+ 1 day'))
+        $days = [
+            date('d', strtotime('- 1 day')),
+            date('d', strtotime('- 2 day')),
+            date('d', strtotime('- 3 day')),
+            date('d', strtotime('- 4 day')),
+            date('d', strtotime('- 5 day')),
+            date('d', strtotime('- 6 day')),
+            date('d', strtotime('- 7 day')),
+            date('d'),
+            date('d', strtotime('+ 1 day')),
         ];
 
-        preg_match_all(
-            $format ? $format : '/((('.$year->before.'|'.$year->now.'|'.$year->after.').('.$month->before.'|'.$month->now.'|'.$month->after.').('.$day->before.'|'.$day->now.'|'.$day->after.')|('.$day->before.'|'.$day->now.'|'.$day->after.').('.$month->before.'|'.$month->now.'|'.$month->after.').('.$year->before.'|'.$year->now.'|'.$year->after.')).(([0-9]|1[0-9]|2[0-3]){2}\:([0-9]|[1-4][0-9]|5[0-9]){2}(\:([0-9]|[1-4][0-9]|5[0-9]){2})?((\+|\-)\d{2}\:\d{2})?)?)/',
-            $dom,
-            $dates,
-            PREG_SET_ORDER
-        );
-
-        if (count($dates))
+        if ($format)
         {
-            foreach ($dates as $d)
-            {
-                if (@$d[0])
-                {
-                    try
-                    {
-                        $date = new DateTime($d[0]);
-
-                        $full_date = $date->format('Y-m-d H:i:s');
-
-                        if (date('H:i:s') != '00:00:00' && $date->format('H:i:s') == '00:00:00')
-                        {
-                            $full_date = $date->format('Y-m-d').' '.date('H:i:s');
-                        }
-
-                        if ($full_date < date('Y-m-d H:i:s', strtotime('+ 10 minute')) && $full_date > date('Y-m-d H:i:s', strtotime('- 12 hour')))
-                        {
-                            return $full_date;
-                        }
-                    }
-                    catch (\Exception $e)
-                    {
-                        return false;
-                    }
-                }
-            }
-
-            return false;
+            $formats = [
+                $format
+            ];
         }
         else
         {
-            return false;
+            $formats = [
+                '/((('.implode('|', $years).').('.implode('|', $months).').('.implode('|', $days).')).(([0-9]|1[0-9]|2[0-3]){2}\:([0-9]|[1-4][0-9]|5[0-9]){2}(\:([0-9]|[1-4][0-9]|5[0-9]){2})?((\+|\-)\d{2}\:\d{2})?)?)/',
+                '/((('.implode('|', $days).').('.implode('|', $months).').('.implode('|', $years).')).(([0-9]|1[0-9]|2[0-3]){2}\:([0-9]|[1-4][0-9]|5[0-9]){2}(\:([0-9]|[1-4][0-9]|5[0-9]){2})?((\+|\-)\d{2}\:\d{2})?)?)/',
+                //
+            ];
         }
+
+        foreach ($formats as $format)
+        {
+            preg_match_all(
+                $format,
+                $dom,
+                $dates,
+                PREG_SET_ORDER
+            );
+
+            if (count($dates))
+            {
+                foreach ($dates as $d)
+                {
+                    if (@$d[0])
+                    {
+                        try
+                        {
+                            $date = new \DateTime($d[0]);
+
+                            $full_date = $date->format('Y-m-d H:i:s');
+
+                            if (date('H:i:s') != '00:00:00' && $date->format('H:i:s') == '00:00:00')
+                            {
+                                $full_date = $date->format('Y-m-d').' '.date('H:i:s');
+                            }
+
+                            if ($full_date < date('Y-m-d H:i:s', strtotime('+ 10 minute')) && $full_date > date('Y-m-d H:i:s', strtotime('- 7 day')))
+                            {
+                                return $full_date;
+                            }
+                        }
+                        catch (\Exception $e)
+                        {
+                            //
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 }

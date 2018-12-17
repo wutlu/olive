@@ -24,7 +24,7 @@ class CreateMediaCrawlersTable extends Migration
             $table->string('selector_description');
 
             $table->unsignedSmallInteger('error_count')->default(0);
-            $table->unsignedSmallInteger('off_limit')->default(10);
+            $table->unsignedSmallInteger('off_limit')->default(100);
             $table->text('off_reason')->nullable()->default(null);
 
             $table->unsignedSmallInteger('control_interval')->default(10);

@@ -213,8 +213,8 @@
                         <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="(\d{6,9})">ID</button>
                         <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="(\d{4})">\d{4}</button>
                         <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="(\d{2})">\d{2}</button>
-                        <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="(?<=href\="\/)">(?<=href\="\/)</button>
-                        <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="(?=")">(?=")</button>
+                        <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern='(?<=href\="\/)'>(?<=href\="\/)</button>
+                        <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern='(?=")'>(?=")</button>
                         <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="(\b(?!yazarlar))">(\b(?!yazarlar))</button>
                     </div>
                     <div class="collection-item">
@@ -239,7 +239,7 @@
                         <div class="d-flex flex-wrap">
                             <div style="width: 50%; padding: 1rem;">
                                 <div class="input-field">
-                                    <input name="off_limit" id="off_limit" value="{{ $crawler->off_limit }}" type="number" class="validate" max="100" min="10" />
+                                    <input name="off_limit" id="off_limit" value="{{ $crawler->off_limit }}" type="number" class="validate" max="255" min="10" />
                                     <label for="off_limit">Kapatma Limiti</label>
                                     <small class="helper-text">
                                         Belirtilen değer kadar hata alındığı takdirde; hata logu girilir ve bot devre dışı bırakılır.

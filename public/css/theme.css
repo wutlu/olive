@@ -1521,7 +1521,8 @@ nav .nav-wrapper > ul > li > a > i {
   border-radius: 0;
 }
 
-.collection .collection-item {
+.collection .collection-item.active{
+  color: #666;
 }
 
 .collection .collection-item > i.material-icons {

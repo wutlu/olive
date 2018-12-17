@@ -62,7 +62,7 @@
                                         </div>
                                     </form>
                                 </div>
-                                <div id="tab-kaydol">
+                                <div id="tab-kaydol" style="display: none;">
                                     <form id="register-form" data-callback="__register" action="{{ route('user.register') }}" method="put" class="json">
                                         <div class="row">
                                             <div class="input-field col s12">
@@ -97,7 +97,7 @@
                                         </div>
                                     </form>
                                 </div>
-                                <div id="tab-sifre">
+                                <div id="tab-sifre" style="display: none;">
                                     <form id="password-form" data-callback="__password" action="{{ route('user.password') }}" method="post" class="json">
                                         <div class="row">
                                             <div class="input-field col s12">

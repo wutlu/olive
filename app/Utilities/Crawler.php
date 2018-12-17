@@ -164,7 +164,7 @@ class Crawler
 
             $dom = $client->get($page, $arr)->getBody();
 
-            $dom = str_replace([ '""' ], [ '"' ], $dom);
+            $dom = str_replace('&nbsp;', ' ', $dom);
 
             $saw = new Wrawler($dom);
 
