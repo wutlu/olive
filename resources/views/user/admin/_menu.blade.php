@@ -1,19 +1,19 @@
 <div class="collection">
-    <a href="{{ route('admin.user', $id) }}" class="collection-item waves-effect {{ $active == 'account' ? 'active' : '' }}">
+    <a href="{{ route('admin.user', $id) }}" class="collection-item waves-effect waves-light {{ $active == 'account' ? 'active' : '' }}">
         Hesap Bilgileri
     </a>
-    <a href="{{ route('admin.user.notifications', $id) }}" class="collection-item waves-effect {{ $active == 'notifications' ? 'active' : '' }}">
+    <a href="{{ route('admin.user.notifications', $id) }}" class="collection-item waves-effect waves-light {{ $active == 'notifications' ? 'active' : '' }}">
         E-posta Bildirimleri
     </a>
-    <a href="{{ route('admin.user.invoices', $id) }}" class="collection-item waves-effect {{ $active == 'invoices' ? 'active' : '' }}">
+    <a href="{{ route('admin.user.invoices', $id) }}" class="collection-item waves-effect waves-light {{ $active == 'invoices' ? 'active' : '' }}">
         Fatura Geçmişi <span class="badge teal white-text">{{ $user->invoices()->count() }}</span>
     </a>
-    <a href="{{ route('admin.user.tickets', $id) }}" class="collection-item waves-effect {{ $active == 'tickets' ? 'active' : '' }}">
+    <a href="{{ route('admin.user.tickets', $id) }}" class="collection-item waves-effect waves-light {{ $active == 'tickets' ? 'active' : '' }}">
         Destek Talepleri <span class="badge teal white-text">{{ $user->tickets()->count() }}</span>
     </a>
     @if (@$user->organisation)
         <div class="divider teal"></div>
-        <a href="{{ route('admin.organisation', $user->organisation->id) }}" class="collection-item waves-effect">
+        <a href="{{ route('admin.organisation', $user->organisation->id) }}" class="collection-item waves-effect waves-light">
             {{ $user->organisation->name }}
         </a>
     @endif

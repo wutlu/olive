@@ -148,7 +148,7 @@
                     <time class="grey-text d-block">{{ date('d.m.Y H:i:s', strtotime($source['created_at'])) }}</time>
 
                     @isset ($source['title'])
-                        <h6 class="teal-text">{{ title_case($source['title']) }}</h6>
+                        <h6 class="teal-text">{{ $source['title'] }}</h6>
                     @endisset
 
                     @if ($type == 'tweet')

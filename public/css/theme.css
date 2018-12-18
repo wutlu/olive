@@ -1325,9 +1325,6 @@ header#main > .parallax-container > .parallax > video#background-video {
 
           perspective: 400px;
   -webkit-perspective: 400px;
-
-  background-color: #000;
-  color: #fff;
 }
 
 .carousel.carousel-slider .carousel-item {
@@ -1339,10 +1336,6 @@ header#main > .parallax-container > .parallax > video#background-video {
       -ms-user-select: none;
      -moz-user-select: none;
   -webkit-user-select: none;
-
-  background-repeat: no-repeat;
-  background-position: right center;
-  background-size: cover;
 }
 
 .carousel.carousel-slider > .carousel-item > h2 {
@@ -1371,17 +1364,45 @@ header#main > .parallax-container > .parallax > video#background-video {
   -webkit-animation-iteration-count: infinite;
   -webkit-animation-timing-function: linear;
 }
-.carousel.carousel-slider > .carousel-item > .anim.sphere-1 {
+
+.sphere-1 {
     background-image: url(../img/sphere-1.png);
 }
-.carousel.carousel-slider > .carousel-item > .anim.sphere-2 {
+.sphere-2 {
     background-image: url(../img/sphere-2.png);
 }
-.carousel.carousel-slider > .carousel-item > .anim.sphere-3 {
+.sphere-3 {
     background-image: url(../img/sphere-3.png);
 }
-.carousel.carousel-slider > .carousel-item > .anim.sphere-4 {
+.sphere-4 {
     background-image: url(../img/sphere-4.png);
+}
+
+.card.card-olive {
+  overflow: hidden;
+}
+.card.card-olive .card-content {
+  z-index: 1;
+  position: relative;
+}
+.card.card-olive .olive {
+  width: 256px;
+  height: 256px;
+
+  -webkit-animation-name: carousel-anim;
+  -webkit-animation-duration: 60s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+
+  position: absolute;
+  z-index: 0;
+
+  top: -64px;
+  left: -64px;
 }
 
 /*
@@ -1567,7 +1588,11 @@ nav .nav-wrapper > ul > li > a > i {
   border-radius: 0;
 }
 
-.collection .collection-item {
+.collection > .collection-header {
+  border-width: 0 !important;
+}
+
+.collection > .collection-item {
   padding: 12px 24px;
   margin: 0;
   background-color: transparent;
@@ -1575,17 +1600,17 @@ nav .nav-wrapper > ul > li > a > i {
   border-radius: 0;
 }
 
-.collection .collection-item.active{
+.collection > .collection-item.active{
   color: #009688;
 }
 
-.collection .collection-item > i.material-icons {
+.collection > .collection-item > i.material-icons {
   width: 48px;
   font-size: 32px;
 }
 
 @media (max-width: 36em) {
-  .collection .collection-item > i.material-icons {
+  .collection > .collection-item > i.material-icons {
     display: none;
   }
 }
@@ -1649,6 +1674,13 @@ nav .nav-wrapper > ul > li > a > i {
 .collapsible-body {
   padding: 0;
   border-width: 0;
+}
+
+.collapsible > li > .card-loader {
+  margin: 0;
+
+          box-shadow: none !important;
+  -webkit-box-shadow: none !important;
 }
 
 /*
@@ -1736,4 +1768,55 @@ table tr {
  */
 .progress {
   margin: 0;
+}
+
+/*
+ * dropdown
+ */
+.dropdown-content {
+  min-width: 200px;
+}
+.dropdown-content li > a, .dropdown-content li > span {
+  color: #666;
+}
+
+/*
+ * grid
+ */
+.row {
+  margin-left: -.4rem;
+  margin-right: -.4rem;
+  margin-bottom: 24px;
+}
+
+/*
+ * card deck
+ */
+.deck {
+  display: -ms-flexbox;
+  display: flex;
+
+  padding: 12px;
+  overflow: hidden;
+
+      flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+}
+.deck > .deck-content {
+  min-width: 20%;
+}
+
+/*
+ * rank
+ */
+.rank {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  text-align: center;
+  white-space: nowrap;
+  border-radius: 50%;
+  margin: 0 .4rem 0 0;
+  font-size: 16px;
 }

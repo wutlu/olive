@@ -101,7 +101,7 @@
                     </a>
                 </li>
             </ul>
-            <nav class="cyan lighten-2">
+            <nav class="cyan darken-2">
                 <div class="sidenav-fixed-layout">
                     <div class="nav-wrapper">
                         <a href="{{ route('dashboard') }}" class="brand-logo center">
@@ -135,7 +135,7 @@
             <li>
                 <div class="user-view">
                     <small class="white-text right">Yapı {{ config('app.version') }}</small>
-                    <div class="background" style="background-image: url('{{ asset('img/user-background.jpg') }}');"></div>
+                    <div class="background" style="background-image: url('{{ asset('img/card-2.jpg') }}');"></div>
                     <img alt="{{ auth()->user()->name }}" class="circle" src="{{ asset(auth()->user()->avatar()) }}" />
                     <span class="white-text name">{{ auth()->user()->name }}</span>
                     <span class="white-text email">{{ auth()->user()->email }}</span>
@@ -321,7 +321,7 @@
         @endpush
 
         @isset($breadcrumb)
-            <nav class="grey darken-4" id="breadcrumb">
+            <nav class="cyan darken-4" id="breadcrumb">
                 <div class="sidenav-fixed-layout">
                     <div class="container">
                         <a href="{{ route('dashboard') }}" class="breadcrumb">Olive</a>

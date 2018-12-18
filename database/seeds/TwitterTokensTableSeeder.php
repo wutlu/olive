@@ -15,29 +15,23 @@ class TwitterTokensTableSeeder extends Seeder
     {
         $items = [
             [
-                'consumer_key' => 'TVSeX3HEq9fZV5SvOovYDJb4d',
-                'consumer_secret' => 'XJmduCOzg37dtvemc67ASQjtcO8nvIvH8TNsZy8m2E4FTUmckx',
-                'access_token' => '1033402875119058946-dkGEoG5g7usP8cndLiBrGD6WnVJcGi',
-                'access_token_secret' => '6U9EGsFV5zYFT6sqxTFjGibUkr7lHZgSwQGIYhuJFHEYd'
+                'consumer_key' => 'tn5VnjavB6cJqxOBOEhBQmJES',
+                'consumer_secret' => 'Lrm0tTLi5eNqwtSyobo1jmhgOK9037SngaOp6hjI0QxcmoXbgj',
+                'access_token' => '1033402875119058946-g4fSADDwlgMOvU9oaFoyFUAvTGE3oa',
+                'access_token_secret' => 'zIdouUDzFukCqs6A8OHIeIE00H9bXWSUAUH8HBMW5kcTY'
             ],
             [
-                'consumer_key' => 'yV4jfYwP0maAFheS7ldkVIBxO',
-                'consumer_secret' => '0TAr4uGvvCb3nMGCtr8rSAroP2XM3ZVuFsAkxw9IcNeQ6jGM0x',
-                'access_token' => '1033402875119058946-B7UaSssoT6aDd6YHy0Yz8ryWSP4o4c',
-                'access_token_secret' => 'C6bpltnXH8bU9Ty5IjRPu5W3EQdV0WEPpYq6ZnHoQiJyu'
+                'consumer_key' => 'A24af69hKvM8brBYxGBymEqsw',
+                'consumer_secret' => 'QLY0yiPpESRShPfdRhiwrLlf6NldWunBgG4uD5jRLiDoVeDrIA',
+                'access_token' => '1033402875119058946-bqdjmUM2Q96wjQMZ5TMNEovko323Lq',
+                'access_token_secret' => '9IbB13EZbQqzXXfAkh5oMEi6rt1T6UA4oTFhYSFSWFBcX'
             ],
             [
-                'consumer_key' => 'k6VJe7V43CXCfEMnORY8h0aa2',
-                'consumer_secret' => '5F2QAzIalmc6Y8HRCTny8r18zxRgqAQY78UrZOITS8IrmJAU8o',
-                'access_token' => '1033402875119058946-0dZxL2GySHE2SnkKv6u1TcwhuyMxcS',
-                'access_token_secret' => 'Awpp5lJkbEnm3vjc03D5aNRLRH54XWBn8BIE8qam5mH12'
-            ],
-            [
-                'consumer_key' => 'z2dFPxVVHaj99rwmS9ytu3EUH',
-                'consumer_secret' => '2WQwFCS3fCSYcZumiQGxNGmPvU0HqtkfDdku5gl01rA2p5cVE5',
-                'access_token' => '1033402875119058946-zpHa3k5124L9rBBfMhcnEy30Ti25Ao',
-                'access_token_secret' => 'EeIaHIDa6hq4gse6zgL7ZJlMoTW6aOljrh2Gf7se5w5Lb'
-            ],
+                'consumer_key' => 'tSlwAyA9EM8lWKXcA3RpDHBqo',
+                'consumer_secret' => 'X21Pd12O3FbfqZedqNArqEiMyG7a3hdEapboA01WkXqfuMt2V9',
+                'access_token' => '1033402875119058946-RivmyYk7y263C5MRRm3OvJe3OhhyAB',
+                'access_token_secret' => 'i2qTtMkJ6b4GB6MKmphcvdNHtLGiRmjeW5P7uHhWh7hPC'
+            ]
         ];
 
         foreach ($items as $item)

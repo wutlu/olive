@@ -26,10 +26,11 @@
         </div>
         <div class="card-content grey-text grey lighten-5">
             <h6>Daha İyi Sonuçlar Elde Edin</h6>
-            <p>İlgilendiğiniz kullanıcıları belirterek veri toplama esnasında yüksek analiz sonuçları elde edebilirsiniz.</p>
+            <p>Sizi yakından ilgilendiren kullanıcıları belirterek veri toplama esnasında yüksek analiz sonuçları elde edebilirsiniz.</p>
             <p>Bu ayarlar bulunduğunuz organizasyon için geçerlidir.</p>
             <p>Organizasyona dahil tüm kullanıcıların takip havuzu ortaktır.</p>
             <p>Elde edilen veriler tüm veri.zone kullanıcıları tarafından ortak veritabanından analize açık halde olacaktır.</p>
+            <p>Bu modül için sisteme bağlı bir Twitter hesabınızın olması gerekir.</p>
         </div>
         <div class="collection load"
              id="collections"
@@ -69,7 +70,7 @@
     </div>
 
     @component('components.loader')
-        @slot('color', 'purple')
+        @slot('color', 'cyan')
         @slot('id', 'home-loader')
     @endcomponent
 @endsection

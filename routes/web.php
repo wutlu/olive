@@ -46,6 +46,10 @@ Route::prefix('gercek-zamanli')->namespace('RealTime')->group(function () {
     });
 });
 
+Route::prefix('trend')->group(function () {
+    Route::get('/', 'TrendController@dashboard')->name('trend');
+});
+
 Route::prefix('pinleme')->group(function () {
     Route::prefix('gruplar')->group(function () {
         Route::get('/', 'PinController@groups')->name('pin.groups');

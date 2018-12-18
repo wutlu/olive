@@ -98,6 +98,10 @@ return [
                 'name' => 'Destek',
                 'route' => 'settings.support'
             ],
+            24 => [
+                'name' => 'Trendler',
+                'route' => 'trend'
+            ],
 
             /*
              * root modülleri

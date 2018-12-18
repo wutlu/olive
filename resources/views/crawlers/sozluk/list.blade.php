@@ -52,23 +52,25 @@
 @endpush
 
 @section('wildcard')
-    <div class="card">
+    <div class="card grey darken-4">
         <div class="card-image">
             <a class="btn-floating btn-large halfway-fab waves-effect cyan dropdown-trigger" data-target="more">
                 <i class="material-icons">more_vert</i>
             </a>
         </div>
-        <table id="stats" class="grey darken-4 load" data-href="{{ route('crawlers.sozluk.bot.statistics.all') }}" data-callback="__stats">
-            <tbody>
-                <tr>
-                    <th class="right-align grey-text">BOYUT</th>
-                    <th class="cyan-text" data-name="total-size">-</th>
+        <div class="container">
+            <table id="stats" class="load" data-href="{{ route('crawlers.sozluk.bot.statistics.all') }}" data-callback="__stats">
+                <tbody>
+                    <tr>
+                        <th class="right-align grey-text">BOYUT</th>
+                        <th class="cyan-text" data-name="total-size">-</th>
 
-                    <th class="right-align grey-text">DÖKÜMAN</th>
-                    <th class="cyan-text" data-name="total-docs">-</th>
-                </tr>
-            </tbody>
-        </table>
+                        <th class="right-align grey-text">DÖKÜMAN</th>
+                        <th class="cyan-text" data-name="total-docs">-</th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
     <ul id="more" class="dropdown-content">
         <li>
@@ -174,7 +176,7 @@
     </div>
 
     @component('components.loader')
-        @slot('color', 'purple')
+        @slot('color', 'cyan')
         @slot('id', 'home-loader')
     @endcomponent
 

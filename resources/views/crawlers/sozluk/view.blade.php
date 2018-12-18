@@ -134,6 +134,11 @@
                 <tbody>
                     <tr>
                         <th class="center-align">
+                            <button type="submit" class="btn-flat waves-effect cyan-text">
+                                <i class="material-icons">done_all</i>
+                            </button>
+                        </th>
+                        <th class="center-align">
                             <a href="#" data-trigger="status" class="btn-flat waves-effect waves-{{ $crawler->status ? 'green green' : 'red red' }}-text">{{ $crawler->status ? 'AKTİF' : 'PASİF' }}</a>
                         </th>
                         <th class="right-align grey-text">BOYUT</th>

@@ -77,7 +77,7 @@
     </div>
 
     @component('components.loader')
-        @slot('color', 'purple')
+        @slot('color', 'cyan')
         @slot('id', 'home-loader')
     @endcomponent
 

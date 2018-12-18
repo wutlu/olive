@@ -788,6 +788,7 @@ function vzAjax(__)
                     var mdl = modal({
                         'id': 'err',
                         'body': title,
+                        'title': keywords.info,
                         'size': 'modal-small',
                         'options': {}
                     })
@@ -798,6 +799,7 @@ function vzAjax(__)
                 var mdl = modal({
                         'id': 'err',
                         'body': errors.time_out,
+                        'title': keywords.info,
                         'size': 'modal-small',
                         'options': {},
                         'footer': [

@@ -69,11 +69,12 @@
 
 @section('content')
     <div
-        class="card time-line"
+        class="card time-line card-olive"
         data-href="{{ route('realtime.query') }}"
         data-callback="__realtime"
         data-method="post"
         data-include="keyword_group,sentiment">
+        <div class="olive sphere-2"></div>
         <div class="card-content">
             <div class="d-flex justify-content-between">
                 <span class="card-title mr-auto mb-0 align-self-center">Gerçek Zamanlı</span>
@@ -184,7 +185,7 @@
     var buffer = [];
     var words = [];
 
-    var time = 100;
+    var time = 200;
     var liveTimer;
 
     $(window).on('load', function() {
@@ -293,7 +294,7 @@
     $(document).on('mouseenter', '.time-line > .collection', function() {
         time = 1000;
     }).on('mouseleave', '.time-line', function() {
-        time = 100;
+        time = 200;
     })
 
     var streamTimer;
@@ -358,11 +359,11 @@
 
 @section('dock')
     <div class="card">
-        <div class="card-content card-content-image" style="background-image: url({{ asset('img/md/32.jpg') }});">
+        <div class="card-content teal accent-3">
             <span class="card-title white-text mb-0">Kelime Grupları</span>
         </div>
         <div class="card-image">
-            <a href="#" class="btn-floating btn-large halfway-fab waves-effect white" data-trigger="create-keyword-group">
+            <a href="#" class="btn-floating halfway-fab waves-effect white" data-trigger="create-keyword-group">
                 <i class="material-icons black-text">add</i>
             </a>
         </div>
@@ -395,6 +396,7 @@
                     data-href="{{ route('realtime.keyword.group') }}"
                     data-method="post"
                     data-callback="__get_keyword_group"
+                    id="menu"
                     href="#">
                     <i class="material-icons">create</i>
                 </a>
@@ -408,7 +410,7 @@
     @endcomponent
 
     <div class="card">
-        <div class="card-content card-content-image" style="background-image: url({{ asset('img/md/32.jpg') }});">
+        <div class="card-content teal accent-3">
             <span class="card-title white-text mb-0">Pin Grupları</span>
         </div>
         <div class="collection collection-bordered">
@@ -435,7 +437,7 @@
     </div>
 
     <div class="card">
-        <div class="card-content card-content-image" style="background-image: url({{ asset('img/md/32.jpg') }});">
+        <div class="card-content teal accent-3">
             <span class="card-title white-text mb-0">Duygu Analizi <sup>Beta</sup></span>
         </div>
         <div class="collection collection-bordered">

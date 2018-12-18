@@ -11,18 +11,18 @@
 
 @section('wildcard')
     @if (count($carousels))
-        <div class="card carousel carousel-slider center rounded-0">
+        <div class="carousel carousel-slider center rounded-0 teal accent-4 z-depth-1">
             @php
             $i = 0;
             @endphp
                 @foreach ($carousels as $carousel)
-                <div class="{{ implode(' ', [ 'carousel-item', $i == 0 ? 'active' : '', $carousel->pattern ]) }}">
+                <div class="{{ implode(' ', [ 'carousel-item', $i == 0 ? 'active' : '', 'white-text' ]) }}">
                     <h2>{{ $carousel->title }}</h2>
                     <p>{!! nl2br($carousel->description) !!}</p>
                     <div class="{{ implode(' ', [ 'anim', $carousel->pattern ]) }}"></div>
 
                     @if ($carousel->button_text)
-                        <a href="{{ $carousel->button_action }}" class="btn-flat waves-effect waves-red red-text">
+                        <a href="{{ $carousel->button_action }}" class="btn-flat waves-effect">
                             {{ $carousel->button_text }}
                         </a>
                     @endif
@@ -46,7 +46,7 @@
         <a href="{{ route('realtime.stream') }}" class="card-panel hoverable waves-effect" data-tooltip="Gerçek Zamanlı" data-position="right">
             <img alt="Gerçek Zamanlı" src="{{ asset('img/icons/realtime.png') }}" />
         </a>
-        <a style="opacity: .4;" href="#" class="card-panel hoverable waves-effect" data-tooltip="Trendler" data-position="right">
+        <a href="{{ route('trend') }}" class="card-panel hoverable waves-effect" data-tooltip="Trendler" data-position="right">
             <img alt="Trendler" src="{{ asset('img/icons/trends.png') }}" />
         </a>
         <a style="opacity: .4;" href="#" class="card-panel hoverable waves-effect" data-tooltip="Geçmiş Veri" data-position="right">
@@ -83,24 +83,18 @@
                         $('[data-target=search-trigger]').tapTarget('open');
                     @endpush
                 @endif
-                <div class="card" id="organisation-card">
-                    <div class="card-image">
-                        <img src="{{ asset('img/user-background.jpg') }}" alt="{{ $user->organisation->name }}" />
+                <div class="card">
+                    <a class="card-content card-content-image d-block waves-effect" href="{{ route('settings.organisation') }}">
                         <span class="card-title">{{ $user->organisation->name }}</span>
-                        <a href="{{ route('settings.organisation') }}" class="btn-floating btn-large halfway-fab waves-effect white">
-                            <i class="material-icons black-text">settings</i>
-                        </a>
-                    </div>
-                    <div class="card-content">
                         <p class="grey-text">{{ count($user->organisation->users) }}/{{ $user->organisation->capacity }} kullanıcı</p>
                         @if ($user->id == $user->organisation->user_id)
                             @if ($user->organisation->status)
-                            <p class="grey-text">{{ $user->organisation->days() }} gün kaldı.</p>
+                            <p class="grey-text">{{ $user->organisation->days() }} gün kaldı</p>
                             @else
                             <p class="red-text">Pasif</p>
                             @endif
                         @endif
-                    </div>
+                    </a>
                     <ul class="collection">
                         @foreach ($user->organisation->users as $u)
                         <li class="collection-item avatar">
@@ -114,11 +108,8 @@
                 </div>
             @else
                 <div class="card">
-                    <div class="card-image">
-                        <img src="{{ asset('img/card-header.jpg') }}" alt="" />
-                        <span class="card-title">Başlayın</span>
-                    </div>
                     <div class="card-content">
+                        <span class="card-title">Başlayın</span>
                         <p class="grey-text">Profesyonel bir ortamda tüm modüllerden faydalanabilmek için hemen bir organizasyon oluşturun.</p>
                     </div>
                     <div class="card-action">
@@ -127,7 +118,7 @@
                 </div>
 
                 @if (!auth()->user()->intro('welcome.create.organisation') && auth()->user()->verified)
-                    <div class="tap-target teal white-text" data-target="start">
+                    <div class="tap-target cyan darken-4 white-text" data-target="start">
                         <div class="tap-target-content">
                             <h5>Organizasyon Oluşturun</h5>
                             <p>Hemen profesyonel olarak başlayın!</p>
