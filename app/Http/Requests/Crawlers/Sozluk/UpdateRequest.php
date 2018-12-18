@@ -25,8 +25,8 @@ class UpdateRequest extends FormRequest
     public function rules(IdRequest $request)
     {
         return [
-            'id'                   => 'required|integer|exists:media_crawlers',
-            'name'                 => 'required|string|max:24|unique:media_crawlers,name,'.$request->id,
+            'id'                   => 'required|integer|exists:sozluk_crawlers',
+            'name'                 => 'required|string|max:24|unique:sozluk_crawlers,name,'.$request->id,
             'site'                 => 'required|string|max:255|active_url',
             'url_pattern'          => 'required|string|max:255',
             'selector_title'       => 'required|string|max:255',

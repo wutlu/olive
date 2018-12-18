@@ -45,28 +45,26 @@
                 'body': 'Destek talebini kapatmak üzeresiniz?',
                 'size': 'modal-small',
                 'title': 'Desteği Kapat',
-                'options': {}
+                'options': {},
+                'footer': [
+                   $('<a />', {
+                       'href': '#',
+                       'class': 'modal-close waves-effect btn-flat grey-text',
+                       'html': buttons.cancel
+                   }),
+                   $('<span />', {
+                       'html': ' '
+                   }),
+                   $('<a />', {
+                       'href': '#',
+                       'class': 'waves-effect btn-flat cyan-text json',
+                       'data-href': '{{ route('settings.support.ticket.close', $ticket->id) }}',
+                       'data-method': 'patch',
+                       'data-callback': '__close',
+                       'html': buttons.ok
+                   })
+                ]
             });
-    
-                mdl.find('.modal-footer')
-                   .html([
-                       $('<a />', {
-                           'href': '#',
-                           'class': 'modal-close waves-effect btn-flat',
-                           'html': buttons.cancel
-                       }),
-                       $('<span />', {
-                           'html': ' '
-                       }),
-                       $('<a />', {
-                           'href': '#',
-                           'class': 'waves-effect btn blue darken-4 json',
-                           'data-href': '{{ route('settings.support.ticket.close', $ticket->id) }}',
-                           'data-method': 'patch',
-                           'data-callback': '__close',
-                           'html': buttons.ok
-                       })
-                   ])
         }
     @endpush
     <div class="card ticket-card">

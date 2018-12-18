@@ -186,42 +186,38 @@
                                 'html': 'Girilen değer kadar hata alındığında token devre dışı kalsın.'
                             })
                         ]
-                    }),
-                    $('<br />'),
-                    $('<div />', {
-                        'class': 'right-align',
-                        'html': [
-                           $('<a />', {
-                               'href': '#',
-                               'class': 'modal-close waves-effect btn-flat',
-                               'html': buttons.cancel
-                           }),
-                           $('<span />', {
-                               'html': ' '
-                           }),
-                           $('<a />', {
-                               'data-trigger': 'delete',
-                               'href': '#',
-                               'class': 'waves-effect btn-flat red-text hide',
-                               'html': buttons.remove
-                           }),
-                           $('<span />', {
-                               'html': ' '
-                           }),
-                           $('<button />', {
-                               'type': 'submit',
-                               'class': 'waves-effect btn',
-                               'data-submit': 'form#form',
-                               'html': buttons.ok
-                           })
-                        ]
                     })
                 ]
             }),
             'size': 'modal-medium',
             'options': {
                 dismissible: false
-            }
+            },
+            'footer': [
+               $('<a />', {
+                   'href': '#',
+                   'class': 'modal-close waves-effect btn-flat grey-text',
+                   'html': buttons.cancel
+               }),
+               $('<span />', {
+                   'html': ' '
+               }),
+               $('<a />', {
+                   'data-trigger': 'delete',
+                   'href': '#',
+                   'class': 'waves-effect btn-flat grey-text hide',
+                   'html': buttons.remove
+               }),
+               $('<span />', {
+                   'html': ' '
+               }),
+               $('<button />', {
+                   'type': 'submit',
+                   'class': 'waves-effect btn-flat cyan-text',
+                   'data-submit': 'form#form',
+                   'html': buttons.ok
+               })
+            ]
         });
 
         return mdl;
@@ -230,17 +226,14 @@
     $(document).on('click', '[data-trigger=delete]', function() {
         var mdl = modal({
                 'id': 'alert',
-                'body': 'Silmek istediğinizden emin misiniz?',
+                'body': 'Token silinecek?',
                 'size': 'modal-small',
                 'title': 'Sil',
-                'options': {}
-            });
-
-            mdl.find('.modal-footer')
-               .html([
+                'options': {},
+                'footer': [
                     $('<a />', {
                         'href': '#',
-                        'class': 'modal-close waves-effect btn-flat',
+                        'class': 'modal-close waves-effect btn-flat grey-text',
                         'html': buttons.cancel
                     }),
                     $('<span />', {
@@ -248,14 +241,15 @@
                     }),
                     $('<a />', {
                         'href': '#',
-                        'class': 'waves-effect btn red json',
+                        'class': 'waves-effect btn-flat red-text json',
                         'html': buttons.ok,
                         'data-href': '{{ route('admin.twitter.token') }}',
                         'data-method': 'delete',
                         'data-id': $(this).data('id'),
                         'data-callback': '__delete'
                     })
-               ])
+                ]
+            });
     })
 
     $(document).on('click', '[data-trigger=create]', function() {
@@ -370,17 +364,15 @@
                             ],
                             'size': 'modal-medium',
                             'title': 'Kapatma Mesajı',
-                            'options': {}
-                        });
-
-                        _mdl.find('.modal-footer')
-                           .html([
+                            'options': {},
+                            'footer': [
                                 $('<a />', {
                                     'href': '#',
-                                    'class': 'modal-close waves-effect btn-flat',
+                                    'class': 'modal-close waves-effect btn-flat cyan-text',
                                     'html': buttons.ok
                                 })
-                           ])
+                            ]
+                        });
                 }, 500)
             }
         }

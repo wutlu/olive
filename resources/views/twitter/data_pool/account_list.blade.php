@@ -87,14 +87,11 @@
                 'body': 'Bu kaydı silmek istiyor musunuz?',
                 'size': 'modal-small',
                 'title': 'Sil',
-                'options': {}
-            });
-
-            mdl.find('.modal-footer')
-               .html([
+                'options': {},
+                'footer': [
                     $('<a />', {
                         'href': '#',
-                        'class': 'modal-close waves-effect btn-flat',
+                        'class': 'modal-close waves-effect btn-flat grey-text',
                         'html': buttons.cancel
                     }),
                     $('<span />', {
@@ -102,14 +99,15 @@
                     }),
                     $('<a />', {
                         'href': '#',
-                        'class': 'waves-effect btn red json',
+                        'class': 'waves-effect btn-flat red-text json',
                         'html': buttons.ok,
                         'data-href': '{{ route('twitter.account.delete') }}',
                         'data-id': __.data('id'),
                         'data-method': 'delete',
                         'data-callback': '__delete'
                     })
-               ])
+                ]
+            })
     })
 
     function __delete(__, obj)

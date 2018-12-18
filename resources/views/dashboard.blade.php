@@ -9,58 +9,57 @@
     })
 @endpush
 
-@section('content')
-    <div class="row">
-        @if (count($carousels))
-            <div class="col s12">
-                <div class="card grey lighten-4 carousel carousel-slider center">
-                    @php
-                    $i = 0;
-                    @endphp
-                    @foreach ($carousels as $carousel)
-                    <div class="{{ implode(' ', [ 'carousel-item', $i == 0 ? 'active' : '' ]) }}">
-                        <h2>{{ $carousel->title }}</h2>
-                        <p>{!! nl2br($carousel->description) !!}</p>
-                        <div class="{{ implode(' ', [ 'anim', $carousel->pattern ]) }}"></div>
+@section('wildcard')
+    @if (count($carousels))
+        <div class="card carousel carousel-slider center rounded-0">
+            @php
+            $i = 0;
+            @endphp
+                @foreach ($carousels as $carousel)
+                <div class="{{ implode(' ', [ 'carousel-item', $i == 0 ? 'active' : '', $carousel->pattern ]) }}">
+                    <h2>{{ $carousel->title }}</h2>
+                    <p>{!! nl2br($carousel->description) !!}</p>
+                    <div class="{{ implode(' ', [ 'anim', $carousel->pattern ]) }}"></div>
 
-                        @if ($carousel->button_text)
-                            <a href="{{ $carousel->button_action }}" class="btn waves-effect white grey-text darken-text-2">
-                                {{ $carousel->button_text }}
-                            </a>
-                        @endif
-                    </div>
-                    @php
-                    $i++;
-                    @endphp
-                    @endforeach
+                    @if ($carousel->button_text)
+                        <a href="{{ $carousel->button_action }}" class="btn-flat waves-effect waves-red red-text">
+                            {{ $carousel->button_text }}
+                        </a>
+                    @endif
                 </div>
-            </div>
-        @endif
-        <div class="col s12">
-            <div class="fast-menu">
-                <a href="{{ route('twitter.keyword.list') }}" class="card-panel hoverable waves-effect" data-tooltip="Twitter Veri Havuzu" data-position="right">
-                    <img alt="Twitter Veri Havuzu" src="{{ asset('img/icons/filter.png') }}" />
-                </a>
-                <a style="opacity: .4;" href="#" class="card-panel hoverable waves-effect" data-tooltip="Monitörler" data-position="right">
-                    <img alt="Monitorler" src="{{ asset('img/icons/analytics.png') }}" />
-                </a>
-                <a href="{{ route('realtime.stream') }}" class="card-panel hoverable waves-effect" data-tooltip="Gerçek Zamanlı" data-position="right">
-                    <img alt="Gerçek Zamanlı" src="{{ asset('img/icons/realtime.png') }}" />
-                </a>
-                <a style="opacity: .4;" href="#" class="card-panel hoverable waves-effect" data-tooltip="Trendler" data-position="right">
-                    <img alt="Trendler" src="{{ asset('img/icons/trends.png') }}" />
-                </a>
-                <a style="opacity: .4;" href="#" class="card-panel hoverable waves-effect" data-tooltip="Geçmiş Veri" data-position="right">
-                    <img alt="Geçmiş Veri" src="{{ asset('img/icons/archive.png') }}" />
-                </a>
-                <a style="opacity: .4;" href="#" class="card-panel hoverable waves-effect" data-tooltip="Alarmlar" data-position="right">
-                    <img alt="Alarmlar" src="{{ asset('img/icons/alarm.png') }}" />
-                </a>
-                <a style="opacity: .4;" href="#" class="card-panel hoverable waves-effect" data-tooltip="Araçlar" data-position="right">
-                    <img alt="Araçlar" src="{{ asset('img/icons/tools.png') }}" />
-                </a>
-            </div>
+                @php
+                $i++;
+                @endphp
+            @endforeach
         </div>
+    @endif
+@endsection
+
+@section('content')
+    <div class="fast-menu">
+        <a href="{{ route('twitter.keyword.list') }}" class="card-panel hoverable waves-effect" data-tooltip="Twitter Veri Havuzu" data-position="right">
+            <img alt="Twitter Veri Havuzu" src="{{ asset('img/icons/filter.png') }}" />
+        </a>
+        <a style="opacity: .4;" href="#" class="card-panel hoverable waves-effect" data-tooltip="Monitörler" data-position="right">
+            <img alt="Monitorler" src="{{ asset('img/icons/analytics.png') }}" />
+        </a>
+        <a href="{{ route('realtime.stream') }}" class="card-panel hoverable waves-effect" data-tooltip="Gerçek Zamanlı" data-position="right">
+            <img alt="Gerçek Zamanlı" src="{{ asset('img/icons/realtime.png') }}" />
+        </a>
+        <a style="opacity: .4;" href="#" class="card-panel hoverable waves-effect" data-tooltip="Trendler" data-position="right">
+            <img alt="Trendler" src="{{ asset('img/icons/trends.png') }}" />
+        </a>
+        <a style="opacity: .4;" href="#" class="card-panel hoverable waves-effect" data-tooltip="Geçmiş Veri" data-position="right">
+            <img alt="Geçmiş Veri" src="{{ asset('img/icons/archive.png') }}" />
+        </a>
+        <a style="opacity: .4;" href="#" class="card-panel hoverable waves-effect" data-tooltip="Alarmlar" data-position="right">
+            <img alt="Alarmlar" src="{{ asset('img/icons/alarm.png') }}" />
+        </a>
+        <a style="opacity: .4;" href="#" class="card-panel hoverable waves-effect" data-tooltip="Araçlar" data-position="right">
+            <img alt="Araçlar" src="{{ asset('img/icons/tools.png') }}" />
+        </a>
+    </div>
+    <div class="row">
         <div class="col xl4 l5 s12">
             @if (@auth()->user()->organisation_id)
                 @if (!auth()->user()->intro('search.module'))

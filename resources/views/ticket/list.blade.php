@@ -80,26 +80,24 @@
             'title': 'Talep Oluştur',
             'options': {
                 dismissible: false
-            }
-        });
-
-            mdl.find('.modal-footer')
-               .html([
-                   $('<a />', {
-                       'href': '#',
-                       'class': 'modal-close waves-effect btn-flat',
-                       'html': buttons.cancel
-                   }),
-                   $('<span />', {
-                       'html': ' '
-                   }),
-                   $('<a />', {
-                       'href': '#',
-                       'class': 'waves-effect btn',
-                       'data-submit': 'form#form',
-                       'html': buttons.ok
-                   })
-               ])
+            },
+            'footer': [
+                $('<a />', {
+                    'href': '#',
+                    'class': 'modal-close waves-effect btn-flat grey-text',
+                    'html': buttons.cancel
+                }),
+                $('<span />', {
+                    'html': ' '
+                }),
+                $('<a />', {
+                    'href': '#',
+                    'class': 'waves-effect btn-flat cyan-text',
+                    'data-submit': 'form#form',
+                    'html': buttons.ok
+                })
+            ]
+        })
 
         M.updateTextFields()
 

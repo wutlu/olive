@@ -170,33 +170,29 @@
                     $('<p />', {
                         'class': 'red-text',
                         'html': 'Bu işlem farklı organizasyonlardaki benzer kayıtları da etkileyecektir.'
-                    }),
-                    $('<br />'),
-                    $('<div />', {
-                        'class': 'right-align',
-                        'html': [
-                           $('<a />', {
-                               'href': '#',
-                               'class': 'modal-close waves-effect btn-flat',
-                               'html': buttons.cancel
-                           }),
-                           $('<span />', {
-                               'html': ' '
-                           }),
-                           $('<button />', {
-                               'type': 'submit',
-                               'class': 'waves-effect btn',
-                               'data-submit': 'form#form',
-                               'html': buttons.ok
-                           })
-                        ]
                     })
                 ]
             }),
             'size': 'modal-medium',
             'options': {
                 dismissible: false
-            }
+            },
+            'footer': [
+               $('<a />', {
+                   'href': '#',
+                   'class': 'modal-close waves-effect btn-flat grey-text',
+                   'html': buttons.cancel
+               }),
+               $('<span />', {
+                   'html': ' '
+               }),
+               $('<button />', {
+                   'type': 'submit',
+                   'class': 'waves-effect btn-flat cyan-text',
+                   'data-submit': 'form#form',
+                   'html': buttons.ok
+               })
+            ]
         });
 
         return mdl;

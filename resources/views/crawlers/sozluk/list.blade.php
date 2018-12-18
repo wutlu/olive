@@ -51,53 +51,67 @@
     }
 @endpush
 
-@section('content')
+@section('wildcard')
     <div class="card">
+        <div class="card-image">
+            <a class="btn-floating btn-large halfway-fab waves-effect cyan dropdown-trigger" data-target="more">
+                <i class="material-icons">more_vert</i>
+            </a>
+        </div>
         <table id="stats" class="grey darken-4 load" data-href="{{ route('crawlers.sozluk.bot.statistics.all') }}" data-callback="__stats">
             <tbody>
                 <tr>
                     <th class="right-align grey-text">BOYUT</th>
-                    <th class="orange-text" data-name="total-size"></th>
+                    <th class="cyan-text" data-name="total-size">-</th>
 
                     <th class="right-align grey-text">DÖKÜMAN</th>
-                    <th class="orange-text" data-name="total-docs"></th>
+                    <th class="cyan-text" data-name="total-docs">-</th>
                 </tr>
             </tbody>
         </table>
-        <div class="card-image">
-            <img src="{{ asset('img/card-header.jpg') }}" alt="Sözlük Botları" class="r-0" />
-            <span class="card-title">
-                Sözlük Botları
-                <small class="d-block" data-name="bots-count"></small>
-            </span>
-            <a href="{{ route('crawlers.sozluk.bot') }}" class="btn-floating btn-large halfway-fab waves-effect white">
-                <i class="material-icons black-text">add</i>
-            </a>
-        </div>
-        <div class="card-content">
+    </div>
+    <ul id="more" class="dropdown-content">
+        <li>
+            <a class="waves-effect" href="{{ route('crawlers.sozluk.bot') }}">Yeni Bot</a>
+        </li>
+        <li>
             <a
                 href="#"
-                class="btn-flat waves-effect"
                 data-message="Oluşturulmamış indekslerin oluşturulması için istek gönderilecek?"
+                class="waves-effect"
                 data-trigger="trigger"
                 data-href="{{ route('crawlers.sozluk.bot.index.all') }}"
                 data-callback="__create_all_index">Eksik Indeksleri Oluştur</a>
+        </li>
+        <li>
             <a
                 href="#"
-                class="btn-flat waves-effect"
                 data-message="Pasif fakat test edilmiş tüm botlar çalıştırılacak?"
+                class="waves-effect"
                 data-trigger="trigger"
                 data-href="{{ route('crawlers.sozluk.bot.start.all') }}"
                 data-callback="__start_all">Pasif Botları Çalıştır</a>
+        </li>
+        <li>
             <a
                 href="#"
-                class="btn-flat waves-effect"
                 data-message="Aktif tüm botlar durdurulacak?"
+                class="waves-effect"
                 data-trigger="trigger"
                 data-href="{{ route('crawlers.sozluk.bot.stop.all') }}"
                 data-callback="__stop_all">Aktif Botları Durdur</a>
-        </div>
+        </li>
+    </ul>
+@endsection
 
+@section('content')
+    <div class="card">
+        <div class="card-content">
+            <span class="card-title mb-0">
+                Sözlük Botları
+                <small class="d-block" data-name="bots-count"></small>
+            </span>
+        </div>
         <nav class="grey darken-4">
             <div class="nav-wrapper">
                 <div class="input-field">
@@ -181,14 +195,11 @@
                 'body': __.data('message'),
                 'size': 'modal-small',
                 'title': 'Uyarı',
-                'options': {}
-            });
-
-            mdl.find('.modal-footer')
-               .html([
+                'options': {},
+                'footer': [
                     $('<a />', {
                         'href': '#',
-                        'class': 'modal-close waves-effect btn-flat',
+                        'class': 'modal-close waves-effect btn-flat grey-text',
                         'html': buttons.cancel
                     }),
                     $('<span />', {
@@ -196,13 +207,14 @@
                     }),
                     $('<a />', {
                         'href': '#',
-                        'class': 'waves-effect btn json',
+                        'class': 'waves-effect btn-flat cyan-text json',
                         'html': buttons.ok,
                         'data-href': __.data('href'),
                         'data-method': 'post',
                         'data-callback': __.data('callback')
                     })
-               ])
+                ]
+            });
     })
 
     function __create_all_index(__, obj)

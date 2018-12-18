@@ -60,6 +60,7 @@
                 'action': '{{ route('admin.carousel') }}',
                 'id': 'form',
                 'class': 'json',
+                'data-method': 'patch',
                 'html': [
                     $('<div />', {
                         'class': 'input-field',
@@ -170,7 +171,6 @@
                             })
                         ]
                     }),
-
                     $('<div />', {
                         'class': 'collection',
                         'html': $('<label />', {
@@ -187,38 +187,34 @@
                                 })
                             ]
                         })
-                    }),
-                    $('<br />'),
-                    $('<div />', {
-                        'class': 'right-align',
-                        'html': [
-                           $('<a />', {
-                               'href': '#',
-                               'class': 'modal-close waves-effect btn-flat',
-                               'html': buttons.cancel
-                           }),
-                           $('<span />', {
-                               'html': ' '
-                           }),
-                           $('<a />', {
-                               'data-trigger': 'delete',
-                               'href': '#',
-                               'class': 'waves-effect btn-flat red-text hide',
-                               'html': buttons.remove
-                           }),
-                           $('<span />', {
-                               'html': ' '
-                           }),
-                           $('<button />', {
-                               'type': 'submit',
-                               'class': 'waves-effect btn',
-                               'data-submit': 'form#form',
-                               'html': buttons.ok
-                           })
-                        ]
                     })
                 ]
             }),
+            'footer': [
+                $('<a />', {
+                    'href': '#',
+                    'class': 'modal-close waves-effect btn-flat grey-text',
+                    'html': buttons.cancel
+                }),
+                $('<span />', {
+                    'html': ' '
+                }),
+                $('<a />', {
+                    'data-trigger': 'delete',
+                    'href': '#',
+                    'class': 'waves-effect btn-flat grey-text hide',
+                    'html': buttons.remove
+                }),
+                $('<span />', {
+                    'html': ' '
+                }),
+                $('<button />', {
+                    'type': 'submit',
+                    'class': 'waves-effect btn-flat cyan-text',
+                    'data-submit': 'form#form',
+                    'html': buttons.ok
+                })
+            ],
             'size': 'modal-medium',
             'options': {
                 dismissible: false
@@ -234,14 +230,10 @@
                 'body': 'Silmek istediğinizden emin misiniz?',
                 'size': 'modal-small',
                 'title': 'Sil',
-                'options': {}
-            });
-
-            mdl.find('.modal-footer')
-               .html([
+                'footer': [
                     $('<a />', {
                         'href': '#',
-                        'class': 'modal-close waves-effect btn-flat',
+                        'class': 'modal-close waves-effect grey-text btn-flat',
                         'html': buttons.cancel
                     }),
                     $('<span />', {
@@ -249,14 +241,16 @@
                     }),
                     $('<a />', {
                         'href': '#',
-                        'class': 'waves-effect btn red json',
+                        'class': 'waves-effect btn-flat red-text json',
                         'html': buttons.ok,
                         'data-href': '{{ route('admin.carousel') }}',
                         'data-method': 'delete',
                         'data-id': $(this).data('id'),
                         'data-callback': '__delete'
                     })
-               ])
+                ],
+                'options': {}
+            });
     })
 
     $(document).on('click', '[data-trigger=create]', function() {
@@ -369,7 +363,7 @@
                 <i class="material-icons black-text">add</i>
             </a>
         </div>
-        <div class="card-content grey lighten-5">
+        <div class="card-content grey lighten-4">
             <span data-name="count">0</span> / 10
         </div>
         <ul class="collection load" 
@@ -404,7 +398,7 @@
     </div>
 
     @component('components.loader')
-        @slot('color', 'purple')
+        @slot('color', 'cyan')
         @slot('id', 'home-loader')
     @endcomponent
 @endsection

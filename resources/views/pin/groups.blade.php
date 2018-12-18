@@ -66,42 +66,38 @@
                                 'html': 'Pin grubu için isim girin.'
                             })
                         ]
-                    }),
-                    $('<br />'),
-                    $('<div />', {
-                        'class': 'right-align',
-                        'html': [
-                           $('<a />', {
-                               'href': '#',
-                               'class': 'modal-close waves-effect btn-flat',
-                               'html': buttons.cancel
-                           }),
-                           $('<span />', {
-                               'html': ' '
-                           }),
-                           $('<a />', {
-                               'data-trigger': 'delete-pin-group',
-                               'href': '#',
-                               'class': 'waves-effect btn-flat red-text hide',
-                               'html': buttons.remove
-                           }),
-                           $('<span />', {
-                               'html': ' '
-                           }),
-                           $('<button />', {
-                               'type': 'submit',
-                               'class': 'waves-effect btn',
-                               'data-submit': 'form#pin-group-form',
-                               'html': buttons.ok
-                           })
-                        ]
                     })
                 ]
             }),
             'size': 'modal-medium',
             'options': {
                 dismissible: false
-            }
+            },
+            'footer': [
+                $('<a />', {
+                    'href': '#',
+                    'class': 'modal-close waves-effect btn-flat grey-text',
+                    'html': buttons.cancel
+                }),
+                $('<span />', {
+                    'html': ' '
+                }),
+                $('<a />', {
+                    'data-trigger': 'delete-pin-group',
+                    'href': '#',
+                    'class': 'waves-effect btn-flat grey-text hide',
+                    'html': buttons.remove
+                }),
+                $('<span />', {
+                    'html': ' '
+                }),
+                $('<button />', {
+                    'type': 'submit',
+                    'class': 'waves-effect btn-flat cyan-text',
+                    'data-submit': 'form#pin-group-form',
+                    'html': buttons.ok
+                })
+            ]
         });
 
         mdl.find('input[name=name]').characterCounter()
@@ -160,17 +156,14 @@
     $(document).on('click', '[data-trigger=delete-pin-group]', function() {
         var mdl = modal({
                 'id': 'pin-group-alert',
-                'body': 'Silmek istediğinizden emin misiniz?',
+                'body': 'Pin grubu silinecek?',
                 'size': 'modal-small',
                 'title': 'Sil',
-                'options': {}
-            });
-
-            mdl.find('.modal-footer')
-               .html([
+                'options': {},
+                'footer': [
                     $('<a />', {
                         'href': '#',
-                        'class': 'modal-close waves-effect btn-flat',
+                        'class': 'modal-close waves-effect btn-flat grey-text',
                         'html': buttons.cancel
                     }),
                     $('<span />', {
@@ -178,14 +171,15 @@
                     }),
                     $('<a />', {
                         'href': '#',
-                        'class': 'waves-effect btn red json',
+                        'class': 'waves-effect btn-flat red-text json',
                         'html': buttons.ok,
                         'data-href': '{{ route('pin.group') }}',
                         'data-method': 'delete',
                         'data-id': $(this).data('id'),
                         'data-callback': '__delete_pin_group'
                     })
-               ])
+                ]
+            });
     })
 
     function __delete_pin_group(__, obj)

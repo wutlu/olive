@@ -53,57 +53,73 @@
     }
 @endpush
 
-@section('content')
+@section('wildcard')
     <div class="card">
+        <div class="card-image">
+            <a class="btn-floating btn-large halfway-fab waves-effect cyan dropdown-trigger" data-target="more">
+                <i class="material-icons">more_vert</i>
+            </a>
+        </div>
+
         <table id="stats" class="grey darken-4 load" data-href="{{ route('crawlers.media.bot.statistics.all') }}" data-callback="__stats">
             <tbody>
                 <tr>
                     <th class="right-align grey-text">BOYUT</th>
-                    <th class="orange-text" data-name="total-size"></th>
+                    <th class="cyan-text" data-name="total-size"></th>
 
                     <th class="right-align grey-text">KUYRUK</th>
-                    <th class="orange-text" data-name="total-docs-buffer"></th>
+                    <th class="cyan-text" data-name="total-docs-buffer"></th>
 
                     <th class="right-align grey-text">BAŞARILI</th>
-                    <th class="orange-text" data-name="total-docs-success"></th>
+                    <th class="cyan-text" data-name="total-docs-success"></th>
 
                     <th class="right-align grey-text">BAŞARISIZ</th>
-                    <th class="orange-text" data-name="total-docs-failed"></th>
+                    <th class="cyan-text" data-name="total-docs-failed"></th>
                 </tr>
             </tbody>
         </table>
-        <div class="card-image">
-            <img src="{{ asset('img/card-header.jpg') }}" alt="Medya Botları" class="r-0" />
-            <span class="card-title">
-                Medya Botları
-                <small class="d-block" data-name="bots-count"></small>
-            </span>
-            <a href="{{ route('crawlers.media.bot') }}" class="btn-floating btn-large halfway-fab waves-effect white">
-                <i class="material-icons black-text">add</i>
-            </a>
-        </div>
-        <div class="card-content">
+    </div>
+    <ul id="more" class="dropdown-content">
+        <li>
+            <a class="waves-effect" href="{{ route('crawlers.media.bot') }}">Yeni Bot</a>
+        </li>
+        <li>
             <a
                 href="#"
-                class="btn-flat waves-effect"
+                class="waves-effect"
                 data-message="Oluşturulmamış indekslerin oluşturulması için istek gönderilecek?"
                 data-trigger="trigger"
                 data-href="{{ route('crawlers.media.bot.index.all') }}"
                 data-callback="__create_all_index">Eksik Indeksleri Oluştur</a>
+        </li>
+        <li>
             <a
                 href="#"
-                class="btn-flat waves-effect"
+                class="waves-effect"
                 data-message="Pasif fakat test edilmiş tüm botlar çalıştırılacak?"
                 data-trigger="trigger"
                 data-href="{{ route('crawlers.media.bot.start.all') }}"
                 data-callback="__start_all">Pasif Botları Çalıştır</a>
+        </li>
+        <li>
             <a
                 href="#"
-                class="btn-flat waves-effect"
+                class="waves-effect"
                 data-message="Aktif tüm botlar durdurulacak?"
                 data-trigger="trigger"
                 data-href="{{ route('crawlers.media.bot.stop.all') }}"
                 data-callback="__stop_all">Aktif Botları Durdur</a>
+        </li>
+    </ul>
+@endsection
+
+@section('content')
+    <div class="card">
+        <div class="card-content">
+            <span class="card-title mb-0">
+                Medya Botları
+                <small class="d-block" data-name="bots-count"></small>
+            </span>
         </div>
 
         <nav class="grey darken-4">
@@ -191,14 +207,11 @@
                 'body': __.data('message'),
                 'size': 'modal-small',
                 'title': 'Uyarı',
-                'options': {}
-            });
-
-            mdl.find('.modal-footer')
-               .html([
+                'options': {},
+                'footer': [
                     $('<a />', {
                         'href': '#',
-                        'class': 'modal-close waves-effect btn-flat',
+                        'class': 'modal-close waves-effect btn-flat grey-text',
                         'html': buttons.cancel
                     }),
                     $('<span />', {
@@ -206,13 +219,14 @@
                     }),
                     $('<a />', {
                         'href': '#',
-                        'class': 'waves-effect btn json',
+                        'class': 'waves-effect btn-flat cyan-text json',
                         'html': buttons.ok,
                         'data-href': __.data('href'),
                         'data-method': 'post',
                         'data-callback': __.data('callback')
                     })
-               ])
+                ]
+            });
     })
 
     function __create_all_index(__, obj)

@@ -50,14 +50,11 @@
                 'body': 'Bot durumunu değiştirmek istediğinizden emin misiniz?',
                 'size': 'modal-small',
                 'title': 'Durum',
-                'options': {}
-            });
-
-            mdl.find('.modal-footer')
-               .html([
+                'options': {},
+                'footer': [
                     $('<a />', {
                         'href': '#',
-                        'class': 'modal-close waves-effect btn-flat',
+                        'class': 'modal-close waves-effect btn-flat grey-text',
                         'html': buttons.cancel
                     }),
                     $('<span />', {
@@ -65,14 +62,15 @@
                     }),
                     $('<a />', {
                         'href': '#',
-                        'class': 'waves-effect btn json',
+                        'class': 'waves-effect btn-flat cyan-text json',
                         'html': buttons.ok,
                         'data-href': '{{ route('crawlers.sozluk.bot.status') }}',
                         'data-id': '{{ $crawler->id }}',
                         'data-method': 'post',
                         'data-callback': '__status'
                     })
-               ])
+                ]
+            });
     })
 
     var statTimer;
@@ -122,6 +120,11 @@
         data-callback="__test">
         <input type="hidden" value="{{ $crawler->id }}" name="id" id="id" />
         <div class="card">
+            <div class="card-content">
+                <span class="card-title mb-0">
+                    <span data-name="crawler-title">{{ $crawler->name }}</span>
+                </span>
+            </div>
             <table
                 id="stats"
                 class="grey darken-4 load"
@@ -130,6 +133,9 @@
                 data-callback="__stats">
                 <tbody>
                     <tr>
+                        <th class="center-align">
+                            <a href="#" data-trigger="status" class="btn-flat waves-effect waves-{{ $crawler->status ? 'green green' : 'red red' }}-text">{{ $crawler->status ? 'AKTİF' : 'PASİF' }}</a>
+                        </th>
                         <th class="right-align grey-text">BOYUT</th>
                         <th class="orange-text" data-name="total-size"></th>
 
@@ -141,22 +147,12 @@
                     </tr>
                 </tbody>
             </table>
-            <div class="card-content">
-                <a href="#" data-trigger="status" class="btn-flat waves-effect waves-{{ $crawler->status ? 'green green' : 'red red' }}-text">{{ $crawler->status ? 'AKTİF' : 'PASİF' }}</a>
-
-                @if (!$crawler->status && $crawler->off_reason)
-	                <div>
-	                    <small class="grey-text">Kapanma Nedeni</small>
-	                    <p class="d-block">{{ $crawler->off_reason }}</p>
-	                </div>
-                @endif
-            </div>
-            <div class="card-image">
-                <img src="{{ asset('img/card-header.jpg') }}" alt="{{ $crawler->name }}" class="r-0" />
-                <span class="card-title">
-                    <span data-name="crawler-title">{{ $crawler->name }}</span>
-                </span>
-            </div>
+            @if (!$crawler->status && $crawler->off_reason)
+                <div class="card-content red white-text rounded-0">
+    	            <small class="black-text">Kapanma Nedeni</small>
+    	            <p class="d-block">{{ $crawler->off_reason }}</p>
+                </div>
+            @endif
             <div class="card-content">
                 <div class="collection">
                     <div class="collection-item">
@@ -284,17 +280,14 @@
     $(document).on('click', '[data-trigger=delete]', function() {
         var mdl = modal({
                 'id': 'status',
-                'body': 'Bu kaydı silmek üzeresiniz?',
+                'body': 'Bot silinecek?',
                 'size': 'modal-small',
                 'title': 'Sil',
-                'options': {}
-            });
-
-            mdl.find('.modal-footer')
-               .html([
+                'options': {},
+                'footer': [
                     $('<a />', {
                         'href': '#',
-                        'class': 'modal-close waves-effect btn-flat',
+                        'class': 'modal-close waves-effect btn-flat grey-text',
                         'html': buttons.cancel
                     }),
                     $('<span />', {
@@ -302,14 +295,15 @@
                     }),
                     $('<a />', {
                         'href': '#',
-                        'class': 'waves-effect btn json',
+                        'class': 'waves-effect btn-flat red-text json',
                         'html': buttons.ok,
                         'data-href': '{{ route('crawlers.sozluk.bot') }}',
                         'data-id': '{{ $crawler->id }}',
                         'data-method': 'delete',
                         'data-callback': '__delete'
                     })
-               ])
+                ]
+            });
     })
 
     function __delete(__, obj)
@@ -327,25 +321,20 @@
             'body': '',
             'size': 'modal-large',
             'title': obj.status == 'ok' ? 'Test Başarılı!' : 'Test Başarısız!',
-            'options': {}
+            'options': {},
+            'footer': [
+                $('<a />', {
+                    'href': '#',
+                    'class': 'modal-close waves-effect btn-flat cyan-text',
+                    'html': buttons.ok
+                })
+            ]
         });
-
-            mdl.removeClass('red green')
-            mdl.addClass(obj.status == 'ok' ? 'green' : 'red')
 
         if (obj.status == 'ok')
         {
             $('[data-trigger=status]').removeClass('waves-green green-text').addClass('waves-red red-text').html('PASİF')
         }
-
-            mdl.find('.modal-footer')
-               .html([
-                    $('<a />', {
-                        'href': '#',
-                        'class': 'modal-close waves-effect btn-flat',
-                        'html': buttons.ok
-                    })
-               ])
 
         var textarea = $('<textarea />', {
             'style': 'border-width:0; resize: none; min-height: 200px; background-color: transparent;'

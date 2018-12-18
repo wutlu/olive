@@ -675,17 +675,15 @@ function vzAjax(__)
                             'body': title,
                             'size': 'modal-small',
                             'title': keywords.info,
-                            'options': {}
-                        });
-
-                        mdl.find('.modal-footer')
-                           .html([
+                            'options': {},
+                            'footer': [
                                $('<a />', {
                                    'href': '#',
-                                   'class': 'modal-close waves-effect btn-flat',
+                                   'class': 'modal-close waves-effect btn-flat cyan-text',
                                    'html': buttons.ok
                                })
-                           ])
+                            ]
+                        })
                 }, jqXHR.status == 0 ? 2000 : 500)
             }
             else if (jqXHR.status == 401)
@@ -760,8 +758,15 @@ function vzAjax(__)
                             ],
                             'size': 'modal-large',
                             'title': title,
-                            'options': {}
-                        });
+                            'options': {},
+                            'footer': [
+                                $('<a />', {
+                                    'href': '#',
+                                    'class': 'modal-close waves-effect btn-flat cyan-text',
+                                    'html': buttons.ok
+                                })
+                            ]
+                        })
 
                     $.each(variables, function(key, val) {
                         $('<li />', {
@@ -785,16 +790,7 @@ function vzAjax(__)
                         'body': title,
                         'size': 'modal-small',
                         'options': {}
-                    });
-
-                        mdl.find('.modal-footer')
-                           .html([
-                               $('<a />', {
-                                   'href': '#',
-                                   'class': 'modal-close waves-effect btn-flat',
-                                   'html': buttons.ok
-                               })
-                           ])
+                    })
                 }
             }
             else if (jqXHR.status == 419)
@@ -803,17 +799,15 @@ function vzAjax(__)
                         'id': 'err',
                         'body': errors.time_out,
                         'size': 'modal-small',
-                        'options': {}
-                    });
-
-                    mdl.find('.modal-footer')
-                        .html([
+                        'options': {},
+                        'footer': [
                             $('<a />', {
                                 'href': '#',
-                                'class': 'modal-close waves-effect btn-flat',
+                                'class': 'modal-close waves-effect btn-flat cyan-text',
                                 'html': buttons.ok
                             })
-                        ])
+                        ]
+                    });
             }
             else
             {
@@ -1035,11 +1029,11 @@ function modal(obj)
             'html': $('<div />', {
                 'class': 'modal-content',
                 'html': [
-                    $('<h5 />', {
+                    $('<div />', {
                         'class': 'modal-title'
                     }),
                     $('<div />', {
-                        'class': 'modal-body'
+                        'class': 'modal-body z-depth-1'
                     }),
                     $('<div />', {
                         'class': 'modal-footer'
@@ -1075,6 +1069,7 @@ function modal(obj)
 
     modal.find('.modal-title').html(obj.title ? obj.title : '')
     modal.find('.modal-body').html(obj.body)
+    modal.find('.modal-footer').html(obj.footer ? obj.footer : '')
 
     modal.modal('open')
 

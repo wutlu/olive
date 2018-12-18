@@ -219,7 +219,7 @@ time {
   margin-bottom: 0 !important;
 }
 .mb-1 {
-  margin-bottom: 2rem !important;
+  margin-bottom: 1rem !important;
 }
 .mb-2 {
   margin-bottom: 2rem !important;
@@ -229,7 +229,7 @@ time {
   margin-top: 0 !important;
 }
 .mt-1 {
-  margin-top: 2rem !important;
+  margin-top: 1rem !important;
 }
 .mt-2 {
   margin-top: 2rem !important;
@@ -239,7 +239,7 @@ time {
   margin-left: 0 !important;
 }
 .ml-1 {
-  margin-left: 2rem !important;
+  margin-left: 1rem !important;
 }
 .ml-2 {
   margin-left: 2rem !important;
@@ -249,10 +249,50 @@ time {
   margin-right: 0 !important;
 }
 .mr-1 {
-  margin-right: 2rem !important;
+  margin-right: 1rem !important;
 }
 .mr-2 {
   margin-right: 2rem !important;
+}
+
+.pb-0 {
+  padding-bottom: 0 !important;
+}
+.pb-1 {
+  padding-bottom: 1rem !important;
+}
+.pb-2 {
+  padding-bottom: 2rem !important;
+}
+
+.pt-0 {
+  padding-top: 0 !important;
+}
+.pt-1 {
+  padding-top: 1rem !important;
+}
+.pt-2 {
+  padding-top: 2rem !important;
+}
+
+.pl-0 {
+  padding-left: 0 !important;
+}
+.pl-1 {
+  padding-left: 1rem !important;
+}
+.pl-2 {
+  padding-left: 2rem !important;
+}
+
+.pr-0 {
+  padding-right: 0 !important;
+}
+.pr-1 {
+  padding-right: 1rem !important;
+}
+.pr-2 {
+  padding-right: 2rem !important;
 }
 
 .rounded {
@@ -617,10 +657,6 @@ i.large {
   font-size: 6rem;
 }
 
-.r-0 {
-  border-radius: 0 !important;
-}
-
 table.invoice thead > tr {
   border-width: 0 0 2px;
   border-style: solid;
@@ -955,6 +991,9 @@ body.module-search-active > .search-wrapper {
   -ms-flex-pack: justify;
   justify-content: space-between;
 }
+.fast-menu > a.card-panel {
+  margin: .4rem;
+}
 .fast-menu > a.card-panel > img {
   max-width: 64px;
 }
@@ -1286,6 +1325,9 @@ header#main > .parallax-container > .parallax > video#background-video {
 
           perspective: 400px;
   -webkit-perspective: 400px;
+
+  background-color: #000;
+  color: #fff;
 }
 
 .carousel.carousel-slider .carousel-item {
@@ -1297,8 +1339,15 @@ header#main > .parallax-container > .parallax > video#background-video {
       -ms-user-select: none;
      -moz-user-select: none;
   -webkit-user-select: none;
+
+  background-repeat: no-repeat;
+  background-position: right center;
+  background-size: cover;
 }
 
+.carousel.carousel-slider > .carousel-item > h2 {
+  text-transform: uppercase;
+}
 .carousel.carousel-slider > .carousel-item > .anim {
   position: absolute;
   z-index: -1;
@@ -1361,6 +1410,7 @@ header#main > .parallax-container > .parallax > video#background-video {
   position: relative;
   padding: 32px 32px 0;
   margin-bottom: 8px;
+  height: 181px;
 }
 
 .sidenav .user-view .background {
@@ -1526,7 +1576,7 @@ nav .nav-wrapper > ul > li > a > i {
 }
 
 .collection .collection-item.active{
-  color: #666;
+  color: #009688;
 }
 
 .collection .collection-item > i.material-icons {
@@ -1628,6 +1678,29 @@ table tr {
 /*
  * modal
  */
+.modal {
+  overflow-y: hidden;
+  max-height: 100%;
+  background-color: transparent;
+}
+.modal .modal-content {
+  padding: 0;
+  background-color: #f6f6f6;
+}
+.modal .modal-content > .modal-title {
+  padding: 24px;
+  font-size: 22px;
+}
+.modal .modal-content > .modal-body {
+  overflow: auto;
+  max-height: 300px;
+  padding: 12px 24px;
+  background-color: #fff;
+}
+.modal .modal-content > .modal-footer {
+  padding: 12px 24px;
+}
+
 .modal.modal-small {
   max-width: 260px;
 }

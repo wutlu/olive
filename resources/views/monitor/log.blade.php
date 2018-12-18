@@ -104,14 +104,11 @@
                 'body': 'Log vb. tüm geçici/kullanılmayan kayıtları silmek istediğinizden emin misiniz?',
                 'size': 'modal-small',
                 'title': 'Temizle',
-                'options': {}
-            });
-
-            mdl.find('.modal-footer')
-               .html([
+                'options': {},
+                'footer': [
                     $('<a />', {
                         'href': '#',
-                        'class': 'modal-close waves-effect btn-flat',
+                        'class': 'modal-close waves-effect btn-flat grey-text',
                         'html': buttons.cancel
                     }),
                     $('<span />', {
@@ -119,13 +116,14 @@
                     }),
                     $('<a />', {
                         'href': '#',
-                        'class': 'waves-effect btn json',
+                        'class': 'waves-effect btn-flat cyan-text json',
                         'html': buttons.ok,
                         'data-href': '{{ route('admin.monitoring.log.clear') }}',
                         'data-method': 'delete',
                         'data-callback': '__clear'
                     })
-               ])
+                ]
+            });
     })
 @endpush
 
