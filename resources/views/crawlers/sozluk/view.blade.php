@@ -153,7 +153,7 @@
                 </tbody>
             </table>
             @if (!$crawler->status && $crawler->off_reason)
-                <div class="card-content red white-text rounded-0">
+                <div class="card-content red white-text">
     	            <small class="black-text">Kapanma Nedeni</small>
     	            <p class="d-block">{{ $crawler->off_reason }}</p>
                 </div>

@@ -61,7 +61,7 @@ class Kernel extends ConsoleKernel
             #
             # Müşteri Twitter hesaplarının aktifliğini her saat başı kontrol et.
             #
-            $schedule->command('nohup "twitter:account_control" --type=restart')->hourly()->timezone(config('app.timezone'));
+            //$schedule->command('nohup "twitter:account_control" --type=restart')->hourly()->timezone(config('app.timezone'));
 
             #
             # Pinlemeler için pdf çıktı al.

@@ -46,8 +46,10 @@ Route::prefix('gercek-zamanli')->namespace('RealTime')->group(function () {
     });
 });
 
-Route::prefix('trend')->group(function () {
-    Route::get('/', 'TrendController@dashboard')->name('trend');
+Route::prefix('trend-analizi')->group(function () {
+    Route::get('/', 'TrendController@dashboard')->name('trend.live');
+    Route::get('arsiv', 'TrendController@archive')->name('trend.archive');
+    Route::get('endeks', 'TrendController@index')->name('trend.index');
 });
 
 Route::prefix('pinleme')->group(function () {

@@ -11,7 +11,7 @@
 
 @section('wildcard')
     @if (count($carousels))
-        <div class="carousel carousel-slider center rounded-0 teal accent-4 z-depth-1">
+        <div class="carousel carousel-slider center cyan darken-4 z-depth-1">
             @php
             $i = 0;
             @endphp
@@ -22,7 +22,7 @@
                     <div class="{{ implode(' ', [ 'anim', $carousel->pattern ]) }}"></div>
 
                     @if ($carousel->button_text)
-                        <a href="{{ $carousel->button_action }}" class="btn-flat waves-effect">
+                        <a href="{{ $carousel->button_action }}" class="btn-flat waves-effect waves-red white-text">
                             {{ $carousel->button_text }}
                         </a>
                     @endif
@@ -46,8 +46,8 @@
         <a href="{{ route('realtime.stream') }}" class="card-panel hoverable waves-effect" data-tooltip="Gerçek Zamanlı" data-position="right">
             <img alt="Gerçek Zamanlı" src="{{ asset('img/icons/realtime.png') }}" />
         </a>
-        <a href="{{ route('trend') }}" class="card-panel hoverable waves-effect" data-tooltip="Trendler" data-position="right">
-            <img alt="Trendler" src="{{ asset('img/icons/trends.png') }}" />
+        <a href="{{ route('trend.live') }}" class="card-panel hoverable waves-effect" data-tooltip="Trend Analizi" data-position="right">
+            <img alt="Trend Analizi" src="{{ asset('img/icons/trends.png') }}" />
         </a>
         <a style="opacity: .4;" href="#" class="card-panel hoverable waves-effect" data-tooltip="Geçmiş Veri" data-position="right">
             <img alt="Geçmiş Veri" src="{{ asset('img/icons/archive.png') }}" />

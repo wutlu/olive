@@ -12,10 +12,26 @@ class TrendController extends Controller
     }
 
     # 
-    # trend ekranı
+    # trend analiz ekranı
     # 
     public function dashboard()
     {
-        return view('trends.trend');
+        return view('trends.live');
+    }
+
+    # 
+    # trend endeks ekranı
+    # 
+    public function index()
+    {
+        return view('trends.index');
+    }
+
+    # 
+    # trend arşiv ekranı
+    # 
+    public function archive()
+    {
+        return view('trends.archive');
     }
 }

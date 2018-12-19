@@ -2,7 +2,10 @@
     'sidenav_fixed_layout' => true,
     'breadcrumb' => [
         [
-            'text' => 'Trendler'
+            'text' => 'Trend Analizi'
+        ],
+        [
+            'text' => 'Canlı Trend'
         ]
     ],
     'dock' => true
@@ -47,11 +50,11 @@
 
         <ul class="collapsible white" id="olive">
             <li>
-                <div class="card-panel orange lighten-4 mt-0 mb-0 rounded-0">Tüm veriler üzerinden yapılan trend analizi sonuçları.</div>
+                <div class="card-panel orange lighten-4 mt-0 mb-0">Tüm veriler üzerinden yapılan trend analizi sonuçları.</div>
             </li>
             @for ($i = 1; $i <= 10; $i++)
             <li>
-                <div class="collapsible-header d-flex">
+                <div class="collapsible-header">
                     <span class="rank grey-text align-self-center">{{ $i }}</span>
                     <span class="align-self-center">test</span>
                     <span class="badge grey lighten-4 grey-text align-self-center">14000+</span>

@@ -99,8 +99,16 @@ return [
                 'route' => 'settings.support'
             ],
             24 => [
-                'name' => 'Trendler',
-                'route' => 'trend'
+                'name' => 'Trend Analizi » Canlı Trend',
+                'route' => 'trend.live'
+            ],
+            25 => [
+                'name' => 'Trend Analizi » Trend Endeksi',
+                'route' => 'trend.index'
+            ],
+            26 => [
+                'name' => 'Trend Analizi » Trend Arşivi',
+                'route' => 'trend.archive'
             ],
 
             /*

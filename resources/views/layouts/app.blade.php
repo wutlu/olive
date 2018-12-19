@@ -465,7 +465,7 @@
         <div class="load" data-href="{{ route('dashboard.monitor') }}" data-method="post" data-callback="__monitor"></div>
         <div class="push-notifications">
             <div class="notification hide _model">
-                <div class="card">
+                <div class="card z-depth-5">
                     <div class="card-content">
                         <p data-name="text"></p>
                     </div>
