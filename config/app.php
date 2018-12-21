@@ -25,7 +25,7 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
-    'version' => '1.3.1030',
+    'version' => '1.3.1030 beta',
 
     'ticket' => [
         'types' => [

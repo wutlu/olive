@@ -23,18 +23,15 @@
 @section('content')
     <div class="card teal">
         <div class="card-content white-text">
-            <p>Trend analizleri Olive tarafından yapılır. Asıl kaynakların trendleriyle uyum sağlaması beklenemez.</p>
+            <p>Trend analizleri Olive tarafından yapılır. Asıl kaynakların trendleriyle uyum sağlaması beklenmemelidir.</p>
         </div>
         <div class="card-tabs">
             <ul class="tabs tabs-fixed-width tabs-transparent">
                 <li class="tab">
-                    <a href="#olive" class="waves-effect waves-light active">Olive</a>
-                </li>
-                <li class="tab">
                     <a href="#youtube" class="waves-effect waves-light">YouTube</a>
                 </li>
                 <li class="tab">
-                    <a href="#twitter" class="waves-effect waves-light">Twitter</a>
+                    <a href="#twitter" class="waves-effect waves-light active">Twitter</a>
                 </li>
                 <li class="tab">
                     <a href="#media" class="waves-effect waves-light">Medya</a>
@@ -48,10 +45,7 @@
             </ul>
         </div>
 
-        <ul class="collapsible white" id="olive">
-            <li>
-                <div class="card-panel orange lighten-4 mt-0 mb-0">Tüm veriler üzerinden yapılan trend analizi sonuçları.</div>
-            </li>
+        <ul class="collapsible white" id="twitter">
             @for ($i = 1; $i <= 10; $i++)
             <li>
                 <div class="collapsible-header">
@@ -67,15 +61,6 @@
         </ul>
 
         <ul class="collapsible white" id="youtube">
-            <li>
-            @component('components.loader')
-                @slot('color', 'cyan')
-                @slot('id', 'home-loader')
-            @endcomponent
-            </li>
-        </ul>
-
-        <ul class="collapsible white" id="twitter">
             <li>
             @component('components.loader')
                 @slot('color', 'cyan')

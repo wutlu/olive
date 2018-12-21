@@ -134,7 +134,7 @@
         <ul id="slide-out" class="sidenav sidenav-fixed collapsible">
             <li>
                 <div class="user-view">
-                    <small class="white-text right">Yapı {{ config('app.version') }}</small>
+                    <small class="white-text right">{{ config('app.version') }}</small>
                     <div class="background" style="background-image: url('{{ asset('img/card-2.jpg') }}');"></div>
                     <img alt="{{ auth()->user()->name }}" class="circle" src="{{ asset(auth()->user()->avatar()) }}" />
                     <span class="white-text name">{{ auth()->user()->name }}</span>

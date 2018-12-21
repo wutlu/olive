@@ -34,7 +34,7 @@ class Kernel extends ConsoleKernel
         if (env('FIRST_MIGRATION'))
         {
             # 
-            # Her pazartesi ödeme bildirimi gönder.
+            # her pazartesi ödeme bildirimi gönderir
             # 
             $schedule->command('check:upcoming_payments')
                      ->mondays()
@@ -42,34 +42,38 @@ class Kernel extends ConsoleKernel
                      ->withoutOverlapping();
 
             # 
-            # Site Takipçisi
+            # toplanılmak üzere bağlantı tespit eder
             # 
             $schedule->command('nohup "media:detector" --type=start')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
             $schedule->command('nohup "shopping:detector" --type=start')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
 
             # 
-            # Bağlantı Toplayıcı
+            # bağlantı toplar
             # 
             $schedule->command('nohup "media:taker" --type=start')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
             $schedule->command('nohup "shopping:taker" --type=start')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
 
             # 
-            # Alarmları Kontrolü
+            # medya bağlantıları için kontrol aralığı belirleme
+            # 
+            $schedule->command('nohup "media:minuter" --type=start')->hourly()->timezone(config('app.timezone'))->withoutOverlapping();
+
+            # 
+            # sistem alarmı kontrolü
             # 
             $schedule->command('alarm:control')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
 
             #
-            # Müşteri Twitter hesaplarının aktifliğini her saat başı kontrol et.
+            # müşteri Twitter hesaplarının durumunu kontrol eder
             #
-            //$schedule->command('nohup "twitter:account_control" --type=restart')->hourly()->timezone(config('app.timezone'));
+            $schedule->command('nohup "twitter:account_control" --type=restart')->hourly()->timezone(config('app.timezone'));
 
             #
-            # Pinlemeler için pdf çıktı al.
+            # pinleme pdf çıktılarını tetikler
             #
-            # $schedule->command('trigger:pdf:pin_groups')->everyMinute()->timezone(config('app.timezone'));
+            $schedule->command('trigger:pdf:pin_groups')->everyMinute()->timezone(config('app.timezone'));
 
             /* ---------------------------------------- */
-
 
 
             /* ---------------------------------------- */
@@ -105,7 +109,7 @@ class Kernel extends ConsoleKernel
             if ($option)
             {
                 $schedule->command('nohup "google:trend_detect" --type=restart')
-                         ->everyThirtyMinutes()
+                         ->hourly()
                          ->timezone(config('app.timezone'));
             }
 

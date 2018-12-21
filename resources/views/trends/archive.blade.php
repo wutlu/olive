@@ -19,10 +19,12 @@
     @include('trends._menu', [ 'active' => 'archive' ])
 @endsection
 
+@section('header.title', 'Test')
+
 @section('content')
     <div class="card">
-        <div class="card-content">
-            <span class="card-title mb-0">Trend Arşivi</span>
+        <div class="card-content teal">
+            <span class="card-title mb-0 white-text">Trend Arşivi</span>
         </div>
         <nav class="grey darken-4">
             <div class="nav-wrapper">
