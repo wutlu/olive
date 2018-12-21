@@ -32,7 +32,7 @@
                             .addClass('_tmp d-flex')
                             .attr('data-id', o.id)
 
-                        item.find('[data-name=id]').html('Id: ' + o.id)
+                        item.find('[data-name=id]').html(o.id)
                         item.find('[data-name=last-id]').html(o.last_id + ' girdi')
                         item.find('[data-name=name]').html(o.name)
                         item.find('[data-name=site]').html(o.site)
@@ -152,15 +152,16 @@
                 data-method="post"
                 data-name="crawlers.sozluk.bot"
                 data-callback="__go"
-                class="collection-item model hide waves-effect json">
+                class="collection-item model hide json justify-content-between">
                 <span class="align-self-center">
-                    <p data-name="name"></p>
+                    <p>
+                        <span class="rank" data-name="id"></span> <span data-name="name"></span>
+                    </p>
                     <p data-name="site" class="grey-text"></p>
-                    <p class="grey-text" data-name="id"></p>
                     <p class="grey-text" data-name="error"></p>
                     <p class="grey-text" data-name="last-id"></p>
                 </span>
-                <small class="badge ml-auto">
+                <small class="align-self-center">
                     <p>
                         <i class="material-icons" data-name="test">sentiment_very_satisfied</i>
                     </p>

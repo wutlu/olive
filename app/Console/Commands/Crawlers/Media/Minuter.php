@@ -63,12 +63,15 @@ class Minuter extends Command
                         'query' => [
                             'bool' => [
                                 'filter' => [
-                                    'range' => [
-                                        'created_at' => [
-                                            'format' => 'YYYY-MM-dd HH',
-                                            'gte' => $this->time
+                                    [
+                                        'range' => [
+                                            'created_at' => [
+                                                'format' => 'YYYY-MM-dd HH',
+                                                'gte' => $this->time
+                                            ]
                                         ]
-                                    ]
+                                    ],
+                                    [ 'match' => [ 'status' => 'ok' ] ]
                                 ]
                             ]
                         ]

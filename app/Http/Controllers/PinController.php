@@ -169,43 +169,50 @@ class PinController extends Controller
 
         $status = 'failed';
 
-        $pin = Pin::where([
-            'index' => $request->index,
-            'type' => $request->type,
-            'id' => $request->id,
-            'group_id' => $request->group_id
-        ])->where('organisation_id', $user->organisation_id)->first();
-
-        if ($type == 'add')
+        try
         {
-            if (@$pin)
-            {
-                $pin->delete();
-                $status = 'removed';
-            }
-            else
-            {
-                $document = Document::exists($request->index, $request->type, $request->id);
+            $pin = Pin::where([
+                'index' => $request->index,
+                'type' => $request->type,
+                'id' => $request->id,
+                'group_id' => $request->group_id
+            ])->where('organisation_id', $user->organisation_id)->first();
 
-                if ($document->status == 'ok')
+            if ($type == 'add')
+            {
+                if (@$pin)
                 {
-                    $status = 'pinned';
+                    $pin->delete();
+                    $status = 'removed';
+                }
+                else
+                {
+                    $document = Document::exists($request->index, $request->type, $request->id);
 
-                    $p = new Pin;
-                    $p->fill($request->all());
-                    $p->user_id = $user->id;
-                    $p->organisation_id = $user->organisation_id;
-                    $p->save();
+                    if ($document->status == 'ok')
+                    {
+                        $status = 'pinned';
+
+                        $p = new Pin;
+                        $p->fill($request->all());
+                        $p->user_id = $user->id;
+                        $p->organisation_id = $user->organisation_id;
+                        $p->save();
+                    }
+                }
+            }
+            else if ($type == 'remove')
+            {
+                if (@$pin)
+                {
+                    $pin->delete();
+                    $status = 'removed';
                 }
             }
         }
-        else if ($type == 'remove')
+        catch (\Exception $e)
         {
-            if (@$pin)
-            {
-                $pin->delete();
-                $status = 'removed';
-            }
+            //
         }
 
         return [
