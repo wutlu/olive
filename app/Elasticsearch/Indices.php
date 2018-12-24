@@ -75,12 +75,12 @@ class Indices
                                     // değiştirilmeyecek kelimeler.
                                     'turkish_keywords' => [
                                         'type' => 'keyword_marker',
-                                        'keywords_path' => 'words/keywords.txt'
+                                        'keywords_path' => storage_path('words/keywords.txt')
                                     ],
                                     // ilgilenilmeyecek kelimeler.
                                     'turkish_stop' => [
                                         'type' => 'stop',
-                                        'stopwords_path' => 'words/stopwords.txt'
+                                        'stopwords_path' => storage_path('words/stopwords.txt')
                                     ],
                                     'turkish_lowercase' => [
                                         'type' => 'lowercase',
@@ -93,7 +93,7 @@ class Indices
                                     // eş anlamlı kelimeler.
                                     'graph_synonyms' => [
                                         'type' => 'synonym_graph',
-                                        'synonyms_path' => 'words/synonym.txt'
+                                        'synonyms_path' => storage_path('words/synonym.txt')
                                     ],
                                     // kelime yuvarlama.
                                     'my_snow' => [
@@ -111,8 +111,8 @@ class Indices
                                             'source' => 'token.getTerm().length() > 5'  
                                         ]
                                     ]
-                                ],
 
+                                ],
                                 'analyzer' => [
                                     'turkish' => [
                                         'tokenizer' => 'standard',

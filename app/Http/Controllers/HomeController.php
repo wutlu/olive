@@ -35,6 +35,12 @@ class HomeController extends Controller
         ]);
     }
 
+    # home
+    public static function vz()
+    {
+        return view('vz.home');
+    }
+
     # 
     # uyarı
     # 
@@ -44,7 +50,7 @@ class HomeController extends Controller
     }
 
     # home
-    public static function index(Request $request)
+    public static function index()
     {
         $discountDay = DiscountDay::where('first_day', '<=', date('Y-m-d'))->where('last_day', '>=', date('Y-m-d'))->first();
 

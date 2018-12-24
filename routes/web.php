@@ -1,5 +1,13 @@
 <?php
 
+Route::domain(config('app.domain'))->group(function () {
+    Route::get('/', 'HomeController@vz')->name('veri.zone');
+});
+
+Route::domain(implode('.', [ 'forum', config('app.domain') ]))->namespace('Forum')->group(function () {
+    Route::get('/', 'ForumController@index')->name('forum.index');
+});
+
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('test', 'TestController@test');
 Route::get('panel', 'HomeController@dashboard')->name('dashboard');

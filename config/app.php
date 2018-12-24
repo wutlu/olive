@@ -2,31 +2,99 @@
 
 return [
 
+    /**
+     * Uygulama Adı
+     */
     'name' => env('APP_NAME', 'Laravel'),
 
+    /**
+     * Canlılık Durumu
+     *
+     * @return production|local
+     */
     'env' => env('APP_ENV', 'production'),
 
+    /**
+     * Hata Ayıklama
+     */
     'debug' => env('APP_DEBUG', false),
 
+    /**
+     * Uygulama Bağlantısı
+     *
+     * @return http://localhost
+     */
     'url' => env('APP_URL', 'http://localhost'),
+
+    /**
+     * Forum Bağlantısı
+     *
+     * @return localhost
+     */
+    'domain' => env('APP_DOMAIN', 'localhost'),
+
+    /**
+     * Gereçler Bağlantısı
+     *
+     * @return null
+     */
     'asset_url' => env('ASSET_URL', null),
 
+    /**
+     * Zaman Dilimi
+     *
+     * @return Europe/Istanbul
+     */
     'timezone' => 'Europe/Istanbul',
 
+    /**
+     * Sistem Dili
+     *
+     * @return tr
+     */
     'locale' => 'tr',
 
+    /**
+     * Alternatif Sistem Dili
+     *
+     * - locale değeri bulunamazsa aranacak dil.
+     *
+     * @return tr
+     */
     'fallback_locale' => 'tr',
 
+    /**
+     * Faker Dili
+     *
+     * - sahte veri üretiminde kullanılacak dil.
+     */
     'faker_locale' => 'tr_TR',
 
+    /**
+     * App Key
+     */
     'key' => env('APP_KEY'),
 
+    /**
+     * Sistem Şifresi
+     *
+     * - kritik durumlarda sorulacak şifre.
+     */
     'password' => env('APP_PASSWORD'),
 
+    /**
+     * Chipher
+     */
     'cipher' => 'AES-256-CBC',
 
+    /**
+     * Sistem Versiyonu
+     */
     'version' => '1.3.1030 beta',
 
+    /**
+     * Destek Konuları
+     */
     'ticket' => [
         'types' => [
             'other' => 'Diğer Konular',
@@ -34,6 +102,9 @@ return [
         ]
     ],
 
+    /**
+     * Intro Anahtarları
+     */
     'intro' => [
         'keys' => [
             'welcome.create.organisation',
@@ -41,11 +112,17 @@ return [
         ]
     ],
 
+    /**
+     * E-posta Bildirimi Türleri
+     */
     'notifications' => [
         'important' => 'Önemli Olay Bildirimleri',
         'login' => 'Giriş Bildirimleri'
     ],
 
+    /**
+     * Options Tablosu Varsayılanları
+     */
     'options' => [
         'email_alerts.server' => 'date_format:Y-m-d H:i:s',
         'email_alerts.log' => 'date_format:Y-m-d H:i:s',
@@ -59,6 +136,9 @@ return [
         'twitter.status' => 'string|in:on,off',
     ],
 
+    /**
+     * Uygulama Modülleri
+     */
     'modules' => [
         'youtube' => 'YouTube',
         'twitter' => 'Twitter',
@@ -67,6 +147,9 @@ return [
         'shopping' => 'Alışveriş',
     ],
 
+    /**
+     * Slider Ayarları
+     */
     'carousel' => [
         'patterns' => [
             'sphere-1' => 'AI 1',
@@ -76,6 +159,9 @@ return [
         ]
     ],
 
+    /**
+     * Modül Haritası
+     */
     'search' => [
         'modules' => [
             1 => [
@@ -257,6 +343,9 @@ return [
         ]
     ],
 
+    /**
+     * Log Dosyaları
+     */
     'log_files' => [
         base_path('supervisor/logs/crawler.log'),
         base_path('supervisor/logs/elasticsearch.log'),
@@ -266,6 +355,9 @@ return [
         storage_path('logs/laravel.log')
     ],
 
+    /**
+     * Grup E-posta Adresi
+     */
     'group_email' => env('GROUP_EMAIL'),
 
     /*

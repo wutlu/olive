@@ -1,4 +1,5 @@
 <?php
+
 $ign = [
   'able',
   'about',
