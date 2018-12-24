@@ -77,10 +77,10 @@
 	footer.main > a > img {
 		width: 32px;
 		height: 32px;
-		background-color: #222;
+		background-color: #fff;
 		margin: 0 .4rem 0 0;
 		padding: .4rem;
-		border-radius: 50%;
+		border-radius: 10%;
 	}
 	footer.main > a > img,
 	footer.main > a > span {

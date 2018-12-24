@@ -64,20 +64,22 @@ $ sudo apt install elasticsearch -y
 ### Sistemin Kurulumu Öncesi Yapılandırma
 
 ~~~~
-$ mkdir \var\www\olive.veri.zone
-$ nano \etc\apache2\sites-available\olive.veri.zone.conf
+$ mkdir \var\www\veri.zone
+$ nano \etc\apache2\sites-available\veri.zone.conf
 <VirtualHost *:80>
-    ServerAdmin root@veri.zone
-    DocumentRoot /var/www/olive.veri.zone
+        ServerName veri.zone
+        ServerAlias olive.veri.zone
+        ServerAlias forum.veri.zone
+        ServerAlias www.veri.zone
 
-    ServerName olive.veri.zone
-#   ServerAlias www.olive.veri.zone
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/veri.zone/public
 
-    ErrorLog ${APACHE_LOG_DIR}/error.log
-    CustomLog ${APACHE_LOG_DIR}/access.log combined
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
 
-$ sudo a2ensite olive.veri.zone.conf
+$ sudo a2ensite veri.zone.conf
 $ sudo service apache2 reload
 ~~~~
 
@@ -86,8 +88,8 @@ $ sudo service apache2 reload
 ~~~~
 $ cd /var/www/
 $ git clone https://www.github.com/4lper/olive
-$ mv olive olive.veri.zone
-$ cd olive.veri.zone
+$ mv olive veri.zone
+$ cd veri.zone
 $ composer install
 $ cp .env-example .env
 $ php artisan key:generate
@@ -98,7 +100,7 @@ $ php artisan storage:link
 $ nano /etc/supervisor/supervisord.conf
 
 // [include] programının altına ekleyin.
-files = /var/www/olive.veri.zone/supervisor/olive-worker.conf
+files = /var/www/veri.zone/supervisor/olive-worker.conf
 
 $ sudo supervisorctl reread
 $ sudo supervisorctl reload
@@ -117,5 +119,5 @@ $ sudo supervisorctl start olive-crawler:*
 
 ~~~~
 $ crontab -e
-*/1 * * * * php /var/www/olive.veri.zone/artisan schedule:run >> /dev/null 2>&1
+*/1 * * * * php /var/www/veri.zone/artisan schedule:run >> /dev/null 2>&1
 ~~~~

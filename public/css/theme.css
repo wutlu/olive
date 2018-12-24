@@ -819,7 +819,7 @@ table.invoice tfoot > tr {
   background-size: 128px 128px;
 }
 .card.card-data.tweet {
-  background-image: url('../img/icons/twitter-circled.png');
+  background-image: url('../img/icons/twitter.png');
 }
 .card.card-data.article {
   background-image: url('../img/icons/globe-earth.png');

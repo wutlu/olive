@@ -23,7 +23,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => 'h4',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'İNTERNETHABER',
@@ -33,7 +32,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => 'h2',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'SABAHAKTÜEL',
@@ -43,7 +41,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1.pageTitle',
                 'selector_description' => 'h2.spot',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'TEKNOKULİS',
@@ -53,7 +50,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1.pageTitle',
                 'selector_description' => 'h2.spot',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'MARKETINGTÜRKİYE',
@@ -63,7 +59,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1.entry-title',
                 'selector_description' => '.td-post-content > p:first-child',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'MEDIACAT',
@@ -73,7 +68,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1.main-title',
                 'selector_description' => '.excerpt',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'OTOHABER',
@@ -83,7 +77,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => 'h2.spot',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'EUROVİZYON',
@@ -93,7 +86,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => '.panel-title h1',
                 'selector_description' => '.panel-title p',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'NTV',
@@ -103,7 +95,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => 'article > h2',
                 'off_limit' => 255,
-                'control_interval' => 15,
             ],
             [
                 'name' => 'SPUTNIKNEWS',
@@ -113,7 +104,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1[itemprop="name"]',
                 'selector_description' => '.b-article__lead > p',
                 'off_limit' => 255,
-                'control_interval' => 15,
             ],
             [
                 'name' => 'JURNAL',
@@ -123,7 +113,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1.entry-title',
                 'selector_description' => 'blockquote',
                 'off_limit' => 255,
-                'control_interval' => 30,
             ],
             [
                 'name' => 'SHIFTDELETE',
@@ -133,7 +122,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => '#post_detail_content p:first-child',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'YAZETE',
@@ -143,7 +131,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1[itemprop="headline"]',
                 'selector_description' => '[itemprop="description"]',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'NTVSPOR',
@@ -153,7 +140,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => '.spot',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'OBJEKTİFHABER',
@@ -163,7 +149,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1[itemprop="name"]',
                 'selector_description' => 'p[itemprop="description"]',
                 'off_limit' => 255,
-                'control_interval' => 15,
             ],
             [
                 'name' => 'T24',
@@ -173,7 +158,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1[itemprop="headline"]',
                 'selector_description' => '.top-context > h2',
                 'off_limit' => 255,
-                'control_interval' => 5,
             ],
             [
                 'name' => 'TOBB',
@@ -183,7 +167,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => '#subpage-content > h3.title',
                 'selector_description' => '#subpage-content > .box-content-container:first-child',
                 'off_limit' => 10,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'GİRİŞİMHABER',
@@ -193,7 +176,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => '#post_title',
                 'selector_description' => '#entry p:first-child',
                 'off_limit' => 255,
-                'control_interval' => 30,
             ],
             [
                 'name' => 'FOTOSPOR',
@@ -203,7 +185,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1[itemprop="headline"]',
                 'selector_description' => 'h3[itemprop="description"]',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'NETPANO',
@@ -213,7 +194,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1.entry-title',
                 'selector_description' => '.td-post-content p:first-child',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'GOAL',
@@ -223,7 +203,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1[itemprop="headline"]',
                 'selector_description' => '[itemprop="description"]',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'BLOOMBERGHT',
@@ -233,7 +212,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => 'h2',
                 'off_limit' => 255,
-                'control_interval' => 15,
             ],
             [
                 'name' => 'DİRİLİŞPOSTASI',
@@ -243,7 +221,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => 'h2',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'SONSÖZ',
@@ -253,7 +230,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1.entry-title',
                 'selector_description' => 'h2',
                 'off_limit' => 255,
-                'control_interval' => 30,
             ],
             [
                 'name' => 'HABERLER',
@@ -263,7 +239,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1#haber_baslik',
                 'selector_description' => 'h2.spot',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'DÖRDÜNCÜKUVVET',
@@ -273,7 +248,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => '[itemprop="headline"]',
                 'selector_description' => '.entry-content p:nth-child(1)',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'MİLLİGAZETE',
@@ -283,7 +257,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1[itemprop="headline"]',
                 'selector_description' => 'p[itemprop="description"]',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'SAHADAN',
@@ -293,7 +266,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1[itemprop="headline"]',
                 'selector_description' => 'h2[itemprop="description"]',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'SİNEMALAR',
@@ -303,7 +275,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => '[itemprop="articleBody"] p:first-child',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'YENİASIR',
@@ -313,7 +284,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1.detail-title',
                 'selector_description' => 'p.detail-spot',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'PRESSTÜRK',
@@ -323,7 +293,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => '.haber-detay > div:nth-child(2)',
                 'selector_description' => '.haber-detay > div:nth-child(3)',
                 'off_limit' => 255,
-                'control_interval' => 15,
             ],
             [
                 'name' => 'GAZETEYENİYÜZYIL',
@@ -333,7 +302,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h3.title',
                 'selector_description' => 'p.lead',
                 'off_limit' => 100,
-                'control_interval' => 1,
             ],
             [
                 'name' => 'GERÇEKGÜNDEM',
@@ -343,7 +311,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1.article-title',
                 'selector_description' => '.article-excerpt',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'GAZETECİLER',
@@ -353,7 +320,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => 'h2',
                 'off_limit' => 255,
-                'control_interval' => 15,
             ],
             [
                 'name' => 'TAKVİM',
@@ -363,7 +329,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1#haberTitle',
                 'selector_description' => 'h2#haberSpot',
                 'off_limit' => 255,
-                'control_interval' => 20,
             ],
             [
                 'name' => 'MEMURLAR',
@@ -373,7 +338,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1[itemprop="headline"]',
                 'selector_description' => '[itemprop="description"]',
                 'off_limit' => 10,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'EVRENSEL',
@@ -383,7 +347,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => '.spot > h2',
                 'off_limit' => 255,
-                'control_interval' => 15,
             ],
             [
                 'name' => 'NETGAZETE',
@@ -393,7 +356,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => 'p.haber-spot',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'BIGPARA',
@@ -403,7 +365,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1.news-detail-title',
                 'selector_description' => '.tag-content > p:first-child',
                 'off_limit' => 10,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'İLERİHABER',
@@ -413,7 +374,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => '.waypoint > h1',
                 'selector_description' => '.waypoint > h2.spot',
                 'off_limit' => 255,
-                'control_interval' => 15,
             ],
             [
                 'name' => 'ULUSALKANAL',
@@ -423,7 +383,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h2',
                 'selector_description' => 'h3',
                 'off_limit' => 255,
-                'control_interval' => 15,
             ],
             [
                 'name' => 'TRTSPOR',
@@ -433,7 +392,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => '.section > h2',
                 'selector_description' => '.news-detail p:first-child',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'TELEVİZYONGAZETESİ',
@@ -443,7 +401,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => '#content-area > p:first-child',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'MYNETSPOR',
@@ -453,7 +410,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1.detail-post-title',
                 'selector_description' => 'h2.detail-post-spot',
                 'off_limit' => 255,
-                'control_interval' => 15,
             ],
             [
                 'name' => 'MEDYAALEMİ',
@@ -463,7 +419,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => 'h2',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'BİRGÜN',
@@ -473,7 +428,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'article.haber-detay .title',
                 'selector_description' => '.body > p:first-child',
                 'off_limit' => 255,
-                'control_interval' => 15,
             ],
             [
                 'name' => 'İHA',
@@ -483,7 +437,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => 'h2',
                 'off_limit' => 255,
-                'control_interval' => 5,
             ],
             [
                 'name' => 'TÜRKTIME',
@@ -493,7 +446,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => '#haberdetaybaslik > h1',
                 'selector_description' => '#haberdetaybaslik > h2',
                 'off_limit' => 255,
-                'control_interval' => 15,
             ],
             [
                 'name' => 'MEPANEWS',
@@ -503,7 +455,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1[itemprop="name"]',
                 'selector_description' => 'h2[itemprop="description"]',
                 'off_limit' => 255,
-                'control_interval' => 15,
             ],
             [
                 'name' => 'YENİSÖZ',
@@ -513,7 +464,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => '.content h1',
                 'selector_description' => '.content h2',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'SÜPERHABER',
@@ -523,7 +473,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => '.news-detail h1',
                 'selector_description' => '.news-detail h2:last-child',
                 'off_limit' => 255,
-                'control_interval' => 9,
             ],
             [
                 'name' => 'MİLATGAZETESİ',
@@ -533,7 +482,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => 'p.spot',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'ONEDİO',
@@ -543,7 +491,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => '.text > h3',
                 'off_limit' => 255,
-                'control_interval' => 20,
             ],
             [
                 'name' => 'TÜRKİYEGAZETESİ',
@@ -553,7 +500,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => 'h2.article_abstract',
                 'off_limit' => 255,
-                'control_interval' => 5,
             ],
             [
                 'name' => 'RUDAW',
@@ -563,7 +509,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h3.articleTitle',
                 'selector_description' => '.textContent > p:first-child',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'KARGOHABER',
@@ -573,7 +518,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1[itemprop="name"]',
                 'selector_description' => '[itemprop="description"]',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'KHA',
@@ -583,7 +527,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1[itemprop="headline"]',
                 'selector_description' => 'p.introduction',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'CHIP',
@@ -593,7 +536,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1[itemprop="headline"]',
                 'selector_description' => 'p[itemprop="description"]',
                 'off_limit' => 255,
-                'control_interval' => 30,
             ],
             [
                 'name' => 'MEDYASPOR',
@@ -603,7 +545,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => 'p.lead',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'ŞAMDAN',
@@ -613,7 +554,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => 'h2',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'BEINSPORTS',
@@ -623,7 +563,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h2#NewsTitle',
                 'selector_description' => '[itemprop="articleBody"] div:first-child',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'SONSAYFA',
@@ -633,7 +572,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => '.news-detail h2',
                 'selector_description' => '.news-detail p.brief',
                 'off_limit' => 255,
-                'control_interval' => 45,
             ],
             [
                 'name' => 'FUTBOLSAYFASI',
@@ -643,7 +581,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => 'h2',
                 'off_limit' => 255,
-                'control_interval' => 30,
             ],
             [
                 'name' => 'DİKEN',
@@ -653,7 +590,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1[itemprop="headline"]',
                 'selector_description' => '.entry-content',
                 'off_limit' => 255,
-                'control_interval' => 15,
             ],
             [
                 'name' => 'AYDINLIK',
@@ -663,7 +599,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1.author_title',
                 'selector_description' => '.white p:nth-child(2)',
                 'off_limit' => 255,
-                'control_interval' => 20,
             ],
             [
                 'name' => 'FOTOMAÇ',
@@ -673,7 +608,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1#NewsTitle',
                 'selector_description' => 'h2#NewsSpot',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'BEYAZPERDE',
@@ -683,7 +617,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => '[itemprop="headline"]',
                 'selector_description' => '#article-content > p:first-child',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'HÜRHABER',
@@ -693,7 +626,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1[itemprop="headline"]',
                 'selector_description' => '.dsag > h2',
                 'off_limit' => 255,
-                'control_interval' => 15,
             ],
             [
                 'name' => 'MYNETHABER',
@@ -703,7 +635,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1.detail-post-title',
                 'selector_description' => 'h2.detail-post-spot',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'DOĞRUHABER',
@@ -713,7 +644,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => 'article > p:first-child',
                 'off_limit' => 255,
-                'control_interval' => 15,
             ],
             [
                 'name' => 'SONDAKİKA',
@@ -723,7 +653,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1[itemprop="headline"]',
                 'selector_description' => 'h2[itemprop="description"]',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'ODATV',
@@ -733,7 +662,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1[itemprop="name"]',
                 'selector_description' => 'h2[itemprop="description"]',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'FİKRİYAT',
@@ -743,7 +671,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1.post-title',
                 'selector_description' => '.post-body > p:first-child',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'YENİAKİT',
@@ -753,7 +680,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => 'h2',
                 'off_limit' => 255,
-                'control_interval' => 5,
             ],
             [
                 'name' => 'HABER7',
@@ -763,7 +689,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1.title',
                 'selector_description' => 'h2.spot',
                 'off_limit' => 255,
-                'control_interval' => 5,
             ],
             [
                 'name' => 'SOL',
@@ -773,7 +698,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1#page-title',
                 'selector_description' => '.singlenews-spot',
                 'off_limit' => 255,
-                'control_interval' => 15,
             ],
             [
                 'name' => 'POSTA',
@@ -783,7 +707,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1.news-detail__info__title',
                 'selector_description' => 'h2.news-detail__info__spot',
                 'off_limit' => 255,
-                'control_interval' => 5,
             ],
             [
                 'name' => 'SPORX',
@@ -793,7 +716,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1#habertitle',
                 'selector_description' => 'h2#haberheadline',
                 'off_limit' => 255,
-                'control_interval' => 15,
             ],
             [
                 'name' => 'KARAR',
@@ -803,7 +725,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1.title',
                 'selector_description' => 'h2[itemprop="description"]',
                 'off_limit' => 255,
-                'control_interval' => 5,
             ],
             [
                 'name' => 'URFANATİK',
@@ -813,7 +734,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => 'p.lead',
                 'off_limit' => 255,
-                'control_interval' => 15,
             ],
             [
                 'name' => 'DONANIMHABER',
@@ -823,7 +743,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1.post-baslik',
                 'selector_description' => '.surmanset',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'MEDYAFARESİ',
@@ -833,7 +752,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => '.news > h1',
                 'selector_description' => '.news > h2',
                 'off_limit' => 255,
-                'control_interval' => 15,
             ],
             [
                 'name' => 'DEMOKRATHABER',
@@ -843,7 +761,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => '.panel-title > h1',
                 'selector_description' => '.panel-title > p',
                 'off_limit' => 255,
-                'control_interval' => 15,
             ],
             [
                 'name' => 'ARKEOLOJİKHABER',
@@ -853,7 +770,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => '.entry-header > h1.entry-title',
                 'selector_description' => '.entry-content p:nth-child(1)',
                 'off_limit' => 255,
-                'control_interval' => 30,
             ],
             [
                 'name' => 'WEBTEKNO',
@@ -863,7 +779,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1[itemprop="headline"] a',
                 'selector_description' => '[itemprop="description"]',
                 'off_limit' => 255,
-                'control_interval' => 30,
             ],
             [
                 'name' => 'YAKINPLAN',
@@ -873,7 +788,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1.entry-title',
                 'selector_description' => '.td-post-content > p:first-child',
                 'off_limit' => 255,
-                'control_interval' => 45,
             ],
             [
                 'name' => 'TÜRKİYEHABERAJANSI',
@@ -883,7 +797,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => 'h2',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'CNNTÜRK',
@@ -893,7 +806,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1.detail-title',
                 'selector_description' => 'h2.detail-description',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'GAZETEVATAN',
@@ -903,7 +815,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1[itemprop="headline"]',
                 'selector_description' => 'h2[itemprop="description"]',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'YENİŞAFAK',
@@ -913,7 +824,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => 'h2.spot',
                 'off_limit' => 255,
-                'control_interval' => 15,
             ],
             [
                 'name' => 'ÖNCEVATAN',
@@ -923,7 +833,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h3.title',
                 'selector_description' => 'p.lead',
                 'off_limit' => 255,
-                'control_interval' => 15,
             ],
             [
                 'name' => 'AJANSHABER',
@@ -933,7 +842,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'header > h1',
                 'selector_description' => 'header > h2',
                 'off_limit' => 255,
-                'control_interval' => 15,
             ],
             [
                 'name' => 'BEYAZGAZETE',
@@ -943,7 +851,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1.title',
                 'selector_description' => 'p.description',
                 'off_limit' => 255,
-                'control_interval' => 15,
             ],
             [
                 'name' => 'OCAKMEDYA',
@@ -953,7 +860,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1.entry-title',
                 'selector_description' => '.td-post-content > p:first-child',
                 'off_limit' => 255,
-                'control_interval' => 15,
             ],
             [
                 'name' => 'BBC',
@@ -963,7 +869,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1.story-body__h1',
                 'selector_description' => 'p.story-body__introduction',
                 'off_limit' => 255,
-                'control_interval' => 15,
             ],
             [
                 'name' => 'HABERTÜRK',
@@ -973,7 +878,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => 'h2',
                 'off_limit' => 255,
-                'control_interval' => 5,
             ],
             [
                 'name' => 'YURTGAZETESİ',
@@ -983,7 +887,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h3.title',
                 'selector_description' => 'p.lead',
                 'off_limit' => 255,
-                'control_interval' => 20,
             ],
             [
                 'name' => 'GAZETENEHABER',
@@ -993,7 +896,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => 'h2.spot',
                 'off_limit' => 255,
-                'control_interval' => 20,
             ],
             [
                 'name' => 'ASPOR',
@@ -1003,7 +905,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => 'h2',
                 'off_limit' => 255,
-                'control_interval' => 15,
             ],
             [
                 'name' => 'TIMETURK',
@@ -1013,7 +914,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => '.content > h1',
                 'selector_description' => '.content > h2',
                 'off_limit' => 255,
-                'control_interval' => 5,
             ],
             [
                 'name' => 'AA',
@@ -1023,7 +923,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => '.lead',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'DHA',
@@ -1033,7 +932,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => '.news-body > p.spot',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'DÜNYA',
@@ -1043,7 +941,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => 'h2',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'MİLLİYET',
@@ -1053,7 +950,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => 'h2',
                 'off_limit' => 255,
-                'control_interval' => 5,
             ],
             [
                 'name' => 'TGRTHABER',
@@ -1063,7 +959,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1[itemprop="headline"]',
                 'selector_description' => 'h2.haber-spot',
                 'off_limit' => 255,
-                'control_interval' => 15,
             ],
             [
                 'name' => 'YENİASYA',
@@ -1073,7 +968,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => '.head > h2',
                 'selector_description' => '.details > .intro',
                 'off_limit' => 255,
-                'control_interval' => 15,
             ],
             [
                 'name' => 'ANADOLUGAZETESİ',
@@ -1083,7 +977,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => '.Baslik > h1',
                 'selector_description' => '.ozet > h2',
                 'off_limit' => 255,
-                'control_interval' => 20,
             ],
             [
                 'name' => 'HTKULÜP',
@@ -1093,7 +986,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => 'h2',
                 'off_limit' => 255,
-                'control_interval' => 20,
             ],
             [
                 'name' => 'HABERVAKTİM',
@@ -1103,7 +995,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1[itemprop="name"]',
                 'selector_description' => '.short_content',
                 'off_limit' => 255,
-                'control_interval' => 15,
             ],
             [
                 'name' => 'DÖVİZ',
@@ -1113,7 +1004,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1[itemprop="headline"]',
                 'selector_description' => '.left-column p',
                 'off_limit' => 255,
-                'control_interval' => 15,
             ],
             [
                 'name' => 'HABERGAZETESİ',
@@ -1123,7 +1013,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => 'h2',
                 'off_limit' => 255,
-                'control_interval' => 15,
             ],
             [
                 'name' => 'AHABER',
@@ -1133,7 +1022,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => '.detailLeftFrame h1',
                 'selector_description' => '.detailLeftFrame h2',
                 'off_limit' => 255,
-                'control_interval' => 15,
             ],
             [
                 'name' => 'YENİMESAJ',
@@ -1143,7 +1031,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1.h1',
                 'selector_description' => '.haber > div:nth-child(2)',
                 'off_limit' => 255,
-                'control_interval' => 15,
             ],
             [
                 'name' => 'EURONEWS',
@@ -1153,7 +1040,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => '.c-article-content',
                 'off_limit' => 255,
-                'control_interval' => 5,
             ],
             [
                 'name' => 'YENİÇAĞ',
@@ -1163,7 +1049,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1[itemprop="name"]',
                 'selector_description' => '[itemprop="description"]',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'MEDYARADAR',
@@ -1173,7 +1058,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => 'h2',
                 'off_limit' => 255,
-                'control_interval' => 20,
             ],
             [
                 'name' => 'BİANET',
@@ -1183,7 +1067,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => '.post_text_container > a',
                 'selector_description' => '.desc',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'SÖZCÜ',
@@ -1193,7 +1076,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => 'h2',
                 'off_limit' => 255,
-                'control_interval' => 15,
             ],
             [
                 'name' => 'AKŞAM',
@@ -1203,7 +1085,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => '.newsdetailwrap h1',
                 'selector_description' => '.newsdetailwrap h2',
                 'off_limit' => 255,
-                'control_interval' => 5,
             ],
             [
                 'name' => 'ENSONHABER',
@@ -1213,7 +1094,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1[itemprop="name"]',
                 'selector_description' => 'h2[itemprop="description"]',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'HABER3',
@@ -1223,7 +1103,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1[itemprop="headline"]',
                 'selector_description' => 'h2',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'CUMHURİYET',
@@ -1233,7 +1112,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1[itemprop="headline"]',
                 'selector_description' => '.news-short',
                 'off_limit' => 255,
-                'control_interval' => 30,
             ],
             [
                 'name' => 'STAR',
@@ -1243,7 +1121,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => 'h2',
                 'off_limit' => 255,
-                'control_interval' => 5,
             ],
             [
                 'name' => 'TRTHABER',
@@ -1253,7 +1130,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1[itemprop="headline"]',
                 'selector_description' => 'p[itemprop="description"]',
                 'off_limit' => 255,
-                'control_interval' => 5,
             ],
             [
                 'name' => 'F5HABER',
@@ -1263,7 +1139,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => 'h2',
                 'off_limit' => 100,
-                'control_interval' => 1,
             ],
             [
                 'name' => 'HÜRRİYET',
@@ -1273,7 +1148,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => 'h2',
                 'off_limit' => 100,
-                'control_interval' => 1,
             ],
             [
                 'name' => 'MEDYALOJİ',
@@ -1283,7 +1157,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1[itemprop="name"]',
                 'selector_description' => '.articleTitle > div',
                 'off_limit' => 10,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'GAZETEPORT',
@@ -1293,7 +1166,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1.entry-title',
                 'selector_description' => '.entry p:first-child',
                 'off_limit' => 10,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'GAZETEDUVAR',
@@ -1303,7 +1175,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => '.single-post h2',
                 'selector_description' => 'span.subtitle',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'ORTADOĞUGAZETESİ',
@@ -1313,7 +1184,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => '.content h1',
                 'selector_description' => '.content strong:first-child',
                 'off_limit' => 10,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'HABERİYAKALA',
@@ -1323,7 +1193,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1.news-title',
                 'selector_description' => 'h2.news-desc',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'KAMUAJANS',
@@ -1333,7 +1202,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => 'h2[itemprop="description"]',
                 'off_limit' => 255,
-                'control_interval' => 15,
             ],
             [
                 'name' => 'ANAYURTGAZETESİ',
@@ -1343,7 +1211,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => 'h2',
                 'off_limit' => 255,
-                'control_interval' => 45,
             ],
             [
                 'name' => 'FANATİK',
@@ -1353,7 +1220,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1.news-detail__info__title',
                 'selector_description' => 'h2.news-detail__info__spot',
                 'off_limit' => 255,
-                'control_interval' => 20,
             ],
             [
                 'name' => 'GÜNEŞ',
@@ -1363,7 +1229,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => 'h4',
                 'off_limit' => 10,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'SABAH',
@@ -1373,7 +1238,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1.pageTitle',
                 'selector_description' => 'h2.spot',
                 'off_limit' => 255,
-                'control_interval' => 10,
             ],
             [
                 'name' => 'GAZETEKARINCA',
@@ -1383,7 +1247,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1.entry-title',
                 'selector_description' => 'h4',
                 'off_limit' => 255,
-                'control_interval' => 15,
             ],
             [
                 'name' => 'HTHAYAT',
@@ -1393,7 +1256,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1',
                 'selector_description' => 'h2',
                 'off_limit' => 255,
-                'control_interval' => 20,
             ],
             [
                 'name' => 'ETKİHABER',
@@ -1403,7 +1265,15 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_title' => 'h1[itemprop="name"]',
                 'selector_description' => 'h2[itemprop="description"]',
                 'off_limit' => 255,
-                'control_interval' => 15,
+            ],
+            [
+                'name' => 'GZT',
+                'site' => 'https://www.gzt.com',
+                'base' => '/',
+                'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-(\d{7,9})',
+                'selector_title' => 'h1',
+                'selector_description' => 'h2',
+                'off_limit' => 255,
             ],
         ];
 
@@ -1419,7 +1289,7 @@ class MediaCrawlersTableSeeder extends Seeder
                     'url_pattern' => $item['url_pattern'],
                     'selector_title' => $item['selector_title'],
                     'selector_description' => $item['selector_description'],
-                    'control_interval' => $item['control_interval']
+                    'off_limit' => $item['off_limit']
                 ]
             );
         }
