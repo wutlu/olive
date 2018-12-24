@@ -50,7 +50,7 @@ class ModuleSearchController extends Controller
                                     );
                                 }
                              })->orderBy('total', 'DESC')
-                               ->limit(5)
+                               ->limit(8)
                                ->get();
 
         if (count($query))
@@ -63,7 +63,8 @@ class ModuleSearchController extends Controller
                     'module_id' => $q->module_id,
                     'name' => $module['name'],
                     'route' => route($module['route']),
-                    'root' => @$module['root'] ? true : false
+                    'root' => @$module['root'] ? true : false,
+                    'icon' => @$module['icon'],
                 ];
             }
         }

@@ -37,10 +37,16 @@
         @if (!auth()->user()->verified)
             <div id="modal-confirmation" class="modal bottom-sheet">
                 <div class="modal-content">
-                    <p>E-posta ({{ auth()->user()->email }}) adresinizi henüz doğrulamadınız.</p>
-                    <p>Bu adres size ait değilse <a href="{{ route('settings.account') }}">Hesap Bilgileri</a> bölümünden size ait bir e-posta tanımlayın.</p>
-                    <a href="#" class="waves-effect btn-flat json" data-href="{{ route('user.register.resend') }}" data-method="post" data-callback="__resend">Tekrar Gönder</a>
-                    <a href="#" class="waves-effect btn modal-close">Tamam</a>
+                    <div class="card mb-0">
+                        <div class="card-content">
+                            <p>E-posta ({{ auth()->user()->email }}) adresinizi henüz doğrulamadınız.</p>
+                            <p>Bu adres size ait değilse <a href="{{ route('settings.account') }}">Hesap Bilgileri</a> bölümünden size ait bir e-posta tanımlayın.</p>
+                        </div>
+                        <div class="card-action">
+                            <a href="#" class="waves-effect btn-flat json" data-href="{{ route('user.register.resend') }}" data-method="post" data-callback="__resend">Tekrar Gönder</a>
+                            <button href="#" class="waves-effect btn-flat modal-close">Tamam</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -377,7 +383,7 @@
         <div class="search-wrapper" id="module-search">
             <div class="search-content">
                 <div class="right-align">
-                    <a href="#" class="btn-flat red-text waves-effect" data-trigger="module-search-close">
+                    <a href="#" class="btn-floating red waves-effect" data-trigger="module-search-close">
                         <i class="material-icons">close</i>
                     </a>
                 </div>
@@ -393,7 +399,7 @@
                         data-callback="__module_search" />
                     <label for="search_input">Arayın</label>
                 </div>
-                <div class="collection" id="module_search_results"></div>
+                <div id="ms-results"></div>
             </div>
         </div>
 
@@ -434,7 +440,7 @@
             {
                 if (obj.status == 'ok')
                 {
-                    var collections = $('#module_search_results');
+                    var collections = $('#ms-results');
 
                     if (obj.data.length)
                     {
@@ -445,16 +451,20 @@
                     {
                         $.each (obj.data, function(key, o) {
                             var item = $('<a />', {
-                                'class': 'collection-item waves-effect json',
+                                'class': 'ms-item waves-effect json',
+                                'href': '#',
                                 'data-href': '{{ route('module.go') }}',
                                 'data-method': 'post',
                                 'data-callback': '__go',
-                                'html': o.name,
+                                'html': [
+                                    $('<i />', { 'class': 'material-icons medium', 'html': o.icon }),
+                                    $('<span />', { 'class': 'd-block', 'html': o.name })
+                                ],
                                 'data-module_id': o.module_id,
                                 'data-include': 'search_input'
                             });
 
-                            item.addClass(o.root ? 'orange-text' : '')
+                            item.addClass(o.root ? 'red-text' : '')
                             item.appendTo(collections)
                         })
                     }
@@ -534,30 +544,25 @@
     @endauth
 
     <div class="@isset($sidenav_fixed_layout){{ 'sidenav-fixed-layout' }}@endisset">
-        <ul class="partners blue-grey darken-4">
+        <ul class="partners grey lighten-4">
             <li class="partner">
-                <a href="#">
+                <a href="https://laravel.com/" target="_blank">
                     <img alt="client" src="{{ asset('img/clients-logo1.png') }}" />
                 </a>
             </li>
             <li class="partner">
-                <a href="#">
+                <a href="https://materializecss.com/" target="_blank">
                     <img alt="client" src="{{ asset('img/clients-logo2.png') }}" />
                 </a>
             </li>
             <li class="partner">
-                <a href="#">
+                <a href="https://www.elastic.co/" target="_blank">
                     <img alt="client" src="{{ asset('img/clients-logo3.png') }}" />
                 </a>
             </li>
             <li class="partner">
-                <a href="#">
+                <a href="https://www.postgresql.org/" target="_blank">
                     <img alt="client" src="{{ asset('img/clients-logo4.png') }}" />
-                </a>
-            </li>
-            <li class="partner">
-                <a href="#">
-                    <img alt="client" src="{{ asset('img/clients-logo5.png') }}" />
                 </a>
             </li>
         </ul>

@@ -72,9 +72,15 @@ class Indices
                             ],
                             'analysis' => [
                                 'filter' => [
+                                    // değiştirilmeyecek kelimeler.
+                                    'turkish_keywords' => [
+                                        'type' => 'keyword_marker',
+                                        'keywords_path' => 'words/keywords.txt'
+                                    ],
+                                    // ilgilenilmeyecek kelimeler.
                                     'turkish_stop' => [
                                         'type' => 'stop',
-                                        'stopwords' => '_turkish_' 
+                                        'stopwords_path' => 'words/stopwords.txt'
                                     ],
                                     'turkish_lowercase' => [
                                         'type' => 'lowercase',
@@ -84,9 +90,26 @@ class Indices
                                         'type' => 'stemmer',
                                         'language' => 'turkish'
                                     ],
-                                    'turkish_keywords' => [
-                                        'type' => 'keyword_marker',
-                                        'keywords' => explode(PHP_EOL, \File::get(database_path('words/stop.txt')))
+                                    // eş anlamlı kelimeler.
+                                    'graph_synonyms' => [
+                                        'type' => 'synonym_graph',
+                                        'synonyms_path' => 'words/synonym.txt'
+                                    ],
+                                    // kelime yuvarlama.
+                                    'my_snow' => [
+                                        'type' => 'snowball',
+                                        'language' => 'Turkish'
+                                    ],
+                                    'unique_stem' => [
+                                      'type' => 'unique',
+                                      'only_on_same_position' => true
+                                    ],
+                                    // girilen değerden büyük kelimelerle ilgileniyoruz.
+                                    'my_script_filter' => [
+                                        'type' => 'predicate_token_filter',
+                                        'script' => [
+                                            'source' => 'token.getTerm().length() > 5'  
+                                        ]
                                     ]
                                 ],
 
@@ -94,11 +117,24 @@ class Indices
                                     'turkish' => [
                                         'tokenizer' => 'standard',
                                         'filter' => [
-                                            'apostrophe',
+                                            'classic', // kısaltmalardaki noktaları kaldırır.
+
                                             'turkish_lowercase',
-                                            'turkish_stop',
-                                            'turkish_stemmer',
-                                            'turkish_keywords'
+                                            'keyword_repeat',
+                                            'porter_stem',
+                                            'unique_stem',
+
+                                            'remove_duplicates', // aynı kelimeleri teke düşürür.
+                                            'turkish_keywords', // keywords.txt içerisine girilen kelimeler üzerinde işlem yapmaz.
+                                            'turkish_stop', // stopwords.txt dosyasındaki kelimelerle ilgilenilmeyecek.
+                                            'apostrophe', // kesme işareti ve ayrılan ek'i saymaz.
+                                            'turkish_stemmer', // sözcüğü köklerine ayırır. stopwords kelimeleri hariç.
+
+                                            'fingerprint', // alan kazanma.
+                                            'my_script_filter', // girilen değerden büyük kelimelerle ilgileniyoruz.
+                                            'graph_synonyms', // eş anlamlı kelimeler.
+                                            'my_snow',
+                                            'min_hash', // hashleme yaparak alan kazanır.
                                         ]
                                     ]
                                 ]

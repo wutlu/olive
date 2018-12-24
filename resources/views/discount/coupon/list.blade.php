@@ -43,7 +43,7 @@
             <a href="{{ route('admin.discount.coupon', $coupon->id) }}" class="collection-item d-flex waves-effect">
                 <span class="align-self-center">
                     <p>{{ $coupon->rate.'%' }} indirim</p>
-                    <p>{{ '₺ '.$coupon->price }} indirim</p>
+                    <p>{{ config('formal.currency').' '.$coupon->price }} indirim</p>
                 </span>
                 <small class="badge ml-auto">{{ $coupon->key }}</small>
             </a>

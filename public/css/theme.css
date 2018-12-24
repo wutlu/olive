@@ -938,12 +938,24 @@ table.invoice tfoot > tr {
   z-index: 100000;
 
   padding: 10% 20%;
-  background-color: #fff;
   visibility: hidden;
   opacity: 0;
 
   overflow: auto;
+
+  background-image: url(../img/main_bg.jpg);
+  background-repeat: repeat;
+  background-attachment: scroll;
+
+  background-color: #ccc;
 }
+
+@media (max-width: 1024px) {
+  .search-wrapper {
+    padding: 10%;
+  }
+}
+
 .search-wrapper > .search-content > input[type=search] {
   background-color: #fff;
   padding: 1rem;
@@ -955,6 +967,26 @@ body.module-search-active {
 body.module-search-active > .search-wrapper {
   visibility: visible;
   opacity: 1;
+}
+
+/*
+ * module search results
+ */
+#ms-results {
+  display: flex;
+  display: -ms-flexbox;
+
+      flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+}
+#ms-results > .ms-item {
+  text-align: center;
+  padding: 1rem;
+
+  -ms-flex: 1 1 auto;
+      flex: 1 1 auto;
+
+  width: 25%;
 }
 
 /*
@@ -1034,6 +1066,17 @@ ul.partners > li.partner {
   align-self: center;
   padding: 1rem;
 }
+ul.partners > li.partner a {
+          filter: grayscale(100%);
+  -webkit-filter: grayscale(100%);
+
+          transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  -webkit-transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+ul.partners > li.partner a:hover {
+          filter: grayscale(0);
+  -webkit-filter: grayscale(0);
+}
 
 /*
  * team
@@ -1106,7 +1149,7 @@ main {
  * footer
  */
 footer.page-footer {
-  background-color: #fff;
+  background-color: #333;
   background-image: url(../img/bg-1.svg);
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -1114,6 +1157,9 @@ footer.page-footer {
 }
 footer.page-footer > .container > .row > .col > img#vz-logo {
   max-width: 128px;
+}
+footer.page-footer .footer-copyright {
+  background-color: rgba(255, 255, 255, .6);
 }
 
 /*

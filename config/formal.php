@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'currency' => '₺',
+    'currency' => '$',
     'tax_name' => 'K.D.V.',
     'company' => [
         'logo' => 'img/veri.zone-logo.svg',

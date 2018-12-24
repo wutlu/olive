@@ -57,11 +57,13 @@ class Document
 
         try
         {
-            $docs = $client->search([
+            $arr = [
                 'index' => $name,
                 'type' => $type,
                 'body' => $query
-            ]);
+            ];
+
+            $docs = $client->search($arr);
 
             return (object) [
                 'status' => 'ok',

@@ -143,7 +143,7 @@
                 @foreach (config('plans') as $key => $plan)
                 <div class="card-content grey lighten-4" id="tab-{{ $key }}">
                     @if ($plan['price'])
-                        <h3 class="center-align">₺ {{ $plan['price'] }}<sup>.00</sup> <sub>/ Ay</sub></h3>
+                        <h3 class="center-align">{{ config('formal.currency') }} {{ $plan['price'] }}<sup>.00</sup> <sub>/ Ay</sub></h3>
                         @if (@$discountDay)
                         <p class="center-align grey-text">Hemen ücretsiz kaydolun ve bugüne özel <span class="chip">{{ $discountDay->discount_rate }}%</span> indirim kuponuna anında sahip olun.</p>
                         @endif

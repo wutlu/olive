@@ -423,7 +423,7 @@
                 <form autocomplete="off" id="calculate-form" method="post" action="{{ route('organisation.create.calculate.renew') }}" class="json" data-callback="__calculate">
                     <div class="card card-unstyled">
                         <div class="card-content">
-                            <h3 class="center-align">₺ {{ $plan->price }}<sup>.00</sup> <sub>/ Ay</sub></h3>
+                            <h3 class="center-align">{{ config('formal.currency').' '.$plan->price }}<sup>.00</sup> <sub>/ Ay</sub></h3>
                             <p class="center-align grey-text">{{ $plan->name }}</p>
 
                             <div class="row">
@@ -466,7 +466,7 @@
                                     <td>
                                         <span class="invoice-month">-</span> Ay <small>(Vergi Hariç)</small>
                                     </td>
-                                    <td class="right-align">₺</td>
+                                    <td class="right-align">{{ config('formal.currency') }}</td>
                                     <td class="right-align">
                                         <span class="invoice-total_price">-</span>
                                     </td>
@@ -477,7 +477,7 @@
                                         <span class="invoice-discount_rate">0</span>%
                                         <span class="invoice-discount_price"></span>
                                     </td>
-                                    <td class="right-align">₺</td>
+                                    <td class="right-align">{{ config('formal.currency') }}</td>
                                     <td class="right-align">
                                         <span class="invoice-discount">0</span>
                                     </td>
@@ -485,7 +485,7 @@
                                 <tr>
                                     <td>Vergiler</td>
                                     <td>{{ config('formal.tax') }}%</td>
-                                    <td class="right-align">₺</td>
+                                    <td class="right-align">{{ config('formal.currency') }}</td>
                                     <td class="right-align">
                                         <span class="invoice-tax">0</span>
                                     </td>
@@ -495,7 +495,7 @@
                                 <tr>
                                     <th>Genel Toplam</th>
                                     <th></th>
-                                    <th class="right-align">₺</th>
+                                    <th class="right-align">{{ config('formal.currency') }}</th>
                                     <th class="right-align">
                                         <span class="invoice-total_price_with_tax">-</span>
                                     </th>
@@ -536,7 +536,7 @@
 
                             if (obj.result.discount.price)
                             {
-                                $('.invoice-discount_price').html('+ ₺ ' + obj.result.discount.price)
+                                $('.invoice-discount_price').html('+ {{ config('formal.currency') }} ' + obj.result.discount.price)
                             }
 
                             $('tr.discount-row').removeClass('hide')

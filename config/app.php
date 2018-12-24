@@ -80,149 +80,179 @@ return [
         'modules' => [
             1 => [
                 'name' => 'Gerçek Zamanlı',
-                'route' => 'realtime.stream'
+                'route' => 'realtime.stream',
+                'icon' => 'timeline'
             ],
             2 => [
                 'name' => 'Pin Grupları',
-                'route' => 'pin.groups'
+                'route' => 'pin.groups',
+                'icon' => 'group_work'
             ],
             3 => [
-                'name' => 'Twitter » Kelime Takip Havuzu',
-                'route' => 'twitter.keyword.list'
+                'name' => 'Kelime Takip Havuzu',
+                'route' => 'twitter.keyword.list',
+                'icon' => 'streetview'
             ],
             4 => [
-                'name' => 'Twitter » Kullanıcı Takip Havuzu',
-                'route' => 'twitter.account.list'
+                'name' => 'Kullanıcı Takip Havuzu',
+                'route' => 'twitter.account.list',
+                'icon' => 'directions_walk'
             ],
             5 => [
                 'name' => 'Destek',
-                'route' => 'settings.support'
+                'route' => 'settings.support',
+                'icon' => 'help'
             ],
             24 => [
-                'name' => 'Trend Analizi » Canlı Trend',
-                'route' => 'trend.live'
+                'name' => 'Canlı Trend',
+                'route' => 'trend.live',
+                'icon' => 'whatshot'
             ],
             25 => [
-                'name' => 'Trend Analizi » Trend Endeksi',
-                'route' => 'trend.index'
+                'name' => 'Trend Endeksi',
+                'route' => 'trend.index',
+                'icon' => 'trending_up'
             ],
             26 => [
-                'name' => 'Trend Analizi » Trend Arşivi',
-                'route' => 'trend.archive'
+                'name' => 'Trend Arşivi',
+                'route' => 'trend.archive',
+                'icon' => 'archive'
             ],
 
             /*
              * root modülleri
              */
             6 => [
-                'name' => '✨ Sistem İzleme » Sunucu Bilgisi',
+                'name' => 'Sunucu Bilgisi',
                 'route' => 'admin.monitoring.server',
-                'root' => true
+                'root' => true,
+                'icon' => 'desktop_mac'
             ],
             7 => [
-                'name' => '✨ Sistem İzleme » Log Ekranı',
+                'name' => 'Log Ekranı',
                 'route' => 'admin.monitoring.log',
-                'root' => true
+                'root' => true,
+                'icon' => 'code'
             ],
             8 => [
-                'name' => '✨ Sistem İzleme » Kuyruk Ekranı',
+                'name' => 'Kuyruk Ekranı',
                 'route' => 'admin.monitoring.queue',
-                'root' => true
+                'root' => true,
+                'icon' => 'queue'
             ],
             9 => [
-                'name' => '✨ Sistem İzleme » Arkaplan İşlemleri',
+                'name' => 'Arkaplan İşlemleri',
                 'route' => 'admin.monitoring.background',
-                'root' => true
+                'root' => true,
+                'icon' => 'hourglass_empty'
             ],
             10 => [
-                'name' => '✨ Organizasyon » Kupon Yönetimi',
+                'name' => 'Kupon Yönetimi',
                 'route' => 'admin.discount.coupon.list',
-                'root' => true
+                'root' => true,
+                'icon' => 'card_giftcard'
             ],
             11 => [
-                'name' => '✨ Organizasyon » İndirim Günleri',
+                'name' => 'İndirim Günleri',
                 'route' => 'admin.discount.day.list',
-                'root' => true
+                'root' => true,
+                'icon' => 'card_giftcard'
             ],
             12 => [
-                'name' => '✨ Vekil Sunucu Yönetimi',
+                'name' => 'Vekil Sunucu Yönetimi',
                 'route' => 'admin.proxies',
-                'root' => true
+                'root' => true,
+                'icon' => 'vpn_key'
             ],
             13 => [
-                'name' => '✨ Bot Yönetimi » Alışveriş Botları',
+                'name' => 'Alışveriş Botları',
                 'route' => 'crawlers.shopping.list',
-                'root' => true
+                'root' => true,
+                'icon' => 'widgets'
             ],
             14 => [
-                'name' => '✨ Bot Yönetimi » YouTube Ayarları',
+                'name' => 'YouTube Ayarları',
                 'route' => 'admin.youtube.settings',
-                'root' => true
+                'root' => true,
+                'icon' => 'widgets'
             ],
             15 => [
-                'name' => '✨ Bot Yönetimi » Google Ayarları',
+                'name' => 'Google Ayarları',
                 'route' => 'admin.google.settings',
-                'root' => true
+                'root' => true,
+                'icon' => 'widgets'
             ],
             16 => [
-                'name' => '✨ Bot Yönetimi » Twitter Ayarları',
+                'name' => 'Twitter Ayarları',
                 'route' => 'admin.twitter.settings',
-                'root' => true
+                'root' => true,
+                'icon' => 'widgets'
             ],
             17 => [
-                'name' => '✨ Twitter » Müşteri Hesapları',
+                'name' => 'Twitter Hesapları',
                 'route' => 'admin.twitter.accounts',
-                'root' => true
+                'root' => true,
+                'icon' => 'person'
             ],
             18 => [
-                'name' => '✨ Twitter » Token Yönetimi',
+                'name' => 'Token Yönetimi',
                 'route' => 'admin.twitter.tokens.json',
-                'root' => true
+                'root' => true,
+                'icon' => 'accessibility'
             ],
             19 => [
-                'name' => '✨ Twitter » Veri Havuzu » Kelime Havuzu',
+                'name' => 'Kelime Havuzu',
                 'route' => 'admin.twitter.stream.keywords',
-                'root' => true
+                'root' => true,
+                'icon' => 'streetview'
             ],
             20 => [
-                'name' => '✨ Twitter » Veri Havuzu » Kullanıcı Havuzu',
+                'name' => 'Kullanıcı Havuzu',
                 'route' => 'admin.twitter.stream.accounts',
-                'root' => true
+                'root' => true,
+                'icon' => 'directions_walk'
             ],
             17 => [
-                'name' => '✨ Bot Yönetimi » Medya Botları',
+                'name' => 'Medya Botları',
                 'route' => 'crawlers.media.list',
-                'root' => true
+                'root' => true,
+                'icon' => 'widgets'
             ],
             18 => [
-                'name' => '✨ Bot Yönetimi » Sözlük Botları',
+                'name' => 'Sözlük Botları',
                 'route' => 'crawlers.sozluk.list',
-                'root' => true
+                'root' => true,
+                'icon' => 'widgets'
             ],
             19 => [
-                'name' => '✨ Sayfa Yönetimi',
+                'name' => 'Sayfa Yönetimi',
                 'route' => 'admin.page.list',
-                'root' => true
+                'root' => true,
+                'icon' => 'pages'
             ],
             20 => [
-                'name' => '✨ Destek Talepleri',
+                'name' => 'Destek Talepleri',
                 'route' => 'admin.tickets',
-                'root' => true
+                'root' => true,
+                'icon' => 'help'
             ],
             21 => [
-                'name' => '✨ Kullanıcı Yönetimi',
+                'name' => 'Kullanıcı Yönetimi',
                 'route' => 'admin.user.list',
-                'root' => true
+                'root' => true,
+                'icon' => 'people'
             ],
             22 => [
-                'name' => '✨ Organizasyon Yönetimi',
+                'name' => 'Organizasyon Yönetimi',
                 'route' => 'admin.organisation.list',
-                'root' => true
+                'root' => true,
+                'icon' => 'group_work'
             ],
             23 => [
-                'name' => '✨ Carousel Yönetimi',
+                'name' => 'Carousel Yönetimi',
                 'route' => 'admin.carousels',
-                'root' => true
+                'root' => true,
+                'icon' => 'view_carousel'
             ],
         ]
     ],

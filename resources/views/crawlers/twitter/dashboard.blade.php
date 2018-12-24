@@ -447,7 +447,7 @@
                 </a>
             </div>
         </div>
-        <div id="logs">
+        <div id="logs" style="display: none;">
             <div class="card-content grey-text">Log takibini log monitörü bölümünden de yapabilirsiniz. Bu alan sadece "Twitter" modülü ile ilgili logları gösterir.</div>
             <ul
                 id="console"
