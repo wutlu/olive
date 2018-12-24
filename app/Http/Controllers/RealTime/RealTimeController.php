@@ -111,257 +111,265 @@ class RealTimeController extends Controller
                             }
                         }
                     }
+                }
 
-                    # 
-                    # Haber Modülü
-                    # 
-                    if ($group->module_news)
-                    {
-                        $q = [
-                            'size' => 100,
-                            'query' => [
-                                'bool' => [
-                                    'must' => [
-                                        [
-                                            'query_string' => [ 'fields' => [ 'description', 'title' ], 'query' => implode(' OR ', $keywords) ]
-                                        ]
-                                    ],
-                                    'filter' => [
-                                        [ 'range' => [ 'created_at' => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ],
-                                        [ 'match' => [ 'status' => 'ok' ] ]
-                                    ]
+                # 
+                # Haber Modülü
+                # 
+                if ($group->module_news)
+                {
+                    $q = [
+                        'size' => 100,
+                        'query' => [
+                            'bool' => [
+                                'filter' => [
+                                    [ 'range' => [ 'created_at' => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ],
+                                    [ 'match' => [ 'status' => 'ok' ] ]
                                 ]
-                            ],
-                            'sort' => [ 'created_at' => 'DESC' ],
-                            '_source' => [ 'url', 'title', 'description', 'created_at' ]
+                            ]
+                        ],
+                        'sort' => [ 'created_at' => 'DESC' ],
+                        '_source' => [ 'url', 'title', 'description', 'created_at' ]
+                    ];
+
+                    if (count($keywords))
+                    {
+                        $q['query']['bool']['must'][] = [
+                            'query_string' => [ 'fields' => [ 'description', 'title' ], 'query' => implode(' OR ', $keywords) ]
                         ];
+                    }
 
-                        if ($request->sentiment != 'all')
+                    if ($request->sentiment != 'all')
+                    {
+                        $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
+                    }
+
+                    $query = @Document::list([ 'articles', '*' ], 'article', $q)->data['hits']['hits'];
+
+                    if ($query)
+                    {
+                        foreach ($query as $object)
                         {
-                            $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
+                            $data[] = [
+                                'uuid' => md5($object['_id'].'.'.$object['_index']),
+                                '_id' => $object['_id'],
+                                '_type' => $object['_type'],
+                                '_index' => $object['_index'],
+                                'module' => 'haber',
+                                'url' => $object['_source']['url'],
+                                'title' => $object['_source']['title'],
+                                'text' => $object['_source']['description'],
+                                'created_at' => date('d.m.Y H:i:s', strtotime($object['_source']['created_at']))
+                            ];
                         }
+                    }
+                }
 
-                        $query = @Document::list([ 'articles', '*' ], 'article', $q)->data['hits']['hits'];
+                # 
+                # Sözlük Modülü
+                # 
+                if ($group->module_sozluk)
+                {
+                    $q = [
+                        'size' => 100,
+                        'query' => [
+                            'bool' => [
+                                'filter' => [
+                                    [ 'range' => [ 'created_at' => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ]
+                                ]
+                            ]
+                        ],
+                        'sort' => [ 'created_at' => 'DESC' ],
+                        '_source' => [ 'url', 'title', 'entry', 'author', 'created_at' ]
+                    ];
 
-                        if ($query)
+                    if (count($keywords))
+                    {
+                        $q['query']['bool']['must'][] = [
+                            'query_string' => [ 'fields' => [ 'description', 'title' ], 'query' => implode(' OR ', $keywords) ]
+                        ];
+                    }
+
+                    if ($request->sentiment != 'all')
+                    {
+                        $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
+                    }
+
+                    $query = @Document::list([ 'sozluk', '*' ], 'entry', $q)->data['hits']['hits'];
+
+                    if ($query)
+                    {
+                        foreach ($query as $object)
                         {
-                            foreach ($query as $object)
+                            $data[] = [
+                                'uuid' => md5($object['_id'].'.'.$object['_index']),
+                                '_id' => $object['_id'],
+                                '_type' => $object['_type'],
+                                '_index' => $object['_index'],
+                                'module' => 'sozluk',
+                                'url' => $object['_source']['url'],
+                                'title' => $object['_source']['title'],
+                                'text' => $object['_source']['entry'],
+                                'author' => $object['_source']['author'],
+                                'created_at' => date('d.m.Y H:i:s', strtotime($object['_source']['created_at']))
+                            ];
+                        }
+                    }
+                }
+
+                # 
+                # Alışveriş Modülü
+                # 
+                if ($group->module_shopping)
+                {
+                    $q = [
+                        'size' => 100,
+                        'query' => [
+                            'bool' => [
+                                'filter' => [
+                                    [ 'range' => [ 'created_at' => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ],
+                                    [ 'match' => [ 'status' => 'ok' ] ]
+                                ]
+                            ]
+                        ],
+                        'sort' => [ 'created_at' => 'DESC' ],
+                        '_source' => [ 'url', 'title', 'description', 'created_at' ]
+                    ];
+
+                    if (count($keywords))
+                    {
+                        $q['query']['bool']['must'][] = [
+                            'query_string' => [ 'fields' => [ 'description', 'title' ], 'query' => implode(' OR ', $keywords) ]
+                        ];
+                    }
+
+                    if ($request->sentiment != 'all')
+                    {
+                        $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
+                    }
+
+                    $query = @Document::list([ 'shopping', '*' ], 'product', $q)->data['hits']['hits'];
+
+                    if ($query)
+                    {
+                        foreach ($query as $object)
+                        {
+                            $arr = [
+                                'uuid' => md5($object['_id'].'.'.$object['_index']),
+                                '_id' => $object['_id'],
+                                '_type' => $object['_type'],
+                                '_index' => $object['_index'],
+                                'module' => 'alisveris',
+                                'url' => $object['_source']['url'],
+                                'title' => $object['_source']['title'],
+                                'created_at' => date('d.m.Y H:i:s', strtotime($object['_source']['created_at']))
+                            ];
+
+                            if (@$object['_source']['description'])
                             {
-                                $data[] = [
-                                    'uuid' => md5($object['_id'].'.'.$object['_index']),
-                                    '_id' => $object['_id'],
-                                    '_type' => $object['_type'],
-                                    '_index' => $object['_index'],
-                                    'module' => 'haber',
-                                    'url' => $object['_source']['url'],
-                                    'title' => $object['_source']['title'],
-                                    'text' => $object['_source']['description'],
-                                    'created_at' => date('d.m.Y H:i:s', strtotime($object['_source']['created_at']))
-                                ];
+                                $arr['text'] = $object['_source']['description'];
                             }
+
+                            $data[] = $arr;
+                        }
+                    }
+                }
+
+                # 
+                # YouTube Modülü
+                # 
+                if ($group->module_youtube)
+                {
+                    $q = [
+                        'size' => 100,
+                        'query' => [
+                            'bool' => [
+                                'filter' => [
+                                    [ 'range' => [ 'created_at' => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ]
+                                ]
+                            ]
+                        ],
+                        'sort' => [ 'created_at' => 'DESC' ],
+                        '_source' => [ 'title', 'description', 'created_at', 'channel.title', 'channel.id' ]
+                    ];
+
+                    if (count($keywords))
+                    {
+                        $q['query']['bool']['must'][] = [
+                            'query_string' => [ 'fields' => [ 'description', 'title' ], 'query' => implode(' OR ', $keywords) ]
+                        ];
+                    }
+
+                    if ($request->sentiment != 'all')
+                    {
+                        $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
+                    }
+
+                    // video
+                    $query = @Document::list([ 'youtube', 'videos' ], 'video', $q)->data['hits']['hits'];
+
+                    if ($query)
+                    {
+                        foreach ($query as $object)
+                        {
+                            $data[] = [
+                                'uuid' => md5($object['_id'].'.'.$object['_index']),
+                                '_id' => $object['_id'],
+                                '_type' => $object['_type'],
+                                '_index' => $object['_index'],
+                                'module' => 'youtube-video',
+                                'title' => $object['_source']['title'],
+                                'text' => $object['_source']['description'],
+                                'channel' => [
+                                    'title' => $object['_source']['channel']['title']
+                                ],
+                                'created_at' => date('d.m.Y H:i:s', strtotime($object['_source']['created_at']))
+                            ];
                         }
                     }
 
-                    # 
-                    # Sözlük Modülü
-                    # 
-                    if ($group->module_sozluk)
-                    {
-                        $q = [
-                            'size' => 100,
-                            'query' => [
-                                'bool' => [
-                                    'must' => [
-                                        [
-                                            'query_string' => [ 'fields' => [ 'description', 'title' ], 'query' => implode(' OR ', $keywords) ]
-                                        ]
-                                    ],
-                                    'filter' => [
-                                        [ 'range' => [ 'created_at' => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ]
+                    $q = [
+                        'size' => 200,
+                        'query' => [
+                            'bool' => [
+                                'must' => [
+                                    [
+                                        'query_string' => [ 'default_field' => 'text', 'query' => implode(' OR ', $keywords) ]
                                     ]
+                                ],
+                                'filter' => [
+                                    [ 'range' => [ 'created_at' => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ]
                                 ]
-                            ],
-                            'sort' => [ 'created_at' => 'DESC' ],
-                            '_source' => [ 'url', 'title', 'entry', 'author', 'created_at' ]
-                        ];
+                            ]
+                        ],
+                        'sort' => [ 'created_at' => 'DESC' ],
+                        '_source' => [ 'text', 'channel.title', 'created_at' ]
+                    ];
 
-                        if ($request->sentiment != 'all')
-                        {
-                            $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
-                        }
-
-                        $query = @Document::list([ 'sozluk', '*' ], 'entry', $q)->data['hits']['hits'];
-
-                        if ($query)
-                        {
-                            foreach ($query as $object)
-                            {
-                                $data[] = [
-                                    'uuid' => md5($object['_id'].'.'.$object['_index']),
-                                    '_id' => $object['_id'],
-                                    '_type' => $object['_type'],
-                                    '_index' => $object['_index'],
-                                    'module' => 'sozluk',
-                                    'url' => $object['_source']['url'],
-                                    'title' => $object['_source']['title'],
-                                    'text' => $object['_source']['entry'],
-                                    'author' => $object['_source']['author'],
-                                    'created_at' => date('d.m.Y H:i:s', strtotime($object['_source']['created_at']))
-                                ];
-                            }
-                        }
+                    if ($request->sentiment != 'all')
+                    {
+                        $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
                     }
 
-                    # 
-                    # Alışveriş Modülü
-                    # 
-                    if ($group->module_shopping)
+                    // yorum
+                    $query = @Document::list([ 'youtube', 'comments' ], 'comment', $q)->data['hits']['hits'];
+
+                    if ($query)
                     {
-                        $q = [
-                            'size' => 100,
-                            'query' => [
-                                'bool' => [
-                                    'must' => [
-                                        [
-                                            'query_string' => [ 'fields' => [ 'description', 'title' ], 'query' => implode(' OR ', $keywords) ]
-                                        ]
-                                    ],
-                                    'filter' => [
-                                        [ 'range' => [ 'created_at' => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ],
-                                        [ 'match' => [ 'status' => 'ok' ] ]
-                                    ]
-                                ]
-                            ],
-                            'sort' => [ 'created_at' => 'DESC' ],
-                            '_source' => [ 'url', 'title', 'description', 'created_at' ]
-                        ];
-
-                        if ($request->sentiment != 'all')
+                        foreach ($query as $object)
                         {
-                            $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
-                        }
-
-                        $query = @Document::list([ 'shopping', '*' ], 'product', $q)->data['hits']['hits'];
-
-                        if ($query)
-                        {
-                            foreach ($query as $object)
-                            {
-                                $arr = [
-                                    'uuid' => md5($object['_id'].'.'.$object['_index']),
-                                    '_id' => $object['_id'],
-                                    '_type' => $object['_type'],
-                                    '_index' => $object['_index'],
-                                    'module' => 'alisveris',
-                                    'url' => $object['_source']['url'],
-                                    'title' => $object['_source']['title'],
-                                    'created_at' => date('d.m.Y H:i:s', strtotime($object['_source']['created_at']))
-                                ];
-
-                                if (@$object['_source']['description'])
-                                {
-                                    $arr['text'] = $object['_source']['description'];
-                                }
-
-                                $data[] = $arr;
-                            }
-                        }
-                    }
-
-                    # 
-                    # YouTube Modülü
-                    # 
-                    if ($group->module_youtube)
-                    {
-                        $q = [
-                            'size' => 100,
-                            'query' => [
-                                'bool' => [
-                                    'must' => [
-                                        [
-                                            'query_string' => [ 'fields' => [ 'description', 'title' ], 'query' => implode(' OR ', $keywords) ]
-                                        ]
-                                    ],
-                                    'filter' => [
-                                        [ 'range' => [ 'created_at' => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ]
-                                    ]
-                                ]
-                            ],
-                            'sort' => [ 'created_at' => 'DESC' ],
-                            '_source' => [ 'title', 'description', 'created_at', 'channel.title', 'channel.id' ]
-                        ];
-
-                        if ($request->sentiment != 'all')
-                        {
-                            $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
-                        }
-
-                        // video
-                        $query = @Document::list([ 'youtube', 'videos' ], 'video', $q)->data['hits']['hits'];
-
-                        if ($query)
-                        {
-                            foreach ($query as $object)
-                            {
-                                $data[] = [
-                                    'uuid' => md5($object['_id'].'.'.$object['_index']),
-                                    '_id' => $object['_id'],
-                                    '_type' => $object['_type'],
-                                    '_index' => $object['_index'],
-                                    'module' => 'youtube-video',
-                                    'title' => $object['_source']['title'],
-                                    'text' => $object['_source']['description'],
-                                    'channel' => [
-                                        'title' => $object['_source']['channel']['title']
-                                    ],
-                                    'created_at' => date('d.m.Y H:i:s', strtotime($object['_source']['created_at']))
-                                ];
-                            }
-                        }
-
-                        $q = [
-                            'size' => 200,
-                            'query' => [
-                                'bool' => [
-                                    'must' => [
-                                        [
-                                            'query_string' => [ 'default_field' => 'text', 'query' => implode(' OR ', $keywords) ]
-                                        ]
-                                    ],
-                                    'filter' => [
-                                        [ 'range' => [ 'created_at' => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ]
-                                    ]
-                                ]
-                            ],
-                            'sort' => [ 'created_at' => 'DESC' ],
-                            '_source' => [ 'text', 'channel.title', 'created_at' ]
-                        ];
-
-                        if ($request->sentiment != 'all')
-                        {
-                            $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
-                        }
-
-                        // yorum
-                        $query = @Document::list([ 'youtube', 'comments' ], 'comment', $q)->data['hits']['hits'];
-
-                        if ($query)
-                        {
-                            foreach ($query as $object)
-                            {
-                                $data[] = [
-                                    'uuid' => md5($object['_id'].'.'.$object['_index']),
-                                    '_id' => $object['_id'],
-                                    '_type' => $object['_type'],
-                                    '_index' => $object['_index'],
-                                    'module' => 'youtube-yorum',
-                                    'channel' => [
-                                        'title' => $object['_source']['channel']['title']
-                                    ],
-                                    'text' => $object['_source']['text'],
-                                    'created_at' => date('d.m.Y H:i:s', strtotime($object['_source']['created_at']))
-                                ];
-                            }
+                            $data[] = [
+                                'uuid' => md5($object['_id'].'.'.$object['_index']),
+                                '_id' => $object['_id'],
+                                '_type' => $object['_type'],
+                                '_index' => $object['_index'],
+                                'module' => 'youtube-yorum',
+                                'channel' => [
+                                    'title' => $object['_source']['channel']['title']
+                                ],
+                                'text' => $object['_source']['text'],
+                                'created_at' => date('d.m.Y H:i:s', strtotime($object['_source']['created_at']))
+                            ];
                         }
                     }
                 }

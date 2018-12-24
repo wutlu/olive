@@ -1149,7 +1149,7 @@ main {
  * footer
  */
 footer.page-footer {
-  background-color: #333;
+  background-color: #fff;
   background-image: url(../img/bg-1.svg);
   background-repeat: no-repeat;
   background-attachment: fixed;

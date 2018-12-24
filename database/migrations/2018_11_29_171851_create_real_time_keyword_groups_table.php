@@ -17,7 +17,7 @@ class CreateRealTimeKeywordGroupsTable extends Migration
             $table->increments('id')->unsigned();
 
             $table->string('name')->index();
-            $table->text('keywords');
+            $table->text('keywords')->nullable()->default(null);
 
             $table->unsignedInteger('organisation_id')->index();
             $table->foreign('organisation_id')->references('id')->on('organisations')->onDelete('cascade')->onUpdate('cascade');

@@ -69,7 +69,7 @@ class UpdateRequest extends FormRequest
             'id' => 'required|integer|exists:real_time_keyword_groups,id',
 
             'name' => 'required|string|max:10',
-            'keywords' => 'bail|required|string|max:64|keyword_max_line|empty_lines',
+            'keywords' => 'bail|nullable|required_with:module_twitter|string|max:64|keyword_max_line|empty_lines',
 
             'module_youtube' => 'sometimes|boolean',
             'module_twitter' => 'sometimes|boolean',

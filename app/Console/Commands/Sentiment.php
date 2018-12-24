@@ -83,7 +83,7 @@ class Sentiment extends Command
      */
     public static function update()
     {
-        $dictionaryFolder = database_path('words/dictionaries/');
+        $dictionaryFolder = database_path('analysis/dictionaries/');
 
         $sentiment = new SentimentLib;
         $sentiment->reloadDictionaries($dictionaryFolder);

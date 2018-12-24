@@ -75,12 +75,12 @@ class Indices
                                     // değiştirilmeyecek kelimeler.
                                     'turkish_keywords' => [
                                         'type' => 'keyword_marker',
-                                        'keywords_path' => storage_path('words/keywords.txt')
+                                        'keywords_path' => 'analysis/keywords.txt'
                                     ],
                                     // ilgilenilmeyecek kelimeler.
                                     'turkish_stop' => [
                                         'type' => 'stop',
-                                        'stopwords_path' => storage_path('words/stopwords.txt')
+                                        'stopwords_path' => 'analysis/stopwords.txt'
                                     ],
                                     'turkish_lowercase' => [
                                         'type' => 'lowercase',
@@ -91,18 +91,17 @@ class Indices
                                         'language' => 'turkish'
                                     ],
                                     // eş anlamlı kelimeler.
+                                    /*
                                     'graph_synonyms' => [
                                         'type' => 'synonym_graph',
-                                        'synonyms_path' => storage_path('words/synonym.txt')
+                                        'synonyms_path' => 'analysis/synonym.txt',
+                                        'lenient' => true
                                     ],
+                                    */
                                     // kelime yuvarlama.
                                     'my_snow' => [
                                         'type' => 'snowball',
                                         'language' => 'Turkish'
-                                    ],
-                                    'unique_stem' => [
-                                      'type' => 'unique',
-                                      'only_on_same_position' => true
                                     ],
                                     // girilen değerden büyük kelimelerle ilgileniyoruz.
                                     'my_script_filter' => [
@@ -111,30 +110,20 @@ class Indices
                                             'source' => 'token.getTerm().length() > 5'  
                                         ]
                                     ]
-
                                 ],
                                 'analyzer' => [
                                     'turkish' => [
                                         'tokenizer' => 'standard',
                                         'filter' => [
                                             'classic', // kısaltmalardaki noktaları kaldırır.
-
                                             'turkish_lowercase',
-                                            'keyword_repeat',
-                                            'porter_stem',
-                                            'unique_stem',
-
-                                            'remove_duplicates', // aynı kelimeleri teke düşürür.
                                             'turkish_keywords', // keywords.txt içerisine girilen kelimeler üzerinde işlem yapmaz.
                                             'turkish_stop', // stopwords.txt dosyasındaki kelimelerle ilgilenilmeyecek.
                                             'apostrophe', // kesme işareti ve ayrılan ek'i saymaz.
-                                            'turkish_stemmer', // sözcüğü köklerine ayırır. stopwords kelimeleri hariç.
-
-                                            'fingerprint', // alan kazanma.
-                                            'my_script_filter', // girilen değerden büyük kelimelerle ilgileniyoruz.
-                                            'graph_synonyms', // eş anlamlı kelimeler.
-                                            'my_snow',
-                                            'min_hash', // hashleme yaparak alan kazanır.
+                                            'turkish_stemmer', // sözcüğü köklerinden ayırır. stopwords kelimeleri hariç.
+                                            'my_script_filter',
+                                            //'graph_synonyms', // eş anlamlı kelimeler.
+                                            'my_snow'
                                         ]
                                     ]
                                 ]

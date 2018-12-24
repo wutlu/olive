@@ -31,6 +31,7 @@ class TrendController extends Controller
             ],
             'tweet',
             [
+                /*
                 'query' => [
                     'bool' => [
                         'filter' => [
@@ -43,6 +44,7 @@ class TrendController extends Controller
                         ]
                     ]
                 ],
+                */
                 'aggs' => [
                     'top_terms' => [
                         'significant_text' => [
