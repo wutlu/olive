@@ -17,6 +17,7 @@ class CreateForumCategoriesTable extends Migration
             $table->increments('id')->unsigned();
 
             $table->string('name');
+            $table->string('slug')->index();
             $table->string('description');
             $table->unsignedInteger('sort');
 

@@ -4,8 +4,10 @@ Route::domain(config('app.domain'))->group(function () {
     Route::get('/', 'HomeController@vz')->name('veri.zone');
 });
 
-Route::domain(implode('.', [ 'forum', config('app.domain') ]))->namespace('Forum')->group(function () {
+Route::namespace('Forum')->prefix('forum')->group(function () {
     Route::get('/', 'ForumController@index')->name('forum.index');
+    Route::get('{slug}', 'ForumController@category')->name('forum.category');
+    Route::get('{slug}/{fake_slug}/{id}', 'ForumController@thread')->name('forum.thread');
 });
 
 Route::get('/', 'HomeController@index')->name('home');

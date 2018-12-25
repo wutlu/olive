@@ -281,22 +281,20 @@
             </div>
         @else
             <div class="card-panel red">
-                <div class="not-found">
-                    <i class="material-icons white-text">cloud_off</i>
-                    <i class="material-icons white-text">cloud_off</i>
-                    <i class="material-icons">sentiment_very_dissatisfied</i>
-                    <p class="white-text">Kaynak Okunamadı</p>
-                </div>
+                @component('components.nothing')
+                    @slot('cloud_class', 'white-text')
+                    @slot('cloud', 'cloud_off')
+                    @slot('sun', 'sentiment_very_dissatisfied')
+                    @slot('text', 'Kaynak Okunamadı')
+                @endcomponent
             </div>
         @endif
 
     @empty
-        <div class="not-found">
-            <i class="material-icons white-text">cloud</i>
-            <i class="material-icons white-text">cloud</i>
-            <i class="material-icons">wb_sunny</i>
-            <p>Pinleme Yok</p>
-        </div>
+        @component('components.nothing')
+            @slot('cloud_class', 'white-text')
+            @slot('text', 'Pinleme Yok')
+        @endcomponent
     @endforelse
 
     {!! $pins->links('vendor.pagination.materializecss') !!}

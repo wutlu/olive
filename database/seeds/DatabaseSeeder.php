@@ -23,8 +23,8 @@ class DatabaseSeeder extends Seeder
             TwitterTokensTableSeeder::class,
             OptionTableSeeder::class,
             ModuleSearchesTableSeeder::class,
-            CarouselsTableSeeder::class
+            CarouselsTableSeeder::class,
+            ForumCategoriesTableSeeder::class
         ]);
-        $this->call(MediaCrawlersTableSeeder::class);
     }
 }

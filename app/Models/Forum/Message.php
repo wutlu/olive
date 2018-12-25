@@ -4,7 +4,7 @@ namespace App\Models\Forum;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Category extends Model
+class Message extends Model
 {
-    protected $table = 'forum_categories';
+    //
 }

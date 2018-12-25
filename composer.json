@@ -21,8 +21,8 @@
         "laravel/tinker": "^1.0",
         "orangehill/iseed": "^2.5",
         "predis/predis": "^1.1",
-        "torann/geoip": "^1.0",
-        "wutlu/phpsentiment": "^1.0"
+        "qhudabaksh/phpsentiment": "^1.0",
+        "torann/geoip": "^1.0"
     },
     "require-dev": {
         "filp/whoops": "^2.0",

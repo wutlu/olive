@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d9489a892dcc3c50ac582a57ca27130a",
+    "content-hash": "52ba3b9f3a943abac4e416812fb3cf42",
     "packages": [
         {
             "name": "alaouy/youtube",
@@ -2755,6 +2755,48 @@
             "time": "2018-10-13T15:16:03+00:00"
         },
         {
+            "name": "qhudabaksh/phpsentiment",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/qhudabaksh/phpSentiment.git",
+                "reference": "bdb55e6904e606af7b1447a03301a1c363d45194"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/qhudabaksh/phpSentiment/zipball/bdb55e6904e606af7b1447a03301a1c363d45194",
+                "reference": "bdb55e6904e606af7b1447a03301a1c363d45194",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "PHPSentiment": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "James Hennessey"
+                },
+                {
+                    "name": "4lper",
+                    "email": "alper@veri.zone"
+                }
+            ],
+            "description": "Turkish sentiment analysis tool for PHP",
+            "homepage": "https://github.com/4lper/phpsentiment",
+            "keywords": [
+                "insight",
+                "phpinsight",
+                "sentiment"
+            ],
+            "time": "2018-11-26T20:29:00+00:00"
+        },
+        {
             "name": "ramsey/uuid",
             "version": "3.8.0",
             "source": {
@@ -4026,48 +4068,6 @@
                 "environment"
             ],
             "time": "2018-07-29T20:33:41+00:00"
-        },
-        {
-            "name": "wutlu/phpsentiment",
-            "version": "1.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/4lper/phpSentiment.git",
-                "reference": "bdb55e6904e606af7b1447a03301a1c363d45194"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/4lper/phpSentiment/zipball/bdb55e6904e606af7b1447a03301a1c363d45194",
-                "reference": "bdb55e6904e606af7b1447a03301a1c363d45194",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "PHPSentiment": "lib/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "authors": [
-                {
-                    "name": "James Hennessey"
-                },
-                {
-                    "name": "4lper",
-                    "email": "alper@veri.zone"
-                }
-            ],
-            "description": "Turkish sentiment analysis tool for PHP",
-            "homepage": "https://github.com/4lper/phpsentiment",
-            "keywords": [
-                "insight",
-                "phpinsight",
-                "sentiment"
-            ],
-            "time": "2018-11-26T20:29:00+00:00"
         }
     ],
     "packages-dev": [

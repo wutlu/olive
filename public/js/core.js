@@ -573,7 +573,10 @@ function vzAjax(__)
     }
     else
     {
-        __.attr('disabled', true)
+        if (!__.is('input'))
+        {
+            __.attr('disabled', true)
+        }
 
         if (__.is('input') && __.attr('type') == 'checkbox')
         {

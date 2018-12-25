@@ -30,11 +30,7 @@
             <p class="grey-text">{{ count($coupons).'/'.$coupons->total() }}</p>
 
             @if (!count($coupons))
-                <div class="not-found">
-                    <i class="material-icons">cloud</i>
-                    <i class="material-icons">cloud</i>
-                    <i class="material-icons">wb_sunny</i>
-                </div>
+                @component('components.nothing')@endcomponent
             @endif
         </div>
         @if (count($coupons))

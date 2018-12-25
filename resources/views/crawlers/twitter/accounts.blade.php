@@ -51,11 +51,7 @@
              data-callback="__accounts"
              data-nothing>
             <li class="collection-item nothing hide">
-                <div class="not-found">
-                    <i class="material-icons">cloud</i>
-                    <i class="material-icons">cloud</i>
-                    <i class="material-icons">wb_sunny</i>
-                </div>
+                @component('components.nothing')@endcomponent
             </li>
             <li class="collection-item avatar model hide">
                 <img alt="avatar" class="circle" data-name="avatar" />

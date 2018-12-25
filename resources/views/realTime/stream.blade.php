@@ -376,13 +376,7 @@
              data-callback="__keyword_groups"
              data-method="post"
              data-nothing>
-            <li class="collection-item nothing hide">
-                <div class="not-found">
-                    <i class="material-icons">cloud</i>
-                    <i class="material-icons">cloud</i>
-                    <i class="material-icons">wb_sunny</i>
-                </div>
-            </li>
+            <li class="collection-item nothing hide grey-text">Henüz kelime grubu oluşturmadınız.</li>
             <li class="collection-item model hide justify-content-between">
                 <span data-name="name" class="align-self-center mr-auto"></span>
                 <div class="switch align-self-center">
@@ -430,7 +424,7 @@
                     <span>{{ str_limit($group->name, 10) }}</span>
                 </label>
             @empty
-                <div class="collection-item red-text">Henüz pin grubu oluşturmadınız.</div>
+                <div class="collection-item grey-text">Henüz pin grubu oluşturmadınız.</div>
             @endforelse
             <a class="collection-item waves-effect d-block" href="{{ route('pin.groups') }}">Tümü</a>
         </div>

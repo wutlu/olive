@@ -428,11 +428,7 @@
                  data-method="post"
                  data-nothing>
                 <div class="collection-item nothing hide">
-                    <div class="not-found">
-                        <i class="material-icons">cloud</i>
-                        <i class="material-icons">cloud</i>
-                        <i class="material-icons">wb_sunny</i>
-                    </div>
+                    @component('components.nothing')@endcomponent
                 </div>
                 <a
                     class="collection-item model hide flex-wrap red z-depth-4 waves-effect json"

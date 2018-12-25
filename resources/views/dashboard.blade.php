@@ -197,11 +197,9 @@
                 data-method="post"
                 data-nothing>
                 <li class="nothing hide">
-                    <div class="not-found">
-                        <i class="material-icons white-text">cloud</i>
-                        <i class="material-icons white-text">cloud</i>
-                        <i class="material-icons">wb_sunny</i>
-                    </div>
+                    @component('components.nothing')
+                        @slot('cloud_class', 'white-text')
+                    @endcomponent
                 </li>
                 <li class="model hide">
                     <div class="collapsible-header">

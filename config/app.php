@@ -90,7 +90,7 @@ return [
     /**
      * Sistem Versiyonu
      */
-    'version' => '1.3.1030 beta',
+    'version' => '1.3.1030 αlpha',
 
     /**
      * Destek Konuları
@@ -484,7 +484,6 @@ return [
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'Sentiment' => PHPSentiment\Sentiment::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
-
     ],
 
 ];

@@ -40,11 +40,7 @@
             </div>
         @else
             <div class="card-content">
-                <div class="not-found">
-                    <i class="material-icons">cloud</i>
-                    <i class="material-icons">cloud</i>
-                    <i class="material-icons">wb_sunny</i>
-                </div>
+                @component('components.nothing')@endcomponent
             </div>
         @endif
     </div>

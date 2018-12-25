@@ -77,11 +77,7 @@
              data-method="post"
              data-nothing>
             <li class="collection-item nothing hide">
-                <div class="not-found">
-                    <i class="material-icons">cloud</i>
-                    <i class="material-icons">cloud</i>
-                    <i class="material-icons">wb_sunny</i>
-                </div>
+                @component('components.nothing')@endcomponent
             </li>
             <li class="collection-item model hide">
                 <span class="align-self-center">

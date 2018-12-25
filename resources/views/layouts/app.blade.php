@@ -33,89 +33,95 @@
     <div class="window-size z-depth-1">
         <p>Ekran çözünürlüğünüz çok küçük. Tam manasıyla bir Olive için çözünürlüğünüzü yükseltmeniz gerekiyor.</p>
     </div> 
-    @isset($sidenav_fixed_layout)
-        @if (!auth()->user()->verified)
-            <div id="modal-confirmation" class="modal bottom-sheet">
-                <div class="modal-content">
-                    <div class="card mb-0">
-                        <div class="card-content">
-                            <p>E-posta ({{ auth()->user()->email }}) adresinizi henüz doğrulamadınız.</p>
-                            <p>Bu adres size ait değilse <a href="{{ route('settings.account') }}">Hesap Bilgileri</a> bölümünden size ait bir e-posta tanımlayın.</p>
-                        </div>
-                        <div class="card-action">
-                            <a href="#" class="waves-effect btn-flat json" data-href="{{ route('user.register.resend') }}" data-method="post" data-callback="__resend">Tekrar Gönder</a>
-                            <button href="#" class="waves-effect btn-flat modal-close">Tamam</button>
+    @if (@$sidenav_fixed_layout)
+        @auth
+            @if (!auth()->user()->verified)
+                <div id="modal-confirmation" class="modal bottom-sheet">
+                    <div class="modal-content">
+                        <div class="card mb-0">
+                            <div class="card-content">
+                                <p>E-posta ({{ auth()->user()->email }}) adresinizi henüz doğrulamadınız.</p>
+                                <p>Bu adres size ait değilse <a href="{{ route('settings.account') }}">Hesap Bilgileri</a> bölümünden size ait bir e-posta tanımlayın.</p>
+                            </div>
+                            <div class="card-action">
+                                <a href="#" class="waves-effect btn-flat json" data-href="{{ route('user.register.resend') }}" data-method="post" data-callback="__resend">Tekrar Gönder</a>
+                                <button href="#" class="waves-effect btn-flat modal-close">Tamam</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            @push('local.scripts')
+                @push('local.scripts')
 
-            var instance = M.Modal.getInstance($('#modal-confirmation'));
-                instance.open()
+                var instance = M.Modal.getInstance($('#modal-confirmation'));
+                    instance.open()
 
-            function __resend(__, obj)
-            {
-                if (obj.status == 'ok')
+                function __resend(__, obj)
                 {
-                    M.toast({
-                        html: 'Yeni bir doğrulama e-postası gönderildi.',
-                        classes: 'blue',
-                        completeCallback: function() {
-                            M.toast({ html: 'Lütfen e-posta kutunuzu kontrol edin.', classes: 'green darken-2' })
-                            instance.close()
-                        }
-                    })
+                    if (obj.status == 'ok')
+                    {
+                        M.toast({
+                            html: 'Yeni bir doğrulama e-postası gönderildi.',
+                            classes: 'blue',
+                            completeCallback: function() {
+                                M.toast({ html: 'Lütfen e-posta kutunuzu kontrol edin.', classes: 'green darken-2' })
+                                instance.close()
+                            }
+                        })
+                    }
+                    else if (obj.status == 'err')
+                    {
+                        M.toast({
+                            html: 'Mevcut hesap daha önceden doğrulanmış.',
+                            classes: 'red',
+                            completeCallback: function() {
+                                instance.close()
+                            }
+                        })
+                    }
                 }
-                else if (obj.status == 'err')
-                {
-                    M.toast({
-                        html: 'Mevcut hesap daha önceden doğrulanmış.',
-                        classes: 'red',
-                        completeCallback: function() {
-                            instance.close()
-                        }
-                    })
-                }
-            }
-            @endpush
-        @endif
+                @endpush
+            @endif
+        @endauth
 
         <div class="navbar-fixed">
-            <ul id="user-top-dropdown" class="dropdown-content">
-                @if (auth()->user()->organisation)
-                <li>
-                    <a class="waves-effect" href="{{ route('settings.organisation') }}">
-                        <i class="material-icons">group_work</i> {{ auth()->user()->organisation->name }}
-                    </a>
-                </li>
-                @endif
-                <li>
-                    <a class="waves-effect" href="{{ route('settings.account') }}">
-                        <i class="material-icons">person</i> Hesap Bilgileri
-                    </a>
-                </li>
-                <li>
-                    <a class="waves-effect" href="{{ route('settings.support') }}">
-                        <i class="material-icons">help</i> Destek
-                    </a>
-                </li>
-                <li>
-                    <a class="waves-effect" href="{{ route('user.logout') }}">
-                        <i class="material-icons">exit_to_app</i> Çıkış
-                    </a>
-                </li>
-            </ul>
+            @auth
+                <ul id="user-top-dropdown" class="dropdown-content">
+                    @if (auth()->user()->organisation)
+                    <li>
+                        <a class="waves-effect" href="{{ route('settings.organisation') }}">
+                            <i class="material-icons">group_work</i> {{ auth()->user()->organisation->name }}
+                        </a>
+                    </li>
+                    @endif
+                    <li>
+                        <a class="waves-effect" href="{{ route('settings.account') }}">
+                            <i class="material-icons">person</i> Hesap Bilgileri
+                        </a>
+                    </li>
+                    <li>
+                        <a class="waves-effect" href="{{ route('settings.support') }}">
+                            <i class="material-icons">help</i> Destek
+                        </a>
+                    </li>
+                    <li>
+                        <a class="waves-effect" href="{{ route('user.logout') }}">
+                            <i class="material-icons">exit_to_app</i> Çıkış
+                        </a>
+                    </li>
+                </ul>
+            @endauth
             <nav class="cyan darken-2">
-                <div class="sidenav-fixed-layout">
+                <div class="{{ auth()->check() ? 'sidenav-fixed-layout' : 'container' }}">
                     <div class="nav-wrapper">
-                        <a href="{{ route('dashboard') }}" class="brand-logo center">
+                        <a href="{{ route('dashboard') }}" class="brand-logo {{ auth()->check() ? 'center' : 'left' }}">
                             <img alt="{{ config('app.name') }}" src="{{ asset('img/olive-logo-white.svg') }}" />
                         </a>
+                        @auth
                         <a href="#" data-target="slide-out" class="sidenav-trigger">
                             <i class="material-icons">menu</i>
                         </a>
+                        @endauth
                         <ul class="right">
                             @isset($dock)
                             <li>
@@ -124,211 +130,234 @@
                                 </a>
                             </li>
                             @endisset
+                            @guest
+                            <li>
+                                <a href="#">
+                                    <i class="material-icons">person</i>
+                                </a>
+                            </li>
+                            @endguest
                         </ul>
                         <ul class="right hide-on-med-and-down">
+                            @auth
                             <li>
                                 <a class="dropdown-trigger waves-effect" href="#" data-target="user-top-dropdown" data-align="right">
                                     {{ auth()->user()->name }} <i class="material-icons right">arrow_drop_down</i>
                                 </a>
                             </li>
+                            @endauth
                         </ul>
                     </div>
                 </div>
             </nav>
         </div>
 
-        <ul id="slide-out" class="sidenav sidenav-fixed collapsible">
-            <li>
-                <div class="user-view">
-                    <small class="white-text right">{{ config('app.version') }}</small>
-                    <div class="background" style="background-image: url('{{ asset('img/card-2.jpg') }}');"></div>
-                    <img alt="{{ auth()->user()->name }}" class="circle" src="{{ asset(auth()->user()->avatar()) }}" />
-                    <span class="white-text name">{{ auth()->user()->name }}</span>
-                    <span class="white-text email">{{ auth()->user()->email }}</span>
-                </div>
-            </li>
+        @auth
+            <ul id="slide-out" class="sidenav sidenav-fixed collapsible">
+                <li>
+                    <div class="user-view">
+                        <small class="white-text right">{{ config('app.version') }}</small>
+                        <div class="background" style="background-image: url('{{ asset('img/card-2.jpg') }}');"></div>
+                        <img alt="{{ auth()->user()->name }}" class="circle" src="{{ asset(auth()->user()->avatar()) }}" />
+                        <span class="white-text name">{{ auth()->user()->name }}</span>
+                        <span class="white-text email">{{ auth()->user()->email }}</span>
+                    </div>
+                </li>
 
-            @if (auth()->user()->root())
-            <!-- sadece yönetici -->
-            <li>
-                <a href="#" class="subheader">Yönetici Menüsü</a>
-            </li>
-            <li>
-                <a class="waves-effect" href="{{ route('admin.tickets') }}">
-                    <i class="material-icons">mail</i>
-                    Destek Talepleri
-                    <span class="badge grey white-text" data-id="ticket-count">0</span>
-                </a>
-            </li>
-            <li class="divider"></li>
-            <li>
-                <a class="waves-effect" href="{{ route('admin.page.list') }}">
-                    <i class="material-icons">pages</i>
-                    Sayfalar
-                </a>
-            </li>
-            <li class="divider"></li>
-            <li>
-                <a class="waves-effect" href="{{ route('admin.organisation.list') }}">
-                    <i class="material-icons">group_work</i>
-                    Organizasyonlar
-                </a>
-            </li>
-            <li>
-                <a class="waves-effect" href="{{ route('admin.user.list') }}">
-                    <i class="material-icons">people</i>
-                    Kullanıcılar
-                </a>
-            </li>
-            <li>
-                <a class="waves-effect" href="{{ route('admin.discount.coupon.list') }}">
-                    <i class="material-icons">card_giftcard</i>
-                    İndirim Kuponları
-                </a>
-            </li>
-            <li>
-                <a class="waves-effect" href="{{ route('admin.carousels') }}">
-                    <i class="material-icons">view_carousel</i>
-                    Carousel Yönetimi
-                </a>
-            </li>
-            <li>
-                <a class="waves-effect" href="{{ route('admin.proxies') }}">
-                    <i class="material-icons">vpn_key</i>
-                    Vekil Sunucu Yönetimi
-                </a>
-            </li>
-            <li class="divider"></li>
-            <li>
-                <div class="collapsible-header waves-effect">
-                    <i class="material-icons">settings</i>
-                    <span>Bot Yönetimi</span>
-                    <i class="material-icons arrow">keyboard_arrow_down</i>
-                </div>
-                <div class="collapsible-body">
-                    <ul>
-                        <li>
-                            <a class="waves-effect" href="{{ route('crawlers.media.list') }}">
-                                <i class="material-icons">widgets</i>
-                                Medya Botları
-                            </a>
-                        </li>
-                        <li>
-                            <a class="waves-effect" href="{{ route('crawlers.sozluk.list') }}">
-                                <i class="material-icons">widgets</i>
-                                Sözlük Botları
-                            </a>
-                        </li>
-                        <li>
-                            <a class="waves-effect" href="{{ route('crawlers.shopping.list') }}">
-                                <i class="material-icons">widgets</i>
-                                Alışveriş Botları
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a class="waves-effect" href="{{ route('admin.twitter.settings') }}">
-                                <i class="material-icons">widgets</i>
-                                Twitter Ayarları
-                            </a>
-                        </li>
-                        <li>
-                            <a class="waves-effect" href="{{ route('admin.youtube.settings') }}">
-                                <i class="material-icons">widgets</i>
-                                YouTube Ayarları
-                            </a>
-                        </li>
-                        <li>
-                            <a class="waves-effect" href="{{ route('admin.google.settings') }}">
-                                <i class="material-icons">widgets</i>
-                                Google Ayarları
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-            <li class="divider"></li>
-            <li>
-                <div class="collapsible-header waves-effect">
-                    <i class="material-icons">computer</i>
-                    <span>Sistem İzleme</span>
-                    <i class="material-icons arrow">keyboard_arrow_down</i>
-                </div>
-                <div class="collapsible-body">
-                    <ul>
-                        <li>
-                            <a class="waves-effect" href="{{ route('admin.monitoring.server') }}">
-                                <i class="material-icons">desktop_mac</i>
-                                Sunucu Bilgisi
-                            </a>
-                        </li>
-                        <li>
-                            <a class="waves-effect" href="{{ route('admin.monitoring.background') }}">
-                                <i class="material-icons">hourglass_empty</i>
-                                Arkaplan İşleri
-                            </a>
-                        </li>
-                        <li>
-                            <a class="waves-effect" href="{{ route('admin.monitoring.log') }}">
-                                <i class="material-icons">code</i>
-                                Log Ekranı
-                            </a>
-                        </li>
-                        <li>
-                            <a class="waves-effect" href="{{ route('admin.monitoring.queue') }}">
-                                <i class="material-icons">queue</i>
-                                Kuyruk Ekranı
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-            <li class="divider"></li>
-            @endif
+                @if (auth()->user()->root())
+                <!-- sadece yönetici -->
+                <li>
+                    <a href="#" class="subheader">Yönetici Menüsü</a>
+                </li>
+                <li>
+                    <a class="waves-effect" href="{{ route('admin.tickets') }}">
+                        <i class="material-icons">mail</i>
+                        Destek Talepleri
+                        <span class="badge grey white-text" data-id="ticket-count">0</span>
+                    </a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <a class="waves-effect" href="{{ route('admin.page.list') }}">
+                        <i class="material-icons">pages</i>
+                        Sayfalar
+                    </a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <a class="waves-effect" href="{{ route('admin.organisation.list') }}">
+                        <i class="material-icons">group_work</i>
+                        Organizasyonlar
+                    </a>
+                </li>
+                <li>
+                    <a class="waves-effect" href="{{ route('admin.user.list') }}">
+                        <i class="material-icons">people</i>
+                        Kullanıcılar
+                    </a>
+                </li>
+                <li>
+                    <a class="waves-effect" href="{{ route('admin.discount.coupon.list') }}">
+                        <i class="material-icons">card_giftcard</i>
+                        İndirim Kuponları
+                    </a>
+                </li>
+                <li>
+                    <a class="waves-effect" href="{{ route('admin.carousels') }}">
+                        <i class="material-icons">view_carousel</i>
+                        Carousel Yönetimi
+                    </a>
+                </li>
+                <li>
+                    <a class="waves-effect" href="{{ route('admin.proxies') }}">
+                        <i class="material-icons">vpn_key</i>
+                        Vekil Sunucu Yönetimi
+                    </a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <div class="collapsible-header waves-effect">
+                        <i class="material-icons">settings</i>
+                        <span>Bot Yönetimi</span>
+                        <i class="material-icons arrow">keyboard_arrow_down</i>
+                    </div>
+                    <div class="collapsible-body">
+                        <ul>
+                            <li>
+                                <a class="waves-effect" href="{{ route('crawlers.media.list') }}">
+                                    <i class="material-icons">widgets</i>
+                                    Medya Botları
+                                </a>
+                            </li>
+                            <li>
+                                <a class="waves-effect" href="{{ route('crawlers.sozluk.list') }}">
+                                    <i class="material-icons">widgets</i>
+                                    Sözlük Botları
+                                </a>
+                            </li>
+                            <li>
+                                <a class="waves-effect" href="{{ route('crawlers.shopping.list') }}">
+                                    <i class="material-icons">widgets</i>
+                                    Alışveriş Botları
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a class="waves-effect" href="{{ route('admin.twitter.settings') }}">
+                                    <i class="material-icons">widgets</i>
+                                    Twitter Ayarları
+                                </a>
+                            </li>
+                            <li>
+                                <a class="waves-effect" href="{{ route('admin.youtube.settings') }}">
+                                    <i class="material-icons">widgets</i>
+                                    YouTube Ayarları
+                                </a>
+                            </li>
+                            <li>
+                                <a class="waves-effect" href="{{ route('admin.google.settings') }}">
+                                    <i class="material-icons">widgets</i>
+                                    Google Ayarları
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <div class="collapsible-header waves-effect">
+                        <i class="material-icons">computer</i>
+                        <span>Sistem İzleme</span>
+                        <i class="material-icons arrow">keyboard_arrow_down</i>
+                    </div>
+                    <div class="collapsible-body">
+                        <ul>
+                            <li>
+                                <a class="waves-effect" href="{{ route('admin.monitoring.server') }}">
+                                    <i class="material-icons">desktop_mac</i>
+                                    Sunucu Bilgisi
+                                </a>
+                            </li>
+                            <li>
+                                <a class="waves-effect" href="{{ route('admin.monitoring.background') }}">
+                                    <i class="material-icons">hourglass_empty</i>
+                                    Arkaplan İşleri
+                                </a>
+                            </li>
+                            <li>
+                                <a class="waves-effect" href="{{ route('admin.monitoring.log') }}">
+                                    <i class="material-icons">code</i>
+                                    Log Ekranı
+                                </a>
+                            </li>
+                            <li>
+                                <a class="waves-effect" href="{{ route('admin.monitoring.queue') }}">
+                                    <i class="material-icons">queue</i>
+                                    Kuyruk Ekranı
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="divider"></li>
+                @endif
 
-            <li>
-                <a href="#" class="subheader">Kullanıcı Menüsü</a>
-            </li>
-            @if (auth()->user()->organisation)
-            <li>
-                <a class="waves-effect" href="{{ route('settings.organisation') }}">
-                    <i class="material-icons">group_work</i>
-                    {{ auth()->user()->organisation->name }}
-                </a>
-            </li>
-            <li class="divider"></li>
-            @endif
-            <li>
-                <a class="waves-effect" href="{{ route('settings.account') }}">
-                    <i class="material-icons">person</i>
-                    Hesap Bilgileri
-                </a>
-            </li>
-            <li>
-                <a class="waves-effect" href="{{ route('settings.support') }}">
-                    <i class="material-icons">help</i>
-                    Destek
-                </a>
-            </li>
-            <li>
-                <a class="waves-effect" href="{{ route('user.logout') }}">
-                    <i class="material-icons">exit_to_app</i>
-                    Çıkış
-                </a>
-            </li>
-        </ul>
+                <li>
+                    <a class="waves-effect" href="{{ route('forum.index') }}">
+                        <i class="material-icons">forum</i>
+                        Forum
+                    </a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <a href="#" class="subheader">Kullanıcı Menüsü</a>
+                </li>
+                @if (auth()->user()->organisation)
+                <li>
+                    <a class="waves-effect" href="{{ route('settings.organisation') }}">
+                        <i class="material-icons">group_work</i>
+                        {{ auth()->user()->organisation->name }}
+                    </a>
+                </li>
+                <li class="divider"></li>
+                @endif
+                <li>
+                    <a class="waves-effect" href="{{ route('forum.index') }}">
+                        <i class="material-icons">forum</i>
+                        Forum
+                    </a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <a class="waves-effect" href="{{ route('settings.account') }}">
+                        <i class="material-icons">person</i>
+                        Hesap Bilgileri
+                    </a>
+                </li>
+                <li>
+                    <a class="waves-effect" href="{{ route('settings.support') }}">
+                        <i class="material-icons">help</i>
+                        Destek
+                    </a>
+                </li>
+                <li>
+                    <a class="waves-effect" href="{{ route('user.logout') }}">
+                        <i class="material-icons">exit_to_app</i>
+                        Çıkış
+                    </a>
+                </li>
+            </ul>
+        @endauth
 
         @push('local.scripts')
-
-        $('#slide-out').sidenav({
-            draggable: true
-        });
-
+            $('#slide-out').sidenav({
+                draggable: true
+            });
         @endpush
 
         @isset($breadcrumb)
             <nav class="cyan darken-4" id="breadcrumb">
-                <div class="sidenav-fixed-layout">
+                <div class="{{ auth()->check() ? 'sidenav-fixed-layout' : '' }}">
                     <div class="container">
                         <a href="{{ route('dashboard') }}" class="breadcrumb">Olive</a>
                         @foreach ($breadcrumb as $row)
@@ -344,7 +373,7 @@
         @endisset
 
         <main>
-            <div class="sidenav-fixed-layout">
+            <div class="{{ auth()->check() ? 'sidenav-fixed-layout' : '' }}">
                 @if (trim($__env->yieldContent('wildcard')))
                     <div class="wildcard">
                         @yield('wildcard')
@@ -353,14 +382,14 @@
 
                 <div class="container">
                     @isset($dock)
-                    <div id="dock-content">
+                    <aside id="dock-content">
                         <div class="content">
                             @yield('content')
                         </div>
                         <div class="menu">
                             @yield('dock')
                         </div>
-                    </div>
+                    </aside>
                     @else
                         @yield('content')
                     @endisset
@@ -375,7 +404,7 @@
 
     @auth
         <div class="fixed-action-btn">
-            <a data-trigger="module-search" id="search-trigger" class="btn-floating btn-large cyan darken-2 waves-effect" data-tooltip="Modül Ara (CTRL + G)" data-position="left">
+            <a data-trigger="module-search" id="search-trigger" class="btn-floating btn-large red darken-4 waves-effect" data-tooltip="Modül Ara (CTRL + G)" data-position="left">
                 <i class="material-icons">search</i>
             </a>
         </div>
@@ -396,6 +425,7 @@
                         class="validate json"
                         data-href="{{ route('module.search') }}"
                         data-method="post"
+                        data-delay="1"
                         data-callback="__module_search" />
                     <label for="search_input">Arayın</label>
                 </div>
@@ -421,9 +451,11 @@
 
                     vzAjax(input)
 
+                    input.focus()
+
                     setTimeout(function() {
                         input.focus()
-                    }, 500)
+                    }, 200)
             }).on('keyup', '[name=search_input]', function(e) {
                 if (e.which == 27)
                 {
@@ -464,7 +496,7 @@
                                 'data-include': 'search_input'
                             });
 
-                            item.addClass(o.root ? 'red-text' : '')
+                            item.addClass(o.root ? 'yellow-text' : '')
                             item.appendTo(collections)
                         })
                     }
@@ -543,7 +575,7 @@
         @endpush
     @endauth
 
-    <div class="@isset($sidenav_fixed_layout){{ 'sidenav-fixed-layout' }}@endisset">
+    <div class="@auth{{ @$sidenav_fixed_layout ? 'sidenav-fixed-layout' : '' }}@endauth">
         <ul class="partners grey lighten-4">
             <li class="partner">
                 <a href="https://laravel.com/" target="_blank">
@@ -577,7 +609,7 @@
                     <div class="col l2 offset-l2 s12">
                         <ul>
                             <li><a class="grey-text" href="{{ route('page.view', 'hakkimizda') }}">Hakkımızda</a></li>
-                            <li><a class="grey-text" href="{{ config('services.medium.url') }}">Blog</a></li>
+                            <li><a class="grey-text" href="{{ route('forum.index') }}">Forum</a></li>
                             <li><a class="grey-text" href="{{ route('page.view', 'iletisim') }}">İletişim</a></li>
                             <li><a class="grey-text" href="#">Api</a></li>
                         </ul>
