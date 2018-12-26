@@ -56,7 +56,7 @@
 @section('wildcard')
     <div class="card grey darken-4">
         <div class="card-image">
-            <a class="btn-floating btn-large halfway-fab waves-effect cyan dropdown-trigger" data-target="more">
+            <a class="btn-floating btn-large halfway-fab waves-effect teal dropdown-trigger" data-target="more">
                 <i class="material-icons">more_vert</i>
             </a>
         </div>

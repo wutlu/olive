@@ -306,10 +306,16 @@
             words = obj.words;
 
             $.each(obj.data, function(key, o) {
-                if (!$('#' + o.uuid).length)
+                if ($('#' + o.uuid).length)
                 {
-                    var item = buffer.find(item => item.uuid === o.uuid);
 
+                }
+                else
+                {
+                    var item = buffer.filter(function (x) {
+                         return x.uuid === o.uuid
+                    })[0];
+    
                     if (!item)
                     {
                         buffer.push(o)

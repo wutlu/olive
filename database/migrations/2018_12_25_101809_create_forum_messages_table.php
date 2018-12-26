@@ -24,6 +24,7 @@ class CreateForumMessagesTable extends Migration
             $table->boolean('lock')->default(false);
             $table->boolean('static')->default(false);
 
+            $table->unsignedInteger('user_id')->index();
             $table->unsignedInteger('category_id')->index();
             $table->unsignedInteger('message_id')->nullable()->default(null)->index();
 
@@ -35,6 +36,7 @@ class CreateForumMessagesTable extends Migration
         });
 
         Schema::table('forum_messages', function (Blueprint $table) {
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('category_id')->references('id')->on('forum_categories')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('message_id')->references('id')->on('forum_messages')->onDelete('cascade')->onUpdate('cascade');
         });

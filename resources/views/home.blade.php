@@ -194,7 +194,7 @@
     $(document).ready(function() {
         $('.tabs').tabs()
         $('.parallax').parallax()
-    });
+    })
 
     $('.down-area').on('click', 'a.btn-large', function(e) {
         scrollTo({

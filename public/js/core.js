@@ -170,10 +170,7 @@ $(document).on('click', '[data-clip]', function() {
 
     document.execCommand('copy')
 
-    /*
-    toast({ 'text': __.data('clip'), 'timeOut': 500, 'alert': 'info' })
-    */
-    alert('kopyalandı denilecek')
+    M.toast({ html: __.data('clip') })
 })
 
 /* --- focus function --- */
@@ -221,13 +218,15 @@ $(document).on('keydown keyup change click', '[data-image-to]', function() {
 
 /* --- input to html --- */
 
-$(document).on('keydown keyup change click', '[data-input-to]', function() {
+$(document).on('keydown keyup change click', '[data-slug]', function() {
     var __ = $(this);
 
-    var target = __.data('input-to'),
+    var target = __.data('slug'),
         target = element(target);
 
-    target.html(__.val())
+    target.val(slug(__.val()))
+
+    M.updateTextFields()
 })
 
 /* --- submit function --- */

@@ -6,8 +6,14 @@ Route::domain(config('app.domain'))->group(function () {
 
 Route::namespace('Forum')->prefix('forum')->group(function () {
     Route::get('/', 'ForumController@index')->name('forum.index');
+    Route::post('categories', 'ForumController@categoryJson')->name('forum.categories');
+
     Route::get('{slug}', 'ForumController@category')->name('forum.category');
-    Route::get('{slug}/{fake_slug}/{id}', 'ForumController@thread')->name('forum.thread');
+    Route::get('{slug}/{fake_slug}-{id}', 'ForumController@thread')->name('forum.thread');
+});
+
+Route::prefix('kullanici')->group(function () {
+    Route::get('{id}', 'UserController@profile')->name('user.profile');
 });
 
 Route::get('/', 'HomeController@index')->name('home');

@@ -1144,7 +1144,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'name' => 'HÜRRİYET',
                 'site' => 'http://www.hurriyet.com.tr',
                 'base' => '/',
-                'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-(\d{8,9})',
+                'url_pattern' => '(?<=href\="\/)([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-(\d{8,9})(?=")',
                 'selector_title' => 'h1',
                 'selector_description' => 'h2',
                 'off_limit' => 100,

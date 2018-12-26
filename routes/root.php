@@ -52,6 +52,15 @@ Route::prefix('carousel-yonetimi')->group(function () {
     Route::post('siralama', 'CarouselController@sortable')->name('admin.carousel.sortable');
 });
 
+Route::prefix('forum-yonetimi')->namespace('Forum')->group(function () {
+    Route::prefix('kategori')->group(function () {
+        Route::post('/', 'ForumController@categoryGet')->name('admin.forum.category');
+        Route::put('/', 'ForumController@categoryCreate');
+        Route::patch('/', 'ForumController@categoryUpdate');
+        Route::delete('/', 'ForumController@categoryDelete');
+    });
+});
+
 Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {
     Route::get('/', function () { return view('crawlers.dashboard'); })->name('crawlers');
 

@@ -134,7 +134,6 @@
         }
     }
 
-
     function __collections(__, obj)
     {
         var ul = $('#collections');
@@ -142,8 +141,6 @@
 
         if (obj.status == 'ok')
         {
-            item_model.addClass('hide')
-
             if (obj.hits.length)
             {
                 $.each(obj.hits, function(key, o) {

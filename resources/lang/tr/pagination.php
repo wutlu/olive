@@ -14,4 +14,5 @@ return [
 
     'previous' => '&laquo; Önceki',
     'next' => 'Sonraki &raquo;',
+    'last' => 'Son Sayfa &raquo;',
 ];

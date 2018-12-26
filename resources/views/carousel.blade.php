@@ -259,10 +259,10 @@
 
         var form = _modal.find('form#form')
 
-        $('input[name=title]').val('')
-        $('textarea[name=description]').val('')
-        $('input[name=button_action]').val('')
-        $('input[name=button_text]').val('')
+        $('input[name=title]').val('').characterCounter()
+        $('textarea[name=description]').val('').characterCounter()
+        $('input[name=button_action]').val('').characterCounter()
+        $('input[name=button_text]').val('').characterCounter()
         $('select[name=pattern]').val('').formSelect()
         $('input[name=visibility]').prop('checked', false)
 
@@ -335,10 +335,10 @@
 
             var form = _modal.find('form#form')
 
-            $('input[name=title]').val(obj.data.title)
-            $('textarea[name=description]').val(obj.data.description)
-            $('input[name=button_action]').val(obj.data.button_action)
-            $('input[name=button_text]').val(obj.data.button_text)
+            $('input[name=title]').val(obj.data.title).characterCounter()
+            $('textarea[name=description]').val(obj.data.description).characterCounter()
+            $('input[name=button_action]').val(obj.data.button_action).characterCounter()
+            $('input[name=button_text]').val(obj.data.button_text).characterCounter()
             $('select[name=pattern]').val(obj.data.pattern).formSelect()
             $('input[name=visibility]').prop('checked', obj.data.visibility)
 

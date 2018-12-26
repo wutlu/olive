@@ -1,20 +1,19 @@
 @extends('layouts.app')
 
 @push('external.include.header')
-	@if ($page->title)
-    <!-- description -->
-    @section('title', $page->title)
-	@endif
+    @if ($page->title)
+        @section('title', $page->title)
+    @endif
 
-	@if ($page->description)
+    @if ($page->description)
     <!-- description -->
     <meta name="description" content="{{ $page->description }}" />
-	@endif
+    @endif
 
-	@if ($page->keywords)
+    @if ($page->keywords)
     <!-- keywords -->
     <meta name="keywords" content="{{ $page->keywords }}" />
-	@endif
+    @endif
 @endpush
 
 @section('content')
@@ -26,11 +25,11 @@
 
             <div class="container">
                 <a href="{{ route('home') }}">
-                	<img alt="Logo" src="{{ asset('img/olive-logo.svg') }}" style="max-width: 200px;" />
+                    <img alt="Logo" src="{{ asset('img/olive-logo.svg') }}" style="max-width: 200px;" />
                 </a>
                 <div class="card card-unstyled">
                     <div class="card-content">
-                    	<span class="card-title">{{ $page->title }}</span>
+                        <span class="card-title">{{ $page->title }}</span>
                         {!! nl2br($page->body) !!}
                     </div>
                 </div>
@@ -40,7 +39,7 @@
 @endsection
 
 @push('local.scripts')
-	$(document).ready(function() {
+    $(document).ready(function() {
         $('.parallax').parallax();
     });
 @endpush

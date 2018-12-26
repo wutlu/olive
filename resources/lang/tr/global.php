@@ -18,9 +18,9 @@ return [
         'disconnected' => 'İnternete bağlı değilsiniz.',
         'time_out' => 'Oturumunuz sona erdi. Lütfen tekrar giriş yapın.',
         'calm' => 'Birkaç dakika sonra tekrar deneyebilirsiniz.',
-        'notfound' => 'Kaynak bulunamadı.',
+        'notfound' => 'Kaynak erişilemiyor.',
         'exited' => 'Oturumunuz sona erdi. Lütfen tekrar giriş yapın.',
-        'permission' => 'Organizasyonunuz henüz aktif edilmedi.'
+        'permission' => 'Bu işlemi yapmak için henüz yetkiniz yok.'
     ],
     'date' => [
         'timeago' => [

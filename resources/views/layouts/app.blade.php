@@ -18,6 +18,7 @@
     <link rel="icon" href="{{ asset('img/favicon.png?v='.config('app.version')) }}" />
 
     <!-- master styles -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
     <link rel="stylesheet" href="{{ asset('css/materialize.min.css?v='.config('app.version')) }}" />
     <link rel="stylesheet" href="{{ asset('css/theme.css?v='.config('app.version')) }}" />
 
@@ -114,7 +115,7 @@
             <nav class="cyan darken-2">
                 <div class="{{ auth()->check() ? 'sidenav-fixed-layout' : 'container' }}">
                     <div class="nav-wrapper">
-                        <a href="{{ route('dashboard') }}" class="brand-logo {{ auth()->check() ? 'center' : 'left' }}">
+                        <a href="{{ route('dashboard') }}" class="brand-logo center">
                             <img alt="{{ config('app.name') }}" src="{{ asset('img/olive-logo-white.svg') }}" />
                         </a>
                         @auth
@@ -130,13 +131,6 @@
                                 </a>
                             </li>
                             @endisset
-                            @guest
-                            <li>
-                                <a href="#">
-                                    <i class="material-icons">person</i>
-                                </a>
-                            </li>
-                            @endguest
                         </ul>
                         <ul class="right hide-on-med-and-down">
                             @auth
@@ -321,13 +315,6 @@
                 </li>
                 <li class="divider"></li>
                 @endif
-                <li>
-                    <a class="waves-effect" href="{{ route('forum.index') }}">
-                        <i class="material-icons">forum</i>
-                        Forum
-                    </a>
-                </li>
-                <li class="divider"></li>
                 <li>
                     <a class="waves-effect" href="{{ route('settings.account') }}">
                         <i class="material-icons">person</i>

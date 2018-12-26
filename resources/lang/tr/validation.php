@@ -113,6 +113,7 @@ return [
     'has_route' => 'Rota oluşturulamadı.',
     'token_check' => 'Token geçerli değil.',
     'organisation_status' => 'Organizasyonunuz henüz aktif değil.',
+    'slug' => 'Slug alanı sadece a-z0-9 ve - karakterlerinden oluşabilir.',
 
     /*
     |--------------------------------------------------------------------------

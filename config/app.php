@@ -204,6 +204,11 @@ return [
                 'route' => 'trend.archive',
                 'icon' => 'archive'
             ],
+            27 => [
+                'name' => 'Forum',
+                'route' => 'forum.index',
+                'icon' => 'library_books'
+            ],
 
             /*
              * root modülleri

@@ -10,11 +10,6 @@ use App\Models\ModuleSearch;
 
 class ModuleSearchController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     # 
     # ara
     # 
@@ -29,7 +24,7 @@ class ModuleSearchController extends Controller
                              ->where(function ($query) use ($keywords) {
                                 foreach ($keywords as $keyword)
                                 {
-                                    if (strlen($keyword) >= 2)
+                                    if (strlen($keyword) >= 1)
                                     {
                                         $query->orWhere('keyword', 'ILIKE', '%'.$keyword.'%');
                                     }
@@ -82,7 +77,7 @@ class ModuleSearchController extends Controller
     {
         $module = config('app.search.modules')[$request->module_id];
 
-        if (strlen($request->search_input) >= 2)
+        if (strlen($request->search_input) >= 1)
         {
             $query = ModuleSearch::where([
                 'keyword' => $request->search_input,

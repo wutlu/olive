@@ -35,8 +35,8 @@ class ForumCategoriesTableSeeder extends Seeder
                 'sort' => 4
             ],
             [
-                'name' => 'HTML, CSS ve jQuery',
-                'description' => 'HTML, CSS ve jQuery\'ye dair her şey.',
+                'name' => 'Front-end',
+                'description' => 'Ön yüz kodlamaya dair her şey.',
                 'sort' => 5
             ],
             [

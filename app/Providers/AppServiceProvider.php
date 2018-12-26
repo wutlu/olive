@@ -36,6 +36,10 @@ class AppServiceProvider extends ServiceProvider
             return Hash::check($value , auth()->user()->password);
         });
 
+        Validator::extend('slug', function($attribute, $value) {
+            return !preg_match('/[^a-z0-9\-]/', $value);
+        });
+
         Validator::extend('coupon_exists', function($attribute, $key) {
             return DiscountCoupon::whereNull('invoice_id')->where('key', $key)->count();
         });
