@@ -170,7 +170,7 @@
                                     if (o.button_text)
                                     {
                                         var button = $('<a />', {
-                                            'class': o.button_class + ' d-block',
+                                            'class': o.button_class,
                                             'html': o.button_text,
                                             'href': o.button_action
                                         });

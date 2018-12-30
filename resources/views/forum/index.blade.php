@@ -12,7 +12,7 @@
     <div class="card wild-background">
         @auth
             <div class="card-image">
-                <a href="#" class="btn-floating btn-large halfway-fab waves-effect teal" data-tooltip="Konu Aç" data-position="left">
+                <a href="{{ route('forum.thread.new') }}" class="btn-floating btn-large halfway-fab waves-effect teal" data-tooltip="Konu Aç" data-position="left">
                     <i class="material-icons">add</i>
                 </a>
             </div>
@@ -449,12 +449,14 @@
                 <span class="align-self-center">Tüm Konular</span>
             </a>
 
-            @if (auth()->user()->moderator || auth()->user()->root)
-                <a href="#" class="collection-item waves-effect d-flex red-text">
-                    <i class="material-icons" style="margin: 0 .4rem 0 0;">bug_report</i>
-                    <span class="align-self-center">Spam Sıralaması</span>
-                </a>
-            @endif
+            @auth
+                @if (auth()->user()->moderator || auth()->user()->root)
+                    <a href="#" class="collection-item waves-effect d-flex red-text">
+                        <i class="material-icons" style="margin: 0 .4rem 0 0;">bug_report</i>
+                        <span class="align-self-center">Spam Sıralaması</span>
+                    </a>
+                @endif
+            @endauth
 
             <div class="divider"></div>
 

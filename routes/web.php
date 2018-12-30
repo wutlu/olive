@@ -13,6 +13,8 @@ Route::namespace('Forum')->prefix('forum')->group(function () {
     Route::get('{slug}', 'ForumController@category')->name('forum.category');
     Route::get('{slug}/{fake_slug}-{id}', 'ForumController@thread')->name('forum.thread');
 
+    Route::get('konu', 'ForumController@threadNew')->name('forum.thread.new');
+
     Route::post('durum', 'ForumController@threadStatus')->name('forum.thread.status');
     Route::post('sabit', 'ForumController@threadStatic')->name('forum.thread.static');
     Route::delete('sil', 'ForumController@messageDelete')->name('forum.message.delete');

@@ -33,6 +33,7 @@ class ForumController extends Controller
             'threadFollow',
             'messageBestAnswer',
             'messageSpam',
+            'threadNew',
         ]);
         $this->middleware('throttle:10,1')->only([ 'messageVote', 'messageSpam' ]);
     }
@@ -45,6 +46,14 @@ class ForumController extends Controller
         $data = Message::whereNull('message_id')->orderBy('updated_at', 'DESC')->simplePaginate($pager);
 
         return view('forum.index', compact('data'));
+    }
+
+    /**
+     * forum yeni konu
+     */
+    public static function threadNew()
+    {
+        return view('forum.thread_new');
     }
 
     /**
@@ -438,6 +447,8 @@ class ForumController extends Controller
         }
         */
 
+        $message->timestamps = false;
+
         switch ($request->type)
         {
             case 'neg': $message->decrement('vote'); break;
@@ -460,6 +471,7 @@ class ForumController extends Controller
     {
         $message = Message::where('id', $request->id)->firstOrFail();
 
+        $message->timestamps = false;
         $message->increment('spam');
 
         return [

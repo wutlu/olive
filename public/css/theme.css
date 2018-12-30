@@ -792,18 +792,7 @@ table.invoice tfoot > tr {
   font-size: 20px;
 }
 
-.card .card-image {
-  position: relative;
-}
-
 .card .card-image img {
-  display: block;
-  position: relative;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  width: 100%;
   min-height: 96px;
 }
 
@@ -1829,25 +1818,16 @@ table tr {
 .modal .modal-content {
   padding: 0;
 
-  background: #333;
-  background:         linear-gradient(45deg, #cccccc 0%, #ffffff 100%);
-  background:    -moz-linear-gradient(45deg, #cccccc 0%, #ffffff 100%);
-  background: -webkit-linear-gradient(45deg, #cccccc 0%, #ffffff 100%);
-
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cccccc', endColorstr='#ffffff', GradientType=1 );
-
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: scroll;
+  background-color: #fff;
 }
 .modal .modal-content > .modal-title {
-  padding: 24px;
+  padding: 24px 24px 12px 24px;
   font-size: 22px;
 }
 .modal .modal-content > .modal-body {
   overflow: auto;
   max-height: 300px;
-  margin: 0 1rem;
+  margin: 0;
   padding: 12px 24px;
   background-color: #fff;
 }

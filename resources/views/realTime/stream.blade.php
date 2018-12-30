@@ -45,7 +45,7 @@
 @endpush
 
 @push('local.scripts')
-    $('.owl-breadcrumb').owlCarousel({
+    $('.owl-carousel').owlCarousel({
         responsiveClass: true,
         responsive: {
             0: {
