@@ -97,9 +97,7 @@ class Kernel extends ConsoleKernel
 
             if ($option)
             {
-                $schedule->command('nohup "youtube:trend_detect" --type=restart')
-                         ->everyFifteenMinutes()
-                         ->timezone(config('app.timezone'));
+                // yapılacak
             }
 
             /* ---------------------------------------- */

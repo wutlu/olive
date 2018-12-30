@@ -90,7 +90,7 @@ return [
     /**
      * Sistem Versiyonu
      */
-    'version' => '1.3.1030 αlpha',
+    'version' => '1.3.1030-alpha',
 
     /**
      * Destek Konuları

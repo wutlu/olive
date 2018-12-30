@@ -35,7 +35,7 @@ class HomeController extends Controller
         ]);
     }
 
-    # home
+    # veri.zone home
     public static function vz()
     {
         return view('vz.home');
@@ -47,6 +47,30 @@ class HomeController extends Controller
     public static function alert()
     {
         return session('alert') ? view('alert') : redirect()->route('dashboard');
+    }
+
+    # 
+    # manifest
+    # 
+    public static function manifest()
+    {
+        return json_encode([
+            'name' => config('app.name'),
+            'icons' => [
+                [
+                    'src' => '/favicons/android-chrome-192x192.png?v='.config('app.version'),
+                    'sizes' => '192x192',
+                    'type' => 'image/png'
+                ],
+                [
+                    'src' => '/favicons/android-chrome-512x512.png?v='.config('app.version'),
+                    'sizes' => '512x512',
+                    'type' => 'image/png'
+                ]
+            ],
+            'theme_color' => config('view.color'),
+            'display' => 'standalone'
+        ], JSON_PRETTY_PRINT);
     }
 
     # home

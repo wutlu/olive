@@ -9,7 +9,7 @@
 ])
 
 @section('wildcard')
-    <div class="card grey darken-4">
+    <div class="card wild-background">
         @auth
             <div class="card-image">
                 <a href="#" class="btn-floating btn-large halfway-fab waves-effect teal" data-tooltip="Konu Aç" data-position="left">
@@ -43,19 +43,23 @@
                     <a class="d-block" data-tooltip="{{ $thread->user->name }}" data-position="right" href="{{ route('user.profile', $thread->user_id) }}">
                         <img alt="Avatar" src="{{ $thread->user->avatar() }}" class="circle" style="width: 64px; height: 64px;" />
                     </a>
-                    @if ($thread->lock)
-                        <i class="material-icons tiny" data-tooltip="Kilitli">lock</i>
-                    @endif
-                    @if ($thread->question == 'solved')
-                        <i class="material-icons tiny" data-tooltip="Çözüldü">check</i>
-                    @elseif ($thread->question == 'unsolved')
-                        <i class="material-icons tiny" data-tooltip="Soru">help</i>
-                    @endif
-                    @if ($thread->static)
-                        <i class="material-icons tiny" data-tooltip="Sabit">terrain</i>
-                    @endif
                 </span>
                 <div class="align-self-center">
+                    <div class="d-flex">
+                        @if ($thread->closed)
+                            <i class="material-icons grey-text text-darken-2 tiny" data-tooltip="Kapalı">lock</i>
+                        @endif
+
+                        @if ($thread->static)
+                            <i class="material-icons grey-text text-darken-2 tiny" data-tooltip="Sabit">terrain</i>
+                        @endif
+
+                        @if ($thread->question == 'solved')
+                            <i class="material-icons grey-text text-darken-2 tiny" data-tooltip="Çözüldü">check</i>
+                        @elseif ($thread->question == 'unsolved')
+                            <i class="material-icons grey-text text-darken-2 tiny" data-tooltip="Soru">help</i>
+                        @endif
+                    </div>
                     <a href="{{ $thread->route() }}" class="d-flex">
                         <span class="card-title card-title-small align-self-center mb-0">{{ $thread->subject }}</span>
                     </a>
@@ -69,7 +73,9 @@
                             <a href="{{ route('user.profile', $thread->user_id) }}">{{ '@'.$thread->user->name }}</a>
                         @endif
                     </p>
-                    {!! $thread->replies()->paginate(10)->onEachSide(1)->setPath($thread->route())->links('vendor.pagination.materializecss_in') !!}
+                    @if (count($thread->replies))
+                        {!! $thread->replies()->paginate(10)->onEachSide(1)->setPath($thread->route())->links('vendor.pagination.materializecss_in') !!}
+                    @endif
                 </div>
                 <div class="align-self-center ml-auto d-flex flex-column">
                     <a href="{{ route('forum.category', $thread->category->slug) }}" class="chip waves-effect center-align">{{ $thread->category->name }}</a>
@@ -442,6 +448,13 @@
                 <i class="material-icons" style="margin: 0 .4rem 0 0;">library_books</i>
                 <span class="align-self-center">Tüm Konular</span>
             </a>
+
+            @if (auth()->user()->moderator || auth()->user()->root)
+                <a href="#" class="collection-item waves-effect d-flex red-text">
+                    <i class="material-icons" style="margin: 0 .4rem 0 0;">bug_report</i>
+                    <span class="align-self-center">Spam Sıralaması</span>
+                </a>
+            @endif
 
             <div class="divider"></div>
 

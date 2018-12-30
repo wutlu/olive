@@ -1,5 +1,5 @@
 @if ($paginator->hasPages())
-    <ul class="pagination d-flex justify-content-end" role="navigation">
+    <ul class="pagination d-flex justify-content-end">
         <li aria-current="page" class="mr-auto">
             <a href="#">{{ $paginator->currentPage() }}</a>
         </li>

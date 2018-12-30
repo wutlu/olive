@@ -45,26 +45,26 @@
 @endpush
 
 @push('local.scripts')
-    $('.owl-carousel').owlCarousel({
-        responsiveClass:true,
-        responsive:{
-            0:{
-                items:1
+    $('.owl-breadcrumb').owlCarousel({
+        responsiveClass: true,
+        responsive: {
+            0: {
+                items: 1
             },
-            600:{
-                items:2
+            600: {
+                items: 2
             },
-            1440:{
-                items:3
+            1440: {
+                items: 3
             }
         },
-        autoWidth:true,
+        autoWidth: true,
         dotClass: 'hide'
     })
 @endpush
 
 @section('wildcard')
-    <div id="wildcard-pin-history" class="owl-carousel z-depth-2 hide"></div>
+    <div id="wildcard-pin-history" class="owl-carousel owl-wildcard z-depth-2 hide"></div>
 @endsection
 
 @section('content')
@@ -90,16 +90,6 @@
                     href="#">Pinler (<span class="count">0</span>)</a>
             </div>
         </div>
-        <div class="card-content">
-            <p class="d-flex">
-                <img alt="Pin" src="{{ asset('img/icons/pin.png') }}" style="width: 32px; height: 32px; margin: 0 .2rem 0 0;" />
-                <span class="align-self-center">Sağdaki menüden bir pin grubu seçin. Pin grubunuz yoksa oluşturabilirsiniz. Pinlemek için ilgilendiğiniz içeriğe tıklamanız yeterli.</span>
-            </p>
-            <p class="d-flex">
-                <img alt="Pin" src="{{ asset('img/icons/snowflake.png') }}" style="width: 32px; height: 32px; margin: 0 .2rem 0 0;" />
-                <span class="align-self-center">Akışı yavaşlatmak için fareyi akışın üzerine getirin.</span>
-            </p>
-        </div>
         <div class="collection">
             <a
                 href="#"
@@ -114,7 +104,16 @@
                 <p data-name="title" class="black-text strong"></p>
                 <p data-name="text"></p>
             </a>
-            <div class="collection-item yellow lighten-5">Bir kelime grubu oluşturun ve aktif edin.</div>
+            <div class="collection-item">
+                <p class="d-flex">
+                    <img alt="Pin" src="{{ asset('img/icons/pin.png') }}" style="width: 32px; height: 32px; margin: 0 .2rem 0 0;" />
+                    <span class="align-self-center">Sağdaki menüden bir pin grubu seçin. Pin grubunuz yoksa oluşturabilirsiniz. Pinlemek için ilgilendiğiniz içeriğe tıklamanız yeterli.</span>
+                </p>
+                <p class="d-flex">
+                    <img alt="Pin" src="{{ asset('img/icons/snowflake.png') }}" style="width: 32px; height: 32px; margin: 0 .2rem 0 0;" />
+                    <span class="align-self-center">Akışı yavaşlatmak için fareyi akışın üzerine getirin.</span>
+                </p>
+            </div>
         </div>
     </div>
 @endsection
@@ -163,16 +162,16 @@
                 ]
             });
 
+            M.toast({ html: toastHTML.get(0).outerHTML })
+
             $('#wildcard-pin-history').removeClass('hide')
 
-            $('.owl-carousel').trigger('add.owl.carousel', [$('<a />', {
+            $('.owl-wildcard').trigger('add.owl.carousel', [$('<a />', {
                 'href': __.data('url'),
                 'class': 'pin-history-link',
                 'target': '_blank',
                 'html': str_limit(__.data('url'), 100)
             }), 0]).trigger('refresh.owl.carousel');
-
-            M.toast({ html: toastHTML.get(0).outerHTML })
 
             pin_count.html(parseInt(pin_count.html()) + 1)
         }

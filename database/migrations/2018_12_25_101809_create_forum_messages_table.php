@@ -21,7 +21,7 @@ class CreateForumMessagesTable extends Migration
 
             $table->enum('question', [ 'solved', 'unsolved', 'check' ])->nullable()->default(null); // check ise cevap doğru
 
-            $table->boolean('lock')->default(false);
+            $table->boolean('closed')->default(false);
             $table->boolean('static')->default(false);
 
             $table->unsignedInteger('user_id')->index();

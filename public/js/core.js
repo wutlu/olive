@@ -1037,7 +1037,8 @@ function modal(obj)
                         'class': 'modal-title'
                     }),
                     $('<div />', {
-                        'class': 'modal-body z-depth-1'
+                        'class': 'modal-body z-depth-1',
+                        'style': obj.minHeight ? 'min-height: ' + obj.minHeight : ''
                     }),
                     $('<div />', {
                         'class': 'modal-footer'

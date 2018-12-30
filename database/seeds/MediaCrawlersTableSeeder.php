@@ -1275,6 +1275,15 @@ class MediaCrawlersTableSeeder extends Seeder
                 'selector_description' => 'h2',
                 'off_limit' => 255,
             ],
+            [
+                'name' => 'MEMUR ATAMALARI',
+                'site' => 'http://www.memuratamalari.com',
+                'base' => '/',
+                'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-(\d{4,9})\.html',
+                'selector_title' => 'h1[itemprop="name"]',
+                'selector_description' => 'h2[itemprop="description"]',
+                'off_limit' => 255,
+            ],
         ];
 
         foreach ($items as $item)

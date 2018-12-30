@@ -29,7 +29,8 @@ class User extends Authenticatable
         'remember_token',
         'session_id',
         'organisation_id',
-        'root'
+        'root',
+        'moderator'
     ];
 
     /**
@@ -38,7 +39,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
-        'root' => 'boolean'
+        'root' => 'boolean',
+        'moderator' => 'boolean',
     ];
 
     # avatar
@@ -94,5 +96,10 @@ class User extends Authenticatable
     public function root()
     {
         return $this->root;
+    }
+
+    public function moderator()
+    {
+        return $this->moderator;
     }
 }

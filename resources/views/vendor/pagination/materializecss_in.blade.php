@@ -1,5 +1,5 @@
 @if ($paginator->hasPages())
-    <ul class="pagination pagination-in" role="navigation">
+    <ul class="pagination pagination-in">
 
         {{-- Pagination Elements --}}
         @foreach ($elements as $element)

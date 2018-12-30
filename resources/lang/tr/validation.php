@@ -234,5 +234,6 @@ return [
         'button_text'                  => 'Buton Yazısı',
         'visibility'                   => 'Görünürlük',
         'sort'                         => 'Sıra',
+        'category_id'                  => 'Kategori',
     ],
 ];

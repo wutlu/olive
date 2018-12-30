@@ -4,12 +4,23 @@ Route::domain(config('app.domain'))->group(function () {
     Route::get('/', 'HomeController@vz')->name('veri.zone');
 });
 
+Route::get('manifest.json', 'HomeController@manifest')->name('olive.manifest');
+
 Route::namespace('Forum')->prefix('forum')->group(function () {
     Route::get('/', 'ForumController@index')->name('forum.index');
-    Route::post('categories', 'ForumController@categoryJson')->name('forum.categories');
+    Route::post('kategoriler', 'ForumController@categoryJson')->name('forum.categories');
 
     Route::get('{slug}', 'ForumController@category')->name('forum.category');
     Route::get('{slug}/{fake_slug}-{id}', 'ForumController@thread')->name('forum.thread');
+
+    Route::post('durum', 'ForumController@threadStatus')->name('forum.thread.status');
+    Route::post('sabit', 'ForumController@threadStatic')->name('forum.thread.static');
+    Route::delete('sil', 'ForumController@messageDelete')->name('forum.message.delete');
+    Route::post('en-iyi-cevap', 'ForumController@messageBestAnswer')->name('forum.message.best');
+    Route::post('puan', 'ForumController@messageVote')->name('forum.message.vote');
+    Route::post('spam', 'ForumController@messageSpam')->name('forum.message.spam');
+    Route::post('tasi', 'ForumController@threadMove')->name('forum.thread.move');
+    Route::post('follow', 'ForumController@threadFollow')->name('forum.thread.follow');
 });
 
 Route::prefix('kullanici')->group(function () {

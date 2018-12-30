@@ -51,6 +51,9 @@ return [
     ],
 
     'twitter' => [
+        'name' => 'veri.zone',
+        'screen_name' => 'bigverizone',
+
         'client_id' => env('TWITTER_CONSUMER_KEY'),
         'client_secret' => env('TWITTER_CONSUMER_SECRET'),
         'access_token' => env('TWITTER_ACCESS_TOKEN'),

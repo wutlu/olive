@@ -11,16 +11,27 @@
     @isset($breadcrumb)
         @php $title = end($breadcrumb); @endphp
     @endisset
+
     <!-- title -->
     <title>@yield('title', @$title ? $title['text'] : config('app.name'))</title>
-
-    <!-- favicon -->
-    <link rel="icon" href="{{ asset('img/favicon.png?v='.config('app.version')) }}" />
 
     <!-- master styles -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
     <link rel="stylesheet" href="{{ asset('css/materialize.min.css?v='.config('app.version')) }}" />
     <link rel="stylesheet" href="{{ asset('css/theme.css?v='.config('app.version')) }}" />
+
+    <!-- manifest -->
+    <link rel="manifest" href="{{ asset(route('olive.manifest').'?v='.config('app.version')) }}" />
+
+    <!-- favicons -->
+    <link rel="icon" href="{{ asset('favicon.ico?v='.config('app.version')) }}" />
+    <link rel="icon" type="image/png" href="{{ asset('img/favicons/favicon-16x16.png?v='.config('app.version')) }}" sizes="16x16" />
+    <link rel="icon" type="image/png" href="{{ asset('img/favicons/favicon-32x32.png?v='.config('app.version')) }}" sizes="32x32" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('img/favicons/apple-touch-icon.png?v='.config('app.version')) }}" />
+    <link rel="mask-icon" href="{{ asset('img/favicons/safari-pinned-tab.svg?v='.config('app.version')) }}" color="{{ config('view.color') }}" />
+
+    <!-- theme color -->
+    <meta name="theme-color" content="{{ config('view.color') }}" />
 
     <!-- external include header -->
     @stack('external.include.header')

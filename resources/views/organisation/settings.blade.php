@@ -129,25 +129,25 @@
     <div class="card-tabs">
         <ul class="tabs tabs-fixed-width">
             <li class="tab">
-                <a href="#tab-1">
+                <a href="#tab-1" class="waves-effect">
                     <i class="material-icons">people</i>
                 </a>
             </li>
             @if ($user->id == $user->organisation->user_id)
             <li class="tab">
-                <a href="#tab-2">
+                <a href="#tab-2" class="waves-effect">
                     <i class="material-icons">tune</i>
                 </a>
             </li>
             @endif
             <li class="tab">
-                <a href="#tab-3">
+                <a href="#tab-3" class="waves-effect">
                     <i class="material-icons">settings</i>
                 </a>
             </li>
             @if ($user->id == $user->organisation->user_id)
             <li class="tab">
-                <a href="#tab-4">
+                <a href="#tab-4" class="waves-effect">
                     <i class="material-icons">update</i>
                 </a>
             </li>

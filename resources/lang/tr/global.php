@@ -2,9 +2,9 @@
 
 return [
     'header' => [
-        'lead-1' => 'Olive, büyük veri inceleme ara katmanıdır.',
+        'lead-1' => 'Olive, açık kaynak veri izleme katmanıdır.',
         'lead-2' => 'Hedef bilgiye çok daha hızlı ve daha anlamlı bir şekilde erişmenizi sağlar.',
-        'lead-3' => '...',
+        'lead-3' => 'Ankara\'da sevgiyle üretiliyor.',
     ],
     'keywords' => [
         'ok' => 'Tamam',
@@ -17,7 +17,7 @@ return [
     'errors' => [
         'disconnected' => 'İnternete bağlı değilsiniz.',
         'time_out' => 'Oturumunuz sona erdi. Lütfen tekrar giriş yapın.',
-        'calm' => 'Birkaç dakika sonra tekrar deneyebilirsiniz.',
+        'calm' => 'Çok fazla işlem yaptınız. Lütfen bir kaç dakika sonra tekrar deneyin.',
         'notfound' => 'Kaynak erişilemiyor.',
         'exited' => 'Oturumunuz sona erdi. Lütfen tekrar giriş yapın.',
         'permission' => 'Bu işlemi yapmak için henüz yetkiniz yok.'

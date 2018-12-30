@@ -734,48 +734,31 @@ table.invoice tfoot > tr {
  * breadcrumb
  */
 #breadcrumb {
-  overflow: hidden;
-}
-#breadcrumb .breadcrumb {
-  font-size: 18px;
-  color: rgba(255, 255, 255, 0.7);
-  overflow: hidden;
+  height: auto;
 }
 
-#breadcrumb .breadcrumb i,
-#breadcrumb .breadcrumb [class^="mdi-"], .breadcrumb [class*="mdi-"],
-#breadcrumb .breadcrumb i.material-icons {
-  display: inline-block;
-  float: left;
-  font-size: 24px;
+/**
+ * markdown
+ */
+.markdown > h1,
+.markdown > h2,
+.markdown > h3,
+.markdown > h4,
+.markdown > h5,
+.markdown > h6 {
+  margin: 0 0 1rem;
+}
+.markdown code {
+  padding: 2rem;
+  margin: 0 -24px;
 }
 
-#breadcrumb .breadcrumb:before {
-  content: '\E5CC';
-  color: rgba(255, 255, 255, 0.7);
-  vertical-align: top;
-  display: inline-block;
-  font-family: 'Material Icons';
-  font-weight: normal;
-  font-style: normal;
-  font-size: 25px;
-  margin: 0 10px 0 8px;
-  -webkit-font-smoothing: antialiased;
-}
-
-#breadcrumb .breadcrumb:first-child:before {
-  display: none;
-}
-
-#breadcrumb .breadcrumb:last-child {
-  color: #fff;
-}
-
-@media (max-width: 1024px) {
-  #breadcrumb {
-    display: none;
-  }
-}
+.markdown > h1 { font-size: 3rem; }
+.markdown > h2 { font-size: 2.6rem; }
+.markdown > h3 { font-size: 2.2rem; }
+.markdown > h4 { font-size: 1.8rem; }
+.markdown > h5 { font-size: 1.4rem; }
+.markdown > h6 { font-size: 1rem; }
 
 /**
  * cards
@@ -790,6 +773,12 @@ table.invoice tfoot > tr {
   padding: 64px 0 32px;
   display: table;
   font-size: 32px;
+}
+.wildcard .wild-background {
+  background-color: #333;
+  background-image: url('../img/low.png');
+  background-repeat: no-repeat;
+  background-position: right center;
 }
 
 .card {
@@ -1817,6 +1806,18 @@ table tr {
   background-size: 50%;
 }
 
+.btn-floating.btn-flat,
+.btn-floating.btn-flat > i.material-icons {
+  color: #666;
+}
+.btn-floating.btn-flat:hover {
+  background-color: rgba(0, 0, 0, .2);
+}
+
+.card .card-action a:not(.btn):not(.btn-large):not(.btn-small):not(.btn-large):not(.btn-floating) {
+  margin-right: 2px;
+}
+
 /**
  * modal
  */
@@ -1983,6 +1984,10 @@ th {
   font-size: 1rem;
   padding: 0 6px;
   line-height: 16px;
+}
+
+.pagination li.active {
+  background-color: #0097a7;
 }
 
 /**

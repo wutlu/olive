@@ -45,9 +45,14 @@ class ForumCategoriesTableSeeder extends Seeder
                 'sort' => 6
             ],
             [
+                'name' => 'Sosyal Medya',
+                'description' => 'Sosyal medya hakkında her şey.',
+                'sort' => 7
+            ],
+            [
                 'name' => 'Off-Topic',
                 'description' => 'Forum dışı her şey.',
-                'sort' => 7
+                'sort' => 8
             ],
         ];
 
