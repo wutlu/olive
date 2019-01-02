@@ -10,10 +10,13 @@ Route::namespace('Forum')->prefix('forum')->group(function () {
     Route::get('/', 'ForumController@index')->name('forum.index');
     Route::post('kategoriler', 'ForumController@categoryJson')->name('forum.categories');
 
-    Route::get('{slug}', 'ForumController@category')->name('forum.category');
-    Route::get('{slug}/{fake_slug}-{id}', 'ForumController@thread')->name('forum.thread');
+    Route::get('konu/{id?}', 'ForumController@threadForm')->name('forum.thread.form');
+    Route::post('konu', 'ForumController@threadSave');
+    Route::get('cevap/{reply_id}', 'ForumController@replyForm')->name('forum.reply.form')->where([ 'reply_id' => '[0-9]+' ]);
+    Route::get('cevap/{id}/guncelle', 'ForumController@replyEditForm')->name('forum.reply.form.edit');
+    Route::post('cevap', 'ForumController@replySave')->name('forum.reply.submit');
 
-    Route::get('konu', 'ForumController@threadNew')->name('forum.thread.new');
+    Route::post('mesaj/onizleme', 'ForumController@messagePreview')->name('forum.message.preview');
 
     Route::post('durum', 'ForumController@threadStatus')->name('forum.thread.status');
     Route::post('sabit', 'ForumController@threadStatic')->name('forum.thread.static');
@@ -22,7 +25,10 @@ Route::namespace('Forum')->prefix('forum')->group(function () {
     Route::post('puan', 'ForumController@messageVote')->name('forum.message.vote');
     Route::post('spam', 'ForumController@messageSpam')->name('forum.message.spam');
     Route::post('tasi', 'ForumController@threadMove')->name('forum.thread.move');
-    Route::post('follow', 'ForumController@threadFollow')->name('forum.thread.follow');
+    Route::post('takip', 'ForumController@threadFollow')->name('forum.thread.follow');
+
+    Route::get('{slug}', 'ForumController@category')->name('forum.category');
+    Route::get('{slug}/{fake_slug}-{id}', 'ForumController@thread')->name('forum.thread');
 });
 
 Route::prefix('kullanici')->group(function () {

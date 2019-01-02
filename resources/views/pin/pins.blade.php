@@ -289,7 +289,6 @@
                 @endcomponent
             </div>
         @endif
-
     @empty
         @component('components.nothing')
             @slot('cloud_class', 'white-text')

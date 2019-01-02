@@ -19,7 +19,7 @@
     <div class="card wild-background">
         @auth
             <div class="card-image">
-                <a data-button="reply" href="#" class="btn-floating btn-large halfway-fab waves-effect teal {{ $thread->closed ? 'hide' : '' }}" data-tooltip="Cevapla" data-position="left">
+                <a data-button="reply" href="{{ route('forum.reply.form', $thread->id) }}" class="btn-floating btn-large halfway-fab waves-effect teal {{ $thread->closed ? 'hide' : '' }}" data-tooltip="Cevapla" data-position="left">
                     <i class="material-icons">reply</i>
                 </a>
             </div>
@@ -321,7 +321,16 @@
         @foreach ($messages as $message)
             @auth
                 <ul id="thread-menu-{{ $message->id }}" class="dropdown-content">
-                    @if (!$message->message_id)
+                    @if ($message->message_id)
+                        <li>
+                            <a href="{{ route('forum.reply.form.edit', $message->id) }}" class="waves-effect">Güncelle</a>
+                        </li>
+                    @else
+                        @if ($message->authority())
+                           <li>
+                               <a href="{{ route('forum.thread.form', $thread->id) }}" class="waves-effect">Güncelle</a>
+                           </li>
+                        @endif
                         @if ($message->authority(false))
                             <li>
                                 <a href="#" class="waves-effect json" data-href="{{ route('forum.thread.status') }}" data-id="{{ $thread->id }}" data-method="post" data-callback="__close">{{ $message->closed ? 'Konuyu Aç' : 'Konuyu Kapat' }}</a>
@@ -348,7 +357,7 @@
                         @endif
 
                         <li data-button="reply" class="{{ $thread->closed ? 'hide' : '' }}">
-                            <a href="#" class="waves-effect">Cevapla</a>
+                            <a href="{{ route('forum.reply.form', $message->id) }}" class="waves-effect">Cevapla</a>
                         </li>
 
                     @if (@$message->thread->question)
@@ -421,6 +430,15 @@
                 <div class="markdown"> 
                     {!! $message->markdown() !!}
                 </div>
+
+                @if ($message->updated_user_id)
+                    <p class="mt-1">
+                        <i class="grey-text">
+                            <time class="timeago" data-time="{{ $message->updated_at }}" datetime="{{ $message->updated_at }}">{{ date('d.m.Y H:i', strtotime($message->updated_at)) }}</time>
+                            <a href="{{ route('user.profile', $message->updated_user_id) }}">{{ $message->updatedUser->name }}</a> tarafından güncellendi.
+                        </i>
+                    </p>
+                @endif
 
                 <div class="d-flex mt-1">
                     <button class="btn-flat waves-effect green-text json" data-href="{{ route('forum.message.vote') }}" data-method="post" data-callback="__vote" data-id="{{ $message->id }}" data-type="pos">

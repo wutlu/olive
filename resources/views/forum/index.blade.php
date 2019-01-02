@@ -12,7 +12,7 @@
     <div class="card wild-background">
         @auth
             <div class="card-image">
-                <a href="{{ route('forum.thread.new') }}" class="btn-floating btn-large halfway-fab waves-effect teal" data-tooltip="Konu Aç" data-position="left">
+                <a href="{{ route('forum.thread.form') }}" class="btn-floating btn-large halfway-fab waves-effect teal" data-tooltip="Konu Başlat" data-position="left">
                     <i class="material-icons">add</i>
                 </a>
             </div>

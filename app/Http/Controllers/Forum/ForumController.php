@@ -14,13 +14,17 @@ use App\Http\Requests\IdRequest;
 use App\Http\Requests\Forum\Kategori\UpdateRequest;
 use App\Http\Requests\Forum\Kategori\CreateRequest;
 
+use App\Http\Requests\Forum\PreviewRequest;
 use App\Http\Requests\Forum\MoveRequest;
 use App\Http\Requests\Forum\VoteRequest;
+use App\Http\Requests\Forum\ThreadRequest;
+use App\Http\Requests\Forum\ReplyRequest;
 
 use App\Utilities\UserActivityUtility;
 
 use Validator;
 use Cookie;
+use Parsedown;
 
 class ForumController extends Controller
 {
@@ -33,9 +37,20 @@ class ForumController extends Controller
             'threadFollow',
             'messageBestAnswer',
             'messageSpam',
-            'threadNew',
+            'threadForm',
+            'threadSave',
+            'messagePreview',
+            'replyForm',
         ]);
-        $this->middleware('throttle:10,1')->only([ 'messageVote', 'messageSpam' ]);
+
+        $this->middleware('throttle:10,1')->only([
+            'messageVote',
+            'messageSpam'
+        ]);
+
+        $this->middleware('throttle:10,10')->only([
+            'threadSave'
+        ]);
     }
 
     /**
@@ -49,11 +64,157 @@ class ForumController extends Controller
     }
 
     /**
+     * forum yeni cevap
+     */
+    public static function replyForm(int $reply_id)
+    {
+        $reply = Message::where('id', $reply_id)->firstOrFail();
+        $thread = $reply->thread ? $reply->thread : $reply;
+
+        return view('forum.reply_form', compact('reply', 'thread'));
+    }
+
+    /**
+     * forum cevap güncelle
+     */
+    public static function replyEditForm(int $id)
+    {
+        $reply = Message::where('id', $id)->firstOrFail();
+        $thread = $reply->thread ? $reply->thread : $reply;
+
+        if (!$reply->authority())
+        {
+            return abort(403);
+        }
+
+        $edit = true;
+
+        return view('forum.reply_form', compact('reply', 'thread', 'edit'));
+    }
+
+    /**
+     * forum cevap oluşturma / güncelleme
+     */
+    public static function replySave(ReplyRequest $request)
+    {
+        $user = auth()->user();
+
+        $reply = Message::where('id', $request->reply_id)->firstOrFail();
+        $thread = $reply->thread ? $reply->thread : $reply;
+
+        if ($request->edit)
+        {
+            $reply->body = $request->body;
+            $reply->updated_user_id = $user->id;
+            $reply->save();
+        }
+        else
+        {
+            $new = new Message;
+            $new->body = $request->body;
+            $new->reply_id = $request->reply_id;
+            $new->message_id = $thread->id;
+            $new->user_id = $user->id;
+            $new->save();
+
+            Follow::create([ 'user_id' => $user->id, 'message_id' => $thread->id ]);
+        }
+
+        $pager = Message::where('message_id', $thread->id)->paginate(10);
+
+        return [
+            'status' => 'ok',
+            'data' => [
+                'route' => $thread->route().'?page='.$pager->lastPage()
+            ]
+        ];
+    }
+
+    /**
      * forum yeni konu
      */
-    public static function threadNew()
+    public static function threadForm(int $id = 0)
     {
-        return view('forum.thread_new');
+        $categories = Category::orderBy('sort')->get();
+
+        if ($id)
+        {
+            $thread = Message::where('id', $id)->whereNull('message_id')->firstOrFail();
+
+            if (!$thread->authority())
+            {
+                return abort(403);
+            }
+        }
+        else
+        {
+            $thread = [];
+        }
+
+        return view('forum.thread_form', compact('categories', 'thread'));
+    }
+
+    /**
+     * forum konu oluşturma / güncelleme
+     */
+    public static function threadSave(ThreadRequest $request)
+    {
+        $user = auth()->user();
+
+        if ($request->id)
+        {
+            $thread = Message::where('id', $request->id)->whereNull('message_id')->firstOrFail();
+
+            if (!$thread->authority())
+            {
+                return abort(403);
+            }
+
+            $thread->subject = $request->subject;
+            $thread->body = $request->body;
+            $thread->updated_user_id = $user->id;
+            $thread->save();
+        }
+        else
+        {
+            $thread = new Message;
+            $thread->subject = $request->subject;
+            $thread->body = $request->body;
+            $thread->category_id = $request->category_id;
+            $thread->user_id = $user->id;
+
+            if ($request->question)
+            {
+                $thread->question = 'unsolved';
+            }
+
+            $thread->save();
+
+            Follow::create([ 'user_id' => $user->id, 'message_id' => $thread->id ]);
+        }
+
+        return [
+            'status' => 'ok',
+            'data' => [
+                'route' => $thread->route()
+            ]
+        ];
+    }
+
+    /**
+     * forum mesaj önizleme
+     */
+    public static function messagePreview(PreviewRequest $request)
+    {
+        $parsedown = new Parsedown;
+        $parsedown->setSafeMode(true);
+
+        return [
+            'status' => 'ok',
+            'data' => [
+                'message' => $request->body ? nl2br($parsedown->text($request->body)) : 'Önizleme Yok'
+            ]
+        ];
     }
 
     /**
@@ -188,7 +349,7 @@ class ForumController extends Controller
                 'button'    => [
                     'action' => $thread->route(),
                     'text'   => 'Konuya Git',
-                    'class'  => 'btn waves-effect'
+                    'class'  => 'btn-flat waves-effect'
                 ]
             ]
         );
@@ -228,7 +389,7 @@ class ForumController extends Controller
                 'button'    => [
                     'action' => $thread->route(),
                     'text'   => 'Konuya Git',
-                    'class'  => 'btn waves-effect'
+                    'class'  => 'btn-flat waves-effect'
                 ]
             ]
         );
@@ -340,7 +501,7 @@ class ForumController extends Controller
                 'button'    => [
                     'action' => $thread->route(),
                     'text'   => 'Konuya Git',
-                    'class'  => 'btn waves-effect'
+                    'class'  => 'btn-flat waves-effect'
                 ]
             ]
         );
@@ -417,7 +578,7 @@ class ForumController extends Controller
                 'button'    => [
                     'action' => $message->thread->route(),
                     'text'   => 'Konuya Git',
-                    'class'  => 'btn waves-effect'
+                    'class'  => 'btn-flat waves-effect'
                 ]
             ]
         );

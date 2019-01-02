@@ -8,13 +8,8 @@ use Parsedown;
 class Message extends Model
 {
     protected $table = 'forum_messages';
-    protected $fillable = [
-    	'subject',
-    	'body',
-    	'question'
-    ];
 
-    # user
+    # route
     public function route()
     {
         return route('forum.thread', [
@@ -28,6 +23,12 @@ class Message extends Model
     public function user()
     {
         return $this->hasOne('App\Models\User\User', 'id', 'user_id');
+    }
+
+    # updated user
+    public function updatedUser()
+    {
+        return $this->hasOne('App\Models\User\User', 'id', 'updated_user_id');
     }
 
     # category
@@ -57,8 +58,9 @@ class Message extends Model
     public function markdown()
     {
         $parsedown = new Parsedown;
+        $parsedown->setSafeMode(true);
 
-        return $parsedown->text($this->body);
+        return nl2br($parsedown->text($this->body));
     }
 
     /**

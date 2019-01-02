@@ -402,7 +402,7 @@
 
     @auth
         <div class="fixed-action-btn">
-            <a data-trigger="module-search" id="search-trigger" class="btn-floating btn-large red darken-4 waves-effect" data-tooltip="Modül Ara (CTRL + G)" data-position="left">
+            <a data-trigger="module-search" id="search-trigger" class="btn-floating btn-large red darken-2 waves-effect" data-tooltip="Modül Ara (CTRL + G)" data-position="left">
                 <i class="material-icons">search</i>
             </a>
         </div>

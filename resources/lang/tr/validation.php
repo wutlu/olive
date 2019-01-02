@@ -235,5 +235,7 @@ return [
         'visibility'                   => 'Görünürlük',
         'sort'                         => 'Sıra',
         'category_id'                  => 'Kategori',
+        'thread_id'                    => 'Konu',
+        'reply_id'                     => 'Cevap',
     ],
 ];

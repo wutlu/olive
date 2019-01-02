@@ -22,6 +22,9 @@ $factory->define(App\Models\Forum\Message::class, function (Faker $faker) {
         	$faker->text(100)
         ]),
         'category_id' => 1,
-        'user_id' => 1
+        'user_id' => 1,
+        'hit' => 0,
+        'closed' => false,
+        'static' => false
     ];
 });
