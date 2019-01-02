@@ -377,10 +377,12 @@ class UserController extends Controller
         $user->verified = $request->verified ? true : false;
         $user->avatar = $request->avatar ? null : $user->avatar;
         $user->root = $request->root ? true : false;
+        $user->moderator = $request->moderator ? true : false;
         $user->save();
 
         return [
-            'status' => 'ok'
+            'status' => 'ok',
+            'data' => $user
         ];
     }
 

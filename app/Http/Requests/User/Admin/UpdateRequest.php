@@ -25,14 +25,14 @@ class UpdateRequest extends FormRequest
     public function rules(IdRequest $request)
     {
         return [
-            'id'       => 'required|integer|exists:users,id',
-            'name'     => 'required|string|max:100',
-            'root'     => 'nullable|string|in:on',
-            'password' => 'nullable|string|max:32',
-            'email'    => 'required|email|unique:users,email,'.$request->id,
-            'verified' => 'nullable|string|in:on',
-            'avatar'   => 'nullable|string|in:on',
-            'root'     => 'nullable|string|in:on'
+            'id'        => 'required|integer|exists:users,id',
+            'name'      => 'required|string|max:100',
+            'root'      => 'nullable|string|in:on',
+            'password'  => 'nullable|string|max:32',
+            'email'     => 'required|email|unique:users,email,'.$request->id,
+            'verified'  => 'nullable|string|in:on',
+            'avatar'    => 'nullable|string|in:on',
+            'moderator' => 'nullable|string|in:on',
         ];
     }
 }

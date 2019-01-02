@@ -638,6 +638,7 @@
     var buttons = {!! json_encode(__('global.keywords')) !!};
     var errors = {!! json_encode(__('global.errors')) !!};
     var keywords = {!! json_encode(__('global.keywords')) !!};
+    var verifications = {!! json_encode(__('global.verifications')) !!};
     var date = {!! json_encode(__('global.date')) !!};
     </script>
     <!-- master scripts -->

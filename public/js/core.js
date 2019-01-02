@@ -873,6 +873,24 @@ function vzAjax(__)
                 eval(callback)(__, obj);
             }
 
+            if (obj.verification)
+            {
+                var mdl = modal({
+                        'id': 'alert',
+                        'title': keywords.verification,
+                        'body': verifications[obj.verification],
+                        'size': 'modal-small',
+                        'options': {},
+                        'footer': [
+                            $('<a />', {
+                                'href': '#',
+                                'class': 'modal-close waves-effect btn-flat cyan-text',
+                                'html': buttons.ok
+                            })
+                        ]
+                    });
+            }
+
             __result(__)
             timeAgo()
         }

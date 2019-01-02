@@ -14,6 +14,9 @@ Route::namespace('Forum')->prefix('forum')->group(function () {
     Route::post('konu', 'ForumController@threadSave');
     Route::post('cevap', 'ForumController@replySave')->name('forum.reply.submit');
 
+    Route::post('cevap/{id}', 'ForumController@replyGet')->name('forum.reply.get');
+    Route::post('cevap/guncelle', 'ForumController@replyUpdate')->name('forum.reply.update');
+
     Route::post('mesaj/onizleme', 'ForumController@messagePreview')->name('forum.message.preview');
 
     Route::post('durum', 'ForumController@threadStatus')->name('forum.thread.status');

@@ -15,6 +15,24 @@
     ]
 ])
 
+@push('external.include.header')
+    <meta name="description" content="{{ str_limit($thread->body, 255) }}" />
+
+    <meta property="og:title" content="{{ $thread->subject }}">
+    <meta property="og:description" content="{{ str_limit($thread->body, 255) }}" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="{{ url()->full() }}" />
+    <meta property="og:image" content="{{ asset('img/olive-twitter-card.png?v='.config('app.version')) }}" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="{{ url()->full() }}" />
+    <meta name="twitter:title" content="{{ $thread->subject }}" />
+    <meta name="twitter:description" content="{{ str_limit($thread->body, 255) }}" />
+    <meta name="twitter:image" content="{{ asset('img/olive-twitter-card.png?v='.config('app.version')) }}" />
+
+    <link rel="stylesheet" href="{{ asset('css/highlight.min.css?v='.config('app.version')) }}" />
+@endpush
+
 @section('wildcard')
     <div class="card wild-background">
         @auth
@@ -42,7 +60,28 @@
     </div>
 @endsection
 
+@push('local.styles')
+    textarea {
+        border-width: 0 !important;
+        box-shadow: none !important;
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    .textarea-content {
+        padding: 12px 24px !important;
+    }
+@endpush
+
 @push('local.scripts')
+    function __vote(__, obj)
+    {
+        if (obj.status == 'ok')
+        {
+            $('[data-id=message-' + obj.data.id + ']').find('[data-name=vote]').html(obj.data.vote)
+        }
+    }
+
     @auth
         @if (auth()->user()->root || auth()->user()->moderator)
             $(document).on('click', '[data-trigger=delete]', function() {
@@ -309,36 +348,211 @@
                 $('#modal-spam').modal('close')
             }
         }
-    @endauth
 
-    function __vote(__, obj)
-    {
-        if (obj.status == 'ok')
-        {
-            $('[data-id=message-' + obj.data.id + ']').find('[data-name=vote]').html(obj.data.vote)
-        }
-    }
+        $('[data-button=reply]').click(function() {
+            var __ = $(this);
 
-    $('[data-button=reply]').click(function() {
-        var __ = $(this);
+            scrollTo({
+                'target': '[data-section=reply]',
+                'tolerance': '-96px'
+            })
 
-        scrollTo({
-            'target': '[data-section=reply]',
-            'tolerance': '-96px'
+            $('input[name=reply_id]').val(__.data('id'))
+
+            if (__.data('quote') && __.data('quote') != {{ $thread->id }})
+            {
+                var markdown = eval(element('[data-original-source=' + __.data('quote') + ']'));
+
+                $('[data-section=quote]').removeClass('hide').find('.markdown').html(markdown.html())
+            }
+            else
+            {
+                $('[data-section=quote]').addClass('hide')
+            }
+
+            setTimeout(function() {
+                $('textarea[name=body]').focus()
+            }, 500)
         })
 
-        $('input[name=reply_id]').val(__.data('id'))
+        $(document).on('click', '[data-section=quote] [data-name=close]', function() {
+            var __ = $(this);
+                __.closest('.card-content').addClass('hide')
+            $('input[name=reply_id]').val('{{ $thread->id }}')
+        })
 
-        if (__.data('quote'))
+        function __submit(__, obj)
         {
-            var markdown = eval(element('[data-quote-source=' + __.data('quote') + ']'));
+            if (obj.status == 'ok')
+            {
+                M.toast({ html: 'Cevap Ekleniyor...', classes: 'green darken-2' })
 
-            $('[data-section=quote]').removeClass('hide').find('.markdown').html(markdown)
+                $('textarea[name=body]').val('')
+                $('input[name=reply_id]').val('{{ $thread->id }}')
+
+                history.pushState(null, null, '{{ $thread->route() }}?page=' + obj.data.last_page + '#message-' + obj.data.id);
+                location.reload()
+            }
         }
-        else
+
+        function __preview(__, obj)
         {
-            $('[data-section=quote]').addClass('hide')
+            if (obj.status == 'ok')
+            {
+                __.children('.markdown').html(obj.data.message)
+
+                $('code').each(function(i, block) {
+                    hljs.highlightBlock(block);
+                })
+            }
         }
+
+        $(document).ready(function() {
+            $('.tabs').tabs({
+                onShow: function(e) {
+                    if (e.id == 'preview')
+                    {
+                        vzAjax($('#preview'))
+                    }
+                }
+            })
+
+            $('input[name=subject], textarea[name=body]').characterCounter()
+        })
+
+        function __reply_update(__, obj)
+        {
+            if (obj.status == 'ok')
+            {
+                var original_source = $('[data-original-source=' + obj.data.id + ']');
+                    original_source.removeClass('hide')
+                    original_source.html(obj.data.body)
+
+                var live_form = original_source.next('#reply-form-' + obj.data.id);
+                    live_form.addClass('hide')
+
+                M.toast({ html: 'Cevap Güncellendi', classes: 'green darken-2' })
+            }
+        }
+
+        $(document).on('click', '[data-trigger=reply_get-cancel]', function() {
+            var __ = $(this);
+
+            var original_source = $('[data-original-source=' + __.data('id') + ']');
+                original_source.removeClass('hide')
+
+            var live_form = original_source.next('#reply-form-' + __.data('id'));
+                live_form.addClass('hide')
+        })
+
+        function __reply_get(__, obj)
+        {
+            if (obj.status == 'ok')
+            {
+                var form = $('<form />', {
+                    'id': 'reply-form-' + obj.data.id,
+                    'class': 'json',
+                    'method': 'post',
+                    'action': '{{ route('forum.reply.update') }}',
+                    'data-id': obj.data.id,
+                    'data-callback': '__reply_update',
+                    'html': $('<div />', {
+                        'class': 'card',
+                        'html': [
+                            $('<div />', {
+                                'class': 'card-content textarea-content',
+                                'html': $('<div />', {
+                                    'class': 'input-field',
+                                    'html': [
+                                        $('<textarea />', {
+                                            'id': 'body-' + obj.data.id,
+                                            'name': 'body',
+                                            'class': 'materialize-textarea validate',
+                                            'data-length': 5000,
+                                            'html': obj.data.body
+                                        }),
+                                        $('<label />', {
+                                            'for': 'body-' + obj.data.id,
+                                            'html': 'Cevap İçeriği'
+                                        }),
+                                        $('<div />', {
+                                            'class': 'helper-text'
+                                        }),
+                                        $('<small />', {
+                                            'class': 'grey-text',
+                                            'html': 'Bu alanda <a href="https://guides.github.com/features/mastering-markdown/" target="_blank">Markdown</a> kullanabilirsiniz.'
+                                        })
+                                    ]
+                                })
+                            }),
+                            $('<div />', {
+                                'class': 'card-action right-align',
+                                'html': [
+                                    $('<button />', {
+                                        'type': 'button',
+                                        'data-trigger': 'reply_get-cancel',
+                                        'data-id': obj.data.id,
+                                        'class': 'btn-flat waves-effect',
+                                        'html': $('<i />', {
+                                            'class': 'material-icons',
+                                            'html': 'close'
+                                        })
+                                    }),
+                                    $('<span />', {
+                                        'html': ' '
+                                    }),
+                                    $('<button />', {
+                                        'type': 'submit',
+                                        'class': 'btn-flat waves-effect',
+                                        'html': $('<i />', {
+                                            'class': 'material-icons',
+                                            'html': 'send'
+                                        })
+                                    })
+                                ]
+                            })
+                        ]
+                    })
+                })
+
+                var original_source = $('[data-original-source=' + obj.data.id + ']');
+                    original_source.addClass('hide')
+
+                var live_form = original_source.next('#reply-form-' + obj.data.id);
+
+                if (live_form.length)
+                {
+                    live_form.removeClass('hide')
+                    live_form.find('textarea[name=body]').val(obj.data.body)
+                }
+                else
+                {
+                    original_source.after(form)
+                }
+
+                $('textarea[name=body]').characterCounter()
+
+                M.textareaAutoResize($('textarea#body-' + obj.data.id))
+            }
+        }
+    @endauth
+
+    var hash = window.location.hash.substr(1);
+
+    if (hash)
+    {
+        $(window).on('load', function() {
+            scrollTo({
+                'target': '#' + hash,
+                'tolerance': '-72px'
+            })
+
+            $('[data-id=' + hash + ']').hide().show('highlight', {}, 4000)
+        })
+    }
+
+    $('code').each(function(i, block) {
+        hljs.highlightBlock(block);
     })
 @endpush
 
@@ -352,14 +566,22 @@
             @forelse ($messages as $message)
                 @auth
                     <ul id="thread-menu-{{ $message->id }}" class="dropdown-content">
+                        <li data-button="reply" data-quote="{{ $message->id }}" data-id="{{ $message->id }}" class="{{ $thread->closed ? 'hide' : '' }}">
+                            <a href="#" class="waves-effect">Cevapla</a>
+                        </li>
                         @if ($message->message_id)
                             <li>
-                                <a href="#" class="waves-effect">Güncelle</a>
+                                <a
+                                    href="#"
+                                    class="waves-effect json"
+                                    data-callback="__reply_get"
+                                    data-method="post"
+                                    data-href="{{ route('forum.reply.get', $message->id) }}">Düzenle</a>
                             </li>
                         @else
                             @if ($message->authority())
                                <li>
-                                   <a href="{{ route('forum.thread.form', $thread->id) }}" class="waves-effect">Güncelle</a>
+                                   <a href="{{ route('forum.thread.form', $thread->id) }}" class="waves-effect">Düzenle</a>
                                </li>
                             @endif
                             @if ($message->authority(false))
@@ -381,15 +603,11 @@
                             </li>
                         @endif
 
-                            @if (auth()->user()->id != $message->user_id)
-                                <li>
-                                    <a href="#" class="waves-effect" data-trigger="spam" data-id="{{ $message->id }}">Spam Bildir</a>
-                                </li>
-                            @endif
-
-                            <li data-button="reply" data-quote="{{ $message->id }}" data-id="{{ $message->id }}" class="{{ $thread->closed ? 'hide' : '' }}">
-                                <a href="#" class="waves-effect">Cevapla</a>
+                        @if (auth()->user()->id != $message->user_id)
+                            <li>
+                                <a href="#" class="waves-effect" data-trigger="spam" data-id="{{ $message->id }}">Spam Bildir</a>
                             </li>
+                        @endif
 
                         @if (@$message->thread->question)
                             @if ($message->authority())
@@ -461,8 +679,8 @@
                     </div>
                 </div>
 
-                @if ($message->reply_id && $message->reply_id != $thread->id)
-                    <div class="card-content">
+                @if ($message->reply_id)
+                    <div data-id="message-{{ $message->id }}" class="card-content">
                         <blockquote>
                             <div class="markdown">{!! $message->reply->markdown() !!}</div>
                             <cite class="d-block right-align">
@@ -473,7 +691,7 @@
                     </div>
                 @endif
                 <div data-id="message-{{ $message->id }}" class="card-content">
-                    <div class="markdown" data-quote-source="{{ $message->id }}"> 
+                    <div class="markdown" data-original-source="{{ $message->id }}"> 
                         {!! $message->markdown() !!}
                     </div>
 
@@ -534,8 +752,8 @@
                     </blockquote>
                 </div>
 
-                <div class="card-tabs">
-                    <ul class="tabs">
+                <div class="card-tabs teal">
+                    <ul class="tabs tabs-transparent">
                         <li class="tab">
                             <a href="#textarea" class="waves-effect active">Cevapla</a>
                         </li>
@@ -562,8 +780,8 @@
                     style="display: none;">
                     <div class="markdown"></div>
                 </div>
-                <div class="card-action right-align">
-                    <button type="submit" class="btn-flat waves-effect">
+                <div class="card-action right-align teal">
+                    <button type="submit" class="btn-flat waves-effect white-text">
                         <i class="material-icons">send</i>
                     </button>
                 </div>
@@ -572,114 +790,7 @@
     @endauth
 @endsection
 
-@push('local.styles')
-    textarea {
-        border-width: 0 !important;
-        box-shadow: none !important;
-        margin-top: 0;
-        margin-bottom: 0;
-        min-height: 200px !important;
-    }
-
-    .textarea-content {
-        padding: 12px 24px !important;
-    }
-@endpush
-
-@push('external.include.header')
-    <link rel="stylesheet" href="{{ asset('css/highlight.min.css?v='.config('app.version')) }}" />
-@endpush
-
-@push('external.include.footer')
-    <script src="{{ asset('js/highlight.min.js?v='.config('app.version')) }}"></script>
-@endpush
-
-@push('external.include.header')
-    <meta name="description" content="{{ str_limit($thread->body, 255) }}" />
-
-    <meta property="og:title" content="{{ $thread->subject }}">
-    <meta property="og:description" content="{{ str_limit($thread->body, 255) }}" />
-    <meta property="og:type" content="article" />
-    <meta property="og:url" content="{{ url()->full() }}" />
-    <meta property="og:image" content="{{ asset('img/olive-twitter-card.png?v='.config('app.version')) }}" />
-
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="{{ url()->full() }}" />
-    <meta name="twitter:title" content="{{ $thread->subject }}" />
-    <meta name="twitter:description" content="{{ str_limit($thread->body, 255) }}" />
-    <meta name="twitter:image" content="{{ asset('img/olive-twitter-card.png?v='.config('app.version')) }}" />
-
-    <link rel="stylesheet" href="{{ asset('css/highlight.min.css?v='.config('app.version')) }}" />
-@endpush
-
 @push('external.include.footer')
     <script src="{{ asset('js/highlight.min.js?v='.config('app.version')) }}"></script>
     <script src="{{ asset('js/jquery.ui.min.js?v='.config('app.version')) }}"></script>
-@endpush
-
-@push('local.scripts')
-    @auth
-        $(document).on('click', '[data-section=quote] [data-name=close]', function() {
-            var __ = $(this);
-                __.closest('.card-content').addClass('hide')
-            $('input[name=reply_id]').val('{{ $thread->id }}')
-        })
-    @endauth
-
-    var hash = window.location.hash.substr(1);
-
-    if (hash)
-    {
-        $(window).on('load', function() {
-            scrollTo({
-                'target': '#' + hash,
-                'tolerance': '-72px'
-            })
-
-            $('[data-id=' + hash + ']').hide().show('highlight', {}, 4000)
-        })
-    }
-
-    function __submit(__, obj)
-    {
-        if (obj.status == 'ok')
-        {
-            M.toast({ html: 'Cevap Ekleniyor...', classes: 'green darken-2' })
-
-            $('textarea[name=body]').val('')
-            $('input[name=reply_id]').val('{{ $thread->id }}')
-
-            history.pushState(null, null, '{{ $thread->route() }}?page=' + obj.data.last_page + '#message-' + obj.data.id);
-            location.reload()
-        }
-    }
-
-    function __preview(__, obj)
-    {
-        if (obj.status == 'ok')
-        {
-            __.children('.markdown').html(obj.data.message)
-
-            $('code').each(function(i, block) {
-                hljs.highlightBlock(block);
-            })
-        }
-    }
-
-    $(document).ready(function() {
-        $('.tabs').tabs({
-            onShow: function(e) {
-                if (e.id == 'preview')
-                {
-                    vzAjax($('#preview'))
-                }
-            }
-        })
-
-        $('input[name=subject], textarea[name=body]').characterCounter()
-    })
-
-    $('code').each(function(i, block) {
-        hljs.highlightBlock(block);
-    })
 @endpush

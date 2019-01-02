@@ -70,7 +70,8 @@
                     @component('components.nothing')
                         @slot('cloud', 'cloud_off')
                         @slot('sun', 'sentiment_very_dissatisfied')
-                        @slot('text', 'İlgili konu kapandığından, güncelleyemezsiniz.')
+                        @slot('text', 'İlgili konu kapandığından, güncelleme yapamazsınız!')
+                        @slot('text_class', 'red-text')
                     @endcomponent
                 </div>
             @endif
@@ -90,7 +91,7 @@
                     </div>
                 @endif
             </div>
-            <div class="card-tabs red">
+            <div class="card-tabs">
                 <ul class="tabs">
                     <li class="tab">
                         <a href="#textarea" class="active">Konu İçeriği</a>
@@ -128,7 +129,7 @@
 @if (!$thread)
     @section('dock')
         <div class="card">
-            <div class="card-content red">
+            <div class="card-content teal">
                 <span class="card-title white-text mb-0">Kategori</span>
             </div>
             <div class="collection">

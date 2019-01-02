@@ -23,7 +23,7 @@
             $('input[name=password]').val('')
             $('input[name=avatar]').prop('checked', false)
 
-            $('img.user-avatar').attr('src', '{{ asset('img/icons/people.png') }}')
+            $('img.user-avatar').attr('src', obj.data.avatar ? '{{ url('/') }}/' + obj.data.avatar : '{{ asset('img/icons/people.png') }}')
 
             M.toast({
                 html: 'Kullanıcı Bilgileri Güncellendi',
@@ -93,6 +93,10 @@
                     <label class="collection-item waves-effect d-block">
                         <input name="root" id="root" value="on" type="checkbox" {{ $user->root() ? 'checked' : '' }} />
                         <span>Yönetici</span>
+                    </label>
+                    <label class="collection-item waves-effect d-block">
+                        <input name="moderator" id="moderator" value="on" type="checkbox" {{ $user->moderator() ? 'checked' : '' }} />
+                        <span>Moderatör</span>
                     </label>
                 </div>
             </div>

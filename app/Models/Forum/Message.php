@@ -8,6 +8,9 @@ use Term;
 class Message extends Model
 {
     protected $table = 'forum_messages';
+    protected $fillable = [
+        'question'
+    ];
 
     # route
     public function route()

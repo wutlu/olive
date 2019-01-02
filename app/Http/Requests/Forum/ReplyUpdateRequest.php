@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Validator;
 use App\Models\Forum\Message;
 
-class ThreadRequest extends FormRequest
+class ReplyUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,7 +27,7 @@ class ThreadRequest extends FormRequest
     public function messages()
     {
         return [
-            'lock' => 'İlgili konu kapandığından, güncelleme yapamazsınız!'
+            'lock' => 'İlgili konu kapandığından, güncelleme yapamazsınız.',
         ];
     }
 
@@ -39,15 +39,15 @@ class ThreadRequest extends FormRequest
     public function rules()
     {
         Validator::extend('lock', function($attribute, $id) {
-            return Message::where('id', $id)->whereNull('message_id')->value('closed') ? false : true;
+            $reply = Message::where('id', $id)->first();
+            $reply = $reply->message_id ? $reply->thread : $reply;
+
+            return $reply->closed ? false : true;
         });
 
         return [
-            'id' => 'sometimes|required|integer|exists:forum_messages,id|lock',
-            'subject' => 'required|string|max:64',
-            'body' => 'required|string|max:5000|min:24',
-            'category_id' => 'sometimes|required|integer|exists:forum_categories,id',
-            'question' => 'nullable|string|in:on'
+            'id' => 'bail|required|integer|exists:forum_messages,id|lock',
+            'body' => 'required|string|max:5000|min:10'
         ];
     }
 }

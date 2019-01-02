@@ -12,7 +12,8 @@ return [
         'update' => 'Güncelle',
         'info' => 'Bilgi',
         'login' => 'Giriş',
-        'remove' => 'Sil'
+        'remove' => 'Sil',
+        'verification' => 'Doğrulama'
     ],
     'errors' => [
         'disconnected' => 'İnternete bağlı değilsiniz.',
@@ -20,7 +21,10 @@ return [
         'calm' => 'Çok fazla işlem yaptınız. Lütfen bir kaç dakika sonra tekrar deneyin.',
         'notfound' => 'Kaynağa erişilemiyor.',
         'exited' => 'Oturumunuz sona erdi. Lütfen tekrar giriş yapın.',
-        'permission' => 'Bu işlemi yapmak için henüz yetkiniz yok.'
+        'permission' => 'Bu işlemi yapmak için yetkiniz yok.'
+    ],
+    'verifications' => [
+        'email' => 'E-posta adresinizi doğrulamadan bu işlemi gerçekleştiremezsiniz.'
     ],
     'date' => [
         'timeago' => [

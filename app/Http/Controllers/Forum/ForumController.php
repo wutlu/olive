@@ -18,7 +18,8 @@ use App\Http\Requests\Forum\PreviewRequest;
 use App\Http\Requests\Forum\MoveRequest;
 use App\Http\Requests\Forum\VoteRequest;
 use App\Http\Requests\Forum\ThreadRequest;
-use App\Http\Requests\Forum\ReplyRequest;
+use App\Http\Requests\Forum\ReplyCreateRequest;
+use App\Http\Requests\Forum\ReplyUpdateRequest;
 
 use App\Utilities\UserActivityUtility;
 
@@ -39,16 +40,28 @@ class ForumController extends Controller
             'messageSpam',
             'threadForm',
             'threadSave',
-            'messagePreview'
+            'replySave',
+            'threadMove',
+            'messagePreview',
         ]);
 
         $this->middleware('throttle:10,1')->only([
             'messageVote',
-            'messageSpam'
+            'messageSpam',
         ]);
 
-        $this->middleware('throttle:5,10')->only([
-            'threadSave'
+        $this->middleware('throttle:10,10')->only([
+            'threadSave',
+            'replySave',
+        ]);
+
+        $this->middleware('verification.email')->only([
+            'replySave',
+            'replyGet',
+            'replyUpdate',
+            'threadSave',
+            'threadFollow',
+            'messageBestAnswer',
         ]);
     }
 
@@ -65,7 +78,7 @@ class ForumController extends Controller
     /**
      * forum cevap ekleme
      */
-    public static function replySave(ReplyRequest $request)
+    public static function replySave(ReplyCreateRequest $request)
     {
         $user = auth()->user();
 
@@ -99,6 +112,49 @@ class ForumController extends Controller
             'data' => [
                 'id' => $new->id,
                 'last_page' => $paginate->lastPage()
+            ]
+        ];
+    }
+
+    /**
+     * forum cevap json
+     */
+    public static function replyGet(int $id)
+    {
+        $reply = Message::select('id', 'body', 'user_id')->where('id', $id)->whereNotNull('message_id')->firstOrFail();
+
+        if (!$reply->authority())
+        {
+            return abort(403);
+        }
+
+        return [
+            'status' => 'ok',
+            'data' => $reply
+        ];
+    }
+
+    /**
+     * forum cevap güncelle
+     */
+    public static function replyUpdate(ReplyUpdateRequest $request)
+    {
+        $reply = Message::select('id', 'body', 'user_id')->where('id', $request->id)->whereNotNull('message_id')->firstOrFail();
+
+        if (!$reply->authority())
+        {
+            return abort(403);
+        }
+
+        $reply->body = $request->body;
+        $reply->updated_user_id = auth()->user()->id;
+        $reply->save();
+
+        return [
+            'status' => 'ok',
+            'data' => [
+                'id' => $reply->id,
+                'body' => $reply->markdown()
             ]
         ];
     }
@@ -313,7 +369,7 @@ class ForumController extends Controller
             [
                 'key'       => implode('-', [ 'thread', 'status', $thread->id ]),
                 'icon'      => $thread->closed ? 'lock' : 'lock_open',
-                'markdown'  => '"'.$thread->subject.'" başlıklı konunuz, '.auth()->user()->name.' tarafından '.($thread->closed ? 'kapatıldı' : 'açıldı').'.',
+                'markdown'  => '"'.$thread->subject.'" başlıklı konunuz, ['.auth()->user()->name.']('.route('user.profile', auth()->user()->id).') tarafından '.($thread->closed ? 'kapatıldı' : 'açıldı').'.',
                 'user_id'   => $thread->user_id,
                 'push'      => true,
                 'button'    => [
@@ -353,7 +409,7 @@ class ForumController extends Controller
             [
                 'key'       => implode('-', [ 'thread', 'static', $thread->id ]),
                 'icon'      => 'terrain',
-                'markdown'  => auth()->user()->name.', "'.$thread->subject.'" başlıklı '.($thread->static ? 'konunuzu sabitledi' : 'konunuzun sabitliği kaldırdı').'.',
+                'markdown'  => '['.auth()->user()->name.']('.route('user.profile', auth()->user()->id).'), "'.$thread->subject.'" başlıklı '.($thread->static ? 'konunuzu sabitledi' : 'konunuzun sabitliği kaldırdı').'.',
                 'user_id'   => $thread->user_id,
                 'push'      => true,
                 'button'    => [
@@ -404,7 +460,7 @@ class ForumController extends Controller
             [
                 'key'       => implode('-', [ 'message', 'delete', $message->id ]),
                 'icon'      => 'delete',
-                'markdown'  => auth()->user()->name.', "'.($subject).'" başlıklı '.($message->message_id ? 'konuya verdiğiniz bir cevabı' : 'konunuzu').' sildi.',
+                'markdown'  => '['.auth()->user()->name.']('.route('user.profile', auth()->user()->id).'), "'.($subject).'" başlıklı '.($message->message_id ? 'konuya verdiğiniz bir cevabı' : 'konunuzu').' sildi.',
                 'user_id'   => $message->user_id,
                 'push'      => true
             ]
@@ -519,22 +575,28 @@ class ForumController extends Controller
     public static function messageBestAnswer(IdRequest $request)
     {
         $message = Message::where('id', $request->id)->whereNotNull('message_id')->firstOrFail();
+        $thread = $message->thread;
 
-        if (!$message->thread->authority())
+        if (!$thread->question)
+        {
+            return abort(404);
+        }
+
+        if (!$thread->authority())
         {
             return abort(403);
         }
 
         Message::where('message_id', $message->message_id)->update([ 'question' => null ]);
 
-        $message->thread->update([ 'question' => 'solved' ]);
+        $thread->update([ 'question' => 'solved' ]);
         $message->update([ 'question' => 'check' ]);
 
         $user = auth()->user();
 
         $data[] = '| Durum              | Sonuç                                                                               |';
         $data[] = '| -----------------: |:----------------------------------------------------------------------------------- |';
-        $data[] = '| İlgili Konu        | ['.$message->thread->subject.']('.$message->thread->route().')                      |';
+        $data[] = '| İlgili Konu        | ['.$thread->subject.']('.$thread->route().')                      |';
         $data[] = '| Seçimi Yapan       | ['.$user->name.']('.route('user.profile', $user->id).')                             |';
 
         UserActivityUtility::push(
@@ -546,7 +608,7 @@ class ForumController extends Controller
                 'user_id'   => $message->user_id,
                 'push'      => true,
                 'button'    => [
-                    'action' => $message->thread->route(),
+                    'action' => $thread->route(),
                     'text'   => 'Konuya Git',
                     'class'  => 'btn-flat waves-effect'
                 ]

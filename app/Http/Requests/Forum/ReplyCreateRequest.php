@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Validator;
 use App\Models\Forum\Message;
 
-class ReplyRequest extends FormRequest
+class ReplyCreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,7 +27,7 @@ class ReplyRequest extends FormRequest
     public function messages()
     {
         return [
-            'lock' => 'İlgili konu kapandığından, cevap ekleyemezsiniz.'
+            'lock' => 'İlgili konu kapandığından, cevap ekleyemezsiniz.',
         ];
     }
 
