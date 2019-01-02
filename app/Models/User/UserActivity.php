@@ -3,8 +3,7 @@
 namespace App\Models\User;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Utilities\Term;
-use Parsedown;
+use Term;
 
 class UserActivity extends Model
 {
@@ -24,8 +23,6 @@ class UserActivity extends Model
 
     public function getMarkdownAttribute($value)
     {
-    	$parsedown = new Parsedown;
-
-    	return $parsedown->text($value);
+    	return Term::markdown($value);
     }
 }

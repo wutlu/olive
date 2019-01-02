@@ -109,7 +109,8 @@ function scrollTo(scrollTo)
 {
     var target = eval(element(scrollTo.target));
 
-    if (target.length) {
+    if (target.length)
+    {
         var offset = target.offset();
 
         setTimeout(function() {
@@ -538,7 +539,7 @@ $.ajaxSetup({
         'X-CSRF-TOKEN': token,
         'X-AJAX': true
     }
-});
+})
 
 var error_timer;
 

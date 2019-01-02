@@ -368,8 +368,8 @@
             <span class="card-title white-text mb-0">Kelime Grupları</span>
         </div>
         <div class="card-image">
-            <a href="#" class="btn-floating halfway-fab waves-effect white" data-trigger="create-keyword-group">
-                <i class="material-icons black-text">add</i>
+            <a href="#" class="btn-floating halfway-fab waves-effect white black-text" data-trigger="create-keyword-group">
+                <i class="material-icons">add</i>
             </a>
         </div>
         <div class="card-content">

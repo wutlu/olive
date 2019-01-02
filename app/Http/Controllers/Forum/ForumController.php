@@ -24,7 +24,7 @@ use App\Utilities\UserActivityUtility;
 
 use Validator;
 use Cookie;
-use Parsedown;
+use Term;
 
 class ForumController extends Controller
 {
@@ -39,8 +39,7 @@ class ForumController extends Controller
             'messageSpam',
             'threadForm',
             'threadSave',
-            'messagePreview',
-            'replyForm',
+            'messagePreview'
         ]);
 
         $this->middleware('throttle:10,1')->only([
@@ -48,7 +47,7 @@ class ForumController extends Controller
             'messageSpam'
         ]);
 
-        $this->middleware('throttle:10,10')->only([
+        $this->middleware('throttle:5,10')->only([
             'threadSave'
         ]);
     }
@@ -64,68 +63,42 @@ class ForumController extends Controller
     }
 
     /**
-     * forum yeni cevap
-     */
-    public static function replyForm(int $reply_id)
-    {
-        $reply = Message::where('id', $reply_id)->firstOrFail();
-        $thread = $reply->thread ? $reply->thread : $reply;
-
-        return view('forum.reply_form', compact('reply', 'thread'));
-    }
-
-    /**
-     * forum cevap güncelle
-     */
-    public static function replyEditForm(int $id)
-    {
-        $reply = Message::where('id', $id)->firstOrFail();
-        $thread = $reply->thread ? $reply->thread : $reply;
-
-        if (!$reply->authority())
-        {
-            return abort(403);
-        }
-
-        $edit = true;
-
-        return view('forum.reply_form', compact('reply', 'thread', 'edit'));
-    }
-
-    /**
-     * forum cevap oluşturma / güncelleme
+     * forum cevap ekleme
      */
     public static function replySave(ReplyRequest $request)
     {
         $user = auth()->user();
 
         $reply = Message::where('id', $request->reply_id)->firstOrFail();
+
         $thread = $reply->thread ? $reply->thread : $reply;
+        $thread->updated_at = date('Y-m-d H:i:s');
+        $thread->save();
 
-        if ($request->edit)
+        $new = new Message;
+        $new->body = $request->body;
+
+        if ($request->reply_id != $thread->id)
         {
-            $reply->body = $request->body;
-            $reply->updated_user_id = $user->id;
-            $reply->save();
-        }
-        else
-        {
-            $new = new Message;
-            $new->body = $request->body;
             $new->reply_id = $request->reply_id;
-            $new->message_id = $thread->id;
-            $new->user_id = $user->id;
-            $new->save();
-
-            Follow::create([ 'user_id' => $user->id, 'message_id' => $thread->id ]);
         }
 
-        $pager = Message::where('message_id', $thread->id)->paginate(10);
+        $new->message_id = $thread->id;
+        $new->user_id = $user->id;
+        $new->save();
+
+        Follow::firstOrCreate([ 'user_id' => $user->id, 'message_id' => $thread->id ]);
+
+        $paginate = Message::where(function($query) use ($thread) {
+            $query->orWhere('id', $thread->id);
+            $query->orWhere('message_id', $thread->id);
+        })->orderBy('id', 'ASC')->paginate(10);
 
         return [
             'status' => 'ok',
             'data' => [
-                'route' => $thread->route().'?page='.$pager->lastPage()
+                'id' => $new->id,
+                'last_page' => $paginate->lastPage()
             ]
         ];
     }
@@ -206,13 +179,10 @@ class ForumController extends Controller
      */
     public static function messagePreview(PreviewRequest $request)
     {
-        $parsedown = new Parsedown;
-        $parsedown->setSafeMode(true);
-
         return [
             'status' => 'ok',
             'data' => [
-                'message' => $request->body ? nl2br($parsedown->text($request->body)) : 'Önizleme Yok'
+                'message' => $request->body ? Term::markdown($request->body) : 'Önizleme Yok'
             ]
         ];
     }

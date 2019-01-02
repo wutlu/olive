@@ -66,6 +66,15 @@
 }
 
 /**
+ * blockquote
+ */
+blockquote {
+  padding: 12px 24px;
+  border-width: .4rem;
+  border-color: #182334;
+}
+
+/**
  * window size
  */
 .window-size {
@@ -760,6 +769,13 @@ table.invoice tfoot > tr {
 .markdown > h5 { font-size: 1.4rem; }
 .markdown > h6 { font-size: 1rem; }
 
+.markdown a {
+  color: #6f42c1;
+}
+.markdown a:hover {
+  color: #6610f2;
+}
+
 /**
  * cards
  */
@@ -957,7 +973,7 @@ table.invoice tfoot > tr {
   background:    -moz-linear-gradient(45deg, #000000 0%, #009688 100%);
   background: -webkit-linear-gradient(45deg, #000000 0%, #009688 100%);
 
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#2488d5', GradientType=1 );
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#009688', GradientType=1 );
 
   background-repeat: no-repeat;
   background-size: cover;

@@ -33,8 +33,8 @@
                         <a href="{{ route('user.login') }}" class="waves-effect btn black-text white">@auth{{ 'Olive\'e Gidin'}}@else{{ 'Giriş Yapın' }}@endauth</a>
 
                         <div class="down-area center-align">
-                            <a href="#" class="waves-effect btn-large btn-floating pulse white">
-                                <i class="material-icons black-text">arrow_downward</i>
+                            <a href="#" class="waves-effect btn-large btn-floating pulse white black-text">
+                                <i class="material-icons">arrow_downward</i>
                             </a>
                         </div>
                     </div>

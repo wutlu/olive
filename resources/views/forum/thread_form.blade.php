@@ -90,8 +90,8 @@
                     </div>
                 @endif
             </div>
-            <div class="card-tabs teal accent-3">
-                <ul class="tabs tabs-transparent">
+            <div class="card-tabs red">
+                <ul class="tabs">
                     <li class="tab">
                         <a href="#textarea" class="active">Konu İçeriği</a>
                     </li>
@@ -104,7 +104,8 @@
                 <div class="input-field">
                     <textarea id="body" name="body" class="materialize-textarea validate" data-length="5000">{{ @$thread->body }}</textarea>
                     <label for="body">Konu İçeriği</label>
-                    <div class="helper-text">Bu alanda <a href="https://guides.github.com/features/mastering-markdown/" target="_blank">Markdown</a> kullanabilirsiniz.</div>
+                    <div class="helper-text"></div>
+                    <small class="grey-text">Bu alanda <a href="https://guides.github.com/features/mastering-markdown/" target="_blank">Markdown</a> kullanabilirsiniz.</small>
                 </div>
             </div>
             <div
@@ -117,7 +118,7 @@
                 style="display: none;">
                 <div class="markdown"></div>
             </div>
-            <div class="card-action right-align teal accent-3">
+            <div class="card-action right-align">
                 <button type="submit" class="btn-flat waves-effect">{{ $thread ? 'Güncelle' : 'Başlat' }}</button>
             </div>
         </div>
@@ -127,7 +128,7 @@
 @if (!$thread)
     @section('dock')
         <div class="card">
-            <div class="card-content teal accent-3">
+            <div class="card-content red">
                 <span class="card-title white-text mb-0">Kategori</span>
             </div>
             <div class="collection">

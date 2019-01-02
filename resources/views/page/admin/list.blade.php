@@ -20,8 +20,8 @@
     <div class="card">
         <div class="card-image">
             <img src="{{ asset('img/card-header.jpg') }}" alt="Sayfalar" />
-            <a href="{{ route('admin.page') }}" class="btn-floating btn-large halfway-fab waves-effect white">
-                <i class="material-icons black-text">add</i>
+            <a href="{{ route('admin.page') }}" class="btn-floating btn-large halfway-fab waves-effect white black-text">
+                <i class="material-icons">add</i>
             </a>
         </div>
         <div class="card-content">

@@ -30,7 +30,7 @@ class CreateForumMessagesTable extends Migration
             $table->unsignedInteger('message_id')->index()->nullable()->default(null);
             $table->unsignedInteger('reply_id')->index()->nullable()->default(null);
 
-            $table->unsignedInteger('hit')->>nullable()->default(null);
+            $table->unsignedInteger('hit')->nullable()->default(null);
             $table->integer('vote')->default(0);
             $table->unsignedInteger('spam')->default(0)->unsigned();
 

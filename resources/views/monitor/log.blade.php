@@ -148,11 +148,8 @@
             <img src="{{ asset('img/card-header.jpg') }}" alt="Log Ekranı" />
             <span class="card-title">Log Ekranı</span>
 
-            <a
-                href="#"
-                class="btn-floating btn-large halfway-fab waves-effect white"
-                data-trigger="clear">
-                <i class="material-icons black-text">clear_all</i>
+            <a href="#" class="btn-floating btn-large halfway-fab waves-effect white black-text" data-trigger="clear">
+                <i class="material-icons">clear_all</i>
             </a>
         </div>
         <ul

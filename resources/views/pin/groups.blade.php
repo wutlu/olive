@@ -209,8 +209,8 @@
         <div class="card-image">
             <img src="{{ asset('img/card-header.jpg') }}" alt="Pin Grupları" />
             <span class="card-title">Pin Grupları</span>
-            <a href="#" class="btn-floating btn-large halfway-fab waves-effect white" data-trigger="create-pin-group">
-                <i class="material-icons black-text">add</i>
+            <a href="#" class="btn-floating btn-large halfway-fab waves-effect white black-text" data-trigger="create-pin-group">
+                <i class="material-icons">add</i>
             </a>
         </div>
         <div class="card-content">

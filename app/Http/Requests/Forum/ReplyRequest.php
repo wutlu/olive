@@ -46,9 +46,8 @@ class ReplyRequest extends FormRequest
         });
 
         return [
-            'reply_id' => 'required|integer|exists:forum_messages,id|lock',
-            'body' => 'required|string|max:5000|min:10',
-            'edit' => 'sometimes|required|string|in:on'
+            'reply_id' => 'bail|required|integer|exists:forum_messages,id|lock',
+            'body' => 'required|string|max:5000|min:10'
         ];
     }
 }

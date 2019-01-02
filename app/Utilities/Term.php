@@ -53,6 +53,9 @@ class Term
     public static function markdown(string $text)
     {
         $parsedown = new Parsedown;
+        $parsedown->setSafeMode(true);
+        $parsedown->setBreaksEnabled(true);
+        $parsedown->setUrlsLinked(true);
 
         return $parsedown->text($text);
     }

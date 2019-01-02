@@ -117,7 +117,8 @@ return [
      */
     'notifications' => [
         'important' => 'Önemli Olay Bildirimleri',
-        'login' => 'Giriş Bildirimleri'
+        'login' => 'Giriş Bildirimleri',
+        'forum.follow' => 'Forum Bildirimleri'
     ],
 
     /**

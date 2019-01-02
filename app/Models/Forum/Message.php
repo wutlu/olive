@@ -3,7 +3,7 @@
 namespace App\Models\Forum;
 
 use Illuminate\Database\Eloquent\Model;
-use Parsedown;
+use Term;
 
 class Message extends Model
 {
@@ -55,12 +55,15 @@ class Message extends Model
         return $this->hasOne('App\Models\Forum\Message', 'id', 'message_id');
     }
 
+    # reply cevaplanan içerik
+    public function reply()
+    {
+        return $this->hasOne('App\Models\Forum\Message', 'id', 'reply_id');
+    }
+
     public function markdown()
     {
-        $parsedown = new Parsedown;
-        $parsedown->setSafeMode(true);
-
-        return nl2br($parsedown->text($this->body));
+        return Term::markdown($this->body);
     }
 
     /**

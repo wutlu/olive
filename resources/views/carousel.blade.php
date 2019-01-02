@@ -359,8 +359,8 @@
             <img src="{{ asset('img/card-header.jpg') }}" alt="Carousel Yönetimi" />
             <span class="card-title">Carousel Yönetimi</span>
 
-            <a href="#" class="btn-floating btn-large halfway-fab waves-effect white" data-trigger="create">
-                <i class="material-icons black-text">add</i>
+            <a href="#" class="btn-floating btn-large halfway-fab waves-effect white black-text" data-trigger="create">
+                <i class="material-icons">add</i>
             </a>
         </div>
         <div class="card-content grey lighten-4">

@@ -262,8 +262,8 @@
             </div>
             <div class="card-content yellow lighten-4">Bu aşamada girilen değerler test edilir. Test sonucu olumlu olmadığı sürece değerler kaydedilmeyecektir.</div>
             <div class="card-action right-align">
-                <a href="#" class="btn-flat waves-effect" data-trigger="delete">
-                    <i class="material-icons red-text">close</i>
+                <a href="#" class="btn-flat waves-effect red-text" data-trigger="delete">
+                    <i class="material-icons">close</i>
                 </a>
                 <button type="submit" class="btn waves-effect">
                     <i class="material-icons">done_all</i>

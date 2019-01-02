@@ -12,8 +12,6 @@ Route::namespace('Forum')->prefix('forum')->group(function () {
 
     Route::get('konu/{id?}', 'ForumController@threadForm')->name('forum.thread.form');
     Route::post('konu', 'ForumController@threadSave');
-    Route::get('cevap/{reply_id}', 'ForumController@replyForm')->name('forum.reply.form')->where([ 'reply_id' => '[0-9]+' ]);
-    Route::get('cevap/{id}/guncelle', 'ForumController@replyEditForm')->name('forum.reply.form.edit');
     Route::post('cevap', 'ForumController@replySave')->name('forum.reply.submit');
 
     Route::post('mesaj/onizleme', 'ForumController@messagePreview')->name('forum.message.preview');
