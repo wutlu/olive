@@ -151,8 +151,8 @@
     <div class="card">
         <div class="card-image">
             <img src="{{ asset('img/card-header.jpg') }}" alt="Destek Taleplerim" />
-            <a href="javascript:form()" class="btn-floating btn-large halfway-fab waves-effect white black-text">
-                <i class="material-icons">add</i>
+            <a href="javascript:form()" class="btn-floating btn-large halfway-fab waves-effect white">
+                <i class="material-icons grey-text text-darken-2">add</i>
             </a>
         </div>
         <div class="card-content">

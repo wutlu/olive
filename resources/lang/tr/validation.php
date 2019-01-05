@@ -237,5 +237,6 @@ return [
         'category_id'                  => 'Kategori',
         'thread_id'                    => 'Konu',
         'reply_id'                     => 'Cevap',
+        'route'                        => 'Rota',
     ],
 ];

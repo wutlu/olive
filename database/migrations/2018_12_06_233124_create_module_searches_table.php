@@ -20,7 +20,6 @@ class CreateModuleSearchesTable extends Migration
 
             $table->string('keyword')->index();
 
-            $table->index([ 'keyword', 'module_id' ]);
             $table->unique([ 'keyword', 'module_id' ]);
 
             $table->unsignedInteger('hit')->default(0);

@@ -9,6 +9,6 @@ class ModuleSearch extends Model
     protected $table = 'module_searches';
 	protected $fillable = [
 		'keyword',
-		'module_id'
+		'module_id',
 	];
 }

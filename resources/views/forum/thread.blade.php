@@ -60,19 +60,6 @@
     </div>
 @endsection
 
-@push('local.styles')
-    textarea {
-        border-width: 0 !important;
-        box-shadow: none !important;
-        margin-top: 0;
-        margin-bottom: 0;
-    }
-
-    .textarea-content {
-        padding: 12px 24px !important;
-    }
-@endpush
-
 @push('local.scripts')
     function __vote(__, obj)
     {
@@ -751,7 +738,9 @@
                         <div class="markdown"></div>
                     </blockquote>
                 </div>
-
+                <div class="card-content teal">
+                    <span class="card-title white-text mb-0">Cevapla</span>
+                </div>
                 <div class="card-tabs teal">
                     <ul class="tabs tabs-transparent">
                         <li class="tab">

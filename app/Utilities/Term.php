@@ -50,7 +50,7 @@ class Term
     }
 
     # markdown
-    public static function markdown(string $text)
+    public static function markdown($text)
     {
         $parsedown = new Parsedown;
         $parsedown->setSafeMode(true);

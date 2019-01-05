@@ -432,6 +432,8 @@
         </div>
 
         @push('local.scripts')
+            var ms_results = $('#ms-results');
+
             $(document).keydown(function(e) {
                 if (e.ctrlKey && e.keyCode == 71)
                 {
@@ -454,11 +456,6 @@
                     setTimeout(function() {
                         input.focus()
                     }, 200)
-            }).on('keyup', '[name=search_input]', function(e) {
-                if (e.which == 27)
-                {
-                    $('body').removeClass('module-search-active')
-                }
             }).on('click', '[data-trigger=module-search-close]', function() {
                 $('body').removeClass('module-search-active')
             }).on('click', '.search-wrapper', function() {
@@ -466,15 +463,36 @@
                     search_wrapper.find('input[name=search_input]').focus();
             })
 
+            $('#module-search').keydown(function(e) {
+                if (e.which == 27)
+                {
+                    $('body').removeClass('module-search-active')
+                }
+                else if (e.keyCode == 37)
+                {
+                    console.log('Left')
+                }
+                else if (e.keyCode == 38)
+                {
+                    console.log('Up')
+                }
+                else if (e.keyCode == 39)
+                {
+                    console.log('Right')
+                }
+                else if (e.keyCode == 40)
+                {
+                    console.log('Down')
+                }
+            })
+
             function __module_search(__, obj)
             {
                 if (obj.status == 'ok')
                 {
-                    var collections = $('#ms-results');
-
                     if (obj.data.length)
                     {
-                        collections.html('')
+                        ms_results.html('')
                     }
 
                     if (obj.data.length)
@@ -494,8 +512,13 @@
                                 'data-include': 'search_input'
                             });
 
+                            if (o.route)
+                            {
+                                item.attr('data-route', o.route)
+                            }
+
                             item.addClass(o.root ? 'yellow-text' : '')
-                            item.appendTo(collections)
+                            item.appendTo(ms_results)
                         })
                     }
                 }

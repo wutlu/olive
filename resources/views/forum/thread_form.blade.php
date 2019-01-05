@@ -45,20 +45,6 @@
     </div>
 @endsection
 
-@push('local.styles')
-    textarea {
-        border-width: 0 !important;
-        box-shadow: none !important;
-        margin-top: 0;
-        margin-bottom: 0;
-        min-height: 200px !important;
-    }
-
-    .textarea-content {
-        padding: 12px 24px !important;
-    }
-@endpush
-
 @section('content')
     <form id="thread-form" data-include="{{ $thread ? '' : 'category_id' }}" class="json" action="{{ route('forum.thread.form') }}" data-method="post" data-callback="__submit">
         @if ($thread)

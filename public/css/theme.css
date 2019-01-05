@@ -968,12 +968,12 @@ table.invoice tfoot > tr {
 
   overflow: auto;
 
-  background: #333;
-  background:         linear-gradient(45deg, #000000 0%, #009688 100%);
-  background:    -moz-linear-gradient(45deg, #000000 0%, #009688 100%);
-  background: -webkit-linear-gradient(45deg, #000000 0%, #009688 100%);
+  background: #38ADAE;
+  background:         linear-gradient(45deg, #38ADAE 0%, #CD295A 100%);
+  background:    -moz-linear-gradient(45deg, #38ADAE 0%, #CD295A 100%);
+  background: -webkit-linear-gradient(45deg, #38ADAE 0%, #CD295A 100%);
 
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#009688', GradientType=1 );
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#38ADAE', endColorstr='#CD295A', GradientType=1 );
 
   background-repeat: no-repeat;
   background-size: cover;
@@ -985,13 +985,13 @@ table.invoice tfoot > tr {
   visibility: hidden;
 }
 
-.search-wrapper .input-field > .material-icons { color: #009688; }
+.search-wrapper .input-field > .material-icons { color: #ffff; }
 .search-wrapper .input-field > input {
-  color: #009688;
-  border-color: #009688;
+  color: #ffffff !important;
+  border-color: #ffffff !important;
 }
 .search-wrapper .input-field > label {
-  color: #009688;
+  color: #ffffff !important;
 }
 
 @media (max-width: 1024px) {
@@ -1030,6 +1030,9 @@ body.module-search-active > .search-wrapper {
   width: 25%;
 
   color: #fff;
+}
+#ms-results > .ms-item.active {
+  background-color: rgba(0, 0, 0, .1);
 }
 
 /**

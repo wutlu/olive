@@ -20,7 +20,8 @@ class ModuleSearchesTableSeeder extends Seeder
                     'module_id' => $key
                 ],
                 [
-                    'keyword' => $module['name']
+                    'keyword' => $module['name'],
+                    'route' => route($module['route'])
                 ]
             );
         }

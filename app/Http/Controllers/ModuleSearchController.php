@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests\ModuleSearchRequest;
+use App\Http\Requests\ModuleGoRequest;
 
 use App\Models\ModuleSearch;
+use App\Models\Forum\Message;
 
 class ModuleSearchController extends Controller
 {
@@ -57,10 +59,28 @@ class ModuleSearchController extends Controller
                 $data[] = [
                     'module_id' => $q->module_id,
                     'name' => $module['name'],
-                    'route' => route($module['route']),
                     'root' => @$module['root'] ? true : false,
                     'icon' => @$module['icon'],
                 ];
+            }
+        }
+
+        if (strlen($request->search_input) >= 2)
+        {
+            $forum_messages = Message::where('subject', 'ILIKE', '%'.$request->search_input.'%')->orderBy('updated_at', 'DESC')->limit(12)->get();
+
+            if (count($forum_messages))
+            {
+                foreach ($forum_messages as $message)
+                {
+                    $data[] = [
+                        'module_id' => 27,
+                        'name' => $message->subject,
+                        'route' => $message->route(),
+                        'root' => false,
+                        'icon' => 'library_books'
+                    ];
+                }
             }
         }
 
@@ -73,7 +93,7 @@ class ModuleSearchController extends Controller
     # 
     # go
     # 
-    public static function go(Request $request)
+    public static function go(ModuleGoRequest $request)
     {
         $module = config('app.search.modules')[$request->module_id];
 
@@ -101,7 +121,7 @@ class ModuleSearchController extends Controller
 
         return [
             'status' => 'ok',
-            'route' => route($module['route'])
+            'route' => $request->route ? $request->route : route($module['route'])
         ];
     }
 }

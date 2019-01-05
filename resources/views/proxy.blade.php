@@ -243,8 +243,8 @@
             <img src="{{ asset('img/card-header.jpg') }}" alt="Vekil Sunucu Yönetimi" />
             <span class="card-title">Vekil Sunucu Yönetimi</span>
 
-            <a href="#" class="btn-floating btn-large halfway-fab waves-effect white black-text" data-trigger="create">
-                <i class="material-icons">add</i>
+            <a href="#" class="btn-floating btn-large halfway-fab waves-effect white" data-trigger="create">
+                <i class="material-icons grey-text text-darken-2">add</i>
             </a>
         </div>
         <div class="card-content grey lighten-4 grey-text">
