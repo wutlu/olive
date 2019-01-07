@@ -207,7 +207,7 @@
 </div>
 
 @push('external.include.footer')
-    <script src="{{ asset('js/jquery.maskedinput.min.js?v='.config('app.version')) }}"></script>
+    <script src="{{ asset('js/jquery.maskedinput.min.js?v='.config('system.version')) }}"></script>
     <script>
     $('input#postal_code').mask('99999')
     $('input#person_tckn').mask('99999999999')

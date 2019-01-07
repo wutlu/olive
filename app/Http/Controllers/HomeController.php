@@ -58,12 +58,12 @@ class HomeController extends Controller
             'name' => config('app.name'),
             'icons' => [
                 [
-                    'src' => '/favicons/android-chrome-192x192.png?v='.config('app.version'),
+                    'src' => '/favicons/android-chrome-192x192.png?v='.config('system.version'),
                     'sizes' => '192x192',
                     'type' => 'image/png'
                 ],
                 [
-                    'src' => '/favicons/android-chrome-512x512.png?v='.config('app.version'),
+                    'src' => '/favicons/android-chrome-512x512.png?v='.config('system.version'),
                     'sizes' => '512x512',
                     'type' => 'image/png'
                 ]

@@ -91,10 +91,10 @@
                     <small class="grey-text">Açıldığı Tarih</small>
                     <p>{{ date('d.m.Y H:i', strtotime($ticket->created_at)) }}</p>
                 </li>
-                @isset(config('app.ticket.types')[$ticket->type])
+                @isset(config('system.ticket.types')[$ticket->type])
                 <li class="item">
                     <small class="grey-text">İlgili Kategori</small>
-                    <p>{{ @config('app.ticket.types')[$ticket->type] ? config('app.ticket.types')[$ticket->type] : '-' }}</p> 
+                    <p>{{ @config('system.ticket.types')[$ticket->type] ? config('system.ticket.types')[$ticket->type] : '-' }}</p> 
                 </li>
                 @endisset
             </ul>

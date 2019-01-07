@@ -98,9 +98,9 @@
                 <li class="item">
                     <small class="grey-text">İlgili Kategori</small>
                     @isset($ticket->invoice)
-                        <a href="{{ route('organisation.invoice', $ticket->invoice_id) }}" class="d-block">{{ @config('app.ticket.types')[$ticket->type] ? config('app.ticket.types')[$ticket->type] : '-' }}</a>
+                        <a href="{{ route('organisation.invoice', $ticket->invoice_id) }}" class="d-block">{{ @config('system.ticket.types')[$ticket->type] ? config('system.ticket.types')[$ticket->type] : '-' }}</a>
                     @else
-                        <p>{{ @config('app.ticket.types')[$ticket->type] ? config('app.ticket.types')[$ticket->type] : '-' }}</p> 
+                        <p>{{ @config('system.ticket.types')[$ticket->type] ? config('system.ticket.types')[$ticket->type] : '-' }}</p> 
                     @endisset
                 </li>
             </ul>

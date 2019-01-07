@@ -32,7 +32,7 @@
                                 'type': 'text',
                                 'class': 'validate',
                                 'data-length': 70,
-                                'val': '{{ @config('app.ticket.types')[session('form')] }}'
+                                'val': '{{ @config('system.ticket.types')[session('form')] }}'
                             }),
                             $('<label />', {
                                 'for': 'subject',
@@ -106,7 +106,7 @@
         var select = $('select[name=type]');
             select.formSelect()
 
-        $.each({!! json_encode(config('app.ticket.types')) !!}, function(key, name) {
+        $.each({!! json_encode(config('system.ticket.types')) !!}, function(key, name) {
             var option = $('<option />', {
                 'value': key,
                 'html': name
@@ -170,7 +170,7 @@
                 <i class="material-icons align-self-center">{{ $ticket->status == 'open' ? 'lock_open' : 'lock' }}</i>
                 <span class="align-self-center">
                     <p>
-                        {{ $ticket->subject }} / {{ config('app.ticket.types')[$ticket->type] }}
+                        {{ $ticket->subject }} / {{ config('system.ticket.types')[$ticket->type] }}
                         @if (count($ticket->replies))
                         <span class="badge green {{ $ticket->status == 'closed' ? 'lighten-2' : '' }} white-text">{{ $ticket->replies()->count() }} cevap</span>
                         @endif

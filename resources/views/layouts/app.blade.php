@@ -17,18 +17,18 @@
 
     <!-- master styles -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-    <link rel="stylesheet" href="{{ asset('css/materialize.min.css?v='.config('app.version')) }}" />
-    <link rel="stylesheet" href="{{ asset('css/theme.css?v='.config('app.version')) }}" />
+    <link rel="stylesheet" href="{{ asset('css/materialize.min.css?v='.config('system.version')) }}" />
+    <link rel="stylesheet" href="{{ asset('css/theme.css?v='.config('system.version')) }}" />
 
     <!-- manifest -->
-    <link rel="manifest" href="{{ asset(route('olive.manifest').'?v='.config('app.version')) }}" />
+    <link rel="manifest" href="{{ asset(route('olive.manifest').'?v='.config('system.version')) }}" />
 
     <!-- favicons -->
-    <link rel="icon" href="{{ asset('favicon.ico?v='.config('app.version')) }}" />
-    <link rel="icon" type="image/png" href="{{ asset('img/favicons/favicon-16x16.png?v='.config('app.version')) }}" sizes="16x16" />
-    <link rel="icon" type="image/png" href="{{ asset('img/favicons/favicon-32x32.png?v='.config('app.version')) }}" sizes="32x32" />
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('img/favicons/apple-touch-icon.png?v='.config('app.version')) }}" />
-    <link rel="mask-icon" href="{{ asset('img/favicons/safari-pinned-tab.svg?v='.config('app.version')) }}" color="{{ config('view.color') }}" />
+    <link rel="icon" href="{{ asset('favicon.ico?v='.config('system.version')) }}" />
+    <link rel="icon" type="image/png" href="{{ asset('img/favicons/favicon-16x16.png?v='.config('system.version')) }}" sizes="16x16" />
+    <link rel="icon" type="image/png" href="{{ asset('img/favicons/favicon-32x32.png?v='.config('system.version')) }}" sizes="32x32" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('img/favicons/apple-touch-icon.png?v='.config('system.version')) }}" />
+    <link rel="mask-icon" href="{{ asset('img/favicons/safari-pinned-tab.svg?v='.config('system.version')) }}" color="{{ config('view.color') }}" />
 
     <!-- theme color -->
     <meta name="theme-color" content="{{ config('view.color') }}" />
@@ -161,7 +161,7 @@
             <ul id="slide-out" class="sidenav sidenav-fixed collapsible">
                 <li>
                     <div class="user-view">
-                        <small class="white-text right">{{ config('app.version') }}</small>
+                        <small class="white-text right">{{ config('system.version') }}</small>
                         <div class="background" style="background-image: url('{{ asset('img/card-2.jpg') }}');"></div>
                         <img alt="{{ auth()->user()->name }}" class="circle" src="{{ asset(auth()->user()->avatar()) }}" />
                         <span class="white-text name">{{ auth()->user()->name }}</span>
@@ -665,10 +665,10 @@
     var date = {!! json_encode(__('global.date')) !!};
     </script>
     <!-- master scripts -->
-    <script src="{{ asset('js/jquery.min.js?v='.config('app.version')) }}"></script>
-    <script src="{{ asset('js/materialize.min.js?v='.config('app.version')) }}"></script>
-    <script src="{{ asset('js/jquery.timeago.min.js?v='.config('app.version')) }}"></script>
-    <script src="{{ asset('js/core.js?v='.config('app.version')) }}"></script>
+    <script src="{{ asset('js/jquery.min.js?v='.config('system.version')) }}"></script>
+    <script src="{{ asset('js/materialize.min.js?v='.config('system.version')) }}"></script>
+    <script src="{{ asset('js/jquery.timeago.min.js?v='.config('system.version')) }}"></script>
+    <script src="{{ asset('js/core.js?v='.config('system.version')) }}"></script>
 
     <!-- external include -->
     @stack('external.include.footer')

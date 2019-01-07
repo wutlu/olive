@@ -3,6 +3,7 @@
 return [
 	'forum' => [
 		'thread' => 'konu',
+		'user' => 'kullanici',
 
 		'my_threads' => 'acilan',
 		'included_threads' => 'dahil-olunan',

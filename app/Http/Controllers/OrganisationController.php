@@ -908,6 +908,11 @@ class OrganisationController extends Controller
                 ]
             );
 
+            if (!$organisation->author->badge(999))
+            {
+                $organisation->author->addBadge(999); // destekçi
+            }
+
             $invoice->paid_at = date('Y-m-d H:i:s');
         }
 

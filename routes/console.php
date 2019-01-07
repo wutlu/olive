@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\OrganisationController;
 use App\Http\Controllers\System\SystemController;
+use App\Http\Controllers\Forum\ForumController;
 use App\Http\Controllers\PinController;
 use App\Console\Commands\Sentiment;
 
@@ -20,3 +21,7 @@ Artisan::command('sentiment:update', function () {
 Artisan::command('trigger:pdf:pin_groups', function () {
 	PinController::pdfTrigger();
 })->describe('PDF çıktı almak için pin gruplarını tetikler.');
+
+Artisan::command('forum:notification_trigger', function () {
+	ForumController::threadFollowNotifications();
+})->describe('Takip edilen konulara verilen cevaplar için e-posta bildirimleri.');

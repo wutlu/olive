@@ -18,7 +18,7 @@
             <span class="card-title">E-posta Bildirimleri</span>
         </div>
         <div class="collection">
-            @foreach(config('app.notifications') as $key => $name)
+            @foreach(config('system.notifications') as $key => $name)
             <label class="collection-item waves-effect d-block">
                 <input
                     name="key"

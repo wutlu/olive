@@ -157,7 +157,7 @@
                                         'selected': true
                                     }),
 
-                                    @foreach (config('app.carousel.patterns') as $key => $pattern)
+                                    @foreach (config('system.carousel.patterns') as $key => $pattern)
                                         $('<option />', {
                                             'value': '{{ $key }}',
                                             'html': '{{ $pattern }}'

@@ -39,7 +39,7 @@ class ModuleGoRequest extends FormRequest
     public function rules()
     {
         Validator::extend('module_exists', function($attribute, $id) {
-            return @config('app.search.modules')[$id] ? true : false;
+            return @config('system.search.modules')[$id] ? true : false;
         });
 
         Validator::extend('in_route', function($attribute, $route) {

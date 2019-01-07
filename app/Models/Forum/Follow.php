@@ -11,4 +11,10 @@ class Follow extends Model
     	'user_id',
     	'message_id'
     ];
+
+    # user
+    public function user()
+    {
+        return $this->hasOne('App\Models\User\User', 'id', 'user_id');
+    }
 }

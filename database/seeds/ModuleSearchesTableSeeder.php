@@ -13,7 +13,7 @@ class ModuleSearchesTableSeeder extends Seeder
      */
     public function run()
     {
-        foreach (config('app.search.modules') as $key => $module)
+        foreach (config('system.search.modules') as $key => $module)
         {
             ModuleSearch::firstOrCreate(
                 [

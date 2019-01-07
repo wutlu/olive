@@ -32,6 +32,7 @@ use Auth;
 use Session;
 use Jenssegers\Agent\Agent;
 use Image;
+use System;
 
 class UserController extends Controller
 {
@@ -57,6 +58,14 @@ class UserController extends Controller
         $this->middleware('throttle:1,1')->only('registerResend');
 	}
 
+    # profile
+    public static function profile(int $id)
+    {
+        $user = User::where('id', $id)->firstOrFail();
+
+        return view('user.profile', compact('user'));
+    }
+
     # login view
     public static function loginView()
     {
@@ -72,6 +81,23 @@ class UserController extends Controller
         if (Auth::attempt([ 'email' => $email, 'password' => $password ]))
         {
             $user = User::where('email', $email)->first();
+
+            if ($user->banned_at)
+            {
+                auth()->logout();
+
+                System::log(
+                    'Yasaklı bir kullanıcı giriş denemesi yaptı.',
+                    'App\Http\Controllers\UserController::loginPost('.$email.':'.$password.')', 1
+                );
+
+                return [
+                    'status' => 'ban',
+                    'data' => [
+                        'reason' => $user->ban_reason
+                    ]
+                ];
+            }
 
             $request->session()->regenerate();
 
@@ -237,6 +263,8 @@ class UserController extends Controller
 
         $text = 'E-posta adresinizi başarılı bir şekilde doğruladınız. İyi araştırmalar dileriz...';
 
+        $user->addBadge(1); // e-posta doğrulama
+
         UserActivityUtility::push(
             'E-posta Doğrulandı!',
             [
@@ -307,7 +335,7 @@ class UserController extends Controller
         $user->session_id = Session::getId();
         $user->save();
 
-        foreach (config('app.notifications') as $key => $val)
+        foreach (config('system.notifications') as $key => $val)
         {
             UserNotification::create([
                 'user_id' => $user->id,
@@ -371,6 +399,17 @@ class UserController extends Controller
     public static function adminUpdate(int $id, AdminUpdateRequest $request)
     {
         $user = User::where('id', $id)->firstOrFail();
+
+        if ($user->moderator == false && $request->moderator == true)
+        {
+            $user->addBadge(997);
+        }
+
+        if ($user->root == false && $request->root == true)
+        {
+            $user->addBadge(998);
+        }
+
         $user->name = $request->name;
         $user->password = $request->password ? bcrypt($request->password) : $user->password;
         $user->email = $request->email;
@@ -378,6 +417,18 @@ class UserController extends Controller
         $user->avatar = $request->avatar ? null : $user->avatar;
         $user->root = $request->root ? true : false;
         $user->moderator = $request->moderator ? true : false;
+
+        if ($request->ban_reason)
+        {
+            $user->ban_reason = $request->ban_reason;
+            $user->banned_at = date('Y-m-d H:i:s');
+        }
+        else
+        {
+            $user->ban_reason = null;
+            $user->banned_at = null;
+        }
+
         $user->save();
 
         return [
@@ -406,7 +457,7 @@ class UserController extends Controller
         $user = User::where('id', $id)->firstOrFail();
 
         $request->validate([
-            'key' => 'string|in:'.implode(',', array_keys(config('app.notifications')))
+            'key' => 'string|in:'.implode(',', array_keys(config('system.notifications')))
         ]);
 
         if ($user->notification($request->key))
@@ -546,7 +597,7 @@ class UserController extends Controller
         $user = auth()->user();
 
         $request->validate([
-            'key' => 'string|in:'.implode(',', array_keys(config('app.notifications')))
+            'key' => 'string|in:'.implode(',', array_keys(config('system.notifications')))
         ]);
 
         if ($user->notification($request->key))

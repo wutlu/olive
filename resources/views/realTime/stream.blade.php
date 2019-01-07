@@ -37,11 +37,11 @@
 @endpush
 
 @push('external.include.header')
-    <link rel="stylesheet" href="{{ asset('css/owl.carousel.min.css?v='.config('app.version')) }}" />
+    <link rel="stylesheet" href="{{ asset('css/owl.carousel.min.css?v='.config('system.version')) }}" />
 @endpush
 
 @push('external.include.footer')
-    <script src="{{ asset('js/owl.carousel.min.js?v='.config('app.version')) }}"></script>
+    <script src="{{ asset('js/owl.carousel.min.js?v='.config('system.version')) }}"></script>
 @endpush
 
 @push('local.scripts')
@@ -119,8 +119,8 @@
 @endsection
 
 @push('external.include.footer')
-    <script src="{{ asset('js/jquery.mark.min.js?v='.config('app.version')) }}" charset="UTF-8"></script>
-    <script src="{{ asset('js/jquery.ui.min.js?v='.config('app.version')) }}"></script>
+    <script src="{{ asset('js/jquery.mark.min.js?v='.config('system.version')) }}" charset="UTF-8"></script>
+    <script src="{{ asset('js/jquery.ui.min.js?v='.config('system.version')) }}"></script>
 @endpush
 
 @push('local.scripts')
@@ -573,7 +573,7 @@
                     $('<div />', {
                         'class': 'collection',
                         'html': [
-                        @foreach (config('app.modules') as $key => $module)
+                        @foreach (config('system.modules') as $key => $module)
                             $('<label />', {
                                 'class': 'collection-item waves-effect d-block',
                                 'html': [

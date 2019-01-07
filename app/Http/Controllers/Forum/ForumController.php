@@ -28,6 +28,11 @@ use Cookie;
 use Term;
 use Carbon\Carbon;
 
+use App\Models\User\User;
+
+use App\Notifications\MessageNotification;
+use App\Notifications\ForumNotification;
+
 class ForumController extends Controller
 {
     public function __construct()
@@ -106,16 +111,19 @@ class ForumController extends Controller
                 {
                     case __('route.forum.my_threads'):
                         $title = 'Açılan Konular';
+
                         $data = $data->where('user_id', auth()->user()->id);
                     break;
                     case __('route.forum.included_threads'):
                         $title = 'Dahil Olunan Konular';
+
                         $data = $data->whereHas('replies', function($query) {
                             $query->where('user_id', auth()->user()->id);
                         });
                     break;
                     case __('route.forum.followed_threads'):
                         $title = 'Takip Edilen Konular';
+
                         $data = $data->select('forum_messages.*');
                         $data = $data->leftJoin('forum_follows', 'forum_follows.message_id', '=', 'forum_messages.id');
                         $data = $data->where('forum_follows.user_id', auth()->user()->id);
@@ -127,15 +135,18 @@ class ForumController extends Controller
                 {
                     case __('route.forum.unanswered'):
                         $title = 'Yanıtlanmayan Sorular';
+
                         $data = $data->whereNotNull('question');
                         $data = $data->has('replies', '=', 0);
                     break;
                     case __('route.forum.solved'):
                         $title = 'Çözülen Sorular';
+
                         $data = $data->where('question', 'solved');
                     break;
                     case __('route.forum.unsolved'):
                         $title = 'Çözülmeyen Sorular';
+
                         $data = $data->where('question', 'unsolved');
                     break;
                 }
@@ -159,7 +170,7 @@ class ForumController extends Controller
                             });
                             $query->orWhere('spam', '>', 0);
                         });
-                        $data = $data->orderBy('spam', 'DESC');
+                        $data = $data->orderBy('forum_messages.spam', 'DESC');
                     break;
                     case __('route.forum.week'):
                         $title = 'Haftanın Popülerleri';
@@ -175,6 +186,13 @@ class ForumController extends Controller
                     break;
                 }
             break;
+            case __('route.forum.user'):
+                $user = User::where('id', intval($section))->firstOrFail();
+
+                $title = $user->name.', konuları';
+
+                $data = $data->where('user_id', $user->id);
+            break;
         }
 
         $data = $data->orderBy('forum_messages.updated_at', 'DESC');
@@ -189,6 +207,48 @@ class ForumController extends Controller
     }
 
     /**
+     ****************************************************
+     * SYSTEM FUNCTION
+     ****************************************************
+     * takip edilen konulara verilen
+     * cevaplar için e-posta bildirimleri.
+     */
+    public static function threadFollowNotifications()
+    {
+        $threads = Message::whereNull('message_id')->where('notify', false)->get();
+
+        if (count($threads))
+        {
+            foreach ($threads as $thread)
+            {
+                echo Term::line($thread->subject);
+
+                foreach ($thread->followers as $follower)
+                {
+                    echo $follower->user->name.PHP_EOL;
+
+                    if ($follower->user->notification('forum'))
+                    {
+                        $follower->user->notify(
+                            (
+                                new ForumNotification(
+                                    $thread->subject,
+                                    $thread->subject,
+                                    'Takip ettiğiniz konuya cevap(lar) girildi.',
+                                    $thread->route()
+                                )
+                            )->onQueue('email')
+                        );
+                    }
+                }
+
+                $thread->notify = true;
+                $thread->save();
+            }
+        }
+    }
+
+    /**
      * forum cevap ekleme
      */
     public static function replySave(ReplyCreateRequest $request)
@@ -199,6 +259,7 @@ class ForumController extends Controller
 
         $thread = $reply->thread ? $reply->thread : $reply;
         $thread->updated_at = date('Y-m-d H:i:s');
+        $thread->notify = false;
         $thread->save();
 
         $new = new Message;
@@ -212,6 +273,17 @@ class ForumController extends Controller
         $new->message_id = $thread->id;
         $new->user_id = $user->id;
         $new->save();
+
+        if ($thread->question)
+        {
+            if (!$user->badge(3))
+            {
+                if ($user->messages()->whereHas('thread', function($query) { $query->whereNotNull('question'); })->count() >= 10)
+                {
+                    $user->addBadge(3); // 10 cevap
+                }
+            }
+        }
 
         Follow::firstOrCreate([ 'user_id' => $user->id, 'message_id' => $thread->id ]);
 
@@ -324,6 +396,11 @@ class ForumController extends Controller
             $thread->body = $request->body;
             $thread->category_id = $request->category_id;
             $thread->user_id = $user->id;
+
+            if (!$user->badge(2))
+            {
+                $user->addBadge(2); // ilk konu
+            }
 
             if ($request->question)
             {
@@ -727,6 +804,16 @@ class ForumController extends Controller
                 ]
             ]
         );
+
+        if ($message->user->notification('forum'))
+        {
+            $message->user->notify((new MessageNotification('Olive: 🌠🌟✨ En İyi Cevap ✨🌟🌠', 'Mesajınız en iyi cevap seçildi.', implode(PHP_EOL, $data)))->onQueue('email'));
+        }
+
+        if (!$message->user->badge(4))
+        {
+            $message->user->addBadge(4); // en iyi cevap
+        }
 
         return [
             'status' => 'ok',

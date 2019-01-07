@@ -154,6 +154,13 @@ class Kernel extends ConsoleKernel
                      ->hourly()
                      ->timezone(config('app.timezone'))
                      ->withoutOverlapping();
+
+            /* ---------------------------------------- */
+
+            $schedule->command('nohup "forum:notification_trigger"')
+                     ->everyFiveMinutes()
+                     ->timezone(config('app.timezone'))
+                     ->withoutOverlapping();
         }
     }
 

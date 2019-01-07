@@ -25,7 +25,7 @@ class SetRequest extends FormRequest
     public function rules(Request $request)
     {
         return [
-            'key' => 'required|in:'.implode(',', array_keys(config('app.options'))),
+            'key' => 'required|in:'.implode(',', array_keys(config('system.options'))),
             'value' => 'required|'.@config('app.options')[$request->key].'|max:255'
         ];
     }

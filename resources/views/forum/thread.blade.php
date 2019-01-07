@@ -22,15 +22,15 @@
     <meta property="og:description" content="{{ str_limit($thread->body, 255) }}" />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="{{ url()->full() }}" />
-    <meta property="og:image" content="{{ asset('img/olive-twitter-card.png?v='.config('app.version')) }}" />
+    <meta property="og:image" content="{{ asset('img/olive-twitter-card.png?v='.config('system.version')) }}" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="{{ url()->full() }}" />
     <meta name="twitter:title" content="{{ $thread->subject }}" />
     <meta name="twitter:description" content="{{ str_limit($thread->body, 255) }}" />
-    <meta name="twitter:image" content="{{ asset('img/olive-twitter-card.png?v='.config('app.version')) }}" />
+    <meta name="twitter:image" content="{{ asset('img/olive-twitter-card.png?v='.config('system.version')) }}" />
 
-    <link rel="stylesheet" href="{{ asset('css/highlight.min.css?v='.config('app.version')) }}" />
+    <link rel="stylesheet" href="{{ asset('css/highlight.min.css?v='.config('system.version')) }}" />
 @endpush
 
 @section('wildcard')
@@ -162,7 +162,7 @@
 
                         $('[data-id=message-' + obj.data.id + ']').find('[data-icon=static]').removeClass('hide')
 
-                        M.toast({ html: 'Konu Sabitlendi', classes: 'red darken-2' })
+                        M.toast({ html: 'Konu Sabitlendi', classes: 'green darken-2' })
                     }
                     else if (obj.data.status == 'unstatic')
                     {
@@ -651,6 +651,17 @@
                             <time class="timeago grey-text text-darken-2" data-time="{{ $message->created_at }}">{{ date('d.m.Y H:i', strtotime($message->created_at)) }}</time>
                         </div>
                         <div class="align-self-center ml-auto d-flex flex-column">
+                            @if ($message->user->badges->count())
+                                <div class="d-flex justify-content-end mb-1">
+                                    @foreach ($message->user->badges()->limit(3)->orderBy('badge_id', 'DESC')->get() as $badge)
+                                        <img
+                                            alt="{{ config('system.user.badges')[$badge->badge_id]['name'] }}"
+                                            src="{{ asset(config('system.user.badges')[$badge->badge_id]['image_src']) }}"
+                                            data-tooltip="{{ config('system.user.badges')[$badge->badge_id]['name'] }}"
+                                            style="width: 32px; height: 32px;" />
+                                    @endforeach
+                                </div>
+                            @endif
                             @auth
                                 <a style="margin-bottom: .4rem;" class="btn-floating btn-flat waves-effect ml-auto dropdown-trigger" data-target="thread-menu-{{ $message->id }}" data-align="right">
                                     <i class="material-icons">more_vert</i>
@@ -664,6 +675,12 @@
                                 <span class="badge d-flex justify-content-end grey-text text-darken-2">
                                     <span class="align-self-center">{{ $message->hit }}</span>
                                     <i class="material-icons align-self-center" style="margin: 0 0 0 .4rem;">remove_red_eye</i>
+                                </span>
+                            @endif
+                            @if ($message->authority(false) && $message->spam > 0)
+                                <span class="badge d-flex justify-content-end red-text">
+                                    <span class="align-self-center">{{ $message->spam }}</span>
+                                    <i class="material-icons align-self-center" style="margin: 0 0 0 .4rem;">bug_report</i>
                                 </span>
                             @endif
                         </div>
@@ -784,6 +801,6 @@
 @endsection
 
 @push('external.include.footer')
-    <script src="{{ asset('js/highlight.min.js?v='.config('app.version')) }}"></script>
-    <script src="{{ asset('js/jquery.ui.min.js?v='.config('app.version')) }}"></script>
+    <script src="{{ asset('js/highlight.min.js?v='.config('system.version')) }}"></script>
+    <script src="{{ asset('js/jquery.ui.min.js?v='.config('system.version')) }}"></script>
 @endpush

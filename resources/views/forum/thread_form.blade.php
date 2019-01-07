@@ -138,11 +138,11 @@
 @endif
 
 @push('external.include.header')
-    <link rel="stylesheet" href="{{ asset('css/highlight.min.css?v='.config('app.version')) }}" />
+    <link rel="stylesheet" href="{{ asset('css/highlight.min.css?v='.config('system.version')) }}" />
 @endpush
 
 @push('external.include.footer')
-    <script src="{{ asset('js/highlight.min.js?v='.config('app.version')) }}"></script>
+    <script src="{{ asset('js/highlight.min.js?v='.config('system.version')) }}"></script>
 @endpush
 
 @push('local.scripts')

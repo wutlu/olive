@@ -31,7 +31,7 @@ class UpdateRequest extends FormRequest
             'button_action' => 'nullable|url|max:255',
             'button_text' => 'required_with:button_action|nullable|string|max:32',
             'visibility' => 'nullable|boolean',
-            'pattern' => 'nullable|string|in:'.implode(',', array_keys(config('app.carousel.patterns'))),
+            'pattern' => 'nullable|string|in:'.implode(',', array_keys(config('system.carousel.patterns'))),
         ];
     }
 }

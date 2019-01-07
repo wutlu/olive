@@ -98,6 +98,13 @@
                         <input name="moderator" id="moderator" value="on" type="checkbox" {{ $user->moderator() ? 'checked' : '' }} />
                         <span>Moderatör</span>
                     </label>
+                    <div class="collection-item">
+                        <div class="input-field">
+                            <input name="ban_reason" id="ban_reason" value="{{ $user->ban_reason }}" type="text" class="validate" />
+                            <label for="ban_reason">Ban Nedeni</label>
+                            <small class="helper-text">Bu alanı doldurursanız kullanıcının sisteme erişimi engellenecektir.</small>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="card-action right-align">

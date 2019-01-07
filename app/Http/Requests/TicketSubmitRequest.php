@@ -24,7 +24,7 @@ class TicketSubmitRequest extends FormRequest
     public function rules()
     {
         return [
-            'type'       => 'required|string|in:'.implode(',', array_keys(config('app.ticket.types'))),
+            'type'       => 'required|string|in:'.implode(',', array_keys(config('system.ticket.types'))),
             'invoice_id' => 'nullable|integer|exists:organisation_invoices,id',
             'subject'    => 'required|string|max:100',
             'message'    => 'required|string|min:10,max:500'

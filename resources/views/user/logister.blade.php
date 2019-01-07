@@ -136,6 +136,23 @@
 
             setTimeout(goDashboard, 1000)
         }
+        else if (obj.status == 'ban')
+        {
+            var mdl = modal({
+                'id': 'err',
+                'body': obj.data.reason,
+                'title': 'Ban',
+                'size': 'modal-small',
+                'options': {},
+                'footer': [
+                   $('<a />', {
+                       'href': '#',
+                       'class': 'modal-close waves-effect btn-flat cyan-text',
+                       'html': buttons.ok
+                   })
+                ]
+            })
+        }
     }
 
     function __register(__, obj)

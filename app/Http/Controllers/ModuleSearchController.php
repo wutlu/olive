@@ -38,7 +38,7 @@ class ModuleSearchController extends Controller
                                         'module_id',
                                         array_keys(
                                             array_where(
-                                                config('app.search.modules'),
+                                                config('system.search.modules'),
                                                 function ($value, $key) {
                                                     return @$value['root'] == true;
                                                 }
@@ -54,7 +54,7 @@ class ModuleSearchController extends Controller
         {
             foreach ($query as $q)
             {
-                $module = config('app.search.modules')[$q->module_id];
+                $module = config('system.search.modules')[$q->module_id];
 
                 $data[] = [
                     'module_id' => $q->module_id,
@@ -95,7 +95,7 @@ class ModuleSearchController extends Controller
     # 
     public static function go(ModuleGoRequest $request)
     {
-        $module = config('app.search.modules')[$request->module_id];
+        $module = config('system.search.modules')[$request->module_id];
 
         if (strlen($request->search_input) >= 1)
         {

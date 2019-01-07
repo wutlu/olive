@@ -28,7 +28,7 @@ Route::namespace('Forum')->prefix('forum')->group(function () {
     Route::post('tasi', 'ForumController@threadMove')->name('forum.thread.move');
     Route::post('takip', 'ForumController@threadFollow')->name('forum.thread.follow');
 
-    Route::get('{group}:{section}', 'ForumController@group')->name('forum.group')->where([ 'group' => '[a-zA-Z0-9-]+', 'section' => '[a-zA-Z0-9-]+' ]);
+    Route::get('{group}:{section}/{id?}', 'ForumController@group')->name('forum.group')->where([ 'group' => '[a-zA-Z0-9-]+', 'section' => '[a-zA-Z0-9-]+' ]);
     Route::get('{slug}', 'ForumController@category')->name('forum.category');
     Route::get('{slug}/{fake_slug}-{id}', 'ForumController@thread')->name('forum.thread');
 });
@@ -45,7 +45,7 @@ Route::post('aktiviteler', 'HomeController@activity')->name('dashboard.activitie
 Route::post('route-by-id', 'RouteController@generateById')->name('route.generate.id');
 
 Route::post('panel-monitor', 'HomeController@monitor')->name('dashboard.monitor');
-Route::post('intro/{key}', 'HomeController@intro')->name('intro')->where('key', '('.implode('|', config('app.intro.keys')).')');
+Route::post('intro/{key}', 'HomeController@intro')->name('intro')->where('key', '('.implode('|', config('system.intro.keys')).')');
 
 Route::post('modul-ara', 'ModuleSearchController@search')->name('module.search');
 Route::post('modul-git', 'ModuleSearchController@go')->name('module.go');
@@ -120,7 +120,7 @@ Route::prefix('ayarlar')->group(function () {
     });
 
     Route::prefix('destek')->group(function () {
-        Route::get('{type?}', 'TicketController@list')->name('settings.support')->where('type', '('.implode('|', array_keys(config('app.ticket.types'))).')');
+        Route::get('{type?}', 'TicketController@list')->name('settings.support')->where('type', '('.implode('|', array_keys(config('system.ticket.types'))).')');
         Route::get('talep/{id}', 'TicketController@view')->name('settings.support.ticket');
         Route::patch('talep/{id}/kapat', 'TicketController@close')->name('settings.support.ticket.close');
         Route::put('talep/cevap', 'TicketController@reply')->name('settings.support.ticket.reply');
