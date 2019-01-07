@@ -174,7 +174,7 @@
                 <li>
                     <a href="#" class="subheader">Yönetici Menüsü</a>
                 </li>
-                <li>
+                <li class="tiny">
                     <a class="waves-effect" href="{{ route('admin.tickets') }}">
                         <i class="material-icons">mail</i>
                         Destek Talepleri
@@ -182,38 +182,38 @@
                     </a>
                 </li>
                 <li class="divider"></li>
-                <li>
+                <li class="tiny">
                     <a class="waves-effect" href="{{ route('admin.page.list') }}">
                         <i class="material-icons">pages</i>
                         Sayfalar
                     </a>
                 </li>
                 <li class="divider"></li>
-                <li>
+                <li class="tiny">
                     <a class="waves-effect" href="{{ route('admin.organisation.list') }}">
                         <i class="material-icons">group_work</i>
                         Organizasyonlar
                     </a>
                 </li>
-                <li>
+                <li class="tiny">
                     <a class="waves-effect" href="{{ route('admin.user.list') }}">
                         <i class="material-icons">people</i>
                         Kullanıcılar
                     </a>
                 </li>
-                <li>
+                <li class="tiny">
                     <a class="waves-effect" href="{{ route('admin.discount.coupon.list') }}">
                         <i class="material-icons">card_giftcard</i>
                         İndirim Kuponları
                     </a>
                 </li>
-                <li>
+                <li class="tiny">
                     <a class="waves-effect" href="{{ route('admin.carousels') }}">
                         <i class="material-icons">view_carousel</i>
                         Carousel Yönetimi
                     </a>
                 </li>
-                <li>
+                <li class="tiny">
                     <a class="waves-effect" href="{{ route('admin.proxies') }}">
                         <i class="material-icons">vpn_key</i>
                         Vekil Sunucu Yönetimi
@@ -228,38 +228,38 @@
                     </div>
                     <div class="collapsible-body">
                         <ul>
-                            <li>
+                            <li class="tiny">
                                 <a class="waves-effect" href="{{ route('crawlers.media.list') }}">
                                     <i class="material-icons">widgets</i>
                                     Medya Botları
                                 </a>
                             </li>
-                            <li>
+                            <li class="tiny">
                                 <a class="waves-effect" href="{{ route('crawlers.sozluk.list') }}">
                                     <i class="material-icons">widgets</i>
                                     Sözlük Botları
                                 </a>
                             </li>
-                            <li>
+                            <li class="tiny">
                                 <a class="waves-effect" href="{{ route('crawlers.shopping.list') }}">
                                     <i class="material-icons">widgets</i>
                                     Alışveriş Botları
                                 </a>
                             </li>
                             <li class="divider"></li>
-                            <li>
+                            <li class="tiny">
                                 <a class="waves-effect" href="{{ route('admin.twitter.settings') }}">
                                     <i class="material-icons">widgets</i>
                                     Twitter Ayarları
                                 </a>
                             </li>
-                            <li>
+                            <li class="tiny">
                                 <a class="waves-effect" href="{{ route('admin.youtube.settings') }}">
                                     <i class="material-icons">widgets</i>
                                     YouTube Ayarları
                                 </a>
                             </li>
-                            <li>
+                            <li class="tiny">
                                 <a class="waves-effect" href="{{ route('admin.google.settings') }}">
                                     <i class="material-icons">widgets</i>
                                     Google Ayarları
@@ -277,25 +277,25 @@
                     </div>
                     <div class="collapsible-body">
                         <ul>
-                            <li>
+                            <li class="tiny">
                                 <a class="waves-effect" href="{{ route('admin.monitoring.server') }}">
                                     <i class="material-icons">desktop_mac</i>
                                     Sunucu Bilgisi
                                 </a>
                             </li>
-                            <li>
+                            <li class="tiny">
                                 <a class="waves-effect" href="{{ route('admin.monitoring.background') }}">
                                     <i class="material-icons">hourglass_empty</i>
                                     Arkaplan İşleri
                                 </a>
                             </li>
-                            <li>
+                            <li class="tiny">
                                 <a class="waves-effect" href="{{ route('admin.monitoring.log') }}">
                                     <i class="material-icons">code</i>
                                     Log Ekranı
                                 </a>
                             </li>
-                            <li>
+                            <li class="tiny">
                                 <a class="waves-effect" href="{{ route('admin.monitoring.queue') }}">
                                     <i class="material-icons">queue</i>
                                     Kuyruk Ekranı
@@ -307,7 +307,7 @@
                 <li class="divider"></li>
                 @endif
 
-                <li>
+                <li class="tiny">
                     <a class="waves-effect" href="{{ route('forum.index') }}">
                         <i class="material-icons">forum</i>
                         Forum
@@ -318,7 +318,7 @@
                     <a href="#" class="subheader">Kullanıcı Menüsü</a>
                 </li>
                 @if (auth()->user()->organisation)
-                <li>
+                <li class="tiny">
                     <a class="waves-effect" href="{{ route('settings.organisation') }}">
                         <i class="material-icons">group_work</i>
                         {{ auth()->user()->organisation->name }}
@@ -326,19 +326,19 @@
                 </li>
                 <li class="divider"></li>
                 @endif
-                <li>
+                <li class="tiny">
                     <a class="waves-effect" href="{{ route('settings.account') }}">
                         <i class="material-icons">person</i>
                         Hesap Bilgileri
                     </a>
                 </li>
-                <li>
+                <li class="tiny">
                     <a class="waves-effect" href="{{ route('settings.support') }}">
                         <i class="material-icons">help</i>
                         Destek
                     </a>
                 </li>
-                <li>
+                <li class="tiny">
                     <a class="waves-effect" href="{{ route('user.logout') }}">
                         <i class="material-icons">exit_to_app</i>
                         Çıkış
@@ -410,8 +410,8 @@
         <div class="search-wrapper" id="module-search">
             <div class="search-content">
                 <div class="right-align">
-                    <a href="#" class="btn-floating red waves-effect" data-trigger="module-search-close">
-                        <i class="material-icons">close</i>
+                    <a href="#" class="btn-floating btn-flat waves-effect" data-trigger="module-search-close">
+                        <i class="material-icons white-text">close</i>
                     </a>
                 </div>
                 <div class="input-field">
@@ -505,7 +505,7 @@
                                 'data-method': 'post',
                                 'data-callback': '__go',
                                 'html': [
-                                    $('<i />', { 'class': 'material-icons medium', 'html': o.icon }),
+                                    $('<i />', { 'class': 'material-icons', 'html': o.icon }),
                                     $('<span />', { 'class': 'd-block', 'html': o.name })
                                 ],
                                 'data-module_id': o.module_id,

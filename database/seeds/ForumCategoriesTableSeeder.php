@@ -50,9 +50,14 @@ class ForumCategoriesTableSeeder extends Seeder
                 'sort' => 7
             ],
             [
+                'name' => 'Olive',
+                'description' => 'Olive hakkında aklınıza takılan her şey.',
+                'sort' => 8
+            ],
+            [
                 'name' => 'Off-Topic',
                 'description' => 'Forum dışı her şey.',
-                'sort' => 8
+                'sort' => 9
             ],
         ];
 

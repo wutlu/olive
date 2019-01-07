@@ -26,6 +26,7 @@ use App\Utilities\UserActivityUtility;
 use Validator;
 use Cookie;
 use Term;
+use Carbon\Carbon;
 
 class ForumController extends Controller
 {
@@ -40,6 +41,8 @@ class ForumController extends Controller
             'messageSpam',
             'threadForm',
             'threadSave',
+            'replyGet',
+            'replyUpdate',
             'replySave',
             'threadMove',
             'messagePreview',
@@ -73,6 +76,116 @@ class ForumController extends Controller
         $data = Message::whereNull('message_id')->orderBy('updated_at', 'DESC')->simplePaginate($pager);
 
         return view('forum.index', compact('data'));
+    }
+
+    /**
+     * forum kategori
+     */
+    public static function category(string $slug, int $pager = 10)
+    {
+        $category = Category::where('slug', $slug)->firstOrFail();
+        $data = $category->threads()->orderBy('static', 'DESC')->orderBy('updated_at', 'DESC')->simplePaginate($pager);
+
+        return view('forum.index', compact('category', 'data'));
+    }
+
+    /**
+     * forum grup
+     */
+    public static function group(string $group, string $section, int $pager = 10)
+    {
+        $data = new Message;
+        $data = $data->whereNull('forum_messages.message_id');
+
+        switch ($group)
+        {
+            case __('route.forum.thread'):
+                if (auth()->guest()) return redirect()->route('user.login');
+
+                switch ($section)
+                {
+                    case __('route.forum.my_threads'):
+                        $title = 'Açılan Konular';
+                        $data = $data->where('user_id', auth()->user()->id);
+                    break;
+                    case __('route.forum.included_threads'):
+                        $title = 'Dahil Olunan Konular';
+                        $data = $data->whereHas('replies', function($query) {
+                            $query->where('user_id', auth()->user()->id);
+                        });
+                    break;
+                    case __('route.forum.followed_threads'):
+                        $title = 'Takip Edilen Konular';
+                        $data = $data->select('forum_messages.*');
+                        $data = $data->leftJoin('forum_follows', 'forum_follows.message_id', '=', 'forum_messages.id');
+                        $data = $data->where('forum_follows.user_id', auth()->user()->id);
+                    break;
+                }
+            break;
+            case __('route.forum.question'):
+                switch ($section)
+                {
+                    case __('route.forum.unanswered'):
+                        $title = 'Yanıtlanmayan Sorular';
+                        $data = $data->whereNotNull('question');
+                        $data = $data->has('replies', '=', 0);
+                    break;
+                    case __('route.forum.solved'):
+                        $title = 'Çözülen Sorular';
+                        $data = $data->where('question', 'solved');
+                    break;
+                    case __('route.forum.unsolved'):
+                        $title = 'Çözülmeyen Sorular';
+                        $data = $data->where('question', 'unsolved');
+                    break;
+                }
+            break;
+            case __('route.forum.popular'):
+                switch ($section)
+                {
+                    case __('route.forum.spam'):
+                        $title = 'Spam Sıralaması';
+
+                        if (!auth()->user()->moderator && !auth()->user()->root)
+                        {
+                            return abort(503);
+                        }
+
+                        $data = $data->where(function ($query) {
+                            $query->orWhere(function ($query) {
+                                $query->whereHas('replies', function($query) {
+                                    $query->where('spam', '>', 0);
+                                });
+                            });
+                            $query->orWhere('spam', '>', 0);
+                        });
+                        $data = $data->orderBy('spam', 'DESC');
+                    break;
+                    case __('route.forum.week'):
+                        $title = 'Haftanın Popülerleri';
+
+                        $date = Carbon::now()->subDays(7)->format('Y-m-d H:i:s');
+                        $data->where('created_at', '>=', $date);
+                        $data->orderBy('hit', 'DESC');
+                    break;
+                    case __('route.forum.all_time'):
+                        $title = 'Tüm Zamanların Popülerleri';
+
+                        $data->orderBy('hit', 'DESC');
+                    break;
+                }
+            break;
+        }
+
+        $data = $data->orderBy('forum_messages.updated_at', 'DESC');
+        $data = $data->simplePaginate($pager);
+
+        if (!@$title)
+        {
+            return abort(404);
+        }
+
+        return view('forum.index', compact('data', 'title'));
     }
 
     /**

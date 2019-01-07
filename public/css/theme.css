@@ -969,11 +969,11 @@ table.invoice tfoot > tr {
   overflow: auto;
 
   background: #38ADAE;
-  background:         linear-gradient(45deg, #38ADAE 0%, #CD295A 100%);
-  background:    -moz-linear-gradient(45deg, #38ADAE 0%, #CD295A 100%);
-  background: -webkit-linear-gradient(45deg, #38ADAE 0%, #CD295A 100%);
+  background:         linear-gradient(45deg, #38ADAE 0%, #f000ff 100%);
+  background:    -moz-linear-gradient(45deg, #38ADAE 0%, #f000ff 100%);
+  background: -webkit-linear-gradient(45deg, #38ADAE 0%, #f000ff 100%);
 
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#38ADAE', endColorstr='#CD295A', GradientType=1 );
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#38ADAE', endColorstr='#f000ff', GradientType=1 );
 
   background-repeat: no-repeat;
   background-size: cover;
@@ -985,7 +985,9 @@ table.invoice tfoot > tr {
   visibility: hidden;
 }
 
-.search-wrapper .input-field > .material-icons { color: #ffff; }
+.search-wrapper .input-field > .material-icons {
+  color: #fff;
+}
 .search-wrapper .input-field > input {
   color: #ffffff !important;
   border-color: #ffffff !important;
@@ -1874,6 +1876,25 @@ table tr {
   width: 100%;
   display: block;
   background-color: transparent;
+}
+
+/**
+ * slide-out dock
+ */
+ul#slide-out {
+  height: 100% !important;
+}
+ul#slide-out li.tiny {
+  max-width: 90%;
+}
+ul#slide-out li.tiny > a {
+  border-radius: 0 2rem 2rem 0;
+}
+ul#slide-out li > a > span.badge {
+  min-width: 1rem;
+}
+ul#slide-out li > .collapsible-body {
+  padding: 1rem 0;
 }
 
 /**

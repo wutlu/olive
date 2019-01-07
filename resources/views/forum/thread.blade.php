@@ -2,7 +2,7 @@
     'sidenav_fixed_layout' => true,
     'breadcrumb' => [
         [
-            'text' => implode(' ', [ config('app.name'), 'Forumları' ]),
+            'text' => 'Forum',
             'link' => route('forum.index')
         ],
         [
@@ -419,6 +419,10 @@
                     live_form.addClass('hide')
 
                 M.toast({ html: 'Cevap Güncellendi', classes: 'green darken-2' })
+
+                $('code').each(function(i, block) {
+                    hljs.highlightBlock(block);
+                })
             }
         }
 
@@ -456,7 +460,7 @@
                                             'name': 'body',
                                             'class': 'materialize-textarea validate',
                                             'data-length': 5000,
-                                            'html': obj.data.body
+                                            'val': obj.data.body
                                         }),
                                         $('<label />', {
                                             'for': 'body-' + obj.data.id,

@@ -12,4 +12,10 @@ class Category extends Model
     	'slug',
     	'description'
     ];
+
+    # kategori içerisinde açılan konular
+    public function threads()
+    {
+        return $this->hasMany('App\Models\Forum\Message', 'category_id', 'id')->whereNull('message_id');
+    }
 }

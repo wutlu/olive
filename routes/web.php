@@ -28,6 +28,7 @@ Route::namespace('Forum')->prefix('forum')->group(function () {
     Route::post('tasi', 'ForumController@threadMove')->name('forum.thread.move');
     Route::post('takip', 'ForumController@threadFollow')->name('forum.thread.follow');
 
+    Route::get('{group}:{section}', 'ForumController@group')->name('forum.group')->where([ 'group' => '[a-zA-Z0-9-]+', 'section' => '[a-zA-Z0-9-]+' ]);
     Route::get('{slug}', 'ForumController@category')->name('forum.category');
     Route::get('{slug}/{fake_slug}-{id}', 'ForumController@thread')->name('forum.thread');
 });

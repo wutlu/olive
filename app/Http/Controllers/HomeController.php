@@ -68,8 +68,11 @@ class HomeController extends Controller
                     'type' => 'image/png'
                 ]
             ],
-            'theme_color' => config('view.color'),
-            'display' => 'standalone'
+            'theme_color' => config('view.theme_color'),
+            'background_color' => config('view.background_color'),
+            'display' => 'standalone',
+            'scope' => '/',
+            'start_url' => '/',
         ], JSON_PRETTY_PRINT);
     }
 

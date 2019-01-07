@@ -1,10 +1,34 @@
 @extends('layouts.app', [
     'sidenav_fixed_layout' => true,
-    'breadcrumb' => [
+    'breadcrumb' => @$title ?
+    [
         [
-            'text' => implode(' ', [ config('app.name'), 'Forumları' ])
+            'text' => 'Forum',
+            'link' => route('forum.index')
+        ],
+        [
+            'text' => $title
         ]
-    ],
+    ]
+    :
+    (
+        @$category ?
+        [
+            [
+                'text' => 'Forum',
+                'link' => route('forum.index')
+            ],
+            [
+                'text' => $category->name
+            ]
+        ]
+        :
+        [
+            [
+                'text' => 'Forum'
+            ]
+        ]
+    ),
     'dock' => true
 ])
 
@@ -24,20 +48,62 @@
             </div>
         @endauth
         <div class="container">
-            <span class="wildcard-title white-text">{{ implode(' ', [ config('app.name'), 'Forumları' ]) }}</span>
+            <span class="wildcard-title white-text">
+                @isset ($title)
+                    {{ $title }}
+                @else
+                    @isset ($category)
+                        {{ $category->name }}
+                    @else
+                        {{ 'Forum' }}
+                    @endif
+                @endif
+            </span>
         </div>
     </div>
 @endsection
+
+@isset ($category)
+    @push('external.include.header')
+        <meta name="description" content="{{ str_limit($category->description, 255) }}" />
+
+        <meta property="og:title" content="{{ $category->name }}">
+        <meta property="og:description" content="{{ str_limit($category->description, 255) }}" />
+        <meta property="og:type" content="category" />
+        <meta property="og:url" content="{{ url()->full() }}" />
+        <meta property="og:image" content="{{ asset('img/olive-twitter-card.png?v='.config('app.version')) }}" />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="{{ url()->full() }}" />
+        <meta name="twitter:title" content="{{ $category->name }}" />
+        <meta name="twitter:description" content="{{ str_limit($category->description, 255) }}" />
+        <meta name="twitter:image" content="{{ asset('img/olive-twitter-card.png?v='.config('app.version')) }}" />
+    @endpush
+@endisset
 
 @section('content')
     {!! $data->links('vendor.pagination.materializecss_simple') !!}
 
     <ul class="card">
         <li class="card-content grey lighten-5">
-            <div class="chip">Tüm Konular</div>
+            @isset ($category)
+                <div class="chip">{{ $category->name }}</div>
+            @else
+                <div class="chip">{{ @$title ? $title : 'Tüm Konular' }}</div>
+            @endisset
         </li>
         @forelse ($data as $thread)
-        <li class="card-content z-depth-1 hoverable">
+            @php
+                $color_light = '';
+                $color_dark = '';
+
+                if ($thread->static)
+                {
+                    $color_light = 'white lighten-2 grey-text';
+                    $color_dark = 'grey lighten-2';
+                }
+            @endphp
+        <li class="card-content z-depth-1 hoverable {{ $color_dark }}">
             <div class="d-flex">
                 <span class="align-self-center center-align" style="margin: 0 1rem 0 0;">
                     <a class="d-block" data-tooltip="{{ $thread->user->name }}" data-position="right" href="{{ route('user.profile', $thread->user_id) }}">
@@ -64,11 +130,12 @@
                         <span class="card-title card-title-small align-self-center mb-0">{{ $thread->subject }}</span>
                     </a>
                     <p class="grey-text">
-                        <time class="timeago grey-text text-darken-2" data-time="{{ $thread->created_at }}">{{ date('d.m.Y H:i', strtotime($thread->created_at)) }}</time>
                         @if (count($thread->replies))
+                            <time class="timeago grey-text text-darken-2" data-time="{{ $thread->updated_at }}">{{ date('d.m.Y H:i', strtotime($thread->updated_at)) }}</time>
                             <span>yanıtladı</span>
                             <a href="{{ route('user.profile', $thread->replies->last()->user->id) }}">{{ '@'.$thread->replies->last()->user->name }}</a>
                         @else
+                            <time class="timeago grey-text text-darken-2" data-time="{{ $thread->created_at }}">{{ date('d.m.Y H:i', strtotime($thread->created_at)) }}</time>
                             <span>yazdı</span>
                             <a href="{{ route('user.profile', $thread->user_id) }}">{{ '@'.$thread->user->name }}</a>
                         @endif
@@ -78,7 +145,7 @@
                     @endif
                 </div>
                 <div class="align-self-center ml-auto d-flex flex-column">
-                    <a href="{{ route('forum.category', $thread->category->slug) }}" class="chip waves-effect center-align">{{ $thread->category->name }}</a>
+                    <a href="{{ route('forum.category', $thread->category->slug) }}" class="chip waves-effect center-align {{ $color_light }}">{{ $thread->category->name }}</a>
                     <span class="badge d-flex grey-text justify-content-end">
                         <span class="align-self-center">{{ count($thread->replies) }}</span>
                         <i class="material-icons align-self-center" style="margin: 0 0 0 .4rem;">reply</i>
@@ -444,14 +511,14 @@
         @endcomponent
 
         <div class="collection white" id="criterion" style="display: none;">
-            <a href="#" class="collection-item waves-effect d-flex">
+            <a href="{{ route('forum.index') }}" class="collection-item waves-effect d-flex">
                 <i class="material-icons" style="margin: 0 .4rem 0 0;">library_books</i>
                 <span class="align-self-center">Tüm Konular</span>
             </a>
 
             @auth
                 @if (auth()->user()->moderator || auth()->user()->root)
-                    <a href="#" class="collection-item waves-effect d-flex red-text">
+                    <a href="{{ route('forum.group', [ __('route.forum.popular'), __('route.forum.spam') ]) }}" class="collection-item waves-effect d-flex red-text">
                         <i class="material-icons" style="margin: 0 .4rem 0 0;">bug_report</i>
                         <span class="align-self-center">Spam Sıralaması</span>
                     </a>
@@ -461,42 +528,42 @@
             <div class="divider"></div>
 
             @auth
-            <a href="#" class="collection-item waves-effect d-flex">
-                <i class="material-icons" style="margin: 0 .4rem 0 0;">local_library</i>
-                <span class="align-self-center">Konularınız</span>
-            </a>
-            <a href="#" class="collection-item waves-effect d-flex">
-                <i class="material-icons" style="margin: 0 .4rem 0 0;">library_add</i>
-                <span class="align-self-center">Katıldığınız Konular</span>
-            </a>
-            <a href="#" class="collection-item waves-effect d-flex">
-                <i class="material-icons" style="margin: 0 .4rem 0 0;">star</i>
-                <span>Takip Ettiğiniz Konular</span>
-            </a>
+                <a href="{{ route('forum.group', [ __('route.forum.thread'), __('route.forum.my_threads') ]) }}" class="collection-item waves-effect green-text d-flex">
+                    <i class="material-icons" style="margin: 0 .4rem 0 0;">local_library</i>
+                    <span class="align-self-center">Açılan Konular</span>
+                </a>
+                <a href="{{ route('forum.group', [ __('route.forum.thread'), __('route.forum.included_threads') ]) }}" class="collection-item waves-effect green-text d-flex">
+                    <i class="material-icons" style="margin: 0 .4rem 0 0;">library_add</i>
+                    <span class="align-self-center">Dahil Olunan Konular</span>
+                </a>
+                <a href="{{ route('forum.group', [ __('route.forum.thread'), __('route.forum.followed_threads') ]) }}" class="collection-item waves-effect green-text d-flex">
+                    <i class="material-icons" style="margin: 0 .4rem 0 0;">star</i>
+                    <span>Takip Edilen Konular</span>
+                </a>
 
-            <div class="divider"></div>
+                <div class="divider"></div>
             @endauth
 
-            <a href="#" class="collection-item waves-effect d-flex">
+            <a href="{{ route('forum.group', [ __('route.forum.question'), __('route.forum.unanswered') ]) }}" class="collection-item waves-effect d-flex">
                 <i class="material-icons" style="margin: 0 .4rem 0 0;">reply</i>
                 <span class="align-self-center">Yanıtlanmayan Sorular</span>
             </a>
-            <a href="#" class="collection-item waves-effect d-flex">
+            <a href="{{ route('forum.group', [ __('route.forum.question'), __('route.forum.solved') ]) }}" class="collection-item waves-effect d-flex">
                 <i class="material-icons" style="margin: 0 .4rem 0 0;">check</i>
                 <span class="align-self-center">Çözülen Sorular</span>
             </a>
-            <a href="#" class="collection-item waves-effect d-flex">
+            <a href="{{ route('forum.group', [ __('route.forum.question'), __('route.forum.unsolved') ]) }}" class="collection-item waves-effect d-flex">
                 <i class="material-icons" style="margin: 0 .4rem 0 0;">close</i>
                 <span class="align-self-center">Çözülmeyen Sorular</span>
             </a>
 
             <div class="divider"></div>
 
-            <a href="#" class="collection-item waves-effect d-flex">
+            <a href="{{ route('forum.group', [ __('route.forum.popular'), __('route.forum.week') ]) }}" class="collection-item waves-effect d-flex">
                 <i class="material-icons" style="margin: 0 .4rem 0 0;">star</i>
                 <span class="align-self-center">Haftanın Popülerleri</span>
             </a>
-            <a href="#" class="collection-item waves-effect d-flex">
+            <a href="{{ route('forum.group', [ __('route.forum.popular'), __('route.forum.all_time') ]) }}" class="collection-item waves-effect d-flex">
                 <i class="material-icons" style="margin: 0 .4rem 0 0;">star</i>
                 <span class="align-self-center">Tüm Zamanların Popülerleri</span>
             </a>

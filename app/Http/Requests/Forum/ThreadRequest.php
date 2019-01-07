@@ -46,7 +46,7 @@ class ThreadRequest extends FormRequest
             'id' => 'sometimes|required|integer|exists:forum_messages,id|lock',
             'subject' => 'required|string|max:64',
             'body' => 'required|string|max:5000|min:24',
-            'category_id' => 'sometimes|required|integer|exists:forum_categories,id',
+            'category_id' => 'required|integer|exists:forum_categories,id',
             'question' => 'nullable|string|in:on'
         ];
     }

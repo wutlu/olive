@@ -3,7 +3,7 @@
         'sidenav_fixed_layout' => true,
         'breadcrumb' => [
             [
-                'text' => implode(' ', [ config('app.name'), 'Forumları' ]),
+                'text' => 'Forum',
                 'link' => route('forum.index')
             ]
         ]
@@ -35,7 +35,7 @@
 @section('wildcard')
     <div class="card wild-background">
         <div class="card-image">
-            <a href="{{ $thread ? $thread->route() : route('forum.index') }}" class="btn-floating btn-large halfway-fab waves-effect red darken-2" data-tooltip="Vazgeç" data-position="left">
+            <a href="{{ $thread ? $thread->route() : route('forum.index') }}" class="btn-floating btn-large halfway-fab waves-effect teal" data-tooltip="Vazgeç" data-position="left">
                 <i class="material-icons">close</i>
             </a>
         </div>
@@ -49,6 +49,7 @@
     <form id="thread-form" data-include="{{ $thread ? '' : 'category_id' }}" class="json" action="{{ route('forum.thread.form') }}" data-method="post" data-callback="__submit">
         @if ($thread)
             <input type="hidden" name="id" id="id" value="{{ $thread->id }}" />
+            <input type="hidden" name="category_id" id="category_id" value="{{ $thread->category_id }}" />
         @endif
         <div class="card">
             @if (@$thread->closed)
@@ -175,6 +176,6 @@
             }
         })
 
-        $('input[type=text], textarea').characterCounter()
+        $('input[name=subject], textarea[name=body]').characterCounter()
     })
 @endpush
