@@ -188,6 +188,12 @@
                         Sayfalar
                     </a>
                 </li>
+                <li class="tiny">
+                    <a class="waves-effect" href="{{ route('admin.carousels') }}">
+                        <i class="material-icons">view_carousel</i>
+                        Carousel Yönetimi
+                    </a>
+                </li>
                 <li class="divider"></li>
                 <li class="tiny">
                     <a class="waves-effect" href="{{ route('admin.organisation.list') }}">
@@ -202,15 +208,15 @@
                     </a>
                 </li>
                 <li class="tiny">
-                    <a class="waves-effect" href="{{ route('admin.discount.coupon.list') }}">
-                        <i class="material-icons">card_giftcard</i>
-                        İndirim Kuponları
+                    <a class="waves-effect" href="{{ route('admin.user.newsletter') }}">
+                        <i class="material-icons">email</i>
+                        E-posta Bülteni
                     </a>
                 </li>
                 <li class="tiny">
-                    <a class="waves-effect" href="{{ route('admin.carousels') }}">
-                        <i class="material-icons">view_carousel</i>
-                        Carousel Yönetimi
+                    <a class="waves-effect" href="{{ route('admin.discount.coupon.list') }}">
+                        <i class="material-icons">card_giftcard</i>
+                        İndirim Kuponları
                     </a>
                 </li>
                 <li class="tiny">

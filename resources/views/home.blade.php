@@ -89,6 +89,8 @@
         </div>
 
         <div class="container">
+            @php
+            /*
             <h2 class="center-align">Ekip</h2>
             <div class="item-group item-group-center" id="team">
                 <div class="item">
@@ -114,6 +116,8 @@
                     <p class="grey-text">Veri Analisti</p>
                 </div>
             </div>
+            */
+            @endphp
         </div>
     </div>
 

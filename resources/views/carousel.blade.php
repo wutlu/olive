@@ -87,7 +87,7 @@
                                 'id': 'description',
                                 'name': 'description',
                                 'class': 'materialize-textarea validate',
-                                'data-length': 128
+                                'data-length': 255
                             }),
                             $('<label />', {
                                 'for': 'description',

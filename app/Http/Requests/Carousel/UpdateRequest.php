@@ -27,7 +27,7 @@ class UpdateRequest extends FormRequest
         return [
             'id' => 'required|integer|exists:carousels,id',
             'title' => 'required|string|max:48',
-            'description' => 'required|string|max:128',
+            'description' => 'required|string|max:255',
             'button_action' => 'nullable|url|max:255',
             'button_text' => 'required_with:button_action|nullable|string|max:32',
             'visibility' => 'nullable|boolean',

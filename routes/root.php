@@ -218,6 +218,10 @@ Route::prefix('kullanici-yonetimi')->group(function () {
 
     Route::get('kullanici/{id}/fatura-gecmisi', 'UserController@adminInvoiceHistory')->name('admin.user.invoices');
     Route::get('kullanici/{id}/destek-talepleri', 'UserController@adminTickets')->name('admin.user.tickets');
+
+    /* ... */
+
+    Route::get('bulten', 'NewsletterController@adminListView')->name('admin.user.newsletter');
 });
 
 Route::prefix('organizasyon-yonetimi')->group(function () {

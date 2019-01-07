@@ -59,16 +59,19 @@
 
 @section('content')
     <div class="fast-menu">
+        <a href="{{ route('forum.index') }}" class="card-panel hoverable waves-effect" data-tooltip="Forum" data-position="right">
+            <img alt="Forum" src="{{ asset('img/icons/board.png') }}" />
+        </a>
         <a href="{{ route('twitter.keyword.list') }}" class="card-panel hoverable waves-effect" data-tooltip="Twitter Veri Havuzu" data-position="right">
             <img alt="Twitter Veri Havuzu" src="{{ asset('img/icons/filter.png') }}" />
-        </a>
-        <a style="opacity: .4;" href="#" class="card-panel hoverable waves-effect" data-tooltip="Monitörler" data-position="right">
-            <img alt="Monitorler" src="{{ asset('img/icons/analytics.png') }}" />
         </a>
         <a href="{{ route('realtime.stream') }}" class="card-panel hoverable waves-effect" data-tooltip="Gerçek Zamanlı" data-position="right">
             <img alt="Gerçek Zamanlı" src="{{ asset('img/icons/realtime.png') }}" />
         </a>
-        <a href="{{ route('trend.live') }}" class="card-panel hoverable waves-effect" data-tooltip="Trend Analizi" data-position="right">
+        <a style="opacity: .4;" href="#" class="card-panel hoverable waves-effect" data-tooltip="Monitörler" data-position="right">
+            <img alt="Monitorler" src="{{ asset('img/icons/analytics.png') }}" />
+        </a>
+        <a style="opacity: .4;" href="#" class="card-panel hoverable waves-effect" data-tooltip="Trend Analizi" data-position="right">
             <img alt="Trend Analizi" src="{{ asset('img/icons/trends.png') }}" />
         </a>
         <a style="opacity: .4;" href="#" class="card-panel hoverable waves-effect" data-tooltip="Geçmiş Veri" data-position="right">
