@@ -96,7 +96,7 @@ return [
                 'description' => '10 soruya cevap verin.'
             ],
             4 => [
-            	'name' => 'En İyi Cevap',
+            	'name' => 'İyi Cevap',
                 'image_src' => 'img/icons/badges/best_answer.png',
                 'description' => 'Verdiğiniz 1 cevap en iyisi seçilsin.'
             ],

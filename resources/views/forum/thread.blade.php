@@ -651,23 +651,23 @@
                             <time class="timeago grey-text text-darken-2" data-time="{{ $message->created_at }}">{{ date('d.m.Y H:i', strtotime($message->created_at)) }}</time>
                         </div>
                         <div class="align-self-center ml-auto d-flex flex-column">
-                            @if ($message->user->badges->count())
-                                <div class="d-flex justify-content-end mb-1">
-                                    @foreach ($message->user->badges()->limit(3)->orderBy('badge_id', 'DESC')->get() as $badge)
-                                        <img
-                                            alt="{{ config('system.user.badges')[$badge->badge_id]['name'] }}"
-                                            src="{{ asset(config('system.user.badges')[$badge->badge_id]['image_src']) }}"
-                                            data-tooltip="{{ config('system.user.badges')[$badge->badge_id]['name'] }}"
-                                            style="width: 32px; height: 32px;" />
-                                    @endforeach
-                                </div>
-                            @endif
                             @auth
                                 <a style="margin-bottom: .4rem;" class="btn-floating btn-flat waves-effect ml-auto dropdown-trigger" data-target="thread-menu-{{ $message->id }}" data-align="right">
                                     <i class="material-icons">more_vert</i>
                                 </a>
                             @endauth
                             @if (!$message->message_id)
+                                @if ($message->user->badges->count())
+                                    <div class="d-flex justify-content-end mb-1">
+                                        @foreach ($message->user->badges()->limit(3)->orderBy('badge_id', 'DESC')->get() as $badge)
+                                            <img
+                                                alt="{{ config('system.user.badges')[$badge->badge_id]['name'] }}"
+                                                src="{{ asset(config('system.user.badges')[$badge->badge_id]['image_src']) }}"
+                                                data-tooltip="{{ config('system.user.badges')[$badge->badge_id]['name'] }}"
+                                                style="width: 32px; height: 32px;" />
+                                        @endforeach
+                                    </div>
+                                @endif
                                 <span class="badge d-flex justify-content-end grey-text text-darken-2">
                                     <span class="align-self-center">{{ count($message->replies) }}</span>
                                     <i class="material-icons align-self-center" style="margin: 0 0 0 .4rem;">reply</i>
