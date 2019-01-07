@@ -174,7 +174,7 @@
                 <li>
                     <a href="#" class="subheader">Yönetici Menüsü</a>
                 </li>
-                <li class="tiny">
+                <li>
                     <a class="waves-effect" href="{{ route('admin.tickets') }}">
                         <i class="material-icons">mail</i>
                         Destek Talepleri

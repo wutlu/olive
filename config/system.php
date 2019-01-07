@@ -34,6 +34,7 @@ return [
         'login' => 'Giriş Bildirimleri',
         'forum' => 'Forum Bildirimleri',
         'badge' => 'Etiket Bildirimleri',
+        'newsletter' => 'E-posta Bülteni',
     ],
 
     /**
