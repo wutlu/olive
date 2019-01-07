@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\Utilities\Term;
+
 class Carousel extends Model
 {
     protected $table = 'carousels';
@@ -15,6 +17,12 @@ class Carousel extends Model
 		'button_action',
 		'button_text',
 
-		'visibility'
+		'visibility',
+		'modal',
     ];
+
+    public function markdown()
+    {
+    	return Term::markdown($this->description);
+    }
 }

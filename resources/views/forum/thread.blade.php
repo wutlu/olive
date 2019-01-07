@@ -646,7 +646,10 @@
                                 @endif
                             </div>
                             @if ($last_user_id != $message->user_id)
-                                <a class="card-title card-title-small align-self-center mb-0" href="{{ route('user.profile', $message->user_id) }}">{{ $message->user->name }}</a>
+                                <a
+                                    style="@if ($message->user->banned_at){{ 'text-decoration: line-through;' }}@endif"
+                                    class="card-title card-title-small align-self-center mb-0"
+                                    href="{{ route('user.profile', $message->user_id) }}">{{ $message->user->name }}</a>
                             @endif
                             <time class="timeago grey-text text-darken-2" data-time="{{ $message->created_at }}">{{ date('d.m.Y H:i', strtotime($message->created_at)) }}</time>
                         </div>

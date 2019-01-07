@@ -10,6 +10,28 @@
 @endpush
 
 @section('wildcard')
+    @if (count($modals))
+        @foreach ($modals as $carousel)
+            @if ($carousel->modal)
+                @push('local.scripts')
+                    modal({
+                        'id': 'carousel-{{ $carousel->id }}',
+                        'body': '{!! str_replace(PHP_EOL, '', $carousel->markdown()) !!}',
+                        'size': 'modal-large',
+                        'title': '{{ $carousel->title }}',
+                        'options': {},
+                        'footer': [
+                            $('<a />', {
+                                'href': '#',
+                                'class': 'modal-close waves-effect btn-flat cyan-text',
+                                'html': buttons.ok
+                            })
+                        ]
+                    });
+                @endpush
+            @endif
+        @endforeach
+    @endif
     @if (count($carousels))
         <div class="carousel carousel-slider center cyan darken-4 z-depth-1">
             @php
@@ -18,7 +40,7 @@
                 @foreach ($carousels as $carousel)
                 <div class="{{ implode(' ', [ 'carousel-item', $i == 0 ? 'active' : '', 'white-text' ]) }}">
                     <h2>{{ $carousel->title }}</h2>
-                    <p>{!! nl2br($carousel->description) !!}</p>
+                    {!! $carousel->markdown() !!}
                     <div class="{{ implode(' ', [ 'anim', $carousel->pattern ]) }}"></div>
 
                     @if ($carousel->button_text)

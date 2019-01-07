@@ -80,6 +80,7 @@ class CarouselController extends Controller
         $carousel = new Carousel;
         $carousel->fill($request->all());
         $carousel->visibility = $request->visibility ? true : false;
+        $carousel->modal = $request->modal ? true : false;
         $carousel->save();
 
         return [
@@ -96,6 +97,7 @@ class CarouselController extends Controller
         $carousel = Carousel::where('id', $request->id)->firstOrFail();
         $carousel->fill($request->all());
         $carousel->visibility = $request->visibility ? true : false;
+        $carousel->modal = $request->modal ? true : false;
         $carousel->save();
 
         return [

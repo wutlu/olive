@@ -60,7 +60,6 @@
                 'action': '{{ route('admin.carousel') }}',
                 'id': 'form',
                 'class': 'json',
-                'data-method': 'patch',
                 'html': [
                     $('<div />', {
                         'class': 'input-field',
@@ -187,6 +186,23 @@
                                 })
                             ]
                         })
+                    }),
+                    $('<div />', {
+                        'class': 'collection',
+                        'html': $('<label />', {
+                            'class': 'collection-item waves-effect d-block',
+                            'html': [
+                                $('<input />', {
+                                    'name': 'modal',
+                                    'id': 'modal',
+                                    'value': '1',
+                                    'type': 'checkbox'
+                                }),
+                                $('<span />', {
+                                    'html': 'Modal'
+                                })
+                            ]
+                        })
                     })
                 ]
             }),
@@ -265,6 +281,7 @@
         $('input[name=button_text]').val('').characterCounter()
         $('select[name=pattern]').val('').formSelect()
         $('input[name=visibility]').prop('checked', false)
+        $('input[name=modal]').prop('checked', false)
 
         $('[data-trigger=delete]').removeAttr('data-id').addClass('hide')
 
@@ -273,6 +290,7 @@
         form.data('callback', '__create')
 
         M.updateTextFields()
+        M.textareaAutoResize($('textarea[name=description]'))
     })
 
     function __delete(__, obj)
@@ -341,6 +359,7 @@
             $('input[name=button_text]').val(obj.data.button_text).characterCounter()
             $('select[name=pattern]').val(obj.data.pattern).formSelect()
             $('input[name=visibility]').prop('checked', obj.data.visibility)
+            $('input[name=modal]').prop('checked', obj.data.modal)
 
             $('[data-trigger=delete]').data('id', obj.data.id).removeClass('hide')
 
@@ -349,6 +368,7 @@
             form.data('callback', '__update')
 
             M.updateTextFields()
+            M.textareaAutoResize($('textarea[name=description]'))
         }
     }
 @endpush
