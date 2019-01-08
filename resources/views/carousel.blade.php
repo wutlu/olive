@@ -236,32 +236,32 @@
     }
 
     $(document).on('click', '[data-trigger=delete]', function() {
-        var mdl = modal({
-                'id': 'alert',
-                'body': 'Silmek istediğinizden emin misiniz?',
-                'size': 'modal-small',
-                'title': 'Sil',
-                'footer': [
-                    $('<a />', {
-                        'href': '#',
-                        'class': 'modal-close waves-effect grey-text btn-flat',
-                        'html': buttons.cancel
-                    }),
-                    $('<span />', {
-                        'html': ' '
-                    }),
-                    $('<a />', {
-                        'href': '#',
-                        'class': 'waves-effect btn-flat red-text json',
-                        'html': buttons.ok,
-                        'data-href': '{{ route('admin.carousel') }}',
-                        'data-method': 'delete',
-                        'data-id': $(this).data('id'),
-                        'data-callback': '__delete'
-                    })
-                ],
-                'options': {}
-            });
+        return modal({
+            'id': 'alert',
+            'body': 'Silmek istediğinizden emin misiniz?',
+            'size': 'modal-small',
+            'title': 'Sil',
+            'footer': [
+                $('<a />', {
+                    'href': '#',
+                    'class': 'modal-close waves-effect grey-text btn-flat',
+                    'html': buttons.cancel
+                }),
+                $('<span />', {
+                    'html': ' '
+                }),
+                $('<a />', {
+                    'href': '#',
+                    'class': 'waves-effect btn-flat red-text json',
+                    'html': buttons.ok,
+                    'data-href': '{{ route('admin.carousel') }}',
+                    'data-method': 'delete',
+                    'data-id': $(this).data('id'),
+                    'data-callback': '__delete'
+                })
+            ],
+            'options': {}
+        })
     })
 
     $(document).on('click', '[data-trigger=create]', function() {

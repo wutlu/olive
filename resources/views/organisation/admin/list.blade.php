@@ -27,7 +27,7 @@
                         item.removeClass('model hide').addClass('_tmp d-flex').attr('data-id', o.id)
 
                         item.find('[data-name=name]').html(o.name)
-                        item.find('[data-name=status]').html(o.status ? '✓' : '✕').addClass(o.status ? 'green-text' : 'red-text')
+                        item.find('[data-name=status]').html(o.status ? 'Ödeme Alındı!' : 'Ödeme Alınmadı!').addClass(o.status ? 'green-text' : 'red-text')
                         item.find('[data-name=author]').html(o.author.name)
                         item.find('[data-name=avatar]').attr('src', o.author.avatar ? '{{ asset('/') }}' + o.author.avatar : '{{ asset('img/icons/people.png') }}')
 

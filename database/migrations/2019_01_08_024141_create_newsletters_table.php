@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUserNewslettersTable extends Migration
+class CreateNewslettersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,16 @@ class CreateUserNewslettersTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_newsletters', function (Blueprint $table) {
+        Schema::create('newsletters', function (Blueprint $table) {
             $table->increments('id')->unsigned();
 
             $table->string('subject');
             $table->text('body');
 
-            $table->json('mail_list')->nullable()->default(null);
-            $table->json('sent_list')->nullable()->default(null);
+            $table->text('email_list')->nullable()->default(null);
+            $table->unsignedInteger('sent_line')->default(0);
 
-            $table->enum('status', [ 'process', 'failed', 'ok' ])->nullable()->default(null);
+            $table->enum('status', [ 'process', 'ok', 'triggered' ])->nullable()->default(null);
 
             $table->timestamp('send_date');
 
@@ -37,6 +37,6 @@ class CreateUserNewslettersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_newsletters');
+        Schema::dropIfExists('newsletters');
     }
 }

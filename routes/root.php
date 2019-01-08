@@ -218,17 +218,17 @@ Route::prefix('kullanici-yonetimi')->group(function () {
 
     Route::get('kullanici/{id}/fatura-gecmisi', 'UserController@adminInvoiceHistory')->name('admin.user.invoices');
     Route::get('kullanici/{id}/destek-talepleri', 'UserController@adminTickets')->name('admin.user.tickets');
+});
 
-    /* ... */
+Route::prefix('bulten')->group(function () {
+    Route::get('/', 'NewsletterController@dashboard')->name('admin.newsletter');
+    Route::post('/', 'NewsletterController@json');
+    Route::get('islem/{id?}', 'NewsletterController@form')->name('admin.newsletter.form');
+    Route::post('kayit', 'NewsletterController@save')->name('admin.newsletter.form.save');
+    Route::post('durum', 'NewsletterController@status')->name('admin.newsletter.status');
+    Route::delete('/', 'NewsletterController@delete')->name('admin.newsletter.delete');
 
-    Route::prefix('bulten')->group(function () {
-        Route::get('/', 'NewsletterController@dashboard')->name('admin.user.newsletter');
-        Route::post('/', 'NewsletterController@json');
-        Route::get('islem/{id?}', 'NewsletterController@form')->name('admin.user.newsletter.form');
-        Route::post('islem/{id?}', 'NewsletterController@formSave');
-
-        Route::post('kullanici-listesi', 'NewsletterController@users')->name('admin.user.newsletter.users');
-    });
+    Route::post('kullanici-listesi', 'NewsletterController@users')->name('admin.newsletter.users');
 });
 
 Route::prefix('organizasyon-yonetimi')->group(function () {

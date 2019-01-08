@@ -26,10 +26,11 @@
                     var item = item_model.clone();
                         item.removeClass('model hide').addClass('_tmp d-flex').attr('data-id', o.id)
 
-                        item.find('[data-name=name]').html(o.name)
-                        item.find('[data-name=email]').html(o.email)
-                        item.find('[data-name=avatar]').attr('src', o.avatar ? '{{ asset('/') }}' + o.avatar : '{{ asset('img/icons/people.png') }}')
-                        item.find('[data-name=verified]').html(o.verified ? '✓' : '✕').addClass(o.verified ? 'green-text' : 'red-text')
+                        item.find('[data-name=subject]').html(o.subject)
+                        item.find('[data-name=status]').html(
+                            o.status == 'process' ? 'İşleniyor...' : (o.status == 'ok' ? 'Tamamlandı!' : o.status == 'triggered' ? 'Planlandı...' : 'Henüz Planlanmadı!')
+                        ).addClass(o.status == 'process' ? 'orange-text' : (o.status == 'ok' ? 'green-text' : 'grey-text'))
+                        item.find('[data-name=updated-at]').html(o.updated_at).data('time', o.updated_at)
 
                         item.appendTo(ul)
                 })
@@ -46,7 +47,7 @@
             <img src="{{ asset('img/card-header.jpg') }}" alt="E-posta Bülteni" />
             <span class="card-title">E-posta Bülteni</span>
 
-            <a href="{{ route('admin.user.newsletter.form') }}" class="btn-floating btn-large halfway-fab waves-effect white">
+            <a href="{{ route('admin.newsletter.form') }}" class="btn-floating btn-large halfway-fab waves-effect white">
                 <i class="material-icons grey-text text-darken-2">add</i>
             </a>
         </div>
@@ -71,7 +72,7 @@
         </nav>
         <div class="collection load json-clear" 
              id="newsletters"
-             data-href="{{ route('admin.user.newsletter') }}"
+             data-href="{{ route('admin.newsletter') }}"
              data-method="post"
              data-skip="0"
              data-take="5"
@@ -84,16 +85,16 @@
             </div>
             <a
                 href="#"
-                class="collection-item model hide waves-effect json"
+                class="collection-item model hide waves-effect json justify-content-between"
                 data-href="{{ route('route.generate.id') }}"
                 data-method="post"
-                data-name="admin.user"
+                data-name="admin.newsletter.form"
                 data-callback="__go">
-                <span class="align-self-center">
-                    <p data-name="name"></p>
-                    <p data-name="email" class="grey-text"></p>
+                <span>
+                    <p data-name="subject" class="mb-0"></p>
+                    <p data-name="status" class="mb-0"></p>
                 </span>
-                <small data-name="verified" class="badge ml-auto"></small>
+                <time data-name="updated-at" class="timeago"></time>
             </a>
         </div>
     </div>

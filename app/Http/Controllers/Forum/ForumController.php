@@ -208,8 +208,10 @@ class ForumController extends Controller
      ****************************************************
      * SYSTEM FUNCTION
      ****************************************************
+     *
      * takip edilen konulara verilen
      * cevaplar için e-posta bildirimleri.
+     *
      */
     public static function threadFollowNotifications()
     {

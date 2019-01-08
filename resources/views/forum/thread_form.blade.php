@@ -46,7 +46,7 @@
 @endsection
 
 @section('content')
-    <form id="thread-form" data-include="{{ $thread ? '' : 'category_id' }}" class="json" action="{{ route('forum.thread.form') }}" data-method="post" data-callback="__submit">
+    <form id="thread-form" data-include="{{ $thread ? '' : 'category_id' }}" class="json" action="{{ route('forum.thread.form') }}" method="post" data-callback="__submit">
         @if ($thread)
             <input type="hidden" name="id" id="id" value="{{ $thread->id }}" />
             <input type="hidden" name="category_id" id="category_id" value="{{ $thread->category_id }}" />

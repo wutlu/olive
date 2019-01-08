@@ -906,7 +906,7 @@ table.invoice tfoot > tr {
  */
 textarea.max-height {
   overflow: auto;
-  max-height: 260px !important;
+  max-height: 264px !important;
 }
 
 /**
@@ -1865,7 +1865,7 @@ table tr {
 .modal .modal-content {
   padding: 0;
 
-  background-color: #f0f0f0;
+  background-color: #f9f9f9;
 }
 .modal .modal-content > .modal-title {
   padding: 24px 24px 12px 24px;
@@ -1875,7 +1875,7 @@ table tr {
   overflow: auto;
   max-height: 300px;
   margin: 0;
-  padding: 12px 24px;
+  padding: 24px 32px;
   background-color: #fff;
 
           box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);

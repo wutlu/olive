@@ -29,7 +29,7 @@
                         item.find('[data-name=name]').html(o.name)
                         item.find('[data-name=email]').html(o.email)
                         item.find('[data-name=avatar]').attr('src', o.avatar ? '{{ asset('/') }}' + o.avatar : '{{ asset('img/icons/people.png') }}')
-                        item.find('[data-name=verified]').html(o.verified ? '✓' : '✕').addClass(o.verified ? 'green-text' : 'red-text')
+                        item.find('[data-name=verified]').html(o.verified ? 'Doğrulandı!' : 'Doğrulanmadı!').addClass(o.verified ? 'green-text' : 'red-text')
 
                         item.appendTo(ul)
                 })

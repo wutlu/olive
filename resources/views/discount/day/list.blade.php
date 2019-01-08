@@ -35,8 +35,8 @@
             @foreach ($days as $day)
             <a href="{{ route('admin.discount.day', $day->id) }}" class="collection-item d-flex waves-effect">
                 <span class="align-self-center">
-                    <p>{{ $day->discount_rate.'%' }} indirim</p>
-                    <p>{{ config('formal.currency').' '.$day->discount_price }} indirim</p>
+                    <p class="mb-0">{{ $day->discount_rate.'%' }} indirim</p>
+                    <p class="mb-0">{{ config('formal.currency').' '.$day->discount_price }} indirim</p>
                 </span>
                 <small class="badge ml-auto">{{ date('d.m.Y', strtotime($day->first_day)).' / '.date('d.m.Y', strtotime($day->last_day)) }}</small>
             </a>

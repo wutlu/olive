@@ -208,7 +208,7 @@
                     </a>
                 </li>
                 <li class="tiny">
-                    <a class="waves-effect" href="{{ route('admin.user.newsletter') }}">
+                    <a class="waves-effect" href="{{ route('admin.newsletter') }}">
                         <i class="material-icons">email</i>
                         E-posta Bülteni
                     </a>

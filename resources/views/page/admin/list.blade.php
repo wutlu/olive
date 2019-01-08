@@ -37,8 +37,8 @@
             @foreach ($pages as $page)
             <a href="{{ route('admin.page', $page->id) }}" class="collection-item d-flex waves-effect">
                 <span>
-                    <p>{{ $page->title }}</p>
-                    <p class="grey-text">{{ url($page->slug) }}</p>
+                    <p class="mb-0">{{ $page->title }}</p>
+                    <p class="mb-0 grey-text">{{ url($page->slug) }}</p>
                 </span>
             </a>
             @endforeach

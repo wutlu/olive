@@ -14,34 +14,32 @@
     <div class="card wild-background mb-0">
         <div class="container">
             <span class="wildcard-title white-text d-flex flex-wrap">
-        		<img alt="Avatar" src="{{ $user->avatar() }}" class="mr-1 circle align-self-center" style="width: 96px; height: 96px;" />
+                <img alt="Avatar" src="{{ $user->avatar() }}" class="mr-1 circle align-self-center" style="width: 96px; height: 96px;" />
                 <span class="align-self-center">{{ $user->name }}</span>
             </span>
         </div>
     </div>
-    @if ($user->badges->count())
-	    <div class="card">
-	    	<div class="container">
-	    		<div class="pt-1 pb-1">
-		            <div class="d-flex flex-wrap">
-		                @foreach (config('system.user.badges') as $id => $badge)
-                            @php
-                            $have = $user->badge($id);
-                            @endphp
+    <div class="card">
+        <div class="container">
+            <div class="pt-1 pb-1">
+                <div class="d-flex flex-wrap">
+                    @foreach (config('system.user.badges') as $id => $badge)
+                        @php
+                        $have = $user->badge($id);
+                        @endphp
 
-                            <a href="#" data-trigger="badge" data-text="{{ $badge['description'] }}">
-    		                    <img
-    		                        alt="{{ $badge['name'] }}"
-    		                        src="{{ asset($badge['image_src']) }}"
-    		                        data-tooltip="{{ $badge['name'] }}"
-                                    class="rosette {{ $have ? 'active' : '' }}" />
-                            </a>
-		                @endforeach
-		            </div>
-	            </div>
-	        </div>
-	    </div>
-    @endif
+                        <a href="#" data-trigger="badge" data-text="{{ $badge['description'] }}" style="padding: .2rem;">
+                            <img
+                                alt="{{ $badge['name'] }}"
+                                src="{{ asset($badge['image_src']) }}"
+                                data-tooltip="{{ $badge['name'] }}"
+                                class="rosette {{ $have ? 'active' : '' }}" />
+                        </a>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('local.scripts')
@@ -50,7 +48,7 @@
             'id': 'badge',
             'body': $(this).data('text'),
             'size': 'modal-small',
-            'title': 'Nasıl Alırım?',
+            'title': 'Nasıl Kazanılır?',
             'options': {},
             'footer': [
                 $('<a />', {
@@ -64,17 +62,25 @@
 @endpush
 
 @push('local.styles')
-    .rosette {
+    img.rosette {
         width: 64px;
         height: 64px;
         padding: .2rem;
 
                 filter: grayscale(100%);
         -webkit-filter: grayscale(100%);
+
+        padding: 1rem;
     }
-    .rosette.active {
+
+    img.rosette.active {
                 filter: grayscale(0);
         -webkit-filter: grayscale(0);
+
+        background-color: #f0f0f0;
+
+                box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+        -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
     }
 @endpush
 
@@ -91,20 +97,20 @@
 @endpush
 
 @section('content')
-	<div class="card">
+    <div class="card">
         @if ($user->about)
             <div class="card-content grey lighten-4">
                 <span class="card-title">Hakkında</span>
                 <div class="markdown">{!! Term::markdown($user->about) !!}</div>
             </div>
         @endif
-		<ul class="collection">
-			<li class="collection-item">
-				<a href="{{ route('forum.group', [ __('route.forum.user'), $user->id ]) }}">Açtığı Konular</a>
-				<span class="badge grey white-text">{{ $user->messages()->whereNull('message_id')->count() }}</span>
-			</li>
-		</ul>
-	</div>
+        <ul class="collection">
+            <li class="collection-item">
+                <a href="{{ route('forum.group', [ __('route.forum.user'), $user->id ]) }}">Açtığı Konular</a>
+                <span class="badge grey white-text">{{ $user->messages()->whereNull('message_id')->count() }}</span>
+            </li>
+        </ul>
+    </div>
 @endsection
 
 @push('local.scripts')

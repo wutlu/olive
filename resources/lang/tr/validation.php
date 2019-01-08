@@ -241,5 +241,9 @@ return [
         'carousel'                     => 'Carousel',
         'modal'                        => 'Modal',
         'about'                        => 'Hakkında',
+        'send_date'                    => 'Gönderilecek Tarih',
+        'send_time'                    => 'Gönderilecek Saat',
+        'email_list'                   => 'E-posta Listesi',
+        'process'                      => 'İşleme Alma',
     ],
 ];
