@@ -32,13 +32,12 @@ class ProxyController extends Controller
     # 
     public static function proxiesJson()
     {
-        $proxies = new Proxy;
-        $proxies = $proxies->orderBy('id', 'DESC');
+        $proxies = Proxy::orderBy('id', 'DESC')->get();
 
         return [
             'status' => 'ok',
-            'hits' => $proxies->get(),
-            'total' => $proxies->count()
+            'hits' => $proxies,
+            'total' => count($proxies)
         ];
     }
 

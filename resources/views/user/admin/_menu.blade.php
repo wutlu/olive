@@ -11,6 +11,9 @@
     <a href="{{ route('admin.user.tickets', $id) }}" class="collection-item waves-effect {{ $active == 'tickets' ? 'active' : '' }}">
         Destek Talepleri <span class="badge teal white-text">{{ $user->tickets()->count() }}</span>
     </a>
+    <a href="{{ route('forum.group', [ __('route.forum.user'), $id ]) }}" class="collection-item waves-effect">
+        Açtığı Konular <span class="badge teal white-text">{{ $user->messages()->whereNull('message_id')->count() }}</span>
+    </a>
     @if (@$user->organisation)
         <div class="divider teal"></div>
         <a href="{{ route('admin.organisation', $user->organisation->id) }}" class="collection-item waves-effect">

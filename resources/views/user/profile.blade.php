@@ -24,12 +24,18 @@
 	    	<div class="container">
 	    		<div class="pt-1 pb-1">
 		            <div class="d-flex flex-wrap">
-		                @foreach ($user->badges()->orderBy('id', 'ASC')->get() as $badge)
-		                    <img
-		                        alt="{{ config('system.user.badges')[$badge->badge_id]['name'] }}"
-		                        src="{{ asset(config('system.user.badges')[$badge->badge_id]['image_src']) }}"
-		                        data-tooltip="{{ config('system.user.badges')[$badge->badge_id]['name'] }} - {{ date('d.m.Y H:i', strtotime($badge->created_at)) }}"
-		                        style="width: 32px; height: 32px;" />
+		                @foreach (config('system.user.badges') as $id => $badge)
+                            @php
+                            $have = $user->badge($id);
+                            @endphp
+
+                            <a href="#" data-trigger="badge" data-text="{{ $badge['description'] }}">
+    		                    <img
+    		                        alt="{{ $badge['name'] }}"
+    		                        src="{{ asset($badge['image_src']) }}"
+    		                        data-tooltip="{{ $badge['name'] }}"
+                                    class="rosette {{ $have ? 'active' : '' }}" />
+                            </a>
 		                @endforeach
 		            </div>
 	            </div>
@@ -37,6 +43,40 @@
 	    </div>
     @endif
 @endsection
+
+@push('local.scripts')
+    $(document).on('click', '[data-trigger=badge]', function() {
+        modal({
+            'id': 'badge',
+            'body': $(this).data('text'),
+            'size': 'modal-small',
+            'title': 'Nasıl Alırım?',
+            'options': {},
+            'footer': [
+                $('<a />', {
+                    'href': '#',
+                    'class': 'modal-close waves-effect btn-flat cyan-text',
+                    'html': buttons.ok
+                })
+            ]
+        });
+    })
+@endpush
+
+@push('local.styles')
+    .rosette {
+        width: 64px;
+        height: 64px;
+        padding: .2rem;
+
+                filter: grayscale(100%);
+        -webkit-filter: grayscale(100%);
+    }
+    .rosette.active {
+                filter: grayscale(0);
+        -webkit-filter: grayscale(0);
+    }
+@endpush
 
 @push('external.include.header')
     <meta property="og:title" content="{{ $user->name }}">
@@ -52,12 +92,16 @@
 
 @section('content')
 	<div class="card">
+        @if ($user->about)
+            <div class="card-content grey lighten-4">
+                <span class="card-title">Hakkında</span>
+                <div class="markdown">{!! Term::markdown($user->about) !!}</div>
+            </div>
+        @endif
 		<ul class="collection">
 			<li class="collection-item">
-				<a href="{{ route('forum.group', [ __('route.forum.user'), $user->id ]) }}">
-					Açtığı Konular
-				</a>
-				<span class="badge grey white-text">{{ $user->messages()->count() }}</span>
+				<a href="{{ route('forum.group', [ __('route.forum.user'), $user->id ]) }}">Açtığı Konular</a>
+				<span class="badge grey white-text">{{ $user->messages()->whereNull('message_id')->count() }}</span>
 			</li>
 		</ul>
 	</div>

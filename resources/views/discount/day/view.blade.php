@@ -75,38 +75,37 @@
 @section('content')
     <form method="{{ @$day ? 'patch' : 'put' }}" action="{{ route('admin.discount.day') }}" class="json" id="details-form" data-callback="__form">
         @if (@$day)
-        <input type="hidden" value="{{ $day->id }}" name="id" id="id" />
+            <input type="hidden" value="{{ $day->id }}" name="id" id="id" />
         @endif
         <div class="card">
-            <div class="card-image">
-                <img src="{{ asset('img/card-header.jpg') }}" alt="{{ @$day ? 'İndirim Günü' : 'İndirim Günü Oluştur' }}" />
-                <span class="card-title">{{ @$day ? 'İndirim Günü' : 'İndirim Günü Oluştur' }}</span>
-            </div>
             <div class="card-content">
-                <div class="collection">
-                    <div class="collection-item">
-                        <div class="input-field" style="max-width: 240px;">
-                            <input name="first_day" id="first_day" value="{{ @$day->first_day }}" type="date" class="validate" />
+                <span class="card-title">{{ @$day ? 'İndirim Günü' : 'İndirim Günü Oluştur' }}</span>
+                <div class="d-flex flex-wrap">
+                    <div class="p-1" style="min-width: 240px;">
+                        <div class="input-field">
+                            <input name="first_day" id="first_day" value="{{ @$day->first_day }}" type="text" class="validate datepicker" placeholder="Başlangıç Günü" />
                             <label for="first_day">Başlangıç Günü</label>
                             <small class="helper-text">İndirim kampanyasının başladığı gün.</small>
                         </div>
                     </div>
-                    <div class="collection-item">
-                        <div class="input-field" style="max-width: 240px;">
-                            <input name="last_day" id="last_day" value="{{ @$day->last_day }}" type="date" class="validate" />
+                    <div class="p-1" style="min-width: 240px;">
+                        <div class="input-field">
+                            <input name="last_day" id="last_day" value="{{ @$day->last_day }}" type="text" class="validate datepicker" placeholder="Bitiş Günü" />
                             <label for="last_day">Bitiş Günü</label>
                             <small class="helper-text">İndirim kampanyasının biteceği gün.</small>
                         </div>
                     </div>
-                    <div class="collection-item">
-                        <div class="input-field" style="max-width: 240px;">
+                </div>
+                <div class="d-flex flex-wrap">
+                    <div class="p-1" style="min-width: 240px;">
+                        <div class="input-field">
                             <input name="discount_rate" id="discount_rate" value="{{ @$day->discount_rate }}" type="number" max="100" min="0" class="validate" />
                             <label for="discount_rate">İndirim Oranı (%)</label>
                             <small class="helper-text">Kuponun sağlayacağı indirim oranı.</small>
                         </div>
                     </div>
-                    <div class="collection-item">
-                        <div class="input-field" style="max-width: 240px;">
+                    <div class="p-1" style="min-width: 240px;">
+                        <div class="input-field">
                             <input name="discount_price" id="discount_price" value="{{ @$day->discount_price }}" type="number" min="0" class="validate" />
                             <label for="discount_price">İndirim Miktarı ({{ config('formal.currency') }})</label>
                             <small class="helper-text">Kuponun sağlayacağı indirim miktarı.</small>
@@ -118,8 +117,16 @@
                 @if (@$day)
                     <a href="#" class="btn-flat waves-effect" data-trigger="delete">Sil</a>
                 @endif
-                <button type="submit" class="btn waves-effect">{{ @$day ? 'Güncelle' : 'Oluştur' }}</button>
+                <button type="submit" class="btn-flat waves-effect">{{ @$day ? 'Güncelle' : 'Oluştur' }}</button>
             </div>
         </div>
     </form>
 @endsection
+
+@push('local.scripts')
+    $('.datepicker').datepicker({
+        firstDay: 0,
+        format: 'yyyy-mm-dd',
+        i18n: date.i18n
+    })
+@endpush

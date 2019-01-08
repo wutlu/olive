@@ -19,8 +19,8 @@
                 <i class="material-icons grey-text text-darken-2">add</i>
             </a>
         </div>
-        <div class="card-content grey lighten-4 grey-text">
-            Belirleyeceğiniz günlerde sisteme kaydolan kullanıcılar için sistem, indirim kuponları üretir.
+        <div class="card-content teal white-text">
+            <p>Belirleyeceğiniz günlerde sisteme kaydolan kullanıcılar için sistem, indirim kuponları üretir.</p>
         </div>
         <div class="card-content">
             <span class="card-title">İndirim Günleri</span>

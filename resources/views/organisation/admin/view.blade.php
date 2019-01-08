@@ -72,12 +72,12 @@
                     <div class="collection-item">
                         <div class="d-flex">
                             <div class="input-field" style="margin: 0 1rem 0 0;">
-                                <input name="end_date" id="end_date" value="{{ date('Y-m-d', strtotime($organisation->end_date)) }}" type="date" class="validate" />
+                                <input name="end_date" id="end_date" value="{{ date('Y-m-d', strtotime($organisation->end_date)) }}" type="text" class="validate datepicker" />
                                 <label for="end_date">Bitiş Tarihi</label>
                                 <small class="helper-text">Organizasyonun bitiş tarihi.</small>
                             </div>
                             <div class="input-field" style="margin: 0 1rem 0 0;">
-                                <input name="end_time" id="end_time" value="{{ date('H:i', strtotime($organisation->end_date)) }}" type="time" class="validate" />
+                                <input name="end_time" id="end_time" value="{{ date('H:i', strtotime($organisation->end_date)) }}" type="text" class="validate timepicker" />
                                 <label for="end_time">Bitiş Saati</label>
                                 <small class="helper-text">Organizasyonun bitiş saati.</small>
                             </div>
@@ -116,4 +116,16 @@
 
 @push('local.scripts')
     $('select').formSelect()
+
+    $('.datepicker').datepicker({
+        firstDay: 0,
+        format: 'yyyy-mm-dd',
+        i18n: date.i18n
+    })
+
+    $('.timepicker').timepicker({
+        format: 'hh:MM',
+        twelveHour: false,
+        i18n: date.i18n
+    })
 @endpush

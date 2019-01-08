@@ -10,6 +10,7 @@ return [
         'ok' => 'Tamam',
         'cancel' => 'Vazgeç',
         'update' => 'Güncelle',
+        'clear' => 'Temizle',
         'info' => 'Bilgi',
         'login' => 'Giriş',
         'remove' => 'Sil',
@@ -47,19 +48,15 @@ return [
             'wordSeparator' => ' ',
             'numbers' => []
         ],
-        'months' => [
-            1 => 'Ocak',
-            2 => 'Şubat',
-            3 => 'Mart',
-            4 => 'Nisan',
-            5 => 'Mayıs',
-            6 => 'Haziran',
-            7 => 'Temmuz',
-            8 => 'Ağustos',
-            9 => 'Eylül',
-            10 => 'Ekim',
-            11 => 'Kasım',
-            12 => 'Aralık'
+        'i18n' => [
+            'months' => [ 'Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık' ],
+            'monthsShort' => [ 'Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara' ],
+            'weekdays' => [ 'Pazrtesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi', 'Pazar' ],
+            'weekdaysShort' => [ 'Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Pzr' ],
+            'weekdaysAbbrev' => [ 'Pt', 'S', 'Ç', 'Pe', 'C', 'Ct', 'P' ],
+            'cancel' => 'Vazgeç',
+            'done' => 'Tamam',
+            'clear' => 'Temizle'
         ]
     ]
 ];

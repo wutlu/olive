@@ -238,5 +238,8 @@ return [
         'thread_id'                    => 'Konu',
         'reply_id'                     => 'Cevap',
         'route'                        => 'Rota',
+        'carousel'                     => 'Carousel',
+        'modal'                        => 'Modal',
+        'about'                        => 'Hakkında',
     ],
 ];

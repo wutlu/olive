@@ -47,7 +47,7 @@ class ModuleSearchController extends Controller
                                     );
                                 }
                              })->orderBy('total', 'DESC')
-                               ->limit(12)
+                               ->limit(8)
                                ->get();
 
         if (count($query))
@@ -65,22 +65,20 @@ class ModuleSearchController extends Controller
             }
         }
 
-        if (strlen($request->search_input) >= 2)
-        {
-            $forum_messages = Message::where('subject', 'ILIKE', '%'.$request->search_input.'%')->orderBy('updated_at', 'DESC')->limit(12)->get();
+        $limit = $request->search_input ? 8 : 4;
+        $forum_messages = Message::where('subject', 'ILIKE', '%'.$request->search_input.'%')->orderBy('updated_at', 'DESC')->limit($limit)->get();
 
-            if (count($forum_messages))
+        if (count($forum_messages))
+        {
+            foreach ($forum_messages as $message)
             {
-                foreach ($forum_messages as $message)
-                {
-                    $data[] = [
-                        'module_id' => 27,
-                        'name' => $message->subject,
-                        'route' => $message->route(),
-                        'root' => false,
-                        'icon' => 'library_books'
-                    ];
-                }
+                $data[] = [
+                    'module_id' => 27,
+                    'name' => $message->subject,
+                    'route' => $message->route(),
+                    'root' => false,
+                    'icon' => 'library_books'
+                ];
             }
         }
 

@@ -417,6 +417,7 @@ class UserController extends Controller
         $user->avatar = $request->avatar ? null : $user->avatar;
         $user->root = $request->root ? true : false;
         $user->moderator = $request->moderator ? true : false;
+        $user->about = $request->about ? $request->about : null;
 
         if ($request->ban_reason)
         {
@@ -555,6 +556,7 @@ class UserController extends Controller
         $user = auth()->user();
 
         $user->name = $request->name;
+        $user->about = $request->about ? $request->about : null;
 
         if ($user->email != $request->email)
         {

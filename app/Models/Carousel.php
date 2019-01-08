@@ -17,7 +17,7 @@ class Carousel extends Model
 		'button_action',
 		'button_text',
 
-		'visibility',
+		'carousel',
 		'modal',
     ];
 

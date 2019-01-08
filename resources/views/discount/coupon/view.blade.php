@@ -78,38 +78,37 @@
         <input type="hidden" value="{{ $coupon->id }}" name="id" id="id" />
         @endif
         <div class="card">
-            <div class="card-image">
-                <img src="{{ asset('img/card-header.jpg') }}" alt="{{ @$coupon ? $coupon->key : 'Kupon Oluştur' }}" />
-                <span class="card-title">{{ @$coupon ? $coupon->key : 'Kupon Oluştur' }}</span>
-            </div>
             <div class="card-content">
-                <div class="collection">
-                    <div class="collection-item">
-                        <div class="input-field" style="max-width: 240px;">
+                <span class="card-title">{{ @$coupon ? $coupon->key : 'Kupon Oluştur' }}</span>
+                <div class="d-flex flex-wrap">
+                    <div class="p-1" style="min-width: 240px;">
+                        <div class="input-field">
                             <input name="key" id="key" value="{{ @$coupon->key }}" type="text" class="validate" />
                             <label for="key">Kupon Kodu</label>
                             <small class="helper-text">Benzersiz bir kupon kodu girin.</small>
                         </div>
                     </div>
-                    <div class="collection-item">
+                    <div class="p-1" style="min-width: 240px;">
                         <div class="input-field" style="max-width: 240px;">
-                            <input name="rate" id="rate" value="{{ @$coupon->rate }}" type="number" max="100" min="0" class="validate" />
-                            <label for="rate">İndirim Oranı (%)</label>
-                            <small class="helper-text">Kuponun sağlayacağı indirim oranı.</small>
+                            <input name="count" id="count" value="{{ @$coupon->count }}" type="number" min="1" class="validate" />
+                            <label for="count">Adet</label>
+                            <small class="helper-text">Kupon sayısı.</small>
                         </div>
                     </div>
-                    <div class="collection-item">
+                </div>
+                <div class="d-flex flex-wrap">
+                    <div class="p-1" style="min-width: 240px;">
                         <div class="input-field" style="max-width: 240px;">
                             <input name="price" id="price" value="{{ @$coupon->price }}" type="number" min="0" class="validate" />
                             <label for="price">İndirim Miktarı ({{ config('formal.currency') }})</label>
                             <small class="helper-text">Kuponun sağlayacağı indirim miktarı.</small>
                         </div>
                     </div>
-                    <div class="collection-item">
+                    <div class="p-1" style="min-width: 240px;">
                         <div class="input-field" style="max-width: 240px;">
-                            <input name="count" id="count" value="{{ @$coupon->count }}" type="number" min="1" class="validate" />
-                            <label for="count">Adet</label>
-                            <small class="helper-text">Kupon sayısı.</small>
+                            <input name="rate" id="rate" value="{{ @$coupon->rate }}" type="number" max="100" min="0" class="validate" />
+                            <label for="rate">İndirim Oranı (%)</label>
+                            <small class="helper-text">Kuponun sağlayacağı indirim oranı.</small>
                         </div>
                     </div>
                 </div>
@@ -118,7 +117,7 @@
                 @if (@$coupon)
                     <a href="#" class="btn-flat waves-effect red-text" data-trigger="delete">Sil</a>
                 @endif
-                <button type="submit" class="btn waves-effect">{{ @$coupon ? 'Güncelle' : 'Oluştur' }}</button>
+                <button type="submit" class="btn-flat waves-effect">{{ @$coupon ? 'Güncelle' : 'Oluştur' }}</button>
             </div>
         </div>
     </form>

@@ -34,6 +34,7 @@ class UpdateRequest extends FormRequest
             'avatar'     => 'nullable|string|in:on',
             'moderator'  => 'nullable|string|in:on',
             'ban_reason' => 'nullable|string|max:255',
+            'about'      => 'nullable|string|max:10000',
         ];
     }
 }

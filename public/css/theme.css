@@ -277,6 +277,16 @@ time {
   margin-right: 2rem !important;
 }
 
+.p-0 {
+  padding: 0 !important;
+}
+.p-1 {
+  padding: 1rem !important;
+}
+.p-2 {
+  padding: 2rem !important;
+}
+
 .pb-0 {
   padding-bottom: 0 !important;
 }
@@ -892,6 +902,14 @@ table.invoice tfoot > tr {
 }
 
 /**
+ * textarea
+ */
+textarea.max-height {
+  overflow: auto;
+  max-height: 260px !important;
+}
+
+/**
  * item group
  */
 
@@ -1322,7 +1340,7 @@ header#main > .parallax-container > .parallax > video#background-video {
 
     margin: 0;
 
-    background-color: rgba(150, 150, 150, .9);
+    background-color: #f0f0f0;
 
     width: 264px;
     padding: 12px 12px 0;
@@ -1519,8 +1537,8 @@ header#main > .parallax-container > .parallax > video#background-video {
   position: absolute;
   z-index: 0;
 
-  top: -64px;
-  left: -64px;
+  top: -128px;
+  left: -128px;
 }
 
 /**
@@ -1847,7 +1865,7 @@ table tr {
 .modal .modal-content {
   padding: 0;
 
-  background-color: #fff;
+  background-color: #f0f0f0;
 }
 .modal .modal-content > .modal-title {
   padding: 24px 24px 12px 24px;
@@ -1859,6 +1877,9 @@ table tr {
   margin: 0;
   padding: 12px 24px;
   background-color: #fff;
+
+          box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
 }
 .modal .modal-content > .modal-footer {
   padding: 12px 24px;
@@ -1884,6 +1905,11 @@ table tr {
   width: 100%;
   display: block;
   background-color: transparent;
+}
+
+.timepicker-modal,
+.datepicker-modal {
+  width: auto !important;
 }
 
 /**

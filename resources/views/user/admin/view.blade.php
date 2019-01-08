@@ -67,6 +67,14 @@
                     </div>
                     <div class="collection-item">
                         <div class="input-field">
+                            <textarea name="about" id="about" data-length="10000" class="materialize-textarea validate">{{ $user->about }}</textarea>
+                            <label for="about">Hakkında</label>
+                            <span class="helper-text"></span>
+                            <small class="grey-text">Bu alanda <a href="https://guides.github.com/features/mastering-markdown/" target="_blank">Markdown</a> kullanabilirsiniz.</small>
+                        </div>
+                    </div>
+                    <div class="collection-item">
+                        <div class="input-field">
                             <input name="password" id="password" type="password" class="validate" />
                             <label for="password">Şifre</label>
                             <small class="helper-text">Değiştirmek istemiyorsanız boş bırakın.</small>
@@ -113,6 +121,12 @@
         </div>
     </form>
 @endsection
+
+@push('local.scripts')
+    $(document).ready(function() {
+        $('textarea#about').characterCounter()
+    })
+@endpush
 
 @section('dock')
     @include('user.admin._menu', [ 'active' => 'account', 'id' => $user->id ])

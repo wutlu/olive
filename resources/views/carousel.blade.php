@@ -28,10 +28,7 @@
                     var selector = $('[data-id=' + o.id + '].collection-item');
                     var item = selector.length ? selector : item_model.clone();
 
-                        item.removeClass('model hide red-text')
-                            .addClass('_tmp d-flex')
-                            .addClass(o.visibility ? '' : 'red-text')
-                            .attr('data-id', o.id)
+                        item.removeClass('model hide').addClass('_tmp d-flex').attr('data-id', o.id)
 
                         item.find('[data-name=trigger]').attr('data-id', o.id)
                         item.find('[data-name=title]').html(o.title)
@@ -54,7 +51,7 @@
 
     function form_modal()
     {
-        var mdl = modal({
+        return modal({
             'id': 'carousel',
             'body': $('<form />', {
                 'action': '{{ route('admin.carousel') }}',
@@ -176,13 +173,13 @@
                             'class': 'collection-item waves-effect d-block',
                             'html': [
                                 $('<input />', {
-                                    'name': 'visibility',
-                                    'id': 'visibility',
+                                    'name': 'carousel',
+                                    'id': 'carousel',
                                     'value': '1',
                                     'type': 'checkbox'
                                 }),
                                 $('<span />', {
-                                    'html': 'Görünürlük'
+                                    'html': 'Carousel'
                                 })
                             ]
                         })
@@ -236,8 +233,6 @@
                 dismissible: false
             }
         });
-
-        return mdl;
     }
 
     $(document).on('click', '[data-trigger=delete]', function() {
@@ -280,7 +275,7 @@
         $('input[name=button_action]').val('').characterCounter()
         $('input[name=button_text]').val('').characterCounter()
         $('select[name=pattern]').val('').formSelect()
-        $('input[name=visibility]').prop('checked', false)
+        $('input[name=carousel]').prop('checked', false)
         $('input[name=modal]').prop('checked', false)
 
         $('[data-trigger=delete]').removeAttr('data-id').addClass('hide')
@@ -358,7 +353,7 @@
             $('input[name=button_action]').val(obj.data.button_action).characterCounter()
             $('input[name=button_text]').val(obj.data.button_text).characterCounter()
             $('select[name=pattern]').val(obj.data.pattern).formSelect()
-            $('input[name=visibility]').prop('checked', obj.data.visibility)
+            $('input[name=carousel]').prop('checked', obj.data.carousel)
             $('input[name=modal]').prop('checked', obj.data.modal)
 
             $('[data-trigger=delete]').data('id', obj.data.id).removeClass('hide')

@@ -14,7 +14,6 @@ use App\Http\Requests\IdRequest;
 use App\Http\Requests\Forum\Kategori\UpdateRequest;
 use App\Http\Requests\Forum\Kategori\CreateRequest;
 
-use App\Http\Requests\Forum\PreviewRequest;
 use App\Http\Requests\Forum\MoveRequest;
 use App\Http\Requests\Forum\VoteRequest;
 use App\Http\Requests\Forum\ThreadRequest;
@@ -50,7 +49,6 @@ class ForumController extends Controller
             'replyUpdate',
             'replySave',
             'threadMove',
-            'messagePreview',
         ]);
 
         $this->middleware('throttle:10,1')->only([
@@ -416,19 +414,6 @@ class ForumController extends Controller
             'status' => 'ok',
             'data' => [
                 'route' => $thread->route()
-            ]
-        ];
-    }
-
-    /**
-     * forum mesaj önizleme
-     */
-    public static function messagePreview(PreviewRequest $request)
-    {
-        return [
-            'status' => 'ok',
-            'data' => [
-                'message' => $request->body ? Term::markdown($request->body) : 'Önizleme Yok'
             ]
         ];
     }

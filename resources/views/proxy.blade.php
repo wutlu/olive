@@ -62,7 +62,7 @@
 
     function form_modal()
     {
-        var mdl = modal({
+        return modal({
             'id': 'proxy',
             'body': $('<form />', {
                 'action': '{{ route('admin.proxy') }}',
@@ -120,8 +120,6 @@
                 })
             ]
         });
-
-        return mdl;
     }
 
     $(document).on('click', '[data-trigger=delete]', function() {
@@ -159,7 +157,7 @@
 
         var form = _modal.find('form#form')
 
-        $('input[name=proxy]').val('')
+        $('input[name=proxy]').val('').characterCounter()
 
         $('[data-trigger=delete]').removeAttr('data-id').addClass('hide')
 
@@ -224,7 +222,7 @@
 
             var form = _modal.find('form#form')
 
-            $('input[name=proxy]').val(obj.data.proxy)
+            $('input[name=proxy]').val(obj.data.proxy).characterCounter()
 
             $('[data-trigger=delete]').data('id', obj.data.id).removeClass('hide')
 

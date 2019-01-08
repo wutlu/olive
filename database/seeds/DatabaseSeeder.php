@@ -24,7 +24,8 @@ class DatabaseSeeder extends Seeder
             OptionTableSeeder::class,
             ModuleSearchesTableSeeder::class,
             CarouselsTableSeeder::class,
-            ForumCategoriesTableSeeder::class
+            ForumCategoriesTableSeeder::class,
+            ForumMessagesTableSeeder::class,
         ]);
     }
 }

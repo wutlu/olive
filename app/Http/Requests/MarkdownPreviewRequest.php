@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Forum;
+namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PreviewRequest extends FormRequest
+class MarkdownPreviewRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

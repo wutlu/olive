@@ -89,7 +89,7 @@ class HomeController extends Controller
     {
         $user = auth()->user();
 
-        $carousels = Carousel::where('visibility', true)->orderBy('updated_at', 'DESC')->get();
+        $carousels = Carousel::where('carousel', true)->orderBy('updated_at', 'DESC')->get();
         $modals = Carousel::where('modal', true)->orderBy('updated_at', 'DESC')->get();
 
         return view('dashboard', compact('user', 'carousels', 'modals'));

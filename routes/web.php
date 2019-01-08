@@ -6,6 +6,8 @@ Route::domain(config('app.domain'))->group(function () {
 
 Route::get('manifest.json', 'HomeController@manifest')->name('olive.manifest');
 
+Route::post('markdown/onizleme', 'MarkdownController@preview')->name('markdown.preview');
+
 Route::namespace('Forum')->prefix('forum')->group(function () {
     Route::get('/', 'ForumController@index')->name('forum.index');
     Route::post('kategoriler', 'ForumController@categoryJson')->name('forum.categories');
@@ -16,8 +18,6 @@ Route::namespace('Forum')->prefix('forum')->group(function () {
 
     Route::post('cevap/{id}', 'ForumController@replyGet')->name('forum.reply.get');
     Route::post('cevap/guncelle', 'ForumController@replyUpdate')->name('forum.reply.update');
-
-    Route::post('mesaj/onizleme', 'ForumController@messagePreview')->name('forum.message.preview');
 
     Route::post('durum', 'ForumController@threadStatus')->name('forum.thread.status');
     Route::post('sabit', 'ForumController@threadStatic')->name('forum.thread.static');

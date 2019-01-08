@@ -788,7 +788,7 @@
                 <div
                     class="card-content"
                     id="preview"
-                    data-href="{{ route('forum.message.preview') }}"
+                    data-href="{{ route('markdown.preview') }}"
                     data-method="post"
                     data-include="body"
                     data-callback="__preview"

@@ -26,7 +26,8 @@ class UpdateRequest extends FormRequest
         return [
             'email'    => 'required|email|max:64|unique:users,email,'.auth()->user()->id,
             'password' => 'nullable|string|max:32|min:4',
-            'name'     => 'required|string|max:48|min:4'
+            'name'     => 'required|string|max:48|min:4',
+            'about'    => 'nullable|string|max:10000',
         ];
     }
 }

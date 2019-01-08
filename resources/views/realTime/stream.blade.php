@@ -74,7 +74,7 @@
         data-callback="__realtime"
         data-method="post"
         data-include="keyword_group,sentiment">
-        <div class="olive sphere-1"></div>
+        <div class="olive sphere-3"></div>
         <div class="card-content">
             <div class="d-flex justify-content-between">
                 <span class="card-title mr-auto mb-0 align-self-center">Gerçek Zamanlı</span>

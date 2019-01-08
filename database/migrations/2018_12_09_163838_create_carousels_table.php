@@ -23,7 +23,8 @@ class CreateCarouselsTable extends Migration
             $table->string('button_action')->nullable()->default(null);
             $table->string('button_text')->nullable()->default(null);
 
-            $table->boolean('visibility')->default(1);
+            $table->boolean('carousel')->default(true);
+            $table->boolean('modal')->default(false);
 
             $table->timestamps();
         });

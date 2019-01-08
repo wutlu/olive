@@ -16,7 +16,10 @@
                 @push('local.scripts')
                     modal({
                         'id': 'carousel-{{ $carousel->id }}',
-                        'body': '{!! str_replace(PHP_EOL, '', $carousel->markdown()) !!}',
+                        'body': $('<div />', {
+                            'class': 'markdown',
+                            'html': '{!! str_replace(PHP_EOL, '', $carousel->markdown()) !!}'
+                        }),
                         'size': 'modal-large',
                         'title': '{{ $carousel->title }}',
                         'options': {},
@@ -27,7 +30,7 @@
                                 'html': buttons.ok
                             })
                         ]
-                    });
+                    })
                 @endpush
             @endif
         @endforeach
@@ -40,7 +43,9 @@
                 @foreach ($carousels as $carousel)
                 <div class="{{ implode(' ', [ 'carousel-item', $i == 0 ? 'active' : '', 'white-text' ]) }}">
                     <h2>{{ $carousel->title }}</h2>
-                    {!! $carousel->markdown() !!}
+                    <div class="markdown">
+                        {!! $carousel->markdown() !!}
+                    </div>
                     <div class="{{ implode(' ', [ 'anim', $carousel->pattern ]) }}"></div>
 
                     @if ($carousel->button_text)
@@ -223,7 +228,7 @@
                 data-nothing>
                 <li class="nothing hide">
                     @component('components.nothing')
-                        @slot('cloud_class', 'white-text')
+                        @slot('cloud_class', 'grey-text text-darken-2')
                     @endcomponent
                 </li>
                 <li class="model hide">

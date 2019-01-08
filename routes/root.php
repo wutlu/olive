@@ -221,7 +221,14 @@ Route::prefix('kullanici-yonetimi')->group(function () {
 
     /* ... */
 
-    Route::get('bulten', 'NewsletterController@adminListView')->name('admin.user.newsletter');
+    Route::prefix('bulten')->group(function () {
+        Route::get('/', 'NewsletterController@dashboard')->name('admin.user.newsletter');
+        Route::post('/', 'NewsletterController@json');
+        Route::get('islem/{id?}', 'NewsletterController@form')->name('admin.user.newsletter.form');
+        Route::post('islem/{id?}', 'NewsletterController@formSave');
+
+        Route::post('kullanici-listesi', 'NewsletterController@users')->name('admin.user.newsletter.users');
+    });
 });
 
 Route::prefix('organizasyon-yonetimi')->group(function () {
