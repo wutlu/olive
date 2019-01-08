@@ -107,14 +107,13 @@
     @forelse ($ticket->replies as $row)
     <div class="card {{ $row->user_id == auth()->user()->id ? '' : 'cyan lighten-4' }}" id="message-{{ $row->id }}">
         <div class="card-content">
-            <small class="mb-4">{{ date('d.m.Y H:i', strtotime($ticket->created_at)) }}</small>
+            <small class="mb-4 grey-text">{{ date('d.m.Y H:i', strtotime($ticket->created_at)) }}</small>
             <div class="md-area">{!! Term::markdown($row->message) !!}</div>
         </div>
     </div>
     @empty
         @component('components.nothing')
             @slot('cloud_class', 'white-text')
-            @slot('text', 'Henüz Cevaplanmadı')
         @endcomponent
     @endforelse
 
