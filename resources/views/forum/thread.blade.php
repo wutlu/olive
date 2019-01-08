@@ -659,7 +659,7 @@
                                     <i class="material-icons">more_vert</i>
                                 </a>
                             @endauth
-                            @if (!$message->message_id)
+                            @if ($last_user_id != $message->user_id)
                                 @if ($message->user->badges->count())
                                     <div class="d-flex justify-content-end mb-1">
                                         @foreach ($message->user->badges()->limit(3)->orderBy('badge_id', 'DESC')->get() as $badge)
@@ -671,6 +671,8 @@
                                         @endforeach
                                     </div>
                                 @endif
+                            @endif
+                            @if (!$message->message_id)
                                 <span class="badge d-flex justify-content-end grey-text text-darken-2">
                                     <span class="align-self-center">{{ count($message->replies) }}</span>
                                     <i class="material-icons align-self-center" style="margin: 0 0 0 .4rem;">reply</i>
