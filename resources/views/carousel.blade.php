@@ -392,7 +392,7 @@
             </li>
             <li class="collection-item model hide justify-content-between">
                 <div>
-                    <p data-name="title"></p>
+                    <p data-name="title" class="mb-0"></p>
                     <time data-name="created-at" class="timeago grey-text"></time>
                 </div>
                 <a
