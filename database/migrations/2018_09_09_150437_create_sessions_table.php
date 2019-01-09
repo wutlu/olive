@@ -15,10 +15,23 @@ class CreateSessionsTable extends Migration
     {
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->unique();
+
             $table->unsignedInteger('user_id')->nullable()->index();
-            $table->string('ip_address', 45)->nullable();
-            $table->text('user_agent')->nullable();
+            $table->unsignedInteger('ping')->default(0);
+
+            $table->ipAddress('ip_address')->nullable()->default(null);
+            $table->text('user_agent')->nullable()->default(null);
+
             $table->text('payload');
+
+            $table->string('page')->nullable()->default(null);
+            $table->string('referer')->nullable()->default(null);
+
+            $table->string('device')->nullable()->default(null);
+            $table->string('browser')->nullable()->default(null);
+            $table->string('platform')->nullable()->default(null);
+            $table->string('robot')->nullable()->default(null);
+
             $table->integer('last_activity');
         });
     }

@@ -65,5 +65,6 @@ class Kernel extends HttpKernel
         'twitter' => \App\Http\Middleware\Twitter::class,
         'root' => \App\Http\Middleware\CheckRootMiddleware::class,
         'verification.email' => \App\Http\Middleware\VerificationMiddleware::class,
+        'log' => \App\Http\Middleware\LogMiddleware::class,
     ];
 }

@@ -6,8 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Log extends Model
 {
-    protected $table = 'logs';
 	public $incrementing = false;
+
+    protected $table = 'logs';
 	protected $primaryKey = 'uuid';
 	protected $fillable = [
 		'uuid',

@@ -38,8 +38,11 @@ Route::prefix('kullanici')->group(function () {
 });
 
 Route::get('/', 'HomeController@index')->name('home');
+
 Route::get('test', 'TestController@test');
+
 Route::get('panel', 'HomeController@dashboard')->name('dashboard');
+
 Route::post('aktiviteler', 'HomeController@activity')->name('dashboard.activities');
 
 Route::post('route-by-id', 'RouteController@generateById')->name('route.generate.id');

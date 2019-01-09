@@ -148,6 +148,10 @@
                 <div class="card-content center-align">
                     <p class="teal-text">Hemen ücretsiz bir şekilde üye olabilir ve hiçbir ücret ödemeden başlangıç paketinden faydalanabilirsiniz.</p>
                     <p class="grey-text">Tüm araçlardan faydalanabilmek için bir organizasyon satın almalı veya bir organizasyon'a dahil olmalısınız.</p>
+                    <hr />
+                    @if (@$discountDay)
+                        <p class="center-align grey-text">Hemen şimdi üye olun ve bugüne özel <span class="chip">{{ $discountDay->discount_rate }}%</span> indirim kuponuna anında sahip olun.</p>
+                    @endif
                 </div>
                 <div class="card-tabs">
                     <ul class="tabs tabs-fixed-width">
@@ -161,22 +165,20 @@
                 @foreach (config('plans') as $key => $plan)
                 <div class="card-content grey lighten-4" id="tab-{{ $key }}">
                     @if ($plan['price'])
+                        <div class="center-align" style="text-decoration: line-through;">{{ config('formal.currency') }} {{ $plan['price_old'] }}</div>
                         <h3 class="center-align">
                             {{ config('formal.currency') }}
                             {{ $plan['price'] }}
                             <sup>.00</sup>
-                            <sub>/ Ay</sub>
+                            <sub>
+                                <small>/ Ay</small>
+                            </sub>
                         </h3>
-                        <div class="center-align" style="text-decoration: line-through;">{{ config('formal.currency') }} {{ $plan['price_old'] }}</div>
                         @if (@$plan['description'])
                             <p class="grey-text center-align">{{ $plan['description'] }}</p>
                         @endif
 
                         <p class="grey-text center-align">Vergiler dahil değildir.</p>
-
-                        @if (@$discountDay)
-                            <p class="center-align grey-text">Hemen şimdi üye olun ve bugüne özel <span class="chip">{{ $discountDay->discount_rate }}%</span> indirim kuponuna anında sahip olun.</p>
-                        @endif
                     @else
                         <h3 class="center-align">Ücretsiz!</h3>
                     @endif

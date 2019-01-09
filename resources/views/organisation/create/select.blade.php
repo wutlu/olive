@@ -41,13 +41,17 @@
             @foreach (config('plans') as $key => $plan)
             <div id="tab-{{ $key }}">
                 @if ($plan['price'])
+                    <p class="center-align">
+                        {{ $plan['name'] }},
+                        <span style="text-decoration: line-through;">{{ config('formal.currency') }} {{ $plan['price_old'] }}</span>
+                    </p>
+
                     <h3 class="center-align">
                         {{ config('formal.currency') }}
                         {{ $plan['price'] }}
                         <sup>.00</sup>
-                        <sub>/ Ay</sub>
+                        <sub><small>/ Ay</small></sub>
                     </h3>
-                    <div class="center-align" style="text-decoration: line-through;">{{ config('formal.currency') }} {{ $plan['price_old'] }}</div>
 
                     @if (@$plan['description'])
                         <p class="grey-text center-align">{{ $plan['description'] }}</p>
@@ -78,8 +82,9 @@
                                     @endif
                                 </p>
                                 <p class="grey-text">{{ $item['details'] }}</p>
+
                                 @if (is_string($item['value']))
-                                <p class="teal-text">{{ $item['value'] }}</p>
+                                    <p class="teal-text">{{ $item['value'] }}</p>
                                 @endif
                             </span>
                         </div>

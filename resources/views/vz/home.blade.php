@@ -79,8 +79,9 @@
 		height: 32px;
 		background-color: #fff;
 		margin: 0 .4rem 0 0;
-		padding: .4rem;
-		border-radius: 10%;
+		padding: 1px;
+		border: 1px solid #333;
+		border-radius: 2px;
 	}
 	footer.main > a > img,
 	footer.main > a > span {
