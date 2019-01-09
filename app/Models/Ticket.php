@@ -21,6 +21,12 @@ class Ticket extends Model
         return $this->hasMany('App\Models\Ticket', 'ticket_id', 'id')->orderBy('updated_at', 'ASC');
     }
 
+    # asıl konu
+    public function ticket()
+    {
+        return $this->hasOne('App\Models\Ticket', 'id', 'ticket_id');
+    }
+
     # user
     public function user()
     {

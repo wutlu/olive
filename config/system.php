@@ -11,8 +11,10 @@ return [
      */
     'ticket' => [
         'types' => [
+            'source' => 'Kaynak İsteği',
+            'technic' => 'Teknik Konular',
             'other' => 'Diğer Konular',
-            'odeme-bildirimi' => 'Ödeme Bildirimi'
+            'odeme-bildirimi' => 'Ödeme Bildirimi',
         ]
     ],
 

@@ -22,7 +22,7 @@
             <i class="material-icons green-text large">check</i>
             <span class="card-title">Organizasyon Oluşturuldu</span>
             <p class="grey-text">Ödeme bilgileri ve diğer detaylar e-posta adresinize gönderildi.</p>
-            <p class="grey-text">Sanal faturanız oluşturuldu. Ödemeniz gerçekleştikten sonra sanal faturanız, resmi fatura olarak güncellenecek ve organizasyon aktif hale gelecektir.</p>
+            <p class="grey-text">Sanal faturanız hazır. Ödemeniz gerçekleştikten sonra sanal faturanız, resmi fatura olarak güncellenecek ve organizasyon aktif hale gelecektir.</p>
             <br />
             <a href="{{ route('settings.organisation') }}" class="btn-flat waves-effect">Organizasyonu Gör</a>
             @else

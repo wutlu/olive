@@ -45,14 +45,15 @@ class DiscountCouponNotification extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject('Olive: indirim kuponunuz!')
+                    ->subject('Olive: 🌟 İndirim Kuponu 🌟')
                     ->greeting('Merhaba, '.$this->name)
                     ->level('olive')
                     ->line('Bugüne özel kupon kampanyasından bir indirim kuponu kazandınız.')
                     ->with([
                         'table' => $this->data
                     ])
-                    ->line('Bu kuponu istediğiniz zaman tüm planlarda kullanabilirsiniz.');
+                    ->line('Bu kuponu istediğiniz zaman herhangi bir planda kullanabilirsiniz.')
+                    ->line('İndirim kuponları sadece ilk alımlarda geçerlidir.');
     }
 
     /**

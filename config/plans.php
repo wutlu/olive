@@ -7,180 +7,120 @@ return [
 		'properties' => [
 			'capacity' => [
 				'text' => 'Plan Kapasitesi',
-				'details' => 'Kapasite kadar kullanıcı barındırabilirsiniz.',
+				'details' => 'Plan kapasitesi kadar kullanıcı aynı anda bu planı kullanabilir.',
 				'value' => 1
 			],
-			'realtime_social_media' => [
-				'text' => 'Akış Modülü',
-				'details' => 'Gerçek zamanlı ve yerli tam veya anahtar bazlı veri akışı.',
-				'value' => 'Sadece haber akışı aracı.'
+			'forum' => [
+				'text' => 'Forum',
+				'details' => 'Olive forumlarını limitsizce kullanabilme.',
+				'value' => true
 			],
-			'trends' => [
-				'text' => 'Trend Modülü',
-				'details' => 'Twitter 50, Google 20 ve yerli medyadan anlık veya tarih bazlı trend analizleri.',
-				'value' => 'Sadece Twitter ve Google araçları.'
-			],
-			'twitter_tools' => [
-				'text' => 'Twitter Araçları',
-				'details' => 'Kullanıcı analizi, istenilen formatta dışarı Tweet veya takipçi aktarma, detaylı Tweet bilgileri vb...',
-				'value' => 'Sadece detaylı Tweet ve kullanıcı araçları.'
-			],
-			'api_access' => [
-				'text' => 'Api',
-				'details' => 'Uygulamalarınız için gelişmiş api erişimi.',
+			'real_time' => [
+				'text' => 'Gerçek Zamanlı',
+				'details' => 'Tamamen yerli ve anlık veri akışı ekranına erişim ve dahası.',
 				'value' => false
 			],
-			'alerts' => [
-				'text' => 'Alarm',
-				'details' => 'Twitter, Instagram, Youtube Yorumları, Haber Siteleri, Sözlükler, Alışveriş Siteleri ve dahası üzerinden kelime veya cümle alarmları.',
+			'support' => [
+				'text' => 'Destek',
+				'details' => '7/24 Online Destek',
 				'value' => false
 			],
-			'index' => [
-				'text' => 'Endeks Modülü',
-				'details' => 'Gündem içerisinden reyting raporlama.',
+			'source' => [
+				'text' => 'Kaynak Tanımlama',
+				'details' => 'Daha fazla içeriğe ulaşabilmek adına farklı kaynak ve kriterler tanımlayabilme.',
+				'value' => false
+			],
+			'monitor' => [
+				'text' => 'İzleme Ekranları',
+				'details' => 'Veri analizleri ve veri endeksleri oluşturabileceğiniz izleme ekranları.',
+				'value' => false
+			],
+			'trend_live' => [
+				'text' => 'Canlı Trend (Yakında, ücretsiz...)',
+				'details' => 'Anlık sosyal medya ve yerli gündem canlı trend bilgisi.',
+				'value' => true
+			],
+			'trend_index' => [
+				'text' => 'Canlı Endeks',
+				'details' => 'Anlık sosyal medya ve yerli gündem trend endeksleri.',
 				'value' => false
 			],
 			'archive' => [
 				'text' => 'Arşiv',
-				'details' => 'Tüm veritabanında geçmişe yönelik arama.',
+				'details' => 'Eski verilere erişim.',
+				'value' => false
+			],
+			'alarm' => [
+				'text' => 'Alarm',
+				'details' => 'Yerli veri internet alarmları.',
+				'value' => false
+			],
+			'tools' => [
+				'text' => 'Araçlar',
+				'details' => 'YouTube, Twitter vb. platformlardan daha verimli içerik elde etme araçları.',
 				'value' => false
 			]
 		]
 	],
 	2 => [
-		'name' => 'Şahıs Planı',
-		'price' => 490,
+		'name' => 'Destekçi',
+		'description' => 'Olive, henüz geliştirme aşamasında olduğundan tüm planlar satışa sunulmamıştır. Geliştirme boyunca alabileceğiniz DESTEKÇİ planını satın alarak, hazır ve hazırlanmakta olan tüm Olive özelliklerini tam erişim kullanabilirsiniz. Bu plan ilerleyen zamanlarda kaldırılacaktır. Fakat siz her zaman bu planı bu fiyattan kullanmaya devam edeceksiniz.',
+		'price' => 76,
+		'price_old' => 649,
 		'properties' => [
 			'capacity' => [
 				'text' => 'Plan Kapasitesi',
-				'details' => 'Kapasite kadar kullanıcı barındırabilirsiniz.',
-				'value' => 1
+				'details' => 'Plan kapasitesi kadar kullanıcı aynı anda bu planı kullanabilir.',
+				'value' => 2
 			],
-			'realtime_social_media' => [
-				'text' => 'Akış Modülü',
-				'details' => 'Gerçek zamanlı ve yerli tam veya anahtar bazlı veri akışı.',
+			'forum' => [
+				'text' => 'Forum',
+				'details' => 'Olive forumlarını limitsizce kullanabilme.',
 				'value' => true
 			],
-			'trends' => [
-				'text' => 'Trend Modülü',
-				'details' => 'Twitter 50, Google 20 ve yerli medyadan anlık veya tarih bazlı trend analizleri.',
+			'real_time' => [
+				'text' => 'Gerçek Zamanlı',
+				'details' => 'Tamamen yerli ve anlık veri akışı ekranına erişim ve dahası.',
 				'value' => true
 			],
-			'twitter_tools' => [
-				'text' => 'Twitter Araçları',
-				'details' => 'Kullanıcı analizi, istenilen formatta dışarı Tweet veya takipçi aktarma, detaylı Tweet bilgileri vb...',
+			'support' => [
+				'text' => 'Destek',
+				'details' => '7/24 Online Destek',
 				'value' => true
 			],
-			'api_access' => [
-				'text' => 'Api',
-				'details' => 'Uygulamalarınız için gelişmiş api erişimi.',
+			'source' => [
+				'text' => 'Kaynak Tanımlama',
+				'details' => 'Daha fazla içeriğe ulaşabilmek adına farklı kaynak ve kriterler tanımlayabilme.',
 				'value' => true
 			],
-			'alerts' => [
-				'text' => 'Alarm',
-				'details' => 'Twitter, Instagram, Youtube Yorumları, Haber Siteleri, Sözlükler, Alışveriş Siteleri ve dahası üzerinden kelime veya cümle alarmları.',
+			'monitor' => [
+				'text' => 'İzleme Ekranları (Yakında...)',
+				'details' => 'Veri analizleri ve veri endeksleri oluşturabileceğiniz izleme ekranları.',
 				'value' => true
 			],
-			'index' => [
-				'text' => 'Endeks Modülü',
-				'details' => 'Gündem içerisinden reyting raporlama.',
+			'trend_live' => [
+				'text' => 'Canlı Trend (Yakında...)',
+				'details' => 'Anlık sosyal medya ve yerli gündem canlı trend bilgisi.',
 				'value' => true
 			],
-			'archive' => [
-				'text' => 'Arşiv',
-				'details' => 'Tüm veritabanında geçmişe yönelik arama.',
-				'value' => true
-			]
-		]
-	],
-	3 => [
-		'name' => 'Ofis Planı',
-		'price' => 1290,
-		'properties' => [
-			'capacity' => [
-				'text' => 'Plan Kapasitesi',
-				'details' => 'Kapasite kadar kullanıcı barındırabilirsiniz.',
-				'value' => 3
-			],
-			'realtime_social_media' => [
-				'text' => 'Akış Modülü',
-				'details' => 'Gerçek zamanlı ve yerli tam veya anahtar bazlı veri akışı.',
-				'value' => true
-			],
-			'trends' => [
-				'text' => 'Trend Modülü',
-				'details' => 'Twitter 50, Google 20 ve yerli medyadan anlık veya tarih bazlı trend analizleri.',
-				'value' => true
-			],
-			'twitter_tools' => [
-				'text' => 'Twitter Araçları',
-				'details' => 'Kullanıcı analizi, istenilen formatta dışarı Tweet veya takipçi aktarma, detaylı Tweet bilgileri vb...',
-				'value' => true
-			],
-			'api_access' => [
-				'text' => 'Api',
-				'details' => 'Uygulamalarınız için gelişmiş api erişimi.',
-				'value' => true
-			],
-			'alerts' => [
-				'text' => 'Alarm',
-				'details' => 'Twitter, Instagram, Youtube Yorumları, Haber Siteleri, Sözlükler, Alışveriş Siteleri ve dahası üzerinden kelime veya cümle alarmları.',
-				'value' => true
-			],
-			'index' => [
-				'text' => 'Endeks Modülü',
-				'details' => 'Gündem içerisinden reyting raporlama.',
+			'trend_index' => [
+				'text' => 'Canlı Endeks (Yakında...)',
+				'details' => 'Anlık sosyal medya ve yerli gündem trend endeksleri.',
 				'value' => true
 			],
 			'archive' => [
-				'text' => 'Arşiv',
-				'details' => 'Tüm veritabanında geçmişe yönelik arama.',
-				'value' => true
-			]
-		]
-	],
-	4 => [
-		'name' => 'Kurumsal Plan',
-		'price' => 2940,
-		'properties' => [
-			'capacity' => [
-				'text' => 'Plan Kapasitesi',
-				'details' => 'Kapasite kadar kullanıcı barındırabilirsiniz.',
-				'value' => 8
-			],
-			'realtime_social_media' => [
-				'text' => 'Akış Modülü',
-				'details' => 'Gerçek zamanlı ve yerli tam veya anahtar bazlı veri akışı.',
+				'text' => 'Arşiv (Yakında...)',
+				'details' => 'Eski verilere erişim.',
 				'value' => true
 			],
-			'trends' => [
-				'text' => 'Trend Modülü',
-				'details' => 'Twitter 50, Google 20 ve yerli medyadan anlık veya tarih bazlı trend analizleri.',
+			'alarm' => [
+				'text' => 'Alarm (Yakında...)',
+				'details' => 'Yerli veri internet alarmları.',
 				'value' => true
 			],
-			'twitter_tools' => [
-				'text' => 'Twitter Araçları',
-				'details' => 'Kullanıcı analizi, istenilen formatta dışarı Tweet veya takipçi aktarma, detaylı Tweet bilgileri vb...',
-				'value' => true
-			],
-			'api_access' => [
-				'text' => 'Api',
-				'details' => 'Uygulamalarınız için gelişmiş api erişimi.',
-				'value' => true
-			],
-			'alerts' => [
-				'text' => 'Alarm',
-				'details' => 'Twitter, Instagram, Youtube Yorumları, Haber Siteleri, Sözlükler, Alışveriş Siteleri ve dahası üzerinden kelime veya cümle alarmları.',
-				'value' => true
-			],
-			'index' => [
-				'text' => 'Endeks Modülü',
-				'details' => 'Gündem içerisinden reyting raporlama.',
-				'value' => true
-			],
-			'archive' => [
-				'text' => 'Arşiv',
-				'details' => 'Tüm veritabanında geçmişe yönelik arama.',
+			'tools' => [
+				'text' => 'Araçlar (Yakında...)',
+				'details' => 'YouTube, Twitter vb. platformlardan daha verimli içerik elde etme araçları.',
 				'value' => true
 			]
 		]

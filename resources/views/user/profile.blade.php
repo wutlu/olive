@@ -28,12 +28,12 @@
                         $have = $user->badge($id);
                         @endphp
 
-                        <a href="#" data-trigger="badge" data-text="{{ $badge['description'] }}" style="padding: .2rem;">
+                        <a href="#" class="waves-effect rosette {{ $have ? 'active' : '' }}" data-trigger="badge" data-text="{{ $badge['description'] }}">
                             <img
                                 alt="{{ $badge['name'] }}"
                                 src="{{ asset($badge['image_src']) }}"
                                 data-tooltip="{{ $badge['name'] }}"
-                                class="rosette {{ $have ? 'active' : '' }}" />
+                                class="" />
                         </a>
                     @endforeach
                 </div>
@@ -62,7 +62,7 @@
 @endpush
 
 @push('local.styles')
-    img.rosette {
+    .rosette {
         width: 64px;
         height: 64px;
         padding: .2rem;
@@ -71,9 +71,19 @@
         -webkit-filter: grayscale(100%);
 
         padding: 1rem;
+        border-radius: 50%;
     }
 
-    img.rosette.active {
+    .rosette > img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .rosette + .rosette {
+        margin: 0 0 0 1rem;
+    }
+
+    .rosette.active {
                 filter: grayscale(0);
         -webkit-filter: grayscale(0);
 

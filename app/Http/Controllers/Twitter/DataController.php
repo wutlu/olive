@@ -19,7 +19,7 @@ class DataController extends Controller
 {
     public function __construct()
     {
-        $this->middleware([ 'auth', 'organisation:have' ]);
+        $this->middleware([ 'auth', 'organisation:have,source' ]);
         $this->middleware([ 'can:organisation-status', 'twitter:have' ])->only([
             'keywordCreate',
             'accountCreate'

@@ -20,7 +20,7 @@ class TicketController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware([ 'auth', 'organisation:have,support' ]);
         $this->middleware('root')->only([
             'adminList',
             'adminView'
@@ -114,17 +114,18 @@ class TicketController extends Controller
         $ticket->message = $request->message;
         $ticket->ticket_id = $request->ticket_id;
         $ticket->save();
+
         $ticket->id = $ticket->id.rand(100, 999);
         $ticket->save();
 
-        if ($user->root())
+        if ($user->root)
         {
             $subject = 'Destek #'.$request->ticket_id.' [YANITLANDI]';
             $markdown = 'Destek talebiniz, '.$user->name.' tarafından yanıtlandı.';
 
-            if ($ticket->user->notification('important'))
+            if ($ticket->ticket->user->notification('important'))
             {
-                $ticket->user->notify((new TicketNotification($subject, $markdown, $request->ticket_id))->onQueue('email'));
+                $ticket->ticket->user->notify((new TicketNotification($subject, $markdown, $request->ticket_id))->onQueue('email'));
             }
 
             UserActivityUtility::push(

@@ -115,7 +115,7 @@
                         data-trigger="delete">Sil</a>
                 @endif
                 <label class="btn-flat waves-effect" data-name="status-checkbox">
-                    <input name="status" id="status" value="on" type="checkbox" />
+                    <input name="status" id="status" value="on" type="checkbox" {{ @$newsletter->status == 'triggered' ? 'checked' : '' }} />
                     <span>Kuyruğa Al</span>
                 </label>
                 <button type="submit" class="btn-flat waves-effect">{{ $newsletter ? 'Güncelle' : 'Oluştur' }}</button>

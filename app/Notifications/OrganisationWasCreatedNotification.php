@@ -45,7 +45,7 @@ class OrganisationWasCreatedNotification extends Notification implements ShouldQ
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject('Olive: Organizasyon oluşturuldu.')
+                    ->subject('Olive: Organizasyon Oluşturuldu')
                     ->greeting('Tebrikler!')
                     ->line('Organizasyonunuz başarılı bir şekilde oluşturuldu.')
                     ->line('Sanal faturanız oluşturuldu. Ödemeniz gerçekleştikten sonra sanal faturanız, resmi fatura olarak güncellenecek ve organizasyon aktif hale gelecektir.')

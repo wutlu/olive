@@ -161,7 +161,7 @@
             </p>
         </div>
 
-        <ul class="collection member-list">
+        <ul class="collection" data-name="member-list">
             @foreach ($user->organisation->users as $u)
             <li class="collection-item avatar" id="organisation-user-{{ $u->id }}">
                 <img src="{{ $u->avatar() }}" alt="avatar" class="circle">
@@ -170,10 +170,16 @@
                 <p class="grey-text">{{ ($u->id == $user->organisation->user_id) ? 'Organizasyon Sahibi' : 'Kullanıcı' }}</p>
 
                 @if ($user->id != $u->id && $user->id == $user->organisation->user_id)
-                <a href="#" class="secondary-content dropdown-trigger" data-align="right" data-target="dropdown-user-{{ $u->id }}">
-                    <i class="material-icons">more_vert</i>
-                </a>
+                    <a href="#" class="secondary-content dropdown-trigger" data-align="right" data-target="dropdown-user-{{ $u->id }}">
+                        <i class="material-icons">more_vert</i>
+                    </a>
+                @endif
+            </li>
+            @endforeach
+        </ul>
 
+        @foreach ($user->organisation->users as $u)
+            @if ($user->id != $u->id && $user->id == $user->organisation->user_id)
                 <ul id="dropdown-user-{{ $u->id }}" class="dropdown-content">
                     <li>
                         <a href="#" data-user-id="{{ $u->id }}" data-button="__transfer">
@@ -186,10 +192,8 @@
                         </a>
                     </li>
                 </ul>
-                @endif
-            </li>
-            @endforeach
-        </ul>
+            @endif
+        @endforeach
 
         @if ($user->id == $user->organisation->user_id)
             @push('local.scripts')
@@ -372,7 +376,7 @@
                                     ]
                                 })
                             ]
-                        }).appendTo($('ul.member-list'))
+                        }).appendTo($('[data-name=member-list]'))
 
                         $('a.secondary-content').dropdown({
                             alignment: 'right'

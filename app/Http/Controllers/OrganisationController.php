@@ -535,7 +535,7 @@ class OrganisationController extends Controller
                         'icon' => 'flag',
                         'markdown' => implode(PHP_EOL, [
                             'Ödeme bilgileri ve diğer detaylar e-posta adresinize gönderildi.',
-                            'Sanal faturanız oluşturuldu. Ödemenizi gerçekleştirdikten sonra sanal faturanız, resmi fatura olarak güncellenecek ve organizasyon aktif hale gelecektir.'
+                            'Sanal faturanız hazır. Ödemenizi gerçekleştirdikten sonra sanal faturanız, resmi fatura olarak güncellenecek ve organizasyon aktif hale gelecektir.'
                         ]),
                         'button' => [
                             'type' => 'http',
@@ -709,7 +709,7 @@ class OrganisationController extends Controller
                         'icon' => 'flag',
                         'markdown' => implode(PHP_EOL, [
                             'Ödeme bilgileri ve diğer detaylar e-posta adresinize gönderildi.',
-                            'Sanal faturanız oluşturuldu. Ödemenizi gerçekleştirdikten sonra sanal faturanız, resmi fatura olarak güncellenecek ve organizasyon süresi uzatılacaktır.'
+                            'Sanal faturanız hazır. Ödemenizi gerçekleştirdikten sonra sanal faturanız, resmi fatura olarak güncellenecek ve organizasyon süresi uzatılacaktır.'
                         ]),
                         'button' => [
                             'type' => 'http',

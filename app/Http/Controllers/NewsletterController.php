@@ -239,5 +239,9 @@ class NewsletterController extends Controller
                 $newsletter->update([ 'status' => 'ok' ]);
             }
         }
+        else
+        {
+            echo Term::line('Planlanmış bülten bulunamadı.');
+        }
     }
 }

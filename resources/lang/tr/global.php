@@ -2,9 +2,9 @@
 
 return [
     'header' => [
-        'lead-1' => 'Olive, açık kaynak veri izleme katmanıdır.',
+        'lead-1' => 'Olive, gerçek zamanlı veri analiz katmanıdır.',
         'lead-2' => 'Hedef bilgiye çok daha hızlı ve daha anlamlı bir şekilde erişmenizi sağlar.',
-        'lead-3' => 'Ankara\'da sevgiyle üretiliyor.',
+        'lead-3' => 'Her gün gelişmekte olan Olive ile yeniliklere açık olun!',
     ],
     'keywords' => [
         'ok' => 'Tamam',
@@ -22,7 +22,7 @@ return [
         'calm' => 'Çok fazla işlem yaptınız. Lütfen bir kaç dakika sonra tekrar deneyin.',
         'notfound' => 'Kaynağa erişilemiyor.',
         'exited' => 'Oturumunuz sona erdi. Lütfen tekrar giriş yapın.',
-        'permission' => 'Bu işlemi yapmak için yetkiniz yok.'
+        'permission' => 'Bu işlemi yapmak için gerekli organizasyon yetkiniz yok.'
     ],
     'verifications' => [
         'email' => 'E-posta adresinizi doğrulamadan bu işlemi gerçekleştiremezsiniz.'

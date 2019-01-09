@@ -261,7 +261,7 @@ class UserController extends Controller
 
         session()->flash('validate', 'ok');
 
-        $text = 'E-posta adresinizi başarılı bir şekilde doğruladınız. İyi araştırmalar dileriz...';
+        $text = 'E-posta adresiniz başarılı bir şekilde doğrulandı. İyi araştırmalar dileriz...';
 
         $user->addBadge(1); // e-posta doğrulama
 
@@ -270,7 +270,6 @@ class UserController extends Controller
             [
                 'icon'              => 'check',
                 'markdown'          => $text,
-                'markdown_color'    => '#8bc34a',
                 'user_id'           => $user->id,
             ]
         );

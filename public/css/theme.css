@@ -1721,6 +1721,7 @@ nav .nav-wrapper > ul > li > a > i {
   margin: 0 0 1rem;
   background-color: transparent;
   border-width: 0;
+  overflow: visible;
 }
 
 .collection > .collection-header {

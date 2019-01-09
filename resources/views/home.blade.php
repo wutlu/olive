@@ -28,7 +28,7 @@
 
                         <p class="white-text">@lang('global.header.lead-1')</p>
                         <p class="grey-text">@lang('global.header.lead-2')</p>
-                        <p class="grey-text">@lang('global.header.lead-3')</p>
+                        <p class="red-text">@lang('global.header.lead-3')</p>
 
                         <a href="{{ route('user.login') }}" class="waves-effect btn black-text white">@auth{{ 'Olive\'e Gidin'}}@else{{ 'Giriş Yapın' }}@endauth</a>
 
@@ -55,28 +55,41 @@
                     <i class="large material-icons analytics">poll</i>
                     <h5>Analiz</h5>
                     <ul>
-                        <li>-</li>
+                        <li>- Twitter Analizleri</li>
+                        <li>- YouTube Analizleri</li>
+                        <li>- Haber Siteleri Analizleri</li>
+                        <li>- Sözlük Siteleri Analizleri</li>
+                        <li>- Alışveriş Siteleri Analizleri</li>
+                        <li>- ve dahası...</li>
                     </ul>
                 </div>
                 <div class="item white-text">
                     <i class="large material-icons realtime">subject</i>
                     <h5>Gerçek Zamanlı Veri</h5>
                     <ul>
-                        <li>-</li>
+                        <li>- Anlık veri akışı.</li>
+                        <li>- Duygusal akış.</li>
+                        <li>- Tam veya kriterlere göre akış.</li>
+                        <li>- Akış gruplandırma.</li>
+                        <li>- Veri pinleme ve çıktı alma.</li>
                     </ul>
                 </div>
                 <div class="item white-text">
                     <i class="large material-icons rotate">toys</i>
                     <h5>Araçlar</h5>
                     <ul>
-                        <li>-</li>
+                        <li>- İçerik takibi ve yorum raporları.</li>
+                        <li>- Detaylama ile görünenden fazla bilgi.</li>
+                        <li>- Anlamlı listeler elde etme.</li>
+                        <li>- Duygu analizleri.</li>
                     </ul>
                 </div>
                 <div class="item white-text">
                     <i class="large material-icons cloud">cloud</i>
                     <h5>Arşiv</h5>
                     <ul>
-                        <li>-</li>
+                        <li>- Kullanıcı tarafından veri elde edebilme.</li>
+                        <li>- Elde edilen verilerin yasal süreçlerde barındırılması ve hızlı bir şekilde erişebilme.</li>
                     </ul>
                 </div>
             </div>
@@ -89,6 +102,8 @@
         </div>
 
         <div class="container">
+            <h2 class="center-align" itemprop="name">Olive</h2>
+            <p class="center-align" itemprop="description">Olive, bir grup genç girişimci tarafından üretilen gerçek zamanlı veri analiz katmanıdır.<br />Tamamen yerli kaynaklarla üretilip, sürekli bir geliştirilme sürecindedir.</p>
             @php
             /*
             <h2 class="center-align">Ekip</h2>
@@ -130,10 +145,9 @@
             <h2 class="center-align white-text">Planlar</h2>
 
             <div class="card">
-                <div class="card-content">
-                    <span class="card-title">Olive'e kaydolmak ücretsizdir.</span>
+                <div class="card-content center-align">
+                    <p class="teal-text">Hemen ücretsiz bir şekilde üye olabilir ve hiçbir ücret ödemeden başlangıç paketinden faydalanabilirsiniz.</p>
                     <p class="grey-text">Tüm araçlardan faydalanabilmek için bir organizasyon satın almalı veya bir organizasyon'a dahil olmalısınız.</p>
-                    <p class="orange-text">Hemen üye olarak hiçbir ücret ödemeden başlangıç paketinden faydalanabilirsiniz.</p>
                 </div>
                 <div class="card-tabs">
                     <ul class="tabs tabs-fixed-width">
@@ -147,13 +161,24 @@
                 @foreach (config('plans') as $key => $plan)
                 <div class="card-content grey lighten-4" id="tab-{{ $key }}">
                     @if ($plan['price'])
-                        <h3 class="center-align">{{ config('formal.currency') }} {{ $plan['price'] }}<sup>.00</sup> <sub>/ Ay</sub></h3>
-                        @if (@$discountDay)
-                        <p class="center-align grey-text">Hemen ücretsiz kaydolun ve bugüne özel <span class="chip">{{ $discountDay->discount_rate }}%</span> indirim kuponuna anında sahip olun.</p>
+                        <h3 class="center-align">
+                            {{ config('formal.currency') }}
+                            {{ $plan['price'] }}
+                            <sup>.00</sup>
+                            <sub>/ Ay</sub>
+                        </h3>
+                        <div class="center-align" style="text-decoration: line-through;">{{ config('formal.currency') }} {{ $plan['price_old'] }}</div>
+                        @if (@$plan['description'])
+                            <p class="grey-text center-align">{{ $plan['description'] }}</p>
                         @endif
+
                         <p class="grey-text center-align">Vergiler dahil değildir.</p>
+
+                        @if (@$discountDay)
+                            <p class="center-align grey-text">Hemen şimdi üye olun ve bugüne özel <span class="chip">{{ $discountDay->discount_rate }}%</span> indirim kuponuna anında sahip olun.</p>
+                        @endif
                     @else
-                    <h3 class="center-align">Ücretsiz!</h3>
+                        <h3 class="center-align">Ücretsiz!</h3>
                     @endif
 
                     <ul class="collection collection-unstyled collection-unstyled-hover">
