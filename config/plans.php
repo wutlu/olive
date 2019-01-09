@@ -64,7 +64,7 @@ return [
 	],
 	2 => [
 		'name' => 'Destekçi',
-		'description' => 'Olive, henüz geliştirme aşamasında olduğundan tüm planlar satışa sunulmamıştır. Geliştirme boyunca alabileceğiniz DESTEKÇİ planını satın alarak, hazır ve hazırlanmakta olan tüm Olive özelliklerini tam erişim kullanabilirsiniz. Bu plan ilerleyen zamanlarda kaldırılacaktır. Fakat siz her zaman bu planı bu fiyattan kullanmaya devam edeceksiniz.',
+		'description' => 'Olive, henüz geliştirme aşamasında olduğundan tüm planlar satışa sunulmamıştır. Sadece geliştirme süresince alabileceğiniz DESTEKÇİ planını satın alarak, hazır ve hazırlanmakta olan tüm Olive özelliklerini tam erişim kullanabilirsiniz. Bu plan ilerleyen zamanlarda kaldırılacaktır. Fakat siz her zaman bu planı bu fiyattan kullanmaya devam edeceksiniz.',
 		'price' => 76,
 		'price_old' => 649,
 		'properties' => [

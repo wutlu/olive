@@ -245,5 +245,6 @@ return [
         'send_time'                    => 'Gönderilecek Saat',
         'email_list'                   => 'E-posta Listesi',
         'process'                      => 'İşleme Alma',
+        'pid'                          => 'İşlem Kimliği',
     ],
 ];

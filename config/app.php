@@ -158,6 +158,10 @@ return [
         Barryvdh\DomPDF\ServiceProvider::class,
 
         /*
+         * Local Service Providers...
+         */
+
+        /*
          * Application Service Providers...
          */
         App\Providers\AppServiceProvider::class,

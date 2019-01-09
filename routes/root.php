@@ -17,6 +17,11 @@ Route::prefix('sistem-izleme')->group(function () {
         Route::post('islemler', 'MonitorController@backgroundProcesses')->name('admin.monitoring.background.processes');
         Route::post('sonlandir', 'MonitorController@processKill')->name('admin.monitoring.process.kill');
     });
+
+    Route::prefix('ziyaretci-loglari')->group(function () {
+        Route::get('/', 'SessionController@logs')->name('admin.session.logs');
+        Route::post('/', 'SessionController@logsJson');
+    });
 });
 
 Route::prefix('kupon-yonetimi')->group(function () {

@@ -17,6 +17,8 @@ class CreateSessionsTable extends Migration
             $table->string('id')->unique();
 
             $table->unsignedInteger('user_id')->nullable()->index();
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+
             $table->unsignedInteger('ping')->default(0);
 
             $table->ipAddress('ip_address')->nullable()->default(null);
@@ -27,9 +29,16 @@ class CreateSessionsTable extends Migration
             $table->string('page')->nullable()->default(null);
             $table->string('referer')->nullable()->default(null);
 
-            $table->string('device')->nullable()->default(null);
-            $table->string('browser')->nullable()->default(null);
-            $table->string('platform')->nullable()->default(null);
+            $table->boolean('is_mobile')->default(0);
+            $table->boolean('is_tablet')->default(0);
+            $table->boolean('is_desktop')->default(0);
+            $table->boolean('is_phone')->default(0);
+
+            $table->string('device')->nullable()->default(null); // iPhone, Nexus, AsusTablet, ...
+
+            $table->json('browser');
+            $table->json('os');
+
             $table->string('robot')->nullable()->default(null);
 
             $table->integer('last_activity');

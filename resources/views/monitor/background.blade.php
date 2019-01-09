@@ -48,7 +48,7 @@
 
             logTimer = window.setTimeout(function() {
                 vzAjax(collection)
-            }, 5000)
+            }, 10000)
         }
     }
 
@@ -79,13 +79,11 @@
 
 @section('content')
     <div class="card">
-        <div class="card-image">
-            <img src="{{ asset('img/card-header.jpg') }}" alt="Arkaplan İşleri" />
+        <div class="card-content">
             <span class="card-title">Arkaplan İşleri</span>
-        </div>
-        <div class="card-content grey-text">
-            <p>Sunucu üzerinde çalışan sisteme özgü işlemleri dinamik olarak izleyebilirsiniz.</p>
-            <p>Sonlandırmak için sonlandırmak istediğiniz işlemin üzerine tıklayın.</p>
+
+            <p class="grey-text">Sunucu üzerinde çalışan sisteme özgü işlemleri dinamik olarak izleyebilirsiniz.</p>
+            <p class="grey-text">Sonlandırmak için sonlandırmak istediğiniz işlemin üzerine tıklayın.</p>
         </div>
         <div
             id="console"

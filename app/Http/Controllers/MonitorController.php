@@ -168,7 +168,7 @@ class MonitorController extends Controller
 
         $redis = new Redis;
 
-        exec('ps axo start,pid,cmd | grep '.base_path('artisan'), $output);
+        exec('ps axo time,pid,cmd | grep '.base_path('artisan'), $output);
 
         if (count($output))
         {
@@ -179,7 +179,7 @@ class MonitorController extends Controller
                 $lines[] = [
                     'time' => @$split[0],
                     'pid' => @$split[1],
-                    'command' => @$split[2]
+                    'command' => @$split[2],
                 ];
 
                 $pids[@$split[1]] = true;

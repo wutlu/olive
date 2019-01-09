@@ -194,7 +194,6 @@
                         Carousel Yönetimi
                     </a>
                 </li>
-                <li class="divider"></li>
                 <li class="tiny">
                     <a class="waves-effect" href="{{ route('admin.organisation.list') }}">
                         <i class="material-icons">group_work</i>
@@ -283,6 +282,12 @@
                     </div>
                     <div class="collapsible-body">
                         <ul>
+                            <li class="tiny">
+                                <a class="waves-effect" href="{{ route('admin.session.logs') }}">
+                                    <i class="material-icons">accessibility</i>
+                                    Ziyaretçi Logları
+                                </a>
+                            </li>
                             <li class="tiny">
                                 <a class="waves-effect" href="{{ route('admin.monitoring.server') }}">
                                     <i class="material-icons">desktop_mac</i>

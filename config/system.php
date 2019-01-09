@@ -310,6 +310,18 @@ return [
                 'root' => true,
                 'icon' => 'view_carousel'
             ],
+            28 => [
+                'name' => 'E-posta Bülteni',
+                'route' => 'admin.newsletter',
+                'root' => true,
+                'icon' => 'email'
+            ],
+            29 => [
+                'name' => 'Ziyaretçi Logları',
+                'route' => 'admin.session.logs',
+                'root' => true,
+                'icon' => 'accessibility'
+            ],
         ]
     ],
 ];
