@@ -67,8 +67,8 @@
         <a href="{{ route('forum.index') }}" class="card-panel hoverable waves-effect" data-tooltip="Forum" data-position="right">
             <img alt="Forum" src="{{ asset('img/icons/board.png') }}" />
         </a>
-        <a href="{{ route('twitter.keyword.list') }}" class="card-panel hoverable waves-effect" data-tooltip="Twitter Veri Havuzu" data-position="right">
-            <img alt="Twitter Veri Havuzu" src="{{ asset('img/icons/filter.png') }}" />
+        <a href="{{ route('data_pool.dashboard') }}" class="card-panel hoverable waves-effect" data-tooltip="Veri Havuzu" data-position="right">
+            <img alt="Veri Havuzu" src="{{ asset('img/icons/filter.png') }}" />
         </a>
         <a href="{{ route('realtime.stream') }}" class="card-panel hoverable waves-effect" data-tooltip="Gerçek Zamanlı" data-position="right">
             <img alt="Gerçek Zamanlı" src="{{ asset('img/icons/realtime.png') }}" />

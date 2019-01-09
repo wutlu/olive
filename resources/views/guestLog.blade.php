@@ -84,6 +84,8 @@
 
 @push('local.styles')
     #console.collection {
+    	min-height: 400px;
+
         background-image: url('{{ asset('img/olive-logo-opacity.svg') }}');
         background-repeat: no-repeat;
         background-position: center;

@@ -140,8 +140,8 @@ return [
                 'icon' => 'group_work'
             ],
             3 => [
-                'name' => 'Kelime Takip Havuzu',
-                'route' => 'twitter.keyword.list',
+                'name' => 'Veri Havuzu',
+                'route' => 'data_pool.dashboard',
                 'icon' => 'streetview'
             ],
             4 => [

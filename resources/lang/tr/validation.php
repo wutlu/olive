@@ -207,8 +207,6 @@ return [
         'selector_seller_name'         => 'Satıcı Adı Seçicisi',
         'selector_seller_phones'       => 'Satıcı Telefonu Seçicisi',
         'selector_price'               => 'Ücret Seçicisi',
-        'twitter_follow_limit_user'    => 'Kullanıcı Takip Limiti',
-        'twitter_follow_limit_keyword' => 'Kelime Takip Limiti',
         'consumer_key'                 => 'Consumer Key',
         'consumer_secret'              => 'Consumer Secret',
         'access_token'                 => 'Access Token',
@@ -246,5 +244,11 @@ return [
         'email_list'                   => 'E-posta Listesi',
         'process'                      => 'İşleme Alma',
         'pid'                          => 'İşlem Kimliği',
+
+        'twitter_follow_limit_user'    => 'Twitter Kullanıcı Takip Limiti',
+        'twitter_follow_limit_keyword' => 'Twitter Kelime Takip Limiti',
+        'youtube_follow_limit_channel' => 'YouTube Kanal Takip Limiti',
+        'youtube_follow_limit_keyword' => 'Youtube Kelime Takip Limiti',
+        'youtube_follow_limit_video'   => 'YouTube Video Takip Limiti',
     ],
 ];

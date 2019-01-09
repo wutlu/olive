@@ -26,7 +26,7 @@ class DataController extends Controller
     {
         $user = auth()->user();
 
-        return view('crawlers.twitter.data_pool.keyword_list', compact('user'));
+        return view('crawlers.twitter.dataPool.keyword_list', compact('user'));
     }
 
     # ######################################## [ ADMIN ] ######################################## #
@@ -80,7 +80,7 @@ class DataController extends Controller
     {
         $user = auth()->user();
 
-        return view('crawlers.twitter.data_pool.account_list', compact('user'));
+        return view('crawlers.twitter.dataPool.account_list', compact('user'));
     }
 
     # ######################################## [ ADMIN ] ######################################## #

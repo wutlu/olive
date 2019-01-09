@@ -31,6 +31,10 @@ class CreateOrganisationsTable extends Migration
             $table->unsignedInteger('twitter_follow_limit_user')->default(10);
             $table->unsignedInteger('twitter_follow_limit_keyword')->default(10);
 
+            $table->unsignedInteger('youtube_follow_limit_channel')->default(10);
+            $table->unsignedInteger('youtube_follow_limit_video')->default(10);
+            $table->unsignedInteger('youtube_follow_limit_keyword')->default(10);
+
             $table->timestamps();
         });
     }

@@ -231,7 +231,7 @@ return [
         'Agent' => Jenssegers\Agent\Facades\Agent::class,
         'GeoIP' => Torann\GeoIP\Facades\GeoIP::class,
         'Image' => Intervention\Image\Facades\Image::class,
-        'Youtube' => Alaouy\Youtube\Facades\Youtube::class,
+        'YouTube' => Alaouy\Youtube\Facades\Youtube::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'Sentiment' => PHPSentiment\Sentiment::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,

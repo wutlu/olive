@@ -372,14 +372,13 @@
     <div class="card">
         <div class="card-image">
             <img src="{{ asset('img/card-header.jpg') }}" alt="Carousel Yönetimi" />
-            <span class="card-title">Carousel Yönetimi</span>
-
             <a href="#" class="btn-floating btn-large halfway-fab waves-effect white" data-trigger="create">
                 <i class="material-icons grey-text text-darken-2">add</i>
             </a>
         </div>
-        <div class="card-content grey lighten-4">
-            <span data-name="count">0</span> / 10
+        <div class="card-content">
+            <span class="card-title mb-0">Carousel Yönetimi</span>
+            <span data-name="count" class="grey-text">0</span>
         </div>
         <ul class="collection load" 
              id="collections"

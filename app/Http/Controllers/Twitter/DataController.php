@@ -19,7 +19,11 @@ class DataController extends Controller
 {
     public function __construct()
     {
-        $this->middleware([ 'auth', 'organisation:have,source' ]);
+        $this->middleware('auth');
+        $this->middleware('organisation:have,source')->only([
+            'keywordCreate',
+            'accountCreate'
+        ]);
         $this->middleware([ 'can:organisation-status', 'twitter:have' ])->only([
             'keywordCreate',
             'accountCreate'
@@ -31,7 +35,7 @@ class DataController extends Controller
     {
         $user = auth()->user();
 
-        return view('twitter.data_pool.keyword_list', compact('user'));
+        return view('twitter.dataPool.keyword_list', compact('user'));
     }
 
     # twitter veri havuzu kelime listesi json.
@@ -81,7 +85,7 @@ class DataController extends Controller
     {
         $user = auth()->user();
 
-        return view('twitter.data_pool.account_list', compact('user'));
+        return view('twitter.dataPool.account_list', compact('user'));
     }
 
     # twitter veri havuzu kullanıcı listesi json.

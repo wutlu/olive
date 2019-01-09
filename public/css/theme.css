@@ -985,12 +985,12 @@ textarea.max-height {
 
   overflow: auto;
 
-  background: #333;
-  background:         linear-gradient(45deg, #333 0%, #38ADAE 100%);
-  background:    -moz-linear-gradient(45deg, #333 0%, #38ADAE 100%);
-  background: -webkit-linear-gradient(45deg, #333 0%, #38ADAE 100%);
+  background: #111;
+  background:         linear-gradient(45deg, #111 0%, #38ADAE 100%);
+  background:    -moz-linear-gradient(45deg, #111 0%, #38ADAE 100%);
+  background: -webkit-linear-gradient(45deg, #111 0%, #38ADAE 100%);
 
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#333', endColorstr='#38ADAE', GradientType=1 );
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#111', endColorstr='#38ADAE', GradientType=1 );
 
   background-repeat: no-repeat;
   background-size: cover;

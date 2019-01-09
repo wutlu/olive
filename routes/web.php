@@ -166,6 +166,8 @@ Route::prefix('twitter')->namespace('Twitter')->group(function () {
 });
 
 Route::prefix('veri-havuzu')->group(function () {
+    Route::get('/', 'DataController@dashboard')->name('data_pool.dashboard');
+
     Route::prefix('twitter')->namespace('Twitter')->group(function () {
         Route::get('kelime-havuzu', 'DataController@keywordList')->name('twitter.keyword.list');
         Route::post('kelime-havuzu', 'DataController@keywordListJson');

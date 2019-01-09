@@ -847,8 +847,14 @@ class OrganisationController extends Controller
         $organisation->capacity = $request->capacity;
         $organisation->status = $request->status ? true : false;
         $organisation->end_date = $request->end_date.' '.$request->end_time;
+
         $organisation->twitter_follow_limit_user = $request->twitter_follow_limit_user;
         $organisation->twitter_follow_limit_keyword = $request->twitter_follow_limit_keyword;
+
+        $organisation->youtube_follow_limit_channel = $request->youtube_follow_limit_channel;
+        $organisation->youtube_follow_limit_keyword = $request->youtube_follow_limit_keyword;
+        $organisation->youtube_follow_limit_video = $request->youtube_follow_limit_video;
+
         $organisation->save();
 
         return [

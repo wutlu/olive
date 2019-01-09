@@ -2,13 +2,14 @@
     'sidenav_fixed_layout' => true,
     'breadcrumb' => [
         [
-            'text' => 'Veri Havuzu'
+            'text' => 'Veri Havuzu',
+            'link' => route('data_pool.dashboard')
         ],
         [
             'text' => 'Twitter'
         ],
         [
-            'text' => 'Kullanıcı Havuzu'
+            'text' => 'Kelime Havuzu'
         ]
     ],
     'dock' => true
@@ -21,20 +22,12 @@
 @section('content')
     <div class="card">
         <div class="card-content">
-            <span class="card-title mb-0">Kullanıcı Havuzu</span>
+            <span class="card-title mb-0">Kelime Havuzu</span>
             <p class="grey-text" data-name="count"></p>
-        </div>
-        <div class="card-content grey-text grey lighten-5">
-            <h6>Daha İyi Sonuçlar Elde Edin</h6>
-            <p>Sizi yakından ilgilendiren kullanıcıları belirterek veri toplama esnasında yüksek analiz sonuçları elde edebilirsiniz.</p>
-            <p>Bu ayarlar bulunduğunuz organizasyon için geçerlidir.</p>
-            <p>Organizasyona dahil tüm kullanıcıların takip havuzu ortaktır.</p>
-            <p>Elde edilen veriler tüm veri.zone kullanıcıları tarafından ortak veritabanından analize açık halde olacaktır.</p>
-            <p>Bu modül için sisteme bağlı bir Twitter hesabınızın olması gerekir.</p>
         </div>
         <div class="collection load"
              id="collections"
-             data-href="{{ route('twitter.account.list') }}"
+             data-href="{{ route('twitter.keyword.list') }}"
              data-callback="__collections"
              data-method="post"
              data-nothing>
@@ -43,8 +36,7 @@
             </div>
             <a href="#" class="collection-item model hide waves-effect" data-trigger="delete">
                 <span class="align-self-center">
-                    <p data-name="screen-name"></p>
-                    <p data-name="id" class="grey-text"></p>
+                    <p data-name="title"></p>
                     <p data-name="reason"></p>
                 </span>
             </a>
@@ -53,13 +45,13 @@
             <form
                 id="collection-form"
                 method="put"
-                action="{{ route('twitter.account.create') }}"
+                action="{{ route('twitter.keyword.create') }}"
                 data-callback="__create"
                 class="json">
                 <div class="input-field">
-                    <input id="screen_name" name="screen_name" type="text" class="validate" />
-                    <label for="screen_name">Twitter Kullanıcı Adı veya ID</label>
-                    <span class="helper-text">Örnek: "ntv, bigverizone"</span>
+                    <input id="keyword" name="keyword" type="text" class="validate" />
+                    <label for="keyword">Kelime Ekleyin</label>
+                    <span class="helper-text">Örnek: "veri.zone, bankacalıkta kampanya"</span>
                 </div>
             </form>
         </div>
@@ -72,7 +64,7 @@
 @endsection
 
 @section('dock')
-	@include('twitter.data_pool._menu', [ 'active' => 'accounts' ])
+	@include('dataPool._menu', [ 'active' => 'twitter.keywords' ])
 @endsection
 
 @push('local.scripts')
@@ -98,7 +90,7 @@
                         'href': '#',
                         'class': 'waves-effect btn-flat red-text json',
                         'html': buttons.ok,
-                        'data-href': '{{ route('twitter.account.delete') }}',
+                        'data-href': '{{ route('twitter.keyword.delete') }}',
                         'data-id': __.data('id'),
                         'data-method': 'delete',
                         'data-callback': '__delete'
@@ -122,7 +114,7 @@
     {
         if (obj.status == 'ok')
         {
-            __.find('#screen_name').val('')
+            __.find('#keyword').val('')
 
             window.clearTimeout(collection_timer)
 
@@ -151,8 +143,7 @@
                             .addClass('_tmp d-flex')
                             .attr('data-id', o.id)
 
-                        item.find('[data-name=screen-name]').html(o.screen_name)
-                        item.find('[data-name=id]').html(o.user_id)
+                        item.find('[data-name=title]').html(o.keyword)
                         item.find('[data-name=reason]')
                         	.html(o.reason ? o.reason : '-')
                         	.removeClass('green-text red-text')
@@ -169,7 +160,7 @@
 
             $('#home-loader').hide()
 
-            $('[data-name=count]').html(obj.hits.length + '/{{ $user->organisation->twitter_follow_limit_user }}')
+            $('[data-name=count]').html(obj.hits.length + '/{{ $user->organisation->twitter_follow_limit_keyword }}')
         }
 
         window.clearTimeout(collection_timer)

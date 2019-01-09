@@ -25,7 +25,7 @@
             </a>
         </div>
         <div class="card-content">
-            <span class="card-title">Sayfalar</span>
+            <span class="card-title mb-0">Sayfalar</span>
             <p class="grey-text">{{ count($pages).'/'.$pages->total() }}</p>
 
             @if (!count($pages))

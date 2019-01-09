@@ -12,6 +12,11 @@ use App\Models\Forum\Message;
 
 class ModuleSearchController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     # 
     # ara
     # 

@@ -83,20 +83,41 @@
                             </div>
                         </div>
                     </div>
+                    <hr />
                     <div class="collection-item">
                         <div class="d-flex">
                             <div class="input-field" style="margin: 0 1rem 0 0;">
                                 <input name="twitter_follow_limit_user" id="twitter_follow_limit_user" value="{{ $organisation->twitter_follow_limit_user }}" type="number" max="400" class="validate" />
-                                <label for="twitter_follow_limit_user">Kullanıcı Takip Limiti</label>
-                                <small class="helper-text">Organizasyonun takip edebileceği maksimum kullanıcı sayısı.</small>
+                                <label for="twitter_follow_limit_user">Twitter Kullanıcı Takip Limiti</label>
+                                <small class="helper-text">Organizasyonun Twitter üzerinden takip edebileceği maksimum kullanıcısı sayısı.</small>
                             </div>
                             <div class="input-field" style="margin: 0 1rem 0 0;">
                                 <input name="twitter_follow_limit_keyword" id="twitter_follow_limit_keyword" value="{{ $organisation->twitter_follow_limit_keyword }}" type="number" max="4000" class="validate" />
-                                <label for="twitter_follow_limit_keyword">Kelime Takip Limiti</label>
-                                <small class="helper-text">Organizasyonun takip edebileceği maksimum kelime sayısı.</small>
+                                <label for="twitter_follow_limit_keyword">Twitter Kelime Takip Limiti</label>
+                                <small class="helper-text">Organizasyonun Twitter üzerinden takip edebileceği maksimum kelime sayısı.</small>
                             </div>
                         </div>
                     </div>
+                    <div class="collection-item">
+                        <div class="d-flex">
+                            <div class="input-field" style="margin: 0 1rem 0 0;">
+                                <input name="youtube_follow_limit_channel" id="youtube_follow_limit_channel" value="{{ $organisation->youtube_follow_limit_channel }}" type="number" max="100" class="validate" />
+                                <label for="youtube_follow_limit_channel">YouTube Kanal Takip Limiti</label>
+                                <small class="helper-text">Organizasyonun YouTube üzerinden takip edebileceği maksimum kanal sayısı.</small>
+                            </div>
+                            <div class="input-field" style="margin: 0 1rem 0 0;">
+                                <input name="youtube_follow_limit_keyword" id="youtube_follow_limit_keyword" value="{{ $organisation->youtube_follow_limit_keyword }}" type="number" max="100" class="validate" />
+                                <label for="youtube_follow_limit_keyword">YouTube Kelime Takip Limiti</label>
+                                <small class="helper-text">Organizasyonun YouTube üzerinden takip edebileceği maksimum kelime sayısı.</small>
+                            </div>
+                            <div class="input-field" style="margin: 0 1rem 0 0;">
+                                <input name="youtube_follow_limit_video" id="youtube_follow_limit_video" value="{{ $organisation->youtube_follow_limit_video }}" type="number" max="100" class="validate" />
+                                <label for="youtube_follow_limit_video">YouTube Video Takip Limiti</label>
+                                <small class="helper-text">Organizasyonun YouTube üzerinden takip edebileceği maksimum video sayısı.</small>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
                     <label class="collection-item waves-effect d-block">
                         <input name="status" id="status" value="on" type="checkbox" {{ $organisation->status ? 'checked' : '' }} />
                         <span>Aktif</span>
