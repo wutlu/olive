@@ -232,7 +232,7 @@ class TwitterController extends Controller
         $skip = $request->skip;
 
         $query = new Account;
-        $query = $request->string ? $query->where('name', 'ILIKE', '%'.$request->string.'%')
+        $query = $request->string ? $query->orWhere('name', 'ILIKE', '%'.$request->string.'%')
                                           ->orWhere('screen_name', 'ILIKE', '%'.$request->string.'%') : $query;
         $query = $query->skip($skip)
                        ->take($take)

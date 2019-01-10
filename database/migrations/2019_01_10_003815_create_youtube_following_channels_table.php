@@ -17,7 +17,7 @@ class CreateYoutubeFollowingChannelsTable extends Migration
             $table->increments('id')->unsigned();
 
             $table->string('channel_image');
-            $table->string('channel_name');
+            $table->string('channel_title');
             $table->string('channel_id')->index();
 
             $table->string('reason')->nullable()->default(null);

@@ -13,7 +13,7 @@
             'link' => route('admin.twitter.settings')
         ],
         [
-        	'text' => 'Bağlı Hesaplar'
+            'text' => 'Bağlı Hesaplar'
         ]
     ],
     'dock' => true
@@ -82,7 +82,7 @@
 @endsection
 
 @section('dock')
-	@include('crawlers.twitter._menu', [ 'active' => 'accounts' ])
+    @include('crawlers.twitter._menu', [ 'active' => 'accounts' ])
 @endsection
 
 @push('local.scripts')

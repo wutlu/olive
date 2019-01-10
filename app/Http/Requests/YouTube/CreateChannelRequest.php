@@ -61,7 +61,8 @@ class CreateChannelRequest extends FormRequest
                         $channel = Youtube::getChannelByName($matches[2]);
                     break;
                 }
-                if (@$channel->snippet->country == 'TR')
+
+                if (@$channel)
                 {
                     $stuser = FollowingChannels::where(
                         [

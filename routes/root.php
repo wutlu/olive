@@ -74,15 +74,15 @@ Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {
     # 
     Route::prefix('alisveris-botlari')->group(function () {
         Route::get('/', 'ShoppingController@listView')->name('crawlers.shopping.list');
-        Route::get('json', 'ShoppingController@listViewJson')->name('crawlers.shopping.list.json');
+        Route::post('json', 'ShoppingController@listViewJson')->name('crawlers.shopping.list.json');
 
         Route::get('bot/{id?}', 'ShoppingController@view')->name('crawlers.shopping.bot');
-        Route::get('bot/{id}/istatistik', 'ShoppingController@statistics')->name('crawlers.shopping.bot.statistics');
+        Route::post('bot/{id}/istatistik', 'ShoppingController@statistics')->name('crawlers.shopping.bot.statistics');
         Route::post('bot/durum', 'ShoppingController@status')->name('crawlers.shopping.bot.status');
         Route::patch('bot', 'ShoppingController@update');
         Route::delete('bot', 'ShoppingController@delete');
 
-        Route::get('genel/istatistik', 'ShoppingController@allStatistics')->name('crawlers.shopping.bot.statistics.all');
+        Route::post('genel/istatistik', 'ShoppingController@allStatistics')->name('crawlers.shopping.bot.statistics.all');
         Route::post('genel/baslat', 'ShoppingController@allStart')->name('crawlers.shopping.bot.start.all');
         Route::post('genel/durdur', 'ShoppingController@allStop')->name('crawlers.shopping.bot.stop.all');
         Route::post('genel/index-olustur', 'ShoppingController@allIndex')->name('crawlers.shopping.bot.index.all');
@@ -91,14 +91,28 @@ Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {
     # 
     # YOUTUBE
     # 
-    Route::prefix('youtube')->group(function () {
+    Route::prefix('youtube')->namespace('YouTube')->group(function () {
         Route::get('/', 'YouTubeController@dashboard')->name('admin.youtube.settings');
         Route::patch('ayar', 'YouTubeController@statusSet')->name('admin.youtube.status.set');
 
         Route::post('log-ekrani', 'YouTubeController@logJson')->name('admin.youtube.monitoring.log');
 
-        Route::get('index-durumu', 'YouTubeController@indexStatus')->name('admin.youtube.index.status');
+        Route::post('index-durumu', 'YouTubeController@indexStatus')->name('admin.youtube.index.status');
         Route::post('index-olustur', 'YouTubeController@indexCreate')->name('admin.youtube.index.create');
+
+        Route::prefix('veri-havuzu')->group(function () {
+            Route::get('kelime-havuzu', 'DataController@keywordList')->name('admin.youtube.followed_keywords');
+            Route::post('kelime-havuzu', 'DataController@keywordListJson');
+            Route::patch('kelime-havuzu', 'DataController@keywordReason')->name('admin.youtube.followed_keywords.reason');
+
+            Route::get('kanal-havuzu', 'DataController@channelList')->name('admin.youtube.followed_channels');
+            Route::post('kanal-havuzu', 'DataController@channelListJson');
+            Route::patch('kanal-havuzu', 'DataController@channelReason')->name('admin.youtube.followed_channels.reason');
+
+            Route::get('video-havuzu', 'DataController@videoList')->name('admin.youtube.followed_videos');
+            Route::post('video-havuzu', 'DataController@videoListJson');
+            Route::patch('video-havuzu', 'DataController@videoReason')->name('admin.youtube.followed_videos.reason');
+        });
     });
 
     # 
@@ -110,7 +124,7 @@ Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {
 
         Route::post('log-ekrani', 'GoogleController@logJson')->name('admin.google.monitoring.log');
 
-        Route::get('index-durumu', 'GoogleController@indexStatus')->name('admin.google.index.status');
+        Route::post('index-durumu', 'GoogleController@indexStatus')->name('admin.google.index.status');
         Route::post('index-olustur', 'GoogleController@indexCreate')->name('admin.google.index.create');
     });
 
@@ -139,7 +153,7 @@ Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {
 
         Route::prefix('token-yonetimi')->group(function () {
             Route::post('json', 'TokenController@tokensJson')->name('admin.twitter.tokens.json');
-            Route::get('token', 'TokenController@token')->name('admin.twitter.token');
+            Route::post('token', 'TokenController@token')->name('admin.twitter.token');
             Route::put('token', 'TokenController@tokenCreate');
             Route::patch('token', 'TokenController@tokenUpdate');
             Route::delete('token', 'TokenController@tokenDelete');
@@ -161,15 +175,15 @@ Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {
     # 
     Route::prefix('medya-botlari')->group(function () {
         Route::get('/', 'MediaController@listView')->name('crawlers.media.list');
-        Route::get('json', 'MediaController@listViewJson')->name('crawlers.media.list.json');
+        Route::post('json', 'MediaController@listViewJson')->name('crawlers.media.list.json');
 
         Route::get('bot/{id?}', 'MediaController@view')->name('crawlers.media.bot');
-        Route::get('bot/{id}/istatistik', 'MediaController@statistics')->name('crawlers.media.bot.statistics');
+        Route::post('bot/{id}/istatistik', 'MediaController@statistics')->name('crawlers.media.bot.statistics');
         Route::post('bot/durum', 'MediaController@status')->name('crawlers.media.bot.status');
         Route::patch('bot', 'MediaController@update');
         Route::delete('bot', 'MediaController@delete');
 
-        Route::get('genel/istatistik', 'MediaController@allStatistics')->name('crawlers.media.bot.statistics.all');
+        Route::post('genel/istatistik', 'MediaController@allStatistics')->name('crawlers.media.bot.statistics.all');
         Route::post('genel/baslat', 'MediaController@allStart')->name('crawlers.media.bot.start.all');
         Route::post('genel/durdur', 'MediaController@allStop')->name('crawlers.media.bot.stop.all');
         Route::post('genel/index-olustur', 'MediaController@allIndex')->name('crawlers.media.bot.index.all');
@@ -180,7 +194,7 @@ Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {
     # 
     Route::prefix('sozluk-botlari')->group(function () {
         Route::get('/', 'SozlukController@listView')->name('crawlers.sozluk.list');
-        Route::get('json', 'SozlukController@listViewJson')->name('crawlers.sozluk.list.json');
+        Route::post('json', 'SozlukController@listViewJson')->name('crawlers.sozluk.list.json');
 
         Route::get('bot/{id?}', 'SozlukController@view')->name('crawlers.sozluk.bot');
         Route::post('bot/{id}/istatistik', 'SozlukController@statistics')->name('crawlers.sozluk.bot.statistics');
@@ -188,7 +202,7 @@ Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {
         Route::patch('bot', 'SozlukController@update');
         Route::delete('bot', 'SozlukController@delete');
 
-        Route::get('genel/istatistik', 'SozlukController@allStatistics')->name('crawlers.sozluk.bot.statistics.all');
+        Route::post('genel/istatistik', 'SozlukController@allStatistics')->name('crawlers.sozluk.bot.statistics.all');
         Route::post('genel/baslat', 'SozlukController@allStart')->name('crawlers.sozluk.bot.start.all');
         Route::post('genel/durdur', 'SozlukController@allStop')->name('crawlers.sozluk.bot.stop.all');
         Route::post('genel/index-olustur', 'SozlukController@allIndex')->name('crawlers.sozluk.bot.index.all');

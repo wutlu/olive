@@ -147,7 +147,8 @@
         <div
             class="collection load"
             data-href="{{ route('admin.youtube.index.status') }}"
-            data-callback="__status">
+            data-callback="__status"
+            data-method="post">
             <label class="collection-item waves-effect d-block">
                 <input
                     name="value"
@@ -176,18 +177,19 @@
             @endif
         </div>
     </div>
+    @include('crawlers.youtube._menu', [ 'active' => 'youtube.settings' ])
 @endsection
 
 @push('local.scripts')
-	function __status_set(__, obj)
-	{
-		if (obj.status == 'err')
-		{
-			M.toast({ html: 'Önce indeksleri oluşturmanız gerekiyor.', classes: 'red' })
+    function __status_set(__, obj)
+    {
+        if (obj.status == 'err')
+        {
+            M.toast({ html: 'Önce indeksleri oluşturmanız gerekiyor.', classes: 'red' })
 
-			__.prop('checked', false)
-		}
-	}
+            __.prop('checked', false)
+        }
+    }
 
     function __index_create(__, obj)
     {

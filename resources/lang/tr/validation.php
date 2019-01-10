@@ -254,5 +254,7 @@ return [
 
         'channel_url'                  => 'Kanal Adresi',
         'video_url'                    => 'Video Adresi',
+
+        'channel_id'                   => 'Kanal Kimliği',
     ],
 ];

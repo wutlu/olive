@@ -150,15 +150,15 @@
                             <a href="#" class="d-table grey-text hide" style="padding: .1rem;" target="_blank" data-name="referer"></a>
                         </span>
                     </span>
-                    <span class="d-flex flex-column">
-                        <span class="right-align hide" data-name="robot" style="padding: .1rem;"></span>
+                    <span class="d-flex flex-column align-items-end">
+                        <span class="hide" data-name="robot" style="padding: .1rem;"></span>
                         <span class="d-block">
-                            <span class="right-align" data-name="type" style="padding: .1rem;"></span>
-                            <span class="right-align" data-name="os" style="padding: .1rem;"></span>
+                            <span data-name="type" style="padding: .1rem;"></span>
+                            <span data-name="os" style="padding: .1rem;"></span>
                         </span>
-                        <span class="right-align" data-name="browser" style="padding: .1rem;"></span>
-                        <span class="right-align hide" data-name="device" style="padding: .1rem;"></span>
-                        <span class="right-align" data-name="ping" style="padding: .1rem;"></span>
+                        <span data-name="browser" style="padding: .1rem;"></span>
+                        <span class="hide" data-name="device" style="padding: .1rem;"></span>
+                        <span data-name="ping" style="padding: .1rem;"></span>
 	                </span>
                 </div>
             </li>

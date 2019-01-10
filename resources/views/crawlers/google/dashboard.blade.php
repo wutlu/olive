@@ -138,6 +138,7 @@
     <div class="card">
         <div
             class="collection load"
+            data-method="post"
             data-href="{{ route('admin.google.index.status') }}"
             data-callback="__status">
             <label class="collection-item waves-effect d-block">

@@ -9,11 +9,11 @@
             'link' => route('crawlers')
         ],
         [
-            'text' => 'Twitter Ayarları',
-            'link' => route('admin.twitter.settings')
+            'text' => 'YouTube Ayarları',
+            'link' => route('admin.youtube.settings')
         ],
         [
-            'text' => 'Takip Edilen Kullanıcılar'
+            'text' => 'Takip Edilen Videolar'
         ]
     ],
     'dock' => true
@@ -22,8 +22,8 @@
 @section('content')
     <div class="card">
         <div class="card-image">
-            <img src="{{ asset('img/card-header.jpg') }}" alt="Takip Edilen Kullanıcılar" />
-            <span class="card-title">Takip Edilen Kullanıcılar</span>
+            <img src="{{ asset('img/card-header.jpg') }}" alt="Takip Edilen Videolar" />
+            <span class="card-title">Takip Edilen Videolar</span>
         </div>
         <nav class="grey darken-4">
             <div class="nav-wrapper">
@@ -32,7 +32,7 @@
                            name="string"
                            type="search"
                            class="validate json json-search"
-                           data-json-target="#users"
+                           data-json-target="#videos"
                            placeholder="Ara" />
                     <label class="label-icon" for="string">
                         <i class="material-icons">search</i>
@@ -42,13 +42,13 @@
             </div>
         </nav>
         <div class="collection load json-clear" 
-             id="users"
-             data-href="{{ route('admin.twitter.stream.accounts') }}"
+             id="videos"
+             data-href="{{ route('admin.youtube.followed_videos') }}"
              data-skip="0"
              data-take="5"
              data-include="string"
-             data-more-button="#users-more_button"
-             data-callback="__accounts"
+             data-more-button="#videos-more_button"
+             data-callback="__videos"
              data-method="post"
              data-nothing>
             <div class="collection-item nothing hide">
@@ -56,11 +56,12 @@
             </div>
             <a
                 href="#"
-                class="collection-item model hide waves-effect justify-content-between"
+                class="collection-item avatar model hide waves-effect justify-content-between"
                 data-trigger="textarea">
+                <img class="circle rounded-0 align-self-center" alt="Video Resmi" data-name="image" />
                 <span class="align-self-center">
-                    <p data-name="user-id" class="grey-text"></p>
-                    <p data-name="screen-name"></p>
+                    <p data-name="video-title"></p>
+                    <p data-name="video-id" class="grey-text"></p>
                     <p data-name="reason"></p>
                 </span>
                 <span class="d-flex flex-column align-items-end">
@@ -78,20 +79,20 @@
 
     <div class="center-align">
         <button class="btn-flat waves-effect hide json"
-                id="users-more_button"
+                id="videos-more_button"
                 type="button"
-                data-json-target="#users">Daha Fazla</button>
+                data-json-target="#videos">Daha Fazla</button>
     </div>
 @endsection
 
 @section('dock')
-    @include('crawlers.twitter._menu', [ 'active' => 'stream.accounts' ])
+    @include('crawlers.youtube._menu', [ 'active' => 'youtube.videos' ])
 @endsection
 
 @push('local.scripts')
-    function __accounts(__, obj)
+    function __videos(__, obj)
     {
-        var ul = $('#users');
+        var ul = $('#videos');
         var item_model = ul.children('.model');
 
         if (obj.status == 'ok')
@@ -105,13 +106,12 @@
                         item.removeClass('model hide')
                             .addClass('_tmp d-flex')
                             .attr('data-id', o.id)
-                            .attr('data-name', 'user-' + o.user_id)
+                            .attr('data-name', 'video-' + o.video_id)
 
-
+                        item.find('[data-name=image]').attr('src', 'https://i.ytimg.com/vi/' + o.video_id + '/hqdefault.jpg')
                         item.find('[data-name=created-at]').attr('data-time', o.created_at)
 
-                        item.find('[data-name=screen-name]').html(o.screen_name)
-                        item.find('[data-name=user-id]').html(o.user_id)
+                        item.find('[data-name=video-title]').html(o.video_title)
                         item.find('[data-name=follower]').html(o.organisation.name)
                         item.find('[data-name=reason]').html(o.reason ? o.reason : '-').removeClass('green-text red-text').addClass(o.reason ? 'red-text' : 'green-text')
 
@@ -129,7 +129,7 @@
         {
             $('#modal-token').modal('close')
 
-            var el = $('[data-name=user-' + obj.data.user_id + ']');
+            var el = $('[data-name=video-' + obj.data.video_id + ']');
                 el.find('[data-name=reason]')
                   .html(obj.data.reason ? obj.data.reason : '-')
                   .removeClass('green-text red-text')
@@ -140,9 +140,9 @@
     $(document).on('click', '[data-trigger=textarea]', function() {
         return modal({
             'id': 'token',
-            'title': 'Sorunlu Profil',
+            'title': 'Sorunlu Video',
             'body': $('<form />', {
-                'action': '{{ route('admin.twitter.stream.accounts.reason') }}',
+                'action': '{{ route('admin.youtube.followed_videos.reason') }}',
                 'id': 'form',
                 'class': 'json',
                 'data-id': $(this).data('id'),
@@ -165,7 +165,7 @@
                             }),
                             $('<span />', {
                                 'class': 'helper-text',
-                                'html': 'Bir neden girilirse bu profil takipten çıkarılacaktır.'
+                                'html': 'Bir neden girilirse bu video takipten çıkarılacaktır.'
                             })
                         ]
                     }),

@@ -33,10 +33,11 @@
             <a href="#" class="collection-item avatar model hide waves-effect justify-content-between" data-trigger="delete">
             	<img class="circle align-self-center" alt="Kanal Resmi" data-name="image" />
                 <span class="align-self-center">
-                    <p data-name="channel-name"></p>
+                    <p data-name="channel-title"></p>
+                    <p data-name="channel-id" class="grey-text"></p>
                     <p data-name="reason"></p>
                 </span>
-                <time class="timeago grey-text right-align" data-name="created-at"></time>
+                <time data-name="created-at" class="timeago grey-text right-align"></time>
             </a>
         </div>
         <div class="card-content">
@@ -49,7 +50,7 @@
                 <div class="input-field">
                     <input id="channel_url" name="channel_url" type="text" class="validate" />
                     <label for="channel_url">YouTube Kanal Adresi</label>
-                    <span class="helper-text">Sadece Türkçe kanalları takibe alabilirsiniz.<br />Örnek: "https://www.youtube.com/channel/UCwzySbzUWiKqG84jOnbeB1w"</span>
+                    <span class="helper-text">Örnek: "https://www.youtube.com/channel/UCwzySbzUWiKqG84jOnbeB1w"</span>
                 </div>
             </form>
         </div>
@@ -145,7 +146,9 @@
                         item.find('[data-name=image]').attr('src', o.channel_image)
                         item.find('[data-name=created-at]').attr('data-time', o.created_at)
 
-                        item.find('[data-name=channel-name]').html(o.channel_name)
+                        item.find('[data-name=channel-title]').html(o.channel_title)
+                        item.find('[data-name=channel-id]').html(o.channel_id)
+
                         item.find('[data-name=reason]')
                         	.html(o.reason ? o.reason : '-')
                         	.removeClass('green-text red-text')

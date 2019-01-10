@@ -62,7 +62,7 @@
         </div>
 
         <div class="container">
-            <table id="stats" class="load" data-href="{{ route('crawlers.media.bot.statistics.all') }}" data-callback="__stats">
+            <table id="stats" class="load" data-method="post" data-href="{{ route('crawlers.media.bot.statistics.all') }}" data-callback="__stats">
                 <tbody>
                     <tr>
                         <th class="right-align grey-text">BOYUT</th>
@@ -142,6 +142,7 @@
         </nav>
         <div class="collection load json-clear"
              id="crawlers"
+             data-method="post"
              data-href="{{ route('crawlers.media.list.json') }}"
              data-skip="0"
              data-take="50"

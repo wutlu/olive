@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Twitter\Stream;
+namespace App\Http\Requests\Twitter\Reason;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AccountReasonRequest extends FormRequest
+class AccountRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,7 @@ class AccountReasonRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id' => 'required|integer|exists:twitter_streaming_users',
+            'id' => 'required|integer|exists:twitter_streaming_users,id',
             'reason' => 'nullable|string|max:255'
         ];
     }

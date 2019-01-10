@@ -433,7 +433,7 @@
                 <a
                     class="collection-item model hide flex-wrap red z-depth-4 waves-effect json"
                     data-href="{{ route('admin.twitter.token') }}"
-                    data-method="get"
+                    data-method="post"
                     data-callback="__get"
                     href="#">
                     <input data-name="error" readonly type="text" />

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Crawlers;
+namespace App\Http\Controllers\Crawlers\YouTube;
 
 use App\Http\Controllers\Controller;
 

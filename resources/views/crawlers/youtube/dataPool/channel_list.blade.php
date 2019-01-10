@@ -9,11 +9,11 @@
             'link' => route('crawlers')
         ],
         [
-            'text' => 'Twitter Ayarları',
-            'link' => route('admin.twitter.settings')
+            'text' => 'YouTube Ayarları',
+            'link' => route('admin.youtube.settings')
         ],
         [
-            'text' => 'Takip Edilen Kullanıcılar'
+            'text' => 'Takip Edilen Kanallar'
         ]
     ],
     'dock' => true
@@ -22,8 +22,8 @@
 @section('content')
     <div class="card">
         <div class="card-image">
-            <img src="{{ asset('img/card-header.jpg') }}" alt="Takip Edilen Kullanıcılar" />
-            <span class="card-title">Takip Edilen Kullanıcılar</span>
+            <img src="{{ asset('img/card-header.jpg') }}" alt="Takip Edilen Kanallar" />
+            <span class="card-title">Takip Edilen Kanallar</span>
         </div>
         <nav class="grey darken-4">
             <div class="nav-wrapper">
@@ -32,7 +32,7 @@
                            name="string"
                            type="search"
                            class="validate json json-search"
-                           data-json-target="#users"
+                           data-json-target="#channels"
                            placeholder="Ara" />
                     <label class="label-icon" for="string">
                         <i class="material-icons">search</i>
@@ -42,13 +42,13 @@
             </div>
         </nav>
         <div class="collection load json-clear" 
-             id="users"
-             data-href="{{ route('admin.twitter.stream.accounts') }}"
+             id="channels"
+             data-href="{{ route('admin.youtube.followed_channels') }}"
              data-skip="0"
              data-take="5"
              data-include="string"
-             data-more-button="#users-more_button"
-             data-callback="__accounts"
+             data-more-button="#channels-more_button"
+             data-callback="__channels"
              data-method="post"
              data-nothing>
             <div class="collection-item nothing hide">
@@ -56,11 +56,12 @@
             </div>
             <a
                 href="#"
-                class="collection-item model hide waves-effect justify-content-between"
+                class="collection-item avatar model hide waves-effect justify-content-between"
                 data-trigger="textarea">
+                <img class="circle align-self-center" alt="Kanal Resmi" data-name="image" />
                 <span class="align-self-center">
-                    <p data-name="user-id" class="grey-text"></p>
-                    <p data-name="screen-name"></p>
+                    <p data-name="channel-title"></p>
+                    <p data-name="channel-id" class="grey-text"></p>
                     <p data-name="reason"></p>
                 </span>
                 <span class="d-flex flex-column align-items-end">
@@ -78,20 +79,20 @@
 
     <div class="center-align">
         <button class="btn-flat waves-effect hide json"
-                id="users-more_button"
+                id="channels-more_button"
                 type="button"
-                data-json-target="#users">Daha Fazla</button>
+                data-json-target="#channels">Daha Fazla</button>
     </div>
 @endsection
 
 @section('dock')
-    @include('crawlers.twitter._menu', [ 'active' => 'stream.accounts' ])
+    @include('crawlers.youtube._menu', [ 'active' => 'youtube.channels' ])
 @endsection
 
 @push('local.scripts')
-    function __accounts(__, obj)
+    function __channels(__, obj)
     {
-        var ul = $('#users');
+        var ul = $('#channels');
         var item_model = ul.children('.model');
 
         if (obj.status == 'ok')
@@ -105,13 +106,14 @@
                         item.removeClass('model hide')
                             .addClass('_tmp d-flex')
                             .attr('data-id', o.id)
-                            .attr('data-name', 'user-' + o.user_id)
+                            .attr('data-name', 'channel-' + o.channel_id)
 
-
+                        item.find('[data-name=image]').attr('src', o.channel_image)
                         item.find('[data-name=created-at]').attr('data-time', o.created_at)
 
-                        item.find('[data-name=screen-name]').html(o.screen_name)
-                        item.find('[data-name=user-id]').html(o.user_id)
+                        item.find('[data-name=channel-title]').html(o.channel_title)
+                        item.find('[data-name=channel-id]').html(o.channel_id)
+
                         item.find('[data-name=follower]').html(o.organisation.name)
                         item.find('[data-name=reason]').html(o.reason ? o.reason : '-').removeClass('green-text red-text').addClass(o.reason ? 'red-text' : 'green-text')
 
@@ -129,7 +131,7 @@
         {
             $('#modal-token').modal('close')
 
-            var el = $('[data-name=user-' + obj.data.user_id + ']');
+            var el = $('[data-name=channel-' + obj.data.channel_id + ']');
                 el.find('[data-name=reason]')
                   .html(obj.data.reason ? obj.data.reason : '-')
                   .removeClass('green-text red-text')
@@ -140,9 +142,9 @@
     $(document).on('click', '[data-trigger=textarea]', function() {
         return modal({
             'id': 'token',
-            'title': 'Sorunlu Profil',
+            'title': 'Sorunlu Kanal',
             'body': $('<form />', {
-                'action': '{{ route('admin.twitter.stream.accounts.reason') }}',
+                'action': '{{ route('admin.youtube.followed_channels.reason') }}',
                 'id': 'form',
                 'class': 'json',
                 'data-id': $(this).data('id'),
@@ -165,7 +167,7 @@
                             }),
                             $('<span />', {
                                 'class': 'helper-text',
-                                'html': 'Bir neden girilirse bu profil takipten çıkarılacaktır.'
+                                'html': 'Bir neden girilirse bu kanal takipten çıkarılacaktır.'
                             })
                         ]
                     }),

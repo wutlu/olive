@@ -19,10 +19,6 @@
     'dock' => true
 ])
 
-@push('local.styles')
-    p { margin: 0; }
-@endpush
-
 @section('content')
     <div class="card">
         <div class="card-image">
@@ -60,13 +56,16 @@
             </div>
             <a
                 href="#"
-                class="collection-item model hide waves-effect"
+                class="collection-item model hide waves-effect justify-content-between"
                 data-trigger="textarea">
                 <span class="align-self-center">
                     <p data-name="keyword"></p>
                     <p data-name="reason"></p>
                 </span>
-                <small data-name="follower" class="badge ml-auto"></small>
+                <span class="d-flex flex-column align-items-end">
+                    <span data-name="follower" class="badge"></span>
+                    <time data-name="created-at" class="timeago grey-text"></time>
+                </span>
             </a>
         </div>
     </div>
@@ -102,7 +101,12 @@
             {
                 $.each(obj.hits, function(key, o) {
                     var item = item_model.clone();
-                        item.removeClass('model hide').addClass('_tmp d-flex').attr('data-id', o.id).attr('data-name', o.keyword)
+                        item.removeClass('model hide')
+                            .addClass('_tmp d-flex')
+                            .attr('data-id', o.id)
+                            .attr('data-name', o.keyword)
+
+                        item.find('[data-name=created-at]').attr('data-time', o.created_at)
 
                         item.find('[data-name=keyword]').html(o.keyword)
                         item.find('[data-name=follower]').html(o.organisation.name)
@@ -130,7 +134,7 @@
     }
 
     $(document).on('click', '[data-trigger=textarea]', function() {
-        var mdl = modal({
+        return modal({
             'id': 'token',
             'title': 'Sorunlu Kelime',
             'body': $('<form />', {
@@ -187,8 +191,6 @@
                     'html': buttons.ok
                 })
             ]
-        });
-
-        return mdl;
+        })
     })
 @endpush

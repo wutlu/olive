@@ -126,7 +126,7 @@
                     <time class="timeago d-block" data-name="control-date"></time>
                 </span>
             </div>
-            <table id="stats" class="grey darken-4 load" data-href="{{ route('crawlers.shopping.bot.statistics', $crawler->id) }}" data-callback="__stats">
+            <table id="stats" class="grey darken-4 load" data-method="post" data-href="{{ route('crawlers.shopping.bot.statistics', $crawler->id) }}" data-callback="__stats">
                 <tbody>
                     <tr>
                         <th class="center-align">

@@ -108,8 +108,8 @@ class DataController extends Controller
 
         $query = new FollowingChannels;
         $query->organisation_id = auth()->user()->organisation_id;
-        $query->channel_name = $channel->snippet->title;
-        $query->channel_image = $channel->snippet->thumbnails->high->url;
+        $query->channel_title = $channel->snippet->title;
+        $query->channel_image = $channel->snippet->thumbnails->default->url;
         $query->channel_id = $channel->id;
         $query->save();
 

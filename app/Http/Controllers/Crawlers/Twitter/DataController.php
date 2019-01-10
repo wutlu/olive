@@ -5,16 +5,14 @@ namespace App\Http\Controllers\Crawlers\Twitter;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-use Socialite;
-use Laravel\Socialite\Contracts\Provider;
 use App\Models\Twitter\StreamingKeywords;
 use App\Models\Twitter\StreamingUsers;
 
 use App\Http\Requests\SearchRequest;
 use App\Http\Requests\IdRequest;
 
-use App\Http\Requests\Twitter\Stream\KeywordReasonRequest;
-use App\Http\Requests\Twitter\Stream\AccountReasonRequest;
+use App\Http\Requests\Twitter\Reason\KeywordRequest as KeywordReasonRequest;
+use App\Http\Requests\Twitter\Reason\AccountRequest as AccountReasonRequest;
 
 class DataController extends Controller
 {
@@ -112,14 +110,13 @@ class DataController extends Controller
     # 
     public function accountReason(AccountReasonRequest $request)
     {
-        $query = StreamingUsers::where('user_id', $request->user_id)->firstOrFail();
-
-        StreamingUsers::where('user_id', $query->user_id)->update([ 'reason' => $request->reason ]);
+        $query = StreamingUsers::where('id', $request->id)->firstOrFail();
+                 StreamingUsers::where('user_id', $query->user_id)->update([ 'reason' => $request->reason ]);
 
         return [
             'status' => 'ok',
             'data' => [
-                'user_id' => $request->user_id,
+                'user_id' => $query->user_id,
                 'reason' => $request->reason
             ]
         ];

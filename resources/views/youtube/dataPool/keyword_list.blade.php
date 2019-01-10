@@ -35,7 +35,7 @@
                     <p data-name="title"></p>
                     <p data-name="reason"></p>
                 </span>
-                <time class="timeago grey-text right-align" data-name="created-at"></time>
+                <time data-name="created-at" class="timeago grey-text right-align"></time>
             </a>
         </div>
         <div class="card-content">
