@@ -166,7 +166,7 @@
                     @if ($options['youtube.status'] == 'on'){{ 'checked' }}@endif />
                 <span>Çalışıyor</span>
             </label>
-            @if ($options['youtube.index.video'] == 'off' && $options['youtube.index.comment'] == 'off')
+            @if ($options['youtube.index.video'] == 'off' || $options['youtube.index.comment'] == 'off')
                 <a
                     href="#"
                     class="collection-item waves-effect d-block json"

@@ -68,7 +68,15 @@ class YouTubeController extends Controller
             'youtube.index.comment'
         ])->where('value', 'on')->count();
 
-    	return $count == 2 ? [ 'status' => 'ok', 'elasticsearch' => Indices::stats([ 'youtube', '*' ]) ] : [ 'status' => 'err' ];
+    	return $count == 2 ?
+        [
+            'status' => 'ok',
+            'elasticsearch' => Indices::stats([ 'youtube', '*' ])
+        ]
+        :
+        [
+            'status' => 'err'
+        ];
     }
 
     # ######################################## [ ADMIN ] ######################################## #

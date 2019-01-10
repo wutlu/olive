@@ -54,15 +54,15 @@
             <li class="collection-item nothing hide">
                 @component('components.nothing')@endcomponent
             </li>
-            <li class="collection-item avatar model hide">
-                <img alt="avatar" class="circle" data-name="avatar" />
+            <li class="collection-item avatar model hide justify-content-between">
+                <img alt="avatar" class="circle align-self-center" data-name="avatar" />
                 <span class="align-self-center">
                     <p data-name="name"></p>
                     <p data-name="screen-name" class="grey-text"></p>
-                    <time data-name="created-at" class="timeago grey-text"></time>
                 </span>
-                <small class="badge ml-auto">
+                <span class="d-flex flex-column align-items-end">
                     <i class="material-icons" data-name="status">sentiment_very_satisfied</i>
+                    <time data-name="created-at" class="timeago grey-text"></time>
                 </small>
             </li>
         </ul>

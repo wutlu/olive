@@ -9,6 +9,10 @@ use System;
 use Sentiment;
 use Term;
 
+use App\Elasticsearch\Indices;
+
+use App\Jobs\Elasticsearch\BulkInsertJob;
+
 class TrendDetect extends Command
 {
     /**
@@ -51,8 +55,6 @@ class TrendDetect extends Command
 
         foreach ($items as $item)
         {
-            try
-            {
                 $arr = [
                     'id' => $item->id,
                     'title' => $item->snippet->title,
@@ -84,14 +86,22 @@ class TrendDetect extends Command
                     $arr['sentiment'] = $sentiment->score($arr['description']);
                 }
 
-                print_r($arr);
-            }
-            catch (\Exception $e)
-            {
-                $this->error($e->getMessage());
+                $this->info($arr['title']);
 
-                // log gir.
-            }
+                $chunk['body'][] = [
+                    'index' => [
+                        '_index' => Indices::name([ 'youtube', 'videos' ]),
+                        '_type' => 'video',
+                        '_id' => $arr['id']
+                    ]
+                ];
+
+                $chunk['body'][] = $arr;
+        }
+
+        if (count($chunk))
+        {
+            BulkInsertJob::dispatch($chunk)->onQueue('elasticsearch');
         }
     }
 }
