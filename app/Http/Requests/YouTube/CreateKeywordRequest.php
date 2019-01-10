@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Twitter;
+namespace App\Http\Requests\YouTube;
 
 use Illuminate\Foundation\Http\FormRequest;
 
 use Validator;
 
-use App\Models\Twitter\StreamingKeywords;
+use App\Models\YouTube\FollowingKeywords;
 
 class CreateKeywordRequest extends FormRequest
 {
@@ -43,11 +43,14 @@ class CreateKeywordRequest extends FormRequest
         $user = auth()->user();
 
         Validator::extend('unique_keyword', function($attribute, $keyword) use ($user) {
-            return !StreamingKeywords::where('organisation_id', $user->organisation_id)->where('keyword', $keyword)->exists();
+            return !FollowingKeywords::where([
+                'organisation_id' => $user->organisation_id,
+                'keyword' => $keyword
+            ])->exists();
         });
 
         Validator::extend('limit', function($attribute) use ($user) {
-            return $user->organisation->streamingKeywords()->count() < $user->organisation->twitter_follow_limit_keyword;
+            return $user->organisation->youtubeFollowingKeywords()->count() < $user->organisation->youtube_follow_limit_keyword;
         });
 
         return [

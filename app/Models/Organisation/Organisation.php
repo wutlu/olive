@@ -42,22 +42,42 @@ class Organisation extends Model
         return $this->hasMany('App\Models\Organisation\OrganisationInvoice', 'organisation_id', 'id')->orderBy('created_at', 'DESC');
     }
 
-    # kelimeler
-    public function keywords()
-    {
-        return $this->hasMany('App\Models\Keyword', 'organisation_id', 'id');
-    }
+    /**
+     * twitter area
+     */
 
-    # takip edilecek kelimeler
+    # takip edilecek twitter kelimeleri
     public function streamingKeywords()
     {
         return $this->hasMany('App\Models\Twitter\StreamingKeywords', 'organisation_id', 'id');
     }
 
-    # takip edilecek kullanıcılar
+    # takip edilecek twitter kullanıcılar
     public function streamingUsers()
     {
         return $this->hasMany('App\Models\Twitter\StreamingUsers', 'organisation_id', 'id');
+    }
+
+    /**
+     * youtube area
+     */
+
+    # takip edilecek youtube kelimeleri
+    public function youtubeFollowingKeywords()
+    {
+        return $this->hasMany('App\Models\YouTube\FollowingKeywords', 'organisation_id', 'id');
+    }
+
+    # takip edilecek youtube kullanıcıları
+    public function youtubeFollowingChannels()
+    {
+        return $this->hasMany('App\Models\YouTube\FollowingChannels', 'organisation_id', 'id');
+    }
+
+    # takip edilecek youtube videoları
+    public function youtubeFollowingVideos()
+    {
+        return $this->hasMany('App\Models\YouTube\FollowingVideos', 'organisation_id', 'id');
     }
 
     # kalan gün

@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Models\Twitter;
+namespace App\Models\YouTube;
 
 use Illuminate\Database\Eloquent\Model;
 
-class StreamingKeywords extends Model
+class FollowingKeywords extends Model
 {
-    protected $table = 'twitter_streaming_keywords';
+    protected $table = 'youtube_following_keywords';
     protected $fillable = [
-		'keyword',
-		'reason'
+        'keyword',
+        'reason'
     ];
 
     # organizasyon

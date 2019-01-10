@@ -32,6 +32,10 @@ class AppServiceProvider extends ServiceProvider
             return $json->success;
         });
 
+        Validator::extend('except_list', function($attribute, $keyword) {
+            return !in_array(str_slug($keyword, ' '), config('services.twitter.unaccepted_keywords'));
+        });
+
         Validator::extend('password_check', function($attribute, $value) {
             return Hash::check($value , auth()->user()->password);
         });

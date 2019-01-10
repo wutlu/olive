@@ -15,17 +15,13 @@
     'dock' => true
 ])
 
-@push('local.styles')
-	p { margin: 0; }
-@endpush
-
 @section('content')
     <div class="card">
         <div class="card-content">
             <span class="card-title mb-0">Kullanıcı Havuzu</span>
             <p class="grey-text" data-name="count"></p>
         </div>
-        <div class="collection load"
+        <div class="collection mb-0 load"
              id="collections"
              data-href="{{ route('twitter.account.list') }}"
              data-callback="__collections"
@@ -34,12 +30,13 @@
             <div class="collection-item nothing hide">
                 @component('components.nothing')@endcomponent
             </div>
-            <a href="#" class="collection-item model hide waves-effect" data-trigger="delete">
+            <a href="#" class="collection-item model hide waves-effect justify-content-between" data-trigger="delete">
                 <span class="align-self-center">
                     <p data-name="screen-name"></p>
                     <p data-name="id" class="grey-text"></p>
                     <p data-name="reason"></p>
                 </span>
+                <time class="timeago grey-text right-align" data-name="created-at"></time>
             </a>
         </div>
         <div class="card-content">
@@ -140,9 +137,12 @@
                     var selector = $('[data-id=' + o.id + '].collection-item'),
 
                         item = selector.length ? selector : item_model.clone();
+
                         item.removeClass('model hide')
                             .addClass('_tmp d-flex')
                             .attr('data-id', o.id)
+
+                        item.find('[data-name=created-at]').attr('data-time', o.created_at)
 
                         item.find('[data-name=screen-name]').html(o.screen_name)
                         item.find('[data-name=id]').html(o.user_id)
@@ -162,7 +162,7 @@
 
             $('#home-loader').hide()
 
-            $('[data-name=count]').html(obj.hits.length + '/{{ $user->organisation->twitter_follow_limit_user }}')
+            $('[data-name=count]').html(obj.hits.length + '/{{ auth()->user()->organisation->twitter_follow_limit_user }}')
         }
 
         window.clearTimeout(collection_timer)

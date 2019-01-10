@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Twitter;
 
 use Illuminate\Foundation\Http\FormRequest;
+
 use App\Http\Requests\IdRequest;
 
 class UpdateTokenRequest extends FormRequest

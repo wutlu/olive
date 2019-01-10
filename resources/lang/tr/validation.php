@@ -114,6 +114,7 @@ return [
     'token_check' => 'Token geçerli değil.',
     'organisation_status' => 'Organizasyonunuz henüz aktif değil.',
     'slug' => 'Slug alanı sadece a-z0-9 ve - karakterlerinden oluşabilir.',
+    'except_list' => 'Bu kelimeyi kullanamazsınız.',
 
     /*
     |--------------------------------------------------------------------------
@@ -250,5 +251,8 @@ return [
         'youtube_follow_limit_channel' => 'YouTube Kanal Takip Limiti',
         'youtube_follow_limit_keyword' => 'Youtube Kelime Takip Limiti',
         'youtube_follow_limit_video'   => 'YouTube Video Takip Limiti',
+
+        'channel_url'                  => 'Kanal Adresi',
+        'video_url'                    => 'Video Adresi',
     ],
 ];

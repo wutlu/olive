@@ -14,6 +14,8 @@ use App\Models\Carousel;
 
 use App\Ticket;
 
+use YouTube;
+
 class HomeController extends Controller
 {
     public function __construct()

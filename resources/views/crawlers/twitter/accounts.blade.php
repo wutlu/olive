@@ -43,6 +43,7 @@
         </nav>
         <ul class="collection load json-clear"
              id="accounts"
+             data-method="post"
              data-href="{{ route('admin.twitter.accounts.list.json') }}"
              data-skip="0"
              data-take="5"

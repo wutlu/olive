@@ -26,8 +26,8 @@ class CreateSessionsTable extends Migration
 
             $table->text('payload');
 
-            $table->string('page')->nullable()->default(null);
-            $table->string('referer')->nullable()->default(null);
+            $table->string('page', 1024)->nullable()->default(null);
+            $table->string('referer', 1024)->nullable()->default(null);
 
             $table->boolean('is_mobile')->default(0);
             $table->boolean('is_tablet')->default(0);

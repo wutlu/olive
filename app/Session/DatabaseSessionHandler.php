@@ -47,11 +47,10 @@ class DatabaseSessionHandler extends \Illuminate\Session\DatabaseSessionHandler
             'is_phone' => $agent->isPhone(),
 
             'device' => $agent->device() ? $agent->device() : null,
+            'os' => json_encode($os),
+            'browser' => json_encode($browser),
 
             'robot' => $agent->isRobot() ? $agent->robot() : null,
-
-            'browser' => json_encode($browser),
-            'os' => json_encode($os),
         ];
 
         if (Request::isMethod('get'))

@@ -192,18 +192,19 @@
                                         {{ $item['text'] }}
 
                                         @if ($item['value'] === true)
-                                        <i class="material-icons secondary-content green-text">check</i>
+                                            <i class="material-icons secondary-content green-text">check</i>
                                         @elseif ($item['value'] === false)
-                                        <i class="material-icons secondary-content red-text">close</i>
+                                            <i class="material-icons secondary-content red-text">close</i>
                                         @elseif (is_integer($item['value']))
-                                        <span class="badge grey lighten-2">{{ $item['value'] }}</span>
+                                            <span class="badge grey lighten-2">{{ $item['value'] }}</span>
                                         @else
-                                        <i class="material-icons secondary-content teal-text">streetview</i>
+                                            <i class="material-icons secondary-content teal-text">streetview</i>
                                         @endif
                                     </p>
                                     <p class="grey-text">{{ $item['details'] }}</p>
+
                                     @if (is_string($item['value']))
-                                    <p class="teal-text">{{ $item['value'] }}</p>
+                                        <p class="teal-text">{{ $item['value'] }}</p>
                                     @endif
                                 </span>
                             </div>

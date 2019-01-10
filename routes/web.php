@@ -181,6 +181,26 @@ Route::prefix('veri-havuzu')->group(function () {
         Route::put('kullanici', 'DataController@accountCreate')->name('twitter.account.create');
         Route::delete('kullanici', 'DataController@accountDelete')->name('twitter.account.delete');
     });
+
+    Route::prefix('youtube')->namespace('YouTube')->group(function () {
+        Route::get('kelime-havuzu', 'DataController@keywordList')->name('youtube.keyword.list');
+        Route::post('kelime-havuzu', 'DataController@keywordListJson');
+
+        Route::put('kelime', 'DataController@keywordCreate')->name('youtube.keyword.create');
+        Route::delete('kelime', 'DataController@keywordDelete')->name('youtube.keyword.delete');
+
+        Route::get('kanal-havuzu', 'DataController@channelList')->name('youtube.channel.list');
+        Route::post('kanal-havuzu', 'DataController@channelListJson');
+
+        Route::put('kanal', 'DataController@channelCreate')->name('youtube.channel.create');
+        Route::delete('kanal', 'DataController@channelDelete')->name('youtube.channel.delete');
+
+        Route::get('video-havuzu', 'DataController@videoList')->name('youtube.video.list');
+        Route::post('video-havuzu', 'DataController@videoListJson');
+
+        Route::put('video', 'DataController@videoCreate')->name('youtube.video.create');
+        Route::delete('video', 'DataController@videoDelete')->name('youtube.video.delete');
+    });
 });
 
 Route::prefix('oturum')->group(function () {

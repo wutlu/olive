@@ -9,7 +9,6 @@ class StreamingUsers extends Model
     protected $table = 'twitter_streaming_users';
     protected $fillable = [
 		'screen_name',
-		'user_id',
 		'reason'
     ];
 
@@ -18,4 +17,13 @@ class StreamingUsers extends Model
     {
         return $this->hasOne('App\Models\Organisation\Organisation', 'id', 'organisation_id');
     }
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'organisation_id',
+    ];
 }

@@ -6,7 +6,7 @@
             'link' => route('data_pool.dashboard')
         ],
         [
-            'text' => 'Twitter'
+            'text' => 'YouTube'
         ],
         [
             'text' => 'Kelime Havuzu'
@@ -23,7 +23,7 @@
         </div>
         <div class="collection mb-0 load"
              id="collections"
-             data-href="{{ route('twitter.keyword.list') }}"
+             data-href="{{ route('youtube.keyword.list') }}"
              data-callback="__collections"
              data-method="post"
              data-nothing>
@@ -42,7 +42,7 @@
             <form
                 id="collection-form"
                 method="put"
-                action="{{ route('twitter.keyword.create') }}"
+                action="{{ route('youtube.keyword.create') }}"
                 data-callback="__create"
                 class="json">
                 <div class="input-field">
@@ -61,7 +61,7 @@
 @endsection
 
 @section('dock')
-	@include('dataPool._menu', [ 'active' => 'twitter.keywords' ])
+	@include('dataPool._menu', [ 'active' => 'youtube.keywords' ])
 @endsection
 
 @push('local.scripts')
@@ -87,7 +87,7 @@
                         'href': '#',
                         'class': 'waves-effect btn-flat red-text json',
                         'html': buttons.ok,
-                        'data-href': '{{ route('twitter.keyword.delete') }}',
+                        'data-href': '{{ route('youtube.keyword.delete') }}',
                         'data-id': __.data('id'),
                         'data-method': 'delete',
                         'data-callback': '__delete'
@@ -160,7 +160,7 @@
 
             $('#home-loader').hide()
 
-            $('[data-name=count]').html(obj.hits.length + '/{{ auth()->user()->organisation->twitter_follow_limit_keyword }}')
+            $('[data-name=count]').html(obj.hits.length + '/{{ auth()->user()->organisation->youtube_follow_limit_keyword }}')
         }
 
         window.clearTimeout(collection_timer)

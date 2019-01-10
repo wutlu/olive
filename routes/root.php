@@ -126,7 +126,7 @@ Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {
         Route::post('index-yonetimi/json', 'TwitterController@indicesJson')->name('admin.twitter.indices.json');
 
         Route::post('index-olustur', 'TwitterController@indexCreate')->name('admin.twitter.index.create');
-        Route::get('index-durumu', 'TwitterController@indexStatus')->name('admin.twitter.index.status');
+        Route::post('index-durumu', 'TwitterController@indexStatus')->name('admin.twitter.index.status');
 
         Route::patch('ayar', 'TwitterController@set')->name('admin.twitter.option.set');
 
@@ -134,7 +134,7 @@ Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {
 
         Route::prefix('bagli-hesaplar')->group(function () {
             Route::get('/', 'TwitterController@accounts')->name('admin.twitter.accounts');
-            Route::get('json', 'TwitterController@accountsViewJson')->name('admin.twitter.accounts.list.json');
+            Route::post('json', 'TwitterController@accountsViewJson')->name('admin.twitter.accounts.list.json');
         });
 
         Route::prefix('token-yonetimi')->group(function () {

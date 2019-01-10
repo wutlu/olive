@@ -866,20 +866,20 @@
     </div>
 
     @if ($user->id == $user->organisation->user_id)
-    <div id="tab-4" class="grey lighten-4">
-        <div class="collection">
-            @foreach ($user->organisation->invoices as $invoice)
-                <a href="{{ route('organisation.invoice', $invoice->invoice_id) }}" class="collection-item d-flex waves-effect {{ $invoice->paid_at ? 'grey-text' : 'red-text' }}">
-                    <i class="material-icons align-self-center">history</i>
-                    <span class="align-self-center">
-                        <p>{{ $invoice->plan()->name }} ({{ $invoice->plan()->properties->capacity->value }} kullanıcı)</p>
-                        <p class="grey-text">{{ date('d.m.Y H:i', strtotime($invoice->created_at)) }}</p>
-                    </span>
-                    <small class="badge ml-auto">{{ $invoice->paid_at ? date('d.m.Y H:i', strtotime($invoice->paid_at)) : 'ÖDENMEDİ' }}</small>
-                </a>
-            @endforeach
+        <div id="tab-4" class="grey lighten-4">
+            <div class="collection">
+                @foreach ($user->organisation->invoices as $invoice)
+                    <a href="{{ route('organisation.invoice', $invoice->invoice_id) }}" class="collection-item d-flex waves-effect {{ $invoice->paid_at ? 'grey-text' : 'red-text' }}">
+                        <i class="material-icons align-self-center">history</i>
+                        <span class="align-self-center">
+                            <p>{{ $invoice->plan()->name }} ({{ $invoice->plan()->properties->capacity->value }} kullanıcı)</p>
+                            <p class="grey-text">{{ date('d.m.Y H:i', strtotime($invoice->created_at)) }}</p>
+                        </span>
+                        <small class="badge ml-auto">{{ $invoice->paid_at ? date('d.m.Y H:i', strtotime($invoice->paid_at)) : 'ÖDENMEDİ' }}</small>
+                    </a>
+                @endforeach
+            </div>
         </div>
-    </div>
     @endif
 </div>
 @endsection

@@ -6,10 +6,10 @@
             'link' => route('data_pool.dashboard')
         ],
         [
-            'text' => 'Twitter'
+            'text' => 'YouTube'
         ],
         [
-            'text' => 'Kelime Havuzu'
+            'text' => 'Video Havuzu'
         ]
     ],
     'dock' => true
@@ -18,21 +18,22 @@
 @section('content')
     <div class="card">
         <div class="card-content">
-            <span class="card-title mb-0">Kelime Havuzu</span>
+            <span class="card-title mb-0">Video Havuzu</span>
             <p class="grey-text" data-name="count"></p>
         </div>
         <div class="collection mb-0 load"
              id="collections"
-             data-href="{{ route('twitter.keyword.list') }}"
+             data-href="{{ route('youtube.video.list') }}"
              data-callback="__collections"
              data-method="post"
              data-nothing>
             <div class="collection-item nothing hide">
                 @component('components.nothing')@endcomponent
             </div>
-            <a href="#" class="collection-item model hide waves-effect justify-content-between" data-trigger="delete">
+            <a href="#" class="collection-item avatar model hide waves-effect justify-content-between" data-trigger="delete">
+            	<img class="circle align-self-center" alt="Video Resmi" data-name="image" />
                 <span class="align-self-center">
-                    <p data-name="title"></p>
+                    <p data-name="video-title"></p>
                     <p data-name="reason"></p>
                 </span>
                 <time class="timeago grey-text right-align" data-name="created-at"></time>
@@ -42,13 +43,13 @@
             <form
                 id="collection-form"
                 method="put"
-                action="{{ route('twitter.keyword.create') }}"
+                action="{{ route('youtube.video.create') }}"
                 data-callback="__create"
                 class="json">
                 <div class="input-field">
-                    <input id="keyword" name="keyword" type="text" class="validate" />
-                    <label for="keyword">Kelime Ekleyin</label>
-                    <span class="helper-text">Örnek: "veri.zone, bankacalıkta kampanya"</span>
+                    <input id="video_url" name="video_url" type="text" class="validate" />
+                    <label for="video_url">YouTube Video Adresi</label>
+                    <span class="helper-text">Örnek: "https://www.youtube.com/watch?v=YAtyQFmYD_U"</span>
                 </div>
             </form>
         </div>
@@ -61,7 +62,7 @@
 @endsection
 
 @section('dock')
-	@include('dataPool._menu', [ 'active' => 'twitter.keywords' ])
+	@include('dataPool._menu', [ 'active' => 'youtube.videos' ])
 @endsection
 
 @push('local.scripts')
@@ -87,7 +88,7 @@
                         'href': '#',
                         'class': 'waves-effect btn-flat red-text json',
                         'html': buttons.ok,
-                        'data-href': '{{ route('twitter.keyword.delete') }}',
+                        'data-href': '{{ route('youtube.video.delete') }}',
                         'data-id': __.data('id'),
                         'data-method': 'delete',
                         'data-callback': '__delete'
@@ -111,7 +112,7 @@
     {
         if (obj.status == 'ok')
         {
-            __.find('#keyword').val('')
+            __.find('#video_url').val('')
 
             window.clearTimeout(collection_timer)
 
@@ -141,9 +142,10 @@
                             .addClass('_tmp d-flex')
                             .attr('data-id', o.id)
 
+                        item.find('[data-name=image]').attr('src', 'https://i.ytimg.com/vi/' + o.video_id + '/hqdefault.jpg')
                         item.find('[data-name=created-at]').attr('data-time', o.created_at)
 
-                        item.find('[data-name=title]').html(o.keyword)
+                        item.find('[data-name=video-title]').html(o.video_title)
                         item.find('[data-name=reason]')
                         	.html(o.reason ? o.reason : '-')
                         	.removeClass('green-text red-text')
@@ -160,7 +162,7 @@
 
             $('#home-loader').hide()
 
-            $('[data-name=count]').html(obj.hits.length + '/{{ auth()->user()->organisation->twitter_follow_limit_keyword }}')
+            $('[data-name=count]').html(obj.hits.length + '/{{ auth()->user()->organisation->youtube_follow_limit_video }}')
         }
 
         window.clearTimeout(collection_timer)

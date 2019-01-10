@@ -107,36 +107,47 @@ class UserController extends Controller
             {
                 $agent = new Agent();
 
-                $device     = $agent->device();
-                $platform   = $agent->platform();
-                $browser    = $agent->browser();
-                $type       = $agent->isDesktop() ? 'Masaüstü' : $agent->isPhone() ? 'Mobil' : 'Diğer';
-                $ip         = $request->ip();
-                $date       = date('Y-m-d H:i:s');
+                $agent_browser = $agent->browser();
+                $agent_platform = $agent->platform();
 
-                $location   = geoip()->getLocation($ip);
+                $browser['name'] = $agent_browser;
 
-                $data[] = '| Özellik         | Değer                                      |';
-                $data[] = '| --------------: |:------------------------------------------ |';
-                $data[] = '| IP              | '.$ip.'                                    |';
-                $data[] = '| Konum           | '.$location->city.'/'.$location->country.' |';
+                if ($agent->version($agent_browser))
+                {
+                    $browser['version'] = $agent->version($agent_browser);
+                }
 
-            if ($device)
+                $os['name'] = $agent_platform;
+
+                if ($agent->version($agent_platform))
+                {
+                    $os['version'] = $agent->version($agent_platform);
+                }
+
+                $info = (object) [
+                    'ip' => $request->ip(),
+                    'location' => geoip()->getLocation($request->ip),
+
+                    'device' => $agent->device() ? $agent->device() : null,
+                    'os' => implode(', ', $os),
+                    'browser' => implode(', ', $browser),
+
+                    'date' => date('Y-m-d H:i:s'),
+                ];
+
+                $data[] = '| Özellik         | Değer                                                  |';
+                $data[] = '| --------------: |:------------------------------------------------------ |';
+                $data[] = '| IP              | '.$info->ip.'                                          |';
+                $data[] = '| Konum           | '.$info->location->city.'/'.$info->location->country.' |';
+
+            if ($info->device)
             {
-                $data[] = '| Cihaz           | '.$device.'                                |';
+                $data[] = '| Cihaz           | '.$info->device.'                                      |';
             }
 
-            if ($platform)
-            {
-                $data[] = '| İşletim Sistemi | '.$platform.'                              |';
-            }
-
-            if ($browser)
-            {
-                $data[] = '| Tarayıcı        | '.$browser.'                               |';
-            }
-
-                $data[] = '| İşlem Tarihi    | '.$date.'                                  |';
+                $data[] = '| İşletim Sistemi | '.$info->os.'                                          |';
+                $data[] = '| Tarayıcı        | '.$info->browser.'                                     |';
+                $data[] = '| İşlem Tarihi    | '.$info->date.'                                        |';
 
                 # --- [] --- #
 
@@ -145,7 +156,7 @@ class UserController extends Controller
                 UserActivityUtility::push(
                     'Hesabınıza yeni bir ip\'den giriş yapıldı.',
                     [
-                        'key'       => implode('-', [ 'user', 'auth', $ip ]),
+                        'key'       => implode('-', [ 'user', 'auth', $info->ip ]),
                         'icon'      => 'accessibility',
                         'markdown'  => $data
                     ]

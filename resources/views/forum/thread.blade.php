@@ -457,7 +457,8 @@
                                     'html': [
                                         $('<textarea />', {
                                             'id': 'body-' + obj.data.id,
-                                            'name': 'body',
+                                            'name': 'body-' + obj.data.id,
+                                            'data-alias': 'body',
                                             'class': 'materialize-textarea validate',
                                             'data-length': 5000,
                                             'val': obj.data.body
@@ -497,7 +498,7 @@
                                         'class': 'btn-flat waves-effect',
                                         'html': $('<i />', {
                                             'class': 'material-icons',
-                                            'html': 'send'
+                                            'html': 'check'
                                         })
                                     })
                                 ]

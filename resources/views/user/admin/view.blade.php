@@ -43,8 +43,8 @@
         data-callback="__account">
         <div class="card">
             <div class="card-image">
-                <img src="{{ asset('img/card-header.jpg') }}" alt="Hesap Bilgileri" />
-                <span class="card-title">Hesap Bilgileri</span>
+                <img src="{{ asset('img/card-header.jpg') }}" alt="Kullanıcı Bilgileri" />
+                <span class="card-title">Kullanıcı Bilgileri</span>
             </div>
             <div class="card-content">
                 <ul class="item-group">

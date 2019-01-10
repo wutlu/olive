@@ -19,7 +19,7 @@
             $('input[name=password]').val('')
 
             M.toast({
-                html: 'Hesap Bilgileri Güncellendi',
+                html: 'Hesap Güncellendi',
                 classes: 'green darken-2'
             })
         }

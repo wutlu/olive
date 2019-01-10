@@ -31,7 +31,7 @@
     <link rel="mask-icon" href="{{ asset('img/favicons/safari-pinned-tab.svg?v='.config('system.version')) }}" color="{{ config('view.color') }}" />
 
     <!-- theme color -->
-    <meta name="theme-color" content="{{ config('view.color') }}" />
+    <meta name="theme-color" content="{{ config('view.theme_color') }}" />
 
     <!-- external include header -->
     @stack('external.include.header')

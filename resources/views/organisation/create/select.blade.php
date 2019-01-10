@@ -65,36 +65,37 @@
 
                 <ul class="collection collection-unstyled collection-unstyled-hover">
                     @foreach ($plan['properties'] as $k => $item)
-                    <li class="collection-item">
-                        <div>
-                            <span>
-                                <p>
-                                    {{ $item['text'] }}
+                        <li class="collection-item">
+                            <div>
+                                <span>
+                                    <p>
+                                        {{ $item['text'] }}
 
-                                    @if ($item['value'] === true)
-                                    <i class="material-icons secondary-content green-text">check</i>
-                                    @elseif ($item['value'] === false)
-                                    <i class="material-icons secondary-content red-text">close</i>
-                                    @elseif (is_integer($item['value']))
-                                    <span class="badge">{{ $item['value'] }}</span>
-                                    @else
-                                    <i class="material-icons secondary-content teal-text">streetview</i>
+                                        @if ($item['value'] === true)
+                                            <i class="material-icons secondary-content green-text">check</i>
+                                        @elseif ($item['value'] === false)
+                                            <i class="material-icons secondary-content red-text">close</i>
+                                        @elseif (is_integer($item['value']))
+                                            <span class="badge grey lighten-5">{{ $item['value'] }}</span>
+                                        @else
+                                            <i class="material-icons secondary-content teal-text">streetview</i>
+                                        @endif
+                                    </p>
+                                    <p class="grey-text">{{ $item['details'] }}</p>
+
+                                    @if (is_string($item['value']))
+                                        <p class="teal-text">{{ $item['value'] }}</p>
                                     @endif
-                                </p>
-                                <p class="grey-text">{{ $item['details'] }}</p>
-
-                                @if (is_string($item['value']))
-                                    <p class="teal-text">{{ $item['value'] }}</p>
-                                @endif
-                            </span>
-                        </div>
-                    </li>
+                                </span>
+                            </div>
+                        </li>
                     @endforeach
                 </ul>
+
                 @if ($plan['price'])
-                <div class="center-align">
-                    <a href="{{ route('organisation.create.details', [ $key ]) }}" class="btn-flat btn-large waves-effect">Planı Seç</a>
-                </div>
+                    <div class="center-align">
+                        <a href="{{ route('organisation.create.details', [ $key ]) }}" class="btn-flat btn-large waves-effect">Planı Seç</a>
+                    </div>
                 @endif
             </div>
             @endforeach

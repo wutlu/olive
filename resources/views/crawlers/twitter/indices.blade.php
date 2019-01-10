@@ -127,7 +127,7 @@
                     data-callback="__index_create">Trend indeksini Oluştur</a>
                 <div
                     class="load"
-                    data-method="get"
+                    data-method="post"
                     data-href="{{ route('admin.twitter.index.status') }}"
                     data-callback="__index_status">
                 </div>

@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use Socialite;
-use Laravel\Socialite\Contracts\Provider;
 use App\Models\Twitter\StreamingKeywords;
 use App\Models\Twitter\StreamingUsers;
 
@@ -20,10 +19,7 @@ class DataController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('organisation:have,source')->only([
-            'keywordCreate',
-            'accountCreate'
-        ]);
+        $this->middleware('organisation:have,source');
         $this->middleware([ 'can:organisation-status', 'twitter:have' ])->only([
             'keywordCreate',
             'accountCreate'
@@ -33,9 +29,7 @@ class DataController extends Controller
     # twitter veri havuzu kelime listesi view.
     public function keywordList()
     {
-        $user = auth()->user();
-
-        return view('twitter.dataPool.keyword_list', compact('user'));
+        return view('twitter.dataPool.keyword_list');
     }
 
     # twitter veri havuzu kelime listesi json.
@@ -83,9 +77,7 @@ class DataController extends Controller
     # twitter veri havuzu kullanıcı listesi view.
     public function accountList()
     {
-        $user = auth()->user();
-
-        return view('twitter.dataPool.account_list', compact('user'));
+        return view('twitter.dataPool.account_list');
     }
 
     # twitter veri havuzu kullanıcı listesi json.

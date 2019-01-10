@@ -3,7 +3,9 @@
 namespace App\Http\Requests\Twitter;
 
 use Illuminate\Foundation\Http\FormRequest;
+
 use Validator;
+
 use App\Models\Twitter\StreamingUsers;
 use App\Console\Commands\Crawlers\Twitter\AccountControl;
 
@@ -28,7 +30,7 @@ class CreateAccountRequest extends FormRequest
     {
         return [
             'limit' => 'Maksimum hesap limitine ulaştınız.',
-            'twitter_account' => 'Hesap takip için uygun değil.'
+            'twitter_account' => 'Hesap, takip için uygun değil.'
         ];
     }
 
@@ -64,7 +66,7 @@ class CreateAccountRequest extends FormRequest
         });
 
         Validator::extend('limit', function($attribute) use ($user) {
-            return count($user->organisation->streamingUsers) < $user->organisation->twitter_follow_limit_user;
+            return $user->organisation->streamingUsers()->count() < $user->organisation->twitter_follow_limit_user;
         });
 
         return [
