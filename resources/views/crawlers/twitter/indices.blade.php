@@ -62,6 +62,13 @@
             vzAjax($('#indices'))
         }, 10000)
     }
+
+    function __timeout(__)
+    {
+        $('#home-loader').hide()
+
+        __.find('.nothing').removeClass('hide')
+    }
 @endpush
 
 @section('content')
@@ -75,7 +82,9 @@
              data-href="{{ route('admin.twitter.indices.json') }}"
              data-callback="__indices"
              data-method="post"
-             data-nothing>
+             data-nothing
+             data-timeout="1000"
+             data-error-callback="__timeout">
             <li class="collection-item nothing hide">
                 @component('components.nothing')@endcomponent
             </li>

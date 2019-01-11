@@ -87,17 +87,23 @@
                 data_id_input.data('id', obj.data.crawler.last_id)
             }
 
-            if (obj.data.elasticsearch.status == 'ok' && obj.data.elasticsearch.data._all.primaries.docs)
+            if (isset(obj.data.elasticsearch.message))
             {
-                $('[data-name=total-docs]').html(number_format(obj.data.elasticsearch.data._all.primaries.docs.count))
-                $('[data-name=total-size]').html(humanFileSize(obj.data.elasticsearch.data._all.primaries.store.size_in_bytes))
+                var message = $.parseJSON(obj.data.elasticsearch.message);
             }
             else
             {
-                var message = $.parseJSON(obj.data.elasticsearch.message);
+                var message = { 'status': obj.data.elasticsearch.status == 'ok' ? 200 : 404 };
+            }
 
-                $('[data-name=total-docs]').html(message.status == 404 ? 'Index Oluşturulmadı!' : 'Bağlantı Hatası')
-                $('[data-name=total-size]').html(message.status == 404 ? 'Index Oluşturulmadı!' : 'Bağlantı Hatası')
+            if (message.status == '404')
+            {
+                $('[data-elasticsearch]').html('Index Oluşturulmadı!')
+            }
+            else
+            {
+                $('[data-name=total-docs]').html(number_format(obj.data.elasticsearch.data._all.primaries.docs.count))
+                $('[data-name=total-size]').html(humanFileSize(obj.data.elasticsearch.data._all.primaries.store.size_in_bytes))
             }
 
             $('[data-name=pid]').html(obj.data.pid ? obj.data.pid : 'Yok')
@@ -108,6 +114,11 @@
                 vzAjax($('#stats'))
             }, 10000)
         }
+    }
+
+    function __connection_failed(__)
+    {
+        $('[data-elasticsearch]').html('ES Bağlantı Hatası')
     }
 @endpush
 
@@ -128,9 +139,11 @@
             <table
                 id="stats"
                 class="grey darken-4 load"
-                data-href="{{ route('crawlers.sozluk.bot.statistics', $crawler->id) }}"
                 data-method="post"
-                data-callback="__stats">
+                data-timeout="1000"
+                data-href="{{ route('crawlers.sozluk.bot.statistics', $crawler->id) }}"
+                data-callback="__stats"
+                data-error-callback="__connection_failed">
                 <tbody>
                     <tr>
                         <th class="center-align">
@@ -142,13 +155,13 @@
                             <a href="#" data-trigger="status" class="btn-flat waves-effect waves-{{ $crawler->status ? 'green green' : 'red red' }}-text">{{ $crawler->status ? 'AKTİF' : 'PASİF' }}</a>
                         </th>
                         <th class="right-align grey-text">BOYUT</th>
-                        <th class="orange-text" data-name="total-size"></th>
+                        <th class="orange-text" data-elasticsearch data-name="total-size">-</th>
 
                         <th class="right-align grey-text">DÖKÜMAN</th>
-                        <th class="orange-text" data-name="total-docs"></th>
+                        <th class="orange-text" data-elasticsearch data-name="total-docs">-</th>
 
                         <th class="right-align grey-text">PID</th>
-                        <th class="orange-text" data-name="pid"></th>
+                        <th class="orange-text" data-elasticsearch data-name="pid">-</th>
                     </tr>
                 </tbody>
             </table>

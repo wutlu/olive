@@ -17,7 +17,7 @@ return [
         'verification' => 'Doğrulama'
     ],
     'errors' => [
-        'disconnected' => 'İnternete bağlı değilsiniz.',
+        'disconnected' => 'Sunucu bağlantısı sağlanamadı.',
         'time_out' => 'Oturumunuz sona erdi. Lütfen tekrar giriş yapın.',
         'calm' => 'Çok fazla işlem yaptınız. Lütfen bir kaç dakika sonra tekrar deneyin.',
         'notfound' => 'Kaynağa erişilemiyor.',

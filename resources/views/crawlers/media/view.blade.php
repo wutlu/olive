@@ -82,21 +82,25 @@
             $('[data-name=control-date]').attr('data-time', obj.data.crawler.control_date)
             $('[data-name=error-count]').html(obj.data.crawler.error_count + ' hata')
 
-            if (obj.data.elasticsearch.status == 'ok' && obj.data.elasticsearch.data._all.primaries.docs)
+            if (isset(obj.data.elasticsearch.message))
+            {
+                var message = $.parseJSON(obj.data.elasticsearch.message);
+            }
+            else
+            {
+                var message = { 'status': obj.data.elasticsearch.status == 'ok' ? 200 : 404 };
+            }
+
+            if (message.status == '404')
+            {
+                $('[data-elasticsearch]').html('Index Oluşturulmadı!')
+            }
+            else
             {
                 $('[data-name=total-docs-success]').html(number_format(obj.data.count.success.data.count))
                 $('[data-name=total-docs-failed]').html(number_format(obj.data.count.failed.data.count))
                 $('[data-name=total-docs-buffer]').html(number_format(obj.data.count.buffer.data.count))
                 $('[data-name=total-size]').html(humanFileSize(obj.data.elasticsearch.data._all.primaries.store.size_in_bytes))
-            }
-            else
-            {
-                var message = $.parseJSON(obj.data.elasticsearch.message);
-
-                $('[data-name=total-docs-success]').html(message.status == 404 ? 'Index Oluşturulmadı!' : 'Bağlantı Hatası')
-                $('[data-name=total-docs-failed]').html(message.status == 404 ? 'Index Oluşturulmadı!' : 'Bağlantı Hatası')
-                $('[data-name=total-docs-buffer]').html(message.status == 404 ? 'Index Oluşturulmadı!' : 'Bağlantı Hatası')
-                $('[data-name=total-size]').html(message.status == 404 ? 'Index Oluşturulmadı!' : 'Bağlantı Hatası')
             }
 
             window.clearTimeout(statTimer)
@@ -105,6 +109,11 @@
                 vzAjax($('#stats'))
             }, 10000)
         }
+    }
+
+    function __connection_failed(__)
+    {
+        $('[data-elasticsearch]').html('ES Bağlantı Hatası')
     }
 @endpush
 
@@ -126,7 +135,14 @@
                     <time class="timeago d-block" data-name="control-date"></time>
                 </span>
             </div>
-            <table id="stats" class="grey darken-4 load" data-method="post" data-href="{{ route('crawlers.media.bot.statistics', $crawler->id) }}" data-callback="__stats">
+            <table
+                id="stats"
+                class="grey darken-4 load"
+                data-method="post"
+                data-timeout="1000"
+                data-href="{{ route('crawlers.media.bot.statistics', $crawler->id) }}"
+                data-callback="__stats"
+                data-error-callback="__connection_failed">
                 <tbody>
                     <tr>
                         <th class="center-align">
@@ -138,16 +154,16 @@
                             <a href="#" data-trigger="status" class="btn-flat waves-effect waves-{{ $crawler->status ? 'green green' : 'red red' }}-text">{{ $crawler->status ? 'AKTİF' : 'PASİF' }}</a>
                         </th>
                         <th class="right-align grey-text">BOYUT</th>
-                        <th class="orange-text" data-name="total-size"></th>
+                        <th class="orange-text" data-elasticsearch data-name="total-size">-</th>
 
                         <th class="right-align grey-text">KUYRUK</th>
-                        <th class="orange-text" data-name="total-docs-buffer"></th>
+                        <th class="orange-text" data-elasticsearch data-name="total-docs-buffer">-</th>
 
                         <th class="right-align grey-text">BAŞARILI</th>
-                        <th class="orange-text" data-name="total-docs-success"></th>
+                        <th class="orange-text" data-elasticsearch data-name="total-docs-success">-</th>
 
                         <th class="right-align grey-text">BAŞARISIZ</th>
-                        <th class="orange-text" data-name="total-docs-failed"></th>
+                        <th class="orange-text" data-elasticsearch data-name="total-docs-failed">-</th>
                     </tr>
                 </tbody>
             </table>

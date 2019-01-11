@@ -10,6 +10,18 @@ $(function() {
     timeAgo()
 })
 
+function isset(accessor)
+{
+    try
+    {
+      return typeof accessor() !== 'undefined';
+    }
+    catch (e)
+    {
+      return false;
+    }
+}
+
 /* --- number format --- */
 
 function number_format(number)
@@ -670,24 +682,33 @@ function vzAjax(__)
                     title = jqXHR.reason;
                 }
 
-                window.clearTimeout(error_timer);
+                var err_callback = __.data('error-callback');
 
-                error_timer = setTimeout(function() {
-                    var mdl = modal({
-                            'id': 'err',
-                            'body': title,
-                            'size': 'modal-small',
-                            'title': keywords.info,
-                            'options': {},
-                            'footer': [
-                               $('<a />', {
-                                   'href': '#',
-                                   'class': 'modal-close waves-effect btn-flat cyan-text',
-                                   'html': buttons.ok
-                               })
-                            ]
-                        })
-                }, jqXHR.status == 0 ? 2000 : 500)
+                if (err_callback)
+                {
+                    eval(err_callback)(__);
+                }
+                else
+                {
+                    window.clearTimeout(error_timer);
+
+                    error_timer = setTimeout(function() {
+                        var mdl = modal({
+                                'id': 'err',
+                                'body': title,
+                                'size': 'modal-small',
+                                'title': keywords.info,
+                                'options': {},
+                                'footer': [
+                                   $('<a />', {
+                                       'href': '#',
+                                       'class': 'modal-close waves-effect btn-flat cyan-text',
+                                       'html': buttons.ok
+                                   })
+                                ]
+                            })
+                    }, jqXHR.status == 0 ? 2000 : 500)
+                }
             }
             else if (jqXHR.status == 401)
             {
@@ -893,7 +914,8 @@ function vzAjax(__)
 
             __result(__)
             timeAgo()
-        }
+        },
+        timeout: __.data('timeout') ? __.data('timeout') : 60000
     })
 }
 

@@ -49,6 +49,11 @@
             $('#home-loader').hide()
         }
     }
+
+    function __connection_failed(__)
+    {
+        $('[data-elasticsearch]').html('ES Bağlantı Hatası')
+    }
 @endpush
 
 @section('wildcard')
@@ -59,14 +64,21 @@
             </a>
         </div>
         <div class="container">
-            <table id="stats" class="load" data-method="post" data-href="{{ route('crawlers.sozluk.bot.statistics.all') }}" data-callback="__stats">
+            <table
+                id="stats"
+                class="load"
+                data-method="post"
+                data-timeout="1000",
+                data-href="{{ route('crawlers.sozluk.bot.statistics.all') }}"
+                data-callback="__stats"
+                data-error-callback="__connection_failed">
                 <tbody>
                     <tr>
                         <th class="right-align grey-text">BOYUT</th>
-                        <th class="cyan-text" data-name="total-size">-</th>
+                        <th class="cyan-text" data-elasticsearch data-name="total-size">-</th>
 
                         <th class="right-align grey-text">DÖKÜMAN</th>
-                        <th class="cyan-text" data-name="total-docs">-</th>
+                        <th class="cyan-text" data-elasticsearch data-name="total-docs">-</th>
                     </tr>
                 </tbody>
             </table>
@@ -255,15 +267,14 @@
         {
             $('[data-name=bots-count]').html(obj.data.count.active + ' / ' + (obj.data.count.active + obj.data.count.disabled))
 
-            if (obj.data.elasticsearch.status == 'ok' && obj.data.elasticsearch.data._all.primaries.docs)
+            if (obj.data.elasticsearch.data._all.primaries.docs)
             {
                 $('[data-name=total-docs]').html(number_format(obj.data.elasticsearch.data._all.primaries.docs.count))
                 $('[data-name=total-size]').html(humanFileSize(obj.data.elasticsearch.data._all.primaries.store.size_in_bytes))
             }
             else
             {
-                $('[data-name=total-docs]').html('Bağlantı Hatası')
-                $('[data-name=total-size]').html('Bağlantı Hatası')
+                $('[data-elasticsearch]').html('Index Oluşturulmadı!')
             }
 
             window.clearTimeout(statTimer)

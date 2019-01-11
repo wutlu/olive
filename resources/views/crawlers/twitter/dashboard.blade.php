@@ -16,24 +16,48 @@
 ])
 
 @push('local.scripts')
-	var statisticsTimer;
+    var statisticsTimer;
 
-	function __statistics(__, obj)
-	{
-		if (obj.status == 'ok')
-		{
-            $('[data-name=tweet-count]').html(obj.data.twitter.tweets.status == 'ok' ? number_format(obj.data.twitter.tweets.data._all.total.docs.count) : '-')
-            $('[data-name=trend-count]').html(obj.data.twitter.trends.status == 'ok' ? number_format(obj.data.twitter.trends.data._all.total.docs.count) : '-')
-            $('[data-name=tweet-size]').html(obj.data.twitter.size.tweet.status == 'ok' ? humanFileSize(obj.data.twitter.size.tweet.data._all.total.store.size_in_bytes) : '-')
-			$('[data-name=trend-size]').html(obj.data.twitter.size.trend.status == 'ok' ? humanFileSize(obj.data.twitter.size.trend.data._all.total.store.size_in_bytes) : '-')
+    function __statistics(__, obj)
+    {
+        if (obj.status == 'ok')
+        {
+            if (obj.data.twitter.tweets.data._all.primaries.docs)
+            {
+                $('[data-name=tweet-count]').html(number_format(obj.data.twitter.tweets.data._all.total.docs.count))
+                $('[data-name=tweet-size]').html(humanFileSize(obj.data.twitter.size.tweet.data._all.total.store.size_in_bytes))
+            }
+            else
+            {
+                $('[data-elasticsearch=tweets]').html('Index Oluşturulmadı!')
+            }
 
-			window.clearTimeout(statisticsTimer)
+            if (isset(obj.data.twitter.trends.message))
+            {
+                var message = $.parseJSON(obj.data.twitter.trends.message);
+            }
+            else
+            {
+                var message = { 'status': obj.data.twitter.trends.status == 'ok' ? 200 : 404 };
+            }
 
-			statisticsTimer = window.setTimeout(function() {
-				vzAjax($('[data-callback=__statistics]'))
-			}, 10000)
-		}
-	}
+            if (message.status == '404')
+            {
+                $('[data-elasticsearch=trends]').html('Index Oluşturulmadı!')
+            }
+            else
+            {
+                $('[data-name=trend-count]').html(number_format(obj.data.twitter.trends.data._all.total.docs.count))
+                $('[data-name=trend-size]').html(humanFileSize(obj.data.twitter.size.trend.data._all.total.store.size_in_bytes))
+            }
+
+            window.clearTimeout(statisticsTimer)
+
+            statisticsTimer = window.setTimeout(function() {
+                vzAjax($('[data-callback=__statistics]'))
+            }, 10000)
+        }
+    }
 
     var collection_timer;
 
@@ -377,6 +401,11 @@
             }
         }
     }
+
+    function __connection_failed(__)
+    {
+        $('[data-elasticsearch]').html('ES Bağlantı Hatası')
+    }
 @endpush
 
 @section('content')
@@ -401,22 +430,28 @@
         </div>
         <div id="stats">
             <div class="card-content grey-text red lighten-5">
-                <div class="item-group load" data-href="{{ route('admin.twitter.statistics') }}" data-method="post" data-callback="__statistics">
+                <div
+                    class="item-group load"
+                    data-href="{{ route('admin.twitter.statistics') }}"
+                    data-timeout="1000"
+                    data-method="post"
+                    data-callback="__statistics"
+                    data-error-callback="__connection_failed">
                     <div class="item">
                         <small class="d-block grey-text">Tweet Sayısı</small>
-                        <p data-name="tweet-count">-</p>
+                        <p data-elasticsearch="tweets" data-name="tweet-count">-</p>
                     </div>
                     <div class="item">
                         <small class="d-block grey-text">Kullanılan Alan</small>
-                        <p data-name="tweet-size">-</p>
+                        <p data-elasticsearch="tweets" data-name="tweet-size">-</p>
                     </div>
                     <div class="item">
                         <small class="d-block grey-text">Alınan Trend Başlık</small>
-                        <p data-name="trend-count">-</p>
+                        <p data-elasticsearch="trends" data-name="trend-count">-</p>
                     </div>
                     <div class="item">
                         <small class="d-block grey-text">Kullanılan Alan</small>
-                        <p data-name="trend-size">-</p>
+                        <p data-elasticsearch="trends" data-name="trend-size">-</p>
                     </div>
                 </div>
             </div>
@@ -613,5 +648,5 @@
             @endif
         </div>
     </div>
-	@include('crawlers.twitter._menu', [ 'active' => 'dashboard' ])
+    @include('crawlers.twitter._menu', [ 'active' => 'dashboard' ])
 @endsection
