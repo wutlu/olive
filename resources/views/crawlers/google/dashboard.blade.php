@@ -25,11 +25,11 @@
             <div class="item-group">
                 <div class="item">
                     <small class="d-block grey-text">Arama Sayısı</small>
-                    <p data-name="search-count">-</p>
+                    <p data-elasticsearch data-name="search-count">-</p>
                 </div>
                 <div class="item">
                     <small class="d-block grey-text">Kapladığı Alan</small>
-                    <p data-name="search-size">-</p>
+                    <p data-elasticsearch data-name="search-size">-</p>
                 </div>
             </div>
         </div>
@@ -117,6 +117,11 @@
             }, 10000)
         }
     }
+
+    function __connection_failed(__)
+    {
+        $('[data-elasticsearch]').html('ES Bağlantı Hatası')
+    }
 @endpush
 
 @push('local.styles')
@@ -140,7 +145,9 @@
             class="collection load"
             data-method="post"
             data-href="{{ route('admin.google.index.status') }}"
-            data-callback="__status">
+            data-callback="__status"
+            data-timeout="1000"
+            data-error-callback="__connection_failed">
             <label class="collection-item waves-effect d-block">
                 <input
                     name="value"
@@ -165,7 +172,7 @@
                     data-href="{{ route('admin.google.index.create') }}"
                     data-method="post"
                     data-trigger="search-index"
-                    data-callback="__index_create">Indeksleri Oluştur</a>
+                    data-callback="__index_create">Indexleri Oluştur</a>
             @endif
         </div>
     </div>
@@ -176,7 +183,7 @@
     {
         if (obj.status == 'err')
         {
-            M.toast({ html: 'Önce indeksleri oluşturmanız gerekiyor.', classes: 'red' })
+            M.toast({ html: 'Önce indexleri oluşturmanız gerekiyor.', classes: 'red' })
 
             __.prop('checked', false)
         }
@@ -196,18 +203,26 @@
     {
         if (obj.status == 'ok')
         {
-            var vid = obj.elasticsearch.data.indices['olive__google-search'].total;
+            var indice = obj.elasticsearch.data.indices['olive__google-search'];
 
-            $('[data-name=search-count]').html(number_format(vid.docs.count))
-            $('[data-name=search-size]').html(humanFileSize(vid.store.size_in_bytes))
+            if (indice)
+            {
+                $('[data-name=search-count]').html(number_format(indice.total.docs.count))
+                $('[data-name=search-size]').html(humanFileSize(indice.total.store.size_in_bytes))
 
-            $('[data-name=alert]').addClass('hide')
-
-            $('[data-trigger=search-index]').remove()
+                $('[data-name=alert]').addClass('hide')
+                $('[data-trigger=search-index]').remove()
+            }
+            else
+            {
+                $('[data-elasticsearch]').html('Indexe ulaşılamıyor!')
+                $('[data-name=alert]').html('İlgili index daha önce oluşturulmuştu. Şu an bu indexlere ulaşılamıyor.').removeClass('hide')
+            }
         }
         else if (obj.status == 'err')
         {
-            $('[data-name=alert]').html('Sistemin çalışması için tüm indekslerin oluşturulması gerekiyor.').removeClass('hide')
+            $('[data-elasticsearch]').html('Index isteği hiç gönderilmedi.')
+            $('[data-name=alert]').html('Tüm indexleri oluşturmadan sistemi çalıştıramazsınız. Lütfen sağ menüden "Indexleri Oluştur" butonuna basın ve bekleyin.').removeClass('hide')
         }
 
         window.clearTimeout(statusTimer)

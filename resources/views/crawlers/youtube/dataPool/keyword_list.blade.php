@@ -63,7 +63,8 @@
                     <p data-name="reason"></p>
                 </span>
                 <span class="d-flex flex-column align-items-end">
-                    <span data-name="follower" class="badge"></span>
+                    <span data-name="follower" class="grey-text"></span>
+                    <small data-name="hit" class="grey-text"></small>
                     <time data-name="created-at" class="timeago grey-text"></time>
                 </span>
             </a>
@@ -107,6 +108,7 @@
                             .attr('data-name', o.keyword)
 
                         item.find('[data-name=created-at]').attr('data-time', o.created_at)
+                        item.find('[data-name=hit]').html(o.hit + ' kontrol')
 
                         item.find('[data-name=keyword]').html(o.keyword)
                         item.find('[data-name=follower]').html(o.organisation.name)

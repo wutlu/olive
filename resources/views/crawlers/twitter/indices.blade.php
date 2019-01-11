@@ -133,7 +133,7 @@
                     class="collection-item waves-effect d-block json"
                     data-href="{{ route('admin.twitter.index.create') }}"
                     data-method="post"
-                    data-callback="__index_create">Trend indeksini Oluştur</a>
+                    data-callback="__index_create">Trend Indexini Oluştur</a>
                 <div
                     class="load"
                     data-method="post"
@@ -150,7 +150,7 @@
                         {
                             $('[data-callback=__index_create]').remove()
 
-                            M.toast({ html: 'Trend indeksi oluşturuldu.', classes: 'green darken-2' })
+                            M.toast({ html: 'Trend indexi oluşturuldu.', classes: 'green darken-2' })
                         }
                         else
                         {

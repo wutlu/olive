@@ -91,11 +91,11 @@
         <li>
             <a
                 href="#"
-                data-message="Oluşturulmamış indekslerin oluşturulması için istek gönderilecek?"
+                data-message="Oluşturulmamış indexlerin oluşturulması için istek gönderilecek?"
                 class="waves-effect"
                 data-trigger="trigger"
                 data-href="{{ route('crawlers.sozluk.bot.index.all') }}"
-                data-callback="__create_all_index">Eksik Indeksleri Oluştur</a>
+                data-callback="__create_all_index">Eksik Indexleri Oluştur</a>
         </li>
         <li>
             <a

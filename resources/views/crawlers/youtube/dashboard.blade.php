@@ -25,19 +25,19 @@
             <div class="item-group">
                 <div class="item">
                     <small class="d-block grey-text">Video Sayısı</small>
-                    <p data-name="video-count">-</p>
+                    <p data-elasticsearch="video" data-name="video-count">-</p>
                 </div>
                 <div class="item">
                     <small class="d-block grey-text">Kapladığı Alan</small>
-                    <p data-name="video-size">-</p>
+                    <p data-elasticsearch="video" data-name="video-size">-</p>
                 </div>
                 <div class="item">
                     <small class="d-block grey-text">Yorum Sayısı</small>
-                    <p data-name="comment-count">-</p>
+                    <p data-elasticsearch="comment" data-name="comment-count">-</p>
                 </div>
                 <div class="item">
                     <small class="d-block grey-text">Kapladığı Alan</small>
-                    <p data-name="comment-size">-</p>
+                    <p data-elasticsearch="comment" data-name="comment-size">-</p>
                 </div>
             </div>
         </div>
@@ -125,6 +125,11 @@
             }, 10000)
         }
     }
+
+    function __connection_failed(__)
+    {
+        $('[data-elasticsearch]').html('ES Bağlantı Hatası')
+    }
 @endpush
 
 @push('local.styles')
@@ -148,7 +153,9 @@
             class="collection load"
             data-href="{{ route('admin.youtube.index.status') }}"
             data-callback="__status"
-            data-method="post">
+            data-method="post"
+            data-timeout="1000"
+            data-error-callback="__connection_failed">
             <label class="collection-item waves-effect d-block">
                 <input
                     name="value"
@@ -173,7 +180,7 @@
                     data-href="{{ route('admin.youtube.index.create') }}"
                     data-method="post"
                     data-trigger="video-index"
-                    data-callback="__index_create">Indeksleri Oluştur</a>
+                    data-callback="__index_create">Indexleri Oluştur</a>
             @endif
         </div>
     </div>
@@ -185,7 +192,7 @@
     {
         if (obj.status == 'err')
         {
-            M.toast({ html: 'Önce indeksleri oluşturmanız gerekiyor.', classes: 'red' })
+            M.toast({ html: 'Önce indexleri oluşturmanız gerekiyor.', classes: 'red' })
 
             __.prop('checked', false)
         }
@@ -205,22 +212,40 @@
     {
         if (obj.status == 'ok')
         {
-            var vid = obj.elasticsearch.data.indices['olive__youtube-videos'].total;
-            var com = obj.elasticsearch.data.indices['olive__youtube-comments'].total;
-
-            $('[data-name=video-count]').html(number_format(vid.docs.count))
-            $('[data-name=video-size]').html(humanFileSize(vid.store.size_in_bytes))
-            $('[data-name=comment-count]').html(number_format(com.docs.count))
-            $('[data-name=comment-size]').html(humanFileSize(com.store.size_in_bytes))
-
             $('[data-name=alert]').addClass('hide')
 
-            $('[data-trigger=video-index]').remove()
-            $('[data-trigger=comment-index]').remove()
+            var indice_vid = obj.elasticsearch.data.indices['olive__youtube-videos'];
+            var indice_com = obj.elasticsearch.data.indices['olive__youtube-comments'];
+
+            if (indice_vid)
+            {
+                $('[data-name=video-count]').html(number_format(indice_vid.total.docs.count))
+                $('[data-name=video-size]').html(humanFileSize(indice_vid.total.store.size_in_bytes))
+
+                $('[data-trigger=video-index]').remove()
+            }
+            else
+            {
+                $('[data-elasticsearch=video]').html('Indexe ulaşılamıyor!')
+            }
+
+            if (indice_com)
+            {
+                $('[data-name=comment-count]').html(number_format(indice_com.total.docs.count))
+                $('[data-name=comment-size]').html(humanFileSize(indice_com.total.store.size_in_bytes))
+
+                $('[data-trigger=comment-index]').remove()
+            }
+            else
+            {
+                $('[data-elasticsearch=comment]').html('Indexe ulaşılamıyor!')
+                $('[data-name=alert]').html('Ulaşılamayan index(ler) daha önce oluşturulmuştu. Şu an bu index(e|lere) ulaşılamıyor.').removeClass('hide')
+            }
         }
         else if (obj.status == 'err')
         {
-            $('[data-name=alert]').html('Sistemin çalışması için tüm indekslerin oluşturulması gerekiyor.').removeClass('hide')
+            $('[data-elasticsearch]').html('Index isteği hiç gönderilmedi.')
+            $('[data-name=alert]').html('Tüm indexleri oluşturmadan sistemi çalıştıramazsınız. Lütfen sağ menüden "Indexleri Oluştur" butonuna basın ve bekleyin.').removeClass('hide')
         }
 
         window.clearTimeout(statusTimer)

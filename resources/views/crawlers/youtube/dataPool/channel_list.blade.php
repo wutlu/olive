@@ -65,8 +65,9 @@
                     <p data-name="reason"></p>
                 </span>
                 <span class="d-flex flex-column align-items-end">
-                    <span data-name="follower" class="badge"></span>
+                    <span data-name="follower" class="grey-text"></span>
                     <time data-name="created-at" class="timeago grey-text"></time>
+                    <small data-name="hit" class="grey-text"></small>
                 </span>
             </a>
         </div>
@@ -107,6 +108,8 @@
                             .addClass('_tmp d-flex')
                             .attr('data-id', o.id)
                             .attr('data-name', 'channel-' + o.channel_id)
+
+                        item.find('[data-name=hit]').html(o.hit + ' kontrol')
 
                         item.find('[data-name=image]').attr('src', o.channel_image)
                         item.find('[data-name=created-at]').attr('data-time', o.created_at)

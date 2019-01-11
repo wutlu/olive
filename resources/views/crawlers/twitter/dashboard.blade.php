@@ -603,7 +603,7 @@
             @if ($options['twitter.index.trends'] == 'off')
             <div class="collection-item d-block orange-text">
                 <i class="material-icons d-table">warning</i>
-                Trend Indeksinin oluşturulması bekleniyor.
+                Trend indexinin oluşturulması bekleniyor.
             </div>
             @else
             <label class="collection-item waves-effect d-block">
@@ -643,7 +643,7 @@
             @else
             <div class="collection-item d-block orange-text">
                 <i class="material-icons d-table">warning</i>
-                Tweet indekslerinin oluşturulması bekleniyor.
+                Tweet indexlerinin oluşturulması bekleniyor.
             </div>
             @endif
         </div>

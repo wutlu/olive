@@ -26,7 +26,7 @@ class StatusRequest extends FormRequest
     public function messages()
     {
         return [
-            'es_index' => 'Index\'in oluşmasını bekleyin.',
+            'es_index' => 'Indexin oluşmasını bekleyin.',
             'test' => 'Çalıştırmadan önce test işlemini yapmanız gerekiyor.',
         ];
     }

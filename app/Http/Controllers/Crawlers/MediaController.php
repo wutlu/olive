@@ -131,7 +131,7 @@ class MediaController extends Controller
 
     # ######################################## [ ADMIN ] ######################################## #
     # 
-    # tüm eksik indeksleri oluştur.
+    # tüm eksik indexleri oluştur.
     # 
     public static function allIndex()
     {

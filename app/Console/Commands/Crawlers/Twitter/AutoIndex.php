@@ -23,7 +23,7 @@ class AutoIndex extends Command
      *
      * @var string
      */
-    protected $description = 'Tweet indekslerini Tweetler alınmadan oluşturur.';
+    protected $description = 'Tweet indexlerini Tweetler alınmadan oluşturur.';
 
     /**
      * Create a new command instance.

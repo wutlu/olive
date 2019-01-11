@@ -36,7 +36,7 @@
         @endforeach
     @endif
     @if (count($carousels))
-        <div class="carousel carousel-slider center cyan darken-4 z-depth-1">
+        <div class="carousel carousel-slider grey darken-4 center z-depth-1">
             @php
             $i = 0;
             @endphp

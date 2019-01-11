@@ -101,10 +101,10 @@
             <a
                 href="#"
                 class="waves-effect"
-                data-message="Oluşturulmamış indekslerin oluşturulması için istek gönderilecek?"
+                data-message="Oluşturulmamış indexlerin oluşturulması için istek gönderilecek?"
                 data-trigger="trigger"
                 data-href="{{ route('crawlers.media.bot.index.all') }}"
-                data-callback="__create_all_index">Eksik Indeksleri Oluştur</a>
+                data-callback="__create_all_index">Eksik Indexleri Oluştur</a>
         </li>
         <li>
             <a
@@ -282,7 +282,7 @@
             $('[data-name=total-docs-success]').html(number_format(obj.data.count.success.data.count))
             $('[data-name=total-docs-failed]').html(number_format(obj.data.count.failed.data.count))
             $('[data-name=total-docs-buffer]').html(number_format(obj.data.count.buffer.data.count))
-            $('[data-name=total-size]').html(humanFileSize(obj.data.elasticsearch.data._all.primaries.length ? obj.data.elasticsearch.data._all.primaries.store.size_in_bytes : 0))
+            $('[data-name=total-size]').html(humanFileSize(obj.data.elasticsearch.data._all.primaries.store.size_in_bytes))
 
             window.clearTimeout(statTimer)
 

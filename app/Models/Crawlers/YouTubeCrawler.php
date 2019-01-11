@@ -43,15 +43,6 @@ class YouTubeCrawler
                                     'type' => 'date',
                                     'format' => 'YYYY-MM-dd HH:mm:ss'
                                 ],
-                                'counts' => [
-                                    'properties' => [
-                                        'view' => [ 'type' => 'long' ],
-                                        'like' => [ 'type' => 'integer' ],
-                                        'dislike' => [ 'type' => 'integer' ],
-                                        'favorite' => [ 'type' => 'integer' ],
-                                        'comment' => [ 'type' => 'integer' ]
-                                    ]
-                                ],
                                 'channel' => [
                                     'properties' => [
                                         'id' => [ 'type' => 'keyword' ],
