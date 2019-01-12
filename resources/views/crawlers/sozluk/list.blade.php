@@ -267,15 +267,12 @@
         {
             $('[data-name=bots-count]').html(obj.data.count.active + ' / ' + (obj.data.count.active + obj.data.count.disabled))
 
-            if (obj.data.elasticsearch.data._all.primaries.docs)
-            {
-                $('[data-name=total-docs]').html(number_format(obj.data.elasticsearch.data._all.primaries.docs.count))
-                $('[data-name=total-size]').html(humanFileSize(obj.data.elasticsearch.data._all.primaries.store.size_in_bytes))
-            }
-            else
-            {
-                $('[data-elasticsearch]').html('Index Oluşturulmadı!')
-            }
+            var es_catch_val = 'ES {error}';
+
+            try { $('[data-name=total-docs]').html(number_format(obj.data.elasticsearch.data._all.primaries.docs.count)) }
+            catch (err) { $('[data-name=total-docs]').html(es_catch_val) }
+            try { $('[data-name=total-size]').html(humanFileSize(obj.data.elasticsearch.data._all.primaries.store.size_in_bytes)) }
+            catch (err) { $('[data-name=total-size]').html(es_catch_val) }
 
             window.clearTimeout(statTimer)
 

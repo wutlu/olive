@@ -82,6 +82,7 @@
                         <li>- Detaylama ile görünenden fazla bilgi.</li>
                         <li>- Anlamlı listeler elde etme.</li>
                         <li>- Duygu analizleri.</li>
+                        <li>- Gerçek zamanlı veri apileri.</li>
                     </ul>
                 </div>
                 <div class="item white-text">

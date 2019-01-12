@@ -32,11 +32,11 @@ return [
      * E-posta Bildirimi Türleri
      */
     'notifications' => [
-        'important' => 'Önemli Olay Bildirimleri',
-        'login' => 'Giriş Bildirimleri',
-        'forum' => 'Forum Bildirimleri',
-        'badge' => 'Etiket Bildirimleri',
-        'newsletter' => 'E-posta Bülteni',
+        'important' => 'Önemli olay bildirimleri.',
+        'login' => 'Giriş bildirimleri.',
+        'forum' => 'Forum takip ve uyarı bildirimleri.',
+        'badge' => 'Yeni kazanılan etiket bildirimleri.',
+        'newsletter' => 'E-posta bülteni.',
     ],
 
     /**
@@ -45,11 +45,14 @@ return [
     'options' => [
         'email_alerts.server' => 'date_format:Y-m-d H:i:s',
         'email_alerts.log' => 'date_format:Y-m-d H:i:s',
+
         'youtube.status' => 'string|in:on,off',
-        'youtube.index.video' => 'string|in:on,off',
-        'youtube.index.comment' => 'string|in:on,off',
+        'youtube.index.auto' => 'string|in:on,off',
+        'youtube.index.status' => 'string|in:on,off',
+
         'google.index.search' => 'string|in:on,off',
         'google.status' => 'string|in:on,off',
+
         'twitter.index.auto' => 'string|in:on,off',
         'twitter.trend.status' => 'string|in:on,off',
         'twitter.status' => 'string|in:on,off',
@@ -59,7 +62,8 @@ return [
      * Uygulama Modülleri
      */
     'modules' => [
-        'youtube' => 'YouTube',
+        'youtube_video' => 'YouTube Video',
+        'youtube_comment' => 'YouTube Yorum',
         'twitter' => 'Twitter',
         'sozluk' => 'Sözlük',
         'news' => 'Haber',

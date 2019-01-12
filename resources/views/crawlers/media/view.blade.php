@@ -82,7 +82,7 @@
             $('[data-name=control-date]').attr('data-time', obj.data.crawler.control_date)
             $('[data-name=error-count]').html(obj.data.crawler.error_count + ' hata')
 
-            if (isset(obj.data.elasticsearch.message))
+            if (obj.data.elasticsearch.message)
             {
                 var message = $.parseJSON(obj.data.elasticsearch.message);
             }

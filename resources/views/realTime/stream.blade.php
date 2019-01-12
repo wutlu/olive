@@ -636,7 +636,8 @@
             mdl.find('.modal-title').html('Grup Oluştur')
             mdl.find('form#keyword-group-form').data('method', 'put')
 
-            mdl.find('[name=module_youtube]').prop('checked', false)
+            mdl.find('[name=module_youtube_video]').prop('checked', false)
+            mdl.find('[name=module_youtube_comment]').prop('checked', false)
             mdl.find('[name=module_twitter]').prop('checked', false)
             mdl.find('[name=module_sozluk]').prop('checked', false)
             mdl.find('[name=module_news]').prop('checked', false)
@@ -661,7 +662,8 @@
 
                 M.textareaAutoResize($('textarea[name=keywords]'))
 
-                mdl.find('[name=module_youtube]').prop('checked', obj.data.module_youtube)
+                mdl.find('[name=module_youtube_video]').prop('checked', obj.data.module_youtube_video)
+                mdl.find('[name=module_youtube_comment]').prop('checked', obj.data.module_youtube_comment)
                 mdl.find('[name=module_twitter]').prop('checked', obj.data.module_twitter)
                 mdl.find('[name=module_sozluk]').prop('checked', obj.data.module_sozluk)
                 mdl.find('[name=module_news]').prop('checked', obj.data.module_news)

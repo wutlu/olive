@@ -63,7 +63,7 @@ class CommentTakerJob implements ShouldQueue
                             {
                                 //echo $item->data['text'].PHP_EOL;
 
-                                $chunk['body'][] = $this->index($item->data['id']);;
+                                $chunk['body'][] = $this->index($item->data['id'], date('Y.m', strtotime($item->data['created_at'])));
                                 $chunk['body'][] = $item->data;
                             }
 
@@ -75,7 +75,7 @@ class CommentTakerJob implements ShouldQueue
 
                                     if (DateUtility::checkDate($item->data['created_at']))
                                     {
-                                        $chunk['body'][] = $this->index($item->data['id']);;
+                                        $chunk['body'][] = $this->index($item->data['id'], date('Y.m', strtotime($item->data['created_at'])));
                                         $chunk['body'][] = $item->data;
                                     }
 
@@ -145,11 +145,11 @@ class CommentTakerJob implements ShouldQueue
      *
      * @return array;
      */
-    public static function index(string $id)
+    public static function index(string $id, string $date)
     {   
         return [
             'create' => [
-                '_index' => Indices::name([ 'youtube', 'comments' ]),
+                '_index' => Indices::name([ 'youtube', implode('-', [ 'comments', $date ]) ]),
                 '_type' => 'comment',
                 '_id' => $id
             ]

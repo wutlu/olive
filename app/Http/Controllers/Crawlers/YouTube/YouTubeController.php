@@ -6,18 +6,19 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 
-use App\Http\Requests\IdRequest;
-use App\Http\Requests\SearchRequest;
 use App\Http\Requests\SetRequest;
 
-use App\Jobs\Elasticsearch\CreateYouTubeIndexJob;
+use Carbon\Carbon;
 
 use App\Elasticsearch\Indices;
 
-use App\Models\Option;
 use App\Models\Log;
+use App\Models\Option;
 
-use Carbon\Carbon;
+use GuzzleHttp\Client;
+use GuzzleHttp\HandlerStack;
+
+use App\Jobs\Elasticsearch\CreateYouTubeIndexJob;
 
 class YouTubeController extends Controller
 {
@@ -27,83 +28,60 @@ class YouTubeController extends Controller
     # 
     public static function dashboard()
     {
-    	$rows = Option::whereIn('key', [
-    		'youtube.status',
-    		'youtube.index.video',
-    		'youtube.index.comment'
-    	])->get();
+        $rows = Option::whereIn('key', [
+            'youtube.status',
+            'youtube.index.videos',
+            'youtube.index.comments'
+        ])->get();
 
-    	$options = [];
+        $options = [];
 
-    	foreach ($rows as $row)
-    	{
-    		$options[$row->key] = $row->value;
-    	}
+        foreach ($rows as $row)
+        {
+            $options[$row->key] = $row->value;
+        }
 
         return view('crawlers.youtube.dashboard', compact('options'));
     }
 
     # ######################################## [ ADMIN ] ######################################## #
     # 
-    # admin create index
+    # index listesi view.
     # 
-    public static function indexCreate()
+    public static function indices()
     {
-        CreateYouTubeIndexJob::dispatch('video')->onQueue('elasticsearch');
-        CreateYouTubeIndexJob::dispatch('comment')->onQueue('elasticsearch');
+        $rows = Option::whereIn('key', [
+            'youtube.index.auto',
+            'youtube.index.videos'
+        ])->get();
 
-        return [
-            'status' => 'ok'
-        ];
-    }
+        $options = [];
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # admin index status
-    # 
-    public static function indexStatus()
-    {
-        $count = Option::whereIn('key', [
-            'youtube.index.video',
-            'youtube.index.comment'
-        ])->where('value', 'on')->count();
-
-    	return $count == 2 ?
-        [
-            'status' => 'ok',
-            'elasticsearch' => Indices::stats([ 'youtube', '*' ])
-        ]
-        :
-        [
-            'status' => 'err'
-        ];
-    }
-
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # status set
-    # 
-    public static function statusSet(SetRequest $request)
-    {
-        $count = Option::whereIn('key', [
-            'youtube.index.video',
-            'youtube.index.comment'
-        ])->where('value', 'on')->count();
-
-        if ($count == 2)
+        foreach ($rows as $row)
         {
-            Option::updateOrCreate(
-                [
-                    'key' => $request->key
-                ],
-                [
-                    'value' => $request->value
-                ]
-            );
+            $options[$row->key] = $row->value;
         }
 
+        return view('crawlers.youtube.indices', compact('options'));
+    }
+
+    # ######################################## [ ADMIN ] ######################################## #
+    # 
+    # index listesi json çıktısı.
+    # 
+    public static function indicesJson()
+    {
+        $client = new Client([
+            'base_uri' => array_random(config('database.connections.elasticsearch.hosts')),
+            'handler' => HandlerStack::create()
+        ]);
+
+        $source = $client->get('/_cat/indices/olive__youtube*?format=json&s=index:desc')->getBody();
+        $source = json_decode($source);
+
         return [
-            'status' => $count == 2 ? 'ok' : 'err'
+            'status' => 'ok',
+            'hits' => $source
         ];
     }
 
@@ -123,6 +101,107 @@ class YouTubeController extends Controller
         return [
             'status' => 'ok',
             'data' => $logs
+        ];
+    }
+
+    # ######################################## [ ADMIN ] ######################################## #
+    # 
+    # istatistikler
+    # 
+    public static function statistics()
+    {
+        return [
+            'status' => 'ok',
+            'data' => [
+                'youtube' => [
+                    'comments' => Indices::stats([ 'youtube', 'comments', '*' ]),
+                    'videos' => Indices::stats([ 'youtube', 'videos' ])
+                ]
+            ]
+        ];
+    }
+
+    # ######################################## [ ADMIN ] ######################################## #
+    # 
+    # ayar güncelle
+    # 
+    public static function set(SetRequest $request)
+    {
+        $option = Option::where('key', $request->key)->first();
+        
+        $error = true;
+
+        if (@$option)
+        {
+            if ($request->key == 'youtube.index.comments')
+            {
+                if ($option->value == date('Y.m', strtotime('+ 1 month')))
+                {
+                    $error = false;
+                }
+            }
+            else if ($request->key == 'youtube.index.videos')
+            {
+                if ($option->value == 'on')
+                {
+                    $error = false;
+                }
+            }
+            else
+            {
+                $error = false;
+            }
+        }
+
+        if ($error)
+        {
+            return response(
+                [
+                    'status' => 'err',
+                    'message' => 'The given data was invalid.',
+                    'errors' => [
+                        'token' => [ 'Önce index oluşturmanız gerekiyor.' ]
+                    ]
+                ],
+                422
+            );
+        }
+
+        Option::updateOrCreate(
+            [
+                'key' => $request->key
+            ],
+            [
+                'value' => $request->value
+            ]
+        );
+
+        return [
+            'status' => 'ok'
+        ];
+    }
+
+    # ######################################## [ ADMIN ] ######################################## #
+    # 
+    # admin create index
+    # 
+    public static function indexCreate()
+    {
+        CreateYouTubeIndexJob::dispatch('videos')->onQueue('elasticsearch');
+
+        return [
+            'status' => 'ok'
+        ];
+    }
+
+    # ######################################## [ ADMIN ] ######################################## #
+    # 
+    # youtube index durumu.
+    # 
+    public static function indexStatus()
+    {
+        return [
+            'videos' => Indices::stats([ 'youtube', 'videos' ])
         ];
     }
 }

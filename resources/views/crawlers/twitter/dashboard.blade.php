@@ -25,14 +25,14 @@
             if (obj.data.twitter.tweets.data._all.primaries.docs)
             {
                 $('[data-name=tweet-count]').html(number_format(obj.data.twitter.tweets.data._all.primaries.docs.count))
-                $('[data-name=tweet-size]').html(humanFileSize(obj.data.twitter.size.tweet.data._all.total.store.size_in_bytes))
+                $('[data-name=tweet-size]').html(humanFileSize(obj.data.twitter.tweets.data._all.total.store.size_in_bytes))
             }
             else
             {
                 $('[data-elasticsearch=tweets]').html('Index Oluşturulmadı!')
             }
 
-            if (isset(obj.data.twitter.trends.message))
+            if (obj.data.twitter.trends.message)
             {
                 var message = $.parseJSON(obj.data.twitter.trends.message);
             }
@@ -48,7 +48,7 @@
             else
             {
                 $('[data-name=trend-count]').html(number_format(obj.data.twitter.trends.data._all.primaries.docs.count))
-                $('[data-name=trend-size]').html(humanFileSize(obj.data.twitter.size.trend.data._all.total.store.size_in_bytes))
+                $('[data-name=trend-size]').html(humanFileSize(obj.data.twitter.trends.data._all.total.store.size_in_bytes))
             }
 
             window.clearTimeout(statisticsTimer)
@@ -248,32 +248,32 @@
     }
 
     $(document).on('click', '[data-trigger=delete]', function() {
-        var mdl = modal({
-                'id': 'alert',
-                'body': 'Token silinecek?',
-                'size': 'modal-small',
-                'title': 'Sil',
-                'options': {},
-                'footer': [
-                    $('<a />', {
-                        'href': '#',
-                        'class': 'modal-close waves-effect btn-flat grey-text',
-                        'html': buttons.cancel
-                    }),
-                    $('<span />', {
-                        'html': ' '
-                    }),
-                    $('<a />', {
-                        'href': '#',
-                        'class': 'waves-effect btn-flat red-text json',
-                        'html': buttons.ok,
-                        'data-href': '{{ route('admin.twitter.token') }}',
-                        'data-method': 'delete',
-                        'data-id': $(this).data('id'),
-                        'data-callback': '__delete'
-                    })
-                ]
-            });
+        return modal({
+            'id': 'alert',
+            'body': 'Token silinecek?',
+            'size': 'modal-small',
+            'title': 'Sil',
+            'options': {},
+            'footer': [
+                $('<a />', {
+                    'href': '#',
+                    'class': 'modal-close waves-effect btn-flat grey-text',
+                    'html': buttons.cancel
+                }),
+                $('<span />', {
+                    'html': ' '
+                }),
+                $('<a />', {
+                    'href': '#',
+                    'class': 'waves-effect btn-flat red-text json',
+                    'html': buttons.ok,
+                    'data-href': '{{ route('admin.twitter.token') }}',
+                    'data-method': 'delete',
+                    'data-id': $(this).data('id'),
+                    'data-callback': '__delete'
+                })
+            ]
+        })
     })
 
     $(document).on('click', '[data-trigger=create]', function() {
@@ -438,7 +438,7 @@
                     data-callback="__statistics"
                     data-error-callback="__connection_failed">
                     <div class="item">
-                        <small class="d-block grey-text">Tweet Sayısı</small>
+                        <small class="d-block grey-text">Alınan Tweet</small>
                         <p data-elasticsearch="tweets" data-name="tweet-count">-</p>
                     </div>
                     <div class="item">

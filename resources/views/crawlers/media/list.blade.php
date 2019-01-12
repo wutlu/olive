@@ -277,12 +277,18 @@
     {
         if (obj.status == 'ok')
         {
+            var es_catch_val = 'ES {error}';
+
             $('[data-name=bots-count]').html(obj.data.count.active + ' / ' + (obj.data.count.active + obj.data.count.disabled))
 
-            $('[data-name=total-docs-success]').html(number_format(obj.data.count.success.data.count))
-            $('[data-name=total-docs-failed]').html(number_format(obj.data.count.failed.data.count))
-            $('[data-name=total-docs-buffer]').html(number_format(obj.data.count.buffer.data.count))
-            $('[data-name=total-size]').html(humanFileSize(obj.data.elasticsearch.data._all.primaries.store.size_in_bytes))
+            try { $('[data-name=total-docs-success]').html(number_format(obj.data.count.success.data.count)) }
+            catch (err) { $('[data-name=total-docs-success]').html(es_catch_val) }
+            try { $('[data-name=total-docs-failed]').html(number_format(obj.data.count.failed.data.count)) }
+            catch (err) { $('[data-name=total-docs-failed]').html(es_catch_val) }
+            try { $('[data-name=total-docs-buffer]').html(number_format(obj.data.count.buffer.data.count)) }
+            catch (err) { $('[data-name=total-docs-buffer]').html(es_catch_val) }
+            try { $('[data-name=total-size]').html(humanFileSize(obj.data.elasticsearch.data._all.primaries.store.size_in_bytes)) }
+            catch (err) { $('[data-name=total-size]').html(es_catch_val) }
 
             window.clearTimeout(statTimer)
 

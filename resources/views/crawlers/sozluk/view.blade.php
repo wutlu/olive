@@ -87,7 +87,7 @@
                 data_id_input.data('id', obj.data.crawler.last_id)
             }
 
-            if (isset(obj.data.elasticsearch.message))
+            if (obj.data.elasticsearch.message)
             {
                 var message = $.parseJSON(obj.data.elasticsearch.message);
             }

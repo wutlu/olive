@@ -10,7 +10,8 @@ class KeywordGroup extends Model
     protected $fillable = [
     	'name',
     	'keywords',
-		'module_youtube',
+		'module_youtube_video',
+		'module_youtube_comment',
 		'module_twitter',
 		'module_sozluk',
 		'module_news',

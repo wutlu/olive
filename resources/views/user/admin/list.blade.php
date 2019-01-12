@@ -87,7 +87,7 @@
                     <p data-name="name"></p>
                     <p data-name="email" class="grey-text"></p>
                 </span>
-                <small data-name="verified" class="badge ml-auto"></small>
+                <span data-name="verified" class="ml-auto"></span>
             </a>
         </div>
     </div>

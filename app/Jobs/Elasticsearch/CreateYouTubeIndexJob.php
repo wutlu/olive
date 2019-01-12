@@ -17,6 +17,7 @@ class CreateYouTubeIndexJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public $type;
+    public $value;
 
     /**
      * The number of times the job may be attempted.
@@ -30,9 +31,10 @@ class CreateYouTubeIndexJob implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(string $type)
+    public function __construct(string $type, string $value = '')
     {
         $this->type = $type;
+        $this->value = $value;
     }
 
     /**
@@ -48,13 +50,13 @@ class CreateYouTubeIndexJob implements ShouldQueue
 
         if ($indices->status == 'created' || $indices->status == 'exists')
         {
-            Option::where('key', implode('.', [ 'youtube', 'index', $this->type ]))->update([
-                'value' => 'on'
+            Option::where('key', implode('.', [ 'youtube', 'index', $this->value ? 'comments' : $this->type ]))->update([
+                'value' => $this->value ? $this->value : $this->type
             ]);
         }
         else
         {
-            CreateYouTubeIndexJob::dispatch($this->type)->onQueue('elasticsearch')->delay(now()->addMinutes(10));
+            CreateYouTubeIndexJob::dispatch($this->type, $this->value)->onQueue('elasticsearch')->delay(now()->addMinutes(10));
         }
     }
 }

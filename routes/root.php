@@ -89,16 +89,34 @@ Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {
     });
 
     # 
+    # GOOGLE
+    # 
+    Route::prefix('google')->group(function () {
+        Route::get('/', 'GoogleController@dashboard')->name('admin.google.settings');
+        Route::patch('ayar', 'GoogleController@statusSet')->name('admin.google.status.set');
+
+        Route::post('log-ekrani', 'GoogleController@logJson')->name('admin.google.monitoring.log');
+
+        Route::post('index-durumu', 'GoogleController@indexStatus')->name('admin.google.index.status');
+        Route::post('index-olustur', 'GoogleController@indexCreate')->name('admin.google.index.create');
+    });
+
+    # 
     # YOUTUBE
     # 
     Route::prefix('youtube')->namespace('YouTube')->group(function () {
         Route::get('/', 'YouTubeController@dashboard')->name('admin.youtube.settings');
-        Route::patch('ayar', 'YouTubeController@statusSet')->name('admin.youtube.status.set');
 
+        Route::post('istatistik', 'YouTubeController@statistics')->name('admin.youtube.statistics');
         Route::post('log-ekrani', 'YouTubeController@logJson')->name('admin.youtube.monitoring.log');
 
         Route::post('index-durumu', 'YouTubeController@indexStatus')->name('admin.youtube.index.status');
         Route::post('index-olustur', 'YouTubeController@indexCreate')->name('admin.youtube.index.create');
+
+        Route::patch('ayar', 'YouTubeController@set')->name('admin.youtube.option.set');
+
+        Route::get('index-yonetimi', 'YouTubeController@indices')->name('admin.youtube.indices');
+        Route::post('index-yonetimi/json', 'YouTubeController@indicesJson')->name('admin.youtube.indices.json');
 
         Route::prefix('veri-havuzu')->group(function () {
             Route::get('kelime-havuzu', 'DataController@keywordList')->name('admin.youtube.followed_keywords');
@@ -116,35 +134,21 @@ Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {
     });
 
     # 
-    # GOOGLE
-    # 
-    Route::prefix('google')->group(function () {
-        Route::get('/', 'GoogleController@dashboard')->name('admin.google.settings');
-        Route::patch('ayar', 'GoogleController@statusSet')->name('admin.google.status.set');
-
-        Route::post('log-ekrani', 'GoogleController@logJson')->name('admin.google.monitoring.log');
-
-        Route::post('index-durumu', 'GoogleController@indexStatus')->name('admin.google.index.status');
-        Route::post('index-olustur', 'GoogleController@indexCreate')->name('admin.google.index.create');
-    });
-
-    # 
     # TWITTER
     # 
     Route::prefix('twitter')->namespace('Twitter')->group(function () {
         Route::get('/', 'TwitterController@dashboard')->name('admin.twitter.settings');
 
         Route::post('istatistik', 'TwitterController@statistics')->name('admin.twitter.statistics');
+        Route::post('log-ekrani', 'TwitterController@logJson')->name('admin.twitter.monitoring.log');
 
-        Route::get('index-yonetimi', 'TwitterController@indices')->name('admin.twitter.indices');
-        Route::post('index-yonetimi/json', 'TwitterController@indicesJson')->name('admin.twitter.indices.json');
-
-        Route::post('index-olustur', 'TwitterController@indexCreate')->name('admin.twitter.index.create');
         Route::post('index-durumu', 'TwitterController@indexStatus')->name('admin.twitter.index.status');
+        Route::post('index-olustur', 'TwitterController@indexCreate')->name('admin.twitter.index.create');
 
         Route::patch('ayar', 'TwitterController@set')->name('admin.twitter.option.set');
 
-        Route::post('log-ekrani', 'TwitterController@logJson')->name('admin.twitter.monitoring.log');
+        Route::get('index-yonetimi', 'TwitterController@indices')->name('admin.twitter.indices');
+        Route::post('index-yonetimi/json', 'TwitterController@indicesJson')->name('admin.twitter.indices.json');
 
         Route::prefix('bagli-hesaplar')->group(function () {
             Route::get('/', 'TwitterController@accounts')->name('admin.twitter.accounts');

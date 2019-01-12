@@ -18,7 +18,7 @@ class UserTableSeeder extends Seeder
                 'email' => 'alper@veri.zone'
             ],
             [
-                'name' => 'Alper Mutlu TOKSÖZ',
+                'name' => 'qhudabaksh',
                 'password' => bcrypt('1234'),
                 'verified' => true,
                 'root' => true,

@@ -1876,7 +1876,7 @@ table tr {
 }
 .modal .modal-content > .modal-body {
   overflow: auto;
-  max-height: 300px;
+  max-height: 400px;
   margin: 0;
   padding: 24px 32px;
   background-color: #fff;

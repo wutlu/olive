@@ -139,7 +139,7 @@ class DateUtility
                 $full_date = $date->format('Y-m-d').' '.date('H:i:s');
             }
 
-            if ($full_date < date('Y-m-d H:i:s', strtotime('+ 10 minute')) && $full_date > date('Y-m-d H:i:s', strtotime('- 2 day')))
+            if ($full_date < date('Y-m-d H:i:s', strtotime('+ 10 minute')) && $full_date > date('Y-m-d H:i:s', strtotime('- 7 day')))
             {
                 return $full_date;
             }

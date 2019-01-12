@@ -276,9 +276,9 @@ class RealTimeController extends Controller
                 }
 
                 # 
-                # YouTube Modülü
+                # YouTube Video Modülü
                 # 
-                if ($group->module_youtube)
+                if ($group->module_youtube_video)
                 {
                     $q = [
                         'size' => 100,
@@ -305,7 +305,6 @@ class RealTimeController extends Controller
                         $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
                     }
 
-                    // video
                     $query = @Document::list([ 'youtube', 'videos' ], 'video', $q)->data['hits']['hits'];
 
                     if ($query)
@@ -327,32 +326,42 @@ class RealTimeController extends Controller
                             ];
                         }
                     }
+                }
 
+                # 
+                # YouTube Yorum Modülü
+                # 
+                if ($group->module_youtube_comment)
+                {
                     $q = [
                         'size' => 200,
                         'query' => [
                             'bool' => [
-                                'must' => [
-                                    [
-                                        'query_string' => [ 'default_field' => 'text', 'query' => implode(' OR ', $keywords) ]
-                                    ]
-                                ],
-                                'filter' => [
-                                    [ 'range' => [ 'created_at' => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ]
-                                ]
+                                'filter' => [ 'range' => [ 'created_at' => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ]
                             ]
                         ],
                         'sort' => [ 'created_at' => 'DESC' ],
-                        '_source' => [ 'text', 'channel.title', 'created_at' ]
+                        '_source' => [
+                            'text',
+                            'channel.id',
+                            'channel.title',
+                            'created_at'
+                        ]
                     ];
+
+                    if (count($keywords))
+                    {
+                        $q['query']['bool']['must'][] = [
+                            'query_string' => [ 'default_field' => 'text', 'query' => implode(' OR ', $keywords) ]
+                        ];
+                    }
 
                     if ($request->sentiment != 'all')
                     {
                         $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
                     }
 
-                    // yorum
-                    $query = @Document::list([ 'youtube', 'comments' ], 'comment', $q)->data['hits']['hits'];
+                    $query = @Document::list([ 'youtube', 'comments', '*' ], 'comment', $q)->data['hits']['hits'];
 
                     if ($query)
                     {
@@ -365,6 +374,7 @@ class RealTimeController extends Controller
                                 '_index' => $object['_index'],
                                 'module' => 'youtube-yorum',
                                 'channel' => [
+                                    'id' => $object['_source']['channel']['id'],
                                     'title' => $object['_source']['channel']['title']
                                 ],
                                 'text' => $object['_source']['text'],

@@ -75,9 +75,6 @@ class Kernel extends ConsoleKernel
 
             /* ---------------------------------------- */
 
-
-            /* ---------------------------------------- */
-
             $crawlers = SozlukCrawler::where('status', true)->get();
 
             if (count($crawlers))
@@ -97,7 +94,27 @@ class Kernel extends ConsoleKernel
 
             if ($option)
             {
-                // yapılacak
+                $schedule->command('nohup "youtube:video_detect --type=trends" --type=start')
+                         ->everyTenMinutes()
+                         ->timezone(config('app.timezone'))
+                         ->withoutOverlapping();
+
+                $schedule->command('nohup "youtube:video_detect --type=followed_videos" --type=start')
+                         ->everyTenMinutes()
+                         ->timezone(config('app.timezone'))
+                         ->withoutOverlapping();
+
+                $schedule->command('nohup "youtube:video_detect --type=followed_keywords" --type=start')
+                         ->everyTenMinutes()
+                         ->timezone(config('app.timezone'))
+                         ->withoutOverlapping();
+
+                /*
+                $schedule->command('nohup "youtube:video_detect --type=followed_channels" --type=start')
+                         ->everyTenMinutes()
+                         ->timezone(config('app.timezone'))
+                         ->withoutOverlapping();
+                */
             }
 
             /* ---------------------------------------- */
@@ -113,14 +130,30 @@ class Kernel extends ConsoleKernel
 
             /* ---------------------------------------- */
 
-            $option = Option::where('key', 'twitter.index.auto')->where('value', 'on')->exists();
+            /**
+             * auto index [ twitter, youtube ]
+             */
 
-            if ($option)
+            $options = Option::whereIn('key', [
+                'twitter.index.auto',
+                'youtube.index.auto',
+            ])->where('value', 'on')->get();
+
+            if (count($options))
             {
-                $schedule->command('twitter:auto_index')
-                         ->everyFiveMinutes()
-                         ->timezone(config('app.timezone'))
-                         ->withoutOverlapping();
+                foreach ($options as $option)
+                {
+                    switch ($option->key)
+                    {
+                        case 'twitter.index.auto': $key = 'twitter.tweets'; break;
+                        case 'youtube.index.auto': $key = 'youtube.comments'; break;
+                    }
+
+                    $schedule->command('elasticsearch:auto_index --type='.$key)
+                             ->everyFiveMinutes()
+                             ->timezone(config('app.timezone'))
+                             ->withoutOverlapping();
+                }
             }
 
             /* ---------------------------------------- */

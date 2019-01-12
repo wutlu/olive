@@ -14,12 +14,11 @@ use Carbon\Carbon;
 use App\Elasticsearch\Indices;
 
 use App\Models\Log;
-use App\Models\Twitter\Account;
 use App\Models\Option;
+use App\Models\Twitter\Account;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Subscriber\Oauth\Oauth1;
 
 use App\Jobs\Elasticsearch\CreateTwitterIndexJob;
 
@@ -119,11 +118,7 @@ class TwitterController extends Controller
             'data' => [
                 'twitter' => [
                     'tweets' => Indices::stats([ 'twitter', 'tweets', '*' ]),
-                    'trends' => Indices::stats([ 'twitter', 'trends' ]),
-                    'size' => [
-                        'tweet' => Indices::stats([ 'twitter', 'tweets', '*' ]),
-                        'trend' => Indices::stats([ 'twitter', 'trends' ])
-                    ]
+                    'trends' => Indices::stats([ 'twitter', 'trends' ])
                 ]
             ]
         ];

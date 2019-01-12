@@ -15,40 +15,92 @@
     'dock' => true
 ])
 
+@push('local.scripts')
+    var statisticsTimer;
+
+    function __statistics(__, obj)
+    {
+        if (obj.status == 'ok')
+        {
+            if (obj.data.youtube.comments.data._all.primaries.docs)
+            {
+                $('[data-name=comment-count]').html(number_format(obj.data.youtube.comments.data._all.primaries.docs.count))
+                $('[data-name=comment-size]').html(humanFileSize(obj.data.youtube.comments.data._all.total.store.size_in_bytes))
+            }
+            else
+            {
+                $('[data-elasticsearch=comments]').html('Index Oluşturulmadı!')
+            }
+
+            if (obj.data.youtube.videos.message)
+            {
+                var message = $.parseJSON(obj.data.youtube.videos.message);
+            }
+            else
+            {
+                var message = { 'status': obj.data.youtube.videos.status == 'ok' ? 200 : 404 };
+            }
+
+            if (message.status == '404')
+            {
+                $('[data-elasticsearch=videos]').html('Index Oluşturulmadı!')
+            }
+            else
+            {
+                $('[data-name=video-count]').html(number_format(obj.data.youtube.videos.data._all.primaries.docs.count))
+                $('[data-name=video-size]').html(humanFileSize(obj.data.youtube.videos.data._all.total.store.size_in_bytes))
+            }
+
+            window.clearTimeout(statisticsTimer)
+
+            statisticsTimer = window.setTimeout(function() {
+                vzAjax($('[data-callback=__statistics]'))
+            }, 10000)
+        }
+    }
+
+    function __connection_failed(__)
+    {
+        $('[data-elasticsearch]').html('ES Bağlantı Hatası')
+    }
+@endpush
+
 @section('content')
     <div class="card">
-        <div class="card-image">
-            <img src="{{ asset('img/card-header.jpg') }}" alt="YouTube Ayarları" />
-            <span class="card-title">YouTube Ayarları</span>
-        </div>
         <div class="card-content">
-            <div class="item-group">
+            <span class="card-title mb-0">YouTube Ayarları</span>
+        </div>
+        <div class="card-content grey-text red lighten-5">
+            <div
+                class="item-group load"
+                data-href="{{ route('admin.youtube.statistics') }}"
+                data-timeout="2000"
+                data-method="post"
+                data-callback="__statistics"
+                data-error-callback="__connection_failed">
                 <div class="item">
-                    <small class="d-block grey-text">Video Sayısı</small>
-                    <p data-elasticsearch="video" data-name="video-count">-</p>
+                    <small class="d-block grey-text">Alınan Yorum</small>
+                    <p data-elasticsearch="comments" data-name="comment-count">-</p>
                 </div>
                 <div class="item">
-                    <small class="d-block grey-text">Kapladığı Alan</small>
-                    <p data-elasticsearch="video" data-name="video-size">-</p>
+                    <small class="d-block grey-text">Kullanılan Alan</small>
+                    <p data-elasticsearch="comments" data-name="comment-size">-</p>
                 </div>
                 <div class="item">
-                    <small class="d-block grey-text">Yorum Sayısı</small>
-                    <p data-elasticsearch="comment" data-name="comment-count">-</p>
+                    <small class="d-block grey-text">Alınan Video</small>
+                    <p data-elasticsearch="videos" data-name="video-count">-</p>
                 </div>
                 <div class="item">
-                    <small class="d-block grey-text">Kapladığı Alan</small>
-                    <p data-elasticsearch="comment" data-name="comment-size">-</p>
+                    <small class="d-block grey-text">Kullanılan Alan</small>
+                    <p data-elasticsearch="videos" data-name="video-size">-</p>
                 </div>
             </div>
         </div>
+
         <div class="card-content red hide" data-name="alert"></div>
-    </div>
-    <div class="card">
-        <div class="card-image">
-            <img src="{{ asset('img/card-header.jpg') }}" alt="Hata Logları" />
-            <span class="card-title">Hata Logları</span>
-        </div>
+
         <div class="card-content grey-text">Log takibini log monitörü bölümünden de yapabilirsiniz. Bu alan sadece "YouTube" modülü ile ilgili logları gösterir.</div>
+
         <ul
             id="console"
             class="collection black load d-flex align-items-end flex-wrap no-select"
@@ -149,109 +201,31 @@
 
 @section('dock')
     <div class="card">
-        <div
-            class="collection load"
-            data-href="{{ route('admin.youtube.index.status') }}"
-            data-callback="__status"
-            data-method="post"
-            data-timeout="1000"
-            data-error-callback="__connection_failed">
-            <label class="collection-item waves-effect d-block">
-                <input
-                    name="value"
-                    id="value"
-                    value="on"
-                    class="json"
-                    data-href="{{ route('admin.youtube.status.set') }}"
-                    data-method="patch"
-                    data-delay="1"
-                    data-key="youtube.status"
-                    data-checked-value="on"
-                    data-unchecked-value="off"
-                    type="checkbox"
-                    data-callback="__status_set"
-                    @if ($options['youtube.status'] == 'on'){{ 'checked' }}@endif />
-                <span>Çalışıyor</span>
-            </label>
-            @if ($options['youtube.index.video'] == 'off' || $options['youtube.index.comment'] == 'off')
-                <a
-                    href="#"
-                    class="collection-item waves-effect d-block json"
-                    data-href="{{ route('admin.youtube.index.create') }}"
-                    data-method="post"
-                    data-trigger="video-index"
-                    data-callback="__index_create">Indexleri Oluştur</a>
+        <div class="collection">
+            @if ($options['youtube.index.videos'] == 'off' || $options['youtube.index.comments'] != date('Y.m', strtotime('+ 1 month')))
+                <div class="collection-item d-block orange-text">
+                    <i class="material-icons d-table">warning</i>
+                    YouTube indexlerinin oluşturulması bekleniyor.
+                </div>
+            @else
+                <label class="collection-item waves-effect d-block">
+                    <input
+                        name="value"
+                        id="value"
+                        value="on"
+                        class="json"
+                        data-href="{{ route('admin.youtube.option.set') }}"
+                        data-method="patch"
+                        data-delay="1"
+                        data-key="youtube.status"
+                        data-checked-value="on"
+                        data-unchecked-value="off"
+                        type="checkbox"
+                        @if ($options['youtube.status'] == 'on'){{ 'checked' }}@endif  />
+                    <span>Video Botu</span>
+                </label>
             @endif
         </div>
     </div>
     @include('crawlers.youtube._menu', [ 'active' => 'youtube.settings' ])
 @endsection
-
-@push('local.scripts')
-    function __status_set(__, obj)
-    {
-        if (obj.status == 'err')
-        {
-            M.toast({ html: 'Önce indexleri oluşturmanız gerekiyor.', classes: 'red' })
-
-            __.prop('checked', false)
-        }
-    }
-
-    function __index_create(__, obj)
-    {
-        if (obj.status == 'ok')
-        {
-            M.toast({ html: 'Index oluşturma isteği gönderildi. Lütfen bekleyin...', classes: 'orange' })
-        }
-    }
-
-    var statusTimer;
-
-    function __status(__, obj)
-    {
-        if (obj.status == 'ok')
-        {
-            $('[data-name=alert]').addClass('hide')
-
-            var indice_vid = obj.elasticsearch.data.indices['olive__youtube-videos'];
-            var indice_com = obj.elasticsearch.data.indices['olive__youtube-comments'];
-
-            if (indice_vid)
-            {
-                $('[data-name=video-count]').html(number_format(indice_vid.primaries.docs.count))
-                $('[data-name=video-size]').html(humanFileSize(indice_vid.total.store.size_in_bytes))
-
-                $('[data-trigger=video-index]').remove()
-            }
-            else
-            {
-                $('[data-elasticsearch=video]').html('Indexe ulaşılamıyor!')
-            }
-
-            if (indice_com)
-            {
-                $('[data-name=comment-count]').html(number_format(indice_com.primaries.docs.count))
-                $('[data-name=comment-size]').html(humanFileSize(indice_com.total.store.size_in_bytes))
-
-                $('[data-trigger=comment-index]').remove()
-            }
-            else
-            {
-                $('[data-elasticsearch=comment]').html('Indexe ulaşılamıyor!')
-                $('[data-name=alert]').html('Ulaşılamayan index(ler) daha önce oluşturulmuştu. Şu an bu index(e|lere) ulaşılamıyor.').removeClass('hide')
-            }
-        }
-        else if (obj.status == 'err')
-        {
-            $('[data-elasticsearch]').html('Index isteği hiç gönderilmedi.')
-            $('[data-name=alert]').html('Tüm indexleri oluşturmadan sistemi çalıştıramazsınız. Lütfen sağ menüden "Indexleri Oluştur" butonuna basın ve bekleyin.').removeClass('hide')
-        }
-
-        window.clearTimeout(statusTimer)
-
-        statusTİmer = window.setTimeout(function() {
-            vzAjax($('[data-callback=__status]'))
-        }, 5000)
-    }
-@endpush

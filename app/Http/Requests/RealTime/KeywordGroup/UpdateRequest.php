@@ -71,7 +71,8 @@ class UpdateRequest extends FormRequest
             'name' => 'required|string|max:10',
             'keywords' => 'bail|nullable|required_with:module_twitter|string|max:64|keyword_max_line|empty_lines',
 
-            'module_youtube' => 'sometimes|boolean',
+            'module_youtube_video' => 'sometimes|boolean',
+            'module_youtube_comment' => 'sometimes|boolean',
             'module_twitter' => 'sometimes|boolean',
             'module_sozluk' => 'sometimes|boolean',
             'module_news' => 'sometimes|boolean',

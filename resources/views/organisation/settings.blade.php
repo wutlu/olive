@@ -406,254 +406,254 @@
     </div>
 
     @if ($user->id == $user->organisation->user_id)
-    <div id="tab-2" class="card-content grey lighten-4">
-        @if ($user->organisation->lastInvoice->paid_at)
-            <div class="center-align hide" data-id="spinner">
-                <div class="preloader-wrapper big active">
-                    <div class="spinner-layer spinner-red-only">
-                        <div class="circle-clipper left">
-                            <div class="circle"></div>
-                        </div>
-                        <div class="gap-patch">
-                            <div class="circle"></div>
-                        </div>
-                        <div class="circle-clipper right">
-                            <div class="circle"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="parent-form">
-                <form autocomplete="off" id="calculate-form" method="post" action="{{ route('organisation.create.calculate.renew') }}" class="json" data-callback="__calculate">
-                    <div class="card card-unstyled">
-                            <div class="card-content">
-                                <p class="center-align">
-                                {{ $plan->name }},
-                                <span style="text-decoration: line-through;">{{ config('formal.currency') }} {{ $plan->price_old }}</span>
-                            </p>
-
-                            <h3 class="center-align">
-                                {{ config('formal.currency') }}
-                                {{ $plan->price }}
-                                <sup>.00</sup>
-                                <sub><small>/ Ay</small></sub>
-                            </h3>
-
-                            <div class="row">
-                                <div class="input-field col s12">
-                                    <select name="month" id="month">
-                                        <option value="1" selected>1 Ay</option>
-                                        @for ($i = 2; $i <= 24; $i++)
-                                        <option value="{{ $i }}">{{ $i }} Ay</option>
-                                        @endfor
-                                    </select>
-                                    <label for="month">Uzatılacak Süre</label>
-                                    <span class="helper-text">12 aylık ödeme seçeneğinde {{ config('formal.discount_with_year') }}% indirim uygulanır.</span>
-                                </div>
+        <div id="tab-2" class="card-content grey lighten-4" style="display: none;">
+            @if ($user->organisation->lastInvoice->paid_at)
+                <div class="center-align hide" data-id="spinner">
+                    <div class="preloader-wrapper big active">
+                        <div class="spinner-layer spinner-red-only">
+                            <div class="circle-clipper left">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="gap-patch">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="circle-clipper right">
+                                <div class="circle"></div>
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="parent-form">
+                    <form autocomplete="off" id="calculate-form" method="post" action="{{ route('organisation.create.calculate.renew') }}" class="json" data-callback="__calculate">
+                        <div class="card card-unstyled">
+                                <div class="card-content">
+                                    <p class="center-align">
+                                    {{ $plan->name }},
+                                    <span style="text-decoration: line-through;">{{ config('formal.currency') }} {{ $plan->price_old }}</span>
+                                </p>
 
-                    <div class="card card-unstyled">
-                        <div class="card-content center-align">
-                            <button type="submit" class="btn teal waves-effect">Uygula</button>
+                                <h3 class="center-align">
+                                    {{ config('formal.currency') }}
+                                    {{ $plan->price }}
+                                    <sup>.00</sup>
+                                    <sub><small>/ Ay</small></sub>
+                                </h3>
+
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <select name="month" id="month">
+                                            <option value="1" selected>1 Ay</option>
+                                            @for ($i = 2; $i <= 24; $i++)
+                                            <option value="{{ $i }}">{{ $i }} Ay</option>
+                                            @endfor
+                                        </select>
+                                        <label for="month">Uzatılacak Süre</label>
+                                        <span class="helper-text">12 aylık ödeme seçeneğinde {{ config('formal.discount_with_year') }}% indirim uygulanır.</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card card-unstyled">
+                            <div class="card-content center-align">
+                                <button type="submit" class="btn teal waves-effect">Uygula</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="card card-unstyled" id="payment-details">
+                        <div class="card-content">
+                            <span class="card-title">Fatura Önizlemesi</span>
+                            <table class="highlight invoice">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Değer</th>
+                                        <th style="width: 100px;" class="right-align">Birim</th>
+                                        <th style="width: 100px;" class="right-align">Miktar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>{{ $plan->name }}</td>
+                                        <td>
+                                            <span class="invoice-month">-</span> Ay <small>(Vergi Hariç)</small>
+                                        </td>
+                                        <td class="right-align">{{ config('formal.currency') }}</td>
+                                        <td class="right-align">
+                                            <span class="invoice-total_price">-</span>
+                                        </td>
+                                    </tr>
+                                    <tr class="discount-row hide">
+                                        <td>İndirim</td>
+                                        <td>
+                                            <span class="invoice-discount_rate">0</span>%
+                                            <span class="invoice-discount_price"></span>
+                                        </td>
+                                        <td class="right-align">{{ config('formal.currency') }}</td>
+                                        <td class="right-align">
+                                            <span class="invoice-discount">0</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Vergiler</td>
+                                        <td>{{ config('formal.tax') }}%</td>
+                                        <td class="right-align">{{ config('formal.currency') }}</td>
+                                        <td class="right-align">
+                                            <span class="invoice-tax">0</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>Genel Toplam</th>
+                                        <th></th>
+                                        <th class="right-align">{{ config('formal.currency') }}</th>
+                                        <th class="right-align">
+                                            <span class="invoice-total_price_with_tax">-</span>
+                                        </th>
+                                    </tr>
+                                </tfoot>
+                            </table>
                         </div>
                     </div>
-                </form>
 
-                <div class="card card-unstyled" id="payment-details">
-                    <div class="card-content">
-                        <span class="card-title">Fatura Önizlemesi</span>
-                        <table class="highlight invoice">
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th>Değer</th>
-                                    <th style="width: 100px;" class="right-align">Birim</th>
-                                    <th style="width: 100px;" class="right-align">Miktar</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>{{ $plan->name }}</td>
-                                    <td>
-                                        <span class="invoice-month">-</span> Ay <small>(Vergi Hariç)</small>
-                                    </td>
-                                    <td class="right-align">{{ config('formal.currency') }}</td>
-                                    <td class="right-align">
-                                        <span class="invoice-total_price">-</span>
-                                    </td>
-                                </tr>
-                                <tr class="discount-row hide">
-                                    <td>İndirim</td>
-                                    <td>
-                                        <span class="invoice-discount_rate">0</span>%
-                                        <span class="invoice-discount_price"></span>
-                                    </td>
-                                    <td class="right-align">{{ config('formal.currency') }}</td>
-                                    <td class="right-align">
-                                        <span class="invoice-discount">0</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Vergiler</td>
-                                    <td>{{ config('formal.tax') }}%</td>
-                                    <td class="right-align">{{ config('formal.currency') }}</td>
-                                    <td class="right-align">
-                                        <span class="invoice-tax">0</span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th>Genel Toplam</th>
-                                    <th></th>
-                                    <th class="right-align">{{ config('formal.currency') }}</th>
-                                    <th class="right-align">
-                                        <span class="invoice-total_price_with_tax">-</span>
-                                    </th>
-                                </tr>
-                            </tfoot>
-                        </table>
+                    <div class="card card-unstyled">
+                        <div class="card-content">
+                            <span class="card-title">Fatura Bilgileri</span>
+                        </div>
                     </div>
+
+                    @include('organisation._inc.billing_form', [
+                        'method' => 'patch',
+                        'route' => route('organisation.update'),
+                        'callback' => '__update',
+                        'include' => 'month'
+                    ])
                 </div>
 
-                <div class="card card-unstyled">
-                    <div class="card-content">
-                        <span class="card-title">Fatura Bilgileri</span>
-                    </div>
-                </div>
-
-                @include('organisation._inc.billing_form', [
-                    'method' => 'patch',
-                    'route' => route('organisation.update'),
-                    'callback' => '__update',
-                    'include' => 'month'
-                ])
-            </div>
-
-            @push('local.scripts')
-                function __calculate(__, obj)
-                {
-                    if (obj.status == 'ok')
+                @push('local.scripts')
+                    function __calculate(__, obj)
                     {
-                        $('.invoice-month').html(obj.result.month)
-                        $('.invoice-total_price').html(obj.result.total_price)
-                        $('.invoice-tax').html(obj.result.amount_of_tax)
-                        $('.invoice-total_price_with_tax').html(obj.result.total_price_with_tax)
-
-                        if (obj.result.discount)
+                        if (obj.status == 'ok')
                         {
-                            $('.invoice-discount').html(obj.result.discount.amount)
-                            $('.invoice-discount_rate').html(obj.result.discount.rate)
+                            $('.invoice-month').html(obj.result.month)
+                            $('.invoice-total_price').html(obj.result.total_price)
+                            $('.invoice-tax').html(obj.result.amount_of_tax)
+                            $('.invoice-total_price_with_tax').html(obj.result.total_price_with_tax)
 
-                            if (obj.result.discount.price)
+                            if (obj.result.discount)
                             {
-                                $('.invoice-discount_price').html('+ {{ config('formal.currency') }} ' + obj.result.discount.price)
+                                $('.invoice-discount').html(obj.result.discount.amount)
+                                $('.invoice-discount_rate').html(obj.result.discount.rate)
+
+                                if (obj.result.discount.price)
+                                {
+                                    $('.invoice-discount_price').html('+ {{ config('formal.currency') }} ' + obj.result.discount.price)
+                                }
+
+                                $('tr.discount-row').removeClass('hide')
+                            }
+                            else
+                            {
+                                $('tr.discount-row').addClass('hide')
                             }
 
-                            $('tr.discount-row').removeClass('hide')
+                            scrollTo({
+                                'target': '#payment-details',
+                                'tolerance': '-92px'
+                            })
                         }
-                        else
-                        {
-                            $('tr.discount-row').addClass('hide')
-                        }
-
-                        scrollTo({
-                            'target': '#payment-details',
-                            'tolerance': '-92px'
-                        })
                     }
-                }
 
-                function __update(__, obj)
-                {
-                    if (obj.status == 'ok')
+                    function __update(__, obj)
                     {
-                        if (obj.organisation == 'have')
+                        if (obj.status == 'ok')
                         {
-                            window.location.href = '{{ route('settings.organisation') }}';
+                            if (obj.organisation == 'have')
+                            {
+                                window.location.href = '{{ route('settings.organisation') }}';
 
-                            return false;
+                                return false;
+                            }
+
+                            if (obj.updated)
+                            {
+                                M.toast({
+                                    html: 'Fatura oluşturuluyor...',
+                                    classes: 'green darken-2'
+                                })
+
+                                $('#tab-2').children('.parent-form').addClass('hide')
+                                $('#tab-2').children('[data-id=spinner]').removeClass('hide')
+
+                                location.href = '{{ route('settings.organisation') }}#tab-2';
+                                location.reload()
+                            }
                         }
+                    }
+                @endpush
+            @else
+                <div class="center-align">
+                    <a href="{{ route('organisation.invoice', [ 'id' => $user->organisation->lastInvoice->invoice_id ]) }}" class="waves-effect btn-flat">Fatura</a>
+                    <a href="{{ route('settings.support', [ 'type' => 'odeme-bildirimi' ]) }}" class="waves-effect btn-flat">Ödeme Bildirimi</a>
+                    @if ($user->organisation->invoices()->count() > 1)
+                        <a href="#" class="waves-effect btn-flat" id="cancel-button">İptal</a>
+                    @endif
+                </div>
 
-                        if (obj.updated)
+                @push('local.scripts')
+                    $(document).on('click', '#cancel-button', function() {
+                        var mdl = modal({
+                            'id': 'alert',
+                            'body': 'Şu anda ödeme bildirimi bekliyoruz. Faturayı iptal etmek istiyor musunuz?',
+                            'size': 'modal-small',
+                            'title': 'İptal',
+                            'options': { dismissible: false },
+                            'footer': [
+                               $('<a />', {
+                                   'href': '#',
+                                   'class': 'modal-close waves-effect btn-flat grey-text',
+                                   'html': buttons.cancel
+                               }),
+                               $('<span />', {
+                                   'html': ' '
+                               }),
+                               $('<a />', {
+                                   'href': '#',
+                                   'class': 'waves-effect btn-flat red-text json',
+                                   'data-href': '{{ route('settings.organisation.invoice.cancel') }}',
+                                   'data-method': 'delete',
+                                   'data-callback': '__cancel',
+                                   'html': buttons.ok
+                               })
+                            ]
+                        });
+                    })
+
+                    function __cancel(__, obj)
+                    {
+                        if (obj.status == 'ok')
                         {
+                            $('#modal-alert').modal('close')
+
                             M.toast({
-                                html: 'Fatura oluşturuluyor...',
+                                html: 'Fatura iptal edildi.',
                                 classes: 'green darken-2'
                             })
 
-                            $('#tab-2').children('.parent-form').addClass('hide')
-                            $('#tab-2').children('[data-id=spinner]').removeClass('hide')
-
-                            location.href = '{{ route('settings.organisation') }}#tab-2';
-                            location.reload()
+                            setTimeout(function() {
+                                location.href = '{{ route('settings.organisation') }}#tab-2';
+                                location.reload()
+                            }, 400)
                         }
                     }
-                }
-            @endpush
-        @else
-            <div class="center-align">
-                <a href="{{ route('organisation.invoice', [ 'id' => $user->organisation->lastInvoice->invoice_id ]) }}" class="waves-effect btn-flat">Fatura</a>
-                <a href="{{ route('settings.support', [ 'type' => 'odeme-bildirimi' ]) }}" class="waves-effect btn-flat">Ödeme Bildirimi</a>
-                @if ($user->organisation->invoices()->count() > 1)
-                    <a href="#" class="waves-effect btn-flat" id="cancel-button">İptal</a>
-                @endif
-            </div>
-
-            @push('local.scripts')
-                $(document).on('click', '#cancel-button', function() {
-                    var mdl = modal({
-                        'id': 'alert',
-                        'body': 'Şu anda ödeme bildirimi bekliyoruz. Faturayı iptal etmek istiyor musunuz?',
-                        'size': 'modal-small',
-                        'title': 'İptal',
-                        'options': { dismissible: false },
-                        'footer': [
-                           $('<a />', {
-                               'href': '#',
-                               'class': 'modal-close waves-effect btn-flat grey-text',
-                               'html': buttons.cancel
-                           }),
-                           $('<span />', {
-                               'html': ' '
-                           }),
-                           $('<a />', {
-                               'href': '#',
-                               'class': 'waves-effect btn-flat red-text json',
-                               'data-href': '{{ route('settings.organisation.invoice.cancel') }}',
-                               'data-method': 'delete',
-                               'data-callback': '__cancel',
-                               'html': buttons.ok
-                           })
-                        ]
-                    });
-                })
-
-                function __cancel(__, obj)
-                {
-                    if (obj.status == 'ok')
-                    {
-                        $('#modal-alert').modal('close')
-
-                        M.toast({
-                            html: 'Fatura iptal edildi.',
-                            classes: 'green darken-2'
-                        })
-
-                        setTimeout(function() {
-                            location.href = '{{ route('settings.organisation') }}#tab-2';
-                            location.reload()
-                        }, 400)
-                    }
-                }
-            @endpush
-        @endif
-    </div>
+                @endpush
+            @endif
+        </div>
     @endif
 
-    <div id="tab-3" class="card-content grey lighten-4">
+    <div id="tab-3" class="card-content grey lighten-4" style="display: none;">
         <div class="card card-unstyled">
             <div class="card-content">
                 @if ($user->organisation->user_id == $user->id)
@@ -866,7 +866,7 @@
     </div>
 
     @if ($user->id == $user->organisation->user_id)
-        <div id="tab-4" class="grey lighten-4">
+        <div id="tab-4" class="grey lighten-4" style="display: none;">
             <div class="collection">
                 @foreach ($user->organisation->invoices as $invoice)
                     <a href="{{ route('organisation.invoice', $invoice->invoice_id) }}" class="collection-item d-flex waves-effect {{ $invoice->paid_at ? 'grey-text' : 'red-text' }}">

@@ -48,7 +48,8 @@ class KeywordController extends Controller
             'id',
             'name',
             'keywords',
-            'module_youtube',
+            'module_youtube_video',
+            'module_youtube_comment',
             'module_twitter',
             'module_sozluk',
             'module_news',
@@ -78,7 +79,8 @@ class KeywordController extends Controller
         $data->name = $request->name;
         $data->keywords = trim($request->keywords);
 
-        $data->module_youtube = $request->module_youtube ? true : false;
+        $data->module_youtube_video = $request->module_youtube_video ? true : false;
+        $data->module_youtube_comment = $request->module_youtube_comment ? true : false;
         $data->module_twitter = $request->module_twitter ? true : false;
         $data->module_sozluk = $request->module_sozluk ? true : false;
         $data->module_news = $request->module_news ? true : false;
@@ -106,7 +108,8 @@ class KeywordController extends Controller
         $data->name = $request->name;
         $data->keywords = trim($request->keywords);
 
-        $data->module_youtube = $request->module_youtube ? true : false;
+        $data->module_youtube_video = $request->module_youtube_video ? true : false;
+        $data->module_youtube_comment = $request->module_youtube_comment ? true : false;
         $data->module_twitter = $request->module_twitter ? true : false;
         $data->module_sozluk = $request->module_sozluk ? true : false;
         $data->module_news = $request->module_news ? true : false;

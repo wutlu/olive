@@ -10,18 +10,6 @@ $(function() {
     timeAgo()
 })
 
-function isset(accessor)
-{
-    try
-    {
-      return typeof accessor() !== 'undefined';
-    }
-    catch (e)
-    {
-      return false;
-    }
-}
-
 /* --- number format --- */
 
 function number_format(number)
@@ -627,7 +615,7 @@ function vzAjax(__)
     var URL = __.is('form') ? __.attr('action') : __.data('href'),
         URL = (method == 'POST' || method == 'PATCH' || method == 'PUT' || method == 'DELETE') ? URL : URL + '/?' + $.param( variables, true );
 
-    $.ajax({
+    var _xhr = $.ajax({
         type: method,
         dataType: 'json',
         url: URL,

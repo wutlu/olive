@@ -98,7 +98,7 @@
                     <p data-name="name"></p>
                     <p data-name="author" class="grey-text"></p>
                 </span>
-                <small data-name="status" class="badge ml-auto"></small>
+                <span data-name="status" class="ml-auto"></span>
             </a>
         </div>
     </div>

@@ -14,6 +14,7 @@ use App\Elasticsearch\Indices;
 use App\Jobs\Elasticsearch\BulkInsertJob;
 use App\Jobs\Crawlers\YouTube\CommentTakerJob;
 
+use App\Models\YouTube\FollowingChannels;
 use App\Models\YouTube\FollowingVideos;
 use App\Models\YouTube\FollowingKeywords;
 
@@ -55,7 +56,7 @@ class VideoDetect extends Command
         $type = $this->option('type');
 
         $types = [
-            'trend' => 'Trend Videolar',
+            'trends' => 'Trend Videolar',
             'followed_channels' => 'Takip Edilen Kanal Videoları',
             'followed_videos' => 'Takip Edilen Videolar',
             'followed_keywords' => 'Takip Edilen Kelimeler',
@@ -68,7 +69,7 @@ class VideoDetect extends Command
 
         switch ($type)
         {
-            case 'trend':
+            case 'trends':
                 $item_chunk = array_chunk(YouTube::getPopularVideos('tr', 50), 10);
             break;
             case 'followed_videos':
@@ -95,83 +96,100 @@ class VideoDetect extends Command
                 $item_chunk = array_flatten($item_chunk);
                 $item_chunk = array_chunk($item_chunk, 10);
             break;
+            case 'followed_channels':
+                $channels = FollowingChannels::select('channel_id')->whereNull('reason')->get()->toArray();
+
+                $item_chunk = array_map(function ($item) {
+                    return Youtube::listChannelVideos($item['channel_id'], 50);
+                }, $channels);
+
+                $item_chunk = array_flatten($item_chunk);
+                $item_chunk = array_chunk($item_chunk, 10);
+            break;
         }
 
-        foreach ($item_chunk as $items)
+        if (count($item_chunk))
         {
-            $ids = [];
-            $chunk = [];
-
-            foreach ($items as $item)
+            foreach ($item_chunk as $items)
             {
-                $video = self::video($item);
+                $ids = [];
+                $chunk = [];
 
-                if ($video->status == 'ok')
+                foreach ($items as $item)
                 {
-                    $ids[] = $video->data['id'];
+                    $video = self::video($item);
 
-                    $chunk['body'][] = $this->index($video->data['id']);;
-                    $chunk['body'][] = $video->data;
-
-                    $this->info($video->data['title']);
-
-                    /*** related videos ***/
-
-                    try
+                    if ($video->status == 'ok')
                     {
-                        $relatedVideos = Youtube::getRelatedVideos($video->data['id'], 50);
+                        $ids[] = $video->data['id'];
 
-                        if ($relatedVideos)
+                        $chunk['body'][] = $this->index($video->data['id']);;
+                        $chunk['body'][] = $video->data;
+
+                        $this->info($video->data['title']);
+
+                        /*** related videos ***/
+
+                        try
                         {
-                            foreach (array_chunk($relatedVideos, 10) as $relatedChunk)
+                            $relatedVideos = Youtube::getRelatedVideos($video->data['id'], 50);
+
+                            if ($relatedVideos)
                             {
-                                $relatedIds = [];
-
-                                foreach ($relatedChunk as $relatedItem)
+                                foreach (array_chunk($relatedVideos, 10) as $relatedChunk)
                                 {
-                                    $relatedVideo = self::video($relatedItem);
+                                    $relatedIds = [];
 
-                                    if ($relatedVideo->status == 'ok' && DateUtility::checkDate($relatedVideo->data['created_at']))
+                                    foreach ($relatedChunk as $relatedItem)
                                     {
-                                        $relatedIds[] = $relatedVideo->data['id'];
+                                        $relatedVideo = self::video($relatedItem);
 
-                                        $chunk['body'][] = $this->index($relatedVideo->data['id']);
-                                        $chunk['body'][] = $relatedVideo->data;
+                                        if ($relatedVideo->status == 'ok' && DateUtility::checkDate($relatedVideo->data['created_at']))
+                                        {
+                                            $relatedIds[] = $relatedVideo->data['id'];
 
-                                        $this->info('[related]'.$relatedVideo->data['title']);
+                                            $chunk['body'][] = $this->index($relatedVideo->data['id']);
+                                            $chunk['body'][] = $relatedVideo->data;
+
+                                            $this->info('[related]'.$relatedVideo->data['title']);
+                                        }
                                     }
-                                }
 
-                                if (count($relatedIds))
-                                {
-                                    $this->info('CommentTakerJob ['.count($relatedIds).']');
+                                    if (count($relatedIds))
+                                    {
+                                        $this->info('CommentTakerJob ['.count($relatedIds).']');
 
-                                    CommentTakerJob::dispatch($relatedIds)->onQueue('power-crawler');
+                                        CommentTakerJob::dispatch($relatedIds)->onQueue('power-crawler');
+                                    }
                                 }
                             }
                         }
-                    }
-                    catch (\Exception $e)
-                    {
-                        $this->error($e->getMessage());
-                        // hata logu gir.
-                    }
+                        catch (\Exception $e)
+                        {
+                            $this->error($e->getMessage());
+                            // hata logu gir.
+                        }
 
-                    /*** ************** ***/
+                        /*** ************** ***/
+                    }
+                }
+
+                if (count($ids))
+                {
+                    $this->info('CommentTakerJob ['.count($ids).']');
+
+                    CommentTakerJob::dispatch($ids)->onQueue('power-crawler');
+                }
+
+                if (count($chunk))
+                {
+                    BulkInsertJob::dispatch($chunk)->onQueue('elasticsearch');
                 }
             }
-
-            if (count($ids))
-            {
-                $this->info('CommentTakerJob ['.count($ids).']');
-
-                CommentTakerJob::dispatch($ids)->onQueue('power-crawler');
-            }
-
-            if (count($chunk))
-            {
-                BulkInsertJob::dispatch($chunk)->onQueue('elasticsearch');
-            }
+        }
+        else
+        {
+            $this->error('Taranacak içerik bulunamadı.');
         }
     }
 

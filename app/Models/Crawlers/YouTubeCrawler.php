@@ -11,7 +11,7 @@ class YouTubeCrawler
     {
         switch ($type)
         {
-            case 'video':
+            case 'videos':
                 return Indices::create(
                     [
                         'youtube', 'videos'
@@ -68,10 +68,10 @@ class YouTubeCrawler
                 );
             break;
 
-            case 'comment':
+            default:
                 return Indices::create(
                     [
-                        'youtube', 'comments'
+                        'youtube', $type
                     ],
                     [
                         'comment' => [

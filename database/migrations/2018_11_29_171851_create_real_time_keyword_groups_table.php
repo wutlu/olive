@@ -22,7 +22,8 @@ class CreateRealTimeKeywordGroupsTable extends Migration
             $table->unsignedInteger('organisation_id')->index();
             $table->foreign('organisation_id')->references('id')->on('organisations')->onDelete('cascade')->onUpdate('cascade');
 
-            $table->boolean('module_youtube')->default(0);
+            $table->boolean('module_youtube_video')->default(0);
+            $table->boolean('module_youtube_comment')->default(0);
             $table->boolean('module_twitter')->default(0);
             $table->boolean('module_sozluk')->default(0);
             $table->boolean('module_news')->default(0);
