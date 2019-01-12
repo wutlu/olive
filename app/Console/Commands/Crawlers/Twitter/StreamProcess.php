@@ -19,6 +19,8 @@ use Mail;
 use App\Mail\ServerAlertMail;
 use App\Models\Crawlers\TwitterCrawler;
 
+use App\Utilities\DateUtility;
+
 class StreamProcess extends Command
 {
     private $endpoint = "https://stream.twitter.com/1.1/";
@@ -173,6 +175,7 @@ class StreamProcess extends Command
 
             $crawler = new TwitterCrawler;
             $sentiment = new Sentiment;
+            $dateUtility = new DateUtility;
 
             $bulk = [];
 
@@ -190,29 +193,62 @@ class StreamProcess extends Command
                 {
                     if (@$obj['id_str'])
                     {
+                        $store = null;
+
                         if (@$obj['retweeted_status'])
                         {
-                            $tweet = $crawler->pattern($obj['retweeted_status']);
-                            $tweet['sentiment'] = $sentiment->score($tweet['text']);
-                            $tweet = (object) $tweet;
+                            if ($dateUtility->checkDate($obj['retweeted_status']['created_at']))
+                            {
+                                $tweet = $crawler->pattern($obj['retweeted_status']);
+                                $tweet['sentiment'] = $sentiment->score($tweet['text']);
+                                $tweet = (object) $tweet;
 
-                            $bulk = $crawler->chunk($tweet, $bulk);
+                                $store = true;
+
+                                $bulk = $crawler->chunk($tweet, $bulk);
+
+                                //$this->info('tweetledi [rt] ['.$tweet->user->screen_name.']');
+                            }
+                            else
+                            {
+                                //$this->error('eski tarih ['.$obj['created_at'].']');
+                            }
                         }
 
                         if (@$obj['quoted_status'])
                         {
-                            $tweet = $crawler->pattern($obj['quoted_status']);
+                            if ($dateUtility->checkDate($obj['quoted_status']['created_at']))
+                            {
+                                $tweet = $crawler->pattern($obj['quoted_status']);
+                                $tweet['sentiment'] = $sentiment->score($tweet['text']);
+                                $tweet = (object) $tweet;
+
+                                $store = true;
+
+                                $bulk = $crawler->chunk($tweet, $bulk);
+
+                                //$this->info('tweetledi [qt] ['.$tweet->user->screen_name.']');
+                            }
+                            else
+                            {
+                                //$this->error('eski tarih ['.$obj['created_at'].']');
+                            }
+                        }
+
+                        if ($store === null || $store === true)
+                        {
+                            $tweet = $crawler->pattern($obj);
                             $tweet['sentiment'] = $sentiment->score($tweet['text']);
                             $tweet = (object) $tweet;
 
                             $bulk = $crawler->chunk($tweet, $bulk);
+
+                            //$this->info('tweetledi [tw] ['.$tweet->user->screen_name.']');
                         }
-
-                        $tweet = $crawler->pattern($obj);
-                        $tweet['sentiment'] = $sentiment->score($tweet['text']);
-                        $tweet = (object) $tweet;
-
-                        $bulk = $crawler->chunk($tweet, $bulk);
+                        else
+                        {
+                            //$this->error('eski tarih ['.$obj['created_at'].']');
+                        }
 
                         //$this->info($obj['text']);
                     }

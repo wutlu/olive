@@ -18,6 +18,8 @@ use App\Jobs\Elasticsearch\BulkInsertJob;
 
 use App\Models\YouTube\FollowingVideos;
 
+use App\Utilities\DateUtility;
+
 class CommentTakerJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -41,12 +43,12 @@ class CommentTakerJob implements ShouldQueue
      */
     public function handle()
     {
-        $chunk = [];
-
         if (count($this->ids))
         {
             foreach ($this->ids as $id)
             {
+                $chunk = [];
+
                 try
                 {
                     $commentThreads = Youtube::getCommentThreadsByVideoId($id, 100);
@@ -57,10 +59,13 @@ class CommentTakerJob implements ShouldQueue
                         {
                             $item = self::comment($comment);
 
-                            echo $item->data['text'].PHP_EOL;
+                            if (DateUtility::checkDate($item->data['created_at']))
+                            {
+                                //echo $item->data['text'].PHP_EOL;
 
-                            $chunk['body'][] = $this->index($item->data['id']);;
-                            $chunk['body'][] = $item->data;
+                                $chunk['body'][] = $this->index($item->data['id']);;
+                                $chunk['body'][] = $item->data;
+                            }
 
                             if ($item->replies)
                             {
@@ -68,10 +73,13 @@ class CommentTakerJob implements ShouldQueue
                                 {
                                     $item = self::comment($reply, $item->data['id']);
 
-                                    $chunk['body'][] = $this->index($item->data['id']);;
-                                    $chunk['body'][] = $item->data;
+                                    if (DateUtility::checkDate($item->data['created_at']))
+                                    {
+                                        $chunk['body'][] = $this->index($item->data['id']);;
+                                        $chunk['body'][] = $item->data;
+                                    }
 
-                                    echo $item->data['text'].PHP_EOL;
+                                    //echo $item->data['text'].PHP_EOL;
                                 }
                             }
                         }
@@ -81,12 +89,12 @@ class CommentTakerJob implements ShouldQueue
                 {
                     FollowingVideos::where('video_id', $id)->update([ 'reason' => 'Video yorumlara kapalı!' ]);
                 }
-            }
-        }
 
-        if (count($chunk))
-        {
-            BulkInsertJob::dispatch($chunk)->onQueue('elasticsearch');
+                if (count($chunk))
+                {
+                    BulkInsertJob::dispatch($chunk)->onQueue('elasticsearch');
+                }
+            }
         }
     }
 
@@ -140,7 +148,7 @@ class CommentTakerJob implements ShouldQueue
     public static function index(string $id)
     {   
         return [
-            'index' => [
+            'create' => [
                 '_index' => Indices::name([ 'youtube', 'comments' ]),
                 '_type' => 'comment',
                 '_id' => $id

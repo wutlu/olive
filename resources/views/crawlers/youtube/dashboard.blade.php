@@ -219,7 +219,7 @@
 
             if (indice_vid)
             {
-                $('[data-name=video-count]').html(number_format(indice_vid.total.docs.count))
+                $('[data-name=video-count]').html(number_format(indice_vid.primaries.docs.count))
                 $('[data-name=video-size]').html(humanFileSize(indice_vid.total.store.size_in_bytes))
 
                 $('[data-trigger=video-index]').remove()
@@ -231,7 +231,7 @@
 
             if (indice_com)
             {
-                $('[data-name=comment-count]').html(number_format(indice_com.total.docs.count))
+                $('[data-name=comment-count]').html(number_format(indice_com.primaries.docs.count))
                 $('[data-name=comment-size]').html(humanFileSize(indice_com.total.store.size_in_bytes))
 
                 $('[data-trigger=comment-index]').remove()

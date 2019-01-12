@@ -15,6 +15,9 @@ use App\Jobs\Elasticsearch\BulkInsertJob;
 use App\Jobs\Crawlers\YouTube\CommentTakerJob;
 
 use App\Models\YouTube\FollowingVideos;
+use App\Models\YouTube\FollowingKeywords;
+
+use App\Utilities\DateUtility;
 
 class VideoDetect extends Command
 {
@@ -54,7 +57,8 @@ class VideoDetect extends Command
         $types = [
             'trend' => 'Trend Videolar',
             'followed_channels' => 'Takip Edilen Kanal Videoları',
-            'followed_videos' => 'Takip Edilen Videolar'
+            'followed_videos' => 'Takip Edilen Videolar',
+            'followed_keywords' => 'Takip Edilen Kelimeler',
         ];
 
         if (!$type)
@@ -65,44 +69,41 @@ class VideoDetect extends Command
         switch ($type)
         {
             case 'trend':
-                $count = $this->option('count') ? $this->option('count') : 10;
-
-                if ($count > 50)
-                {
-                    $this->error('En fazla 50 video sorgulayabilirsiniz.');
-
-                    die;
-                }
-
-                $item_chunk = [
-                    YouTube::getPopularVideos('tr', $count)
-                ];
-
-                print_r($item_chunk);
-                exit();
+                $item_chunk = array_chunk(YouTube::getPopularVideos('tr', 50), 10);
             break;
             case 'followed_videos':
                 $ids = FollowingVideos::select('video_id')->whereNull('reason')->get();
 
-                $item_chunk = array_map(function($obj) {
-                    return $obj->video_id;
-                }, $ids);
+                $item_chunk = array_map(function($chunk) {
+                    return Youtube::getVideoInfo(array_map(function($chunk) {
+                        return $chunk['video_id'];
+                    }, $chunk));
+                }, $ids->chunk(10)->toArray());
+            break;
+            case 'followed_keywords':
+                $keywords = FollowingKeywords::select('keyword')->whereNull('reason')->get()->toArray();
 
-                $ids->chunk(50)->toArray()
+                $item_chunk = array_map(function ($item) {
+                    return Youtube::searchAdvanced([
+                        'q' => $item['keyword'],
+                        'type' => 'video',
+                        'part' => 'id, snippet',
+                        'maxResults' => 50
+                    ]);
+                }, $keywords);
 
-                print_r($item_chunk);
-                exit;
+                $item_chunk = array_flatten($item_chunk);
+                $item_chunk = array_chunk($item_chunk, 10);
             break;
         }
 
         foreach ($item_chunk as $items)
         {
+            $ids = [];
             $chunk = [];
 
             foreach ($items as $item)
             {
-                $ids = [];
-
                 $video = self::video($item);
 
                 if ($video->status == 'ok')
@@ -116,30 +117,55 @@ class VideoDetect extends Command
 
                     /*** related videos ***/
 
-                    $relatedVideos = Youtube::getRelatedVideos($video->data['id'], $count);
-
-                    foreach ($relatedVideos as $item)
+                    try
                     {
-                        $video = self::video($item);
+                        $relatedVideos = Youtube::getRelatedVideos($video->data['id'], 50);
 
-                        if ($video->status == 'ok')
+                        if ($relatedVideos)
                         {
-                            $ids[] = $video->data['id'];
+                            foreach (array_chunk($relatedVideos, 10) as $relatedChunk)
+                            {
+                                $relatedIds = [];
 
-                            $chunk['body'][] = $this->index($video->data['id']);
-                            $chunk['body'][] = $video->data;
+                                foreach ($relatedChunk as $relatedItem)
+                                {
+                                    $relatedVideo = self::video($relatedItem);
 
-                            $this->info('[related]'.$video->data['title']);
+                                    if ($relatedVideo->status == 'ok' && DateUtility::checkDate($relatedVideo->data['created_at']))
+                                    {
+                                        $relatedIds[] = $relatedVideo->data['id'];
+
+                                        $chunk['body'][] = $this->index($relatedVideo->data['id']);
+                                        $chunk['body'][] = $relatedVideo->data;
+
+                                        $this->info('[related]'.$relatedVideo->data['title']);
+                                    }
+                                }
+
+                                if (count($relatedIds))
+                                {
+                                    $this->info('CommentTakerJob ['.count($relatedIds).']');
+
+                                    CommentTakerJob::dispatch($relatedIds)->onQueue('power-crawler');
+                                }
+                            }
                         }
+                    }
+                    catch (\Exception $e)
+                    {
+                        $this->error($e->getMessage());
+                        // hata logu gir.
                     }
 
                     /*** ************** ***/
                 }
+            }
 
-                if (count($ids))
-                {
-                    CommentTakerJob::dispatch($ids)->onQueue('power-crawler');
-                }
+            if (count($ids))
+            {
+                $this->info('CommentTakerJob ['.count($ids).']');
+
+                CommentTakerJob::dispatch($ids)->onQueue('power-crawler');
             }
 
             if (count($chunk))
@@ -207,7 +233,7 @@ class VideoDetect extends Command
     public static function index(string $id)
     {   
         return [
-            'index' => [
+            'create' => [
                 '_index' => Indices::name([ 'youtube', 'videos' ]),
                 '_type' => 'video',
                 '_id' => $id

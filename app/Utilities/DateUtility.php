@@ -6,7 +6,7 @@ use Carbon\Carbon;
 
 class DateUtility
 {
-	# is date
+    # get date in dom
     public static function getDateInDom(string $dom, string $format = '')
     {
         $dom = mb_strtolower($dom);
@@ -116,29 +116,37 @@ class DateUtility
                 {
                     if (@$d[0])
                     {
-                        try
-                        {
-                            $date = new \DateTime($d[0]);
-
-                            $full_date = $date->format('Y-m-d H:i:s');
-
-                            if (date('H:i:s') != '00:00:00' && $date->format('H:i:s') == '00:00:00')
-                            {
-                                $full_date = $date->format('Y-m-d').' '.date('H:i:s');
-                            }
-
-                            if ($full_date < date('Y-m-d H:i:s', strtotime('+ 10 minute')) && $full_date > date('Y-m-d H:i:s', strtotime('- 7 day')))
-                            {
-                                return $full_date;
-                            }
-                        }
-                        catch (\Exception $e)
-                        {
-                            //
-                        }
+                        return self::checkDate($d[0]);
                     }
                 }
             }
+        }
+
+        return false;
+    }
+
+    # check date
+    public static function checkDate(string $date)
+    {
+        try
+        {
+            $date = new \DateTime($date);
+
+            $full_date = $date->format('Y-m-d H:i:s');
+
+            if (date('H:i:s') != '00:00:00' && $date->format('H:i:s') == '00:00:00')
+            {
+                $full_date = $date->format('Y-m-d').' '.date('H:i:s');
+            }
+
+            if ($full_date < date('Y-m-d H:i:s', strtotime('+ 10 minute')) && $full_date > date('Y-m-d H:i:s', strtotime('- 2 day')))
+            {
+                return $full_date;
+            }
+        }
+        catch (\Exception $e)
+        {
+            //
         }
 
         return false;

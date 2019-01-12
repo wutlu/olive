@@ -207,7 +207,7 @@
 
             if (indice)
             {
-                $('[data-name=search-count]').html(number_format(indice.total.docs.count))
+                $('[data-name=search-count]').html(number_format(indice.primaries.docs.count))
                 $('[data-name=search-size]').html(humanFileSize(indice.total.store.size_in_bytes))
 
                 $('[data-name=alert]').addClass('hide')

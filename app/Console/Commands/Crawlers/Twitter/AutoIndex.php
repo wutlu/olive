@@ -42,21 +42,23 @@ class AutoIndex extends Command
      */
     public function handle()
     {
+        $carbon = new Carbon;
+
         $last_month = Option::where('key', 'twitter.index.tweets')->first();
 
         if (@$last_month)
         {
-            $last_month = Carbon::createFromFormat('Y.m', $last_month->value)->format('Y.m');
+            $last_month = $carbon->createFromFormat('Y.m', $last_month->value)->format('Y.m');
 
-            while ($last_month <= date('Y.m'))
+            while ($last_month <= date('Y.m', strtotime('+1 month')))
             {
-                $last_month = Carbon::createFromFormat('Y.m', $last_month)->addMonth()->format('Y.m');
-
                 $index_name = implode('-', [ 'tweets', $last_month ]);
 
                 CreateTwitterIndexJob::dispatch($index_name, $last_month)->onQueue('elasticsearch');
 
                 echo $this->info($index_name);
+
+                $last_month = $carbon->createFromFormat('Y.m', $last_month)->addMonth()->format('Y.m');
             }
         }
         else

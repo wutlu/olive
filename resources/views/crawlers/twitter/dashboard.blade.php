@@ -24,7 +24,7 @@
         {
             if (obj.data.twitter.tweets.data._all.primaries.docs)
             {
-                $('[data-name=tweet-count]').html(number_format(obj.data.twitter.tweets.data._all.total.docs.count))
+                $('[data-name=tweet-count]').html(number_format(obj.data.twitter.tweets.data._all.primaries.docs.count))
                 $('[data-name=tweet-size]').html(humanFileSize(obj.data.twitter.size.tweet.data._all.total.store.size_in_bytes))
             }
             else
@@ -47,7 +47,7 @@
             }
             else
             {
-                $('[data-name=trend-count]').html(number_format(obj.data.twitter.trends.data._all.total.docs.count))
+                $('[data-name=trend-count]').html(number_format(obj.data.twitter.trends.data._all.primaries.docs.count))
                 $('[data-name=trend-size]').html(humanFileSize(obj.data.twitter.size.trend.data._all.total.store.size_in_bytes))
             }
 
@@ -433,7 +433,7 @@
                 <div
                     class="item-group load"
                     data-href="{{ route('admin.twitter.statistics') }}"
-                    data-timeout="1000"
+                    data-timeout="2000"
                     data-method="post"
                     data-callback="__statistics"
                     data-error-callback="__connection_failed">
