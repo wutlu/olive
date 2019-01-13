@@ -24,7 +24,7 @@ class AccountControl extends Command
      *
      * @var string
      */
-    protected $description = 'Müşteri Twitter hesaplarının aktif olup olmadığını kontrol eder.';
+    protected $description = 'Twitter kullanıcı hesaplarının aktif olup olmadığını kontrol et.';
 
     /**
      * Create a new command instance.
@@ -112,7 +112,13 @@ class AccountControl extends Command
         }
     }
 
-    # twitter kullanıcı profili.
+    /**
+     * Twitter Profili
+     *
+     * - Twitter profil bilgilerini getir.
+     *
+     * @return json
+     */
     public static function getUser(array $user, string $token = null, string $token_secret = null)
     {
         $stack = HandlerStack::create();

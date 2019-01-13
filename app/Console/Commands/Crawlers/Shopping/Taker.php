@@ -22,7 +22,7 @@ class Taker extends Command
      *
      * @var string
      */
-    protected $description = 'Ürün bağlantı toplayıcı.';
+    protected $description = 'Tespit edilen ürünleri topla.';
 
     /**
      * Create a new command instance.
@@ -42,7 +42,10 @@ class Taker extends Command
     public function handle()
     {
         $query = Document::list(
-            [ 'shopping', '*' ],
+            [
+                'shopping',
+                '*'
+            ],
             'product',
             [
                 'query' => [

@@ -22,7 +22,7 @@ class Taker extends Command
      *
      * @var string
      */
-    protected $description = 'Medya bağlantı toplayıcı.';
+    protected $description = 'Tespit edilen medya kaynaklarını topla.';
 
     /**
      * Create a new command instance.

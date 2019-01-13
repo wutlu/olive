@@ -30,7 +30,7 @@ class StreamUpdate extends Command
      *
      * @var string
      */
-    protected $description = 'Twitter gerçek zamanlı işlem ön planlayıcı.';
+    protected $description = 'Twitter, gerçek zamanlı eylem planla.';
 
     /**
      * Create a new command instance.
@@ -80,24 +80,12 @@ class StreamUpdate extends Command
         switch ($type)
         {
             case 'user':
-                $kquery = StreamingUsers::with('organisation')
-                                        ->whereNull('reason')
-                                        ->whereHas('organisation', function ($query) {
-                                           $query->where('status', true);
-                                        })
-                                        ->orderBy('user_id', 'ASC')
-                                        ->get();
+                $kquery = StreamingUsers::with('organisation')->whereNull('reason')->whereHas('organisation', function ($query) { $query->where('status', true); })->orderBy('user_id', 'ASC')->get();
                 $klimit = 5000;
                 $kcolumn = 'user_id';
             break;
             case 'keyword':
-                $kquery = StreamingKeywords::with('organisation')
-                                        ->whereNull('reason')
-                                        ->whereHas('organisation', function ($query) {
-                                           $query->where('status', true);
-                                        })
-                                        ->orderBy('keyword', 'ASC')
-                                        ->get();
+                $kquery = StreamingKeywords::with('organisation')->whereNull('reason')->whereHas('organisation', function ($query) { $query->where('status', true); })->orderBy('keyword', 'ASC')->get();
                 $klimit = 400;
                 $kcolumn = 'keyword';
             break;
@@ -112,7 +100,10 @@ class StreamUpdate extends Command
         if ($type == 'trend')
         {
             $query = Document::list(
-                [ 'twitter', 'trends' ],
+                [
+                    'twitter',
+                    'trends'
+                ],
                 'trend',
                 [
                     'size' => 0,
@@ -233,7 +224,7 @@ class StreamUpdate extends Command
         }
         else
         {
-            $message = 'Twitter akış için yeterli token bulunamadı.';
+            $message = 'Twitter, akış için yeterli token bulunamadı.';
 
             $this->error($message);
 

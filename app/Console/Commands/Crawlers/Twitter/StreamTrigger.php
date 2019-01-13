@@ -23,7 +23,7 @@ class StreamTrigger extends Command
      *
      * @var string
      */
-    protected $description = 'Twitter gerçek zamanlı işlem tetikleyici.';
+    protected $description = 'Twitter, gerçek zamanlı akış tetikle.';
 
     /**
      * Create a new command instance.
@@ -153,7 +153,7 @@ class StreamTrigger extends Command
         }
         else
         {
-            $this->error('İşlem yapılacak token bulunamadı.');
+            $this->error('Eylem yapılacak token bulunamadı.');
         }
     }
 }

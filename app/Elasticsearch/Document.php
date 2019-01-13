@@ -8,7 +8,11 @@ use System;
 
 class Document
 {
-    # tek döküman
+    /**
+     * Tek Döküman Çağır
+     *
+     * @return object
+     */
     public static function get($name, string $type, string $id)
     {
         if (is_array($name))
@@ -36,7 +40,12 @@ class Document
         }
         catch (\Exception $e)
         {
-            System::log(json_encode($e->getMessage()), 'App\Elasticsearch\Document::get('.$name.', '.$type.', '.$id.')');
+            System::log(
+                json_encode(
+                    $e->getMessage()
+                ),
+                'App\Elasticsearch\Document::get('.$name.', '.$type.', '.$id.')'
+            );
 
             return (object) [
                 'status' => 'err',
@@ -45,7 +54,11 @@ class Document
         }
     }
 
-    # çok döküman
+    /**
+     * Döküman Listele
+     *
+     * @return object
+     */
     public static function list(array $name, string $type, array $query)
     {
         $name = Indices::name($name);
@@ -72,7 +85,12 @@ class Document
         }
         catch (\Exception $e)
         {
-            System::log(json_encode($e->getMessage()), 'App\Elasticsearch\Document::list('.$name.', '.$type.', '.json_encode($query).')');
+            System::log(
+                json_encode(
+                    $e->getMessage()
+                ),
+                'App\Elasticsearch\Document::list('.$name.', '.$type.', '.json_encode($query).')'
+            );
 
             return (object) [
                 'status' => 'err',
@@ -81,7 +99,11 @@ class Document
         }
     }
 
-    # elasticsearch bulk insert
+    /**
+     * Toplu İş Girişi
+     *
+     * @return object
+     */
     public static function bulkInsert(array $chunk)
     {
         $client = ClientBuilder::fromConfig([
@@ -95,7 +117,13 @@ class Document
 
             if (@$query->status == 'error')
             {
-                System::log(json_encode($query->message), 'App\Elasticsearch\Document::bulkInsert()', 5);
+                System::log(
+                    json_encode(
+                        $query->message
+                    ),
+                    'App\Elasticsearch\Document::bulkInsert()',
+                    5
+                );
 
                 return (object) [
                     'status' => 'err',
@@ -112,7 +140,16 @@ class Document
         }
         catch (\Exception $e)
         {
-            System::log(json_encode([ $e->getMessage(), $chunk ]), 'App\Elasticsearch\Document::bulkInsert()', 10);
+            System::log(
+                json_encode(
+                    [
+                        $e->getMessage(),
+                        $chunk
+                    ]
+                ),
+                'App\Elasticsearch\Document::bulkInsert()',
+                10
+            );
 
             return (object) [
                 'status' => 'err',
@@ -121,7 +158,11 @@ class Document
         }
     }
 
-    # elasticsearch döküman güncelle
+    /**
+     * Döküman Güncelle
+     *
+     * @return object
+     */
     public static function patch(array $name, string $type, string $id, array $body = [])
     {
         $name = Indices::name($name);
@@ -147,7 +188,16 @@ class Document
         }
         catch (\Exception $e)
         {
-            System::log(json_encode([ $e->getMessage(), $body ]), 'App\Elasticsearch\Document::patch('.$name.', '.$type.')', 5);
+            System::log(
+                json_encode(
+                    [
+                        $e->getMessage(),
+                        $body
+                    ]
+                ),
+                'App\Elasticsearch\Document::patch('.$name.', '.$type.')',
+                5
+            );
 
             return (object) [
                 'status' => 'err',
@@ -156,7 +206,11 @@ class Document
         }
     }
 
-    # döküman sayısı
+    /**
+     * Döküman Sayısı
+     *
+     * @return object
+     */
     public static function count(array $name, string $type, array $body = [])
     {
         $name = Indices::name($name);
@@ -181,7 +235,12 @@ class Document
         }
         catch (\Exception $e)
         {
-            System::log(json_encode($e->getMessage()), 'App\Elasticsearch\Document::count('.$name.', '.$type.', '.json_encode($body).')');
+            System::log(
+                json_encode(
+                    $e->getMessage()
+                ),
+                'App\Elasticsearch\Document::count('.$name.', '.$type.', '.json_encode($body).')'
+            );
 
             return (object) [
                 'status' => 'err',
@@ -190,7 +249,11 @@ class Document
         }
     }
 
-    # döküman var mı?
+    /**
+     * Döküman Kontrolü
+     *
+     * @return object
+     */
     public static function exists($name, string $type, string $id)
     {
         if (is_array($name))
@@ -225,7 +288,9 @@ class Document
         }
     }
 
-    /*
+    /**
+     * Döküman Sil
+     *
      *   curl -X POST "192.168.44.1:9200/ * /_delete_by_query?pretty" -H 'Content-Type: application/json' -d'
      *   {
      *       "query": { 
@@ -239,8 +304,8 @@ class Document
      *       }
      *   }
      *   '
+     * @return object
      */
-    # sorguyla döküman sil
     public static function deleteByQUery($name, string $type, array $body)
     {
         if (is_array($name))

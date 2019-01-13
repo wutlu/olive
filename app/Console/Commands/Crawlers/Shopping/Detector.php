@@ -24,7 +24,7 @@ class Detector extends Command
      *
      * @var string
      */
-    protected $description = 'Ürün bağlantı tespit edici.';
+    protected $description = 'Ürün tespit et.';
 
     /**
      * Create a new command instance.
@@ -43,11 +43,7 @@ class Detector extends Command
      */
     public function handle()
     {
-        $crawlers = ShoppingCrawler::where([
-            'status' => true
-        ])
-        ->orderBy('control_date', 'ASC')
-        ->get();
+        $crawlers = ShoppingCrawler::where('status', true)->orderBy('control_date', 'ASC')->get();
 
         if (@$crawlers)
         {

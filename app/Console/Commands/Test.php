@@ -18,7 +18,7 @@ class Test extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Test komutu.';
 
     /**
      * Create a new command instance.

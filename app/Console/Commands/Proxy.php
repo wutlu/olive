@@ -23,7 +23,7 @@ class Proxy extends Command
      *
      * @var string
      */
-    protected $description = 'Proxy yaşam değerlerinin testi.';
+    protected $description = 'Proxy yaşam değerlerini test et.';
 
     /**
      * Create a new command instance.

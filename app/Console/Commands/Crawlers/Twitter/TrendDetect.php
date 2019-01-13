@@ -20,6 +20,11 @@ use Mail;
 
 class TrendDetect extends Command
 {
+    /**
+     * Twitter Api Adresi
+     *
+     * @var string
+     */
     private $endpoint = "https://api.twitter.com/1.1/";
 
     /**
@@ -34,7 +39,7 @@ class TrendDetect extends Command
      *
      * @var string
      */
-    protected $description = 'Twitter trend başlıkları alır.';
+    protected $description = 'Twitter trend başlıkları topla.';
 
     /**
      * Create a new command instance.
@@ -146,7 +151,7 @@ class TrendDetect extends Command
 
         if (count(@$chunk['body']) <= 10)
         {
-            Mail::queue(new ServerAlertMail('Twitter Trend Tespiti [Düşük Verim]', 'Twitter trend toplama verimliliğinde yoğun bir düşüş yaşandı. Lütfen logları inceleyin.'));
+            Mail::queue(new ServerAlertMail('Twitter, Trend Tespiti [Düşük Verim]', 'Twitter trend toplama verimliliğinde yoğun bir düşüş yaşandı. Lütfen logları inceleyin.'));
         }
     }
 }

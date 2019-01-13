@@ -22,7 +22,7 @@ class AutoIndex extends Command
      *
      * @var string
      */
-    protected $description = 'Indexleri içerikler alınmadan önce oluşturur.';
+    protected $description = 'Indexleri içerikler alınmadan önce oluştur.';
 
     /**
      * Create a new command instance.

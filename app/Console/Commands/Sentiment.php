@@ -10,6 +10,11 @@ use App\Utilities\Term;
 
 class Sentiment extends Command
 {
+    /**
+     * Duyru Türleri
+     *
+     * @var array
+     */
     public $classes = [ 'pos', 'neg', 'neu' ];
 
     /**
@@ -24,7 +29,7 @@ class Sentiment extends Command
      *
      * @var string
      */
-    protected $description = '';
+    protected $description = 'Duygu analizi testi.';
 
     /**
      * Create a new command instance.
@@ -43,7 +48,11 @@ class Sentiment extends Command
      */
     public function handle()
     {
-        $keys = [ 'neg' => 'Negatif', 'pos' => 'Pozitif', 'neu' => 'Nötr' ];
+        $keys = [
+            'neg' => 'Negatif',
+            'pos' => 'Pozitif',
+            'neu' => 'Nötr'
+        ];
 
         $strings = [
             'Bugün çok neşeliyim, neşemi kimse bozamaz net!',
@@ -77,7 +86,7 @@ class Sentiment extends Command
     }
 
     /**
-     * Execute the console command.
+     * Duygu Analizi veritabanı güncelle.
      *
      * @return mixed
      */

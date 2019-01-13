@@ -35,7 +35,7 @@ class Crawler extends Command
      *
      * @var string
      */
-    protected $description = 'Sözlük entry toplayıcı.';
+    protected $description = 'Sözlük girdilerini topla.';
 
     /**
      * Create a new command instance.
@@ -217,7 +217,7 @@ class Crawler extends Command
         }
         else
         {
-            $this->error('İşlemin gerçekleşmesi için botu aktif edin.');
+            $this->error('Eylemin çalışması için botu aktif edin.');
         }
     }
 }

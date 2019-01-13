@@ -37,7 +37,7 @@ class TrendDetect extends Command
      *
      * @var string
      */
-    protected $description = 'Google trend aramaları alır.';
+    protected $description = 'Google trend arama sonuçlarını çağır.';
 
     /**
      * Create a new command instance.

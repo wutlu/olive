@@ -23,6 +23,11 @@ use App\Utilities\DateUtility;
 
 class StreamProcess extends Command
 {
+    /**
+     * Twitter Api Adresi
+     *
+     * @var string
+     */
     private $endpoint = "https://stream.twitter.com/1.1/";
 
     /**
@@ -37,7 +42,7 @@ class StreamProcess extends Command
      *
      * @var string
      */
-    protected $description = 'Twitter gerçek zamanlı tweet toplayıcı.';
+    protected $description = 'Twitter, gerçek zamanlı akışa başla.';
 
     /**
      * Create a new command instance.
@@ -272,9 +277,11 @@ class StreamProcess extends Command
         }
     }
 
-    # 
-    # read line
-    # 
+    /**
+     * Akış Satır Okuyucu
+     *
+     * @return mixed
+     */
     private function read_line($stream, string $buffer = '', int $size = 0)
     {
         while (!$stream->eof())

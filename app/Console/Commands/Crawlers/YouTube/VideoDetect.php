@@ -34,7 +34,7 @@ class VideoDetect extends Command
      *
      * @var string
      */
-    protected $description = 'YouTube video toplayıcı.';
+    protected $description = 'YouTube video topla.';
 
     /**
      * Create a new command instance.
@@ -64,7 +64,7 @@ class VideoDetect extends Command
 
         if (!$type)
         {
-            $type = $this->choice('Hangi grubu takip etmek istersiniz?', $types, $type);
+            $type = $this->choice('Hangi eylemi uygulamak istiyorsunuz?', $types, $type);
         }
 
         switch ($type)
@@ -128,7 +128,7 @@ class VideoDetect extends Command
 
                         $this->info($video->data['title']);
 
-                        /*** related videos ***/
+                        ### [ ilişkili videolar ] ###
 
                         try
                         {
@@ -167,10 +167,15 @@ class VideoDetect extends Command
                         catch (\Exception $e)
                         {
                             $this->error($e->getMessage());
-                            // hata logu gir.
+
+                            System::log(
+                                json_encode($e->getMessage()),
+                                'App\Console\Commands\Crawler\YouTube\VideoDetect::handle('.$type.')',
+                                5
+                            );
                         }
 
-                        /*** ************** ***/
+                        ### ### ###
                     }
                 }
 
@@ -194,7 +199,7 @@ class VideoDetect extends Command
     }
 
     /**
-     * video
+     * Video Objesi
      *
      * @return object;
      */
@@ -244,7 +249,7 @@ class VideoDetect extends Command
     }
 
     /**
-     * index
+     * Video İçin Index
      *
      * @return array;
      */

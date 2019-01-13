@@ -19,7 +19,7 @@ class Nohup extends Command
      *
      * @var string
      */
-    protected $description = 'Arkaplanda işlem çalıştırır.';
+    protected $description = 'Arkaplanda işlem çalıştır.';
 
     /**
      * Create a new command instance.
@@ -86,7 +86,11 @@ class Nohup extends Command
         }
     }
 
-    # kill
+    /**
+     * Kill Process
+     *
+     * @return string
+     */
     public function kill(int $process_id)
     {
         $cmd = implode(' ', [
@@ -107,7 +111,11 @@ class Nohup extends Command
         return '['.$process_id.'] process killed. ('.$pid.')';
     }
 
-    # start
+    /**
+     * Start Process
+     *
+     * @return string
+     */
     public function start(string $key, string $sh)
     {
         $cmd = implode(' ', [

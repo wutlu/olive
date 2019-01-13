@@ -7,13 +7,25 @@ use System;
 
 class Indices
 {
-    # elasticsearch index name
+    /**
+     * Index Adı
+     *
+     * - Elasticsearch indexleri bir arada tutulur.
+     * Bu durum çeşitli karışıklıklara neden olabileceğinden,
+     * indexlere alias eklenerek bir önlem alınır.
+     *
+     * @return string
+     */
     public static function name(array $name)
     {
         return str_slug(config('app.name')).'__'.implode('-', $name);
     }
 
-    # elasticsearch index schema
+    /**
+     * Index Şeması
+     *
+     * @return object
+     */
     public static function create(array $name, array $mapping, array $params = [])
     {
         $name = self::name($name);
@@ -72,12 +84,12 @@ class Indices
                             ],
                             'analysis' => [
                                 'filter' => [
-                                    // değiştirilmeyecek kelimeler.
+                                    # [ değiştirilmeyecek kelimeler ] #
                                     'turkish_keywords' => [
                                         'type' => 'keyword_marker',
                                         'keywords_path' => 'analysis/keywords.txt'
                                     ],
-                                    // ilgilenilmeyecek kelimeler.
+                                    # [ umursanmayacak kelimeler ] #
                                     'turkish_stop' => [
                                         'type' => 'stop',
                                         'stopwords_path' => 'analysis/stopwords.txt'
@@ -90,7 +102,7 @@ class Indices
                                         'type' => 'stemmer',
                                         'language' => 'turkish'
                                     ],
-                                    // eş anlamlı kelimeler.
+                                    # [ eş anlamlı kelimeler ] #
                                     /*
                                     'graph_synonyms' => [
                                         'type' => 'synonym_graph',
@@ -98,12 +110,12 @@ class Indices
                                         'lenient' => true
                                     ],
                                     */
-                                    // kelime yuvarlama.
+                                    # [ kelime yuvarlama ] #
                                     'my_snow' => [
                                         'type' => 'snowball',
                                         'language' => 'Turkish'
                                     ],
-                                    // girilen değerden büyük kelimelerle ilgileniyoruz.
+                                    # [ sadece 5 karakterden büyük kelimeler ] #
                                     'my_script_filter' => [
                                         'type' => 'predicate_token_filter',
                                         'script' => [
@@ -115,14 +127,14 @@ class Indices
                                     'turkish' => [
                                         'tokenizer' => 'standard',
                                         'filter' => [
-                                            'classic', // kısaltmalardaki noktaları kaldırır.
+                                            'classic', # [ bkz. gibi kısaltmalardaki . kaldırılır ] #
                                             'turkish_lowercase',
-                                            'turkish_keywords', // keywords.txt içerisine girilen kelimeler üzerinde işlem yapmaz.
-                                            'turkish_stop', // stopwords.txt dosyasındaki kelimelerle ilgilenilmeyecek.
-                                            'apostrophe', // kesme işareti ve ayrılan ek'i saymaz.
-                                            'turkish_stemmer', // sözcüğü köklerinden ayırır. stopwords kelimeleri hariç.
+                                            'turkish_keywords',
+                                            'turkish_stop',
+                                            'apostrophe', # [ kesme işaretleri ve ayrılan ek kaldırılır ('de) gibi ] #
+                                            'turkish_stemmer', # [ stopwords kelimeleri hariç tüm sözcükler eklerine ayrılır ] #
                                             'my_script_filter',
-                                            //'graph_synonyms', // eş anlamlı kelimeler.
+                                            //'graph_synonyms',
                                             'my_snow'
                                         ]
                                     ]
@@ -139,7 +151,13 @@ class Indices
             }
             catch (\Exception $e)
             {
-                System::log(json_encode($e->getMessage()), 'App\Elasticsearch\Indices::create('.$name.')', 10);
+                System::log(
+                    json_encode(
+                        $e->getMessage()
+                    ),
+                    'App\Elasticsearch\Indices::create('.$name.')',
+                    10
+                );
 
                 return (object) [
                     'status' => 'err',
@@ -149,7 +167,11 @@ class Indices
         }
     }
 
-    # elasticsearch index drop
+    /**
+     * Index Sil
+     *
+     * @return object
+     */
     public static function drop(array $name)
     {
         $name = self::name($name);
@@ -171,7 +193,12 @@ class Indices
         }
         catch (\Exception $e)
         {
-            System::log(json_encode($e->getMessage()), 'App\Elasticsearch\Indices::drop('.$name.')');
+            System::log(
+                json_encode(
+                    $e->getMessage()
+                ),
+                'App\Elasticsearch\Indices::drop('.$name.')'
+            );
 
             return [
                 'status' => 'err',
@@ -180,7 +207,11 @@ class Indices
         }
     }
 
-    # elasticsearch index stat
+    /**
+     * Index Istatistikleri
+     *
+     * @return object
+     */
     public static function stats(array $name)
     {
         $name = self::name($name);
@@ -203,7 +234,12 @@ class Indices
         }
         catch (\Exception $e)
         {
-            System::log(json_encode($e->getMessage()), 'App\Elasticsearch\Indices::stats('.$name.')');
+            System::log(
+                json_encode(
+                    $e->getMessage()
+                ),
+                'App\Elasticsearch\Indices::stats('.$name.')'
+            );
 
             return (object) [
                 'status' => 'err',
@@ -212,7 +248,11 @@ class Indices
         }
     }
 
-    # elasticsearch _cat/indices
+    /**
+     * Index Listesi
+     *
+     * @return object
+     */
     public static function indices(array $name = [])
     {
         $name = self::name($name);
@@ -235,7 +275,12 @@ class Indices
         }
         catch (\Exception $e)
         {
-            System::log(json_encode($e->getMessage()), 'App\Elasticsearch\Indices::indices('.$name.')');
+            System::log(
+                json_encode(
+                    $e->getMessage()
+                ),
+                'App\Elasticsearch\Indices::indices('.$name.')'
+            );
 
             return (object) [
                 'status' => 'err',

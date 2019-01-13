@@ -31,50 +31,56 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        /**
+         * Kurulum sağlandıktan sonra .env dosyasından
+         * FIRT_MIGRATION alanı true olarak güncellenmeli.
+         */
         if (env('FIRST_MIGRATION'))
         {
-            # 
-            # her pazartesi ödeme bildirimi gönderir
-            # 
+            /**
+             * Organizasyon sahibi kullanıcılara
+             * her Pazartesi ödeme bildirimi e-postası gönder.
+             */
             $schedule->command('check:upcoming_payments')
                      ->mondays()
                      ->timezone(config('app.timezone'))
                      ->withoutOverlapping();
 
-            # 
-            # toplanılmak üzere bağlantı tespit eder
-            # 
+            /**
+             * Kaynak Tespiti
+             */
             $schedule->command('nohup "media:detector" --type=start')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
             $schedule->command('nohup "shopping:detector" --type=start')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
 
-            # 
-            # bağlantı toplar
-            # 
+            /**
+             * Kaynak Toplama
+             */
             $schedule->command('nohup "media:taker" --type=start')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
             $schedule->command('nohup "shopping:taker" --type=start')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
 
-            # 
-            # medya bağlantıları için kontrol aralığı belirleme
-            # 
+            /**
+             * Medya botları için kontrol aralığı belirle.
+             */
             $schedule->command('nohup "media:minuter" --type=start')->hourly()->timezone(config('app.timezone'))->withoutOverlapping();
 
-            # 
-            # sistem alarmı kontrolü
-            # 
+            /**
+             * Olağanüstü sunucu durumlarını e-posta gönder.
+             */
             $schedule->command('alarm:control')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
 
-            #
-            # müşteri Twitter hesaplarının durumunu kontrol eder
-            #
+            /**
+             * Twitter kullanıcı hesaplarının geçerliliğinin kontrolü.
+             */
             $schedule->command('nohup "twitter:account_control" --type=restart')->hourly()->timezone(config('app.timezone'));
 
-            #
-            # pinleme pdf çıktılarını tetikler
-            #
+            /**
+             * Pinleme için PDF çıktı modülünün tetiklenmesi.
+             */
             $schedule->command('trigger:pdf:pin_groups')->everyMinute()->timezone(config('app.timezone'));
 
-            /* ---------------------------------------- */
-
+            /**
+             * Sözlük botlarının Tetiklenmesi
+             */
             $crawlers = SozlukCrawler::where('status', true)->get();
 
             if (count($crawlers))
@@ -88,8 +94,9 @@ class Kernel extends ConsoleKernel
                 }
             }
 
-            /* ---------------------------------------- */
-
+            /**
+             * YouTube botlarının tetiklenmesi.
+             */
             $option = Option::where('key', 'youtube.status')->where('value', 'on')->exists();
 
             if ($option)
@@ -115,8 +122,9 @@ class Kernel extends ConsoleKernel
                          ->withoutOverlapping();
             }
 
-            /* ---------------------------------------- */
-
+            /**
+             * Google botlarının tetiklenmesi.
+             */
             $option = Option::where('key', 'google.status')->where('value', 'on')->exists();
 
             if ($option)
@@ -126,12 +134,9 @@ class Kernel extends ConsoleKernel
                          ->timezone(config('app.timezone'));
             }
 
-            /* ---------------------------------------- */
-
             /**
-             * auto index [ twitter, youtube ]
+             * Otomatik index modülü.
              */
-
             $options = Option::whereIn('key', [
                 'twitter.index.auto',
                 'youtube.index.auto',
@@ -154,8 +159,9 @@ class Kernel extends ConsoleKernel
                 }
             }
 
-            /* ---------------------------------------- */
-
+            /**
+             * Twitter Trend Modülü
+             */
             $option = Option::where('key', 'twitter.trend.status')->where('value', 'on')->exists();
 
             if ($option)
@@ -166,8 +172,9 @@ class Kernel extends ConsoleKernel
                          ->withoutOverlapping();
             }
 
-            /* ---------------------------------------- */
-
+            /**
+             * Twitter Tweet Modülü
+             */
             $option = Option::where('key', 'twitter.status')->where('value', 'on')->exists();
 
             if ($option)
@@ -179,29 +186,33 @@ class Kernel extends ConsoleKernel
 
             $schedule->command('nohup "twitter:stream:trigger" --type=start')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
 
-            /* ---------------------------------------- */
-
+            /**
+             * Proxy Durum Testleri
+             */
             $schedule->command('nohup "proxy:check" --type=restart')
                      ->hourly()
                      ->timezone(config('app.timezone'))
                      ->withoutOverlapping();
 
-            /* ---------------------------------------- */
-
+            /**
+             * Forum uyarıları e-posta kuyruğu.
+             */
             $schedule->command('nohup "forum:notification_trigger" --type=restart')
                      ->everyFiveMinutes()
                      ->timezone(config('app.timezone'))
                      ->withoutOverlapping();
 
-            /* ---------------------------------------- */
-
+            /**
+             * E-posta bülteni e-posta kuyruğu.
+             */
             $schedule->command('nohup "newsletter:process_trigger" --type=restart')
                      ->everyMinute()
                      ->timezone(config('app.timezone'))
                      ->withoutOverlapping();
 
-            /* ---------------------------------------- */
-
+            /**
+             * Başarılı olamayan eylemlerin tekrar kuyruğu.
+             */
             $schedule->command('nohup "queue:retry all" --type=restart')
                      ->hourly()
                      ->timezone(config('app.timezone'))
