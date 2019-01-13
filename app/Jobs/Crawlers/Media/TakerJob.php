@@ -90,7 +90,7 @@ class TakerJob
                 # ES hatalarını 10 dakika sonra tekrar dene.
                 if ($upsert->status == 'err')
                 {
-                    TakerJob::dispatch($this->data)->onQueue('crawler')->delay(now()->addMinutes(10));
+                    TakerJob::dispatch($this->data)->onQueue('error-crawler')->delay(now()->addMinutes(10));
                 }
             }
             else if ($item->status == 'err' || $item->status == 'failed')

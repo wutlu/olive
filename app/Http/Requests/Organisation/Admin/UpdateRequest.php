@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Organisation\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Validator;
 
 class UpdateRequest extends FormRequest
 {
@@ -17,14 +18,30 @@ class UpdateRequest extends FormRequest
     }
 
     /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'name' => 'Sadece alfa-nümerik karakterler ve "." nokta kullanabilirsiniz.',
+        ];
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
     public function rules()
     {
+        Validator::extend('name', function($attribute, $value) {
+            return !preg_match('/[^a-zA-Z0-9\.]/', $value);
+        });
+
         return [
-            'name'     => 'required|string|max:100',
+            'name'     => 'required|string|max:100|name',
             'status'   => 'nullable|string|in:on',
             'capacity' => 'required|integer|max:12|min:1',
             'end_date' => 'required|date_format:Y-m-d',

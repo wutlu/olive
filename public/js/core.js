@@ -31,6 +31,7 @@ function number_format(number)
 }
 
 /* --- str limit --- */
+
 function str_limit(text, size)
 {
     return text.length > size ? text.slice(0, size - 1) + '...' : text;
@@ -123,6 +124,28 @@ function scrollTo(scrollTo)
 
 $(document).on('keydown keyup change click', '.goodbye', function() {
     window.onbeforeunload = goodbye; 
+}).on('click', '[data-modal-alert]', function() {
+    var __ = $(this);
+
+    return modal({
+        'id': 'err',
+        'body': $('<span />', {
+            'html': __.data('modal-alert'),
+            'css': {
+                'font-size': '18px'
+            }
+        }),
+        'title': __.data('modal-alert-title'),
+        'size': 'modal-small',
+        'options': {},
+        'footer': [
+           $('<a />', {
+               'href': '#',
+               'class': 'modal-close waves-effect btn-flat cyan-text',
+               'html': buttons.ok
+           })
+        ]
+    })
 })
 
 function goodbye(e)
@@ -821,7 +844,7 @@ function vzAjax(__)
                                 'html': buttons.ok
                             })
                         ]
-                    });
+                    })
             }
             else
             {
@@ -897,7 +920,7 @@ function vzAjax(__)
                                 'html': buttons.ok
                             })
                         ]
-                    });
+                    })
             }
 
             __result(__)

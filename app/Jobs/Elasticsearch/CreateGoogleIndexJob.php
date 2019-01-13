@@ -51,7 +51,7 @@ class CreateGoogleIndexJob implements ShouldQueue
         }
         else
         {
-            CreateGoogleIndexJob::dispatch()->onQueue('elasticsearch')->delay(now()->addMinutes(10));
+            CreateGoogleIndexJob::dispatch()->onQueue('error-crawler')->delay(now()->addMinutes(10));
         }
     }
 }

@@ -46,7 +46,7 @@
                     @endif
 
                     @if (@$organisation->twitterAccount->status === false)
-                        <pre class="red-text grey-text">{{ $organisation->twitterAccount->reasons }}.</pre>
+                        <pre class="red-text red-text">{{ $organisation->twitterAccount->reasons }}</pre>
                     @endif
 
                     <div class="center-align">

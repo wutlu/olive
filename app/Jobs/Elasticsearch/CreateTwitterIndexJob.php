@@ -56,7 +56,7 @@ class CreateTwitterIndexJob implements ShouldQueue
         }
         else
         {
-            CreateTwitterIndexJob::dispatch($this->type, $this->value)->onQueue('elasticsearch')->delay(now()->addMinutes(10));
+            CreateTwitterIndexJob::dispatch($this->type, $this->value)->onQueue('error-crawler')->delay(now()->addMinutes(10));
         }
     }
 }

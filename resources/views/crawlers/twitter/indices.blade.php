@@ -83,19 +83,19 @@
              data-callback="__indices"
              data-method="post"
              data-nothing
-             data-timeout="1000"
+             data-timeout="4000"
              data-error-callback="__timeout">
             <li class="collection-item nothing hide">
                 @component('components.nothing')@endcomponent
             </li>
-            <li class="collection-item model hide">
+            <li class="collection-item model hide justify-content-between">
                 <span class="align-self-center">
-                	<p data-name="name"></p>
-                	<p data-name="health"></p>
+                	<p data-name="name" class="mb-0"></p>
+                	<p data-name="health" class="mb-0"></p>
                 </span>
-                <small class="badge ml-auto right-align">
-                	<p data-name="count"></p>
-                	<p data-name="size"></p>
+                <small class="grey-text d-flex align-items-end flex-column">
+                	<p data-name="count" class="mb-0"></p>
+                	<p data-name="size" class="mb-0"></p>
                 </small>
             </li>
         </ul>

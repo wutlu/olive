@@ -140,7 +140,7 @@
                 id="stats"
                 class="grey darken-4 load"
                 data-method="post"
-                data-timeout="1000"
+                data-timeout="4000"
                 data-href="{{ route('crawlers.shopping.bot.statistics', $crawler->id) }}"
                 data-callback="__stats"
                 data-error-callback="__connection_failed">
@@ -199,23 +199,36 @@
                                     <small class="helper-text">Veri toplanacak sitenin Ana Sayfa http(s) adresi.</small>
                                 </div>
                             </div>
-                            <div style="max-width: 40%; padding: 1rem;">
+                            <div style="max-width: 30%; padding: 1rem;">
                                 <div class="input-field">
                                     <input name="google_search_query" id="google_search_query" value="{{ $crawler->google_search_query }}" type="text" class="validate" data-length="255" />
                                     <label for="google_search_query">Google Arama Sorgusu</label>
                                     <small class="helper-text">Ürün bağlantılarının tespiti için ilgili siteden içerikleri elde etme amaçlı sorgu sonucu.<br />Bkz: site:sahibinden.com/ilan</small>
                                 </div>
                             </div>
-                            <div style="max-width: 30%; padding: 1rem;">
-			                    <div class="input-field">
-			                        <select name="google_max_page" id="google_max_page">
-			                        	@for ($i = 1; $i <= 10; $i++)
-			                        		<option value="{{ $i }}" @if ($crawler->google_max_page == $i){{ 'selected' }}@endif>{{ $i }}</option>
-			                        	@endfor
-			                        </select>
-			                        <label for="google_max_page">Google Maksimum Sayfa Sayısı</label>
-			                        <small class="helper-text">Google sonuçları alınırken gidilecek maksimum sayfa sayısı. (Her sayfada 10 kayıt bulunur)</small>
-			                    </div>
+                            <div style="max-width: 20%; padding: 1rem;">
+                                <div class="input-field">
+                                    <select name="google_max_page" id="google_max_page">
+                                        @for ($i = 1; $i <= 10; $i++)
+                                            <option value="{{ $i }}" @if ($crawler->google_max_page == $i){{ 'selected' }}@endif>{{ $i }}</option>
+                                        @endfor
+                                    </select>
+                                    <label for="google_max_page">Google Maksimum Sayfa Sayısı</label>
+                                    <small class="helper-text">Google sonuçları alınırken gidilecek maksimum sayfa sayısı. (Her sayfada 10 kayıt bulunur)</small>
+                                </div>
+                            </div>
+                            <div style="max-width: 20%; padding: 1rem;">
+                                <div class="input-field">
+                                    <select name="google_time" id="google_time">
+                                            <option value="h" @if ($crawler->google_time == 'h'){{ 'selected' }}@endif>1 Saat</option>
+                                            <option value="d" @if ($crawler->google_time == 'd'){{ 'selected' }}@endif>1 Gün</option>
+                                            <option value="w" @if ($crawler->google_time == 'w'){{ 'selected' }}@endif>1 Hafta</option>
+                                            <option value="m" @if ($crawler->google_time == 'm'){{ 'selected' }}@endif>1 Ay</option>
+                                            <option value="y" @if ($crawler->google_time == 'y'){{ 'selected' }}@endif>1 Yıl</option>
+                                    </select>
+                                    <label for="google_max_page">Google Zaman Sınırlaması</label>
+                                    <small class="helper-text">Google sonuçları alınırken gidilecek maksimum zaman.</small>
+                                </div>
                             </div>
                         </div>
                     </div>

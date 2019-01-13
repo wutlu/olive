@@ -30,6 +30,7 @@ class UpdateRequest extends FormRequest
             'site'                   => 'required|string|max:255|active_url',
             'google_search_query'    => 'required|string|max:255',
             'google_max_page'        => 'required|integer|max:10|min:1',
+            'google_time'            => 'required|string|in:h,d,w,m,y',
             'url_pattern'            => 'required|string|max:255',
             'selector_title'         => 'required|string|max:255',
             'selector_breadcrumb'    => 'required|string|max:255',

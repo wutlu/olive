@@ -52,7 +52,7 @@ class CreateSozlukIndexJob implements ShouldQueue
             }
             else
             {
-                CreateSozlukIndexJob::dispatch($this->id)->onQueue('elasticsearch')->delay(now()->addMinutes(10));
+                CreateSozlukIndexJob::dispatch($this->id)->onQueue('error-crawler')->delay(now()->addMinutes(10));
             }
 
             $es->save();

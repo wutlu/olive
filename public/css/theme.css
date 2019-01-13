@@ -902,10 +902,10 @@ table.invoice tfoot > tr {
 }
 
 /**
- * textarea
+ * overflow
  */
-textarea.max-height {
-  overflow: auto;
+.max-height {
+  overflow: auto !important;
   max-height: 264px !important;
 }
 
@@ -1874,6 +1874,9 @@ table tr {
   padding: 24px 24px 12px 24px;
   font-size: 22px;
 }
+.modal .modal-content > .modal-title:empty {
+  display: none;
+}
 .modal .modal-content > .modal-body {
   overflow: auto;
   max-height: 400px;
@@ -1923,15 +1926,13 @@ ul#slide-out {
 }
 ul#slide-out li.tiny {
   max-width: 90%;
+  padding: 1px 0;
 }
 ul#slide-out li.tiny > a {
   border-radius: 0 2rem 2rem 0;
 }
 ul#slide-out li > a > span.badge {
   min-width: 1rem;
-}
-ul#slide-out li > .collapsible-body {
-  padding: 1rem 0;
 }
 
 /**

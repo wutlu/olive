@@ -52,7 +52,7 @@ class CreateShoppingIndexJob implements ShouldQueue
             }
             else
             {
-                CreateShoppingIndexJob::dispatch($this->id)->onQueue('elasticsearch')->delay(now()->addMinutes(10));
+                CreateShoppingIndexJob::dispatch($this->id)->onQueue('error-crawler')->delay(now()->addMinutes(10));
             }
 
             $es->save();

@@ -147,7 +147,7 @@ class Document
         }
         catch (\Exception $e)
         {
-            System::log(json_encode($e->getMessage()), 'App\Elasticsearch\Document::patch('.$name.', '.$type.')', 5);
+            System::log(json_encode([ $e->getMessage(), $body ]), 'App\Elasticsearch\Document::patch('.$name.', '.$type.')', 5);
 
             return (object) [
                 'status' => 'err',

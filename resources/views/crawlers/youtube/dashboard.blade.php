@@ -74,7 +74,7 @@
             <div
                 class="item-group load"
                 data-href="{{ route('admin.youtube.statistics') }}"
-                data-timeout="2000"
+                data-timeout="4000"
                 data-method="post"
                 data-callback="__statistics"
                 data-error-callback="__connection_failed">
@@ -98,8 +98,6 @@
         </div>
 
         <div class="card-content red hide" data-name="alert"></div>
-
-        <div class="card-content grey-text">Log takibini log monitörü bölümünden de yapabilirsiniz. Bu alan sadece "YouTube" modülü ile ilgili logları gösterir.</div>
 
         <ul
             id="console"

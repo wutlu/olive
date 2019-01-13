@@ -248,7 +248,13 @@ class ShoppingController extends Controller
 
         $data['status'] = 'err';
 
-        $links = Crawler::googleSearchResultLinkDetection($request->site, $request->url_pattern, $request->google_search_query, $request->google_max_page);
+        $links = Crawler::googleSearchResultLinkDetection(
+            $request->site,
+            $request->url_pattern,
+            $request->google_search_query,
+            $request->google_time,
+            $request->google_max_page
+        );
 
         $total = 0;
         $accepted = 0;

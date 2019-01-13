@@ -34,13 +34,6 @@
             </div>
         </div>
         <div class="card-content red hide" data-name="alert"></div>
-    </div>
-    <div class="card">
-        <div class="card-image">
-            <img src="{{ asset('img/card-header.jpg') }}" alt="Hata Logları" />
-            <span class="card-title">Hata Logları</span>
-        </div>
-        <div class="card-content grey-text">Log takibini log monitörü bölümünden de yapabilirsiniz. Bu alan sadece "Google" modülü ile ilgili logları gösterir.</div>
         <ul
             id="console"
             class="collection black load d-flex align-items-end flex-wrap no-select"
@@ -146,7 +139,7 @@
             data-method="post"
             data-href="{{ route('admin.google.index.status') }}"
             data-callback="__status"
-            data-timeout="1000"
+            data-timeout="4000"
             data-error-callback="__connection_failed">
             <label class="collection-item waves-effect d-block">
                 <input

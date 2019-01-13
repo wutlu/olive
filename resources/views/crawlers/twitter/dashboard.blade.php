@@ -433,7 +433,7 @@
                 <div
                     class="item-group load"
                     data-href="{{ route('admin.twitter.statistics') }}"
-                    data-timeout="2000"
+                    data-timeout="4000"
                     data-method="post"
                     data-callback="__statistics"
                     data-error-callback="__connection_failed">
@@ -479,7 +479,7 @@
             </div>
         </div>
         <div id="logs" style="display: none;">
-            <div class="card-content grey-text">Log takibini log monitörü bölümünden de yapabilirsiniz. Bu alan sadece "Twitter" modülü ile ilgili logları gösterir.</div>
+            <div class="card-content grey-text">Bu alan sadece "Twitter" modülü ile ilgili logları gösterir.</div>
             <ul
                 id="console"
                 class="collection black load d-flex align-items-end flex-wrap no-select"

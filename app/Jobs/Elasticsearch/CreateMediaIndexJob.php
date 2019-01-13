@@ -52,7 +52,7 @@ class CreateMediaIndexJob implements ShouldQueue
             }
             else
             {
-                CreateMediaIndexJob::dispatch($this->id)->onQueue('elasticsearch')->delay(now()->addMinutes(10));
+                CreateMediaIndexJob::dispatch($this->id)->onQueue('error-crawler')->delay(now()->addMinutes(10));
             }
 
             $es->save();

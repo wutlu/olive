@@ -7,6 +7,7 @@ return [
         'lead-3' => 'Her gün gelişmekte olan Olive ile yeniliklere açık olun!',
     ],
     'keywords' => [
+        'alert' => 'Uyarı',
         'ok' => 'Tamam',
         'cancel' => 'Vazgeç',
         'update' => 'Güncelle',

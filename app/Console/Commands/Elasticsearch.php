@@ -42,80 +42,143 @@ class Elasticsearch extends Command
     public function handle()
     {
         $option = $this->choice(
-            'What do you want to do?', [
-                'list' => 'List of Indices',
-                'delete' => 'Delete Indices',
-            ], 'list');
+            'What do you want to do?',
+            [
+                'list_index' => 'List of Indices',
+                'delete_index' => 'Delete Indices',
+                'delete_doc' => 'Delete Document',
+            ],
+            'list_index'
+        );
 
-        if ($option == 'delete' || $option == 'list')
+        $alias = str_slug(config('app.name'));
+
+        $client = ClientBuilder::fromConfig([
+            'hosts' => config('database.connections.elasticsearch.hosts'),
+            'retries' => 5
+        ]);
+
+        $response = $client->indices()->stats([ 'index' => $alias.'__'.'*' ]);
+
+        if (@$response['indices'])
         {
-            $alias = str_slug(config('app.name'));
+            [$indices, $stats] = array_divide($response['indices']);
 
-            $client = ClientBuilder::fromConfig([
-                'hosts' => config('database.connections.elasticsearch.hosts'),
-                'retries' => 5
-            ]);
+            $autocomlete = [];
 
-            $response = $client->indices()->stats([ 'index' => $alias.'__'.'*' ]);
-
-            if (@$response['indices'])
+            foreach ($indices as $no => $key)
             {
-                [$indices, $stats] = array_divide($response['indices']);
+                unset($indices[$no]);
 
-                $autocomlete = [];
+                $name = str_replace([ $alias, '__' ], '', $key);
 
-                foreach ($indices as $no => $key)
+                $indices[] = [
+                    'key' => $name,
+                    'count' => number_format(@$stats[$no]['total']['docs']['count']),
+                    'size' => @$stats[$no]['total']['store']['size_in_bytes']
+                ];
+
+                $autocomlete[] = $name;
+            }
+
+            $this->table(['Key', 'Docs Count', 'Size'], $indices);
+
+            if ($option == 'delete_index')
+            {
+                $name = $this->anticipate('Please select the index you want to delete', $autocomlete);
+
+                if ($name)
                 {
-                    unset($indices[$no]);
-
-                    $name = str_replace([ $alias, '__' ], '', $key);
-
-                    $indices[] = [
-                        'key' => $name,
-                        'count' => number_format(@$stats[$no]['total']['docs']['count']),
-                        'size' => @$stats[$no]['total']['store']['size_in_bytes']
-                    ];
-
-                    $autocomlete[] = $name;
-                }
-
-                $this->table(['Key', 'Docs Count', 'Size'], $indices);
-
-                if ($option == 'delete')
-                {
-                    $name = $this->anticipate('Please select the index you want to delete', $autocomlete);
-
-                    if ($name)
+                    if ($this->confirm('Are you sure?'))
                     {
-                        if ($this->confirm('Are you sure?'))
-                        {
-                            $password = $this->secret('Password?');
+                        $password = $this->secret('Password?');
 
-                            if ($password == config('app.password'))
-                            {
-                                $this->line(Indices::drop([ $name ]));
-                                $this->info('Index deleted.');
-                            }
-                            else
-                            {
-                                $this->error('The password you entered is not valid.');
-                            }
+                        if ($password == config('app.password'))
+                        {
+                            $this->line(Indices::drop([ $name ]));
+                            $this->info('Index deleted.');
                         }
                         else
                         {
-                            $this->line('You stopped deleting the index.');
+                            $this->error('The password you entered is not valid.');
                         }
                     }
                     else
                     {
-                        $this->error('Please specify an index!');
+                        $this->line('You stopped deleting the index.');
                     }
                 }
+                else
+                {
+                    $this->error('Please specify an index!');
+                }
             }
-            else
+            else if ($option == 'delete_doc')
             {
-                $this->line('Indices not found.');
+                $index = $this->anticipate('Select index', $autocomlete);
+
+                if ($index)
+                {
+                    $index = $alias.'__'.$index;
+
+                    try
+                    {
+                        $response = $client->indices()->getMapping([ 'index' => $index ]);
+                    }
+                    catch (\Exception $e)
+                    {
+                        $this->error('Index not found!');
+
+                        die();
+                    }
+
+                    [$keys] = array_divide($response[$index]['mappings']);
+
+                    foreach ($keys as $no => $key)
+                    {
+                        unset($keys[$no]);
+
+                        $keys[$key] = [
+                            'key' => $key
+                        ];
+                    }
+
+                    $this->table(['Key'], $keys);
+
+                    $type = $this->choice('Type', array_keys($keys));
+
+                    if ($type)
+                    {
+                        $id = $this->ask('Id');
+
+                        if ($id)
+                        {
+                            try
+                            {
+                                $response = $client->delete([
+                                    'index' => $index,
+                                    'type' => $type,
+                                    'id' => $id
+                                ]);
+
+                                $this->info('Index deleted!');
+                            }
+                            catch (\Exception $e)
+                            {
+                                $this->error('Document not found!');
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    $this->error('Please specify an index!');
+                }
             }
+        }
+        else
+        {
+            $this->line('Indices not found.');
         }
 
         if (!$option)

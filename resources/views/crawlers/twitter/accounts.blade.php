@@ -63,6 +63,7 @@
                 <span class="d-flex flex-column align-items-end">
                     <i class="material-icons" data-name="status">sentiment_very_satisfied</i>
                     <time data-name="created-at" class="timeago grey-text"></time>
+                    <span data-name="reasons" class="grey-text hide"></span>
                 </small>
             </li>
         </ul>
@@ -108,6 +109,7 @@
                         item.find('[data-name=status]').addClass(o.status ? 'green-text' : 'red-text')
                         item.find('[data-name=avatar]').attr('src', o.avatar)
                         item.find('[data-name=created-at]').attr('data-time', o.created_at)
+                        item.find('[data-name=reasons]').html(o.reasons).removeClass(o.reasons ? 'hide' : '')
 
                         item.appendTo(ul)
                 })

@@ -13,16 +13,18 @@ class DiscountCouponNotification extends Notification implements ShouldQueue
 
     protected $name;
     protected $data;
+    protected $message;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(string $name, string $data)
+    public function __construct(string $name, string $data, string $message = '')
     {
         $this->name = $name;
         $this->data = $data;
+        $this->message = $message ? $message : 'Bugüne özel kupon kampanyasından bir indirim kuponu kazandınız.';
     }
 
     /**
@@ -48,7 +50,7 @@ class DiscountCouponNotification extends Notification implements ShouldQueue
                     ->subject('Olive: 🌟 İndirim Kuponu 🌟')
                     ->greeting('Merhaba, '.$this->name)
                     ->level('olive')
-                    ->line('Bugüne özel kupon kampanyasından bir indirim kuponu kazandınız.')
+                    ->line($this->message)
                     ->with([
                         'table' => $this->data
                     ])

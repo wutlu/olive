@@ -40,4 +40,27 @@ class Pin extends Model
             return Document::get($this->index, $this->type, $this->id);
         }
     }
+
+    /**
+     * authority
+     *
+     * @return boolean
+     */
+    public function authority()
+    {
+        $user = auth()->user();
+
+        if ($user->root)
+        {
+            return true;
+        }
+        elseif ($this->organisation_id == $user->organisation_id)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

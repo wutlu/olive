@@ -119,15 +119,15 @@ Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {
         Route::post('index-yonetimi/json', 'YouTubeController@indicesJson')->name('admin.youtube.indices.json');
 
         Route::prefix('veri-havuzu')->group(function () {
-            Route::get('kelime-havuzu', 'DataController@keywordList')->name('admin.youtube.followed_keywords');
+            Route::get('kelime-havuzu/{id?}', 'DataController@keywordList')->name('admin.youtube.followed_keywords');
             Route::post('kelime-havuzu', 'DataController@keywordListJson');
             Route::patch('kelime-havuzu', 'DataController@keywordReason')->name('admin.youtube.followed_keywords.reason');
 
-            Route::get('kanal-havuzu', 'DataController@channelList')->name('admin.youtube.followed_channels');
+            Route::get('kanal-havuzu/{id?}', 'DataController@channelList')->name('admin.youtube.followed_channels');
             Route::post('kanal-havuzu', 'DataController@channelListJson');
             Route::patch('kanal-havuzu', 'DataController@channelReason')->name('admin.youtube.followed_channels.reason');
 
-            Route::get('video-havuzu', 'DataController@videoList')->name('admin.youtube.followed_videos');
+            Route::get('video-havuzu/{id?}', 'DataController@videoList')->name('admin.youtube.followed_videos');
             Route::post('video-havuzu', 'DataController@videoListJson');
             Route::patch('video-havuzu', 'DataController@videoReason')->name('admin.youtube.followed_videos.reason');
         });
@@ -164,11 +164,11 @@ Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {
         });
 
         Route::prefix('veri-havuzu')->group(function () {
-            Route::get('kelime-havuzu', 'DataController@keywordList')->name('admin.twitter.stream.keywords');
+            Route::get('kelime-havuzu/{id?}', 'DataController@keywordList')->name('admin.twitter.stream.keywords');
             Route::post('kelime-havuzu', 'DataController@keywordListJson');
             Route::patch('kelime-havuzu', 'DataController@keywordReason')->name('admin.twitter.stream.keywords.reason');
 
-            Route::get('kullanici-havuzu', 'DataController@accountList')->name('admin.twitter.stream.accounts');
+            Route::get('kullanici-havuzu/{id?}', 'DataController@accountList')->name('admin.twitter.stream.accounts');
             Route::post('kullanici-havuzu', 'DataController@accountListJson');
             Route::patch('kullanici-havuzu', 'DataController@accountReason')->name('admin.twitter.stream.accounts.reason');
         });
@@ -258,9 +258,17 @@ Route::prefix('organizasyon-yonetimi')->group(function () {
     Route::get('/', 'OrganisationController@adminListView')->name('admin.organisation.list');
     Route::post('json', 'OrganisationController@adminListViewJson')->name('admin.organisation.list.json');
 
-    Route::get('organizasyon/{id}', 'OrganisationController@adminView')->name('admin.organisation');
-    Route::post('organizasyon/{id}', 'OrganisationController@adminUpdate');
+    Route::prefix('organizasyon')->group(function () {
+        Route::get('{id}', 'OrganisationController@adminView')->name('admin.organisation');
+        Route::post('{id}', 'OrganisationController@adminUpdate');
 
-    Route::get('organizasyon/{id}/fatura-gecmisi', 'OrganisationController@adminInvoiceHistory')->name('admin.organisation.invoices');
-    Route::post('organizasyon/{id}/fatura-onay', 'OrganisationController@adminInvoiceApprove')->name('admin.organisation.invoice.approve');
+        Route::get('{id}/gercek-zamanli/kelime-gruplari', 'OrganisationController@keywordGroups')->name('admin.organisation.keyword_groups');
+        Route::post('gercek-zamanli/kelime-gruplari/guncelle', 'OrganisationController@keywordGroupsUpdate')->name('admin.organisation.keyword_groups.update');
+
+        Route::get('{id}/pin-gruplari', 'OrganisationController@pinGroups')->name('admin.organisation.pin_groups');
+        Route::post('{id}/pin-gruplari', 'OrganisationController@pinGroupListJson');
+
+        Route::get('{id}/fatura-gecmisi', 'OrganisationController@adminInvoiceHistory')->name('admin.organisation.invoices');
+        Route::post('{id}/fatura-onay', 'OrganisationController@adminInvoiceApprove')->name('admin.organisation.invoice.approve');
+    });
 });

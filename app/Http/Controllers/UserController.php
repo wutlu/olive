@@ -33,6 +33,7 @@ use Session;
 use Jenssegers\Agent\Agent;
 use Image;
 use System;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -97,6 +98,94 @@ class UserController extends Controller
                         'reason' => $user->ban_reason
                     ]
                 ];
+            }
+
+            $diffYears = Carbon::now()->diffInYears($user->created_at);
+
+            $gift = 0;
+
+            if ($diffYears >= 5)
+            {
+                if (!$user->badge(10))
+                {
+                    $user->addBadge(10); // 5 yıl dolduruldu
+
+                    $gift = 30;
+                }
+            }
+            else if ($diffYears >= 4)
+            {
+                if (!$user->badge(9))
+                {
+                    $user->addBadge(9); // 4 yıl dolduruldu
+
+                    $gift = 20;
+                }
+            }
+            else if ($diffYears >= 3)
+            {
+                if (!$user->badge(8))
+                {
+                    $user->addBadge(8); // 3 yıl dolduruldu
+
+                    $gift = 10;
+                }
+            }
+            else if ($diffYears >= 2)
+            {
+                if (!$user->badge(7))
+                {
+                    $user->addBadge(7); // 2 yıl dolduruldu
+
+                    $gift = 10;
+                }
+            }
+            else if ($diffYears >= 1)
+            {
+                if (!$user->badge(6))
+                {
+                    $user->addBadge(6); // 1 yıl dolduruldu
+
+                    $gift = 10;
+                }
+            }
+
+            if ($gift)
+            {
+                $ok = false;
+
+                while ($ok == false)
+                {
+                    $generate_key = str_random(8);
+
+                    $key = DiscountCoupon::where('key', $generate_key)->count();
+
+                    if ($key == 0)
+                    {
+                        $coupon = new DiscountCoupon;
+                        $coupon->key = $generate_key;
+                        $coupon->rate = $gift;
+                        $coupon->price = 0;
+                        $coupon->save();
+
+                        $ok = true;
+
+                        $message[] = $diffYears == 1 ? 'Sizinle bir yılı geride bıraktık!' : 'Sizinle bir yılı daha geride bıraktık!';
+                        $message[] = 'Birlikte geçecek nice yıllar adına sizin için bir indirim kuponu hazırladık.';
+                        $message[] = 'İyi günlerde kullanın...';
+
+                        $discount[] = '| Kupon Kodu        | İndirim Oranı                                              |';
+                        $discount[] = '| ----------------: |:---------------------------------------------------------- |';
+
+                        $discount[] = '| '.$generate_key.' | '.$gift.'%                                                 |';
+
+                        # --- [] --- #
+
+                        $discount = implode(PHP_EOL, $discount);
+
+                        $user->notify((new DiscountCouponNotification($user->name, $discount, implode(PHP_EOL, $message)))->onQueue('email'));
+                    }
+                }
             }
 
             $request->session()->regenerate();
@@ -312,7 +401,7 @@ class UserController extends Controller
                     $ok = true;
 
                     $discount[] = '| Kupon Kodu        | İndirim Oranı                                              |';
-                    $discount[] = '| ----------------: |:--------------------------------                           |';
+                    $discount[] = '| ----------------: |:---------------------------------------------------------- |';
 
                     $discount[] = '| '.$generate_key.' | '.$discountDay->discount_rate.'%                           |';
 

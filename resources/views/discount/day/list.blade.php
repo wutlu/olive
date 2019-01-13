@@ -19,7 +19,7 @@
                 <i class="material-icons grey-text text-darken-2">add</i>
             </a>
         </div>
-        <div class="card-content teal white-text">
+        <div class="card-content teal lighten-5 teal-text">
             <p>Belirleyeceğiniz günlerde sisteme kaydolan kullanıcılar için sistem, indirim kuponları üretir.</p>
         </div>
         <div class="card-content">
@@ -33,12 +33,12 @@
         @if (count($days))
         <div class="collection">
             @foreach ($days as $day)
-            <a href="{{ route('admin.discount.day', $day->id) }}" class="collection-item d-flex waves-effect">
+            <a href="{{ route('admin.discount.day', $day->id) }}" class="collection-item d-flex waves-effect justify-content-between">
                 <span class="align-self-center">
                     <p class="mb-0">{{ $day->discount_rate.'%' }} indirim</p>
                     <p class="mb-0">{{ config('formal.currency').' '.$day->discount_price }} indirim</p>
                 </span>
-                <small class="badge ml-auto">{{ date('d.m.Y', strtotime($day->first_day)).' / '.date('d.m.Y', strtotime($day->last_day)) }}</small>
+                <small class="badge">{{ date('d.m.Y', strtotime($day->first_day)).' / '.date('d.m.Y', strtotime($day->last_day)) }}</small>
             </a>
             @endforeach
         </div>

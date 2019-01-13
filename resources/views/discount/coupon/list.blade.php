@@ -36,12 +36,12 @@
         @if (count($coupons))
         <div class="collection">
             @foreach ($coupons as $coupon)
-            <a href="{{ route('admin.discount.coupon', $coupon->id) }}" class="collection-item d-flex waves-effect">
+            <a href="{{ route('admin.discount.coupon', $coupon->id) }}" class="collection-item d-flex waves-effect justify-content-between">
                 <span class="align-self-center">
-                    <p>{{ $coupon->rate.'%' }} indirim</p>
-                    <p>{{ config('formal.currency').' '.$coupon->price }} indirim</p>
+                    <p class="mb-0">{{ $coupon->rate.'%' }} indirim</p>
+                    <p class="mb-0">{{ config('formal.currency').' '.$coupon->price }} indirim</p>
                 </span>
-                <small class="badge ml-auto">{{ $coupon->key }}</small>
+                <small class="grey-text">{{ $coupon->key }}</small>
             </a>
             @endforeach
         </div>

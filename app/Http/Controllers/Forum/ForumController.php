@@ -283,6 +283,13 @@ class ForumController extends Controller
                     $user->addBadge(3); // 10 cevap
                 }
             }
+            if (!$user->badge(5))
+            {
+                if ($user->messages()->whereHas('thread', function($query) { $query->whereNotNull('question'); })->count() >= 10)
+                {
+                    $user->addBadge(5); // 100 cevap
+                }
+            }
         }
 
         Follow::firstOrCreate([ 'user_id' => $user->id, 'message_id' => $thread->id ]);

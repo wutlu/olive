@@ -56,7 +56,7 @@ class CreateYouTubeIndexJob implements ShouldQueue
         }
         else
         {
-            CreateYouTubeIndexJob::dispatch($this->type, $this->value)->onQueue('elasticsearch')->delay(now()->addMinutes(10));
+            CreateYouTubeIndexJob::dispatch($this->type, $this->value)->onQueue('error-crawler')->delay(now()->addMinutes(10));
         }
     }
 }

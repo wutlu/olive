@@ -11,6 +11,8 @@ use App\Models\Organisation\Organisation;
 use App\Models\Organisation\OrganisationInvoice as Invoice;
 use App\Models\Discount\DiscountCoupon as Coupon;
 use App\Models\User\User;
+use App\Models\RealTime\KeywordGroup;
+use App\Models\Pin\Group as PinGroup;
 
 use App\Http\Requests\PlanRequest;
 
@@ -26,6 +28,8 @@ use App\Http\Requests\Organisation\LeaveRequest;
 use App\Http\Requests\Organisation\DeleteRequest;
 use App\Http\Requests\Organisation\Admin\UpdateRequest as AdminUpdateRequest;
 use App\Http\Requests\Organisation\Admin\InvoiceApproveRequest;
+
+use App\Http\Requests\RealTime\KeywordGroup\AdminUpdateRequest as KeywordGroupAdminUpdateRequest;
 
 use App\Http\Requests\IdRequest;
 use App\Http\Requests\SearchRequest;
@@ -780,7 +784,15 @@ class OrganisationController extends Controller
 
         if ($user->notification('important'))
         {
-            $user->notify((new MessageNotification('Olive: Fatura İptal Edildi', 'Organizasyon Faturasını İptal Ettiniz!', 'Organizasyon ödemesi için oluşturduğunuz fatura, ödeme tamamlanmadan iptal edildi.'))->onQueue('email'));
+            $user->notify(
+                (
+                    new MessageNotification(
+                        'Olive: Fatura İptal Edildi',
+                        'Organizasyon Faturasını İptal Ettiniz!',
+                        'Organizasyon ödemesi için oluşturduğunuz fatura, ödeme tamamlanmadan iptal edildi.'
+                    )
+                )->onQueue('email')
+            );
         }
 
         return [
@@ -925,5 +937,65 @@ class OrganisationController extends Controller
         $invoice->save();
 
         return redirect()->route('organisation.invoice', $invoice->invoice_id);
+    }
+
+    # ######################################## [ ADMIN ] ######################################## #
+    # 
+    # kelime grupları
+    # 
+    public static function keywordGroups(int $id)
+    {
+        $organisation = Organisation::where('id', $id)->firstOrFail();
+
+        return view('organisation.admin.keywordGroups', compact('organisation'));
+    }
+
+    # ######################################## [ ADMIN ] ######################################## #
+    # 
+    # kelime grupları güncelle
+    # 
+    public static function keywordGroupsUpdate(KeywordGroupAdminUpdateRequest $request)
+    {
+        KeywordGroup::where('id', $request->id)->update([ 'keywords' => $request->keywords ]);
+
+        return [
+            'status' => 'ok'
+        ];
+    }
+
+    # ######################################## [ ADMIN ] ######################################## #
+    # 
+    # pin grupları
+    # 
+    public function pinGroups(int $id)
+    {
+        $organisation = Organisation::where('id', $id)->firstOrFail();
+
+        return view('organisation.admin.pinGroups', compact('organisation'));
+    }
+
+    # ######################################## [ ADMIN ] ######################################## #
+    # 
+    # pin grupları json çıktısı
+    # 
+    public function pinGroupListJson(int $id, SearchRequest $request)
+    {
+        $organisation = Organisation::where('id', $id)->firstOrFail();
+
+        $take = $request->take;
+        $skip = $request->skip;
+
+        $query = PinGroup::withCount('pins');
+        $query = $query->where('organisation_id', $organisation->id);
+        $query = $request->string ? $query->where('name', 'ILIKE', '%'.$request->string.'%') : $query;
+        $query = $query->skip($skip)
+                       ->take($take)
+                       ->orderBy('id', 'DESC');
+
+        return [
+            'status' => 'ok',
+            'hits' => $query->get(),
+            'total' => $query->count()
+        ];
     }
 }

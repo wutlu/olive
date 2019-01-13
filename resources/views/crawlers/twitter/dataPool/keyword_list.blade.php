@@ -21,9 +21,15 @@
 
 @section('content')
     <div class="card">
-        <div class="card-image">
-            <img src="{{ asset('img/card-header.jpg') }}" alt="Takip Edilen Kelimeler" />
-            <span class="card-title">Takip Edilen Kelimeler</span>
+        @if ($organisation)
+            <div class="card-content">
+                <a href="{{ route('admin.youtube.followed_channels') }}" class="chip">
+                    {{ $organisation->name }}
+                </a>
+            </div>
+        @endif
+        <div class="card-content teal">
+            <span class="card-title white-text mb-0">Takip Edilen Kelimeler</span>
         </div>
         <nav class="grey darken-4">
             <div class="nav-wrapper">
@@ -33,7 +39,8 @@
                            type="search"
                            class="validate json json-search"
                            data-json-target="#users"
-                           placeholder="Ara" />
+                           placeholder="Ara"
+                           value="{{ $organisation ? '@'.@$organisation->name : '' }}" />
                     <label class="label-icon" for="string">
                         <i class="material-icons">search</i>
                     </label>

@@ -103,9 +103,39 @@ return [
                 'description' => '10 soruya cevap verin.'
             ],
             4 => [
-            	'name' => 'İyi Cevap',
+                'name' => 'İyi Cevap',
                 'image_src' => 'img/icons/badges/best_answer.png',
                 'description' => 'Verdiğiniz 1 cevap en iyisi seçilsin.'
+            ],
+            5 => [
+                'name' => 'Profesör',
+                'image_src' => 'img/icons/badges/professor.png',
+                'description' => '100 soruya cevap verin.'
+            ],
+            6 => [
+                'name' => 'Nostalji 1',
+                'image_src' => 'img/icons/badges/nostalgie_1.png',
+                'description' => '1 yılınızı doldurun.'
+            ],
+            7 => [
+                'name' => 'Nostalji 2',
+                'image_src' => 'img/icons/badges/nostalgie_2.png',
+                'description' => '2 yılınızı doldurun.'
+            ],
+            8 => [
+                'name' => 'Nostalji 3',
+                'image_src' => 'img/icons/badges/nostalgie_3.png',
+                'description' => '3 yılınızı doldurun.'
+            ],
+            9 => [
+                'name' => 'Nostalji 4',
+                'image_src' => 'img/icons/badges/nostalgie_4.png',
+                'description' => '4 yılınızı doldurun.'
+            ],
+            10 => [
+                'name' => 'Nostalji 5',
+                'image_src' => 'img/icons/badges/nostalgie_5.png',
+                'description' => '5 yılınızı doldurun.'
             ],
 
             /* ... */

@@ -50,13 +50,11 @@ class PinController extends Controller
     # 
     public function groupListJson(SearchRequest $request)
     {
-        $organisation = auth()->user()->organisation;
-
         $take = $request->take;
         $skip = $request->skip;
 
-        $query = PinGroup::with('pins');
-        $query = $query->where('organisation_id', $organisation->id);
+        $query = PinGroup::withCount('pins');
+        $query = $query->where('organisation_id', auth()->user()->organisation_id);
         $query = $request->string ? $query->where('name', 'ILIKE', '%'.$request->string.'%') : $query;
         $query = $query->skip($skip)
                        ->take($take)
@@ -74,15 +72,13 @@ class PinController extends Controller
     # 
     public function groupGet(GroupGetRequest $request)
     {
-        $organisation = auth()->user()->organisation;
-
         $data = PinGroup::select(
             'id',
             'name'
         )->with('pins')
          ->where([
             'id' => $request->group_id,
-            'organisation_id' => $organisation->id
+            'organisation_id' => auth()->user()->organisation_id
         ])->firstOrFail();
 
         return [
@@ -96,12 +92,8 @@ class PinController extends Controller
     # 
     public function groupCreate(GroupCreateRequest $request)
     {
-        $organisation = auth()->user()->organisation;
-
         $data = new PinGroup;
-
-        $data->organisation_id = $organisation->id;
-
+        $data->organisation_id = auth()->user()->organisation_id;
         $data->name = $request->name;
         $data->save();
 
@@ -116,11 +108,9 @@ class PinController extends Controller
     # 
     public function groupUpdate(GroupUpdateRequest $request)
     {
-        $organisation = auth()->user()->organisation;
-
         $data = PinGroup::where([
             'id' => $request->id,
-            'organisation_id' => $organisation->id
+            'organisation_id' => auth()->user()->organisation_id
         ])->firstOrFail();
 
         $data->name = $request->name;
@@ -141,11 +131,9 @@ class PinController extends Controller
     # 
     public function groupDelete(IdRequest $request)
     {
-        $organisation = auth()->user()->organisation;
-
         $data = PinGroup::where([
             'id' => $request->id,
-            'organisation_id' => $organisation->id
+            'organisation_id' => auth()->user()->organisation_id
         ])->firstOrFail();
 
         $arr = [
@@ -225,12 +213,7 @@ class PinController extends Controller
     # 
     public function pins(int $id)
     {
-        $user = auth()->user();
-
-        $pg = PinGroup::where([
-            'id' => $id,
-            'organisation_id' => $user->organisation_id
-        ])->firstOrFail();
+        $pg = PinGroup::where('id', $id)->where('organisation_id', auth()->user()->organisation_id)->firstOrFail();
 
         $pins = $pg->pins()->orderBy('created_at', 'DESC')->paginate(10);
 
@@ -242,7 +225,7 @@ class PinController extends Controller
     # 
     public function pdf(GrupPdfRequest $request)
     {
-        $pg = PinGroup::where('id', $request->id)->first();
+        $pg = PinGroup::where('id', $request->id)->where('organisation_id', auth()->user()->organisation_id)->first();
 
         $pg->html_to_pdf = 'process';
         $pg->updated_at = date('Y-m-d H:i:s');
@@ -255,9 +238,14 @@ class PinController extends Controller
         ];
     }
 
-    # 
-    # pin grubu pdf çıktı tetikleyici
-    # 
+    /**
+     ****************************************************
+     * SYSTEM FUNCTION
+     ****************************************************
+     *
+     * pin grubu pdf çıktı tetikleyici
+     *
+     */
     public static function pdfTrigger()
     {
         $date = Carbon::now()->subMinutes(10)->format('Y-m-d H:i:s');

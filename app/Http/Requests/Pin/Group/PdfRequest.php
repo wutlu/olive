@@ -36,16 +36,14 @@ class PdfRequest extends FormRequest
 
         $user = auth()->user();
 
-        $pg = PinGroup::where([
-            'id' => $request->id,
-            'organisation_id' => $user->organisation_id
-        ])->first();
+        $pg = PinGroup::where('id', $request->id)->first();
 
         if (@$pg)
         {
             if ($pg->html_to_pdf == 'process')
             {
                 $id_rules[] = 'process_rule';
+
                 Validator::extend('process_rule', false, 'Raporun hazırlanması henüz sürüyor.<br />Bittiğinde bir bildirim alacaksınız.');
             }
             else
@@ -55,11 +53,13 @@ class PdfRequest extends FormRequest
                 if ($pins < 1)
                 {
                     $id_rules[] = 'min_rule';
+
                     Validator::extend('min_rule', false, 'PDF alabilmek için grupta en az 1 pin olması gerekiyor.');
                 }
                 else if ($pins > 100)
                 {
                     $id_rules[] = 'max_rule';
+
                     Validator::extend('max_rule', false, 'PDF alabilmek için grupta en fazla 100 pin olabilir.');
                 }
             }
@@ -67,6 +67,7 @@ class PdfRequest extends FormRequest
         else
         {
             $id_rules[] = 'nothing_rule';
+
             Validator::extend('nothing_rule', false, 'Pin grubuna artık ulaşılamıyor.');
         }
 

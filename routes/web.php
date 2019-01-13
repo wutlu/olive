@@ -5,6 +5,7 @@ Route::domain(config('app.domain'))->group(function () {
 });
 
 Route::get('manifest.json', 'HomeController@manifest')->name('olive.manifest');
+Route::get('kaynaklar', 'HomeController@sources')->name('sources');
 
 Route::post('markdown/onizleme', 'MarkdownController@preview')->name('markdown.preview');
 

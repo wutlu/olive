@@ -41,8 +41,8 @@ class SozlukCrawlersTableSeeder extends Seeder
                 'site' => 'http://www.incisozluk.com.tr',
                 'url_pattern' => 'e/__id__',
                 'selector_title' => 'h1.title',
-                'selector_entry' => '#middle-block > ol.entry-list > li.entry .entry-text-wrap',
-                'selector_author' => '#middle-block > ol.entry-list > li.entry a.username',
+                'selector_entry' => '.entry-list > .entry:first-child .entry-text-wrap',
+                'selector_author' => '.entry-list > .entry:first-child .username',
                 'max_attempt' => 100,
                 'deep_try' => 100,
                 'chunk' => 25

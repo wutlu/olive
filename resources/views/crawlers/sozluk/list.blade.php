@@ -68,7 +68,7 @@
                 id="stats"
                 class="load"
                 data-method="post"
-                data-timeout="1000",
+                data-timeout="4000",
                 data-href="{{ route('crawlers.sozluk.bot.statistics.all') }}"
                 data-callback="__stats"
                 data-error-callback="__connection_failed">

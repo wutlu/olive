@@ -100,21 +100,19 @@ class Kernel extends ConsoleKernel
                          ->withoutOverlapping();
 
                 $schedule->command('nohup "youtube:video_detect --type=followed_videos" --type=start')
-                         ->everyTenMinutes()
+                         ->hourly()
                          ->timezone(config('app.timezone'))
                          ->withoutOverlapping();
 
                 $schedule->command('nohup "youtube:video_detect --type=followed_keywords" --type=start')
-                         ->everyTenMinutes()
+                         ->hourly()
                          ->timezone(config('app.timezone'))
                          ->withoutOverlapping();
 
-                /*
                 $schedule->command('nohup "youtube:video_detect --type=followed_channels" --type=start')
-                         ->everyTenMinutes()
+                         ->hourly()
                          ->timezone(config('app.timezone'))
                          ->withoutOverlapping();
-                */
             }
 
             /* ---------------------------------------- */
@@ -183,22 +181,29 @@ class Kernel extends ConsoleKernel
 
             /* ---------------------------------------- */
 
-            $schedule->command('nohup "proxy:check"')
+            $schedule->command('nohup "proxy:check" --type=restart')
                      ->hourly()
                      ->timezone(config('app.timezone'))
                      ->withoutOverlapping();
 
             /* ---------------------------------------- */
 
-            $schedule->command('nohup "forum:notification_trigger"')
+            $schedule->command('nohup "forum:notification_trigger" --type=restart')
                      ->everyFiveMinutes()
                      ->timezone(config('app.timezone'))
                      ->withoutOverlapping();
 
             /* ---------------------------------------- */
 
-            $schedule->command('nohup "newsletter:process_trigger"')
+            $schedule->command('nohup "newsletter:process_trigger" --type=restart')
                      ->everyMinute()
+                     ->timezone(config('app.timezone'))
+                     ->withoutOverlapping();
+
+            /* ---------------------------------------- */
+
+            $schedule->command('nohup "queue:retry all" --type=restart')
+                     ->hourly()
                      ->timezone(config('app.timezone'))
                      ->withoutOverlapping();
         }

@@ -342,6 +342,7 @@ class RealTimeController extends Controller
                         ],
                         'sort' => [ 'created_at' => 'DESC' ],
                         '_source' => [
+                            'video_id',
                             'text',
                             'channel.id',
                             'channel.title',
@@ -372,7 +373,8 @@ class RealTimeController extends Controller
                                 '_id' => $object['_id'],
                                 '_type' => $object['_type'],
                                 '_index' => $object['_index'],
-                                'module' => 'youtube-yorum',
+                                'module' => 'youtube-comment',
+                                'video_id' => $object['_source']['video_id'],
                                 'channel' => [
                                     'id' => $object['_source']['channel']['id'],
                                     'title' => $object['_source']['channel']['title']

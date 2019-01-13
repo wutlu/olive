@@ -100,6 +100,8 @@ return [
      */
     'log_files' => [
         base_path('supervisor/logs/crawler.log'),
+        base_path('supervisor/logs/power-crawler.log'),
+        base_path('supervisor/logs/error-crawler.log'),
         base_path('supervisor/logs/elasticsearch.log'),
         base_path('supervisor/logs/email.log'),
         base_path('supervisor/logs/trigger.log'),

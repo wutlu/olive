@@ -53,11 +53,10 @@
         </div>
     </div>
     <div class="card">
-        <div class="card-image">
-            <img src="{{ asset('img/card-header.jpg') }}" alt="Organizasyonlar" />
-            <span class="card-title">Organizasyonlar</span>
+        <div class="card-content">
+            <span class="card-title mb-0">Organizasyonlar</span>
         </div>
-        <nav class="grey darken-4">
+        <nav class="teal">
             <div class="nav-wrapper">
                 <div class="input-field">
                     <input id="string"

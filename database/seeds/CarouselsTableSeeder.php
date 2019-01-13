@@ -27,7 +27,7 @@ class CarouselsTableSeeder extends Seeder
 				'title' => 'Birlikte Daha Güçlü',
 				'description' => 'Kriter belirleyin, daha çok veri elde edelim.',
 				'pattern' => 'sphere-3',
-				'button_action' => route('twitter.keyword.list'),
+				'button_action' => route('data_pool.dashboard'),
 				'button_text' => 'Veri Havuzu'
         	]
         );

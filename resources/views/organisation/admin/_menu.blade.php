@@ -17,4 +17,20 @@
             <p class="grey-text">Eski Organizasyon Sahibi</p>
         </a>
     @endforelse
+
+    <a href="{{ route('admin.organisation.keyword_groups', $organisation->id) }}" class="collection-item waves-effect {{ $active == 'groups.keyword' ? 'active' : '' }}">Gerçek Zamanlı Kelime Grupları</a>
+    <a href="{{ route('admin.organisation.pin_groups', $organisation->id) }}" class="collection-item waves-effect {{ $active == 'groups.pin' ? 'active' : '' }}">Pin Grupları</a>
+
+    <div class="divider"></div>
+
+    <div class="collection-item grey-text">YouTube</div>
+    <a href="{{ route('admin.youtube.followed_channels', $organisation->id) }}" class="collection-item waves-effect">Takip Ettiği Kanallar</a>
+    <a href="{{ route('admin.youtube.followed_videos', $organisation->id) }}" class="collection-item waves-effect">Takip Ettiği Videoları</a>
+    <a href="{{ route('admin.youtube.followed_keywords', $organisation->id) }}" class="collection-item waves-effect">Takip Ettiği Kelimeler</a>
+
+    <div class="divider"></div>
+
+    <div class="collection-item grey-text">Twitter</div>
+    <a href="{{ route('admin.twitter.stream.keywords', $organisation->id) }}" class="collection-item waves-effect">Takip Ettiği Kelimeler</a>
+    <a href="{{ route('admin.twitter.stream.accounts', $organisation->id) }}" class="collection-item waves-effect">Takip Ettiği Kullanıcılar</a>
 </div>

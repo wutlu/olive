@@ -93,7 +93,7 @@
         <div class="collection">
             <a
                 href="#"
-                class="collection-item waves-effect hide model grey-text json"
+                class="collection-item hide model grey-text json"
                 data-href="{{ route('pin', 'add') }}"
                 data-method="post"
                 data-include="group_id"
@@ -205,6 +205,7 @@
                 var item = model.clone();
                     item.find('[data-name=text]').html(obj.text)
                     item.find('[data-name=created-at]').html(obj.created_at)
+
                 var url = '';
 
                     if (obj.module == 'twitter')
@@ -218,7 +219,7 @@
                     {
                         url = obj.url;
 
-                        item.find('[data-name=url]').html(obj.url)
+                        item.find('[data-name=url]').html(url)
                         item.find('[data-name=title]').html(obj.title)
                     }
                     else if (obj.module == 'sozluk')
@@ -226,7 +227,7 @@
                         url = obj.url;
 
                         item.find('[data-name=author]').html(obj.author)
-                        item.find('[data-name=url]').html(obj.url)
+                        item.find('[data-name=url]').html(url)
                         item.find('[data-name=title]').html(obj.title)
                     }
                     else if (obj.module == 'alisveris')
@@ -242,13 +243,15 @@
 
                         item.find('[data-name=author]').html(obj.channel.title)
                         item.find('[data-name=title]').html(obj.title)
+                        item.find('[data-name=url]').html(url)
                     }
-                    else if (obj.module == 'youtube-yorum')
+                    else if (obj.module == 'youtube-comment')
                     {
                         url = 'https://www.youtube.com/channel/' + obj.channel.id;
 
                         item.find('[data-name=author]').html(obj.channel.title)
                         item.find('[data-name=title]').html(obj.title)
+                        item.find('[data-name=url]').html(url)
                     }
 
                     item.attr('data-url', url)
@@ -307,7 +310,7 @@
             $.each(obj.data, function(key, o) {
                 if ($('#' + o.uuid).length)
                 {
-
+                    //
                 }
                 else
                 {

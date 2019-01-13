@@ -4,12 +4,15 @@ namespace App\Utilities;
 
 use Carbon\Carbon;
 
+use Term;
+
 class DateUtility
 {
     # get date in dom
     public static function getDateInDom(string $dom, string $format = '')
     {
-        $dom = mb_strtolower($dom);
+        $dom = Term::convertAscii($dom, [ 'lowercase' => true ]);
+
         $dom = preg_replace(
             [
                 '/ ocak /',
@@ -29,8 +32,8 @@ class DateUtility
                 '/sal(ı|i)/',
                 '/(ç|c)ar(ş|s)amba/',
                 '/per(ş|s)embe/',
-                '/cuma/',
                 '/cumartesi/',
+                '/cuma/',
                 '/pazar/',
 
                 '/\s+/',
@@ -73,6 +76,10 @@ class DateUtility
             date('m', strtotime('- 1 month')),
             date('m'),
             date('m', strtotime('+ 1 month')),
+
+            intval(date('m', strtotime('- 1 month'))),
+            intval(date('m')),
+            intval(date('m', strtotime('+ 1 month'))),
         ];
         $days = [
             date('d', strtotime('- 1 day')),
@@ -84,6 +91,16 @@ class DateUtility
             date('d', strtotime('- 7 day')),
             date('d'),
             date('d', strtotime('+ 1 day')),
+
+            intval(date('d', strtotime('- 1 day'))),
+            intval(date('d', strtotime('- 2 day'))),
+            intval(date('d', strtotime('- 3 day'))),
+            intval(date('d', strtotime('- 4 day'))),
+            intval(date('d', strtotime('- 5 day'))),
+            intval(date('d', strtotime('- 6 day'))),
+            intval(date('d', strtotime('- 7 day'))),
+            intval(date('d')),
+            intval(date('d', strtotime('+ 1 day'))),
         ];
 
         if ($format)
@@ -94,9 +111,12 @@ class DateUtility
         }
         else
         {
+            $date_sep = '(-|\.|\/| )';
             $formats = [
-                '/((('.implode('|', $years).').('.implode('|', $months).').('.implode('|', $days).')).(([0-9]|1[0-9]|2[0-3]){2}\:([0-9]|[1-4][0-9]|5[0-9]){2}(\:([0-9]|[1-4][0-9]|5[0-9]){2})?((\+|\-)\d{2}\:\d{2})?)?)/',
-                '/((('.implode('|', $days).').('.implode('|', $months).').('.implode('|', $years).')).(([0-9]|1[0-9]|2[0-3]){2}\:([0-9]|[1-4][0-9]|5[0-9]){2}(\:([0-9]|[1-4][0-9]|5[0-9]){2})?((\+|\-)\d{2}\:\d{2})?)?)/',
+                '/((('.implode('|', $years).')'.$date_sep.'('.implode('|', $months).')'.$date_sep.'('.implode('|', $days).')).(([0-9]|1[0-9]|2[0-3]){2}\:([0-9]|[1-4][0-9]|5[0-9]){2}(\:([0-9]|[1-4][0-9]|5[0-9]){2})?))/',
+                '/((('.implode('|', $days).')'.$date_sep.'('.implode('|', $months).')'.$date_sep.'('.implode('|', $years).')).(([0-9]|1[0-9]|2[0-3]){2}\:([0-9]|[1-4][0-9]|5[0-9]){2}(\:([0-9]|[1-4][0-9]|5[0-9]){2})?))/',
+                '/((('.implode('|', $years).')'.$date_sep.'('.implode('|', $months).')'.$date_sep.'('.implode('|', $days).')))/',
+                '/((('.implode('|', $days).')'.$date_sep.'('.implode('|', $months).')'.$date_sep.'('.implode('|', $years).')))/',
                 //
             ];
         }
@@ -114,9 +134,15 @@ class DateUtility
             {
                 foreach ($dates as $d)
                 {
+
                     if (@$d[0])
                     {
-                        return self::checkDate($d[0]);
+                        $date = self::checkDate($d[0]);
+
+                        if ($date)
+                        {
+                            return $date;
+                        }
                     }
                 }
             }

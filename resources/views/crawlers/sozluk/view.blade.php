@@ -140,7 +140,7 @@
                 id="stats"
                 class="grey darken-4 load"
                 data-method="post"
-                data-timeout="1000"
+                data-timeout="4000"
                 data-href="{{ route('crawlers.sozluk.bot.statistics', $crawler->id) }}"
                 data-callback="__stats"
                 data-error-callback="__connection_failed">

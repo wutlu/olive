@@ -42,11 +42,10 @@
 
 @section('content')
     <div class="card">
-        <div class="card-image">
-            <img src="{{ asset('img/card-header.jpg') }}" alt="Kullanıcılar" />
-            <span class="card-title">Kullanıcılar</span>
+        <div class="card-content">
+            <span class="card-title mb-0">Kullanıcılar</span>
         </div>
-        <nav class="grey darken-4">
+        <nav class="teal">
             <div class="nav-wrapper">
                 <div class="input-field">
                     <input id="string"

@@ -640,16 +640,31 @@
                     </div>
                     <div class="col l2 offset-l2 s12">
                         <ul>
-                            <li><a class="grey-text" href="{{ route('page.view', 'hakkimizda') }}">Hakkımızda</a></li>
-                            <li><a class="grey-text" href="{{ route('forum.index') }}">Forum</a></li>
-                            <li><a class="grey-text" href="{{ route('page.view', 'iletisim') }}">İletişim</a></li>
-                            <li><a class="grey-text" href="#">Api</a></li>
+                            <li>
+                                <a class="grey-text" href="{{ route('page.view', 'hakkimizda') }}">Hakkımızda</a>
+                            </li>
+                            <li>
+                                <a class="grey-text" href="{{ route('forum.index') }}">Forum</a>
+                            </li>
+                            <li>
+                                <a class="grey-text" href="{{ route('page.view', 'iletisim') }}">İletişim</a>
+                            </li>
+                            <li>
+                                <a class="grey-text" href="{{ route('sources') }}">Kaynaklar</a>
+                            </li>
+                            <li>
+                                <a class="grey-text" data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" href="#">Api</a>
+                            </li>
                         </ul>
                     </div>
                     <div class="col l2 s12">
                         <ul>
-                            <li><a class="grey-text" href="{{ route('page.view', 'gizlilik-politikasi') }}">Gizlilik Politikası</a></li>
-                            <li><a class="grey-text" href="{{ route('page.view', 'kullanim-kosullari') }}">Kullanım Koşulları</a></li>
+                            <li>
+                                <a class="grey-text" href="{{ route('page.view', 'gizlilik-politikasi') }}">Gizlilik Politikası</a>
+                            </li>
+                            <li>
+                                <a class="grey-text" href="{{ route('page.view', 'kullanim-kosullari') }}">Kullanım Koşulları</a>
+                            </li>
                         </ul>
                     </div>
                 </div>

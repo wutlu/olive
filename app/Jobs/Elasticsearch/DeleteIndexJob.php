@@ -44,7 +44,7 @@ class DeleteIndexJob implements ShouldQueue
 
         if ($query->status != 'deleted')
         {
-            DeleteIndexJob::dispatch($this->name)->onQueue('elasticsearch')->delay(now()->addMinutes(10));
+            DeleteIndexJob::dispatch($this->name)->onQueue('error-crawler')->delay(now()->addMinutes(10));
         }
     }
 }

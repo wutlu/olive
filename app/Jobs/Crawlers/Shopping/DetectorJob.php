@@ -49,6 +49,7 @@ class DetectorJob implements ShouldQueue
             $this->crawler->site,
             $this->crawler->url_pattern,
             $this->crawler->google_search_query,
+            $this->crawler->google_time,
             $this->crawler->google_max_page
         );
 

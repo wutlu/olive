@@ -17,7 +17,7 @@
         if (obj.status == 'ok')
         {
             M.toast({
-                html: 'Rapor isteğiniz alındı.<br />Biz raporunuzu hazırlarken,<br />araştırmanıza devam edebilirsiniz.',
+                html: 'Rapor isteğiniz alındı. Biz raporunuzu hazırlarken, araştırmanıza devam edebilirsiniz.',
                 classes: 'green darken-2'
             })
         }
@@ -69,50 +69,51 @@
             <ul id="dropdown-{{ $id }}" class="dropdown-content">
                 @if ($type == 'tweet')
                     <li>
-                        <a href="#" class="waves-effect">Kullanıcının Alınan Tüm Tweetleri</a>
+                        <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" href="#" class="waves-effect">Kullanıcının Alınan Tüm Tweetleri</a>
                     </li>
                     <li>
-                        <a href="#" class="waves-effect">Kullanıcı Bilgileri</a>
+                        <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" href="#" class="waves-effect">Kullanıcı Bilgileri</a>
                     </li>
                 @elseif ($type == 'article')
                     <li>
-                        <a href="#" class="waves-effect">Sitenin Tüm Haberleri</a>
+                        <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" href="#" class="waves-effect">Sitenin Tüm Haberleri</a>
                     </li>
                     <li>
-                        <a href="#" class="waves-effect">Site Bilgileri</a>
+                        <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" href="#" class="waves-effect">Site Bilgileri</a>
                     </li>
                 @elseif ($type == 'entry')
                     <li>
-                        <a href="#" class="waves-effect">Başlığa Git</a>
+                        <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" href="#" class="waves-effect">Başlığa Git</a>
                     </li>
                     <li>
-                        <a href="#" class="waves-effect">Kullanıcının Tüm Girdileri</a>
+                        <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" href="#" class="waves-effect">Kullanıcının Tüm Girdileri</a>
                     </li>
                     <li>
-                        <a href="#" class="waves-effect">Kullanıcı Bilgileri</a>
+                        <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" href="#" class="waves-effect">Kullanıcı Bilgileri</a>
                     </li>
                 @elseif ($type == 'product')
                     <li>
-                        <a href="#" class="waves-effect">Kullanıcının Tüm Ürünleri</a>
+                        <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" href="#" class="waves-effect">Kullanıcının Tüm Ürünleri</a>
                     </li>
                 @elseif ($type == 'comment')
                     <li>
-                        <a href="#" class="waves-effect">Kullanıcının Tüm Yorumları</a>
+                        <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" href="#" class="waves-effect">Kullanıcının Tüm Yorumları</a>
                     </li>
                     <li>
-                        <a href="#" class="waves-effect">Kullanıcının Trend'e Giren Videoları</a>
+                        <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" href="#" class="waves-effect">Kullanıcının Trend'e Giren Videoları</a>
                     </li>
                     <li>
-                        <a href="#" class="waves-effect">Video'ya Yapılan Diğer Yorumlar</a>
+                        <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" href="#" class="waves-effect">Video'ya Yapılan Diğer Yorumlar</a>
                     </li>
                 @elseif ($type == 'video')
                     <li>
-                        <a href="#" class="waves-effect">Kullanıcının Trend'e Giren Videoları</a>
+                        <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" href="#" class="waves-effect">Kullanıcının Trend'e Giren Videoları</a>
                     </li>
                     <li>
-                        <a href="#" class="waves-effect">Video'ya Yapılan Yorumlar</a>
+                        <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" href="#" class="waves-effect">Video'ya Yapılan Yorumlar</a>
                     </li>
                 @endif
+
                 <li class="divider" tabindex="-1"></li>
                 <li>
                     <a href="{{ route('elasticsearch.document', [
@@ -121,19 +122,22 @@
                         'id' => $document->data['_id']
                     ]) }}" class="waves-effect">İçeriği Detaylı İncele</a>
                 </li>
-                <li class="divider" tabindex="-1"></li>
-                <li>
-                    <a
-                        href="#"
-                        class="waves-effect json"
-                        data-href="{{ route('pin', 'remove') }}"
-                        data-method="post"
-                        data-id="{{ $document->data['_id'] }}"
-                        data-type="{{ $document->data['_type'] }}"
-                        data-index="{{ $document->data['_index'] }}"
-                        data-group_id="{{ $pg->id }}"
-                        data-callback="__pin">Pin'i Kaldır</a>
-                </li>
+
+                @if ($pin->organisation_id == auth()->user()->organisation_id)
+                    <li class="divider" tabindex="-1"></li>
+                    <li>
+                        <a
+                            href="#"
+                            class="waves-effect json"
+                            data-href="{{ route('pin', 'remove') }}"
+                            data-method="post"
+                            data-id="{{ $document->data['_id'] }}"
+                            data-type="{{ $document->data['_type'] }}"
+                            data-index="{{ $document->data['_index'] }}"
+                            data-group_id="{{ $pg->id }}"
+                            data-callback="__pin">Pin'i Kaldır</a>
+                    </li>
+                @endif
             </ul>
 
             <div class="card card-data {{ $type }} hoverable" data-id="card-{{ $id }}">
@@ -241,20 +245,22 @@
                         @endif
                     </div>
                 @endif
-                <div class="card-comment">
-                    <div class="input-field">
-                        <textarea
-                            id="textarea-{{ $id }}"
-                            name="comment"
-                            class="materialize-textarea json"
-                            data-href="{{ route('pin.comment') }}"
-                            data-method="post"
-                            data-index="{{ $document->data['_index'] }}"
-                            data-type="{{ $document->data['_type'] }}"
-                            data-id="{{ $document->data['_id'] }}">{{ $pin->comment }}</textarea>
-                        <label for="textarea-{{ $id }}">Yorum Girin</label>
+                @if ($pin->organisation_id == auth()->user()->organisation_id)
+                    <div class="card-comment">
+                        <div class="input-field">
+                            <textarea
+                                id="textarea-{{ $id }}"
+                                name="comment"
+                                class="materialize-textarea json"
+                                data-href="{{ route('pin.comment') }}"
+                                data-method="post"
+                                data-index="{{ $document->data['_index'] }}"
+                                data-type="{{ $document->data['_type'] }}"
+                                data-id="{{ $document->data['_id'] }}">{{ $pin->comment }}</textarea>
+                            <label for="textarea-{{ $id }}">Yorum Girin</label>
+                        </div>
                     </div>
-                </div>
+                @endif
 
                 @if ($sentiment)
                     <div class="card-sentiment d-flex justify-content-between">

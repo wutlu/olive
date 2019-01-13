@@ -73,19 +73,19 @@
         <a href="{{ route('realtime.stream') }}" class="card-panel hoverable waves-effect" data-tooltip="Gerçek Zamanlı" data-position="right">
             <img alt="Gerçek Zamanlı" src="{{ asset('img/icons/realtime.png') }}" />
         </a>
-        <a style="opacity: .4;" href="#" class="card-panel hoverable waves-effect" data-tooltip="Monitörler" data-position="right">
+        <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" style="opacity: .4;" href="#" class="card-panel hoverable waves-effect" data-tooltip="Monitörler" data-position="right">
             <img alt="Monitorler" src="{{ asset('img/icons/analytics.png') }}" />
         </a>
-        <a style="opacity: .4;" href="#" class="card-panel hoverable waves-effect" data-tooltip="Trend Analizi" data-position="right">
+        <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" style="opacity: .4;" href="#" class="card-panel hoverable waves-effect" data-tooltip="Trend Analizi" data-position="right">
             <img alt="Trend Analizi" src="{{ asset('img/icons/trends.png') }}" />
         </a>
-        <a style="opacity: .4;" href="#" class="card-panel hoverable waves-effect" data-tooltip="Geçmiş Veri" data-position="right">
+        <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" style="opacity: .4;" href="#" class="card-panel hoverable waves-effect" data-tooltip="Geçmiş Veri" data-position="right">
             <img alt="Geçmiş Veri" src="{{ asset('img/icons/archive.png') }}" />
         </a>
-        <a style="opacity: .4;" href="#" class="card-panel hoverable waves-effect" data-tooltip="Alarmlar" data-position="right">
+        <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" style="opacity: .4;" href="#" class="card-panel hoverable waves-effect" data-tooltip="Alarmlar" data-position="right">
             <img alt="Alarmlar" src="{{ asset('img/icons/alarm.png') }}" />
         </a>
-        <a style="opacity: .4;" href="#" class="card-panel hoverable waves-effect" data-tooltip="Araçlar" data-position="right">
+        <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" style="opacity: .4;" href="#" class="card-panel hoverable waves-effect" data-tooltip="Araçlar" data-position="right">
             <img alt="Araçlar" src="{{ asset('img/icons/tools.png') }}" />
         </a>
     </div>

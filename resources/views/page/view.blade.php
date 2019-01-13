@@ -1,10 +1,8 @@
 @extends('layouts.app')
 
-@push('external.include.header')
-    @if ($page->title)
-        @section('title', $page->title)
-    @endif
+@section('title', $page->title)
 
+@push('external.include.header')
     @if ($page->description)
     <!-- description -->
     <meta name="description" content="{{ $page->description }}" />
@@ -40,6 +38,6 @@
 
 @push('local.scripts')
     $(document).ready(function() {
-        $('.parallax').parallax();
-    });
+        $('.parallax').parallax()
+    })
 @endpush

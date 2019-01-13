@@ -32,6 +32,9 @@ class Crawler
                 'connect_timeout' => 5,
                 'headers' => [
                     'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))]
+                ],
+                'curl' => [
+                    CURLOPT_REFERER => $site
                 ]
             ];
 
@@ -72,7 +75,7 @@ class Crawler
     }
 
     # google search result link detection
-    public static function googleSearchResultLinkDetection(string $site, string $url_pattern, string $query, int $max_page = 1)
+    public static function googleSearchResultLinkDetection(string $site, string $url_pattern, string $query, string $google_time, int $max_page = 1)
     {
         $data = [];
 
@@ -102,7 +105,7 @@ class Crawler
                     $arr['proxy'] = $proxy->proxy;
                 }
 
-                $dom = $client->get('https://www.google.com/search?q='.$query.'&tbs=qdr:h,sbd:1&start='.$page, $arr)->getBody();
+                $dom = $client->get('https://www.google.com/search?q='.$query.'&tbs=qdr:'.$google_time.',sbd:1&start='.$page, $arr)->getBody();
 
                 preg_match_all('/'.$url_pattern.'/', $dom, $match);
 
@@ -149,6 +152,9 @@ class Crawler
                 'connect_timeout' => 5,
                 'headers' => [
                     'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))]
+                ],
+                'curl' => [
+                    CURLOPT_REFERER => $data['page']
                 ]
             ];
 
@@ -268,7 +274,7 @@ class Crawler
         return (object) $data;
     }
 
-    # article detection
+    # product detection
     public static function productDetection(string $site, string $page, array $selector, bool $proxy = false)
     {
         $selector = (object) $selector;
@@ -297,6 +303,9 @@ class Crawler
                     'referer' => true,
                     'protocols' => [ 'http', 'https' ],
                     'track_redirects' => true
+                ],
+                'curl' => [
+                    CURLOPT_REFERER => $data['page']
                 ]
             ];
 
@@ -347,32 +356,18 @@ class Crawler
             }, $seller_phones);
 
             # price detect
-            $price = $saw->get($selector->price)->toText();
-            $price_currency = preg_replace('/([^a-zA-Z\$\€\₺]+)/', '', $price);
-            $price_amount = preg_replace('/([^\d]+)/', '', $price);
+            $price = null;
+            $prce_raw = Term::convertAscii($saw->get($selector->price)->toText());
 
-            if ($price_currency && strlen($price_currency) <= 3 && intval($price_amount) > 0)
+            $price_currency = substr(preg_replace('/([^a-zA-Z\$\€\₺]+)/', '', $prce_raw), 0, 2);
+            $price_amount = intval(preg_replace('/([^\d]+)/', '', $prce_raw));
+
+            if ($price_currency && $price_amount > 0)
             {
                 $price = [
                     'currency' => $price_currency,
-                    'amount' => intval($price_amount)
+                    'amount' => $price_amount
                 ];
-            }
-            else
-            {
-                if (!$price_currency)
-                {
-                    $data['error_reasons'][] = 'Ücret birimi tespit edilemedi.';
-                }
-                else if (strlen($price_currency) > 3)
-                {
-                    $data['error_reasons'][] = 'Ücret birimi geçersiz. ('.$price_currency.')';
-                }
-
-                if (!$price_amount || intval($price_amount) == 0)
-                {
-                    $data['error_reasons'][] = 'Ücret tutarı tespit edilemedi.';
-                }
             }
 
             # date
@@ -385,9 +380,18 @@ class Crawler
                 'address' => $address,
                 'breadcrumb' => $breadcrumb,
                 'seller_name' => $seller_name,
-                'seller_phones' => $seller_phones,
-                'price' => $price
+                'seller_phones' => $seller_phones
             ];
+
+            if ($price)
+            {
+                $data['data']['price'] = $price;
+            }
+            else
+            {
+                $data['error_reasons'][] = 'Ücret tespit edilemedi.';
+                $data['status'] = 'err';
+            }
 
             if (!$created_at)
             {
@@ -450,8 +454,8 @@ class Crawler
         }
         catch (\Exception $e)
         {
-            $data['status'] = 'failed';
             $data['error_reasons'][] = $e->getMessage();
+            $data['status'] = 'failed';
         }
 
         return (object) $data;
@@ -474,6 +478,9 @@ class Crawler
                 'connect_timeout' => 5,
                 'headers' => [
                     'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))]
+                ],
+                'curl' => [
+                    CURLOPT_REFERER => $data['page']
                 ]
             ];
 

@@ -28,8 +28,7 @@ class Account extends Model
      */
     protected $hidden = [
         'token',
-        'token_secret',
-        'reasons'
+        'token_secret'
     ];
 
     public $incrementing = false;

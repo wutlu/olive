@@ -14,17 +14,19 @@ use App\Http\Requests\IdRequest;
 use App\Http\Requests\Twitter\Reason\KeywordRequest as KeywordReasonRequest;
 use App\Http\Requests\Twitter\Reason\AccountRequest as AccountReasonRequest;
 
+use App\Models\Organisation\Organisation;
+
 class DataController extends Controller
 {
     # ######################################## [ ADMIN ] ######################################## #
     # 
     # twitter veri havuzu kelime listesi view.
     # 
-    public function keywordList()
+    public function keywordList(int $id = 0)
     {
-        $user = auth()->user();
+        $organisation = $id ? Organisation::where('id', $id)->firstOrFail() : null;
 
-        return view('crawlers.twitter.dataPool.keyword_list', compact('user'));
+        return view('crawlers.twitter.dataPool.keyword_list', compact('organisation'));
     }
 
     # ######################################## [ ADMIN ] ######################################## #
@@ -36,12 +38,25 @@ class DataController extends Controller
         $take = $request->take;
         $skip = $request->skip;
 
+        preg_match('/(?<=\@)[([a-zA-Z0-9-_\.]+(?=)/', $request->string, $matches);
+
+        $org_name = @$matches[0];
+        $string = trim(preg_replace('/\@[([a-zA-Z0-9-_\.]+/', '', $request->string));
+
         $query = new StreamingKeywords;
         $query = $query->with('organisation');
-        $query = $request->string ? $query->where('keyword', 'ILIKE', '%'.$request->string.'%') : $query;
-        $query = $query->skip($skip)
-                       ->take($take)
-                       ->orderBy('id', 'DESC');
+
+    if ($string)
+    {
+        $query->where('keyword', 'ILIKE', '%'.$string.'%');
+    }
+
+    if ($org_name)
+    {
+        $query->whereHas('organisation', function($q) use($org_name) {
+            $q->where('name', $org_name);
+        });
+    }
 
         return [
             'status' => 'ok',
@@ -74,11 +89,11 @@ class DataController extends Controller
     # 
     # twitter veri havuzu kullanıcı listesi view.
     # 
-    public function accountList()
+    public function accountList(int $id = 0)
     {
-        $user = auth()->user();
+        $organisation = $id ? Organisation::where('id', $id)->firstOrFail() : null;
 
-        return view('crawlers.twitter.dataPool.account_list', compact('user'));
+        return view('crawlers.twitter.dataPool.account_list', compact('organisation'));
     }
 
     # ######################################## [ ADMIN ] ######################################## #
@@ -90,12 +105,25 @@ class DataController extends Controller
         $take = $request->take;
         $skip = $request->skip;
 
+        preg_match('/(?<=\@)[([a-zA-Z0-9-_\.]+(?=)/', $request->string, $matches);
+
+        $org_name = @$matches[0];
+        $string = trim(preg_replace('/\@[([a-zA-Z0-9-_\.]+/', '', $request->string));
+
         $query = new StreamingUsers;
         $query = $query->with('organisation');
-        $query = $request->string ? $query->where('screen_name', 'ILIKE', '%'.$request->string.'%') : $query;
-        $query = $query->skip($skip)
-                       ->take($take)
-                       ->orderBy('id', 'DESC');
+
+    if ($string)
+    {
+        $query->where('screen_name', 'ILIKE', '%'.$string.'%');
+    }
+
+    if ($org_name)
+    {
+        $query->whereHas('organisation', function($q) use($org_name) {
+            $q->where('name', $org_name);
+        });
+    }
 
         return [
             'status' => 'ok',

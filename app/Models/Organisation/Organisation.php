@@ -94,4 +94,16 @@ class Organisation extends Model
             return Carbon::parse($this->end_date)->diffInDays(Carbon::now());
         }
     }
+
+    # gerçek zamanlı kelime grupları
+    public function realTimeKeywordGroups()
+    {
+        return $this->hasMany('App\Models\RealTime\KeywordGroup', 'organisation_id', 'id');
+    }
+
+    # gerçek zamanlı kelime grupları
+    public function pinGroups()
+    {
+        return $this->hasMany('App\Models\Pin\Group', 'organisation_id', 'id');
+    }
 }

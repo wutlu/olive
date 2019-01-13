@@ -16,15 +16,19 @@ use App\Http\Requests\YouTube\Reason\KeywordRequest as KeywordReasonRequest;
 use App\Http\Requests\YouTube\Reason\ChannelRequest as ChannelReasonRequest;
 use App\Http\Requests\YouTube\Reason\VideoRequest as VideoReasonRequest;
 
+use App\Models\Organisation\Organisation;
+
 class DataController extends Controller
 {
     # ######################################## [ ADMIN ] ######################################## #
     # 
     # youtube veri havuzu kelime listesi view.
     # 
-    public function keywordList()
+    public function keywordList(int $id = 0)
     {
-        return view('crawlers.youtube.dataPool.keyword_list');
+        $organisation = $id ? Organisation::where('id', $id)->firstOrFail() : null;
+
+        return view('crawlers.youtube.dataPool.keyword_list', compact('organisation'));
     }
 
     # ######################################## [ ADMIN ] ######################################## #
@@ -97,9 +101,11 @@ class DataController extends Controller
     # 
     # youtube veri havuzu kanal listesi view.
     # 
-    public function channelList()
+    public function channelList(int $id = 0)
     {
-        return view('crawlers.youtube.dataPool.channel_list');
+        $organisation = $id ? Organisation::where('id', $id)->firstOrFail() : null;
+
+        return view('crawlers.youtube.dataPool.channel_list', compact('organisation'));
     }
 
     # ######################################## [ ADMIN ] ######################################## #
@@ -170,9 +176,11 @@ class DataController extends Controller
     # 
     # youtube veri havuzu video listesi view.
     # 
-    public function videoList()
+    public function videoList(int $id = 0)
     {
-        return view('crawlers.youtube.dataPool.video_list');
+        $organisation = $id ? Organisation::where('id', $id)->firstOrFail() : null;
+
+        return view('crawlers.youtube.dataPool.video_list', compact('organisation'));
     }
 
     # ######################################## [ ADMIN ] ######################################## #

@@ -11,6 +11,6 @@ class ForumMessagesTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Models\Forum\Message::class, 20)->create();
+        //factory(App\Models\Forum\Message::class, 20)->create();
     }
 }

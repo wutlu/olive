@@ -45,7 +45,7 @@ class BulkInsertJob implements ShouldQueue
 
         if ($bulk->status != 'ok')
         {
-            BulkInsertJob::dispatch($this->chunk)->onQueue('elasticsearch')->delay(now()->addMinutes(10));
+            BulkInsertJob::dispatch($this->chunk)->onQueue('error-crawler')->delay(now()->addMinutes(10));
 
             if (@$return->message)
             {

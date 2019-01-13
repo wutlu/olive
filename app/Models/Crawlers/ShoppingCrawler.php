@@ -12,6 +12,7 @@ class ShoppingCrawler extends Model
         'name',
         'site',
         'google_search_query',
+        'google_time',
         'google_max_page',
         'url_pattern',
 

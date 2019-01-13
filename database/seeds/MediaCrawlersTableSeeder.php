@@ -424,9 +424,9 @@ class MediaCrawlersTableSeeder extends Seeder
                 'name' => 'BİRGÜN',
                 'site' => 'https://www.birgun.net',
                 'base' => '/',
-                'url_pattern' => 'haber-detay\/([a-z0-9-]{4,128})-(\d{6,9})\.html',
-                'selector_title' => 'article.haber-detay .title',
-                'selector_description' => '.body > p:first-child',
+                'url_pattern' => 'haber-detay\/([a-z0-9-]{4,128})\.html',
+                'selector_title' => 'h1.tdb-title-text',
+                'selector_description' => '.tdb_single_subtitle > .tdb-block-inner > p',
                 'off_limit' => 255,
             ],
             [
@@ -551,8 +551,8 @@ class MediaCrawlersTableSeeder extends Seeder
                 'site' => 'http://www.samdan.com.tr',
                 'base' => '/',
                 'url_pattern' => '(?<=href\="\/)([a-z0-9-]{4,128})\/(\d{4})\/(\d{2})\/(\d{2})\/([a-z0-9-]{4,128})(?=")',
-                'selector_title' => 'h1',
-                'selector_description' => 'h2',
+                'selector_title' => '.detail > h1',
+                'selector_description' => '.detail > h2',
                 'off_limit' => 255,
             ],
             [
@@ -732,7 +732,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-h(\d{5,9})\.html',
                 'selector_title' => 'h1',
-                'selector_description' => 'p.lead',
+                'selector_description' => '.panel-heading p.font-medium',
                 'off_limit' => 255,
             ],
             [
@@ -1155,7 +1155,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})_(\d{8,9})\.html',
                 'selector_title' => 'h1[itemprop="name"]',
-                'selector_description' => '.articleTitle > div',
+                'selector_description' => 'h2[itemprop="articleSection"]',
                 'off_limit' => 10,
             ],
             [
@@ -1226,8 +1226,8 @@ class MediaCrawlersTableSeeder extends Seeder
                 'site' => 'http://www.gunes.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-(\d{6,9})',
-                'selector_title' => 'h1',
-                'selector_description' => 'h4',
+                'selector_title' => 'h1.title',
+                'selector_description' => 'h2.spot',
                 'off_limit' => 10,
             ],
             [

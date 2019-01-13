@@ -16,6 +16,10 @@ use App\Ticket;
 
 use YouTube;
 
+use App\Models\Crawlers\MediaCrawler;
+use App\Models\Crawlers\ShoppingCrawler;
+use App\Models\Crawlers\SozlukCrawler;
+
 class HomeController extends Controller
 {
     public function __construct()
@@ -25,7 +29,8 @@ class HomeController extends Controller
             'activity',
             'intro',
             'alert',
-            'monitor'
+            'monitor',
+            'sources'
         ]);
     }
 
@@ -33,6 +38,34 @@ class HomeController extends Controller
     public static function vz()
     {
         return view('vz.home');
+    }
+
+    # kaynaklar
+    public static function sources()
+    {
+        $media = MediaCrawler::select('name', 'status', 'site')->where('test', true)->orderBy('id', 'DESC')->get();
+        $shopping = ShoppingCrawler::select('name', 'status', 'site')->where('test', true)->orderBy('id', 'DESC')->get();
+        $sozluk = SozlukCrawler::select('name', 'status', 'site')->where('test', true)->orderBy('id', 'DESC')->get();
+
+        $options_query = Option::whereIn('key', [
+            'youtube.status',
+            'twitter.status',
+            'google.status',
+        ])->get();
+
+        $options = [];
+
+        foreach ($options_query as $option)
+        {
+            $options[$option->key] = $option->value;
+        }
+
+        return view('sources', compact(
+            'media',
+            'shopping',
+            'sozluk',
+            'options'
+        ));
     }
 
     # 

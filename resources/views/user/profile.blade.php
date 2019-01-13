@@ -22,7 +22,7 @@
     <div class="card">
         <div class="container">
             <div class="pt-1 pb-1">
-                <div class="d-flex flex-wrap">
+                <div class="d-flex flex-wrap justify-content-center">
                     @foreach (config('system.user.badges') as $id => $badge)
                         @php
                         $have = $user->badge($id);

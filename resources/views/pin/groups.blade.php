@@ -26,7 +26,7 @@
                         item.find('[data-name=edit]').attr('data-group_id', o.id)
                         item.find('[data-trigger=pin-go]').html(o.name).attr('data-id', o.id)
                         item.find('[data-name=created-at]').attr('data-time', o.created_at).html(o.created_at)
-                        item.find('[data-name=count]').html(o.pins.length + ' pin')
+                        item.find('[data-name=count]').html(o.pins_count + ' pin')
 
                         item.appendTo(ul)
                 })
@@ -269,7 +269,7 @@
                         href="#"></a>
                     <time data-name="created-at" class="timeago grey-text"></time>
                 </span>
-                <small data-name="count" class="badge ml-auto"></small>
+                <small data-name="count" class="ml-auto"></small>
             </li>
         </ul>
     </div>
