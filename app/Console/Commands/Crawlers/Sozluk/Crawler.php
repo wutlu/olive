@@ -186,7 +186,7 @@ class Crawler extends Command
 
                         $this->line('waiting');
 
-                        sleep(10);
+                        sleep(10*$deep_try);
                     }
                     else
                     {

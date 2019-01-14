@@ -15,7 +15,7 @@ class SozlukCrawlersTableSeeder extends Seeder
     {
         $items = [
             [
-                'name' => 'EkşiSözlük',
+                'name' => 'Ekşi',
                 'site' => 'https://eksisozluk.com',
                 'url_pattern' => 'entry/__id__',
                 'selector_title' => 'h1#title',
@@ -26,7 +26,7 @@ class SozlukCrawlersTableSeeder extends Seeder
                 'chunk' => 25
             ],
             [
-                'name' => 'UludağSözlük',
+                'name' => 'Uludağ',
                 'site' => 'https://www.uludagsozluk.com',
                 'url_pattern' => 'e/__id__',
                 'selector_title' => 'h1.tekentry-baslik',
@@ -37,12 +37,23 @@ class SozlukCrawlersTableSeeder extends Seeder
                 'chunk' => 25
             ],
             [
-                'name' => 'İnciSözlük',
+                'name' => 'İnci',
                 'site' => 'http://www.incisozluk.com.tr',
                 'url_pattern' => 'e/__id__',
                 'selector_title' => 'h1.title',
                 'selector_entry' => '.entry-list > .entry:first-child .entry-text-wrap',
                 'selector_author' => '.entry-list > .entry:first-child .username',
+                'max_attempt' => 100,
+                'deep_try' => 100,
+                'chunk' => 25
+            ],
+            [
+                'name' => 'Instela',
+                'site' => 'https://tr.instela.com',
+                'url_pattern' => 'e---__id__',
+                'selector_title' => 'h1#title',
+                'selector_entry' => '.entry_text',
+                'selector_author' => '.hop > b',
                 'max_attempt' => 100,
                 'deep_try' => 100,
                 'chunk' => 25

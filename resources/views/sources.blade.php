@@ -70,7 +70,7 @@
                         <a href="https://twitter.com" target="_blank" class="collection-item waves-effect waves-teal">
                             Twitter
 
-                            @if ($options['twitter.status'] == true)
+                            @if ($options['twitter.status'] == 'on')
                                 <span class="badge green white-text">Aktif</span>
                             @else
                                 <span class="badge red white-text">Pasif</span>
@@ -79,7 +79,7 @@
                         <a  href="https://www.youtube.com" target="_blank" class="collection-item waves-effect waves-teal">
                             YouTube
 
-                            @if ($options['youtube.status'] == true)
+                            @if ($options['youtube.status'] == 'on')
                                 <span class="badge green white-text">Aktif</span>
                             @else
                                 <span class="badge red white-text">Pasif</span>
@@ -88,7 +88,7 @@
                         <a href="https://www.google.com" target="_blank" class="collection-item waves-effect waves-teal">
                             Google
 
-                            @if ($options['google.status'] == true)
+                            @if ($options['google.status'] == 'on')
                                 <span class="badge green white-text">Aktif</span>
                             @else
                                 <span class="badge red white-text">Pasif</span>
