@@ -93,6 +93,7 @@ class TakerJob implements ShouldQueue
                 {
                     $params['description'] = $item->data['description'];
                     $params['sentiment'] = $sentiment->score($item->data['description']);
+
                     $source[] = 'ctx._source.description = params.description;';
                     $source[] = 'ctx._source.sentiment = params.sentiment;';
                 }

@@ -12,12 +12,20 @@ class TrendController extends Controller
 {
     public function __construct()
     {
+        /**
+         ***** ZORUNLU *****
+         *
+         * - Kullanıcı
+         * - Organizasyon
+         */
         $this->middleware([ 'auth', 'organisation:have' ]);
     }
 
-    # 
-    # trend analiz ekranı
-    # 
+    /**
+     * Trend Analizi Ana Sayfa
+     *
+     * @return view
+     */
     public function dashboard()
     {
         $time = date('Y-m-d', strtotime('2018-11-15'));
@@ -64,17 +72,21 @@ class TrendController extends Controller
         return view('trends.live');
     }
 
-    # 
-    # trend endeks ekranı
-    # 
+    /**
+     * Trend Endex Ekranı
+     *
+     * @return view
+     */
     public function index()
     {
         return view('trends.index');
     }
 
-    # 
-    # trend arşiv ekranı
-    # 
+    /**
+     * Trend Arşiv Ekranı
+     *
+     * @return view
+     */
     public function archive()
     {
         return view('trends.archive');

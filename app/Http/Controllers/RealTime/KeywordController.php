@@ -16,10 +16,19 @@ class KeywordController extends Controller
 {
     public function __construct()
     {
-        ### [ üyelik ve organizasyon zorunlu ] ###
+        /**
+         ***** ZORUNLU *****
+         *
+         * - Kullanıcı
+         * - Organizasyon
+         */
         $this->middleware([ 'auth', 'organisation:have' ]);
 
-        ### [ zorunlu aktif organizasyon ] ###
+        /**
+         ***** ZORUNLU *****
+         *
+         * - Aktif Organizasyon
+         */
         $this->middleware('can:organisation-status')->only([
             'groupCreate'
         ]);

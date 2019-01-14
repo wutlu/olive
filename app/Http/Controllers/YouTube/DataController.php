@@ -20,8 +20,20 @@ class DataController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
-        $this->middleware('organisation:have,source');
+        /**
+         ***** ZORUNLU *****
+         *
+         * - Kullanıcı
+         * - Organizasyon
+         * -- source
+         */
+        $this->middleware([ 'auth', 'organisation:have,source' ]);
+
+        /**
+         ***** ZORUNLU *****
+         *
+         * - Organizasyon Onayı
+         */
         $this->middleware([ 'can:organisation-status' ])->only([
             'keywordCreate',
             'channelCreate',
@@ -29,13 +41,21 @@ class DataController extends Controller
         ]);
     }
 
-    # youtube veri havuzu kelime listesi view.
+    /**
+     * YouTube veri havuzu, takip edilen kelime listesi.
+     *
+     * @return view
+     */
     public function keywordList()
     {
         return view('youtube.dataPool.keyword_list');
     }
 
-    # youtube veri havuzu kelime listesi json.
+    /**
+     * YouTube veri havuzu, takip edilen kelime listesi.
+     *
+     * @return array
+     */
     public function keywordListJson(int $skip = 0, int $take = 27)
     {
         $query = FollowingKeywords::where('organisation_id', auth()->user()->organisation_id)->skip($skip)->take($take)->orderBy('updated_at', 'ASC');
@@ -47,7 +67,11 @@ class DataController extends Controller
         ];
     }
 
-    # youtube veri havuzu kelime oluşturma.
+    /**
+     * YouTube veri havuzu, takip edilen kelime: oluştur.
+     *
+     * @return array
+     */
     public function keywordCreate(CreateKeywordRequest $request)
     {
         $query = new FollowingKeywords;
@@ -60,7 +84,11 @@ class DataController extends Controller
         ];
     }
 
-    # youtube veri havuzu kelime silme.
+    /**
+     * YouTube veri havuzu, takip edilen kelime: sil.
+     *
+     * @return array
+     */
     public static function keywordDelete(IdRequest $request)
     {
         $query = FollowingKeywords::where('organisation_id', auth()->user()->organisation_id)->where('id', $request->id)->firstOrFail();
@@ -77,19 +105,23 @@ class DataController extends Controller
         return $arr;
     }
 
-    /* ********** */
-    /* ************************* */
-    /* ************************************************** */
-    /* ************************* */
-    /* ********** */
+    ### ### ###
 
-    # youtube veri havuzu kanal listesi view.
+    /**
+     * YouTube veri havuzu, takip edilen kanal listesi.
+     *
+     * @return view
+     */
     public function channelList()
     {
         return view('youtube.dataPool.channel_list');
     }
 
-    # youtube veri havuzu kanal listesi json.
+    /**
+     * YouTube veri havuzu, takip edilen kanal listesi.
+     *
+     * @return array
+     */
     public function channelListJson(int $skip = 0, int $take = 27)
     {
         $query = FollowingChannels::where('organisation_id', auth()->user()->organisation_id)->skip($skip)->take($take)->orderBy('updated_at', 'ASC');
@@ -101,7 +133,11 @@ class DataController extends Controller
         ];
     }
 
-    # youtube veri havuzu kanal oluşturma.
+    /**
+     * YouTube veri havuzu, takip edilen kanal: oluştur.
+     *
+     * @return array
+     */
     public function channelCreate(CreateChannelRequest $request)
     {
         $channel = session('channel');
@@ -118,7 +154,11 @@ class DataController extends Controller
         ];
     }
 
-    # youtube veri havuzu kanal silme.
+    /**
+     * YouTube veri havuzu, takip edilen kanal: sil.
+     *
+     * @return array
+     */
     public static function channelDelete(IdRequest $request)
     {
         FollowingChannels::where('organisation_id', auth()->user()->organisation_id)->where('id', $request->id)->delete();
@@ -131,19 +171,23 @@ class DataController extends Controller
         ];
     }
 
-    /* ********** */
-    /* ************************* */
-    /* ************************************************** */
-    /* ************************* */
-    /* ********** */
+    ### ### ###
 
-    # youtube veri havuzu video listesi view.
+    /**
+     * YouTube veri havuzu, takip edilen video listesi.
+     *
+     * @return view
+     */
     public function videoList()
     {
         return view('youtube.dataPool.video_list');
     }
 
-    # youtube veri havuzu video listesi json.
+    /**
+     * YouTube veri havuzu, takip edilen video listesi.
+     *
+     * @return array
+     */
     public function videoListJson(int $skip = 0, int $take = 27)
     {
         $query = FollowingVideos::where('organisation_id', auth()->user()->organisation_id)->skip($skip)->take($take)->orderBy('updated_at', 'ASC');
@@ -155,7 +199,11 @@ class DataController extends Controller
         ];
     }
 
-    # youtube veri havuzu video oluşturma.
+    /**
+     * YouTube veri havuzu, takip edilen video: oluştur.
+     *
+     * @return array
+     */
     public function videoCreate(CreateVideoRequest $request)
     {
         $video = session('video');
@@ -171,7 +219,11 @@ class DataController extends Controller
         ];
     }
 
-    # youtube veri havuzu video silme.
+    /**
+     * YouTube veri havuzu, takip edilen video: sil.
+     *
+     * @return array
+     */
     public static function videoDelete(IdRequest $request)
     {
         FollowingVideos::where('organisation_id', auth()->user()->organisation_id)->where('id', $request->id)->delete();

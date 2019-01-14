@@ -20,9 +20,11 @@ class RouteController extends Controller
         ];
     }
 
-	# 
-	# link yarat
-	# 
+    /**
+     * Link Yarat
+     *
+     * @return array
+     */
     public static function generateById(Request $request)
     {
         Validator::extend('has_route', function($attribute, $value) use ($request) {

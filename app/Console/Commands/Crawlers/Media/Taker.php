@@ -42,7 +42,10 @@ class Taker extends Command
     public function handle()
     {
         $query = Document::list(
-            [ 'articles', '*' ],
+            [
+                'articles',
+                '*'
+            ],
             'article',
             [
                 'query' => [

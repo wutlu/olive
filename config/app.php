@@ -9,65 +9,65 @@ return [
     /**
      * Canlılık Durumu
      *
-     * @return production|local
+     * @var production|local
      */
     'env' => env('APP_ENV', 'production'),
 
     /**
      * Hata Ayıklama
      *
-     * @return true|false
+     * @var boolean
      */
     'debug' => env('APP_DEBUG', false),
 
     /**
      * Uygulama Bağlantısı
      *
-     * @return http://localhost
+     * @var http://localhost
      */
     'url' => env('APP_URL', 'http://localhost'),
 
     /**
      * Forum Bağlantısı
      *
-     * @return localhost
+     * @var localhost
      */
     'domain' => env('APP_DOMAIN', 'localhost'),
 
     /**
      * Gereçler Bağlantısı
      *
-     * @return null
+     * @var null
      */
     'asset_url' => env('ASSET_URL', null),
 
     /**
      * Zaman Dilimi
      *
-     * @return Europe/Istanbul
+     * @var Europe/Istanbul
      */
     'timezone' => 'Europe/Istanbul',
 
     /**
      * Sistem Dili
      *
-     * @return tr
+     * @var tr
      */
     'locale' => 'tr',
 
     /**
      * Alternatif Sistem Dili
      *
-     * - locale değeri bulunamazsa aranacak dil.
+     * - Locale değeri bulunamazsa aranacak dil.
      *
-     * @return tr
+     * @var tr
      */
     'fallback_locale' => 'tr',
 
     /**
      * Faker Dili
      *
-     * - sahte veri üretiminde kullanılacak dil.
+     * - Sahte veri üretiminde kullanılacak dil.
      */
     'faker_locale' => 'tr_TR',
 
@@ -79,7 +79,7 @@ return [
     /**
      * Sistem Şifresi
      *
-     * - kritik durumlarda sorulacak şifre.
+     * - Kritik durumlarda sorulacak şifre.
      */
     'password' => env('APP_PASSWORD'),
 
@@ -91,7 +91,7 @@ return [
     /**
      * Admin Grup E-posta Adresi
      *
-     * - sistemsel sorunlar bu e-posta grubuna gönderilir.
+     * - Sistemsel sorunlar bu e-posta grubuna gönderilir.
      */
     'group_email' => env('GROUP_EMAIL'),
 

@@ -11,9 +11,11 @@ use App\Models\Page;
 
 class PageController extends Controller
 {
-    # 
-    # view
-    # 
+    /**
+     * Sayfa
+     *
+     * @return view
+     */
     public static function view(string $slug)
     {
         $page = Page::where('slug', $slug)->firstOrFail();
@@ -21,10 +23,15 @@ class PageController extends Controller
         return view('page.view', compact('page'));
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # admin list view
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Sayfa Listesi
+     *
+     * @return view
+     */
     public static function adminListView(int $pager = 10)
     {
         $pages = Page::paginate($pager);
@@ -32,28 +39,31 @@ class PageController extends Controller
         return view('page.admin.list', compact('pages'));
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # admin view
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Sayfa
+     *
+     * @return view
+     */
     public static function adminView(int $id = 0)
     {
-        if ($id)
-        {
-            $page = Page::where('id', $id)->firstOrFail();
-        }
-        else
-        {
-            $page = [];
-        }
+        $page = $id ? Page::where('id', $id)->firstOrFail() : [];
 
         return view('page.admin.view', compact('page'));
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # admin update
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Sayfa Güncelle
+     *
+     * @return array
+     */
     public static function adminUpdate(UpdateRequest $request)
     {
         $request['slug'] = str_slug($request->slug);
@@ -70,10 +80,15 @@ class PageController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # admin create
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Sayfa Oluştur
+     *
+     * @return view
+     */
     public static function adminCreate(CreateRequest $request)
     {
         $request['slug'] = str_slug($request->slug);
@@ -93,10 +108,15 @@ class PageController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # admin delete
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Sayfa Sil
+     *
+     * @return view
+     */
     public static function adminDelete(IdRequest $request)
     {
         $page = Page::where('id', $request->id)->delete();

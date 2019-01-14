@@ -14,12 +14,19 @@ class ModuleSearchController extends Controller
 {
     public function __construct()
     {
+        /**
+         ***** ZORUNLU *****
+         *
+         * - Kullanıcı
+         */
         $this->middleware('auth');
     }
 
-    # 
-    # ara
-    # 
+    /**
+     * Arama Sonuçları
+     *
+     * @return array
+     */
     public static function search(ModuleSearchRequest $request)
     {
         $data = [];
@@ -93,9 +100,11 @@ class ModuleSearchController extends Controller
         ];
     }
 
-    # 
-    # go
-    # 
+    /**
+     * Rota Oluşturma Fonksiyonu
+     *
+     * @return array
+     */
     public static function go(ModuleGoRequest $request)
     {
         $module = config('system.search.modules')[$request->module_id];

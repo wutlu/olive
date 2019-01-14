@@ -195,7 +195,7 @@ class Document
                         $body
                     ]
                 ),
-                'App\Elasticsearch\Document::patch('.$name.', '.$type.')',
+                'App\Elasticsearch\Document::patch('.$name.'/'.$type.'/'.$id.')',
                 5
             );
 

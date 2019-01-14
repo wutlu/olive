@@ -12,7 +12,11 @@ use App\Mail\ServerAlertMail;
 
 class SystemUtility
 {
-    # system activity
+    /**
+     * Sistem Aktiviteleri, E-posta bildirimi.
+     *
+     * @return array
+     */
     public static function log(string $message, string $module, int $level = 1)
     {
         $uuid = md5(implode('.', [ $module, $level, date('Y.m.d.H') ]));
@@ -50,7 +54,9 @@ class SystemUtility
                                 implode(
                                     PHP_EOL.PHP_EOL,
                                     [
-                                        'Aşağıdaki log son 1 saat içerisinde çok fazla tekrar etti. Lütfen sisteme müdehale edin!', $message
+                                        'Aşağıdaki '.$level.'. seviye log son 1 saat içerisinde çok fazla tekrar etti. Lütfen sisteme müdehale edin!',
+                                        $module,
+                                        $message
                                     ]
                                 )
                             )
@@ -65,7 +71,11 @@ class SystemUtility
         }
     }
 
-    # system option
+    /**
+     * Sistem Ayarı
+     *
+     * @return mixed
+     */
     public static function option(string $key)
     {
         return Option::where('key', $key)->value('value');

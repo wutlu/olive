@@ -13,10 +13,19 @@ class AccountController extends Controller
 {
 	public function __construct()
     {
-        ### [ üyelik ve organizasyon zorunlu ] ###
+        /**
+         ***** ZORUNLU *****
+         *
+         * - Kullanıcı
+         * - Organizasyon
+         */
         $this->middleware([ 'auth', 'organisation:have' ]);
 
-        ### [ zorunlu twitter hesabı ] ###
+        /**
+         ***** ZORUNLU *****
+         *
+         * - Twitter Hesabı
+         */
         $this->middleware([ 'twitter:have' ])->only('disconnect');
     }
 

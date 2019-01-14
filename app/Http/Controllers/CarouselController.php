@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Http\Requests\IdRequest;
+
 use App\Http\Requests\Carousel\CreateRequest;
 use App\Http\Requests\Carousel\UpdateRequest;
 
@@ -17,23 +18,32 @@ use GuzzleHttp\HandlerStack;
 
 class CarouselController extends Controller
 {
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # carousel listesi view.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Carousel Listesi
+     *
+     * @return view
+     */
     public function carousels()
     {
         return view('carousel');
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # carousel listesi json çıktısı.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Carousel Listesi
+     *
+     * @return array
+     */
     public static function carouselsJson()
     {
-        $carousels = new Carousel;
-        $carousels = $carousels->orderBy('updated_at', 'DESC')->get();
+        $carousels = Carousel::orderBy('updated_at', 'DESC')->get();
 
         return [
             'status' => 'ok',
@@ -42,10 +52,15 @@ class CarouselController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # carousel bilgileri.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Carousel Bilgileri
+     *
+     * @return array
+     */
     public static function carousel(IdRequest $request)
     {
         $carousel = Carousel::where('id', $request->id)->firstOrFail();
@@ -56,10 +71,15 @@ class CarouselController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # carousel oluştur.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Carousel Oluştur
+     *
+     * @return array
+     */
     public static function carouselCreate(CreateRequest $request)
     {
         $count = Carousel::count();
@@ -88,10 +108,15 @@ class CarouselController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # carousel güncelle.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Carousel Güncelle
+     *
+     * @return array
+     */
     public static function carouselUpdate(UpdateRequest $request)
     {
         $carousel = Carousel::where('id', $request->id)->firstOrFail();
@@ -105,10 +130,15 @@ class CarouselController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # carousel sil.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Carousel Sil
+     *
+     * @return array
+     */
     public static function carouselDelete(IdRequest $request)
     {
         $carousel = Carousel::where('id', $request->id)->firstOrFail();

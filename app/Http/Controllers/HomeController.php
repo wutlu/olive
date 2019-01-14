@@ -24,6 +24,11 @@ class HomeController extends Controller
 {
     public function __construct()
     {
+        /**
+         ***** ZORUNLU *****
+         *
+         * - Kullanıcı
+         */
         $this->middleware('auth')->only([
             'dashboard',
             'activity',
@@ -34,13 +39,21 @@ class HomeController extends Controller
         ]);
     }
 
-    # veri.zone home
+    /**
+     * veri.zone Ana Sayfa
+     *
+     * @return view
+     */
     public static function vz()
     {
         return view('vz.home');
     }
 
-    # kaynaklar
+    /**
+     * Kaynaklar Sayfası
+     *
+     * @return view
+     */
     public static function sources()
     {
         $media = MediaCrawler::select('name', 'status', 'site')->where('test', true)->orderBy('id', 'DESC')->get();
@@ -68,17 +81,21 @@ class HomeController extends Controller
         ));
     }
 
-    # 
-    # uyarı
-    # 
+    /**
+     * Uyarı Sayfası
+     *
+     * @return mixed
+     */
     public static function alert()
     {
         return session('alert') ? view('alert') : redirect()->route('dashboard');
     }
 
-    # 
-    # manifest
-    # 
+    /**
+     * Manifest.json
+     *
+     * @return json
+     */
     public static function manifest()
     {
         return json_encode([
@@ -103,15 +120,25 @@ class HomeController extends Controller
         ], JSON_PRETTY_PRINT);
     }
 
-    # home
+    /**
+     * Site Ana Sayfası
+     *
+     * @return view
+     */
     public static function index()
     {
-        $discountDay = DiscountDay::where('first_day', '<=', date('Y-m-d'))->where('last_day', '>=', date('Y-m-d'))->first();
+        $discountDay = DiscountDay::where('first_day', '<=', date('Y-m-d'))
+                                  ->where('last_day', '>=', date('Y-m-d'))
+                                  ->first();
 
         return view('home', compact('discountDay'));
     }
 
-    # dashboard
+    /**
+     * Portal Ana Sayfası
+     *
+     * @return json
+     */
     public static function dashboard()
     {
         $user = auth()->user();
@@ -122,7 +149,11 @@ class HomeController extends Controller
         return view('dashboard', compact('user', 'carousels', 'modals'));
     }
 
-    # activities
+    /**
+     * Aktiviteler
+     *
+     * @return array
+     */
     public static function activity(SearchRequest $request)
     {
         $take = $request->take;
@@ -142,7 +173,11 @@ class HomeController extends Controller
         ];
     }
 
-    # skip intro
+    /**
+     * Introyu Geç
+     *
+     * @return array
+     */
     public static function intro(string $key)
     {
         $query = UserIntro::firstOrCreate([ 'user_id' => auth()->user()->id, 'key' => $key ]);
@@ -152,7 +187,11 @@ class HomeController extends Controller
         ];
     }
 
-    # monitor
+    /**
+     * Bildirim Monitörü
+     *
+     * @return array
+     */
     public static function monitor()
     {
         $data = [
@@ -161,6 +200,7 @@ class HomeController extends Controller
             ],
             'push_notifications' => []
         ];
+
         $user = auth()->user();
 
         if ($user->root())

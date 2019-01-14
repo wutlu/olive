@@ -30,6 +30,7 @@ class CreateGoogleIndexJob implements ShouldQueue
      */
     public function __construct()
     {
+        //
     }
 
     /**

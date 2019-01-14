@@ -24,7 +24,11 @@ use App\Jobs\KillProcessJob;
 
 class MonitorController extends Controller
 {
-    # sunucu ekranı
+    /**
+     * Sunucu Bilgisi Ekranı
+     *
+     * @return view
+     */
     public static function server()
     {
         $disks = System::getDiskSize();
@@ -32,7 +36,11 @@ class MonitorController extends Controller
         return view('monitor.server', compact('disks'));
     }
 
-    # sunucu ekranı data
+    /**
+     * Sunucu Bilgisi
+     *
+     * @return array
+     */
     public static function serverJson()
     {
         $data['ram']['total'] = System::getRamTotal();
@@ -48,7 +56,18 @@ class MonitorController extends Controller
         ];
     }
 
-    # alarm kontrolü
+    /**
+     ********************
+     ******* ROOT *******
+     ****** SYSTEM ******
+     ********************
+     *
+     * Alarm Kontrolü
+     * - Anlık kontrol sorgusu yapılır ve sorun
+     * durumunda yöneticilere e-posta bildirimi yapılır.
+     *
+     * @return mixed
+     */
     public static function alarmControl()
     {
         $data = self::serverJson();
@@ -99,13 +118,21 @@ class MonitorController extends Controller
         }
     }
 
-    # log ekranı
+    /**
+     * Log Ekranı
+     *
+     * @return view
+     */
     public static function log()
     {
         return view('monitor.log');
     }
 
-    # log ekranı data
+    /**
+     * Log Verisi
+     *
+     * @return array
+     */
     public static function logJson()
     {
         $date = Carbon::now()->subHours(24)->format('Y-m-d H:i:s');
@@ -130,7 +157,11 @@ class MonitorController extends Controller
         ];
     }
 
-    # log temizle
+    /**
+     * Log Temizle
+     *
+     * @return array
+     */
     public static function logClear()
     {
         foreach (config('app.log_files') as $file)
@@ -148,19 +179,32 @@ class MonitorController extends Controller
         ];
     }
 
-    # kuyruk izleme (horizon)
+    /**
+     * Kuyrul Monitörü
+     * - Laravel Horizon
+     *
+     * @return view
+     */
     public static function queue()
     {
         return view('monitor.queue');
     }
 
-    # arkaplan ekranı
+    /**
+     * Arkaplan Monitörü
+     *
+     * @return view
+     */
     public static function background()
     {
         return view('monitor.background');
     }
 
-    # arkaplan işlemleri
+    /**
+     * Arkaplan İşlemleri
+     *
+     * @return array
+     */
     public static function backgroundProcesses()
     {
         $pids = [];
@@ -195,7 +239,11 @@ class MonitorController extends Controller
         ];
     }
 
-    # arkaplan işlem öldür
+    /**
+     * Arkaplan İşlemi Öldür
+     *
+     * @return array
+     */
     public static function processKill(ShellRequest $request)
     {
         KillProcessJob::dispatch($request->pid)->onQueue('trigger');

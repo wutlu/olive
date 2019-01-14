@@ -10,19 +10,29 @@ use Carbon\Carbon;
 
 class SessionController extends Controller
 {
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # log ekranı.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Log Ekranı
+     *
+     * @return view
+     */
     public function logs()
     {
         return view('guestLog');
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # log ekranı json çıktısı.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Log Ekranı
+     *
+     * @return array
+     */
     public static function logsJson()
     {
         $date = Carbon::now()->subMinutes(1)->timestamp;

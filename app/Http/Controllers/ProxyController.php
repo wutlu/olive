@@ -17,19 +17,29 @@ use GuzzleHttp\HandlerStack;
 
 class ProxyController extends Controller
 {
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # proxy listesi view.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Proxy Listesi
+     *
+     * @return view
+     */
     public function proxies()
     {
         return view('proxy');
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # proxy listesi json çıktısı.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Proxy Listesi
+     *
+     * @return array
+     */
     public static function proxiesJson()
     {
         $proxies = Proxy::orderBy('id', 'DESC')->get();
@@ -41,10 +51,15 @@ class ProxyController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # proxy bilgileri.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Proxy Detay
+     *
+     * @return array
+     */
     public static function proxy(IdRequest $request)
     {
         $proxy = Proxy::where('id', $request->id)->firstOrFail();
@@ -55,10 +70,15 @@ class ProxyController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # proxy oluştur.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Proxy Oluştur
+     *
+     * @return array
+     */
     public static function proxyCreate(CreateRequest $request)
     {
         $proxy_health = self::getProxyHealth($request->proxy);
@@ -88,10 +108,15 @@ class ProxyController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # proxy güncelle.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Proxy Güncelle
+     *
+     * @return array
+     */
     public static function proxyUpdate(UpdateRequest $request)
     {
         $proxy_health = self::getProxyHealth($request->proxy);
@@ -121,10 +146,15 @@ class ProxyController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # proxy sil.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Proxy Sil
+     *
+     * @return array
+     */
     public static function proxyDelete(IdRequest $request)
     {
         $proxy = Proxy::where('id', $request->id)->firstOrFail();
@@ -141,10 +171,15 @@ class ProxyController extends Controller
         return $arr;
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # proxy kontrol fonksiyonu.
-    #
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Proxy Kontrolü
+     *
+     * @return array
+     */
     private static function getProxyHealth(string $proxy)
     {
         $starttime = microtime(true);
@@ -174,13 +209,6 @@ class ProxyController extends Controller
         $load_time = intval($endtime - $starttime);
         $load_time = 10 - ($load_time > 10 ? 10 : $load_time);
 
-        if ($response->getStatusCode() == 200)
-        {
-            return $load_time;
-        }
-        else
-        {
-            return 0;
-        }
+        return $response->getStatusCode() == 200 ? $load_time : 0;
     }
 }

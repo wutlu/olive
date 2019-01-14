@@ -15,7 +15,11 @@ use App\Models\Proxy;
 
 class Crawler
 {
-    # link detection
+    /**
+     * Medya, Bağlantı Tespiti
+     *
+     * @return array
+     */
     public static function mediaLinkDetection(string $site, string $url_pattern, string $base = '/', bool $proxy = false)
     {
         $data = [];
@@ -74,7 +78,11 @@ class Crawler
         return (object) $data;
     }
 
-    # google search result link detection
+    /**
+     * Google Arama Sonucu, Bağlantı Tespiti
+     *
+     * @return array
+     */
     public static function googleSearchResultLinkDetection(string $site, string $url_pattern, string $query, string $google_time, int $max_page = 1)
     {
         $data = [];
@@ -132,7 +140,11 @@ class Crawler
         return (object) $data;
     }
 
-    # article detection
+    /**
+     * Makale Tespiti
+     *
+     * @return array
+     */
     public static function articleDetection(string $site, string $page, string $title_selector, string $description_selector, bool $proxy = false)
     {
         $data = [
@@ -274,7 +286,11 @@ class Crawler
         return (object) $data;
     }
 
-    # product detection
+    /**
+     * Ürün Tespiti
+     *
+     * @return array
+     */
     public static function productDetection(string $site, string $page, array $selector, bool $proxy = false)
     {
         $selector = (object) $selector;
@@ -461,7 +477,11 @@ class Crawler
         return (object) $data;
     }
 
-    # entry detection
+    /**
+     * Sözlük, Girdi Tespiti
+     *
+     * @return array
+     */
     public static function entryDetection(string $site, string $page, int $id, string $title_selector, string $entry_selector, string $author_selector, bool $proxy = false)
     {
         $data['page'] = $site.'/'.str_replace('__id__', $id, $page);

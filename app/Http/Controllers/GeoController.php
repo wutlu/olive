@@ -13,10 +13,19 @@ class GeoController extends Controller
 {
     public function __construct()
 	{
+        /**
+         ***** ZORUNLU *****
+         *
+         * - Kullanıcı
+         */
 		$this->middleware('auth');
 	}
 
-    # ülkeler
+    /**
+     * Ülkeler
+     *
+     * @return array
+     */
     public static function countries()
     {
         return [
@@ -25,7 +34,11 @@ class GeoController extends Controller
         ];
     }
 
-    # şehirler
+    /**
+     * Şehirler
+     *
+     * @return array
+     */
     public static function states(StatesRequest $request)
     {
         return [

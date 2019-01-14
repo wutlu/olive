@@ -6,7 +6,11 @@ use App\Models\User\UserActivity;
 
 class UserActivityUtility
 {
-    # user activity
+    /**
+     * Kullanıcı Aktiviteleri
+     *
+     * @return array
+     */
     public static function push(string $title, array $array = [])
     {
         $user_id = @$array['user_id'] ? $array['user_id'] : auth()->user()->id;

@@ -55,8 +55,8 @@ return [
     */
 
     'trim' => [
-        'recent' => 60,
-        'failed' => 10080,
+        'recent' => 30,
+        'failed' => 1440,
     ],
 
     /*
@@ -102,7 +102,7 @@ return [
                     'process',
                 ],
                 'balance' => 'auto',
-                'processes' => 3,
+                'processes' => 10,
                 'tries' => 3,
             ],
         ],

@@ -36,7 +36,11 @@ class ForumController extends Controller
 {
     public function __construct()
     {
-        ### [ üyelik zorunlu ] ###
+        /**
+         ***** ZORUNLU *****
+         *
+         * - Kullanıcı
+         */
         $this->middleware('auth')->only([
             'threadStatus',
             'threadStatic',
@@ -64,7 +68,11 @@ class ForumController extends Controller
             'replySave',
         ]);
 
-        ### [ e-posta doğrulaması iste ] ###
+        /**
+         ***** ZORUNLU *****
+         *
+         * - E-posta Doğrulaması
+         */
         $this->middleware('verification.email')->only([
             'replySave',
             'replyGet',

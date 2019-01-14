@@ -14,11 +14,18 @@ class MarkdownController extends Controller
 {
     public function __construct()
     {
+        /**
+         ***** ZORUNLU *****
+         *
+         * - Kullanıcı
+         */
         $this->middleware('auth');
     }
 
     /**
-     * markdown öznizleme
+     * Markdown Ön İzleme
+     *
+     * @return array
      */
     public static function preview(MarkdownPreviewRequest $request)
     {

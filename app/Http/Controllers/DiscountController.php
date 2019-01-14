@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 use App\Http\Requests\Discount\Coupon\CreateRequest;
 use App\Http\Requests\Discount\Coupon\UpdateRequest;
 use App\Http\Requests\IdRequest;
@@ -14,10 +15,15 @@ use App\Models\Discount\DiscountDay as Day;
 
 class DiscountController extends Controller
 {
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # admin list view
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * İndirim Kuponu Listesi
+     *
+     * @return view
+     */
     public static function adminCouponListView(int $pager = 10)
     {
         $coupons = Coupon::whereNull('invoice_id')->paginate($pager);
@@ -25,10 +31,15 @@ class DiscountController extends Controller
         return view('discount.coupon.list', compact('coupons'));
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # admin view
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * İndirim Kuponu Sayfası
+     *
+     * @return view
+     */
     public static function adminCouponView(int $id = 0)
     {
         if ($id)
@@ -44,20 +55,27 @@ class DiscountController extends Controller
         return view('discount.coupon.view', compact('coupon'));
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # admin update
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * İndirim Kuponu Güncelle
+     *
+     * @return array
+     */
     public static function adminCouponUpdate(UpdateRequest $request)
     {
         $coupon = Coupon::where('id', $request->id)->whereNull('invoice_id')->firstOrFail();
         $count  = Coupon::where('key', $coupon->key)->whereNull('invoice_id')->count();
 
-        Coupon::where('key', $coupon->key)->whereNull('invoice_id')->update([
-            'key' => $request->key,
-            'rate' => $request->rate,
-            'price' => $request->price
-        ]);
+        Coupon::where('key', $coupon->key)->whereNull('invoice_id')->update(
+            [
+                'key' => $request->key,
+                'rate' => $request->rate,
+                'price' => $request->price
+            ]
+        );
 
         if ($request->count > $count)
         {
@@ -95,10 +113,15 @@ class DiscountController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # admin create
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * İndirim Kuponu Oluştur
+     *
+     * @return array
+     */
     public static function adminCouponCreate(CreateRequest $request)
     {
         for ($i = 1; $i <= $request->count; $i++)
@@ -121,10 +144,15 @@ class DiscountController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # admin delete
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * İndirim Kuponu Sil
+     *
+     * @return array
+     */
     public static function adminCouponDelete(IdRequest $request)
     {
         $coupon = Coupon::where('id', $request->id)->firstOrFail();
@@ -138,10 +166,17 @@ class DiscountController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # admin discount days list view
-    # 
+    ### ### ###
+
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * İndirim Günü Listesi
+     *
+     * @return view
+     */
     public static function adminDayListView(int $pager = 10)
     {
         $days = Day::paginate($pager);
@@ -149,28 +184,31 @@ class DiscountController extends Controller
         return view('discount.day.list', compact('days'));
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # admin discount days view
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * İndirim Günü Sayfası
+     *
+     * @return view
+     */
     public static function adminDayView(int $id = 0)
     {
-        if ($id)
-        {
-            $day = Day::where('id', $id)->firstOrFail();
-        }
-        else
-        {
-            $day = [];
-        }
+        $day = $id ? Day::where('id', $id)->firstOrFail() : [];
 
         return view('discount.day.view', compact('day'));
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # admin create
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * İndirim Günü Oluştur
+     *
+     * @return array
+     */
     public static function adminDayCreate(DayCreateRequest $request)
     {
         $day = new Day;
@@ -188,10 +226,15 @@ class DiscountController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # admin day update
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * İndirim Günü Güncelle
+     *
+     * @return array
+     */
     public static function adminDayUpdate(DayUpdateRequest $request)
     {
         $day = Day::where('id', $request->id)->firstOrFail();
@@ -206,10 +249,15 @@ class DiscountController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # admin day delete
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * İndirim Günü Sil
+     *
+     * @return array
+     */
     public static function adminDayDelete(IdRequest $request)
     {
         $day = Day::where('id', $request->id)->delete();

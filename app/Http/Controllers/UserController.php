@@ -39,11 +39,22 @@ class UserController extends Controller
 {
 	public function __construct()
 	{
+        /**
+         ***** ZORUNLU *****
+         *
+         * - Ziyaretçi
+         */
 		$this->middleware('guest')->only([
 			'registerPut',
 			'loginPost',
 			'loginView'
 		]);
+
+        /**
+         ***** ZORUNLU *****
+         *
+         * - Kullanıcı
+         */
         $this->middleware('auth')->only([
             'registerResend',
             'account',
@@ -54,12 +65,21 @@ class UserController extends Controller
             'avatarUpload'
         ]);
 
+        ### [ 5 işlemden sonra 5 dakika ile sınırla ] ###
         $this->middleware('throttle:5,5')->only('passwordPost');
+
+        ### [ 5 işlemden sonra 1 dakika ile sınırla ] ###
         $this->middleware('throttle:5,1')->only('loginPost');
+
+        ### [ 1 işlemden sonra 1 dakika ile sınırla ] ###
         $this->middleware('throttle:1,1')->only('registerResend');
 	}
 
-    # profile
+    /**
+     * Forum, Kullanıcı Profili
+     *
+     * @return view
+     */
     public static function profile(int $id)
     {
         $user = User::where('id', $id)->firstOrFail();
@@ -67,13 +87,21 @@ class UserController extends Controller
         return view('user.profile', compact('user'));
     }
 
-    # login view
+    /**
+     * Üyelik Formu
+     *
+     * @return view
+     */
     public static function loginView()
     {
     	return view('user.logister');
     }
 
-    # login post
+    /**
+     * Üye Girişi
+     *
+     * @return array
+     */
     public static function loginPost(LoginRequest $request)
     {
         $email = $request->email_login;
@@ -108,7 +136,8 @@ class UserController extends Controller
             {
                 if (!$user->badge(10))
                 {
-                    $user->addBadge(10); // 5 yıl dolduruldu
+                    ### [ 5 yıl dolduruldu ] ###
+                    $user->addBadge(10);
 
                     $gift = 30;
                 }
@@ -117,7 +146,8 @@ class UserController extends Controller
             {
                 if (!$user->badge(9))
                 {
-                    $user->addBadge(9); // 4 yıl dolduruldu
+                    ### [ 4 yıl dolduruldu ] ###
+                    $user->addBadge(9);
 
                     $gift = 20;
                 }
@@ -126,7 +156,8 @@ class UserController extends Controller
             {
                 if (!$user->badge(8))
                 {
-                    $user->addBadge(8); // 3 yıl dolduruldu
+                    ### [ 3 yıl dolduruldu ] ###
+                    $user->addBadge(8);
 
                     $gift = 10;
                 }
@@ -135,7 +166,8 @@ class UserController extends Controller
             {
                 if (!$user->badge(7))
                 {
-                    $user->addBadge(7); // 2 yıl dolduruldu
+                    ### [ 2 yıl dolduruldu ] ###
+                    $user->addBadge(7);
 
                     $gift = 10;
                 }
@@ -144,7 +176,8 @@ class UserController extends Controller
             {
                 if (!$user->badge(6))
                 {
-                    $user->addBadge(6); // 1 yıl dolduruldu
+                    ### [ 1 yıl dolduruldu ] ###
+                    $user->addBadge(6);
 
                     $gift = 10;
                 }
@@ -183,7 +216,15 @@ class UserController extends Controller
 
                         $discount = implode(PHP_EOL, $discount);
 
-                        $user->notify((new DiscountCouponNotification($user->name, $discount, implode(PHP_EOL, $message)))->onQueue('email'));
+                        $user->notify(
+                            (
+                                new DiscountCouponNotification(
+                                    $user->name,
+                                    $discount,
+                                    implode(PHP_EOL, $message)
+                                )
+                            )->onQueue('email')
+                        );
                     }
                 }
             }
@@ -253,7 +294,14 @@ class UserController extends Controller
 
                 if ($user->notification('login'))
                 {
-                    $user->notify((new LoginNotification($user->name, $data))->onQueue('email'));
+                    $user->notify(
+                        (
+                            new LoginNotification(
+                                $user->name,
+                                $data
+                            )
+                        )->onQueue('email')
+                    );
                 }
 
                 Session::getHandler()->destroy($previous_session);
@@ -268,21 +316,29 @@ class UserController extends Controller
         }
         else
         {
-            return response([
-                'message' => 'The given data was invalid.',
-                'errors' => [
-                    'email_login' => [
-                        'Geçersiz e-posta/şifre kombinasyonu.'
-                    ],
-                    'password_login' => [
-                        'Geçersiz e-posta/şifre kombinasyonu.'
+            return response
+            (
+                [
+                    'message' => 'The given data was invalid.',
+                    'errors' => [
+                        'email_login' => [
+                            'Geçersiz e-posta/şifre kombinasyonu.'
+                        ],
+                        'password_login' => [
+                            'Geçersiz e-posta/şifre kombinasyonu.'
+                        ]
                     ]
-                ]
-            ], 422);
+                ],
+                422
+            );
         }
     }
 
-    # password post
+    /**
+     * Yeni Şifre İstek
+     *
+     * @return array
+     */
     public static function passwordGetPost(PasswordGetRequest $request)
     {
         $user = User::where('email', $request->email_password)->first();
@@ -294,7 +350,11 @@ class UserController extends Controller
         ];
     }
 
-    # password new get
+    /**
+     * Yeni Şifre
+     *
+     * @return view
+     */
     public static function passwordNew(string $id, string $sid)
     {
         $user = User::where([
@@ -305,7 +365,11 @@ class UserController extends Controller
         return view('user.password_new', compact('user'));
     }
 
-    # password new patch
+    /**
+     * Yeni Şifre Güncelle
+     *
+     * @return array
+     */
     public static function passwordNewPatch(string $id, string $sid, PasswordNewRequest $request)
     {
         $user = User::where([
@@ -315,14 +379,17 @@ class UserController extends Controller
 
         if ($request->email != $user->email)
         {
-            return response([
-                'message' => 'The given data was invalid.',
-                'errors' => [
-                    'email' => [
-                        'Geçerli e-posta adresiniz bu değil.'
+            return response(
+                [
+                    'message' => 'The given data was invalid.',
+                    'errors' => [
+                        'email' => [
+                            'Geçerli e-posta adresiniz bu değil.'
+                        ]
                     ]
-                ]
-            ], 422);
+                ],
+                422
+            );
         }
 
         $user->password = bcrypt($request->password);
@@ -340,14 +407,25 @@ class UserController extends Controller
             ]
         );
 
-        $user->notify((new NewPasswordNotification($user->name, $text))->onQueue('email'));
+        $user->notify(
+            (
+                new NewPasswordNotification(
+                    $user->name,
+                    $text
+                )
+            )->onQueue('email')
+        );
 
         return [
             'status' => 'ok'
         ];
     }
 
-    # register validate
+    /**
+     * Üyelik Onayı
+     *
+     * @return array
+     */
     public static function registerValidate(string $id, string $sid)
     {
         $user = User::where([
@@ -363,20 +441,28 @@ class UserController extends Controller
 
         $text = 'E-posta adresiniz başarılı bir şekilde doğrulandı. İyi araştırmalar dileriz...';
 
-        $user->addBadge(1); // e-posta doğrulama
+        ### [ e-posta doğrulandı ] ###
+        $user->addBadge(1);
 
         UserActivityUtility::push(
             'E-posta Doğrulandı!',
             [
-                'icon'              => 'check',
-                'markdown'          => $text,
-                'user_id'           => $user->id,
+                'icon'     => 'check',
+                'markdown' => $text,
+                'user_id'  => $user->id,
             ]
         );
 
-        $user->notify((new WelcomeNotification($user->name, $text))->onQueue('email'));
+        $user->notify(
+            (
+                new WelcomeNotification(
+                    $user->name,
+                    $text
+                )
+            )->onQueue('email')
+        );
 
-        # indirim günü varsa kupon yarat #
+        ### [ indirim günü varsa kupon yarat ] ###
 
         $discountDay = DiscountDay::where('first_day', '<=', date('Y-m-d'))->where('last_day', '>=', date('Y-m-d'))->first();
 
@@ -414,7 +500,14 @@ class UserController extends Controller
 
                     $discount = implode(PHP_EOL, $discount);
 
-                    $user->notify((new DiscountCouponNotification($user->name, $discount))->onQueue('email'));
+                    $user->notify(
+                        (
+                            new DiscountCouponNotification(
+                                $user->name,
+                                $discount
+                            )
+                        )->onQueue('email')
+                    );
                 }
             }
         }
@@ -424,7 +517,11 @@ class UserController extends Controller
         return redirect()->route('dashboard');
     }
 
-    # register put
+    /**
+     * Yeni Üye Kayıt
+     *
+     * @return array
+     */
     public static function registerPut(RegisterRequest $request)
     {
         $user = new User;
@@ -442,7 +539,15 @@ class UserController extends Controller
             ]);
         }
 
-        $user->notify((new EmailValidationNotification($user->id, $user->session_id, $user->name))->onQueue('email'));
+        $user->notify(
+            (
+                new EmailValidationNotification(
+                    $user->id,
+                    $user->session_id,
+                    $user->name
+                )
+            )->onQueue('email')
+        );
 
         Auth::login($user);
 
@@ -451,7 +556,11 @@ class UserController extends Controller
         ];
     }
 
-    # register resend
+    /**
+     * Yeni Doğrulama İsteği
+     *
+     * @return array
+     */
     public static function registerResend()
     {
         $user = auth()->user();
@@ -472,7 +581,11 @@ class UserController extends Controller
         ];
     }
 
-    # logout
+    /**
+     * Çıkış
+     *
+     * @return array
+     */
     public static function logout()
     {
         auth()->logout();
@@ -480,10 +593,15 @@ class UserController extends Controller
         return redirect()->route('user.login');
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # admin view
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Kullanıcı Güncelle
+     *
+     * @return view
+     */
     public static function adminView(int $id)
     {
         $user = User::where('id', $id)->firstOrFail();
@@ -491,21 +609,28 @@ class UserController extends Controller
         return view('user.admin.view', compact('user'));
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # admin update
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Kullanıcı Güncelle
+     *
+     * @return array
+     */
     public static function adminUpdate(int $id, AdminUpdateRequest $request)
     {
         $user = User::where('id', $id)->firstOrFail();
 
         if ($user->moderator == false && $request->moderator == true)
         {
+            ### [ moderatör rozeti ] ###
             $user->addBadge(997);
         }
 
         if ($user->root == false && $request->root == true)
         {
+            ### [ root rozeti ] ###
             $user->addBadge(998);
         }
 
@@ -537,10 +662,15 @@ class UserController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # admin notifications
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Kullanıcı, Bildirim Durumları
+     *
+     * @return view
+     */
     public static function adminNotifications(int $id)
     {
         $user = User::where('id', $id)->firstOrFail();
@@ -548,10 +678,15 @@ class UserController extends Controller
         return view('user.admin.notifications', compact('user'));
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # admin update notification
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Kullanıcı, Bildirim Durumu Güncelle
+     *
+     * @return view
+     */
     public static function adminNotificationUpdate(int $id, Request $request)
     {
         $user = User::where('id', $id)->firstOrFail();
@@ -580,10 +715,15 @@ class UserController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # admin invoice history
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Kullanıcı, Fatura Geçmişi
+     *
+     * @return view
+     */
     public static function adminInvoiceHistory(int $id)
     {
         $user = User::where('id', $id)->firstOrFail();
@@ -591,10 +731,15 @@ class UserController extends Controller
         return view('user.admin.invoiceHistory', compact('user'));
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # admin tickets
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Kullanıcı Destek Talepleri
+     *
+     * @return view
+     */
     public static function adminTickets(int $id)
     {
         $user = User::where('id', $id)->firstOrFail();
@@ -603,19 +748,29 @@ class UserController extends Controller
         return view('user.admin.tickets', compact('user', 'tickets'));
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # admin list view
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Kullanıcı Listesi
+     *
+     * @return view
+     */
     public static function adminListView()
     {
         return view('user.admin.list');
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # admin list view
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Kullanıcı Listesi
+     *
+     * @return array
+     */
     public static function adminListViewJson(SearchRequest $request)
     {
         $take = $request->take;
@@ -637,9 +792,15 @@ class UserController extends Controller
         ];
     }
 
-    # 
-    # hesap bilgileri
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Kullanıcı Bilgileri
+     *
+     * @return view
+     */
     public static function account()
     {
         $user = auth()->user();
@@ -647,9 +808,15 @@ class UserController extends Controller
         return view('user.account', compact('user'));
     }
 
-    # 
-    # hesap bilgileri güncelle
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Kullanıcı Bilgileri, Güncelle
+     *
+     * @return array
+     */
     public static function accountUpdate(AccountUpdateRequest $request)
     {
         $user = auth()->user();
@@ -659,7 +826,15 @@ class UserController extends Controller
 
         if ($user->email != $request->email)
         {
-            $user->notify((new EmailValidationNotification($user->id, $user->session_id, $user->name))->onQueue('email'));
+            $user->notify(
+                (
+                    new EmailValidationNotification(
+                        $user->id,
+                        $user->session_id,
+                        $user->name
+                    )
+                )->onQueue('email')
+            );
 
             $user->email = $request->email;
             $user->verified = false;
@@ -669,7 +844,15 @@ class UserController extends Controller
         {
             if ($user->notification('important'))
             {
-                $user->notify((new MessageNotification('Olive: Şifre Güncellendi!', 'Merhaba, '.$user->name, 'Hesap şifreniz başarılı bir şekilde güncellendi.'))->onQueue('email'));
+                $user->notify(
+                    (
+                        new MessageNotification(
+                            'Olive: Şifre Güncellendi!',
+                            'Merhaba, '.$user->name,
+                            'Hesap şifreniz başarılı bir şekilde güncellendi.'
+                        )
+                    )->onQueue('email')
+                );
             }
 
             $user->password = bcrypt($request->password);
@@ -682,17 +865,29 @@ class UserController extends Controller
         ];
     }
 
-    # 
-    # bildirim tercihleri
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Kullanıcı, Bildirim Tercihleri
+     *
+     * @return view
+     */
     public static function notifications()
     {
         return view('user.notifications');
     }
 
-    # 
-    # bildirim tercihleri güncelle
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Kullanıcı, Bildirim Tercihi, Güncelle
+     *
+     * @return array
+     */
     public static function notificationUpdate(Request $request)
     {
         $user = auth()->user();
@@ -721,17 +916,29 @@ class UserController extends Controller
         ];
     }
 
-    # 
-    # avatar
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Avatar Sayfası
+     *
+     * @return view
+     */
     public static function avatar()
     {
         return view('user.avatar');
     }
 
-    # 
-    # avatar upload
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Avatar Yükle
+     *
+     * @return redirect
+     */
     public static function avatarUpload(AvatarRequest $request)
     {
         $user = auth()->user();

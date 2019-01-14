@@ -18,10 +18,21 @@ class DataController extends Controller
 {
     public function __construct()
     {
-        ### [ üyelik ve organizasyon zorunlu ve organizasyonun zorunlu olarak real_time özelliği desteklemesi ] ###
+        /**
+         ***** ZORUNLU *****
+         *
+         * - Kullanıcı
+         * - Organizasyon
+         * -- real_time özelliği
+         */
         $this->middleware([ 'auth', 'organisation:have,source' ]);
 
-        ### [ onaylı organizasyon ve tanımlı twitter hesabı ] ###
+        /**
+         ***** ZORUNLU *****
+         *
+         * - Organizasyon Onayı
+         * -- Twitter Hesabı
+         */
         $this->middleware([ 'can:organisation-status', 'twitter:have' ])->only([
             'keywordCreate',
             'accountCreate'

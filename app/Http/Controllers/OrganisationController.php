@@ -52,13 +52,30 @@ class OrganisationController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except([ 'invoice' ]);
+        /**
+         ***** ZORUNLU *****
+         *
+         * - Kullanıcı
+         */
+        $this->middleware('auth')->except('invoice');
+
+        /**
+         ***** ZORUNLU *****
+         *
+         * - Organizasyonu Olmayanlar
+         */
         $this->middleware('organisation:have_not')->only([
             'select',
             'details',
             'create',
             'calculate'
         ]);
+
+        /**
+         ***** ZORUNLU *****
+         *
+         * - Organizasyonu Olanlar
+         */
         $this->middleware('organisation:have')->only([
             'settings',
             'updateName',
@@ -71,6 +88,12 @@ class OrganisationController extends Controller
             'update',
             'invoiceCancel'
         ]);
+
+        /**
+         ***** ZORUNLU *****
+         *
+         * - Organizasyon Sahibi
+         */
         $this->middleware('can:organisation-owner')->only([
             'invite',
             'update',
@@ -81,9 +104,12 @@ class OrganisationController extends Controller
         ]);
     }
 
-    # 
-    # organizasyon ödeme bildirimleri
-    # 
+    /**
+     *
+     * Organizasyon, Ödeme Bildirimleri
+     *
+     * @return mixed
+     */
     public static function checkUpcomingPayments()
     {
         $organisations = Organisation::whereBetween('end_date', [ Carbon::now()->subDays(14), Carbon::now()->addDays(1) ])->get();
@@ -157,21 +183,26 @@ class OrganisationController extends Controller
         }
     }
 
-    # 
-    # organizasyon ayarlar view
-    # 
+    /**
+     *
+     * Organizasyon, Ayarlar
+     *
+     * @return view
+     */
     public static function settings()
     {
         $user = auth()->user();
-
         $plan = $user->organisation->lastInvoice->plan();
 
         return view('organisation.settings', compact('user', 'plan'));
     }
 
-    # 
-    # organizasyon adı güncelle
-    # 
+    /**
+     *
+     * Organizasyon, Ad Güncelle
+     *
+     * @return array
+     */
     public static function updateName(NameRequest $request)
     {
         auth()->user()->organisation->update([ 'name' => $request->organisation_name ]);
@@ -181,13 +212,15 @@ class OrganisationController extends Controller
         ];
     }
 
-    # 
-    # organizasyona davet
-    # 
+    /**
+     *
+     * Organizasyon, Davet Gönder
+     *
+     * @return array
+     */
     public static function invite(InviteRequest $request)
     {
         $user = User::where('email', $request->email)->first();
-
         $user->organisation_id = auth()->user()->organisation_id;
         $user->save();
 
@@ -196,7 +229,15 @@ class OrganisationController extends Controller
 
         if ($user->notification('important'))
         {
-            $user->notify((new MessageNotification('Olive: '.$title, 'Merhaba, '.$user->name, $message))->onQueue('email'));
+            $user->notify(
+                (
+                    new MessageNotification(
+                        'Olive: '.$title,
+                        'Merhaba, '.$user->name,
+                        $message
+                    )
+                )->onQueue('email')
+            );
         }
 
         Activity::push(
@@ -219,9 +260,12 @@ class OrganisationController extends Controller
         ];
     }
 
-    # 
-    # organizasyondan ayrıl
-    # 
+    /**
+     *
+     * Organizasyon, Ayrıl
+     *
+     * @return array
+     */
     public static function leave(LeaveRequest $request)
     {
         $user = auth()->user();
@@ -241,7 +285,15 @@ class OrganisationController extends Controller
 
         if ($user->notification('important'))
         {
-            $user->notify((new MessageNotification('Olive: '.$title, 'Merhaba, '.$user->name, $message))->onQueue('email'));
+            $user->notify(
+                (
+                    new MessageNotification(
+                        'Olive: '.$title,
+                        'Merhaba, '.$user->name,
+                        $message
+                    )
+                )->onQueue('email')
+            );
         }
 
         $user->organisation_id = null;
@@ -252,9 +304,12 @@ class OrganisationController extends Controller
         ];
     }
 
-    # 
-    # organizasyon devret
-    # 
+    /**
+     *
+     * Organizasyon, Devret
+     *
+     * @return array
+     */
     public static function transfer(TransferAndRemoveRequest $request)
     {
         $user = auth()->user();
@@ -265,15 +320,21 @@ class OrganisationController extends Controller
         $organisation->user_id = $transferred_user->id;
         $organisation->save();
 
-        /*
-         * devreden için bilgilendirme
-         */
+        ### [ devreden için bilgilendirme ] ###
         $title = 'Organizasyon Devredildi';
         $message = $user->organisation->name.', '.$transferred_user->name.' üzerine devredildi.';
 
         if ($user->notification('important'))
         {
-            $user->notify((new MessageNotification('Olive: '.$title, 'Merhaba, '.$user->name, $message))->onQueue('email'));
+            $user->notify(
+                (
+                    new MessageNotification(
+                        'Olive: '.$title,
+                        'Merhaba, '.$user->name,
+                        $message
+                    )
+                )->onQueue('email')
+            );
         }
 
         Activity::push(
@@ -284,15 +345,21 @@ class OrganisationController extends Controller
             ]
         );
 
-        /*
-         * devralan için bilgilendirme
-         */
+        ### [ devralan için bilgilendirme ] ###
         $title = 'Organizasyon Devredildi';
         $message = $user->organisation->name.', '.$user->name.' tarafından size devredildi.';
 
         if ($transferred_user->notification('important'))
         {
-            $transferred_user->notify((new MessageNotification('Olive: '.$title, 'Merhaba, '.$transferred_user->name, $message))->onQueue('email'));
+            $transferred_user->notify(
+                (
+                    new MessageNotification(
+                        'Olive: '.$title,
+                        'Merhaba, '.$transferred_user->name,
+                        $message
+                    )
+                )->onQueue('email')
+            );
         }
 
         Activity::push(
@@ -311,9 +378,12 @@ class OrganisationController extends Controller
         ];
     }
 
-    # 
-    # kullanıcı çıkar
-    # 
+    /**
+     *
+     * Organizasyon, Kullanıcı Çıkar
+     *
+     * @return array
+     */
     public static function remove(TransferAndRemoveRequest $request)
     {
         $user = auth()->user();
@@ -327,7 +397,15 @@ class OrganisationController extends Controller
 
         if ($removed_user->notification('important'))
         {
-            $removed_user->notify((new MessageNotification('Olive: '.$title, 'Merhaba, '.$removed_user->name, $message))->onQueue('email'));
+            $removed_user->notify(
+                (
+                    new MessageNotification(
+                        'Olive: '.$title,
+                        'Merhaba, '.$removed_user->name,
+                        $message
+                    )
+                )->onQueue('email')
+            );
         }
 
         Activity::push(
@@ -344,9 +422,12 @@ class OrganisationController extends Controller
         ];
     }
 
-    # 
-    # organizasyon sil
-    # 
+    /**
+     *
+     * Organizasyon, Sil
+     *
+     * @return array
+     */
     public static function delete(DeleteRequest $request)
     {
         $user = auth()->user();
@@ -377,7 +458,15 @@ class OrganisationController extends Controller
 
             if ($u->notification('important'))
             {
-                $u->notify((new MessageNotification('Olive: '.$title, 'Merhaba, '.$u->name, $message))->onQueue('email'));
+                $u->notify(
+                    (
+                        new MessageNotification(
+                            'Olive: '.$title,
+                            'Merhaba, '.$u->name,
+                            $message
+                        )
+                    )->onQueue('email')
+                );
             }
 
             Activity::push(
@@ -397,17 +486,23 @@ class OrganisationController extends Controller
         ];
     }
 
-    # 
-    # paket seçimi
-    # 
+    /**
+     *
+     * Organizasyon, Plan Seçimi
+     *
+     * @return view
+     */
     public static function select()
     {
         return view('organisation.create.select');
     }
 
-    #
-    # plan detayı
-    #
+    /**
+     *
+     * Organizasyon, Plan Detayı
+     *
+     * @return view
+     */
     public static function details(int $id)
     {
         if (isset(config('plans')[$id]))
@@ -429,9 +524,12 @@ class OrganisationController extends Controller
         }
     }
 
-    #
-    # plan hesapla
-    #
+    /**
+     *
+     * Organizasyon, Plan Hesapla
+     *
+     * @return array
+     */
     public static function calculate(PlanCalculateRequest $request)
     {
         $session['plan'] = (object) config('plans')[$request->plan_id];
@@ -476,9 +574,12 @@ class OrganisationController extends Controller
         ];
     }
 
-    #
-    # organizasyon ve fatura oluştur
-    #
+    /**
+     *
+     * Organizasyon ve Fatura oluştur.
+     *
+     * @return array
+     */
     public static function create(BillingRequest $request)
     {
         $user = auth()->user();
@@ -530,7 +631,14 @@ class OrganisationController extends Controller
 
                 if ($user->notification('important'))
                 {
-                    $user->notify((new OrganisationWasCreatedNotification($user->name, $invoice_id))->onQueue('email'));
+                    $user->notify(
+                        (
+                            new OrganisationWasCreatedNotification(
+                                $user->name,
+                                $invoice_id
+                            )
+                        )->onQueue('email')
+                    );
                 }
 
                 Activity::push(
@@ -598,9 +706,12 @@ class OrganisationController extends Controller
         ];
     }
 
-    #
-    # plan hesapla
-    #
+    /**
+     *
+     * Organizasyon, Plan Hesapla
+     *
+     * @return array
+     */
     public static function calculateRenew(PlanCalculateRenewRequest $request)
     {
         $user = auth()->user();
@@ -636,9 +747,12 @@ class OrganisationController extends Controller
         ];
     }
 
-    #
-    # organizasyon süresi uzat
-    #
+    /**
+     *
+     * Organizasyon, Süre Uzat
+     *
+     * @return array
+     */
     public static function update(BillingUpdateRequest $request)
     {
         $user = auth()->user();
@@ -704,7 +818,14 @@ class OrganisationController extends Controller
 
                 if ($user->notification('important'))
                 {
-                    $user->notify((new OrganisationWasUpdatedNotification($user->name, $invoice_id))->onQueue('email'));
+                    $user->notify(
+                        (
+                            new OrganisationWasUpdatedNotification(
+                                $user->name,
+                                $invoice_id
+                            )
+                        )->onQueue('email')
+                    );
                 }
 
                 Activity::push(
@@ -737,17 +858,23 @@ class OrganisationController extends Controller
         ];
     }
 
-    #
-    # sonuç göster
-    #
+    /**
+     *
+     * Organizasyon, Oluşturma Sonucu
+     *
+     * @return view
+     */
     public static function result()
     {
         return view('organisation.create.result');
     }
 
-    # 
-    # fatura
-    # 
+    /**
+     *
+     * Organizasyon, Fatura
+     *
+     * @return view
+     */
     public static function invoice(int $id, string $key = '')
     {
         if (auth()->guest() && $key != md5(config('app.key')))
@@ -773,9 +900,12 @@ class OrganisationController extends Controller
         return view('organisation.invoice', compact('invoice'));
     }
 
-    # 
-    # fatura iptali
-    # 
+    /**
+     *
+     * Organizasyon, Fatura İptal
+     *
+     * @return array
+     */
     public static function invoiceCancel()
     {
         $user = auth()->user();
@@ -786,7 +916,8 @@ class OrganisationController extends Controller
         {
             $user->notify(
                 (
-                    new MessageNotification(
+                    new MessageNotification
+                    (
                         'Olive: Fatura İptal Edildi',
                         'Organizasyon Faturasını İptal Ettiniz!',
                         'Organizasyon ödemesi için oluşturduğunuz fatura, ödeme tamamlanmadan iptal edildi.'
@@ -800,19 +931,29 @@ class OrganisationController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # admin list view
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Organizasyon Listesi
+     *
+     * @return view
+     */
     public static function adminListView()
     {
         return view('organisation.admin.list');
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # admin list view
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Organizasyon Listesi
+     *
+     * @return array
+     */
     public static function adminListViewJson(SearchRequest $request)
     {
         $request->validate([
@@ -837,10 +978,15 @@ class OrganisationController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # admin view
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Organizasyon Sayfası
+     *
+     * @return view
+     */
     public static function adminView(int $id)
     {
         $organisation = Organisation::where('id', $id)->firstOrFail();
@@ -848,10 +994,15 @@ class OrganisationController extends Controller
         return view('organisation.admin.view', compact('organisation'));
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # admin update
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Organizasyon Güncelle
+     *
+     * @return array
+     */
     public static function adminUpdate(int $id, AdminUpdateRequest $request)
     {
         $organisation = Organisation::where('id', $id)->firstOrFail();
@@ -874,10 +1025,15 @@ class OrganisationController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # admin invoice history
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Organizasyon, ödeme geçmişi.
+     *
+     * @return view
+     */
     public static function adminInvoiceHistory(int $id)
     {
         $organisation = Organisation::where('id', $id)->firstOrFail();
@@ -885,10 +1041,15 @@ class OrganisationController extends Controller
         return view('organisation.admin.invoiceHistory', compact('organisation'));
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # admin invoice approve
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Organizasyon, fatura onayı.
+     *
+     * @return redirect
+     */
     public static function adminInvoiceApprove(int $id, InvoiceApproveRequest $request)
     {
         $invoice = Invoice::where('invoice_id', $id)->firstOrFail();
@@ -914,7 +1075,15 @@ class OrganisationController extends Controller
 
             if ($organisation->author->notification('important'))
             {
-                $organisation->author->notify((new MessageNotification($title, $greeting, $message))->onQueue('email'));
+                $organisation->author->notify(
+                    (
+                        new MessageNotification(
+                            $title,
+                            $greeting,
+                            $message
+                        )
+                    )->onQueue('email')
+                );
             }
 
             Activity::push(
@@ -939,10 +1108,17 @@ class OrganisationController extends Controller
         return redirect()->route('organisation.invoice', $invoice->invoice_id);
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # kelime grupları
-    # 
+    ### ### ###
+
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Organizasyon, Kelime Grupları
+     *
+     * @return view
+     */
     public static function keywordGroups(int $id)
     {
         $organisation = Organisation::where('id', $id)->firstOrFail();
@@ -950,23 +1126,39 @@ class OrganisationController extends Controller
         return view('organisation.admin.keywordGroups', compact('organisation'));
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # kelime grupları güncelle
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Organizasyon, Kelime Grupları: güncelle.
+     *
+     * @return array
+     */
     public static function keywordGroupsUpdate(KeywordGroupAdminUpdateRequest $request)
     {
-        KeywordGroup::where('id', $request->id)->update([ 'keywords' => $request->keywords ]);
+        KeywordGroup::where('id', $request->id)->update(
+            [
+                'keywords' => $request->keywords
+            ]
+        );
 
         return [
             'status' => 'ok'
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # pin grupları
-    # 
+    ### ### ###
+
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Organizasyon, Pin Grupları
+     *
+     * @return view
+     */
     public function pinGroups(int $id)
     {
         $organisation = Organisation::where('id', $id)->firstOrFail();
@@ -974,10 +1166,15 @@ class OrganisationController extends Controller
         return view('organisation.admin.pinGroups', compact('organisation'));
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # pin grupları json çıktısı
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Organizasyon, Pin Grupları
+     *
+     * @return array
+     */
     public function pinGroupListJson(int $id, SearchRequest $request)
     {
         $organisation = Organisation::where('id', $id)->firstOrFail();

@@ -8,7 +8,11 @@ use Term;
 
 class DateUtility
 {
-    # get date in dom
+    /**
+     * Metin içerisinden tarih tespiti.
+     *
+     * @return array
+     */
     public static function getDateInDom(string $dom, string $format = '')
     {
         $dom = Term::convertAscii($dom, [ 'lowercase' => true ]);
@@ -151,7 +155,11 @@ class DateUtility
         return false;
     }
 
-    # check date
+    /**
+     * Tarih Doğrula
+     *
+     * @return array
+     */
     public static function checkDate(string $date)
     {
         try

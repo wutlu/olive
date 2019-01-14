@@ -71,7 +71,7 @@ class Kernel extends ConsoleKernel
             /**
              * Twitter kullanıcı hesaplarının geçerliliğinin kontrolü.
              */
-            $schedule->command('nohup "twitter:account_control" --type=restart')->hourly()->timezone(config('app.timezone'));
+            $schedule->command('nohup "twitter:account_control" --type=restart')->daily()->timezone(config('app.timezone'));
 
             /**
              * Pinleme için PDF çıktı modülünün tetiklenmesi.

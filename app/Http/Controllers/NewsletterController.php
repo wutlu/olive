@@ -13,30 +13,37 @@ use App\Http\Requests\Newsletter\SaveRequest;
 use App\Models\User\User;
 use App\Notifications\MessageNotification;
 
+use App\Mail\NewsletterMail;
+
 use Term;
 use Mail;
-use App\Mail\NewsletterMail;
 use Carbon\Carbon;
 
 class NewsletterController extends Controller
 {
-	public function __construct()
-	{
-	}
-
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # e-posta bülteni ana sayfa.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * E-posta Bülteni, Ana Sayfa
+     *
+     * @return view
+     */
     public static function dashboard()
     {
         return view('newsletter.dashboard');
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # e-posta bülteni json çıktısı.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * E-posta Bülteni, Bülten Listesi
+     *
+     * @return array
+     */
     public static function json(SearchRequest $request)
     {
         $take = $request->take;
@@ -55,31 +62,37 @@ class NewsletterController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # e-posta bülteni formu.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * E-posta Bülteni, Bülten Formu
+     *
+     * @return view
+     */
     public static function form(int $id = 0)
     {
-        $newsletter = null;
-
-        if ($id)
-        {
-            $newsletter = Newsletter::where('id', $id)->firstOrFail();
-        }
+        $newsletter = $id ? Newsletter::where('id', $id)->firstOrFail() : [];
 
         return view('newsletter.form', compact('newsletter'));
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # e-posta bülteni kayıt.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * E-posta Bülteni, Bülten Kayıt
+     *
+     * @return array
+     */
     public static function save(SaveRequest $request)
     {
         if ($request->id)
         {
             $query = Newsletter::where('id', $request->id)->firstOrFail();
+
             $status = 'updated';
 
             if ($query->status == 'process')
@@ -126,10 +139,15 @@ class NewsletterController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # e-posta bülteni bülten durumu.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * E-posta Bülteni, Bülten Durumu
+     *
+     * @return array
+     */
     public static function status(IdRequest $request)
     {
         $query = Newsletter::where('id', $request->id)->firstOrFail();
@@ -144,10 +162,15 @@ class NewsletterController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # e-posta bülteni sil.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * E-posta Bülteni, Bülten Sil
+     *
+     * @return array
+     */
     public static function delete(IdRequest $request)
     {
         $query = Newsletter::where('id', $request->id)->firstOrFail();
@@ -172,10 +195,16 @@ class NewsletterController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # e-posta bülteni için tüm kullanıcıların e-posta listesi.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * - Sistem kullanıcılarının toplu bir şekilde
+     * e-posta bültenine dahil edilmesi.
+     *
+     * @return array
+     */
     public static function users()
     {
         $users = User::select('email')->where('verified', true)->get()->pluck('email');
@@ -189,12 +218,14 @@ class NewsletterController extends Controller
     }
 
     /**
-     ****************************************************
-     * SYSTEM FUNCTION
-     ****************************************************
+     ********************
+     ******* ROOT *******
+     ****** SYSTEM ******
+     ********************
      *
-     * bülten göndermek üzere e-posta tetikleyici.
+     * E-posta göndermek üzere bülten tetikleyici.
      *
+     * @return mixed
      */
     public static function processTrigger()
     {

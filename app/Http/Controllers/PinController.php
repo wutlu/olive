@@ -29,7 +29,19 @@ class PinController extends Controller
 {
     public function __construct()
     {
+        /**
+         ***** ZORUNLU *****
+         *
+         * - Kullanıcı
+         * - Organizasyon
+         */
         $this->middleware([ 'auth', 'organisation:have' ]);
+
+        /**
+         ***** ZORUNLU *****
+         *
+         * - Organizasyon Onayı
+         */
         $this->middleware('can:organisation-status')->only([
             'groupCreate',
             'pin',
@@ -37,17 +49,21 @@ class PinController extends Controller
         ]);
     }
 
-    # 
-    # pin grupları
-    # 
+    /**
+     * Pin Grupları
+     *
+     * @return view
+     */
     public function groups()
     {
         return view('pin.groups');
     }
 
-    # 
-    # pin grupları json çıktısı
-    # 
+    /**
+     * Pin Grupları
+     *
+     * @return array
+     */
     public function groupListJson(SearchRequest $request)
     {
         $take = $request->take;
@@ -67,16 +83,17 @@ class PinController extends Controller
         ];
     }
 
-    # 
-    # grup bilgileri
-    # 
+    /**
+     * Pin Grubu Bilgisi
+     *
+     * @return array
+     */
     public function groupGet(GroupGetRequest $request)
     {
         $data = PinGroup::select(
             'id',
             'name'
-        )->with('pins')
-         ->where([
+        )->with('pins')->where([
             'id' => $request->group_id,
             'organisation_id' => auth()->user()->organisation_id
         ])->firstOrFail();
@@ -87,9 +104,11 @@ class PinController extends Controller
         ];
     }
 
-    # 
-    # grup oluştur
-    # 
+    /**
+     * Pin Grubu Oluştur
+     *
+     * @return array
+     */
     public function groupCreate(GroupCreateRequest $request)
     {
         $data = new PinGroup;
@@ -103,9 +122,11 @@ class PinController extends Controller
         ];
     }
 
-    # 
-    # grup güncelle
-    # 
+    /**
+     * Pin Grubu Güncelle
+     *
+     * @return array
+     */
     public function groupUpdate(GroupUpdateRequest $request)
     {
         $data = PinGroup::where([
@@ -126,9 +147,11 @@ class PinController extends Controller
         ];
     }
 
-    # 
-    # grup sil
-    # 
+    /**
+     * Pin Grubu Sil
+     *
+     * @return array
+     */
     public function groupDelete(IdRequest $request)
     {
         $data = PinGroup::where([
@@ -148,9 +171,11 @@ class PinController extends Controller
         return $arr;
     }
 
-    # 
-    # pinleme
-    # 
+    /**
+     * Pinleme
+     *
+     * @return array
+     */
     public function pin(string $type, PinRequest $request)
     {
         $user = auth()->user();
@@ -208,9 +233,11 @@ class PinController extends Controller
         ];
     }
 
-    # 
-    # pin grubundaki pinler
-    # 
+    /**
+     * Pin Grubu, Pinler
+     *
+     * @return view
+     */
     public function pins(int $id)
     {
         $pg = PinGroup::where('id', $id)->where('organisation_id', auth()->user()->organisation_id)->firstOrFail();
@@ -220,9 +247,11 @@ class PinController extends Controller
         return view('pin.pins', compact('pg', 'pins'));
     }
 
-    # 
-    # pin grubu pdf çıktı tanımlama
-    # 
+    /**
+     * Pin Grubu, PDF tetikleyici
+     *
+     * @return view
+     */
     public function pdf(GrupPdfRequest $request)
     {
         $pg = PinGroup::where('id', $request->id)->where('organisation_id', auth()->user()->organisation_id)->first();
@@ -239,12 +268,14 @@ class PinController extends Controller
     }
 
     /**
-     ****************************************************
-     * SYSTEM FUNCTION
-     ****************************************************
+     ********************
+     ******* ROOT *******
+     ****** SYSTEM ******
+     ********************
      *
-     * pin grubu pdf çıktı tetikleyici
+     * Pin Grubu, PDF zaman aşımı tetikleyici
      *
+     * @return mixed
      */
     public static function pdfTrigger()
     {
@@ -276,9 +307,11 @@ class PinController extends Controller
         }
     }
 
-    # 
-    # pin için yorum gir
-    # 
+    /**
+     * Pin, Yorum
+     *
+     * @return view
+     */
     public function comment(CommentRequest $request)
     {
         $user = auth()->user();

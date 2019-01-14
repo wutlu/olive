@@ -20,16 +20,31 @@ class TicketController extends Controller
 {
     public function __construct()
     {
+        /**
+         ***** ZORUNLU *****
+         *
+         * - Kullanıcı
+         * - Organizasyon
+         * -- support
+         */
         $this->middleware([ 'auth', 'organisation:have,support' ]);
+
+        /**
+         ***** ZORUNLU *****
+         *
+         * - ROOT
+         */
         $this->middleware('root')->only([
             'adminList',
             'adminView'
         ]);
     }
 
-    # 
-    # form
-    # 
+    /**
+     * Destek Formu
+     *
+     * @return view
+     */
     public static function list(string $type = '')
     {
         if ($type)
@@ -44,9 +59,11 @@ class TicketController extends Controller
         return view('ticket.list', compact('type', 'tickets'));
     }
 
-    # 
-    # form submit
-    # 
+    /**
+     * Destek Formu Gönder
+     *
+     * @return array
+     */
     public static function submit(TicketSubmitRequest $request)
     {
         $user = auth()->user();
@@ -73,7 +90,15 @@ class TicketController extends Controller
 
         if ($ticket->user->notification('important'))
         {
-            $ticket->user->notify((new TicketNotification($subject, $markdown, $ticket->id))->onQueue('email'));
+            $ticket->user->notify(
+                (
+                    new TicketNotification(
+                        $subject,
+                        $markdown,
+                        $ticket->id
+                    )
+                )->onQueue('email')
+            );
         }
 
         UserActivityUtility::push(
@@ -102,9 +127,11 @@ class TicketController extends Controller
         ];
     }
 
-    # 
-    # ticket reply
-    # 
+    /**
+     * Destek Cevap
+     *
+     * @return array
+     */
     public static function reply(TicketReplyRequest $request)
     {
         $user = auth()->user();
@@ -125,7 +152,15 @@ class TicketController extends Controller
 
             if ($ticket->ticket->user->notification('important'))
             {
-                $ticket->ticket->user->notify((new TicketNotification($subject, $markdown, $request->ticket_id))->onQueue('email'));
+                $ticket->ticket->user->notify(
+                    (
+                        new TicketNotification(
+                            $subject,
+                            $markdown,
+                            $request->ticket_id
+                        )
+                    )->onQueue('email')
+                );
             }
 
             UserActivityUtility::push(
@@ -153,9 +188,11 @@ class TicketController extends Controller
         ];
     }
 
-    # 
-    # ticket
-    # 
+    /**
+     * Destek Detay
+     *
+     * @return view
+     */
     public static function view(int $id)
     {
         $ticket = Ticket::where([
@@ -166,9 +203,11 @@ class TicketController extends Controller
         return view('ticket.view', compact('ticket'));
     }
 
-    # 
-    # ticket
-    # 
+    /**
+     * Destek Kapat
+     *
+     * @return array
+     */
     public static function close(int $id)
     {
         $user = auth()->user();
@@ -187,7 +226,15 @@ class TicketController extends Controller
 
             if ($ticket->user->notification('important'))
             {
-                $ticket->user->notify((new TicketNotification($subject, $markdown, $id))->onQueue('email'));
+                $ticket->user->notify(
+                    (
+                        new TicketNotification(
+                            $subject,
+                            $markdown,
+                            $id
+                        )
+                    )->onQueue('email')
+                );
             }
 
             UserActivityUtility::push(
@@ -214,10 +261,15 @@ class TicketController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # admin list
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Destek Listesi
+     *
+     * @return view
+     */
     public static function adminList(string $status = 'open', int $pager = 10)
     {
         $tickets = Ticket::where('status', $status)->orderBy('updated_at', 'DESC')->paginate($pager);
@@ -225,10 +277,15 @@ class TicketController extends Controller
         return view('ticket.admin.list', compact('tickets', 'status'));
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # admin view
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Destek Detay
+     *
+     * @return view
+     */
     public static function adminView(int $id)
     {
         $ticket = Ticket::where('id', $id)->firstOrFail();

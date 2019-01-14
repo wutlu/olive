@@ -9,7 +9,11 @@ use LanguageDetection\Language;
 
 class Term
 {
-    # common words
+    /**
+     * Benzer Kelime Tespiti
+     *
+     * @return array
+     */
     public static function commonWords(string $string, int $max_count = 5)
     {
         $string = preg_replace('/ss+/i', '', $string);
@@ -41,7 +45,11 @@ class Term
         return $keywords;
     }
 
-    # cli line
+    /**
+     * Cli Satır
+     *
+     * @return string
+     */
     public static function line(string $string)
     {
         $arr[] = '['.date('H:i:s').']';
@@ -51,7 +59,11 @@ class Term
         return implode(' ', $arr);
     }
 
-    # language detection
+    /**
+     * Dil Tespiti
+     *
+     * @return boolean
+     */
     public static function languageDetector(array $bucket, string $lang = 'tr')
     {
         foreach ($bucket as $line)
@@ -70,7 +82,11 @@ class Term
         return false;
     }
 
-    # markdown
+    /**
+     * Markdown
+     *
+     * @return string
+     */
     public static function markdown($text)
     {
         $parsedown = new Parsedown;
@@ -81,7 +97,11 @@ class Term
         return $parsedown->text($text);
     }
 
-    # ascii converter
+    /**
+     * Ascii karakter düzeltici.
+     *
+     * @return string
+     */
     public static function convertAscii($str, $options = [])
     {
         $str = mb_convert_encoding((string) $str, 'UTF-8', mb_list_encodings());
@@ -170,7 +190,11 @@ class Term
         return $options['lowercase'] ? mb_strtolower($str, 'UTF-8') : $str;
     }
 
-    # human readable file sizes
+    /**
+     * Okunaklı dosya boyutları.
+     *
+     * @return object
+     */
     public static function humanFileSize(int $bytes, int $decimals = 2)
     {
         $sizes = [
