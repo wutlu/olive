@@ -18,10 +18,15 @@ use App\Models\Organisation\Organisation;
 
 class DataController extends Controller
 {
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # twitter veri havuzu kelime listesi view.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Twitter veri havuzu, takip edilen kelime listesi.
+     *
+     * @return view
+     */
     public function keywordList(int $id = 0)
     {
         $organisation = $id ? Organisation::where('id', $id)->firstOrFail() : null;
@@ -29,10 +34,15 @@ class DataController extends Controller
         return view('crawlers.twitter.dataPool.keyword_list', compact('organisation'));
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # twitter veri havuzu kelime listesi json.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Twitter veri havuzu, takip edilen kelime listesi.
+     *
+     * @return array
+     */
     public function keywordListJson(SearchRequest $request)
     {
         $take = $request->take;
@@ -46,17 +56,17 @@ class DataController extends Controller
         $query = new StreamingKeywords;
         $query = $query->with('organisation');
 
-    if ($string)
-    {
-        $query->where('keyword', 'ILIKE', '%'.$string.'%');
-    }
+        if ($string)
+        {
+            $query->where('keyword', 'ILIKE', '%'.$string.'%');
+        }
 
-    if ($org_name)
-    {
-        $query->whereHas('organisation', function($q) use($org_name) {
-            $q->where('name', $org_name);
-        });
-    }
+        if ($org_name)
+        {
+            $query->whereHas('organisation', function($q) use($org_name) {
+                $q->where('name', $org_name);
+            });
+        }
 
         return [
             'status' => 'ok',
@@ -65,10 +75,15 @@ class DataController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # twitter veri havuzu sorunlu kelime.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Twitter veri havuzu, sorunlu kelimeler için neden belirtme.
+     *
+     * @return array
+     */
     public function keywordReason(KeywordReasonRequest $request)
     {
         $query = StreamingKeywords::where('id', $request->id)->firstOrFail();
@@ -85,10 +100,15 @@ class DataController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # twitter veri havuzu kullanıcı listesi view.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Twitter veri havuzu, takip edilen kullanıcı listesi.
+     *
+     * @return view
+     */
     public function accountList(int $id = 0)
     {
         $organisation = $id ? Organisation::where('id', $id)->firstOrFail() : null;
@@ -96,10 +116,15 @@ class DataController extends Controller
         return view('crawlers.twitter.dataPool.account_list', compact('organisation'));
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # twitter veri havuzu kullanıcı listesi json.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Twitter veri havuzu, takip edilen kullanıcı listesi.
+     *
+     * @return array
+     */
     public function accountListJson(SearchRequest $request)
     {
         $take = $request->take;
@@ -113,17 +138,17 @@ class DataController extends Controller
         $query = new StreamingUsers;
         $query = $query->with('organisation');
 
-    if ($string)
-    {
-        $query->where('screen_name', 'ILIKE', '%'.$string.'%');
-    }
+        if ($string)
+        {
+            $query->where('screen_name', 'ILIKE', '%'.$string.'%');
+        }
 
-    if ($org_name)
-    {
-        $query->whereHas('organisation', function($q) use($org_name) {
-            $q->where('name', $org_name);
-        });
-    }
+        if ($org_name)
+        {
+            $query->whereHas('organisation', function($q) use($org_name) {
+                $q->where('name', $org_name);
+            });
+        }
 
         return [
             'status' => 'ok',
@@ -132,10 +157,15 @@ class DataController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # twitter veri havuzu sorunlu profil.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Twitter veri havuzu, sorunlu kullanıcılar için neden belirtme.
+     *
+     * @return array
+     */
     public function accountReason(AccountReasonRequest $request)
     {
         $query = StreamingUsers::where('id', $request->id)->firstOrFail();

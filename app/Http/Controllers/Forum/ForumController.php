@@ -36,6 +36,7 @@ class ForumController extends Controller
 {
     public function __construct()
     {
+        ### [ üyelik zorunlu ] ###
         $this->middleware('auth')->only([
             'threadStatus',
             'threadStatic',
@@ -51,16 +52,19 @@ class ForumController extends Controller
             'threadMove',
         ]);
 
+        ### [ 10 işlemden sonra 1 dakika ile sınırla ] ###
         $this->middleware('throttle:10,1')->only([
             'messageVote',
             'messageSpam',
         ]);
 
+        ### [ 10 işlemden sonra 10 dakika ile sınırla ] ###
         $this->middleware('throttle:10,10')->only([
             'threadSave',
             'replySave',
         ]);
 
+        ### [ e-posta doğrulaması iste ] ###
         $this->middleware('verification.email')->only([
             'replySave',
             'replyGet',
@@ -72,7 +76,9 @@ class ForumController extends Controller
     }
 
     /**
-     * forum ana sayfa
+     * Forum, ana sayfa.
+     *
+     * @return view
      */
     public static function index(int $pager = 10)
     {
@@ -82,7 +88,9 @@ class ForumController extends Controller
     }
 
     /**
-     * forum kategori
+     * Forum, kategori sayfası.
+     *
+     * @return view
      */
     public static function category(string $slug, int $pager = 10)
     {
@@ -93,7 +101,9 @@ class ForumController extends Controller
     }
 
     /**
-     * forum grup
+     * Forum, grup sayfası.
+     *
+     * @return view
      */
     public static function group(string $group, string $section, int $pager = 10)
     {
@@ -205,13 +215,15 @@ class ForumController extends Controller
     }
 
     /**
-     ****************************************************
-     * SYSTEM FUNCTION
-     ****************************************************
+     ********************
+     ******* ROOT *******
+     ****** SYSTEM ******
+     ********************
      *
-     * takip edilen konulara verilen
-     * cevaplar için e-posta bildirimleri.
+     * E-posta Bildirimleri
+     * - Takip edilen konulara e-posta bildirimi gönderir.
      *
+     * @return mixed
      */
     public static function threadFollowNotifications()
     {
@@ -249,7 +261,9 @@ class ForumController extends Controller
     }
 
     /**
-     * forum cevap ekleme
+     * Forum, cevap ekle.
+     *
+     * @return array
      */
     public static function replySave(ReplyCreateRequest $request)
     {
@@ -280,14 +294,16 @@ class ForumController extends Controller
             {
                 if ($user->messages()->whereHas('thread', function($query) { $query->whereNotNull('question'); })->count() >= 10)
                 {
-                    $user->addBadge(3); // 10 cevap
+                    ### [ 10 üstü cevap rozeti ] ###
+                    $user->addBadge(3);
                 }
             }
             if (!$user->badge(5))
             {
                 if ($user->messages()->whereHas('thread', function($query) { $query->whereNotNull('question'); })->count() >= 10)
                 {
-                    $user->addBadge(5); // 100 cevap
+                    ### [ 100 üstü cevap rozeti ] ###
+                    $user->addBadge(5);
                 }
             }
         }
@@ -309,7 +325,9 @@ class ForumController extends Controller
     }
 
     /**
-     * forum cevap json
+     * Forum, cevap detaylar.
+     *
+     * @return array
      */
     public static function replyGet(int $id)
     {
@@ -327,7 +345,9 @@ class ForumController extends Controller
     }
 
     /**
-     * forum cevap güncelle
+     * Forum, cevap güncelle.
+     *
+     * @return array
      */
     public static function replyUpdate(ReplyUpdateRequest $request)
     {
@@ -352,7 +372,9 @@ class ForumController extends Controller
     }
 
     /**
-     * forum yeni konu
+     * Forum, konu formu.
+     *
+     * @return view
      */
     public static function threadForm(int $id = 0)
     {
@@ -376,7 +398,9 @@ class ForumController extends Controller
     }
 
     /**
-     * forum konu oluşturma / güncelleme
+     * Forum, konu oluştur veya güncelle.
+     *
+     * @return array
      */
     public static function threadSave(ThreadRequest $request)
     {
@@ -428,22 +452,34 @@ class ForumController extends Controller
     }
 
     /**
-     * kategoriler
+     * Forum, kategoriler.
+     *
+     * @return array
      */
     public static function categoryJson()
     {
         return [
             'status' => 'ok',
             'hits' => array_map(function($item) {
-                return array_merge($item, [ 'url' => route('forum.category', $item['slug']) ]);
+                return array_merge(
+                    $item,
+                    [
+                        'url' => route('forum.category', $item['slug'])
+                    ]
+                );
             }, Category::orderBy('sort')->get()->toArray())
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # admin get forum kategori
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Forum, kategori detaylar.
+     *
+     * @return array
+     */
     public static function categoryGet(IdRequest $request)
     {
         $data = Category::where('id', $request->id)->firstOrFail();
@@ -454,10 +490,15 @@ class ForumController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # admin update forum kategori
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Forum, kategori güncelle.
+     *
+     * @return array
+     */
     public static function categoryUpdate(UpdateRequest $request)
     {
         $query = Category::where('id', $request->id)->firstOrFail();
@@ -466,14 +507,24 @@ class ForumController extends Controller
 
         return [
             'status' => 'ok',
-            'data' => array_merge($query->toArray(), [ 'url' => route('forum.category', $query->slug) ])
+            'data' => array_merge(
+                $query->toArray(),
+                [
+                    'url' => route('forum.category', $query->slug)
+                ]
+            )
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # admin create forum kategori
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Forum, kategori oluştur.
+     *
+     * @return array
+     */
     public static function categoryCreate(CreateRequest $request)
     {
         $query = new Category;
@@ -483,14 +534,24 @@ class ForumController extends Controller
 
         return [
             'status' => 'ok',
-            'data' => array_merge($query->toArray(), [ 'url' => route('forum.category', $query->slug) ])
+            'data' => array_merge(
+                $query->toArray(),
+                [
+                    'url' => route('forum.category', $query->slug)
+                ]
+            )
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # admin delete forum kategori
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Forum, kategori sil.
+     *
+     * @return array
+     */
     public static function categoryDelete(IdRequest $request)
     {
         $category = Category::where('id', $request->id)->firstOrFail();
@@ -507,10 +568,10 @@ class ForumController extends Controller
         return $arr;
     }
 
-    /*******************************************************************************/
-
     /**
-     * forum konu sayfası
+     * Forum, konu sayfası.
+     *
+     * @return array
      */
     public static function thread(string $slug, string $fake_slug, int $id)
     {
@@ -534,7 +595,15 @@ class ForumController extends Controller
     }
 
     /**
-     * forum konu durumu
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Forum, konu durumu.
+     * - Açık konu: Cevap yazılabilir.
+     * - Kapalı konu: Cevap yazılamaz.
+     *
+     * @return array
      */
     public static function threadStatus(IdRequest $request)
     {
@@ -574,7 +643,13 @@ class ForumController extends Controller
     }
 
     /**
-     * forum konu sabitliği
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Forum, konu sabitliği.
+     *
+     * @return array
      */
     public static function threadStatic(IdRequest $request)
     {
@@ -614,7 +689,13 @@ class ForumController extends Controller
     }
 
     /**
-     * forum mesaj sil
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Forum, mesaj sil.
+     *
+     * @return array
      */
     public static function messageDelete(IdRequest $request)
     {
@@ -663,7 +744,13 @@ class ForumController extends Controller
     }
 
     /**
-     * forum konu taşı
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Forum, konu taşı.
+     *
+     * @return array
      */
     public static function threadMove(MoveRequest $request)
     {
@@ -722,7 +809,9 @@ class ForumController extends Controller
     }
 
     /**
-     * forum konu takibi
+     * Forum, takibi.
+     *
+     * @return array
      */
     public static function threadFollow(IdRequest $request)
     {
@@ -740,7 +829,12 @@ class ForumController extends Controller
         }
         else
         {
-            Follow::create([ 'user_id' => $user->id, 'message_id' => $thread->id ]);
+            Follow::create(
+                [
+                    'user_id' => $user->id,
+                    'message_id' => $thread->id
+                ]
+            );
 
             $status = 'follow';
         }
@@ -754,7 +848,9 @@ class ForumController extends Controller
     }
 
     /**
-     * forum en iyi cevap
+     * Forum, en iyi cevap belirleme.
+     *
+     * @return array
      */
     public static function messageBestAnswer(IdRequest $request)
     {
@@ -801,12 +897,20 @@ class ForumController extends Controller
 
         if ($message->user->notification('forum'))
         {
-            $message->user->notify((new MessageNotification('Olive: 🌠🌟✨ En İyi Cevap ✨🌟🌠', 'Mesajınız en iyi cevap seçildi.', implode(PHP_EOL, $data)))->onQueue('email'));
+            $message->user->notify(
+                (
+                    new MessageNotification(
+                        'Olive: 🌠🌟✨ En İyi Cevap ✨🌟🌠', 'Mesajınız en iyi cevap seçildi.',
+                        implode(PHP_EOL, $data)
+                    )
+                )->onQueue('email')
+            );
         }
 
         if (!$message->user->badge(4))
         {
-            $message->user->addBadge(4); // en iyi cevap
+            ### [ en iyi cevap rozeti ] ###
+            $message->user->addBadge(4);
         }
 
         return [
@@ -819,7 +923,9 @@ class ForumController extends Controller
     }
 
     /**
-     * forum mesaj puanlama
+     * Forum, mesaj puanlama.
+     *
+     * @return array
      */
     public static function messageVote(VoteRequest $request)
     {
@@ -852,7 +958,9 @@ class ForumController extends Controller
     }
 
     /**
-     * forum mesaj puanlama
+     * Forum, mesaj, spam bildirimi.
+     *
+     * @return array
      */
     public static function messageSpam(IdRequest $request)
     {

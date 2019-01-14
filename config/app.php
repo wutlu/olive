@@ -109,6 +109,11 @@ return [
         storage_path('logs/laravel.log')
     ],
 
+    'storages' => [
+        '/dev',
+        '/run',
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers

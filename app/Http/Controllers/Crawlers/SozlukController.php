@@ -25,19 +25,29 @@ use App\Elasticsearch\Indices;
 
 class SozlukController extends Controller
 {
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # sözlük botları view
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Sözlük Botları, durum yönetimi ana sayfası.
+     *
+     * @return view
+     */
     public static function listView()
     {
         return view('crawlers.sozluk.list');
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # sözlük botları json çıktısı.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Sözlük Modülü, bot listesi.
+     *
+     * @return array
+     */
     public static function listViewJson(SearchRequest $request)
     {
         $take = $request->take;
@@ -58,10 +68,15 @@ class SozlukController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # tüm istatistikler.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Sözlük Modülü, Elasticsearch index istatistikleri.
+     *
+     * @return array
+     */
     public static function allStatistics()
     {
         $sozluk_crawler = new SozlukCrawler;
@@ -78,17 +93,24 @@ class SozlukController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # çalışmayan tüm botları başlat.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Sözlük Modülü, çalışmayan botları başlatma tetikleyicisi.
+     *
+     * @return array
+     */
     public static function allStart()
     {
-        $crawlers = SozlukCrawler::where([
-            'status' => false,
-            'elasticsearch_index' => true,
-            'test' => true
-        ])->get();
+        $crawlers = SozlukCrawler::where(
+            [
+                'status' => false,
+                'elasticsearch_index' => true,
+                'test' => true
+            ]
+        )->get();
 
         if (count($crawlers))
         {
@@ -105,10 +127,15 @@ class SozlukController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # çalışan tüm botları durdur.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Sözlük Modülü, çalışan botları durdurma tetikleyicisi.
+     *
+     * @return array
+     */
     public static function allStop()
     {
         $crawlers = SozlukCrawler::where('status', true)->get();
@@ -130,10 +157,16 @@ class SozlukController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # tüm eksik indexleri oluştur.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Alışveriş Modülü, Elasticsearch, eksik tüm indexleri oluşturma tetikleyicisi.
+     * - Indexlerin tetiklenmesi için botların test edilmiş olması gerekir.
+     *
+     * @return array
+     */
     public static function allIndex()
     {
         $crawlers = SozlukCrawler::where('elasticsearch_index', false)->where('test', true)->get();
@@ -151,10 +184,15 @@ class SozlukController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # bot sil.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Alışveriş Modülü, bot silme tetikleyicisi.
+     *
+     * @return array
+     */
     public static function delete(DeleteRequest $request)
     {
         $crawler = SozlukCrawler::where('id', $request->id)->delete();
@@ -166,10 +204,15 @@ class SozlukController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # index istatistikleri.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Alışveriş Modülü, Elasticsearch index istatistikleri.
+     *
+     * @return array
+     */
     public static function statistics(int $id)
     {
         $crawler = SozlukCrawler::where('id', $id)->firstOrFail();
@@ -184,10 +227,15 @@ class SozlukController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # bot view.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Alışveriş Modülü, bot detayları sayfası.
+     *
+     * @return view
+     */
     public static function view(int $id = 0)
     {
         if ($id)
@@ -210,10 +258,15 @@ class SozlukController extends Controller
         return view('crawlers.sozluk.view', compact('crawler'));
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # bot oluştur.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Alışveriş Modülü, bot oluştur veya bot güncelle.
+     *
+     * @return array
+     */
     public static function update(UpdateRequest $request)
     {
         $crawler = SozlukCrawler::where('id', $request->id)->first();
@@ -268,10 +321,17 @@ class SozlukController extends Controller
         return $data;
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # bot durumu.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Alışveriş Modülü, bot durumu değiştirme.
+     * - Çalışan botu durdur.
+     * - Durmuş botu çalıştır.
+     *
+     * @return array
+     */
     public static function status(StatusRequest $request)
     {
         $crawler = SozlukCrawler::where('id', $request->id)->first();

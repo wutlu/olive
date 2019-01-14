@@ -66,6 +66,7 @@
                 <div class="input-field">
                     <input id="subject" name="subject" type="text" class="validate" data-length="64" value="{{ @$thread->subject }}" />
                     <label for="subject">Konu Başlığı</label>
+                    <span class="helper-text"></span>
                 </div>
                 @if (!$thread)
                     <div class="switch d-table mx-auto">
@@ -79,7 +80,7 @@
                 @endif
             </div>
             <div class="card-tabs">
-                <ul class="tabs">
+                <ul class="tabs tabs-transparent teal">
                     <li class="tab">
                         <a href="#textarea" class="active">Konu İçeriği</a>
                     </li>
@@ -92,7 +93,7 @@
                 <div class="input-field">
                     <textarea id="body" name="body" class="materialize-textarea validate" data-length="5000">{{ @$thread->body }}</textarea>
                     <label for="body">Konu İçeriği</label>
-                    <div class="helper-text"></div>
+                    <span class="helper-text"></span>
                     <small class="grey-text">Bu alanda <a href="https://guides.github.com/features/mastering-markdown/" target="_blank">Markdown</a> kullanabilirsiniz.</small>
                 </div>
             </div>

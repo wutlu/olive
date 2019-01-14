@@ -13,11 +13,18 @@ class AccountController extends Controller
 {
 	public function __construct()
     {
+        ### [ üyelik ve organizasyon zorunlu ] ###
         $this->middleware([ 'auth', 'organisation:have' ]);
+
+        ### [ zorunlu twitter hesabı ] ###
         $this->middleware([ 'twitter:have' ])->only('disconnect');
     }
 
-    # twitter connect
+    /**
+     * Twitter ile bağlan sayfası.
+     *
+     * @return view
+     */
     public function connect()
     {
         $organisation = auth()->user()->organisation;
@@ -25,19 +32,24 @@ class AccountController extends Controller
         return view('twitter.connect', compact('organisation'));
     }
 
-    # twitter connect
+    /**
+     * Twitter hesap bağlantısı kesme.
+     *
+     * @return redirect
+     */
     public function disconnect()
     {
-        $user = auth()->user();
-        $organisation = $user->organisation;
-
-        $twitter_account = $user->organisation->twitterAccount;
+        $twitter_account = auth()->user()->organisation->twitterAccount;
         $twitter_account->delete();
 
         return redirect()->route('twitter.connect');
     }
 
-    # twitter redirect
+    /**
+     * Twitter yönlendirme.
+     *
+     * @return mixed
+     */
     public function redirect()
     {
         return Socialite::driver('twitter')->redirect();

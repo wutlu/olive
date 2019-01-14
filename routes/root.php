@@ -1,7 +1,5 @@
 <?php
 
-Route::patch('ayar', 'System\SystemController@set')->name('admin.set');
-
 Route::prefix('sistem-izleme')->group(function () {
     Route::get('sunucu-bilgisi', 'MonitorController@server')->name('admin.monitoring.server');
     Route::post('sunucu-bilgisi', 'MonitorController@serverJson');

@@ -63,8 +63,8 @@
 
 @push('local.styles')
     .rosette {
-        width: 64px;
-        height: 64px;
+        width: 52px;
+        height: 52px;
         padding: .2rem;
 
                 filter: grayscale(100%);

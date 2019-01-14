@@ -23,19 +23,29 @@ use App\Elasticsearch\Document;
 
 class MediaController extends Controller
 {
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # medya botları view
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Medya Botları, durum yönetimi ana sayfası.
+     *
+     * @return view
+     */
     public static function listView()
     {
         return view('crawlers.media.list');
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # medya botları json çıktısı.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Medya Modülü, bot listesi.
+     *
+     * @return array
+     */
     public static function listViewJson(SearchRequest $request)
     {
         $take = $request->take;
@@ -57,10 +67,15 @@ class MediaController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # tüm istatistikler.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Medya Modülü, Elasticsearch index istatistikleri.
+     *
+     * @return array
+     */
     public static function allStatistics()
     {
         $media_crawler = new MediaCrawler;
@@ -99,27 +114,43 @@ class MediaController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # çalışmayan tüm botları başlat.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Medya Modülü, çalışmayan botları başlatma tetikleyicisi.
+     *
+     * @return array
+     */
     public static function allStart()
     {
-        $crawlers = MediaCrawler::where([
+        $crawlers = MediaCrawler::where(
+            [
             'status' => false,
             'elasticsearch_index' => true,
             'test' => true
-        ])->update([ 'status' => true ]);
+            ]
+        )->update(
+            [
+                'status' => true
+            ]
+        );
 
         return [
             'status' => 'ok'
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # çalışan tüm botları durdur.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Medya Modülü, çalışan botları durdurma tetikleyicisi.
+     *
+     * @return array
+     */
     public static function allStop()
     {
         $crawlers = MediaCrawler::where('status', true)->update([ 'status' => false ]);
@@ -129,10 +160,16 @@ class MediaController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # tüm eksik indexleri oluştur.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Medya Modülü, Elasticsearch, eksik tüm indexleri oluşturma tetikleyicisi.
+     * - Indexlerin tetiklenmesi için botların test edilmiş olması gerekir.
+     *
+     * @return array
+     */
     public static function allIndex()
     {
         $crawlers = MediaCrawler::where('elasticsearch_index', false)->where('test', true)->get();
@@ -150,10 +187,15 @@ class MediaController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # bot sil.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Medya Modülü, bot silme tetikleyicisi.
+     *
+     * @return array
+     */
     public static function delete(DeleteRequest $request)
     {
         $crawler = MediaCrawler::where('id', $request->id)->delete();
@@ -165,10 +207,15 @@ class MediaController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # index istatistikleri.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Medya Modülü, Elasticsearch index istatistikleri.
+     *
+     * @return array
+     */
     public static function statistics(int $id)
     {
         $crawler = MediaCrawler::where('id', $id)->firstOrFail();
@@ -206,10 +253,15 @@ class MediaController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # bot view.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Medya Modülü, bot detayları sayfası.
+     *
+     * @return view
+     */
     public static function view(int $id = 0)
     {
         if ($id)
@@ -232,10 +284,15 @@ class MediaController extends Controller
         return view('crawlers.media.view', compact('crawler'));
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # bot oluştur.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Medya Modülü, bot oluştur veya bot güncelle.
+     *
+     * @return array
+     */
     public static function update(UpdateRequest $request)
     {
         $crawler = MediaCrawler::where('id', $request->id)->first();
@@ -289,10 +346,17 @@ class MediaController extends Controller
         return $data;
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # bot durumu.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Medya Modülü, bot durumu değiştirme.
+     * - Çalışan botu durdur.
+     * - Durmuş botu çalıştır.
+     *
+     * @return array
+     */
     public static function status(StatusRequest $request)
     {
         $crawler = MediaCrawler::where('id', $request->id)->first();

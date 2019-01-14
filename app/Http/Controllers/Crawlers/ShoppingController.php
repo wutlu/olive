@@ -24,19 +24,29 @@ use App\Elasticsearch\Document;
 
 class ShoppingController extends Controller
 {
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # alışveriş botları view
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Alışveriş Botları, durum yönetimi ana sayfası.
+     *
+     * @return view
+     */
     public static function listView()
     {
         return view('crawlers.shopping.list');
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # alışveriş botları json çıktısı.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Alışveriş Modülü, bot listesi.
+     *
+     * @return array
+     */
     public static function listViewJson(SearchRequest $request)
     {
         $take = $request->take;
@@ -58,10 +68,15 @@ class ShoppingController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # tüm istatistikler.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Alışveriş Modülü, Elasticsearch index istatistikleri.
+     *
+     * @return array
+     */
     public static function allStatistics()
     {
         $shopping_crawler = new ShoppingCrawler;
@@ -100,27 +115,43 @@ class ShoppingController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # çalışmayan tüm botları başlat.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Alışveriş Modülü, çalışmayan botları başlatma tetikleyicisi.
+     *
+     * @return array
+     */
     public static function allStart()
     {
-        $crawlers = ShoppingCrawler::where([
-            'status' => false,
-            'elasticsearch_index' => true,
-            'test' => true
-        ])->update([ 'status' => true ]);
+        $crawlers = ShoppingCrawler::where(
+            [
+                'status' => false,
+                'elasticsearch_index' => true,
+                'test' => true
+            ]
+        )->update(
+            [
+                'status' => true
+            ]
+        );
 
         return [
             'status' => 'ok'
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # çalışan tüm botları durdur.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Alışveriş Modülü, çalışan botları durdurma tetikleyicisi.
+     *
+     * @return array
+     */
     public static function allStop()
     {
         $crawlers = ShoppingCrawler::where('status', true)->update([ 'status' => false ]);
@@ -130,10 +161,16 @@ class ShoppingController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # tüm eksik indexleri oluştur.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Alışveriş Modülü, Elasticsearch, eksik tüm indexleri oluşturma tetikleyicisi.
+     * - Indexlerin tetiklenmesi için botların test edilmiş olması gerekir.
+     *
+     * @return array
+     */
     public static function allIndex()
     {
         $crawlers = ShoppingCrawler::where('elasticsearch_index', false)->where('test', true)->get();
@@ -151,10 +188,15 @@ class ShoppingController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # bot sil.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Alışveriş Modülü, bot silme tetikleyicisi.
+     *
+     * @return array
+     */
     public static function delete(DeleteRequest $request)
     {
         $crawler = ShoppingCrawler::where('id', $request->id)->delete();
@@ -166,10 +208,15 @@ class ShoppingController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # index istatistikleri.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Alışveriş Modülü, Elasticsearch index istatistikleri.
+     *
+     * @return array
+     */
     public static function statistics(int $id)
     {
         $crawler = ShoppingCrawler::where('id', $id)->firstOrFail();
@@ -207,10 +254,15 @@ class ShoppingController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # bot view.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Alışveriş Modülü, bot detayları sayfası.
+     *
+     * @return view
+     */
     public static function view(int $id = 0)
     {
         if ($id)
@@ -238,10 +290,15 @@ class ShoppingController extends Controller
         return view('crawlers.shopping.view', compact('crawler'));
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # bot oluştur.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Alışveriş Modülü, bot oluştur veya bot güncelle.
+     *
+     * @return array
+     */
     public static function update(UpdateRequest $request)
     {
         $crawler = ShoppingCrawler::where('id', $request->id)->first();
@@ -309,10 +366,17 @@ class ShoppingController extends Controller
         return $data;
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # bot durumu.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Alışveriş Modülü, bot durumu değiştirme.
+     * - Çalışan botu durdur.
+     * - Durmuş botu çalıştır.
+     *
+     * @return array
+     */
     public static function status(StatusRequest $request)
     {
         $crawler = ShoppingCrawler::where('id', $request->id)->first();

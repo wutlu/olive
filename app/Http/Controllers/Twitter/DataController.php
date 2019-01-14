@@ -18,21 +18,31 @@ class DataController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
-        $this->middleware('organisation:have,source');
+        ### [ üyelik ve organizasyon zorunlu ve organizasyonun zorunlu olarak real_time özelliği desteklemesi ] ###
+        $this->middleware([ 'auth', 'organisation:have,source' ]);
+
+        ### [ onaylı organizasyon ve tanımlı twitter hesabı ] ###
         $this->middleware([ 'can:organisation-status', 'twitter:have' ])->only([
             'keywordCreate',
             'accountCreate'
         ]);
     }
 
-    # twitter veri havuzu kelime listesi view.
+    /**
+     * Twitter veri havuzu, takip edilen kelime listesi.
+     *
+     * @return view
+     */
     public function keywordList()
     {
         return view('twitter.dataPool.keyword_list');
     }
 
-    # twitter veri havuzu kelime listesi json.
+    /**
+     * Twitter veri havuzu, takip edilen kelime listesi.
+     *
+     * @return array
+     */
     public function keywordListJson(int $skip = 0, int $take = 27)
     {
         $query = StreamingKeywords::where('organisation_id', auth()->user()->organisation_id)->skip($skip)->take($take)->orderBy('updated_at', 'DESC');
@@ -44,7 +54,11 @@ class DataController extends Controller
         ];
     }
 
-    # twitter veri havuzu kelime oluşturma.
+    /**
+     * Twitter veri havuzu, kelime oluşturma.
+     *
+     * @return array
+     */
     public function keywordCreate(CreateKeywordRequest $request)
     {
         $query = new StreamingKeywords;
@@ -57,7 +71,11 @@ class DataController extends Controller
         ];
     }
 
-    # twitter veri havuzu kelime silme.
+    /**
+     * Twitter veri havuzu, kelime silme.
+     *
+     * @return array
+     */
     public static function keywordDelete(IdRequest $request)
     {
         $query = StreamingKeywords::where('organisation_id', auth()->user()->organisation_id)->where('id', $request->id)->firstOrFail();
@@ -74,13 +92,21 @@ class DataController extends Controller
         return $arr;
     }
 
-    # twitter veri havuzu kullanıcı listesi view.
+    /**
+     * Twitter veri havuzu, hesap listesi.
+     *
+     * @return view
+     */
     public function accountList()
     {
         return view('twitter.dataPool.account_list');
     }
 
-    # twitter veri havuzu kullanıcı listesi json.
+    /**
+     * Twitter veri havuzu, hesap listesi.
+     *
+     * @return array
+     */
     public function accountListJson(int $skip = 0, int $take = 27)
     {
         $query = StreamingUsers::where('organisation_id', auth()->user()->organisation_id)->skip($skip)->take($take)->orderBy('updated_at', 'DESC');
@@ -92,7 +118,11 @@ class DataController extends Controller
         ];
     }
 
-    # twitter veri havuzu kullanıcı oluşturma.
+    /**
+     * Twitter veri havuzu, hesap tanımlama.
+     *
+     * @return array
+     */
     public function accountCreate(CreateAccountRequest $request)
     {
         $account = session('account');
@@ -108,7 +138,11 @@ class DataController extends Controller
         ];
     }
 
-    # twitter veri havuzu kullanıcı silme.
+    /**
+     * Twitter veri havuzu, hesap silme.
+     *
+     * @return array
+     */
     public static function accountDelete(IdRequest $request)
     {
         StreamingUsers::where('organisation_id', auth()->user()->organisation_id)->where('id', $request->id)->delete();

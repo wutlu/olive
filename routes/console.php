@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\OrganisationController;
-use App\Http\Controllers\System\SystemController;
+use App\Http\Controllers\MonitorController;
 use App\Http\Controllers\Forum\ForumController;
 use App\Http\Controllers\PinController;
 use App\Http\Controllers\NewsletterController;
@@ -13,7 +13,7 @@ Artisan::command('check:upcoming_payments', function () {
 })->describe('Ödemesi yaklaşan organizasyon işlemleri.');
 
 Artisan::command('alarm:control', function () {
-    SystemController::alarmControl();
+    MonitorController::alarmControl();
 })->describe('Alarmların kontrolü.');
 
 Artisan::command('sentiment:update', function () {

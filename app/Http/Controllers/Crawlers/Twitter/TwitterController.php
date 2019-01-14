@@ -24,10 +24,15 @@ use App\Jobs\Elasticsearch\CreateTwitterIndexJob;
 
 class TwitterController extends Controller
 {
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # dashboard
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Twitter, token ve durum yönetimi ana sayfası.
+     *
+     * @return view
+     */
     public static function dashboard()
     {
         $rows = Option::whereIn('key', [
@@ -47,10 +52,15 @@ class TwitterController extends Controller
         return view('crawlers.twitter.dashboard', compact('options'));
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # index listesi view.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Twitter, Index listesi.
+     *
+     * @return view
+     */
     public static function indices()
     {
         $rows = Option::whereIn('key', [
@@ -68,10 +78,15 @@ class TwitterController extends Controller
         return view('crawlers.twitter.indices', compact('options'));
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # index listesi json çıktısı.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Twitter, Index listesi.
+     *
+     * @return array
+     */
     public static function indicesJson()
     {
         $client = new Client([
@@ -88,18 +103,20 @@ class TwitterController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # log ekranı json çıktısı.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Twitter Logları
+     *
+     * @return array
+     */
     public static function logJson()
     {
         $date = Carbon::now()->subHours(24)->format('Y-m-d H:i:s');
 
-        $logs = Log::where('module', 'ILIKE', '%twitter%')
-                   ->where('updated_at', '>', $date)
-                   ->orderBy('updated_at', 'DESC')
-                   ->get();
+        $logs = Log::where('module', 'ILIKE', '%twitter%')->where('updated_at', '>', $date)->orderBy('updated_at', 'DESC')->get();
 
         return [
             'status' => 'ok',
@@ -107,10 +124,15 @@ class TwitterController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # istatistikler
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Twitter, Elasticsearch index istatistikleri.
+     *
+     * @return array
+     */
     public static function statistics()
     {
         return [
@@ -124,10 +146,15 @@ class TwitterController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # ayar güncelle
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Twitter, options tablosu ayar güncelleme.
+     *
+     * @return array
+     */
     public static function set(SetRequest $request)
     {
         $option = Option::where('key', $request->key)->first();
@@ -184,10 +211,15 @@ class TwitterController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # trend başlıklar için index oluştur.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Twitter Trend başlıklar, Elasticsearch index oluşturma tetikleyicisi.
+     *
+     * @return array
+     */
     public static function indexCreate()
     {
         CreateTwitterIndexJob::dispatch('trends')->onQueue('elasticsearch');
@@ -197,10 +229,16 @@ class TwitterController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # twitter index durumu.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Twitter Trend başlıklar, Elasticsearch index durumu.
+     * - Index oluşturuldu mu, oluşturulmadı mı kontrolünü sağlar.
+     *
+     * @return array
+     */
     public static function indexStatus()
     {
         return [
@@ -208,19 +246,29 @@ class TwitterController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # bağlı hesaplar view
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Twitter ile bağlanan kullanıcıların listesi.
+     *
+     * @return view
+     */
     public static function accounts()
     {
         return view('crawlers.twitter.accounts');
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # bağlı hesaplar json
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Twitter ile bağlanan kullanıcıların listesi.
+     *
+     * @return array
+     */
     public static function accountsViewJson(SearchRequest $request)
     {
         $take = $request->take;

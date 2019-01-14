@@ -21,10 +21,15 @@ use Carbon\Carbon;
 
 class GoogleController extends Controller
 {
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # dashboard
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Google, durum yönetimi ana sayfası.
+     *
+     * @return view
+     */
     public static function dashboard()
     {
     	$rows = Option::whereIn('key', [
@@ -42,10 +47,15 @@ class GoogleController extends Controller
         return view('crawlers.google.dashboard', compact('options'));
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # google trendler için index oluştur.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Google trendler, Elasticsearch index oluşturma tetikleyicisi.
+     *
+     * @return array
+     */
     public static function indexCreate()
     {
         CreateGoogleIndexJob::dispatch()->onQueue('elasticsearch');
@@ -55,10 +65,16 @@ class GoogleController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # trend index durumu.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Google Trendler, Elasticsearch index durumu.
+     * - Index oluşturuldu mu, oluşturulmadı mı kontrolünü sağlar.
+     *
+     * @return array
+     */
     public static function indexStatus()
     {
         $count = Option::whereIn('key', [
@@ -68,10 +84,15 @@ class GoogleController extends Controller
     	return $count ? [ 'status' => 'ok', 'elasticsearch' => Indices::stats([ 'google', '*' ]) ] : [ 'status' => 'err' ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # ayar güncelle.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Google, options tablosu ayar güncelleme.
+     *
+     * @return array
+     */
     public static function statusSet(SetRequest $request)
     {
         $count = Option::whereIn('key', [
@@ -95,10 +116,15 @@ class GoogleController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # log ekranı json çıktısı.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Google Logları
+     *
+     * @return array
+     */
     public static function logJson()
     {
         $date = Carbon::now()->subHours(24)->format('Y-m-d H:i:s');

@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\RealTime;
 
 use Illuminate\Http\Request;
+
 use App\Http\Controllers\Controller;
 
 use App\Models\Pin\Group as PinGroup;
 use App\Models\RealTime\KeywordGroup;
+
 use App\Http\Requests\RealTime\RealTimeRequest;
 
 use App\Elasticsearch\Document;
@@ -15,22 +17,32 @@ use Carbon\Carbon;
 
 class RealTimeController extends Controller
 {
+    /**
+     * Gerçek Zamanlı, son bir kaç dakika değeri.
+     *
+     * @var datetime
+     */
     private $minute;
 
     public function __construct()
     {
+        ### [ üyelik ve organizasyon zorunlu ve organizasyonun zorunlu olarak real_time özelliği desteklemesi ] ###
         $this->middleware([ 'auth', 'organisation:have,real_time' ]);
+
+        ### [ zorunlu aktif organizasyon ] ###
         $this->middleware('can:organisation-status')->only([
             'query'
         ]);
 
-        // gerçek zamanlı tarih aralığı
+        ### [ gerçek zamanlı son bir kaç dakika değeri ] ###
         $this->minute = Carbon::now()->subMinutes(5)->format('Y-m-d H:i');
     }
 
-    # 
-    # gerçek zamanlı akış ekranı.
-    # 
+    /**
+     * Gerçek Zamanlı, akış ekranı.
+     *
+     * @return view
+     */
     public function stream()
     {
         $pin_groups = PinGroup::where('organisation_id', auth()->user()->organisation_id)->orderBy('updated_at', 'DESC')->limit(4)->get();
@@ -38,9 +50,11 @@ class RealTimeController extends Controller
         return view('realTime.stream', compact('pin_groups'));
     }
 
-    # 
-    # gerçek zamanlı sorgu.
-    # 
+    /**
+     * Gerçek Zamanlı, akış sorgusu.
+     *
+     * @return array
+     */
     public function query(RealTimeRequest $request)
     {
         $user = auth()->user();
@@ -67,9 +81,7 @@ class RealTimeController extends Controller
 
                 if (count($keywords))
                 {
-                    # 
-                    # Twitter Modülü
-                    # 
+                    ### [ twitter modülü ] ###
                     if ($group->module_twitter)
                     {
                         $q = [
@@ -113,9 +125,7 @@ class RealTimeController extends Controller
                     }
                 }
 
-                # 
-                # Haber Modülü
-                # 
+                ### [ haber modülü ] ###
                 if ($group->module_news)
                 {
                     $q = [
@@ -165,9 +175,7 @@ class RealTimeController extends Controller
                     }
                 }
 
-                # 
-                # Sözlük Modülü
-                # 
+                ### [ sözlük modülü ] ###
                 if ($group->module_sozluk)
                 {
                     $q = [
@@ -217,9 +225,7 @@ class RealTimeController extends Controller
                     }
                 }
 
-                # 
-                # Alışveriş Modülü
-                # 
+                ### [ alışveriş modülü ] ###
                 if ($group->module_shopping)
                 {
                     $q = [
@@ -275,9 +281,7 @@ class RealTimeController extends Controller
                     }
                 }
 
-                # 
-                # YouTube Video Modülü
-                # 
+                ### [ youtube, video modülü ] ###
                 if ($group->module_youtube_video)
                 {
                     $q = [
@@ -328,9 +332,7 @@ class RealTimeController extends Controller
                     }
                 }
 
-                # 
-                # YouTube Yorum Modülü
-                # 
+                ### [ youtube, yorum modülü ] ###
                 if ($group->module_youtube_comment)
                 {
                     $q = [

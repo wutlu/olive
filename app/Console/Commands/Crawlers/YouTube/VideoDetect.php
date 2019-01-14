@@ -132,7 +132,7 @@ class VideoDetect extends Command
 
                         try
                         {
-                            $relatedVideos = Youtube::getRelatedVideos($video->data['id'], 50);
+                            $relatedVideos = Youtube::getRelatedVideos($video->data['id'], 10);
 
                             if ($relatedVideos)
                             {

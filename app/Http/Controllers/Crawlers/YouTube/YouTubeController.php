@@ -22,10 +22,15 @@ use App\Jobs\Elasticsearch\CreateYouTubeIndexJob;
 
 class YouTubeController extends Controller
 {
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # admin list view
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * YouTube, durum yönetimi ana sayfası.
+     *
+     * @return view
+     */
     public static function dashboard()
     {
         $rows = Option::whereIn('key', [
@@ -44,10 +49,15 @@ class YouTubeController extends Controller
         return view('crawlers.youtube.dashboard', compact('options'));
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # index listesi view.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * YouTube, index listesi.
+     *
+     * @return view
+     */
     public static function indices()
     {
         $rows = Option::whereIn('key', [
@@ -65,10 +75,15 @@ class YouTubeController extends Controller
         return view('crawlers.youtube.indices', compact('options'));
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # index listesi json çıktısı.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * YouTube, index listesi.
+     *
+     * @return array
+     */
     public static function indicesJson()
     {
         $client = new Client([
@@ -85,10 +100,15 @@ class YouTubeController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # log ekranı data
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * YouTube Logları
+     *
+     * @return array
+     */
     public static function logJson()
     {
         $date = Carbon::now()->subHours(24)->format('Y-m-d H:i:s');
@@ -104,10 +124,15 @@ class YouTubeController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # istatistikler
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * YouTube, Elasticsearch index istatistikleri.
+     *
+     * @return array
+     */
     public static function statistics()
     {
         return [
@@ -121,10 +146,15 @@ class YouTubeController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # ayar güncelle
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * YouTube, options tablosu ayar güncelleme.
+     *
+     * @return array
+     */
     public static function set(SetRequest $request)
     {
         $option = Option::where('key', $request->key)->first();
@@ -181,10 +211,15 @@ class YouTubeController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # admin create index
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * YouTube videolar, Elasticsearch index oluşturma tetikleyicisi.
+     *
+     * @return array
+     */
     public static function indexCreate()
     {
         CreateYouTubeIndexJob::dispatch('videos')->onQueue('elasticsearch');
@@ -194,10 +229,16 @@ class YouTubeController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # youtube index durumu.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * YouTube Trend başlıklar, Elasticsearch index durumu.
+     * - Index oluşturuldu mu, oluşturulmadı mı kontrolünü sağlar.
+     *
+     * @return array
+     */
     public static function indexStatus()
     {
         return [

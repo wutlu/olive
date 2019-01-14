@@ -165,13 +165,12 @@ class SystemUtility
      */
     public static function getDiskSize()
     {
-        $paths = [ '/' ];
+        $paths = config('app.storages');
 
         $result = [];
 
         foreach ($paths as $key => $path)
         {
-
             $result[$key]['total'] = 0;
             $result[$key]['free'] = 0;
             $result[$key]['used'] = 0;
@@ -200,7 +199,7 @@ class SystemUtility
             {
                 $lines = null;
 
-                exec(sprintf('df /P %s', $path), $lines);
+                exec(sprintf('df %s', $path), $lines);
 
                 foreach ($lines as $index => $line)
                 {

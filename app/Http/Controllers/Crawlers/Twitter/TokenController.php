@@ -20,19 +20,29 @@ use Validator;
 
 class TokenController extends Controller
 {
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # token listesi view.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Twitter, Token listesi.
+     *
+     * @return view
+     */
     public function tokens()
     {
         return view('crawlers.twitter.tokens');
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # token listesi json çıktısı.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Twitter, Token listesi.
+     *
+     * @return array
+     */
     public static function tokensJson()
     {
         $tokens = new Token;
@@ -45,10 +55,15 @@ class TokenController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # token bilgileri.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Twitter, Token bilgileri.
+     *
+     * @return array
+     */
     public static function token(IdRequest $request)
     {
         $token = Token::where('id', $request->id)->firstOrFail();
@@ -59,10 +74,15 @@ class TokenController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # token oluştur.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Twitter, Token oluştur.
+     *
+     * @return array
+     */
     public static function tokenCreate(CreateTokenRequest $request)
     {
         self::tokenRequest(
@@ -98,10 +118,15 @@ class TokenController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # token güncelle.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Twitter, Token güncelle.
+     *
+     * @return view
+     */
     public static function tokenUpdate(UpdateTokenRequest $request)
     {
         self::tokenRequest(
@@ -139,10 +164,15 @@ class TokenController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # token sil.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Twitter, Token sil.
+     *
+     * @return view
+     */
     public static function tokenDelete(IdRequest $request)
     {
         $token = Token::where('id', $request->id)->firstOrFail();
@@ -168,10 +198,16 @@ class TokenController extends Controller
         }
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # token kontrol fonksiyonu.
-    #
+    /**
+     ********************
+     ******* ROOT *******
+     ****** SYSTEM ******
+     ********************
+     *
+     * Twitter, Token kontrolü.
+     *
+     * @return view
+     */
     private static function tokenRequest(string $consumer_key, string $consumer_secret, string $access_token, string $access_token_secret)
     {
         Validator::extend('token_check', function($attribute) use($consumer_key, $consumer_secret, $access_token, $access_token_secret) {

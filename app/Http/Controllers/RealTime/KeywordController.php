@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\RealTime;
 
 use Illuminate\Http\Request;
+
 use App\Http\Controllers\Controller;
 
 use App\Models\RealTime\KeywordGroup;
@@ -15,15 +16,20 @@ class KeywordController extends Controller
 {
     public function __construct()
     {
+        ### [ üyelik ve organizasyon zorunlu ] ###
         $this->middleware([ 'auth', 'organisation:have' ]);
+
+        ### [ zorunlu aktif organizasyon ] ###
         $this->middleware('can:organisation-status')->only([
             'groupCreate'
         ]);
     }
 
-    # 
-    # kelime grupları
-    # 
+    /**
+     * Kelime Grupları
+     *
+     * @return array
+     */
     public function groups()
     {
         $organisation = auth()->user()->organisation;
@@ -37,9 +43,11 @@ class KeywordController extends Controller
         ];
     }
 
-    # 
-    # grup bilgileri
-    # 
+    /**
+     * Kelime Grubu, detayları.
+     *
+     * @return array
+     */
     public function groupGet(IdRequest $request)
     {
         $organisation = auth()->user()->organisation;
@@ -65,9 +73,11 @@ class KeywordController extends Controller
         ];
     }
 
-    # 
-    # grup oluştur
-    # 
+    /**
+     * Kelime Grubu, oluştur.
+     *
+     * @return array
+     */
     public function groupCreate(GroupCreateRequest $request)
     {
         $organisation = auth()->user()->organisation;
@@ -93,17 +103,21 @@ class KeywordController extends Controller
         ];
     }
 
-    # 
-    # grup güncelle
-    # 
+    /**
+     * Kelime Grubu, güncelle.
+     *
+     * @return array
+     */
     public function groupUpdate(GroupUpdateRequest $request)
     {
         $organisation = auth()->user()->organisation;
 
-        $data = KeywordGroup::where([
-            'id' => $request->id,
-            'organisation_id' => $organisation->id
-        ])->firstOrFail();
+        $data = KeywordGroup::where(
+            [
+                'id' => $request->id,
+                'organisation_id' => $organisation->id
+            ]
+        )->firstOrFail();
 
         $data->name = $request->name;
         $data->keywords = trim($request->keywords);
@@ -122,17 +136,21 @@ class KeywordController extends Controller
         ];
     }
 
-    # 
-    # grup sil
-    # 
+    /**
+     * Kelime Grubu, sil.
+     *
+     * @return array
+     */
     public function groupDelete(IdRequest $request)
     {
         $organisation = auth()->user()->organisation;
 
-        $data = KeywordGroup::where([
-            'id' => $request->id,
-            'organisation_id' => $organisation->id
-        ])->firstOrFail();
+        $data = KeywordGroup::where(
+            [
+                'id' => $request->id,
+                'organisation_id' => $organisation->id
+            ]
+        )->firstOrFail();
 
         $arr = [
             'status' => 'ok',

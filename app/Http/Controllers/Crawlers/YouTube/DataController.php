@@ -20,10 +20,15 @@ use App\Models\Organisation\Organisation;
 
 class DataController extends Controller
 {
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # youtube veri havuzu kelime listesi view.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * YouTube veri havuzu, takip edilen kelime listesi.
+     *
+     * @return view
+     */
     public function keywordList(int $id = 0)
     {
         $organisation = $id ? Organisation::where('id', $id)->firstOrFail() : null;
@@ -31,10 +36,15 @@ class DataController extends Controller
         return view('crawlers.youtube.dataPool.keyword_list', compact('organisation'));
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # youtube veri havuzu kelime listesi json.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * YouTube veri havuzu, takip edilen kelime listesi.
+     *
+     * @return array
+     */
     public function keywordListJson(SearchRequest $request)
     {
         $take = $request->take;
@@ -48,17 +58,17 @@ class DataController extends Controller
         $query = new FollowingKeywords;
         $query = $query->with('organisation');
 
-    if ($string)
-    {
-        $query->where('keyword', 'ILIKE', '%'.$string.'%');
-    }
+        if ($string)
+        {
+            $query->where('keyword', 'ILIKE', '%'.$string.'%');
+        }
 
-    if ($org_name)
-    {
-        $query->whereHas('organisation', function($q) use($org_name) {
-            $q->where('name', $org_name);
-        });
-    }
+        if ($org_name)
+        {
+            $query->whereHas('organisation', function($q) use($org_name) {
+                $q->where('name', $org_name);
+            });
+        }
 
         $query = $query->skip($skip)
                        ->take($take)
@@ -71,10 +81,15 @@ class DataController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # youtube veri havuzu sorunlu kelime.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * YouTube sorunlu kelimeler için neden belirtme.
+     *
+     * @return array
+     */
     public function keywordReason(KeywordReasonRequest $request)
     {
         $query = FollowingKeywords::where('id', $request->id)->firstOrFail();
@@ -91,16 +106,17 @@ class DataController extends Controller
         ];
     }
 
-    /* ********** */
-    /* ************************* */
-    /* ************************************************** */
-    /* ************************* */
-    /* ********** */
+    ### ### ###
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # youtube veri havuzu kanal listesi view.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * YouTube veri havuzu, takip edilen kanal listesi.
+     *
+     * @return view
+     */
     public function channelList(int $id = 0)
     {
         $organisation = $id ? Organisation::where('id', $id)->firstOrFail() : null;
@@ -108,10 +124,15 @@ class DataController extends Controller
         return view('crawlers.youtube.dataPool.channel_list', compact('organisation'));
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # youtube veri havuzu kanal listesi json.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * YouTube veri havuzu, takip edilen kelime listesi.
+     *
+     * @return array
+     */
     public function channelListJson(SearchRequest $request)
     {
         $take = $request->take;
@@ -125,17 +146,17 @@ class DataController extends Controller
         $query = new FollowingChannels;
         $query = $query->with('organisation');
 
-    if ($string)
-    {
-        $query->where('channel_title', 'ILIKE', '%'.$string.'%');
-    }
+        if ($string)
+        {
+            $query->where('channel_title', 'ILIKE', '%'.$string.'%');
+        }
 
-    if ($org_name)
-    {
-        $query->whereHas('organisation', function($q) use($org_name) {
-            $q->where('name', $org_name);
-        });
-    }
+        if ($org_name)
+        {
+            $query->whereHas('organisation', function($q) use($org_name) {
+                $q->where('name', $org_name);
+            });
+        }
 
         $query = $query->skip($skip)
                        ->take($take)
@@ -148,10 +169,15 @@ class DataController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # youtube veri havuzu sorunlu kanal.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * YouTube veri havuzu, sorunlu kanallar için neden belirtme.
+     *
+     * @return array
+     */
     public function channelReason(ChannelReasonRequest $request)
     {
         $query = FollowingChannels::where('id', $request->id)->firstOrFail();
@@ -166,16 +192,17 @@ class DataController extends Controller
         ];
     }
 
-    /* ********** */
-    /* ************************* */
-    /* ************************************************** */
-    /* ************************* */
-    /* ********** */
+    ### ### ###
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # youtube veri havuzu video listesi view.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * YouTube veri havuzu, takip edilen video listesi.
+     *
+     * @return view
+     */
     public function videoList(int $id = 0)
     {
         $organisation = $id ? Organisation::where('id', $id)->firstOrFail() : null;
@@ -183,10 +210,15 @@ class DataController extends Controller
         return view('crawlers.youtube.dataPool.video_list', compact('organisation'));
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # youtube veri havuzu video listesi json.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * YouTube veri havuzu, takip edilen video listesi.
+     *
+     * @return array
+     */
     public function videoListJson(SearchRequest $request)
     {
         $take = $request->take;
@@ -200,17 +232,17 @@ class DataController extends Controller
         $query = new FollowingVideos;
         $query = $query->with('organisation');
 
-    if ($string)
-    {
-        $query->where('video_title', 'ILIKE', '%'.$string.'%');
-    }
+        if ($string)
+        {
+            $query->where('video_title', 'ILIKE', '%'.$string.'%');
+        }
 
-    if ($org_name)
-    {
-        $query->whereHas('organisation', function($q) use($org_name) {
-            $q->where('name', $org_name);
-        });
-    }
+        if ($org_name)
+        {
+            $query->whereHas('organisation', function($q) use($org_name) {
+                $q->where('name', $org_name);
+            });
+        }
 
         $query = $query->skip($skip)
                        ->take($take)
@@ -223,10 +255,15 @@ class DataController extends Controller
         ];
     }
 
-    # ######################################## [ ADMIN ] ######################################## #
-    # 
-    # youtube veri havuzu sorunlu video.
-    # 
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * YouTube veri havuzu, sorunlu videolar için neden belirtme.
+     *
+     * @return array
+     */
     public function videoReason(VideoReasonRequest $request)
     {
         $query = FollowingVideos::where('id', $request->id)->firstOrFail();
