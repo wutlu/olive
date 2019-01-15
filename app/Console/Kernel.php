@@ -174,18 +174,26 @@ class Kernel extends ConsoleKernel
 
             if ($option)
             {
-                /**
-                 *  Twitter kullanıcı hesaplarının geçerliliğinin kontrolü.
-                 *
-                 *  $schedule->command('nohup "twitter:account_control" --type=restart')->daily()->timezone(config('app.timezone'));
+                $schedule->command('nohup "twitter:stream:update --type=user" --type=restart')
+                         ->everyMinute()
+                         ->timezone(config('app.timezone'))
+                         ->withoutOverlapping();
 
-                 *  $schedule->command('nohup "twitter:stream:update --type=user" --type=restart')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
-                 *  $schedule->command('nohup "twitter:stream:update --type=keyword" --type=restart')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
-                 */
-                $schedule->command('nohup "twitter:stream:update --type=trend" --type=restart')->hourly()->timezone(config('app.timezone'))->withoutOverlapping();
+                $schedule->command('nohup "twitter:stream:update --type=keyword" --type=restart')
+                         ->everyMinute()
+                         ->timezone(config('app.timezone'))
+                         ->withoutOverlapping();
+
+                $schedule->command('nohup "twitter:stream:update --type=trend" --type=restart')
+                         ->hourly()
+                         ->timezone(config('app.timezone'))
+                         ->withoutOverlapping();
             }
 
-            $schedule->command('nohup "twitter:stream:trigger" --type=start')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
+            $schedule->command('nohup "twitter:stream:trigger" --type=start')
+                     ->everyMinute()
+                     ->timezone(config('app.timezone'))
+                     ->withoutOverlapping();
 
             /**
              * Proxy Durum Testleri
