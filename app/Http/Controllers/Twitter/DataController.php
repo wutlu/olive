@@ -33,7 +33,7 @@ class DataController extends Controller
          * - Organizasyon Onayı
          * -- Twitter Hesabı
          */
-        $this->middleware([ 'can:organisation-status', 'twitter:have' ])->only([
+        $this->middleware([ 'can:organisation-status' ])->only([
             'keywordCreate',
             'accountCreate'
         ]);

@@ -7,7 +7,10 @@ use Illuminate\Foundation\Http\FormRequest;
 use Validator;
 
 use App\Models\Twitter\StreamingUsers;
-use App\Console\Commands\Crawlers\Twitter\AccountControl;
+
+use GuzzleHttp\Client;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Subscriber\Oauth\Oauth1;
 
 class CreateAccountRequest extends FormRequest
 {
@@ -43,10 +46,40 @@ class CreateAccountRequest extends FormRequest
     {
         $user = auth()->user();
 
-        Validator::extend('twitter_account', function($attribute, $screen_name) use ($user) {
+        Validator::extend('twitter_account', function($attribute, $screen_name) {
             try
             {
-                $account = AccountControl::getUser([ 'screen_name' => $screen_name ]);
+                $stack = HandlerStack::create();
+
+                $oauth = new Oauth1([
+                    'consumer_key' => config('services.twitter.client_id'),
+                    'consumer_secret' => config('services.twitter.client_secret'),
+                    //'token' => config('services.twitter.access_token'),
+                    //'token_secret' => config('services.twitter.access_token_secret')
+                ]);
+
+                $stack->push($oauth);
+
+                $client = new Client(
+                    [
+                        'base_uri' => 'https://api.twitter.com/1.1/',
+                        'handler' => $stack,
+                        'auth' => 'oauth'
+                    ]
+                );
+
+                $response = $client->get('users/show.json', [
+                    'query' => [
+                        'screen_name' => $screen_name
+                    ],
+                    'timeout' => 10,
+                    'connect_timeout' => 5,
+                    'headers' => [
+                        'Accept' => 'application/json'
+                    ]
+                ]);
+
+                $account = json_decode($response->getBody());
 
                 session()->flash('account', $account);
 

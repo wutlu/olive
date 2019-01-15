@@ -62,7 +62,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         // private middleware
         'organisation' => \App\Http\Middleware\Organisation::class,
-        'twitter' => \App\Http\Middleware\Twitter::class,
         'root' => \App\Http\Middleware\CheckRootMiddleware::class,
         'verification.email' => \App\Http\Middleware\VerificationMiddleware::class,
         'log' => \App\Http\Middleware\LogMiddleware::class,

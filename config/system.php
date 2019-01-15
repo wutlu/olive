@@ -278,12 +278,7 @@ return [
                 'root' => true,
                 'icon' => 'widgets'
             ],
-            17 => [
-                'name' => 'Twitter Hesapları',
-                'route' => 'admin.twitter.accounts',
-                'root' => true,
-                'icon' => 'person'
-            ],
+            // 17 => [],
             18 => [
                 'name' => 'Token Yönetimi',
                 'route' => 'admin.twitter.tokens.json',

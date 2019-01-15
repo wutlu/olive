@@ -148,11 +148,6 @@ Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {
         Route::get('index-yonetimi', 'TwitterController@indices')->name('admin.twitter.indices');
         Route::post('index-yonetimi/json', 'TwitterController@indicesJson')->name('admin.twitter.indices.json');
 
-        Route::prefix('bagli-hesaplar')->group(function () {
-            Route::get('/', 'TwitterController@accounts')->name('admin.twitter.accounts');
-            Route::post('json', 'TwitterController@accountsViewJson')->name('admin.twitter.accounts.list.json');
-        });
-
         Route::prefix('token-yonetimi')->group(function () {
             Route::post('json', 'TokenController@tokensJson')->name('admin.twitter.tokens.json');
             Route::post('token', 'TokenController@token')->name('admin.twitter.token');

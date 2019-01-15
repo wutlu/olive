@@ -48,8 +48,8 @@
                 class="json">
                 <div class="input-field">
                     <input id="screen_name" name="screen_name" type="text" class="validate" />
-                    <label for="screen_name">Twitter Kullanıcı Adı veya ID</label>
-                    <span class="helper-text">Örnek: "ntv, bigverizone"</span>
+                    <label for="screen_name">Twitter Kullanıcı Adı</label>
+                    <span class="helper-text">Örnek: "ntv, ntvspor"</span>
                 </div>
             </form>
         </div>

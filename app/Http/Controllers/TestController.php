@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 
 use App\Utilities\DateUtility;
 use App\Utilities\Crawler;
+use GuzzleHttp\Client;
+use GuzzleHttp\HandlerStack;
+
+use App\Wrawler;
 
 use Carbon\Carbon;
 
@@ -13,6 +17,7 @@ class TestController extends Controller
 {
     public static function test()
     {
+        /*
         print_r(Crawler::productDetection(
             'https://www.sahibinden.com',
             'https://www.sahibinden.com/ilan/yedek-parca-aksesuar-donanim-tuning-motosiklet-ekipmanlari-aksesuar-tuning-givi-ea101b-kumas-yan-canta-30-lt-646764281/detay',
@@ -26,5 +31,6 @@ class TestController extends Controller
                 'price' => '.classifiedInfo > h3',
             ]
         ));
+        */
     }
 }

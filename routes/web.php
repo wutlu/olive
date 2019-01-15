@@ -156,34 +156,22 @@ Route::prefix('geo')->group(function () {
     Route::get('states', 'GeoController@states')->name('geo.states');
 });
 
-Route::prefix('twitter')->namespace('Twitter')->group(function () {
-    Route::prefix('oauth')->group(function () {
-        Route::get('/', 'AccountController@connect')->name('twitter.connect');
-        Route::post('redirect', 'AccountController@redirect')->name('twitter.connect.redirect');
-        Route::post('disconnect', 'AccountController@disconnect')->name('twitter.disconnect');
-
-        Route::get('callback', 'AccountController@callback')->name('twitter.connect.callback');
-    });
-});
-
 Route::prefix('veri-havuzu')->group(function () {
     Route::get('/', 'DataController@dashboard')->name('data_pool.dashboard');
 
-    /**
-     *    Route::prefix('twitter')->namespace('Twitter')->group(function () {
-     *        Route::get('kelime-havuzu', 'DataController@keywordList')->name('twitter.keyword.list');
-     *        Route::post('kelime-havuzu', 'DataController@keywordListJson');
-     *
-     *        Route::put('kelime', 'DataController@keywordCreate')->name('twitter.keyword.create');
-     *        Route::delete('kelime', 'DataController@keywordDelete')->name('twitter.keyword.delete');
-     *
-     *        Route::get('kullanici-havuzu', 'DataController@accountList')->name('twitter.account.list');
-     *        Route::post('kullanici-havuzu', 'DataController@accountListJson');
-     *
-     *        Route::put('kullanici', 'DataController@accountCreate')->name('twitter.account.create');
-     *        Route::delete('kullanici', 'DataController@accountDelete')->name('twitter.account.delete');
-     *    });
-     */
+    Route::prefix('twitter')->namespace('Twitter')->group(function () {
+        Route::get('kelime-havuzu', 'DataController@keywordList')->name('twitter.keyword.list');
+        Route::post('kelime-havuzu', 'DataController@keywordListJson');
+    
+        Route::put('kelime', 'DataController@keywordCreate')->name('twitter.keyword.create');
+        Route::delete('kelime', 'DataController@keywordDelete')->name('twitter.keyword.delete');
+    
+        Route::get('kullanici-havuzu', 'DataController@accountList')->name('twitter.account.list');
+        Route::post('kullanici-havuzu', 'DataController@accountListJson');
+    
+        Route::put('kullanici', 'DataController@accountCreate')->name('twitter.account.create');
+        Route::delete('kullanici', 'DataController@accountDelete')->name('twitter.account.delete');
+    });
 
     Route::prefix('youtube')->namespace('YouTube')->group(function () {
         Route::get('kelime-havuzu', 'DataController@keywordList')->name('youtube.keyword.list');
