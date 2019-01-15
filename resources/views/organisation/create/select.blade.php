@@ -94,7 +94,11 @@
 
                 @if ($plan['price'])
                     <div class="center-align">
-                        <a href="{{ route('organisation.create.details', [ $key ]) }}" class="btn-flat btn-large waves-effect">Planı Seç</a>
+                        @isset ($plan['buy'])
+                            <a href="{{ route('organisation.create.details', [ $key ]) }}" class="btn-flat btn-large waves-effect">Planı Seç</a>
+                        @else
+                            <span class="grey-text">Stokta Yok</span>
+                        @endisset
                     </div>
                 @endif
             </div>

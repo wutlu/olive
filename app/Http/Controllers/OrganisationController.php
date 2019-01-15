@@ -505,7 +505,7 @@ class OrganisationController extends Controller
      */
     public static function details(int $id)
     {
-        if (isset(config('plans')[$id]))
+        if (@config('plans')[$id]['buy'])
         {
             $user = auth()->user();
 
@@ -585,6 +585,11 @@ class OrganisationController extends Controller
         $user = auth()->user();
 
         $plan = config('plans')[$request->plan_id];
+
+        if (!@config('plans')[$request->plan_id]['buy'])
+        {
+            return abort(404);
+        }
 
         $billing_information = new BillingInformation;
         $billing_information->user_id = $user->id;
