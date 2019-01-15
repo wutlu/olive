@@ -69,11 +69,6 @@ class Kernel extends ConsoleKernel
             $schedule->command('alarm:control')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
 
             /**
-             * Twitter kullanıcı hesaplarının geçerliliğinin kontrolü.
-             */
-            $schedule->command('nohup "twitter:account_control" --type=restart')->daily()->timezone(config('app.timezone'));
-
-            /**
              * Pinleme için PDF çıktı modülünün tetiklenmesi.
              */
             $schedule->command('trigger:pdf:pin_groups')->everyMinute()->timezone(config('app.timezone'));
@@ -179,8 +174,14 @@ class Kernel extends ConsoleKernel
 
             if ($option)
             {
-                $schedule->command('nohup "twitter:stream:update --type=user" --type=restart')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
-                $schedule->command('nohup "twitter:stream:update --type=keyword" --type=restart')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
+                /**
+                 *  Twitter kullanıcı hesaplarının geçerliliğinin kontrolü.
+                 *
+                 *  $schedule->command('nohup "twitter:account_control" --type=restart')->daily()->timezone(config('app.timezone'));
+
+                 *  $schedule->command('nohup "twitter:stream:update --type=user" --type=restart')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
+                 *  $schedule->command('nohup "twitter:stream:update --type=keyword" --type=restart')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();
+                 */
                 $schedule->command('nohup "twitter:stream:update --type=trend" --type=restart')->hourly()->timezone(config('app.timezone'))->withoutOverlapping();
             }
 
