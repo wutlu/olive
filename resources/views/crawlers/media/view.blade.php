@@ -212,6 +212,7 @@
                         var __ = $(this);
                         var url_pattern = $('input[name=url_pattern]');
                             url_pattern.val(url_pattern.val() + __.data('pattern'))
+                            url_pattern.focus()
 
                             M.updateTextFields()
                     })
