@@ -94,7 +94,7 @@ $pos = [
   'tamamladı',
   'tamamlayacak',
   'tamamlayacığım',
-  'sonuçlandırmak'
+  'sonuçlandırmak',
   'sonuçlandırdı',
   'sonuçlandı',
   'gerçekleştirmek',
