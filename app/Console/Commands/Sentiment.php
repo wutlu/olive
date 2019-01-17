@@ -55,7 +55,7 @@ class Sentiment extends Command
         ];
 
         $strings = [
-            'Bugün çok neşeliyim, neşemi kimse bozamaz net!',
+            'Bugün çok neşeliyim, beğeni neşemi kimse bozamaz net! İyi bir hayat.',
             'Artık sevmeyeceğim.',
             'Berbat bir dünyada yaşıyoruz.',
             'Neden böyle oldu ki?'
@@ -80,8 +80,6 @@ class Sentiment extends Command
             }
 
             print_r($scores);
-
-            $this->line('');
         }
     }
 

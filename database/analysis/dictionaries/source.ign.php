@@ -26,7 +26,7 @@ $ign = [
   'izin',
   'ver',
   'hemen',
-  'neredeyse'
+  'neredeyse',
   'yalnız',
   'boyunca',
   'süresince',
@@ -152,7 +152,7 @@ $ign = [
   'sebebiyet',
   'verme',
   'sebepler',
-  'nedenler'
+  'nedenler',
   'sent',
   'metelik',
   'kesin',
@@ -352,7 +352,7 @@ $ign = [
   'bundan',
   'sonra',
   'bunun',
-  'üzerine'
+  'üzerine',
   'onun',
   'onunki',
   'kendi',

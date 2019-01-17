@@ -124,7 +124,7 @@ $pos = [
   'kazanım',
   'kabullenmek',
   'tasdik',
-  'onaylamak'
+  'onaylamak',
   'onayladı',
   'onaylıyor',
   'aklamak',
@@ -181,7 +181,7 @@ $pos = [
   'tavsiye',
   'nasihat',
   'öğüt',
-  'makul'
+  'makul',
   'destek',
   'hoş',
   'nazik',
@@ -1330,7 +1330,7 @@ $pos = [
   'light-hearted',
   'lighten',
   'likable',
-  'like',
+  'beğen',
   'likeable',
   'liking',
   'lionhearted',
