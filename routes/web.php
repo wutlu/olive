@@ -9,6 +9,8 @@ Route::get('kaynaklar', 'HomeController@sources')->name('sources');
 
 Route::post('markdown/onizleme', 'MarkdownController@preview')->name('markdown.preview');
 
+Route::post('kabul-et', 'HomeController@termVersion')->name('term.version');
+
 Route::namespace('Forum')->prefix('forum')->group(function () {
     Route::get('/', 'ForumController@index')->name('forum.index');
     Route::post('kategoriler', 'ForumController@categoryJson')->name('forum.categories');

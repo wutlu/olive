@@ -78,7 +78,7 @@
                                             <div class="input-field col s12">
                                                 <input name="name" id="name" type="text" class="validate" />
                                                 <label for="name">Ad</label>
-                                                <span class="helper-text">Tam Adınız.</span>
+                                                <span class="helper-text">Kullanıcı Adınız.</span>
                                             </div>
                                             <div class="input-field col s12">
                                                 <div class="captcha" data-id="register-captcha"></div>

@@ -529,6 +529,7 @@ class UserController extends Controller
         $user->password = bcrypt($request->password);
         $user->email = $request->email;
         $user->session_id = Session::getId();
+        $user->term_version = config('system.term_version');
         $user->save();
 
         foreach (config('system.notifications') as $key => $val)

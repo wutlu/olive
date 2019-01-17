@@ -15,7 +15,8 @@ return [
         'info' => 'Bilgi',
         'login' => 'Giriş',
         'remove' => 'Sil',
-        'verification' => 'Doğrulama'
+        'verification' => 'Doğrulama',
+        'iagree' => 'Kabul Ediyorum'
     ],
     'errors' => [
         'disconnected' => 'Sunucu bağlantısı sağlanamadı.',

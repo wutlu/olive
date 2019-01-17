@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app', [ 'term' => 'hide' ])
 
 @section('title', $page->title)
 

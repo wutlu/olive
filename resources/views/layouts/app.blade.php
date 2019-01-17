@@ -46,7 +46,32 @@
 <body>
     <div class="window-size z-depth-1">
         <p>Ekran çözünürlüğünüz çok küçük. Tam manasıyla bir Olive için çözünürlüğünüzü yükseltmeniz gerekiyor.</p>
-    </div> 
+    </div>
+    @auth
+        @if (@$term != 'hide')
+            @if (auth()->user()->term_version != config('system.term_version'))
+                @push('local.scripts')
+                    modal({
+                        'id': 'carousel-term',
+                        'body': '<a class="grey-text" href="{{ route('page.view', 'gizlilik-politikasi') }}">Gizlilik Politikası</a> ve <a class="grey-text" href="{{ route('page.view', 'kullanim-kosullari') }}">Kullanım Koşulları</a> güncellendi. Tekrar gözden geçirip onaylamanız gerekiyor.',
+                        'size': 'modal-small',
+                        'options': {
+                            'dismissible': false
+                        },
+                        'footer': [
+                            $('<a />', {
+                                'href': '#',
+                                'class': 'modal-close waves-effect btn-flat grey-text text-darken-4 json',
+                                'data-method': 'post',
+                                'data-href': '{{ route('term.version') }}',
+                                'html': buttons.iagree
+                            })
+                        ]
+                    })
+                @endpush
+            @endif
+        @endif
+    @endauth
     @if (@$sidenav_fixed_layout)
         @auth
             @if (!auth()->user()->verified)

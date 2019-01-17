@@ -50,6 +50,20 @@ class HomeController extends Controller
     }
 
     /**
+     * Kullanım Koşulları ve Gizlilik Politikası kabulu.
+     *
+     * @return view
+     */
+    public static function termVersion()
+    {
+        auth()->user()->update([ 'term_version' => config('system.term_version') ]);
+
+        return [
+            'status' => 'ok'
+        ];
+    }
+
+    /**
      * Kaynaklar Sayfası
      *
      * @return view

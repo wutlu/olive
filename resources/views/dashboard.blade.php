@@ -228,7 +228,7 @@
                 data-nothing>
                 <li class="nothing hide">
                     @component('components.nothing')
-                        @slot('cloud_class', 'grey-text text-darken-2')
+                        @slot('cloud_class', 'white-text')
                     @endcomponent
                 </li>
                 <li class="model hide">

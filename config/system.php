@@ -7,14 +7,26 @@ return [
     'version' => '1.3.1031-alpha',
 
     /**
+     * Gizlilik Politikası ve Kullanım Koşulları Versiyonu
+     *
+     * - Gizlilik Politikası veya Kullanım Koşullarında yapılacak
+     * olan değişiklikler durumunda, kullanıcılara tekrar okuyup
+     * kabul etmelerini gerektirecek popup açılır.
+     *
+     * @var integer
+     */
+    'term_version' => 3,
+
+    /**
      * Destek Konuları
      */
     'ticket' => [
         'types' => [
-            'source' => 'Kaynak İsteği',
-            'technic' => 'Teknik Konular',
-            'other' => 'Diğer Konular',
+            'kaynak-istegi' => 'Kaynak İsteği',
+            'teknik' => 'Teknik Konular',
+            'diger' => 'Diğer Konular',
             'odeme-bildirimi' => 'Ödeme Bildirimi',
+            'hak-sahipligi' => 'Hak Sahipliği'
         ]
     ],
 
