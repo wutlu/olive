@@ -35,11 +35,13 @@
 @section('wildcard')
     <div class="card wild-background">
         @auth
-            <div class="card-image">
-                <a href="{{ route('forum.thread.form') }}" class="btn-floating btn-large halfway-fab waves-effect teal" data-tooltip="Konu Başlat" data-position="left">
-                    <i class="material-icons">add</i>
-                </a>
-            </div>
+            @if (@$category->lock == false || auth()->user()->root())
+                <div class="card-image">
+                    <a href="{{ route('forum.thread.form') }}" class="btn-floating btn-large halfway-fab waves-effect teal" data-tooltip="Konu Başlat" data-position="left">
+                        <i class="material-icons">add</i>
+                    </a>
+                </div>
+            @endif
         @else
             <div class="card-image">
                 <a href="{{ route('user.login') }}" class="btn-floating btn-large halfway-fab waves-effect teal" data-tooltip="Giriş Yap" data-position="left">
@@ -239,6 +241,28 @@
                                         'html': 'Kategori hakkında detaylı bir açıklama girin.'
                                     })
                                 ]
+                            }),
+                            $('<div />', {
+                                'class': 'switch',
+                                'html': $('<label>', {
+                                    'html': [
+                                        $('<span />', {
+                                            'html': 'Açık'
+                                        }),
+                                        $('<input />', {
+                                            'type': 'checkbox',
+                                            'value': 'on',
+                                            'name': 'lock',
+                                            'id': 'lock'
+                                        }),
+                                        $('<span />', {
+                                            'class': 'lever'
+                                        }),
+                                        $('<span />', {
+                                            'html': 'Kilitli'
+                                        })
+                                    ]
+                                })
                             })
                         ]
                     }),
@@ -316,6 +340,7 @@
 
                 $('input[name=name]').val('').characterCounter()
                 $('input[name=slug]').val('').characterCounter()
+                $('input[name=lock]').prop('checked', false)
                 $('input[name=description]').val('').characterCounter()
 
                 $('[data-trigger=delete_cat]').removeAttr('data-id').addClass('hide')
@@ -391,6 +416,7 @@
 
                     $('input[name=name]').val(obj.data.name).characterCounter()
                     $('input[name=slug]').val(obj.data.slug).characterCounter()
+                    $('input[name=lock]').prop('checked', obj.data.lock ? true : false)
                     $('input[name=description]').val(obj.data.description).characterCounter()
 
                     $('[data-trigger=delete_cat]').data('id', obj.data.id).removeClass('hide')

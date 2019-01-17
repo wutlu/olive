@@ -568,7 +568,7 @@
                             }),
                             $('<span />', {
                                 'class': 'helper-text',
-                                'html': 'Birden fazla anahtar kelime veya cümle için birden fazla satır kullanabilirsiniz. Ayrıca OR, AND ve (parantez) parametrelerini de kullanabilirsiniz. Son olarak, boş bıraktığınız taktirde Twitter hariç tüm veri akışını alırsınız.'
+                                'html': 'Birden fazla anahtar kelime veya cümle için birden fazla satır kullanabilirsiniz. Ayrıca OR, AND ve (parantez) parametrelerini de kullanabilirsiniz. AND parametresi sonuç vermesse OR ile sonuç alacaksınız. Son olarak, boş bıraktığınız taktirde Twitter hariç tüm veri akışını alırsınız.'
                             })
                         ]
                     }),

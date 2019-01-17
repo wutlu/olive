@@ -27,6 +27,7 @@ class CreateRequest extends FormRequest
             'name' => 'required|string|max:16',
             'slug' => 'required|slug|max:32|unique:forum_categories,slug',
             'description' => 'required|string|max:255',
+            'lock' => 'nullable|string|in:on'
         ];
     }
 }

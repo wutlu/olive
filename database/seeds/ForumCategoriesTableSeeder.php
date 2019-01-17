@@ -59,6 +59,11 @@ class ForumCategoriesTableSeeder extends Seeder
                 'description' => 'Forum dışı her şey.',
                 'sort' => 9
             ],
+            [
+                'name' => 'Olive Klavuz',
+                'description' => 'Olive kullanım klavuzu.',
+                'sort' => 10
+            ],
         ];
 
         foreach ($items as $item)

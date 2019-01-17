@@ -282,4 +282,3 @@ yu
 yüz
 zaten
 zira
-zxtest

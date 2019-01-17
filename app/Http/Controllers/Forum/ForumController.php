@@ -386,7 +386,12 @@ class ForumController extends Controller
      */
     public static function threadForm(int $id = 0)
     {
-        $categories = Category::orderBy('sort')->get();
+        $categories = Category::where(function ($query) {
+            if (!auth()->user()->root())
+            {
+                $query->where('lock', false);
+            }
+        })->orderBy('sort')->get();
 
         if ($id)
         {
@@ -511,6 +516,7 @@ class ForumController extends Controller
     {
         $query = Category::where('id', $request->id)->firstOrFail();
         $query->fill($request->all());
+        $query->lock = $request->lock ? true : false;
         $query->save();
 
         return [
@@ -538,6 +544,7 @@ class ForumController extends Controller
         $query = new Category;
         $query->fill($request->all());
         $query->sort = intval(Category::orderBy('sort', 'DESC')->take(1)->value('sort'))+1;
+        $query->lock = $request->lock ? true : false;
         $query->save();
 
         return [

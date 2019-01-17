@@ -83,8 +83,18 @@ class RealTimeController extends Controller
                 {
                     foreach (explode(PHP_EOL, $group->keywords) as $k)
                     {
-                        $keywords[] = '('.$k.')';
-                        $words[] = $k;
+                        $keywords[] = '('.strtolower($k).')';
+
+                        $words_raw = str_replace([ ' OR ', ' AND ', ')', '(' ], ' ', $k);
+                        $words_raw = explode(' ', $words_raw);
+
+                        foreach ($words_raw as $w)
+                        {
+                            if ($w)
+                            {
+                                $words[] = $w;
+                            }
+                        }
                     }
                 }
 
