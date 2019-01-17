@@ -25,15 +25,6 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'Yeni Bot 123862',
-                'site' => 'http://',
-                'base' => '/',
-                'url_pattern' => '([a-z0-9-]{4,128})',
-                'selector_title' => 'h1',
-                'selector_description' => 'h2',
-                'off_limit' => 255,
-            ],
-            [
                 'name' => 'YUKSEKOVAGUNDEM',
                 'site' => 'http://www.yuksekovagundem.org',
                 'base' => '/',
@@ -61,7 +52,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'YALOVAGAZETESİ',
+                'name' => 'YALOVAGAZETESI',
                 'site' => 'http://www.yalovagazetesi.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-h(\d{5,9})\.html',
@@ -70,7 +61,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'GUVENGAZETESİ',
+                'name' => 'GUVENGAZETESI',
                 'site' => 'http://www.guvengazetesi.com.tr',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})\/(\d{3,9})',
@@ -79,7 +70,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'ARDAHANHABERİ',
+                'name' => 'ARDAHANHABERI',
                 'site' => 'http://www.ardahanhaberi.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})\/(\d{4,9})',
@@ -88,7 +79,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'CİLDİRMANSET',
+                'name' => 'CILDIRMANSET',
                 'site' => 'http://www.cildirmanset.com',
                 'base' => '/',
                 'url_pattern' => 'haber\/([a-z0-9-]{4,128})-(\d{4,9})\.html',
@@ -97,7 +88,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'AJANSBARTİN',
+                'name' => 'AJANSBARTIN',
                 'site' => 'http://www.ajansbartin.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})-(\d{4,9})h\.htm',
@@ -106,7 +97,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'BARTİNHALKGAZETESİ',
+                'name' => 'BARTINHALKGAZETESI',
                 'site' => 'http://www.bartinhalkgazetesi.com.tr',
                 'base' => '/',
                 'url_pattern' => 'haber\/(\d{4,9})\/([a-z0-9-]{4,128})\.html',
@@ -124,7 +115,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'BATMANGAPGAZETESİ',
+                'name' => 'BATMANGAPGAZETESI',
                 'site' => 'http://www.batmangapgazetesi.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})\.html',
@@ -151,7 +142,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'BATMANTARAFSİZ',
+                'name' => 'BATMANTARAFSIZ',
                 'site' => 'http://batmantarafsiz.com',
                 'base' => '/',
                 'url_pattern' => 'haber\/(\d{5,9})\/([a-z0-9-]{4,128})\.html',
@@ -160,7 +151,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'BATMANGAZETESİ',
+                'name' => 'BATMANGAZETESI',
                 'site' => 'http://batmangazetesi.com.tr',
                 'base' => '/',
                 'url_pattern' => 'haber\/(\d{5,9})\/([a-z0-9-]{4,128})\.html',
@@ -178,7 +169,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'PUSULAGAZETESİ',
+                'name' => 'PUSULAGAZETESI',
                 'site' => 'http://www.pusulagazetesi.net',
                 'base' => '/',
                 'url_pattern' => 'haber\/([a-z0-9-]{4,128})-(\d{5,9})\.html',
@@ -223,7 +214,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'KARAMANHABERCİSİ',
+                'name' => 'KARAMANHABERCISI',
                 'site' => 'https://www.karamanhabercisi.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})-(\d{4,9})h\.htm',
@@ -250,7 +241,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'BAYBURTPOSTASİ',
+                'name' => 'BAYBURTPOSTASI',
                 'site' => 'http://www.bayburtpostasi.com.tr',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-h(\d{5,9})\.html',
@@ -277,7 +268,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'KARİYERMEDYA',
+                'name' => 'KARIYERMEDYA',
                 'site' => 'http://www.kariyermedya.net',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})\.html',
@@ -286,7 +277,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'HALKİNSESİ',
+                'name' => 'HALKINSESI',
                 'site' => 'http://www.halkinsesi.com.tr',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-h(\d{5,9})\.html',
@@ -295,7 +286,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'SORGUNGAZETESİ',
+                'name' => 'SORGUNGAZETESI',
                 'site' => 'http://www.sorgungazetesi.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})-(\d{4,9})\.html',
@@ -304,7 +295,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'İLERİGAZETESI',
+                'name' => 'ILERIGAZETESI',
                 'site' => 'http://www.ilerigazetesi.com.tr',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-h(\d{5,9})\.html',
@@ -313,7 +304,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'VANSESİGAZETESİ',
+                'name' => 'VANSESIGAZETESI',
                 'site' => 'http://vansesigazetesi.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})-(\d{5,9})\.html',
@@ -322,7 +313,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'SEHRİVANGAZETESİ',
+                'name' => 'SEHRIVANGAZETESI',
                 'site' => 'http://www.sehrivangazetesi.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-h(\d{5,9})\.html',
@@ -367,7 +358,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'USAKCİTY',
+                'name' => 'USAKCITY',
                 'site' => 'http://www.usakcity.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-h(\d{5,9})\.html',
@@ -385,7 +376,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'USAKHABERAJANSİ',
+                'name' => 'USAKHABERAJANSI',
                 'site' => 'http://www.usakhaberajansi.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-h(\d{4,9})\.html',
@@ -394,7 +385,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'USAKHABERMERKEZİ',
+                'name' => 'USAKHABERMERKEZI',
                 'site' => 'http://www.usakhabermerkezi.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-h(\d{5,9})\.html',
@@ -403,7 +394,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'SANLİURFAOLAY',
+                'name' => 'SANLIURFAOLAY',
                 'site' => 'https://www.sanliurfaolay.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})\/(\d{5,9})',
@@ -412,7 +403,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'SANLİURFA63',
+                'name' => 'SANLIURFA63',
                 'site' => 'http://www.sanliurfa63.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})\/(\d{5,9})',
@@ -421,7 +412,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'DERSİM-HABER',
+                'name' => 'DERSIM-HABER',
                 'site' => 'http://www.dersim-haber.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})-(\d{5,9})h\.htm',
@@ -430,7 +421,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'OZGURDERSİM',
+                'name' => 'OZGURDERSIM',
                 'site' => 'http://www.ozgurdersim.com',
                 'base' => '/',
                 'url_pattern' => 'haber\/([a-z0-9-]{4,128})-(\d{5,9})\.htm',
@@ -439,7 +430,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'GUNEBAKİS',
+                'name' => 'GUNEBAKIS',
                 'site' => 'http://www.gunebakis.com.tr',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-h(\d{5,9})\.html',
@@ -466,7 +457,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'CERKEZKOYBAKİS',
+                'name' => 'CERKEZKOYBAKIS',
                 'site' => 'http://www.cerkezkoybakis.com.tr',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-h(\d{6,9})\.html',
@@ -493,7 +484,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'BİZİMSIVAS',
+                'name' => 'BIZIMSIVAS',
                 'site' => 'http://www.bizimsivas.com.tr',
                 'base' => '/',
                 'url_pattern' => 'haber\/([a-z0-9-]{4,128})-(\d{5,9})\.html',
@@ -502,7 +493,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'SİVASİRADE',
+                'name' => 'SIVASIRADE',
                 'site' => 'http://www.sivasirade.com',
                 'base' => '/',
                 'url_pattern' => 'haber\/([a-z0-9-]{4,128})-(\d{5,9})\.html',
@@ -511,7 +502,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'SİVASPOSTASİ.COM',
+                'name' => 'SIVASPOSTASI.COM',
                 'site' => 'http://www.sivaspostasi.com.tr',
                 'base' => '/',
                 'url_pattern' => 'haber\/([a-z0-9-]{4,128})-(\d{4,9})\.html',
@@ -520,7 +511,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'VİTRİNHABER',
+                'name' => 'VITRINHABER',
                 'site' => 'https://www.vitrinhaber.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-h(\d{5,9})\.html',
@@ -529,7 +520,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'SİİRTTESONSOZ',
+                'name' => 'SIIRTTESONSOZ',
                 'site' => 'http://www.siirttesonsoz.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{16,128})(?=\/)',
@@ -538,7 +529,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'SİİRTMANSET',
+                'name' => 'SIIRTMANSET',
                 'site' => 'http://www.siirtmanset.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-h(\d{5,9})\.html',
@@ -583,7 +574,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'HABERGAZETESİ.COM',
+                'name' => 'HABERGAZETESI.COM',
                 'site' => 'http://www.habergazetesi.com.tr',
                 'base' => '/',
                 'url_pattern' => 'haber\/(\d{7,9})\/([a-z0-9-]{4,128})',
@@ -592,7 +583,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'SAMSUNGAZETESİ',
+                'name' => 'SAMSUNGAZETESI',
                 'site' => 'https://www.samsungazetesi.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-(\d{8})-h(\d{7,9})\.html',
@@ -619,7 +610,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'HABERLİSİN',
+                'name' => 'HABERLISIN',
                 'site' => 'https://www.haberlisin.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})\/(\d{5,9})',
@@ -628,7 +619,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'BİZİMSAKARYA',
+                'name' => 'BIZIMSAKARYA',
                 'site' => 'http://www.bizimsakarya.com.tr',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-h(\d{5,9})\.html',
@@ -637,7 +628,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'AKYAZİHABER',
+                'name' => 'AKYAZIHABER',
                 'site' => 'https://www.akyazihaber.com/',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-(\d{5,9})-detay',
@@ -655,7 +646,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'BİLECİKHABER',
+                'name' => 'BILECIKHABER',
                 'site' => 'https://www.bilecikhaber.com.tr',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})-(\d{6,9})h\.htm',
@@ -691,7 +682,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'MARASMEDYAMERKEZİ',
+                'name' => 'MARASMEDYAMERKEZI',
                 'site' => 'http://www.marasmedyamerkezi.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-h(\d{5,9})\.html',
@@ -700,7 +691,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'ELBİSTANOLAY',
+                'name' => 'ELBISTANOLAY',
                 'site' => 'https://www.elbistanolay.com',
                 'base' => '/',
                 'url_pattern' => 'haber\/(\d{7,9})\/([a-z0-9-]{4,128})',
@@ -745,7 +736,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'NUSAYBİNİM',
+                'name' => 'NUSAYBINIM',
                 'site' => 'http://www.nusaybinim.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9_-]{4,128})_haber(\d{5,9})\.html',
@@ -754,7 +745,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'MARDİNARENA',
+                'name' => 'MARDINARENA',
                 'site' => 'http://www.mardinarena.com',
                 'base' => '/',
                 'url_pattern' => 'haber-([a-z0-9-]{4,128})-(\d{5,9})\.html',
@@ -763,7 +754,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'HAMLEGAZETESİ',
+                'name' => 'HAMLEGAZETESI',
                 'site' => 'http://www.hamlegazetesi.com.tr',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{16,128})\/',
@@ -772,7 +763,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'MUSOVASİ',
+                'name' => 'MUSOVASI',
                 'site' => 'http://www.musovasi.com',
                 'base' => '/',
                 'url_pattern' => 'haber\/([a-z0-9-]{4,128})-(\d{5,9})\.html',
@@ -790,7 +781,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'GUNAYDİNMUŞ',
+                'name' => 'GUNAYDINMUS',
                 'site' => 'http://www.gunaydinmus.com',
                 'base' => '/',
                 'url_pattern' => 'haber\/([a-z0-9-]{4,128})-(\d{5,9})\.html',
@@ -799,7 +790,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'MUŞMANSET',
+                'name' => 'MUSMANSET',
                 'site' => 'http://www.musmanset.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-h(\d{5,9})\.html',
@@ -808,7 +799,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'FİBHABER',
+                'name' => 'FIBHABER',
                 'site' => 'http://www.fibhaber.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-h(\d{5,9})\.html',
@@ -844,7 +835,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'NİGDEMİZ',
+                'name' => 'NIGDEMIZ',
                 'site' => 'https://nigdemiz.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{16,128})\/',
@@ -853,7 +844,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'NİGDEHABERCİ',
+                'name' => 'NIGDEHABERCI',
                 'site' => 'http://www.nigdehaberci.com',
                 'base' => '/',
                 'url_pattern' => 'haber\/([a-z0-9_-]{4,24})\/([a-z0-9-]{4,128})\/(\d{4,9})\.html',
@@ -871,7 +862,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'KOCAELİPUSULA',
+                'name' => 'KOCAELIPUSULA',
                 'site' => 'https://www.kocaelipusula.com',
                 'base' => '/',
                 'url_pattern' => 'haber\/(\d{5,9})\/([a-z0-9-]{4,128})\.html',
@@ -880,7 +871,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'OZGURKOCAELİ',
+                'name' => 'OZGURKOCAELI',
                 'site' => 'http://www.ozgurkocaeli.com.tr',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})-(\d{6,9})h\.htm',
@@ -889,7 +880,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'KOCAELİBARİSGAZETESİ',
+                'name' => 'KOCAELIBARISGAZETESI',
                 'site' => 'http://www.kocaelibarisgazetesi.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-h(\d{6,9})\.html',
@@ -898,7 +889,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'BUYUKKOCAELİ',
+                'name' => 'BUYUKKOCAELI',
                 'site' => 'http://www.buyukkocaeli.com.tr',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})-(\d{5,9})h\.htm',
@@ -907,7 +898,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'KOCAELİKOZ',
+                'name' => 'KOCAELIKOZ',
                 'site' => 'https://www.kocaelikoz.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-h(\d{5,9})\.html',
@@ -916,7 +907,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'YENİHABERDEN',
+                'name' => 'YENIHABERDEN',
                 'site' => 'http://www.yenihaberden.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})-(\d{6,9})h\.htm',
@@ -934,7 +925,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'YENİMERAM',
+                'name' => 'YENIMERAM',
                 'site' => 'http://www.yenimeram.com.tr',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})-(\d{6,9})\.htm',
@@ -952,7 +943,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'GAZİEMETGAZETESİ',
+                'name' => 'GAZIEMETGAZETESI',
                 'site' => 'http://www.gaziemetgazetesi.com',
                 'base' => '/',
                 'url_pattern' => 'Hbr-(\d{4,9})-([a-zA-Z0-9-]{4,128})\.html',
@@ -961,7 +952,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'KUTAHYANİNSESİ',
+                'name' => 'KUTAHYANINSESI',
                 'site' => 'http://www.kutahyaninsesi.com',
                 'base' => '/',
                 'url_pattern' => 'haber-([a-z0-9-]{4,128})-(\d{4,9})\.html',
@@ -988,7 +979,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'MALATYAGÜNCEL',
+                'name' => 'MALATYAGUNCEL',
                 'site' => 'http://www.malatyaguncel.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})-(\d{7,9})h\.htm',
@@ -997,7 +988,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'MANİSAHABERLERİ',
+                'name' => 'MANISAHABERLERI',
                 'site' => 'http://www.manisahaberleri.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-h(\d{5,9})\.html',
@@ -1006,7 +997,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'AKHİSARHABER',
+                'name' => 'AKHISARHABER',
                 'site' => 'http://www.akhisarhaber.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})-(\d{5,9})h\.htm',
@@ -1015,7 +1006,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'MANİSAKULİSHABER',
+                'name' => 'MANISAKULISHABER',
                 'site' => 'http://www.manisakulishaber.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-h(\d{5,9})\.html',
@@ -1024,7 +1015,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'KIRŞEHİR24',
+                'name' => 'KIRSEHIR24',
                 'site' => 'http://www.kirsehir24.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-h(\d{4,9})\.html',
@@ -1033,7 +1024,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'AŞIKPAŞA',
+                'name' => 'ASIKPASA',
                 'site' => 'http://www.asikpasagazetesi.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})-(\d{4,9})\.html',
@@ -1042,7 +1033,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'DENİZPOSTASI',
+                'name' => 'DENIZPOSTASI',
                 'site' => 'https://www.denizpostasi.com',
                 'base' => '/',
                 'url_pattern' => 'haber\/([a-z0-9-]{4,24})\/(\d{5,9})-([a-z0-9-\']{4,128})',
@@ -1051,7 +1042,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'KAYSERİTEMPO',
+                'name' => 'KAYSERITEMPO',
                 'site' => 'http://www.kayseritempo.org',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})-(\d{6,9})\.html',
@@ -1060,7 +1051,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'AÇIKSÖZ',
+                'name' => 'ACIKSOZ',
                 'site' => 'http://www.aciksoz.com.tr',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-h(\d{5,9})\.html',
@@ -1069,7 +1060,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'KASTAMONUİLKHABER',
+                'name' => 'KASTAMONUILKHABER',
                 'site' => 'https://www.kastamonuilkhaber.com',
                 'base' => '/',
                 'url_pattern' => 'haber-([a-z0-9-]{4,128})-(\d{5,9})\.html',
@@ -1087,7 +1078,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'KARSGÜNCEL',
+                'name' => 'KARSGUNCEL',
                 'site' => 'http://www.karsguncel.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})-(\d{4,9})h\.htm',
@@ -1096,7 +1087,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'POLİTİKARS',
+                'name' => 'POLITIKARS',
                 'site' => 'https://www.politikars.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})-(\d{6,9})h\.htm',
@@ -1105,7 +1096,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'ÇAĞDAŞSES',
+                'name' => 'CAGDASSES',
                 'site' => 'http://cagdasses.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})-(\d{5,9})\.html',
@@ -1114,7 +1105,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'SARIYERMANŞET',
+                'name' => 'SARIYERMANSET',
                 'site' => 'http://www.sariyermanset.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})-(\d{4,9})h\.htm',
@@ -1141,7 +1132,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'EGEDESONSÖZ',
+                'name' => 'EGEDESONSOZ',
                 'site' => 'http://www.egedesonsoz.com',
                 'base' => '/',
                 'url_pattern' => 'haber\/([a-z0-9-]{4,128})\/(\d{6,9})',
@@ -1159,7 +1150,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'KARSMANŞET',
+                'name' => 'KARSMANSET',
                 'site' => 'http://www.karsmanset.com',
                 'base' => '/',
                 'url_pattern' => 'haber\/([a-z0-9-]{4,128})-(\d{5,9})\.htm',
@@ -1177,7 +1168,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'GÜMÜŞHANE',
+                'name' => 'GUMUSHANE',
                 'site' => 'http://www.gumushane.gen.tr',
                 'base' => '/',
                 'url_pattern' => 'v2\/([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-h(\d{5,9})\.html',
@@ -1186,7 +1177,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'KEŞANPOSTASI',
+                'name' => 'KESANPOSTASI',
                 'site' => 'https://www.kesanpostasi.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})\.html',
@@ -1195,7 +1186,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'BÖLGEGÜNDEM',
+                'name' => 'BOLGEGUNDEM',
                 'site' => 'https://www.bolgegundem.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})-(\d{6,9})h\.htm',
@@ -1204,7 +1195,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'YENİGÜNGAZETESİ',
+                'name' => 'YENIGUNGAZETESI',
                 'site' => 'https://www.yenigungazetesi.net',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})\/(\d{5,9})\/',
@@ -1240,7 +1231,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'İSKENDERUNHABER',
+                'name' => 'ISKENDERUNHABER',
                 'site' => 'http://www.iskenderunhaber.com',
                 'base' => '/',
                 'url_pattern' => '(\d{4})\/(\d{2})\/(\d{2})\/([a-z0-9-]{4,128})',
@@ -1258,7 +1249,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'HAKKARİHABERTV',
+                'name' => 'HAKKARIHABERTV',
                 'site' => 'http://www.hakkarihabertv.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})-(\d{5,9})h\.htm',
@@ -1267,7 +1258,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'YÜKSEKOVAHABER',
+                'name' => 'YUKSEKOVAHABER',
                 'site' => 'https://www.yuksekovahaber.com.tr',
                 'base' => '/',
                 'url_pattern' => 'haber\/([a-z0-9-]{4,128})-(\d{6,9})\.htm',
@@ -1276,7 +1267,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'GÜMÜŞHANEOLAY',
+                'name' => 'GUMUSHANEOLAY',
                 'site' => 'http://www.gumushaneolay.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})-(\d{5,9})h\.htm',
@@ -1294,7 +1285,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'YEŞİLGİRESUN',
+                'name' => 'YESILGIRESUN',
                 'site' => 'http://www.yesilgiresun.com.tr',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})\/(\d{5,9})',
@@ -1303,7 +1294,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'GAZİANTEP27',
+                'name' => 'GAZIANTEP27',
                 'site' => 'http://www.gaziantep27.net',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})-(\d{6,9})h\.htm',
@@ -1321,7 +1312,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'GAZİANTEPGÜNEŞ',
+                'name' => 'GAZIANTEPGUNES',
                 'site' => 'http://www.gaziantepgunes.com',
                 'base' => '/',
                 'url_pattern' => '(\d{5,9})\/([a-z0-9-\']{4,128})\.html',
@@ -1330,7 +1321,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'ESKİŞEHİRHABER26',
+                'name' => 'ESKISEHIRHABER26',
                 'site' => 'https://www.eskisehirhaber26.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})_(\d{5,9})',
@@ -1348,7 +1339,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'DOĞUTÜRK',
+                'name' => 'DOGUTURK',
                 'site' => 'http://www.doguturk.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128}),(\d{4,9})\.html',
@@ -1357,7 +1348,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'GAZETEGÜNCEL',
+                'name' => 'GAZETEGUNCEL',
                 'site' => 'http://www.gazeteguncel.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})-(\d{6,9})h\.htm',
@@ -1375,7 +1366,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'GÜNDEM24',
+                'name' => 'GUNDEM24',
                 'site' => 'http://www.gundem24.com.tr',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})-(\d{5,9})\.html',
@@ -1384,7 +1375,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'ERZİNCANMEDYA',
+                'name' => 'ERZINCANMEDYA',
                 'site' => 'https://www.erzincanmedya.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-h(\d{5,9})\.html',
@@ -1402,7 +1393,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'EL-AZİZ',
+                'name' => 'EL-AZIZ',
                 'site' => 'http://www.el-aziz.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-_]{4,128})_haber(\d{5,9})\.html',
@@ -1411,7 +1402,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'SONDAKİKA23',
+                'name' => 'SONDAKIKA23',
                 'site' => 'http://www.sondakika23.com',
                 'base' => '/',
                 'url_pattern' => 'Hbr-(\d{5,9})-([a-z0-9-]{4,128})\.html',
@@ -1420,7 +1411,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'ELAZIĞHABER',
+                'name' => 'ELAZIGHABER',
                 'site' => 'http://www.elazighaber.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})-(\d{5,9})h\.htm',
@@ -1429,7 +1420,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'MEDYAKEŞAN',
+                'name' => 'MEDYAKESAN',
                 'site' => 'http://www.medyakesan.com.tr',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-h(\d{5,9})\.html',
@@ -1438,7 +1429,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'DOĞUŞHABER',
+                'name' => 'DOGUSHABER',
                 'site' => 'http://www.dogushaber.com',
                 'base' => '/',
                 'url_pattern' => 'p(\d{4,9})_([a-z0-9-]{4,128})',
@@ -1447,7 +1438,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'ÇINARINSESİ',
+                'name' => 'CINARINSESI',
                 'site' => 'http://www.cinarinsesi.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})-(\d{6,9})h\.htm',
@@ -1456,7 +1447,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'DİYARINSESİ',
+                'name' => 'DIYARINSESI',
                 'site' => 'https://www.diyarinsesi.org',
                 'base' => '/',
                 'url_pattern' => 'haber\/([a-z0-9-]{4,128})-(\d{6,9})\.htm',
@@ -1465,7 +1456,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'HABERDENİZLİ',
+                'name' => 'HABERDENIZLI',
                 'site' => 'https://www.haberdenizli.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-h(\d{5,9})\.html',
@@ -1483,7 +1474,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'AKİSHABER',
+                'name' => 'AKISHABER',
                 'site' => 'https://akishaber.com.tr',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})-(\d{5,9})\.html',
@@ -1492,7 +1483,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'HABERCİM19',
+                'name' => 'HABERCIM19',
                 'site' => 'https://www.habercim19.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-h(\d{5,9})\.html',
@@ -1501,7 +1492,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'ÇORUMHAKİMİYET',
+                'name' => 'CORUMHAKIMIYET',
                 'site' => 'http://www.corumhakimiyet.net',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-h(\d{4,9})\.html',
@@ -1510,7 +1501,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'ÇANKIRI',
+                'name' => 'CANKIRI',
                 'site' => 'http://www.corumhaber.net',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-h(\d{5,9})\.html',
@@ -1519,7 +1510,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'ÇANKIRIPOSTASI',
+                'name' => 'CANKIRIPOSTASI',
                 'site' => 'https://www.cankiripostasi.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-h(\d{4,9})\.html',
@@ -1546,7 +1537,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'BURSAHAKİMİYET',
+                'name' => 'BURSAHAKIMIYET',
                 'site' => 'http://www.bursahakimiyet.com.tr',
                 'base' => '/',
                 'url_pattern' => 'haber\/([a-z0-9-]{4,128})-(\d{6,9})\.html',
@@ -1555,7 +1546,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'HABERİNADRESİ',
+                'name' => 'HABERINADRESI',
                 'site' => 'http://www.haberinadresi.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})-h(\d{6,9})\.html',
@@ -1564,7 +1555,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'BURSADABUGÜN',
+                'name' => 'BURSADABUGUN',
                 'site' => 'http://www.bursadabugun.com',
                 'base' => '/',
                 'url_pattern' => 'haber\/([a-z0-9-]{4,128})-(\d{7,9})\.html',
@@ -1609,7 +1600,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'BOLUGÜNDEM',
+                'name' => 'BOLUGUNDEM',
                 'site' => 'http://www.bolugundem.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})-(\d{6,9})h\.htm',
@@ -1627,7 +1618,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'BİTLİSHABER13',
+                'name' => 'BITLISHABER13',
                 'site' => 'https://www.bitlishaber13.net',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})-(\d{5,9})\.html',
@@ -1636,7 +1627,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'ADİLCEVAZ13',
+                'name' => 'ADILCEVAZ13',
                 'site' => 'http://www.adilcevaz13.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})-(\d{5,9})h\.htm',
@@ -1645,7 +1636,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'BİNGÖLÜNSESİ',
+                'name' => 'BINGOLUNSESI',
                 'site' => 'http://www.bingolunsesi.com.tr',
                 'base' => '/',
                 'url_pattern' => 'haber\/(\d{5,9})\/([a-z0-9-]{4,128})\.html',
@@ -1663,7 +1654,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'BİNGÖLNET',
+                'name' => 'BINGOLNET',
                 'site' => 'https://www.bingolnet.com',
                 'base' => '/',
                 'url_pattern' => '(\d{4})\/(\d{2})\/(\d{2})\/([a-z0-9-]{4,128})',
@@ -1672,7 +1663,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'BİNGÖLONLINE',
+                'name' => 'BINGOLONLINE',
                 'site' => 'http://www.bingolonline.com',
                 'base' => '/',
                 'url_pattern' => 'haber\/([a-z0-9-]{4,128})-(\d{5,9})\.html',
@@ -1681,7 +1672,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'BİLECİKOLAY',
+                'name' => 'BILECIKOLAY',
                 'site' => 'http://www.bilecikolay.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-h(\d{5,9})\.html',
@@ -1699,7 +1690,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'YENİERDEKGAZETESİ',
+                'name' => 'YENIERDEKGAZETESI',
                 'site' => 'http://www.yenierdekgazetesi.com',
                 'base' => '/',
                 'url_pattern' => 'haber\/([a-z0-9-]{4,128})-(\d{5,9})\.html',
@@ -1708,7 +1699,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'BANDIRMAMANŞET',
+                'name' => 'BANDIRMAMANSET',
                 'site' => 'http://www.bandirmamanset.com',
                 'base' => '/',
                 'url_pattern' => 'haber\/([a-z0-9-]{4,128})-(\d{5,9})\.html',
@@ -1735,7 +1726,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'BESNİGÜNCEL',
+                'name' => 'BESNIGUNCEL',
                 'site' => 'http://www.besniguncel.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-h(\d{5,9})\.html',
@@ -1753,7 +1744,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'ÇUKUROVABARIŞGAZETESİ',
+                'name' => 'CUKUROVABARISGAZETESI',
                 'site' => 'http://www.cukurovabarisgazetesi.net',
                 'base' => '/',
                 'url_pattern' => 'haber\/([a-z0-9-]{4,128})-(\d{5,9})\.html',
@@ -1762,7 +1753,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'İLKHABERGAZETESİ',
+                'name' => 'ILKHABERGAZETESI',
                 'site' => 'http://www.ilkhaber-gazetesi.com',
                 'base' => '/',
                 'url_pattern' => 'haber\/(\d{5,9})\/([a-z0-9-]{4,128})\.html',
@@ -1771,7 +1762,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'YENİADANA',
+                'name' => 'YENIADANA',
                 'site' => 'http://www.yeniadana.net',
                 'base' => '/',
                 'url_pattern' => 'haber\/([a-z0-9-]{4,128})-(\d{5,9})\.html',
@@ -1780,7 +1771,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'GÜNAYDINGAZETESİ',
+                'name' => 'GUNAYDINGAZETESI',
                 'site' => 'https://www.gunaydingazetesi.com.tr',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{16,128})\/(\d{5,9})',
@@ -1789,7 +1780,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'REFLEKSGAZETESİ',
+                'name' => 'REFLEKSGAZETESI',
                 'site' => 'http://www.refleksgazetesi.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})\/(\d{4,9})',
@@ -1798,7 +1789,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'DOĞUBAYAZITHAKINSESİ',
+                'name' => 'DOGUBAYAZITHAKINSESI',
                 'site' => 'http://www.dogubayazithalkinsesi.com',
                 'base' => '/',
                 'url_pattern' => 'haber\/(\d{5,9})\/([a-z0-9-]{4,128})\.html',
@@ -1807,7 +1798,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'DİYADİNNET',
+                'name' => 'DIYADINNET',
                 'site' => 'https://www.diyadinnet.com',
                 'base' => '/',
                 'url_pattern' => 'haberi-(\d{6,9})-([a-z0-9-]{4,128})',
@@ -1843,7 +1834,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => '7/24HABERCİ',
+                'name' => '7/24HABERCI',
                 'site' => 'http://www.7-24haberci.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{16,128})\/(\d{5,9})',
@@ -1852,7 +1843,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'GÜNHABER',
+                'name' => 'GUNHABER',
                 'site' => 'http://www.gunhaber.com.tr',
                 'base' => '/',
                 'url_pattern' => 'haber\/([a-z0-9-]{4,128})\/(\d{6,9})',
@@ -1861,7 +1852,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'HABERBİRİKİM',
+                'name' => 'HABERBIRIKIM',
                 'site' => 'http://www.haberbirikim.com',
                 'base' => '/',
                 'url_pattern' => 'haber\/([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})',
@@ -1897,7 +1888,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'YEŞİLIRMAKGAZETESİ',
+                'name' => 'YESILIRMAKGAZETESI',
                 'site' => 'http://www.yesilirmakgazetesi.com',
                 'base' => '/',
                 'url_pattern' => 'haber\/(\d{5,9})\/([a-z0-9-]{4,128})\.html',
@@ -1906,7 +1897,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'AĞRIDAHABER',
+                'name' => 'AGRIDAHABER',
                 'site' => 'https://www.agridahaber.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-h(\d{6,9})\.html',
@@ -1933,7 +1924,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'AFYONKARAHİSAR',
+                'name' => 'AFYONKARAHISAR',
                 'site' => 'http://www.afyonkarahisar.com.tr',
                 'base' => '/',
                 'url_pattern' => 'haber\/(\d{5,9})\/([a-z0-9-]{4,128})\.html',
@@ -1969,7 +1960,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'TÜRKİYEHABERAJANSI',
+                'name' => 'TURKIYEHABERAJANSI',
                 'site' => 'http://www.turkiyehaberajansi.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})\/(\d{6,9})',
@@ -1987,7 +1978,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'ARKEOLOJİKHABER',
+                'name' => 'ARKEOLOJIKHABER',
                 'site' => 'https://www.arkeolojikhaber.com',
                 'base' => '/',
                 'url_pattern' => 'haber-([a-z0-9-]{4,128})-(\d{5,9})',
@@ -2005,7 +1996,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'URFANATİK',
+                'name' => 'URFANATIK',
                 'site' => 'http://www.urfanatik.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-h(\d{5,9})\.html',
@@ -2014,7 +2005,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'DÜNYA',
+                'name' => 'DUNYA',
                 'site' => 'https://www.dunya.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-haberi-(\d{6,9})',
@@ -2041,7 +2032,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'MİLLİYET',
+                'name' => 'MILLIYET',
                 'site' => 'http://www.milliyet.com.tr',
                 'base' => '/',
                 'url_pattern' => '(\b(?!yazarlar|album))([a-z0-9-]{4,128})-(\d{7,9})(?=\/)',
@@ -2050,7 +2041,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'HABERTÜRK',
+                'name' => 'HABERTURK',
                 'site' => 'http://www.haberturk.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{2,128})-(\d{7,8})(-[a-z0-9-]{2,24})?',
@@ -2068,7 +2059,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'HABERGAZETESİ',
+                'name' => 'HABERGAZETESI',
                 'site' => 'http://www.habergazetesi.com.tr',
                 'base' => '/',
                 'url_pattern' => 'haber\/(\d{7,9})\/([a-z0-9-]{4,128})',
@@ -2077,7 +2068,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'HABERVAKTİM',
+                'name' => 'HABERVAKTIM',
                 'site' => 'https://www.habervaktim.com',
                 'base' => '/',
                 'url_pattern' => 'haber\/(\d{6,9})\/([a-z0-9-]{4,128})\.html',
@@ -2086,7 +2077,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'DÖVİZ',
+                'name' => 'DOVIZ',
                 'site' => 'https://haber.doviz.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{10,128})\/(\d{6,9})',
@@ -2113,7 +2104,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'HABERİYAKALA',
+                'name' => 'HABERIYAKALA',
                 'site' => 'http://www.haberiyakala.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})-(\d{6,9})-haber',
@@ -2131,7 +2122,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'MARKETINGTÜRKİYE',
+                'name' => 'MARKETINGTURKIYE',
                 'site' => 'http://www.marketingturkiye.com.tr',
                 'base' => '/',
                 'url_pattern' => 'haberler\/([a-z0-9-]{24,128})',
@@ -2140,7 +2131,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'FANATİK',
+                'name' => 'FANATIK',
                 'site' => 'https://www.fanatik.com.tr',
                 'base' => '/',
                 'url_pattern' => '(\b(?!yazarlar))([a-z0-9-]{4,128})-(\d{7,9})',
@@ -2176,7 +2167,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'MEDYALOJİ',
+                'name' => 'MEDYALOJI',
                 'site' => 'https://www.medyaloji.net',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})_(\d{8,9})\.html',
@@ -2185,7 +2176,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'EUROVİZYON',
+                'name' => 'EUROVIZYON',
                 'site' => 'http://www.eurovizyon.co.uk',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-h(\d{5,9})\.html',
@@ -2194,7 +2185,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'ANAYURTGAZETESİ',
+                'name' => 'ANAYURTGAZETESI',
                 'site' => 'http://www.anayurtgazetesi.com',
                 'base' => '/',
                 'url_pattern' => 'haber\/([a-zA-Z0-9-]{4,128})\/(\d{6,9})',
@@ -2239,7 +2230,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'GÜNEŞ',
+                'name' => 'GUNES',
                 'site' => 'http://www.gunes.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-(\d{6,9})',
@@ -2257,7 +2248,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'SÖZCÜ',
+                'name' => 'SOZCU',
                 'site' => 'https://www.sozcu.com.tr',
                 'base' => '/',
                 'url_pattern' => '(\d{4})\/([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-(\d{7,9})',
@@ -2266,7 +2257,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'ORTADOĞUGAZETESİ',
+                'name' => 'ORTADOGUGAZETESI',
                 'site' => 'http://www.ortadogugazetesi.net',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})-(\d{5,9})\.html',
@@ -2320,7 +2311,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'İNTERNETHABER',
+                'name' => 'INTERNETHABER',
                 'site' => 'http://www.internethaber.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})-(\d{7,9})h\.htm',
@@ -2338,7 +2329,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'CUMHURİYET',
+                'name' => 'CUMHURIYET',
                 'site' => 'http://www.cumhuriyet.com.tr',
                 'base' => '/',
                 'url_pattern' => 'haber\/([a-z0-9-]{4,24})\/(\d{7,9})\/([a-zA-Z0-9-_]{4,128})\.html',
@@ -2356,7 +2347,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'BİANET',
+                'name' => 'BIANET',
                 'site' => 'http://bianet.org',
                 'base' => '/',
                 'url_pattern' => 'bianet\/([a-z0-9-]{4,128})\/(\d{6,9})-([a-z0-9-]{4,128})',
@@ -2383,7 +2374,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'AKŞAM',
+                'name' => 'AKSAM',
                 'site' => 'http://www.aksam.com.tr',
                 'base' => '/',
                 'url_pattern' => '(\b(?!yazarlar))([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})\/haber-(\d{6,9})',
@@ -2428,7 +2419,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'FİKRİYAT',
+                'name' => 'FIKRIYAT',
                 'site' => 'https://www.fikriyat.com',
                 'base' => '/',
                 'url_pattern' => '(?<=href\="\/)([a-z0-9-]{4,128})\/(\d{4})\/(\d{2})\/(\d{2})\/([a-z0-9-]{4,128})(?=")',
@@ -2437,7 +2428,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'GİRİŞİMHABER',
+                'name' => 'GIRISIMHABER',
                 'site' => 'http://www.girisimhaber.com',
                 'base' => '/',
                 'url_pattern' => 'post\/(\d{4})\/(\d{2})\/(\d{2})\/([a-zA-Z0-9-]{4,128})\.aspx',
@@ -2446,7 +2437,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'YURTGAZETESİ',
+                'name' => 'YURTGAZETESI',
                 'site' => 'http://www.yurtgazetesi.com.tr',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-h(\d{5,9})\.html',
@@ -2455,7 +2446,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'OBJEKTİFHABER',
+                'name' => 'OBJEKTIFHABER',
                 'site' => 'http://www.objektifhaber.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})-(\d{6,9})-haber',
@@ -2500,7 +2491,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'SİNEMALAR',
+                'name' => 'SINEMALAR',
                 'site' => 'https://www.sinemalar.com',
                 'base' => '/',
                 'url_pattern' => 'haber\/(\d{4,9})\/([a-z0-9-]{4,128})',
@@ -2509,7 +2500,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'HÜRRİYET',
+                'name' => 'HURRIYET',
                 'site' => 'http://www.hurriyet.com.tr',
                 'base' => '/',
                 'url_pattern' => '(?<=href\="\/)([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-(\d{8,9})(?=")',
@@ -2545,7 +2536,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'MİLLİGAZETE',
+                'name' => 'MILLIGAZETE',
                 'site' => 'https://www.milligazete.com.tr',
                 'base' => '/',
                 'url_pattern' => 'haber\/(\d{7,9})\/([a-z0-9-]{4,128})',
@@ -2572,7 +2563,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'MEDYAFARESİ',
+                'name' => 'MEDYAFARESI',
                 'site' => 'http://www.medyafaresi.com',
                 'base' => '/',
                 'url_pattern' => 'haber\/([a-z0-9-]{4,128})\/(\d{6,9})',
@@ -2590,7 +2581,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'İLERİHABER',
+                'name' => 'ILERIHABER',
                 'site' => 'http://ilerihaber.org',
                 'base' => '/',
                 'url_pattern' => 'icerik\/([a-z0-9-]{10,128})-(\d{5,9})\.html',
@@ -2599,7 +2590,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'BİRGÜN',
+                'name' => 'BIRGUN',
                 'site' => 'https://www.birgun.net',
                 'base' => '/',
                 'url_pattern' => 'haber-detay\/([a-z0-9-]{4,128})\.html',
@@ -2617,7 +2608,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'ETKİHABER',
+                'name' => 'ETKIHABER',
                 'site' => 'http://www.etkihaber.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{10,128})-(\d{6,9})h\.htm',
@@ -2644,7 +2635,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'TAKVİM',
+                'name' => 'TAKVIM',
                 'site' => 'https://www.takvim.com.tr',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/(\d{4})\/(\d{2})\/(\d{2})\/([a-z0-9-]{10,128})',
@@ -2653,7 +2644,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'SONSÖZ',
+                'name' => 'SONSOZ',
                 'site' => 'https://sonsoz.com.tr',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{24,128})(?=\/)',
@@ -2662,7 +2653,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'YENİASIR',
+                'name' => 'YENIASIR',
                 'site' => 'https://www.yeniasir.com.tr',
                 'base' => '/',
                 'url_pattern' => '(([a-z0-9-]{4,24})\/)?([a-z0-9-]{4,24})\/(\d{4})\/(\d{2})\/(\d{2})\/([a-z0-9-]{4,128})',
@@ -2680,7 +2671,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'PRESSTÜRK',
+                'name' => 'PRESSTURK',
                 'site' => 'http://www.pressturk.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})\/(\d{5,9})',
@@ -2698,7 +2689,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'TEKNOKULİS',
+                'name' => 'TEKNOKULIS',
                 'site' => 'http://www.teknokulis.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,24})\/(\d{4})\/(\d{2})\/(\d{2})\/([a-z0-9-]{4,128})',
@@ -2716,7 +2707,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'SABAHAKTÜEL',
+                'name' => 'SABAHAKTUEL',
                 'site' => 'https://www.sabah.com.tr',
                 'base' => '/',
                 'url_pattern' => '(\b(?!yazarlar|album))([a-z0-9-]{4,24}\/)?([a-z0-9-]{4,24})\/(\d{4})\/(\d{2})\/(\d{2})\/([a-z0-9-]{4,128})',
@@ -2752,7 +2743,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'DİRİLİŞPOSTASI',
+                'name' => 'DIRILISPOSTASI',
                 'site' => 'https://www.dirilispostasi.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-([a-z0-9]{24})',
@@ -2761,7 +2752,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'GAZETECİLER',
+                'name' => 'GAZETECILER',
                 'site' => 'http://www.gazeteciler.com',
                 'base' => '/',
                 'url_pattern' => 'haber\/([a-z0-9-]{4,128})\/(\d{6,9})',
@@ -2788,7 +2779,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'FOTOMAÇ',
+                'name' => 'FOTOMAC',
                 'site' => 'https://www.fotomac.com.tr',
                 'base' => '/',
                 'url_pattern' => '(?<=href="\/(?!album))([a-z0-9-]{4,24})\/(\d{4})\/(\d{2})\/(\d{2})\/([a-z0-9-]{4,128})',
@@ -2797,7 +2788,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'GAZETEYENİYÜZYIL',
+                'name' => 'GAZETEYENIYUZYIL',
                 'site' => 'http://www.gazeteyeniyuzyil.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-h(\d{6,9})\.html',
@@ -2824,7 +2815,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'DOĞRUHABER',
+                'name' => 'DOGRUHABER',
                 'site' => 'https://dogruhaber.com.tr',
                 'base' => '/',
                 'url_pattern' => 'haber\/(\d{6,9})-([a-z0-9-]{4,128})\/',
@@ -2833,7 +2824,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'GERÇEKGÜNDEM',
+                'name' => 'GERCEKGUNDEM',
                 'site' => 'http://www.gercekgundem.com',
                 'base' => '/',
                 'url_pattern' => '(\b(?!posts))([a-z0-9-]{4,128})\/(\d{5,9})\/([a-z0-9-]{4,128})',
@@ -2842,7 +2833,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'DÖRDÜNCÜKUVVET',
+                'name' => 'DORDUNCUKUVVET',
                 'site' => 'http://www.dorduncukuvvet.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{24,128})(?=\/")',
@@ -2860,7 +2851,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'TÜRKİYEGAZETESİ',
+                'name' => 'TURKIYEGAZETESI',
                 'site' => 'http://www.turkiyegazetesi.com.tr',
                 'base' => '/',
                 'url_pattern' => '(\b(?!yazarlar))([a-z0-9-]{4,24})\/(\d{6,9})\.aspx',
@@ -2878,7 +2869,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'ANADOLUGAZETESİ',
+                'name' => 'ANADOLUGAZETESI',
                 'site' => 'http://www.anadolugazetesi.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{10,128})-(\d{6,9})\.html',
@@ -2887,7 +2878,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'MİLATGAZETESİ',
+                'name' => 'MILATGAZETESI',
                 'site' => 'https://www.milatgazetesi.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})([a-z0-9-]{4,24})\/haber-(\d{6,9})',
@@ -2914,7 +2905,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'HÜRHABER',
+                'name' => 'HURHABER',
                 'site' => 'http://www.hurhaber.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})-(\d{6,9})\.html',
@@ -2923,7 +2914,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'TELEVİZYONGAZETESİ',
+                'name' => 'TELEVIZYONGAZETESI',
                 'site' => 'https://televizyongazetesi.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})\/(\d{7,9})',
@@ -2932,7 +2923,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'DİKEN',
+                'name' => 'DIKEN',
                 'site' => 'http://www.diken.com.tr',
                 'base' => '/',
                 'url_pattern' => '(?<=\.com.tr\/)([a-z0-9-]{16,})(?=\/)',
@@ -2950,7 +2941,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'SÜPERHABER',
+                'name' => 'SUPERHABER',
                 'site' => 'https://www.superhaber.tv',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})-haber-(\d{6,9})',
@@ -2968,7 +2959,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'ŞAMDAN',
+                'name' => 'SAMDAN',
                 'site' => 'http://www.samdan.com.tr',
                 'base' => '/',
                 'url_pattern' => '(?<=href\="\/)([a-z0-9-]{4,128})\/(\d{4})\/(\d{2})\/(\d{2})\/([a-z0-9-]{4,128})(?=")',
@@ -2977,7 +2968,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'YENİSÖZ',
+                'name' => 'YENISOZ',
                 'site' => 'http://www.gazetevatan.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})-(\d{7,9})-([a-z0-9-]{4,24})',
@@ -2995,7 +2986,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'İHA',
+                'name' => 'IHA',
                 'site' => 'http://www.iha.com.tr',
                 'base' => '/',
                 'url_pattern' => 'haber-([a-z0-9-]{4,128})-(\d{6,9})',
@@ -3013,7 +3004,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'ONEDİO',
+                'name' => 'ONEDIO',
                 'site' => 'https://onedio.com',
                 'base' => '/',
                 'url_pattern' => 'haber\/([a-z0-9-]{10,128})-(\d{6,9})',
@@ -3040,7 +3031,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'TÜRKTIME',
+                'name' => 'TURKTIME',
                 'site' => 'http://www.turktime.com',
                 'base' => '/',
                 'url_pattern' => 'haber\/([a-z0-9-]{4,128})\/(\d{6,9})',
@@ -3058,7 +3049,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'SONDAKİKA',
+                'name' => 'SONDAKIKA',
                 'site' => 'https://www.sondakika.com',
                 'base' => '/',
                 'url_pattern' => 'haber\/([a-z0-9-]{4,128})-(\d{8,9})',
@@ -3067,7 +3058,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'MEDYAALEMİ',
+                'name' => 'MEDYAALEMI',
                 'site' => 'http://www.medyaalemi.com.tr',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})-(\d{4,9})',
@@ -3094,7 +3085,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'YENİŞAFAK',
+                'name' => 'YENISAFAK',
                 'site' => 'https://www.yenisafak.com',
                 'base' => '/',
                 'url_pattern' => '(\b(?!yazarlar))([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-(\d{7,9})',
@@ -3121,7 +3112,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'YENİASYA',
+                'name' => 'YENIASYA',
                 'site' => 'http://www.yeniasya.com.tr',
                 'base' => '/',
                 'url_pattern' => '(\b(?!video|yazar))([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})_(\d{6,9})',
@@ -3130,7 +3121,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'ÖNCEVATAN',
+                'name' => 'ONCEVATAN',
                 'site' => 'https://www.oncevatan.com.tr',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-h(\d{6,9})\.html',
@@ -3139,7 +3130,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'CNNTÜRK',
+                'name' => 'CNNTURK',
                 'site' => 'https://www.cnnturk.com',
                 'base' => '/',
                 'url_pattern' => '(?<=href="\/)([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})(?=")',
@@ -3175,7 +3166,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'HTKULÜP',
+                'name' => 'HTKULUP',
                 'site' => 'https://htkulup.haberturk.com',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/haber\/(\d{7,9})-([a-z0-9-]{10,128})',
@@ -3184,7 +3175,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'YENİMESAJ',
+                'name' => 'YENIMESAJ',
                 'site' => 'http://www.yenimesaj.com.tr',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})-H(\d{6,9})\.htm',
@@ -3202,7 +3193,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'YENİÇAĞ',
+                'name' => 'YENICAG',
                 'site' => 'http://www.yenicaggazetesi.com.tr',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,128})-(\d{6,9})h\.htm',
@@ -3220,7 +3211,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'YENİAKİT',
+                'name' => 'YENIAKIT',
                 'site' => 'http://www.yeniakit.com.tr',
                 'base' => '/',
                 'url_pattern' => 'haber\/([a-z0-9-]{4,128})-(\d{6,9})\.html',

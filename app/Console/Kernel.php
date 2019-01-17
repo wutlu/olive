@@ -38,8 +38,8 @@ class Kernel extends ConsoleKernel
         if (env('FIRST_MIGRATION'))
         {
             /**
-             * Organizasyon sahibi kullanıcılara
-             * her Pazartesi ödeme bildirimi e-postası gönder.
+             * Organizasyon sahibi olan kullanıcılara
+             * her pazartesi ödeme bildirimi e-postası gönder.
              */
             $schedule->command('check:upcoming_payments')
                      ->mondays()

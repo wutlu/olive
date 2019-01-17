@@ -24,6 +24,13 @@ class RealTimeController extends Controller
      */
     private $minute;
 
+    /**
+     * Gerçek Zamanlı, sorgu yapılacak kolon.
+     *
+     * @var string
+     */
+    private $range;
+
     public function __construct()
     {
         ### [ üyelik ve organizasyon zorunlu ve organizasyonun zorunlu olarak real_time özelliği desteklemesi ] ###
@@ -35,7 +42,9 @@ class RealTimeController extends Controller
         ]);
 
         ### [ gerçek zamanlı son bir kaç dakika değeri ] ###
-        $this->minute = Carbon::now()->subMinutes(5)->format('Y-m-d H:i');
+        $this->minute = Carbon::now()->subMinutes(4)->format('Y-m-d H:i');
+        ### [ gerçek zamanlı sorgu yapılacak kolon ] ###
+        $this->range_column = 'called_at';
     }
 
     /**
@@ -89,7 +98,7 @@ class RealTimeController extends Controller
                             'query' => [
                                 'bool' => [
                                     'must' => [ [ 'query_string' => [ 'default_field' => 'text', 'query' => implode(' OR ', $keywords) ] ] ],
-                                    'filter' => [ 'range' => [ 'created_at' => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ]
+                                    'filter' => [ 'range' => [ $this->range_column => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ]
                                 ]
                             ],
                             'sort' => [ 'created_at' => 'DESC' ],
@@ -133,7 +142,7 @@ class RealTimeController extends Controller
                         'query' => [
                             'bool' => [
                                 'filter' => [
-                                    [ 'range' => [ 'created_at' => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ],
+                                    [ 'range' => [ $this->range_column => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ],
                                     [ 'match' => [ 'status' => 'ok' ] ]
                                 ]
                             ]
@@ -183,7 +192,7 @@ class RealTimeController extends Controller
                         'query' => [
                             'bool' => [
                                 'filter' => [
-                                    [ 'range' => [ 'created_at' => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ]
+                                    [ 'range' => [ $this->range_column => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ]
                                 ]
                             ]
                         ],
@@ -233,7 +242,7 @@ class RealTimeController extends Controller
                         'query' => [
                             'bool' => [
                                 'filter' => [
-                                    [ 'range' => [ 'created_at' => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ],
+                                    [ 'range' => [ $this->range_column => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ],
                                     [ 'match' => [ 'status' => 'ok' ] ]
                                 ]
                             ]
@@ -289,7 +298,7 @@ class RealTimeController extends Controller
                         'query' => [
                             'bool' => [
                                 'filter' => [
-                                    [ 'range' => [ 'created_at' => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ]
+                                    [ 'range' => [ $this->range_column => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ]
                                 ]
                             ]
                         ],
@@ -339,7 +348,7 @@ class RealTimeController extends Controller
                         'size' => 200,
                         'query' => [
                             'bool' => [
-                                'filter' => [ 'range' => [ 'created_at' => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ]
+                                'filter' => [ 'range' => [ $this->range_column => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ]
                             ]
                         ],
                         'sort' => [ 'created_at' => 'DESC' ],
