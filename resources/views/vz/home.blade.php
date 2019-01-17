@@ -27,7 +27,7 @@
 	}
 
 	a {
-		color: #fff;
+		color: #7efff7;
 		text-decoration: none;
 	}
 
@@ -36,15 +36,10 @@
 	}
 
 	body {
-		background: #333;
-		background:         linear-gradient(45deg, #000000 0%, #2488d5 100%);
-		background:    -moz-linear-gradient(45deg, #000000 0%, #2488d5 100%);
-		background: -webkit-linear-gradient(45deg, #000000 0%, #2488d5 100%);
-
-		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#2488d5', GradientType=1 );
-
+		background-color: #333;
+		background-image: url('../img/low_full.png');
+		background-position: top right;
 		background-repeat: no-repeat;
-		background-size: cover;
 		background-attachment: scroll;
 	}
 
@@ -77,19 +72,16 @@
 	footer.main > a > img {
 		width: 32px;
 		height: 32px;
-		background-color: #fff;
 		margin: 0 .4rem 0 0;
-		padding: 1px;
-		border: 1px solid #333;
-		border-radius: 2px;
 	}
 	footer.main > a > img,
 	footer.main > a > span {
   		-ms-flex-item-align: center;
   		align-self: center;
+  		color: #7efff7;
 	}
 	footer.main > span {
-		color: #fff;
+		color: #7efff7;
 	}
 
 	@media (max-width: 36em) {
@@ -106,13 +98,13 @@
 		<img alt="veri.zone" src="{{ asset('img/veri.zone-logo.svg') }}" />
 	</header>
 	<footer class="main">
-		<a href="https://www.instagram.com/bigverizone">
-			<img alt="Instagram" src="{{ asset('img/icons/instagram.png') }}" />
-			<span>bigverizone</span>
+		<a href="https://www.instagram.com/veri.zone">
+			<img alt="Instagram" src="{{ asset('img/o_instagram.svg') }}" />
+			<span>veri.zone</span>
 		</a>
-		<a href="https://twitter.com/bigverizone">
-			<img alt="Twitter" src="{{ asset('img/icons/twitter.png') }}" />
-			<span>bigverizone</span>
+		<a href="https://twitter.com/veri.zone">
+			<img alt="Twitter" src="{{ asset('img/o_twitter.svg') }}" />
+			<span>veri.zone</span>
 		</a>
 		<span><a href="mailto:destek@veri.zone">destek@veri.zone</a></span>
 		<span>Ankara'da sevgi ile üretiliyor.</span>

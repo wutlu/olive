@@ -192,7 +192,7 @@ return [
         'site'                         => 'Site',
         'base'                         => 'Temel',
         'pattern'                      => 'Desen',
-        'pattern_url'                  => 'URL Deseni',
+        'url_pattern'                  => 'URL Deseni',
         'selector_title'               => 'Başlık Seçicisi',
         'selector_description'         => 'Açıklama Seçicisi',
         'test_count'                   => 'Test Sayısı',

@@ -6,6 +6,8 @@
 
     <!-- viewport -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="content-language" content="tr" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, shring-to-fit=no, user-scalable=no" />
 
     @isset($breadcrumb)
@@ -365,15 +367,22 @@
         @endpush
 
         @isset($breadcrumb)
+            @php
+                $br_count = count($breadcrumb)-1;
+            @endphp
             <nav class="cyan darken-4" id="breadcrumb">
                 <div class="{{ auth()->check() ? 'sidenav-fixed-layout' : '' }}">
                     <div class="container">
                         <a href="{{ route('dashboard') }}" class="breadcrumb">Olive</a>
-                        @foreach ($breadcrumb as $row)
+                        @foreach ($breadcrumb as $key => $row)
                             @if (@$row['link'])
-                            <a href="{{ $row['link'] }}" class="breadcrumb">{{ $row['text'] }}</a>
+                                <a href="{{ $row['link'] }}" class="breadcrumb">{{ $row['text'] }}</a>
                             @else
-                            <span class="breadcrumb">{{ $row['text'] }}</span>
+                                @if ($key == $br_count)
+                                    <span class="breadcrumb" data-name="breadcrumb">{{ $row['text'] }}</span>
+                                @else
+                                    <span class="breadcrumb">{{ $row['text'] }}</span>
+                                @endif
                             @endif
                         @endforeach
                     </div>

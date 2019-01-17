@@ -180,7 +180,7 @@
                             $(document).on('keydown keyup', 'input[name=name]', function() {
                                 var __ = $(this);
 
-                                $('[data-name=crawler-title]').html(__.val())
+                                $('[data-name=crawler-title], [data-name=breadcrumb]').html(__.val())
                             })
                         @endpush
                         <div class="input-field">
@@ -208,14 +208,33 @@
                         </div>
                     </div>
                     @push('local.scripts')
-                    $(document).on('click', '[data-id=match]', function() {
-                        var __ = $(this);
-                        var url_pattern = $('input[name=url_pattern]');
-                            url_pattern.val(url_pattern.val() + __.data('pattern'))
-                            url_pattern.focus()
+                        $(document).on('click', '[data-id=match]', function() {
+                            var __ = $(this);
+                            var url_pattern = $('input[name=url_pattern]');
+                                url_pattern.val(url_pattern.val() + __.data('pattern'))
+                                url_pattern.focus()
 
-                            M.updateTextFields()
-                    })
+                                M.updateTextFields()
+                        }).on('keyup', '[name=site]', function() {
+                            var __ = $(this);
+                            var title = __.val().replace(/(.+)(\.|\/)(.{4,})\.(.+)/, '$3')
+                                                .replace('i', 'İ')
+                                                .replace('i', 'İ')
+                                                .replace('ü', 'Ü')
+                                                .replace('ü', 'Ü')
+                                                .replace('ö', 'Ö')
+                                                .replace('ö', 'Ö')
+                                                .replace('ü', 'Ç')
+                                                .replace('ü', 'Ç')
+                                                .replace('ğ', 'Ğ')
+                                                .replace('ğ', 'Ğ')
+                                                .replace('ş', 'Ş')
+                                                .replace('ş', 'Ş')
+                                                .toUpperCase();
+
+                            $('input[name=name]').val(title)
+                            $('[data-name=breadcrumb]').html(title)
+                        })
                     @endpush
                     <div class="collection-item green lighten-4">
                         <div class="input-field">

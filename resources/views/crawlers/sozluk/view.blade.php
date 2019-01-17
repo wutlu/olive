@@ -178,7 +178,7 @@
                             $(document).on('keydown keyup', 'input[name=name]', function() {
                                 var __ = $(this);
 
-                                $('[data-name=crawler-title]').html(__.val())
+                                $('[data-name=crawler-title], [data-name=breadcrumb]').html(__.val())
                             })
                         @endpush
                         <div class="input-field">
