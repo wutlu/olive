@@ -502,7 +502,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'SIVASPOSTASI.COM',
+                'name' => 'SIVASPOSTASI',
                 'site' => 'http://www.sivaspostasi.com.tr',
                 'base' => '/',
                 'url_pattern' => 'haber\/([a-z0-9-]{4,128})-(\d{4,9})\.html',
@@ -574,7 +574,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'HABERGAZETESI.COM',
+                'name' => 'HABERGAZETESI',
                 'site' => 'http://www.habergazetesi.com.tr',
                 'base' => '/',
                 'url_pattern' => 'haber\/(\d{7,9})\/([a-z0-9-]{4,128})',
@@ -709,7 +709,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'off_limit' => 255,
             ],
             [
-                'name' => 'MARASGUNDEM.COM',
+                'name' => 'MARASGUNDEM',
                 'site' => 'https://www.marasgundem.com.tr',
                 'base' => '/',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-(\d{6,9})h',
