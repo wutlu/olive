@@ -9,7 +9,7 @@
 
   <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet" />
 
-  <link rel="icon" href="{{ asset('favicon.ico') }}" />
+  <link rel="icon" href="{{ secure_asset('favicon.ico') }}" />
 
   <style type="text/css">
 	::selection {
@@ -95,15 +95,15 @@
 </head>
 <body>
 	<header class="main">
-		<img alt="veri.zone" src="{{ asset('img/veri.zone-logo.svg') }}" />
+		<img alt="veri.zone" src="{{ secure_asset('img/veri.zone-logo.svg') }}" />
 	</header>
 	<footer class="main">
 		<a href="https://www.instagram.com/veri.zone">
-			<img alt="Instagram" src="{{ asset('img/o_instagram.svg') }}" />
+			<img alt="Instagram" src="{{ secure_asset('img/o_instagram.svg') }}" />
 			<span>veri.zone</span>
 		</a>
 		<a href="https://twitter.com/veri.zone">
-			<img alt="Twitter" src="{{ asset('img/o_twitter.svg') }}" />
+			<img alt="Twitter" src="{{ secure_asset('img/o_twitter.svg') }}" />
 			<span>veri.zone</span>
 		</a>
 		<span><a href="mailto:destek@veri.zone">destek@veri.zone</a></span>

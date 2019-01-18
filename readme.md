@@ -45,7 +45,6 @@ postgres=# \q
 
 $ sudo nano /etc/postgresql/9.5/main/postgresql.conf
 max_connections = 5000
-listen_addresses = '*'
 
 $ sudo nano /etc/postgresql/9.5/main/pg_hba.conf
 host    all             all              0.0.0.0/0                       md5
@@ -93,10 +92,10 @@ $ nano /etc/apache2/sites-available/veri.zone.conf
 $ sudo a2ensite veri.zone.conf
 
 $ nano /etc/apache2/apache2.conf
-<Directory />
-        Options FollowSymLinks
+<Directory /var/www/>
+        Options Indexes FollowSymLinks
         AllowOverride all 
-        Require all denied
+        Require all granted
 </Directory>
 
 $ sudo service apache2 reload
