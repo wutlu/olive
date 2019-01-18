@@ -41,6 +41,10 @@ postgres=# \password
 postgres=# (New Password)
 postgres=# (New Password Repeat)
 postgres=# \q
+
+$ sudo nano /etc/postgresql/9.5/main/postgresql.conf
+max_connections = 5000
+
 ~~~~
 
 ### Java Kurulumu
@@ -64,12 +68,11 @@ $ sudo apt install elasticsearch -y
 ### Sistemin Kurulumu Öncesi Yapılandırma
 
 ~~~~
-$ mkdir \var\www\veri.zone
-$ nano \etc\apache2\sites-available\veri.zone.conf
+$ mkdir /var/www/veri.zone
+$ nano /etc/apache2/sites-available/veri.zone.conf
 <VirtualHost *:80>
         ServerName veri.zone
         ServerAlias olive.veri.zone
-        ServerAlias forum.veri.zone
         ServerAlias www.veri.zone
 
         ServerAdmin webmaster@localhost
@@ -87,7 +90,7 @@ $ sudo service apache2 reload
 
 ~~~~
 $ cd /var/www/
-$ git clone https://www.github.com/4lper/olive
+$ git clone https://www.github.com/qhudabaksh/olive
 $ mv olive veri.zone
 $ cd veri.zone
 $ composer install
@@ -95,6 +98,7 @@ $ cp .env-example .env
 $ php artisan key:generate
 $ php artisan migrate --seed
 $ php artisan storage:link
+$ chmod 777 -R storage
 
 // Kelimelerde güncelleme yapılırsa bu işlem tekrarlanmalı.
 $ cp -R /var/www/veri.zone/database/analysis /etc/elasticsearch/analysis

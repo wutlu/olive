@@ -110,8 +110,7 @@ return [
     ],
 
     'storages' => [
-        '/dev',
-        '/run',
+        '/'
     ],
 
     /*
