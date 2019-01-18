@@ -8,6 +8,7 @@ use Validator;
 use Request;
 use Hash;
 
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Schema;
 
 use App\Models\Discount\DiscountCoupon;
@@ -22,6 +23,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(191);
+
+        URL::forceScheme(config('app.ssl') ? 'https' : 'http');
 
         Validator::extend('recaptcha', function($attribute, $value, $parameters) {
             $link = 'https://www.google.com/recaptcha/api/siteverify?secret='.config('services.google.recaptcha.secret_key').'&response='.$value.'&remoteip='.Request::getClientIp();

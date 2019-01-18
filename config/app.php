@@ -35,6 +35,13 @@ return [
     'domain' => env('APP_DOMAIN', 'localhost'),
 
     /**
+     * SSL
+     *
+     * @var boolean
+     */
+    'ssl' => env('SSL', false),
+
+    /**
      * Gereçler Bağlantısı
      *
      * @var null
