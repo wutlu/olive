@@ -5,6 +5,7 @@
 $ sudo apt-get update
 $ sudo apt-get upgrade
 
+$ sudo apt install software-properties-common
 
 // Ondrej php paketini tanımlayalım.
 $ sudo add-apt-repository ppa:ondrej/php
@@ -28,7 +29,7 @@ $ curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/lo
 ~~~~
 // Redis
 $ sudo nano /etc/redis/redis.conf
-maxmemory 128mb
+maxmemory 2048mb
 maxmemory-policy allkeys-lru
 
 $ sudo systemctl restart redis-server.service
@@ -44,6 +45,11 @@ postgres=# \q
 
 $ sudo nano /etc/postgresql/9.5/main/postgresql.conf
 max_connections = 5000
+listen_addresses = '*'
+
+$ sudo nano /etc/postgresql/9.5/main/pg_hba.conf
+host    all             all              0.0.0.0/0                       md5
+host    all             all              ::/0                            md5
 
 ~~~~
 
@@ -54,6 +60,8 @@ $ sudo apt update
 $ sudo apt install oracle-java8-installer
 $ javac -version
 $ sudo apt install oracle-java8-set-default
+
+$ JAVA_HOME="/usr/lib/jvm/java-8-oracle"
 ~~~~
 
 ### Elasticsearch Kurulumu
@@ -83,6 +91,14 @@ $ nano /etc/apache2/sites-available/veri.zone.conf
 </VirtualHost>
 
 $ sudo a2ensite veri.zone.conf
+
+$ nano /etc/apache2/apache2.conf
+<Directory />
+        Options FollowSymLinks
+        AllowOverride all 
+        Require all denied
+</Directory>
+
 $ sudo service apache2 reload
 ~~~~
 
