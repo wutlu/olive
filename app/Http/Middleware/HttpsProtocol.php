@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\App;
+use Illuminate\Http\Request;
 
 class HttpsProtocol
 {
@@ -18,6 +19,8 @@ class HttpsProtocol
     {
         if (config('app.ssl'))
         {
+            $request->setTrustedProxies([$request->getClientIp()], Request::HEADER_X_FORWARDED_ALL);
+
             if (!$request->isSecure())
             {
                 return redirect()->secure($request->getRequestUri());
