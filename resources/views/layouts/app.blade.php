@@ -757,5 +757,16 @@
         }
     }
     </script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-117327079-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag(){dataLayer.push(arguments);}
+
+        gtag('js', new Date());
+
+        gtag('config', '{{ config('services.google.analytics.code') }}');
+    </script>
 </body>
 </html>

@@ -197,7 +197,7 @@
                         <label>
                             <input type="checkbox" name="tos" id="tos" />
                             <span>
-                                <a href="{{ route('page.view', 'kullanim-kosullari') }}">Kullanım Koşulları</a> ve <a href="{{ route('page.view', 'gizlilik-haklari') }}">Gizlilik Hakları</a>'nı okudum, anladım ve kabul ediyorum.
+                                <a target="_blank" href="{{ route('page.view', 'kullanim-kosullari') }}">Kullanım Koşulları</a> ve <a target="_blank" href="{{ route('page.view', 'gizlilik-politikasi') }}">Gizlilik Politikası</a>'nı okudum, anladım ve kabul ediyorum.
                             </span>
                         </label>
                     </p>
