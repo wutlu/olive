@@ -242,20 +242,7 @@
                             <label for="url_pattern">Makale URL Deseni</label>
                             <small class="helper-text">Kaynak içerik adreslerinin <strong>REGEX</strong> deseni.</small>
                         </div>
-                        <button class="btn-flat btn-small waves-effect" type="button" data-id="match" data-pattern="([a-z0-9-]{4,24})">KEYWORD</button>
-                        <button class="btn-flat btn-small waves-effect" type="button" data-id="match" data-pattern="\/">/</button>
-                        <button class="btn-flat btn-small waves-effect" type="button" data-id="match" data-pattern="([a-z0-9-]{4,128})">SLUG</button>
-                        <button class="btn-flat btn-small waves-effect" type="button" data-id="match" data-pattern="-">-</button>
-                        <button class="btn-flat btn-small waves-effect" type="button" data-id="match" data-pattern="\.">.</button>
-                        <button class="btn-flat btn-small waves-effect" type="button" data-id="match" data-pattern="(\d{5,9})">d{5,9}</button>
-                        <button class="btn-flat btn-small waves-effect" type="button" data-id="match" data-pattern="(\d{6,9})">d{6,9}</button>
-                        <button class="btn-flat btn-small waves-effect" type="button" data-id="match" data-pattern="(\d{4})">d{4}</button>
-                        <button class="btn-flat btn-small waves-effect" type="button" data-id="match" data-pattern="(\d{2})">d{2}</button>
-                        <button class="btn-flat btn-small waves-effect" type="button" data-id="match" data-pattern="\.htm">.htm</button>
-                        <button class="btn-flat btn-small waves-effect" type="button" data-id="match" data-pattern="\.html">.html</button>
-                        <button class="btn-flat btn-small waves-effect" type="button" data-id="match" data-pattern='(?<=href\="\/)'>(?<=href\="\/)</button>
-                        <button class="btn-flat btn-small waves-effect" type="button" data-id="match" data-pattern='(?=")'>(?=")</button>
-                        <button class="btn-flat btn-small waves-effect" type="button" data-id="match" data-pattern="(\b(?!yazarlar))">(\b(?!yazarlar))</button>
+                        @include('crawlers._inc.regex')
                     </div>
                     <div class="collection-item">
                         <div class="d-flex flex-wrap">

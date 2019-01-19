@@ -249,17 +249,7 @@
                             <label for="url_pattern">Ürün URL Deseni</label>
                             <small class="helper-text">Kaynak içerik adreslerinin <strong>REGEX</strong> deseni.</small>
                         </div>
-                        <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="([a-z0-9-]{4,24})">KATEGORİ</button>
-                        <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="\/">/</button>
-                        <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="([a-z0-9-]{4,128})">SLUG</button>
-                        <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="-">-</button>
-                        <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="\.">.</button>
-                        <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="(\d{6,9})">ID</button>
-                        <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="(\d{4})">\d{4}</button>
-                        <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="(\d{2})">\d{2}</button>
-                        <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="(?<=href\="\/)">(?<=href\="\/)</button>
-                        <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="(?=")">(?=")</button>
-                        <button class="btn-flat btn-sm waves-effect" type="button" data-id="match" data-pattern="(\b(?!yazarlar))">(\b(?!yazarlar))</button>
+                        @include('crawlers._inc.regex')
                     </div>
                     <div class="collection-item">
                         <div class="d-flex flex-wrap">

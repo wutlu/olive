@@ -153,4 +153,6 @@ $ sudo supervisorctl start olive-crawler:*
 ~~~~
 $ crontab -e
 */1 * * * * php /var/www/veri.zone/artisan schedule:run >> /dev/null 2>&1
+
+@reboot nohup su - elasticsearch /data/elasticsearch-n1/bin/elasticsearch >> /data/elasticsearch-n1/logs/start.out 2>&1 &
 ~~~~

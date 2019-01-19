@@ -194,6 +194,7 @@ return [
         'pattern'                      => 'Desen',
         'url_pattern'                  => 'URL Deseni',
         'selector_title'               => 'Başlık Seçicisi',
+        'selector_breadcrumb'          => 'Mini Harita Seçicisi',
         'selector_description'         => 'Açıklama Seçicisi',
         'test_count'                   => 'Test Sayısı',
         'value'                        => 'Değer',
