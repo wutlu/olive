@@ -5,15 +5,15 @@ return [
     'tax_name' => 'K.D.V.',
     'company' => [
         'logo' => 'img/veri.zone-logo.svg',
-        'name' => 'veri.zone A.Ş.',
+        'name' => 'Mutlu Toksöz Ticaret, Veri ve Yazılım Hizmetleri',
         'address' => [
             'Tomtom Mah. Nur-i Ziya Sok. 16/1',
-            '34433 Çankaya Ankara'
+            '06900 Polatlı/ANKARA'
         ],
         'contact' => [
             'www.veri.zone',
             'destek@veri.zone',
-            '0 212 292 04 94'
+            '+90 850 302 1630'
         ],
         'taxOffice' => [
             'name' => 'Ankara',
@@ -39,8 +39,8 @@ return [
 
     'banks' => [
         [
-            'name' => 'veri.zone LTD.',
-            'iban' => 'TR 1345 1561 2451 5112 51'
+            'name' => 'veri.zone',
+            'iban' => 'TR 0000 0000 0000 0000'
         ]
     ]
 ];
