@@ -158,8 +158,8 @@ Route::prefix('fatura')->group(function () {
 });
 
 Route::prefix('geo')->group(function () {
-    Route::get('countries', 'GeoController@countries')->name('geo.countries');
-    Route::get('states', 'GeoController@states')->name('geo.states');
+    Route::post('countries', 'GeoController@countries')->name('geo.countries');
+    Route::post('states', 'GeoController@states')->name('geo.states');
 });
 
 Route::prefix('veri-havuzu')->group(function () {

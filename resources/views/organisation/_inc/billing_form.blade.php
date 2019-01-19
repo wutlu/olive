@@ -86,7 +86,11 @@
                     </div>
                 </div>
                 <div class="col s12 m4 offset-m1">
-                    <div class="input-field mb-2 load" data-href="{{ route('geo.countries') }}" data-callback="__countries">
+                    <div
+                        class="input-field mb-2 load"
+                        data-href="{{ route('geo.countries') }}"
+                        data-callback="__countries"
+                        data-method="post">
                         <select
                             name="country_id"
                             id="country_id"
@@ -94,6 +98,7 @@
                             data-load-delay="1000"
                             data-href="{{ route('geo.states') }}"
                             data-include="country_id"
+                            data-method="post"
                             data-callback="__states"></select>
                         <label for="country_id">Ülke</label>
                     </div>
