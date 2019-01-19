@@ -43,7 +43,7 @@ class BillingUpdateRequest extends FormRequest
         });
 
         return [
-            'month'              => 'required|integer|min:1|max:24',
+            'month'              => 'required|integer|min:3|max:24',
 
             'type'               => 'required|string|in:individual,corporate,person',
 

@@ -25,7 +25,7 @@ class BillingRequest extends FormRequest
     {
         return [
             'plan_id'            => 'required|integer|in:2,3,4|check_email_verification',
-            'month'              => 'required|integer|min:1|max:24',
+            'month'              => 'required|integer|min:3|max:24',
             'coupon_code'        => 'nullable|string|max:16|coupon_exists',
 
             'type'               => 'required|string|in:individual,corporate,person',

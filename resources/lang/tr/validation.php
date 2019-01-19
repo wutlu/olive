@@ -50,7 +50,7 @@ return [
     'ipv6' => ':attribute geçerli bir IPv6 adresi olmalıdır.',
     'json' => ':attribute geçerli bir JSON değişkeni olmalıdır.',
     'max' => [
-        'numeric' => ':attribute değeri :max değerinden küçük olmalıdır.',
+        'numeric' => ':attribute değeri en fazla :max olabilir.',
         'file' => ':attribute değeri :max kilobayt değerinden küçük olmalıdır.',
         'string' => ':attribute uzunluğu :max karakterden kısa olmalıdır.',
         'array' => ':attribute değeri :max adedinden az nesneye sahip olmalıdır.',
@@ -58,7 +58,7 @@ return [
     'mimes' => ':attribute dosya biçimi :values olmalıdır.',
     'mimetypes' => ':attribute dosya biçimi :values olmalıdır.',
     'min' => [
-        'numeric' => ':attribute değeri :min değerinden büyük olmalıdır.',
+        'numeric' => ':attribute değeri en az :min olabilir.',
         'file' => ':attribute değeri :min kilobayt değerinden büyük olmalıdır.',
         'string' => ':attribute uzunluğu :min karakterden uzun olmalıdır.',
         'array' => ':attribute en az :min nesneye sahip olmalıdır.',
