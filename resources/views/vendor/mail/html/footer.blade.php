@@ -3,7 +3,7 @@
         <table class="footer" align="center" width="570" cellpadding="0" cellspacing="0">
             <tr>
                 <td class="content-cell" align="center">
-			        <small style="display: block; font-style: italic; color: #666;">Artık e-posta bildirimi almak istemiyorsanız, "<a href="{{ route('settings.notifications') }}">E-posta Bildirimleri</a>" sayfasını güncelleyebilirsiniz.</small>
+			        <small style="display: block; font-style: italic; color: #666;">E-posta bildirimlerine müdehale etmek için, "<a href="{{ route('settings.notifications') }}">E-posta Bildirimleri</a>" sayfasından ilgili ayarları güncelleyebilirsiniz.</small>
                     {{ Illuminate\Mail\Markdown::parse($slot) }}
                     <br />
                     <br />
