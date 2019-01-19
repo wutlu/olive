@@ -179,17 +179,16 @@
                         <span class="helper-text">Yazışma adresiniz.</span>
                     </div>
                     @push('local.scripts')
-                    $(document).ready(function() {
-                        $('textarea#address').characterCounter()
-                    })
+                        $(document).ready(function() {
+                            $('textarea#address').characterCounter()
+                        })
                     @endpush
                 </div>
             </div>
 
-            <div class="card-panel orange">
-                <span class="white-text">
-                    Faturanızı oluşturup, ödemenizi gerçekleştirdikten sonra ödeme bildirimi yapmanız gerekecek.
-                </span>
+            <div class="card-panel teal white-text">
+                <p>Fatura oluşturulduktan sonra ödemenizi gerçekleştirin ve ödeme bildirimi yapın.</p>
+                <p>Fatura, girdiğiniz adrese gönderilecektir. Farklı bir adrese gelmesini istiyorsanız, sonraki aşama olan ödeme bildirimi formunda belirtin.</p>
             </div>
 
             <div class="card card-unstyled">
@@ -198,7 +197,7 @@
                         <label>
                             <input type="checkbox" name="tos" id="tos" />
                             <span>
-                                <a href="#">Kullanım Koşulları</a>'nı okudum, anladım ve onaylıyorum.
+                                <a href="{{ route('page.view', 'kullanim-kosullari') }}">Kullanım Koşulları</a> ve <a href="{{ route('page.view', 'gizlilik-haklari') }}">Gizlilik Hakları</a>'nı okudum, anladım ve kabul ediyorum.
                             </span>
                         </label>
                     </p>
