@@ -28,7 +28,7 @@
                 <div class="card card-unstyled">
                     <div class="card-content">
                         <span class="card-title">{{ $page->title }}</span>
-                        {!! nl2br($page->body) !!}
+                        {!! $page->body !!}
                     </div>
                 </div>
             </div>
