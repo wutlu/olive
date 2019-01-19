@@ -4,7 +4,7 @@ return [
     /**
      * Sistem Versiyonu
      */
-    'version' => '1.3.1032-alpha',
+    'version' => '1.3.1034-alpha',
 
     /**
      * Gizlilik Politikası ve Kullanım Koşulları Versiyonu

@@ -786,7 +786,7 @@ table.invoice tfoot > tr {
 }
 
 .markdown > p + p {
-  margin: 1rem 0 0;
+  margin: 1rem 0 0 !important;
 }
 
 /**
