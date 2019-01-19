@@ -51,8 +51,7 @@ class LoginNotification extends Notification implements ShouldQueue
                     ->line('Aşağıdaki bilgilere sahip bir cihazdan oturum açıldı.')
                     ->with([
                         'table' => $this->data
-                    ])
-                    ->line('Bu bildirimi artık almak istemiyorsanız; Ayarlar/Bildirim Ayarları sayfasını güncelleyebilirsiniz.');
+                    ]);
     }
 
     /**
