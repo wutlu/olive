@@ -22,7 +22,7 @@
                         <p>
                             Tüm kaynaklar açık kaynak olup, yasal olarak kaynak belirtilerek kullanılmaktadır.
                             Diğer hukuksal bilgilere <a href="{{ route('page.view', 'gizlilik-politikasi') }}">Gizlilik Politikası</a> ve <a href="{{ route('page.view', 'kullanim-kosullari') }}">Kullanım Koşulları</a> sayfalarından ulaşabilirsiniz.</p>
-                        <p>Yerel veya farklı kaynak istekleriniz, <a href="{{ route('settings.support', 'destek') }}">DESTEK</a> bölümünden bize bildirebilirsiniz.</p>
+                        <p>Yerel veya farklı kaynak istekleriniz, <a href="{{ route('settings.support', 'kaynak-istegi') }}">DESTEK</a> bölümünden bize bildirebilirsiniz.</p>
                     </div>
 
                     <ul class="tabs tabs-transparent teal mb-1">
