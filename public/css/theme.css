@@ -785,6 +785,10 @@ table.invoice tfoot > tr {
   color: #6610f2;
 }
 
+.markdown > p + p {
+  margin: 1rem 0 0;
+}
+
 /**
  * cards
  */
