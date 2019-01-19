@@ -52,6 +52,17 @@ host    all             all              ::/0                            md5
 
 ~~~~
 
+### Open SSL
+
+~~~~
+
+$ sudo apt-get update
+$ sudo apt-get install openssl
+$ openssl genrsa -out veri.zone.key 2048
+$ openssl req -new -sha256 -key veri.zone.key -out veri.zone.csr
+
+~~~~
+
 ### Java Kurulumu
 ~~~~
 $ sudo add-apt-repository ppa:webupd8team/java
