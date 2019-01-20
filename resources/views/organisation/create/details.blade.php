@@ -93,8 +93,8 @@
                         <div class="row">
                             <div class="input-field col s12">
                                 <select name="month" id="month">
-                                    <option value="1" selected>1 Ay</option>
-                                    @for ($i = 2; $i <= 24; $i++)
+                                    <option value="3" selected>3 Ay</option>
+                                    @for ($i = 4; $i <= 24; $i++)
                                     <option value="{{ $i }}">{{ $i }} Ay</option>
                                     @endfor
                                 </select>

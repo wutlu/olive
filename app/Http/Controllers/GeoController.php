@@ -30,7 +30,7 @@ class GeoController extends Controller
     {
         return [
             'status' => 'ok',
-            'data' => Countries::select('name', 'id')->get()
+            'data' => Countries::select('name', 'id')->orderBy('name', 'ASC')->get()
         ];
     }
 
@@ -43,7 +43,7 @@ class GeoController extends Controller
     {
         return [
             'status' => 'ok',
-            'data' => States::select('name', 'id')->where('country_id', $request->country_id)->get()
+            'data' => States::select('name', 'id')->where('country_id', $request->country_id)->orderBy('name', 'ASC')->get()
         ];
     }
 }
