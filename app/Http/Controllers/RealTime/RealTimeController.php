@@ -341,7 +341,7 @@ class RealTimeController extends Controller
                                 '_index' => $object['_index'],
                                 'module' => 'youtube-video',
                                 'title' => $object['_source']['title'],
-                                'text' => $object['_source']['description'],
+                                'text' => @$object['_source']['description'],
                                 'channel' => [
                                     'title' => $object['_source']['channel']['title']
                                 ],
