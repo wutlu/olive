@@ -116,12 +116,14 @@ class Indices
                                         'language' => 'Turkish'
                                     ],
                                     # [ sadece 5 karakterden büyük kelimeler ] #
+                                    /*
                                     'my_script_filter' => [
                                         'type' => 'predicate_token_filter',
                                         'script' => [
                                             'source' => 'token.getTerm().length() > 5'  
                                         ]
                                     ]
+                                    */
                                 ],
                                 'analyzer' => [
                                     'turkish' => [
@@ -133,7 +135,7 @@ class Indices
                                             'turkish_stop',
                                             'apostrophe', # [ kesme işaretleri ve ayrılan ek kaldırılır ('de) gibi ] #
                                             'turkish_stemmer', # [ stopwords kelimeleri hariç tüm sözcükler eklerine ayrılır ] #
-                                            'my_script_filter',
+                                            //'my_script_filter',
                                             //'graph_synonyms',
                                             'my_snow'
                                         ]
