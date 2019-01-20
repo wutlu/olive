@@ -17,7 +17,7 @@ class CreateCarouselsTable extends Migration
             $table->increments('id')->unsigned();
 
             $table->string('title');
-            $table->string('description');
+            $table->text('description');
             $table->string('pattern')->nullable()->default(null);
 
             $table->string('button_action')->nullable()->default(null);
