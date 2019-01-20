@@ -14,6 +14,13 @@ return [
     'env' => env('APP_ENV', 'production'),
 
     /**
+     * İlk Kurulum
+     *
+     * @var boolean
+     */
+    'first_migration' => env('FIRST_MIGRATION', false),
+
+    /**
      * Hata Ayıklama
      *
      * @var boolean

@@ -35,7 +35,7 @@ class Kernel extends ConsoleKernel
          * Kurulum sağlandıktan sonra .env dosyasından
          * FIRT_MIGRATION alanı true olarak güncellenmeli.
          */
-        if (env('FIRST_MIGRATION'))
+        if (config('app.first_migration'))
         {
             /**
              * Organizasyon sahibi olan kullanıcılara

@@ -55,10 +55,7 @@ class Sentiment extends Command
         ];
 
         $strings = [
-            'Bugün çok neşeliyim, beğeni neşemi kimse bozamaz net! İyi bir hayat.',
-            'Artık sevmeyeceğim.',
-            'Berbat bir dünyada yaşıyoruz.',
-            'Neden böyle oldu ki?'
+            'Atatürk ölmedi kalbimizde yaşıyor.'
         ];
 
         $sentiment = new SentimentLib;
