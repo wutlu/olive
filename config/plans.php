@@ -63,7 +63,7 @@ return [
 		]
 	],
 	2 => [
-		'name' => 'Yatırım',
+		'name' => 'Yatırımcı',
 		'description' => 'Olive, henüz geliştirme aşamasında olduğundan tüm planlar satışa sunulmamıştır. Sadece geliştirme süresince alabileceğiniz YATIRIM planını satın alarak, hazır ve hazırlanmakta olan tüm Olive özelliklerini tam erişim sağlayabilirsiniz. Bu plan ilerleyen zamanlarda kaldırılacaktır. Fakat siz her zaman bu planı bu fiyattan kullanmaya devam edebilecek ve yılda '.config('formal.currency').' 6.876 kâr edeceksiniz.',
 		'price' => 76,
 		'price_old' => 649,
