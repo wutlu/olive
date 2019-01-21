@@ -28,5 +28,5 @@
             <span class="card-title">Kuyruk Ekranı (Laravel Horizon)</span>
         </div>
     </div>
-    <iframe class="card" src="{{ url('horizon') }}"></iframe>
+    <iframe class="card" src="{{ config('app.ssl') ? secure_url('horizon') : url('horizon') }}"></iframe>
 @endsection
