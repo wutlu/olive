@@ -5,10 +5,9 @@ return [
     'tax_name' => 'K.D.V.',
     'company' => [
         'logo' => 'img/veri.zone-logo.svg',
-        'name' => 'Mutlu Toksöz Ticaret, Veri ve Yazılım Hizmetleri',
+        'name' => 'TEST',
         'address' => [
-            'Tomtom Mah. Nur-i Ziya Sok. 16/1',
-            '06900 Polatlı/ANKARA'
+            'TEST'
         ],
         'contact' => [
             'www.veri.zone',
@@ -44,3 +43,10 @@ return [
         ]
     ]
 ];
+
+/*
+ *   M. Toksöz Ticaret
+ *   Yeni Mahalle, Eti Cad. No: 76/B
+ *   Polatlı Vergi Dairesi
+ *   11047286234
+ */

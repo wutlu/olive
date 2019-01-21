@@ -588,7 +588,7 @@ class MediaCrawlersTableSeeder extends Seeder
                 'name' => 'SAMSUNGAZETESI',
                 'site' => 'https://www.samsungazetesi.com',
                 'base' => '/',
-                'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-(\d{8})-h(\d{7,9})\.html',
+                'url_pattern' => 'samsun-haber\/([a-z0-9-]{4,128})-h(\d{7,9})\.html',
                 'selector_title' => '.panel-title > h1',
                 'selector_description' => '.panel-title > p',
                 'off_limit' => 255,
@@ -2018,7 +2018,7 @@ class MediaCrawlersTableSeeder extends Seeder
             [
                 'name' => 'BBC',
                 'site' => 'https://www.bbc.com',
-                'base' => '/',
+                'base' => 'turkce',
                 'url_pattern' => '(\b(?!gettyimages|-))turkce\/([a-z0-9-]{10,128})-(\d{8,9})',
                 'selector_title' => 'h1.story-body__h1',
                 'selector_description' => 'p.story-body__introduction',
@@ -2396,7 +2396,7 @@ class MediaCrawlersTableSeeder extends Seeder
             [
                 'name' => 'GOAL',
                 'site' => 'https://www.goal.com',
-                'base' => '/',
+                'base' => 'tr',
                 'url_pattern' => 'tr\/haber\/([a-z0-9-]{4,128})\/([a-z0-9]{4,32})',
                 'selector_title' => 'h1[itemprop="headline"]',
                 'selector_description' => '[itemprop="description"]',
@@ -2405,7 +2405,7 @@ class MediaCrawlersTableSeeder extends Seeder
             [
                 'name' => 'RUDAW',
                 'site' => 'http://www.rudaw.net',
-                'base' => '/',
+                'base' => 'turkish',
                 'url_pattern' => 'turkish\/([a-z0-9-]{4,24})\/(\d{9,10})',
                 'selector_title' => 'h3.articleTitle',
                 'selector_description' => '.textContent > p:first-child',
@@ -2801,7 +2801,7 @@ class MediaCrawlersTableSeeder extends Seeder
             [
                 'name' => 'SOL',
                 'site' => 'http://haber.sol.org.tr',
-                'base' => '/',
+                'base' => 'anasayfa',
                 'url_pattern' => '([a-z0-9-]{4,24})\/([a-z0-9-]{4,128})-(\d{6,9})',
                 'selector_title' => 'h1#page-title',
                 'selector_description' => '.singlenews-spot',
