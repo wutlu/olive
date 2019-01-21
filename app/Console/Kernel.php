@@ -43,6 +43,7 @@ class Kernel extends ConsoleKernel
              */
             $schedule->command('check:upcoming_payments')
                      ->mondays()
+                     ->dailyAt('13:00')
                      ->timezone(config('app.timezone'))
                      ->withoutOverlapping();
 
