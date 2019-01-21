@@ -13,9 +13,6 @@ use App\Http\Requests\Crawlers\Media\DeleteRequest;
 
 use App\Models\Crawlers\MediaCrawler;
 
-use App\Jobs\Elasticsearch\CreateMediaIndexJob;
-use App\Jobs\Elasticsearch\DeleteIndexJob;
-
 use App\Utilities\Crawler;
 
 use App\Elasticsearch\Indices;
@@ -130,17 +127,21 @@ class MediaController extends Controller
      */
     public static function allStart()
     {
-        $crawlers = MediaCrawler::where(
-            [
-                'status' => false,
-                'elasticsearch_index' => true,
-                'test' => true
-            ]
-        )->update(
-            [
-                'status' => true
-            ]
-        );
+        $status = Option::where('key', 'media.index.status')->value('value');
+
+        if (count(config('database.elasticsearch.media.groups')) == $status)
+        {
+            $crawlers = MediaCrawler::where(
+                [
+                    'status' => false,
+                    'test' => true
+                ]
+            )->update(
+                [
+                    'status' => true
+                ]
+            );
+        }
 
         return [
             'status' => 'ok'
