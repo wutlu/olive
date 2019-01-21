@@ -123,10 +123,10 @@ class OrganisationController extends Controller
                 if ($organisation->days() <= 0)
                 {
                     $message = [
-                        'title' => 'Organizasyon Askıya Alındı',
+                        'title' => 'Üzgünüm :(',
                         'info' => 'Organizasyon Süreniz Doldu',
                         'body' => implode(PHP_EOL, [
-                            'Tüm araçlardan tekrar faydalanabilmek için organizasyon süresini uzatmanız gerekiyor.'
+                            'Tüm araçlardan tekrar faydalanabilmek için organizasyon sürenizi uzatmanız gerekiyor.'
                         ])
                     ];
 
@@ -137,7 +137,7 @@ class OrganisationController extends Controller
                 if ($organisation->status == true)
                 {
                     $message = [
-                        'title' => 'Organizasyonu Yenileyin',
+                        'title' => 'Yenileyin',
                         'info' => 'Organizasyon Süresi Dolmak Üzere',
                         'body' => implode(PHP_EOL, [
                             'Kesinti yaşamamak için organizasyon sürenizi uzatmanız gerekiyor.'
@@ -147,8 +147,6 @@ class OrganisationController extends Controller
 
                 if (@$message)
                 {
-                    print_r($message);
-
                     $author = $organisation->author;
 
                     if ($author->notification('important'))
