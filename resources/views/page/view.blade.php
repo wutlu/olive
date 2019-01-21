@@ -60,9 +60,7 @@
 @push('local.scripts')
     $(document).ready(function() {
         $('.parallax').parallax()
-    })
-
-    $(document).ready(function(){
         $('.sidenav').sidenav()
+        $('.tabs').tabs()
     })
 @endpush
