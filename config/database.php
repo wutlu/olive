@@ -128,7 +128,7 @@ return [
             ]
         ],
         'shopping' => [
-            'article' => [
+            'product' => [
                 'settings' => [
                     'total_fields_limit' => 40,
                     'number_of_shards' => 2,
