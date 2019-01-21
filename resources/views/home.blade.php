@@ -1,18 +1,14 @@
 @extends('layouts.app')
 
-@push('local.scripts')
-    $(document).on('mouseover', '#main', function() {
-        $(this).find('.face').attr('src', '{{ asset('img/f2.jpg') }}')
-    }).on('mouseleave', '#main', function() {
-        $(this).find('.face').attr('src', '{{ asset('img/f1.jpg') }}')
-    })
-@endpush
 
 @section('content')
     <header id="main">
         <div class="parallax-container">
             <div class="parallax">
-                <img class="face" src="{{ asset('img/f1.jpg') }}" alt="Face" />
+                <img src="{{ asset('img/bg-2.svg') }}" alt="bg-1" />
+                <video autoplay muted loop id="background-video">
+                    <source src="{{ asset('video/face.mp4') }}" type="video/mp4">
+                </video>
             </div>
 
             <div class="parallax">
