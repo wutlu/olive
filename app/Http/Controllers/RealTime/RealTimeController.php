@@ -44,7 +44,7 @@ class RealTimeController extends Controller
         ### [ gerçek zamanlı son bir kaç dakika değeri ] ###
         $this->minute = Carbon::now()->subMinutes(4)->format('Y-m-d H:i');
         ### [ gerçek zamanlı sorgu yapılacak kolon ] ###
-        $this->range_column = 'called_at';
+        $this->range_column = 'created_at';
     }
 
     /**
@@ -173,7 +173,7 @@ class RealTimeController extends Controller
                         $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
                     }
 
-                    $query = @Document::list([ 'articles', '*' ], 'article', $q)->data['hits']['hits'];
+                    $query = @Document::list([ 'media', '*' ], 'article', $q)->data['hits']['hits'];
 
                     if ($query)
                     {

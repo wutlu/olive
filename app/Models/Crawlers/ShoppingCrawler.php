@@ -111,10 +111,10 @@ class ShoppingCrawler extends Model
                 ]
             ],
             [
-                'total_fields_limit' => config('database.elasticserach.shopping.product.settings.total_fields_limit'),
-                'number_of_shards' => config('database.elasticserach.shopping.product.settings.number_of_shards'),
-                'number_of_replicas' => config('database.elasticserach.shopping.product.settings.number_of_replicas'),
-                'refresh_interval' => config('database.elasticserach.shopping.product.settings.refresh_interval')
+                'total_fields_limit' => config('database.elasticsearch.shopping.product.settings.total_fields_limit'),
+                'number_of_shards' => config('database.elasticsearch.shopping.product.settings.number_of_shards'),
+                'number_of_replicas' => config('database.elasticsearch.shopping.product.settings.number_of_replicas'),
+                'refresh_interval' => config('database.elasticsearch.shopping.product.settings.refresh_interval')
             ]
         );
     }

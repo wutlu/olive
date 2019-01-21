@@ -82,26 +82,12 @@
             $('[data-name=control-date]').attr('data-time', obj.data.crawler.control_date)
             $('[data-name=error-count]').html(obj.data.crawler.error_count + ' hata')
 
-            if (obj.data.elasticsearch.message)
-            {
-                var message = $.parseJSON(obj.data.elasticsearch.message);
-            }
-            else
-            {
-                var message = { 'status': obj.data.elasticsearch.status == 'ok' ? 200 : 404 };
-            }
-
-            if (message.status == '404')
-            {
-                $('[data-elasticsearch]').html('N/I')
-            }
-            else
-            {
-                $('[data-name=total-docs-success]').html(number_format(obj.data.count.success.data.count))
-                $('[data-name=total-docs-failed]').html(number_format(obj.data.count.failed.data.count))
-                $('[data-name=total-docs-buffer]').html(number_format(obj.data.count.buffer.data.count))
-                $('[data-name=total-size]').html(humanFileSize(obj.data.elasticsearch.data._all.primaries.store.size_in_bytes))
-            }
+            try { $('[data-name=total-docs-success]').html(number_format(obj.data.count.success.data.count)) }
+            catch (err) { $('[data-name=total-docs-success]').html('es {err}') }
+            try { $('[data-name=total-docs-failed]').html(number_format(obj.data.count.failed.data.count)) }
+            catch (err) { $('[data-name=total-docs-failed]').html('es {err}') }
+            try { $('[data-name=total-docs-buffer]').html(number_format(obj.data.count.buffer.data.count)) }
+            catch (err) { $('[data-name=total-docs-buffer]').html('es {err}') }
 
             window.clearTimeout(statTimer)
 
@@ -153,8 +139,6 @@
                         <th class="center-align">
                             <a href="#" data-trigger="status" class="btn-flat waves-effect waves-{{ $crawler->status ? 'green green' : 'red red' }}-text">{{ $crawler->status ? 'AKTİF' : 'PASİF' }}</a>
                         </th>
-                        <th class="right-align grey-text">BOYUT</th>
-                        <th class="orange-text" data-elasticsearch data-name="total-size">-</th>
 
                         <th class="right-align grey-text">KUYRUK</th>
                         <th class="orange-text" data-elasticsearch data-name="total-docs-buffer">-</th>

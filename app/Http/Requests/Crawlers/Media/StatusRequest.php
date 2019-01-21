@@ -3,8 +3,12 @@
 namespace App\Http\Requests\Crawlers\Media;
 
 use Illuminate\Foundation\Http\FormRequest;
+
 use App\Models\Crawlers\MediaCrawler;
+
 use Validator;
+
+use App\Elasticsearch\Indices;
 
 class StatusRequest extends FormRequest
 {
@@ -26,7 +30,7 @@ class StatusRequest extends FormRequest
     public function messages()
     {
         return [
-            'es_index' => 'Indexin oluşmasını bekleyin.',
+            'es_index' => 'Bu botun çalışması için eksik indexlerin oluşturulması gerekiyor.',
             'test' => 'Çalıştırmadan önce test işlemini yapmanız gerekiyor.',
         ];
     }
@@ -39,17 +43,25 @@ class StatusRequest extends FormRequest
     public function rules()
     {
         Validator::extend('es_index', function($attribute, $id) {
-            return MediaCrawler::where('id', $id)
-                               ->where(function ($query) {
-                                   $query->orWhere(function ($query) {
-                                       $query->where('status', true);
-                                   });
-                                   $query->orWhere(function ($query) {
-                                       $query->where('status', false);
-                                       $query->where('elasticsearch_index', true);
-                                   });
-                               })
-                               ->exists();
+            $crawler = MediaCrawler::where('id', $id)->first();
+
+            if ($crawler->status == true)
+            {
+                return true;
+            }
+            else
+            {
+                if (@$crawler)
+                {
+                    $index = Indices::stats([ 'media', $crawler->elasticsearch_index_name ]);
+
+                    return $index->status == 'ok' ? true : false;
+                }
+                else
+                {
+                    return false;
+                }
+            }
         });
 
         Validator::extend('test', function($attribute, $id) {

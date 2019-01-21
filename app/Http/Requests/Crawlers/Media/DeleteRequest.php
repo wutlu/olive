@@ -47,12 +47,10 @@ class DeleteRequest extends FormRequest
                                ->where(function ($query) {
                                     $query->orWhere(function ($query) {
                                         $query->where([
-                                             'elasticsearch_index' => false,
                                              'test' => false
                                         ]);
                                     });
                                     $query->orWhere(function ($query) {
-                                        $query->where('elasticsearch_index', true);
                                         $query->where('updated_at', '<=', Carbon::now()->subHours(6)->format('Y-m-d H:i:s'));
                                     });
                                 })

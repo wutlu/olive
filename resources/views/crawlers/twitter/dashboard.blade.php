@@ -601,50 +601,50 @@
     <div class="card">
         <div class="collection">
             @if ($options['twitter.index.trends'] == 'off')
-            <div class="collection-item d-block orange-text">
-                <i class="material-icons d-table">warning</i>
-                Trend indexinin oluşturulması bekleniyor.
-            </div>
+                <div class="collection-item d-block orange-text">
+                    <i class="material-icons d-table">warning</i>
+                    Trend indexinin oluşturulması bekleniyor.
+                </div>
             @else
-            <label class="collection-item waves-effect d-block">
-                <input
-                    name="value"
-                    id="value"
-                    value="on"
-                    class="json"
-                    data-href="{{ route('admin.twitter.option.set') }}"
-                    data-method="patch"
-                    data-delay="1"
-                    data-key="twitter.trend.status"
-                    data-checked-value="on"
-                    data-unchecked-value="off"
-                    type="checkbox"
-                    @if ($options['twitter.trend.status'] == 'on'){{ 'checked' }}@endif  />
-                <span>Trend Botu</span>
-            </label>
+                <label class="collection-item waves-effect d-block">
+                    <input
+                        name="value"
+                        id="value"
+                        value="on"
+                        class="json"
+                        data-href="{{ route('admin.twitter.option.set') }}"
+                        data-method="patch"
+                        data-delay="1"
+                        data-key="twitter.trend.status"
+                        data-checked-value="on"
+                        data-unchecked-value="off"
+                        type="checkbox"
+                        @if ($options['twitter.trend.status'] == 'on'){{ 'checked' }}@endif  />
+                    <span>Trend Botu</span>
+                </label>
             @endif
             @if ($options['twitter.index.tweets'] == date('Y.m', strtotime('+ 1 month')))
-            <label class="collection-item waves-effect d-block">
-                <input
-                    name="value"
-                    id="value"
-                    value="on"
-                    class="json"
-                    data-href="{{ route('admin.twitter.option.set') }}"
-                    data-method="patch"
-                    data-delay="1"
-                    data-key="twitter.status"
-                    data-checked-value="on"
-                    data-unchecked-value="off"
-                    type="checkbox"
-                    @if ($options['twitter.status'] == 'on'){{ 'checked' }}@endif  />
-                <span>Tweet Botu</span>
-            </label>
+                <label class="collection-item waves-effect d-block">
+                    <input
+                        name="value"
+                        id="value"
+                        value="on"
+                        class="json"
+                        data-href="{{ route('admin.twitter.option.set') }}"
+                        data-method="patch"
+                        data-delay="1"
+                        data-key="twitter.status"
+                        data-checked-value="on"
+                        data-unchecked-value="off"
+                        type="checkbox"
+                        @if ($options['twitter.status'] == 'on'){{ 'checked' }}@endif  />
+                    <span>Tweet Botu</span>
+                </label>
             @else
-            <div class="collection-item d-block orange-text">
-                <i class="material-icons d-table">warning</i>
-                Tweet indexlerinin oluşturulması bekleniyor.
-            </div>
+                <div class="collection-item d-block orange-text">
+                    <i class="material-icons d-table">warning</i>
+                    Tweet indexlerinin oluşturulması bekleniyor.
+                </div>
             @endif
         </div>
     </div>

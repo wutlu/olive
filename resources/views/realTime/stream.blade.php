@@ -184,7 +184,7 @@
     var buffer = [];
     var words = [];
 
-    var time = 200;
+    var time = 400;
     var liveTimer;
 
     $(window).on('load', function() {
@@ -294,9 +294,9 @@
     }
 
     $(document).on('mouseenter', '.time-line > .collection', function() {
-        time = 1000;
+        time = 1200;
     }).on('mouseleave', '.time-line', function() {
-        time = 200;
+        time = 400;
     })
 
     var streamTimer;

@@ -306,7 +306,7 @@ class Document
      *   '
      * @return object
      */
-    public static function deleteByQUery($name, string $type, array $body)
+    public static function deleteByQuery($name, string $type, array $body)
     {
         if (is_array($name))
         {

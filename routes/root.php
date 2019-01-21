@@ -183,7 +183,10 @@ Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {
         Route::post('genel/istatistik', 'MediaController@allStatistics')->name('crawlers.media.bot.statistics.all');
         Route::post('genel/baslat', 'MediaController@allStart')->name('crawlers.media.bot.start.all');
         Route::post('genel/durdur', 'MediaController@allStop')->name('crawlers.media.bot.stop.all');
-        Route::post('genel/index-olustur', 'MediaController@allIndex')->name('crawlers.media.bot.index.all');
+
+        Route::get('index-yonetimi', 'MediaController@indices')->name('crawlers.media.indices');
+        Route::post('index-yonetimi/json', 'MediaController@indicesJson')->name('crawlers.media.indices.json');
+        Route::post('index-olustur', 'MediaController@indexCreate')->name('crawlers.media.index.create');
     });
 
     # 

@@ -59,26 +59,34 @@ class TakerJob implements ShouldQueue
             {
                 $sentiment = new Sentiment;
 
-                $upsert = Document::patch([ 'articles', $crawler->id ], 'article', $this->data['id'], [
-                    'script' => [
-                        'source' => '
-                            ctx._source.title = params.title;
-                            ctx._source.description = params.description;
-                            ctx._source.created_at = params.created_at;
-                            ctx._source.called_at = params.called_at;
-                            ctx._source.status = params.status;
-                            ctx._source.sentiment = params.sentiment;
-                        ',
-                        'params' => [
-                            'title' => $item->data['title'],
-                            'description' => $item->data['description'],
-                            'created_at' => $item->data['created_at'],
-                            'called_at' => date('Y-m-d H:i:s'),
-                            'status' => 'ok',
-                            'sentiment' => $sentiment->score($item->data['description'])
+                $upsert = Document::patch(
+                    [
+                        'media',
+                        $crawler->elasticsearch_index_name
+                    ],
+                    'article',
+                    $this->data['id'],
+                    [
+                        'script' => [
+                            'source' => '
+                                ctx._source.title = params.title;
+                                ctx._source.description = params.description;
+                                ctx._source.created_at = params.created_at;
+                                ctx._source.called_at = params.called_at;
+                                ctx._source.status = params.status;
+                                ctx._source.sentiment = params.sentiment;
+                            ',
+                            'params' => [
+                                'title' => $item->data['title'],
+                                'description' => $item->data['description'],
+                                'created_at' => $item->data['created_at'],
+                                'called_at' => date('Y-m-d H:i:s'),
+                                'status' => 'ok',
+                                'sentiment' => $sentiment->score($item->data['description'])
+                            ]
                         ]
                     ]
-                ]);
+                );
 
                 # Hata varken sorunsuz işlem gerçekleştirildiğinde hata alanını sıfırla.
                 if ($crawler->error_count > 0)
@@ -94,19 +102,33 @@ class TakerJob implements ShouldQueue
             }
             else if ($item->status == 'err' || $item->status == 'failed')
             {
-                $insert = Document::patch([ 'articles', $crawler->id ], 'article', $this->data['id'], [
-                    'doc' => [
-                        'called_at' => date('Y-m-d H:i:s'),
-                        'status' => 'failed',
-                        'message' => $item->status == 'err' ? json_encode($item->error_reasons) : 'not_found'
+                $insert = Document::patch(
+                    [
+                        'media',
+                        $crawler->elasticsearch_index_name
+                    ],
+                    'article',
+                    $this->data['id'],
+                    [
+                        'doc' => [
+                            'called_at' => date('Y-m-d H:i:s'),
+                            'status' => 'failed',
+                            'message' => $item->status == 'err' ? json_encode($item->error_reasons) : 'not_found'
+                        ]
                     ]
-                ]);
+                );
 
                 $crawler->error_count = $crawler->error_count+1;
 
                 if ($crawler->error_count >= $crawler->off_limit)
                 {
-                    System::log(json_encode($item->error_reasons), 'App\Jobs\Crawlers\Media\TakerJob::handle(int '.$crawler->id.')', 10);
+                    System::log(
+                        json_encode(
+                            $item->error_reasons
+                        ),
+                        'App\Jobs\Crawlers\Media\TakerJob::handle(int '.$crawler->id.')',
+                        10
+                    );
 
                     if ($crawler->status == true)
                     {
@@ -123,7 +145,11 @@ class TakerJob implements ShouldQueue
         }
         else
         {
-            $insert = Indices::drop([ 'articles', $this->data['site_id'] ]);
+            System::log(
+                'Medya botu TakerJob tarafından bulunamadı.',
+                'App\Jobs\Crawlers\Media\TakerJob::handle(int '.$this->data['site_id'].')',
+                10
+            );
         }
     }
 }

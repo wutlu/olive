@@ -25,11 +25,11 @@ class MediaCrawler extends Model
     ];
 
     # index crate
-    public function indexCreate()
+    public function indexCreate(string $group)
     {
         return Indices::create(
             [
-                'articles', $this->id
+                'media', $group
             ],
             [
                 'article' => [
@@ -76,10 +76,10 @@ class MediaCrawler extends Model
                 ]
             ],
             [
-                'total_fields_limit' => config('database.elasticserach.media.article.settings.total_fields_limit'),
-                'number_of_shards' => config('database.elasticserach.media.article.settings.number_of_shards'),
-                'number_of_replicas' => config('database.elasticserach.media.article.settings.number_of_replicas'),
-                'refresh_interval' => config('database.elasticserach.media.article.settings.refresh_interval')
+                'total_fields_limit' => config('database.elasticsearch.media.article.settings.total_fields_limit'),
+                'number_of_shards' => config('database.elasticsearch.media.article.settings.number_of_shards'),
+                'number_of_replicas' => config('database.elasticsearch.media.article.settings.number_of_replicas'),
+                'refresh_interval' => config('database.elasticsearch.media.article.settings.refresh_interval')
             ]
         );
     }
@@ -87,6 +87,6 @@ class MediaCrawler extends Model
     # index stats
     public function stats()
     {
-        return Indices::stats([ 'articles', $this->id ]);
+        return [];
     }
 }

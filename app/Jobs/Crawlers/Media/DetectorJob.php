@@ -60,7 +60,7 @@ class DetectorJob implements ShouldQueue
             {
                 $chunk['body'][] = [
                     'create' => [
-                        '_index' => Indices::name([ 'articles', $this->crawler->id ]),
+                        '_index' => Indices::name([ 'media', $this->crawler->elasticsearch_index_name ]),
                         '_type' => 'article',
                         '_id' => md5($link)
                     ]

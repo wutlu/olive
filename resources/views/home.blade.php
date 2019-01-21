@@ -28,7 +28,7 @@
 
                         <p class="white-text">@lang('global.header.lead-1')</p>
                         <p class="grey-text">@lang('global.header.lead-2')</p>
-                        <p class="red-text">@lang('global.header.lead-3')</p>
+                        <p class="grey-text">@lang('global.header.lead-3')</p>
 
                         <a href="{{ route('user.login') }}" class="waves-effect btn black-text white">@auth{{ 'Olive\'e Gidin'}}@else{{ 'Giriş Yapın' }}@endauth</a>
 

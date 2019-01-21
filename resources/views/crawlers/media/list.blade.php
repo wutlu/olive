@@ -11,7 +11,8 @@
         [
             'text' => 'Medya Botları'
         ]
-    ]
+    ],
+    'dock' => true
 ])
 
 @push('local.scripts')
@@ -39,7 +40,6 @@
                         item.find('[data-name=name]').html(o.name)
                         item.find('[data-name=site]').html(o.site)
                         item.find('[data-name=status]').addClass(o.status ? 'green-text' : 'red-text')
-                        item.find('[data-name=index]').addClass(o.elasticsearch_index ? 'green-text' : 'red-text')
                         item.find('[data-name=test]').addClass(o.test ? 'green-text' : 'red-text')
 
                         item.appendTo(ul)
@@ -101,15 +101,6 @@
             <a
                 href="#"
                 class="waves-effect"
-                data-message="Oluşturulmamış indexlerin oluşturulması için istek gönderilecek?"
-                data-trigger="trigger"
-                data-href="{{ route('crawlers.media.bot.index.all') }}"
-                data-callback="__create_all_index">Eksik Indexleri Oluştur</a>
-        </li>
-        <li>
-            <a
-                href="#"
-                class="waves-effect"
                 data-message="Pasif fakat test edilmiş tüm botlar çalıştırılacak?"
                 data-trigger="trigger"
                 data-href="{{ route('crawlers.media.bot.start.all') }}"
@@ -125,6 +116,10 @@
                 data-callback="__stop_all">Aktif Botları Durdur</a>
         </li>
     </ul>
+@endsection
+
+@section('dock')
+    @include('crawlers.media._menu', [ 'active' => 'list' ])
 @endsection
 
 @section('content')
@@ -172,26 +167,20 @@
                 data-name="crawlers.media.bot"
                 data-callback="__go"
                 class="collection-item model hide json justify-content-between">
-                <span class="align-self-center">
+                <span>
+                    <p class="mb-0">
+                        <span data-name="id" class="rank"></span>
+                        <span data-name="name"></span>
+                    </p>
                     <p>
-                        <span class="rank" data-name="id"></span> <span data-name="name"></span>
+                        <span data-name="site" class="grey-text"></span>
                     </p>
-                    <p data-name="site" class="grey-text"></p>
-                    <p class="grey-text" data-name="error"></p>
-                    <p class="grey-text">
-                        <time class="timeago" data-name="control-time"></time> / <span data-name="control-interval"></span>
-                    </p>
+                    <time class="timeago" data-name="control-time"></time> / <span data-name="control-interval"></span>
                 </span>
-                <small class="align-self-center">
-                    <p>
-                        <i class="material-icons" data-name="test">sentiment_very_satisfied</i>
-                    </p>
-                    <p>
-                        <i class="material-icons" data-name="index">storage</i>
-                    </p>
-                    <p>
-                        <i class="material-icons" data-name="status">power</i>
-                    </p>
+                <small class="right-align">
+                    <i class="material-icons" data-name="test">sentiment_very_satisfied</i>
+                    <i class="material-icons" data-name="status">power</i>
+                    <p class="grey-text" data-name="error"></p>
                 </small>
             </a>
         </div>
@@ -240,16 +229,6 @@
                 ]
             });
     })
-
-    function __create_all_index(__, obj)
-    {
-        if (obj.status == 'ok')
-        {
-            M.toast({ html: 'Tüm botlar için index oluşturma isteği gönderildi.', classes: 'orange' })
-
-            $('#modal-trigger').modal('close')
-        } 
-    }
 
     function __stop_all(__, obj)
     {

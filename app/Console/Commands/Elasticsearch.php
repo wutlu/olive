@@ -44,11 +44,12 @@ class Elasticsearch extends Command
         $option = $this->choice(
             'What do you want to do?',
             [
-                'list_index' => 'List of Indices',
-                'delete_index' => 'Delete Indices',
-                'delete_doc' => 'Delete Document',
+                'index_list' => 'List Index',
+                'index_update' => 'Update Index',
+                'index_delete' => 'Delete Index',
+                'doc_delete' => 'Delete Document',
             ],
-            'list_index'
+            'index_list'
         );
 
         $alias = str_slug(config('app.name'));
@@ -83,7 +84,7 @@ class Elasticsearch extends Command
 
             $this->table(['Key', 'Docs Count', 'Size'], $indices);
 
-            if ($option == 'delete_index')
+            if ($option == 'index_delete')
             {
                 $name = $this->anticipate('Please select the index you want to delete', $autocomlete);
 
@@ -113,7 +114,7 @@ class Elasticsearch extends Command
                     $this->error('Please specify an index!');
                 }
             }
-            else if ($option == 'delete_doc')
+            else if ($option == 'doc_delete')
             {
                 $index = $this->anticipate('Select index', $autocomlete);
 
@@ -167,6 +168,86 @@ class Elasticsearch extends Command
                             {
                                 $this->error('Document not found!');
                             }
+                        }
+                    }
+                }
+                else
+                {
+                    $this->error('Please specify an index!');
+                }
+            }
+            else if ($option == 'index_update')
+            {
+                $index = $this->anticipate('Select index', $autocomlete);
+
+                if ($index)
+                {
+                    $index = $alias.'__'.$index;
+
+                    try
+                    {
+                        $response = $client->indices()->getSettings([ 'index' => $index ]);
+
+                        foreach ($response as $item)
+                        {
+                            $this->line($item['settings']['index']['provided_name']);
+
+                            $settings = [
+                                'number_of_shards' => $item['settings']['index']['number_of_shards'],
+                            ];
+
+                            $this->line(json_encode($settings, JSON_PRETTY_PRINT));
+
+                            $settings = [
+                                'total_fields_limit' => @$item['settings']['index']['mapping']['total_fields']['limit'],
+                                'number_of_replicas' => @$item['settings']['index']['number_of_replicas'],
+                                'read_only_allow_delete' => @$item['settings']['index']['blocks']['read_only_allow_delete'],
+                                'refresh_interval' => @$item['settings']['index']['refresh_interval'],
+                            ];
+
+                            $this->info(json_encode($settings, JSON_PRETTY_PRINT));
+                        }
+
+                    }
+                    catch (\Exception $e)
+                    {
+                        $this->error('Index not found!');
+
+                        die();
+                    }
+
+                    $settings = [];
+
+                    $total_fields_limit = $this->ask('total_fields_limit: (integer)');
+                    if ($total_fields_limit) $settings['index']['mapping']['total_fields']['limit'] = $total_fields_limit;
+
+                    $number_of_replicas = $this->ask('number_of_replicas: (integer)');
+                    if ($number_of_replicas) $settings['number_of_replicas'] = $number_of_replicas;
+
+                    $read_only_allow_delete = $this->ask('read_only_allow_delete: (boolean)');
+                    if ($read_only_allow_delete) $settings['index']['blocks']['read_only_allow_delete'] = $read_only_allow_delete == 'null' ? null : $read_only_allow_delete;
+
+                    $refresh_interval = $this->ask('refresh_interval: (string bkz: 5s)');
+                    if ($refresh_interval) $settings['refresh_interval'] = $refresh_interval;
+
+                    $this->info(json_encode($settings, JSON_PRETTY_PRINT));
+
+                    if ($this->confirm('Do you approve information?'))
+                    {
+                        try
+                        {
+                            $response = $client->indices()->putSettings([
+                                'index' => $index,
+                                'body' => [
+                                    'settings' => $settings
+                                ]
+                            ]);
+
+                            $this->info('Changes have been updated.');
+                        }
+                        catch (\Exception $e)
+                        {
+                            $this->error(json_encode(json_decode($e->getMessage()), JSON_PRETTY_PRINT));
                         }
                     }
                 }

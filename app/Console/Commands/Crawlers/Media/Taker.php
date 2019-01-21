@@ -43,7 +43,7 @@ class Taker extends Command
     {
         $query = Document::list(
             [
-                'articles',
+                'media',
                 '*'
             ],
             'article',

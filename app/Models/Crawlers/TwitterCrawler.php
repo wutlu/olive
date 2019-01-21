@@ -216,10 +216,10 @@ class TwitterCrawler
                         ]
                     ],
                     [
-                        'total_fields_limit' => config('database.elasticserach.twitter.trend.settings.total_fields_limit'),
-                        'number_of_shards' => config('database.elasticserach.twitter.trend.settings.number_of_shards'),
-                        'number_of_replicas' => config('database.elasticserach.twitter.trend.settings.number_of_replicas'),
-                        'refresh_interval' => config('database.elasticserach.twitter.trend.settings.refresh_interval')
+                        'total_fields_limit' => config('database.elasticsearch.twitter.trend.settings.total_fields_limit'),
+                        'number_of_shards' => config('database.elasticsearch.twitter.trend.settings.number_of_shards'),
+                        'number_of_replicas' => config('database.elasticsearch.twitter.trend.settings.number_of_replicas'),
+                        'refresh_interval' => config('database.elasticsearch.twitter.trend.settings.refresh_interval')
                     ]
                 );
             break;
@@ -413,10 +413,10 @@ class TwitterCrawler
                         ]
                     ],
                     [
-                        'total_fields_limit' => config('database.elasticserach.twitter.tweet.settings.total_fields_limit'),
-                        'number_of_shards' => config('database.elasticserach.twitter.tweet.settings.number_of_shards'),
-                        'number_of_replicas' => config('database.elasticserach.twitter.tweet.settings.number_of_replicas'),
-                        'refresh_interval' => config('database.elasticserach.twitter.tweet.settings.refresh_interval')
+                        'total_fields_limit' => config('database.elasticsearch.twitter.tweet.settings.total_fields_limit'),
+                        'number_of_shards' => config('database.elasticsearch.twitter.tweet.settings.number_of_shards'),
+                        'number_of_replicas' => config('database.elasticsearch.twitter.tweet.settings.number_of_replicas'),
+                        'refresh_interval' => config('database.elasticsearch.twitter.tweet.settings.refresh_interval')
                     ]
                 );
             break;

@@ -88,19 +88,41 @@ return [
         'google' => [
             'search' => [
                 'settings' => [
-                    'total_fields_limit' => 22,
-                    'number_of_shards' => 2,
-                    'number_of_replicas' => 1,
+                    'total_fields_limit' => 30,
+                    'number_of_shards' => 1,
+                    'number_of_replicas' => 0,
                     'refresh_interval' => '10s'
                 ]
             ]
         ],
         'media' => [
+            'groups' => [
+                's01',
+                's02',
+                's03',
+                's04',
+                's05',
+                's06',
+                's07',
+                's08',
+                's09',
+                's10',
+                's11',
+                's12',
+                's13',
+                's14',
+                's15',
+                's16',
+                's17',
+                's18',
+                's19',
+                's20',
+            ],
             'article' => [
                 'settings' => [
-                    'total_fields_limit' => 22,
-                    'number_of_shards' => 2,
-                    'number_of_replicas' => 1,
+                    'total_fields_limit' => 30,
+                    'number_of_shards' => 4,
+                    'number_of_replicas' => 0,
                     'refresh_interval' => '5s'
                 ]
             ]
@@ -110,7 +132,7 @@ return [
                 'settings' => [
                     'total_fields_limit' => 40,
                     'number_of_shards' => 2,
-                    'number_of_replicas' => 1,
+                    'number_of_replicas' => 0,
                     'refresh_interval' => '5s'
                 ]
             ]
@@ -118,9 +140,9 @@ return [
         'sozluk' => [
             'entry' => [
                 'settings' => [
-                    'total_fields_limit' => 22,
+                    'total_fields_limit' => 30,
                     'number_of_shards' => 2,
-                    'number_of_replicas' => 1,
+                    'number_of_replicas' => 0,
                     'refresh_interval' => '10s'
                 ]
             ]
@@ -128,17 +150,17 @@ return [
         'twitter' => [
             'trend' => [
                 'settings' => [
-                    'total_fields_limit' => 22,
+                    'total_fields_limit' => 30,
                     'number_of_shards' => 2,
-                    'number_of_replicas' => 1,
+                    'number_of_replicas' => 0,
                     'refresh_interval' => '10s'
                 ]
             ],
             'tweet' => [
                 'settings' => [
                     'total_fields_limit' => 500,
-                    'number_of_shards' => 2,
-                    'number_of_replicas' => 1,
+                    'number_of_shards' => 4,
+                    'number_of_replicas' => 0,
                     'refresh_interval' => '30s'
                 ]
             ]
@@ -146,17 +168,17 @@ return [
         'youtube' => [
             'video' => [
                 'settings' => [
-                    'total_fields_limit' => 44,
+                    'total_fields_limit' => 50,
                     'number_of_shards' => 2,
-                    'number_of_replicas' => 1,
+                    'number_of_replicas' => 0,
                     'refresh_interval' => '10s'
                 ]
             ],
             'comment' => [
                 'settings' => [
-                    'total_fields_limit' => 44,
+                    'total_fields_limit' => 50,
                     'number_of_shards' => 2,
-                    'number_of_replicas' => 1,
+                    'number_of_replicas' => 0,
                     'refresh_interval' => '30s'
                 ]
             ]

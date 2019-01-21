@@ -21,6 +21,11 @@ use App\Utilities\Crawler;
 use App\Elasticsearch\Indices;
 use App\Elasticsearch\Document;
 
+use App\Models\Option;
+
+use GuzzleHttp\Client;
+use GuzzleHttp\HandlerStack;
+
 class MediaController extends Controller
 {
     /**
@@ -87,21 +92,21 @@ class MediaController extends Controller
                 'count' => [
                     'active' => $media_crawler->where('status', true)->count(),
                     'disabled' => $media_crawler->where('status', false)->count(),
-                    'buffer' => $document->count([ 'articles', '*' ], 'article', [
+                    'buffer' => $document->count([ 'media', '*' ], 'article', [
                         'query' => [
                             'match' => [
                                 'status' => 'buffer'
                             ]
                         ]
                     ]),
-                    'success' => $document->count([ 'articles', '*' ], 'article', [
+                    'success' => $document->count([ 'media', '*' ], 'article', [
                         'query' => [
                             'match' => [
                                 'status' => 'ok'
                             ]
                         ]
                     ]),
-                    'failed' => $document->count([ 'articles', '*' ], 'article', [
+                    'failed' => $document->count([ 'media', '*' ], 'article', [
                         'query' => [
                             'match' => [
                                 'status' => 'failed'
@@ -109,7 +114,7 @@ class MediaController extends Controller
                         ]
                     ])
                 ],
-                'elasticsearch' => Indices::stats([ 'articles', '*' ])
+                'elasticsearch' => Indices::stats([ 'media', '*' ])
             ]
         ];
     }
@@ -127,9 +132,9 @@ class MediaController extends Controller
     {
         $crawlers = MediaCrawler::where(
             [
-            'status' => false,
-            'elasticsearch_index' => true,
-            'test' => true
+                'status' => false,
+                'elasticsearch_index' => true,
+                'test' => true
             ]
         )->update(
             [
@@ -165,42 +170,32 @@ class MediaController extends Controller
      ******* ROOT *******
      ********************
      *
-     * Medya Modülü, Elasticsearch, eksik tüm indexleri oluşturma tetikleyicisi.
-     * - Indexlerin tetiklenmesi için botların test edilmiş olması gerekir.
-     *
-     * @return array
-     */
-    public static function allIndex()
-    {
-        $crawlers = MediaCrawler::where('elasticsearch_index', false)->where('test', true)->get();
-
-        if (count($crawlers))
-        {
-            foreach ($crawlers as $crawler)
-            {
-                CreateMediaIndexJob::dispatch($crawler->id)->onQueue('elasticsearch');
-            }
-        }
-
-        return [
-            'status' => 'ok'
-        ];
-    }
-
-    /**
-     ********************
-     ******* ROOT *******
-     ********************
-     *
      * Medya Modülü, bot silme tetikleyicisi.
      *
      * @return array
      */
     public static function delete(DeleteRequest $request)
     {
-        $crawler = MediaCrawler::where('id', $request->id)->delete();
+        $crawler = MediaCrawler::where('id', $request->id)->firstOrFail();
 
-        DeleteIndexJob::dispatch([ 'articles', $request->id ])->onQueue('elasticsearch');
+        Document::deleteByQuery(
+            [
+                'media',
+                $crawler->elasticsearch_index_name
+            ],
+            'article',
+            [
+                'query' => [
+                    'bool' => [
+                        'must' => [
+                            [ 'match' => [ 'site_id' => $crawler->id ] ]
+                        ]
+                    ]
+                ]
+            ]
+        );
+
+        $crawler->delete();
 
         return [
             'status' => 'ok'
@@ -219,6 +214,7 @@ class MediaController extends Controller
     public static function statistics(int $id)
     {
         $crawler = MediaCrawler::where('id', $id)->firstOrFail();
+
         $document = new Document;
 
         return [
@@ -226,29 +222,37 @@ class MediaController extends Controller
             'data' => [
                 'crawler' => $crawler,
                 'count' => [
-                    'buffer' => $document->count([ 'articles', $crawler->id ], 'article', [
+                    'buffer' => $document->count([ 'media', $crawler->elasticsearch_index_name ], 'article', [
                         'query' => [
-                            'match' => [
-                                'status' => 'buffer'
+                            'bool' => [
+                                'must' => [
+                                    [ 'match' => [ 'status' => 'buffer' ] ],
+                                    [ 'match' => [ 'site_id' => $crawler->id ] ]
+                                ]
+                            ]
+                        ],
+                    ]),
+                    'success' => $document->count([ 'media', $crawler->elasticsearch_index_name ], 'article', [
+                        'query' => [
+                            'bool' => [
+                                'must' => [
+                                    [ 'match' => [ 'status' => 'ok' ] ],
+                                    [ 'match' => [ 'site_id' => $crawler->id ] ]
+                                ]
                             ]
                         ]
                     ]),
-                    'success' => $document->count([ 'articles', $crawler->id ], 'article', [
+                    'failed' => $document->count([ 'media', $crawler->elasticsearch_index_name ], 'article', [
                         'query' => [
-                            'match' => [
-                                'status' => 'ok'
-                            ]
-                        ]
-                    ]),
-                    'failed' => $document->count([ 'articles', $crawler->id ], 'article', [
-                        'query' => [
-                            'match' => [
-                                'status' => 'failed'
+                            'bool' => [
+                                'must' => [
+                                    [ 'match' => [ 'status' => 'failed' ] ],
+                                    [ 'match' => [ 'site_id' => $crawler->id ] ]
+                                ]
                             ]
                         ]
                     ])
-                ],
-                'elasticsearch' => Indices::stats([ 'articles', $crawler->id ])
+                ]
             ]
         ];
     }
@@ -276,12 +280,36 @@ class MediaController extends Controller
             $crawler->url_pattern = '([a-z0-9-]{4,128})';
             $crawler->selector_title = 'h1';
             $crawler->selector_description = 'h2';
+            $crawler->elasticsearch_index_name = self::getBestIndex();
             $crawler->save();
 
             return redirect()->route('crawlers.media.bot', $crawler->id);
         }
 
         return view('crawlers.media.view', compact('crawler'));
+    }
+
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * En az içeriğe sahip olan indexin seçilimi.
+     *
+     * @return string
+     */
+    public static function getBestIndex()
+    {
+        $counts = [];
+
+        foreach (config('database.elasticsearch.media.groups') as $group)
+        {
+            $counts[$group] = MediaCrawler::where('elasticsearch_index_name', $group)->count();
+        }
+
+        $sorted = array_sort($counts);
+
+        return array_keys($sorted)[0];
     }
 
     /**
@@ -332,8 +360,6 @@ class MediaController extends Controller
                 $crawler->off_reason = null;
 
                 $data['status'] = 'ok';
-
-                CreateMediaIndexJob::dispatch($crawler->id)->onQueue('elasticsearch');
             }
 
             $crawler->save();
@@ -369,6 +395,98 @@ class MediaController extends Controller
             'data' => [
                 'status' => $crawler->status
             ]
+        ];
+    }
+
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Medya, index listesi.
+     *
+     * @return view
+     */
+    public static function indices()
+    {
+        $rows = Option::whereIn('key', [
+            'media.index.status'
+        ])->get();
+
+        $options = [];
+
+        foreach ($rows as $row)
+        {
+            $options[$row->key] = $row->value;
+        }
+
+        $index_groups = config('database.elasticsearch.media.groups');
+
+        return view('crawlers.media.indices', compact('options', 'index_groups'));
+    }
+
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Medya, index listesi.
+     *
+     * @return array
+     */
+    public static function indicesJson()
+    {
+        $client = new Client([
+            'base_uri' => array_random(config('database.connections.elasticsearch.hosts')),
+            'handler' => HandlerStack::create()
+        ]);
+
+        $source = $client->get('/_cat/indices/olive__media*?format=json&s=index:desc')->getBody();
+        $source = json_decode($source);
+
+        return [
+            'status' => 'ok',
+            'hits' => $source
+        ];
+    }
+
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Medya, Elasticsearch index oluşturucu.
+     *
+     * @return array
+     */
+    public static function indexCreate()
+    {
+        $count = 0;
+        $groups = config('database.elasticsearch.media.groups');
+
+        $es = new MediaCrawler;
+
+        foreach ($groups as $group)
+        {
+            $indices = $es->indexCreate($group);
+
+            if ($indices->status == 'created' || $indices->status == 'exists')
+            {
+                $count++;
+            }
+        }
+
+        Option::updateOrCreate(
+            [
+                'key' => 'media.index.status'
+            ],
+            [
+                'value' => $count
+            ]
+        );
+
+        return [
+            'status' => ($count == count($groups)) ? 'ok' : 'err'
         ];
     }
 }

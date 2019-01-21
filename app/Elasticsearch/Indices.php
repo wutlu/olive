@@ -79,7 +79,7 @@ class Indices
                             'refresh_interval' => $params->refresh_interval,
                             'index' => [
                                 'blocks' => [
-                                    'read_only_allow_delete' => null
+                                    'read_only_allow_delete' => false
                                 ]
                             ],
                             'analysis' => [
@@ -267,8 +267,6 @@ class Indices
         try
         {
             $es = $client->indices()->get();
-
-            print_r($es);
 
             return (object) [
                 'status' => 'ok',

@@ -55,13 +55,17 @@ class Minuter extends Command
             {
                 $count = Document::count(
                     [
-                        'articles',
-                        $crawler->id
+                        'media',
+                        $crawler->elasticsearch_index_name
                     ],
                     'article',
                     [
                         'query' => [
                             'bool' => [
+                                'must' => [
+                                    [ 'match' => [ 'status' => 'ok' ] ],
+                                    [ 'match' => [ 'site_id' => $crawler->id ] ]
+                                ],
                                 'filter' => [
                                     [
                                         'range' => [
@@ -70,8 +74,7 @@ class Minuter extends Command
                                                 'gte' => $this->time
                                             ]
                                         ]
-                                    ],
-                                    [ 'match' => [ 'status' => 'ok' ] ]
+                                    ]
                                 ]
                             ]
                         ]
@@ -79,7 +82,6 @@ class Minuter extends Command
                 );
 
                 $this->line($crawler->name);
-
                 $this->info('data: ['.$count->data['count'].']');
 
                 $division = $count->data['count'] ? $count->data['count'] : 1;
