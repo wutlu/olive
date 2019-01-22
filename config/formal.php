@@ -30,6 +30,14 @@ return [
     'tax' => env('TAX', 18),
 
     /**
+     * referans payı
+     *
+     * @var integer
+     */
+
+    'reference_rate' => env('REFERENCE_RATE', 10),
+
+    /**
      * yıllık alımlarda indirim oranı
      *
      * @var integer

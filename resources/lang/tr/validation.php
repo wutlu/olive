@@ -258,5 +258,6 @@ return [
         'video_url'                    => 'Video Adresi',
 
         'channel_id'                   => 'Kanal Kimliği',
+        'reference_code'               => 'Referans Kodu',
     ],
 ];

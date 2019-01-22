@@ -21,7 +21,8 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'term_version'
+        'term_version',
+        'reference_code',
     ];
 
     /**
@@ -125,6 +126,12 @@ class User extends Authenticatable
     public function organisation()
     {
         return $this->hasOne('App\Models\Organisation\Organisation', 'id', 'organisation_id');
+    }
+
+    # referans
+    public function reference()
+    {
+        return $this->hasOne('App\Models\User\User', 'id', 'reference_id');
     }
 
     # ödeme bilgileri

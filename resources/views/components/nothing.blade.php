@@ -4,5 +4,5 @@
     <i class="material-icons {{ @$sun_class }}">{{ @$sun ? $sun : 'wb_sunny' }}</i>
 </div>
 @isset($text)
-	<p class="center-align {{ @$text_class }}">{{ $text }}</p>
+	<p class="center-align {{ @$text_class }}">{!! $text !!}</p>
 @endisset

@@ -1565,6 +1565,10 @@ header#main > .parallax-container > .parallax > video#background-video {
      -moz-user-select: none;
   -webkit-user-select: none;
 }
+.card-panel.card-loader.card-loader-unstyled {
+          box-shadow: none;
+  -webkit-box-shadow: nonw;
+}
 
 /**
  * sidenav
@@ -2016,7 +2020,6 @@ span.badge.new,
 .card .card-image img,
 .card .card-content,
 .card .card-action:last-child,
-.material-tooltip,
 .btn:not(.btn-floating),
 .btn-large:not(.btn-floating),
 .btn-small:not(.btn-floating),

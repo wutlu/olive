@@ -32,13 +32,13 @@
                             <div class="card-tabs">
                                 <ul class="tabs tabs-transparent tabs-fixed-width">
                                     <li class="tab">
-                                        <a href="#tab-giris" class="active">Giriş Yap</a>
+                                        <a href="#tab-giris" class="active waves-effect waves-light">Giriş Yap</a>
                                     </li>
                                     <li class="tab">
-                                        <a href="#tab-kaydol">Kaydol</a>
+                                        <a href="#tab-kaydol" class="waves-effect waves-light">Kaydol</a>
                                     </li>
                                     <li class="tab">
-                                        <a href="#tab-sifre">Şifre</a>
+                                        <a href="#tab-sifre" class="waves-effect waves-light">Şifre</a>
                                     </li>
                                 </ul>
                             </div>
@@ -79,6 +79,11 @@
                                                 <input name="name" id="name" type="text" class="validate" />
                                                 <label for="name">Ad</label>
                                                 <span class="helper-text">Kullanıcı Adınız.</span>
+                                            </div>
+                                            <div class="input-field col s12">
+                                                <input name="reference_code" id="reference_code" type="text" class="validate" />
+                                                <label for="reference_code">Referans Kodu</label>
+                                                <span class="helper-text">Varsa referans kodunuz.</span>
                                             </div>
                                             <div class="input-field col s12">
                                                 <div class="captcha" data-id="register-captcha"></div>

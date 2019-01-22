@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddOrganisationIdToUsersTable extends Migration
+class AddReferenceToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +14,10 @@ class AddOrganisationIdToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->unsignedInteger('organisation_id')->nullable()->default(null)->index();
-            $table->foreign('organisation_id')->references('id')->on('organisations')->onDelete('SET NULL')->onUpdate('cascade');
+            $table->string('reference_code')->nullable()->default(null)->unique();
+
+            $table->unsignedInteger('reference_id')->nullable()->default(null)->index();
+            $table->foreign('reference_id')->references('id')->on('users')->onDelete('SET NULL')->onUpdate('cascade');
         });
     }
 

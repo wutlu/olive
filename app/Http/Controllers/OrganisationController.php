@@ -13,9 +13,9 @@ use App\Models\Discount\DiscountCoupon as Coupon;
 use App\Models\User\User;
 use App\Models\RealTime\KeywordGroup;
 use App\Models\Pin\Group as PinGroup;
+use App\Models\User\Transaction;
 
 use App\Http\Requests\PlanRequest;
-
 use App\Http\Requests\PlanCalculateRequest;
 use App\Http\Requests\PlanCalculateRenewRequest;
 
@@ -1075,6 +1075,18 @@ class OrganisationController extends Controller
             $title = 'Olive: Fatura Onayı';
             $greeting = 'Fatura Onaylandı!';
             $message = 'Organizasyonu aktif bir şekilde kullanabilirsiniz. İyi araştırmalar...';
+
+            if ($organisation->author->reference_id && intval($invoice->fee()->total_price))
+            {
+                $share = $invoice->fee()->total_price*config('formal.reference_rate')/100;
+
+                $transaction = new Transaction;
+                $transaction->price = $share;
+                $transaction->currency = config('formal.currency');
+                $transaction->status_message = $organisation->author->id.'.'.$organisation->author->name.', ödemesinden referans payı aldınız.';
+                $transaction->user_id = $organisation->author->reference_id;
+                $transaction->save();
+            }
 
             if ($organisation->author->notification('important'))
             {

@@ -62,7 +62,10 @@ class UserController extends Controller
             'notifications',
             'notificationUpdate',
             'avatar',
-            'avatarUpload'
+            'avatarUpload',
+            'reference',
+            'references',
+            'referenceStart',
         ]);
 
         ### [ 5 işlemden sonra 5 dakika ile sınırla ] ###
@@ -74,6 +77,71 @@ class UserController extends Controller
         ### [ 1 işlemden sonra 1 dakika ile sınırla ] ###
         $this->middleware('throttle:1,1')->only('registerResend');
 	}
+
+    /**
+     * Üye, Refenras Sistemi
+     *
+     * @return view
+     */
+    public static function reference()
+    {
+        $user = auth()->user();
+
+        return view('user.reference', compact('user'));
+    }
+
+    /**
+     * Üye, Refenras Sistemi
+     *
+     * @return array
+     */
+    public static function references(SearchRequest $request)
+    {
+        $take = $request->take;
+        $skip = $request->skip;
+
+        $query = new User;
+        $query = $query->select('name', 'id', 'created_at');
+        $query = $request->string ? $query->where('name', 'ILIKE', '%'.$request->string.'%') : $query;
+        $query = $query->where('reference_id', auth()->user()->id);
+        $query = $query->skip($skip)
+                       ->take($take)
+                       ->orderBy('created_at', 'DESC');
+
+        return [
+            'status' => 'ok',
+            'hits' => $query->get(),
+            'total' => $query->count()
+        ];
+    }
+
+    /**
+     * Üye, Refenras Sistemi
+     *
+     * @return array
+     */
+    public static function referenceStart()
+    {
+        $code = null;
+
+        while ($code === null)
+        {
+            $code_random = str_random(6);
+
+            $exists = User::where('reference_code', $code_random)->exists();
+
+            if (!$exists)
+            {
+                $code = $code_random;
+            }
+        }
+
+        auth()->user()->update([ 'reference_code' => $code ]);
+
+        return [
+            'status' => 'ok'
+        ];
+    }
 
     /**
      * Forum, Kullanıcı Profili
@@ -530,6 +598,17 @@ class UserController extends Controller
         $user->email = $request->email;
         $user->session_id = Session::getId();
         $user->term_version = config('system.term_version');
+
+        if ($request->reference_code)
+        {
+            $referencer = User::where('reference_code', $request->reference_code)->first();
+
+            if (@$referencer)
+            {
+                $user->reference_id = $referencer->id;
+            }
+        }
+
         $user->save();
 
         foreach (config('system.notifications') as $key => $val)

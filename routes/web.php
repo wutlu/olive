@@ -142,6 +142,11 @@ Route::prefix('ayarlar')->group(function () {
     Route::get('hesap-bilgileri', 'UserController@account')->name('settings.account');
     Route::post('hesap-bilgileri', 'UserController@accountUpdate');
 
+    Route::get('referans-sistemi', 'UserController@reference')->name('settings.reference');
+    Route::post('referans-sistemi/referanslar', 'UserController@references')->name('settings.references');
+    Route::post('referans-sistemi/islemler', 'UserController@references')->name('settings.transactions');
+    Route::post('referans-sistemi/basla', 'UserController@referenceStart')->name('settings.reference.start');
+
     Route::get('e-posta-bildirimleri', 'UserController@notifications')->name('settings.notifications');
     Route::patch('e-posta-bildirimleri', 'UserController@notificationUpdate')->name('settings.notification');
 
