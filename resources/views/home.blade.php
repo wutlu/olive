@@ -59,7 +59,7 @@
                         <li>- YouTube Analizleri</li>
                         <li>- Haber Siteleri Analizleri</li>
                         <li>- Sözlük Siteleri Analizleri</li>
-                        <li>- Alışveriş Siteleri Analizleri</li>
+                        <li>- E-ticaret Siteleri Analizleri</li>
                         <li>- ve dahası...</li>
                     </ul>
                 </div>
@@ -111,7 +111,7 @@
 
                     setTimeout(function() {
                         vzAjax($('[data-id=loader]'))
-                    }, 10000)
+                    }, 30000)
                 }
             }
         @endpush

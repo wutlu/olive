@@ -39,6 +39,9 @@ class HomeController extends Controller
             'monitor',
             'sources'
         ]);
+
+        ### [ 5 işlemden sonra 1 dakika ile sınırla ] ###
+        $this->middleware('throttle:60,5')->only('dataCounter');
     }
 
     /**
