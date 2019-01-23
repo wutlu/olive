@@ -1,6 +1,23 @@
 @extends('layouts.app', [
     'sidenav_fixed_layout' => true,
-    'breadcrumb' => [
+    'breadcrumb' => $root ? [
+        [
+            'text' => 'Admin'
+        ],
+        [
+            'text' => 'Kullanıcılar',
+            'link' => route('admin.user.list')
+        ],
+        [
+            'text' => $user->name,
+            'link' => route('admin.user', $user->id)
+        ],
+        [
+            'text' => '🐞 Referans Sistemi'
+        ]
+    ]
+    :
+    [
         [
             'text' => 'Ayarlar'
         ],
@@ -14,7 +31,12 @@
 @section('content')
     <div class="card">
         <div class="card-content teal d-flex justify-content-between">
-            <a href="#" class="white-text" data-trigger="withdraw" data-tooltip="Bakiye" data-position="right">{{ config('formal.currency') }} {{ $user->balance() }}</a>
+            @if ($root)
+                <span class="white-text" data-tooltip="Bakiye" data-position="right">{{ config('formal.currency') }} {{ $user->balance() }}</span>
+            @else
+                <a href="#" class="white-text" data-trigger="withdraw" data-tooltip="Bakiye" data-position="right">{{ config('formal.currency') }} {{ $user->balance() }}</a>
+            @endif
+
             <span class="white-text" data-tooltip="Referans Kodu" data-position="right">{{ $user->reference_code }}</span>
             <span class="white-text" data-tooltip="Pay Oranı" data-position="left">{{ config('formal.reference_rate') }}%</span>
         </div>
@@ -32,7 +54,7 @@
             <div id="referanslar">
                 <ul class="collection load json-clear" 
                     id="references"
-                    data-href="{{ route('settings.references') }}"
+                    data-href="{{ $root ? route('admin.settings.references', $user->id) : route('settings.references') }}"
                     data-skip="0"
                     data-take="10"
                     data-more-button="#references-more_button"
@@ -42,7 +64,7 @@
                     <li class="collection-item nothing hide p-2">
                         @component('components.nothing')
                             @slot('size', 'small')
-                            @slot('text', 'Henüz sizin referansınızla kaydolan kimse olmadı.')
+                            @slot('text', $root ? 'Kullanıcının referansıyla kaydolan kimse olmadı.' : 'Sizin referansınızla henüz kaydolan kimse olmadı.')
                         @endcomponent
                     </li>
                     <li class="collection-item model hide">
@@ -69,7 +91,7 @@
             <div id="islem-gecmisi" style="display: none;">
                 <ul class="collection load json-clear" 
                     id="transactions"
-                    data-href="{{ route('settings.transactions') }}"
+                    data-href="{{ $root ? route('admin.settings.transactions', $user->id) : route('settings.transactions') }}"
                     data-skip="0"
                     data-take="10"
                     data-more-button="#transactions-more_button"
@@ -221,7 +243,7 @@
 @endsection
 
 @section('dock')
-    @include('settings._menu', [ 'active' => 'reference' ])
+    @include($root ? 'user.admin._menu' : 'settings._menu', [ 'active' => 'reference', 'id' => $user->id ])
 @endsection
 
 @push('local.scripts')

@@ -171,11 +171,17 @@ class UserController extends Controller
      *
      * @return view
      */
-    public static function reference()
+    public static function reference($id = 0)
     {
-        $user = auth()->user();
+        $root = $id ? true : false;
+        $user = $id ? User::where('id', $id)->firstOrFail() : auth()->user();
 
-        return view('user.reference', compact('user'));
+        if ($root && !$user->reference_code)
+        {
+            return abort(404);
+        }
+
+        return view('user.reference', compact('user', 'root'));
     }
 
     /**
@@ -183,7 +189,7 @@ class UserController extends Controller
      *
      * @return array
      */
-    public static function references(SearchRequest $request)
+    public static function references($id = 0, SearchRequest $request)
     {
         $take = $request->take;
         $skip = $request->skip;
@@ -191,7 +197,7 @@ class UserController extends Controller
         $query = new User;
         $query = $query->select('name', 'id', 'created_at');
         $query = $request->string ? $query->where('name', 'ILIKE', '%'.$request->string.'%') : $query;
-        $query = $query->where('reference_id', auth()->user()->id);
+        $query = $query->where('reference_id', $id ? $id : auth()->user()->id);
         $query = $query->skip($skip)
                        ->take($take)
                        ->orderBy('created_at', 'DESC');
@@ -210,23 +216,27 @@ class UserController extends Controller
      */
     public static function referenceStart()
     {
-        $code = null;
-
-        while ($code === null)
-        {
-            $code_random = str_random(6);
-
-            $exists = User::where('reference_code', $code_random)->exists();
-
-            if (!$exists)
-            {
-                $code = $code_random;
-            }
-        }
-
         $user = auth()->user();
-        $user->addBadge(11);
-        $user->update([ 'reference_code' => $code ]);
+
+        if (!$user->reference_code)
+        {
+            $code = null;
+
+            while ($code === null)
+            {
+                $code_random = str_random(6);
+
+                $exists = User::where('reference_code', $code_random)->exists();
+
+                if (!$exists)
+                {
+                    $code = $code_random;
+                }
+            }
+
+            $user->addBadge(11);
+            $user->update([ 'reference_code' => $code ]);
+        }
 
         return [
             'status' => 'ok'
@@ -238,15 +248,17 @@ class UserController extends Controller
      *
      * @return array
      */
-    public static function transactions(SearchRequest $request)
+    public static function transactions($id = 0, SearchRequest $request)
     {
+        $user = $id ? User::where('id', $id)->firstOrFail() : auth()->user();
+
         $take = $request->take;
         $skip = $request->skip;
 
         $query = new Transaction;
         $query = $query->select('id', 'price', 'currency', 'status_message', 'withdraw', 'iban', 'created_at');
         $query = $request->string ? $query->where('status_message', 'ILIKE', '%'.$request->string.'%') : $query;
-        $query = $query->where('user_id', auth()->user()->id);
+        $query = $query->where('user_id', $user->id);
         $query = $query->skip($skip)
                        ->take($take)
                        ->orderBy('created_at', 'DESC');

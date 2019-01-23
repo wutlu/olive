@@ -14,10 +14,22 @@
     <a href="{{ route('forum.group', [ __('route.forum.user'), $id ]) }}" class="collection-item waves-effect">
         Açtığı Konular <span class="badge teal white-text">{{ $user->messages()->whereNull('message_id')->count() }}</span>
     </a>
-    @if (@$user->organisation)
+    @if ($user->organisation_id)
         <div class="divider teal"></div>
         <a href="{{ route('admin.organisation', $user->organisation->id) }}" class="collection-item waves-effect">
             {{ $user->organisation->name }}
+        </a>
+    @endif
+    @if ($user->reference_id)
+        <div class="divider teal"></div>
+        <div class="collection-item grey-text pb-0">Referans</div>
+        <a href="{{ route('admin.user', $user->reference_id) }}" class="collection-item waves-effect {{ $active == 'account' ? 'active' : '' }}">
+            {{ $user->reference->name }}
+        </a>
+    @endif
+    @if ($user->reference_code)
+        <a href="{{ route('admin.settings.reference', $id) }}" class="collection-item waves-effect {{ $active == 'reference' ? 'active' : '' }}">
+            Referans Sistemi
         </a>
     @endif
 </div>
