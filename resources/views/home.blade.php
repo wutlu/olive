@@ -120,7 +120,7 @@
             <div class="d-flex flex-wrap">
                 <span class="align-self-center grey-text d-table mx-auto">HIZLA BÜYÜYEN VERİTABANI</span>
                 <span class="align-self-center d-flex mx-auto" id="data-count">
-                    <span class="align-self-center load" data-id="loader" data-href="{{ route('home.data.counter') }}" data-method="post" data-callback="__counter">14,404</span>
+                    <span class="align-self-center load" data-id="loader" data-href="{{ route('home.data.counter') }}" data-method="post" data-callback="__counter">0</span>
                     <i class="align-self-center material-icons">add</i>
                     <small class="align-self-center">VERİ</small>
                 </span>
