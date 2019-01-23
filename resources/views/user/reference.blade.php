@@ -64,7 +64,7 @@
                     <li class="collection-item nothing hide p-2">
                         @component('components.nothing')
                             @slot('size', 'small')
-                            @slot('text', $root ? 'Kullanıcının referansıyla kaydolan kimse olmadı.' : 'Sizin referansınızla henüz kaydolan kimse olmadı.')
+                            @slot('text', $root ? 'Kullanıcının referansıyla kaydolan kimse olmadı.' : 'Henüz sizin referansınızla kaydolan kimse olmadı.')
                         @endcomponent
                     </li>
                     <li class="collection-item model hide">
