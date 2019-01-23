@@ -1213,6 +1213,13 @@ ul.partners > li.partner a:hover {
 }
 
 /**
+ * data count
+ */
+#data-count {
+  font-size: 32px;
+}
+
+/**
  * main
  */
 main {

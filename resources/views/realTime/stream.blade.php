@@ -10,7 +10,6 @@
 
 @push('local.styles')
     .time-line > .collection {
-        min-height: 800px;
         max-height: 6320px;
 
         overflow: hidden;

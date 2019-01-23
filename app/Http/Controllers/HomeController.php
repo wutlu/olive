@@ -20,6 +20,8 @@ use App\Models\Crawlers\MediaCrawler;
 use App\Models\Crawlers\ShoppingCrawler;
 use App\Models\Crawlers\SozlukCrawler;
 
+use App\Elasticsearch\Document;
+
 class HomeController extends Controller
 {
     public function __construct()
@@ -146,6 +148,23 @@ class HomeController extends Controller
                                   ->first();
 
         return view('home', compact('discountDay'));
+    }
+
+    /**
+     * Tam Veri Sayısı
+     *
+     * @return array
+     */
+    public static function dataCounter()
+    {
+        $count_query = Document::count([ '*' ]);
+
+        return [
+            'status' => 'ok',
+            'data' => [
+                'count' => number_format($count_query->data['count'])
+            ]
+        ];
     }
 
     /**

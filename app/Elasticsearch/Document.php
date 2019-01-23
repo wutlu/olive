@@ -211,7 +211,7 @@ class Document
      *
      * @return object
      */
-    public static function count(array $name, string $type, array $body = [])
+    public static function count(array $name, string $type = '', array $body = [])
     {
         $name = Indices::name($name);
 

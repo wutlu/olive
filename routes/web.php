@@ -12,6 +12,7 @@ Route::get('manifest.json', 'HomeController@manifest')->name('olive.manifest');
 Route::get('kaynaklar', 'HomeController@sources')->name('sources');
 
 Route::post('markdown/onizleme', 'MarkdownController@preview')->name('markdown.preview');
+Route::post('veri-sayac', 'HomeController@dataCounter')->name('home.data.counter');
 
 Route::post('kabul-et', 'HomeController@termVersion')->name('term.version');
 

@@ -102,9 +102,29 @@
             <img src="{{ asset('img/bg-2.svg') }}" alt="bg-2" />
         </div>
 
+        @push('local.scripts')
+            function __counter(__, obj)
+            {
+                if (obj.status == 'ok')
+                {
+                    __.html(obj.data.count)
+
+                    setTimeout(function() {
+                        vzAjax($('[data-id=loader]'))
+                    }, 10000)
+                }
+            }
+        @endpush
+
         <div class="container">
-            <h2 class="center-align" itemprop="name">Olive</h2>
-            <p class="center-align" itemprop="description">Olive, bir grup genç girişimci tarafından üretilen gerçek zamanlı veri analiz katmanıdır.<br />Tamamen yerli kaynaklarla üretilip, sürekli bir geliştirilme sürecindedir.</p>
+            <div class="d-flex flex-wrap">
+                <span class="align-self-center grey-text d-table mx-auto">HIZLA BÜYÜYEN VERİTABANI</span>
+                <span class="align-self-center d-flex mx-auto" id="data-count">
+                    <span class="align-self-center load" data-id="loader" data-href="{{ route('home.data.counter') }}" data-method="post" data-callback="__counter">14,404</span>
+                    <i class="align-self-center material-icons">add</i>
+                    <small class="align-self-center">VERİ</small>
+                </span>
+            </div>
             @php
             /*
             <h2 class="center-align">Ekip</h2>
