@@ -78,12 +78,12 @@ class MonitorController extends Controller
         $message[] = '| Bileşen | Tüketim |';
         $message[] = '| ------: | :------ |';
 
-        if ($ram_percent > 96)
+        if ($ram_percent > 70)
         {
             $message[] = '| RAM tüketimi | '.$ram_percent.'% |';
         }
 
-        if ($cpu_percent > 96)
+        if ($cpu_percent > 70)
         {
             $message[] = '| CPU tüketimi | '.$cpu_percent.'% |';
         }
@@ -92,7 +92,7 @@ class MonitorController extends Controller
         {
             $hdd_percent = 100-100/$disk['total']->size*$disk['free']->size;
 
-            if ($hdd_percent > 96)
+            if ($hdd_percent > 90)
             {
                 $message[] = '| DISK kullanımı | '.$hdd_percent.'% |';
             }
