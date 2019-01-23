@@ -1882,11 +1882,13 @@ table tr {
   padding: 24px 24px 12px 24px;
   font-size: 22px;
 }
-.modal .modal-content > .modal-title:empty {
+.modal .modal-content > .modal-title:empty,
+.modal .modal-content > .modal-footer:empty {
   display: none;
 }
 .modal .modal-content > .modal-body {
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   max-height: 400px;
   margin: 0;
   padding: 24px 32px;

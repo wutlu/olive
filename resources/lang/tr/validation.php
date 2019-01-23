@@ -115,6 +115,7 @@ return [
     'organisation_status' => 'Organizasyonunuz henüz aktif değil.',
     'slug' => 'Slug alanı sadece a-z0-9 ve - karakterlerinden oluşabilir.',
     'except_list' => 'Bu kelimeyi kullanamazsınız.',
+    'iban' => 'Iban numarası geçerli değil.',
 
     /*
     |--------------------------------------------------------------------------
@@ -259,5 +260,8 @@ return [
 
         'channel_id'                   => 'Kanal Kimliği',
         'reference_code'               => 'Referans Kodu',
+
+        'iban'                         => 'IBAN',
+        'iban_name'                    => 'Hesap Adı',
     ],
 ];

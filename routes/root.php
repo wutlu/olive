@@ -237,6 +237,12 @@ Route::prefix('kullanici-yonetimi')->group(function () {
 
     Route::get('kullanici/{id}/fatura-gecmisi', 'UserController@adminInvoiceHistory')->name('admin.user.invoices');
     Route::get('kullanici/{id}/destek-talepleri', 'UserController@adminTickets')->name('admin.user.tickets');
+
+    Route::prefix('referans-sistemi')->group(function () {
+        Route::get('/', 'UserController@adminReference')->name('admin.reference');
+        Route::post('islemler', 'UserController@adminTransactions')->name('admin.transactions');
+        Route::post('islem', 'UserController@adminTransaction')->name('admin.transaction');
+    });
 });
 
 Route::prefix('bulten')->group(function () {

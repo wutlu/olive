@@ -212,6 +212,9 @@ class HomeController extends Controller
             'ticket' => [
                 'count' => 0
             ],
+            'partner' => [
+                'count' => 0
+            ],
             'push_notifications' => []
         ];
 
@@ -220,6 +223,7 @@ class HomeController extends Controller
         if ($user->root())
         {
             $data['ticket']['count'] = Option::where('key', 'root_alert.support')->value('value');
+            $data['partner']['count'] = Option::where('key', 'root_alert.partner')->value('value');
         }
 
         $activities = UserActivity::where('user_id', $user->id)->where('push_notification', 'on')->limit(3)->get();

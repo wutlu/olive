@@ -16,6 +16,7 @@ class OptionTableSeeder extends Seeder
         Option::firstOrCreate( [ 'key' => 'email_alerts.server'      ], [ 'value' => date('Y-m-d H:i:s')                   ] );
         Option::firstOrCreate( [ 'key' => 'email_alerts.log'         ], [ 'value' => date('Y-m-d H:i:s')                   ] );
         Option::firstOrCreate( [ 'key' => 'root_alert.support'       ], [ 'value' => 0                                     ] );
+        Option::firstOrCreate( [ 'key' => 'root_alert.partner'       ], [ 'value' => 0                                     ] );
         Option::firstOrCreate( [ 'key' => 'youtube.status'           ], [ 'value' => 'off'                                 ] );
         Option::firstOrCreate( [ 'key' => 'youtube.index.videos'     ], [ 'value' => 'off'                                 ] );
         Option::firstOrCreate( [ 'key' => 'youtube.index.auto'       ], [ 'value' => 'off'                                 ] );

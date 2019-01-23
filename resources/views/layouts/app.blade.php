@@ -208,6 +208,13 @@
                         <span class="badge grey white-text" data-id="ticket-count">0</span>
                     </a>
                 </li>
+                <li>
+                    <a class="waves-effect" href="{{ route('admin.reference') }}">
+                        <i class="material-icons">money</i>
+                        Referans Sistemi
+                        <span class="badge grey white-text" data-id="partner-count">0</span>
+                    </a>
+                </li>
                 <li class="divider"></li>
                 <li class="tiny">
                     <a class="waves-effect" href="{{ route('admin.page.list') }}">
@@ -592,7 +599,12 @@
                 if (obj.status == 'ok')
                 {
                     @if (auth()->user()->root())
-                        $('[data-id=ticket-count]').html(obj.data.ticket.count).addClass(obj.data.ticket.count > 0 ? 'red' : 'grey').removeClass(obj.data.ticket.count > 0 ? 'grey' : 'red')
+                        $('[data-id=ticket-count]').html(obj.data.ticket.count)
+                                                   .addClass(obj.data.ticket.count > 0 ? 'red' : 'grey')
+                                                   .removeClass(obj.data.ticket.count > 0 ? 'grey' : 'red')
+                        $('[data-id=partner-count]').html(obj.data.partner.count)
+                                                   .addClass(obj.data.partner.count > 0 ? 'red' : 'grey')
+                                                   .removeClass(obj.data.partner.count > 0 ? 'grey' : 'red')
                     @endif
 
                     if (obj.data.push_notifications.length)

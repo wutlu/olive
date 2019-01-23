@@ -1076,10 +1076,11 @@ function modal(obj)
 
     var modal_id = '#modal-' + obj.id;
     var modal_size = obj.size ? obj.size : 'modal-large';
+    var modal_class = obj.class ? obj.class : '';
 
     var modal_element = $('<div >', {
             'id': 'modal-' + obj.id,
-            'class': 'modal ' + modal_size,
+            'class': 'modal ' + modal_size + ' ' + modal_class,
             'data-z-index': z_index,
             'css': { 'z-index': z_index },
             'html': $('<div />', {

@@ -152,6 +152,12 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Ticket', 'user_id', 'id')->whereNull('ticket_id')->orderBy('updated_at', 'DESC')->paginate($pager);
     }
 
+    # maddi işlem geçmişi
+    public function transactions()
+    {
+        return $this->hasMany('App\Models\User\Transaction', 'user_id', 'id');
+    }
+
     # intro
     # - user_id ve key için kayıt varsa o intro geçilmiştir.
     public function intro(string $key)
@@ -180,5 +186,10 @@ class User extends Authenticatable
     public function moderator()
     {
         return $this->moderator;
+    }
+
+    public function balance()
+    {
+        return $this->transactions->whereNotIn('withdraw', [ 'failed' ])->sum('price');
     }
 }

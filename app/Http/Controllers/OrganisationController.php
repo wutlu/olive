@@ -1076,9 +1076,12 @@ class OrganisationController extends Controller
             $greeting = 'Fatura Onaylandı!';
             $message = 'Organizasyonu aktif bir şekilde kullanabilirsiniz. İyi araştırmalar...';
 
-            if ($organisation->author->reference_id && intval($invoice->fee()->total_price))
+            $fee = $invoice->fee();
+
+            if ($organisation->author->reference_id && intval($fee->total_price))
             {
-                $share = $invoice->fee()->total_price*config('formal.reference_rate')/100;
+                $price = $fee->total_price - $fee->amount_of_tax;
+                $share = $price*config('formal.reference_rate')/100;
 
                 $transaction = new Transaction;
                 $transaction->price = $share;

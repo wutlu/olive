@@ -27,84 +27,82 @@
     @endif
 
     @if ($user->id == $user->organisation->user_id)
-
-    $(document).on('click', 'a.name-change', function() {
-        var mdl = modal({
-            'id': 'detail',
-            'body': $('<form />', {
-                'method': 'patch',
-                'action': '{{ route('organisation.update.name') }}',
-                'id': 'form',
-                'class': 'json',
-                'data-callback': '__update__organisation_name',
-                'html': $('<div />', {
-                    'class': 'input-field',
-                    'html': [
-                        $('<input />', {
-                            'id': 'organisation_name',
-                            'name': 'organisation_name',
-                            'type': 'text',
-                            'class': 'validate',
-                            'data-length': 16
-                        }),
-                        $('<label />', {
-                            'for': 'organisation_name',
-                            'html': 'Organizasyon Adı'
-                        }),
-                        $('<span />', {
-                            'class': 'helper-text'
-                        })
-                    ]
-                })
-            }),
-            'size': 'modal-medium',
-            'title': 'Ad Değiştir',
-            'options': {
-                dismissible: false
-            },
-            'footer': [
-                $('<a />', {
-                    'href': '#',
-                    'class': 'modal-close waves-effect btn-flat grey-text',
-                    'html': buttons.cancel
+        $(document).on('click', '[data-trigger=name-change]', function() {
+            var mdl = modal({
+                'id': 'detail',
+                'body': $('<form />', {
+                    'method': 'patch',
+                    'action': '{{ route('organisation.update.name') }}',
+                    'id': 'form',
+                    'class': 'json',
+                    'data-callback': '__update__organisation_name',
+                    'html': $('<div />', {
+                        'class': 'input-field',
+                        'html': [
+                            $('<input />', {
+                                'id': 'organisation_name',
+                                'name': 'organisation_name',
+                                'type': 'text',
+                                'class': 'validate',
+                                'data-length': 16
+                            }),
+                            $('<label />', {
+                                'for': 'organisation_name',
+                                'html': 'Organizasyon Adı'
+                            }),
+                            $('<span />', {
+                                'class': 'helper-text'
+                            })
+                        ]
+                    })
                 }),
-                $('<span />', {
-                    'html': ' '
-                }),
-                $('<button />', {
-                    'type': 'submit',
-                    'class': 'waves-effect btn-flat cyan-text',
-                    'data-submit': 'form#form',
-                    'html': buttons.update
-                })
-            ]
-        });
-
-        var name = $('input#organisation_name');
-            name.val($('#organisation-card').find('span.card-title').children('span').html())
-
-        M.updateTextFields()
-
-        $('input[name=organisation_name]').characterCounter().focus()
-    })
-
-    function __update__organisation_name(__, obj)
-    {
-        if (obj.status == 'ok')
-        {
-            var name = $('input#organisation_name');
-
-            $('#organisation-card').find('span.card-title').children('span').html(name.val())
-
-            $('#modal-detail').modal('close')
-
-            M.toast({
-                html: 'Organizasyon Adı güncellendi',
-                classes: 'green darken-2'
+                'size': 'modal-medium',
+                'title': 'Ad Değiştir',
+                'options': {
+                    dismissible: false
+                },
+                'footer': [
+                    $('<a />', {
+                        'href': '#',
+                        'class': 'modal-close waves-effect btn-flat grey-text',
+                        'html': buttons.cancel
+                    }),
+                    $('<span />', {
+                        'html': ' '
+                    }),
+                    $('<button />', {
+                        'type': 'submit',
+                        'class': 'waves-effect btn-flat cyan-text',
+                        'data-submit': 'form#form',
+                        'html': buttons.update
+                    })
+                ]
             })
-        }
-    }
 
+            var name = $('input#organisation_name');
+                name.val($('#organisation-card').find('span.card-title').children('span').html())
+
+            M.updateTextFields()
+
+            $('input[name=organisation_name]').characterCounter().focus()
+        })
+
+        function __update__organisation_name(__, obj)
+        {
+            if (obj.status == 'ok')
+            {
+                var name = $('input#organisation_name');
+
+                $('#organisation-card').find('span.card-title').children('span').html(name.val())
+
+                $('#modal-detail').modal('close')
+
+                M.toast({
+                    html: 'Organizasyon Adı güncellendi',
+                    classes: 'green darken-2'
+                })
+            }
+        }
     @endif
 @endpush
 
@@ -113,15 +111,17 @@
     <div class="card-content">
         <span class="card-title">
             <span>{{ $user->organisation->name }}</span>
+
             @if ($user->id == $user->organisation->user_id)
-            <a class="name-change material-icons" href="#">create</a>
+                <a data-trigger="name-change" class="material-icons" href="#">create</a>
             @endif
         </span>
+
         @if ($user->id == $user->organisation->user_id)
             @if ($user->organisation->status)
-            <p class="grey-text">{{ $user->organisation->days() }} gün kaldı.</p>
+                <p class="grey-text">{{ $user->organisation->days() }} gün kaldı.</p>
             @else
-            <p class="red-text">Pasif</p>
+                <p class="red-text">Pasif</p>
             @endif
         @endif
     </div>

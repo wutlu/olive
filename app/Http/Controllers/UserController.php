@@ -11,6 +11,7 @@ use App\Http\Requests\User\PasswordNewRequest;
 use App\Http\Requests\User\UpdateRequest as AccountUpdateRequest;
 use App\Http\Requests\User\AvatarRequest;
 use App\Http\Requests\User\Admin\UpdateRequest as AdminUpdateRequest;
+use App\Http\Requests\User\TransactionRequest;
 use App\Http\Requests\SearchRequest;
 
 use App\Notifications\PasswordValidationNotification;
@@ -27,6 +28,8 @@ use App\Models\Discount\DiscountDay;
 use App\Models\Discount\DiscountCoupon;
 use App\Models\User\User;
 use App\Models\User\UserNotification;
+use App\Models\User\Transaction;
+use App\Models\Option;
 
 use Auth;
 use Session;
@@ -66,6 +69,8 @@ class UserController extends Controller
             'reference',
             'references',
             'referenceStart',
+            'transactions',
+            'transaction',
         ]);
 
         ### [ 5 işlemden sonra 5 dakika ile sınırla ] ###
@@ -77,6 +82,52 @@ class UserController extends Controller
         ### [ 1 işlemden sonra 1 dakika ile sınırla ] ###
         $this->middleware('throttle:1,1')->only('registerResend');
 	}
+
+
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Üye, Refenras Sistemi
+     *
+     * @return view
+     */
+    public static function adminReference()
+    {
+        $user = auth()->user();
+
+        return view('user.admin.reference', compact('user'));
+    }
+
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Üye, Refenras Sistemi, işlem geçmişi.
+     *
+     * @return array
+     */
+    public static function adminTransactions(SearchRequest $request)
+    {
+        $take = $request->take;
+        $skip = $request->skip;
+
+        $query = new Transaction;
+        $query = $query->with('user');
+        $query = $request->string ? $query->where('status_message', 'ILIKE', '%'.$request->string.'%') : $query;
+        $query = $query->skip($skip)
+                       ->take($take)
+                       ->orderBy('withdraw', 'ASC')
+                       ->orderBy('created_at', 'DESC');
+
+        return [
+            'status' => 'ok',
+            'hits' => $query->get(),
+            'total' => $query->count()
+        ];
+    }
 
     /**
      * Üye, Refenras Sistemi
@@ -136,7 +187,59 @@ class UserController extends Controller
             }
         }
 
-        auth()->user()->update([ 'reference_code' => $code ]);
+        $user = auth()->user();
+        $user->addBadge(11);
+        $user->update([ 'reference_code' => $code ]);
+
+        return [
+            'status' => 'ok'
+        ];
+    }
+
+    /**
+     * Üye, Refenras Sistemi, işlem geçmişi.
+     *
+     * @return array
+     */
+    public static function transactions(SearchRequest $request)
+    {
+        $take = $request->take;
+        $skip = $request->skip;
+
+        $query = new Transaction;
+        $query = $query->select('id', 'price', 'currency', 'status_message', 'withdraw', 'iban', 'created_at');
+        $query = $request->string ? $query->where('status_message', 'ILIKE', '%'.$request->string.'%') : $query;
+        $query = $query->where('user_id', auth()->user()->id);
+        $query = $query->skip($skip)
+                       ->take($take)
+                       ->orderBy('created_at', 'DESC');
+
+        return [
+            'status' => 'ok',
+            'hits' => $query->get(),
+            'total' => $query->count()
+        ];
+    }
+
+    /**
+     * Üye, Refenras Sistemi, işlem oluştur.
+     *
+     * @return array
+     */
+    public static function transaction(TransactionRequest $request)
+    {
+        $query = new Transaction;
+        $query->price = '-'.$request->price;
+        $query->withdraw = 'wait';
+        $query->iban = $request->iban;
+        $query->iban_name = $request->iban_name;
+        $query->user_id = auth()->user()->id;
+        $query->currency = config('formal.currency');
+        $query->save();
+
+        session()->flash('transaction', 'success');
+
+        Option::where('key', 'root_alert.partner')->first()->incr();
 
         return [
             'status' => 'ok'

@@ -36,7 +36,7 @@ class BillingRequest extends FormRequest
 
             'tckn_without'       => 'nullable|in:on',
 
-            'merchant_name'      => 'nullable|string|max:32|required_unless:type,individual',
+            'merchant_name'      => 'nullable|string|max:128|required_unless:type,individual',
 
             'tax_number'         => 'nullable|integer|max:9999999999|required_if:type,corporate',
             'tax_office'         => 'nullable|string|max:32|required_unless:type,individual',

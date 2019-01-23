@@ -93,7 +93,7 @@
                 	<p data-name="name" class="mb-0"></p>
                 	<p data-name="health" class="mb-0"></p>
                 </span>
-                <small class="grey-text d-flex align-items-end flex-column">
+                <small class="grey-text d-flex flex-column align-items-end">
                 	<p data-name="count" class="mb-0"></p>
                 	<p data-name="size" class="mb-0"></p>
                 </small>

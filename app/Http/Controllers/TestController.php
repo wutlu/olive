@@ -19,15 +19,9 @@ class TestController extends Controller
 {
     public static function test()
     {
-        $counts = [];
+    	$fee = auth()->user()->organisation->lastInvoice->fee();
 
-        foreach (config('database.elasticsearch.media.groups') as $group)
-        {
-            $counts[$group] = MediaCrawler::where('elasticsearch_index_name', $group)->count();
-        }
-
-        $sorted = array_sort($counts);
-
-        return array_keys($sorted)[0];
+    	echo $fee->total_price - $fee->amount_of_tax;
+        return '';
     }
 }
