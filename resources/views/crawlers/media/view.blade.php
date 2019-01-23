@@ -13,7 +13,7 @@
             'link' => route('crawlers.media.list')
         ],
         [
-            'text' => $crawler->name
+            'text' => '🐞 '.$crawler->name
         ]
     ]
 ])

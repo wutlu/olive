@@ -9,7 +9,7 @@
             'link' => route('crawlers')
         ],
         [
-            'text' => 'Medya Botları'
+            'text' => '🐞 Medya Botları'
         ]
     ],
     'dock' => true

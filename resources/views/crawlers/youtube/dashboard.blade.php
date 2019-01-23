@@ -9,7 +9,7 @@
             'link' => route('crawlers')
         ],
         [
-            'text' => 'YouTube Ayarları'
+            'text' => '🐞 YouTube Ayarları'
         ]
     ],
     'dock' => true

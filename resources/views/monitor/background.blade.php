@@ -8,7 +8,7 @@
             'text' => 'Sistem İzleme'
         ],
         [
-            'text' => 'Arkaplan İşleri'
+            'text' => '🐞 Arkaplan İşleri'
         ]
     ]
 ])

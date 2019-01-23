@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\User\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -42,9 +42,9 @@ class TransactionRequest extends FormRequest
         });
 
         return [
-            'price' => 'required|integer|min:100|max_price',
-            'iban_name' => 'required|string|max:128|min:4',
-            'iban' => 'required|string|iban',
+        	'id' => 'required|integer|exists:user_transactions,id',
+        	'status_message' => 'required_if:withdraw,failed|nullable|string|max:255',
+        	'withdraw' => 'nullable|string|in:success,failed,wait'
         ];
     }
 }

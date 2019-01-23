@@ -8,7 +8,7 @@
             'text' => 'Sistem İzleme'
         ],
         [
-            'text' => 'Sunucu Bilgisi'
+            'text' => '🐞 Sunucu Bilgisi'
         ]
     ]
 ])

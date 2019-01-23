@@ -5,7 +5,7 @@
             'text' => 'Admin'
         ],
         [
-            'text' => 'Destek Talepleri'
+            'text' => '🐞 Destek Talepleri'
         ]
     ]
 ])

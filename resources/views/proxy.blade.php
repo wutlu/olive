@@ -5,7 +5,7 @@
             'text' => 'Admin'
         ],
         [
-        	'text' => 'Vekil Sunucu Yönetimi'
+        	'text' => '🐞 Vekil Sunucu Yönetimi'
         ]
     ]
 ])

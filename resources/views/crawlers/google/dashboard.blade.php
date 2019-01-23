@@ -9,7 +9,7 @@
             'link' => route('crawlers')
         ],
         [
-            'text' => 'Google Ayarları'
+            'text' => '🐞 Google Ayarları'
         ]
     ],
     'dock' => true

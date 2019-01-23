@@ -13,7 +13,7 @@
             'link' => route('admin.user', $user->id)
         ],
         [
-            'text' => 'E-posta Bildirimleri'
+            'text' => '🐞 E-posta Bildirimleri'
         ]
     ],
     'dock' => true

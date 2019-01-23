@@ -13,7 +13,7 @@
             'link' => route('admin.user', $user->id)
         ],
         [
-            'text' => 'Destek Talepleri'
+            'text' => '🐞 Destek Talepleri'
         ]
     ],
     'dock' => true

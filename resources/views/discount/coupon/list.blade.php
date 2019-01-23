@@ -5,7 +5,7 @@
             'text' => 'Admin'
         ],
         [
-            'text' => 'İndirim Kuponları'
+            'text' => '🐞 İndirim Kuponları'
         ]
     ],
     'dock' => true

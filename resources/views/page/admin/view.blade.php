@@ -9,7 +9,7 @@
             'link' => route('admin.page.list')
         ],
         [
-            'text' => @$page ? $page->title : 'Sayfa Oluştur'
+            'text' => @$page ? '🐞 '.$page->title : '🐞 Sayfa Oluştur'
         ]
     ]
 ])

@@ -263,5 +263,7 @@ return [
 
         'iban'                         => 'IBAN',
         'iban_name'                    => 'Hesap Adı',
+
+        'status_message'               => 'Durum Mesajı',
     ],
 ];

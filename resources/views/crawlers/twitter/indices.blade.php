@@ -13,7 +13,7 @@
             'link' => route('admin.twitter.settings')
         ],
         [
-        	'text' => 'Index Yönetimi'
+        	'text' => '🐞 Index Yönetimi'
         ]
     ],
     'dock' => true

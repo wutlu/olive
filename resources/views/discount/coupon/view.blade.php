@@ -9,7 +9,7 @@
             'link' => route('admin.discount.coupon.list')
         ],
         [
-            'text' => @$coupon ? $coupon->key : 'Kupon Oluştur'
+            'text' => @$coupon ? '🐞 '.$coupon->key : '🐞 Kupon Oluştur'
         ]
     ]
 ])

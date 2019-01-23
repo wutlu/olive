@@ -9,7 +9,7 @@
             'link' => route('admin.user.list')
         ],
         [
-            'text' => $user->name
+            'text' => '🐞 '.$user->name
         ]
     ],
     'dock' => true

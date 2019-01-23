@@ -13,7 +13,7 @@
             'link' => route('admin.youtube.settings')
         ],
         [
-        	'text' => 'Index Yönetimi'
+        	'text' => '🐞 Index Yönetimi'
         ]
     ],
     'dock' => true

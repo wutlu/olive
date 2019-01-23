@@ -12,6 +12,7 @@ use App\Http\Requests\User\UpdateRequest as AccountUpdateRequest;
 use App\Http\Requests\User\AvatarRequest;
 use App\Http\Requests\User\Admin\UpdateRequest as AdminUpdateRequest;
 use App\Http\Requests\User\TransactionRequest;
+use App\Http\Requests\User\Admin\TransactionRequest as AdminTransactionRequest;
 use App\Http\Requests\SearchRequest;
 
 use App\Notifications\PasswordValidationNotification;
@@ -119,13 +120,49 @@ class UserController extends Controller
         $query = $request->string ? $query->where('status_message', 'ILIKE', '%'.$request->string.'%') : $query;
         $query = $query->skip($skip)
                        ->take($take)
-                       ->orderBy('withdraw', 'ASC')
                        ->orderBy('created_at', 'DESC');
 
         return [
             'status' => 'ok',
             'hits' => $query->get(),
             'total' => $query->count()
+        ];
+    }
+
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Üye, Refenras Sistemi, işlem yap.
+     *
+     * @return array
+     */
+    public static function adminTransaction(AdminTransactionRequest $request)
+    {
+        $option = Option::where('key', 'root_alert.partner')->first();
+
+        $transaction = Transaction::where('id', $request->id)->first();
+
+        if ($transaction->withdraw == 'wait' && $request->withdraw != 'wait')
+        {
+            $option->decr();
+        }
+        else if ($transaction->withdraw != 'wait' && $request->withdraw == 'wait')
+        {
+            $option->incr();
+        }
+
+        $transaction->withdraw = $request->withdraw;
+        $transaction->status_message = $request->status_message;
+        $transaction->save();
+
+        return [
+            'status' => 'ok',
+            'data' => [
+                'id' => $transaction->id,
+                'withdraw' => $transaction->withdraw,
+            ]
         ];
     }
 

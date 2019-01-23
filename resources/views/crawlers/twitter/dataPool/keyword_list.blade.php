@@ -13,7 +13,7 @@
             'link' => route('admin.twitter.settings')
         ],
         [
-            'text' => 'Takip Edilen Kelimeler'
+            'text' => '🐞 Takip Edilen Kelimeler'
         ]
     ],
     'dock' => true

@@ -13,7 +13,7 @@
             'link' => route('crawlers.shopping.list')
         ],
         [
-            'text' => $crawler->name
+            'text' => '🐞 '.$crawler->name
         ]
     ]
 ])

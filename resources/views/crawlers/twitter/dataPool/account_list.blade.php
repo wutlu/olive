@@ -13,7 +13,7 @@
             'link' => route('admin.twitter.settings')
         ],
         [
-            'text' => 'Takip Edilen Kullanıcılar'
+            'text' => '🐞 Takip Edilen Kullanıcılar'
         ]
     ],
     'dock' => true

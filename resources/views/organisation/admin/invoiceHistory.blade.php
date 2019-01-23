@@ -13,7 +13,7 @@
             'link' => route('admin.organisation', $organisation->id)
         ],
         [
-            'text' => 'Fatura Geçmişi'
+            'text' => '🐞 Fatura Geçmişi'
         ]
     ],
     'dock' => true

@@ -13,7 +13,7 @@
             'link' => route('admin.user', $user->id)
         ],
         [
-            'text' => 'Fatura Geçmişi'
+            'text' => '🐞 Fatura Geçmişi'
         ]
     ],
     'dock' => true

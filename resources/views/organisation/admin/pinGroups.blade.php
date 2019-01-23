@@ -13,7 +13,7 @@
             'link' => route('admin.organisation', $organisation->id)
         ],
         [
-            'text' => 'Pin Grupları'
+            'text' => '🐞 Pin Grupları'
         ]
     ],
     'dock' => true

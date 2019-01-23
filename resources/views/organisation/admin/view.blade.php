@@ -9,7 +9,7 @@
             'link' => route('admin.organisation.list')
         ],
         [
-            'text' => $organisation->name
+            'text' => '🐞 '.$organisation->name
         ]
     ],
     'dock' => true

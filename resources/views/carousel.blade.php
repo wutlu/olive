@@ -5,7 +5,7 @@
             'text' => 'Admin'
         ],
         [
-        	'text' => 'Carousel Yönetimi'
+        	'text' => '🐞 Carousel Yönetimi'
         ]
     ]
 ])

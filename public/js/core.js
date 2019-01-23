@@ -1131,6 +1131,13 @@ function modal(obj)
 
     modal.modal('open')
 
+    if (obj.timeout)
+    {
+        setTimeout(function() {
+            $(modal_id).modal('close')
+        }, obj.timeout)
+    }
+
     return modal;
 }
 

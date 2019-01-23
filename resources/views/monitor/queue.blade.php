@@ -8,7 +8,7 @@
             'text' => 'Sistem İzleme'
         ],
         [
-            'text' => 'Kuyruk Ekranı (Laravel Horizon)'
+            'text' => '🐞 Kuyruk Ekranı (Laravel Horizon)'
         ]
     ]
 ])

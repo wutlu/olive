@@ -13,7 +13,7 @@
             'link' => route('admin.organisation', $organisation->id)
         ],
         [
-            'text' => 'Gerçek Zamanlı Kelime Grupları'
+            'text' => '🐞 Gerçek Zamanlı Kelime Grupları'
         ]
     ],
     'dock' => true

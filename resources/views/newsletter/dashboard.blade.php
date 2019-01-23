@@ -5,7 +5,7 @@
             'text' => 'Admin'
         ],
         [
-            'text' => 'E-posta Bülteni'
+            'text' => '🐞 E-posta Bülteni'
         ]
     ]
 ])

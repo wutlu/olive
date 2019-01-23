@@ -9,7 +9,7 @@
             'link' => route('crawlers')
         ],
         [
-            'text' => 'Sözlük Botları'
+            'text' => '🐞 Sözlük Botları'
         ]
     ]
 ])

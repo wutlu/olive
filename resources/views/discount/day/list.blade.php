@@ -5,7 +5,7 @@
             'text' => 'Admin'
         ],
         [
-            'text' => 'İndirim Günleri'
+            'text' => '🐞 İndirim Günleri'
         ]
     ],
     'dock' => true

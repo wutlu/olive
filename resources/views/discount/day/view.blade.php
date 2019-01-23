@@ -9,7 +9,7 @@
             'link' => route('admin.discount.day.list')
         ],
         [
-            'text' => @$day ? 'İndirim Günü' : 'İndirim Günü Oluştur'
+            'text' => @$day ? '🐞 İndirim Günü' : '🐞 İndirim Günü Oluştur'
         ]
     ]
 ])

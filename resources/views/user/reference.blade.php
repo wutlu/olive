@@ -168,7 +168,7 @@
                                     if (o.withdraw)
                                     {
                                         item.find('[data-name=withdraw]')
-                                            .html(o.withdraw == 'wait' ? 'Onay Bekliyor...' : o.withdraw == 'failed' ? 'Sorunlu!' : 'Gerçekleşti!')
+                                            .html(o.withdraw == 'wait' ? 'Onay Bekliyor...' : o.withdraw == 'failed' ? 'Başarısız!' : 'Gerçekleşti!')
                                             .removeClass('red-text green-text orange-text hide')
                                             .addClass(o.withdraw == 'wait' ? 'orange-text' : o.withdraw == 'failed' ? 'red-text' : 'green-text')
                                     }
@@ -354,18 +354,15 @@
 
     @if (session('transaction') == 'success')
         modal({
-            'id': 'statu',
+            'id': 'status',
             'body': 'İşlem Başarılı!',
             'size': 'modal-small',
             'class': 'center-align',
             'options': {
                 dismissible: false
-            }
+            },
+            'timeout': 2000
         })
-
-        setTimeout(function() {
-            $('#modal-statu').modal('close')
-        }, 1000)
     @endif
 @endpush
 

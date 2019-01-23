@@ -5,7 +5,7 @@
             'text' => 'Admin'
         ],
         [
-            'text' => 'Bot Yönetimi'
+            'text' => '🐞 Bot Yönetimi'
         ]
     ]
 ])

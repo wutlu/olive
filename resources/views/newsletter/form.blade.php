@@ -9,7 +9,7 @@
             'link' => route('admin.newsletter')
         ],
         [
-            'text' => $newsletter ? $newsletter->subject : 'Bülten Oluştur'
+            'text' => $newsletter ? '🐞 '.$newsletter->subject : '🐞 Bülten Oluştur'
         ]
     ]
 ])

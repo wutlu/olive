@@ -9,7 +9,7 @@
             'link' => route('crawlers')
         ],
         [
-            'text' => 'Twitter Ayarları'
+            'text' => '🐞 Twitter Ayarları'
         ]
     ],
     'dock' => true

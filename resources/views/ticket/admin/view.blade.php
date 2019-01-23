@@ -9,7 +9,7 @@
             'link' => route('admin.tickets')
         ],
         [
-            'text' => '#'.$ticket->id
+            'text' => '🐞 #'.$ticket->id
         ]
     ]
 ])

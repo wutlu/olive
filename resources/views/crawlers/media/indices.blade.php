@@ -13,7 +13,7 @@
             'link' => route('crawlers.media.list')
         ],
         [
-            'text' => 'Index Yönetimi'
+            'text' => '🐞 Index Yönetimi'
         ]
     ],
     'dock' => true

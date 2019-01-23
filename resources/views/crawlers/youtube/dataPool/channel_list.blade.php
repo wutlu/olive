@@ -13,7 +13,7 @@
             'link' => route('admin.youtube.settings')
         ],
         [
-            'text' => 'Takip Edilen Kanallar'
+            'text' => '🐞 Takip Edilen Kanallar'
         ]
     ],
     'dock' => true

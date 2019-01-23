@@ -2,19 +2,18 @@
     'sidenav_fixed_layout' => true,
     'breadcrumb' => [
         [
-            'text' => 'Ayarlar'
+            'text' => 'Admin'
         ],
         [
-            'text' => 'Referans Sistemi'
+            'text' => '🐞 Referans Sistemi'
         ]
-    ],
-    'dock' => true
+    ]
 ])
 
 @section('content')
     <div class="card">
         <div class="card-content teal d-flex justify-content-between">
-            <span class="white-text" data-tooltip="Tüm Müşteri Bakiyesi" data-position="right">{{ config('formal.currency') }} {{ $user->balance() }}</span>
+            <span class="white-text" data-tooltip="Tüm Müşterilerin Bakiyesi" data-position="right">{{ config('formal.currency') }} {{ $user->balance() }}</span>
             <span class="white-text" data-tooltip="Pay Oranı" data-position="left">{{ config('formal.reference_rate') }}%</span>
         </div>
         <ul class="collection load json-clear" 
@@ -52,7 +51,10 @@
                     </span>
                     <span class="d-flex flex-column align-items-end">
                         <time class="timeago grey-text"></time>
-                        <span data-name="withdraw" class="hide"></span>
+
+                        <small data-status="success" class="hide green-text">BAŞARILI</small>
+                        <small data-status="failed" class="hide red-text">BAŞARISIZ</small>
+                        <small data-status="wait" class="hide orange-text">BEKLİYOR</small>
                     </span>
                 </span>
             </li>
@@ -71,10 +73,6 @@
                 type="button"
                 data-json-target="ul#transactions">Daha Fazla</button>
     </div>
-@endsection
-
-@section('dock')
-    @include('settings._menu', [ 'active' => 'reference' ])
 @endsection
 
 @push('local.scripts')
@@ -106,10 +104,7 @@
 
                         if (o.withdraw)
                         {
-                            item.find('[data-name=withdraw]')
-                                .html(o.withdraw == 'wait' ? 'Onay Bekliyor...' : o.withdraw == 'failed' ? 'Sorunlu!' : 'Gerçekleşti!')
-                                .removeClass('red-text green-text orange-text hide')
-                                .addClass(o.withdraw == 'wait' ? 'orange-text' : o.withdraw == 'failed' ? 'red-text' : 'green-text')
+                            item.find('[data-status=' + o.withdraw + ']').removeClass('hide')
                         }
 
                         item.find('time').attr('data-time', o.created_at).html(o.created_at)
@@ -126,7 +121,17 @@
     {
         if (obj.status == 'ok')
         {
+            $('#modal-form').modal('close')
 
+            M.toast({
+                html: 'İşlem Güncellendi',
+                classes: 'green darken-2'
+            })
+
+            var item = $('[data-id=list-item-' + obj.data.id + ']')
+
+                item.find('[data-status]').addClass('hide')
+                item.find('[data-status=' + obj.data.withdraw + ']').removeClass('hide')
         }
     }
 
@@ -135,102 +140,113 @@
 
         modal({
             'id': 'form',
-            'body': [
-                $('<ul />', {
-                    'class': 'mb-2',
-                    'html': [
-                        $('<li />', {
-                            'html': [
-                                $('<small />', {
-                                    'html': 'IBAN Ad',
-                                    'class': 'grey-text d-table'
-                                }),
-                                $('<span />', {
-                                    'html': __.data('iban-name')
-                                }),
-                                $('<small />', {
-                                    'html': 'IBAN',
-                                    'class': 'grey-text d-table'
-                                }),
-                                $('<span />', {
-                                    'html': __.data('iban')
-                                }),
-                                $('<small />', {
-                                    'html': 'Tutar',
-                                    'class': 'grey-text d-table'
-                                }),
-                                $('<span />', {
-                                    'html': __.data('currency') + ' ' + __.data('price')
-                                })
-                            ]
-                        })
-                    ]
-                }),
-                $('<form />', {
-                    'method': 'post',
-                    'action': '{{ route('admin.transaction') }}',
-                    'id': 'form',
-                    'class': 'json',
-                    'data-callback': '__transaction',
-                    'html': [
-                        $('<div />', {
-                            'class': 'input-field',
-                            'html': [
-                                $('<select />', {
-                                    'id': 'withdraw',
-                                    'name': 'withdraw',
-                                    'type': 'text',
-                                    'class': 'validate',
+            'body': $('<form />', {
+                'method': 'post',
+                'action': '{{ route('admin.transaction') }}',
+                'id': 'form',
+                'class': 'json',
+                'data-callback': '__transaction',
+                'data-id': __.data('id'),
+                'html': [
+                    $('<ul />', {
+                        'class': 'collection',
+                        'html': [
+                            $('<li />', {
+                                'class': 'collection-item',
+                                'html': [
+                                    $('<small />', {
+                                        'html': 'IBAN Ad',
+                                        'class': 'grey-text ' + (__.data('iban-name') ? 'd-table' : 'hide')
+                                    }),
+                                    $('<span />', {
+                                        'html': __.data('iban-name'),
+                                        'class': (__.data('iban-name') ? 'd-table' : 'hide')
+                                    }),
+                                    $('<small />', {
+                                        'html': 'IBAN',
+                                        'class': 'grey-text ' + (__.data('iban') ? 'd-table' : 'hide')
+                                    }),
+                                    $('<span />', {
+                                        'html': __.data('iban'),
+                                        'class': (__.data('iban') ? 'd-table' : 'hide')
+                                    }),
+                                    $('<small />', {
+                                        'html': 'Tutar',
+                                        'class': 'grey-text d-table'
+                                    }),
+                                    $('<span />', {
+                                        'html': __.data('currency') + ' ' + __.data('price')
+                                    })
+                                ]
+                            }),
+                            $('<li />', {
+                                'class': 'collection-item',
+                                'html': $('<div />', {
+                                    'class': 'input-field',
                                     'html': [
-                                        $('<option />', {
-                                            'value': '',
-                                            'html': 'Seçin',
-                                            'selected': true
+                                        $('<select />', {
+                                            'id': 'withdraw',
+                                            'name': 'withdraw',
+                                            'type': 'text',
+                                            'class': 'validate',
+                                            'html': [
+                                                $('<option />', {
+                                                    'value': '',
+                                                    'html': 'Eylemsiz',
+                                                    'selected': __.data('withdraw') == '' ? true : false
+                                                }),
+                                                $('<option />', {
+                                                    'value': 'wait',
+                                                    'html': 'Bekliyor',
+                                                    'selected': __.data('withdraw') == 'wait' ? true : false
+                                                }),
+                                                $('<option />', {
+                                                    'value': 'success',
+                                                    'html': 'Başarılı',
+                                                    'selected': __.data('withdraw') == 'success' ? true : false
+                                                }),
+                                                $('<option />', {
+                                                    'value': 'failed',
+                                                    'html': 'Başarısız',
+                                                    'selected': __.data('withdraw') == 'failed' ? true : false
+                                                })
+                                            ]
                                         }),
-                                        $('<option />', {
-                                            'value': 'wait',
-                                            'html': 'Bekliyor'
-                                        }),
-                                        $('<option />', {
-                                            'value': 'success',
-                                            'html': 'Başarılı'
-                                        }),
-                                        $('<option />', {
-                                            'value': 'failed',
-                                            'html': 'Başarısız'
+                                        $('<label />', {
+                                            'for': 'withdraw',
+                                            'html': 'İşlem Durumu'
                                         })
                                     ]
-                                }),
-                                $('<label />', {
-                                    'for': 'withdraw',
-                                    'html': 'İşlem Durumu'
                                 })
-                            ]
-                        }),
-                        $('<div />', {
-                            'class': 'input-field',
-                            'html': [
-                                $('<input />', {
-                                    'id': 'status_message',
-                                    'name': 'status_message',
-                                    'type': 'text',
-                                    'class': 'validate',
-                                    'data-length': 128,
-                                    'value': __.data('status-message')
-                                }),
-                                $('<label />', {
-                                    'for': 'status_message',
-                                    'html': 'İşlem Mesajı'
-                                }),
-                                $('<span />', {
-                                    'class': 'helper-text',
-                                    'html': 'İşlem sonucunu bu alanda belirtin.'
+                            }),
+                            $('<li />', {
+                                'class': 'collection-item',
+                                'html': $('<div />', {
+                                    'class': 'input-field',
+                                    'html': [
+                                        $('<input />', {
+                                            'id': 'status_message',
+                                            'name': 'status_message',
+                                            'type': 'text',
+                                            'class': 'validate',
+                                            'data-length': 128,
+                                            'value': __.data('status-message')
+                                        }),
+                                        $('<label />', {
+                                            'for': 'status_message',
+                                            'html': 'İşlem Mesajı'
+                                        }),
+                                        $('<span />', {
+                                            'class': 'helper-text',
+                                            'html': 'İşlem sonucunu bu alanda belirtin.'
+                                        })
+                                    ]
                                 })
-                            ]
-                        })
-                    ]
-                })
-            ],
+                            })
+                        ]
+                    })
+                ]
+            }),
             'size': 'modal-medium',
             'title': 'İşlem Yap',
             'options': {
