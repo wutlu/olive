@@ -46,7 +46,7 @@
         @if ($pg->html_to_pdf == 'success')
             <div class="card-action d-flex justify-content-between">
                 <span class="align-self-center">{{ date('d.m.Y H:i', strtotime($pg->completed_at)) }}</span>
-                <a href="{{ url($pg->pdf_path) }}" class="btn-flat waves-effect align-self-center">Pdf İndir</a>
+                <a href="{{ url($pg->pdf_path).'?v='.date('dmyHi', strtotime($pg->completed_at)) }}" class="btn-flat waves-effect align-self-center">Pdf İndir</a>
             </div>
         @endif
     </div>
