@@ -127,7 +127,7 @@
                     </div>
                     <div class="collection-item">
                         <div class="input-field">
-                            <textarea name="body" id="body" class="materialize-textarea validate" data-length="10000">{{ @$page->body }}</textarea>
+                            <textarea name="body" id="body" class="materialize-textarea validate" data-length="20000">{{ @$page->body }}</textarea>
                             <label for="body">Sayfa Gövdesi</label>
                             <small class="helper-text">Sayfa içeriği. (HTML)</small>
                         </div>
