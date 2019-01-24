@@ -56,6 +56,11 @@ class PinGroupJob implements ShouldQueue
                 $html_path = $pg->html_path ? $pg->html_path : 'storage/outputs/html/'.$name.'.html';
                 $pdf_path = $pg->pdf_path ? $pg->pdf_path : 'storage/outputs/pdf/'.$name.'.pdf';
 
+                if (file_exists(public_path($pdf_path)))
+                {
+                    unlink(public_path($pdf_path));
+                }
+
                 $html = '
                     <!DOCTYPE html>
                     <html lang="'.app()->getLocale().'">
