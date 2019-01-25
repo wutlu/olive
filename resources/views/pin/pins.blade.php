@@ -74,9 +74,9 @@
                             route(
                                 'content.details',
                                 [
-                                    'index' => $document->data['_index'],
-                                    'type' => $document->data['_type'],
-                                    'id' => $document->data['_id']
+                                    'es_index' => $document->data['_index'],
+                                    'es_type' => $document->data['_type'],
+                                    'es_id' => $document->data['_id']
                                 ]
                             )
                         }}"

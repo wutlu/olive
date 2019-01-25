@@ -73,9 +73,9 @@ Route::prefix('organizasyon')->group(function () {
 
 Route::get('uyari', 'HomeController@alert')->name('alert');
 
-Route::prefix('icerik')->group(function () {
+Route::prefix('db')->group(function () {
     Route::get('{es_index}/{es_type}/{es_id}', 'ContentController@module')->name('content.details');
-    Route::get('histogram/{es_index}/{es_type}', 'ContentController@histogram')->name('content.details');
+    Route::get('histogram/{es_index}/{es_type}', 'ContentController@histogram')->name('content.histogram');
 });
 
 Route::prefix('gercek-zamanli')->namespace('RealTime')->group(function () {

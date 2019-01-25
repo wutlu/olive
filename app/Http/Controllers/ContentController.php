@@ -94,64 +94,20 @@ class ContentController extends Controller
     {
         $document = Document::list($es_index, $es_type, [
                 'size' => 0,
-                'query' => [
-                    'bool' => [
-                        'must' => [
-                            [
-                                'query_string' => [
-                                    'default_field' => 'text',
-                                    'query' => implode(' OR ', $keywords)
-                                ]
-                            ]
-                        ],
-                        'filter' => [
-                            'range' => [
-                                $this->range_column => [
-                                    'format' => 'YYYY-MM-dd HH:mm',
-                                    'gte' => $this->minute
-                                ]
-                            ]
-                        ]
-                    ]
-                    'bool' => [
-                        'should' => [
-                            [
-                                'bool' => [
-                                    'must' => [
-                                        [
-                                            'range' => [
-                                                'created_at' => [
-                                                    'format' => 'YYYY-MM-dd HH:mm',
-                                                    'gte' => Carbon::now()->subHours(24)->format('Y-m-d H:i')
-                                                ]
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                            ]
-                        ]
-                    ]
-                ],
                 'aggs' => [
-                    'tweet' => [
-                        'histogram' => [
-                            'script' => 'doc[\'created_at\'].date.getHourOfDay()',
-                            'interval' => 1,
-                            'min_doc_count' => 0,
-                            'extended_bounds' => [
-                                'min' => 0,
-                                'max' => 23
+                    'dayOfWeek' => [
+                        'terms' => [
+                            'script' => [
+                                'lang' => 'painless',
+                                'source' => 'doc[\'created_at\'].value.dayOfWeekEnum.value'
                             ]
                         ]
                     ]
                 ]
         ]);
 
-        if ($document->status == 'ok')
-        {
             print_r($document);
             return '';
-        }
 
         return [
             'status' => 'err'
