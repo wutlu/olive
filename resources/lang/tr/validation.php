@@ -40,7 +40,7 @@ return [
     'email' => ':attribute biçimi geçersiz.',
     'exists' => ':attribute sistemde kayıtlı değil.',
     'file' => ':attribute dosya olmalıdır.',
-    'filled' => ':attribute alanının doldurulması zorunludur.',
+    'filled' => ':attribute alanının doldurulması zorunludur!',
     'image' => ':attribute alanı resim dosyası olmalıdır.',
     'in' => ':attribute değeri geçersiz.',
     'in_array' => ':attribute alanı :other içinde mevcut değil.',
