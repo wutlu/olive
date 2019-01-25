@@ -282,7 +282,7 @@
                             <li class="tiny">
                                 <a class="waves-effect" href="{{ route('crawlers.shopping.list') }}">
                                     <i class="material-icons">widgets</i>
-                                    Alışveriş Botları
+                                    E-ticaret Botları
                                 </a>
                             </li>
                             <li class="divider"></li>

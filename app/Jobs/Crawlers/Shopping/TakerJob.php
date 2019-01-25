@@ -142,7 +142,7 @@ class TakerJob implements ShouldQueue
 
                     if ($crawler->status == true)
                     {
-                        Mail::queue(new ServerAlertMail($crawler->name.' Alışveriş Botu [DURDU]', json_encode($item->error_reasons)));
+                        Mail::queue(new ServerAlertMail($crawler->name.' E-ticaret Botu [DURDU]', json_encode($item->error_reasons)));
                     }
 
                     $crawler->off_reason = json_encode($item->error_reasons);

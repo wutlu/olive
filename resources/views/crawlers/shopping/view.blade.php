@@ -9,7 +9,7 @@
             'link' => route('crawlers')
         ],
         [
-            'text' => 'Alışveriş Botları',
+            'text' => 'E-ticaret Botları',
             'link' => route('crawlers.shopping.list')
         ],
         [

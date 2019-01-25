@@ -36,7 +36,7 @@
     {
         if (obj.status == 'ok')
         {
-            var ramPer = 100-100/obj.data.ram.total.size*obj.data.ram.free.size;
+            var ramPer = 100-(100/obj.data.ram.total.size*obj.data.ram.free.size);
             var cpuPer = obj.data.cpu.usage;
 
             addData(ramChart, '', ramPer)

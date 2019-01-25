@@ -40,7 +40,7 @@
                     <a href="#sozluk" class="waves-effect waves-light">Sözlük</a>
                 </li>
                 <li class="tab">
-                    <a href="#shopping" class="waves-effect waves-light">Alışveriş</a>
+                    <a href="#shopping" class="waves-effect waves-light">E-ticaret</a>
                 </li>
             </ul>
         </div>

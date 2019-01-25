@@ -79,7 +79,7 @@ return [
         'twitter' => 'Twitter',
         'sozluk' => 'Sözlük',
         'news' => 'Haber',
-        'shopping' => 'Alışveriş',
+        'shopping' => 'E-ticaret',
     ],
 
     /**
@@ -272,7 +272,7 @@ return [
                 'icon' => 'vpn_key'
             ],
             13 => [
-                'name' => 'Alışveriş Botları',
+                'name' => 'E-ticaret Botları',
                 'route' => 'crawlers.shopping.list',
                 'root' => true,
                 'icon' => 'widgets'
