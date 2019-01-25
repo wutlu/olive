@@ -28,7 +28,7 @@ class CreateRequest extends FormRequest
             'slug'         => 'required|string|max:255|unique:pages',
             'keywords'     => 'nullable|string|max:255',
             'descriptions' => 'nullable|string|max:255',
-            'body'         => 'required|string|max:10000'
+            'body'         => 'required|string|max:20000'
         ];
     }
 }
