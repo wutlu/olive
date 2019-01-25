@@ -1074,20 +1074,20 @@ class UserController extends Controller
 
         if ($request->password)
         {
-            if ($user->notification('important'))
-            {
-                $user->notify(
-                    (
-                        new MessageNotification(
-                            'Olive: Şifre Güncellendi!',
-                            'Merhaba, '.$user->name,
-                            'Hesap şifreniz başarılı bir şekilde güncellendi.'
-                        )
-                    )->onQueue('email')
-                );
-            }
-
             $user->password = bcrypt($request->password);
+        }
+
+        if ($user->notification('important'))
+        {
+            $user->notify(
+                (
+                    new MessageNotification(
+                        'Olive: Bilgiler Güncellendi!',
+                        'Merhaba, '.$user->name,
+                        'Hesap bilgieriniz başarılı bir şekilde güncellendi.'
+                    )
+                )->onQueue('email')
+            );
         }
 
         $user->save();

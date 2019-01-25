@@ -23,6 +23,10 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Route::pattern('es_id', '[a-z0-9]+');
+        Route::pattern('es_type', '[a-z]+');
+        Route::pattern('es_index', '[a-z0-9_-]+');
+
         Route::pattern('key', '[a-zA-Z0-9-\/:=_]+');
         Route::pattern('id', '[0-9]+');
         Route::pattern('step', '[0-9]+');

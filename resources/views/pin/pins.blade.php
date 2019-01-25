@@ -67,60 +67,20 @@
             @endphp
 
             <ul id="dropdown-{{ $id }}" class="dropdown-content">
-                @if ($type == 'tweet')
-                    <li>
-                        <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" href="#" class="waves-effect">Kullanıcının Alınan Tüm Tweetleri</a>
-                    </li>
-                    <li>
-                        <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" href="#" class="waves-effect">Kullanıcı Bilgileri</a>
-                    </li>
-                @elseif ($type == 'article')
-                    <li>
-                        <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" href="#" class="waves-effect">Sitenin Tüm Haberleri</a>
-                    </li>
-                    <li>
-                        <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" href="#" class="waves-effect">Site Bilgileri</a>
-                    </li>
-                @elseif ($type == 'entry')
-                    <li>
-                        <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" href="#" class="waves-effect">Başlığa Git</a>
-                    </li>
-                    <li>
-                        <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" href="#" class="waves-effect">Kullanıcının Tüm Girdileri</a>
-                    </li>
-                    <li>
-                        <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" href="#" class="waves-effect">Kullanıcı Bilgileri</a>
-                    </li>
-                @elseif ($type == 'product')
-                    <li>
-                        <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" href="#" class="waves-effect">Kullanıcının Tüm Ürünleri</a>
-                    </li>
-                @elseif ($type == 'comment')
-                    <li>
-                        <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" href="#" class="waves-effect">Kullanıcının Tüm Yorumları</a>
-                    </li>
-                    <li>
-                        <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" href="#" class="waves-effect">Kullanıcının Trend'e Giren Videoları</a>
-                    </li>
-                    <li>
-                        <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" href="#" class="waves-effect">Video'ya Yapılan Diğer Yorumlar</a>
-                    </li>
-                @elseif ($type == 'video')
-                    <li>
-                        <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" href="#" class="waves-effect">Kullanıcının Trend'e Giren Videoları</a>
-                    </li>
-                    <li>
-                        <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" href="#" class="waves-effect">Video'ya Yapılan Yorumlar</a>
-                    </li>
-                @endif
-
-                <li class="divider" tabindex="-1"></li>
                 <li>
-                    <a href="{{ route('elasticsearch.document', [
-                        'index' => $document->data['_index'],
-                        'type' => $document->data['_type'],
-                        'id' => $document->data['_id']
-                    ]) }}" class="waves-effect">İçeriği Detaylı İncele</a>
+                    <a
+                        data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!"
+                        href="{{
+                            route(
+                                'content.details',
+                                [
+                                    'index' => $document->data['_index'],
+                                    'type' => $document->data['_type'],
+                                    'id' => $document->data['_id']
+                                ]
+                            )
+                        }}"
+                        class="waves-effect">İncele</a>
                 </li>
 
                 @if ($pin->organisation_id == auth()->user()->organisation_id)

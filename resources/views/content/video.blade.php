@@ -1,0 +1,1 @@
+video.blade.php

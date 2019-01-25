@@ -59,9 +59,12 @@ class Document
      *
      * @return object
      */
-    public static function list(array $name, string $type, array $query)
+    public static function list($name, string $type, array $query)
     {
-        $name = Indices::name($name);
+        if (is_array($name))
+        {
+            $name = Indices::name($name);
+        }
 
         $client = ClientBuilder::fromConfig([
             'hosts' => config('database.connections.elasticsearch.hosts'),

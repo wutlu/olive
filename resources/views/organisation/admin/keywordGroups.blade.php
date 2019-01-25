@@ -52,7 +52,7 @@
                         {!! $group->module_twitter ? '<span class="chip">Twitter</span>' : '' !!}
                         {!! $group->module_sozluk ? '<span class="chip">Sözlük</span>' : '' !!}
                         {!! $group->module_news ? '<span class="chip">Haber</span>' : '' !!}
-                        {!! $group->module_shopping ? '<span class="chip">Alışveriş</span>' : '' !!}
+                        {!! $group->module_shopping ? '<span class="chip">E-ticaret</span>' : '' !!}
                     </div>
                 </li>
             @empty

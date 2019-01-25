@@ -225,7 +225,7 @@ return [
         'module_twitter'               => 'Twitter Modülü',
         'module_sozluk'                => 'Sözlük Modülü',
         'module_news'                  => 'Haber Modülü',
-        'module_shopping'              => 'Alışveriş Modülü',
+        'module_shopping'              => 'E-ticaret Modülü',
         'keyword_group'                => 'Kelime Grubu',
         'pin_group'                    => 'Pin Grubu',
         'keyword_group.*'              => 'Kelime Grubu',

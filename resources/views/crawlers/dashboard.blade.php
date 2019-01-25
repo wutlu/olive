@@ -19,9 +19,9 @@
         <i class="material-icons">widgets</i>
         <span class="d-block">Sözlük Botları</span>
     </a>
-    <a href="{{ route('crawlers.shopping.list') }}" class="d-block card-panel hoverable waves-effect orange lighten-2" data-tooltip="Alışveriş Botları" data-position="right">
+    <a href="{{ route('crawlers.shopping.list') }}" class="d-block card-panel hoverable waves-effect orange lighten-2" data-tooltip="E-ticaret Botları" data-position="right">
         <i class="material-icons">widgets</i>
-        <span class="d-block">Alışveriş Botları</span>
+        <span class="d-block">E-ticaret Botları</span>
     </a>
     <a href="{{ route('admin.twitter.settings') }}" class="d-block card-panel hoverable waves-effect blue lighten-2" data-tooltip="Twitter Ayarları" data-position="right">
         <i class="material-icons">widgets</i>
