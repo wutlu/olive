@@ -74,8 +74,8 @@ Route::prefix('organizasyon')->group(function () {
 Route::get('uyari', 'HomeController@alert')->name('alert');
 
 Route::prefix('db')->group(function () {
-    Route::get('{es_index}/{es_type}/{es_id}', 'ContentController@module')->name('content.details');
-    Route::get('histogram/{es_index}/{es_type}', 'ContentController@histogram')->name('content.histogram');
+    Route::get('{es_index}/{es_type}/{es_id}', 'ContentController@module')->name('content');
+    Route::post('histogram/{type}/{es_index}/{es_type}/{sid?}', 'ContentController@histogram')->name('content.histogram')->where('type', '(hourly|weekly)');
 });
 
 Route::prefix('gercek-zamanli')->namespace('RealTime')->group(function () {

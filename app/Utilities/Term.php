@@ -18,12 +18,13 @@ class Term
     {
         $string = preg_replace('/ss+/i', '', $string);
         $string = trim($string);
-        $string = preg_replace('/[^a-zA-Z -]/', '', $string);
-        $string = strtolower($string);
+        $string = preg_replace('/[^a-zğüşıöçA-ZĞÜŞİÖÇ -]/', '', $string);
 
-        $stop_words = explode(PHP_EOL, File::get(database_path('analysis/stop.txt')));
+        $string = self::convertAscii($string, [ 'lowercase' => true ]);
 
-        preg_match_all('/\b.*?\b/i', $string, $match_words);
+        $stop_words = explode(PHP_EOL, File::get(database_path('analysis/stopwords.txt')));
+
+        preg_match_all('/(\b[\wğüşıöç]+\b)(([a-z0-9-]+)*?)(\b[\wğüşıöç]+\b)/i', $string, $match_words);
 
         $match_words = $match_words[0];
 
@@ -35,7 +36,9 @@ class Term
             }
         }  
 
-        $word_count = str_word_count( implode(" ", $match_words) , 1); 
+        $word_count = str_word_count(implode(' ', $match_words), 1, 'ğüşıöç');
+
+        return $word_count;
         $frequency = array_count_values($word_count);
 
         arsort($frequency);

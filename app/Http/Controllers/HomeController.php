@@ -22,6 +22,8 @@ use App\Models\Crawlers\SozlukCrawler;
 
 use App\Elasticsearch\Document;
 
+use App\Utilities\Term;
+
 class HomeController extends Controller
 {
     public function __construct()
@@ -57,7 +59,7 @@ class HomeController extends Controller
     /**
      * Kullanım Koşulları ve Gizlilik Politikası kabulu.
      *
-     * @return view
+     * @return array
      */
     public static function termVersion()
     {

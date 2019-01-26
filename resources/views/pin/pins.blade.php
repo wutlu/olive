@@ -72,7 +72,7 @@
                         data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!"
                         href="{{
                             route(
-                                'content.details',
+                                'content',
                                 [
                                     'es_index' => $document->data['_index'],
                                     'es_type' => $document->data['_type'],

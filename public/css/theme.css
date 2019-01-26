@@ -989,16 +989,7 @@ table.invoice tfoot > tr {
 
   overflow: auto;
 
-  background: #111;
-  background:         linear-gradient(45deg, #111 0%, #38ADAE 100%);
-  background:    -moz-linear-gradient(45deg, #111 0%, #38ADAE 100%);
-  background: -webkit-linear-gradient(45deg, #111 0%, #38ADAE 100%);
-
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#111', endColorstr='#38ADAE', GradientType=1 );
-
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: scroll;
+  background-color: rgba(255, 255, 255, .9);
 
           transform: scale(1.1);
   -webkit-transform: scale(1.1);
@@ -1008,14 +999,17 @@ table.invoice tfoot > tr {
 }
 
 .search-wrapper .input-field > .material-icons {
-  color: #fff;
+  color: #666;
 }
 .search-wrapper .input-field > input {
-  color: #ffffff !important;
-  border-color: #ffffff !important;
+  color: #666 !important;
+  border-width: 0 !important;
+  box-shadow: none !important;
+  font-size: 48px;
+  height: 64px;
 }
 .search-wrapper .input-field > label {
-  color: #ffffff !important;
+  color: #666 !important;
 }
 
 @media (max-width: 1024px) {
@@ -1054,7 +1048,7 @@ body.module-search-active > .search-wrapper {
 
   width: 25%;
 
-  color: #fff;
+  color: #666;
 }
 #ms-results > .ms-item.active {
   background-color: rgba(0, 0, 0, .1);
@@ -1574,7 +1568,7 @@ header#main > .parallax-container > .parallax > video#background-video {
 }
 .card-panel.card-loader.card-loader-unstyled {
           box-shadow: none;
-  -webkit-box-shadow: nonw;
+  -webkit-box-shadow: none;
 }
 
 /**
@@ -1883,11 +1877,12 @@ table tr {
 .modal .modal-content {
   padding: 0;
 
-  background-color: #f9f9f9;
+  background-color: #fff;
 }
 .modal .modal-content > .modal-title {
   padding: 24px 24px 12px 24px;
   font-size: 22px;
+  color: #999;
 }
 .modal .modal-content > .modal-title:empty,
 .modal .modal-content > .modal-footer:empty {
@@ -1899,10 +1894,12 @@ table tr {
   max-height: 400px;
   margin: 0;
   padding: 24px 32px;
+
   background-color: #fff;
 
-          box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
-  -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+  border-width: 1px 0;
+  border-color: #f0f0f0;
+  border-style: solid;
 }
 .modal .modal-content > .modal-footer {
   padding: 12px 24px;

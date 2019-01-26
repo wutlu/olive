@@ -10,7 +10,7 @@
 @include('content._inc.histogram', [
     'index' => $es->index,
     'type' => $es->type,
-    'id' => $document['_source']['group_name'],
+    'id' => $document['_source']['site_id'],
 ])
 
 @section('content')

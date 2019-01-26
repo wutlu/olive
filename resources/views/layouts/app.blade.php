@@ -463,7 +463,7 @@
             <div class="search-content">
                 <div class="right-align">
                     <a href="#" class="btn-floating btn-flat waves-effect" data-trigger="module-search-close">
-                        <i class="material-icons white-text">close</i>
+                        <i class="material-icons grey-text">close</i>
                     </a>
                 </div>
                 <div class="input-field">
@@ -473,6 +473,7 @@
                         id="search_input"
                         type="text"
                         class="validate json"
+                        placeholder="Arayın"
                         data-href="{{ route('module.search') }}"
                         data-method="post"
                         data-delay="1"
@@ -569,7 +570,7 @@
                                 item.attr('data-route', o.route)
                             }
 
-                            item.addClass(o.root ? 'yellow-text' : '')
+                            item.addClass(o.root ? 'teal-text' : '')
                             item.appendTo(ms_results)
                         })
                     }
@@ -654,7 +655,7 @@
     @endauth
 
     <div class="@auth{{ @$sidenav_fixed_layout ? 'sidenav-fixed-layout' : '' }}@endauth">
-        <ul class="partners grey lighten-4">
+        <ul class="partners">
             <li class="partner">
                 <a href="https://laravel.com/" target="_blank">
                     <img alt="client" src="{{ asset('img/clients-logo1.png') }}" />
