@@ -50,6 +50,7 @@ class ContentController extends Controller
 
         if ($document->status == 'ok')
         {
+            $data = [];
             $document = $document->data;
             $id_segment = explode('-', $es_index);
 
@@ -82,6 +83,46 @@ class ContentController extends Controller
                 case 'article':
                     $crawler = MediaCrawler::where('id', $document['_source']['site_id'])->firstOrFail();
 
+                    $data['total'] = Document::count($es_index, 'article', [
+                        'query' => [
+                            'bool' => [
+                                'must' => [
+                                    [
+                                        'match' => [ 'site_id' => $crawler->id ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]);
+
+                    $data['pos'] = Document::count($es_index, 'article', [
+                        'query' => [
+                            'bool' => [
+                                'must' => [
+                                    [ 'match' => [ 'site_id' => $crawler->id ] ],
+                                    [ 'match' => [ 'status' => 'ok' ] ]
+                                ],
+                                'filter' => [
+                                    [ 'range' => [ 'sentiment.pos' => [ 'gte' => .34 ] ] ]
+                                ]
+                            ]
+                        ]
+                    ]);
+
+                    $data['neg'] = Document::count($es_index, 'article', [
+                        'query' => [
+                            'bool' => [
+                                'must' => [
+                                    [ 'match' => [ 'site_id' => $crawler->id ] ],
+                                    [ 'match' => [ 'status' => 'ok' ] ]
+                                ],
+                                'filter' => [
+                                    [ 'range' => [ 'sentiment.neg' => [ 'gte' => .34 ] ] ]
+                                ]
+                            ]
+                        ]
+                    ]);
+
                     $title = implode(' ', [ $crawler->name, '/', $document['_source']['title'] ]);
                 break;
 
@@ -94,7 +135,7 @@ class ContentController extends Controller
                 'id' => $es_id
             ];
 
-            return view(implode('.', [ 'content', $es_type ]), compact('document', 'title', 'es'));
+            return view(implode('.', [ 'content', $es_type ]), compact('document', 'title', 'es', 'data'));
         }
 
         return abort(404);

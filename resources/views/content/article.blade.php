@@ -16,12 +16,21 @@
 @section('content')
     <div class="card">
         <div class="card-content">
-            <span class="card-title">{{ $document['_source']['title'] }}</span>
-            <ul class="item-group mb-0">
-                <li class="item">test</li>
-                <li class="item">test</li>
-                <li class="item">test</li>
-                <li class="item">test</li>
+            <ul class="item-group m-0">
+                <li class="item">
+                	<small class="grey-text">Alınan Haber</small>
+                	<p class="mb-0">{{ $data['total']->data['count'] }}</p>
+                </li>
+                <li class="item">
+                	<small class="grey-text">En Çok Tekrar Eden Kelimeler</small>
+                </li>
+                <li class="item">
+                	<small class="grey-text">Pozitif İçerik</small>
+                	<p class="mb-0">{{ $data['pos']->data['count'] }}</p>
+                </li>
+                <li class="item">
+                	<canvas id="sentiment-chart"></canvas>
+                </li>
             </ul>
         </div>
     </div>
@@ -29,4 +38,52 @@
 
 @push('external.include.footer')
     <script src="{{ asset('js/chart.js?v='.config('system.version')) }}"></script>
+@endpush
+
+@push('local.scripts')
+    var diskOptions = {
+	    legend: {
+	        display: false
+	    },
+        layout: {
+            padding: {
+                top: 10,
+                bottom: 10
+            }
+        },
+        tooltips: {
+            callbacks: {
+                label: function(tooltipItem, data) {
+                    var dataset = data.datasets[tooltipItem.datasetIndex];
+                    var total = dataset.data.reduce(function(previousValue, currentValue, currentIndex, array) {
+                        return previousValue + currentValue;
+                    });
+
+                    var currentValue = dataset.data[tooltipItem.index];
+                    var percentage = Math.floor(((currentValue/total) * 100)+0.5);
+
+                    return percentage + '%';
+                }
+            }
+        }
+    };
+
+	var sentiment_chart = $("#sentiment-chart");
+
+	$(document).ready(function() {
+	    sentiment_chart = new Chart(sentiment_chart, {
+	        type: 'pie',
+	        data: {
+	            datasets: [{
+	                backgroundColor: [ '#aeea00', '#f44336', '#bdbdbd' ],
+	                data: [
+	                	{{ $data['pos']->data['count'] }},
+	                	{{ $data['neg']->data['count'] }},
+	                	{{ $data['total']->data['count'] - ($data['pos']->data['count']+$data['neg']->data['count']) }}
+	                ]
+	            }]
+	        },
+	        options: diskOptions
+	    })
+	})
 @endpush

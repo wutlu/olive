@@ -214,9 +214,12 @@ class Document
      *
      * @return object
      */
-    public static function count(array $name, string $type = '', array $body = [])
+    public static function count($name, string $type = '', array $body = [])
     {
-        $name = Indices::name($name);
+        if (is_array($name))
+        {
+            $name = Indices::name($name);
+        }
 
         $client = ClientBuilder::fromConfig([
             'hosts' => config('database.connections.elasticsearch.hosts'),
