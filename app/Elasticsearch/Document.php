@@ -151,7 +151,7 @@ class Document
                     ]
                 ),
                 'App\Elasticsearch\Document::bulkInsert()',
-                10
+                9
             );
 
             return (object) [

@@ -18,18 +18,19 @@
         <div class="card-content">
             <ul class="item-group m-0">
                 <li class="item">
-                	<small class="grey-text">Alınan Haber</small>
-                	<p class="mb-0">{{ $data['total']->data['count'] }}</p>
+                    <small class="grey-text">Alınan Haber</small>
+                    <p class="mb-0">{{ $data['total']->data['count'] }}</p>
                 </li>
                 <li class="item">
-                	<small class="grey-text">En Çok Tekrar Eden Kelimeler</small>
+                    <small class="grey-text">En Çok Tekrar Eden Kelimeler</small>
                 </li>
                 <li class="item">
-                	<small class="grey-text">Pozitif İçerik</small>
-                	<p class="mb-0">{{ $data['pos']->data['count'] }}</p>
+                    <small class="grey-text">Pozitif İçerik</small>
+                    <p class="mb-0">{{ $data['pos']->data['count'] }}</p>
                 </li>
                 <li class="item">
-                	<canvas id="sentiment-chart"></canvas>
+                    <small class="grey-text">Duygu Analizi</small>
+                    <canvas id="sentiment-chart"></canvas>
                 </li>
             </ul>
         </div>
@@ -42,15 +43,6 @@
 
 @push('local.scripts')
     var diskOptions = {
-	    legend: {
-	        display: false
-	    },
-        layout: {
-            padding: {
-                top: 10,
-                bottom: 10
-            }
-        },
         tooltips: {
             callbacks: {
                 label: function(tooltipItem, data) {
@@ -68,22 +60,33 @@
         }
     };
 
-	var sentiment_chart = $("#sentiment-chart");
+    var sentiment_chart = $("#sentiment-chart");
 
-	$(document).ready(function() {
-	    sentiment_chart = new Chart(sentiment_chart, {
-	        type: 'pie',
-	        data: {
-	            datasets: [{
-	                backgroundColor: [ '#aeea00', '#f44336', '#bdbdbd' ],
-	                data: [
-	                	{{ $data['pos']->data['count'] }},
-	                	{{ $data['neg']->data['count'] }},
-	                	{{ $data['total']->data['count'] - ($data['pos']->data['count']+$data['neg']->data['count']) }}
-	                ]
-	            }]
-	        },
-	        options: diskOptions
-	    })
-	})
+    $(document).ready(function() {
+        sentiment_chart = new Chart(sentiment_chart, {
+            type: 'pie',
+            data: {
+                datasets: [{
+                    labels: [
+                       'Pozitif',
+                       'Negatif',
+                       'Nötr'
+                    ],
+                    backgroundColor: [ '#aeea00', '#f44336', '#bdbdbd' ],
+                    data: [
+                        {{ $data['pos']->data['count'] }},
+                        {{ $data['neg']->data['count'] }},
+                        {{ $data['total']->data['count'] - ($data['pos']->data['count']+$data['neg']->data['count']) }}
+                    ]
+                }],
+                legend: {
+                    position: "right",
+                    labels: {
+                        usePointStyle: true
+                    }
+                }
+            },
+            options: diskOptions
+        })
+    })
 @endpush
