@@ -61,6 +61,67 @@ class ContentController extends Controller
                 case 'entry':
                     $crawler = SozlukCrawler::where('id', $id_segment[1])->firstOrFail();
 
+                    $site = [
+                        [ 'match' => [ 'group_name' => $document['_source']['group_name'] ] ]
+                    ];
+
+                    $data = [
+                        'total' => Document::count($es_index, 'entry', [
+                            'query' => [
+                                'bool' => [
+                                    'must' => $site
+                                ]
+                            ]
+                        ]),
+                        'pos' => Document::count($es_index, 'entry', [
+                            'query' => [
+                                'bool' => [
+                                    'must' => $site,
+                                    'filter' => [
+                                        [ 'range' => [ 'sentiment.pos' => [ 'gte' => .34 ] ] ]
+                                    ]
+                                ]
+                            ]
+                        ]),
+                        'neg' => Document::count($es_index, 'entry', [
+                            'query' => [
+                                'bool' => [
+                                    'must' => $site,
+                                    'filter' => [
+                                        [ 'range' => [ 'sentiment.neg' => [ 'gte' => .34 ] ] ]
+                                    ]
+                                ]
+                            ]
+                        ]),
+                        'popular' => Document::list($es_index, 'entry', [
+                            'size' => 0,
+                            'query' => [
+                                'bool' => [
+                                    'must' => $site
+                                ]
+                            ],
+                            'aggs' => [
+                                'popular_keywords' => [
+                                    'terms' => [
+                                        'field' => 'entry',
+                                        'size' => 100
+                                    ]
+                                ]
+                            ]
+                        ])
+                    ];
+
+                    $bucket = @$data['popular']->data['aggregations']['popular_keywords']['buckets'];
+
+                    if ($bucket)
+                    {
+                        $bucket = implode(' ', array_map(function($a) {
+                            return $a['key'];
+                        }, $bucket));
+
+                        $data['keywords'] = Term::commonWords($bucket, 100);
+                    }
+
                     $title = implode(' ', [ $crawler->name, '/', $document['_source']['title'] ]);
                 break;
 
@@ -284,29 +345,57 @@ class ContentController extends Controller
 
             if ($smilar)
             {
-                $documents = Document::list([ 'media', '*' ], $es_type, [
-                    'query' => [
-                        'bool' => [
-                            'must' => [
-                                [
-                                    'match' => [ 'status' => 'ok' ]
-                                ],
-                                [
-                                    'more_like_this' => [
-                                        'fields' => [ 'title', 'description' ],
-                                        'like' => array_keys($smilar),
-                                        'min_term_freq' => 1,
-                                        'min_doc_freq' => 1
+                switch ($es_type)
+                {
+                    case 'article':
+                        $documents = Document::list([ 'media', '*' ], $es_type, [
+                            'query' => [
+                                'bool' => [
+                                    'must' => [
+                                        [
+                                            'match' => [ 'status' => 'ok' ]
+                                        ],
+                                        [
+                                            'more_like_this' => [
+                                                'fields' => [ 'title' ],
+                                                'like' => array_keys($smilar),
+                                                'min_term_freq' => 1,
+                                                'min_doc_freq' => 1
+                                            ]
+                                        ]
                                     ]
                                 ]
-                            ]
-                        ]
-                    ],
-                    'min_score' => 10,
-                    'from' => $request->skip,
-                    'size' => $request->take,
-                    '_source' => [ 'url', 'title', 'description', 'created_at' ]
-                ]);
+                            ],
+                            'min_score' => 10,
+                            'from' => $request->skip,
+                            'size' => $request->take,
+                            '_source' => [ 'url', 'title', 'description', 'created_at' ]
+                        ]);
+                    break;
+
+                    case 'entry':
+                        $documents = Document::list([ 'sozluk', '*' ], $es_type, [
+                            'query' => [
+                                'bool' => [
+                                    'must' => [
+                                        [
+                                            'more_like_this' => [
+                                                'fields' => [ 'title' ],
+                                                'like' => array_keys($smilar),
+                                                'min_term_freq' => 1,
+                                                'min_doc_freq' => 1
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ],
+                            'min_score' => 10,
+                            'from' => $request->skip,
+                            'size' => $request->take,
+                            '_source' => [ 'url', 'title', 'entry', 'created_at' ]
+                        ]);
+                    break;
+                }
 
                 return [
                     'status' => 'ok',

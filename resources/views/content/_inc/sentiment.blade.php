@@ -1,5 +1,5 @@
 <div class="card">
-    <div class="card-content teal white-text">İlgili siteden toplam {{ $total }} içerik alındı. Sayfadaki istatistik verileri alınan haberler üzerinden gerçekleştirilmiştir.</div>
+    <div class="card-content teal white-text">{{ $alert }}</div>
     <div class="card-content">
         <span class="card-title">Duygu Analizi</span>
         <canvas id="sentiment-chart"></canvas>

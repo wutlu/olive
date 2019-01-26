@@ -68,19 +68,7 @@
 
             <ul id="dropdown-{{ $id }}" class="dropdown-content">
                 <li>
-                    <a
-                        data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!"
-                        href="{{
-                            route(
-                                'content',
-                                [
-                                    'es_index' => $document->data['_index'],
-                                    'es_type' => $document->data['_type'],
-                                    'es_id' => $document->data['_id']
-                                ]
-                            )
-                        }}"
-                        class="waves-effect">İncele</a>
+                    <a href="{{ route('content', [ 'es_index' => $document->data['_index'], 'es_type' => $document->data['_type'], 'es_id' => $document->data['_id'] ]) }}" class="waves-effect">İncele</a>
                 </li>
 
                 @if ($pin->organisation_id == auth()->user()->organisation_id)
