@@ -68,6 +68,7 @@
                         @component('components.nothing')@endcomponent
                     </div>
                     <div class="collection-item z-depth-1 model hide">
+                        <span class="d-table" data-name="title"></span>
                         <span class="d-table grey-text" data-name="entry"></span>
                         <a href="#" class="grey-text" data-name="url" target="_blank"></a>
                         <time class="d-table teal-text mb-0" data-name="created-at"></time>
@@ -114,6 +115,7 @@
                     var item = item_model.clone();
                         item.removeClass('model hide').addClass('_tmp').attr('data-id', o.id)
 
+                        item.find('[data-name=title]').html(o._source.title)
                         item.find('[data-name=entry]').html(o._source.entry)
                         item.find('[data-name=url]').html(o._source.url).attr('href', o._source.url)
                         item.find('[data-name=created-at]').html(o._source.created_at)
