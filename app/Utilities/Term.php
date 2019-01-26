@@ -16,15 +16,11 @@ class Term
      */
     public static function commonWords(string $string, int $max_count = 5)
     {
-        $string = preg_replace('/ss+/i', '', $string);
-        $string = trim($string);
-        $string = preg_replace('/[^a-zğüşıöçA-ZĞÜŞİÖÇ -]/', '', $string);
-
         $string = self::convertAscii($string, [ 'lowercase' => true ]);
 
         $stop_words = explode(PHP_EOL, File::get(database_path('analysis/stopwords.txt')));
 
-        preg_match_all('/(\b[\wğüşıöç]+\b)(([a-z0-9-]+)*?)(\b[\wğüşıöç]+\b)/i', $string, $match_words);
+        preg_match_all('/\b([a-zğüşıöç]{4,})\b/i', $string, $match_words);
 
         $match_words = $match_words[0];
 
@@ -38,7 +34,6 @@ class Term
 
         $word_count = str_word_count(implode(' ', $match_words), 1, 'ğüşıöç');
 
-        return $word_count;
         $frequency = array_count_values($word_count);
 
         arsort($frequency);

@@ -42,7 +42,7 @@ class DeleteIndexJob implements ShouldQueue
     {
         $query = Indices::drop($this->name);
 
-        if ($query->status != 'deleted')
+        if (@$query['status'] != 'deleted')
         {
             DeleteIndexJob::dispatch($this->name)->onQueue('error-crawler')->delay(now()->addMinutes(10));
         }

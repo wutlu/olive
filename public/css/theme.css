@@ -930,6 +930,10 @@ table.invoice tfoot > tr {
   display: inline-block;
 }
 
+.item-group > .item.w-50 {
+  width: 50%;
+}
+
 @media (max-width: 1024px) {
   .item-group > .item {
     width: 50%;

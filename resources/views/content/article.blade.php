@@ -14,27 +14,42 @@
 ])
 
 @section('content')
-    <div class="card">
-        <div class="card-content">
-            <ul class="item-group m-0">
-                <li class="item">
-                    <small class="grey-text">Alınan Haber</small>
-                    <p class="mb-0">{{ $data['total']->data['count'] }}</p>
-                </li>
-                <li class="item">
-                    <small class="grey-text">En Çok Tekrar Eden Kelimeler</small>
-                </li>
-                <li class="item">
-                    <small class="grey-text">Pozitif İçerik</small>
-                    <p class="mb-0">{{ $data['pos']->data['count'] }}</p>
-                </li>
-                <li class="item">
-                    <small class="grey-text">Duygu Analizi</small>
-                    <canvas id="sentiment-chart"></canvas>
-                </li>
-            </ul>
+<div class="row">
+    <div class="col m12 xl12">
+        <div class="card">
+            <div class="card-content">
+                <a href="{{ $document['_source']['url'] }}" class="card-title d-flex" target="_blank">
+                    <i class="material-icons mr-1">insert_link</i>
+                    <span>{{ $document['_source']['title'] }}</span>
+                </a>
+                <div class="markdown">
+                    {!! Term::markdown($document['_source']['description']) !!}
+                </div>
+            </div>
         </div>
     </div>
+    <div class="col m12 xl6">
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title d-table">Sitede Sık Kullanılan Kelimeler</span>
+                @forelse (@$data['keywords'] as $key => $word)
+                    <span class="chip">{{ $key }}</span>
+                @empty
+                    <span class="chip">Tespit Edilemedi</span>
+                @endforelse
+            </div>
+        </div>
+    </div>
+    <div class="col m12 xl6">
+        <div class="card">
+            <div class="card-content teal white-text">İlgili siteden toplam {{ $data['total']->data['count'] }} içerik alındı. Sayfadaki istatistik verileri alınan veriler üzerinden gerçekleştirilmiştir.</div>
+            <div class="card-content">
+                <span class="card-title">Duygu Analizi</span>
+                <canvas id="sentiment-chart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('external.include.footer')
@@ -66,12 +81,12 @@
         sentiment_chart = new Chart(sentiment_chart, {
             type: 'pie',
             data: {
+                labels: [
+                   'Pozitif',
+                   'Negatif',
+                   'Nötr'
+                ],
                 datasets: [{
-                    labels: [
-                       'Pozitif',
-                       'Negatif',
-                       'Nötr'
-                    ],
                     backgroundColor: [ '#aeea00', '#f44336', '#bdbdbd' ],
                     data: [
                         {{ $data['pos']->data['count'] }},

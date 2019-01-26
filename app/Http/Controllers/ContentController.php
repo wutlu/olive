@@ -83,14 +83,15 @@ class ContentController extends Controller
                 case 'article':
                     $crawler = MediaCrawler::where('id', $document['_source']['site_id'])->firstOrFail();
 
+                    $site = [
+                        [ 'match' => [ 'site_id' => $crawler->id ] ],
+                        [ 'match' => [ 'status' => 'ok' ] ]
+                    ];
+
                     $data['total'] = Document::count($es_index, 'article', [
                         'query' => [
                             'bool' => [
-                                'must' => [
-                                    [
-                                        'match' => [ 'site_id' => $crawler->id ]
-                                    ]
-                                ]
+                                'must' => $site
                             ]
                         ]
                     ]);
@@ -98,10 +99,7 @@ class ContentController extends Controller
                     $data['pos'] = Document::count($es_index, 'article', [
                         'query' => [
                             'bool' => [
-                                'must' => [
-                                    [ 'match' => [ 'site_id' => $crawler->id ] ],
-                                    [ 'match' => [ 'status' => 'ok' ] ]
-                                ],
+                                'must' => $site,
                                 'filter' => [
                                     [ 'range' => [ 'sentiment.pos' => [ 'gte' => .34 ] ] ]
                                 ]
@@ -112,16 +110,41 @@ class ContentController extends Controller
                     $data['neg'] = Document::count($es_index, 'article', [
                         'query' => [
                             'bool' => [
-                                'must' => [
-                                    [ 'match' => [ 'site_id' => $crawler->id ] ],
-                                    [ 'match' => [ 'status' => 'ok' ] ]
-                                ],
+                                'must' => $site,
                                 'filter' => [
                                     [ 'range' => [ 'sentiment.neg' => [ 'gte' => .34 ] ] ]
                                 ]
                             ]
                         ]
                     ]);
+
+                    $data['popular'] = Document::list($es_index, 'article', [
+                        'size' => 0,
+                        'query' => [
+                            'bool' => [
+                                'must' => $site
+                            ]
+                        ],
+                        'aggs' => [
+                            'popular_keywords' => [
+                                'terms' => [
+                                    'field' => 'description',
+                                    'size' => 100
+                                ]
+                            ]
+                        ]
+                    ]);
+
+                    $bucket = @$data['popular']->data['aggregations']['popular_keywords']['buckets'];
+
+                    if ($bucket)
+                    {
+                        $bucket = implode(' ', array_map(function($a) {
+                            return $a['key'];
+                        }, $bucket));
+
+                        $data['keywords'] = Term::commonWords($bucket, 100);
+                    }
 
                     $title = implode(' ', [ $crawler->name, '/', $document['_source']['title'] ]);
                 break;
