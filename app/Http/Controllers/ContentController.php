@@ -13,6 +13,8 @@ use Carbon\Carbon;
 
 use App\Utilities\Term;
 
+use App\Http\Requests\SearchRequest;
+
 class ContentController extends Controller
 {
     public function __construct()
@@ -88,52 +90,51 @@ class ContentController extends Controller
                         [ 'match' => [ 'status' => 'ok' ] ]
                     ];
 
-                    $data['total'] = Document::count($es_index, 'article', [
-                        'query' => [
-                            'bool' => [
-                                'must' => $site
-                            ]
-                        ]
-                    ]);
-
-                    $data['pos'] = Document::count($es_index, 'article', [
-                        'query' => [
-                            'bool' => [
-                                'must' => $site,
-                                'filter' => [
-                                    [ 'range' => [ 'sentiment.pos' => [ 'gte' => .34 ] ] ]
+                    $data = [
+                        'total' => Document::count($es_index, 'article', [
+                            'query' => [
+                                'bool' => [
+                                    'must' => $site
                                 ]
                             ]
-                        ]
-                    ]);
-
-                    $data['neg'] = Document::count($es_index, 'article', [
-                        'query' => [
-                            'bool' => [
-                                'must' => $site,
-                                'filter' => [
-                                    [ 'range' => [ 'sentiment.neg' => [ 'gte' => .34 ] ] ]
+                        ]),
+                        'pos' => Document::count($es_index, 'article', [
+                            'query' => [
+                                'bool' => [
+                                    'must' => $site,
+                                    'filter' => [
+                                        [ 'range' => [ 'sentiment.pos' => [ 'gte' => .34 ] ] ]
+                                    ]
                                 ]
                             ]
-                        ]
-                    ]);
-
-                    $data['popular'] = Document::list($es_index, 'article', [
-                        'size' => 0,
-                        'query' => [
-                            'bool' => [
-                                'must' => $site
-                            ]
-                        ],
-                        'aggs' => [
-                            'popular_keywords' => [
-                                'terms' => [
-                                    'field' => 'description',
-                                    'size' => 100
+                        ]),
+                        'neg' => Document::count($es_index, 'article', [
+                            'query' => [
+                                'bool' => [
+                                    'must' => $site,
+                                    'filter' => [
+                                        [ 'range' => [ 'sentiment.neg' => [ 'gte' => .34 ] ] ]
+                                    ]
                                 ]
                             ]
-                        ]
-                    ]);
+                        ]),
+                        'popular' => Document::list($es_index, 'article', [
+                            'size' => 0,
+                            'query' => [
+                                'bool' => [
+                                    'must' => $site
+                                ]
+                            ],
+                            'aggs' => [
+                                'popular_keywords' => [
+                                    'terms' => [
+                                        'field' => 'description',
+                                        'size' => 100
+                                    ]
+                                ]
+                            ]
+                        ])
+                    ];
 
                     $bucket = @$data['popular']->data['aggregations']['popular_keywords']['buckets'];
 
@@ -266,5 +267,68 @@ class ContentController extends Controller
             'status' => $document->status,
             'data' => $document->data
         ];
+    }
+
+    /**
+     * Benzer İçerikler
+     *
+     * @return array
+     */
+    public static function smilar(string $es_index, string $es_type, string $es_id, SearchRequest $request)
+    {
+        $document = Document::get($es_index, $es_type, $es_id);
+
+        if ($document->status == 'ok')
+        {
+            $smilar = Term::commonWords($document->data['_source']['title']);
+
+            if ($smilar)
+            {
+                $documents = Document::list([ 'media', '*' ], $es_type, [
+                    'query' => [
+                        'bool' => [
+                            'must' => [
+                                [
+                                    'match' => [ 'status' => 'ok' ]
+                                ],
+                                [
+                                    'more_like_this' => [
+                                        'fields' => [ 'title', 'description' ],
+                                        'like' => array_keys($smilar),
+                                        'min_term_freq' => 1,
+                                        'min_doc_freq' => 1
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ],
+                    'min_score' => 10,
+                    'from' => $request->skip,
+                    'size' => $request->take,
+                    '_source' => [ 'url', 'title', 'description', 'created_at' ]
+                ]);
+
+                return [
+                    'status' => 'ok',
+                    'hits' => $documents->data['hits']['hits']
+                ];
+            }
+            else
+            {
+                return [
+                    'status' => 'ok',
+                    'hits' => []
+                ];
+            }
+        }
+        else
+        {
+            return [
+                'status' => 'err',
+                'data' => [
+                    'reason' => 'not found'
+                ]
+            ];
+        }
     }
 }
