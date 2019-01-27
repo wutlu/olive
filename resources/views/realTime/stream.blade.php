@@ -14,6 +14,13 @@
 
         overflow: hidden;
     }
+    .time-line > .collection > .lined {
+        border-width: 0 0 1px;
+        border-style: solid;
+        border-color: #f9f9f9;
+
+        position: relative;
+    }
 
     .list-alert {
         border-radius: .4rem !important;
@@ -32,6 +39,37 @@
         background-size: 32px 32px;
         padding: 1rem 1rem 1rem 32px;
         display: table;
+    }
+
+    a[data-trigger=pin] {
+        width: 32px;
+        height: 32px;
+
+        background-image: url('../img/icons/pin.png');
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: 24px 24px;
+
+        position: absolute;
+        top: .5rem;
+        right: .5rem;
+    }
+    a[data-trigger=pin].on {
+        background-image: url('../img/icons/unpin.png');
+    }
+
+    a[data-button=view] {
+        width: 32px;
+        height: 32px;
+
+        background-image: url('../img/icons/info.png');
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: 24px 24px;
+
+        position: absolute;
+        top: .5rem;
+        right: 48px;
     }
 @endpush
 
@@ -89,21 +127,24 @@
                     href="#">Pinler (<span class="count">0</span>)</a>
             </div>
         </div>
-        <div class="collection">
-            <a
-                href="#"
-                class="collection-item hide model grey-text json"
-                data-href="{{ route('pin', 'add') }}"
-                data-method="post"
-                data-include="group_id"
-                data-callback="__pin">
+        <ul class="collection">
+            <li class="collection-item hide model grey-text lined">
                 <time data-name="created-at"></time>
-                <p data-name="url" class="grey-text text-darken-2"></p>
-                <p data-name="author" class="red-text"></p>
-                <p data-name="title" class="black-text strong"></p>
-                <p data-name="text"></p>
-            </a>
-            <div class="collection-item">
+                <a href="#" data-name="url" class="indigo-text d-table" target="_blank"></a>
+                <p data-name="author" class="red-text mb-0"></p>
+                <p data-name="title" class="black-text mb-0"></p>
+                <p data-name="text" class="mb-0"></p>
+                <a href="#" class="btn-flat btn-floating waves-effect" data-button="view"></a>
+                <a
+                    href="#"
+                    class="btn-flat btn-floating waves-effect json"
+                    data-href="{{ route('pin', 'add') }}"
+                    data-method="post"
+                    data-include="group_id"
+                    data-callback="__pin"
+                    data-trigger="pin"></a>
+            </li>
+            <li class="collection-item">
                 <p class="d-flex">
                     <img alt="Pin" src="{{ asset('img/icons/pin.png') }}" style="width: 32px; height: 32px; margin: 0 .2rem 0 0;" />
                     <span class="align-self-center">Sağdaki menüden bir pin grubu seçin. Pin grubunuz yoksa oluşturabilirsiniz. Pinlemek için ilgilendiğiniz içeriğe tıklamanız yeterli.</span>
@@ -112,8 +153,8 @@
                     <img alt="Pin" src="{{ asset('img/icons/snowflake.png') }}" style="width: 32px; height: 32px; margin: 0 .2rem 0 0;" />
                     <span class="align-self-center">Akışı yavaşlatmak için fareyi akışın üzerine getirin.</span>
                 </p>
-            </div>
-        </div>
+            </li>
+        </ul>
     </div>
 @endsection
 
@@ -133,12 +174,16 @@
 
         if (obj.status == 'removed')
         {
+            $('[data-pin-uuid=' + __.attr('data-pin-uuid') + ']').removeClass('on')
+
             M.toast({ html: 'Pin Kaldırıldı', classes: 'red darken-2' })
 
             pin_count.html(parseInt(pin_count.html()) - 1)
         }
         else if (obj.status == 'pinned')
         {
+            $('[data-pin-uuid=' + __.attr('data-pin-uuid') + ']').addClass('on')
+
             var toastHTML = $('<div />', {
                 'html': [
                     $('<span />', {
@@ -156,6 +201,7 @@
                         'data-id': __.data('id'),
                         'data-type': __.data('type'),
                         'data-index': __.data('index'),
+                        'data-pin-uuid': __.data('pin-uuid'),
                         'data-include': 'group_id'
                     })
                 ]
@@ -183,7 +229,8 @@
     var buffer = [];
     var words = [];
 
-    var time = 400;
+    var speed = $('input[name=speed]:checked').val();
+    var time = speed;
     var liveTimer;
 
     $(window).on('load', function() {
@@ -207,74 +254,79 @@
 
                 var url = '';
 
-                    if (obj.module == 'twitter')
-                    {
-                        url = 'https://twitter.com/' + obj.user.screen_name + '/status/' + obj._id;
+                if (obj.module == 'twitter')
+                {
+                    url = 'https://twitter.com/' + obj.user.screen_name + '/status/' + obj._id;
 
-                        item.find('[data-name=author]').html(obj.user.name + ' @' + obj.user.screen_name)
-                        item.find('[data-name=url]').html(url)
-                    }
-                    else if (obj.module == 'haber')
-                    {
-                        url = obj.url;
+                    item.find('[data-name=author]').html(obj.user.name + ' @' + obj.user.screen_name)
+                    item.find('[data-name=url]').html(url).attr('href', url)
+                }
+                else if (obj.module == 'haber')
+                {
+                    url = obj.url;
 
-                        item.find('[data-name=url]').html(url)
-                        item.find('[data-name=title]').html(obj.title)
-                    }
-                    else if (obj.module == 'sozluk')
-                    {
-                        url = obj.url;
+                    item.find('[data-name=url]').html(url).attr('href', url)
+                    item.find('[data-name=title]').html(obj.title)
+                }
+                else if (obj.module == 'sozluk')
+                {
+                    url = obj.url;
 
-                        item.find('[data-name=author]').html(obj.author)
-                        item.find('[data-name=url]').html(url)
-                        item.find('[data-name=title]').html(obj.title)
-                    }
-                    else if (obj.module == 'alisveris')
-                    {
-                        url = obj.url;
+                    item.find('[data-name=author]').html(obj.author)
+                    item.find('[data-name=url]').html(url).attr('href', url)
+                    item.find('[data-name=title]').html(obj.title)
+                }
+                else if (obj.module == 'alisveris')
+                {
+                    url = obj.url;
 
-                        item.find('[data-name=url]').html(obj.url)
-                        item.find('[data-name=title]').html(obj.title)
-                    }
-                    else if (obj.module == 'youtube-video')
-                    {
-                        url = 'https://www.youtube.com/watch?v=' + obj._id;
+                    item.find('[data-name=url]').html(obj.url).attr('href', url)
+                    item.find('[data-name=title]').html(obj.title)
+                }
+                else if (obj.module == 'youtube-video')
+                {
+                    url = 'https://www.youtube.com/watch?v=' + obj._id;
 
-                        item.find('[data-name=author]').html(obj.channel.title)
-                        item.find('[data-name=title]').html(obj.title)
-                        item.find('[data-name=url]').html(url)
-                    }
-                    else if (obj.module == 'youtube-comment')
-                    {
-                        url = 'https://www.youtube.com/channel/' + obj.channel.id;
+                    item.find('[data-name=author]').html(obj.channel.title)
+                    item.find('[data-name=title]').html(obj.title)
+                    item.find('[data-name=url]').html(url).attr('href', url)
+                }
+                else if (obj.module == 'youtube-comment')
+                {
+                    url = 'https://www.youtube.com/channel/' + obj.channel.id;
 
-                        item.find('[data-name=author]').html(obj.channel.title)
-                        item.find('[data-name=title]').html(obj.title)
-                        item.find('[data-name=url]').html(url)
-                    }
+                    item.find('[data-name=author]').html(obj.channel.title)
+                    item.find('[data-name=title]').html(obj.title)
+                    item.find('[data-name=url]').html(url).attr('href', url)
+                }
 
-                    item.attr('data-url', url)
+                item.find('[data-name=title], [data-name=text]').mark(words, {
+                    'element': 'span',
+                    'className': 'marked yellow black-text',
+                    'accuracy': 'complementary'
+                })
 
-                    item.find('[data-name=title], [data-name=text]').mark(words, {
-                        'element': 'span',
-                        'className': 'marked yellow black-text',
-                        'accuracy': 'complementary'
-                    })
+                item.attr('id', obj.uuid)
+                    .hide()
+                    .removeClass('model hide')
+                    .show( 'highlight', {}, 1000 );
 
-                    item.attr('id', obj.uuid)
-                        .attr('data-id', obj._id)
-                        .attr('data-index', obj._index)
-                        .attr('data-type', obj._type)
-                        .hide()
-                        .removeClass('model hide')
-                        .show( 'highlight', {}, 200 );
-
-                    item.prependTo(bucket)
+                item.prependTo(bucket)
 
                 if ($('input[name=sound_alert]').prop("checked") == true)
                 {
                     $.playSound('{{ asset('alert-message.mp3') }}')
                 }
+
+                item.find('[data-callback=__pin]')
+                    .attr('data-id', obj._id)
+                    .attr('data-pin-uuid', obj.uuid)
+                    .attr('data-index', obj._index)
+                    .attr('data-type', obj._type)
+                    .attr('data-url', url)
+
+                item.find('[data-button=view]')
+                    .attr('href', '{{ url('/') }}/db/' + obj._index + '/' + obj._type + '/' + obj._id)
             }
 
             buffer.shift()
@@ -288,15 +340,26 @@
         window.clearTimeout(liveTimer);
 
         liveTimer = window.setTimeout(function() {
-            livePush();
+            livePush()
         }, time)
     }
 
     $(document).on('mouseenter', '.time-line > .collection', function() {
-        time = 1200;
-    }).on('mouseleave', '.time-line', function() {
-        time = 400;
-    })
+        time = 60000;
+    }).on('mouseleave', '.time-line', speed_change)
+
+    $('input[name=speed]').change(speed_change)
+
+    function speed_change()
+    {
+        time = $('input[name=speed]:checked').val();
+
+        window.clearTimeout(liveTimer);
+
+        liveTimer = window.setTimeout(function() {
+            livePush()
+        }, time)
+    }
 
     var streamTimer;
 
@@ -422,7 +485,7 @@
                         name="group_id"
                         id="group_id-{{ $group->id }}"
                         value="{{ $group->id }}"
-                        class="json with-gap"
+                        class="json"
                         data-href="{{ route('pin.group') }}"
                         data-method="post"
                         data-delay="1"
@@ -443,19 +506,19 @@
         </div>
         <div class="collection collection-bordered">
             <label class="collection-item waves-effect d-block">
-                <input name="sentiment" value="pos" class="with-gap" type="radio" />
+                <input name="sentiment" value="pos" type="radio" />
                 <span>Pozitif</span>
             </label>
             <label class="collection-item waves-effect d-block">
-                <input name="sentiment" value="neg" class="with-gap" type="radio" />
+                <input name="sentiment" value="neg" type="radio" />
                 <span>Negatif</span>
             </label>
             <label class="collection-item waves-effect d-block">
-                <input name="sentiment" value="neu" class="with-gap" type="radio" />
+                <input name="sentiment" value="neu" type="radio" />
                 <span>Nötr</span>
             </label>
             <label class="collection-item waves-effect d-block">
-                <input checked name="sentiment" value="all" class="with-gap" type="radio" />
+                <input checked name="sentiment" value="all" type="radio" />
                 <span>Tümü</span>
             </label>
         </div>
@@ -466,6 +529,26 @@
             <label class="collection-item waves-effect d-block">
                 <input name="sound_alert" value="on" type="checkbox" />
                 <span>Uyarı Sesleri</span>
+            </label>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-content teal accent-3">
+            <span class="card-title white-text mb-0">Akış Hızı</span>
+        </div>
+        <div class="collection collection-bordered">
+            <label class="collection-item waves-effect d-block">
+                <input name="speed" value="100" type="radio" />
+                <span>Hızlı</span>
+            </label>
+            <label class="collection-item waves-effect d-block">
+                <input name="speed" value="400" type="radio" />
+                <span>Normal</span>
+            </label>
+            <label class="collection-item waves-effect d-block">
+                <input name="speed" value="600" type="radio" checked />
+                <span>Yavaş</span>
             </label>
         </div>
     </div>
