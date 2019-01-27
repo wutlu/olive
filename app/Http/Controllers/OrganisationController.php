@@ -120,29 +120,31 @@ class OrganisationController extends Controller
             {
                 echo Term::line($organisation->name);
 
-                if ($organisation->days() <= 0)
-                {
-                    $message = [
-                        'title' => 'Üzgünüm :(',
-                        'info' => 'Organizasyon Süreniz Doldu',
-                        'body' => implode(PHP_EOL, [
-                            'Tüm araçlardan tekrar faydalanabilmek için organizasyon sürenizi uzatmanız gerekiyor.'
-                        ])
-                    ];
-
-                    $organisation->status = false;
-                    $organisation->save();
-                }
-
                 if ($organisation->status == true)
                 {
-                    $message = [
-                        'title' => 'Yenileyin',
-                        'info' => 'Organizasyon Süresi Dolmak Üzere',
-                        'body' => implode(PHP_EOL, [
-                            'Kesinti yaşamamak için organizasyon sürenizi uzatmanız gerekiyor.'
-                        ])
-                    ];
+                    if ($organisation->days() == 0)
+                    {
+                        $message = [
+                            'title' => 'Üzgünüm :(',
+                            'info' => 'Organizasyon Süreniz Doldu',
+                            'body' => implode(PHP_EOL, [
+                                'Tüm araçlardan tekrar faydalanabilmek için organizasyon sürenizi uzatmanız gerekiyor.'
+                            ])
+                        ];
+
+                        $organisation->status = false;
+                        $organisation->save();
+                    }
+                    else
+                    {
+                        $message = [
+                            'title' => 'Yenileyin',
+                            'info' => 'Organizasyon Süresi Dolmak Üzere',
+                            'body' => implode(PHP_EOL, [
+                                'Kesinti yaşamamak için organizasyon sürenizi uzatmanız gerekiyor.'
+                            ])
+                        ];
+                    }
                 }
 
                 if (@$message)
