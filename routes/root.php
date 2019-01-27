@@ -238,14 +238,14 @@ Route::prefix('kullanici-yonetimi')->group(function () {
     Route::get('kullanici/{id}/fatura-gecmisi', 'UserController@adminInvoiceHistory')->name('admin.user.invoices');
     Route::get('kullanici/{id}/destek-talepleri', 'UserController@adminTickets')->name('admin.user.tickets');
 
-    Route::prefix('referans-sistemi')->group(function () {
+    Route::prefix('partner-sistemi')->group(function () {
         Route::get('{id}/', 'UserController@reference')->name('admin.settings.reference');
         Route::post('{id}/referanslar', 'UserController@references')->name('admin.settings.references');
         Route::post('{id}/islemler', 'UserController@transactions')->name('admin.settings.transactions');
     });
 });
 
-Route::prefix('referans-sistemi')->group(function () {
+Route::prefix('partner-sistemi')->group(function () {
     Route::get('/', 'UserController@adminReference')->name('admin.reference');
     Route::post('islemler', 'UserController@adminTransactions')->name('admin.transactions');
     Route::post('islem', 'UserController@adminTransaction')->name('admin.transaction');

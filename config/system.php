@@ -152,7 +152,7 @@ return [
             11 => [
                 'name' => 'Partner',
                 'image_src' => 'img/icons/badges/partner.png',
-                'description' => 'Referans sistemine dahil olun.'
+                'description' => 'Partner sistemine dahil olun.'
             ],
 
             /* ... */

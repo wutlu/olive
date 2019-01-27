@@ -36,7 +36,8 @@ class User extends Authenticatable
         'session_id',
         'organisation_id',
         'root',
-        'moderator'
+        'moderator',
+        'partner'
     ];
 
     /**

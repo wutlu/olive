@@ -33,6 +33,7 @@ class UpdateRequest extends FormRequest
             'verified'   => 'nullable|string|in:on',
             'avatar'     => 'nullable|string|in:on',
             'moderator'  => 'nullable|string|in:on',
+            'partner'    => 'nullable|string|in:on',
             'ban_reason' => 'nullable|string|max:255',
             'about'      => 'nullable|string|max:10000',
         ];

@@ -5,7 +5,7 @@
             'text' => 'Admin'
         ],
         [
-            'text' => '🐞 Referans Sistemi'
+            'text' => '🐞 Partner Sistemi'
         ]
     ]
 ])

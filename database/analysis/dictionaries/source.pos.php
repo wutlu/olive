@@ -74,6 +74,7 @@ $pos = [
   'geçerli',
   'uygun',
   'ulaşılabilir',
+  'ulaştı',
   'erişilebilir',
   'alkış',
   'övgü',

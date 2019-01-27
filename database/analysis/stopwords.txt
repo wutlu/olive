@@ -13,6 +13,8 @@ ayrıca
 az
 bana
 bazen
+https
+http
 bazı
 bazıları
 belki

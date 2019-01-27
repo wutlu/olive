@@ -30,7 +30,7 @@ return [
     'tax' => env('TAX', 18),
 
     /**
-     * referans payı
+     * partner payı
      *
      * @var integer
      */

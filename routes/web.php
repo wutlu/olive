@@ -145,7 +145,7 @@ Route::prefix('ayarlar')->group(function () {
     Route::get('hesap-bilgileri', 'UserController@account')->name('settings.account');
     Route::post('hesap-bilgileri', 'UserController@accountUpdate');
 
-    Route::prefix('referans-sistemi')->group(function () {
+    Route::prefix('partner-sistemi')->group(function () {
         Route::get('/', 'UserController@reference')->name('settings.reference');
         Route::post('referanslar', 'UserController@references')->name('settings.references');
         Route::post('islem', 'UserController@transaction')->name('settings.transaction');

@@ -13,7 +13,7 @@
             'link' => route('admin.user', $user->id)
         ],
         [
-            'text' => '🐞 Referans Sistemi'
+            'text' => '🐞 Partner Sistemi'
         ]
     ]
     :
@@ -22,7 +22,7 @@
             'text' => 'Ayarlar'
         ],
         [
-            'text' => 'Referans Sistemi'
+            'text' => 'Partner Sistemi'
         ]
     ],
     'dock' => true
@@ -213,13 +213,13 @@
                     @slot('cloud', 'beach_access')
                     @slot('cloud_class', 'grey-text text-darken-2')
                     @slot('size', 'small')
-                    @slot('text', 'Şu an referans sistemine dahil değilsiniz.<br />İstediğiniz zaman referans sitemine dahil olup kazanç ortağımız olabilirsiniz.')
+                    @slot('text', 'Şu an partner sistemine dahil değilsiniz.<br />İstediğiniz zaman partner sitemine dahil olup kazanç ortağımız olabilirsiniz.')
                 @endcomponent
 
                 <br />
 
-                <p class="mb-0 teal-text">Sizin referansınızla kaydolan müşterilerimizin gerçekleştirdiği her alışverişten pay oranıda kazanç elde edersiniz.</p>
-                <p class="mb-2 teal-text">Elde ettiğiniz her {{ config('formal.currency') }} 100 ve üzeri tutardaki kazançlarınızı dilediğiniz zaman çekebilirsiniz.</p>
+                <p class="mb-0 teal-text">Sizin referansınızla kaydolan müşterilerimizin gerçekleştirdiği her alışverişten geçerli pay oranıda kazanç elde edersiniz.</p>
+                <p class="mb-2 teal-text">Elde ettiğiniz her {{ config('formal.currency') }} 100 ve üzeri tutardaki kazançlarınızı dilediğiniz zaman talep edebilirsiniz.</p>
 
                 <a
                     href="#"
@@ -235,6 +235,37 @@
                     if (obj.status == 'ok')
                     {
                         location.reload()
+                    }
+                    else
+                    {
+                        return modal({
+                            'id': 'err',
+                            'body': [
+                                $('<div />', {
+                                    'class': 'teal-text',
+                                    'html': 'Partner sistemini kullanabilmek için ilk olarak partner başvurusunda bulunmalısınız. Başvuru için aşağıda adı geçen evrakları "partner@veri.zone" e-posta adresine gönderin ve gelecek cevabı takip edin.',
+                                }),
+                                $('<ul />', {
+                                    'html': [
+                                        $('<li />', {
+                                            'html': '- Kimlik Fotokopisi'
+                                        }),
+                                        $('<li />', {
+                                            'html': '- Özgeçmiş'
+                                        })
+                                    ]
+                                })
+                            ],
+                            'size': 'modal-small',
+                            'options': {},
+                            'footer': [
+                               $('<a />', {
+                                   'href': '#',
+                                   'class': 'modal-close waves-effect btn-flat cyan-text',
+                                   'html': buttons.ok
+                               })
+                            ]
+                        })
                     }
                 }
             @endpush

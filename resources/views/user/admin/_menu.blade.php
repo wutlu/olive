@@ -22,14 +22,14 @@
     @endif
     @if ($user->reference_id)
         <div class="divider teal"></div>
-        <div class="collection-item grey-text pb-0">Referans</div>
+        <div class="collection-item grey-text pb-0">Partner</div>
         <a href="{{ route('admin.user', $user->reference_id) }}" class="collection-item waves-effect {{ $active == 'account' ? 'active' : '' }}">
             {{ $user->reference->name }}
         </a>
     @endif
     @if ($user->reference_code)
         <a href="{{ route('admin.settings.reference', $id) }}" class="collection-item waves-effect {{ $active == 'reference' ? 'active' : '' }}">
-            Referans Sistemi
+            Partner Sistemi
         </a>
     @endif
 </div>

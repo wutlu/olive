@@ -211,7 +211,7 @@
                 <li>
                     <a class="waves-effect" href="{{ route('admin.reference') }}">
                         <i class="material-icons">money</i>
-                        Referans Sistemi
+                        Partner Sistemi
                         <span class="badge grey white-text" data-id="partner-count">0</span>
                     </a>
                 </li>

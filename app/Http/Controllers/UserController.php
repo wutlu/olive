@@ -218,29 +218,38 @@ class UserController extends Controller
     {
         $user = auth()->user();
 
-        if (!$user->reference_code)
+        if ($user->partner)
         {
-            $code = null;
-
-            while ($code === null)
+            if (!$user->reference_code)
             {
-                $code_random = str_random(6);
+                $code = null;
 
-                $exists = User::where('reference_code', $code_random)->exists();
-
-                if (!$exists)
+                while ($code === null)
                 {
-                    $code = $code_random;
+                    $code_random = str_random(6);
+
+                    $exists = User::where('reference_code', $code_random)->exists();
+
+                    if (!$exists)
+                    {
+                        $code = $code_random;
+                    }
                 }
+
+                $user->addBadge(11);
+                $user->update([ 'reference_code' => $code ]);
             }
 
-            $user->addBadge(11);
-            $user->update([ 'reference_code' => $code ]);
+            return [
+                'status' => 'ok'
+            ];
         }
-
-        return [
-            'status' => 'ok'
-        ];
+        else
+        {
+            return [
+                'status' => 'err'
+            ];
+        }
     }
 
     /**
@@ -873,6 +882,7 @@ class UserController extends Controller
         $user->avatar = $request->avatar ? null : $user->avatar;
         $user->root = $request->root ? true : false;
         $user->moderator = $request->moderator ? true : false;
+        $user->partner = $request->partner ? true : false;
         $user->about = $request->about ? $request->about : null;
 
         if ($request->ban_reason)

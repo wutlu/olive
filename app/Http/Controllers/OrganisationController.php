@@ -1086,7 +1086,7 @@ class OrganisationController extends Controller
                 $transaction = new Transaction;
                 $transaction->price = $share;
                 $transaction->currency = config('formal.currency');
-                $transaction->status_message = $organisation->author->id.'.'.$organisation->author->name.', ödemesinden referans payı aldınız.';
+                $transaction->status_message = $organisation->author->id.'.'.$organisation->author->name.', ödemesinden partner payı aldınız.';
                 $transaction->user_id = $organisation->author->reference_id;
                 $transaction->save();
             }

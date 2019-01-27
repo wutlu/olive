@@ -106,6 +106,10 @@
                         <input name="moderator" id="moderator" value="on" type="checkbox" {{ $user->moderator() ? 'checked' : '' }} />
                         <span>Moderatör</span>
                     </label>
+                    <label class="collection-item waves-effect d-block">
+                        <input name="partner" id="partner" value="on" type="checkbox" {{ $user->partner ? 'checked' : '' }} />
+                        <span>Partner</span>
+                    </label>
                     <div class="collection-item">
                         <div class="input-field">
                             <input name="ban_reason" id="ban_reason" value="{{ $user->ban_reason }}" type="text" class="validate" />
