@@ -39,13 +39,15 @@ class Kernel extends ConsoleKernel
         {
             /**
              * Organizasyon sahibi olan kullanıcılara
-             * her pazartesi ödeme bildirimi e-postası gönder.
+             * her gün belirlenen saatlerde ödeme bildirimi e-postası gönder.
              */
-            $schedule->command('check:upcoming_payments')
-                     ->mondays()
-                     ->dailyAt('13:00')
-                     ->timezone(config('app.timezone'))
-                     ->withoutOverlapping();
+            foreach (['00:00', '09:00', '15:00', '20:00'] as $time)
+            {
+                $schedule->command('check:upcoming_payments')
+                         ->dailyAt($time)
+                         ->timezone(config('app.timezone'))
+                         ->withoutOverlapping();
+            }
 
             /**
              * Kaynak Tespiti
