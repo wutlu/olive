@@ -406,7 +406,7 @@
     </div>
 
     @if ($user->id == $user->organisation->user_id)
-        <div id="tab-2" class="card-content grey lighten-4" style="display: none;">
+        <div id="tab-2" class="card-content grey lighten-4">
             @if ($user->organisation->lastInvoice->paid_at)
                 <div class="center-align hide" data-id="spinner">
                     <div class="preloader-wrapper big active">
@@ -653,7 +653,7 @@
         </div>
     @endif
 
-    <div id="tab-3" class="card-content grey lighten-4" style="display: none;">
+    <div id="tab-3" class="card-content grey lighten-4">
         <div class="card card-unstyled">
             <div class="card-content">
                 @if ($user->organisation->user_id == $user->id)
@@ -866,7 +866,7 @@
     </div>
 
     @if ($user->id == $user->organisation->user_id)
-        <div id="tab-4" class="grey lighten-4" style="display: none;">
+        <div id="tab-4" class="grey lighten-4">
             <div class="collection">
                 @foreach ($user->organisation->invoices as $invoice)
                     <a href="{{ route('organisation.invoice', $invoice->invoice_id) }}" class="collection-item d-flex waves-effect {{ $invoice->paid_at ? 'grey-text' : 'red-text' }}">

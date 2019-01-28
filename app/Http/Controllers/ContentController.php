@@ -241,7 +241,7 @@ class ContentController extends Controller
             break;
             case 'weekly':
                 $script = 'doc.created_at.value.getDayOfWeek()';
-                $max = 7;
+                $max = 6;
             break;
         }
 
@@ -250,9 +250,7 @@ class ContentController extends Controller
                 'query' => [
                     'bool' => [
                         'must' => [
-                            [
-                                'exists' => [ 'field' => 'created_at' ]
-                            ]
+                            [ 'exists' => [ 'field' => 'created_at' ] ]
                         ]
                     ]
                 ],
@@ -274,22 +272,13 @@ class ContentController extends Controller
         if ($es_type == 'entry')
         {
             $arr['query']['bool']['must'][] = [
-                'match' => [
-                    'group_name' => $es_id
-                ]
+                'match' => [ 'group_name' => $es_id ]
             ];
         }
         else if ($es_type == 'article')
         {
-            $arr['query']['bool']['must'][] = [
-                'match' => [
-                    'site_id' => $es_id
-                ]
-            ];
-
-            $arr['query']['bool']['must'][] = [
-                'exists' => [ 'field' => 'created_at' ]
-            ];
+            $arr['query']['bool']['must'][] = [ 'match' => [ 'site_id' => $es_id ] ];
+            $arr['query']['bool']['must'][] = [ 'exists' => [ 'field' => 'created_at' ] ];
         }
         else if ($es_type == 'product')
         {

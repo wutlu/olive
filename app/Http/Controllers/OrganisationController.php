@@ -166,7 +166,7 @@ class OrganisationController extends Controller
                             'button' => [
                                 'type' => 'http',
                                 'method' => 'GET',
-                                'action' => route('settings.organisation').'#tab-3',
+                                'action' => route('settings.organisation').'#tab-2',
                                 'class' => 'btn-flat waves-effect',
                                 'text' => 'Uzatın'
                             ]
