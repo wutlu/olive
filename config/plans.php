@@ -65,8 +65,8 @@ return [
 	2 => [
 		'name' => 'Yatırımcı',
 		'description' => 'Olive, henüz geliştirme aşamasında olduğundan tüm planlar satışa sunulmamıştır. Sadece geliştirme süresince alabileceğiniz YATIRIM planını satın alarak, hazır ve hazırlanmakta olan tüm Olive özelliklerini tam erişim sağlayabilirsiniz. Bu plan ilerleyen zamanlarda kaldırılacaktır. Fakat siz her zaman bu planı bu fiyattan kullanmaya devam edebilecek ve yılda '.config('formal.currency').' 6.876 kâr edeceksiniz.',
-		'price' => 76,
-		'price_old' => 649,
+		'price' => 240,
+		'price_old' => 1440,
 		'buy' => true,
 		'properties' => [
 			'capacity' => [
@@ -128,13 +128,13 @@ return [
 	],
 	3 => [
 		'name' => 'Bireysel',
-		'price' => 476,
-		'price_old' => 649,
+		'price' => 440,
+		'price_old' => 720,
 		'properties' => [
 			'capacity' => [
 				'text' => 'Plan Kapasitesi',
 				'details' => 'Plan kapasitesi kadar kullanıcı aynı anda bu planı kullanabilir.',
-				'value' => 2
+				'value' => 1
 			],
 			'forum' => [
 				'text' => 'Forum',
@@ -191,7 +191,7 @@ return [
 	4 => [
 		'name' => 'Kurumsal',
 		'price' => 2976,
-		'price_old' => 5192,
+		'price_old' => 3520,
 		'properties' => [
 			'capacity' => [
 				'text' => 'Plan Kapasitesi',

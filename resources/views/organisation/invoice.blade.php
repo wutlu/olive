@@ -181,7 +181,7 @@
             @endisset
             @isset(config('formal.company')['tradeRegisterNo'])
             <ul>
-                <li class="title">Ticaret Sicil N<sup>o</sup></li>
+                <li class="title">T.C. Kimlik N<sup>o</sup></li>
                 <li>{{ config('formal.company')['tradeRegisterNo'] }}</li>
             </ul>
             @endisset
@@ -350,7 +350,7 @@
     <div class="self-area">
         <div class="title">Hesap Bilgisi</div>
         <div class="body">Ödemenizi; fatura numarası açıklamada olacak şekilde aşağıdaki hesap numaralarından herhangi birine yapabilirsiniz.</div>
-        <div class="body">Daha sonra <a href="{{ route('settings.support', [ 'type' => 'odeme-bildirimi' ]) }}"><strong>Destek</strong></a> sayfasından ödeme bildirimi yapmanız gerekiyor.</div>
+        <div class="body">Daha sonra <a href="{{ route('settings.support', [ 'type' => 'odeme-bildirimi' ]) }}"><strong>Destek</strong></a> sayfasından ödeme yaptığınızı bildirmeniz gerekiyor.</div>
     </div>
     <div class="self-area">
         @foreach(config('formal.banks') as $key => $bank)
