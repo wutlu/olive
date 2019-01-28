@@ -5,7 +5,7 @@ return [
     'tax_name' => 'K.D.V.',
     'company' => [
         'logo' => 'img/veri.zone-logo.svg',
-        'name' => 'TOKSÖZ HIRDAVAT',
+        'name' => 'veri.zone',
         'address' => [
             'Yeni Mah. Eti Cad. 76/B',
             'Polatlı/ANKARA',
