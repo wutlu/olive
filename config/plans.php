@@ -64,9 +64,9 @@ return [
 	],
 	2 => [
 		'name' => 'Yatırımcı',
-		'description' => 'Olive, henüz geliştirme aşamasında olduğundan tüm planlar satışa sunulmamıştır. Sadece geliştirme süresince alabileceğiniz YATIRIM planını satın alarak, hazır ve hazırlanmakta olan tüm Olive özelliklerini tam erişim sağlayabilirsiniz. Bu plan ilerleyen zamanlarda kaldırılacaktır. Fakat siz her zaman bu planı bu fiyattan kullanmaya devam edebilecek ve yılda '.config('formal.currency').' 6.876 kâr edeceksiniz.',
-		'price' => 240,
-		'price_old' => 1440,
+		'description' => 'Olive, henüz geliştirme aşamasında olduğundan tüm planlar satışa sunulmamıştır. Sadece geliştirme süresince alabileceğiniz YATIRIM planını satın alarak, hazır ve hazırlanmakta olan tüm Olive özelliklerini tam erişim sağlayabilirsiniz. Bu plan ilerleyen zamanlarda kaldırılacaktır. Fakat siz her zaman bu planı bu fiyattan kullanmaya devam edebilecek ve yılda '.config('formal.currency').' 8.520 kâr edeceksiniz.',
+		'price' => 270,
+		'price_old' => 1080,
 		'buy' => true,
 		'properties' => [
 			'capacity' => [
@@ -128,8 +128,8 @@ return [
 	],
 	3 => [
 		'name' => 'Bireysel',
-		'price' => 440,
-		'price_old' => 720,
+		'price' => 490,
+		'price_old' => 540,
 		'properties' => [
 			'capacity' => [
 				'text' => 'Plan Kapasitesi',
@@ -189,9 +189,71 @@ return [
 		]
 	],
 	4 => [
+		'name' => 'Organize',
+		'price' => 1960,
+		'price_old' => 2160,
+		'properties' => [
+			'capacity' => [
+				'text' => 'Plan Kapasitesi',
+				'details' => 'Plan kapasitesi kadar kullanıcı aynı anda bu planı kullanabilir.',
+				'value' => 4
+			],
+			'forum' => [
+				'text' => 'Forum',
+				'details' => 'Olive forumlarını limitsizce kullanabilme.',
+				'value' => true
+			],
+			'real_time' => [
+				'text' => 'Gerçek Zamanlı',
+				'details' => 'Tamamen yerli ve anlık veri akışı ekranına erişim ve dahası.',
+				'value' => true
+			],
+			'support' => [
+				'text' => 'Destek',
+				'details' => '7/24 Online Destek',
+				'value' => true
+			],
+			'source' => [
+				'text' => 'Kaynak Tanımlama',
+				'details' => 'Daha fazla içeriğe ulaşabilmek adına farklı kaynak ve kriterler tanımlayabilme.',
+				'value' => true
+			],
+			'monitor' => [
+				'text' => 'İzleme Ekranları',
+				'details' => 'Veri analizleri ve veri endeksleri oluşturabileceğiniz izleme ekranları.',
+				'value' => true
+			],
+			'trend_live' => [
+				'text' => 'Canlı Trend',
+				'details' => 'Anlık sosyal medya ve yerli gündem canlı trend bilgisi.',
+				'value' => true
+			],
+			'trend_index' => [
+				'text' => 'Canlı Endeks',
+				'details' => 'Anlık sosyal medya ve yerli gündem trend endeksleri.',
+				'value' => true
+			],
+			'archive' => [
+				'text' => 'Arşiv',
+				'details' => 'Eski verilere erişim.',
+				'value' => true
+			],
+			'alarm' => [
+				'text' => 'Alarm',
+				'details' => 'Yerli veri internet alarmları.',
+				'value' => true
+			],
+			'tools' => [
+				'text' => 'Araçlar',
+				'details' => 'YouTube, Twitter vb. platformlardan daha verimli içerik elde etme araçları.',
+				'value' => true
+			]
+		]
+	],
+	5 => [
 		'name' => 'Kurumsal',
-		'price' => 2976,
-		'price_old' => 3520,
+		'price' => 4120,
+		'price_old' => 4320,
 		'properties' => [
 			'capacity' => [
 				'text' => 'Plan Kapasitesi',
