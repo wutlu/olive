@@ -54,8 +54,8 @@ class CreateAccountRequest extends FormRequest
                 $oauth = new Oauth1([
                     'consumer_key' => config('services.twitter.client_id'),
                     'consumer_secret' => config('services.twitter.client_secret'),
-                    //'token' => config('services.twitter.access_token'),
-                    //'token_secret' => config('services.twitter.access_token_secret')
+                    'token' => config('services.twitter.access_token'),
+                    'token_secret' => config('services.twitter.access_token_secret')
                 ]);
 
                 $stack->push($oauth);

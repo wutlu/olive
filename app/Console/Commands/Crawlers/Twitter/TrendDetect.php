@@ -69,6 +69,11 @@ class TrendDetect extends Command
                 'token_secret' => config('services.twitter.access_token_secret')
             ]);
 
+            $this->info(config('services.twitter.client_id'));
+            $this->info(config('services.twitter.client_secret'));
+            $this->info(config('services.twitter.access_token'));
+            $this->info(config('services.twitter.access_token_secret'));
+
             $stack->push($oauth);
 
             $client = new Client(

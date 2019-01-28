@@ -160,7 +160,7 @@ return [
                 'settings' => [
                     'total_fields_limit' => 500,
                     'number_of_shards' => 4,
-                    'number_of_replicas' => 0,
+                    'number_of_replicas' => 1,
                     'refresh_interval' => '30s'
                 ]
             ]
