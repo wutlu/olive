@@ -34,10 +34,8 @@ use App\Http\Requests\RealTime\KeywordGroup\AdminUpdateRequest as KeywordGroupAd
 use App\Http\Requests\IdRequest;
 use App\Http\Requests\SearchRequest;
 
-use App\Notifications\OrganisationInvoiceNotification;
 use App\Notifications\OrganisationWasCreatedNotification;
 use App\Notifications\OrganisationWasUpdatedNotification;
-use App\Notifications\ReturnedDiscountCouponNotification;
 use App\Notifications\MessageNotification;
 
 use Request as RequestStatic;
@@ -112,7 +110,7 @@ class OrganisationController extends Controller
      */
     public static function checkUpcomingPayments()
     {
-        $organisations = Organisation::whereBetween('end_date', [ Carbon::now()->subDays(14), Carbon::now()->addDays(1) ])->get();
+        $organisations = Organisation::whereBetween('end_date', [ Carbon::now()->subDays(2), Carbon::now()->addDays(1) ])->get();
 
         if (count($organisations))
         {
@@ -166,7 +164,7 @@ class OrganisationController extends Controller
                             'button' => [
                                 'type' => 'http',
                                 'method' => 'GET',
-                                'action' => route('settings.organisation').'#tab-3',
+                                'action' => route('settings.organisation').'#tab-2',
                                 'class' => 'btn-flat waves-effect',
                                 'text' => 'Uzatın'
                             ]

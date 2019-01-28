@@ -199,25 +199,6 @@
                                 url_pattern.focus()
 
                                 M.updateTextFields()
-                        }).on('keyup', '[name=site]', function() {
-                            var __ = $(this);
-                            var title = __.val().replace(/(.+)(\.|\/)(.{4,})\.(.+)/, '$3')
-                                                .replace('i', 'İ')
-                                                .replace('i', 'İ')
-                                                .replace('ü', 'Ü')
-                                                .replace('ü', 'Ü')
-                                                .replace('ö', 'Ö')
-                                                .replace('ö', 'Ö')
-                                                .replace('ü', 'Ç')
-                                                .replace('ü', 'Ç')
-                                                .replace('ğ', 'Ğ')
-                                                .replace('ğ', 'Ğ')
-                                                .replace('ş', 'Ş')
-                                                .replace('ş', 'Ş')
-                                                .toUpperCase();
-
-                            $('input[name=name]').val(title)
-                            $('[data-name=breadcrumb]').html(title)
                         })
                     @endpush
                     <div class="collection-item green lighten-4">

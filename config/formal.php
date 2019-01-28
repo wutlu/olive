@@ -1,13 +1,15 @@
 <?php
 
 return [
-    'currency' => '$',
+    'currency' => '₺',
     'tax_name' => 'K.D.V.',
     'company' => [
         'logo' => 'img/veri.zone-logo.svg',
-        'name' => 'TEST',
+        'name' => 'TOKSÖZ HIRDAVAT',
         'address' => [
-            'TEST'
+            'Yeni Mah. Eti Cad. 76/B',
+            'Polatlı/ANKARA',
+            'Mustafa Toksöz'
         ],
         'contact' => [
             'www.veri.zone',
@@ -15,10 +17,10 @@ return [
             '+90 850 302 1630'
         ],
         'taxOffice' => [
-            'name' => 'Ankara',
-            'no' => '0000'
+            'name' => 'Polatlı Vergi Dairesi',
+            'no' => '8490002944'
         ],
-        'tradeRegisterNo' => '0000'
+        'tradeRegisterNo' => '11047286234'
     ],
 
     /**
@@ -46,15 +48,8 @@ return [
 
     'banks' => [
         [
-            'name' => 'veri.zone',
-            'iban' => 'TR 0000 0000 0000 0000'
+            'name' => 'Mustafa TOKSÖZ',
+            'iban' => 'TR 04 0006 2000 8490 0006 2979 12'
         ]
     ]
 ];
-
-/*
- *   M. Toksöz Ticaret
- *   Yeni Mahalle, Eti Cad. No: 76/B
- *   Polatlı Vergi Dairesi
- *   11047286234
- */

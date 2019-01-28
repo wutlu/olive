@@ -169,6 +169,7 @@
                 <div class="card-content center-align">
                     <p class="teal-text">Hemen ücretsiz bir şekilde üye olabilir ve hiçbir ücret ödemeden başlangıç paketinden faydalanabilirsiniz.</p>
                     <p class="grey-text">Tüm araçlardan faydalanabilmek için bir organizasyon satın almalı veya bir organizasyon'a dahil olmalısınız.</p>
+                    <p class="grey-text">Yapacağınız yıllık ödemelerde anında {{ config('formal.discount_with_year') }}% indirim sağlıyoruz.</p>
 
                     @if (@$discountDay)
                         <p class="center-align grey-text">Hemen şimdi üye olun ve bugüne özel <span class="chip">{{ $discountDay->discount_rate }}%</span> indirim kuponuna anında sahip olun.</p>
