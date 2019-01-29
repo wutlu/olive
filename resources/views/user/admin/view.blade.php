@@ -116,7 +116,7 @@
                     </label>
                     <div class="collection-item">
                         <div class="range-field">
-                            <input name="partner_rate" id="partner_rate" type="number" value="{{ $user->partner_rate }}" class="validate" />
+                            <input name="partner_rate" id="partner_rate" type="number" max="50" value="{{ $user->partner_rate }}" class="validate" />
                             <label for="partner_rate">Partner Pay Oranı (%)</label>
                             <small class="helper-text">Partnerlerin referans olduğu müşterilerden alacakları komisyon oranı.</small>
                         </div>
