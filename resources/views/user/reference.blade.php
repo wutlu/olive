@@ -254,6 +254,9 @@
                                             'html': '- Kimlik Fotokopisi'
                                         }),
                                         $('<li />', {
+                                            'html': '- Ticari Faaliyet Belgesi'
+                                        }),
+                                        $('<li />', {
                                             'html': '- Özgeçmiş'
                                         })
                                     ]
