@@ -68,6 +68,10 @@ class DataController extends Controller
             });
         }
 
+        $query = $query->skip($skip)
+                       ->take($take)
+                       ->orderBy('id', 'DESC');
+
         return [
             'status' => 'ok',
             'hits' => $query->get(),
@@ -149,6 +153,10 @@ class DataController extends Controller
                 $q->where('name', $org_name);
             });
         }
+
+        $query = $query->skip($skip)
+                       ->take($take)
+                       ->orderBy('id', 'DESC');
 
         return [
             'status' => 'ok',
