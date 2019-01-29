@@ -1081,7 +1081,7 @@ class OrganisationController extends Controller
             if ($organisation->author->reference_id && intval($fee->total_price))
             {
                 $price = $fee->total_price - $fee->amount_of_tax;
-                $share = $price*config('formal.reference_rate')/100;
+                $share = $price*$organisation->author->partner_rate/100;
 
                 $transaction = new Transaction;
                 $transaction->price = $share;

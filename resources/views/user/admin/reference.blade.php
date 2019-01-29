@@ -12,10 +12,6 @@
 
 @section('content')
     <div class="card">
-        <div class="card-content teal d-flex justify-content-between">
-            <span class="white-text" data-tooltip="Tüm Müşterilerin Bakiyesi" data-position="right">{{ config('formal.currency') }} {{ $user->balance() }}</span>
-            <span class="white-text" data-tooltip="Pay Oranı" data-position="left">{{ config('formal.reference_rate') }}%</span>
-        </div>
         <ul class="collection load json-clear" 
             id="transactions"
             data-href="{{ route('admin.transactions') }}"

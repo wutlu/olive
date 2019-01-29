@@ -78,7 +78,7 @@ class UserController extends Controller
         $this->middleware('throttle:5,5')->only('passwordPost');
 
         ### [ 5 işlemden sonra 1 dakika ile sınırla ] ###
-        $this->middleware('throttle:5,1')->only('loginPost');
+        $this->middleware('throttle:10,1')->only('loginPost');
 
         ### [ 1 işlemden sonra 1 dakika ile sınırla ] ###
         $this->middleware('throttle:1,1')->only('registerResend');
@@ -96,9 +96,7 @@ class UserController extends Controller
      */
     public static function adminReference()
     {
-        $user = auth()->user();
-
-        return view('user.admin.reference', compact('user'));
+        return view('user.admin.reference');
     }
 
     /**
@@ -884,6 +882,7 @@ class UserController extends Controller
         $user->moderator = $request->moderator ? true : false;
         $user->partner = $request->partner ? true : false;
         $user->about = $request->about ? $request->about : null;
+        $user->partner_rate = $request->partner_rate;
 
         if ($request->ban_reason)
         {

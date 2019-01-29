@@ -30,17 +30,17 @@
 
 @section('content')
     <div class="card">
-        <div class="card-content teal d-flex justify-content-between">
-            @if ($root)
-                <span class="white-text" data-tooltip="Bakiye" data-position="right">{{ config('formal.currency') }} {{ $user->balance() }}</span>
-            @else
-                <a href="#" class="white-text" data-trigger="withdraw" data-tooltip="Bakiye" data-position="right">{{ config('formal.currency') }} {{ $user->balance() }}</a>
-            @endif
-
-            <span class="white-text" data-tooltip="Referans Kodu" data-position="right">{{ $user->reference_code }}</span>
-            <span class="white-text" data-tooltip="Pay Oranı" data-position="left">{{ config('formal.reference_rate') }}%</span>
-        </div>
         @if ($user->reference_code)
+            <div class="card-content teal d-flex justify-content-between">
+                @if ($root)
+                    <span class="white-text" data-tooltip="Bakiye" data-position="right">{{ config('formal.currency') }} {{ $user->balance() }}</span>
+                @else
+                    <a href="#" class="white-text" data-trigger="withdraw" data-tooltip="Bakiye" data-position="right">{{ config('formal.currency') }} {{ $user->balance() }}</a>
+                @endif
+
+                <span class="white-text" data-tooltip="Referans Kodu" data-position="right">{{ $user->reference_code }}</span>
+                <span class="white-text" data-tooltip="Pay Oranı" data-position="left">{{ $user->partner_rate }}%</span>
+            </div>
             <div class="card-tabs">
                 <ul class="tabs tabs-fixed-width tabs-transparent teal">
                     <li class="tab">
@@ -213,13 +213,16 @@
                     @slot('cloud', 'beach_access')
                     @slot('cloud_class', 'grey-text text-darken-2')
                     @slot('size', 'small')
-                    @slot('text', 'Şu an partner sistemine dahil değilsiniz.<br />İstediğiniz zaman partner sitemine dahil olup kazanç ortağımız olabilirsiniz.')
+                    @slot('text', 'Şu an partner sistemine dahil değilsiniz.')
                 @endcomponent
 
                 <br />
 
-                <p class="mb-0 teal-text">Sizin referansınızla kaydolan müşterilerimizin gerçekleştirdiği her alışverişten geçerli pay oranıda kazanç elde edersiniz.</p>
-                <p class="mb-2 teal-text">Elde ettiğiniz her {{ config('formal.currency') }} 100 ve üzeri tutardaki kazançlarınızı dilediğiniz zaman talep edebilirsiniz.</p>
+                <p class="mb-0 teal-text">- Partnerlerimiz bizim satış temsilcilerimiz sayılır.</p>
+                <p class="mb-0 teal-text">- Partner olmak için gerekli kriterlerinizi inceliyoruz.</p>
+                <p class="mb-0 teal-text">- Lütfen başvuru esnasında karşılaşacağınız yönlendirmeleri takip edin.</p>
+
+                <br />
 
                 <a
                     href="#"
