@@ -261,7 +261,7 @@ class ContentController extends Controller
                             'interval' => 1,
                             'min_doc_count' => 0,
                             'extended_bounds' => [
-                                'min' => 0,
+                                'min' => 1,
                                 'max' => $max
                             ]
                         ]
