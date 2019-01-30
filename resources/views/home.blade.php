@@ -121,10 +121,10 @@
         <div class="container">
             <div class="d-table mx-auto">
                 <span class="d-flex white-text" id="data-count">
-                    <small class="align-self-center mr-1">hızla büyüyen veritabanı ve</small>
+                    <small class="align-self-center mr-1">Hızla büyüyen veritabanı ve</small>
                     <span class="align-self-center load" data-id="loader" data-href="{{ route('home.data.counter') }}" data-method="post" data-callback="__counter">0</span>
                     <i class="align-self-center material-icons">add</i>
-                    <small class="align-self-center ml-1">veri</small>
+                    <small class="align-self-center ml-1">veri.</small>
                 </span>
             </div>
         </div>
