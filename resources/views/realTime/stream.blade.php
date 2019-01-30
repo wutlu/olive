@@ -455,13 +455,13 @@
                     </label>
                 </div>
                 <a
-                    class="btn-floating btn-small waves-effect json align-self-center cyan"
+                    class="btn-floating btn-small waves-effect json align-self-center white"
                     data-href="{{ route('realtime.keyword.group') }}"
                     data-method="post"
                     data-callback="__get_keyword_group"
                     id="menu"
                     href="#">
-                    <i class="material-icons">create</i>
+                    <i class="material-icons grey-text text-darken-2">create</i>
                 </a>
             </li>
         </ul>
