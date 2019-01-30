@@ -310,14 +310,14 @@ time {
   display: table;
   margin: 0 auto 1rem;
   text-align: center;
-  color: #b2ebf2;
+  color: #f0f0f0;
 }
 .not-found > i.material-icons {
   position: relative;
 }
 .not-found > i.material-icons:nth-of-type(1),
 .not-found > i.material-icons:nth-of-type(2) {
-  color: #b2ebf2;
+  color: #f0f0f0;
 }
 .not-found > i.material-icons:nth-of-type(1) {
   -webkit-transform: translate(80%, 20%);

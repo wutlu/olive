@@ -24,7 +24,7 @@
         </li>
     </ul>
 
-    <div class="card">
+    <div class="card with-bg">
         <div class="card-content">
             <div class="d-flex justify-content-between">
                 <div>
