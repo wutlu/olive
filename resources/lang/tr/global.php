@@ -1,11 +1,6 @@
 <?php
 
 return [
-    'header' => [
-        'lead-1' => 'Olive, gerçek zamanlı veri analiz katmanıdır.',
-        'lead-2' => 'Hedef bilgiye çok daha hızlı ve daha anlamlı bir şekilde erişmenizi sağlar.',
-        'lead-3' => 'Her gün gelişmekte olan Olive ile yeniliklere açık olun!',
-    ],
     'keywords' => [
         'alert' => 'Uyarı',
         'ok' => 'Tamam',

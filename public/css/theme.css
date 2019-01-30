@@ -402,6 +402,10 @@ time {
 /**
  * reset
  */
+.lead {
+  font-size: 16px;
+}
+
 body {
   overflow-x: hidden;
 }
@@ -599,7 +603,7 @@ table.invoice tfoot > tr {
 }
 .action-bar.action-bar-half {
   z-index: 10;
-  bottom: -24px;
+  bottom: -2rem;
 }
 
 .card {
@@ -1629,6 +1633,13 @@ nav .nav-wrapper > ul > li > a > i {
 }
 
 /**
+ * dword
+ */
+#dword {
+  font-size: 32px;
+}
+
+/**
  * table
  */
 table tr {
@@ -1644,6 +1655,12 @@ table tr {
 
 .btn-large:focus {
   background-color: transparent;
+}
+
+.btn:active,
+.btn-flat:active {
+          transform: scale(.9);
+  -webkit-transform: scale(.9);
 }
 
 .btn-image {
@@ -1849,10 +1866,6 @@ span.badge.new,
 .card .card-image img,
 .card .card-content,
 .card .card-action:last-child,
-.btn:not(.btn-floating),
-.btn-large:not(.btn-floating),
-.btn-small:not(.btn-floating),
-.btn-flat:not(.btn-floating),
 .modal,
 .modal .modal-footer,
 select,
@@ -1867,6 +1880,12 @@ th {
  */
 .toast {
   max-width: 256px;
+}
+
+@media (max-width: 700px) {
+  .toast {
+    max-width: 100%;
+  }
 }
 
 /**

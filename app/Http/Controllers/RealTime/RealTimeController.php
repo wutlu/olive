@@ -42,7 +42,7 @@ class RealTimeController extends Controller
         ]);
 
         ### [ gerçek zamanlı son bir kaç dakika değeri ] ###
-        $this->minute = Carbon::now()->subMinutes(4)->format('Y-m-d H:i');
+        $this->minute = Carbon::now()->subMinutes(2)->format('Y-m-d H:i');
         ### [ gerçek zamanlı sorgu yapılacak kolon ] ###
         $this->range_column = 'created_at';
     }

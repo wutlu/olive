@@ -83,7 +83,7 @@ class MonitorController extends Controller
             $message[] = '| RAM tüketimi | '.$ram_percent.'% |';
         }
 
-        if ($cpu_percent > 70)
+        if ($cpu_percent > 100)
         {
             $message[] = '| CPU tüketimi | '.$cpu_percent.'% |';
         }

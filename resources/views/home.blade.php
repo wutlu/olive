@@ -1,5 +1,36 @@
 @extends('layouts.app')
 
+@push('local.scripts')
+    $('#dword').children('.text').typewrite({
+        actions: [
+            { delay: 500 },
+            { type: 'daha temiz!' },
+            { delay: 1000 },
+            { select: { from: 5, to: 11 } },
+            { delay: 1000 },
+            { remove: { num: 6, type: 'whole' } },
+
+            { type: 'net!' },
+            { delay: 1000 },
+            { select: { from: 5, to: 9 } },
+            { delay: 1000 },
+            { remove: { num: 4, type: 'whole' } },
+
+            { type: 'anlamlı!' },
+            { delay: 1000 },
+            { select: { from: 12, to: 13 } },
+            { delay: 1000 },
+            { remove: { num: 1, type: 'whole' } },
+
+            { type: ' bir internet deneyimi sunar...' },
+        ]
+    })
+@endpush
+
+@push('external.include.footer')
+    <script src="{{ asset('js/jquery.typewrite.min.js?v='.config('system.version')) }}"></script>
+@endpush
+
 @section('content')
     <header id="main">
         <div class="parallax-container">
@@ -14,11 +45,12 @@
                             <img src="{{ asset('img/olive-logo.svg') }}" alt="olive-logo" class="responsive-img" />
                         </a>
 
-                        <p>@lang('global.header.lead-1')</p>
-                        <p class="grey-text text-darken-2">@lang('global.header.lead-2')</p>
-                        <p class="grey-text text-darken-2">@lang('global.header.lead-3')</p>
+                        <div id="dword">
+                            Olive, <span class="text"></span>
+                        </div>
+                        <p class="cyan-text lead">Internet artık daha net!</p>
 
-                        <a href="{{ route('user.login') }}" class="waves-effect btn-flat">@auth{{ 'Olive\'e Gidin'}}@else{{ 'Giriş Yapın' }}@endauth</a>
+                        <a href="{{ route('user.login') }}" class="waves-effect btn-flat btn-large">@auth{{ 'Olive\'e Gidin'}}@else{{ 'Giriş Yapın' }}@endauth</a>
 
                         <div class="down-area center-align">
                             <a href="#" class="waves-effect btn-large btn-floating pulse grey darken-4">
@@ -51,48 +83,39 @@
         </div>
 
         <div class="container">
-            <img id="vz-logo-top" src="{{ asset('img/veri.zone-logo-white.svg') }}" alt="veri.zone-logo" />
+            <img id="vz-logo-top" src="{{ asset('img/veri.zone-logo-grey.svg') }}" alt="veri.zone-logo" />
             <div class="item-group" id="features">
                 <div class="item grey-text text-darken-2">
                     <i class="large material-icons analytics">poll</i>
                     <h5>Analiz</h5>
                     <ul>
-                        <li>- Twitter Analizleri</li>
-                        <li>- YouTube Analizleri</li>
-                        <li>- Haber Siteleri Analizleri</li>
-                        <li>- Sözlük Siteleri Analizleri</li>
-                        <li>- E-ticaret Siteleri Analizleri</li>
-                        <li>- ve dahası...</li>
+                        <li>- Ürün veya markanızı rakiplerinizle kıyaslayın.</li>
+                        <li>- İlgilendiğiniz konuları daha anlamlı bir şekilde inceleyin.</li>
                     </ul>
                 </div>
                 <div class="item grey-text text-darken-2">
                     <i class="large material-icons realtime">subject</i>
                     <h5>Gerçek Zamanlı Veri</h5>
                     <ul>
-                        <li>- Anlık veri akışı.</li>
-                        <li>- Duygusal akış.</li>
-                        <li>- Tam veya kriterlere göre akış.</li>
-                        <li>- Akış gruplandırma.</li>
-                        <li>- Veri pinleme ve çıktı alma.</li>
+                        <li>- Herhangi bir konu trend olmadan gündemine hakim olun.</li>
+                        <li>- Ürün veya markanızı anlık ve duygusal olarak takip edin.</li>
+                        <li>- Anlık gündemi yakalayın ve daha sonra inceleyin.</li>
                     </ul>
                 </div>
                 <div class="item grey-text text-darken-2">
                     <i class="large material-icons rotate">toys</i>
                     <h5>Araçlar</h5>
                     <ul>
-                        <li>- İçerik takibi ve yorum raporları.</li>
-                        <li>- Detaylama ile görünenden fazla bilgi.</li>
-                        <li>- Anlamlı listeler elde etme.</li>
-                        <li>- Duygu analizleri.</li>
-                        <li>- Gerçek zamanlı veri apileri.</li>
+                        <li>- Orjinal kaynaktaki verinin dahasını inceleyin.</li>
+                        <li>- Gerçek zamanlı veya geçmişe dönük API'ler alın.</li>
                     </ul>
                 </div>
                 <div class="item grey-text text-darken-2">
                     <i class="large material-icons cloud">cloud</i>
                     <h5>Arşiv</h5>
                     <ul>
-                        <li>- Kullanıcı tarafından veri elde edebilme.</li>
-                        <li>- Elde edilen verilerin yasal süreçlerde barındırılması ve hızlı bir şekilde erişebilme.</li>
+                        <li>- Kriter belirleyin sizin için erişelim.</li>
+                        <li>- Konu odaklı veri arşivi.</li>
                     </ul>
                 </div>
             </div>

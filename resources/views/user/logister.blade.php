@@ -20,11 +20,12 @@
                             <img src="{{ asset('img/olive-logo.svg') }}" alt="olive-logo" class="responsive-img" />
                         </a>
 
-                        <p class="white-text">@lang('global.header.lead-1')</p>
-                        <p class="grey-text">@lang('global.header.lead-2')</p>
-                        <p class="grey-text">@lang('global.header.lead-3')</p>
+                        <div id="dword" class="white-text">
+                            Olive, daha anlamlı bir internet deneyimi sunar...
+                        </div>
+                        <p class="cyan-text lead">Internet artık daha net!</p>
                     </div>
-                    <div class="col l6 offset-l2 xl4 offset-xl4">
+                    <div class="col l7 offset-l1 xl5 offset-xl3">
                         <div class="card cyan darken-4" style="margin: 2rem 0;">
                             <div class="card-content">
                                 <p class="white-text">Hemen bir hesap oluşturun ve bir çok aracı <strong>ücretsiz</strong> bir şekilde kullanmaya başlayın.</p>
