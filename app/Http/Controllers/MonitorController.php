@@ -98,6 +98,8 @@ class MonitorController extends Controller
             }
         }
 
+        $message[] = '';
+
         if (count($message) > 2 && config('app.env') == 'production')
         {
             $message[] = 'Lütfen sunucuya müdehale edin!';
