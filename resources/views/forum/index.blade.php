@@ -516,12 +516,12 @@
                         @if (auth()->user()->root())
                             <a
                                 href="#"
-                                class="btn-floating btn-small waves-effect cyan darken-2 json align-self-center"
+                                class="btn-floating btn-small waves-effect white json align-self-center"
                                 data-href="{{ route('admin.forum.category') }}"
                                 data-method="post"
                                 data-callback="__get_cat"
                                 data-name="edit-button">
-                                <i class="material-icons tiny">create</i>
+                                <i class="material-icons grey-text text-darken-2 tiny">create</i>
                             </a>
                         @endif
                     @endauth
