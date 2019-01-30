@@ -31,7 +31,7 @@
     <header id="main">
         <div class="parallax-container">
             <div class="parallax indigo lighten-5">
-                <img src="{{ asset('img/bg-2.svg') }}" alt="bg-1" />
+                <img src="{{ asset('img/bg-small.svg') }}" alt="bg" />
             </div>
 
             <div class="container">

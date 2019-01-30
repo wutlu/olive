@@ -13,7 +13,7 @@
     <header id="main">
         <div class="parallax-container">
             <div class="parallax indigo lighten-5">
-                <img src="{{ asset('img/bg-2.svg') }}" alt="bg-1" />
+                <img src="{{ asset('img/bg-small.svg') }}" alt="bg" />
             </div>
 
             <div class="container">
@@ -23,9 +23,9 @@
                     </div>
 
                     <div class="card-content">
-                        <p class="grey-text">- Tüm kaynaklar açık kaynak olup, yasal olarak kaynak belirtilerek kullanılmaktadır.</p>
-                        <p class="grey-text">- Diğer hukuksal bilgilere <a href="{{ route('page.view', 'gizlilik-politikasi') }}">Gizlilik Politikası</a> ve <a href="{{ route('page.view', 'kullanim-kosullari') }}">Kullanım Koşulları</a> sayfalarından ulaşabilirsiniz.</p>
-                        <p class="grey-text">- Yerel veya farklı kaynak istekleriniz, <a href="{{ route('settings.support', 'kaynak-istegi') }}">DESTEK</a> bölümünden bize bildirebilirsiniz.</p>
+                        <p class="grey-text text-darken-2">- Tüm kaynaklar açık kaynak olup, yasal olarak kaynak belirtilerek kullanılmaktadır.</p>
+                        <p class="grey-text text-darken-2">- Diğer hukuksal bilgilere <a href="{{ route('page.view', 'gizlilik-politikasi') }}">Gizlilik Politikası</a> ve <a href="{{ route('page.view', 'kullanim-kosullari') }}">Kullanım Koşulları</a> sayfalarından ulaşabilirsiniz.</p>
+                        <p class="grey-text text-darken-2">- Yerel veya farklı kaynak istekleriniz, <a href="{{ route('settings.support', 'kaynak-istegi') }}">DESTEK</a> bölümünden bize bildirebilirsiniz.</p>
                     </div>
 
                     <ul class="tabs">

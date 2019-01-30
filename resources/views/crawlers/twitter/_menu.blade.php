@@ -1,4 +1,4 @@
-<div class="collection">
+<div class="collection white z-depth-1">
     <a href="{{ route('admin.twitter.settings') }}" class="collection-item waves-effect {{ $active == 'dashboard' ? 'active' : '' }}">Twitter Ayarları</a>
     <a href="{{ route('admin.twitter.indices') }}" class="collection-item waves-effect {{ $active == 'indices' ? 'active' : '' }}">Index Yönetimi</a>
 

@@ -665,7 +665,7 @@
     @endauth
 
     <div class="@auth{{ @$sidenav_fixed_layout ? 'sidenav-fixed-layout' : '' }}@endauth">
-        <ul class="partners">
+        <ul class="partners grey lighten-5">
             <li class="partner">
                 <a href="https://laravel.com/" target="_blank">
                     <img alt="client" src="{{ asset('img/clients-logo1.png') }}" />
@@ -692,7 +692,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col l6 s12">
-                        <img id="vz-logo" src="{{ asset('img/veri.zone-logo.svg') }}" alt="veri.zone-logo" />
+                        <img id="vz-logo" src="{{ asset('img/veri.zone-logo-grey.svg') }}" alt="veri.zone-logo" />
                         <p class="grey-text">veri.zone, açık kaynak internet verilerini toplar ve elde ettiği verilerden anlamlı analizler çıkaran araçlar geliştirir.</p>
                     </div>
                     <div class="col l2 offset-l2 s12">

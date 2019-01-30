@@ -387,7 +387,9 @@
 
         M.updateTextFields()
 
-        $('input#iban').mask('TR 9999 9999 9999 9999 9999 9999')
+        $('input#iban').mask('TR 9999 9999 9999 9999 9999 9999', {
+            'placeholder': ' '
+        })
     })
 
     function __withdraw(__, obj)

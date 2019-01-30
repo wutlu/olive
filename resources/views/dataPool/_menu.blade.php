@@ -1,4 +1,4 @@
-<div class="collection">
+<div class="collection white z-depth-1">
     <a href="{{ route('data_pool.dashboard') }}" class="collection-item waves-effect {{ $active == 'dashboard' ? 'active' : '' }}">Veri Havuzu</a>
     <div class="divider"></div>
     <a href="{{ route('youtube.channel.list') }}" class="collection-item waves-effect {{ $active == 'youtube.channels' ? 'active' : '' }}">YouTube Kanal Havuzu</a>

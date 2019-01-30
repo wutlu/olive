@@ -11,7 +11,10 @@
 ])
 
 @section('content')
-    <div class="card">
+    <div class="card with-bg">
+        <div class="card-content">
+            <span class="card-title">Partner Logları</span>
+        </div>
         <ul class="collection load json-clear" 
             id="transactions"
             data-href="{{ route('admin.transactions') }}"
@@ -30,7 +33,7 @@
             <li class="collection-item model hide">
                 <span class="d-flex justify-content-between">
                     <span class="d-flex">
-                        <a href="#" class="btn-floating waves-effect mr-1 align-self-center" data-trigger="status">
+                        <a href="#" class="btn-floating cyan waves-effect mr-1 align-self-center" data-trigger="status">
                             <i class="material-icons">create</i>
                         </a>
                         <span class="align-self-center">

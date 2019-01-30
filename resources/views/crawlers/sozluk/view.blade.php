@@ -122,9 +122,18 @@
     }
 @endpush
 
-@section('wildcard')
-    <div class="card grey darken-4">
-        <div class="container">
+@section('content')
+    <form
+        method="patch"
+        action="{{ route('crawlers.sozluk.bot') }}"
+        class="json"
+        id="details-form"
+        data-callback="__test">
+        <input type="hidden" value="{{ $crawler->id }}" name="id" id="id" />
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title" data-name="crawler-title">{{ $crawler->name }}</span>
+            </div>
             <table
                 id="stats"
                 class="load"
@@ -154,24 +163,6 @@
                     </tr>
                 </tbody>
             </table>
-        </div>
-    </div>
-@endsection
-
-@section('content')
-    <form
-        method="patch"
-        action="{{ route('crawlers.sozluk.bot') }}"
-        class="json"
-        id="details-form"
-        data-callback="__test">
-        <input type="hidden" value="{{ $crawler->id }}" name="id" id="id" />
-        <div class="card">
-            <div class="card-content">
-                <span class="card-title">
-                    <span data-name="crawler-title">{{ $crawler->name }}</span>
-                </span>
-            </div>
             @if (!$crawler->status && $crawler->off_reason)
                 <div class="card-content red white-text">
     	            <small class="black-text">Kapanma Nedeni</small>

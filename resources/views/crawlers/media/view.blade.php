@@ -103,9 +103,21 @@
     }
 @endpush
 
-@section('wildcard')
-    <div class="card grey darken-4">
-        <div class="container">
+@section('content')
+    <form
+        method="patch"
+        action="{{ route('crawlers.media.bot') }}"
+        class="json"
+        id="details-form"
+        data-callback="__test">
+        <input type="hidden" value="{{ $crawler->id }}" name="id" id="id" />
+        <div class="card with-bg">
+            <div class="card-content">
+                <span class="card-title" data-name="crawler-title">{{ $crawler->name }}</span>
+                <span class="grey-text text-darken-2">
+                    <span data-name="error-count">-</span> / <time class="timeago" data-name="control-date">-</time>
+                </span>
+            </div>
             <table
                 id="stats"
                 class="load"
@@ -136,28 +148,6 @@
                     </tr>
                 </tbody>
             </table>
-        </div>
-    </div>
-@endsection
-
-@section('content')
-    <form
-        method="patch"
-        action="{{ route('crawlers.media.bot') }}"
-        class="json"
-        id="details-form"
-        data-callback="__test">
-        <input type="hidden" value="{{ $crawler->id }}" name="id" id="id" />
-        <div class="card with-bg">
-            <div class="card-content">
-                <span class="card-title">
-                    <span>
-                        <span data-name="crawler-title">{{ $crawler->name }}</span>
-                        <sub data-name="error-count"></sub>
-                    </span>
-                    <time class="timeago d-block" data-name="control-date"></time>
-                </span>
-            </div>
             @if (!$crawler->status && $crawler->off_reason)
                 <div class="card-content red white-text">
                     <small class="black-text">Kapanma Nedeni</small>

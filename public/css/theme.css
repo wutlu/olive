@@ -522,6 +522,18 @@ table.invoice tfoot > tr {
 #breadcrumb {
   height: auto;
 }
+@media (max-width: 1024px) {
+  #breadcrumb {
+    line-height: 24px;
+    padding: 1rem 0;
+  }
+  #breadcrumb .breadcrumb {
+    margin: 0;
+    padding: 0;
+    display: block;
+    width: 100%;
+  }
+}
 
 /**
  * markdown
@@ -1018,7 +1030,7 @@ ul.partners > li.partner a:hover {
  */
 main {
   padding: 1rem 0;
-  background-image: url(../img/bg-3.svg);
+  background-image: url(../img/bg-small.svg);
   background-repeat: no-repeat;
   background-size: 75%;
   background-position: top right;
@@ -1416,6 +1428,10 @@ header#main > .parallax-container > .parallax > video#background-video {
  */
 .sidenav-fixed-layout {
   padding-left: 300px;
+}
+
+nav .sidenav-trigger > .material-icons {
+  color: #666;
 }
 
 @media only screen and (max-width : 992px) {
