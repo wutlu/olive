@@ -207,6 +207,14 @@ class Kernel extends ConsoleKernel
                      ->withoutOverlapping();
 
             /**
+             * Veri sayılarının Redis'e alınması.
+             */
+            $schedule->command('nohup "redis:store --part=total_document')
+                     ->everyMinute()
+                     ->timezone(config('app.timezone'))
+                     ->withoutOverlapping();
+
+            /**
              * Forum uyarıları e-posta kuyruğu.
              */
             $schedule->command('nohup "forum:notification_trigger" --type=restart')

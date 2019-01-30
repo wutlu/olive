@@ -24,6 +24,8 @@ use App\Elasticsearch\Document;
 
 use App\Utilities\Term;
 
+use Illuminate\Support\Facades\Redis as RedisCache;
+
 class HomeController extends Controller
 {
     public function __construct()
@@ -41,9 +43,6 @@ class HomeController extends Controller
             'monitor',
             'sources'
         ]);
-
-        ### [ 5 işlemden sonra 1 dakika ile sınırla ] ###
-        $this->middleware('throttle:60,5')->only('dataCounter');
     }
 
     /**
@@ -162,12 +161,22 @@ class HomeController extends Controller
      */
     public static function dataCounter()
     {
-        $count_query = Document::count([ '*' ]);
+        $total = 0;
+
+        $counts = json_decode(RedisCache::get(implode(':', [ str_slug(config('app.name')), 'documents', 'total' ])));
+
+        if ($counts)
+        {
+            foreach ($counts as $count)
+            {
+                $total = $total + $count;
+            }
+        }
 
         return [
             'status' => 'ok',
             'data' => [
-                'count' => number_format($count_query->data['count'])
+                'count' => number_format($total)
             ]
         ];
     }

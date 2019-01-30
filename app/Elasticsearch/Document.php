@@ -228,11 +228,21 @@ class Document
 
         try
         {
-            $doc = $client->count([
-                'index' => $name,
-                'type' => $type,
-                'body' => $body
-            ]);
+            $arr = [
+                'index' => $name
+            ];
+
+            if ($type)
+            {
+                $arr['type'] = $type;
+            }
+
+            if ($body)
+            {
+                $arr['body'] = $body;
+            }
+
+            $doc = $client->count($arr);
 
             return (object) [
                 'status' => 'ok',

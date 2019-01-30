@@ -1719,7 +1719,7 @@ table tr {
 .modal .modal-content > .modal-body {
   overflow-y: auto;
   overflow-x: hidden;
-  max-height: 400px;
+  max-height: 300px;
   margin: 0 0 0 1rem;
   padding: 1rem 2rem;
   background-color: #fff;
