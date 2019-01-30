@@ -59,7 +59,7 @@ class ModuleSearchController extends Controller
                                     );
                                 }
                              })->orderBy('total', 'DESC')
-                               ->limit(8)
+                               ->limit(4)
                                ->get();
 
         if (count($query))

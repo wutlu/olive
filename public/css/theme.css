@@ -614,7 +614,7 @@ table.invoice tfoot > tr {
   background-image: url('../img/card-bg-2.svg');
   background-repeat: no-repeat;
   background-position: top center;
-  background-size: contain;
+  background-size: 100% auto;
 }
 .card.with-bg > .card-tabs > .tabs {
   background-color: transparent;
@@ -843,20 +843,21 @@ body.module-search-active > .search-wrapper {
  * module search results
  */
 #ms-results {
-  display: flex;
   display: -ms-flexbox;
+  display: flex;
 
-      flex-wrap: wrap;
   -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+
+  -ms-flex-pack: justify;
+  justify-content: space-between;
 }
 #ms-results > .ms-item {
   text-align: center;
   padding: 1rem;
 
-  -ms-flex: 1 1 auto;
-      flex: 1 1 auto;
-
-  width: 25%;
+      flex: 1 1 auto !important;
+  -ms-flex: 1 1 auto !important;
 
   color: #666;
 }
@@ -919,17 +920,24 @@ body.module-search-active > .search-wrapper {
   border-radius: 0 0 1rem 1rem;
 }
 .fast-menu > a {
-  margin: .4rem;
-
       flex: 1 1 auto !important;
   -ms-flex: 1 1 auto !important;
 
+  margin: .4rem;
+  padding: 3rem 1rem;
+
   text-align: center;
 
-  padding: 2.5rem 1rem;
-  border-radius: 1rem;
+  border-color: transparent;
+  border-width: 2px;
+  border-style: dashed;
 
-  background-color: #fff;
+          transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  -webkit-transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.fast-menu > a:hover {
+  border-radius: 1rem;
+  border-color: #333;
 }
 .fast-menu > a > .material-icons {
   font-size: 32px;

@@ -15,93 +15,95 @@
     }
 @endpush
 
-@section('content')
-    @if (count($modals))
-        @foreach ($modals as $carousel)
-            @if ($carousel->modal)
-                @push('local.scripts')
-                    modal({
-                        'id': 'carousel-{{ $carousel->id }}',
-                        'body': $('<div />', {
-                            'class': 'markdown',
-                            'html': '{!! str_replace(PHP_EOL, '', $carousel->markdown()) !!}'
-                        }),
-                        'size': 'modal-large',
-                        'title': '{{ $carousel->title }}',
-                        'options': {},
-                        'footer': [
-                            $('<a />', {
-                                'href': '#',
-                                'class': 'modal-close waves-effect btn-flat cyan-text',
-                                'html': buttons.ok
-                            })
-                        ]
-                    })
-                @endpush
-            @endif
-        @endforeach
-    @endif
-
-    <div class="row">
-        @if (count($carousels))
-            <div class="col s12">
-                <div class="carousel carousel-slider grey darken-4 center z-depth-1">
-                    @php
-                    $i = 0;
-                    @endphp
-                        @foreach ($carousels as $carousel)
-                        <div class="{{ implode(' ', [ 'carousel-item', $i == 0 ? 'active' : '', 'white-text' ]) }}">
-                            <h2>{{ $carousel->title }}</h2>
-                            <div class="markdown">
-                                {!! $carousel->markdown() !!}
-                            </div>
-                            <div class="{{ implode(' ', [ 'anim', $carousel->pattern ]) }}"></div>
-
-                            @if ($carousel->button_text)
-                                <a href="{{ $carousel->button_action }}" class="btn-flat waves-effect waves-red white-text">
-                                    {{ $carousel->button_text }}
-                                </a>
-                            @endif
-                        </div>
-                        @php
-                        $i++;
-                        @endphp
-                    @endforeach
-                </div>
-            </div>
+@section('wildcard')
+    <div class="grey darken-4 z-depth-1"> 
+        @if (count($modals))
+            @foreach ($modals as $carousel)
+                @if ($carousel->modal)
+                    @push('local.scripts')
+                        modal({
+                            'id': 'carousel-{{ $carousel->id }}',
+                            'body': $('<div />', {
+                                'class': 'markdown',
+                                'html': '{!! str_replace(PHP_EOL, '', $carousel->markdown()) !!}'
+                            }),
+                            'size': 'modal-large',
+                            'title': '{{ $carousel->title }}',
+                            'options': {},
+                            'footer': [
+                                $('<a />', {
+                                    'href': '#',
+                                    'class': 'modal-close waves-effect btn-flat cyan-text',
+                                    'html': buttons.ok
+                                })
+                            ]
+                        })
+                    @endpush
+                @endif
+            @endforeach
         @endif
 
+        @if (count($carousels))
+            <div class="carousel carousel-slider center">
+                @php
+                $i = 0;
+                @endphp
+                    @foreach ($carousels as $carousel)
+                    <div class="{{ implode(' ', [ 'carousel-item', $i == 0 ? 'active' : '', 'white-text' ]) }}">
+                        <h2>{{ $carousel->title }}</h2>
+                        <div class="markdown">
+                            {!! $carousel->markdown() !!}
+                        </div>
+                        <div class="{{ implode(' ', [ 'anim', $carousel->pattern ]) }}"></div>
+
+                        @if ($carousel->button_text)
+                            <a href="{{ $carousel->button_action }}" class="btn-flat waves-effect waves-red white-text">
+                                {{ $carousel->button_text }}
+                            </a>
+                        @endif
+                    </div>
+                    @php
+                    $i++;
+                    @endphp
+                @endforeach
+            </div>
+        @endif
+    </div>
+@endsection
+
+@section('content')
+    <div class="row">
         <div class="col s12">
-            <div class="fast-menu grey darken-4">
-                <a href="{{ route('forum.index') }}" class="waves-effect">
+            <div class="fast-menu">
+                <a href="{{ route('forum.index') }}">
                     <i class="material-icons">forum</i>
                     <span class="d-block">Forum</span>
                 </a>
-                <a href="{{ route('data_pool.dashboard') }}" class="waves-effect">
+                <a href="{{ route('data_pool.dashboard') }}">
                     <i class="material-icons">hearing</i>
                     <span class="d-block">Veri Havuzu</span>
                 </a>
-                <a href="{{ route('realtime.stream') }}" class="waves-effect">
+                <a href="{{ route('realtime.stream') }}">
                     <i class="material-icons">watch_later</i>
                     <span class="d-block">Gerçek Zamanlı</span>
                 </a>
-                <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" style="opacity: .4;" href="#" class="waves-effect">
+                <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" style="opacity: .4;" href="#">
                     <i class="material-icons">desktop_mac</i>
                     <span class="d-block">Monitörler</span>
                 </a>
-                <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" style="opacity: .4;" href="#" class="waves-effect">
+                <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" style="opacity: .4;" href="#">
                     <i class="material-icons">trending_up</i>
                     <span class="d-block">Trend Analizi</span>
                 </a>
-                <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" style="opacity: .4;" href="#" class="waves-effect">
+                <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" style="opacity: .4;" href="#">
                     <i class="material-icons">youtube_searched_for</i>
-                    <span class="d-block">Geçmiş Veri</span>
+                    <span class="d-block">Veri Arama</span>
                 </a>
-                <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" style="opacity: .4;" href="#" class="waves-effect">
+                <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" style="opacity: .4;" href="#">
                     <i class="material-icons">access_alarm</i>
                     <span class="d-block">Alarmlar</span>
                 </a>
-                <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" style="opacity: .4;" href="#" class="waves-effect">
+                <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" style="opacity: .4;" href="#">
                     <i class="material-icons">settings</i>
                     <span class="d-block">Araçlar</span>
                 </a>
