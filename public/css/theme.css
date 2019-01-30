@@ -1861,6 +1861,8 @@ nav.nav-half {
 
           box-shadow: none;
   -webkit-box-shadow: none;
+
+  margin: 0 0 1rem;
 }
 
 /**
