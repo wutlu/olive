@@ -20,18 +20,16 @@
 ])
 
 @section('content')
-    <div class="card">
+    <div class="card with-bg">
         @if ($organisation)
             <div class="card-content">
-                <a href="{{ route('admin.youtube.followed_channels') }}" class="chip">
-                    {{ $organisation->name }}
-                </a>
+                <a href="{{ route('admin.youtube.followed_channels') }}" class="chip">{{ $organisation->name }}</a>
             </div>
         @endif
-        <div class="card-content teal">
-            <span class="card-title white-text mb-0">Takip Edilen Kelimeler</span>
+        <div class="card-content">
+            <span class="card-title">Takip Edilen Kelimeler</span>
         </div>
-        <nav class="grey darken-4">
+        <nav class="nav-half">
             <div class="nav-wrapper">
                 <div class="input-field">
                     <input id="string"

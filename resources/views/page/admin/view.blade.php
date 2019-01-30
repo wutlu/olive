@@ -79,9 +79,8 @@
         @if (@$page)
             <input type="hidden" value="{{ $page->id }}" name="id" id="id" />
         @endif
-        <div class="card">
-            <div class="card-image">
-                <img src="{{ asset('img/card-header.jpg') }}" alt="{{ @$page ? $page->title : 'Sayfa Oluştur' }}" />
+        <div class="card with-bg">
+            <div class="card-content">
                 <span class="card-title">{{ @$page ? $page->title : 'Sayfa Oluştur' }}</span>
             </div>
             <div class="card-content">

@@ -19,14 +19,14 @@
         width: 100%;
         height: 600px;
     }
+
+    .card.with-bg {
+        line-height: 0;
+    }
 @endpush
 
 @section('content')
-    <div class="card">
-        <div class="card-image">
-            <img src="{{ asset('img/card-header.jpg') }}" alt="Kuyruk Ekranı (Laravel Horizon)" />
-            <span class="card-title">Kuyruk Ekranı (Laravel Horizon)</span>
-        </div>
+    <div class="card with-bg">
+        <iframe src="{{ config('app.ssl') ? secure_url('horizon') : url('horizon') }}"></iframe>
     </div>
-    <iframe class="card" src="{{ config('app.ssl') ? secure_url('horizon') : url('horizon') }}"></iframe>
 @endsection

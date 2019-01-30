@@ -61,8 +61,8 @@
 @section('wildcard')
     <div class="card grey darken-4">
         <div class="card-image">
-            <a class="btn-floating btn-large halfway-fab waves-effect teal dropdown-trigger" data-target="more">
-                <i class="material-icons">more_vert</i>
+            <a class="btn-floating btn-large halfway-fab waves-effect white dropdown-trigger" data-target="more">
+                <i class="material-icons grey-text text-darken-2">more_vert</i>
             </a>
         </div>
 
@@ -123,15 +123,13 @@
 @endsection
 
 @section('content')
-    <div class="card">
+    <div class="card with-bg">
         <div class="card-content">
-            <span class="card-title mb-0">
-                Medya Botları
-                <small class="d-block" data-name="bots-count"></small>
-            </span>
+            <span class="card-title">Medya Botları</span>
+            <span class="d-block" data-name="bots-count"></span>
         </div>
 
-        <nav class="grey darken-4">
+        <nav class="nav-half">
             <div class="nav-wrapper">
                 <div class="input-field">
                     <input id="string"

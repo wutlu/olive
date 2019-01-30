@@ -9,9 +9,8 @@
 ])
 
 @section('content')
-    <div class="card">
-        <div class="card-image">
-            <img src="{{ asset('img/card-header.jpg') }}" alt="Daha İyi Sonuçlar Elde Edin" />
+    <div class="card with-bg">
+        <div class="card-content">
             <span class="card-title">Veri Havuzu</span>
         </div>
         <div class="card-content">

@@ -72,9 +72,8 @@
 @endpush
 
 @section('content')
-    <div class="card">
-        <div class="card-image">
-            <img src="{{ asset('img/card-header.jpg') }}" alt="Twitter Index Yönetimi" />
+    <div class="card with-bg">
+        <div class="card-content">
             <span class="card-title">Twitter Index Yönetimi</span>
         </div>
         <ul class="collection load" 

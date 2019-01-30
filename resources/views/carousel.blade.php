@@ -368,16 +368,16 @@
     }
 @endpush
 
+@section('action-bar')
+    <a href="#" class="btn-floating btn-large halfway-fab waves-effect white" data-trigger="create">
+        <i class="material-icons grey-text text-darken-2">add</i>
+    </a>
+@endsection
+
 @section('content')
-    <div class="card">
-        <div class="card-image">
-            <img src="{{ asset('img/card-header.jpg') }}" alt="Carousel Yönetimi" />
-            <a href="#" class="btn-floating btn-large halfway-fab waves-effect white" data-trigger="create">
-                <i class="material-icons grey-text text-darken-2">add</i>
-            </a>
-        </div>
+    <div class="card with-bg">
         <div class="card-content">
-            <span class="card-title mb-0">Carousel Yönetimi</span>
+            <span class="card-title">Carousel Yönetimi</span>
             <span data-name="count" class="grey-text">0</span>
         </div>
         <ul class="collection load" 

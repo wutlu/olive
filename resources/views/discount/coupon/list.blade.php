@@ -17,14 +17,16 @@
     @endif
 @endpush
 
+@section('action-bar:half')
+    <div class="card-content">
+        <a href="{{ route('admin.discount.coupon') }}" class="btn-floating btn-large halfway-fab waves-effect white">
+            <i class="material-icons grey-text text-darken-2">add</i>
+        </a>
+    </div>
+@endsection
+
 @section('content')
-    <div class="card">
-        <div class="card-image">
-            <img src="{{ asset('img/card-header.jpg') }}" alt="İndirim Kuponları" />
-            <a href="{{ route('admin.discount.coupon') }}" class="btn-floating btn-large halfway-fab waves-effect white">
-                <i class="material-icons grey-text text-darken-2">add</i>
-            </a>
-        </div>
+    <div class="card with-bg">
         <div class="card-content">
             <span class="card-title">İndirim Kuponları</span>
             <p class="grey-text">{{ count($coupons).'/'.$coupons->total() }}</p>

@@ -52,11 +52,11 @@
             </div>
         </div>
     </div>
-    <div class="card">
+    <div class="card with-bg">
         <div class="card-content">
-            <span class="card-title mb-0">Organizasyonlar</span>
+            <span class="card-title">Organizasyonlar</span>
         </div>
-        <nav class="teal">
+        <nav class="nav-half">
             <div class="nav-wrapper">
                 <div class="input-field">
                     <input id="string"

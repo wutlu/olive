@@ -3,6 +3,13 @@
 @section('title', 'Kaynaklar')
 
 @section('content')
+    <div class="navbar-fixed">
+        <nav class="white">
+            <a href="{{ route('dashboard') }}" class="brand-logo center">
+                <img alt="{{ config('app.name') }}" src="{{ asset('img/olive-logo.svg') }}" />
+            </a>
+        </nav>
+    </div>
     <header id="main">
         <div class="parallax-container">
             <div class="parallax indigo lighten-5">
@@ -10,22 +17,18 @@
             </div>
 
             <div class="container">
-                <a href="{{ route('home') }}">
-                    <img alt="Logo" src="{{ asset('img/olive-logo.svg') }}" style="max-width: 200px;" />
-                </a>
-                <div class="card card-unstyled">
+                <div class="card with-bg">
                     <div class="card-content">
-                        <span class="card-title mb-0">Kaynaklar</span>
+                        <span class="card-title">Kaynaklar</span>
                     </div>
 
-                    <div class="card-content teal-text">
-                        <p>
-                            Tüm kaynaklar açık kaynak olup, yasal olarak kaynak belirtilerek kullanılmaktadır.
-                            Diğer hukuksal bilgilere <a href="{{ route('page.view', 'gizlilik-politikasi') }}">Gizlilik Politikası</a> ve <a href="{{ route('page.view', 'kullanim-kosullari') }}">Kullanım Koşulları</a> sayfalarından ulaşabilirsiniz.</p>
-                        <p>Yerel veya farklı kaynak istekleriniz, <a href="{{ route('settings.support', 'kaynak-istegi') }}">DESTEK</a> bölümünden bize bildirebilirsiniz.</p>
+                    <div class="card-content">
+                        <p class="grey-text">- Tüm kaynaklar açık kaynak olup, yasal olarak kaynak belirtilerek kullanılmaktadır.</p>
+                        <p class="grey-text">- Diğer hukuksal bilgilere <a href="{{ route('page.view', 'gizlilik-politikasi') }}">Gizlilik Politikası</a> ve <a href="{{ route('page.view', 'kullanim-kosullari') }}">Kullanım Koşulları</a> sayfalarından ulaşabilirsiniz.</p>
+                        <p class="grey-text">- Yerel veya farklı kaynak istekleriniz, <a href="{{ route('settings.support', 'kaynak-istegi') }}">DESTEK</a> bölümünden bize bildirebilirsiniz.</p>
                     </div>
 
-                    <ul class="tabs tabs-transparent teal mb-1">
+                    <ul class="tabs">
                         <li class="tab">
                             <a href="#media" class="active">Basın</a>
                         </li>

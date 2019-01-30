@@ -72,9 +72,8 @@
 @endpush
 
 @section('content')
-    <div class="card">
-        <div class="card-image">
-            <img src="{{ asset('img/card-header.jpg') }}" alt="YouTube Index Yönetimi" />
+    <div class="card with-bg">
+        <div class="card-content">
             <span class="card-title">YouTube Index Yönetimi</span>
         </div>
         <ul class="collection load" 

@@ -20,7 +20,7 @@
 @endsection
 
 @section('content')
-    <div class="card teal">
+    <div class="card cyan darken-2">
         <div class="card-content white-text">
             <p>Oluşturduğunuz/Oluşturacağınız endeksler organizasyonunuza ait olacaktır.</p>
             <p>Oluşturduğunuz endeksler organizasyon üyeleriniz tarafından incelenip güncellenebilir.</p>

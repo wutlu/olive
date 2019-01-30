@@ -20,9 +20,8 @@
 ])
 
 @section('content')
-    <div class="card">
-        <div class="card-image">
-            <img src="{{ asset('img/card-header.jpg') }}" alt="Fatura Geçmişi" />
+    <div class="card with-bg">
+        <div class="card-content">
             <span class="card-title">Fatura Geçmişi</span>
         </div>
         @if ($user->invoices->count())

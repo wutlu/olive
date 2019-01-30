@@ -44,9 +44,6 @@
     </style>
 </head>
 <body>
-    <div class="window-size z-depth-1">
-        <p>Ekran çözünürlüğünüz çok küçük. Tam manasıyla bir Olive için çözünürlüğünüzü yükseltmeniz gerekiyor.</p>
-    </div>
     @auth
         @if (@$term != 'hide')
             @if (auth()->user()->term_version != config('system.term_version'))
@@ -150,11 +147,11 @@
                     </li>
                 </ul>
             @endauth
-            <nav class="cyan darken-2">
+            <nav class="white">
                 <div class="{{ auth()->check() ? 'sidenav-fixed-layout' : 'container' }}">
                     <div class="nav-wrapper">
                         <a href="{{ route('dashboard') }}" class="brand-logo center">
-                            <img alt="{{ config('app.name') }}" src="{{ asset('img/olive-logo-white.svg') }}" />
+                            <img alt="{{ config('app.name') }}" src="{{ asset('img/olive-logo.svg') }}" />
                         </a>
                         @auth
                         <a href="#" data-target="slide-out" class="sidenav-trigger">
@@ -189,7 +186,6 @@
                 <li>
                     <div class="user-view">
                         <small class="white-text right">{{ config('system.version') }}</small>
-                        <div class="background" style="background-image: url('{{ asset('img/card-2.jpg') }}');"></div>
                         <img alt="{{ auth()->user()->name }}" class="circle" src="{{ asset(auth()->user()->avatar()) }}" />
                         <span class="white-text name">{{ auth()->user()->name }}</span>
                         <span class="white-text email">{{ auth()->user()->email }}</span>
@@ -402,7 +398,7 @@
             @php
                 $br_count = count($breadcrumb)-1;
             @endphp
-            <nav class="cyan darken-4" id="breadcrumb">
+            <nav class="grey darken-4" id="breadcrumb">
                 <div class="{{ auth()->check() ? 'sidenav-fixed-layout' : '' }}">
                     <div class="container">
                         <a href="{{ route('dashboard') }}" class="breadcrumb">Olive</a>
@@ -422,8 +418,16 @@
             </nav>
         @endisset
 
-        <main>
+        <main class="grey lighten-2">
             <div class="{{ auth()->check() ? 'sidenav-fixed-layout' : '' }}">
+                @if (trim($__env->yieldContent('action-bar')))
+                    <div class="container">
+                        <div class="action-bar">
+                            @yield('action-bar')
+                        </div>
+                    </div>
+                @endif
+
                 @if (trim($__env->yieldContent('wildcard')))
                     <div class="wildcard">
                         @yield('wildcard')
@@ -434,6 +438,12 @@
                     @isset($dock)
                     <aside id="dock-content">
                         <div class="content">
+                            @if (trim($__env->yieldContent('action-bar:half')))
+                                <div class="action-bar action-bar-half">
+                                    @yield('action-bar:half')
+                                </div>
+                            @endif
+
                             @yield('content')
                         </div>
                         <div class="menu">

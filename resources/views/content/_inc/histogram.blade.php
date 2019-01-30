@@ -37,7 +37,7 @@
         }
 	@endphp
 	<div class="z-depth-2">
-        <ul class="tabs tabs-fixed-width tabs-transparent teal histogram-tabs">
+        <ul class="tabs tabs-fixed-width tabs-transparent cyan darken-2 histogram-tabs">
             <li class="tab">
                 <a class="active" href="#weekly">Haftalık {{ $tab_title }}</a>
             </li>
@@ -138,7 +138,7 @@
                     ],
                     datasets: [
                         {
-                            backgroundColor: '#009688',
+                            backgroundColor: '#0097a7',
                             data: data
                         }
                     ]
@@ -189,7 +189,7 @@
                     ],
                     datasets: [
                         {
-                            backgroundColor: '#009688',
+                            backgroundColor: '#0097a7',
                             data: data
                         }
                     ]

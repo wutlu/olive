@@ -1,5 +1,5 @@
 <div class="card">
-    <div class="card-content teal white-text">{{ $alert }}</div>
+    <div class="card-content cyan darken-2 white-text">{{ $alert }}</div>
     <div class="card-content">
         <span class="card-title">Duygu Analizi</span>
         <canvas id="sentiment-chart"></canvas>
@@ -14,7 +14,7 @@
                        'Nötr'
                     ],
                     datasets: [{
-                        backgroundColor: [ '#009688', '#e53935', '#bdbdbd' ],
+                        backgroundColor: [ '#0097a7', '#e53935', '#bdbdbd' ],
                         data: [
                             {{ $pos }},
                             {{ $neg }},

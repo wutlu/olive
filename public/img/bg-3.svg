@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <style>
+      .cls-1, .cls-10, .cls-11, .cls-12, .cls-2, .cls-3, .cls-4, .cls-5, .cls-6, .cls-7, .cls-8, .cls-9 {
+        stroke-width: 0;
+      }
+
+      .cls-1, .cls-10, .cls-11, .cls-2, .cls-3, .cls-4, .cls-5, .cls-7, .cls-8, .cls-9 {
+        fill-rule: evenodd;
+      }
+
+      .cls-1 {
+        opacity: 0.1;
+        fill: url(#linear-gradient);
+      }
+
+      .cls-2 {
+        fill: url(#linear-gradient-2);
+      }
+
+      .cls-3 {
+        fill: url(#linear-gradient-3);
+      }
+
+      .cls-4 {
+        fill: url(#linear-gradient-4);
+      }
+
+      .cls-10, .cls-11, .cls-12, .cls-5, .cls-6, .cls-7, .cls-8, .cls-9 {
+        opacity: 0.2;
+      }
+
+      .cls-5 {
+        fill: url(#linear-gradient-5);
+      }
+
+      .cls-6 {
+        fill: url(#linear-gradient-6);
+      }
+
+      .cls-7 {
+        fill: url(#linear-gradient-7);
+      }
+
+      .cls-8 {
+        fill: url(#linear-gradient-8);
+      }
+
+      .cls-9 {
+        fill: url(#linear-gradient-9);
+      }
+
+      .cls-10 {
+        fill: url(#linear-gradient-10);
+      }
+
+      .cls-11 {
+        fill: url(#linear-gradient-11);
+      }
+
+      .cls-12 {
+        fill: url(#linear-gradient-12);
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="658" y1="184.065" x2="1920" y2="522.217" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#26c6da"/>
+      <stop offset="1" stop-color="#26a69a"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="870.063" y1="144.46" y2="425.79" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-3" x1="1072.38" y1="114.206" y2="341.325" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-4" x1="1285.88" y1="82.154" y2="252.066" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-5" x1="1341.66" y1="55.587" x2="1477" y2="91.851" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-6" x1="892.406" y1="25.992" x2="946.813" y2="40.57" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-7" x1="1629.09" y1="295.582" x2="1713.5" y2="318.2" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-8" x1="1685.59" y1="-11.137" x2="1770" y2="11.481" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-9" x1="1294.22" y1="338.797" x2="1378.66" y2="361.422" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-10" x1="1735.81" y1="565.749" x2="1775.59" y2="576.408" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-11" x1="991.469" y1="324.59" x2="1017.97" y2="331.691" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-12" x1="824.719" y1="578.321" x2="851.25" y2="585.429" xlink:href="#linear-gradient"/>
+  </defs>
+  <path id="Şekil_3" data-name="Şekil 3" class="cls-1" d="M658-12.723s205.016,303.367,401.13,235.608c457.68-158.127,299.77,175.8,378.81,411.269C1496.88,809.719,1920,675.187,1920,567.933V-12.723H658Z"/>
+  <path id="Şekil_1" data-name="Şekil 1" class="cls-2" d="M870.077-12.723s99.781,120.912,378.113,179.146c162.67,34.035,48.55,245.467,168.82,333.2,34.81,25.386,403.58,198.316,502.99-44.612V-12.723H870.077Z"/>
+  <path id="Şekil_2" data-name="Şekil 2" class="cls-3" d="M1072.39-12.723s80.55,97.628,305.25,144.648c131.33,27.481,39.2,198.2,136.29,269.034,28.1,20.5,325.81,160.125,406.07-36.022V-12.723H1072.39Z"/>
+  <path id="Şekil_4" data-name="Şekil 4" class="cls-4" d="M1285.86-12.723s60.27,73.009,228.38,108.172c98.25,20.551,29.32,148.218,101.96,201.191,21.02,15.328,243.76,119.746,303.8-26.938V-12.723H1285.86Z"/>
+  <path id="Elips_5" data-name="Elips 5" class="cls-5" d="M1409.34,6.1a67.615,67.615,0,1,1-67.67,67.615A67.645,67.645,0,0,1,1409.34,6.1Z"/>
+  <circle id="Elips_6" data-name="Elips 6" class="cls-6" cx="919.61" cy="33.281" r="27.204"/>
+  <path id="Elips_7" data-name="Elips 7" class="cls-7" d="M1671.3,264.709a42.173,42.173,0,1,1-42.21,42.173A42.184,42.184,0,0,1,1671.3,264.709Z"/>
+  <path id="Elips_8" data-name="Elips 8" class="cls-8" d="M1727.8-42A42.193,42.193,0,0,1,1770.01.172a42.193,42.193,0,0,1-42.21,42.173A42.19,42.19,0,0,1,1685.6.172,42.19,42.19,0,0,1,1727.8-42Z"/>
+  <path id="Elips_9" data-name="Elips 9" class="cls-9" d="M1336.44,307.927a42.173,42.173,0,1,1-42.21,42.173A42.184,42.184,0,0,1,1336.44,307.927Z"/>
+  <path id="Elips_10" data-name="Elips 10" class="cls-10" d="M1755.71,551.2a19.867,19.867,0,1,1-19.88,19.867A19.873,19.873,0,0,1,1755.71,551.2Z"/>
+  <path id="Elips_11" data-name="Elips 11" class="cls-11" d="M1004.72,314.9a13.244,13.244,0,1,1-13.256,13.244A13.245,13.245,0,0,1,1004.72,314.9Z"/>
+  <circle id="Elips_12" data-name="Elips 12" class="cls-12" cx="837.985" cy="581.875" r="13.265"/>
+</svg>

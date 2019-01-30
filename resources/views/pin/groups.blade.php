@@ -204,19 +204,19 @@
     }
 @endpush
 
+@section('action-bar')
+    <a href="#" class="btn-floating btn-large halfway-fab waves-effect white" data-trigger="create-pin-group">
+        <i class="material-icons grey-text text-darken-2">add</i>
+    </a>
+@endsection
+
 @section('content')
-    <div class="card">
-        <div class="card-image">
-            <img src="{{ asset('img/card-header.jpg') }}" alt="Pin Grupları" />
-            <span class="card-title">Pin Grupları</span>
-            <a href="#" class="btn-floating btn-large halfway-fab waves-effect white" data-trigger="create-pin-group">
-                <i class="material-icons grey-text text-darken-2">add</i>
-            </a>
-        </div>
+    <div class="card with-bg">
         <div class="card-content">
+            <span class="card-title">Pin Grupları</span>
             <p class="grey-text">Araştırmalarınız sonucu elde ettiğiniz ham verileri pinleme gruplarında saklayabilirsiniz. Ayrıca pinlediğiniz verileri PDF halinde rapor alabilirsiniz.</p>
         </div>
-        <nav class="grey darken-4">
+        <nav class="nav-half">
             <div class="nav-wrapper">
                 <div class="input-field">
                     <input id="string"

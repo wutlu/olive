@@ -103,27 +103,12 @@
     }
 @endpush
 
-@section('content')
-    <form
-        method="patch"
-        action="{{ route('crawlers.media.bot') }}"
-        class="json"
-        id="details-form"
-        data-callback="__test">
-        <input type="hidden" value="{{ $crawler->id }}" name="id" id="id" />
-        <div class="card">
-            <div class="card-content">
-                <span class="card-title mb-0">
-                    <span>
-                        <span data-name="crawler-title">{{ $crawler->name }}</span>
-                        <sub data-name="error-count"></sub>
-                    </span>
-                    <time class="timeago d-block" data-name="control-date"></time>
-                </span>
-            </div>
+@section('wildcard')
+    <div class="card grey darken-4">
+        <div class="container">
             <table
                 id="stats"
-                class="grey darken-4 load"
+                class="load"
                 data-method="post"
                 data-timeout="4000"
                 data-href="{{ route('crawlers.media.bot.statistics', $crawler->id) }}"
@@ -141,16 +126,38 @@
                         </th>
 
                         <th class="right-align grey-text">KUYRUK</th>
-                        <th class="orange-text" data-elasticsearch data-name="total-docs-buffer">-</th>
+                        <th class="grey-text" data-elasticsearch data-name="total-docs-buffer">-</th>
 
                         <th class="right-align grey-text">BAŞARILI</th>
-                        <th class="orange-text" data-elasticsearch data-name="total-docs-success">-</th>
+                        <th class="grey-text" data-elasticsearch data-name="total-docs-success">-</th>
 
                         <th class="right-align grey-text">BAŞARISIZ</th>
-                        <th class="orange-text" data-elasticsearch data-name="total-docs-failed">-</th>
+                        <th class="grey-text" data-elasticsearch data-name="total-docs-failed">-</th>
                     </tr>
                 </tbody>
             </table>
+        </div>
+    </div>
+@endsection
+
+@section('content')
+    <form
+        method="patch"
+        action="{{ route('crawlers.media.bot') }}"
+        class="json"
+        id="details-form"
+        data-callback="__test">
+        <input type="hidden" value="{{ $crawler->id }}" name="id" id="id" />
+        <div class="card with-bg">
+            <div class="card-content">
+                <span class="card-title">
+                    <span>
+                        <span data-name="crawler-title">{{ $crawler->name }}</span>
+                        <sub data-name="error-count"></sub>
+                    </span>
+                    <time class="timeago d-block" data-name="control-date"></time>
+                </span>
+            </div>
             @if (!$crawler->status && $crawler->off_reason)
                 <div class="card-content red white-text">
                     <small class="black-text">Kapanma Nedeni</small>
@@ -201,7 +208,7 @@
                                 M.updateTextFields()
                         })
                     @endpush
-                    <div class="collection-item green lighten-4">
+                    <div class="collection-item green lighten-5 z-depth-1">
                         <div class="input-field">
                             <input name="url_pattern" id="url_pattern" value="{{ $crawler->url_pattern }}" type="text" class="validate" data-length="255" />
                             <label for="url_pattern">Makale URL Deseni</label>
@@ -263,7 +270,7 @@
                 <a href="#" class="btn-flat waves-effect red-text" data-trigger="delete">
                     <i class="material-icons">close</i>
                 </a>
-                <button type="submit" class="btn waves-effect">
+                <button type="submit" class="btn-flat waves-effect">
                     <i class="material-icons">done_all</i>
                 </button>
 

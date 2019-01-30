@@ -408,15 +408,16 @@
     }
 @endpush
 
-@section('content')
-    <div class="card">
-        <div class="card-image">
-            <img src="{{ asset('img/card-header.jpg') }}" alt="Twitter Ayarları" />
-            <span class="card-title">Twitter Ayarları</span>
+@section('action-bar:half')
+    <a href="#" class="btn-floating btn-large halfway-fab waves-effect white" data-trigger="create">
+        <i class="material-icons grey-text text-darken-2">add</i>
+    </a>
+@endsection
 
-            <a href="#" class="btn-floating btn-large halfway-fab waves-effect white" data-trigger="create">
-                <i class="material-icons grey-text text-darken-2">add</i>
-            </a>
+@section('content')
+    <div class="card with-bg">
+        <div class="card-content">
+            <span class="card-title">Twitter Ayarları</span>
         </div>
         <div class="card-tabs">
             <ul class="tabs tabs-fixed-width">
@@ -429,7 +430,7 @@
             </ul>
         </div>
         <div id="stats">
-            <div class="card-content grey-text red lighten-5">
+            <div class="card-content grey-text">
                 <div
                     class="item-group load"
                     data-href="{{ route('admin.twitter.statistics') }}"

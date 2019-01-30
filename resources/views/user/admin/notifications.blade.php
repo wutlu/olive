@@ -20,9 +20,8 @@
 ])
 
 @section('content')
-    <div class="card">
-        <div class="card-image">
-            <img src="{{ asset('img/card-header.jpg') }}" alt="E-posta Bildirimleri" />
+    <div class="card with-bg">
+        <div class="card-content">
             <span class="card-title">E-posta Bildirimleri</span>
         </div>
         <div class="collection">

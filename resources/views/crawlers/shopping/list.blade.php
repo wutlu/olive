@@ -128,15 +128,13 @@
 @endsection
 
 @section('content')
-    <div class="card">
+    <div class="card with-bg">
         <div class="card-content">
-            <span class="card-title mb-0">
-                Alışveriş Botları
-                <small class="d-block" data-name="bots-count"></small>
-            </span>
+            <span class="card-title">Alışveriş Botları</span>
+            <span class="d-block" data-name="bots-count"></span>
         </div>
 
-        <nav class="grey darken-4">
+        <nav class="nav-half">
             <div class="nav-wrapper">
                 <div class="input-field">
                     <input id="string"

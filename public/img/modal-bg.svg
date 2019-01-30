@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1024" height="768" viewBox="0 0 1024 768">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: url(#linear-gradient);
+      }
+
+      .cls-2 {
+        fill: #fff;
+        fill-rule: evenodd;
+        opacity: 0.1;
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="128" x2="896" y2="768" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#00acc1"/>
+      <stop offset="1" stop-color="#00838f"/>
+    </linearGradient>
+  </defs>
+  <rect id="Dikdörtgen_1" data-name="Dikdörtgen 1" class="cls-1" width="1024" height="768"/>
+  <path id="Elips_2" data-name="Elips 2" class="cls-2" d="M965-288c244.11,0,442,197.89,442,442S1209.11,596,965,596,523,398.11,523,154,720.89-288,965-288Zm0,120c177.84,0,322,144.164,322,322S1142.84,476,965,476,643,331.836,643,154,787.164-168,965-168Z"/>
+  <path id="Elips_1" data-name="Elips 1" class="cls-2" d="M68-138c119.293,0,216,96.707,216,216S187.293,294,68,294-148,197.293-148,78-51.293-138,68-138Zm0,58.643A157.357,157.357,0,1,1-89.357,78,157.357,157.357,0,0,1,68-79.357Z"/>
+</svg>

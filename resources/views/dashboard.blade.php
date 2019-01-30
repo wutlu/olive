@@ -9,7 +9,13 @@
     })
 @endpush
 
-@section('wildcard')
+@push('local.styles')
+    .carousel-slider {
+        border-radius: 1rem 1rem 0 0;
+    }
+@endpush
+
+@section('content')
     @if (count($modals))
         @foreach ($modals as $carousel)
             @if ($carousel->modal)
@@ -35,61 +41,73 @@
             @endif
         @endforeach
     @endif
-    @if (count($carousels))
-        <div class="carousel carousel-slider grey darken-4 center z-depth-1">
-            @php
-            $i = 0;
-            @endphp
-                @foreach ($carousels as $carousel)
-                <div class="{{ implode(' ', [ 'carousel-item', $i == 0 ? 'active' : '', 'white-text' ]) }}">
-                    <h2>{{ $carousel->title }}</h2>
-                    <div class="markdown">
-                        {!! $carousel->markdown() !!}
-                    </div>
-                    <div class="{{ implode(' ', [ 'anim', $carousel->pattern ]) }}"></div>
 
-                    @if ($carousel->button_text)
-                        <a href="{{ $carousel->button_action }}" class="btn-flat waves-effect waves-red white-text">
-                            {{ $carousel->button_text }}
-                        </a>
-                    @endif
-                </div>
-                @php
-                $i++;
-                @endphp
-            @endforeach
-        </div>
-    @endif
-@endsection
-
-@section('content')
-    <div class="fast-menu">
-        <a href="{{ route('forum.index') }}" class="card-panel hoverable waves-effect" data-tooltip="Forum" data-position="right">
-            <img alt="Forum" src="{{ asset('img/icons/board.png') }}" />
-        </a>
-        <a href="{{ route('data_pool.dashboard') }}" class="card-panel hoverable waves-effect" data-tooltip="Veri Havuzu" data-position="right">
-            <img alt="Veri Havuzu" src="{{ asset('img/icons/filter.png') }}" />
-        </a>
-        <a href="{{ route('realtime.stream') }}" class="card-panel hoverable waves-effect" data-tooltip="Gerçek Zamanlı" data-position="right">
-            <img alt="Gerçek Zamanlı" src="{{ asset('img/icons/realtime.png') }}" />
-        </a>
-        <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" style="opacity: .4;" href="#" class="card-panel hoverable waves-effect" data-tooltip="Monitörler" data-position="right">
-            <img alt="Monitorler" src="{{ asset('img/icons/analytics.png') }}" />
-        </a>
-        <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" style="opacity: .4;" href="#" class="card-panel hoverable waves-effect" data-tooltip="Trend Analizi" data-position="right">
-            <img alt="Trend Analizi" src="{{ asset('img/icons/trends.png') }}" />
-        </a>
-        <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" style="opacity: .4;" href="#" class="card-panel hoverable waves-effect" data-tooltip="Geçmiş Veri" data-position="right">
-            <img alt="Geçmiş Veri" src="{{ asset('img/icons/archive.png') }}" />
-        </a>
-        <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" style="opacity: .4;" href="#" class="card-panel hoverable waves-effect" data-tooltip="Alarmlar" data-position="right">
-            <img alt="Alarmlar" src="{{ asset('img/icons/alarm.png') }}" />
-        </a>
-        <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" style="opacity: .4;" href="#" class="card-panel hoverable waves-effect" data-tooltip="Araçlar" data-position="right">
-            <img alt="Araçlar" src="{{ asset('img/icons/tools.png') }}" />
-        </a>
-    </div>
     <div class="row">
+        @if (count($carousels))
+            <div class="col s12">
+                <div class="carousel carousel-slider grey darken-4 center z-depth-1">
+                    @php
+                    $i = 0;
+                    @endphp
+                        @foreach ($carousels as $carousel)
+                        <div class="{{ implode(' ', [ 'carousel-item', $i == 0 ? 'active' : '', 'white-text' ]) }}">
+                            <h2>{{ $carousel->title }}</h2>
+                            <div class="markdown">
+                                {!! $carousel->markdown() !!}
+                            </div>
+                            <div class="{{ implode(' ', [ 'anim', $carousel->pattern ]) }}"></div>
+
+                            @if ($carousel->button_text)
+                                <a href="{{ $carousel->button_action }}" class="btn-flat waves-effect waves-red white-text">
+                                    {{ $carousel->button_text }}
+                                </a>
+                            @endif
+                        </div>
+                        @php
+                        $i++;
+                        @endphp
+                    @endforeach
+                </div>
+            </div>
+        @endif
+
+        <div class="col s12">
+            <div class="fast-menu grey darken-4">
+                <a href="{{ route('forum.index') }}" class="waves-effect">
+                    <i class="material-icons">forum</i>
+                    <span class="d-block">Forum</span>
+                </a>
+                <a href="{{ route('data_pool.dashboard') }}" class="waves-effect">
+                    <i class="material-icons">hearing</i>
+                    <span class="d-block">Veri Havuzu</span>
+                </a>
+                <a href="{{ route('realtime.stream') }}" class="waves-effect">
+                    <i class="material-icons">watch_later</i>
+                    <span class="d-block">Gerçek Zamanlı</span>
+                </a>
+                <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" style="opacity: .4;" href="#" class="waves-effect">
+                    <i class="material-icons">desktop_mac</i>
+                    <span class="d-block">Monitörler</span>
+                </a>
+                <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" style="opacity: .4;" href="#" class="waves-effect">
+                    <i class="material-icons">trending_up</i>
+                    <span class="d-block">Trend Analizi</span>
+                </a>
+                <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" style="opacity: .4;" href="#" class="waves-effect">
+                    <i class="material-icons">youtube_searched_for</i>
+                    <span class="d-block">Geçmiş Veri</span>
+                </a>
+                <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" style="opacity: .4;" href="#" class="waves-effect">
+                    <i class="material-icons">access_alarm</i>
+                    <span class="d-block">Alarmlar</span>
+                </a>
+                <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" style="opacity: .4;" href="#" class="waves-effect">
+                    <i class="material-icons">settings</i>
+                    <span class="d-block">Araçlar</span>
+                </a>
+            </div>
+        </div>
+
         <div class="col xl4 l5 s12">
             @if (@auth()->user()->organisation_id)
                 @if (!auth()->user()->intro('search.module'))

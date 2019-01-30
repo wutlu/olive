@@ -20,9 +20,8 @@
 ])
 
 @section('content')
-    <div class="card">
-        <div class="card-image">
-            <img src="{{ asset('img/card-header.jpg') }}" alt="Gerçek Zamanlı Kelime Grupları" />
+    <div class="card with-bg">
+        <div class="card-content">
             <span class="card-title">Gerçek Zamanlı Kelime Grupları</span>
         </div>
         <ul class="collection">

@@ -47,7 +47,7 @@ class MonitorController extends Controller
         $data['ram']['free'] = System::getRamFree();
         $data['cpu'] = [
             'core' => System::getCpuNumber(),
-            'usage' => sys_getloadavg()[0]
+            'usage' => shell_exec(storage_path('app/cpu_usage'))
         ];
 
         return [

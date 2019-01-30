@@ -25,9 +25,9 @@
                         .animate({ 'opacity': 1 }, 1000)
                         .children('.card-image')
                         .children('img')
-                        .attr('src', '{{ asset('img/card-header.jpg') }}')
+                        .attr('src', '{{ asset('img/md-s/34.jpg') }}')
                         .next('a')
-                        .removeClass('cyan')
+                        .removeClass('white')
                         .addClass('disabled')
                         .children('i.material-icons')
                         .html('lock')
@@ -71,8 +71,8 @@
         <div class="card-image">
             <img src="{{ asset('img/md-s/'.($ticket->status == 'open' ? '32' : '34').'.jpg') }}" alt="Destek Talebi" />
 
-            <a href="javascript:close()" class="btn-floating btn-large halfway-fab waves-effect waves-light {{ $ticket->status == 'open' ? 'cyan' : 'disabled' }}">
-                <i class="material-icons">{{ $ticket->status == 'open' ? 'lock_open' : 'lock' }}</i>
+            <a href="javascript:close()" class="btn-floating btn-large halfway-fab waves-effect {{ $ticket->status == 'open' ? 'white' : 'disabled' }}">
+                <i class="material-icons grey-text text-darken-2">{{ $ticket->status == 'open' ? 'lock_open' : 'lock' }}</i>
             </a>
 
             <span class="card-title">#{{ $ticket->id }}</span>
@@ -118,9 +118,7 @@
         </div>
     </div>
     @empty
-        @component('components.nothing')
-            @slot('cloud_class', 'white-text')
-        @endcomponent
+        @component('components.nothing')@endcomponent
     @endforelse
 
     @if ($ticket->status == 'open')

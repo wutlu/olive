@@ -77,7 +77,7 @@
         @if (@$coupon)
         <input type="hidden" value="{{ $coupon->id }}" name="id" id="id" />
         @endif
-        <div class="card">
+        <div class="card with-bg">
             <div class="card-content">
                 <span class="card-title">{{ @$coupon ? $coupon->key : 'Kupon Oluştur' }}</span>
                 <div class="d-flex flex-wrap">

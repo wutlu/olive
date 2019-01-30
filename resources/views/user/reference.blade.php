@@ -31,7 +31,7 @@
 @section('content')
     <div class="card">
         @if ($user->reference_code)
-            <div class="card-content teal d-flex justify-content-between">
+            <div class="card-content cyan darken-2 d-flex justify-content-between">
                 @if ($root)
                     <span class="white-text" data-tooltip="Bakiye" data-position="right">{{ config('formal.currency') }} {{ $user->balance() }}</span>
                 @else
@@ -42,7 +42,7 @@
                 <span class="white-text" data-tooltip="Pay Oranı" data-position="left">{{ $user->partner_rate }}%</span>
             </div>
             <div class="card-tabs">
-                <ul class="tabs tabs-fixed-width tabs-transparent teal">
+                <ul class="tabs tabs-fixed-width tabs-transparent cyan darken-2">
                     <li class="tab">
                         <a href="#referanslar" class="active waves-effect waves-light">Referanslar</a>
                     </li>

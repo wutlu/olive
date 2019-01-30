@@ -77,7 +77,7 @@
         @if (@$day)
             <input type="hidden" value="{{ $day->id }}" name="id" id="id" />
         @endif
-        <div class="card">
+        <div class="card with-bg">
             <div class="card-content">
                 <span class="card-title">{{ @$day ? 'İndirim Günü' : 'İndirim Günü Oluştur' }}</span>
                 <div class="d-flex flex-wrap">

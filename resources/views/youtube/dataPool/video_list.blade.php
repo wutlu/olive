@@ -16,9 +16,9 @@
 ])
 
 @section('content')
-    <div class="card">
+    <div class="card with-bg">
         <div class="card-content">
-            <span class="card-title mb-0">Video Havuzu</span>
+            <span class="card-title">Video Havuzu</span>
             <p class="grey-text" data-name="count"></p>
         </div>
         <div class="collection mb-0 load"

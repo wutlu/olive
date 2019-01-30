@@ -45,7 +45,7 @@
             $('[data-id=ram-per]').html(ramPer.toFixed(2) + ' %')
             $('[data-id=ram-total]').html(obj.data.ram.total.readable)
 
-            $('[data-id=cpu-per]').html(cpuPer.toFixed(2) + ' %')
+            $('[data-id=cpu-per]').html(cpuPer + ' %')
             $('[data-id=cpu-core]').html(obj.data.cpu.core + ' CORE')
 
             window.clearTimeout(callbackTimer)
@@ -65,7 +65,7 @@
         data-method="post"></div>
     <div class="row">
         <div class="col s12 xl6">
-            <div class="card">
+            <div class="card with-bg">
                 <div class="card-metric">
                     <div class="card-metric-title">RAM</div>
                     <div class="card-metric-value">
@@ -77,7 +77,7 @@
                     <canvas id="ram-chart" height="128"></canvas>
                 </div>
             </div>
-            <div class="card">
+            <div class="card with-bg">
                 <div class="card-metric">
                     <div class="card-metric-title">CPU</div>
                     <div class="card-metric-value">
@@ -91,9 +91,9 @@
             </div>
         </div>
         <div class="col s12 xl6">
-            <div class="card">
+            <div class="card with-bg">
                 <div class="card-content">
-                    <span class="card-title mb-0">Disk Kullanımı</span>
+                    <span class="card-title">Disk Kullanımı</span>
                 </div>
                 @if (count($disks))
                     <div class="card-tabs">
@@ -107,7 +107,7 @@
                             @endforeach
                         </ul>
                     </div>
-                    <div class="card-content grey lighten-4">
+                    <div class="card-content white lighten-4">
                         @foreach ($disks as $key => $disk)
                             <div id="disk-{{ $key }}">
                                 <canvas id="hdd-chart-{{ $key }}"></canvas>

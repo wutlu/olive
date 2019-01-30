@@ -235,19 +235,20 @@
     }
 @endpush
 
-@section('content')
-    <div class="card">
-        <div class="card-image">
-            <img src="{{ asset('img/card-header.jpg') }}" alt="Vekil Sunucu Yönetimi" />
-            <span class="card-title">Vekil Sunucu Yönetimi</span>
+@section('action-bar')
+    <a href="#" class="btn-floating btn-large halfway-fab waves-effect white" data-trigger="create">
+        <i class="material-icons grey-text text-darken-2">add</i>
+    </a>
+@endsection
 
-            <a href="#" class="btn-floating btn-large halfway-fab waves-effect white" data-trigger="create">
-                <i class="material-icons grey-text text-darken-2">add</i>
-            </a>
+@section('content')
+    <div class="card with-bg">
+        <div class="card-content">
+            <span class="card-title">Vekil Sunucu Yönetimi</span>
         </div>
-        <div class="card-content teal lighten-5 teal-text">
-            <p>Veri toplamada daha yüksek erişim sağlamak için birden fazla vekil sunucu kullanın.</p>
-            <p>Vekil sunucu yaşam değerleri otomatize bir şekilde sürekli olarak kontrol edilir. Yaşam değeri düşük sunucular, yaşam değeri normal duruma gelene kadar kullanılmayacaktır.</p>
+        <div class="card-content">
+            <p class="grey-text">- Veri toplamada daha yüksek erişim sağlamak için birden fazla vekil sunucu kullanın.</p>
+            <p class="grey-text">- Vekil sunucu yaşam değerleri otomatize bir şekilde sürekli olarak kontrol edilir. Yaşam değeri düşük sunucular, yaşam değeri normal duruma gelene kadar kullanılmayacaktır.</p>
         </div>
         <div class="collection load"
              id="collections"

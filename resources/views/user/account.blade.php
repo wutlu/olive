@@ -28,9 +28,8 @@
 
 @section('content')
     <form method="post" action="{{ route('settings.account') }}" class="json" id="details-form" data-callback="__account">
-        <div class="card">
-            <div class="card-image">
-                <img src="{{ asset('img/card-header.jpg') }}" alt="Hesap Bilgileri" />
+        <div class="card with-bg">
+            <div class="card-content">
                 <span class="card-title">Hesap Bilgileri</span>
             </div>
             <div class="card-content">

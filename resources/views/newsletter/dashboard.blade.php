@@ -41,20 +41,19 @@
     }
 @endpush
 
-@section('content')
-    <div class="card">
-        <div class="card-image">
-            <img src="{{ asset('img/card-header.jpg') }}" alt="E-posta Bülteni" />
-            <span class="card-title">E-posta Bülteni</span>
+@section('action-bar')
+    <a href="{{ route('admin.newsletter.form') }}" class="btn-floating btn-large halfway-fab waves-effect white">
+        <i class="material-icons grey-text text-darken-2">add</i>
+    </a>
+@endsection
 
-            <a href="{{ route('admin.newsletter.form') }}" class="btn-floating btn-large halfway-fab waves-effect white">
-                <i class="material-icons grey-text text-darken-2">add</i>
-            </a>
-        </div>
-        <div class="card-content grey lighten-4 grey-text">
+@section('content')
+    <div class="card with-bg">
+        <div class="card-content">
+            <span class="card-title">E-posta Bülteni</span>
             <p>E-posta bültenleri işleme alındıktan sonra tamamlanmadan sonlandırılamaz/güncellenemez/silinemez.</p>
         </div>
-        <nav class="grey darken-4">
+        <nav class="nav-half">
             <div class="nav-wrapper">
                 <div class="input-field">
                     <input id="string"

@@ -39,18 +39,18 @@
             <div class="card-image">
                 <a
                     href="#"
-                    class="btn-floating btn-large halfway-fab waves-effect teal {{ $thread->closed ? 'hide' : '' }}"
+                    class="btn-floating btn-large halfway-fab waves-effect white {{ $thread->closed ? 'hide' : '' }}"
                     data-id="{{ $thread->id }}"
                     data-button="reply"
                     data-tooltip="Cevapla"
                     data-position="left">
-                    <i class="material-icons">reply</i>
+                    <i class="material-icons grey-text text-darken-2">reply</i>
                 </a>
             </div>
         @else
             <div class="card-image">
-                <a href="{{ route('user.login') }}" class="btn-floating btn-large halfway-fab waves-effect teal" data-tooltip="Giriş Yap" data-position="left">
-                    <i class="material-icons">person</i>
+                <a href="{{ route('user.login') }}" class="btn-floating btn-large halfway-fab waves-effect white" data-tooltip="Giriş Yap" data-position="left">
+                    <i class="material-icons grey-text text-darken-2">person</i>
                 </a>
             </div>
         @endauth
@@ -765,10 +765,10 @@
                         <div class="markdown"></div>
                     </blockquote>
                 </div>
-                <div class="card-content teal">
+                <div class="card-content cyan darken-2">
                     <span class="card-title white-text mb-0">Cevapla</span>
                 </div>
-                <div class="card-tabs teal">
+                <div class="card-tabs cyan darken-2">
                     <ul class="tabs tabs-transparent">
                         <li class="tab">
                             <a href="#textarea" class="waves-effect active">Cevapla</a>
@@ -796,8 +796,8 @@
                     style="display: none;">
                     <div class="markdown"></div>
                 </div>
-                <div class="card-action right-align teal">
-                    <button type="submit" class="btn-flat waves-effect white-text">
+                <div class="card-action right-align">
+                    <button type="submit" class="btn-flat waves-effect">
                         <i class="material-icons">send</i>
                     </button>
                 </div>

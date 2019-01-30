@@ -66,11 +66,11 @@
 @endpush
 
 @section('content')
-    <div class="card">
+    <div class="card with-bg">
         <div class="card-content">
-            <span class="card-title mb-0">YouTube Ayarları</span>
+            <span class="card-title">YouTube Ayarları</span>
         </div>
-        <div class="card-content grey-text red lighten-5">
+        <div class="card-content grey-text">
             <div
                 class="item-group load"
                 data-href="{{ route('admin.youtube.statistics') }}"

@@ -41,9 +41,8 @@
         id="details-form"
         data-id="{{ $user->id }}"
         data-callback="__account">
-        <div class="card">
-            <div class="card-image">
-                <img src="{{ asset('img/card-header.jpg') }}" alt="Kullanıcı Bilgileri" />
+        <div class="card with-bg">
+            <div class="card-content">
                 <span class="card-title">Kullanıcı Bilgileri</span>
             </div>
             <div class="card-content">
@@ -99,7 +98,7 @@
                         <img alt="Avatar" src="{{ $user->avatar() }}" class="user-avatar" style="width: 64px; height: 64px;" />
                     </label>
                 </div>
-                <div class="collection z-depth-1">
+                <div class="collection green lighten-5 z-depth-1">
                     <label class="collection-item waves-effect d-block">
                         <input name="root" id="root" value="on" type="checkbox" {{ $user->root() ? 'checked' : '' }} />
                         <span>Yönetici</span>
@@ -109,7 +108,7 @@
                         <span>Moderatör</span>
                     </label>
                 </div>
-                <div class="collection z-depth-1">
+                <div class="collection orange lighten-5 z-depth-1">
                     <label class="collection-item waves-effect d-block">
                         <input name="partner" id="partner" value="on" type="checkbox" {{ $user->partner ? 'checked' : '' }} />
                         <span>Partner</span>
@@ -122,7 +121,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="collection z-depth-1">
+                <div class="collection red lighten-5 z-depth-1">
                     <div class="collection-item">
                         <div class="input-field">
                             <input name="ban_reason" id="ban_reason" value="{{ $user->ban_reason }}" type="text" class="validate" />

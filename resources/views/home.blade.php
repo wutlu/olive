@@ -12,11 +12,7 @@
     <header id="main">
         <div class="parallax-container">
             <div class="parallax">
-                <img class="face" src="{{ asset('img/f1.jpg') }}" alt="Face" />
-            </div>
-
-            <div class="parallax">
-                <img src="{{ asset('img/bg-2.svg') }}" alt="bg-2" />
+                <img src="{{ asset('img/bg.svg') }}" alt="bg-2" />
             </div>
 
             <div class="container">
@@ -26,15 +22,15 @@
                             <img src="{{ asset('img/olive-logo.svg') }}" alt="olive-logo" class="responsive-img" />
                         </a>
 
-                        <p class="white-text">@lang('global.header.lead-1')</p>
+                        <p>@lang('global.header.lead-1')</p>
                         <p class="grey-text">@lang('global.header.lead-2')</p>
                         <p class="grey-text">@lang('global.header.lead-3')</p>
 
-                        <a href="{{ route('user.login') }}" class="waves-effect btn black-text white">@auth{{ 'Olive\'e Gidin'}}@else{{ 'Giriş Yapın' }}@endauth</a>
+                        <a href="{{ route('user.login') }}" class="waves-effect btn-flat">@auth{{ 'Olive\'e Gidin'}}@else{{ 'Giriş Yapın' }}@endauth</a>
 
                         <div class="down-area center-align">
-                            <a href="#" class="waves-effect btn-large btn-floating pulse white">
-                                <i class="material-icons grey-text text-darken-2">arrow_downward</i>
+                            <a href="#" class="waves-effect btn-large btn-floating pulse grey darken-4">
+                                <i class="material-icons white-text">arrow_downward</i>
                             </a>
                         </div>
                     </div>

@@ -118,9 +118,9 @@
 @endpush
 
 @section('content')
-    <div class="card">
+    <div class="card with-bg">
         <div class="card-content">
-            <span class="card-title mb-0">Ziyaretçi Logları</span>
+            <span class="card-title">Ziyaretçi Logları</span>
             <span class="grey-text" data-name="total">0</span>
         </div>
         <ul

@@ -122,23 +122,12 @@
     }
 @endpush
 
-@section('content')
-    <form
-        method="patch"
-        action="{{ route('crawlers.sozluk.bot') }}"
-        class="json"
-        id="details-form"
-        data-callback="__test">
-        <input type="hidden" value="{{ $crawler->id }}" name="id" id="id" />
-        <div class="card">
-            <div class="card-content">
-                <span class="card-title mb-0">
-                    <span data-name="crawler-title">{{ $crawler->name }}</span>
-                </span>
-            </div>
+@section('wildcard')
+    <div class="card grey darken-4">
+        <div class="container">
             <table
                 id="stats"
-                class="grey darken-4 load"
+                class="load"
                 data-method="post"
                 data-timeout="4000"
                 data-href="{{ route('crawlers.sozluk.bot.statistics', $crawler->id) }}"
@@ -155,16 +144,34 @@
                             <a href="#" data-trigger="status" class="btn-flat waves-effect waves-{{ $crawler->status ? 'green green' : 'red red' }}-text">{{ $crawler->status ? 'AKTİF' : 'PASİF' }}</a>
                         </th>
                         <th class="right-align grey-text">BOYUT</th>
-                        <th class="orange-text" data-elasticsearch data-name="total-size">-</th>
+                        <th class="grey-text" data-elasticsearch data-name="total-size">-</th>
 
                         <th class="right-align grey-text">DÖKÜMAN</th>
-                        <th class="orange-text" data-elasticsearch data-name="total-docs">-</th>
+                        <th class="grey-text" data-elasticsearch data-name="total-docs">-</th>
 
                         <th class="right-align grey-text">PID</th>
-                        <th class="orange-text" data-elasticsearch data-name="pid">-</th>
+                        <th class="grey-text" data-elasticsearch data-name="pid">-</th>
                     </tr>
                 </tbody>
             </table>
+        </div>
+    </div>
+@endsection
+
+@section('content')
+    <form
+        method="patch"
+        action="{{ route('crawlers.sozluk.bot') }}"
+        class="json"
+        id="details-form"
+        data-callback="__test">
+        <input type="hidden" value="{{ $crawler->id }}" name="id" id="id" />
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title">
+                    <span data-name="crawler-title">{{ $crawler->name }}</span>
+                </span>
+            </div>
             @if (!$crawler->status && $crawler->off_reason)
                 <div class="card-content red white-text">
     	            <small class="black-text">Kapanma Nedeni</small>
@@ -278,7 +285,7 @@
                 <a href="#" class="btn-flat waves-effect red-text" data-trigger="delete">
                     <i class="material-icons">close</i>
                 </a>
-                <button type="submit" class="btn waves-effect">
+                <button type="submit" class="btn-flat waves-effect">
                     <i class="material-icons">done_all</i>
                 </button>
 

@@ -23,14 +23,18 @@
 
     <div class="divider"></div>
 
-    <div class="collection-item grey-text">YouTube</div>
+    <div class="collection-item">
+        <span class="grey-text">YouTube</span>
+    </div>
     <a href="{{ route('admin.youtube.followed_channels', $organisation->id) }}" class="collection-item waves-effect">Takip Ettiği Kanallar</a>
     <a href="{{ route('admin.youtube.followed_videos', $organisation->id) }}" class="collection-item waves-effect">Takip Ettiği Videoları</a>
     <a href="{{ route('admin.youtube.followed_keywords', $organisation->id) }}" class="collection-item waves-effect">Takip Ettiği Kelimeler</a>
 
     <div class="divider"></div>
 
-    <div class="collection-item grey-text">Twitter</div>
+    <div class="collection-item">
+        <span class="grey-text">Twitter</span>
+    </div>
     <a href="{{ route('admin.twitter.stream.keywords', $organisation->id) }}" class="collection-item waves-effect">Takip Ettiği Kelimeler</a>
     <a href="{{ route('admin.twitter.stream.accounts', $organisation->id) }}" class="collection-item waves-effect">Takip Ettiği Kullanıcılar</a>
 </div>

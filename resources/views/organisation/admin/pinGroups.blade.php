@@ -20,9 +20,8 @@
 ])
 
 @section('content')
-    <div class="card">
-        <div class="card-image">
-            <img src="{{ asset('img/card-header.jpg') }}" alt="Pin Grupları" />
+    <div class="card with-bg">
+        <div class="card-content">
             <span class="card-title">Pin Grupları</span>
         </div>
         <ul id="pin-groups"

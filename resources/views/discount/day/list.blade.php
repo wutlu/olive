@@ -11,18 +11,17 @@
     'dock' => true
 ])
 
+@section('action-bar:half')
+    <a href="{{ route('admin.discount.day') }}" class="btn-floating btn-large halfway-fab waves-effect white">
+        <i class="material-icons grey-text text-darken-2">add</i>
+    </a>
+@endsection
+
 @section('content')
-    <div class="card">
-        <div class="card-image">
-            <img src="{{ asset('img/card-header.jpg') }}" alt="İndirim Günleri" />
-            <a href="{{ route('admin.discount.day') }}" class="btn-floating btn-large halfway-fab waves-effect white">
-                <i class="material-icons grey-text text-darken-2">add</i>
-            </a>
-        </div>
-        <div class="card-content teal lighten-5 teal-text">
-            <p>Belirleyeceğiniz günlerde sisteme kaydolan kullanıcılar için sistem, indirim kuponları üretir.</p>
-        </div>
+    <div class="card with-bg">
         <div class="card-content">
+            <p>Belirleyeceğiniz günlerde sisteme kaydolan kullanıcılar için sistem, indirim kuponları üretir.</p>
+
             <span class="card-title">İndirim Günleri</span>
             <p class="grey-text">{{ count($days).'/'.$days->total() }}</p>
 

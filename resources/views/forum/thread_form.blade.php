@@ -35,8 +35,8 @@
 @section('wildcard')
     <div class="card wild-background">
         <div class="card-image">
-            <a href="{{ $thread ? $thread->route() : route('forum.index') }}" class="btn-floating btn-large halfway-fab waves-effect teal" data-tooltip="Vazgeç" data-position="left">
-                <i class="material-icons">close</i>
+            <a href="{{ $thread ? $thread->route() : route('forum.index') }}" class="btn-floating btn-large halfway-fab waves-effect white" data-tooltip="Vazgeç" data-position="left">
+                <i class="material-icons grey-text text-darken-2">close</i>
             </a>
         </div>
         <div class="container">
@@ -80,7 +80,7 @@
                 @endif
             </div>
             <div class="card-tabs">
-                <ul class="tabs tabs-transparent teal">
+                <ul class="tabs tabs-transparent cyan darken-2">
                     <li class="tab">
                         <a href="#textarea" class="active">Konu İçeriği</a>
                     </li>
@@ -117,7 +117,7 @@
 @if (!$thread)
     @section('dock')
         <div class="card">
-            <div class="card-content teal">
+            <div class="card-content cyan darken-2">
                 <span class="card-title white-text mb-0">Kategori</span>
             </div>
             <div class="collection">

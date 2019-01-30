@@ -14,9 +14,8 @@
 @section('content')
 	<form method="post" action="{{ route('settings.avatar') }}" enctype="multipart/form-data">
 		@csrf
-		<div class="card">
-		    <div class="card-image">
-		        <img src="{{ asset('img/card-header.jpg') }}" alt="Hesap Resmi" />
+		<div class="card with-bg">
+		    <div class="card-content">
 		        <span class="card-title">Hesap Resmi</span>
 		    </div>
 			<div class="card-content">

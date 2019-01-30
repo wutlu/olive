@@ -52,7 +52,7 @@
             </div>
 
             <div class="card">
-                <div class="card-content teal">
+                <div class="card-content cyan darken-2">
                     <span class="card-title white-text mb-0">Benzer Entryler</span>
                 </div>
                 <div class="collection load json-clear"
@@ -71,13 +71,13 @@
                         <span class="d-table" data-name="title"></span>
                         <span class="d-table grey-text" data-name="entry"></span>
                         <a href="#" class="grey-text" data-name="url" target="_blank"></a>
-                        <time class="d-table teal-text mb-0" data-name="created-at"></time>
+                        <time class="d-table grey-text mb-0" data-name="created-at"></time>
                     </div>
                 </div>
             </div>
 
             @component('components.loader')
-                @slot('color', 'teal')
+                @slot('color', 'cyan')
                 @slot('id', 'home-loader')
             @endcomponent
 

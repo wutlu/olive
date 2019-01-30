@@ -22,11 +22,11 @@
 @section('header.title', 'Test')
 
 @section('content')
-    <div class="card">
-        <div class="card-content teal">
-            <span class="card-title mb-0 white-text">Trend Arşivi</span>
+    <div class="card with-bg">
+        <div class="card-content">
+            <span class="card-title">Trend Arşivi</span>
         </div>
-        <nav class="grey darken-4">
+        <nav class="nav-half">
             <div class="nav-wrapper">
                 <div class="input-field">
                     <input id="string"

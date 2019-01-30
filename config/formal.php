@@ -7,7 +7,7 @@ return [
         'logo' => 'img/veri.zone-logo.svg',
         'name' => 'veri.zone',
         'address' => [
-            'Yeni Mah. Eti Cad. 76/B',
+            'Yeni Mah. Eti Cad. 78/B',
             'Polatlı/ANKARA',
             'Mustafa Toksöz'
         ],

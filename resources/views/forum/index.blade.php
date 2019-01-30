@@ -37,15 +37,15 @@
         @auth
             @if (@$category->lock == false || auth()->user()->root())
                 <div class="card-image">
-                    <a href="{{ route('forum.thread.form') }}" class="btn-floating btn-large halfway-fab waves-effect teal" data-tooltip="Konu Başlat" data-position="left">
-                        <i class="material-icons">add</i>
+                    <a href="{{ route('forum.thread.form') }}" class="btn-floating btn-large halfway-fab waves-effect white" data-tooltip="Konu Başlat" data-position="left">
+                        <i class="material-icons grey-text text-darken-2">add</i>
                     </a>
                 </div>
             @endif
         @else
             <div class="card-image">
-                <a href="{{ route('user.login') }}" class="btn-floating btn-large halfway-fab waves-effect teal" data-tooltip="Giriş Yap" data-position="left">
-                    <i class="material-icons">person</i>
+                <a href="{{ route('user.login') }}" class="btn-floating btn-large halfway-fab waves-effect white" data-tooltip="Giriş Yap" data-position="left">
+                    <i class="material-icons grey-text text-darken-2">person</i>
                 </a>
             </div>
         @endauth
@@ -472,7 +472,7 @@
 @endpush
 
 @section('dock')
-    <div class="card teal accent-3">
+    <div class="card cyan">
         <div class="card-content">
             <span class="card-title white-text mb-0">Kategoriler</span>
         </div>
@@ -480,7 +480,7 @@
         @auth
             @if (auth()->user()->root())
                 <div class="card-image">
-                    <a href="#" class="btn-floating halfway-fab waves-effect teal" data-trigger="create-cat">
+                    <a href="#" class="btn-floating halfway-fab waves-effect cyan darken-2" data-trigger="create-cat">
                         <i class="material-icons">add</i>
                     </a>
                 </div>
@@ -516,7 +516,7 @@
                         @if (auth()->user()->root())
                             <a
                                 href="#"
-                                class="btn-floating btn-small waves-effect teal darken-2 json align-self-center"
+                                class="btn-floating btn-small waves-effect cyan darken-2 json align-self-center"
                                 data-href="{{ route('admin.forum.category') }}"
                                 data-method="post"
                                 data-callback="__get_cat"

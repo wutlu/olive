@@ -106,12 +106,11 @@
 
 @section('content')
     <div
-        class="card time-line card-olive"
+        class="card with-bg time-line card-olive"
         data-href="{{ route('realtime.query') }}"
         data-callback="__realtime"
         data-method="post"
         data-include="keyword_group,sentiment">
-        <div class="olive sphere-3"></div>
         <div class="card-content">
             <div class="d-flex justify-content-between">
                 <span class="card-title mr-auto mb-0 align-self-center">Gerçek Zamanlı</span>
@@ -428,9 +427,9 @@
 @endpush
 
 @section('dock')
-    <div class="card">
-        <div class="card-content teal accent-3">
-            <span class="card-title white-text mb-0">Kelime Grupları</span>
+    <div class="card with-bg">
+        <div class="card-content">
+            <span class="card-title">Kelime Grupları</span>
         </div>
         <div class="card-image">
             <a href="#" class="btn-floating halfway-fab waves-effect white" data-trigger="create-keyword-group">
@@ -456,7 +455,7 @@
                     </label>
                 </div>
                 <a
-                    class="btn-floating btn-small waves-effect json align-self-center"
+                    class="btn-floating btn-small waves-effect json align-self-center cyan"
                     data-href="{{ route('realtime.keyword.group') }}"
                     data-method="post"
                     data-callback="__get_keyword_group"
@@ -473,9 +472,9 @@
         @slot('id', 'keyword-group-loader')
     @endcomponent
 
-    <div class="card">
-        <div class="card-content teal accent-3">
-            <span class="card-title white-text mb-0">Pin Grupları</span>
+    <div class="card with-bg">
+        <div class="card-content">
+            <span class="card-title">Pin Grupları</span>
         </div>
         <div class="collection collection-bordered">
             @forelse ($pin_groups as $group)
@@ -500,9 +499,9 @@
         </div>
     </div>
 
-    <div class="card">
-        <div class="card-content teal accent-3">
-            <span class="card-title white-text mb-0">Duygu Analizi <sup>Beta</sup></span>
+    <div class="card with-bg">
+        <div class="card-content">
+            <span class="card-title">Duygu Analizi <sup>Beta</sup></span>
         </div>
         <div class="collection collection-bordered">
             <label class="collection-item waves-effect d-block">
@@ -524,7 +523,7 @@
         </div>
     </div>
 
-    <div class="card">
+    <div class="card with-bg">
         <div class="collection collection-bordered">
             <label class="collection-item waves-effect d-block">
                 <input name="sound_alert" value="on" type="checkbox" />
@@ -533,9 +532,9 @@
         </div>
     </div>
 
-    <div class="card">
-        <div class="card-content teal accent-3">
-            <span class="card-title white-text mb-0">Akış Hızı</span>
+    <div class="card with-bg">
+        <div class="card-content">
+            <span class="card-title">Akış Hızı</span>
         </div>
         <div class="collection collection-bordered">
             <label class="collection-item waves-effect d-block">

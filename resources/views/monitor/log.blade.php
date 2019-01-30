@@ -142,16 +142,23 @@
     }
 @endpush
 
-@section('content')
-    <div class="card">
-        <div class="card-image">
-            <img src="{{ asset('img/card-header.jpg') }}" alt="Log Ekranı" />
-            <span class="card-title">Log Ekranı</span>
+@section('action-bar')
+    <a href="#" class="btn-floating btn-large halfway-fab waves-effect white" data-trigger="clear">
+        <i class="material-icons grey-text text-darken-2">clear_all</i>
+    </a>
+@endsection
 
-            <a href="#" class="btn-floating btn-large halfway-fab waves-effect white" data-trigger="clear">
-                <i class="material-icons grey-text text-darken-2">clear_all</i>
-            </a>
+@section('content')
+    <div class="card with-bg">
+        <div class="card-content">
+            <span class="card-title">Log Dosyaları</span>
         </div>
+        <ul id="files" class="collection">
+            <li class="collection-item hide" data-href="{{ route('admin.monitoring.log.clear') }}">
+                <span data-name="path"></span>
+                <span data-name="size" class="badge grey darken-4 white-text"></span>
+            </li>
+        </ul>
         <ul
             id="console"
             class="collection black load d-flex align-items-end flex-wrap no-select"
@@ -171,17 +178,6 @@
                     <span data-name="module" class="grey-text text-darken-2"></span>
                 </p>
                 <textarea data-name="message" class="green-text d-block"></textarea>
-            </li>
-        </ul>
-    </div>
-    <div class="card">
-        <div class="card-content">
-            <span class="card-title mb-0">Log Dosyaları</span>
-        </div>
-        <ul id="files" class="collection">
-            <li class="collection-item hide" data-href="{{ route('admin.monitoring.log.clear') }}">
-                <span data-name="path"></span>
-                <span data-name="size" class="badge grey darken-4 white-text"></span>
             </li>
         </ul>
     </div>

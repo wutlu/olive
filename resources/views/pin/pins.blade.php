@@ -24,21 +24,23 @@
     }
 @endpush
 
+@section('action-bar')
+    <a
+        href="#"
+        class="btn-floating btn-large halfway-fab waves-effect white json btn-image"
+        data-tooltip="Pdf Dökümü Al"
+        data-position="left"
+        data-href="{{ route('pin.pdf') }}"
+        data-id="{{ $pg->id }}"
+        data-method="post"
+        data-callback="__pdf"
+        style="background-image: url('{{ asset('img/icons/pdf.png') }}');"></a>
+@endsection
+
 @section('content')
-    <div class="card">
-        <div class="card-image">
-            <img src="{{ asset('img/card-header.jpg') }}" alt="Pinlemeler" />
+    <div class="card with-bg">
+        <div class="card-content">
             <span class="card-title">Pinlemeler</span>
-            <a
-                href="#"
-                class="btn-floating btn-large halfway-fab waves-effect white json btn-image"
-                data-tooltip="Pdf Dökümü Al"
-                data-position="left"
-                data-href="{{ route('pin.pdf') }}"
-                data-id="{{ $pg->id }}"
-                data-method="post"
-                data-callback="__pdf"
-                style="background-image: url('{{ asset('img/icons/pdf.png') }}');"></a>
         </div>
         <div class="card-content">
             Ekleyeceğiniz yorumlar, PDF raporlarınızda analiz sonucu olarak yer alacaktır.

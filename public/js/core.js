@@ -1080,7 +1080,7 @@ function modal(obj)
 
     var modal_element = $('<div >', {
             'id': 'modal-' + obj.id,
-            'class': 'modal ' + modal_size + ' ' + modal_class,
+            'class': 'modal with-bg ' + modal_size + ' ' + modal_class,
             'data-z-index': z_index,
             'css': { 'z-index': z_index },
             'html': $('<div />', {

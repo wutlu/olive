@@ -30,9 +30,8 @@
 
 @section('content')
     <form method="post" action="{{ route('admin.organisation', $organisation->id) }}" class="json" id="details-form" data-callback="__account">
-        <div class="card">
-            <div class="card-image">
-                <img src="{{ asset('img/card-header.jpg') }}" alt="Organizasyon Bilgileri" />
+        <div class="card with-bg">
+            <div class="card-content">
                 <span class="card-title">Organizasyon Bilgileri</span>
             </div>
             <div class="card-content">

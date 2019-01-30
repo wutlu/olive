@@ -112,9 +112,7 @@
         </div>
     </div>
     @empty
-        @component('components.nothing')
-            @slot('cloud_class', 'white-text')
-        @endcomponent
+        @component('components.nothing')@endcomponent
     @endforelse
 
     @if ($ticket->status == 'open')
