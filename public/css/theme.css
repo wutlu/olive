@@ -614,7 +614,7 @@ table.invoice tfoot > tr {
   background-image: url('../img/card-bg-2.svg');
   background-repeat: no-repeat;
   background-position: top center;
-  background-size: 100% 172px;
+  background-size: contain;
 }
 .card.with-bg > .card-tabs > .tabs {
   background-color: transparent;
