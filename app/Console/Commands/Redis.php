@@ -9,6 +9,9 @@ use App\Elasticsearch\Document;
 
 use Carbon\Carbon;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\HandlerStack;
+
 class Redis extends Command
 {
     public $alias;
@@ -72,31 +75,19 @@ class Redis extends Command
      */
     public function total_document()
     {
-        $data = [];
+        $client = new Client([
+            'base_uri' => array_random(config('database.connections.elasticsearch.hosts')),
+            'handler' => HandlerStack::create()
+        ]);
 
-        # [ total tweets ] #
-        $tweets = @Document::count([ 'twitter', 'tweets', '*' ], 'tweet')->data['count'];
-        # [ total entries ] #
-        $entries = @Document::count([ 'sozluk', '*' ], 'entry')->data['count'];
-        # [ total articles ] #
-        $articles = @Document::count([ 'media', 's*' ], 'article')->data['count'];
-        # [ total comments ] #
-        $comments = @Document::count([ 'youtube', 'comments', '*' ], 'comment')->data['count'];
-        # [ total videos ] #
-        $videos = @Document::count([ 'youtube', 'videos' ], 'video')->data['count'];
-        # [ total searches ] #
-        $searches = @Document::count([ 'google', 'search' ], 'search')->data['count'];
-        # [ total products ] #
-        $products = @Document::count([ 'shopping', '*' ], 'product')->data['count'];
+        $source = $client->get('/_cat/indices/olive__*?format=json')->getBody();
+        $source = json_decode($source);
 
-        if ($tweets) $data['tweets'] = $tweets;
-        if ($entries) $data['entries'] = $entries;
-        if ($articles) $data['articles'] = $articles;
-        if ($videos) $data['videos'] = $videos;
-        if ($searches) $data['searches'] = $searches;
-        if ($products) $data['products'] = $products;
+        $data = array_map(function($arr) {
+            return $arr->{'docs.count'};
+        }, $source);
 
-        RedisCache::set(implode(':', [ $this->alias, 'documents', 'total' ]), json_encode($data));
+        RedisCache::set(implode(':', [ $this->alias, 'documents', 'total' ]), array_sum($data));
 
         $this->info(json_encode($data, JSON_PRETTY_PRINT));
     }

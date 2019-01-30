@@ -161,22 +161,12 @@ class HomeController extends Controller
      */
     public static function dataCounter()
     {
-        $total = 0;
-
-        $counts = json_decode(RedisCache::get(implode(':', [ str_slug(config('app.name')), 'documents', 'total' ])));
-
-        if ($counts)
-        {
-            foreach ($counts as $count)
-            {
-                $total = $total + $count;
-            }
-        }
+        $counts = RedisCache::get(implode(':', [ str_slug(config('app.name')), 'documents', 'total' ]));
 
         return [
             'status' => 'ok',
             'data' => [
-                'count' => number_format($total)
+                'count' => number_format($counts)
             ]
         ];
     }
