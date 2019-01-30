@@ -474,14 +474,14 @@
 @section('dock')
     <div class="card cyan">
         <div class="card-content">
-            <span class="card-title white-text mb-0">Kategoriler</span>
+            <span class="card-title white-text">Kategoriler</span>
         </div>
 
         @auth
             @if (auth()->user()->root())
                 <div class="card-image">
-                    <a href="#" class="btn-floating halfway-fab waves-effect cyan darken-2" data-trigger="create-cat">
-                        <i class="material-icons">add</i>
+                    <a href="#" class="btn-floating halfway-fab waves-effect white" data-trigger="create-cat">
+                        <i class="material-icons grey-text text-darken-2">add</i>
                     </a>
                 </div>
 
@@ -516,12 +516,12 @@
                         @if (auth()->user()->root())
                             <a
                                 href="#"
-                                class="btn-floating btn-small waves-effect white json align-self-center"
+                                class="btn-floating btn-small waves-effect cyan darken-2 json align-self-center"
                                 data-href="{{ route('admin.forum.category') }}"
                                 data-method="post"
                                 data-callback="__get_cat"
                                 data-name="edit-button">
-                                <i class="material-icons tiny grey-text text-darken-2">create</i>
+                                <i class="material-icons tiny">create</i>
                             </a>
                         @endif
                     @endauth
