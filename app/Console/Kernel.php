@@ -209,7 +209,7 @@ class Kernel extends ConsoleKernel
             /**
              * Veri sayılarının Redis'e alınması.
              */
-            $schedule->command('nohup "redis:store --part=total_document')
+            $schedule->command('nohup "redis:store --part=total_document" --type=restart')
                      ->everyMinute()
                      ->timezone(config('app.timezone'))
                      ->withoutOverlapping();
