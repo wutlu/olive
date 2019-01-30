@@ -75,17 +75,17 @@ class MonitorController extends Controller
         $ram_percent = 100-100/$data['data']['ram']['total']->size*$data['data']['ram']['free']->size;
         $cpu_percent = $data['data']['cpu']['usage'];
 
-        $message[] = '| Bileşen | Tüketim |';
-        $message[] = '| ------: | :------ |';
+        $message[] = '| Bileşen                    | Tüketim                                          |';
+        $message[] = '| -------------------------: | :----------------------------------------------- |';
 
         if ($ram_percent > 70)
         {
-            $message[] = '| RAM tüketimi | '.$ram_percent.'% |';
+            $message[] = '| RAM tüketimi           | '.$ram_percent.'%                                |';
         }
 
         if ($cpu_percent > 100)
         {
-            $message[] = '| CPU tüketimi | '.$cpu_percent.'% |';
+            $message[] = '| CPU tüketimi           | '.$cpu_percent.'%                                |';
         }
 
         foreach (System::getDiskSize() as $disk)
@@ -94,13 +94,13 @@ class MonitorController extends Controller
 
             if ($hdd_percent > 90)
             {
-                $message[] = '| DISK kullanımı | '.$hdd_percent.'% |';
+                $message[] = '| DISK kullanımı     | '.$hdd_percent.'%                               |';
             }
         }
 
-        $message[] = '';
+        $message[] = PHP_EOL;
 
-        if (count($message) > 2 && config('app.env') == 'production')
+        if (count($message) > 3 && config('app.env') == 'production')
         {
             $message[] = 'Lütfen sunucuya müdehale edin!';
 
