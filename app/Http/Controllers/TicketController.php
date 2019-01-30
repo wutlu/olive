@@ -175,7 +175,8 @@ class TicketController extends Controller
                         'action' => route('settings.support.ticket', $request->ticket_id),
                         'class' => 'btn-flat waves-effect',
                         'text' => 'Yanıtı Gör'
-                    ]
+                    ],
+                    'user_id' => $ticket->user->id
                 ]
             );
         }
@@ -249,7 +250,8 @@ class TicketController extends Controller
                         'action' => route('settings.support.ticket', $id),
                         'class' => 'btn-flat waves-effect',
                         'text' => 'Desteği Gör'
-                    ]
+                    ],
+                    'user_id' => $ticket->user->id
                 ]
             );
         }

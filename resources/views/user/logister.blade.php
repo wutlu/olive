@@ -33,10 +33,10 @@
                             <div class="card-tabs">
                                 <ul class="tabs tabs-transparent tabs-fixed-width">
                                     <li class="tab">
-                                        <a href="#tab-giris" class="active waves-effect waves-light">Giriş Yap</a>
+                                        <a href="#tab-giris" class="active waves-effect waves-light">Giriş</a>
                                     </li>
                                     <li class="tab">
-                                        <a href="#tab-kaydol" class="waves-effect waves-light">Kaydol</a>
+                                        <a href="#tab-kaydol" class="waves-effect waves-light">Kayıt</a>
                                     </li>
                                     <li class="tab">
                                         <a href="#tab-sifre" class="waves-effect waves-light">Şifre</a>

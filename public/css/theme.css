@@ -1922,6 +1922,9 @@ nav.nav-half {
   padding-left: 3rem;
   width: calc(100% - 5rem);
 }
+.nav-wrapper .input-field input[type=search]::placeholder {
+  color: #666;
+}
 .input-field input[type=search] + .label-icon {
   left: 0;
   padding: 0 0 0 2rem;
