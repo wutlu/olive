@@ -18,12 +18,14 @@
         <div class="col m12 xl6">
             <div class="card">
                 <div class="card-content">
-                    <span class="card-title d-table">Sitede Sık Kullanılan Kelimeler</span>
-                    @forelse (@$data['keywords'] as $key => $word)
-                        <span class="chip">{{ $key }}</span>
-                    @empty
+                    <span class="card-title">Sitede Sık Kullanılan Kelimeler</span>
+                    @if (@$data['keywords'])
+                        @foreach ($data['keywords'] as $key => $word)
+                            <span class="chip">{{ $key }}</span>
+                        @endforeach
+                    @else
                         <span class="chip red white-text">Tespit Edilemedi</span>
-                    @endforelse
+                    @endif
                 </div>
             </div>
         </div>
@@ -69,7 +71,7 @@
                     </div>
                     <div class="collection-item z-depth-1 model hide">
                         <span class="d-table grey-text" data-name="title"></span>
-                        <a href="#" class="grey-text" data-name="url" target="_blank"></a>
+                        <a href="#" class="orange-text" data-name="url" target="_blank"></a>
                         <time class="d-table grey-text mb-0" data-name="created-at"></time>
                     </div>
                 </div>

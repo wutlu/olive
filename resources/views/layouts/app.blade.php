@@ -185,10 +185,10 @@
             <ul id="slide-out" class="sidenav sidenav-fixed collapsible">
                 <li>
                     <div class="user-view">
-                        <small class="white-text right">{{ config('system.version') }}</small>
+                        <small class="right">{{ config('system.version') }}</small>
                         <img alt="{{ auth()->user()->name }}" class="circle" src="{{ asset(auth()->user()->avatar()) }}" />
-                        <span class="white-text name">{{ auth()->user()->name }}</span>
-                        <span class="white-text email">{{ auth()->user()->email }}</span>
+                        <span class="name">{{ auth()->user()->name }}</span>
+                        <span class="email grey-text">{{ auth()->user()->email }}</span>
                     </div>
                 </li>
 
@@ -197,64 +197,6 @@
                 <li>
                     <a href="#" class="subheader">Yönetici Menüsü</a>
                 </li>
-                <li>
-                    <a class="waves-effect" href="{{ route('admin.tickets') }}">
-                        <i class="material-icons">mail</i>
-                        Destek Talepleri
-                        <span class="badge grey white-text" data-id="ticket-count">0</span>
-                    </a>
-                </li>
-                <li>
-                    <a class="waves-effect" href="{{ route('admin.reference') }}">
-                        <i class="material-icons">money</i>
-                        Partner Sistemi
-                        <span class="badge grey white-text" data-id="partner-count">0</span>
-                    </a>
-                </li>
-                <li class="divider"></li>
-                <li class="tiny">
-                    <a class="waves-effect" href="{{ route('admin.page.list') }}">
-                        <i class="material-icons">pages</i>
-                        Sayfalar
-                    </a>
-                </li>
-                <li class="tiny">
-                    <a class="waves-effect" href="{{ route('admin.carousels') }}">
-                        <i class="material-icons">view_carousel</i>
-                        Carousel Yönetimi
-                    </a>
-                </li>
-                <li class="tiny">
-                    <a class="waves-effect" href="{{ route('admin.organisation.list') }}">
-                        <i class="material-icons">group_work</i>
-                        Organizasyonlar
-                    </a>
-                </li>
-                <li class="tiny">
-                    <a class="waves-effect" href="{{ route('admin.user.list') }}">
-                        <i class="material-icons">people</i>
-                        Kullanıcılar
-                    </a>
-                </li>
-                <li class="tiny">
-                    <a class="waves-effect" href="{{ route('admin.newsletter') }}">
-                        <i class="material-icons">email</i>
-                        E-posta Bülteni
-                    </a>
-                </li>
-                <li class="tiny">
-                    <a class="waves-effect" href="{{ route('admin.discount.coupon.list') }}">
-                        <i class="material-icons">card_giftcard</i>
-                        İndirim Kuponları
-                    </a>
-                </li>
-                <li class="tiny">
-                    <a class="waves-effect" href="{{ route('admin.proxies') }}">
-                        <i class="material-icons">vpn_key</i>
-                        Vekil Sunucu Yönetimi
-                    </a>
-                </li>
-                <li class="divider"></li>
                 <li>
                     <div class="collapsible-header waves-effect">
                         <i class="material-icons">settings</i>
@@ -344,6 +286,64 @@
                             </li>
                         </ul>
                     </div>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <a class="waves-effect" href="{{ route('admin.tickets') }}">
+                        <i class="material-icons">mail</i>
+                        Destek Talepleri
+                        <span class="badge grey white-text" data-id="ticket-count">0</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="waves-effect" href="{{ route('admin.reference') }}">
+                        <i class="material-icons">money</i>
+                        Partner Sistemi
+                        <span class="badge grey white-text" data-id="partner-count">0</span>
+                    </a>
+                </li>
+                <li class="divider"></li>
+                <li class="tiny">
+                    <a class="waves-effect" href="{{ route('admin.page.list') }}">
+                        <i class="material-icons">pages</i>
+                        Sayfalar
+                    </a>
+                </li>
+                <li class="tiny">
+                    <a class="waves-effect" href="{{ route('admin.carousels') }}">
+                        <i class="material-icons">view_carousel</i>
+                        Carousel Yönetimi
+                    </a>
+                </li>
+                <li class="tiny">
+                    <a class="waves-effect" href="{{ route('admin.organisation.list') }}">
+                        <i class="material-icons">group_work</i>
+                        Organizasyonlar
+                    </a>
+                </li>
+                <li class="tiny">
+                    <a class="waves-effect" href="{{ route('admin.user.list') }}">
+                        <i class="material-icons">people</i>
+                        Kullanıcılar
+                    </a>
+                </li>
+                <li class="tiny">
+                    <a class="waves-effect" href="{{ route('admin.newsletter') }}">
+                        <i class="material-icons">email</i>
+                        E-posta Bülteni
+                    </a>
+                </li>
+                <li class="tiny">
+                    <a class="waves-effect" href="{{ route('admin.discount.coupon.list') }}">
+                        <i class="material-icons">card_giftcard</i>
+                        İndirim Kuponları
+                    </a>
+                </li>
+                <li class="tiny">
+                    <a class="waves-effect" href="{{ route('admin.proxies') }}">
+                        <i class="material-icons">vpn_key</i>
+                        Vekil Sunucu Yönetimi
+                    </a>
                 </li>
                 <li class="divider"></li>
                 @endif

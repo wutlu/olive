@@ -1423,7 +1423,7 @@ header#main > .parallax-container > .parallax > video#background-video {
   padding: 32px 32px 0;
   margin-bottom: 8px;
   height: 182px;
-  background-image: url('../img/sunset.png');
+  background-image: url('../img/user-bg.svg');
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;

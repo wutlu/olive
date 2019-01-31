@@ -14,14 +14,12 @@ use App\Wrawler;
 use Carbon\Carbon;
 
 use App\Models\Crawlers\MediaCrawler;
+use App\Elasticsearch\Document;
 
 class TestController extends Controller
 {
     public static function test()
     {
-    	$fee = auth()->user()->organisation->lastInvoice->fee();
-
-    	echo $fee->total_price - $fee->amount_of_tax;
         return '';
     }
 }

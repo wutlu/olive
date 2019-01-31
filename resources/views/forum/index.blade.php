@@ -472,9 +472,9 @@
 @endpush
 
 @section('dock')
-    <div class="card cyan">
+    <div class="card with-bg">
         <div class="card-content">
-            <span class="card-title white-text">Kategoriler</span>
+            <span class="card-title">Kategoriler</span>
         </div>
 
         @auth
@@ -490,7 +490,7 @@
         @endauth
 
         <div class="card-tabs">
-            <ul class="tabs tabs-transparent tabs-fixed-width">
+            <ul class="tabs cyan tabs-transparent tabs-fixed-width">
                 <li class="tab">
                     <a href="#categories" class="active">Kategori</a>
                 </li>

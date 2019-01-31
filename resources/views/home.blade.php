@@ -48,9 +48,9 @@
                         <div id="dword">
                             Olive, <span class="text"></span>
                         </div>
-                        <p class="cyan-text lead">Internet artık daha net!</p>
+                        <p class="grey-text text-darken-2 lead">Internet artık daha net!</p>
 
-                        <a href="{{ route('user.login') }}" class="waves-effect btn-flat btn-large">@auth{{ 'Olive\'e Gidin'}}@else{{ 'Giriş Yapın' }}@endauth</a>
+                        <a href="{{ route('user.login') }}" class="waves-effect btn cyan darken-2">@auth{{ 'Olive\'e Gidin'}}@else{{ 'Giriş Yapın' }}@endauth</a>
 
                         <div class="down-area center-align">
                             <a href="#" class="waves-effect btn-large btn-floating pulse grey darken-4">

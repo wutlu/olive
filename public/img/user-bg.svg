@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1024" height="768" viewBox="0 0 1024 768">
+  <defs>
+    <style>
+      .cls-1, .cls-2, .cls-3, .cls-4, .cls-5 {
+        fill-rule: evenodd;
+      }
+
+      .cls-1 {
+        opacity: 0.1;
+        fill: url(#linear-gradient);
+      }
+
+      .cls-2 {
+        fill: url(#linear-gradient-2);
+      }
+
+      .cls-3 {
+        fill: url(#linear-gradient-3);
+      }
+
+      .cls-4 {
+        fill: url(#linear-gradient-4);
+      }
+
+      .cls-5 {
+        fill: url(#linear-gradient-5);
+      }
+
+      .cls-10, .cls-11, .cls-6, .cls-7, .cls-8, .cls-9 {
+        opacity: 0.2;
+      }
+
+      .cls-6 {
+        fill: url(#linear-gradient-6);
+      }
+
+      .cls-7 {
+        fill: url(#linear-gradient-7);
+      }
+
+      .cls-8 {
+        fill: url(#linear-gradient-8);
+      }
+
+      .cls-9 {
+        fill: url(#linear-gradient-9);
+      }
+
+      .cls-10 {
+        fill: url(#linear-gradient-10);
+      }
+
+      .cls-11 {
+        fill: url(#linear-gradient-11);
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="123.203" y1="-108.875" x2="753.016" y2="520.938" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#26c6da"/>
+      <stop offset="1" stop-color="#26a69a"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="190" y1="0" x2="676" y2="486" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-3" x1="167" y1="0" x2="593" y2="426" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-4" x1="140" y1="0" x2="498" y2="358" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-5" x1="109.5" y1="0" x2="390.5" y2="281" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-6" x1="735" y1="243" x2="541" y2="49" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-7" x1="126" y1="536" x2="27" y2="437" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-8" x1="656" y1="566" x2="595" y2="505" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-9" x1="976" y1="141" x2="941" y2="106" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-10" x1="728" y1="351" x2="707" y2="330" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-11" x1="626" y1="341" x2="547" y2="262" xlink:href="#linear-gradient"/>
+  </defs>
+  <path id="Şekil_5" data-name="Şekil 5" class="cls-1" d="M-117.787,336.35s80.331,265.767,447.94,159.516,138.2-192.09,478.7-292.441C1053.27,131.387,985.313-9.8,985.313-9.8L-76.229-108.886Z"/>
+  <path id="Şekil_4" data-name="Şekil 4" class="cls-2" d="M0,358.576s83.981,206.2,369.7,93.979,96.074-163.666,360.572-269.161C920.143,107.664,855.331,0,855.331,0H0V358.576Z"/>
+  <path id="Şekil_3" data-name="Şekil 3" class="cls-3" d="M0,314.308s73.7,180.747,324.448,82.376,84.315-143.46,316.437-235.931C807.516,94.372,750.637,0,750.637,0H0V314.308Z"/>
+  <path id="Şekil_2" data-name="Şekil 2" class="cls-4" d="M0,264.137s61.871,151.895,272.366,69.226,70.78-120.56,265.64-198.27C677.888,79.308,630.14,0,630.14,0H0V264.137Z"/>
+  <path id="Şekil_1" data-name="Şekil 1" class="cls-5" d="M0,207.325S48.488,326.55,213.453,261.662s55.47-94.63,208.182-155.626C531.26,62.25,493.84,0,493.84,0H0V207.325Z"/>
+  <circle id="Elips_6" data-name="Elips 6" class="cls-6" cx="638" cy="146" r="97"/>
+  <circle id="Elips_5" data-name="Elips 5" class="cls-7" cx="76.5" cy="486.5" r="49.5"/>
+  <circle id="Elips_4" data-name="Elips 4" class="cls-8" cx="625.5" cy="535.5" r="30.5"/>
+  <circle id="Elips_3" data-name="Elips 3" class="cls-9" cx="958.5" cy="123.5" r="17.5"/>
+  <circle id="Elips_2" data-name="Elips 2" class="cls-10" cx="717.5" cy="340.5" r="10.5"/>
+  <circle id="Elips_1" data-name="Elips 1" class="cls-11" cx="586.5" cy="301.5" r="39.5"/>
+</svg>

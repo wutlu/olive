@@ -128,7 +128,33 @@ class ContentController extends Controller
                 case 'product':
                     $crawler = ShoppingCrawler::where('id', $id_segment[1])->firstOrFail();
 
+                    $site = [
+                        [ 'match' => [ 'site_id' => $crawler->id ] ],
+                        [ 'match' => [ 'status' => 'ok' ] ]
+                    ];
+
                     $title = implode(' ', [ $crawler->name, '/', $document['_source']['title'] ]);
+
+                    print_r($document['_source']['breadcrumb']);
+
+                    print_r(Document::list($es_index, 'product', [
+                        'size' => 0,
+                        'query' => [
+                            'bool' => [
+                                'must' => [
+                                    'more_like_this' => [
+                                        'fields' => [ 'title', 'description' ],
+                                        'like' => [ 'traktör' ],
+                                        'min_term_freq' => 1,
+                                        'min_doc_freq' => 1
+                                    ]
+                                ]
+                            ]
+                        ],
+                        'min_score' => 10,
+                    ]));
+
+                    exit();
                 break;
 
                 case 'tweet':
@@ -269,44 +295,50 @@ class ContentController extends Controller
                 ]
         ];
 
-        if ($es_type == 'entry')
+        switch ($es_type)
         {
-            $arr['query']['bool']['must'][] = [
-                'match' => [ 'group_name' => $es_id ]
-            ];
-        }
-        else if ($es_type == 'article')
-        {
-            $arr['query']['bool']['must'][] = [ 'match' => [ 'site_id' => $es_id ] ];
-            $arr['query']['bool']['must'][] = [ 'exists' => [ 'field' => 'created_at' ] ];
-        }
-        else if ($es_type == 'product')
-        {
-            $doc = Document::get($es_index, $es_type, $es_id);
+            case 'entry':
 
-            if ($doc->status != 'ok')
-            {
-                return [
-                    'status' => 'err',
-                    'data' => [
-                        'reason' => 'not found'
-                    ]
-                ];
-            }
-
-            $smilar = Term::commonWords($doc->data['_source']['title']);
-
-            if (count($smilar))
-            {
                 $arr['query']['bool']['must'][] = [
-                    'more_like_this' => [
-                        'fields' => [ 'title', 'description' ],
-                        'like' => array_keys($smilar),
-                        'min_term_freq' => 1,
-                        'min_doc_freq' => 1
-                    ]
+                    'match' => [ 'group_name' => $es_id ]
                 ];
-            }
+
+            break;
+            case 'article':
+
+                $arr['query']['bool']['must'][] = [ 'match' => [ 'site_id' => $es_id ] ];
+
+            break;
+
+            case 'product':
+
+                $doc = Document::get($es_index, $es_type, $es_id);
+
+                if ($doc->status != 'ok')
+                {
+                    return [
+                        'status' => 'err',
+                        'data' => [
+                            'reason' => 'not found'
+                        ]
+                    ];
+                }
+
+                $smilar = Term::commonWords($doc->data['_source']['title']);
+
+                if (count($smilar))
+                {
+                    $arr['query']['bool']['must'][] = [
+                        'more_like_this' => [
+                            'fields' => [ 'title', 'description' ],
+                            'like' => array_keys($smilar),
+                            'min_term_freq' => 1,
+                            'min_doc_freq' => 1
+                        ]
+                    ];
+                }
+
+            break;
         }
 
         $document = Document::list($es_index, $es_type, $arr);
@@ -382,6 +414,29 @@ class ContentController extends Controller
                             'from' => $request->skip,
                             'size' => $request->take,
                             '_source' => [ 'url', 'title', 'entry', 'created_at' ]
+                        ]);
+                    break;
+
+                    case 'product':
+                        $documents = Document::list([ 'shopping', '*' ], $es_type, [
+                            'query' => [
+                                'bool' => [
+                                    'must' => [
+                                        [
+                                            'more_like_this' => [
+                                                'fields' => [ 'title' ],
+                                                'like' => array_keys($smilar),
+                                                'min_term_freq' => 1,
+                                                'min_doc_freq' => 1
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ],
+                            'min_score' => 10,
+                            'from' => $request->skip,
+                            'size' => $request->take,
+                            '_source' => [ 'url', 'title', 'description', 'price', 'breadcrumb', 'created_at' ]
                         ]);
                     break;
                 }

@@ -214,7 +214,8 @@
     <div class="card with-bg">
         <div class="card-content">
             <span class="card-title">Pin Grupları</span>
-            <p class="grey-text">Araştırmalarınız sonucu elde ettiğiniz ham verileri pinleme gruplarında saklayabilirsiniz. Ayrıca pinlediğiniz verileri PDF halinde rapor alabilirsiniz.</p>
+            <p class="grey-text text-darken-2">Araştırmalarınız sonucu elde ettiğiniz ham verileri pinleme gruplarında saklayabilirsiniz.</p>
+            <p class="grey-text text-darken-2">Ayrıca pinlediğiniz verileri PDF halinde rapor alabilirsiniz.</p>
         </div>
         <nav class="nav-half">
             <div class="nav-wrapper">
