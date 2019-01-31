@@ -127,21 +127,6 @@
     })
 @endpush
 
-@push('local.styles')
-    ul#console {
-        height: 400px;
-        overflow-y: scroll;
-        background-image: url('{{ asset('img/olive-logo-opacity.svg') }}');
-        background-repeat: no-repeat;
-        background-position: center;
-    }
-
-    ul#console > li textarea {
-        border-width: 0;
-        resize: none;
-    }
-@endpush
-
 @section('action-bar')
     <a href="#" class="btn-floating btn-large halfway-fab waves-effect white" data-trigger="clear">
         <i class="material-icons grey-text text-darken-2">clear_all</i>
@@ -161,7 +146,7 @@
         </ul>
         <ul
             id="console"
-            class="collection black load d-flex align-items-end flex-wrap no-select"
+            class="collection load d-flex align-items-end flex-wrap no-select"
             data-href="{{ route('admin.monitoring.log') }}"
             data-callback="__log"
             data-method="post">

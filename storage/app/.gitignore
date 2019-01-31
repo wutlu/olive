@@ -1,3 +1,4 @@
 *
 !public/
+!cpu_usage/
 !.gitignore

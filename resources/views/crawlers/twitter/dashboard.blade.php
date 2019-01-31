@@ -483,7 +483,7 @@
             <div class="card-content grey-text">Bu alan sadece "Twitter" modülü ile ilgili logları gösterir.</div>
             <ul
                 id="console"
-                class="collection black load d-flex align-items-end flex-wrap no-select"
+                class="collection load d-flex align-items-end flex-wrap no-select"
                 data-href="{{ route('admin.twitter.monitoring.log') }}"
                 data-callback="__log"
                 data-method="post">
@@ -569,19 +569,6 @@
 @endpush
 
 @push('local.styles')
-    ul#console {
-        height: 400px;
-        overflow-y: scroll;
-        background-image: url('{{ asset('img/olive-logo-opacity.svg') }}');
-        background-repeat: no-repeat;
-        background-position: center;
-    }
-
-    ul#console > li textarea {
-        border-width: 0;
-        resize: none;
-    }
-
     #collections {
         overflow: hidden;
     }

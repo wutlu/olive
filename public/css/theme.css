@@ -1462,6 +1462,24 @@ header#main > .parallax-container > .parallax > video#background-video {
 }
 
 /**
+ * console
+ */
+ul#console {
+    height: 400px;
+    overflow-y: scroll;
+    background-image: url('../img/olive-logo-opacity.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 70% auto;
+    background-color: #000;
+}
+
+ul#console > li textarea {
+    border-width: 0;
+    resize: none;
+}
+
+/**
  * fixed layout
  */
 .sidenav-fixed-layout {

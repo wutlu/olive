@@ -101,7 +101,7 @@
 
         <ul
             id="console"
-            class="collection black load d-flex align-items-end flex-wrap no-select"
+            class="collection load d-flex align-items-end flex-wrap no-select"
             data-href="{{ route('admin.youtube.monitoring.log') }}"
             data-callback="__log"
             data-method="post">
@@ -179,21 +179,6 @@
     function __connection_failed(__)
     {
         $('[data-elasticsearch]').html('ES Bağlantı Hatası')
-    }
-@endpush
-
-@push('local.styles')
-    ul#console {
-        height: 400px;
-        overflow-y: scroll;
-        background-image: url('{{ asset('img/olive-logo-opacity.svg') }}');
-        background-repeat: no-repeat;
-        background-position: center;
-    }
-
-    ul#console > li textarea {
-        border-width: 0;
-        resize: none;
     }
 @endpush
 

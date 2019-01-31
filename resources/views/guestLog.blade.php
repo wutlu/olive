@@ -125,7 +125,7 @@
         </div>
         <ul
             id="console"
-            class="collection black load hide"
+            class="collection load hide"
             data-href="{{ route('admin.session.logs') }}"
             data-callback="__log"
             data-method="post">

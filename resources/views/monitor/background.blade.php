@@ -87,7 +87,7 @@
         </div>
         <div
             id="console"
-            class="collection black load hide"
+            class="collection load hide"
             data-href="{{ route('admin.monitoring.background.processes') }}"
             data-callback="__log"
             data-method="post">

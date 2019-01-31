@@ -19,7 +19,7 @@
     <div class="card with-bg">
         <div class="card-content">
             <span class="card-title">Kanal Havuzu</span>
-            <p class="grey-text" data-name="count"></p>
+            <p class="grey-text text-darken-2" data-name="count"></p>
         </div>
         <div class="collection mb-0 load"
              id="collections"
