@@ -102,12 +102,12 @@
 			<img alt="Instagram" src="{{ asset('img/o_instagram.svg') }}" />
 			<span>veri.zone</span>
 		</a>
-		<a href="https://twitter.com/veri.zone">
+		<a href="https://twitter.com/veridotzone">
 			<img alt="Twitter" src="{{ asset('img/o_twitter.svg') }}" />
-			<span>veri.zone</span>
+			<span>veridotzone</span>
 		</a>
-		<span><a href="mailto:destek@veri.zone">destek@veri.zone</a></span>
-		<span>Ankara'da sevgi ile üretiliyor.</span>
+		<span><a href="mailto:bilgi@veri.zone">bilgi@veri.zone</a></span>
+		<span>Yeni Mah. Eti Cad. 78/B Polatlı/ANKARA</span>
 	</footer>
 </body>
 </html>
