@@ -1,0 +1,37 @@
+#!/bin/bash
+
+PREV_TOTAL=0
+PREV_IDLE=0
+CHECK=0
+
+while true; do
+
+  CPU=(`cat /proc/stat | grep '^cpu '`)
+
+  unset CPU[0]
+
+  IDLE=${CPU[4]}
+
+  TOTAL=0
+
+  let "CHECK++"
+
+  for VALUE in "${CPU[@]:0:4}"; do
+    let "TOTAL=$TOTAL+$VALUE"
+  done
+
+  let "DIFF_IDLE=$IDLE-$PREV_IDLE"
+  let "DIFF_TOTAL=$TOTAL-$PREV_TOTAL"
+  let "DIFF_USAGE=(1000*($DIFF_TOTAL-$DIFF_IDLE)/$DIFF_TOTAL+5)/10"
+
+  PREV_TOTAL="$TOTAL"
+  PREV_IDLE="$IDLE"
+
+  sleep 0.1
+
+  if [ "$CHECK" = 10 ]; then
+    echo $DIFF_USAGE
+
+    break
+  fi
+done
