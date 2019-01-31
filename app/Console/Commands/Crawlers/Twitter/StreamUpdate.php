@@ -112,8 +112,8 @@ class StreamUpdate extends Command
                             'filter' => [
                                 'range' => [
                                     'created_at' => [
-                                        'format' => 'YYYY-MM-dd',
-                                        'gte' => Carbon::now()->subDays(1)->format('Y-m-d')
+                                        'format' => 'YYYY-MM-dd HH',
+                                        'gte' => Carbon::now()->subHours(6)->format('Y-m-d H')
                                     ]
                                 ]
                             ]
@@ -141,8 +141,19 @@ class StreamUpdate extends Command
 
                 if (count($filtered))
                 {
-                    $chunk = $filtered;
-                    $chunk_id = 1;
+                    foreach (array_chunk($filtered, 50) as $query)
+                    {
+                        foreach ($query as $row)
+                        {
+                            $chunk[$row] = $row;
+                        }
+
+                        self::token($type, $chunk_id, $chunk);
+
+                        $chunk = [];
+
+                        $chunk_id++;
+                    }
                 }
             }
         }
@@ -152,21 +163,21 @@ class StreamUpdate extends Command
             {
                 foreach ($kquery->chunk($klimit) as $query)
                 {
-                    $chunk_id++;
-
                     foreach ($query as $row)
                     {
                         $chunk[$row->{$kcolumn}] = $row->{$kcolumn};
                     }
+
+                    self::token($type, $chunk_id, $chunk);
+
+                    $chunk = [];
+
+                    $chunk_id++;
                 }
             }
         }
 
-        if (count($chunk))
-        {
-            self::token($type, $chunk_id, $chunk);
-        }
-        else
+        if ($chunk_id == 0)
         {
             $message = 'List not found: ['.$type.']';
 
@@ -179,7 +190,7 @@ class StreamUpdate extends Command
             );
         }
 
-        for ($i = ($chunk_id+1); $i <= ($chunk_id + 9); $i++)
+        for ($i = ($chunk_id); $i <= ($chunk_id + 9); $i++)
         {
             $tmp_key = implode('_', [ $type, 'chunk', $i ]);
 
