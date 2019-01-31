@@ -196,7 +196,7 @@ return [
                 'icon' => 'streetview'
             ],
             4 => [
-                'name' => 'Kullanıcı Takip Havuzu',
+                'name' => 'Twitter Kullanıcı Havuzu',
                 'route' => 'twitter.account.list',
                 'icon' => 'directions_walk'
             ],
@@ -303,13 +303,13 @@ return [
                 'icon' => 'accessibility'
             ],
             19 => [
-                'name' => 'Kelime Havuzu',
+                'name' => 'Twitter Kelime Havuzu',
                 'route' => 'admin.twitter.stream.keywords',
                 'root' => true,
                 'icon' => 'streetview'
             ],
             20 => [
-                'name' => 'Kullanıcı Havuzu',
+                'name' => 'Twitter Kullanıcı Havuzu',
                 'route' => 'admin.twitter.stream.accounts',
                 'root' => true,
                 'icon' => 'directions_walk'
@@ -367,6 +367,24 @@ return [
                 'route' => 'admin.session.logs',
                 'root' => true,
                 'icon' => 'accessibility'
+            ],
+            30 => [
+                'name' => 'YouTube Kelime Havuzu',
+                'route' => 'admin.youtube.followed_keywords',
+                'root' => true,
+                'icon' => 'streetview'
+            ],
+            31 => [
+                'name' => 'YouTube Kanal Havuzu',
+                'route' => 'admin.youtube.followed_channels',
+                'root' => true,
+                'icon' => 'directions_walk'
+            ],
+            32 => [
+                'name' => 'YouTube Video Havuzu',
+                'route' => 'admin.youtube.followed_videos',
+                'root' => true,
+                'icon' => 'ondemand_video'
             ],
         ]
     ],
