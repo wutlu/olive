@@ -1,11 +1,15 @@
-<div class="collection">
+<div class="collection white z-depth-1">
     <a href="{{ route('admin.organisation', $id) }}" class="collection-item waves-effect {{ $active == 'organisation' ? 'active' : '' }}">
         Organizasyon Bilgileri
     </a>
     <a href="{{ route('admin.organisation.invoices', $id) }}" class="collection-item waves-effect {{ $active == 'invoices' ? 'active' : '' }}">
-        Fatura Geçmişi <span class="badge teal white-text">{{ $organisation->invoices()->count() }}</span>
+        Fatura Geçmişi <span class="badge cyan white-text">{{ $organisation->invoices()->count() }}</span>
     </a>
-    <div class="divider teal"></div>
+    <div class="divider"></div>
+
+    <div class="collection-item pb-0">
+        <span class="grey-text">Kullanıcılar</span>
+    </div> 
     @forelse($organisation->users as $user)
         <a href="{{ route('admin.user', $user->id) }}" class="collection-item waves-effect">
             {{ $user->name }}
@@ -17,6 +21,8 @@
             <p class="grey-text">Eski Organizasyon Sahibi</p>
         </a>
     @endforelse
+
+    <div class="divider"></div>
 
     <a href="{{ route('admin.organisation.keyword_groups', $organisation->id) }}" class="collection-item waves-effect {{ $active == 'groups.keyword' ? 'active' : '' }}">Gerçek Zamanlı Kelime Grupları</a>
     <a href="{{ route('admin.organisation.pin_groups', $organisation->id) }}" class="collection-item waves-effect {{ $active == 'groups.pin' ? 'active' : '' }}">Pin Grupları</a>

@@ -157,7 +157,7 @@
     <div class="card with-bg">
         <div class="card-content">
             <span class="card-title">Destek Taleplerim</span>
-            <p class="grey-text">{{ count($tickets).'/'.$tickets->total() }}</p>
+            <p class="grey-text text-darken-2">{{ count($tickets).'/'.$tickets->total() }}</p>
 
             @if (!count($tickets))
                 @component('components.nothing')@endcomponent
@@ -175,7 +175,7 @@
                         <span class="badge green {{ $ticket->status == 'closed' ? 'lighten-2' : '' }} white-text">{{ $ticket->replies()->count() }} cevap</span>
                         @endif
                     </p>
-                    <p class="grey-text">{{ date('d.m.Y H:i', strtotime($ticket->created_at)) }}</p>
+                    <p class="grey-text text-darken-2">{{ date('d.m.Y H:i', strtotime($ticket->created_at)) }}</p>
                 </span>
                 <small class="badge ml-auto">{{ $ticket->status == 'open' ? 'AÇIK' : 'KAPALI' }}</small>
             </a>

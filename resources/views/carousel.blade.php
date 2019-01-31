@@ -378,7 +378,7 @@
     <div class="card with-bg">
         <div class="card-content">
             <span class="card-title">Carousel Yönetimi</span>
-            <span data-name="count" class="grey-text">0</span>
+            <span data-name="count" class="grey-text text-darken-2">0</span>
         </div>
         <ul class="collection load" 
              id="collections"

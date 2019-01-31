@@ -51,7 +51,7 @@
     <div class="card with-bg">
         <div class="card-content">
             <span class="card-title">E-posta Bülteni</span>
-            <p>E-posta bültenleri işleme alındıktan sonra tamamlanmadan sonlandırılamaz/güncellenemez/silinemez.</p>
+            <p class="grey-text text-darken-2">E-posta bültenleri işleme alındıktan sonra tamamlanmadan sonlandırılamaz/güncellenemez/silinemez.</p>
         </div>
         <nav class="nav-half">
             <div class="nav-wrapper">

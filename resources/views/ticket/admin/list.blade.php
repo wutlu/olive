@@ -29,7 +29,7 @@
             <div class="d-flex justify-content-between">
                 <div>
                     <span class="card-title">Destek Talepleri</span>
-                    <p class="grey-text">{{ count($tickets).'/'.$tickets->total() }}</p>
+                    <p class="grey-text text-darken-2">{{ count($tickets).'/'.$tickets->total() }}</p>
                 </div>
                 <div class="right-align">
                     <a class="dropdown-trigger btn-flat waves-effect" href="#" data-target="status-dropdown" data-align="right">{{ $status == 'open' ? 'Açık' : 'Kapalı' }}</a>
@@ -53,7 +53,7 @@
                         @endif
                     </p>
                     <p>{{ $ticket->user->name }}</p>
-                    <p class="grey-text">{{ date('d.m.Y H:i', strtotime($ticket->created_at)) }}</p>
+                    <p class="grey-text text-darken-2">{{ date('d.m.Y H:i', strtotime($ticket->created_at)) }}</p>
                 </span>
                 <small class="badge ml-auto">{{ $ticket->status == 'open' ? 'AÇIK' : 'KAPALI' }}</small>
             </a>

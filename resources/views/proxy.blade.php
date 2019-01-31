@@ -247,8 +247,8 @@
             <span class="card-title">Vekil Sunucu Yönetimi</span>
         </div>
         <div class="card-content">
-            <p class="grey-text">- Veri toplamada daha yüksek erişim sağlamak için birden fazla vekil sunucu kullanın.</p>
-            <p class="grey-text">- Vekil sunucu yaşam değerleri otomatize bir şekilde sürekli olarak kontrol edilir. Yaşam değeri düşük sunucular, yaşam değeri normal duruma gelene kadar kullanılmayacaktır.</p>
+            <p class="grey-text text-darken-2">- Veri toplamada daha yüksek erişim sağlamak için birden fazla vekil sunucu kullanın.</p>
+            <p class="grey-text text-darken-2">- Vekil sunucu yaşam değerleri otomatize bir şekilde sürekli olarak kontrol edilir. Yaşam değeri düşük sunucular, yaşam değeri normal duruma gelene kadar kullanılmayacaktır.</p>
         </div>
         <div class="collection load"
              id="collections"

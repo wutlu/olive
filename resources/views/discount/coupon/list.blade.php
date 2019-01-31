@@ -29,7 +29,7 @@
     <div class="card with-bg">
         <div class="card-content">
             <span class="card-title">İndirim Kuponları</span>
-            <p class="grey-text">{{ count($coupons).'/'.$coupons->total() }}</p>
+            <p class="grey-text text-darken-2">{{ count($coupons).'/'.$coupons->total() }}</p>
 
             @if (!count($coupons))
                 @component('components.nothing')@endcomponent
@@ -43,7 +43,7 @@
                     <p class="mb-0">{{ $coupon->rate.'%' }} indirim</p>
                     <p class="mb-0">{{ config('formal.currency').' '.$coupon->price }} indirim</p>
                 </span>
-                <small class="grey-text">{{ $coupon->key }}</small>
+                <span class="grey-text">{{ $coupon->key }}</span>
             </a>
             @endforeach
         </div>

@@ -33,8 +33,8 @@
             <li class="collection-item model hide">
                 <span class="d-flex justify-content-between">
                     <span class="d-flex">
-                        <a href="#" class="btn-floating cyan waves-effect mr-1 align-self-center" data-trigger="status">
-                            <i class="material-icons">create</i>
+                        <a href="#" class="btn-floating white waves-effect mr-1 align-self-center" data-trigger="status">
+                            <i class="material-icons grey-text text-darken-2">create</i>
                         </a>
                         <span class="align-self-center">
                             <a
@@ -49,7 +49,7 @@
                         </span>
                     </span>
                     <span class="d-flex flex-column align-items-end">
-                        <time class="timeago grey-text"></time>
+                        <time class="timeago grey-text text-darken-2"></time>
 
                         <small data-status="success" class="hide green-text">BAŞARILI</small>
                         <small data-status="failed" class="hide red-text">BAŞARISIZ</small>

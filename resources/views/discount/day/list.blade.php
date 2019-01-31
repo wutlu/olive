@@ -20,10 +20,9 @@
 @section('content')
     <div class="card with-bg">
         <div class="card-content">
-            <p>Belirleyeceğiniz günlerde sisteme kaydolan kullanıcılar için sistem, indirim kuponları üretir.</p>
-
             <span class="card-title">İndirim Günleri</span>
-            <p class="grey-text">{{ count($days).'/'.$days->total() }}</p>
+            <p class="grey-text text-darken-2">{{ count($days).'/'.$days->total() }}</p>
+            <p class="grey-text text-darken-2">Belirleyeceğiniz günlerde sisteme kaydolan kullanıcılar için sistem, indirim kuponları üretir.</p>
 
             @if (!count($days))
                 @component('components.nothing')@endcomponent

@@ -1,4 +1,4 @@
-<div class="collection">
+<div class="collection white z-depth-1">
     <a href="{{ route('admin.user', $id) }}" class="collection-item waves-effect {{ $active == 'account' ? 'active' : '' }}">
         Hesap Bilgileri
     </a>
@@ -6,13 +6,13 @@
         E-posta Bildirimleri
     </a>
     <a href="{{ route('admin.user.invoices', $id) }}" class="collection-item waves-effect {{ $active == 'invoices' ? 'active' : '' }}">
-        Fatura Geçmişi <span class="badge cyan darken-2 white-text">{{ $user->invoices()->count() }}</span>
+        Fatura Geçmişi <span class="badge cyan white-text">{{ $user->invoices()->count() }}</span>
     </a>
     <a href="{{ route('admin.user.tickets', $id) }}" class="collection-item waves-effect {{ $active == 'tickets' ? 'active' : '' }}">
-        Destek Talepleri <span class="badge cyan darken-2 white-text">{{ $user->tickets()->count() }}</span>
+        Destek Talepleri <span class="badge cyan white-text">{{ $user->tickets()->count() }}</span>
     </a>
     <a href="{{ route('forum.group', [ __('route.forum.user'), $id ]) }}" class="collection-item waves-effect">
-        Açtığı Konular <span class="badge cyan darken-2 white-text">{{ $user->messages()->whereNull('message_id')->count() }}</span>
+        Açtığı Konular <span class="badge cyan white-text">{{ $user->messages()->whereNull('message_id')->count() }}</span>
     </a>
     @if ($user->organisation_id)
         <div class="divider"></div>
@@ -22,7 +22,10 @@
     @endif
     @if ($user->reference_id)
         <div class="divider"></div>
-        <div class="collection-item grey-text pb-0">Partner</div>
+
+        <div class="collection-item pb-0">
+            <span class="grey-text">Partner</span>
+        </div>
         <a href="{{ route('admin.user', $user->reference_id) }}" class="collection-item waves-effect {{ $active == 'account' ? 'active' : '' }}">
             {{ $user->reference->name }}
         </a>

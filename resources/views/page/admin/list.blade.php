@@ -26,7 +26,7 @@
     <div class="card with-bg">
         <div class="card-content">
             <span class="card-title">Sayfalar</span>
-            <p class="grey-text">{{ count($pages).'/'.$pages->total() }}</p>
+            <p class="grey-text text-darken-2">{{ count($pages).'/'.$pages->total() }}</p>
 
             @if (!count($pages))
                 @component('components.nothing')@endcomponent
