@@ -45,6 +45,10 @@ Route::prefix('vekil-sunucu-yonetimi')->group(function () {
     Route::delete('vekil-sunucu', 'ProxyController@proxyDelete');
 });
 
+Route::prefix('hosts-dosyasi')->group(function () {
+    Route::get('/', 'HostsController@hostsFile')->name('admin.hosts.file');
+});
+
 Route::prefix('carousel-yonetimi')->group(function () {
     Route::get('/', 'CarouselController@carousels')->name('admin.carousels');
     Route::post('json', 'CarouselController@carouselsJson')->name('admin.carousels.json');

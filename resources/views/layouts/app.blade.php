@@ -203,7 +203,7 @@
                         <span>Bot Yönetimi</span>
                         <i class="material-icons arrow">keyboard_arrow_down</i>
                     </div>
-                    <div class="collapsible-body">
+                    <div class="collapsible-body teal lighten-5">
                         <ul>
                             <li class="tiny">
                                 <a class="waves-effect" href="{{ route('crawlers.media.list') }}">
@@ -242,6 +242,21 @@
                                     Google Ayarları
                                 </a>
                             </li>
+                            <li>
+                                <a href="#" class="subheader">Genel Ayarlar</a>
+                            </li>
+                            <li class="tiny">
+                                <a class="waves-effect" href="{{ route('admin.proxies') }}">
+                                    <i class="material-icons">vpn_key</i>
+                                    Vekil Sunucu Yönetimi
+                                </a>
+                            </li>
+                            <li class="tiny">
+                                <a class="waves-effect" href="{{ route('admin.hosts.file') }}">
+                                    <i class="material-icons">location_searching</i>
+                                    Hosts Dosyası
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </li>
@@ -252,7 +267,7 @@
                         <span>Sistem İzleme</span>
                         <i class="material-icons arrow">keyboard_arrow_down</i>
                     </div>
-                    <div class="collapsible-body">
+                    <div class="collapsible-body teal lighten-5">
                         <ul>
                             <li class="tiny">
                                 <a class="waves-effect" href="{{ route('admin.session.logs') }}">
@@ -337,12 +352,6 @@
                     <a class="waves-effect" href="{{ route('admin.discount.coupon.list') }}">
                         <i class="material-icons">card_giftcard</i>
                         İndirim Kuponları
-                    </a>
-                </li>
-                <li class="tiny">
-                    <a class="waves-effect" href="{{ route('admin.proxies') }}">
-                        <i class="material-icons">vpn_key</i>
-                        Vekil Sunucu Yönetimi
                     </a>
                 </li>
                 <li class="divider"></li>

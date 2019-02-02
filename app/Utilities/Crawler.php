@@ -122,11 +122,18 @@ class Crawler
 
             try
             {
+                $verboseLogStream = fopen('php://temp', 'r+');
+
                 $arr = [
                     'timeout' => 10,
                     'connect_timeout' => 5,
                     'headers' => [
                         'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))]
+                    ],
+                    'curl' => [
+                        CURLOPT_REFERER => $site,
+                        CURLOPT_VERBOSE => true,
+                        CURLOPT_STDERR => $verboseLogStream,
                     ]
                 ];
 
@@ -138,6 +145,25 @@ class Crawler
                 }
 
                 $dom = $client->get('https://www.google.com/search?q='.$query.'&tbs=qdr:'.$google_time.',sbd:1&start='.$page, $arr)->getBody();
+
+                rewind($verboseLogStream);
+
+                $verboseLog = fread($verboseLogStream, 8192);
+
+                if (preg_match('/Connected to \S+ \((\S+)\) port/', $verboseLog, $matches))
+                {
+                    $ip = $matches[1];
+
+                    if (filter_var($ip, FILTER_VALIDATE_IP))
+                    {
+                        Host::firstOrCreate(
+                            [
+                                'site' => $site,
+                                'ip_address' => $ip
+                            ]
+                        );
+                    }
+                }
 
                 preg_match_all('/'.$url_pattern.'/', $dom, $match);
 

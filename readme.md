@@ -125,6 +125,7 @@ $ php artisan key:generate
 $ php artisan migrate --seed
 $ php artisan storage:link
 $ chmod 777 -R storage
+$ chmod 777 -R /etc/hosts
 
 // Kelimelerde güncelleme yapılırsa bu işlem tekrarlanmalı.
 $ cp -R /var/www/veri.zone/database/analysis /etc/elasticsearch/analysis
