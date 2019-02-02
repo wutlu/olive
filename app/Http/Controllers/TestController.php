@@ -16,12 +16,14 @@ use Carbon\Carbon;
 use App\Models\Crawlers\MediaCrawler;
 use App\Elasticsearch\Document;
 
+use App\Models\Crawlers\Host;
+
+use App\Models\Proxy;
+
 class TestController extends Controller
 {
     public static function test()
     {
-$ip = gethostbyname('www.haber7.com');
 
-echo $ip;
     }
 }
