@@ -20,6 +20,8 @@ class TestController extends Controller
 {
     public static function test()
     {
-        return '';
+$ip = gethostbyname('www.haber7.com');
+
+echo $ip;
     }
 }
