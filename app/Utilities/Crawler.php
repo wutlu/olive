@@ -12,6 +12,7 @@ use App\Utilities\Term;
 use Carbon\Carbon;
 
 use App\Models\Proxy;
+use App\Models\Crawlers\Host;
 
 class Crawler
 {
@@ -31,6 +32,8 @@ class Crawler
 
         try
         {
+            $verboseLogStream = fopen('php://temp', 'r+');
+
             $arr = [
                 'timeout' => 10,
                 'connect_timeout' => 5,
@@ -38,7 +41,9 @@ class Crawler
                     'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))]
                 ],
                 'curl' => [
-                    CURLOPT_REFERER => $site
+                    CURLOPT_REFERER => $site,
+                    CURLOPT_VERBOSE => true,
+                    CURLOPT_STDERR => $verboseLogStream,
                 ]
             ];
 
@@ -53,6 +58,25 @@ class Crawler
             }
 
             $dom = $client->get($base, $arr)->getBody();
+
+            rewind($verboseLogStream);
+
+            $verboseLog = fread($verboseLogStream, 8192);
+
+            if (preg_match('/Connected to \S+ \((\S+)\) port/', $verboseLog, $matches))
+            {
+                $ip = $matches[1];
+
+                if (filter_var($ip, FILTER_VALIDATE_IP))
+                {
+                    Host::firstOrCreate(
+                        [
+                            'site' => $site,
+                            'ip_address' => $ip
+                        ]
+                    );
+                }
+            }
 
             preg_match_all('/'.$url_pattern.'/', $dom, $match);
 
