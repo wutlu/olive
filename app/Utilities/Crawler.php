@@ -601,7 +601,7 @@ class Crawler
                 $data['error_reasons'][] = 'Yazar adı tespit edilemedi.';
                 $data['status'] = 'err';
             }
-            else if (strlen($author) > 32)
+            else if (strlen($author) > 64)
             {
                 $data['error_reasons'][] = 'Yazar adı çok uzun.';
                 $data['status'] = 'err';

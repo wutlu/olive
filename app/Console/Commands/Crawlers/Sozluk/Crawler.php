@@ -89,9 +89,9 @@ class Crawler extends Command
                     ]);
 
                     $timeStart = time();
-                }
 
-                $this->line($second);
+                    $this->line('pid update [second = '.$second.']');
+                }
 
                 $item = CrawlerUtility::entryDetection(
                     $sozluk->site,
