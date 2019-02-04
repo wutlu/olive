@@ -121,18 +121,18 @@
                         <div class="text grey-text text-darken-2">{!! nl2br($source['entry']) !!}</div>
                     @elseif ($type == 'product')
                         @isset ($source['address'])
-                        <ul class="horizontal">
-                            @foreach ($source['address'] as $key => $segment)
-                                <li class="grey-text" data-icon="»">{{ $segment['segment'] }}</li>
-                            @endforeach
-                        </ul>
+                            <ul class="horizontal">
+                                @foreach ($source['address'] as $key => $segment)
+                                    <li class="grey-text" data-icon="»">{{ $segment['segment'] }}</li>
+                                @endforeach
+                            </ul>
                         @endisset
                         @isset ($source['breadcrumb'])
-                        <ul class="horizontal">
-                            @foreach ($source['breadcrumb'] as $key => $segment)
-                                <li class="grey-text" data-icon="»">{{ $segment['segment'] }}</li>
-                            @endforeach
-                        </ul>
+                            <ul class="horizontal">
+                                @foreach ($source['breadcrumb'] as $key => $segment)
+                                    <li class="grey-text" data-icon="»">{{ $segment['segment'] }}</li>
+                                @endforeach
+                            </ul>
                         @endisset
                         <a href="{{ $source['url'] }}" target="_blank">{{ str_limit($source['url'], 96) }}</a>
                         <p>

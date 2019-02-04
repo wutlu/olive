@@ -44,6 +44,7 @@
                         <i class="material-icons mr-1">insert_link</i>
                         <span>{{ $document['_source']['title'] }}</span>
                     </a>
+                    <span class="orange-text">{{ $document['_source']['author'] }}</span>
                     <div class="markdown">{!! Term::markdown($document['_source']['entry']) !!}</div>
                 </div>
                 @include('content._inc.sentiment_bar', [
@@ -70,7 +71,8 @@
                         @component('components.nothing')@endcomponent
                     </div>
                     <div class="collection-item z-depth-1 model hide">
-                        <span class="d-table" data-name="title"></span>
+                        <a href="#" class="d-table" data-name="title"></a>
+                        <span class="d-table orange-text" data-name="author"></span>
                         <span class="d-table grey-text" data-name="entry"></span>
                         <a href="#" class="orange-text" data-name="url" target="_blank"></a>
                         <time class="d-table grey-text mb-0" data-name="created-at"></time>
@@ -113,8 +115,12 @@
                     var item = item_model.clone();
                         item.removeClass('model hide').addClass('_tmp').attr('data-id', o.id)
 
-                        item.find('[data-name=title]').html(o._source.title)
+                        item.find('[data-name=title]')
+                            .html('🔗 ' + o._source.title)
+                            .attr('href', '{{ url('/') }}/db/' + o._index + '/' + o._type + '/' + o._id)
+
                         item.find('[data-name=entry]').html(o._source.entry)
+                        item.find('[data-name=author]').html(o._source.author)
                         item.find('[data-name=url]').html(o._source.url).attr('href', o._source.url)
                         item.find('[data-name=created-at]').html(o._source.created_at)
 

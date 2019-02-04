@@ -70,7 +70,7 @@
                         @component('components.nothing')@endcomponent
                     </div>
                     <div class="collection-item z-depth-1 model hide">
-                        <span class="d-table grey-text" data-name="title"></span>
+                        <a href="#" class="d-table grey-text" data-name="title"></a>
                         <a href="#" class="orange-text" data-name="url" target="_blank"></a>
                         <time class="d-table grey-text mb-0" data-name="created-at"></time>
                     </div>
@@ -112,7 +112,10 @@
                     var item = item_model.clone();
                         item.removeClass('model hide').addClass('_tmp').attr('data-id', o.id)
 
-                        item.find('[data-name=title]').html(o._source.title)
+                        item.find('[data-name=title]')
+                            .html('🔗 ' + o._source.title)
+                            .attr('href', '{{ url('/') }}/db/' + o._index + '/' + o._type + '/' + o._id)
+
                         item.find('[data-name=url]').html(o._source.url).attr('href', o._source.url)
                         item.find('[data-name=created-at]').html(o._source.created_at)
 

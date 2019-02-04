@@ -54,12 +54,11 @@ class ContentController extends Controller
         {
             $data = [];
             $document = $document->data;
-            $id_segment = explode('-', $es_index);
 
             switch ($es_type)
             {
                 case 'entry':
-                    $crawler = SozlukCrawler::where('id', $id_segment[1])->firstOrFail();
+                    $crawler = SozlukCrawler::where('id', $document['_source']['site_id'])->firstOrFail();
 
                     $site = [
                         [ 'match' => [ 'group_name' => $document['_source']['group_name'] ] ]
@@ -126,7 +125,7 @@ class ContentController extends Controller
                 break;
 
                 case 'product':
-                    $crawler = ShoppingCrawler::where('id', $id_segment[1])->firstOrFail();
+                    $crawler = ShoppingCrawler::where('id', $document['_source']['site_id'])->firstOrFail();
 
                     $site = [
                         [ 'match' => [ 'site_id' => $crawler->id ] ],
@@ -134,27 +133,6 @@ class ContentController extends Controller
                     ];
 
                     $title = implode(' ', [ $crawler->name, '/', $document['_source']['title'] ]);
-
-                    print_r($document['_source']['breadcrumb']);
-
-                    print_r(Document::list($es_index, 'product', [
-                        'size' => 0,
-                        'query' => [
-                            'bool' => [
-                                'must' => [
-                                    'more_like_this' => [
-                                        'fields' => [ 'title', 'description' ],
-                                        'like' => [ 'traktör' ],
-                                        'min_term_freq' => 1,
-                                        'min_doc_freq' => 1
-                                    ]
-                                ]
-                            ]
-                        ],
-                        'min_score' => 10,
-                    ]));
-
-                    exit();
                 break;
 
                 case 'tweet':
@@ -413,7 +391,7 @@ class ContentController extends Controller
                             'min_score' => 10,
                             'from' => $request->skip,
                             'size' => $request->take,
-                            '_source' => [ 'url', 'title', 'entry', 'created_at' ]
+                            '_source' => [ 'url', 'title', 'entry', 'author', 'created_at' ]
                         ]);
                     break;
 

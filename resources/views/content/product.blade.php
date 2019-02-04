@@ -4,7 +4,8 @@
         [
             'text' => $title
         ]
-    ]
+    ],
+    'dock' => true
 ])
 
 @include('content._inc.histogram', [
@@ -22,6 +23,7 @@
                         <i class="material-icons mr-1">insert_link</i>
                         <span>{{ $document['_source']['title'] }}</span>
                     </a>
+
                     @isset ($document['_source']['description'])
                         <div class="markdown">{!! Term::markdown($document['_source']['description']) !!}</div>
                     @endisset
@@ -45,7 +47,7 @@
                         @component('components.nothing')@endcomponent
                     </div>
                     <div class="collection-item z-depth-1 model hide">
-                        <span class="d-table" data-name="title"></span>
+                        <a href="#" class="d-table" data-name="title"></a>
 
                         <span class="price red white-text">
                             <span data-name="price-amount"></span>
@@ -76,19 +78,49 @@
     </div>
 @endsection
 
-@push('local.styles')
-    [data-name=breadcrumb] {
-        margin: 0;
-        padding: 0;
-    }
-    [data-name=breadcrumb] > li + li {
-        margin: 0 0 0 1rem;
-    }
-    [data-name=breadcrumb] > li + li:before {
-        content: '»';
-        margin: 0 1rem 0 0;
-    }
-@endpush
+@section('dock')
+    <div class="card">
+        <div class="card-content yellow lighten-4">
+            <span class="grey-text text-darken-4">{{ number_format($document['_source']['price']['amount']) }}</span>
+            <span class="grey-text">{{ $document['_source']['price']['currency'] }}</span>
+        </div>
+        <div class="card-content">
+            <span class="red-text">{{ title_case($document['_source']['seller']['name']) }}</span>
+            @isset ($document['_source']['seller']['phones'])
+                @foreach ($document['_source']['seller']['phones'] as $key => $phone)
+                    <p class="grey-text">{{ $phone['phone'] }}</p>
+                @endforeach
+            @endisset
+        </div>
+
+        <div class="card-tabs">
+            <ul class="tabs dock-tabs cyan tabs-transparent tabs-fixed-width">
+                <li class="tab">
+                    <a href="#category" class="active">Kategori</a>
+                </li>
+                <li class="tab">
+                    <a href="#address">Adres</a>
+                </li>
+            </ul>
+        </div>
+
+        @isset ($document['_source']['breadcrumb'])
+            <ul class="collection" id="category">
+                @foreach ($document['_source']['breadcrumb'] as $key => $segment)
+                    <li class="collection-item" data-icon="»">{{ $segment['segment'] }}</li>
+                @endforeach
+            </ul>
+        @endisset
+
+        @isset ($document['_source']['address'])
+            <ul class="collection" id="address" style="display: none;">
+                @foreach ($document['_source']['address'] as $key => $segment)
+                    <li class="collection-item" data-icon="»">{{ $segment['segment'] }}</li>
+                @endforeach
+            </ul>
+        @endisset
+    </div>
+@endsection
 
 @push('external.include.footer')
     <script src="{{ asset('js/chart.js?v='.config('system.version')) }}"></script>
@@ -110,9 +142,12 @@
                     var item = item_model.clone();
                         item.removeClass('model hide').addClass('_tmp').attr('data-id', o.id)
 
+                        item.find('[data-name=title]')
+                            .html('🔗 ' + o._source.title)
+                            .attr('href', '{{ url('/') }}/db/' + o._index + '/' + o._type + '/' + o._id)
+
                         item.find('[data-name=price-amount]').html(o._source.price.amount)
                         item.find('[data-name=price-currency]').html(o._source.price.currency)
-                        item.find('[data-name=title]').html(o._source.title)
 
                         $.each(o._source.breadcrumb, function(key, o) {
                             item.find('[data-name=breadcrumb]').append($('<li />', {
@@ -130,4 +165,8 @@
             $('#home-loader').hide()
         }
     }
+
+    $(document).ready(function() {
+        $('.dock-tabs').tabs()
+    })
 @endpush

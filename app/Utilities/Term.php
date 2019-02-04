@@ -14,7 +14,7 @@ class Term
      *
      * @return array
      */
-    public static function commonWords(string $string, int $max_count = 5)
+    public static function commonWords(string $string, int $max_count = 4)
     {
         $string = self::convertAscii($string, [ 'lowercase' => true ]);
 
