@@ -50,7 +50,13 @@
 		text-align: left;
 		display: none;
 	}
+	section.main.active {
+		display: table;
+	}
 
+	header.main {
+		margin-bottom: 4rem;
+	}
 	header.main > img {
 		max-width: 340px;
 		margin: 10% auto 1rem;
@@ -66,8 +72,6 @@
 
 		align-items: center;
 		justify-content: center;
-
-		margin-bottom: 4rem;
 	}
 	footer.main > span,
 	footer.main > a {
@@ -95,11 +99,6 @@
 		header.main > img {
 			max-width: 240px;
 		}
-	}
-
-	section {
-		display: table;
-		margin: 0 auto;
 	}
   </style>
 
@@ -135,7 +134,7 @@
     <script src="{{ asset('js/jquery.min.js?v='.config('system.version')) }}"></script>
     <script>
     	$(document).on('click', '[data-trigger=contact]', function() {
-    		$('[data-name=contact]').toggle()
+    		$('[data-name=contact]').addClass('active')
     	})
     </script>
 </body>
