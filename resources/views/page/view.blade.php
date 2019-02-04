@@ -35,9 +35,11 @@
             </div>
 
             <div class="container">
-                <div class="card card-unstyled">
+                <div class="card">
                     <div class="card-content">
                         <span class="card-title">{{ $page->title }}</span>
+                    </div>
+                    <div class="card-content">
                         {!! $page->body !!}
                     </div>
                 </div>

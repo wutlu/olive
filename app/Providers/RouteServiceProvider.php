@@ -25,7 +25,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::pattern('es_id', '[a-z0-9]+');
         Route::pattern('es_type', '[a-z]+');
-        Route::pattern('es_index', '[a-z0-9_-]+');
+        Route::pattern('es_index', '[a-z0-9-\._]+');
 
         Route::pattern('key', '[a-zA-Z0-9-\/:=_]+');
         Route::pattern('id', '[0-9]+');
