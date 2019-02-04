@@ -790,7 +790,7 @@
     }
     </script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-117327079-2"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ config('services.google.analytics.code') }}"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
 

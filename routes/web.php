@@ -5,8 +5,8 @@ $vz = function()
     Route::get('/', 'HomeController@vz')->name('veri.zone');
 };
 
-Route::domain(config('app.domain'))->group($vz);
 Route::domain('www.'.config('app.domain'))->group($vz);
+Route::domain(config('app.domain'))->group($vz);
 
 Route::get('manifest.json', 'HomeController@manifest')->name('olive.manifest');
 Route::get('kaynaklar', 'HomeController@sources')->name('sources');

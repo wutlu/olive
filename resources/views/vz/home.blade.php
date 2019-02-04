@@ -43,9 +43,14 @@
 		background-attachment: scroll;
 	}
 
-	header.main {
-		margin-bottom: 4rem;
+	section.main {
+		max-width: 340px;
+		margin: 0 auto;
+		color: #fff;
+		text-align: left;
+		display: none;
 	}
+
 	header.main > img {
 		max-width: 340px;
 		margin: 10% auto 1rem;
@@ -61,6 +66,8 @@
 
 		align-items: center;
 		justify-content: center;
+
+		margin-bottom: 4rem;
 	}
 	footer.main > span,
 	footer.main > a {
@@ -89,6 +96,11 @@
 			max-width: 240px;
 		}
 	}
+
+	section {
+		display: table;
+		margin: 0 auto;
+	}
   </style>
 
   <meta name="theme-color" content="#2488d5" />
@@ -106,8 +118,25 @@
 			<img alt="Twitter" src="{{ asset('img/o_twitter.svg') }}" />
 			<span>veridotzone</span>
 		</a>
-		<span><a href="mailto:bilgi@veri.zone">bilgi@veri.zone</a></span>
-		<span>Yeni Mah. Eti Cad. 78/B Polatlı/ANKARA</span>
+		<a href="#" data-trigger="contact">
+			<img alt="Contact" src="{{ asset('img/o_contact.svg') }}" />
+			<span>İletişim</span>
+		</a>
+		<span>© 2019 | veri.zone</span>
 	</footer>
+	<section class="main" data-name="contact">
+		<h4>İletişim Bilgileri</h4>
+		<p>Yeni Mah. Eti Cad. 78/B Polatlı/ANKARA</p>
+		<p>+90 850 302 1630</p>
+		<p>bilgi@veri.zone</p>
+		<p>Alper Mutlu TOKSÖZ</p>
+	</section>
+
+    <script src="{{ asset('js/jquery.min.js?v='.config('system.version')) }}"></script>
+    <script>
+    	$(document).on('click', '[data-trigger=contact]', function() {
+    		$('[data-name=contact]').toggle()
+    	})
+    </script>
 </body>
 </html>

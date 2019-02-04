@@ -21,7 +21,7 @@
         <div class="card-tabs">
             <ul class="tabs tabs-fixed-width">
                 <li class="tab">
-                    <a href="#hosts-file" class="active">Host Dosyası</a>
+                    <a href="#hosts-file" class="active">Hosts Dosyası</a>
                 </li>
                 <li class="tab">
                     <a href="#ip-list">IP Listesi</a>
