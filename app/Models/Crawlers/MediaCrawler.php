@@ -22,6 +22,7 @@ class MediaCrawler extends Model
         'status',
         'error_count',
         'proxy',
+        'count',
     ];
 
     # index crate

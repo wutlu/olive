@@ -41,6 +41,7 @@
                         item.find('[data-name=site]').html(o.site)
                         item.find('[data-name=status]').addClass(o.status ? 'green-text' : 'red-text')
                         item.find('[data-name=test]').addClass(o.test ? 'green-text' : 'red-text')
+                        item.find('[data-name=index]').html(o.elasticsearch_index_name + ' - ' + o.count + ' döküman')
 
                         item.appendTo(ul)
                 })
@@ -178,7 +179,8 @@
                 <small class="right-align">
                     <i class="material-icons" data-name="test">sentiment_very_satisfied</i>
                     <i class="material-icons" data-name="status">power</i>
-                    <p class="grey-text" data-name="error"></p>
+                    <p class="grey-text mb-0" data-name="error"></p>
+                    <p class="grey-text mb-0" data-name="index"></p>
                 </small>
             </a>
         </div>

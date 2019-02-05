@@ -40,7 +40,8 @@ class Crawler
                 ],
                 'curl' => [
                     CURLOPT_REFERER => $site
-                ]
+                ],
+                'verify' => false
             ];
 
             if ($proxy)
@@ -116,7 +117,8 @@ class Crawler
                     ],
                     'curl' => [
                         CURLOPT_REFERER => $site
-                    ]
+                    ],
+                    'verify' => false
                 ];
 
                 $proxy = Proxy::where('health', '>', 7)->inRandomOrder()->first();
@@ -189,7 +191,8 @@ class Crawler
                 ],
                 'curl' => [
                     CURLOPT_REFERER => $data['page']
-                ]
+                ],
+                'verify' => false
             ];
 
             if ($proxy)
@@ -344,7 +347,8 @@ class Crawler
                 ],
                 'curl' => [
                     CURLOPT_REFERER => $data['page']
-                ]
+                ],
+                'verify' => false
             ];
 
             if ($proxy)
@@ -523,7 +527,8 @@ class Crawler
                 ],
                 'curl' => [
                     CURLOPT_REFERER => $data['page']
-                ]
+                ],
+                'verify' => false
             ];
 
             if ($proxy)

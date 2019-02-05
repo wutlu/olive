@@ -5,6 +5,7 @@ use App\Http\Controllers\MonitorController;
 use App\Http\Controllers\Forum\ForumController;
 use App\Http\Controllers\PinController;
 use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\Crawlers\MediaController;
 
 use App\Console\Commands\Sentiment;
 
@@ -31,3 +32,7 @@ Artisan::command('forum:notification_trigger', function () {
 Artisan::command('newsletter:process_trigger', function () {
 	NewsletterController::processTrigger();
 })->describe('Bülten göndermek üzere e-posta tetikler.');
+
+Artisan::command('update:crawler_counts', function () {
+	MediaController::counter();
+})->describe('Veritabanındaki döküman sayılarını SQL\'e alır.');

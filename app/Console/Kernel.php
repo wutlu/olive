@@ -67,6 +67,11 @@ class Kernel extends ConsoleKernel
             $schedule->command('nohup "media:minuter" --type=start')->hourly()->timezone(config('app.timezone'))->withoutOverlapping();
 
             /**
+             * Veritabanındaki döküman sayılarını SQL\'e alır.
+             */
+            $schedule->command('nohup "update:crawler_counts" --type=start')->hourly()->timezone(config('app.timezone'))->withoutOverlapping();
+
+            /**
              * Olağanüstü sunucu durumlarını e-posta gönder.
              */
             $schedule->command('alarm:control')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping();

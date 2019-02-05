@@ -14,6 +14,7 @@ use App\Http\Requests\Crawlers\Media\DeleteRequest;
 use App\Models\Crawlers\MediaCrawler;
 
 use App\Utilities\Crawler;
+use App\Utilities\Term;
 
 use App\Elasticsearch\Indices;
 use App\Elasticsearch\Document;
@@ -489,5 +490,53 @@ class MediaController extends Controller
         return [
             'status' => ($count == count($groups)) ? 'ok' : 'err'
         ];
+    }
+
+    /**
+     ********************
+     ******* ROOT *******
+     ****** SYSTEM ******
+     ********************
+     *
+     * Media Counter
+     *
+     * @return mixed
+     */
+    public static function counter()
+    {
+        $crawlers = MediaCrawler::get();
+
+        if (count($crawlers))
+        {
+            foreach ($crawlers as $crawler)
+            {
+                echo Term::line($crawler->id.' - '.$crawler->name);
+                echo Term::line($crawler->count);
+
+                $document = Document::count(
+                    [
+                        'media',
+                        $crawler->elasticsearch_index_name
+                    ],
+                    'article',
+                    [
+                        'query' => [
+                            'bool' => [
+                                'must' => [
+                                    [ 'match' => [ 'site_id' => $crawler->id ] ]
+                                ]
+                            ]
+                        ]
+                    ]
+                );
+
+                $crawler->update([ 'count' => $document->data['count'] ]);
+
+                echo Term::line($document->data['count']);
+
+                echo '----';
+                echo PHP_EOL;
+            }
+        }
     }
 }
