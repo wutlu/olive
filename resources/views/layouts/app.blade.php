@@ -203,7 +203,7 @@
                         <span>Bot Yönetimi</span>
                         <i class="material-icons arrow">keyboard_arrow_down</i>
                     </div>
-                    <div class="collapsible-body teal lighten-5">
+                    <div class="collapsible-body">
                         <ul>
                             <li class="tiny">
                                 <a class="waves-effect" href="{{ route('crawlers.media.list') }}">
@@ -267,7 +267,7 @@
                         <span>Sistem İzleme</span>
                         <i class="material-icons arrow">keyboard_arrow_down</i>
                     </div>
-                    <div class="collapsible-body teal lighten-5">
+                    <div class="collapsible-body">
                         <ul>
                             <li class="tiny">
                                 <a class="waves-effect" href="{{ route('admin.session.logs') }}">

@@ -13,13 +13,17 @@
         max-height: 6320px;
 
         overflow: hidden;
+
+        word-wrap: break-word;
     }
     .time-line > .collection > .lined {
         border-width: 0 0 1px;
         border-style: solid;
-        border-color: #f9f9f9;
+        border-color: #f0f0f0;
 
         position: relative;
+
+        word-wrap: break-word;
     }
 
     .list-alert {
@@ -649,7 +653,27 @@
                             }),
                             $('<span />', {
                                 'class': 'helper-text',
-                                'html': 'Birden fazla anahtar kelime veya cümle için birden fazla satır kullanabilirsiniz. Ayrıca OR, AND ve (parantez) parametrelerini de kullanabilirsiniz. AND parametresi sonuç vermesse OR ile sonuç alacaksınız. Son olarak, boş bıraktığınız taktirde Twitter hariç tüm veri akışını alırsınız.'
+                                'html': [
+                                    $('<span />', {
+                                        'class': 'helper-text d-flex',
+                                        'html': [
+                                            $('<a />', {
+                                                'href': '#',
+                                                'class': 'align-self-center',
+                                                'data-trigger': 'info',
+                                                'css': { 'margin': '0 .4rem 0 0' },
+                                                'html': $('<i />', {
+                                                    'class': 'material-icons',
+                                                    'html': 'info_outline'
+                                                })
+                                            }),
+                                            $('<span />', {
+                                                'class': 'align-self-center',
+                                                'html': 'Aramak istediğiniz kelimeyi veya kriteri girin.'
+                                            })
+                                        ]
+                                    })
+                                ]
                             })
                         ]
                     }),
@@ -822,3 +846,5 @@
         }
     }
 @endpush
+
+@include('_inc.alerts.search_operators')

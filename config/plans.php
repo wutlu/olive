@@ -10,54 +10,9 @@ return [
 				'details' => 'Plan kapasitesi kadar kullanıcı aynı anda bu planı kullanabilir.',
 				'value' => 1
 			],
-			'forum' => [
-				'text' => 'Forum',
-				'details' => 'Olive forumlarını limitsizce kullanabilme.',
-				'value' => true
-			],
-			'real_time' => [
-				'text' => 'Gerçek Zamanlı',
-				'details' => 'Tamamen yerli ve anlık veri akışı ekranına erişim ve dahası.',
-				'value' => false
-			],
 			'support' => [
 				'text' => 'Destek',
 				'details' => '7/24 Online Destek',
-				'value' => false
-			],
-			'source' => [
-				'text' => 'Kaynak Tanımlama',
-				'details' => 'Daha fazla içeriğe ulaşabilmek adına farklı kaynak ve kriterler tanımlayabilme.',
-				'value' => false
-			],
-			'monitor' => [
-				'text' => 'İzleme Ekranları',
-				'details' => 'Veri analizleri ve veri endeksleri oluşturabileceğiniz izleme ekranları.',
-				'value' => false
-			],
-			'trend_live' => [
-				'text' => 'Canlı Trend (Yakında, ücretsiz...)',
-				'details' => 'Anlık sosyal medya ve yerli gündem canlı trend bilgisi.',
-				'value' => true
-			],
-			'trend_index' => [
-				'text' => 'Canlı Endeks',
-				'details' => 'Anlık sosyal medya ve yerli gündem trend endeksleri.',
-				'value' => false
-			],
-			'archive' => [
-				'text' => 'Arşiv',
-				'details' => 'Eski verilere erişim.',
-				'value' => false
-			],
-			'alarm' => [
-				'text' => 'Alarm',
-				'details' => 'Yerli veri internet alarmları.',
-				'value' => false
-			],
-			'tools' => [
-				'text' => 'Araçlar',
-				'details' => 'YouTube, Twitter vb. platformlardan daha verimli içerik elde etme araçları.',
 				'value' => false
 			]
 		]
@@ -74,54 +29,9 @@ return [
 				'details' => 'Plan kapasitesi kadar kullanıcı aynı anda bu planı kullanabilir.',
 				'value' => 2
 			],
-			'forum' => [
-				'text' => 'Forum',
-				'details' => 'Olive forumlarını limitsizce kullanabilme.',
-				'value' => true
-			],
-			'real_time' => [
-				'text' => 'Gerçek Zamanlı',
-				'details' => 'Tamamen yerli ve anlık veri akışı ekranına erişim ve dahası.',
-				'value' => true
-			],
 			'support' => [
 				'text' => 'Destek',
 				'details' => '7/24 Online Destek',
-				'value' => true
-			],
-			'source' => [
-				'text' => 'Kaynak Tanımlama',
-				'details' => 'Daha fazla içeriğe ulaşabilmek adına farklı kaynak ve kriterler tanımlayabilme.',
-				'value' => true
-			],
-			'monitor' => [
-				'text' => 'İzleme Ekranları (Yakında...)',
-				'details' => 'Veri analizleri ve veri endeksleri oluşturabileceğiniz izleme ekranları.',
-				'value' => true
-			],
-			'trend_live' => [
-				'text' => 'Canlı Trend (Yakında...)',
-				'details' => 'Anlık sosyal medya ve yerli gündem canlı trend bilgisi.',
-				'value' => true
-			],
-			'trend_index' => [
-				'text' => 'Canlı Endeks (Yakında...)',
-				'details' => 'Anlık sosyal medya ve yerli gündem trend endeksleri.',
-				'value' => true
-			],
-			'archive' => [
-				'text' => 'Arşiv (Yakında...)',
-				'details' => 'Eski verilere erişim.',
-				'value' => true
-			],
-			'alarm' => [
-				'text' => 'Alarm (Yakında...)',
-				'details' => 'Yerli veri internet alarmları.',
-				'value' => true
-			],
-			'tools' => [
-				'text' => 'Araçlar (Yakında...)',
-				'details' => 'YouTube, Twitter vb. platformlardan daha verimli içerik elde etme araçları.',
 				'value' => true
 			]
 		]
@@ -136,54 +46,9 @@ return [
 				'details' => 'Plan kapasitesi kadar kullanıcı aynı anda bu planı kullanabilir.',
 				'value' => 1
 			],
-			'forum' => [
-				'text' => 'Forum',
-				'details' => 'Olive forumlarını limitsizce kullanabilme.',
-				'value' => true
-			],
-			'real_time' => [
-				'text' => 'Gerçek Zamanlı',
-				'details' => 'Tamamen yerli ve anlık veri akışı ekranına erişim ve dahası.',
-				'value' => true
-			],
 			'support' => [
 				'text' => 'Destek',
 				'details' => '7/24 Online Destek',
-				'value' => true
-			],
-			'source' => [
-				'text' => 'Kaynak Tanımlama',
-				'details' => 'Daha fazla içeriğe ulaşabilmek adına farklı kaynak ve kriterler tanımlayabilme.',
-				'value' => true
-			],
-			'monitor' => [
-				'text' => 'İzleme Ekranları',
-				'details' => 'Veri analizleri ve veri endeksleri oluşturabileceğiniz izleme ekranları.',
-				'value' => true
-			],
-			'trend_live' => [
-				'text' => 'Canlı Trend',
-				'details' => 'Anlık sosyal medya ve yerli gündem canlı trend bilgisi.',
-				'value' => true
-			],
-			'trend_index' => [
-				'text' => 'Canlı Endeks',
-				'details' => 'Anlık sosyal medya ve yerli gündem trend endeksleri.',
-				'value' => true
-			],
-			'archive' => [
-				'text' => 'Arşiv',
-				'details' => 'Eski verilere erişim.',
-				'value' => true
-			],
-			'alarm' => [
-				'text' => 'Alarm',
-				'details' => 'Yerli veri internet alarmları.',
-				'value' => true
-			],
-			'tools' => [
-				'text' => 'Araçlar',
-				'details' => 'YouTube, Twitter vb. platformlardan daha verimli içerik elde etme araçları.',
 				'value' => true
 			]
 		]
@@ -198,54 +63,9 @@ return [
 				'details' => 'Plan kapasitesi kadar kullanıcı aynı anda bu planı kullanabilir.',
 				'value' => 4
 			],
-			'forum' => [
-				'text' => 'Forum',
-				'details' => 'Olive forumlarını limitsizce kullanabilme.',
-				'value' => true
-			],
-			'real_time' => [
-				'text' => 'Gerçek Zamanlı',
-				'details' => 'Tamamen yerli ve anlık veri akışı ekranına erişim ve dahası.',
-				'value' => true
-			],
 			'support' => [
 				'text' => 'Destek',
 				'details' => '7/24 Online Destek',
-				'value' => true
-			],
-			'source' => [
-				'text' => 'Kaynak Tanımlama',
-				'details' => 'Daha fazla içeriğe ulaşabilmek adına farklı kaynak ve kriterler tanımlayabilme.',
-				'value' => true
-			],
-			'monitor' => [
-				'text' => 'İzleme Ekranları',
-				'details' => 'Veri analizleri ve veri endeksleri oluşturabileceğiniz izleme ekranları.',
-				'value' => true
-			],
-			'trend_live' => [
-				'text' => 'Canlı Trend',
-				'details' => 'Anlık sosyal medya ve yerli gündem canlı trend bilgisi.',
-				'value' => true
-			],
-			'trend_index' => [
-				'text' => 'Canlı Endeks',
-				'details' => 'Anlık sosyal medya ve yerli gündem trend endeksleri.',
-				'value' => true
-			],
-			'archive' => [
-				'text' => 'Arşiv',
-				'details' => 'Eski verilere erişim.',
-				'value' => true
-			],
-			'alarm' => [
-				'text' => 'Alarm',
-				'details' => 'Yerli veri internet alarmları.',
-				'value' => true
-			],
-			'tools' => [
-				'text' => 'Araçlar',
-				'details' => 'YouTube, Twitter vb. platformlardan daha verimli içerik elde etme araçları.',
 				'value' => true
 			]
 		]
@@ -260,54 +80,9 @@ return [
 				'details' => 'Plan kapasitesi kadar kullanıcı aynı anda bu planı kullanabilir.',
 				'value' => 8
 			],
-			'forum' => [
-				'text' => 'Forum',
-				'details' => 'Olive forumlarını limitsizce kullanabilme.',
-				'value' => true
-			],
-			'real_time' => [
-				'text' => 'Gerçek Zamanlı',
-				'details' => 'Tamamen yerli ve anlık veri akışı ekranına erişim ve dahası.',
-				'value' => true
-			],
 			'support' => [
 				'text' => 'Destek',
 				'details' => '7/24 Online Destek',
-				'value' => true
-			],
-			'source' => [
-				'text' => 'Kaynak Tanımlama',
-				'details' => 'Daha fazla içeriğe ulaşabilmek adına farklı kaynak ve kriterler tanımlayabilme.',
-				'value' => true
-			],
-			'monitor' => [
-				'text' => 'İzleme Ekranları',
-				'details' => 'Veri analizleri ve veri endeksleri oluşturabileceğiniz izleme ekranları.',
-				'value' => true
-			],
-			'trend_live' => [
-				'text' => 'Canlı Trend',
-				'details' => 'Anlık sosyal medya ve yerli gündem canlı trend bilgisi.',
-				'value' => true
-			],
-			'trend_index' => [
-				'text' => 'Canlı Endeks',
-				'details' => 'Anlık sosyal medya ve yerli gündem trend endeksleri.',
-				'value' => true
-			],
-			'archive' => [
-				'text' => 'Arşiv',
-				'details' => 'Eski verilere erişim.',
-				'value' => true
-			],
-			'alarm' => [
-				'text' => 'Alarm',
-				'details' => 'Yerli veri internet alarmları.',
-				'value' => true
-			],
-			'tools' => [
-				'text' => 'Araçlar',
-				'details' => 'YouTube, Twitter vb. platformlardan daha verimli içerik elde etme araçları.',
 				'value' => true
 			]
 		]

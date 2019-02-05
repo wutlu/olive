@@ -159,8 +159,6 @@
         </div>
 
         <div class="container">
-            <h3 class="grey-text text-darken-2">planlar</h3>
-
             <div class="card with-bg">
                 <div class="card-content center-align">
                     <p class="teal-text">Hemen ücretsiz bir şekilde üye olabilir ve hiçbir ücret ödemeden başlangıç paketinden faydalanabilirsiniz.</p>

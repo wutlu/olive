@@ -87,6 +87,10 @@
                     <i class="material-icons">watch_later</i>
                     <span class="d-block">Gerçek Zamanlı</span>
                 </a>
+                <a href="{{ route('search.dashboard') }}">
+                    <i class="material-icons">youtube_searched_for</i>
+                    <span class="d-block">Arama Motoru</span>
+                </a>
                 <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" style="opacity: .4;" href="#">
                     <i class="material-icons">desktop_mac</i>
                     <span class="d-block">Monitörler</span>
@@ -94,10 +98,6 @@
                 <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" style="opacity: .4;" href="#">
                     <i class="material-icons">trending_up</i>
                     <span class="d-block">Trend Analizi</span>
-                </a>
-                <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" style="opacity: .4;" href="#">
-                    <i class="material-icons">youtube_searched_for</i>
-                    <span class="d-block">Veri Arama</span>
                 </a>
                 <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" style="opacity: .4;" href="#">
                     <i class="material-icons">access_alarm</i>

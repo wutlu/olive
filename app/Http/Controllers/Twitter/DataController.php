@@ -25,7 +25,7 @@ class DataController extends Controller
          * - Organizasyon
          * -- real_time özelliği
          */
-        $this->middleware([ 'auth', 'organisation:have,source' ]);
+        $this->middleware([ 'auth', 'organisation:have' ]);
 
         /**
          ***** ZORUNLU *****

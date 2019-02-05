@@ -16,7 +16,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col l4">
-                        <a href="{{ route('home') }}" id="logo">
+                        <a class="white" href="{{ route('home') }}" id="logo">
                             <img src="{{ asset('img/olive-logo.svg') }}" alt="olive-logo" class="responsive-img" />
                         </a>
 

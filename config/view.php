@@ -40,6 +40,6 @@ return [
     */
 
     'theme_color' => '#0097a7',
-    'background_color' => '#0097a7',
+    'background_color' => '#ffffff',
 
 ];

@@ -34,7 +34,7 @@ class RealTimeController extends Controller
     public function __construct()
     {
         ### [ üyelik ve organizasyon zorunlu ve organizasyonun zorunlu olarak real_time özelliği desteklemesi ] ###
-        $this->middleware([ 'auth', 'organisation:have,real_time' ]);
+        $this->middleware([ 'auth', 'organisation:have' ]);
 
         ### [ zorunlu aktif organizasyon ] ###
         $this->middleware('can:organisation-status')->only([

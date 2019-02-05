@@ -27,7 +27,7 @@ class DataController extends Controller
          * - Organizasyon
          * -- source
          */
-        $this->middleware([ 'auth', 'organisation:have,source' ]);
+        $this->middleware([ 'auth', 'organisation:have' ]);
 
         /**
          ***** ZORUNLU *****
