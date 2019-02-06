@@ -99,7 +99,8 @@ class Crawler extends Command
                     $entry_id,
                     $sozluk->selector_title,
                     $sozluk->selector_entry,
-                    $sozluk->selector_author
+                    $sozluk->selector_author,
+                    $sozluk->proxy
                 );
 
                 if ($item->status == 'ok')
@@ -139,7 +140,6 @@ class Crawler extends Command
                         $tmp_error = 0;
                         $deep_try = 1;
 
-                        unset($errors);
                         $errors = [];
 
                         $last_entry_id++;
@@ -155,7 +155,6 @@ class Crawler extends Command
 
                         BulkInsertJob::dispatch($chunk)->onQueue('elasticsearch');
 
-                        unset($chunk);
                         $chunk = [ 'body' => [] ];
 
                         $chunk_count = 0;

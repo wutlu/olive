@@ -83,7 +83,7 @@ class RealTimeController extends Controller
                 {
                     foreach (explode(PHP_EOL, $group->keywords) as $k)
                     {
-                        $keywords[] = '('.strtolower($k).')';
+                        $keywords[] = $k;
 
                         $words_raw = str_replace([ ' OR ', ' AND ', ')', '(' ], ' ', $k);
                         $words_raw = explode(' ', $words_raw);
@@ -107,8 +107,12 @@ class RealTimeController extends Controller
                             'size' => 1000,
                             'query' => [
                                 'bool' => [
-                                    'must' => [ [ 'query_string' => [ 'default_field' => 'text', 'query' => implode(' OR ', $keywords) ] ] ],
-                                    'filter' => [ 'range' => [ $this->range_column => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ]
+                                    'must' => [
+                                        [ 'query_string' => [ 'default_field' => 'text', 'query' => implode(' OR ', $keywords) ] ]
+                                    ],
+                                    'filter' => [
+                                        [ 'range' => [ $this->range_column => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ]
+                                    ]
                                 ]
                             ],
                             'sort' => [ 'created_at' => 'DESC' ],
@@ -151,9 +155,9 @@ class RealTimeController extends Controller
                         'size' => 100,
                         'query' => [
                             'bool' => [
+                                'must' => [ 'match' => [ 'status' => 'ok' ] ],
                                 'filter' => [
-                                    [ 'range' => [ $this->range_column => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ],
-                                    [ 'match' => [ 'status' => 'ok' ] ]
+                                    [ 'range' => [ $this->range_column => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ]
                                 ]
                             ]
                         ],
@@ -252,9 +256,9 @@ class RealTimeController extends Controller
                         'query' => [
                             'bool' => [
                                 'filter' => [
-                                    [ 'range' => [ $this->range_column => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ],
-                                    [ 'match' => [ 'status' => 'ok' ] ]
-                                ]
+                                    [ 'range' => [ $this->range_column => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ]
+                                ],
+                                'must' => [ 'match' => [ 'status' => 'ok' ] ]
                             ]
                         ],
                         'sort' => [ 'created_at' => 'DESC' ],
@@ -358,7 +362,9 @@ class RealTimeController extends Controller
                         'size' => 200,
                         'query' => [
                             'bool' => [
-                                'filter' => [ 'range' => [ $this->range_column => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ]
+                                'filter' => [
+                                    [ 'range' => [ $this->range_column => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ]
+                                ]
                             ]
                         ],
                         'sort' => [ 'created_at' => 'DESC' ],

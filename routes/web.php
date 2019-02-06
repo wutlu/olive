@@ -73,6 +73,7 @@ Route::prefix('organizasyon')->group(function () {
 
 Route::prefix('arama')->group(function () {
     Route::get('/', 'SearchController@dashboard')->name('search.dashboard');
+    Route::post('/', 'SearchController@search')->name('search.request');
 });
 
 Route::get('uyari', 'HomeController@alert')->name('alert');

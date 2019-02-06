@@ -652,10 +652,9 @@
                                 'html': 'Kelime Listesi'
                             }),
                             $('<span />', {
-                                'class': 'helper-text',
                                 'html': [
                                     $('<span />', {
-                                        'class': 'helper-text d-flex',
+                                        'class': 'd-flex',
                                         'html': [
                                             $('<a />', {
                                                 'href': '#',
@@ -674,6 +673,9 @@
                                         ]
                                     })
                                 ]
+                            }),
+                            $('<span />', {
+                                'class': 'helper-text'
                             })
                         ]
                     }),

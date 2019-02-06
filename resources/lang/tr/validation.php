@@ -14,8 +14,8 @@ return [
 
     'accepted' => ':attribute kabul edilmelidir.',
     'active_url' => ':attribute geçerli bir URL olmalıdır.',
-    'after' => ':attribute şundan daha eski bir tarih olmalıdır :date.',
-    'after_or_equal' => ':attribute tarihi :date tarihinden sonra veya tarihine eşit olmalıdır.',
+    'after' => ':attribute, :date alaından daha eski bir tarih olmalıdır.',
+    'after_or_equal' => ':attribute alanı :date alanından sonra veya eşit olmalıdır.',
     'alpha' => ':attribute sadece harflerden oluşmalıdır.',
     'alpha_dash' => ':attribute sadece harfler, rakamlar ve tirelerden oluşmalıdır.',
     'alpha_num' => ':attribute sadece harfler ve rakamlar içermelidir.',
@@ -265,5 +265,9 @@ return [
         'iban_name'                    => 'Hesap Adı',
 
         'status_message'               => 'Durum Mesajı',
+
+        'modules'                      => 'Modüller',
+        'sentiment'                    => 'Duygu',
+        'full_match'                   => 'Kelimesi Kelimesine',
     ],
 ];

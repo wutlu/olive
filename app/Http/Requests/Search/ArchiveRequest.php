@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Search;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SearchRequest extends FormRequest
+class ArchiveRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,12 @@ class SearchRequest extends FormRequest
     public function rules()
     {
         return [
-            'string' => 'nullable|string|min:2|max:32',
+            'string' => 'required|string|max:64',
             'skip' => 'required|integer',
-            'take' => 'required|integer|max:100'
+            'take' => 'required|integer|max:100',
+            'start_date' => 'required|date_format:Y-m-d',
+            'end_date' => 'required|date_format:Y-m-d|after_or_equal:start_date',
+            'sentiment' => 'required|string|in:pos,neu,neg,all'
         ];
     }
 }
