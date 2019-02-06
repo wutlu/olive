@@ -10,20 +10,27 @@
 
 @push('local.styles')
     .time-line > .collection {
-        max-height: 6320px;
-
+        max-height: 2048px;
         overflow: hidden;
-
         word-wrap: break-word;
-    }
-    .time-line > .collection > .lined {
-        border-width: 0 0 1px;
+
+        border-width: 0 0 0 1rem;
         border-style: solid;
-        border-color: #f0f0f0;
+        border-color: transparent;
+    }
+    .time-line > .collection:hover {
+        border-color: #f44336;
+    }
 
+    .time-line > .collection > .collection-item {
+        word-break: break-all;
+    }
+
+    .time-line > .collection > .lined {
         position: relative;
-
         word-wrap: break-word;
+        border-radius: 1rem 0 0 1rem;
+        margin: 1rem 0 1rem 1rem;
     }
 
     .list-alert {
@@ -102,15 +109,43 @@
         autoWidth: true,
         dotClass: 'hide'
     })
+
+    $(document).ready(function() {
+        $('.tabs').tabs()
+    })
 @endpush
 
 @section('wildcard')
     <div id="wildcard-pin-history" class="owl-carousel owl-wildcard z-depth-2 hide"></div>
+
+    <div class="grey lighten-4 z-depth-1">
+        <div class="container wild-area">
+            <div class="wild-content d-flex grey lighten-4" data-wild="volume">
+                <span class="wild-body d-flex">
+                    <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center mr-1" data-class=".wild-content" data-class-remove="active">
+                        <i class="material-icons">close</i>
+                    </a>
+                    <label class="align-self-center">
+                        <input name="sound_alert" value="on" type="checkbox" />
+                        <span>Uyarı Sesleri</span>
+                    </label>
+                </span>
+            </div>
+            <ul class="wild-menu">
+                <li>
+                    <a class="d-flex" href="#" data-class="[data-wild=volume]" data-class-add="active">
+                        <i class="material-icons mr-1">volume_up</i>
+                        <span class="align-self-center">Sesler</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
 @endsection
 
 @section('content')
     <div
-        class="card with-bg time-line card-olive"
+        class="card time-line"
         data-href="{{ route('realtime.query') }}"
         data-callback="__realtime"
         data-method="post"
@@ -150,11 +185,11 @@
             <li class="collection-item">
                 <p class="d-flex">
                     <img alt="Pin" src="{{ asset('img/icons/pin.png') }}" style="width: 32px; height: 32px; margin: 0 .2rem 0 0;" />
-                    <span class="align-self-center">Sağdaki menüden bir pin grubu seçin. Pin grubunuz yoksa oluşturabilirsiniz. Pinlemek için ilgilendiğiniz içeriğe tıklamanız yeterli.</span>
+                    <span class="align-self-center">Sağdaki menüden bir pin grubu seçin. Pin grubunuz yoksa oluşturabilirsiniz.</span>
                 </p>
                 <p class="d-flex">
                     <img alt="Pin" src="{{ asset('img/icons/snowflake.png') }}" style="width: 32px; height: 32px; margin: 0 .2rem 0 0;" />
-                    <span class="align-self-center">Akışı yavaşlatmak için fareyi akışın üzerine getirin.</span>
+                    <span class="align-self-center">Akışı durdurmak için fareyi akışın üzerine getirin.</span>
                 </p>
             </li>
         </ul>
@@ -312,7 +347,7 @@
                 item.attr('id', obj.uuid)
                     .hide()
                     .removeClass('model hide')
-                    .show( 'highlight', {}, 1000 );
+                    .show( 'highlight', {}, 2000 );
 
                 item.prependTo(bucket)
 
@@ -505,9 +540,20 @@
 
     <div class="card with-bg">
         <div class="card-content">
-            <span class="card-title">Duygu Analizi <sup>Beta</sup></span>
+            <p class="grey-text text-darken-2">Duygu analizi modülü beta aşamasında olup kelime kapasitesi geliştirilmektedir.</p>
         </div>
-        <div class="collection collection-bordered">
+        <div class="card-tabs">
+            <ul class="tabs tabs-fixed-width">
+                <li class="tab">
+                    <a href="#sentiment" class="active">Duygu</a>
+                </li>
+                <li class="tab">
+                    <a href="#speed">Hız</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="collection collection-bordered" id="sentiment">
             <label class="collection-item waves-effect d-block">
                 <input name="sentiment" value="pos" type="radio" />
                 <span>Pozitif</span>
@@ -525,22 +571,8 @@
                 <span>Tümü</span>
             </label>
         </div>
-    </div>
 
-    <div class="card with-bg">
-        <div class="collection collection-bordered">
-            <label class="collection-item waves-effect d-block">
-                <input name="sound_alert" value="on" type="checkbox" />
-                <span>Uyarı Sesleri</span>
-            </label>
-        </div>
-    </div>
-
-    <div class="card with-bg">
-        <div class="card-content">
-            <span class="card-title">Akış Hızı</span>
-        </div>
-        <div class="collection collection-bordered">
+        <div class="collection collection-bordered" id="speed">
             <label class="collection-item waves-effect d-block">
                 <input name="speed" value="100" type="radio" />
                 <span>Hızlı</span>
