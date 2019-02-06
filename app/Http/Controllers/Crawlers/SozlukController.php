@@ -285,7 +285,7 @@ class SozlukController extends Controller
                 $request->selector_title,
                 $request->selector_entry,
                 $request->selector_author,
-                $crawler->proxy
+                $request->proxy
             );
 
             $data['items'][] = $item;
