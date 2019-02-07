@@ -128,7 +128,6 @@
 		<p>Yeni Mah. Eti Cad. 78/B Polatlı/ANKARA</p>
 		<p>+90 850 302 1630</p>
 		<p>bilgi@veri.zone</p>
-		<p>Alper Mutlu TOKSÖZ</p>
 	</section>
 
     <script src="{{ asset('js/jquery.min.js?v='.config('system.version')) }}"></script>
