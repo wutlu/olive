@@ -42,7 +42,7 @@ class RealTimeController extends Controller
         ]);
 
         ### [ gerçek zamanlı son bir kaç dakika değeri ] ###
-        $this->minute = Carbon::now()->subMinutes(2)->format('Y-m-d H:i');
+        $this->minute = Carbon::now()->subMinutes(20000000)->format('Y-m-d H:i');
         ### [ gerçek zamanlı sorgu yapılacak kolon ] ###
         $this->range_column = 'created_at';
     }
@@ -83,9 +83,11 @@ class RealTimeController extends Controller
                 {
                     foreach (explode(PHP_EOL, $group->keywords) as $k)
                     {
-                        $keywords[] = $k;
+                        $line = str_replace(' ', ' AND ', $k);
+                        $line = str_replace(' AND AND AND ', ' AND ', $line);
+                        $line = str_replace(' AND OR AND ', ' OR ', $line);
 
-                        $words_raw = str_replace([ ' OR ', ' AND ', ')', '(' ], ' ', $k);
+                        $words_raw = str_replace([ ' OR ', ' AND ', ')', '(', '"', '\'' ], ' ', $k);
                         $words_raw = explode(' ', $words_raw);
 
                         foreach ($words_raw as $w)
@@ -95,6 +97,8 @@ class RealTimeController extends Controller
                                 $words[] = $w;
                             }
                         }
+
+                        $keywords[] = '('.$line.')';
                     }
                 }
 
