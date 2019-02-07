@@ -869,7 +869,7 @@
         <div id="tab-4" class="grey lighten-4">
             <div class="collection">
                 @foreach ($user->organisation->invoices as $invoice)
-                    <a href="{{ route('organisation.invoice', $invoice->invoice_id) }}" class="collection-item d-flex waves-effect {{ $invoice->paid_at ? 'grey-text' : 'red-text' }}">
+                    <a target="_blank" href="{{ route('organisation.invoice', $invoice->invoice_id) }}" class="collection-item d-flex waves-effect {{ $invoice->paid_at ? 'grey-text' : 'red-text' }}">
                         <i class="material-icons align-self-center">history</i>
                         <span class="align-self-center">
                             <p>{{ $invoice->plan()->name }} ({{ $invoice->plan()->properties->capacity->value }} kullanıcı)</p>

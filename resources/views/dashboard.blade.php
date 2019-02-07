@@ -110,7 +110,7 @@
             </div>
         </div>
 
-        <div class="col xl4 l5 s12">
+        <div class="col s12 xl5">
             @if (@auth()->user()->organisation_id)
                 @if (!auth()->user()->intro('search.module'))
                     <div class="tap-target red white-text" data-target="search-trigger">
@@ -190,7 +190,7 @@
                 @endif
             @endif
         </div>
-        <div class="col xl8 l7 s12">
+        <div class="col s12 xl7">
             @push('local.scripts')
                 function __activities(__, obj)
                 {

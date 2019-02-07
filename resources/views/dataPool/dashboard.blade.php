@@ -9,7 +9,7 @@
 ])
 
 @section('content')
-    <div class="card with-bg">
+    <div class="card card-unstyled">
         <div class="card-content">
             <span class="card-title">Veri Havuzu</span>
         </div>

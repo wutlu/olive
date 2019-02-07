@@ -10,11 +10,11 @@
     #weekly,
     #hourly {
         line-height: 1px;
+        height: 100px;
     }
 
     #weekly canvas,
     #hourly canvas {
-        height: 100px;
         width: 100%;
     }
 @endpush

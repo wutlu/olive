@@ -24,7 +24,7 @@
                     var item = item_model.clone();
                         item.removeClass('model hide').addClass('_tmp').attr('data-id', 'list-item-' + o.id)
 
-                        item.html(o.url)
+                        item.html(o._index)
 
                         item.appendTo(ul)
                 })
@@ -36,8 +36,8 @@
 @endpush
 
 @section('content')
-    <div class="card">
-        <div class="card-content grey lighten-5">
+    <div class="card card-unstyled">
+        <div class="card-content">
             <div class="input-field">
                 <input
                     id="string"
@@ -48,9 +48,9 @@
                 <label for="string">Ara</label>
                 <span class="d-flex">
                     <a href="#" class="align-self-center" data-trigger="info" style="margin: 0 .4rem 0 0;">
-                        <i class="material-icons">info_outline</i>
+                        <i class="material-icons grey-text">info_outline</i>
                     </a>
-                    <span class="align-self-center">Aramak istediğiniz kelimeyi veya kriteri girin.</span>
+                    <span class="align-self-center grey-text">Aramak istediğiniz kelimeyi veya kriteri girin.</span>
                 </span>
                 <span class="helper-text"></span>
             </div>
@@ -59,11 +59,11 @@
             id="search_archive"
             data-href="{{ route('search.request') }}"
             data-skip="0"
-            data-take="10"
+            data-take="100"
             data-more-button="#search_archive-more_button"
             data-callback="__search_archive"
             data-method="post"
-            data-include="start_date,end_date,sentiment,full_match,modules,string"
+            data-include="start_date,end_date,sentiment,modules,string"
             data-nothing>
             <li class="collection-item nothing hide">
                 @component('components.nothing')
@@ -150,11 +150,6 @@
             <span class="card-title">Kaynak</span>
         </div>
         <div class="collection collection-bordered">
-            <label class="collection-item waves-effect d-block">
-                <input name="full_match" value="on" type="checkbox" />
-                <span>Kelimesi Kelimesine</span>
-            </label>
-            <div class="divider"></div>
             @foreach (config('system.modules') as $key => $module)
                 <label class="collection-item waves-effect d-block">
                     <input name="modules" checked value="{{ $key }}" type="checkbox" />

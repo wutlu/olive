@@ -37,6 +37,7 @@ class SearchController extends Controller
     {
         $data = [];
         $words = [];
+        $types = [];
 
         $words_raw = str_replace([ ' OR ', ' AND ', ')', '(' ], ' ', $request->string);
         $words_raw = explode(' ', $words_raw);
@@ -51,107 +52,53 @@ class SearchController extends Controller
 
         $modules = array_flip($request->modules);
 
-        $range = [
-            'created_at' => [
-                'format' => 'YYYY-MM-dd',
-                'gte' => $request->start_date,
-                'lte' => $request->end_date
-            ]
+        $q = [
+            'from' => $request->skip,
+            'size' => $request->take,
+            'query' => [
+                'bool' => [
+                    'filter' => [
+                        [
+                            'range' => [
+                                'created_at' => [
+                                    'format' => 'YYYY-MM-dd',
+                                    'gte' => $request->start_date,
+                                    'lte' => $request->end_date
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'sort' => [ 'created_at' => 'DESC' ],
+            '_source' => [ 'user.name', 'user.screen_name', 'text', 'created_at' ]
         ];
+
+        if ($request->sentiment != 'all')
+        {
+            $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
+        }
 
         ### [ twitter modülü ] ###
         if (isset($modules['twitter']))
         {
-            $q = [
-                'from' => $request->skip,
-                'size' => $request->take,
-                'query' => [
-                    'bool' => [
-                        'must' => [ [ 'query_string' => [ 'default_field' => 'text', 'query' => $request->string ] ] ],
-                        'filter' => [
-                            [ 'range' => $range ]
-                        ]
-                    ]
-                ],
-                'sort' => [ 'created_at' => 'DESC' ],
-                '_source' => [ 'user.name', 'user.screen_name', 'text', 'created_at' ]
+            $q['query']['bool']['should'][] = [
+                [ 'query_string' => [ 'default_field' => 'text', 'query' => $request->string ] ]
             ];
-
-            if ($request->sentiment != 'all')
-            {
-                $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
-            }
-
-            $query = @Document::list([ 'twitter', 'tweets', '*' ], 'tweet', $q)->data['hits']['hits'];
-
-            if ($query)
-            {
-                foreach ($query as $object)
-                {
-                    $data[] = [
-                        'uuid' => md5($object['_id'].'.'.$object['_index']),
-                        '_id' => $object['_id'],
-                        '_type' => $object['_type'],
-                        '_index' => $object['_index'],
-                        'module' => 'twitter',
-                        'user' => [
-                            'name' => $object['_source']['user']['name'],
-                            'screen_name' => $object['_source']['user']['screen_name']
-                        ],
-                        'text' => $object['_source']['text'],
-                        'created_at' => date('d.m.Y H:i:s', strtotime($object['_source']['created_at']))
-                    ];
-                }
-            }
+            $types[] = 'tweet';
         }
 
         ### [ haber modülü ] ###
         if (isset($modules['news']))
         {
-            $q = [
-                'from' => $request->skip,
-                'size' => $request->take,
-                'query' => [
-                    'bool' => [
-                        'filter' => [
-                            [ 'range' => $range ]
-                        ],
-                        'must' => [
-                            [ 'match' => [ 'status' => 'ok' ] ],
-                            [ 'query_string' => [ 'fields' => [ 'description', 'title' ], 'query' => $request->string ] ]
-                        ]
-                    ]
-                ],
-                'sort' => [ 'created_at' => 'DESC' ],
-                '_source' => [ 'url', 'title', 'description', 'created_at' ]
+            $q['query']['bool']['should'][] = [
+                [ 'match' => [ 'status' => 'ok' ] ],
+                [ 'query_string' => [ 'fields' => [ 'description', 'title' ], 'query' => $request->string ] ]
             ];
-
-            if ($request->sentiment != 'all')
-            {
-                $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
-            }
-
-            $query = @Document::list([ 'media', '*' ], 'article', $q)->data['hits']['hits'];
-
-            if ($query)
-            {
-                foreach ($query as $object)
-                {
-                    $data[] = [
-                        'uuid' => md5($object['_id'].'.'.$object['_index']),
-                        '_id' => $object['_id'],
-                        '_type' => $object['_type'],
-                        '_index' => $object['_index'],
-                        'module' => 'haber',
-                        'url' => $object['_source']['url'],
-                        'title' => $object['_source']['title'],
-                        'text' => $object['_source']['description'],
-                        'created_at' => date('d.m.Y H:i:s', strtotime($object['_source']['created_at']))
-                    ];
-                }
-            }
+            $types[] = 'article';
         }
 
+/*
         ### [ sözlük modülü ] ###
         if (isset($modules['sozluk']))
         {
@@ -354,11 +301,11 @@ class SearchController extends Controller
                 }
             }
         }
+*/
+        $query = @Document::list([ '*' ], implode(',', $types), $q);
 
-        return [
-            'status' => 'ok',
-            'hits' => array_reverse($data),
-            'words' => $words
-        ];
+        dd($query);
+
+        return '';
     }
 }

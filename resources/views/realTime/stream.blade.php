@@ -641,12 +641,12 @@
                                                 'data-trigger': 'info',
                                                 'css': { 'margin': '0 .4rem 0 0' },
                                                 'html': $('<i />', {
-                                                    'class': 'material-icons',
+                                                    'class': 'material-icons grey-text',
                                                     'html': 'info_outline'
                                                 })
                                             }),
                                             $('<span />', {
-                                                'class': 'align-self-center',
+                                                'class': 'align-self-center grey-text',
                                                 'html': 'Aramak istediğiniz kelimeyi veya kriteri girin.'
                                             })
                                         ]
