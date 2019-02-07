@@ -44,7 +44,7 @@
                             @forelse ($media as $key => $m)
                                 <li class="collection-item">
                                     <a href="{{ $m->site }}" target="_blank">
-                                        {{ ($key+1).' - '.$m->name }}
+                                        {{ ($key+1).' - '.$m->name }} (site_id: {{ $m->id }})
                                         
                                         @if ($m->status)
                                             <span class="badge green white-text">Aktif</span>
@@ -61,8 +61,8 @@
                             @forelse ($shopping as $key => $s)
                                 <li class="collection-item">
                                     <a href="{{ $s->site }}" target="_blank">
-                                        {{ ($key+1).' - '.$s->name }}
-                                        
+                                        {{ ($key+1).' - '.$s->name }} (site_id: {{ $s->id }})
+
                                         @if ($s->status)
                                             <span class="badge green white-text">Aktif</span>
                                         @else
@@ -111,8 +111,8 @@
                             @forelse ($sozluk as $s)
                             <li class="collection-item">
                                     <a href="{{ $s->site }}" target="_blank">
-                                        {{ $s->name }}
-                                        
+                                        {{ $s->name }} (site_id: {{ $s->id }})
+
                                         @if ($s->status)
                                             <span class="badge green white-text">Aktif</span>
                                         @else

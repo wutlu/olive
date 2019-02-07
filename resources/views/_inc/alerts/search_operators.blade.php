@@ -9,10 +9,16 @@
                     }),
                     $('<li />', {
                         'html': '- <span class="cyan-text">(millet meclisi) OR (büyük patlama)</span> operatörü ile, içerisinde tam manasıyla "millet meclisi" veya "büyük patlama" geçen içerikler aranır.'
+                    }),
+                    $('<li />', {
+                        'html': '- Twitter için, <span class="cyan-text">user.screen_name:olivedotzone</span> veya <span class="cyan-text">user.id:606582774</span> operatörlerini kullanabilirsiniz.'
+                    }),
+                    $('<li />', {
+                        'html': '- Standart kaynaklar için, <span class="cyan-text">site_id:12</span> operatörünü kullanabilirsiniz. Kaynak numaralarına <a class="orange-text" href="{{ route('sources') }}">Kaynaklar</a> sayfasınan erişebilirsiniz.'
                     })
                 ]
             }),
-            'size': 'modal-small',
+            'size': 'modal-large',
             'options': {}
         });
     })

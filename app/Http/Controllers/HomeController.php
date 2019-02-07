@@ -76,9 +76,9 @@ class HomeController extends Controller
      */
     public static function sources()
     {
-        $media = MediaCrawler::select('name', 'status', 'site')->where('test', true)->orderBy('id', 'DESC')->get();
-        $shopping = ShoppingCrawler::select('name', 'status', 'site')->where('test', true)->orderBy('id', 'DESC')->get();
-        $sozluk = SozlukCrawler::select('name', 'status', 'site')->where('test', true)->orderBy('id', 'DESC')->get();
+        $media = MediaCrawler::select('id', 'name', 'status', 'site')->where('test', true)->orderBy('id', 'DESC')->get();
+        $shopping = ShoppingCrawler::select('id', 'name', 'status', 'site')->where('test', true)->orderBy('id', 'DESC')->get();
+        $sozluk = SozlukCrawler::select('id', 'name', 'status', 'site')->where('test', true)->orderBy('id', 'DESC')->get();
 
         $options_query = Option::whereIn('key', [
             'youtube.status',
