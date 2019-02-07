@@ -9,6 +9,11 @@
 ])
 
 @push('local.styles')
+    #keyword-groups > .collection-item {
+        padding-right: 24px;
+        padding-left: 24px;
+    }
+
     .time-line > .collection {
         max-height: 2048px;
         overflow: hidden;
@@ -16,9 +21,10 @@
 
         border-width: 0 0 0 1rem;
         border-style: solid;
-        border-color: transparent;
+        border-color: #009688;
     }
-    .time-line > .collection:hover {
+
+    .time-line > .collection.active {
         border-color: #f44336;
     }
 
@@ -60,10 +66,6 @@
         background-repeat: no-repeat;
         background-position: center center;
         background-size: 24px 24px;
-
-        position: absolute;
-        top: .5rem;
-        right: .5rem;
     }
     a[data-trigger=pin].on {
         background-image: url('../img/icons/unpin.png');
@@ -77,10 +79,24 @@
         background-repeat: no-repeat;
         background-position: center center;
         background-size: 24px 24px;
+    }
 
+    [data-name=sentiment]:before {
+        font-size: 128px;
         position: absolute;
-        top: .5rem;
-        right: 48px;
+        z-index: 0;
+        top: 0;
+        left: -72px;
+        opacity: .2;
+    }
+    [data-name=sentiment].pos:before {
+        content: 'sentiment_satisfied';
+    }
+    [data-name=sentiment].neg:before {
+        content: 'sentiment_dissatisfied';
+    }
+    [data-name=sentiment].neu:before {
+        content: 'sentiment_neutral';
     }
 @endpush
 
@@ -89,30 +105,9 @@
 @endpush
 
 @push('external.include.footer')
+    <script src="{{ asset('js/jquery.ui.min.js?v='.config('system.version')) }}"></script>
     <script src="{{ asset('js/owl.carousel.min.js?v='.config('system.version')) }}"></script>
-@endpush
-
-@push('local.scripts')
-    $('.owl-carousel').owlCarousel({
-        responsiveClass: true,
-        responsive: {
-            0: {
-                items: 1
-            },
-            600: {
-                items: 2
-            },
-            1440: {
-                items: 3
-            }
-        },
-        autoWidth: true,
-        dotClass: 'hide'
-    })
-
-    $(document).ready(function() {
-        $('.tabs').tabs()
-    })
+    <script src="{{ asset('js/jquery.mark.min.js?v='.config('system.version')) }}" charset="UTF-8"></script>
 @endpush
 
 @section('wildcard')
@@ -131,11 +126,73 @@
                     </label>
                 </span>
             </div>
+            <div class="wild-content d-flex grey lighten-4" data-wild="speed">
+                <span class="wild-body d-flex">
+                    <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center mr-1" data-class=".wild-content" data-class-remove="active">
+                        <i class="material-icons">close</i>
+                    </a>
+                    <label class="align-self-center mr-1">
+                        <input name="speed" type="radio" value="1000" />
+                        <span>1</span>
+                    </label>
+                    <label class="align-self-center mr-1">
+                        <input name="speed" type="radio" value="800" />
+                        <span>2</span>
+                    </label>
+                    <label class="align-self-center mr-1">
+                        <input name="speed" type="radio" value="600" checked />
+                        <span>3</span>
+                    </label>
+                    <label class="align-self-center mr-1">
+                        <input name="speed" type="radio" value="400" />
+                        <span>4</span>
+                    </label>
+                    <label class="align-self-center mr-1">
+                        <input name="speed" type="radio" value="100" />
+                        <span>5</span>
+                    </label>
+                </span>
+            </div>
+            <div class="wild-content d-flex grey lighten-4" data-wild="sentiment">
+                <span class="wild-body d-flex">
+                    <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center mr-1" data-class=".wild-content" data-class-remove="active">
+                        <i class="material-icons">close</i>
+                    </a>
+                </span>
+                <label class="align-self-center mr-1" data-tooltip="Pozitif">
+                    <input type="radio" name="sentiment" value="pos" />
+                    <span class="material-icons grey-text text-darken-2">sentiment_satisfied</span>
+                </label>
+                <label class="align-self-center mr-1" data-tooltip="Negatif">
+                    <input type="radio" name="sentiment" value="neg" />
+                    <span class="material-icons grey-text text-darken-2">sentiment_dissatisfied</span>
+                </label>
+                <label class="align-self-center mr-1" data-tooltip="Nötr">
+                    <input type="radio" name="sentiment" value="neu" />
+                    <span class="material-icons grey-text text-darken-2">sentiment_neutral</span>
+                </label>
+                <label class="align-self-center mr-1" data-tooltip="Tümü">
+                    <input type="radio" name="sentiment" value="all" checked="" />
+                    <span class="material-icons grey-text text-darken-2">fullscreen</span>
+                </label>
+            </div>
             <ul class="wild-menu">
                 <li>
                     <a class="d-flex" href="#" data-class="[data-wild=volume]" data-class-add="active">
                         <i class="material-icons mr-1">volume_up</i>
                         <span class="align-self-center">Sesler</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="d-flex" href="#" data-class="[data-wild=speed]" data-class-add="active">
+                        <i class="material-icons mr-1">fast_forward</i>
+                        <span class="align-self-center">Hız</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="d-flex" href="#" data-class="[data-wild=sentiment]" data-class-add="active">
+                        <i class="material-icons mr-1">face</i>
+                        <span class="align-self-center">Duygu</span>
                     </a>
                 </li>
             </ul>
@@ -167,20 +224,23 @@
         </div>
         <ul class="collection">
             <li class="collection-item hide model grey-text lined">
+                <div>
+                    <a href="#" class="btn-flat btn-floating waves-effect align-self-center" data-button="view"></a>
+                    <a
+                        href="#"
+                        class="btn-flat btn-floating waves-effect json align-self-center"
+                        data-href="{{ route('pin', 'add') }}"
+                        data-method="post"
+                        data-include="group_id"
+                        data-callback="__pin"
+                        data-trigger="pin"></a>
+                </div>
                 <time data-name="created-at"></time>
                 <a href="#" data-name="url" class="indigo-text d-table" target="_blank"></a>
                 <p data-name="author" class="red-text mb-0"></p>
-                <p data-name="title" class="black-text mb-0"></p>
-                <p data-name="text" class="mb-0"></p>
-                <a href="#" class="btn-flat btn-floating waves-effect" data-button="view"></a>
-                <a
-                    href="#"
-                    class="btn-flat btn-floating waves-effect json"
-                    data-href="{{ route('pin', 'add') }}"
-                    data-method="post"
-                    data-include="group_id"
-                    data-callback="__pin"
-                    data-trigger="pin"></a>
+                <p data-name="title" class="mb-0"></p>
+                <p data-name="text" class="black-text mb-0"></p>
+                <span class="material-icons" data-name="sentiment"></span>
             </li>
             <li class="collection-item">
                 <p class="d-flex">
@@ -196,12 +256,24 @@
     </div>
 @endsection
 
-@push('external.include.footer')
-    <script src="{{ asset('js/jquery.mark.min.js?v='.config('system.version')) }}" charset="UTF-8"></script>
-    <script src="{{ asset('js/jquery.ui.min.js?v='.config('system.version')) }}"></script>
-@endpush
-
 @push('local.scripts')
+    $('.owl-carousel').owlCarousel({
+        responsiveClass: true,
+        responsive: {
+            0: {
+                items: 1
+            },
+            600: {
+                items: 2
+            },
+            1440: {
+                items: 3
+            }
+        },
+        autoWidth: true,
+        dotClass: 'hide'
+    })
+
     var group_select = $('select[name=group_id]');
         group_select.formSelect()
 
@@ -347,7 +419,11 @@
                 item.attr('id', obj.uuid)
                     .hide()
                     .removeClass('model hide')
-                    .show( 'highlight', {}, 2000 );
+                    .show( 'highlight', {
+                        'color': '#ccff90'
+                    }, 1000 );
+
+                item.find('[data-name=sentiment]').addClass(obj.sentiment.neu >= 0.34 ? 'neu' : obj.sentiment.pos > 0.34 ? 'pos' : 'neg')
 
                 item.prependTo(bucket)
 
@@ -384,6 +460,8 @@
 
     $(document).on('mouseenter', '.time-line > .collection', function() {
         time = 60000;
+
+        $('.time-line > .collection').addClass('active')
     }).on('mouseleave', '.time-line', speed_change)
 
     $('input[name=speed]').change(speed_change)
@@ -397,6 +475,8 @@
         liveTimer = window.setTimeout(function() {
             livePush()
         }, time)
+
+        $('.time-line > .collection').removeClass('active')
     }
 
     var streamTimer;
@@ -463,140 +543,7 @@
             window.clearTimeout(streamTimer)
         }
     })
-@endpush
 
-@section('dock')
-    <div class="card with-bg">
-        <div class="card-content">
-            <span class="card-title">Kelime Grupları</span>
-        </div>
-        <div class="card-image">
-            <a href="#" class="btn-floating halfway-fab waves-effect white" data-trigger="create-keyword-group">
-                <i class="material-icons grey-text text-darken-2">add</i>
-            </a>
-        </div>
-        <div class="card-content">
-            <span data-name="keyword-group-count">0</span> / <span data-name="keyword-group-limit">0</span>
-        </div>
-        <ul class="collection load" 
-             id="keyword-groups"
-             data-href="{{ route('realtime.keyword.groups') }}"
-             data-callback="__keyword_groups"
-             data-method="post"
-             data-nothing>
-            <li class="collection-item nothing hide grey-text">Henüz kelime grubu oluşturmadınız.</li>
-            <li class="collection-item model hide justify-content-between">
-                <span data-name="name" class="align-self-center mr-auto"></span>
-                <div class="switch align-self-center">
-                    <label>
-                        <input type="checkbox" name="keyword_group" data-multiple="true" />
-                        <span class="lever"></span>
-                    </label>
-                </div>
-                <a
-                    class="btn-floating btn-small waves-effect json align-self-center white"
-                    data-href="{{ route('realtime.keyword.group') }}"
-                    data-method="post"
-                    data-callback="__get_keyword_group"
-                    id="menu"
-                    href="#">
-                    <i class="material-icons grey-text text-darken-2">create</i>
-                </a>
-            </li>
-        </ul>
-    </div>
-
-    @component('components.loader')
-        @slot('color', 'cyan')
-        @slot('id', 'keyword-group-loader')
-    @endcomponent
-
-    <div class="card with-bg">
-        <div class="card-content">
-            <span class="card-title">Pin Grupları</span>
-        </div>
-        <div class="collection collection-bordered">
-            @forelse ($pin_groups as $group)
-                <label class="collection-item waves-effect d-block" style="padding: 12px 24px;">
-                    <input
-                        autocomplete="off"
-                        name="group_id"
-                        id="group_id-{{ $group->id }}"
-                        value="{{ $group->id }}"
-                        class="json"
-                        data-href="{{ route('pin.group') }}"
-                        data-method="post"
-                        data-delay="1"
-                        type="radio"
-                        data-callback="__pin_group" />
-                    <span>{{ str_limit($group->name, 10) }}</span>
-                </label>
-            @empty
-                <div class="collection-item grey-text">Henüz pin grubu oluşturmadınız.</div>
-            @endforelse
-            <a class="collection-item waves-effect d-block" href="{{ route('pin.groups') }}">Tümü</a>
-        </div>
-    </div>
-
-    <div class="card with-bg">
-        <div class="card-content">
-            <p class="grey-text text-darken-2">Duygu analizi modülü beta aşamasında olup kelime kapasitesi geliştirilmektedir.</p>
-        </div>
-        <div class="card-tabs">
-            <ul class="tabs tabs-fixed-width">
-                <li class="tab">
-                    <a href="#sentiment" class="active">Duygu</a>
-                </li>
-                <li class="tab">
-                    <a href="#speed">Hız</a>
-                </li>
-            </ul>
-        </div>
-
-        <div class="collection collection-bordered" id="sentiment">
-            <label class="collection-item waves-effect d-block">
-                <input name="sentiment" value="pos" type="radio" />
-                <span>Pozitif</span>
-            </label>
-            <label class="collection-item waves-effect d-block">
-                <input name="sentiment" value="neg" type="radio" />
-                <span>Negatif</span>
-            </label>
-            <label class="collection-item waves-effect d-block">
-                <input name="sentiment" value="neu" type="radio" />
-                <span>Nötr</span>
-            </label>
-            <label class="collection-item waves-effect d-block">
-                <input checked name="sentiment" value="all" type="radio" />
-                <span>Tümü</span>
-            </label>
-        </div>
-
-        <div class="collection collection-bordered" id="speed">
-            <label class="collection-item waves-effect d-block">
-                <input name="speed" value="100" type="radio" />
-                <span>Hızlı</span>
-            </label>
-            <label class="collection-item waves-effect d-block">
-                <input name="speed" value="400" type="radio" />
-                <span>Normal</span>
-            </label>
-            <label class="collection-item waves-effect d-block">
-                <input name="speed" value="600" type="radio" checked />
-                <span>Yavaş</span>
-            </label>
-        </div>
-    </div>
-@endsection
-
-@push('local.styles')
-    #keyword-groups > .collection-item {
-        padding-right: 24px;
-        padding-left: 24px;
-    }
-@endpush
-
-@push('local.scripts')
     function __pin_group(__, obj)
     {
         if (obj.status == 'ok')
@@ -880,5 +827,79 @@
         }
     }
 @endpush
+
+@section('dock')
+    <div class="card with-bg">
+        <div class="card-content">
+            <span class="card-title">Kelime Grupları</span>
+        </div>
+        <div class="card-image">
+            <a href="#" class="btn-floating halfway-fab waves-effect white" data-trigger="create-keyword-group">
+                <i class="material-icons grey-text text-darken-2">add</i>
+            </a>
+        </div>
+        <div class="card-content">
+            <span data-name="keyword-group-count">0</span> / <span data-name="keyword-group-limit">0</span>
+        </div>
+        <ul class="collection load" 
+             id="keyword-groups"
+             data-href="{{ route('realtime.keyword.groups') }}"
+             data-callback="__keyword_groups"
+             data-method="post"
+             data-nothing>
+            <li class="collection-item nothing hide grey-text">Henüz kelime grubu oluşturmadınız.</li>
+            <li class="collection-item model hide justify-content-between">
+                <span data-name="name" class="align-self-center mr-auto"></span>
+                <div class="switch align-self-center">
+                    <label>
+                        <input type="checkbox" name="keyword_group" data-multiple="true" />
+                        <span class="lever"></span>
+                    </label>
+                </div>
+                <a
+                    class="btn-floating btn-small waves-effect json align-self-center white"
+                    data-href="{{ route('realtime.keyword.group') }}"
+                    data-method="post"
+                    data-callback="__get_keyword_group"
+                    id="menu"
+                    href="#">
+                    <i class="material-icons grey-text text-darken-2">create</i>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    @component('components.loader')
+        @slot('color', 'cyan')
+        @slot('id', 'keyword-group-loader')
+    @endcomponent
+
+    <div class="card with-bg">
+        <div class="card-content">
+            <span class="card-title">Pin Grupları</span>
+        </div>
+        <div class="collection collection-bordered">
+            @forelse ($pin_groups as $group)
+                <label class="collection-item waves-effect d-block" style="padding: 12px 24px;">
+                    <input
+                        autocomplete="off"
+                        name="group_id"
+                        id="group_id-{{ $group->id }}"
+                        value="{{ $group->id }}"
+                        class="json"
+                        data-href="{{ route('pin.group') }}"
+                        data-method="post"
+                        data-delay="1"
+                        type="radio"
+                        data-callback="__pin_group" />
+                    <span>{{ str_limit($group->name, 10) }}</span>
+                </label>
+            @empty
+                <div class="collection-item grey-text">Henüz pin grubu oluşturmadınız.</div>
+            @endforelse
+            <a class="collection-item waves-effect d-block" href="{{ route('pin.groups') }}">Tümü</a>
+        </div>
+    </div>
+@endsection
 
 @include('_inc.alerts.search_operators')

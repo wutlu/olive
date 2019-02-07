@@ -116,7 +116,7 @@ class RealTimeController extends Controller
                                 ]
                             ],
                             'sort' => [ 'created_at' => 'DESC' ],
-                            '_source' => [ 'user.name', 'user.screen_name', 'text', 'created_at' ]
+                            '_source' => [ 'user.name', 'user.screen_name', 'text', 'created_at', 'sentiment' ]
                         ];
 
                         if ($request->sentiment != 'all')
@@ -135,6 +135,7 @@ class RealTimeController extends Controller
                                     '_id' => $object['_id'],
                                     '_type' => $object['_type'],
                                     '_index' => $object['_index'],
+                                    'sentiment' => $object['_source']['sentiment'],
                                     'module' => 'twitter',
                                     'user' => [
                                         'name' => $object['_source']['user']['name'],
@@ -162,7 +163,7 @@ class RealTimeController extends Controller
                             ]
                         ],
                         'sort' => [ 'created_at' => 'DESC' ],
-                        '_source' => [ 'url', 'title', 'description', 'created_at' ]
+                        '_source' => [ 'url', 'title', 'description', 'created_at', 'sentiment' ]
                     ];
 
                     if (count($keywords))
@@ -189,6 +190,7 @@ class RealTimeController extends Controller
                                 '_type' => $object['_type'],
                                 '_index' => $object['_index'],
                                 'module' => 'haber',
+                                'sentiment' => $object['_source']['sentiment'],
                                 'url' => $object['_source']['url'],
                                 'title' => $object['_source']['title'],
                                 'text' => $object['_source']['description'],
@@ -211,7 +213,7 @@ class RealTimeController extends Controller
                             ]
                         ],
                         'sort' => [ 'created_at' => 'DESC' ],
-                        '_source' => [ 'url', 'title', 'entry', 'author', 'created_at' ]
+                        '_source' => [ 'url', 'title', 'entry', 'author', 'created_at', 'sentiment' ]
                     ];
 
                     if (count($keywords))
@@ -238,6 +240,7 @@ class RealTimeController extends Controller
                                 '_type' => $object['_type'],
                                 '_index' => $object['_index'],
                                 'module' => 'sozluk',
+                                'sentiment' => $object['_source']['sentiment'],
                                 'url' => $object['_source']['url'],
                                 'title' => $object['_source']['title'],
                                 'text' => $object['_source']['entry'],
@@ -262,7 +265,7 @@ class RealTimeController extends Controller
                             ]
                         ],
                         'sort' => [ 'created_at' => 'DESC' ],
-                        '_source' => [ 'url', 'title', 'description', 'created_at' ]
+                        '_source' => [ 'url', 'title', 'description', 'created_at', 'sentiment' ]
                     ];
 
                     if (count($keywords))
@@ -289,6 +292,7 @@ class RealTimeController extends Controller
                                 '_type' => $object['_type'],
                                 '_index' => $object['_index'],
                                 'module' => 'alisveris',
+                                'sentiment' => $object['_source']['sentiment'],
                                 'url' => $object['_source']['url'],
                                 'title' => $object['_source']['title'],
                                 'created_at' => date('d.m.Y H:i:s', strtotime($object['_source']['created_at']))
@@ -317,7 +321,7 @@ class RealTimeController extends Controller
                             ]
                         ],
                         'sort' => [ 'created_at' => 'DESC' ],
-                        '_source' => [ 'title', 'description', 'created_at', 'channel.title', 'channel.id' ]
+                        '_source' => [ 'title', 'description', 'created_at', 'channel.title', 'channel.id', 'sentiment' ]
                     ];
 
                     if (count($keywords))
@@ -344,6 +348,7 @@ class RealTimeController extends Controller
                                 '_type' => $object['_type'],
                                 '_index' => $object['_index'],
                                 'module' => 'youtube-video',
+                                'sentiment' => $object['_source']['sentiment'],
                                 'title' => $object['_source']['title'],
                                 'text' => @$object['_source']['description'],
                                 'channel' => [
@@ -368,13 +373,7 @@ class RealTimeController extends Controller
                             ]
                         ],
                         'sort' => [ 'created_at' => 'DESC' ],
-                        '_source' => [
-                            'video_id',
-                            'text',
-                            'channel.id',
-                            'channel.title',
-                            'created_at'
-                        ]
+                        '_source' => [ 'video_id', 'text', 'channel.id', 'channel.title', 'created_at', 'sentiment' ]
                     ];
 
                     if (count($keywords))
@@ -401,6 +400,7 @@ class RealTimeController extends Controller
                                 '_type' => $object['_type'],
                                 '_index' => $object['_index'],
                                 'module' => 'youtube-comment',
+                                'sentiment' => $object['_source']['sentiment'],
                                 'video_id' => $object['_source']['video_id'],
                                 'channel' => [
                                     'id' => $object['_source']['channel']['id'],
