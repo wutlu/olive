@@ -27,7 +27,7 @@ class RegisterRequest extends FormRequest
             'name'               => 'required|string|max:48|min:4',
             'email'              => 'required|email|max:64|unique:users,email',
             'password'           => 'required|string|max:32|min:4',
-            'reference_code'     => 'nullable|string|exists:users,reference_code',
+            'reference_code'     => 'required|string|exists:users,reference_code',
             'terms'              => 'accepted',
             'gRecaptchaResponse' => 'required|recaptcha'
         ];
