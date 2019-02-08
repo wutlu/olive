@@ -3,7 +3,7 @@
 return [
 	1 => [
 		'name' => 'Bireysel',
-		'price' => 490,
+		'price' => 590,
 		'buy' => true,
 		'class' => 'active',
 		'properties' => [
@@ -31,7 +31,7 @@ return [
 	],
 	2 => [
 		'name' => 'Standart',
-		'price' => 1960,
+		'price' => 2290,
 		'buy' => true,
 		'properties' => [
 			'capacity' => [
@@ -58,7 +58,7 @@ return [
 	],
 	3 => [
 		'name' => 'Kurumsal',
-		'price' => 4120,
+		'price' => 4190,
 		'buy' => true,
 		'properties' => [
 			'capacity' => [
