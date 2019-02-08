@@ -12,6 +12,7 @@ use App\Models\RealTime\KeywordGroup;
 use App\Http\Requests\RealTime\RealTimeRequest;
 
 use App\Elasticsearch\Document;
+use App\Utilities\Term;
 
 use Carbon\Carbon;
 
@@ -83,14 +84,9 @@ class RealTimeController extends Controller
                 {
                     foreach (explode(PHP_EOL, $group->keywords) as $k)
                     {
-                        $line = str_replace(' ', ' AND ', $k);
-                        $line = str_replace(' AND AND AND ', ' AND ', $line);
-                        $line = str_replace(' AND OR AND ', ' OR ', $line);
+                        $clean = Term::cleanSearchQuery($k);
 
-                        $words_raw = str_replace([ ' OR ', ' AND ', ')', '(', '"', '\'' ], ' ', $k);
-                        $words_raw = explode(' ', $words_raw);
-
-                        foreach ($words_raw as $w)
+                        foreach ($clean->words as $w)
                         {
                             if ($w)
                             {
@@ -98,7 +94,7 @@ class RealTimeController extends Controller
                             }
                         }
 
-                        $keywords[] = '('.$line.')';
+                        $keywords[] = '('.$clean->line.')';
                     }
                 }
 

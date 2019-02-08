@@ -134,16 +134,19 @@
                     @endpush
                 @endif
                 <div class="card">
-                    <a class="card-content card-content-image d-block waves-effect" href="{{ route('settings.organisation') }}">
-                        <span class="card-title">{{ $user->organisation->name }}</span>
-                        <p class="grey-text">{{ count($user->organisation->users) }}/{{ $user->organisation->capacity }} kullanıcı</p>
-                        @if ($user->id == $user->organisation->user_id)
-                            @if ($user->organisation->status)
-                            <p class="grey-text">{{ $user->organisation->days() }} gün kaldı</p>
-                            @else
-                            <p class="red-text">Pasif</p>
+                    <a class="card-content card-content-image d-flex justify-content-between waves-effect" href="{{ route('settings.organisation') }}">
+                        <span>
+                            <span class="card-title">{{ $user->organisation->name }}</span>
+                            <p class="grey-text">{{ count($user->organisation->users) }}/{{ $user->organisation->capacity }} kullanıcı</p>
+                            @if ($user->id == $user->organisation->user_id)
+                                @if ($user->organisation->status)
+                                    <p class="grey-text">{{ $user->organisation->days() }} gün kaldı</p>
+                                @else
+                                    <p class="red-text">Pasif</p>
+                                @endif
                             @endif
-                        @endif
+                        </span>
+                        <i class="material-icons">settings</i>
                     </a>
                     <ul class="collection">
                         @foreach ($user->organisation->users as $u)

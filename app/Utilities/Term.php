@@ -215,4 +215,24 @@ class Term
             'readable' => $readable.' '.@$sizes[$factor]
         ];
     }
+
+    /**
+     * Temiz bir arama sorgusu oluşturur.
+     *
+     * @return object
+     */
+    public static function cleanSearchQuery(string $text)
+    {
+        $line = str_replace(' ', ' AND ', $text);
+        $line = str_replace(' AND AND AND ', ' AND ', $line);
+        $line = str_replace(' AND OR AND ', ' OR ', $line);
+
+        $words_raw = str_replace([ ' OR ', ' AND ', ')', '(', '"', '\'' ], ' ', $text);
+        $words_raw = explode(' ', $words_raw);
+
+        return (object) [
+            'line' => $text,
+            'words' => $words_raw
+        ];
+    }
 }

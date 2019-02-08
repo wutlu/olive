@@ -1,32 +1,33 @@
-@extends('layouts.app', [
-    'sidenav_fixed_layout' => true,
-    'breadcrumb' => $root ? [
-        [
-            'text' => 'Admin'
+@extends('layouts.app', $root ? [
+        'sidenav_fixed_layout' => true,
+        'breadcrumb' =>  [
+            [
+                'text' => 'Admin'
+            ],
+            [
+                'text' => 'Kullanıcılar',
+                'link' => route('admin.user.list')
+            ],
+            [
+                'text' => $user->name,
+                'link' => route('admin.user', $user->id)
+            ],
+            [
+                'text' => '🐞 Partner Sistemi'
+            ]
         ],
-        [
-            'text' => 'Kullanıcılar',
-            'link' => route('admin.user.list')
-        ],
-        [
-            'text' => $user->name,
-            'link' => route('admin.user', $user->id)
-        ],
-        [
-            'text' => '🐞 Partner Sistemi'
-        ]
+        'dock' => true
     ]
     :
     [
-        [
-            'text' => 'Ayarlar'
-        ],
-        [
-            'text' => 'Partner Sistemi'
+        'sidenav_fixed_layout' => true,
+        'breadcrumb' =>  [
+            [
+                'text' => 'Partner Sistemi'
+            ]
         ]
-    ],
-    'dock' => true
-])
+    ]
+)
 
 @section('content')
     <div class="card">
@@ -279,9 +280,11 @@
     </div>
 @endsection
 
-@section('dock')
-    @include($root ? 'user.admin._menu' : 'settings._menu', [ 'active' => 'reference', 'id' => $user->id ])
-@endsection
+@if ($root)
+    @section('dock')
+        @include('user.admin._menu', [ 'id' => $user->id, 'active' => 'reference' ])
+    @endsection
+@endif
 
 @push('local.scripts')
     $('.tabs').tabs()

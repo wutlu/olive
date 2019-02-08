@@ -19,6 +19,7 @@
 
     <!-- master styles -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+
     <link rel="stylesheet" href="{{ asset('css/materialize.min.css?v='.config('system.version')) }}" />
     <link rel="stylesheet" href="{{ asset('css/theme.css?v='.config('system.version')) }}" />
 
@@ -730,6 +731,9 @@
                             </li>
                             <li>
                                 <a class="grey-text" href="{{ route('page.view', 'kullanim-kosullari') }}">Kullanım Koşulları</a>
+                            </li>
+                            <li>
+                                <a class="grey-text" href="{{ route('settings.reference') }}">Partner Girişi</a>
                             </li>
                         </ul>
                     </div>
