@@ -25,6 +25,8 @@ class AddCountToMediaCrawlersTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('media_crawlers', function (Blueprint $table) {
+            $table->dropColumn('count');
+        });
     }
 }

@@ -28,6 +28,9 @@ class AddReferenceToUsersTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('reference_code');
+            $table->dropColumn('reference_id');
+        });
     }
 }

@@ -426,11 +426,8 @@
                 <div class="parent-form">
                     <form autocomplete="off" id="calculate-form" method="post" action="{{ route('organisation.create.calculate.renew') }}" class="json" data-callback="__calculate">
                         <div class="card card-unstyled">
-                                <div class="card-content">
-                                    <p class="center-align">
-                                    {{ $plan->name }},
-                                    <span style="text-decoration: line-through;">{{ config('formal.currency') }} {{ $plan->price_old }}</span>
-                                </p>
+                            <div class="card-content">
+                                <p class="center-align">{{ $plan->name }}</p>
 
                                 <h3 class="center-align">
                                     {{ config('formal.currency') }}

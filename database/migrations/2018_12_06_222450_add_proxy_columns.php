@@ -33,6 +33,16 @@ class AddProxyColumns extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('sozluk_crawlers', function (Blueprint $table) {
+            $table->dropColumn('proxy');
+        });
+
+        Schema::table('shopping_crawlers', function (Blueprint $table) {
+            $table->dropColumn('proxy');
+        });
+
+        Schema::table('media_crawlers', function (Blueprint $table) {
+            $table->dropColumn('proxy');
+        });
     }
 }

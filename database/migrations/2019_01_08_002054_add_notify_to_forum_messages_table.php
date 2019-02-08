@@ -25,6 +25,8 @@ class AddNotifyToForumMessagesTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('forum_messages', function (Blueprint $table) {
+            $table->dropColumn('notify');
+        });
     }
 }

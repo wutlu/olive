@@ -627,7 +627,7 @@ class OrganisationController extends Controller
 
                     'billing_information_id' => $billing_information->id,
 
-                                      'plan' => json_encode($plan)
+                                   'plan_id' => $request->plan_id
                 ]);
 
                 $ok = true;
@@ -719,7 +719,7 @@ class OrganisationController extends Controller
     {
         $user = auth()->user();
 
-        $session['plan'] = json_decode($user->organisation->lastInvoice->plan);
+        $session['plan'] = $user->organisation->lastInvoice->plan();
 
         $session['unit_price'] = $session['plan']->price;
         $session['month'] = $request->month;
@@ -760,7 +760,7 @@ class OrganisationController extends Controller
     {
         $user = auth()->user();
 
-        $plan = json_decode($user->organisation->lastInvoice->plan);
+        $plan = $user->organisation->lastInvoice->plan();
 
         $billing_information = new BillingInformation;
         $billing_information->user_id = $user->id;
@@ -791,7 +791,7 @@ class OrganisationController extends Controller
 
                     'billing_information_id' => $billing_information->id,
 
-                                      'plan' => json_encode($plan)
+                                   'plan_id' => $user->organisation->lastInvoice->plan_id
                 ]);
 
                 if ($request->month >= 12)

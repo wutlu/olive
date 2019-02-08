@@ -24,85 +24,55 @@
         <span class="text">Plan Seçimi</span>
     </div>
 
-    <div class="card">
-        <div class="card-content">
-            Şu an başlangıç planı kullanmaktasınız.
-        </div>
-        <div class="card-tabs">
-            <ul class="tabs tabs-fixed-width">
+
+            @if (@$discountDay)
+                <p class="center-align grey-text text-darken-2">Hemen şimdi üye olun ve bugüne özel <span class="chip">{{ $discountDay->discount_rate }}%</span> indirim kuponuna anında sahip olun.</p>
+            @endif
+
+            <div class="plans">
                 @foreach (config('plans') as $key => $plan)
-                <li class="tab">
-                    <a href="#tab-{{ $key }}">{{ $plan['name'] }}</a>
-                </li>
-                @endforeach
-            </ul>
-        </div>
-        <div class="card-content">
-            @foreach (config('plans') as $key => $plan)
-            <div id="tab-{{ $key }}">
-                @if ($plan['price'])
-                    <p class="center-align">
-                        {{ $plan['name'] }},
-                        <span style="text-decoration: line-through;">{{ config('formal.currency') }} {{ $plan['price_old'] }}</span>
-                    </p>
+                    <div class="plan {{ $plan['class'] }}" data-title="{{ $plan['name'] }}">
+                        <ul>
+                            @foreach ($plan['properties'] as $item)
+                                <li class="d-flex justify-content-between">
+                                    <span>{{ $item['text'] }}</span>
 
-                    <h3 class="center-align">
-                        {{ config('formal.currency') }}
-                        {{ $plan['price'] }}
-                        <sup>.00</sup>
-                        <sub><small>/ Ay</small></sub>
-                    </h3>
-
-                    @if (@$plan['description'])
-                        <p class="grey-text center-align">{{ $plan['description'] }}</p>
-                    @endif
-
-                    <p class="grey-text center-align">Vergiler dahil değildir.</p>
-                @else
-                    <h3 class="center-align">Ücretsiz!</h3>
-                    <p class="center-align green-text">Mevcut Planınız</p>
-                @endif
-
-                <ul class="collection collection-unstyled collection-unstyled-hover">
-                    @foreach ($plan['properties'] as $k => $item)
-                        <li class="collection-item">
-                            <div>
-                                <span>
-                                    <p>
-                                        {{ $item['text'] }}
-
-                                        @if ($item['value'] === true)
-                                            <i class="material-icons secondary-content green-text">check</i>
-                                        @elseif ($item['value'] === false)
-                                            <i class="material-icons secondary-content red-text">close</i>
-                                        @elseif (is_integer($item['value']))
-                                            <span class="badge grey lighten-5">{{ $item['value'] }}</span>
-                                        @else
-                                            <i class="material-icons secondary-content teal-text">streetview</i>
-                                        @endif
-                                    </p>
-                                    <p class="grey-text">{{ $item['details'] }}</p>
-
-                                    @if (is_string($item['value']))
-                                        <p class="teal-text">{{ $item['value'] }}</p>
+                                    @if ($item['value'] === true)
+                                        <i class="material-icons green-text">check</i>
+                                    @elseif ($item['value'] === false)
+                                        <i class="material-icons red-text">close</i>
+                                    @elseif (is_integer($item['value']))
+                                        <span>{{ $item['value'] }}</span>
+                                    @else
+                                        <i class="material-icons teal-text">streetview</i>
                                     @endif
+                                </li>
+                            @endforeach
+                        </ul>
+                        <div class="price teal white-text">
+                            <div class="d-flex justify-content-between">
+                                <span class="new">
+                                    <small>1 Ay</small>
+                                    {{ config('formal.currency') }} {{ $plan['price'] }}
+                                </span>
+                                <span class="new">
+                                    <small>12+ Ay</small>
+                                    {{ config('formal.currency') }} {{ $plan['price'] - ($plan['price'] / 100 * config('formal.discount_with_year')) }}
                                 </span>
                             </div>
-                        </li>
-                    @endforeach
-                </ul>
+                            <small>Vergiler dahil değildir.</small>
+                        </div>
 
-                @if ($plan['price'])
-                    <div class="center-align">
-                        @isset ($plan['buy'])
-                            <a href="{{ route('organisation.create.details', [ $key ]) }}" class="btn-flat btn-large waves-effect">Planı Seç</a>
-                        @else
-                            <span class="grey-text">Stokta Yok</span>
-                        @endisset
+                        @if ($plan['price'])
+                            <div class="buy center-align">
+                                @isset ($plan['buy'])
+                                    <a href="{{ route('organisation.create.details', [ $key ]) }}" class="orange-text">Planı Seç</a>
+                                @else
+                                    <span class="grey-text">Stokta Yok</span>
+                                @endisset
+                            </div>
+                        @endif
                     </div>
-                @endif
+                @endforeach
             </div>
-            @endforeach
-        </div>
-    </div>
 @endsection

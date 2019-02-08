@@ -25,6 +25,8 @@ class AddBannedAtToUsersTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('banned_at');
+        });
     }
 }

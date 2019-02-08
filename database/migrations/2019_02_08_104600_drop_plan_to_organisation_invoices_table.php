@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddGoogleTimeToShoppingCrawlersTable extends Migration
+class DropPlanToOrganisationInvoicesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddGoogleTimeToShoppingCrawlersTable extends Migration
      */
     public function up()
     {
-        Schema::table('shopping_crawlers', function (Blueprint $table) {
-            $table->enum('google_time', [ 'h', 'd', 'w', 'm', 'y' ])->default('h');
+        Schema::table('organisation_invoices', function (Blueprint $table) {
+            $table->dropColumn('plan');
         });
     }
 
@@ -25,8 +25,8 @@ class AddGoogleTimeToShoppingCrawlersTable extends Migration
      */
     public function down()
     {
-        Schema::table('shopping_crawlers', function (Blueprint $table) {
-            $table->dropColumn('google_time');
+        Schema::table('organisation_invoices', function (Blueprint $table) {
+            $table->json('plan');
         });
     }
 }

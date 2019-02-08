@@ -18,7 +18,7 @@ class OrganisationInvoice extends Model
 		'paid_at',
 		'serial',
 		'no',
-		'plan',
+		'plan_id',
 		'billing_information_id'
 	];
 
@@ -42,7 +42,7 @@ class OrganisationInvoice extends Model
     # plan
     public function plan()
     {
-        return json_decode($this->plan);
+        return json_decode(json_encode(config('plans')[$this->plan_id]));
     }
 
     # ücret bilgileri

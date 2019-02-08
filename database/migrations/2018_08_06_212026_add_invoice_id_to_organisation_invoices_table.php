@@ -27,7 +27,7 @@ class AddInvoiceIdToOrganisationInvoicesTable extends Migration
     public function down()
     {
         Schema::table('discount_coupons', function (Blueprint $table) {
-            //
+            $table->dropColumn('invoice_id');
         });
     }
 }

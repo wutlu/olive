@@ -25,6 +25,8 @@ class AddLockToForumCategoriesTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('forum_categories', function (Blueprint $table) {
+            $table->dropColumn('lock');
+        });
     }
 }

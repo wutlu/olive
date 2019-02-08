@@ -25,6 +25,8 @@ class AddUniqueToTwitterTokens extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('twitter_tokens', function (Blueprint $table) {
+            $table->dropUnique([ 'consumer_key', 'access_token' ]);
+        });
     }
 }
