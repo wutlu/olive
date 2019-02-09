@@ -733,6 +733,9 @@
                                 <a class="grey-text" href="{{ route('page.view', 'kullanim-kosullari') }}">Kullanım Koşulları</a>
                             </li>
                             <li>
+                                <a class="grey-text" href="{{ route('page.view', 'cerez-politikasi') }}">Çerez Politikası</a>
+                            </li>
+                            <li>
                                 <a class="grey-text" href="{{ route('settings.reference') }}">Partner Girişi</a>
                             </li>
                         </ul>

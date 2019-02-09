@@ -162,7 +162,7 @@
             </div>
             <div class="card-content textarea-content" id="textarea">
                 <div class="input-field">
-                    <textarea id="body" name="body" class="materialize-textarea validate" data-length="5000">{{ @$page->body }}</textarea>
+                    <textarea id="body" name="body" class="materialize-textarea validate" data-length="10000">{{ @$page->body }}</textarea>
                     <label for="body">Sayfa Gövdesi</label>
                     <small class="grey-text">Bu alanda <a href="https://guides.github.com/features/mastering-markdown/" target="_blank">Markdown</a> kullanabilirsiniz.</small>
                     <span class="helper-text"></span>

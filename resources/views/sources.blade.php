@@ -17,113 +17,99 @@
             </div>
 
             <div class="container">
-                <div class="card">
+                <div class="card teal">
                     <div class="card-content">
                         <span class="card-title">Kaynaklar</span>
+                        <p class="white-text">- Tüm kaynaklar açık kaynak olup, yasal olarak kaynak belirtilerek kullanılmaktadır.</p>
+                        <p class="white-text">- Diğer hukuksal bilgilere <a href="{{ route('page.view', 'gizlilik-politikasi') }}">Gizlilik Politikası</a> ve <a href="{{ route('page.view', 'kullanim-kosullari') }}">Kullanım Koşulları</a> sayfalarından ulaşabilirsiniz.</p>
+                        <p class="white-text">- Yerel veya farklı kaynak istekleriniz, <a href="{{ route('settings.support', 'kaynak-istegi') }}">DESTEK</a> bölümünden bize bildirebilirsiniz.</p>
                     </div>
+                    <ul class="tabs card-transparent">
+                        <li class="tab">
+                            <a href="#media" class="active">Basın</a>
+                        </li>
+                        <li class="tab">
+                            <a href="#shopping">E-Ticaret</a>
+                        </li>
+                        <li class="tab">
+                            <a href="#social">Sosyal Medya</a>
+                        </li>
+                    </ul>
+                    <div id="media" class="collection max-height white">
+                        @forelse ($media as $key => $m)
+                            <a href="{{ $m->site }}" target="_blank" class="collection-item d-flex justify-content-end">
+                                <span class="mr-auto">{{ ($key+1).' - '.$m->name }}</span>
+                                <span class="badge red white-text">{{ $m->id }}</span> 
 
-                    <div class="card-content">
-                        <p class="grey-text text-darken-2">- Tüm kaynaklar açık kaynak olup, yasal olarak kaynak belirtilerek kullanılmaktadır.</p>
-                        <p class="grey-text text-darken-2">- Diğer hukuksal bilgilere <a href="{{ route('page.view', 'gizlilik-politikasi') }}">Gizlilik Politikası</a> ve <a href="{{ route('page.view', 'kullanim-kosullari') }}">Kullanım Koşulları</a> sayfalarından ulaşabilirsiniz.</p>
-                        <p class="grey-text text-darken-2">- Yerel veya farklı kaynak istekleriniz, <a href="{{ route('settings.support', 'kaynak-istegi') }}">DESTEK</a> bölümünden bize bildirebilirsiniz.</p>
+                                @if ($m->status)
+                                    <span class="badge green white-text">Aktif</span>
+                                @else
+                                    <span class="badge red white-text">Pasif</span>
+                                @endif
+                            </a>
+                        @empty
+                            <div class="collection-item grey-text">Şu an için aktif kaynak bulunmuyor.</div>
+                        @endforelse
                     </div>
+                    <div id="shopping" class="collection max-height white" style="display: none;">
+                        @forelse ($shopping as $key => $s)
+                            <a href="{{ $s->site }}" target="_blank" class="collection-item d-flex justify-content-end">
+                                <span class="mr-auto">{{ ($key+1).' - '.$s->name }}</span>
+                                <span class="badge red white-text">{{ $s->id }}</span> 
 
-                    <div class="card-content">
-                        <ul class="tabs">
-                            <li class="tab">
-                                <a href="#media" class="active">Basın</a>
-                            </li>
-                            <li class="tab">
-                                <a href="#shopping">E-Ticaret</a>
-                            </li>
-                            <li class="tab">
-                                <a href="#social">Sosyal Medya</a>
-                            </li>
-                        </ul>
-                        <ul id="media" class="collection">
-                            @forelse ($media as $key => $m)
-                                <li class="collection-item">
-                                    <a href="{{ $m->site }}" target="_blank">
-                                        {{ ($key+1).' - '.$m->name }} (site_id: {{ $m->id }})
-                                        
-                                        @if ($m->status)
-                                            <span class="badge green white-text">Aktif</span>
-                                        @else
-                                            <span class="badge red white-text">Pasif</span>
-                                        @endif
-                                    </a>
-                                </li>
-                            @empty
-                                <li class="collection-item">Şu an için aktif kaynak bulunmuyor.</li>
-                            @endforelse
-                        </ul>
-                        <ul id="shopping" class="collection" style="display: none;">
-                            @forelse ($shopping as $key => $s)
-                                <li class="collection-item">
-                                    <a href="{{ $s->site }}" target="_blank">
-                                        {{ ($key+1).' - '.$s->name }} (site_id: {{ $s->id }})
+                                @if ($s->status)
+                                    <span class="badge green white-text">Aktif</span>
+                                @else
+                                    <span class="badge red white-text">Pasif</span>
+                                @endif
+                            </a>
+                        @empty
+                            <div class="collection-item grey-text">Şu an için aktif kaynak bulunmuyor.</div>
+                        @endforelse
+                    </div>
+                    <div id="social" class="collection max-height white" style="display: none;">
+                        <a href="https://twitter.com" target="_blank" class="collection-item">
+                            Twitter
 
-                                        @if ($s->status)
-                                            <span class="badge green white-text">Aktif</span>
-                                        @else
-                                            <span class="badge red white-text">Pasif</span>
-                                        @endif
-                                    </a>
-                                </li>
-                            @empty
-                                <li class="collection-item">Şu an için aktif kaynak bulunmuyor.</li>
-                            @endforelse
-                        </ul>
-                        <ul id="social" class="collection" style="display: none;">
-                            <li class="collection-item">
-                                <a href="https://twitter.com" target="_blank">
-                                    Twitter
+                            @if ($options['twitter.status'] == 'on')
+                                <span class="badge green white-text">Aktif</span>
+                            @else
+                                <span class="badge red white-text">Pasif</span>
+                            @endif
+                        </a>
+                        <a href="https://www.youtube.com" target="_blank" class="collection-item">
+                            YouTube
 
-                                    @if ($options['twitter.status'] == 'on')
-                                        <span class="badge green white-text">Aktif</span>
-                                    @else
-                                        <span class="badge red white-text">Pasif</span>
-                                    @endif
-                                </a>
-                            </li>
-                            <li class="collection-item">
-                                <a  href="https://www.youtube.com" target="_blank">
-                                    YouTube
+                            @if ($options['youtube.status'] == 'on')
+                                <span class="badge green white-text">Aktif</span>
+                            @else
+                                <span class="badge red white-text">Pasif</span>
+                            @endif
+                        </a>
+                        <a href="https://www.google.com" target="_blank" class="collection-item">
+                            Google
 
-                                    @if ($options['youtube.status'] == 'on')
-                                        <span class="badge green white-text">Aktif</span>
-                                    @else
-                                        <span class="badge red white-text">Pasif</span>
-                                    @endif
-                                </a>
-                            </li>
-                            <li class="collection-item">
-                                <a href="https://www.google.com" target="_blank">
-                                    Google
+                            @if ($options['google.status'] == 'on')
+                                <span class="badge green white-text">Aktif</span>
+                            @else
+                                <span class="badge red white-text">Pasif</span>
+                            @endif
+                        </a>
 
-                                    @if ($options['google.status'] == 'on')
-                                        <span class="badge green white-text">Aktif</span>
-                                    @else
-                                        <span class="badge red white-text">Pasif</span>
-                                    @endif
-                                </a>
-                            </li>
-                            @forelse ($sozluk as $s)
-                            <li class="collection-item">
-                                    <a href="{{ $s->site }}" target="_blank">
-                                        {{ $s->name }} (site_id: {{ $s->id }})
+                        @forelse ($sozluk as $s)
+                            <a href="{{ $s->site }}" target="_blank" class="collection-item d-flex justify-content-end">
+                                <span class="mr-auto">{{ $s->name }}</span>
+                                <span class="badge red white-text">{{ $s->id }}</span> 
 
-                                        @if ($s->status)
-                                            <span class="badge green white-text">Aktif</span>
-                                        @else
-                                            <span class="badge red white-text">Pasif</span>
-                                        @endif
-                                    </a>
-                                </li>
-                            @empty
-                                <li class="collection-item">Şu an için aktif kaynak bulunmuyor.</li>
-                            @endforelse
-                        </ul>
+                                @if ($s->status)
+                                    <span class="badge green white-text">Aktif</span>
+                                @else
+                                    <span class="badge red white-text">Pasif</span>
+                                @endif
+                            </a>
+                        @empty
+                            <div class="collection-item grey-text">Şu an için aktif kaynak bulunmuyor.</div>
+                        @endforelse
                     </div>
                 </div>
             </div>
