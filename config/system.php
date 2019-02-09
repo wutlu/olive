@@ -172,7 +172,14 @@ return [
                 'image_src' => 'img/icons/badges/supporter.png',
                 'description' => 'En az 1 ödeme yapın.'
             ],
-        ]
+        ],
+
+        /**
+         * Referans ile Üyelik
+         *
+         * @return required|nullable
+         */
+        'referential' => env('REFERENTIAL_REGISTRATION', 'required')
     ],
 
     /**

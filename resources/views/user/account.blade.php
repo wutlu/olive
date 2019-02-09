@@ -52,8 +52,8 @@
                         <div class="input-field">
                             <textarea name="about" id="about" data-length="10000" class="materialize-textarea validate">{{ $user->about }}</textarea>
                             <label for="about">Siz</label>
-                            <span class="helper-text">Kendinizi tanıtmak isterseniz bu alanı doldurabilirsiniz.</span>
                             <small class="grey-text">Bu alanda <a href="https://guides.github.com/features/mastering-markdown/" target="_blank">Markdown</a> kullanabilirsiniz.</small>
+                            <span class="helper-text">Kendinizi tanıtmak isterseniz bu alanı doldurabilirsiniz.</span>
                         </div>
                     </div>
                     <hr />

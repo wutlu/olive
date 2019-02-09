@@ -1790,18 +1790,16 @@ table tr {
 /**
  * btn
  */
+.btn {
+  outline: none !important;
+}
+
 .btn-large:hover {
   background-color: #DFDFDF;
 }
 
 .btn-large:focus {
   background-color: transparent;
-}
-
-.btn:active,
-.btn-flat:active {
-          transform: scale(.9);
-  -webkit-transform: scale(.9);
 }
 
 .btn-image {

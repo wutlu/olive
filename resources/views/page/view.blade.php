@@ -7,13 +7,13 @@
 
 @push('external.include.header')
     @if ($page->description)
-    <!-- description -->
-    <meta name="description" content="{{ $page->description }}" />
+        <!-- description -->
+        <meta name="description" content="{{ $page->description }}" />
     @endif
 
     @if ($page->keywords)
-    <!-- keywords -->
-    <meta name="keywords" content="{{ $page->keywords }}" />
+        <!-- keywords -->
+        <meta name="keywords" content="{{ $page->keywords }}" />
     @endif
 @endpush
 
@@ -35,12 +35,9 @@
             </div>
 
             <div class="container">
-                <div class="card">
+                <div class="card card-unstyled">
                     <div class="card-content">
-                        <span class="card-title">{{ $page->title }}</span>
-                    </div>
-                    <div class="card-content">
-                        {!! $page->body !!}
+                        {!! $page->markdown() !!}
                     </div>
                 </div>
             </div>

@@ -78,8 +78,8 @@
                 <div class="input-field">
                     <textarea id="body" name="body" class="materialize-textarea validate" data-length="10000">{{ @$newsletter->body }}</textarea>
                     <label for="body">Konu İçeriği</label>
-                    <div class="helper-text"></div>
                     <small class="grey-text">Bu alanda <a href="https://guides.github.com/features/mastering-markdown/" target="_blank">Markdown</a> kullanabilirsiniz.</small>
+                    <span class="helper-text"></span>
                 </div>
             </div>
             <div

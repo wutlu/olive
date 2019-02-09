@@ -72,6 +72,29 @@
     @endif
 
     $('[data-length]').characterCounter()
+
+
+
+    $('.tabs').tabs({
+        onShow: function(e) {
+            if (e.id == 'preview')
+            {
+                vzAjax($('#preview'))
+            }
+        }
+    })
+
+    function __preview(__, obj)
+    {
+        if (obj.status == 'ok')
+        {
+            __.children('.markdown').html(obj.data.message)
+
+            $('code').each(function(i, block) {
+                hljs.highlightBlock(block);
+            })
+        }
+    }
 @endpush
 
 @section('content')
@@ -124,20 +147,43 @@
                             <small class="helper-text">Arama sonuçlarında görünecek açıklama.</small>
                         </div>
                     </div>
-                    <div class="collection-item">
-                        <div class="input-field">
-                            <textarea name="body" id="body" class="materialize-textarea validate" data-length="20000">{{ @$page->body }}</textarea>
-                            <label for="body">Sayfa Gövdesi</label>
-                            <small class="helper-text">Sayfa içeriği. (HTML)</small>
-                        </div>
-                    </div>
                 </div>
             </div>
+
+            <div class="card-tabs cyan darken-2">
+                <ul class="tabs tabs-transparent">
+                    <li class="tab">
+                        <a href="#textarea" class="waves-effect active">Cevapla</a>
+                    </li>
+                    <li class="tab">
+                        <a href="#preview" class="waves-effect">Ön İzle</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-content textarea-content" id="textarea">
+                <div class="input-field">
+                    <textarea id="body" name="body" class="materialize-textarea validate" data-length="5000">{{ @$page->body }}</textarea>
+                    <label for="body">Sayfa Gövdesi</label>
+                    <small class="grey-text">Bu alanda <a href="https://guides.github.com/features/mastering-markdown/" target="_blank">Markdown</a> kullanabilirsiniz.</small>
+                    <span class="helper-text"></span>
+                </div>
+            </div>
+            <div
+                class="card-content"
+                id="preview"
+                data-href="{{ route('markdown.preview') }}"
+                data-method="post"
+                data-include="body"
+                data-callback="__preview"
+                style="display: none;">
+                <div class="markdown"></div>
+            </div>
+
             <div class="card-action right-align">
                 @if (@$page)
                     <a href="#" class="btn-flat waves-effect red-text" data-trigger="delete">Sil</a>
                 @endif
-                <button type="submit" class="btn waves-effect">{{ @$page ? 'Güncelle' : 'Oluştur' }}</button>
+                <button type="submit" class="btn-flat waves-effect">{{ @$page ? 'Güncelle' : 'Oluştur' }}</button>
             </div>
         </div>
     </form>
