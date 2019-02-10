@@ -53,11 +53,11 @@ class UserControl extends Command
         {
             $users = explode(PHP_EOL, trim(shell_exec('who')));
 
-            if (count($users))
+            if (trim(shell_exec('who')))
             {
                 $lines = array_map(function($item) {
                     return '- '.$item;
-                }, explode(PHP_EOL, trim(shell_exec('who'))));
+                }, $users);
 
                 $body = implode(PHP_EOL, $lines);
 
