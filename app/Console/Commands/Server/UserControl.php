@@ -51,8 +51,7 @@ class UserControl extends Command
 
         while ($each == true)
         {
-            $lines = explode(PHP_EOL, trim(shell_exec('who -q')));
-            $users = explode(' ', $lines[0]);
+            $users = explode(PHP_EOL, trim(shell_exec('who')));
 
             if (count($users))
             {
@@ -64,7 +63,10 @@ class UserControl extends Command
 
                 if (RedisCache::get($this->alias) != md5($body))
                 {
-                    Mail::queue(new ServerAlertMail('Sunucuda Online ['.count($users).']', $body));
+                    if (config('app.env') == 'production')
+                    {
+                        Mail::queue(new ServerAlertMail('Sunucuda Online ['.count($users).']', $body));
+                    }
 
                     echo Term::line('Sunucuda Online ['.count($users).']->sent');
                 }
