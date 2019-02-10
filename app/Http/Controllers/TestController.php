@@ -25,6 +25,7 @@ class TestController extends Controller
 {
     public static function test()
     {
+        /*
         $documents = Document::listByMultiQuery(
             [
                 [
@@ -59,5 +60,8 @@ class TestController extends Controller
 
         echo "<pre>";
         print_r($documents);
+        */
+
+        return view('test');
     }
 }
