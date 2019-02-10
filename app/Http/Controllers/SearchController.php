@@ -6,16 +6,30 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Search\ArchiveRequest;
 use App\Elasticsearch\Document;
 
+use Term;
+
+use Carbon\Carbon;
+
+use App\Models\Pin\Group as PinGroup;
+
 class SearchController extends Controller
 {
+    /**
+     * Temel sorgu.
+     *
+     * @var array
+     */
+    private $query;
+
     public function __construct()
     {
-        /**
-         ***** ZORUNLU *****
-         *
-         * - Kullanıcı
-         */
-        $this->middleware('auth');
+        ### [ üyelik ve organizasyon zorunlu ve organizasyonun zorunlu olarak real_time özelliği desteklemesi ] ###
+        $this->middleware([ 'auth', 'organisation:have' ]);
+
+        ### [ zorunlu aktif organizasyon ] ###
+        $this->middleware('can:organisation-status')->only([
+            'search'
+        ]);
     }
 
     /**
@@ -25,7 +39,9 @@ class SearchController extends Controller
      */
     public static function dashboard()
     {
-        return view('search.dashboard');
+        $pin_groups = PinGroup::where('organisation_id', auth()->user()->organisation_id)->orderBy('updated_at', 'DESC')->limit(4)->get();
+
+        return view('search.dashboard', compact('pin_groups'));
     }
 
     /**
@@ -35,26 +51,12 @@ class SearchController extends Controller
      */
     public static function search(ArchiveRequest $request)
     {
-        $data = [];
-        $words = [];
-        $types = [];
-
-        $words_raw = str_replace([ ' OR ', ' AND ', ')', '(' ], ' ', $request->string);
-        $words_raw = explode(' ', $words_raw);
-
-        foreach ($words_raw as $w)
-        {
-            if ($w)
-            {
-                $words[] = $w;
-            }
-        }
-
-        $modules = array_flip($request->modules);
-
-        $q = [
+        $mquery = [
             'from' => $request->skip,
             'size' => $request->take,
+            'sort' => [
+                'created_at' => 'DESC'
+            ],
             'query' => [
                 'bool' => [
                     'filter' => [
@@ -69,54 +71,119 @@ class SearchController extends Controller
                         ]
                     ]
                 ]
-            ],
-            'sort' => [ 'created_at' => 'DESC' ],
-            '_source' => [ 'user.name', 'user.screen_name', 'text', 'created_at' ]
+            ]
         ];
 
-        if ($request->sentiment != 'all')
-        {
-            $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
-        }
+        $data = [];
+
+        $clean = Term::cleanSearchQuery($request->string);
+
+        $modules = array_flip($request->modules);
 
         ### [ twitter modülü ] ###
         if (isset($modules['twitter']))
         {
-            $q['query']['bool']['should'][] = [
-                [ 'query_string' => [ 'default_field' => 'text', 'query' => $request->string ] ]
+            $q = $mquery;
+
+            $q['query']['bool']['must'][] = [
+                'query_string' => [
+                    'default_field' => 'text',
+                    'query' => $clean->line,
+                    'default_operator' => 'AND'
+                ]
             ];
-            $types[] = 'tweet';
+            $q['query']['bool']['must_not'][] = [ 'match' => [ 'external.type' => 'retweet' ] ];
+            $q['_source'] = [ 'user.name', 'user.screen_name', 'text', 'created_at', 'sentiment' ];
+
+            if ($request->sentiment != 'all')
+            {
+                $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
+            }
+
+            $query = @Document::list([ 'twitter', 'tweets', date('Y.m') ], 'tweet', $q)->data['hits']['hits'];
+
+            if ($query)
+            {
+                foreach ($query as $object)
+                {
+                    $data[] = [
+                        'uuid' => md5($object['_id'].'.'.$object['_index']),
+                        '_id' => $object['_id'],
+                        '_type' => $object['_type'],
+                        '_index' => $object['_index'],
+                        'sentiment' => $object['_source']['sentiment'],
+                        'module' => 'twitter',
+                        'user' => [
+                            'name' => $object['_source']['user']['name'],
+                            'screen_name' => $object['_source']['user']['screen_name']
+                        ],
+                        'text' => $object['_source']['text'],
+                        'created_at' => date('d.m.Y H:i:s', strtotime($object['_source']['created_at']))
+                    ];
+                }
+            }
         }
 
         ### [ haber modülü ] ###
         if (isset($modules['news']))
         {
-            $q['query']['bool']['should'][] = [
-                [ 'match' => [ 'status' => 'ok' ] ],
-                [ 'query_string' => [ 'fields' => [ 'description', 'title' ], 'query' => $request->string ] ]
+            $q = $mquery;
+
+            $q['query']['bool']['must'][] = [ 'match' => [ 'status' => 'ok' ] ];
+            $q['_source'] = [ 'url', 'title', 'description', 'created_at', 'sentiment' ];
+            $q['query']['bool']['must'][] = [
+                'query_string' => [
+                    'fields' => [
+                        'description',
+                        'title'
+                    ],
+                    'query' => $clean->line,
+                    'default_operator' => 'AND'
+                ]
             ];
-            $types[] = 'article';
+
+            if ($request->sentiment != 'all')
+            {
+                $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
+            }
+
+            $query = @Document::list([ 'media', '*' ], 'article', $q)->data['hits']['hits'];
+
+            if ($query)
+            {
+                foreach ($query as $object)
+                {
+                    $data[] = [
+                        'uuid' => md5($object['_id'].'.'.$object['_index']),
+                        '_id' => $object['_id'],
+                        '_type' => $object['_type'],
+                        '_index' => $object['_index'],
+                        'module' => 'haber',
+                        'sentiment' => $object['_source']['sentiment'],
+                        'url' => $object['_source']['url'],
+                        'title' => $object['_source']['title'],
+                        'text' => $object['_source']['description'],
+                        'created_at' => date('d.m.Y H:i:s', strtotime($object['_source']['created_at']))
+                    ];
+                }
+            }
         }
 
-/*
         ### [ sözlük modülü ] ###
         if (isset($modules['sozluk']))
         {
-            $q = [
-                'from' => $request->skip,
-                'size' => $request->take,
-                'query' => [
-                    'bool' => [
-                        'filter' => [
-                            [ 'range' => $range ]
-                        ],
-                        'must' => [
-                            [ 'query_string' => [ 'fields' => [ 'description', 'title' ], 'query' => $request->string ] ]
-                        ]
-                    ]
-                ],
-                'sort' => [ 'created_at' => 'DESC' ],
-                '_source' => [ 'url', 'title', 'entry', 'author', 'created_at' ]
+            $q = $mquery;
+
+            $q['_source'] = [ 'url', 'title', 'entry', 'author', 'created_at', 'sentiment' ];
+            $q['query']['bool']['must'][] = [
+                'query_string' => [
+                    'fields' => [
+                        'description',
+                        'title'
+                    ],
+                    'query' => $clean->line,
+                    'default_operator' => 'AND'
+                ]
             ];
 
             if ($request->sentiment != 'all')
@@ -136,6 +203,7 @@ class SearchController extends Controller
                         '_type' => $object['_type'],
                         '_index' => $object['_index'],
                         'module' => 'sozluk',
+                        'sentiment' => $object['_source']['sentiment'],
                         'url' => $object['_source']['url'],
                         'title' => $object['_source']['title'],
                         'text' => $object['_source']['entry'],
@@ -149,22 +217,19 @@ class SearchController extends Controller
         ### [ alışveriş modülü ] ###
         if (isset($modules['shopping']))
         {
-            $q = [
-                'from' => $request->skip,
-                'size' => $request->take,
-                'query' => [
-                    'bool' => [
-                        'filter' => [
-                            [ 'range' => $range ],
-                            [ 'match' => [ 'status' => 'ok' ] ]
-                        ],
-                        'must' => [
-                            [ 'query_string' => [ 'fields' => [ 'description', 'title' ], 'query' => $request->string ] ]
-                        ]
-                    ]
-                ],
-                'sort' => [ 'created_at' => 'DESC' ],
-                '_source' => [ 'url', 'title', 'description', 'created_at' ]
+            $q = $mquery;
+
+            $q['query']['bool']['must'][] = [ 'match' => [ 'status' => 'ok' ] ];
+            $q['_source'] = [ 'url', 'title', 'description', 'created_at', 'sentiment' ];
+            $q['query']['bool']['must'][] = [
+                'query_string' => [
+                    'fields' => [
+                        'description',
+                        'title'
+                    ],
+                    'query' => $clean->line,
+                    'default_operator' => 'AND'
+                ]
             ];
 
             if ($request->sentiment != 'all')
@@ -184,6 +249,7 @@ class SearchController extends Controller
                         '_type' => $object['_type'],
                         '_index' => $object['_index'],
                         'module' => 'alisveris',
+                        'sentiment' => $object['_source']['sentiment'],
                         'url' => $object['_source']['url'],
                         'title' => $object['_source']['title'],
                         'created_at' => date('d.m.Y H:i:s', strtotime($object['_source']['created_at']))
@@ -202,21 +268,18 @@ class SearchController extends Controller
         ### [ youtube, video modülü ] ###
         if (isset($modules['youtube_video']))
         {
-            $q = [
-                'from' => $request->skip,
-                'size' => $request->take,
-                'query' => [
-                    'bool' => [
-                        'filter' => [
-                            [ 'range' => $range ]
-                        ],
-                        'must' => [
-                            [ 'query_string' => [ 'fields' => [ 'description', 'title' ], 'query' => $request->string ] ]
-                        ]
-                    ]
-                ],
-                'sort' => [ 'created_at' => 'DESC' ],
-                '_source' => [ 'title', 'description', 'created_at', 'channel.title', 'channel.id' ]
+            $q = $mquery;
+
+            $q['_source'] = [ 'title', 'description', 'created_at', 'channel.title', 'channel.id', 'sentiment' ];
+            $q['query']['bool']['must'][] = [
+                'query_string' => [
+                    'fields' => [
+                        'description',
+                        'title'
+                    ],
+                    'query' => $clean->line,
+                    'default_operator' => 'AND'
+                ]
             ];
 
             if ($request->sentiment != 'all')
@@ -236,6 +299,7 @@ class SearchController extends Controller
                         '_type' => $object['_type'],
                         '_index' => $object['_index'],
                         'module' => 'youtube-video',
+                        'sentiment' => $object['_source']['sentiment'],
                         'title' => $object['_source']['title'],
                         'text' => @$object['_source']['description'],
                         'channel' => [
@@ -250,26 +314,14 @@ class SearchController extends Controller
         ### [ youtube, yorum modülü ] ###
         if (isset($modules['youtube_comment']))
         {
-            $q = [
-                'from' => $request->skip,
-                'size' => $request->take,
-                'query' => [
-                    'bool' => [
-                        'filter' => [
-                            [ 'range' => $range ]
-                        ],
-                        'must' => [
-                            [ 'query_string' => [ 'default_field' => 'text', 'query' => $request->string ] ]
-                        ]
-                    ]
-                ],
-                'sort' => [ 'created_at' => 'DESC' ],
-                '_source' => [
-                    'video_id',
-                    'text',
-                    'channel.id',
-                    'channel.title',
-                    'created_at'
+            $q = $mquery;
+
+            $q['_source'] = [ 'video_id', 'text', 'channel.id', 'channel.title', 'created_at', 'sentiment' ];
+            $q['query']['bool']['must'][] = [
+                'query_string' => [
+                    'default_field' => 'text',
+                    'query' => $clean->line,
+                    'default_operator' => 'AND'
                 ]
             ];
 
@@ -290,6 +342,7 @@ class SearchController extends Controller
                         '_type' => $object['_type'],
                         '_index' => $object['_index'],
                         'module' => 'youtube-comment',
+                        'sentiment' => $object['_source']['sentiment'],
                         'video_id' => $object['_source']['video_id'],
                         'channel' => [
                             'id' => $object['_source']['channel']['id'],
@@ -301,11 +354,13 @@ class SearchController extends Controller
                 }
             }
         }
-*/
-        $query = @Document::list([ '*' ], implode(',', $types), $q);
 
-        dd($query);
+        shuffle($data);
 
-        return '';
+        return [
+            'status' => 'ok',
+            'hits' => $data,
+            'words' => $clean->words
+        ];
     }
 }

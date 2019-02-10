@@ -19,18 +19,11 @@ use Carbon\Carbon;
 class RealTimeController extends Controller
 {
     /**
-     * Gerçek Zamanlı, son bir kaç dakika değeri.
+     * Temel sorgu.
      *
-     * @var datetime
+     * @var array
      */
-    private $minute;
-
-    /**
-     * Gerçek Zamanlı, sorgu yapılacak kolon.
-     *
-     * @var string
-     */
-    private $range;
+    private $query;
 
     public function __construct()
     {
@@ -42,10 +35,24 @@ class RealTimeController extends Controller
             'query'
         ]);
 
-        ### [ gerçek zamanlı son bir kaç dakika değeri ] ###
-        $this->minute = Carbon::now()->subMinutes(2)->format('Y-m-d H:i');
-        ### [ gerçek zamanlı sorgu yapılacak kolon ] ###
-        $this->range_column = 'created_at';
+        ### [ temel sorgu ] ###
+        $this->query = [
+            'query' => [
+                'bool' => [
+                    'filter' => [
+                        [
+                            'range' => [
+                                'called_at' => [
+                                    'format' => 'YYYY-MM-dd HH:mm',
+                                    'gte' => Carbon::now()->subMinutes(2)->format('Y-m-d H:i')
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'sort' => [ 'created_at' => 'DESC' ],
+        ];
     }
 
     /**
@@ -103,21 +110,17 @@ class RealTimeController extends Controller
                     ### [ twitter modülü ] ###
                     if ($group->module_twitter)
                     {
-                        $q = [
-                            'size' => 1000,
-                            'query' => [
-                                'bool' => [
-                                    'must' => [
-                                        [ 'query_string' => [ 'default_field' => 'text', 'query' => implode(' OR ', $keywords) ] ]
-                                    ],
-                                    'filter' => [
-                                        [ 'range' => [ $this->range_column => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ]
-                                    ]
-                                ]
-                            ],
-                            'sort' => [ 'created_at' => 'DESC' ],
-                            '_source' => [ 'user.name', 'user.screen_name', 'text', 'created_at', 'sentiment' ]
+                        $q = $this->query;
+
+                        $q['size'] = 1000;
+                        $q['query']['bool']['must'][] = [
+                            'query_string' => [
+                                'default_field' => 'text',
+                                'query' => implode(' OR ', $keywords),
+                                'default_operator' => 'AND'
+                            ]
                         ];
+                        $q['_source'] = [ 'user.name', 'user.screen_name', 'text', 'created_at', 'sentiment' ];
 
                         if ($request->sentiment != 'all')
                         {
@@ -152,24 +155,23 @@ class RealTimeController extends Controller
                 ### [ haber modülü ] ###
                 if ($group->module_news)
                 {
-                    $q = [
-                        'size' => 100,
-                        'query' => [
-                            'bool' => [
-                                'must' => [ 'match' => [ 'status' => 'ok' ] ],
-                                'filter' => [
-                                    [ 'range' => [ $this->range_column => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ]
-                                ]
-                            ]
-                        ],
-                        'sort' => [ 'created_at' => 'DESC' ],
-                        '_source' => [ 'url', 'title', 'description', 'created_at', 'sentiment' ]
-                    ];
+                    $q = $this->query;
+
+                    $q['size'] = 100;
+                    $q['query']['bool']['must'][] = [ 'match' => [ 'status' => 'ok' ] ];
+                    $q['_source'] = [ 'url', 'title', 'description', 'created_at', 'sentiment' ];
 
                     if (count($keywords))
                     {
                         $q['query']['bool']['must'][] = [
-                            'query_string' => [ 'fields' => [ 'description', 'title' ], 'query' => implode(' OR ', $keywords) ]
+                            'query_string' => [
+                                'fields' => [
+                                    'description',
+                                    'title'
+                                ],
+                                'query' => implode(' OR ', $keywords),
+                                'default_operator' => 'AND'
+                            ]
                         ];
                     }
 
@@ -203,23 +205,22 @@ class RealTimeController extends Controller
                 ### [ sözlük modülü ] ###
                 if ($group->module_sozluk)
                 {
-                    $q = [
-                        'size' => 100,
-                        'query' => [
-                            'bool' => [
-                                'filter' => [
-                                    [ 'range' => [ $this->range_column => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ]
-                                ]
-                            ]
-                        ],
-                        'sort' => [ 'created_at' => 'DESC' ],
-                        '_source' => [ 'url', 'title', 'entry', 'author', 'created_at', 'sentiment' ]
-                    ];
+                    $q = $this->query;
+
+                    $q['size'] = 100;
+                    $q['_source'] = [ 'url', 'title', 'entry', 'author', 'created_at', 'sentiment' ];
 
                     if (count($keywords))
                     {
                         $q['query']['bool']['must'][] = [
-                            'query_string' => [ 'fields' => [ 'description', 'title' ], 'query' => implode(' OR ', $keywords) ]
+                            'query_string' => [
+                                'fields' => [
+                                    'description',
+                                    'title'
+                                ],
+                                'query' => implode(' OR ', $keywords),
+                                'default_operator' => 'AND'
+                            ]
                         ];
                     }
 
@@ -254,24 +255,23 @@ class RealTimeController extends Controller
                 ### [ alışveriş modülü ] ###
                 if ($group->module_shopping)
                 {
-                    $q = [
-                        'size' => 100,
-                        'query' => [
-                            'bool' => [
-                                'filter' => [
-                                    [ 'range' => [ $this->range_column => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ]
-                                ],
-                                'must' => [ 'match' => [ 'status' => 'ok' ] ]
-                            ]
-                        ],
-                        'sort' => [ 'created_at' => 'DESC' ],
-                        '_source' => [ 'url', 'title', 'description', 'created_at', 'sentiment' ]
-                    ];
+                    $q = $this->query;
+
+                    $q['size'] = 100;
+                    $q['query']['bool']['must'][] = [ 'match' => [ 'status' => 'ok' ] ];
+                    $q['_source'] = [ 'url', 'title', 'description', 'created_at', 'sentiment' ];
 
                     if (count($keywords))
                     {
                         $q['query']['bool']['must'][] = [
-                            'query_string' => [ 'fields' => [ 'description', 'title' ], 'query' => implode(' OR ', $keywords) ]
+                            'query_string' => [
+                                'fields' => [
+                                    'description',
+                                    'title'
+                                ],
+                                'query' => implode(' OR ', $keywords),
+                                'default_operator' => 'AND'
+                            ]
                         ];
                     }
 
@@ -311,23 +311,22 @@ class RealTimeController extends Controller
                 ### [ youtube, video modülü ] ###
                 if ($group->module_youtube_video)
                 {
-                    $q = [
-                        'size' => 100,
-                        'query' => [
-                            'bool' => [
-                                'filter' => [
-                                    [ 'range' => [ $this->range_column => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ]
-                                ]
-                            ]
-                        ],
-                        'sort' => [ 'created_at' => 'DESC' ],
-                        '_source' => [ 'title', 'description', 'created_at', 'channel.title', 'channel.id', 'sentiment' ]
-                    ];
+                    $q = $this->query;
+
+                    $q['size'] = 100;
+                    $q['_source'] = [ 'title', 'description', 'created_at', 'channel.title', 'channel.id', 'sentiment' ];
 
                     if (count($keywords))
                     {
                         $q['query']['bool']['must'][] = [
-                            'query_string' => [ 'fields' => [ 'description', 'title' ], 'query' => implode(' OR ', $keywords) ]
+                            'query_string' => [
+                                'fields' => [
+                                    'description',
+                                    'title'
+                                ],
+                                'query' => implode(' OR ', $keywords),
+                                'default_operator' => 'AND'
+                            ]
                         ];
                     }
 
@@ -363,23 +362,19 @@ class RealTimeController extends Controller
                 ### [ youtube, yorum modülü ] ###
                 if ($group->module_youtube_comment)
                 {
-                    $q = [
-                        'size' => 200,
-                        'query' => [
-                            'bool' => [
-                                'filter' => [
-                                    [ 'range' => [ $this->range_column => [ 'format' => 'YYYY-MM-dd HH:mm', 'gte' => $this->minute ] ] ]
-                                ]
-                            ]
-                        ],
-                        'sort' => [ 'created_at' => 'DESC' ],
-                        '_source' => [ 'video_id', 'text', 'channel.id', 'channel.title', 'created_at', 'sentiment' ]
-                    ];
+                    $q = $this->query;
+
+                    $q['size'] = 200;
+                    $q['_source'] = [ 'video_id', 'text', 'channel.id', 'channel.title', 'created_at', 'sentiment' ];
 
                     if (count($keywords))
                     {
                         $q['query']['bool']['must'][] = [
-                            'query_string' => [ 'default_field' => 'text', 'query' => implode(' OR ', $keywords) ]
+                            'query_string' => [
+                                'default_field' => 'text',
+                                'query' => implode(' OR ', $keywords),
+                                'default_operator' => 'AND'
+                            ]
                         ];
                     }
 
@@ -415,9 +410,11 @@ class RealTimeController extends Controller
             }
         }
 
+        shuffle($data);
+
         return [
             'status' => 'ok',
-            'data' => array_reverse($data),
+            'data' => $data,
             'words' => $words
         ];
     }

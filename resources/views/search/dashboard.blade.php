@@ -8,7 +8,84 @@
     'dock' => true
 ])
 
+@push('local.styles')
+    .marked {
+        padding: .4rem;
+        border-radius: .2rem;
+    }
+@endpush
+
 @push('local.scripts')
+    var group_select = $('select[name=group_id]');
+        group_select.formSelect()
+
+    function __pin(__, obj)
+    {
+        var pins_button = $('[data-button=pins-button]');
+        var pin_count = pins_button.children('span.count');
+
+        if (obj.status == 'removed')
+        {
+            $('[data-pin-uuid=' + __.attr('data-pin-uuid') + ']').removeClass('on')
+
+            M.toast({ html: 'Pin Kaldırıldı', classes: 'red darken-2' })
+
+            pin_count.html(parseInt(pin_count.html()) - 1)
+        }
+        else if (obj.status == 'pinned')
+        {
+            $('[data-pin-uuid=' + __.attr('data-pin-uuid') + ']').addClass('on')
+
+            var toastHTML = $('<div />', {
+                'html': [
+                    $('<span />', {
+                        'html': 'İçerik Pinlendi',
+                        'class': 'white-text'
+                    }),
+                    $('<a />', {
+                        'href': '#',
+                        'class': 'btn-flat toast-action json',
+                        'html': 'Geri Al',
+                        'data-undo': 'true',
+                        'data-href': '{{ route('pin', 'remove') }}',
+                        'data-method': 'post',
+                        'data-callback': '__pin',
+                        'data-id': __.data('id'),
+                        'data-type': __.data('type'),
+                        'data-index': __.data('index'),
+                        'data-pin-uuid': __.data('pin-uuid'),
+                        'data-include': 'group_id'
+                    })
+                ]
+            });
+
+            M.toast({ html: toastHTML.get(0).outerHTML })
+
+            $('#wildcard-pin-history').removeClass('hide')
+
+            $('.owl-wildcard').trigger('add.owl.carousel', [$('<a />', {
+                'href': __.data('url'),
+                'class': 'pin-history-link',
+                'target': '_blank',
+                'html': str_limit(__.data('url'), 100)
+            }), 0]).trigger('refresh.owl.carousel');
+
+            pin_count.html(parseInt(pin_count.html()) + 1)
+        }
+        else if (obj.status == 'failed')
+        {
+            M.toast({ html: 'Hay aksi, beklenmedik bir durum.', classes: 'orange darken-2' })
+        }
+    }
+
+    function __pin_group(__, obj)
+    {
+        if (obj.status == 'ok')
+        {
+            $('[data-button=pins-button]').removeAttr('disabled').attr('data-id', obj.data.id).children('span.count').html(obj.data.pins.length)
+        }
+    }
+
     function __search_archive(__, obj)
     {
         var ul = $('#search_archive');
@@ -24,7 +101,155 @@
                     var item = item_model.clone();
                         item.removeClass('model hide').addClass('_tmp').attr('data-id', 'list-item-' + o.id)
 
-                        item.html(o._index)
+                        if  (o._type == 'tweet')
+                        {
+                            var model = $('<div />', {
+                                'html': [
+                                    $('<div />', {
+                                        'html': [
+                                            $('<a />', {
+                                                'html': o.user.name,
+                                                'href': 'https://twitter.com/' + o.user.screen_name,
+                                                'class': 'd-table red-text'
+                                            }).attr('target', 'blank'),
+                                            $('<a />', {
+                                                'html': 'https://twitter.com/' + o.user.screen_name + '/status/' + o._id,
+                                                'href': 'https://twitter.com/' + o.user.screen_name + '/status/' + o._id,
+                                                'class': 'd-table orange-text'
+                                            }).attr('target', '_blank'),
+                                            $('<time>', {
+                                                'html': o.created_at,
+                                                'class': 'd-table grey-text text-lighten-1'
+                                            }),
+                                            $('<span />', {
+                                                'html': o.text,
+                                                'class': 'black-text'
+                                            })
+                                        ]
+                                    })
+                                ]
+                            }).mark(obj.words, {
+                                'element': 'span',
+                                'className': 'marked yellow black-text',
+                                'accuracy': 'complementary'
+                            });
+
+                            if (o.deleted_at)
+                            {
+                                model.css({ 'opacity': '.4' })
+                            }
+
+                            item.append(model)
+                        }
+                        else if  (o._type == 'entry')
+                        {
+                            var model = $('<div />', {
+                                'html': [
+                                    $('<div />', {
+                                        'html': [
+                                            $('<span />', {
+                                                'html': o.author,
+                                                'class': 'd-table red-text'
+                                            }),
+                                            $('<a />', {
+                                                'html': o.url,
+                                                'href': o.url,
+                                                'class': 'd-table orange-text'
+                                            }).attr('target', '_blank'),
+                                            $('<time>', {
+                                                'html': o.created_at,
+                                                'class': 'd-table grey-text text-lighten-1'
+                                            }),
+                                            $('<span />', {
+                                                'html': o.text,
+                                                'class': 'black-text'
+                                            })
+                                        ]
+                                    })
+                                ]
+                            }).mark(obj.words, {
+                                'element': 'span',
+                                'className': 'marked yellow black-text',
+                                'accuracy': 'complementary'
+                            });
+
+                            if (o.deleted_at)
+                            {
+                                model.css({ 'opacity': '.4' })
+                            }
+
+                            item.append(model)
+                        }
+
+                        item.prepend(
+                            $('<div />', {
+                                'class': 'right',
+                                'html': [
+                                    $('<a />', {
+                                        'href': '#',
+                                        'class': 'content-dropdown dropdown-trigger',
+                                        'data-target': 'dropdown-' + o.uuid,
+                                        'html': $('<i />', {
+                                            'class': 'material-icons',
+                                            'html': 'arrow_drop_down'
+                                        })
+                                    }),
+                                    $('<ul />', {
+                                        'id': 'dropdown-' + o.uuid,
+                                        'class': 'dropdown-content',
+                                        'html': [
+                                            $('<li />', {
+                                                'html': $('<a />', {
+                                                    'href': '{{ url('/') }}/db/' + o._index + '/' + o._type + '/' + o._id,
+                                                    'html': 'İncele'
+                                                })
+                                            }),
+                                            $('<li />', {
+                                                'html': $('<a />', {
+                                                    'href': '#',
+                                                    'html': 'Pin',
+                                                    'class': 'json',
+                                                    'data-href': '{{ route('pin', 'add') }}',
+                                                    'data-method': 'post',
+                                                    'data-include': 'group_id',
+                                                    'data-callback': '__pin',
+                                                    'data-trigger': 'pin',
+                                                    'data-id': o._id,
+                                                    'data-pin-uuid': o.uuid,
+                                                    'data-index': o._index,
+                                                    'data-type': o._type
+                                                })
+                                            })
+                                        ]
+                                    })
+                                ]
+                            })
+                        )
+
+                        $('.content-dropdown').dropdown({
+                            alignment: 'right'
+                        })
+
+                        item.append(
+                            $('<div />', {
+                                'css': { 'width': '100%' },
+                                'class': 'd-flex justify-content-between mt-1',
+                                'html': [
+                                    $('<div />', {
+                                        'css': { 'width': (o.sentiment.pos*100) + '%', 'height': '2px' },
+                                        'class': 'red accent-2'
+                                    }),
+                                    $('<div />', {
+                                        'css': { 'width': (o.sentiment.neu*100) + '%', 'height': '2px' },
+                                        'class': 'grey accent-2'
+                                    }),
+                                    $('<div />', {
+                                        'css': { 'width': (o.sentiment.neg*100) + '%', 'height': '2px' },
+                                        'class': 'green accent-2'
+                                    })
+                                ]
+                            })
+                        )
 
                         item.appendTo(ul)
                 })
@@ -36,8 +261,19 @@
 @endpush
 
 @section('content')
-    <div class="card card-unstyled">
-        <div class="card-content">
+    <div class="d-flex justify-content-end mb-1">
+        <a
+            class="btn-flat waves-effect json"
+            disabled
+            data-button="pins-button"
+            data-href="{{ route('route.generate.id') }}"
+            data-method="post"
+            data-name="pin.pins"
+            data-callback="__go"
+            href="#">Pinler (<span class="count">0</span>)</a>
+    </div>
+    <div class="card">
+        <div class="card-content grey lighten-4">
             <div class="input-field">
                 <input
                     id="string"
@@ -46,20 +282,20 @@
                     class="validate json json-search"
                     data-json-target="#search_archive" />
                 <label for="string">Ara</label>
+                <span class="helper-text"></span>
                 <span class="d-flex">
                     <a href="#" class="align-self-center" data-trigger="info" style="margin: 0 .4rem 0 0;">
                         <i class="material-icons grey-text">info_outline</i>
                     </a>
                     <span class="align-self-center grey-text">Aramak istediğiniz kelimeyi veya kriteri girin.</span>
                 </span>
-                <span class="helper-text"></span>
             </div>
         </div>
         <ul class="collection json-clear" 
             id="search_archive"
             data-href="{{ route('search.request') }}"
             data-skip="0"
-            data-take="100"
+            data-take="10"
             data-more-button="#search_archive-more_button"
             data-callback="__search_archive"
             data-method="post"
@@ -67,7 +303,6 @@
             data-nothing>
             <li class="collection-item nothing hide">
                 @component('components.nothing')
-                    @slot('cloud_class', 'white-text')
                     @slot('size', 'small')
                     @slot('text', 'Sonuç bulunamadı!')
                     @slot('text_class', 'grey-text')
@@ -156,6 +391,33 @@
                     <span>{{ $module }}</span>
                 </label>
             @endforeach
+        </div>
+    </div>
+
+    <div class="card with-bg">
+        <div class="card-content">
+            <span class="card-title">Pin Grupları</span>
+        </div>
+        <div class="collection collection-bordered">
+            @forelse ($pin_groups as $group)
+                <label class="collection-item waves-effect d-block" style="padding: 12px 24px;">
+                    <input
+                        autocomplete="off"
+                        name="group_id"
+                        id="group_id-{{ $group->id }}"
+                        value="{{ $group->id }}"
+                        class="json"
+                        data-href="{{ route('pin.group') }}"
+                        data-method="post"
+                        data-delay="1"
+                        type="radio"
+                        data-callback="__pin_group" />
+                    <span>{{ str_limit($group->name, 10) }}</span>
+                </label>
+            @empty
+                <div class="collection-item grey-text">Henüz pin grubu oluşturmadınız.</div>
+            @endforelse
+            <a class="collection-item waves-effect d-block" href="{{ route('pin.groups') }}">Tümü</a>
         </div>
     </div>
 @endsection

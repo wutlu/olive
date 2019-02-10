@@ -589,7 +589,7 @@
     <div class="card">
         <div class="collection">
             @if ($options['twitter.index.trends'] == 'off')
-                <div class="collection-item d-block orange-text">
+                <div class="collection-item d-block">
                     <i class="material-icons d-table">warning</i>
                     Trend indexinin oluşturulması bekleniyor.
                 </div>
@@ -629,7 +629,7 @@
                     <span>Tweet Botu</span>
                 </label>
             @else
-                <div class="collection-item d-block orange-text">
+                <div class="collection-item d-block">
                     <i class="material-icons d-table">warning</i>
                     Tweet indexlerinin oluşturulması bekleniyor.
                 </div>

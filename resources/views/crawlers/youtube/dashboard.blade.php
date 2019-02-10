@@ -186,7 +186,7 @@
     <div class="card">
         <div class="collection">
             @if ($options['youtube.index.videos'] == 'off' || $options['youtube.index.comments'] != date('Y.m', strtotime('+ 1 month')))
-                <div class="collection-item d-block orange-text">
+                <div class="collection-item d-block">
                     <i class="material-icons d-table">warning</i>
                     YouTube indexlerinin oluşturulması bekleniyor.
                 </div>

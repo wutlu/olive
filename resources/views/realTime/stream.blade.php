@@ -58,29 +58,6 @@
         display: table;
     }
 
-    a[data-trigger=pin] {
-        width: 32px;
-        height: 32px;
-
-        background-image: url('../img/icons/pin.png');
-        background-repeat: no-repeat;
-        background-position: center center;
-        background-size: 24px 24px;
-    }
-    a[data-trigger=pin].on {
-        background-image: url('../img/icons/unpin.png');
-    }
-
-    a[data-button=view] {
-        width: 32px;
-        height: 32px;
-
-        background-image: url('../img/icons/info.png');
-        background-repeat: no-repeat;
-        background-position: center center;
-        background-size: 24px 24px;
-    }
-
     [data-name=sentiment]:before {
         font-size: 128px;
         position: absolute;
@@ -224,16 +201,20 @@
         </div>
         <ul class="collection">
             <li class="collection-item hide model grey-text lined">
-                <div>
-                    <a href="#" class="btn-flat btn-floating waves-effect align-self-center" data-button="view"></a>
+                <div class="mb-1">
+                    <a href="#" class="btn-small waves-effect white grey-text text-darken-2" data-button="view">
+                        <i class="material-icons">info</i>
+                    </a>
                     <a
                         href="#"
-                        class="btn-flat btn-floating waves-effect json align-self-center"
+                        class="btn-small waves-effect white grey-text text-darken-2 json"
                         data-href="{{ route('pin', 'add') }}"
                         data-method="post"
                         data-include="group_id"
                         data-callback="__pin"
-                        data-trigger="pin"></a>
+                        data-trigger="pin">
+                            <i class="material-icons">add</i>
+                    </a>
                 </div>
                 <time data-name="created-at"></time>
                 <a href="#" data-name="url" class="indigo-text d-table" target="_blank"></a>
