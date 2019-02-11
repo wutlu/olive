@@ -17,7 +17,6 @@
     .time-line > .collection {
         max-height: 4096px;
         overflow: hidden;
-        word-wrap: break-word;
 
         border-width: 0 0 0 1rem;
         border-style: solid;
@@ -34,7 +33,6 @@
 
     .time-line > .collection > .lined {
         position: relative;
-        word-wrap: break-word;
         border-radius: 1rem 0 0 1rem;
         margin: 1rem 0 1rem 1rem;
     }
@@ -612,34 +610,22 @@
                                 'html': 'Kelime Listesi'
                             }),
                             $('<span />', {
-                                'html': [
-                                    $('<span />', {
-                                        'class': 'd-flex',
-                                        'html': [
-                                            $('<a />', {
-                                                'href': '#',
-                                                'class': 'align-self-center',
-                                                'data-trigger': 'info',
-                                                'css': { 'margin': '0 .4rem 0 0' },
-                                                'html': $('<i />', {
-                                                    'class': 'material-icons grey-text',
-                                                    'html': 'info_outline'
-                                                })
-                                            }),
-                                            $('<span />', {
-                                                'class': 'align-self-center grey-text',
-                                                'html': 'Aramak istediğiniz kelimeyi veya kriteri girin.'
-                                            })
-                                        ]
+                                'html': $('<a />', {
+                                    'href': '#',
+                                    'class': 'btn-flat waves-effect',
+                                    'data-trigger': 'info',
+                                    'css': { 'margin': '0 .4rem 0 0' },
+                                    'html': $('<i />', {
+                                        'class': 'material-icons grey-text',
+                                        'html': 'info_outline'
                                     })
-                                ]
+                                })
                             }),
                             $('<span />', {
                                 'class': 'helper-text'
                             })
                         ]
                     }),
-                    $('<br />'),
                     $('<div />', {
                         'class': 'collection',
                         'html': [
@@ -675,7 +661,7 @@
                 $('<a />', {
                     'data-trigger': 'delete-keyword-group',
                     'href': '#',
-                    'class': 'waves-effect btn-flat grey-text hide',
+                    'class': 'waves-effect btn-flat red-text hide',
                     'html': buttons.remove
                 }),
                 $('<span />', {

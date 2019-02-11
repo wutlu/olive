@@ -1855,12 +1855,9 @@ table tr {
   background-color: #fff;
 }
 .modal .modal-content > .modal-footer {
-  margin: 1rem 0 0;
+  margin: 1px 0 0;
   padding: .5rem 2rem;
-  width: auto;
-  display: table;
   background-color: #fff;
-  float: right;
 }
 
 .modal.modal-small {

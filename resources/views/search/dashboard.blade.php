@@ -13,6 +13,10 @@
         padding: .4rem;
         border-radius: .2rem;
     }
+
+    .time-line > .collection > .collection-item {
+        word-break: break-all;
+    }
 @endpush
 
 @push('local.scripts')
@@ -60,15 +64,6 @@
             });
 
             M.toast({ html: toastHTML.get(0).outerHTML })
-
-            $('#wildcard-pin-history').removeClass('hide')
-
-            $('.owl-wildcard').trigger('add.owl.carousel', [$('<a />', {
-                'href': __.data('url'),
-                'class': 'pin-history-link',
-                'target': '_blank',
-                'html': str_limit(__.data('url'), 100)
-            }), 0]).trigger('refresh.owl.carousel');
 
             pin_count.html(parseInt(pin_count.html()) + 1)
         }
@@ -138,8 +133,6 @@
                             {
                                 model.css({ 'opacity': '.4' })
                             }
-
-                            item.append(model)
                         }
                         else if  (o._type == 'entry')
                         {
@@ -181,8 +174,6 @@
                             {
                                 model.css({ 'opacity': '.4' })
                             }
-
-                            item.html(model)
                         }
                         else if (o._type == 'article')
                         {
@@ -220,8 +211,6 @@
                             {
                                 model.css({ 'opacity': '.4' })
                             }
-
-                            item.html(model)
                         }
                         else if (o._type == 'product')
                         {
@@ -259,8 +248,6 @@
                             {
                                 model.css({ 'opacity': '.4' })
                             }
-
-                            item.html(model)
                         }
                         else if (o._type == 'comment')
                         {
@@ -299,8 +286,6 @@
                             {
                                 model.css({ 'opacity': '.4' })
                             }
-
-                            item.html(model)
                         }
                         else if (o._type == 'video')
                         {
@@ -339,80 +324,41 @@
                             {
                                 model.css({ 'opacity': '.4' })
                             }
-
-                            item.html(model)
                         }
 
-                        item.prepend(
-                            $('<div />', {
-                                'class': 'right',
-                                'html': [
-                                    $('<a />', {
-                                        'href': '#',
-                                        'class': 'content-dropdown dropdown-trigger',
-                                        'data-target': 'dropdown-' + o.uuid,
-                                        'html': $('<i />', {
-                                            'class': 'material-icons',
-                                            'html': 'arrow_drop_down'
-                                        })
-                                    }),
-                                    $('<ul />', {
-                                        'id': 'dropdown-' + o.uuid,
-                                        'class': 'dropdown-content',
-                                        'html': [
-                                            $('<li />', {
-                                                'html': $('<a />', {
-                                                    'href': '{{ url('/') }}/db/' + o._index + '/' + o._type + '/' + o._id,
-                                                    'html': 'İncele'
-                                                })
-                                            }),
-                                            $('<li />', {
-                                                'html': $('<a />', {
-                                                    'href': '#',
-                                                    'html': 'Pin',
-                                                    'class': 'json',
-                                                    'data-href': '{{ route('pin', 'add') }}',
-                                                    'data-method': 'post',
-                                                    'data-include': 'group_id',
-                                                    'data-callback': '__pin',
-                                                    'data-trigger': 'pin',
-                                                    'data-id': o._id,
-                                                    'data-pin-uuid': o.uuid,
-                                                    'data-index': o._index,
-                                                    'data-type': o._type
-                                                })
-                                            })
-                                        ]
+                        $('<div />', {
+                            'class': 'mt-1',
+                            'html': [
+                                $('<a />', {
+                                    'class': 'btn-small waves-effect white grey-text text-darken-2',
+                                    'href': '{{ url('/') }}/db/' + o._index + '/' + o._type + '/' + o._id,
+                                    'html': $('<i />', {
+                                        'class': 'material-icons',
+                                        'html': 'info'
                                     })
-                                ]
-                            })
-                        )
-
-                        $('.content-dropdown').dropdown({
-                            alignment: 'right'
-                        })
-
-                        item.append(
-                            $('<div />', {
-                                'css': { 'width': '100%' },
-                                'class': 'd-flex justify-content-between mt-1',
-                                'html': [
-                                    $('<div />', {
-                                        'css': { 'width': (o.sentiment.neg*100) + '%', 'height': '1px' },
-                                        'class': 'red accent-2'
+                                }),
+                                $('<span />', { 'html': ' ' }),
+                                $('<a />', {
+                                    'href': '#',
+                                    'html': $('<i />', {
+                                        'class': 'material-icons',
+                                        'html': 'add'
                                     }),
-                                    $('<div />', {
-                                        'css': { 'width': (o.sentiment.neu*100) + '%', 'height': '1px' },
-                                        'class': 'grey accent-2'
-                                    }),
-                                    $('<div />', {
-                                        'css': { 'width': (o.sentiment.pos*100) + '%', 'height': '1px' },
-                                        'class': 'green accent-2'
-                                    })
-                                ]
-                            })
-                        )
+                                    'class': 'btn-small waves-effect white grey-text text-darken-2 json',
+                                    'data-href': '{{ route('pin', 'add') }}',
+                                    'data-method': 'post',
+                                    'data-include': 'group_id',
+                                    'data-callback': '__pin',
+                                    'data-trigger': 'pin',
+                                    'data-id': o._id,
+                                    'data-pin-uuid': o.uuid,
+                                    'data-index': o._index,
+                                    'data-type': o._type
+                                })
+                            ]
+                        }).appendTo(model)
 
+                        item.html(model)
                         item.appendTo(ul)
                 })
             }
@@ -423,12 +369,12 @@
 @endpush
 
 @section('content')
-    <div class="card with-bg">
+    <div class="card card-unstyled">
         <div class="card-content d-flex justify-content-between">
             <span class="card-title">Arama Motoru</span>
             <div class="d-flex justify-content-end mb-1">
                 <a
-                    class="btn-flat waves-effect json"
+                    class="btn white grey-text text-darken-2 waves-effect json"
                     disabled
                     data-button="pins-button"
                     data-href="{{ route('route.generate.id') }}"
@@ -436,15 +382,18 @@
                     data-name="pin.pins"
                     data-callback="__go"
                     href="#">Pinler (<span class="count">0</span>)</a>
+                <a href="#" class="btn white waves-effect ml-1" data-trigger="info">
+                    <i class="material-icons tiny grey-text">info_outline</i>
+                </a>
             </div>
         </div>
-        <nav class="nav-half mb-0">
+        <nav class="nav-half mb-0 gree">
             <div class="nav-wrapper">
                 <div class="input-field">
                     <input id="string"
                            name="string"
                            type="search"
-                           class="validate json json-search"
+                           class="validate json json-search white"
                            data-json-target="#search"
                            placeholder="Ara" />
                     <label class="label-icon" for="string">
@@ -454,33 +403,28 @@
                 </div>
             </div>
         </nav>
-        <div class="card-content">
-            <span class="d-flex">
-                <a href="#" class="align-self-center" data-trigger="info" style="margin: 0 .4rem 0 0;">
-                    <i class="material-icons grey-text">info_outline</i>
-                </a>
-                <span class="align-self-center grey-text">Aramak istediğiniz kelimeyi veya kriteri girin.</span>
-            </span>
+        <div class="time-line">
+            <ul class="collection json-clear" 
+                id="search"
+                data-href="{{ route('search.request') }}"
+                data-skip="0"
+                data-take="10"
+                data-more-button="#search-more_button"
+                data-callback="__search_archive"
+                data-method="post"
+                data-include="start_date,end_date,sentiment,modules,string"
+                data-nothing>
+                <li class="collection-item nothing hide">
+                    @component('components.nothing')
+                        @slot('size', 'small')
+                        @slot('cloud_class', 'white-text')
+                        @slot('text', 'Sonuç bulunamadı!')
+                        @slot('text_class', 'grey-text')
+                    @endcomponent
+                </li>
+                <li class="collection-item model hide"></li>
+            </ul>
         </div>
-        <ul class="collection json-clear" 
-            id="search"
-            data-href="{{ route('search.request') }}"
-            data-skip="0"
-            data-take="10"
-            data-more-button="#search-more_button"
-            data-callback="__search_archive"
-            data-method="post"
-            data-include="start_date,end_date,sentiment,modules,string"
-            data-nothing>
-            <li class="collection-item nothing hide">
-                @component('components.nothing')
-                    @slot('size', 'small')
-                    @slot('text', 'Sonuç bulunamadı!')
-                    @slot('text_class', 'grey-text')
-                @endcomponent
-            </li>
-            <li class="collection-item model hide"></li>
-        </ul>
     </div>
 
     <div class="center-align">
