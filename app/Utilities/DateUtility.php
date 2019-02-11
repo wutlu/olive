@@ -185,4 +185,14 @@ class DateUtility
 
         return false;
     }
+
+    /**
+     * Tarih Sırala
+     *
+     * @return array
+     */
+    public static function dateSort($a, $b)
+    {
+        return strtotime($a['created_at']) - strtotime($b['created_at']);
+    }
 }

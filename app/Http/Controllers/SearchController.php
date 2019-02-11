@@ -78,7 +78,14 @@ class SearchController extends Controller
 
         $clean = Term::cleanSearchQuery($request->string);
 
-        $modules = array_flip($request->modules);
+        if (is_array($request->modules))
+        {
+            $modules = array_flip($request->modules);
+        }
+        else
+        {
+            $modules = [ $request->modules => 'on' ];
+        }
 
         ### [ twitter modülü ] ###
         if (isset($modules['twitter']))
@@ -303,6 +310,7 @@ class SearchController extends Controller
                         'title' => $object['_source']['title'],
                         'text' => @$object['_source']['description'],
                         'channel' => [
+                            'id' => $object['_source']['channel']['id'],
                             'title' => $object['_source']['channel']['title']
                         ],
                         'created_at' => date('d.m.Y H:i:s', strtotime($object['_source']['created_at']))
@@ -355,11 +363,9 @@ class SearchController extends Controller
             }
         }
 
-        shuffle($data);
-
         return [
             'status' => 'ok',
-            'hits' => $data,
+            'hits' => array_reverse($data),
             'words' => $clean->words
         ];
     }

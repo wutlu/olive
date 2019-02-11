@@ -88,7 +88,7 @@
 
     function __search_archive(__, obj)
     {
-        var ul = $('#search_archive');
+        var ul = $('#search');
         var item_model = ul.children('.model');
 
         if (obj.status == 'ok')
@@ -107,20 +107,20 @@
                                 'html': [
                                     $('<div />', {
                                         'html': [
+                                            $('<time>', {
+                                                'html': o.created_at,
+                                                'class': 'd-table grey-text text-lighten-1'
+                                            }),
+                                            $('<a />', {
+                                                'html': 'https://twitter.com/' + o.user.screen_name + '/status/' + o._id,
+                                                'href': 'https://twitter.com/' + o.user.screen_name + '/status/' + o._id,
+                                                'class': 'd-table green-text'
+                                            }).attr('target', '_blank'),
                                             $('<a />', {
                                                 'html': o.user.name,
                                                 'href': 'https://twitter.com/' + o.user.screen_name,
                                                 'class': 'd-table red-text'
                                             }).attr('target', 'blank'),
-                                            $('<a />', {
-                                                'html': 'https://twitter.com/' + o.user.screen_name + '/status/' + o._id,
-                                                'href': 'https://twitter.com/' + o.user.screen_name + '/status/' + o._id,
-                                                'class': 'd-table orange-text'
-                                            }).attr('target', '_blank'),
-                                            $('<time>', {
-                                                'html': o.created_at,
-                                                'class': 'd-table grey-text text-lighten-1'
-                                            }),
                                             $('<span />', {
                                                 'html': o.text,
                                                 'class': 'black-text'
@@ -147,18 +147,22 @@
                                 'html': [
                                     $('<div />', {
                                         'html': [
-                                            $('<span />', {
-                                                'html': o.author,
-                                                'class': 'd-table red-text'
+                                            $('<time>', {
+                                                'html': o.created_at,
+                                                'class': 'd-table grey-text text-lighten-1'
                                             }),
                                             $('<a />', {
                                                 'html': o.url,
                                                 'href': o.url,
-                                                'class': 'd-table orange-text'
+                                                'class': 'd-table green-text'
                                             }).attr('target', '_blank'),
-                                            $('<time>', {
-                                                'html': o.created_at,
-                                                'class': 'd-table grey-text text-lighten-1'
+                                            $('<span />', {
+                                                'html': o.title,
+                                                'class': 'd-table teal-text'
+                                            }),
+                                            $('<span />', {
+                                                'html': o.author,
+                                                'class': 'd-table red-text'
                                             }),
                                             $('<span />', {
                                                 'html': o.text,
@@ -178,7 +182,165 @@
                                 model.css({ 'opacity': '.4' })
                             }
 
-                            item.append(model)
+                            item.html(model)
+                        }
+                        else if (o._type == 'article')
+                        {
+                            var model = $('<div />', {
+                                'html': [
+                                    $('<div />', {
+                                        'html': [
+                                            $('<time>', {
+                                                'html': o.created_at,
+                                                'class': 'd-table grey-text text-lighten-1'
+                                            }),
+                                            $('<a />', {
+                                                'html': str_limit(o.url, 96),
+                                                'href': o.url,
+                                                'class': 'd-table green-text'
+                                            }).attr('target', '_blank'),
+                                            $('<span />', {
+                                                'html': o.title,
+                                                'class': 'd-table teal-text'
+                                            }),
+                                            $('<span />', {
+                                                'html': o.text,
+                                                'class': 'black-text'
+                                            })
+                                        ]
+                                    })
+                                ]
+                            }).mark(obj.words, {
+                                'element': 'span',
+                                'className': 'marked yellow black-text',
+                                'accuracy': 'complementary'
+                            });
+
+                            if (o.deleted_at)
+                            {
+                                model.css({ 'opacity': '.4' })
+                            }
+
+                            item.html(model)
+                        }
+                        else if (o._type == 'product')
+                        {
+                            var model = $('<div />', {
+                                'html': [
+                                    $('<div />', {
+                                        'html': [
+                                            $('<time>', {
+                                                'html': o.created_at,
+                                                'class': 'd-table grey-text text-lighten-1'
+                                            }),
+                                            $('<a />', {
+                                                'html': str_limit(o.url, 96),
+                                                'href': o.url,
+                                                'class': 'd-table green-text'
+                                            }).attr('target', '_blank'),
+                                            $('<span />', {
+                                                'html': o.title,
+                                                'class': 'd-table teal-text'
+                                            }),
+                                            $('<span />', {
+                                                'html': o.text ? o.text : 'Açıklama Yok',
+                                                'class': 'black-text'
+                                            })
+                                        ]
+                                    })
+                                ]
+                            }).mark(obj.words, {
+                                'element': 'span',
+                                'className': 'marked yellow black-text',
+                                'accuracy': 'complementary'
+                            });
+
+                            if (o.deleted_at)
+                            {
+                                model.css({ 'opacity': '.4' })
+                            }
+
+                            item.html(model)
+                        }
+                        else if (o._type == 'comment')
+                        {
+                            var model = $('<div />', {
+                                'html': [
+                                    $('<div />', {
+                                        'html': [
+                                            $('<time>', {
+                                                'html': o.created_at,
+                                                'class': 'd-table grey-text text-lighten-1'
+                                            }),
+                                            $('<a />', {
+                                                'html': o.channel.title,
+                                                'href': 'https://www.youtube.com/channel/' + o.channel.id,
+                                                'class': 'd-table teal-text'
+                                            }).attr('target', '_blank'),
+                                            $('<a />', {
+                                                'html': 'https://www.youtube.com/watch?v=' + o.video_id,
+                                                'href': 'https://www.youtube.com/watch?v=' + o.video_id,
+                                                'class': 'd-table green-text'
+                                            }).attr('target', '_blank'),
+                                            $('<span />', {
+                                                'html': o.text,
+                                                'class': 'black-text'
+                                            })
+                                        ]
+                                    })
+                                ]
+                            }).mark(obj.words, {
+                                'element': 'span',
+                                'className': 'marked yellow black-text',
+                                'accuracy': 'complementary'
+                            });
+
+                            if (o.deleted_at)
+                            {
+                                model.css({ 'opacity': '.4' })
+                            }
+
+                            item.html(model)
+                        }
+                        else if (o._type == 'video')
+                        {
+                            var model = $('<div />', {
+                                'html': [
+                                    $('<div />', {
+                                        'html': [
+                                            $('<time>', {
+                                                'html': o.created_at,
+                                                'class': 'd-table grey-text text-lighten-1'
+                                            }),
+                                            $('<a />', {
+                                                'html': o.channel.title,
+                                                'href': 'https://www.youtube.com/channel/' + o.channel.id,
+                                                'class': 'd-table teal-text'
+                                            }).attr('target', '_blank'),
+                                            $('<a />', {
+                                                'html': o.title,
+                                                'href': 'https://www.youtube.com/watch?v=' + o._id,
+                                                'class': 'd-table green-text'
+                                            }).attr('target', '_blank'),
+                                            $('<span />', {
+                                                'html': o.text,
+                                                'class': 'black-text'
+                                            })
+                                        ]
+                                    })
+                                ]
+                            }).mark(obj.words, {
+                                'element': 'span',
+                                'className': 'marked yellow black-text',
+                                'accuracy': 'complementary'
+                            });
+
+                            if (o.deleted_at)
+                            {
+                                model.css({ 'opacity': '.4' })
+                            }
+
+                            item.html(model)
                         }
 
                         item.prepend(
@@ -236,15 +398,15 @@
                                 'class': 'd-flex justify-content-between mt-1',
                                 'html': [
                                     $('<div />', {
-                                        'css': { 'width': (o.sentiment.pos*100) + '%', 'height': '2px' },
+                                        'css': { 'width': (o.sentiment.neg*100) + '%', 'height': '1px' },
                                         'class': 'red accent-2'
                                     }),
                                     $('<div />', {
-                                        'css': { 'width': (o.sentiment.neu*100) + '%', 'height': '2px' },
+                                        'css': { 'width': (o.sentiment.neu*100) + '%', 'height': '1px' },
                                         'class': 'grey accent-2'
                                     }),
                                     $('<div />', {
-                                        'css': { 'width': (o.sentiment.neg*100) + '%', 'height': '2px' },
+                                        'css': { 'width': (o.sentiment.pos*100) + '%', 'height': '1px' },
                                         'class': 'green accent-2'
                                     })
                                 ]
@@ -261,42 +423,51 @@
 @endpush
 
 @section('content')
-    <div class="d-flex justify-content-end mb-1">
-        <a
-            class="btn-flat waves-effect json"
-            disabled
-            data-button="pins-button"
-            data-href="{{ route('route.generate.id') }}"
-            data-method="post"
-            data-name="pin.pins"
-            data-callback="__go"
-            href="#">Pinler (<span class="count">0</span>)</a>
-    </div>
-    <div class="card">
-        <div class="card-content grey lighten-4">
-            <div class="input-field">
-                <input
-                    id="string"
-                    name="string"
-                    type="text"
-                    class="validate json json-search"
-                    data-json-target="#search_archive" />
-                <label for="string">Ara</label>
-                <span class="helper-text"></span>
-                <span class="d-flex">
-                    <a href="#" class="align-self-center" data-trigger="info" style="margin: 0 .4rem 0 0;">
-                        <i class="material-icons grey-text">info_outline</i>
-                    </a>
-                    <span class="align-self-center grey-text">Aramak istediğiniz kelimeyi veya kriteri girin.</span>
-                </span>
+    <div class="card with-bg">
+        <div class="card-content d-flex justify-content-between">
+            <span class="card-title">Arama</span>
+            <div class="d-flex justify-content-end mb-1">
+                <a
+                    class="btn-flat waves-effect json"
+                    disabled
+                    data-button="pins-button"
+                    data-href="{{ route('route.generate.id') }}"
+                    data-method="post"
+                    data-name="pin.pins"
+                    data-callback="__go"
+                    href="#">Pinler (<span class="count">0</span>)</a>
             </div>
         </div>
+        <nav class="nav-half mb-0">
+            <div class="nav-wrapper">
+                <div class="input-field">
+                    <input id="string"
+                           name="string"
+                           type="search"
+                           class="validate json json-search"
+                           data-json-target="#search"
+                           placeholder="Ara" />
+                    <label class="label-icon" for="string">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <i class="material-icons">close</i>
+                </div>
+            </div>
+        </nav>
+        <div class="card-content">
+            <span class="d-flex">
+                <a href="#" class="align-self-center" data-trigger="info" style="margin: 0 .4rem 0 0;">
+                    <i class="material-icons grey-text">info_outline</i>
+                </a>
+                <span class="align-self-center grey-text">Aramak istediğiniz kelimeyi veya kriteri girin.</span>
+            </span>
+        </div>
         <ul class="collection json-clear" 
-            id="search_archive"
+            id="search"
             data-href="{{ route('search.request') }}"
             data-skip="0"
             data-take="10"
-            data-more-button="#search_archive-more_button"
+            data-more-button="#search-more_button"
             data-callback="__search_archive"
             data-method="post"
             data-include="start_date,end_date,sentiment,modules,string"
@@ -314,9 +485,9 @@
 
     <div class="center-align">
         <button class="btn-flat waves-effect hide json"
-                id="search_archive-more_button"
+                id="search-more_button"
                 type="button"
-                data-json-target="ul#search_archive">Daha Fazla</button>
+                data-json-target="ul#search">Daha Fazla</button>
     </div>
 @endsection
 
@@ -347,13 +518,13 @@
                         <input type="radio" name="sentiment" value="pos" />
                         <span class="material-icons grey-text text-darken-2">sentiment_satisfied</span>
                     </label>
-                    <label class="align-self-center mr-1" data-tooltip="Negatif">
-                        <input type="radio" name="sentiment" value="neg" />
-                        <span class="material-icons grey-text text-darken-2">sentiment_dissatisfied</span>
-                    </label>
                     <label class="align-self-center mr-1" data-tooltip="Nötr">
                         <input type="radio" name="sentiment" value="neu" />
                         <span class="material-icons grey-text text-darken-2">sentiment_neutral</span>
+                    </label>
+                    <label class="align-self-center mr-1" data-tooltip="Negatif">
+                        <input type="radio" name="sentiment" value="neg" />
+                        <span class="material-icons grey-text text-darken-2">sentiment_dissatisfied</span>
                     </label>
                     <label class="align-self-center mr-1" data-tooltip="Tümü">
                         <input type="radio" name="sentiment" value="all" checked="" />

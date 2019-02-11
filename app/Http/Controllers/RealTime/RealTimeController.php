@@ -410,7 +410,7 @@ class RealTimeController extends Controller
             }
         }
 
-        shuffle($data);
+        usort($data, '\App\Utilities\DateUtility::dateSort');
 
         return [
             'status' => 'ok',

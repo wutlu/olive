@@ -15,7 +15,7 @@
     }
 
     .time-line > .collection {
-        max-height: 2048px;
+        max-height: 4096px;
         overflow: hidden;
         word-wrap: break-word;
 
@@ -179,7 +179,7 @@
 
 @section('content')
     <div
-        class="card time-line"
+        class="card with-bg time-line"
         data-href="{{ route('realtime.query') }}"
         data-callback="__realtime"
         data-method="post"

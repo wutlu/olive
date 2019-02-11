@@ -58,7 +58,7 @@
                                                 <span class="helper-text">Hesap şifreniz.</span>
                                             </div>
                                             <div class="col s12 right-align">
-                                                <button type="submit" class="waves-effect waves-light btn cyan darken-4">Giriş Yap</button>
+                                                <button type="submit" class="waves-effect waves-light btn-flat">Giriş Yap</button>
                                             </div>
                                         </div>
                                     </form>
@@ -98,7 +98,7 @@
                                                 </label>
                                             </div>
                                             <div class="col s12 right-align">
-                                                <button type="submit" class="waves-effect waves-light btn cyan darken-4">Kaydol</button>
+                                                <button type="submit" class="waves-effect waves-light btn-flat">Kaydol</button>
                                             </div>
                                         </div>
                                     </form>
@@ -115,7 +115,7 @@
                                                 <div class="captcha" data-id="password-captcha"></div>
                                             </div>
                                             <div class="col s12 right-align">
-                                                <button type="submit" class="waves-effect waves-light btn cyan darken-4">Şifre Gönder</button>
+                                                <button type="submit" class="waves-effect waves-light btn-flat">Şifre Gönder</button>
                                             </div>
                                         </div>
                                     </form>
