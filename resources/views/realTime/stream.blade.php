@@ -828,45 +828,19 @@
                     data-href="{{ route('realtime.keyword.group') }}"
                     data-method="post"
                     data-callback="__get_keyword_group"
-                    id="menu"
                     href="#">
                     <i class="material-icons grey-text text-darken-2">create</i>
                 </a>
             </li>
         </ul>
+        @component('components.loader')
+            @slot('color', 'cyan')
+            @slot('id', 'keyword-group-loader')
+            @slot('class', 'card-loader-unstyled')
+        @endcomponent
     </div>
 
-    @component('components.loader')
-        @slot('color', 'cyan')
-        @slot('id', 'keyword-group-loader')
-    @endcomponent
-
-    <div class="card with-bg">
-        <div class="card-content">
-            <span class="card-title">Pin Grupları</span>
-        </div>
-        <div class="collection collection-bordered">
-            @forelse ($pin_groups as $group)
-                <label class="collection-item waves-effect d-block" style="padding: 12px 24px;">
-                    <input
-                        autocomplete="off"
-                        name="group_id"
-                        id="group_id-{{ $group->id }}"
-                        value="{{ $group->id }}"
-                        class="json"
-                        data-href="{{ route('pin.group') }}"
-                        data-method="post"
-                        data-delay="1"
-                        type="radio"
-                        data-callback="__pin_group" />
-                    <span>{{ str_limit($group->name, 10) }}</span>
-                </label>
-            @empty
-                <div class="collection-item grey-text">Henüz pin grubu oluşturmadınız.</div>
-            @endforelse
-            <a class="collection-item waves-effect d-block" href="{{ route('pin.groups') }}">Tümü</a>
-        </div>
-    </div>
+    @include('pin.group.dock')
 @endsection
 
 @include('_inc.alerts.search_operators')

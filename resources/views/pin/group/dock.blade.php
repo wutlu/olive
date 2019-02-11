@@ -1,11 +1,83 @@
-@extends('layouts.app', [
-    'sidenav_fixed_layout' => true,
-    'breadcrumb' => [
-        [
-            'text' => 'Pin Grupları'
-        ]
-    ]
-])
+@push('local.styles')
+    #pin-groups.collection > .collection-item > label {
+        max-width: calc(100% - 48px);
+        overflow: hidden;
+    }
+@endpush
+
+<div class="card with-bg">
+    <div class="card-content">
+        <span class="card-title">Pin Grupları</span>
+    </div>
+    <div class="card-image">
+        <a href="#" class="btn-floating halfway-fab waves-effect white" data-trigger="create-pin-group">
+            <i class="material-icons grey-text text-darken-2">add</i>
+        </a>
+    </div>
+
+    <div class="card-content grey-text">
+        Pinlenen içerikler seçili grup altına kaydedilir.
+    </div>
+
+    <ul id="pin-groups"
+        class="collection load json-clear mb-0" 
+        data-href="{{ route('pin.groups') }}"
+        data-skip="0"
+        data-take="4"
+        data-include="string"
+        data-more-button="#pin-groups-more_button"
+        data-callback="__pin_groups"
+        data-method="post"
+        data-nothing>
+        <li class="collection-item nothing hide">
+            @component('components.nothing')
+                @slot('size', 'small')
+            @endcomponent
+        </li>
+        <li data-name="item" class="collection-item model hide">
+            <a
+                class="btn-floating btn-small waves-effect json align-self-center white mr-1"
+                data-name="edit"
+                data-href="{{ route('pin.group') }}"
+                data-method="post"
+                data-callback="__get_pin_group"
+                href="#">
+                <i class="material-icons grey-text text-darken-2">create</i>        
+            </a>
+            <label class="align-self-center">
+                <input
+                    autocomplete="off"
+                    name="group_id"
+                    class="json"
+                    data-href="{{ route('pin.group') }}"
+                    data-method="post"
+                    data-delay="1"
+                    type="radio"
+                    data-callback="__pin_group" />
+                <span class="d-flex">
+                    <a
+                        data-trigger="pin-go"
+                        data-name="pin.pins"
+                        data-href="{{ route('route.generate.id') }}"
+                        data-method="post"
+                        data-callback="__go"
+                        class="json d-table"
+                        href="#"></a>
+                </span>
+            </label>
+        </li>
+    </ul>
+
+    @component('components.loader')
+        @slot('color', 'cyan')
+        @slot('id', 'pin-groups-loader')
+        @slot('class', 'card-loader-unstyled')
+    @endcomponent
+
+    <div class="card-content">
+        <a href="{{ route('pin.groups') }}">Tüm Gruplar</a>
+    </div>
+</div>
 
 @push('local.scripts')
     function __pin_groups(__, obj)
@@ -25,14 +97,14 @@
 
                         item.find('[data-name=edit]').attr('data-group_id', o.id)
                         item.find('[data-trigger=pin-go]').html(o.name).attr('data-id', o.id)
-                        item.find('[data-name=created-at]').attr('data-time', o.created_at).html(o.created_at)
                         item.find('[data-name=count]').html(o.pins_count + ' pin')
+                        item.find('[name=group_id]').val(o.id)
 
                         item.appendTo(ul)
                 })
             }
 
-            $('#home-loader').hide()
+            $('#pin-groups-loader').hide()
         }
     }
 
@@ -85,7 +157,7 @@
                 $('<a />', {
                     'data-trigger': 'delete-pin-group',
                     'href': '#',
-                    'class': 'waves-effect btn-flat grey-text hide',
+                    'class': 'waves-effect btn-flat red-text hide',
                     'html': buttons.remove
                 }),
                 $('<span />', {
@@ -203,86 +275,3 @@
         }
     }
 @endpush
-
-@section('action-bar')
-    <a href="#" class="btn-floating btn-large halfway-fab waves-effect white" data-trigger="create-pin-group">
-        <i class="material-icons grey-text text-darken-2">add</i>
-    </a>
-@endsection
-
-@section('content')
-    <div class="card with-bg">
-        <div class="card-content">
-            <span class="card-title">Pin Grupları</span>
-            <p class="grey-text text-darken-2">Araştırmalarınız sonucu elde ettiğiniz ham verileri pinleme gruplarında saklayabilirsiniz.</p>
-            <p class="grey-text text-darken-2">Ayrıca pinlediğiniz verileri PDF halinde rapor alabilirsiniz.</p>
-        </div>
-        <nav class="nav-half">
-            <div class="nav-wrapper">
-                <div class="input-field">
-                    <input id="string"
-                           name="string"
-                           type="search"
-                           class="validate json json-search"
-                           data-json-target="#pin-groups"
-                           placeholder="Ara" />
-                    <label class="label-icon" for="string">
-                        <i class="material-icons">search</i>
-                    </label>
-                    <i class="material-icons">close</i>
-                </div>
-            </div>
-        </nav>
-        <ul id="pin-groups"
-             class="collection load json-clear" 
-             data-href="{{ route('pin.groups') }}"
-             data-skip="0"
-             data-take="5"
-             data-include="string"
-             data-more-button="#pin-groups-more_button"
-             data-callback="__pin_groups"
-             data-method="post"
-             data-nothing>
-            <li class="collection-item nothing hide">
-                @component('components.nothing')@endcomponent
-            </li>
-            <li data-name="item" class="collection-item model hide">
-                <span>
-                    <a
-                        style="margin: 0 1rem 0 0;"
-                        class="json"
-                        data-name="edit"
-                        data-href="{{ route('pin.group') }}"
-                        data-method="post"
-                        data-callback="__get_pin_group"
-                        href="#">
-                        <i class="material-icons">create</i>        
-                    </a>
-                </span>
-                <span>
-                	<a
-                        data-trigger="pin-go"
-                        data-name="pin.pins"
-                        data-href="{{ route('route.generate.id') }}"
-                        data-method="post"
-                        data-callback="__go"
-                        class="json d-table"
-                        href="#"></a>
-                    <time data-name="created-at" class="timeago grey-text"></time>
-                </span>
-                <small data-name="count" class="ml-auto"></small>
-            </li>
-        </ul>
-    </div>
-
-    @component('components.loader')
-        @slot('color', 'cyan')
-        @slot('id', 'home-loader')
-    @endcomponent
-    <div class="center-align">
-        <button class="btn-flat waves-effect hide json"
-                id="pin-groups-more_button"
-                type="button"
-                data-json-target="#pin-groups">Öncekiler</button>
-    </div>
-@endsection

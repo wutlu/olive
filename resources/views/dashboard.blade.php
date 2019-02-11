@@ -92,10 +92,6 @@
                     <span class="d-block">Arama Motoru</span>
                 </a>
                 <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" style="opacity: .4;" href="#">
-                    <i class="material-icons">desktop_mac</i>
-                    <span class="d-block">Monitörler</span>
-                </a>
-                <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" style="opacity: .4;" href="#">
                     <i class="material-icons">trending_up</i>
                     <span class="d-block">Trend Analizi</span>
                 </a>

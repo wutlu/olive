@@ -1855,9 +1855,9 @@ table tr {
   background-color: #fff;
 }
 .modal .modal-content > .modal-footer {
-  margin: 1px 0 0;
   padding: .5rem 2rem;
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, .6);
+  height: auto;
 }
 
 .modal.modal-small {
@@ -1873,13 +1873,6 @@ table tr {
 .modal .modal-title {
   margin: 0;
   padding: 0 0 1rem;
-}
-.modal .modal-footer {
-  padding: 1rem 0 0;
-  height: auto;
-  width: 100%;
-  display: block;
-  background-color: transparent;
 }
 
 .timepicker-modal,
