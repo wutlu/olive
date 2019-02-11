@@ -248,12 +248,12 @@
     @empty
         @component('components.nothing')
             @slot('cloud_class', 'white-text')
+            @slot('size', 'small')
             @slot('text', 'Pinleme Yok')
         @endcomponent
     @endforelse
 
     {!! $pins->links('vendor.pagination.materializecss') !!}
-
 @endsection
 
 @push('local.scripts')
