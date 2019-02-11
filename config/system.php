@@ -302,7 +302,6 @@ return [
                 'root' => true,
                 'icon' => 'widgets'
             ],
-            // 17 => [],
             18 => [
                 'name' => 'Token Yönetimi',
                 'route' => 'admin.twitter.tokens.json',
@@ -392,6 +391,11 @@ return [
                 'route' => 'admin.youtube.followed_videos',
                 'root' => true,
                 'icon' => 'ondemand_video'
+            ],
+            33 => [
+                'name' => 'Arama Motoru',
+                'route' => 'search.dashboard',
+                'icon' => 'search'
             ],
         ]
     ],
