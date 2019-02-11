@@ -2,7 +2,7 @@
     'sidenav_fixed_layout' => true,
     'breadcrumb' => [
         [
-            'text' => 'Arama'
+            'text' => 'Arama Motoru'
         ]
     ],
     'dock' => true
@@ -425,7 +425,7 @@
 @section('content')
     <div class="card with-bg">
         <div class="card-content d-flex justify-content-between">
-            <span class="card-title">Arama</span>
+            <span class="card-title">Arama Motoru</span>
             <div class="d-flex justify-content-end mb-1">
                 <a
                     class="btn-flat waves-effect json"

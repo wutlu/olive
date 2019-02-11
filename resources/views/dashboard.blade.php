@@ -87,7 +87,7 @@
                     <i class="material-icons">watch_later</i>
                     <span class="d-block">Gerçek Zamanlı</span>
                 </a>
-                <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" style="opacity: .4;" href="#">
+                <a href="{{ route('search.dashboard') }}">
                     <i class="material-icons">youtube_searched_for</i>
                     <span class="d-block">Arama Motoru</span>
                 </a>

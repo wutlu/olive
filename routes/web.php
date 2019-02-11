@@ -71,7 +71,7 @@ Route::prefix('organizasyon')->group(function () {
     Route::patch('update/name', 'OrganisationController@updateName')->name('organisation.update.name');
 });
 
-Route::prefix('arama')->group(function () {
+Route::prefix('arama-motoru')->group(function () {
     Route::get('/', 'SearchController@dashboard')->name('search.dashboard');
     Route::post('/', 'SearchController@search')->name('search.request');
 });
