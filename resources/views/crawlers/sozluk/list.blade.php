@@ -64,24 +64,24 @@
             </a>
         </div>
         <div class="container">
-            <table
+            <div
                 id="stats"
-                class="load"
+                class="item-group pt-1 pb-1 load"
                 data-method="post"
                 data-timeout="4000",
                 data-href="{{ route('crawlers.sozluk.bot.statistics.all') }}"
                 data-callback="__stats"
                 data-error-callback="__connection_failed">
-                <tbody>
-                    <tr>
-                        <th class="right-align grey-text">BOYUT</th>
-                        <th class="cyan-text" data-elasticsearch data-name="total-size">-</th>
+                <div class="item">
+                    <small class="grey-text">BOYUT</small>
+                    <span class="d-block" data-elasticsearch data-name="total-size">-</span>
+                </div>
 
-                        <th class="right-align grey-text">DÖKÜMAN</th>
-                        <th class="cyan-text" data-elasticsearch data-name="total-docs">-</th>
-                    </tr>
-                </tbody>
-            </table>
+                <div class="item">
+                    <small class="grey-text">DÖKÜMAN</small>
+                    <span class="d-block" data-elasticsearch data-name="total-docs">-</span>
+                </div>
+            </div>
         </div>
     </div>
     <ul id="more" class="dropdown-content">

@@ -67,30 +67,31 @@
         </div>
 
         <div class="container">
-            <table
+            <div
                 id="stats"
-                class="load"
+                class="item-group pt-1 pb-1 load"
                 data-method="post"
                 data-timeout="4000"
                 data-href="{{ route('crawlers.shopping.bot.statistics.all') }}"
                 data-callback="__stats"
                 data-error-callback="__connection_failed">
-                <tbody>
-                    <tr>
-                        <th class="right-align grey-text">BOYUT</th>
-                        <th class="cyan-text" data-elasticsearch data-name="total-size">-</th>
-
-                        <th class="right-align grey-text">KUYRUK</th>
-                        <th class="cyan-text" data-elasticsearch data-name="total-docs-buffer">-</th>
-
-                        <th class="right-align grey-text">BAŞARILI</th>
-                        <th class="cyan-text" data-elasticsearch data-name="total-docs-success">-</th>
-
-                        <th class="right-align grey-text">BAŞARISIZ</th>
-                        <th class="cyan-text" data-elasticsearch data-name="total-docs-failed">-</th>
-                    </tr>
-                </tbody>
-            </table>
+                <div class="item">                
+                    <small class="grey-text">BOYUT</small>
+                    <span class="d-block" data-elasticsearch data-name="total-size">-</span>
+                </div>
+                <div class="item">
+                    <small class="grey-text">KUYRUK</small>
+                    <span class="d-block" data-elasticsearch data-name="total-docs-buffer">-</span>
+                </div>
+                <div class="item">
+                    <small class="grey-text">BAŞARILI</small>
+                    <span class="d-block" data-elasticsearch data-name="total-docs-success">-</span>
+                </div>
+                <div class="item">
+                    <small class="grey-text">BAŞARISIZ</small>
+                    <span class="d-block" data-elasticsearch data-name="total-docs-failed">-</span>
+                </div>
+            </div>
         </div>
     </div>
     <ul id="more" class="dropdown-content">

@@ -111,43 +111,45 @@
         id="details-form"
         data-callback="__test">
         <input type="hidden" value="{{ $crawler->id }}" name="id" id="id" />
-        <div class="card with-bg">
+        <div class="card">
             <div class="card-content">
                 <span class="card-title" data-name="crawler-title">{{ $crawler->name }}</span>
                 <span class="grey-text text-darken-2">
                     <span data-name="error-count">-</span> / <time class="timeago" data-name="control-date">-</time>
                 </span>
             </div>
-            <table
+            <div
                 id="stats"
-                class="load"
+                class="item-group grey lighten-5 p-2 load"
                 data-method="post"
                 data-timeout="4000"
                 data-href="{{ route('crawlers.media.bot.statistics', $crawler->id) }}"
                 data-callback="__stats"
                 data-error-callback="__connection_failed">
-                <tbody>
-                    <tr>
-                        <th class="center-align">
-                            <button type="submit" class="btn-flat waves-effect cyan-text">
-                                <i class="material-icons">done_all</i>
-                            </button>
-                        </th>
-                        <th class="center-align">
-                            <a href="#" data-trigger="status" class="btn-flat waves-effect waves-{{ $crawler->status ? 'green green' : 'red red' }}-text">{{ $crawler->status ? 'AKTİF' : 'PASİF' }}</a>
-                        </th>
+                <div class="item d-flex">
+                    <button type="submit" class="btn-flat waves-effect cyan-text d-flex">
+                        <i class="material-icons mr-1">done_all</i> TEST
+                    </button>
+                </div>
 
-                        <th class="right-align grey-text">KUYRUK</th>
-                        <th class="grey-text" data-elasticsearch data-name="total-docs-buffer">-</th>
+                <div class="item">
+                    <a href="#" data-trigger="status" class="btn-flat waves-effect waves-{{ $crawler->status ? 'green green' : 'red red' }}-text">{{ $crawler->status ? 'AKTİF' : 'PASİF' }}</a>
+                </div>
 
-                        <th class="right-align grey-text">BAŞARILI</th>
-                        <th class="grey-text" data-elasticsearch data-name="total-docs-success">-</th>
+                <div class="item">
+                    <small class="grey-text">KUYRUK</small>
+                    <div class="d-block" data-elasticsearch data-name="total-docs-buffer">-</div>
+                </div>
 
-                        <th class="right-align grey-text">BAŞARISIZ</th>
-                        <th class="grey-text" data-elasticsearch data-name="total-docs-failed">-</th>
-                    </tr>
-                </tbody>
-            </table>
+                <div class="item">
+                    <small class="grey-text">BAŞARILI / BAŞARISIZ</small>
+                    <div class="d-flex">
+                        <span data-elasticsearch data-name="total-docs-success">-</span>
+                        <span>/</span>
+                        <span data-elasticsearch data-name="total-docs-failed">-</span>
+                    </div>
+                </div>
+            </div>
             @if (!$crawler->status && $crawler->off_reason)
                 <div class="card-content red white-text">
                     <small class="black-text">Kapanma Nedeni</small>

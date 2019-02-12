@@ -19,6 +19,8 @@
     <div class="card with-bg">
         <div class="card-content">
             <span class="card-title">Google Ayarları</span>
+        </div>
+        <div class="card-content">
             <div class="item-group">
                 <div class="item">
                     <small class="d-block grey-text">Arama Sayısı</small>
