@@ -371,8 +371,8 @@
 @section('content')
     <div class="card card-unstyled">
         <div class="card-content d-flex justify-content-between">
-            <span class="card-title">
-                Arama Motoru
+            <span class="card-title d-flex">
+                <span class="mr-1">Arama Motoru</span>
                 <a href="#" class="align-self-center mr-1" data-trigger="info">
                     <i class="material-icons grey-text text-darken-4">info_outline</i>
                 </a>

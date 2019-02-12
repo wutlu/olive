@@ -483,7 +483,7 @@
             <div class="search-content">
                 <div class="right-align">
                     <a href="#" class="btn-floating btn-flat waves-effect" data-trigger="module-search-close">
-                        <i class="material-icons grey-text">close</i>
+                        <i class="material-icons white-text">close</i>
                     </a>
                 </div>
                 <div class="input-field">

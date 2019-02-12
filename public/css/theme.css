@@ -729,6 +729,9 @@ code {
   background-position: top center;
   background-size: 100% auto;
 }
+.card.with-bg.bg-soft {
+  background-image: url('../img/card-bg-soft.svg');
+}
 .card.with-bg > .card-tabs > .tabs {
   background-color: transparent;
 }
@@ -912,27 +915,34 @@ code {
 
   overflow: auto;
 
-  background-color: rgba(255, 255, 255, .9);
+  background-color: rgba(0, 0, 0, .8);
 
           transform: scale(1.1);
   -webkit-transform: scale(1.1);
 
   visibility: hidden;
   opacity: 0;
+
+  background-image: url(../img/bg-small.svg);
+  background-repeat: no-repeat;
+  background-size: 75%;
+  background-position: top right;
+
+  color: #fff;
 }
 
 .search-wrapper .input-field > .material-icons {
-  color: #666;
+  color: #fff;
 }
 .search-wrapper .input-field > input {
-  color: #666 !important;
+  color: #fff !important;
   border-width: 0 !important;
   box-shadow: none !important;
   font-size: 48px;
   height: 64px;
 }
 .search-wrapper .input-field > label {
-  color: #666 !important;
+  color: #fff !important;
 }
 
 @media (max-width: 1024px) {
@@ -972,7 +982,7 @@ body.module-search-active > .search-wrapper {
       flex: 1 1 auto !important;
   -ms-flex: 1 1 auto !important;
 
-  color: #666;
+  color: #fff;
 }
 #ms-results > .ms-item.active {
   background-color: rgba(0, 0, 0, .1);
@@ -1565,6 +1575,7 @@ ul#console {
     background-position: center;
     background-size: 70% auto;
     background-color: #000;
+    word-break: break-all;
 }
 
 ul#console > li textarea {

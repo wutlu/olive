@@ -177,7 +177,7 @@
 
 @section('content')
     <div
-        class="card with-bg time-line"
+        class="card time-line"
         data-href="{{ route('realtime.query') }}"
         data-callback="__realtime"
         data-method="post"
@@ -612,13 +612,19 @@
                             $('<span />', {
                                 'html': $('<a />', {
                                     'href': '#',
-                                    'class': 'btn-flat waves-effect',
+                                    'class': 'd-flex',
                                     'data-trigger': 'info',
                                     'css': { 'margin': '0 .4rem 0 0' },
-                                    'html': $('<i />', {
-                                        'class': 'material-icons grey-text',
-                                        'html': 'info_outline'
-                                    })
+                                    'html': [
+                                        $('<i />', {
+                                            'class': 'material-icons mr-1 grey-text align-self-center',
+                                            'html': 'info_outline'
+                                        }),
+                                        $('<span />', {
+                                            'class': 'grey-text align-self-center',
+                                            'html': 'Arama İfadeleri'
+                                        })
+                                    ]
                                 })
                             }),
                             $('<span />', {

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="824" height="222" viewBox="0 0 824 222">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: #a3e1e9;
+      }
+
+      .cls-1 {
+        stroke: #fff;
+        stroke-width: 1px;
+        opacity: 0.5;
+      }
+
+      .cls-2 {
+        opacity: 0.2;
+      }
+    </style>
+  </defs>
+  <circle id="Elips_2" data-name="Elips 2" class="cls-1" cx="323" cy="134" r="21"/>
+  <circle id="Elips_3" data-name="Elips 3" class="cls-1" cx="712" cy="-2" r="32"/>
+  <circle id="Elips_1" data-name="Elips 1" class="cls-2" cx="57" cy="30" r="88"/>
+</svg>
