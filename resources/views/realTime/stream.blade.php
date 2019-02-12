@@ -200,7 +200,7 @@
         <ul class="collection">
             <li class="collection-item hide model grey-text lined">
                 <div class="mb-1">
-                    <a href="#" class="btn-small waves-effect white grey-text text-darken-2" data-button="view">
+                    <a href="#" class="btn-flat waves-effect" data-button="view">
                         <i class="material-icons">info</i>
                     </a>
                     <a

@@ -371,10 +371,15 @@
 @section('content')
     <div class="card card-unstyled">
         <div class="card-content d-flex justify-content-between">
-            <span class="card-title">Arama Motoru</span>
-            <div class="d-flex justify-content-end mb-1">
+            <span class="card-title">
+                Arama Motoru
+                <a href="#" class="align-self-center mr-1" data-trigger="info">
+                    <i class="material-icons grey-text text-darken-4">info_outline</i>
+                </a>
+            </span>
+            <div class="d-flex justify-content-end">
                 <a
-                    class="btn white grey-text text-darken-2 waves-effect json"
+                    class="btn white grey-text text-darken-2 waves-effect align-self-center json"
                     disabled
                     data-button="pins-button"
                     data-href="{{ route('route.generate.id') }}"
@@ -382,9 +387,6 @@
                     data-name="pin.pins"
                     data-callback="__go"
                     href="#">Pinler (<span class="count">0</span>)</a>
-                <a href="#" class="btn white waves-effect ml-1" data-trigger="info">
-                    <i class="material-icons tiny grey-text">info_outline</i>
-                </a>
             </div>
         </div>
         <nav class="nav-half mb-0 gree">

@@ -26,7 +26,7 @@ class TrendController extends Controller
      *
      * @return view
      */
-    public function dashboard()
+    public function live()
     {
         return view('trends.live');
     }

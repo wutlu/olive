@@ -2,6 +2,7 @@
     $(document).on('click', '[data-trigger=info]', function() {
         modal({
             'id': 'operators',
+            'title': 'Arama İfadeleri',
             'body': $('<ul />', {
                 'class': 'collection',
                 'html': [
@@ -44,7 +45,14 @@
                 ]
             }),
             'size': 'modal-large',
-            'options': {}
+            'options': {},
+            'footer': [
+                $('<a />', {
+                    'href': '#',
+                    'class': 'modal-close waves-effect btn-flat',
+                    'html': buttons.ok
+                })
+            ]
         });
     })
 @endpush

@@ -27,7 +27,7 @@ class UpdateRequest extends FormRequest
         return [
             'id'                   => 'required|integer|exists:media_crawlers',
             'name'                 => 'required|string|max:24|unique:media_crawlers,name,'.$request->id,
-            'site'                 => 'required|string|max:255|active_url',
+            'site'                 => 'required|string|max:255|url',
             'base'                 => 'required|string|max:255',
             'url_pattern'          => 'required|string|max:255',
             'selector_title'       => 'required|string|max:255',

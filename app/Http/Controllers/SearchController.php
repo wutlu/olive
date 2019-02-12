@@ -39,9 +39,7 @@ class SearchController extends Controller
      */
     public static function dashboard()
     {
-        $pin_groups = PinGroup::where('organisation_id', auth()->user()->organisation_id)->orderBy('updated_at', 'DESC')->limit(4)->get();
-
-        return view('search.dashboard', compact('pin_groups'));
+        return view('search.dashboard');
     }
 
     /**
