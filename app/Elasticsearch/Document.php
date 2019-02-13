@@ -357,6 +357,23 @@ class Document
      *       }
      *   }
      *   '
+
+     * curl -X POST "localhost:9201/olive__media-s/_delete_by_query" -H 'Content-Type: application/json' -d'
+     * {
+     *     "query": { 
+     *         "bool": {
+     *             "must": [
+     *                 {
+     *                     "match": {
+     *                         "title": "HABERLER"
+     *                     }
+     *                 }
+     *             ]
+     *         }
+     *     }
+     * }
+     * '
+     *
      * @return object
      */
     public static function deleteByQuery($name, string $type, array $body)

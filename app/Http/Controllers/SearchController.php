@@ -365,7 +365,7 @@ class SearchController extends Controller
 
             return [
                 'status' => 'ok',
-                'hits' => array_reverse($data),
+                'hits' => $data,
                 'words' => $clean->words
             ];
         }
