@@ -96,6 +96,10 @@
                     <span class="d-block">Trend Analizi</span>
                 </a>
                 <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" style="opacity: .4;" href="#">
+                    <i class="material-icons">pie_chart</i>
+                    <span class="d-block">Model Analizi</span>
+                </a>
+                <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" style="opacity: .4;" href="#">
                     <i class="material-icons">access_alarm</i>
                     <span class="d-block">Alarmlar</span>
                 </a>

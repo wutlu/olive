@@ -3,9 +3,13 @@
 namespace App\Console\Commands\Trend;
 
 use Illuminate\Console\Command;
+
 use App\Elasticsearch\Document;
+use App\Elasticsearch\Indices;
 
 use Carbon\Carbon;
+
+use App\Models\Option;
 
 class Update extends Command
 {
@@ -51,44 +55,63 @@ class Update extends Command
      */
     public function handle()
     {
-        $module = $this->option('module');
-        $period = $this->option('period');
+        $opt = Option::where('key', 'trend.index')->first();
 
-        if (!$module)
+        if (@$opt->value == 'on')
         {
-            $module = $this->choice(
-                'Modül seçin:',
-                [
-                    'news' => 'List Index',
-                ]
-            );
-        }
+            $module = $this->option('module');
+            $period = $this->option('period');
 
-        $class = new Update;
-
-        if (method_exists($class, $module))
-        {
-            if (!$period)
+            if (!$module)
             {
-                $period = $this->choice(
-                    'Periyot seçin:',
-                    $this->periods,
-                    'minutely'
+                $module = $this->choice(
+                    'Modül seçin:',
+                    [
+                        'news' => 'List Index',
+                    ]
                 );
             }
 
-            if (@$this->periods[$period])
+            $class = new Update;
+
+            if (method_exists($class, $module))
             {
-                return $class->{$module}($period);
+                if (!$period)
+                {
+                    $period = $this->choice(
+                        'Periyot seçin:',
+                        $this->periods,
+                        'minutely'
+                    );
+                }
+
+                if (@$this->periods[$period])
+                {
+                    switch ($period)
+                    {
+                        case 'minutely': $date = Carbon::now()->subMinutes(1)->format('Y-m-d H:i'); break;
+                        case 'hourly': $date = Carbon::now()->subHours(1)->format('Y-m-d H:i'); break;
+                        case 'daily': $date = Carbon::now()->subDays(1)->format('Y-m-d H:i'); break;
+                        case 'weekly': $date = Carbon::now()->subDays(7)->format('Y-m-d H:i'); break;
+                        case 'monthly': $date = Carbon::now()->subMonths(1)->format('Y-m-d H:i'); break;
+                        case 'yearly': $date = Carbon::now()->subYears(1)->format('Y-m-d H:i'); break;
+                    }
+
+                    return $class->{$module}($period, $date);
+                }
+                else
+                {
+                    $this->error('Geçersiz periyot!');
+                }
             }
             else
             {
-                $this->error('Geçersiz periyot!');
+                $this->error('Geçersiz modül!');
             }
         }
         else
         {
-            $this->error('Geçersiz modül!');
+            $this->error('Önce index oluşturun.');
         }
     }
 
@@ -97,19 +120,10 @@ class Update extends Command
      *
      * @return array
      */
-    public static function news(string $period)
+    public static function news(string $period, string $date)
     {
-        switch ($period)
-        {
-            case 'minutely': $period = Carbon::now()->subMinutes(1)->format('Y-m-d H:i'); break;
-            case 'hourly': $period = Carbon::now()->subMinutes(1)->format('Y-m-d H:i'); break;
-            case 'daily': $period = Carbon::now()->subMinutes(1)->format('Y-m-d H:i'); break;
-            case 'weekly': $period = Carbon::now()->subMinutes(1)->format('Y-m-d H:i'); break;
-            case 'monthly': $period = Carbon::now()->subMinutes(1)->format('Y-m-d H:i'); break;
-            case 'yearly': $period = Carbon::now()->subMinutes(1)->format('Y-m-d H:i'); break;
-        }
-
         $items = [];
+        $chunk = [];
 
         $query = @Document::list([ 'media', '*' ], 'article', [
             'size' => 0,
@@ -129,7 +143,7 @@ class Update extends Command
                             'range' => [
                                 'created_at' => [
                                     'format' => 'YYYY-MM-dd HH:mm',
-                                    'gte' => $period
+                                    'gte' => $date
                                 ]
                             ]
                         ]
@@ -149,8 +163,12 @@ class Update extends Command
 
         if ($query)
         {
+            $i = 0;
+
             foreach ($query as $row)
             {
+                $i++;
+
                 $title = @Document::list([ 'media', '*' ], 'article', [
                     'size' => 1,
                     'query' => [
@@ -174,7 +192,7 @@ class Update extends Command
                                     'range' => [
                                         'created_at' => [
                                             'format' => 'YYYY-MM-dd HH:mm',
-                                            'gte' => $period
+                                            'gte' => $date
                                         ]
                                     ]
                                 ]
@@ -198,11 +216,49 @@ class Update extends Command
                     if ($sper <= 50)
                     {
                         $items[] = $title;
+
+                        ################
+
+                        $id = 'news_'.md5($row['key']).'_'.date('Y.m.d.H.i');
+
+                        $chunk['body'][] = [
+                            'create' => [
+                                '_index' => Indices::name([ 'trends', 'title' ]),
+                                '_type' => 'title',
+                                '_id' => $id
+                            ]
+                        ];
+
+                        switch ($period)
+                        {
+                            case 'minutely': $group = 'minutely_'.date('Y.'); break;
+                            case 'hourly': $group = 'hourly_'.date('Y.'); break;
+                            case 'daily': $group = 'daily_'.date('Y.m.d'); break;
+                            case 'weekly': $group = 'weekly_'.date('Y.W'); break;
+                            case 'monthly': $group = 'monthly_'.date('Y.m'); break;
+                            case 'yearly': $group = 'yearly_'.date('Y'); break;
+                        }
+
+                        if ($period != 'minutely' && $period != 'hourly')
+                        {
+                            echo 'db kayıt';
+                        }
+
+                        $chunk['body'][] = [
+                            'id' => $id,
+                            'group' => $group,
+                            'module' => 'news',
+                            'rank' => $i,
+                            'title' => $title,
+                            'created_at' => date('Y-m-d H:i:s')
+                        ];
+
+                        ################
                     }
                 }
             }
-
-            print_r($items);
         }
+
+        //print_r($chunk);
     }
 }

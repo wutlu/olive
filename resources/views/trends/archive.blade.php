@@ -44,40 +44,48 @@
         </nav>
         <ul class="collapsible with-header">
             <li>
-                <div class="collapsible-header">
-                    <span class="rank grey-text align-self-center">2019</span>
-                    <span class="align-self-center">2019 Yılı Web Trendleri</span>
-                    <span class="badge grey lighten-4 grey-text align-self-center">2018-12-12 14:02:00</span>
+                <div class="collapsible-header d-flex justify-content-between">
+                    <div>
+                        <span class="d-block">Yıllık Web Trendleri: 2019</span>
+                        <span class="grey-text">2018-12-12 14:02:00</span>
+                    </div>
+                    <i class="material-icons arrow">keyboard_arrow_down</i>
                 </div>
                 <div class="collapsible-body grey lighten-4">
                     <span>test</span>
                 </div>
             </li>
             <li>
-                <div class="collapsible-header">
-                    <span class="rank grey-text align-self-center">2019</span>
-                    <span class="align-self-center">Ocak Ayı Web Trendleri</span>
-                    <span class="badge grey lighten-4 grey-text align-self-center">2018-12-12 14:02:00</span>
+                <div class="collapsible-header d-flex justify-content-between">
+                    <div>
+                        <span class="d-block">Web Trendleri: Ocak</span>
+                        <span class="grey-text">2018-12-12 14:02:00</span>
+                    </div>
+                    <i class="material-icons arrow">keyboard_arrow_down</i>
                 </div>
                 <div class="collapsible-body grey lighten-4">
                     <span>test</span>
                 </div>
             </li>
             <li>
-                <div class="collapsible-header">
-                    <span class="rank grey-text align-self-center">2019</span>
-                    <span class="align-self-center">Ocak Ayı 1. Hafta, Haftalık Web Trendleri</span>
-                    <span class="badge grey lighten-4 grey-text align-self-center">2018-12-12 14:02:00</span>
+                <div class="collapsible-header d-flex justify-content-between">
+                    <div>
+                        <span class="d-block">Haftalık Web Trendleri: Ocak Ayı 1. Hafta</span>
+                        <span class="grey-text">2018-12-12 14:02:00</span>
+                    </div>
+                    <i class="material-icons arrow">keyboard_arrow_down</i>
                 </div>
                 <div class="collapsible-body grey lighten-4">
                     <span>test</span>
                 </div>
             </li>
             <li>
-                <div class="collapsible-header">
-                    <span class="rank grey-text align-self-center">2019</span>
-                    <span class="align-self-center">1 Ocak 2019 Günlük Web Trendleri</span>
-                    <span class="badge grey lighten-4 grey-text align-self-center">2018-12-12 14:02:00</span>
+                <div class="collapsible-header d-flex justify-content-between">
+                    <div>
+                        <span class="d-block">Web Trendleri: 01 Ocak 2019</span>
+                        <span class="grey-text">2018-12-12 14:02:00</span>
+                    </div>
+                    <i class="material-icons arrow">keyboard_arrow_down</i>
                 </div>
                 <div class="collapsible-body grey lighten-4">
                     <span>test</span>
