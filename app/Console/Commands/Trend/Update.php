@@ -10,6 +10,11 @@ use App\Elasticsearch\Indices;
 use Carbon\Carbon;
 
 use App\Models\Option;
+use App\Models\Trend;
+
+use App\Utilities\Term;
+
+use App\Jobs\Elasticsearch\BulkInsertJob;
 
 class Update extends Command
 {
@@ -125,6 +130,28 @@ class Update extends Command
         $items = [];
         $chunk = [];
 
+        switch ($period)
+        {
+            case 'minutely': $group = 'minutely_'.date('Y.'); break;
+            case 'hourly': $group = 'hourly_'.date('Y.'); break;
+            case 'daily':
+                $group = 'daily_'.date('Y.m.d');
+                $group_title = 'Günlük Trend, '.date('d.m.Y');
+            break;
+            case 'weekly':
+                $group = 'weekly_'.date('Y.W');
+                $group_title = 'Haftalık Trend, '.date('m.Y').' hafta: '.date('W');
+            break;
+            case 'monthly':
+                $group = 'monthly_'.date('Y.m');
+                $group_title = 'Aylık Trend, '.date('m.Y');
+            break;
+            case 'yearly':
+                $group = 'yearly_'.date('Y');
+                $group_title = 'Yıllık Trend, '.date('Y');
+            break;
+        }
+
         $query = @Document::list([ 'media', '*' ], 'article', [
             'size' => 0,
             'query' => [
@@ -223,26 +250,11 @@ class Update extends Command
 
                         $chunk['body'][] = [
                             'create' => [
-                                '_index' => Indices::name([ 'trends', 'title' ]),
+                                '_index' => Indices::name([ 'trend', 'titles' ]),
                                 '_type' => 'title',
                                 '_id' => $id
                             ]
                         ];
-
-                        switch ($period)
-                        {
-                            case 'minutely': $group = 'minutely_'.date('Y.'); break;
-                            case 'hourly': $group = 'hourly_'.date('Y.'); break;
-                            case 'daily': $group = 'daily_'.date('Y.m.d'); break;
-                            case 'weekly': $group = 'weekly_'.date('Y.W'); break;
-                            case 'monthly': $group = 'monthly_'.date('Y.m'); break;
-                            case 'yearly': $group = 'yearly_'.date('Y'); break;
-                        }
-
-                        if ($period != 'minutely' && $period != 'hourly')
-                        {
-                            echo 'db kayıt';
-                        }
 
                         $chunk['body'][] = [
                             'id' => $id,
@@ -257,8 +269,28 @@ class Update extends Command
                     }
                 }
             }
-        }
 
-        //print_r($chunk);
+            if ($i)
+            {
+                if ($period != 'minutely' && $period != 'hourly')
+                {
+                    Trend::updateOrCreate(
+                        [
+                            'group' => $group
+                        ],
+                        [
+                            'title' => $group_title
+                        ]
+                    );
+                }
+
+                echo Term::line($group_title.' ('.$i.')');
+            }
+
+            if (count($chunk))
+            {
+                BulkInsertJob::dispatch($chunk)->onQueue('elasticsearch');
+            }
+        }
     }
 }

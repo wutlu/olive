@@ -8,6 +8,12 @@ use App\Elasticsearch\Indices;
 
 class Trend extends Model
 {
+    protected $table = 'trends';
+    protected $fillable = [
+        'title',
+        'group'
+    ];
+
     # index crate
     public function indexCreate()
     {
