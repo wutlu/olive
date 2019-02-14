@@ -410,7 +410,7 @@ body {
   overflow-x: hidden;
 }
 body * {
-    font-family: 'gt-eesti', sans-serif;
+  font-family: 'gt-eesti', sans-serif;
 }
 
 p {
@@ -434,6 +434,7 @@ a {
   outline: none;
   color: #333;
   text-decoration: none;
+
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -442,7 +443,9 @@ html {
           box-sizing: border-box;
 }
 
-*, *:before, *:after {
+*,
+*:before,
+*:after {
   -webkit-box-sizing: inherit;
           box-sizing: inherit;
 }
