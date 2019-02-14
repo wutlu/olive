@@ -94,15 +94,33 @@ class Update extends Command
                 {
                     switch ($period)
                     {
-                        case 'minutely': $date = Carbon::now()->subMinutes(1)->format('Y-m-d H:i'); break;
-                        case 'hourly': $date = Carbon::now()->subHours(1)->format('Y-m-d H:i'); break;
-                        case 'daily': $date = Carbon::now()->subDays(1)->format('Y-m-d H:i'); break;
-                        case 'weekly': $date = Carbon::now()->subDays(7)->format('Y-m-d H:i'); break;
-                        case 'monthly': $date = Carbon::now()->subMonths(1)->format('Y-m-d H:i'); break;
-                        case 'yearly': $date = Carbon::now()->subYears(1)->format('Y-m-d H:i'); break;
+                        case 'minutely':
+                            $date = Carbon::now()->subMinutes(1)->format('Y-m-d H:i');
+                            $group = implode(':', [ $module, 'minutely', date('YmdHi') ]);
+                        break;
+                        case 'hourly':
+                            $date = Carbon::now()->subHours(1)->format('Y-m-d H:i');
+                            $group = implode(':', [ $module, 'hourly', date('YmdH') ]);
+                        break;
+                        case 'daily':
+                            $date = Carbon::now()->subDays(1)->format('Y-m-d H:i');
+                            $group = implode(':', [ $module, 'daily', date('Ymd') ]);
+                        break;
+                        case 'weekly':
+                            $date = Carbon::now()->subDays(7)->format('Y-m-d H:i');
+                            $group = implode(':', [ $module, 'weekly', date('YmW') ]);
+                        break;
+                        case 'monthly':
+                            $date = Carbon::now()->subMonths(1)->format('Y-m-d H:i');
+                            $group = implode(':', [ $module, 'monthly', date('Ym') ]);
+                        break;
+                        case 'yearly':
+                            $date = Carbon::now()->subYears(1)->format('Y-m-d H:i');
+                            $group = implode(':', [ $module, 'yearly', date('Y') ]);
+                        break;
                     }
 
-                    return $class->{$module}($period, $date);
+                    return $class->{$module}($period, $date, $group);
                 }
                 else
                 {
@@ -123,32 +141,26 @@ class Update extends Command
     /**
      * Trend Haber Tespiti
      *
-     * @return array
+     * @return mixed
      */
-    public static function news(string $period, string $date)
+    public static function news(string $period, string $date, string $group)
     {
         $items = [];
         $chunk = [];
 
         switch ($period)
         {
-            case 'minutely': $group = 'minutely_'.date('Y.'); break;
-            case 'hourly': $group = 'hourly_'.date('Y.'); break;
             case 'daily':
-                $group = 'daily_'.date('Y.m.d');
-                $group_title = 'Günlük Trend, '.date('d.m.Y');
+                $group_title = 'Medya: Günlük Trend, '.date('d.m.Y');
             break;
             case 'weekly':
-                $group = 'weekly_'.date('Y.W');
-                $group_title = 'Haftalık Trend, '.date('m.Y').' hafta: '.date('W');
+                $group_title = 'Medya: Haftalık Trend, '.date('m.Y').' hafta: '.date('W');
             break;
             case 'monthly':
-                $group = 'monthly_'.date('Y.m');
-                $group_title = 'Aylık Trend, '.date('m.Y');
+                $group_title = 'Medya: Aylık Trend, '.date('m.Y');
             break;
             case 'yearly':
-                $group = 'yearly_'.date('Y');
-                $group_title = 'Yıllık Trend, '.date('Y');
+                $group_title = 'Medya: Yıllık Trend, '.date('Y');
             break;
         }
 
@@ -284,13 +296,17 @@ class Update extends Command
                     );
                 }
 
-                echo Term::line($group_title.' ('.$i.')');
+                echo Term::line($group.' ('.$i.')');
             }
 
             if (count($chunk))
             {
                 BulkInsertJob::dispatch($chunk)->onQueue('elasticsearch');
             }
+        }
+        else
+        {
+            echo Term::line('Trend tespit edilemedi.');
         }
     }
 }

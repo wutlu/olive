@@ -617,6 +617,17 @@ code {
   background-position: right center;
 }
 
+.subcard {
+  position: relative;
+  margin: 0 0 -1rem 0;
+}
+.subcard .subcard-title {
+  margin: 0;
+  padding: 64px 0 32px;
+  display: table;
+  font-size: 32px;
+}
+
 /**
  * wild area
  */
@@ -740,7 +751,7 @@ code {
   margin: 0 !important;
 }
 .card .card-title.card-title-small {
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .card .card-image img {
@@ -1526,6 +1537,7 @@ header#main > .parallax-container > .parallax > video#background-video {
   padding: 32px 32px 0;
   margin-bottom: 8px;
   height: 182px;
+
   background-image: url('../img/user-bg.svg');
   background-repeat: no-repeat;
   background-position: center;
@@ -1562,6 +1574,10 @@ header#main > .parallax-container > .parallax > video#background-video {
 .sidenav .collapsible-header i {
     -ms-flex-item-align: center;
     align-self: center;
+}
+
+.sidenav .subheader {
+  text-transform: uppercase;
 }
 
 /**
@@ -1750,7 +1766,6 @@ nav .nav-wrapper > ul > li > a > i {
 .collapsible-header {
   outline: none;
   background-color: transparent;
-
   border-width: 0;
 }
 
@@ -1910,6 +1925,12 @@ ul#slide-out li.tiny > a {
 ul#slide-out li > a > span.badge {
   min-width: 1rem;
 }
+ul#slide-out li > a,
+ul#slide-out li > a > .material-icons,
+ul#slide-out li > .collapsible-header > span,
+ul#slide-out li > .collapsible-header > .material-icons {
+  color: #666;
+}
 
 /**
  * box-shadow
@@ -1979,6 +2000,36 @@ nav,
 }
 .deck > .deck-content {
   min-width: 20%;
+}
+
+/**
+ * card columns
+ */
+.card-columns {
+  -webkit-column-count: 3;
+  -moz-column-count: 3;
+  column-count: 3;
+  -webkit-column-gap: 1.25rem;
+  -moz-column-gap: 1.25rem;
+  column-gap: 1.25rem;
+  orphans: 1;
+  widows: 1;
+}
+@media (min-width: 576px) {
+  .card-columns {
+    -webkit-column-count: 3;
+       -moz-column-count: 3;
+            column-count: 3;
+    -webkit-column-gap: 1.25rem;
+       -moz-column-gap: 1.25rem;
+            column-gap: 1.25rem;
+    orphans: 1;
+    widows: 1;
+  }
+  .card-columns .card {
+    display: inline-block;
+    width: 100%;
+  }
 }
 
 /**

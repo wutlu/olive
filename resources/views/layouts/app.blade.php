@@ -464,6 +464,12 @@
                         @yield('content')
                     @endisset
                 </div>
+
+                @if (trim($__env->yieldContent('subcard')))
+                    <div class="subcard">
+                        @yield('subcard')
+                    </div>
+                @endif
             </div>
         </main>
 

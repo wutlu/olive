@@ -98,6 +98,28 @@ class Kernel extends ConsoleKernel
             }
 
             /**
+             * Trendlerin hazırlanması.
+             */
+            $schedule->command('nohup "trend:update --period=minutely --module=news" --type=restart')
+                     ->everyMinute()
+                     ->timezone(config('app.timezone'));
+            $schedule->command('nohup "trend:update --period=hourly --module=news" --type=restart')
+                     ->hourly()
+                     ->timezone(config('app.timezone'));
+            $schedule->command('nohup "trend:update --period=daily --module=news" --type=restart')
+                     ->daily()
+                     ->timezone(config('app.timezone'));
+            $schedule->command('nohup "trend:update --period=weekly --module=news" --type=restart')
+                     ->weekly()
+                     ->timezone(config('app.timezone'));
+            $schedule->command('nohup "trend:update --period=monthly --module=news" --type=restart')
+                     ->monthly()
+                     ->timezone(config('app.timezone'));
+            $schedule->command('nohup "trend:update --period=yearly --module=news" --type=restart')
+                     ->yearly()
+                     ->timezone(config('app.timezone'));
+
+            /**
              * YouTube botlarının tetiklenmesi.
              */
             $option = Option::where('key', 'youtube.status')->where('value', 'on')->exists();
