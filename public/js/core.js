@@ -8,6 +8,8 @@
 
 $(function() {
     timeAgo()
+
+    $('#loading').fadeOut()
 })
 
 /* --- number format --- */
@@ -578,6 +580,8 @@ function vzAjax(__)
 
     if (__.is('form'))
     {
+        $('#loading').fadeIn()
+
         var form = __.serializeArray(),
             items = '';
 
@@ -935,6 +939,8 @@ function __result(__)
     setTimeout(function() {
         if (__.is('form'))
         {
+            $('#loading').fadeOut()
+
             __.find('button').removeAttr('disabled')
 
             if (__.find('.captcha').length)
