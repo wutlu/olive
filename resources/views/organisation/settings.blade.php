@@ -98,7 +98,7 @@
                 $('#modal-detail').modal('close')
 
                 M.toast({
-                    html: 'Organizasyon Adı güncellendi',
+                    html: 'Organizasyon Adı Güncellendi',
                     classes: 'green darken-2'
                 })
             }

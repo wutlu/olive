@@ -243,7 +243,7 @@
                                 ]
                             }),
                             $('<div />', {
-                                'class': 'switch',
+                                'class': 'switch mb-2',
                                 'html': $('<label>', {
                                     'html': [
                                         $('<span />', {

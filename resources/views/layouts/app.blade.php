@@ -183,7 +183,7 @@
         </div>
 
         @auth
-            <ul id="slide-out" class="sidenav sidenav-fixed collapsible">
+            <ul id="slide-out" class="sidenav sidenav-fixed collapsible white">
                 <li>
                     <div class="user-view">
                         <small class="right">{{ config('system.version') }}</small>
@@ -428,7 +428,7 @@
             </nav>
         @endisset
 
-        <main class="grey lighten-2">
+        <main class="indigo lighten-5">
             <div class="{{ auth()->check() ? 'sidenav-fixed-layout' : '' }}">
                 @if (trim($__env->yieldContent('action-bar')))
                     <div class="container">
@@ -681,7 +681,7 @@
     @endauth
 
     <div class="@auth{{ @$sidenav_fixed_layout ? 'sidenav-fixed-layout' : '' }}@endauth">
-        <ul class="partners grey lighten-5">
+        <ul class="partners white">
             <li class="partner">
                 <a href="https://laravel.com/" target="_blank">
                     <img alt="client" src="{{ asset('img/clients-logo1.png') }}" />
@@ -704,7 +704,7 @@
             </li>
         </ul>
 
-        <footer class="page-footer">
+        <footer class="page-footer indigo lighten-5">
             <div class="container">
                 <div class="row">
                     <div class="col l6 s12">
@@ -748,9 +748,9 @@
                     </div>
                 </div>
             </div>
-            <div class="footer-copyright">
-                <div class="container black-text">
-                    © {{ date('Y') }} <a href="http://veri.zone">veri.zone</a> | Tüm hakları saklıdır.
+            <div class="footer-copyright indigo lighten-5">
+                <div class="container grey-text">
+                    © {{ date('Y') }} <a class="teal-text" href="http://veri.zone">veri.zone</a> | Tüm hakları saklıdır.
                 </div>
             </div>
         </footer>

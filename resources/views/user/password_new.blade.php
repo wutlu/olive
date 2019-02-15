@@ -10,13 +10,13 @@
             </div>
 
             <div class="container">
-                <div class="card" style="max-width: 260px;">
-                	<div class="card-image" style="padding: 1rem 2rem 0;">
-    	            	<img src="{{ asset('img/olive-logo.svg') }}" alt="olive-logo" class="responsive-img" />
-    	            </div>
-                    <div class="card-content">
-                        <p>Lütfen yeni şifrenizi oluşturun.</p>
-                        <form id="password-form" data-callback="__password" action="{{ route('user.password.new', [ 'id' => $user->id, 'sid' => $user->session_id ]) }}" method="patch" class="json">
+                <form id="password-form" data-callback="__password" action="{{ route('user.password.new', [ 'id' => $user->id, 'sid' => $user->session_id ]) }}" method="patch" class="json">
+                    <div class="card" style="max-width: 460px;">
+                        <div class="card-content">
+                            <img src="{{ asset('img/olive-logo.svg') }}" alt="olive-logo" class="responsive-img" style="width: 128px;" />
+                        </div>
+                        <div class="card-content teal lighten-5 teal-text">Yeni şifrenizi oluşturun.</div>
+                        <div class="card-content">
                             <div class="row">
                                 <div class="input-field col s12">
                                     <input name="email" id="email" type="email" class="validate" />
@@ -33,13 +33,13 @@
                                     <label for="password_confirmation">Yeni Şifre</label>
                                     <span class="helper-text">Yeni şifreniz.</span>
                                 </div>
-                                <div class="right-align">
-                                    <button type="submit" class="waves-effect waves-light btn cyan darken-4">Güncelle</button>
-                                </div>
                             </div>
-                        </form>
+                        </div>
+                        <div class="card-action right-align">
+                            <button type="submit" class="btn-flat waves-effect">Güncelle</button>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </header>

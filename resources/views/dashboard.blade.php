@@ -13,62 +13,63 @@
     .carousel-slider {
         border-radius: 1rem 1rem 0 0;
     }
+    .wildcard {
+        background-color: #222;
+    }
 @endpush
 
 @section('wildcard')
-    <div class="grey darken-4 z-depth-1"> 
-        @if (count($modals))
-            @foreach ($modals as $carousel)
-                @if ($carousel->modal)
-                    @push('local.scripts')
-                        modal({
-                            'id': 'carousel-{{ $carousel->id }}',
-                            'body': $('<div />', {
-                                'class': 'markdown',
-                                'html': '{!! str_replace(PHP_EOL, '', $carousel->markdown()) !!}'
-                            }),
-                            'size': 'modal-large',
-                            'title': '{{ $carousel->title }}',
-                            'options': {},
-                            'footer': [
-                                $('<a />', {
-                                    'href': '#',
-                                    'class': 'modal-close waves-effect btn-flat cyan-text',
-                                    'html': buttons.ok
-                                })
-                            ]
-                        })
-                    @endpush
-                @endif
-            @endforeach
-        @endif
+    @if (count($modals))
+        @foreach ($modals as $carousel)
+            @if ($carousel->modal)
+                @push('local.scripts')
+                    modal({
+                        'id': 'carousel-{{ $carousel->id }}',
+                        'body': $('<div />', {
+                            'class': 'markdown',
+                            'html': '{!! str_replace(PHP_EOL, '', $carousel->markdown()) !!}'
+                        }),
+                        'size': 'modal-large',
+                        'title': '{{ $carousel->title }}',
+                        'options': {},
+                        'footer': [
+                            $('<a />', {
+                                'href': '#',
+                                'class': 'modal-close waves-effect btn-flat cyan-text',
+                                'html': buttons.ok
+                            })
+                        ]
+                    })
+                @endpush
+            @endif
+        @endforeach
+    @endif
 
-        @if (count($carousels))
-            <div class="carousel carousel-slider center">
-                @php
-                $i = 0;
-                @endphp
-                    @foreach ($carousels as $carousel)
-                    <div class="{{ implode(' ', [ 'carousel-item', $i == 0 ? 'active' : '', 'white-text' ]) }}">
-                        <h2>{{ $carousel->title }}</h2>
-                        <div class="markdown">
-                            {!! $carousel->markdown() !!}
-                        </div>
-                        <div class="{{ implode(' ', [ 'anim', $carousel->pattern ]) }}"></div>
-
-                        @if ($carousel->button_text)
-                            <a href="{{ $carousel->button_action }}" class="btn-flat waves-effect waves-red white-text">
-                                {{ $carousel->button_text }}
-                            </a>
-                        @endif
+    @if (count($carousels))
+        <div class="carousel carousel-slider center">
+            @php
+            $i = 0;
+            @endphp
+                @foreach ($carousels as $carousel)
+                <div class="{{ implode(' ', [ 'carousel-item', $i == 0 ? 'active' : '', 'white-text' ]) }}">
+                    <h2>{{ $carousel->title }}</h2>
+                    <div class="markdown">
+                        {!! $carousel->markdown() !!}
                     </div>
-                    @php
-                    $i++;
-                    @endphp
-                @endforeach
-            </div>
-        @endif
-    </div>
+                    <div class="{{ implode(' ', [ 'anim', $carousel->pattern ]) }}"></div>
+
+                    @if ($carousel->button_text)
+                        <a href="{{ $carousel->button_action }}" class="btn-flat waves-effect waves-red white-text">
+                            {{ $carousel->button_text }}
+                        </a>
+                    @endif
+                </div>
+                @php
+                $i++;
+                @endphp
+            @endforeach
+        </div>
+    @endif
 @endsection
 
 @section('content')

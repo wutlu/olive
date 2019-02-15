@@ -46,7 +46,7 @@
 
     <ul id="slide-out" class="sidenav">
         <li class="p-1">
-            <img alt="{{ config('app.name') }}" src="{{ asset('img/olive-logo.svg') }}" style="width: 128px;" />
+            <img alt="{{ config('app.name') }}" src="{{ asset('img/olive-logo.svg') }}" style="width: 96px;" />
         </li>
         @forelse ($pages as $page)
             <li>

@@ -116,9 +116,9 @@
 
 @if (!$thread)
     @section('dock')
-        <div class="card">
-            <div class="card-content cyan darken-2">
-                <span class="card-title white-text mb-0">Kategori</span>
+        <div class="card with-bg">
+            <div class="card-content">
+                <span class="card-title">Kategori</span>
             </div>
             <div class="collection">
                 @forelse ($categories as $category)

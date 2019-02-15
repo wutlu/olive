@@ -42,8 +42,7 @@ class Update extends Command
     public function __construct()
     {
         $this->periods = [
-            'minutely' => 'Dakikalık',
-            'hourly' => 'Saatlik',
+            'live' => 'Anlık',
             'daily' => 'Günlük',
             'weekly' => 'Haftalık',
             'monthly' => 'Aylık',
@@ -86,7 +85,7 @@ class Update extends Command
                     $period = $this->choice(
                         'Periyot seçin:',
                         $this->periods,
-                        'minutely'
+                        'live'
                     );
                 }
 
@@ -94,25 +93,21 @@ class Update extends Command
                 {
                     switch ($period)
                     {
-                        case 'minutely':
-                            $date = Carbon::now()->subMinutes(1)->format('Y-m-d H:i');
-                            $group = implode(':', [ $module, 'minutely', date('YmdHi') ]);
-                        break;
-                        case 'hourly':
-                            $date = Carbon::now()->subHours(1)->format('Y-m-d H:i');
-                            $group = implode(':', [ $module, 'hourly', date('YmdH') ]);
+                        case 'live':
+                            $date = Carbon::now()->subMinutes(10)->format('Y-m-d H:i');
+                            $group = implode(':', [ $module, 'live', date('Y.m.d') ]);
                         break;
                         case 'daily':
                             $date = Carbon::now()->subDays(1)->format('Y-m-d H:i');
-                            $group = implode(':', [ $module, 'daily', date('Ymd') ]);
+                            $group = implode(':', [ $module, 'daily', date('Y.m.d') ]);
                         break;
                         case 'weekly':
                             $date = Carbon::now()->subDays(7)->format('Y-m-d H:i');
-                            $group = implode(':', [ $module, 'weekly', date('YmW') ]);
+                            $group = implode(':', [ $module, 'weekly', date('Y.m-W') ]);
                         break;
                         case 'monthly':
                             $date = Carbon::now()->subMonths(1)->format('Y-m-d H:i');
-                            $group = implode(':', [ $module, 'monthly', date('Ym') ]);
+                            $group = implode(':', [ $module, 'monthly', date('Y.m') ]);
                         break;
                         case 'yearly':
                             $date = Carbon::now()->subYears(1)->format('Y-m-d H:i');
@@ -150,6 +145,9 @@ class Update extends Command
 
         switch ($period)
         {
+            case 'live':
+                $group_title = 'Medya: Anlık Trend, '.date('d.m.Y');
+            break;
             case 'daily':
                 $group_title = 'Medya: Günlük Trend, '.date('d.m.Y');
             break;
@@ -284,7 +282,7 @@ class Update extends Command
 
             if ($i)
             {
-                if ($period != 'minutely' && $period != 'hourly')
+                if ($period != 'live')
                 {
                     Trend::updateOrCreate(
                         [
@@ -294,6 +292,8 @@ class Update extends Command
                             'title' => $group_title
                         ]
                     );
+
+                    echo Term::line('Arşiv alındı.');
                 }
 
                 echo Term::line($group.' ('.$i.')');
