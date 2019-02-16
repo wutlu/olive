@@ -16,6 +16,8 @@ use App\Utilities\Term;
 
 use App\Jobs\Elasticsearch\BulkInsertJob;
 
+use Illuminate\Support\Facades\Redis as RedisCache;
+
 class Update extends Command
 {
     private $periods;
@@ -95,7 +97,7 @@ class Update extends Command
                     {
                         case 'live':
                             $date = Carbon::now()->subMinutes(10)->format('Y-m-d H:i');
-                            $group = implode(':', [ $module, 'live', date('Y.m.d') ]);
+                            $group = implode(':', [ $module, 'live', date('Y.m.d-H:i') ]);
                         break;
                         case 'daily':
                             $date = Carbon::now()->subDays(1)->format('Y-m-d H:i');
@@ -168,11 +170,7 @@ class Update extends Command
                 'bool' => [
                     'must' => [
                         [
-                            [
-                                'match' => [
-                                    'status' => 'ok'
-                                ]
-                            ]
+                            [ 'match' => [ 'status' => 'ok' ] ]
                         ]
                     ],
                     'filter' => [
@@ -204,8 +202,6 @@ class Update extends Command
 
             foreach ($query as $row)
             {
-                $i++;
-
                 $title = @Document::list([ 'media', '*' ], 'article', [
                     'size' => 1,
                     'query' => [
@@ -220,9 +216,7 @@ class Update extends Command
                                         'max_query_terms' => 10
                                     ]
                                 ],
-                                [
-                                    'match' => [ 'status' => 'ok' ]
-                                ]
+                                [ 'match' => [ 'status' => 'ok' ] ]
                             ],
                             'filter' => [
                                 [
@@ -245,18 +239,23 @@ class Update extends Command
 
                     foreach ($items as $item)
                     {
-                        similar_text($item, $title, $percent);
+                        similar_text($item['title'], $title, $percent);
 
                         $sper = $percent > $sper ? $percent : $sper;
                     }
 
                     if ($sper <= 50)
                     {
-                        $items[] = $title;
+                        $i++;
+                        $key = md5($row['key']);
+                        $id = 'news_'.$key.'_'.date('Y.m.d-H:i');
+
+                        $items[$i] = [
+                            'key' => $key,
+                            'title' => $title
+                        ];
 
                         ################
-
-                        $id = 'news_'.md5($row['key']).'_'.date('Y.m.d.H.i');
 
                         $chunk['body'][] = [
                             'create' => [
@@ -268,6 +267,7 @@ class Update extends Command
 
                         $chunk['body'][] = [
                             'id' => $id,
+                            'key' => $key,
                             'group' => $group,
                             'module' => 'news',
                             'rank' => $i,
@@ -302,6 +302,52 @@ class Update extends Command
             if (count($chunk))
             {
                 BulkInsertJob::dispatch($chunk)->onQueue('elasticsearch');
+            }
+
+            if ($i && $period == 'live')
+            {
+                $array = [];
+
+                foreach ($items as $rank => $item)
+                {
+                    $array[$rank]['title'] = $item['title'];
+
+                    $ranks = array_reverse(array_map(
+                        function($q) {
+                            return $q['_source']['rank'];
+                        },
+                        Document::list([ 'trend', 'titles' ], 'title', [
+                            'query' => [
+                                'bool' => [
+                                    'must' => [
+                                        [ 'match' => [ 'key' => $item['key'] ] ]
+                                    ],
+                                    'filter' => [
+                                        [
+                                            'range' => [
+                                                'created_at' => [
+                                                    'format' => 'YYYY-MM-dd HH:mm',
+                                                    'gte' => $date
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ],
+                            'sort' => [ 'created_at' => 'DESC' ]
+                        ])->data['hits']['hits']
+                    ));
+
+                    $ranks[] = $rank;
+
+                    $array[$rank]['chart'] = $ranks;
+                }
+
+                $alias = str_slug(config('app.name'));
+
+                RedisCache::set(implode(':', [ $alias, 'trends', 'news' ]), json_encode($array));
+
+                echo Term::line('Redis güncellendi.');
             }
         }
         else

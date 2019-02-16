@@ -34,7 +34,7 @@
 @section('content')
     <header id="main">
         <div class="parallax-container">
-            <div class="parallax">
+            <div class="parallax indigo lighten-5">
                 <img src="{{ asset('img/bg.svg') }}" alt="background" />
             </div>
 
@@ -50,7 +50,7 @@
                         </div>
                         <p class="grey-text text-darken-2 lead">Internet artık daha net!</p>
 
-                        <a href="{{ route('user.login') }}" class="waves-effect btn cyan darken-2">@auth{{ 'Olive\'e Gidin'}}@else{{ 'Giriş Yapın' }}@endauth</a>
+                        <a href="{{ route('user.login') }}" class="waves-effect btn btn-large cyan darken-2">@auth{{ 'Olive\'e Gidin'}}@else{{ 'Giriş Yapın' }}@endauth</a>
 
                         <div class="down-area center-align">
                             <a href="#" class="waves-effect btn-large btn-floating pulse grey darken-4">

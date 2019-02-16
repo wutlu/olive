@@ -17,6 +17,10 @@
     .time-line > .collection > .collection-item {
         word-break: break-all;
     }
+
+    #string {
+        box-shadow: .4rem .4rem .6rem 0 rgba(0, 0, 0, .2);
+    }
 @endpush
 
 @push('local.scripts')
@@ -389,7 +393,7 @@
                     href="#">Pinler (<span class="count">0</span>)</a>
             </div>
         </div>
-        <nav class="nav-half mb-0 gree">
+        <nav class="nav-half mb-2">
             <div class="nav-wrapper">
                 <div class="input-field">
                     <input id="string"

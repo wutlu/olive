@@ -31,6 +31,9 @@ class Trend extends Model
                         'module' => [
                             'type' => 'keyword' // youtube_video, youtube_comment, twitter, sozluk, news, shopping
                         ],
+                        'key' => [
+                            'type' => 'keyword'
+                        ],
                         'rank' => [
                             'type' => 'integer'
                         ],

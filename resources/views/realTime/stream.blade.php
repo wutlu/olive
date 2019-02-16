@@ -66,9 +66,11 @@
     }
     [data-name=sentiment].pos:before {
         content: 'sentiment_satisfied';
+        color: #4caf50;
     }
     [data-name=sentiment].neg:before {
         content: 'sentiment_dissatisfied';
+        color: #f44336;
     }
     [data-name=sentiment].neu:before {
         content: 'sentiment_neutral';
@@ -402,7 +404,7 @@
                         'color': '#ccff90'
                     }, 1000 );
 
-                item.find('[data-name=sentiment]').addClass(obj.sentiment.neu >= 0.34 ? 'neu' : obj.sentiment.pos > 0.34 ? 'pos' : 'neg')
+                item.find('[data-name=sentiment]').addClass(obj.sentiment.neu >= 0.34 ? 'neu' : obj.sentiment.pos >= 0.34 ? 'pos' : 'neg')
 
                 item.prependTo(bucket)
 

@@ -10,6 +10,8 @@ use App\Elasticsearch\Document;
 
 use Carbon\Carbon;
 
+use Illuminate\Support\Facades\Redis as RedisCache;
+
 class TrendController extends Controller
 {
     public function __construct()
@@ -31,6 +33,21 @@ class TrendController extends Controller
     public function live()
     {
         return view('trends.live');
+    }
+
+    /**
+     * Trend Analizi Redis Haber
+     *
+     * @return array
+     */
+    public function liveRedis(string $module)
+    {
+        $alias = str_slug(config('app.name'));
+
+        return [
+            'status' => 'ok',
+            'data' => json_decode(RedisCache::get(implode(':', [ $alias, 'trends', $module ])))
+        ];
     }
 
     /**

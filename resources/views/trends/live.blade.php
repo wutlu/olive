@@ -73,32 +73,46 @@
         })
     }
 
-    for (var i = 1; i <= 4; i++) {
-        __chart('#chart-' + i, {
-            labels: [ '', '', '', '', '' ],
-            datasets: [{
-                backgroundColor: '#E8F5E9',
-                borderColor: '#4CAF50',
-                data: [ i, 2, 5, 4, 8-i ],
-                tension: 0.1,
-                borderWidth: 1,
-                radius: 0
-            }]
-        })
-    }
+    var newsTimer;
 
-    for (var i = 5; i <= 8; i++) {
-        __chart('#chart-' + i, {
-            labels: [ '', '', '', '', '' ],
-            datasets: [{
-                backgroundColor: '#FFEBEE',
-                borderColor: '#F44336',
-                data: [ i, 2, 5, 4, 8-i ],
-                tension: 0.1,
-                borderWidth: 1,
-                radius: 0
-            }]
-        })
+    function __news(__, obj)
+    {
+        if (obj.status == 'ok')
+        {
+            $('#news-loader').addClass('hide')
+
+            var collection = $('#news-collection');
+            var model = collection.children('[data-model]')
+
+            $.each(obj.data, function(rank, o) {
+                var item = collection.children('#news-item-' + rank).length ? $('#news-item-' + rank) : model.clone()
+                                .removeAttr('data-model')
+                                .removeClass('hide')
+                                .attr('id', 'news-item-' + rank);
+                    item.find('[data-name=rank]').html(rank)
+                    item.find('[data-name=title]').html(o.title)
+
+                    item.appendTo(collection)
+
+                __chart(item.find('[data-name=chart]'), {
+                    labels: o.chart,
+                    datasets: [{
+                        backgroundColor: '#E8F5E9',
+                        borderColor: '#4CAF50',
+                        data: o.chart,
+                        tension: 0.1,
+                        borderWidth: 1,
+                        radius: 0
+                    }]
+                })
+            })
+
+            window.clearTimeout(newsTimer)
+
+            newsTimer = window.setTimeout(function() {
+                vzAjax($('#news-collection'))
+            }, 1000)
+        }
     }
 @endpush
 
@@ -131,72 +145,28 @@
         <div class="card-content">
             <span class="card-title">Medya</span>
         </div>
-        <ul class="collection">
-            <li class="collection-item d-flex">
-                <span class="rank align-self-center">1</span>
-                <i class="material-icons green-text align-self-center">arrow_drop_up</i>
-                <a href="#" class="align-self-center">KBÜ de İl protokolü ve öğretim üyelerinin ortak Kolaj Sergisi açıldı</a>
-                <div class="chart align-self-center ml-auto" style="width: 64px; height: 32px;">
-                    <canvas id="chart-1" width="64" height="32"></canvas>
-                </div>
-            </li>
-            <li class="collection-item d-flex">
-                <span class="rank align-self-center">2</span>
-                <i class="material-icons green-text align-self-center">arrow_drop_up</i>
-                <a href="#" class="align-self-center">Harran Üniversitesi ile TJK arasında işbirliği protokolü</a>
-                <div class="chart align-self-center ml-auto" style="width: 64px; height: 32px;">
-                    <canvas id="chart-2" width="64" height="32"></canvas>
-                </div>
-            </li>
-            <li class="collection-item d-flex">
-                <span class="rank align-self-center">3</span>
-                <i class="material-icons green-text align-self-center">arrow_drop_up</i>
-                <a href="#" class="align-self-center">Duvarı delip 120 bin liralık gümüş çaldılar</a>
-                <div class="chart align-self-center ml-auto" style="width: 64px; height: 32px;">
-                    <canvas id="chart-3" width="64" height="32"></canvas>
-                </div>
-            </li>
-            <li class="collection-item d-flex">
-                <span class="rank align-self-center">4</span>
-                <i class="material-icons green-text align-self-center">arrow_drop_up</i>
-                <a href="#" class="align-self-center">Milli Eğitim Bakanlığı Maarif Müfettişi Ali Yeni'den Ürkmezer'e Ziyaret</a>
-                <div class="chart align-self-center ml-auto" style="width: 64px; height: 32px;">
-                    <canvas id="chart-4" width="64" height="32"></canvas>
-                </div>
-            </li>
-            <li class="collection-item d-flex">
-                <span class="rank align-self-center">5</span>
-                <i class="material-icons red-text align-self-center">arrow_drop_down</i>
-                <a href="#" class="align-self-center">Ombudsmanlığın Dünü Bugünü Ve Yarını Çalıştayı</a>
-                <div class="chart align-self-center ml-auto" style="width: 64px; height: 32px;">
-                    <canvas id="chart-5" width="64" height="32"></canvas>
-                </div>
-            </li>
-            <li class="collection-item d-flex">
-                <span class="rank align-self-center">6</span>
-                <i class="material-icons red-text align-self-center">arrow_drop_down</i>
-                <a href="#" class="align-self-center">Hırsızların hedefi rögar kapakları</a>
-                <div class="chart align-self-center ml-auto" style="width: 64px; height: 32px;">
-                    <canvas id="chart-6" width="64" height="32"></canvas>
-                </div>
-            </li>
-            <li class="collection-item d-flex">
-                <span class="rank align-self-center">7</span>
-                <i class="material-icons grey-text align-self-center">remove</i>
-                <a href="#" class="align-self-center">Jet Fadıl 40 yıllık ünlü profesörü Peygamber torunuyum diye kandırmış!</a>
-                <div class="chart align-self-center ml-auto" style="width: 64px; height: 32px;">
-                    <canvas id="chart-7" width="64" height="32"></canvas>
-                </div>
-            </li>
-            <li class="collection-item d-flex">
-                <span class="rank align-self-center">8</span>
-                <i class="material-icons grey-text align-self-center">remove</i>
-                <a href="#" class="align-self-center">Billur Kalkavan kimdir? Kaç yaşında? Sevgilisi kim?</a>
-                <div class="chart align-self-center ml-auto" style="width: 64px; height: 32px;">
-                    <canvas id="chart-8" width="64" height="32"></canvas>
+        <ul
+            id="news-collection"
+            class="collection load"
+            data-method="post"
+            data-href="{{ route('trend.live.redis', 'news') }}"
+            data-callback="__news">
+            <li class="collection-item hide" data-model>
+                <div class="d-flex">
+                    <span class="rank align-self-center" data-name="rank"></span>
+                    <i class="material-icons align-self-center" data-name="arrow"></i>
+                    <a href="#" class="align-self-center" data-name="title"></a>
+                    <div class="chart align-self-center ml-auto" style="width: 64px; height: 32px;">
+                        <canvas width="64" height="32" data-name="chart"></canvas>
+                    </div>
                 </div>
             </li>
         </ul>
+        @component('components.loader')
+            @slot('id', 'news-loader')
+            @slot('color', 'cyan')
+            @slot('class', 'card-loader-unstyled')
+        @endcomponent
     </div>
 @endsection
 
@@ -210,7 +180,7 @@
                     datasets: [{
                         backgroundColor: '#FFEBEE',
                         borderColor: '#F44336',
-                        data: [ i, 2, 5, 4, 8-i ],
+                        data: [ 1, 2, 5, 4, 8 ],
                         tension: 0.1,
                         borderWidth: 1,
                         radius: 0
