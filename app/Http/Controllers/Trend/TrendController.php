@@ -22,7 +22,7 @@ class TrendController extends Controller
          * - Kullanıcı
          * - Organizasyon
          */
-        $this->middleware([ 'auth', 'organisation:have' ]);
+        $this->middleware([ 'auth', 'organisation:have', 'can:organisation-status' ]);
     }
 
     /**

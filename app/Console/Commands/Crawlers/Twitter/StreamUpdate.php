@@ -90,7 +90,7 @@ class StreamUpdate extends Command
                 $kcolumn = 'keyword';
             break;
             case 'trend':
-                $klimit = 100;
+                $klimit = 150;
             break;
         }
 
@@ -100,11 +100,8 @@ class StreamUpdate extends Command
         if ($type == 'trend')
         {
             $query = Document::list(
-                [
-                    'twitter',
-                    'trends'
-                ],
-                'trend',
+                [ 'trend', 'titles' ],
+                'title',
                 [
                     'size' => 0,
                     'query' => [
@@ -212,8 +209,6 @@ class StreamUpdate extends Command
     {
         $tmp_key = implode('_', [ $type, 'chunk', $chunk_id ]);
 
-        $this->line($tmp_key);
-
         $token = Token::where('tmp_key', $tmp_key)->first();
 
         if (!@$token)
@@ -221,10 +216,10 @@ class StreamUpdate extends Command
             $token = Token::whereNull('pid')->where('status', 'off')->orderBy('updated_at', 'ASC')->first();
         }
 
-        $this->info('followed: ['.count($chunk).']');
-
         if (@$token)
         {
+            $this->info('followed: ['.$tmp_key.']['.count($chunk).']');
+
             $new_value = implode(',', $chunk);
 
             $token->type = ($type == 'keyword' || $type == 'trend') ? 'track' : 'follow';
@@ -237,6 +232,7 @@ class StreamUpdate extends Command
         {
             $message = 'Twitter, akış için yeterli token bulunamadı.';
 
+            $this->error('followed: ['.$tmp_key.']['.count($chunk).']');
             $this->error($message);
 
             System::log(

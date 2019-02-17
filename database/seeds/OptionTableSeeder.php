@@ -21,14 +21,18 @@ class OptionTableSeeder extends Seeder
         Option::firstOrCreate( [ 'key' => 'youtube.index.videos'     ], [ 'value' => 'off'                                 ] );
         Option::firstOrCreate( [ 'key' => 'youtube.index.auto'       ], [ 'value' => 'off'                                 ] );
         Option::firstOrCreate( [ 'key' => 'youtube.index.comments'   ], [ 'value' => date('Y.m', strtotime('-1 month'))    ] );
-        Option::firstOrCreate( [ 'key' => 'google.status'            ], [ 'value' => 'off'                                 ] );
-        Option::firstOrCreate( [ 'key' => 'google.index.search'      ], [ 'value' => 'off'                                 ] );
         Option::firstOrCreate( [ 'key' => 'twitter.index.auto'       ], [ 'value' => 'off'                                 ] );
         Option::firstOrCreate( [ 'key' => 'twitter.index.tweets'     ], [ 'value' => date('Y.m', strtotime('-1 month'))    ] );
-        Option::firstOrCreate( [ 'key' => 'twitter.index.trends'     ], [ 'value' => 'off'                                 ] );
-        Option::firstOrCreate( [ 'key' => 'twitter.trend.status'     ], [ 'value' => 'off'                                 ] );
         Option::firstOrCreate( [ 'key' => 'twitter.status'           ], [ 'value' => 'off'                                 ] );
         Option::firstOrCreate( [ 'key' => 'media.index.status'       ], [ 'value' => 'off'                                 ] );
+
+        Option::firstOrCreate( [ 'key' => 'trend.status.news'        ], [ 'value' => 'off'                                 ] );
+        Option::firstOrCreate( [ 'key' => 'trend.status.google'      ], [ 'value' => 'off'                                 ] );
+        Option::firstOrCreate( [ 'key' => 'trend.status.twitter'     ], [ 'value' => 'off'                                 ] );
+        Option::firstOrCreate( [ 'key' => 'trend.status.youtube'     ], [ 'value' => 'off'                                 ] );
+        Option::firstOrCreate( [ 'key' => 'trend.status.sozluk'      ], [ 'value' => 'off'                                 ] );
+        Option::firstOrCreate( [ 'key' => 'trend.status.forum'       ], [ 'value' => 'off'                                 ] );
+        Option::firstOrCreate( [ 'key' => 'trend.status.blog'        ], [ 'value' => 'off'                                 ] );
         Option::firstOrCreate( [ 'key' => 'trend.index'              ], [ 'value' => 'off'                                 ] );
     }
 }

@@ -105,6 +105,10 @@ class Kernel extends ConsoleKernel
             $schedule->command('nohup "trend:update --module=news --period=weekly" --type=restart')->weeklyOn(7, '23:00')->timezone(config('app.timezone'));
             $schedule->command('nohup "trend:update --module=news --period=monthly" --type=restart')->monthlyOn(28, '23:00')->timezone(config('app.timezone'));
 
+            $schedule->command('nohup "trend:update --module=twitter --period=live" --type=restart')->everyFiveMinutes()->timezone(config('app.timezone'));
+            $schedule->command('nohup "trend:update --module=google --period=live" --type=restart')->hourly()->timezone(config('app.timezone'));
+            $schedule->command('nohup "trend:update --module=youtube --period=live" --type=restart')->twiceDaily(9, 1)->everyTenMinutes()->timezone(config('app.timezone'));
+
             /**
              * YouTube botlarının tetiklenmesi.
              */
@@ -113,6 +117,7 @@ class Kernel extends ConsoleKernel
             if ($option)
             {
                 $schedule->command('nohup "youtube:video_detect --type=trends" --type=start')
+                         ->twiceDaily(9, 1)
                          ->everyTenMinutes()
                          ->timezone(config('app.timezone'))
                          ->withoutOverlapping();
@@ -168,19 +173,6 @@ class Kernel extends ConsoleKernel
                              ->timezone(config('app.timezone'))
                              ->withoutOverlapping();
                 }
-            }
-
-            /**
-             * Twitter Trend Modülü
-             */
-            $option = Option::where('key', 'twitter.trend.status')->where('value', 'on')->exists();
-
-            if ($option)
-            {
-                $schedule->command('twitter:trend_detect')
-                         ->everyTenMinutes()
-                         ->timezone(config('app.timezone'))
-                         ->withoutOverlapping();
             }
 
             /**

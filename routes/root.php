@@ -68,6 +68,16 @@ Route::prefix('forum-yonetimi')->namespace('Forum')->group(function () {
     });
 });
 
+Route::prefix('trend')->group(function () {
+    Route::get('/', 'TrendController@dashboard')->name('admin.trend.settings');
+    Route::patch('ayar', 'TrendController@statusSet')->name('admin.trend.status.set');
+
+    Route::post('log-ekrani', 'TrendController@logJson')->name('admin.trend.monitoring.log');
+
+    Route::post('index-durumu', 'TrendController@indexStatus')->name('admin.trend.index.status');
+    Route::post('index-olustur', 'TrendController@indexCreate')->name('admin.trend.index.create');
+});
+
 Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {
     Route::get('/', function () { return view('crawlers.dashboard'); })->name('crawlers');
 
@@ -88,19 +98,6 @@ Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {
         Route::post('genel/baslat', 'ShoppingController@allStart')->name('crawlers.shopping.bot.start.all');
         Route::post('genel/durdur', 'ShoppingController@allStop')->name('crawlers.shopping.bot.stop.all');
         Route::post('genel/index-olustur', 'ShoppingController@allIndex')->name('crawlers.shopping.bot.index.all');
-    });
-
-    # 
-    # GOOGLE
-    # 
-    Route::prefix('google')->group(function () {
-        Route::get('/', 'GoogleController@dashboard')->name('admin.google.settings');
-        Route::patch('ayar', 'GoogleController@statusSet')->name('admin.google.status.set');
-
-        Route::post('log-ekrani', 'GoogleController@logJson')->name('admin.google.monitoring.log');
-
-        Route::post('index-durumu', 'GoogleController@indexStatus')->name('admin.google.index.status');
-        Route::post('index-olustur', 'GoogleController@indexCreate')->name('admin.google.index.create');
     });
 
     # 

@@ -11,6 +11,8 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use App\Models\Trend;
 use App\Models\Option;
 
+use System;
+
 class CreateTrendIndexJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -45,6 +47,8 @@ class CreateTrendIndexJob implements ShouldQueue
 
         if ($indices->status == 'created' || $indices->status == 'exists')
         {
+            System::log('Trend indexi oluşturuldu.', 'App\Jobs\Elasticsearch::handle('.$indices->status.')', 1);
+
             Option::where('key', 'trend.index')->update([
                 'value' => 'on'
             ]);

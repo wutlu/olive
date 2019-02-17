@@ -52,6 +52,19 @@ return [
     ],
 
     /**
+     * Trend Değerleri
+     */
+    'trends' => [
+        'trend.status.google' => 'Google',
+        'trend.status.youtube' => 'YouTube',
+        'trend.status.sozluk' => 'Sözlük',
+        'trend.status.news' => 'Haber',
+        'trend.status.forum' => 'Forum',
+        'trend.status.blog' => 'Blog',
+        'trend.status.twitter' => 'Twitter',
+    ],
+
+    /**
      * Options Tablosu Varsayılanları
      */
     'options' => [
@@ -62,11 +75,16 @@ return [
         'youtube.index.auto' => 'string|in:on,off',
         'youtube.index.status' => 'string|in:on,off',
 
-        'google.index.search' => 'string|in:on,off',
-        'google.status' => 'string|in:on,off',
+        'trend.index' => 'string|in:on,off',
+        'trend.status.google' => 'string|in:on,off',
+        'trend.status.news' => 'string|in:on,off',
+        'trend.status.twitter' => 'string|in:on,off',
+        'trend.status.sozluk' => 'string|in:on,off',
+        'trend.status.forum' => 'string|in:on,off',
+        'trend.status.blog' => 'string|in:on,off',
+        'trend.status.youtube' => 'string|in:on,off',
 
         'twitter.index.auto' => 'string|in:on,off',
-        'twitter.trend.status' => 'string|in:on,off',
         'twitter.status' => 'string|in:on,off',
     ],
 
@@ -293,8 +311,8 @@ return [
                 'icon' => 'widgets'
             ],
             15 => [
-                'name' => 'Google Ayarları',
-                'route' => 'admin.google.settings',
+                'name' => 'Trend Ayarları',
+                'route' => 'admin.trend.settings',
                 'root' => true,
                 'icon' => 'widgets'
             ],

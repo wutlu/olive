@@ -126,42 +126,6 @@
                 <span>Otomatik Index</span>
             </label>
             <div class="collection-item grey lighten-4">Otomatik Indexlemede;<br />Twitter için oluşturulan aylık<br /> indexler, veriler<br /> alınmadan önce oluşturulur.</div>
-            @if ($options['twitter.index.trends'] == 'off')
-                <a
-                    href="#"
-                    class="collection-item waves-effect d-block json"
-                    data-href="{{ route('admin.twitter.index.create') }}"
-                    data-method="post"
-                    data-callback="__index_create">Trend Indexini Oluştur</a>
-                <div
-                    class="load"
-                    data-method="post"
-                    data-href="{{ route('admin.twitter.index.status') }}"
-                    data-callback="__index_status">
-                </div>
-
-                @push('local.scripts')
-                    var index_timer;
-
-                    function __index_status(__, obj)
-                    {
-                        if (obj.trends.status == 'ok')
-                        {
-                            $('[data-callback=__index_create]').remove()
-
-                            M.toast({ html: 'Trend indexi oluşturuldu.', classes: 'green darken-2' })
-                        }
-                        else
-                        {
-                            window.clearTimeout(index_timer)
-
-                            index_timer = window.setTimeout(function() {
-                                vzAjax($('[data-callback=__index_status]'))
-                            }, 5000)
-                        }
-                    }
-                @endpush
-            @endif
         </div>
     </div>
 	@include('crawlers.twitter._menu', [ 'active' => 'indices' ])

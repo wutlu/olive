@@ -670,7 +670,7 @@ class OrganisationController extends Controller
 
         if ($request->coupon_code)
         {
-            $coupon = Coupon::where('key', $request->coupon_code)->first();
+            $coupon = Coupon::where('key', $request->coupon_code)->whereNull('invoice_id')->first();
             $coupon->invoice_id = $invoice_id;
             $coupon->rate_year = $request->month >= 12 ? config('formal.discount_with_year') : 0;
             $coupon->save();

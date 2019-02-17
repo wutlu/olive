@@ -20,8 +20,6 @@ use App\Models\Twitter\Account;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 
-use App\Jobs\Elasticsearch\CreateTwitterIndexJob;
-
 class TwitterController extends Controller
 {
     /**
@@ -36,9 +34,7 @@ class TwitterController extends Controller
     public static function dashboard()
     {
         $rows = Option::whereIn('key', [
-            'twitter.trend.status',
             'twitter.status',
-            'twitter.index.trends',
             'twitter.index.tweets'
         ])->get();
 
@@ -64,8 +60,7 @@ class TwitterController extends Controller
     public static function indices()
     {
         $rows = Option::whereIn('key', [
-            'twitter.index.auto',
-            'twitter.index.trends'
+            'twitter.index.auto'
         ])->get();
 
         $options = [];
@@ -135,15 +130,7 @@ class TwitterController extends Controller
      */
     public static function statistics()
     {
-        return [
-            'status' => 'ok',
-            'data' => [
-                'twitter' => [
-                    'tweets' => Indices::stats([ 'twitter', 'tweets', '*' ]),
-                    'trends' => Indices::stats([ 'twitter', 'trends' ])
-                ]
-            ]
-        ];
+        return json_encode(Indices::stats([ 'twitter', 'tweets', '*' ]));
     }
 
     /**
@@ -166,13 +153,6 @@ class TwitterController extends Controller
             if ($request->key == 'twitter.index.tweets')
             {
                 if ($option->value == date('Y.m', strtotime('+ 1 month')))
-                {
-                    $error = false;
-                }
-            }
-            else if ($request->key == 'twitter.index.trends')
-            {
-                if ($option->value == 'on')
                 {
                     $error = false;
                 }
@@ -208,41 +188,6 @@ class TwitterController extends Controller
 
         return [
             'status' => 'ok'
-        ];
-    }
-
-    /**
-     ********************
-     ******* ROOT *******
-     ********************
-     *
-     * Twitter Trend başlıklar, Elasticsearch index oluşturma tetikleyicisi.
-     *
-     * @return array
-     */
-    public static function indexCreate()
-    {
-        CreateTwitterIndexJob::dispatch('trends')->onQueue('elasticsearch');
-
-        return [
-            'status' => 'ok'
-        ];
-    }
-
-    /**
-     ********************
-     ******* ROOT *******
-     ********************
-     *
-     * Twitter Trend başlıklar, Elasticsearch index durumu.
-     * - Index oluşturuldu mu, oluşturulmadı mı kontrolünü sağlar.
-     *
-     * @return array
-     */
-    public static function indexStatus()
-    {
-        return [
-            'trends' => Indices::stats([ 'twitter', 'trends' ])
         ];
     }
 }

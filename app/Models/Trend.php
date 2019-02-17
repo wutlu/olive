@@ -39,7 +39,7 @@ class Trend extends Model
                         ],
                         'title' => [
                             'type' => 'text',
-                            'analyzer' => 'turkish',
+                            'analyzer' => 'keyword',
                             'fielddata' => true
                         ],
                         'created_at' => [

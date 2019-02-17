@@ -237,14 +237,14 @@
                                     YouTube Ayarları
                                 </a>
                             </li>
-                            <li class="tiny">
-                                <a class="waves-effect" href="{{ route('admin.google.settings') }}">
-                                    <i class="material-icons">widgets</i>
-                                    Google Ayarları
-                                </a>
-                            </li>
                             <li>
                                 <a href="#" class="subheader">Genel Ayarlar</a>
+                            </li>
+                            <li class="tiny">
+                                <a class="waves-effect" href="{{ route('admin.trend.settings') }}">
+                                    <i class="material-icons">widgets</i>
+                                    Trend Ayarları
+                                </a>
                             </li>
                             <li class="tiny">
                                 <a class="waves-effect" href="{{ route('admin.proxies') }}">

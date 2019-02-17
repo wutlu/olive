@@ -24,6 +24,11 @@
     <script src="{{ asset('js/owl.carousel.min.js?v='.config('system.version')) }}"></script>
 @endpush
 
+@push('local.styles')
+    .trend-collection > .collection-item { opacity: .2; }
+    .trend-collection > .collection-item.on { opacity: 1; }
+@endpush
+
 @push('local.scripts')
     $('.owl-twitter').owlCarousel({
         responsiveClass: true,
@@ -55,11 +60,13 @@
                     ticks: {
                         min: 0,
                         max: this.max,
-                        callback: function (value) { return (value / this.max * 100).toFixed(0) + '%'; }
+                        callback: function (value) { return (value / this.max * 100).toFixed(0) + '%'; },
+                        reverse: true
                     }
                 }
             ]
         },
+
         tooltips: { enabled: false },
         maintainAspectRatio: false
     };
@@ -81,37 +88,92 @@
         {
             $('#news-loader').addClass('hide')
 
-            var collection = $('#news-collection');
-            var model = collection.children('[data-model]')
+            var collection = $('#news-collection'),
+                model = collection.children('[data-model]')
+
+            $('.trend-collection').children('.collection-item').removeClass('on')
 
             $.each(obj.data, function(rank, o) {
-                var item = collection.children('#news-item-' + rank).length ? $('#news-item-' + rank) : model.clone()
-                                .removeAttr('data-model')
-                                .removeClass('hide')
-                                .attr('id', 'news-item-' + rank);
+                var hasItem = collection.children('#news-item-' + rank).length;
+
+                var item = hasItem ? $('#news-item-' + rank) : model.clone().removeAttr('data-model').removeClass('hide').attr('id', 'news-item-' + rank);
+
+                    item.addClass('on')
+
                     item.find('[data-name=rank]').html(rank)
                     item.find('[data-name=title]').html(o.title)
+
+                var elements = {
+                    'first': o.chart[0],
+                    'last': o.chart[o.chart.length-1]
+                };
+
+                var colors = {
+                    'red': { 'dark': '#f44336', 'light': '#ffebee' },
+                    'green': { 'dark': '#4caf50', 'light': '#e8f5e9' },
+                    'grey': { 'dark': '#9e9e9e', 'light': '#fafafa' }
+                };
+
+                var icons = {
+                    'stable': 'remove',
+                    'up': 'arrow_drop_up',
+                    'down': 'arrow_drop_down',
+                    'new': 'star'
+                };
+
+                var color_dark = colors.grey.dark;
+                var color_light = colors.grey.light;
+                var icon = icons.stable;
+
+                if (elements.last < elements.first)
+                {
+                    color_dark = colors.green.dark;
+                    color_light = colors.green.light;
+                    icon = icons.up;
+                }
+                else if (elements.last > elements.first)
+                {
+                    color_dark = colors.red.dark;
+                    color_light = colors.red.light;
+                    icon = icons.down;
+                }
+
+                if (o.chart.length == 1)
+                {
+                    color_dark = colors.green.dark;
+                    color_light = colors.green.light;
+                    icon = icons.new;
+                }
+
+                    item.find('[data-name=arrow]')
+                        .html(icon)
+                        .css({
+                            'color': color_dark
+                        })
 
                     item.appendTo(collection)
 
                 __chart(item.find('[data-name=chart]'), {
                     labels: o.chart,
                     datasets: [{
-                        backgroundColor: '#E8F5E9',
-                        borderColor: '#4CAF50',
+                        backgroundColor: color_light,
+                        borderColor: color_dark,
                         data: o.chart,
                         tension: 0.1,
                         borderWidth: 1,
-                        radius: 0
+                        radius: 0,
+                        fill: 'start'
                     }]
                 })
             })
+
+            $('.trend-collection').children('.collection-item:not(.on)').remove()
 
             window.clearTimeout(newsTimer)
 
             newsTimer = window.setTimeout(function() {
                 vzAjax($('#news-collection'))
-            }, 1000)
+            }, 60000)
         }
     }
 @endpush
@@ -147,14 +209,14 @@
         </div>
         <ul
             id="news-collection"
-            class="collection load"
+            class="collection trend-collection load"
             data-method="post"
             data-href="{{ route('trend.live.redis', 'news') }}"
             data-callback="__news">
             <li class="collection-item hide" data-model>
                 <div class="d-flex">
-                    <span class="rank align-self-center" data-name="rank"></span>
                     <i class="material-icons align-self-center" data-name="arrow"></i>
+                    <span class="rank align-self-center center-align" data-name="rank" style="width: 48px;"></span>
                     <a href="#" class="align-self-center" data-name="title"></a>
                     <div class="chart align-self-center ml-auto" style="width: 64px; height: 32px;">
                         <canvas width="64" height="32" data-name="chart"></canvas>
@@ -209,7 +271,3 @@
     </div>
 </div>
 @endsection
-
-@push('local.scripts')
-
-@endpush

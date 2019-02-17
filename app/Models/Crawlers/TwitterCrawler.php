@@ -189,221 +189,183 @@ class TwitterCrawler
     # index deseni
     public function indexCreate(string $type)
     {
-        switch ($type)
-        {
-            case 'trends':
-                return Indices::create(
-                    [ 'twitter', $type ],
-                    [
-                        'trend' => [
+        return Indices::create(
+            [ 'twitter', $type ],
+            [
+                'tweet' => [
+                    'properties' => [
+                        'id' => [ 'type' => 'long' ],
+                        'text' => [
+                            'type' => 'text',
+                            'analyzer' => 'turkish',
+                            'fielddata' => true
+                        ],
+                        'sentiment' => [
                             'properties' => [
-                                'id' => [
-                                    'type' => 'keyword'
-                                ],
-                                'title' => [
+                                'neg' => [ 'type' => 'float' ],
+                                'pos' => [ 'type' => 'float' ],
+                                'neu' => [ 'type' => 'float' ]
+                            ]
+                        ],
+                        'lang' => [
+                            'type' => 'text',
+                            'analyzer' => 'keyword',
+                            'fielddata' => true
+                        ],
+                        'platform' => [
+                            'type' => 'text',
+                            'analyzer' => 'keyword',
+                            'fielddata' => true
+                        ],
+                        'counts' => [
+                            'properties' => [
+                                'rt' => [ 'type' => 'integer' ],
+                                'fav' => [ 'type' => 'integer' ],
+                                'quote' => [ 'type' => 'integer' ],
+                                'reply' => [ 'type' => 'integer' ]
+                            ]
+                        ],
+                        'created_at' => [
+                            'type' => 'date',
+                            'format' => 'YYYY-MM-dd HH:mm:ss'
+                        ],
+                        'deleted_at' => [
+                            'type' => 'date',
+                            'format' => 'YYYY-MM-dd HH:mm:ss'
+                        ],
+                        'called_at' => [
+                            'type' => 'date',
+                            'format' => 'YYYY-MM-dd HH:mm:ss'
+                        ],
+                        'external' => [
+                            'properties' => [
+                                'id' => [ 'type' => 'long' ],
+                                'type' => [ 'type' => 'text' ]
+                            ]
+                        ],
+                        'place' => [
+                            'properties' => [
+                                'name' => [
                                     'type' => 'text',
                                     'analyzer' => 'keyword',
                                     'fielddata' => true
                                 ],
-                                'approx_traffic' => [
-                                    'type' => 'integer'
+                                'full_name' => [
+                                    'type' => 'text',
+                                    'analyzer' => 'keyword',
+                                    'fielddata' => true
                                 ],
-                                'created_at' => [
-                                    'type' => 'date',
-                                    'format' => 'YYYY-MM-dd HH:mm:ss'
+                                'country_code' => [
+                                    'type' => 'text',
+                                    'analyzer' => 'keyword',
+                                    'fielddata' => true
                                 ]
                             ]
-                        ]
-                    ],
-                    [
-                        'total_fields_limit' => config('database.elasticsearch.twitter.trend.settings.total_fields_limit'),
-                        'number_of_shards' => config('database.elasticsearch.twitter.trend.settings.number_of_shards'),
-                        'number_of_replicas' => config('database.elasticsearch.twitter.trend.settings.number_of_replicas'),
-                        'refresh_interval' => config('database.elasticsearch.twitter.trend.settings.refresh_interval')
-                    ]
-                );
-            break;
-
-            default:
-                return Indices::create(
-                    [ 'twitter', $type ],
-                    [
-                        'tweet' => [
+                        ],
+                        'user' => [
                             'properties' => [
                                 'id' => [ 'type' => 'long' ],
-                                'text' => [
+                                'name' => [
+                                    'type' => 'text',
+                                    'analyzer' => 'keyword',
+                                    'fielddata' => true
+                                ],
+                                'screen_name' => [
+                                    'type' => 'text',
+                                    'analyzer' => 'keyword',
+                                    'fielddata' => true
+                                ],
+                                'description' => [
                                     'type' => 'text',
                                     'analyzer' => 'turkish',
                                     'fielddata' => true
                                 ],
-                                'sentiment' => [
-                                    'properties' => [
-                                        'neg' => [ 'type' => 'float' ],
-                                        'pos' => [ 'type' => 'float' ],
-                                        'neu' => [ 'type' => 'float' ]
-                                    ]
+                                'image' => [
+                                    'type' => 'text',
+                                    'index' => false
+                                ],
+                                'location' => [
+                                    'type' => 'text',
+                                    'analyzer' => 'keyword',
+                                    'fielddata' => true
                                 ],
                                 'lang' => [
                                     'type' => 'text',
                                     'analyzer' => 'keyword',
                                     'fielddata' => true
                                 ],
-                                'platform' => [
-                                    'type' => 'text',
-                                    'analyzer' => 'keyword',
-                                    'fielddata' => true
-                                ],
+                                'verified' => [ 'type' => 'boolean' ],
+                                'protected' => [ 'type' => 'boolean' ],
                                 'counts' => [
                                     'properties' => [
-                                        'rt' => [ 'type' => 'integer' ],
-                                        'fav' => [ 'type' => 'integer' ],
-                                        'quote' => [ 'type' => 'integer' ],
-                                        'reply' => [ 'type' => 'integer' ]
+                                        'statuses' => [ 'type' => 'integer' ],
+                                        'favourites' => [ 'type' => 'integer' ],
+                                        'listed' => [ 'type' => 'integer' ],
+                                        'friends' => [ 'type' => 'integer' ],
+                                        'followers' => [ 'type' => 'integer' ]
                                     ]
-                                ],
-                                'created_at' => [
-                                    'type' => 'date',
-                                    'format' => 'YYYY-MM-dd HH:mm:ss'
-                                ],
-                                'deleted_at' => [
-                                    'type' => 'date',
-                                    'format' => 'YYYY-MM-dd HH:mm:ss'
-                                ],
-                                'called_at' => [
-                                    'type' => 'date',
-                                    'format' => 'YYYY-MM-dd HH:mm:ss'
-                                ],
-                                'external' => [
+                                ]
+                            ]
+                        ],
+                        'entities' => [
+                            'properties' => [
+                                'hashtags' => [
+                                    'type' => 'nested',
                                     'properties' => [
-                                        'id' => [ 'type' => 'long' ],
-                                        'type' => [ 'type' => 'text' ]
-                                    ]
-                                ],
-                                'place' => [
-                                    'properties' => [
-                                        'name' => [
-                                            'type' => 'text',
-                                            'analyzer' => 'keyword',
-                                            'fielddata' => true
-                                        ],
-                                        'full_name' => [
-                                            'type' => 'text',
-                                            'analyzer' => 'keyword',
-                                            'fielddata' => true
-                                        ],
-                                        'country_code' => [
+                                        'hashtag' => [
                                             'type' => 'text',
                                             'analyzer' => 'keyword',
                                             'fielddata' => true
                                         ]
                                     ]
                                 ],
-                                'user' => [
+                                'urls' => [
+                                    'type' => 'nested',
                                     'properties' => [
-                                        'id' => [ 'type' => 'long' ],
-                                        'name' => [
+                                        'url' => [
                                             'type' => 'text',
                                             'analyzer' => 'keyword',
                                             'fielddata' => true
-                                        ],
-                                        'screen_name' => [
-                                            'type' => 'text',
-                                            'analyzer' => 'keyword',
-                                            'fielddata' => true
-                                        ],
-                                        'description' => [
-                                            'type' => 'text',
-                                            'analyzer' => 'turkish',
-                                            'fielddata' => true
-                                        ],
-                                        'image' => [
-                                            'type' => 'text',
-                                            'index' => false
-                                        ],
-                                        'location' => [
-                                            'type' => 'text',
-                                            'analyzer' => 'keyword',
-                                            'fielddata' => true
-                                        ],
-                                        'lang' => [
-                                            'type' => 'text',
-                                            'analyzer' => 'keyword',
-                                            'fielddata' => true
-                                        ],
-                                        'verified' => [ 'type' => 'boolean' ],
-                                        'protected' => [ 'type' => 'boolean' ],
-                                        'counts' => [
+                                        ]
+                                    ]
+                                ],
+                                'mentions' => [
+                                    'type' => 'nested',
+                                    'properties' => [
+                                        'mention' => [
                                             'properties' => [
-                                                'statuses' => [ 'type' => 'integer' ],
-                                                'favourites' => [ 'type' => 'integer' ],
-                                                'listed' => [ 'type' => 'integer' ],
-                                                'friends' => [ 'type' => 'integer' ],
-                                                'followers' => [ 'type' => 'integer' ]
+                                                'id' => [ 'type' => 'long' ],
+                                                'name' => [
+                                                    'type' => 'text',
+                                                    'analyzer' => 'keyword',
+                                                    'fielddata' => true
+                                                ],
+                                                'screen_name' => [
+                                                    'type' => 'text',
+                                                    'analyzer' => 'keyword',
+                                                    'fielddata' => true
+                                                ]
                                             ]
                                         ]
                                     ]
                                 ],
-                                'entities' => [
+                                'medias' => [
+                                    'type' => 'nested',
                                     'properties' => [
-                                        'hashtags' => [
-                                            'type' => 'nested',
+                                        'media' => [
                                             'properties' => [
-                                                'hashtag' => [
+                                                'media_url' => [
+                                                    'type' => 'text',
+                                                    'index' => false
+                                                ],
+                                                'source_url' => [
+                                                    'type' => 'text',
+                                                    'index' => false
+                                                ],
+                                                'type' => [
                                                     'type' => 'text',
                                                     'analyzer' => 'keyword',
                                                     'fielddata' => true
-                                                ]
-                                            ]
-                                        ],
-                                        'urls' => [
-                                            'type' => 'nested',
-                                            'properties' => [
-                                                'url' => [
-                                                    'type' => 'text',
-                                                    'analyzer' => 'keyword',
-                                                    'fielddata' => true
-                                                ]
-                                            ]
-                                        ],
-                                        'mentions' => [
-                                            'type' => 'nested',
-                                            'properties' => [
-                                                'mention' => [
-                                                    'properties' => [
-                                                        'id' => [ 'type' => 'long' ],
-                                                        'name' => [
-                                                            'type' => 'text',
-                                                            'analyzer' => 'keyword',
-                                                            'fielddata' => true
-                                                        ],
-                                                        'screen_name' => [
-                                                            'type' => 'text',
-                                                            'analyzer' => 'keyword',
-                                                            'fielddata' => true
-                                                        ]
-                                                    ]
-                                                ]
-                                            ]
-                                        ],
-                                        'medias' => [
-                                            'type' => 'nested',
-                                            'properties' => [
-                                                'media' => [
-                                                    'properties' => [
-                                                        'media_url' => [
-                                                            'type' => 'text',
-                                                            'index' => false
-                                                        ],
-                                                        'source_url' => [
-                                                            'type' => 'text',
-                                                            'index' => false
-                                                        ],
-                                                        'type' => [
-                                                            'type' => 'text',
-                                                            'analyzer' => 'keyword',
-                                                            'fielddata' => true
-                                                        ]
-                                                    ]
                                                 ]
                                             ]
                                         ]
@@ -411,15 +373,15 @@ class TwitterCrawler
                                 ]
                             ]
                         ]
-                    ],
-                    [
-                        'total_fields_limit' => config('database.elasticsearch.twitter.tweet.settings.total_fields_limit'),
-                        'number_of_shards' => config('database.elasticsearch.twitter.tweet.settings.number_of_shards'),
-                        'number_of_replicas' => config('database.elasticsearch.twitter.tweet.settings.number_of_replicas'),
-                        'refresh_interval' => config('database.elasticsearch.twitter.tweet.settings.refresh_interval')
                     ]
-                );
-            break;
-        }
+                ]
+            ],
+            [
+                'total_fields_limit' => config('database.elasticsearch.twitter.tweet.settings.total_fields_limit'),
+                'number_of_shards' => config('database.elasticsearch.twitter.tweet.settings.number_of_shards'),
+                'number_of_replicas' => config('database.elasticsearch.twitter.tweet.settings.number_of_replicas'),
+                'refresh_interval' => config('database.elasticsearch.twitter.tweet.settings.refresh_interval')
+            ]
+        );
     }
 }

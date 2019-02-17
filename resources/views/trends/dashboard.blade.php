@@ -9,7 +9,7 @@
             'link' => route('crawlers')
         ],
         [
-            'text' => '🐞 Google Ayarları'
+            'text' => '🐞 Trend Ayarları'
         ]
     ],
     'dock' => true
@@ -18,25 +18,13 @@
 @section('content')
     <div class="card with-bg">
         <div class="card-content">
-            <span class="card-title">Google Ayarları</span>
-        </div>
-        <div class="card-content">
-            <div class="item-group">
-                <div class="item">
-                    <small class="d-block grey-text">Arama Sayısı</small>
-                    <p data-elasticsearch data-name="search-count">-</p>
-                </div>
-                <div class="item">
-                    <small class="d-block grey-text">Kapladığı Alan</small>
-                    <p data-elasticsearch data-name="search-size">-</p>
-                </div>
-            </div>
+            <span class="card-title">Trend Ayarları</span>
         </div>
         <div class="card-content red hide" data-name="alert"></div>
         <ul
             id="console"
             class="collection load d-flex align-items-end flex-wrap no-select"
-            data-href="{{ route('admin.google.monitoring.log') }}"
+            data-href="{{ route('admin.trend.monitoring.log') }}"
             data-callback="__log"
             data-method="post">
             <li class="collection-item hide" style="width: 100%;">
@@ -121,37 +109,55 @@
         <div
             class="collection load"
             data-method="post"
-            data-href="{{ route('admin.google.index.status') }}"
+            data-href="{{ route('admin.trend.index.status') }}"
             data-callback="__status"
             data-timeout="4000"
             data-error-callback="__connection_failed">
+            @foreach (config('system.trends') as $key => $name)
             <label class="collection-item waves-effect d-block">
                 <input
                     name="value"
                     id="value"
                     value="on"
                     class="json"
-                    data-href="{{ route('admin.google.status.set') }}"
+                    data-href="{{ route('admin.trend.status.set') }}"
                     data-method="patch"
                     data-delay="1"
-                    data-key="google.status"
+                    data-key="{{ $key }}"
                     data-checked-value="on"
                     data-unchecked-value="off"
                     type="checkbox"
                     data-callback="__status_set"
-                    @if ($options['google.status'] == 'on'){{ 'checked' }}@endif />
-                <span>Çalışıyor</span>
+                    @if ($options[$key] == 'on'){{ 'checked' }}@endif />
+                <span>{{ $name }} Trend Botu</span>
             </label>
-            @if ($options['google.index.search'] == 'off')
+            @endforeach
+            @if ($options['trend.index'] == 'off')
                 <a
                     href="#"
-                    class="collection-item waves-effect d-block json"
-                    data-href="{{ route('admin.google.index.create') }}"
+                    class="collection-item waves-effect d-block json grey lighten-2"
+                    data-href="{{ route('admin.trend.index.create') }}"
                     data-method="post"
-                    data-trigger="search-index"
-                    data-callback="__index_create">Indexleri Oluştur</a>
+                    data-trigger="trend-index"
+                    data-callback="__index_create">Index Oluştur</a>
             @endif
         </div>
+    </div>
+    <div class="card">
+        <ul class="collection">
+            <li class="collection-item">
+                <small class="d-block grey-text">Toplam Trend Sayısı</small>
+                <p data-elasticsearch data-name="trend-count">-</p>
+                <small class="d-block grey-text">Kapladığı Alan</small>
+                <p data-elasticsearch data-name="trend-size">-</p>
+            </li>
+            @foreach (config('system.trends') as $key => $name)
+            <li class="collection-item">
+                <small class="d-block grey-text">{{ $name }} Trend Sayısı</small>
+                <p data-elasticsearch data-name="{{ explode('.', $key)[2] }}-trend-count">-</p>
+            </li>
+            @endforeach
+        </ul>
     </div>
 @endsection
 
@@ -160,7 +166,7 @@
     {
         if (obj.status == 'err')
         {
-            M.toast({ html: 'Önce indexleri oluşturmanız gerekiyor.', classes: 'red' })
+            M.toast({ html: 'Önce index oluşturmanız gerekiyor.', classes: 'red' })
 
             __.prop('checked', false)
         }
@@ -180,32 +186,39 @@
     {
         if (obj.status == 'ok')
         {
-            var indice = obj.elasticsearch.data.indices['olive__google-search'];
+            var indice = obj.elasticsearch.data.indices['olive__trend-titles'];
 
             if (indice)
             {
-                $('[data-name=search-count]').html(number_format(indice.primaries.docs.count))
-                $('[data-name=search-size]').html(humanFileSize(indice.total.store.size_in_bytes))
+                $('[data-name=trend-count]').html(number_format(indice.primaries.docs.count))
+                $('[data-name=trend-size]').html(humanFileSize(indice.total.store.size_in_bytes))
 
                 $('[data-name=alert]').addClass('hide')
-                $('[data-trigger=search-index]').remove()
+                $('[data-trigger=trend-index]').remove()
+
+                $.each(obj.data, function(key, o) {
+                    if (o != 'off')
+                    {
+                        $('[data-name=' + key + '-trend-count]').html(number_format(o.data.count))
+                    }
+                })
             }
             else
             {
                 $('[data-elasticsearch]').html('Indexe ulaşılamıyor!')
-                $('[data-name=alert]').html('İlgili index daha önce oluşturulmuştu. Şu an bu indexlere ulaşılamıyor.').removeClass('hide')
+                $('[data-name=alert]').html('İlgili index daha önce oluşturulmuştu. Şu an bu indexe ulaşılamıyor.').removeClass('hide')
             }
         }
         else if (obj.status == 'err')
         {
             $('[data-elasticsearch]').html('Index isteği hiç gönderilmedi.')
-            $('[data-name=alert]').html('Tüm indexleri oluşturmadan sistemi çalıştıramazsınız. Lütfen sağ menüden "Indexleri Oluştur" butonuna basın ve bekleyin.').removeClass('hide')
+            $('[data-name=alert]').html('Trend indexi oluşturulmadan sistemi çalıştıramazsınız. Lütfen sağ menüden "Index Oluştur" butonuna basın ve bekleyin.').removeClass('hide')
         }
 
         window.clearTimeout(statusTimer)
 
         statusTİmer = window.setTimeout(function() {
             vzAjax($('[data-callback=__status]'))
-        }, 5000)
+        }, 10000)
     }
 @endpush

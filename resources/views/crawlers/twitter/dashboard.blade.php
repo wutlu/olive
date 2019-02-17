@@ -22,33 +22,14 @@
     {
         if (obj.status == 'ok')
         {
-            if (obj.data.twitter.tweets.data._all.primaries.docs)
+            if (obj.data._all.primaries.docs)
             {
-                $('[data-name=tweet-count]').html(number_format(obj.data.twitter.tweets.data._all.primaries.docs.count))
-                $('[data-name=tweet-size]').html(humanFileSize(obj.data.twitter.tweets.data._all.total.store.size_in_bytes))
+                $('[data-name=tweet-count]').html(number_format(obj.data._all.primaries.docs.count))
+                $('[data-name=tweet-size]').html(humanFileSize(obj.data._all.total.store.size_in_bytes))
             }
             else
             {
                 $('[data-elasticsearch=tweets]').html('Index Oluşturulmadı!')
-            }
-
-            if (obj.data.twitter.trends.message)
-            {
-                var message = $.parseJSON(obj.data.twitter.trends.message);
-            }
-            else
-            {
-                var message = { 'status': obj.data.twitter.trends.status == 'ok' ? 200 : 404 };
-            }
-
-            if (message.status == '404')
-            {
-                $('[data-elasticsearch=trends]').html('Index Oluşturulmadı!')
-            }
-            else
-            {
-                $('[data-name=trend-count]').html(number_format(obj.data.twitter.trends.data._all.primaries.docs.count))
-                $('[data-name=trend-size]').html(humanFileSize(obj.data.twitter.trends.data._all.total.store.size_in_bytes))
             }
 
             window.clearTimeout(statisticsTimer)
@@ -446,14 +427,6 @@
                         <small class="d-block grey-text">Kullanılan Alan</small>
                         <p data-elasticsearch="tweets" data-name="tweet-size">-</p>
                     </div>
-                    <div class="item">
-                        <small class="d-block grey-text">Alınan Trend Başlık</small>
-                        <p data-elasticsearch="trends" data-name="trend-count">-</p>
-                    </div>
-                    <div class="item">
-                        <small class="d-block grey-text">Kullanılan Alan</small>
-                        <p data-elasticsearch="trends" data-name="trend-size">-</p>
-                    </div>
                 </div>
             </div>
             <div class="card-content red hide" data-name="alert"></div>
@@ -588,29 +561,6 @@
 @section('dock')
     <div class="card">
         <div class="collection">
-            @if ($options['twitter.index.trends'] == 'off')
-                <div class="collection-item d-block">
-                    <i class="material-icons d-table">warning</i>
-                    Trend indexinin oluşturulması bekleniyor.
-                </div>
-            @else
-                <label class="collection-item waves-effect d-block">
-                    <input
-                        name="value"
-                        id="value"
-                        value="on"
-                        class="json"
-                        data-href="{{ route('admin.twitter.option.set') }}"
-                        data-method="patch"
-                        data-delay="1"
-                        data-key="twitter.trend.status"
-                        data-checked-value="on"
-                        data-unchecked-value="off"
-                        type="checkbox"
-                        @if ($options['twitter.trend.status'] == 'on'){{ 'checked' }}@endif  />
-                    <span>Trend Botu</span>
-                </label>
-            @endif
             @if ($options['twitter.index.tweets'] == date('Y.m', strtotime('+ 1 month')))
                 <label class="collection-item waves-effect d-block">
                     <input
