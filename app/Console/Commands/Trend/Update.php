@@ -293,7 +293,7 @@ class Update extends Command
             {
                 if ($period == 'live')
                 {
-                    echo self::redis('news', $items, $date);
+                    echo self::redis('sozluk', $items, $date);
                 }
                 else
                 {

@@ -106,6 +106,9 @@ class StreamUpdate extends Command
                     'size' => 0,
                     'query' => [
                         'bool' => [
+                            'must' => [
+                                [ 'match' => [ 'module' => 'twitter' ] ]
+                            ],
                             'filter' => [
                                 'range' => [
                                     'created_at' => [
