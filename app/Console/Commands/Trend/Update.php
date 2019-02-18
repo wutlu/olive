@@ -520,7 +520,7 @@ class Update extends Command
                     'significant_terms' => [
                         'field' => 'video_id',
                         'size' => 25,
-                        'min_doc_count' => 5
+                        'min_doc_count' => 1
                     ]
                 ]
             ]

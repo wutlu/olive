@@ -103,7 +103,7 @@ class Kernel extends ConsoleKernel
             # [ gerçek zamanlı trend ] #
             $schedule->command('nohup "trend:update --module=sozluk --period=live" --type=restart')->everyTenMinutes()->timezone(config('app.timezone'));
             $schedule->command('nohup "trend:update --module=news --period=live" --type=restart')->everyMinute()->timezone(config('app.timezone'));
-            $schedule->command('nohup "trend:update --module=youtube --period=live" --type=restart')->everyTenMinutes()->timezone(config('app.timezone'));
+            $schedule->command('nohup "trend:update --module=youtube --period=live" --type=restart')->twiceDaily(9, 1)->everyTenMinutes()->timezone(config('app.timezone'));
 
             # [ arşiv trend ] #
             $schedule->command('nohup "trend:update --module=sozluk --period=daily" --type=restart')->dailyAt('23:00')->timezone(config('app.timezone'));
