@@ -1168,6 +1168,14 @@ ul.partners > li.partner a:hover {
 }
 
 /**
+ * container
+ */
+.container.container-wide {
+  width: 90% !important;
+  max-width: 100% !important;
+}
+
+/**
  * more step
  */
 #more-step {
@@ -1952,19 +1960,6 @@ nav,
 .card {
           box-shadow: 0 10px 10px 0 rgba(0, 0, 0, .10), 0 15px 5px -10px rgba(0, 0, 0, .08), 0 5px 25px 0 rgba(0, 0, 0, .1);
   -webkit-box-shadow: 0 10px 10px 0 rgba(0, 0, 0, .10), 0 15px 5px -10px rgba(0, 0, 0, .08), 0 5px 25px 0 rgba(0, 0, 0, .1);
-}
-
-/*!
- * Waves v0.6.0
- * http://fian.my.id/Waves
- *
- * Copyright 2014 Alfiana E. Sibuea and other contributors
- * Released under the MIT license
- * https://github.com/fians/Waves/blob/master/LICENSE
- */
-.waves-effect {
-          transition: .1s ease-out;
-  -webkit-transition: .1s ease-out;
 }
 
 /**

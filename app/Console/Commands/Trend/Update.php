@@ -519,8 +519,8 @@ class Update extends Command
                 'hit_keywords' => [
                     'significant_terms' => [
                         'field' => 'video_id',
-                        'size' => 25,
-                        'min_doc_count' => 5
+                        'size' => 20,
+                        'min_doc_count' => 1
                     ]
                 ]
             ]
@@ -846,7 +846,7 @@ class Update extends Command
 
             $ranks[] = $rank;
 
-            $array[$rank]['chart'] = $ranks;
+            $array[$rank]['ranks'] = $ranks;
         }
 
         $alias = str_slug(config('app.name'));

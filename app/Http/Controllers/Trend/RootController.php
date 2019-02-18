@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Trend;
 
 use App\Http\Controllers\Controller;
 
@@ -20,7 +20,7 @@ use Carbon\Carbon;
 
 use System;
 
-class TrendController extends Controller
+class RootController extends Controller
 {
     /**
      ********************
