@@ -124,6 +124,19 @@
         <div class="navbar-fixed">
             @auth
                 <ul id="user-top-dropdown" class="dropdown-content">
+                    <li>
+                        <a href="{{ route('user.profile', auth()->user()->id) }}" class="d-flex">
+                            <img
+                                alt="{{ auth()->user()->name }}"
+                                class="align-self-center mr-1"
+                                src="{{ asset(auth()->user()->avatar()) }}" />
+                            <span class="align-self-center">
+                                <span class="d-block">{{ auth()->user()->name }}</span>
+                                <span class="grey-text">{{ auth()->user()->email }}</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="divider"></li>
                     @if (auth()->user()->organisation)
                     <li>
                         <a class="waves-effect" href="{{ route('settings.organisation') }}">

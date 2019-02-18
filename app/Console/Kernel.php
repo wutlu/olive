@@ -100,14 +100,26 @@ class Kernel extends ConsoleKernel
             /**
              * Trendlerin hazırlanması.
              */
+            # [ gerçek zamanlı trend ] #
+            $schedule->command('nohup "trend:update --module=sozluk --period=live" --type=restart')->everyMinute()->timezone(config('app.timezone'));
             $schedule->command('nohup "trend:update --module=news --period=live" --type=restart')->everyMinute()->timezone(config('app.timezone'));
+            $schedule->command('nohup "trend:update --module=youtube --period=live" --type=restart')->everyTenMinutes()->timezone(config('app.timezone'));
+
+            # [ arşiv trend ] #
+            $schedule->command('nohup "trend:update --module=sozluk --period=daily" --type=restart')->dailyAt('23:00')->timezone(config('app.timezone'));
+            $schedule->command('nohup "trend:update --module=sozluk --period=weekly" --type=restart')->weeklyOn(7, '23:00')->timezone(config('app.timezone'));
+
+            # [ arşiv trend ] #
             $schedule->command('nohup "trend:update --module=news --period=daily" --type=restart')->dailyAt('23:00')->timezone(config('app.timezone'));
             $schedule->command('nohup "trend:update --module=news --period=weekly" --type=restart')->weeklyOn(7, '23:00')->timezone(config('app.timezone'));
-            $schedule->command('nohup "trend:update --module=news --period=monthly" --type=restart')->monthlyOn(28, '23:00')->timezone(config('app.timezone'));
 
-            $schedule->command('nohup "trend:update --module=twitter --period=live" --type=restart')->everyFiveMinutes()->timezone(config('app.timezone'));
-            $schedule->command('nohup "trend:update --module=google --period=live" --type=restart')->hourly()->timezone(config('app.timezone'));
-            $schedule->command('nohup "trend:update --module=youtube --period=live" --type=restart')->twiceDaily(9, 1)->everyTenMinutes()->timezone(config('app.timezone'));
+            # [ arşiv trend ] #
+            $schedule->command('nohup "trend:update --module=youtube --period=daily" --type=restart')->dailyAt('23:00')->timezone(config('app.timezone'));
+            $schedule->command('nohup "trend:update --module=youtube --period=weekly" --type=restart')->weeklyOn(7, '23:00')->timezone(config('app.timezone'));
+
+            # [ gerçek trend ] #
+            $schedule->command('nohup "trend:update --module=twitter" --type=restart')->everyTenMinutes()->timezone(config('app.timezone'));
+            $schedule->command('nohup "trend:update --module=google" --type=restart')->twiceDaily(9, 1)->hourly()->timezone(config('app.timezone'));
 
             /**
              * YouTube botlarının tetiklenmesi.

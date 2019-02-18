@@ -55,9 +55,7 @@ class Update extends Command
         $this->periods = [
             'live' => 'Anlık',
             'daily' => 'Günlük',
-            'weekly' => 'Haftalık',
-            'monthly' => 'Aylık',
-            'yearly' => 'Yıllık',
+            'weekly' => 'Haftalık'
         ];
 
         parent::__construct();
@@ -86,6 +84,7 @@ class Update extends Command
                         'twitter' => 'Twitter Trendleri',
                         'google' => 'Google Trendleri',
                         'youtube' => 'YouTube Trendleri',
+                        'sozluk' => 'Sözlük Trendleri',
                     ]
                 );
             }
@@ -103,46 +102,45 @@ class Update extends Command
                     die();
                 }
 
-                if (!$period)
+                if ($module == 'sozluk' || $module == 'news' || $module == 'youtube')
                 {
-                    $period = $this->choice(
-                        'Periyot seçin:',
-                        $this->periods,
-                        'live'
-                    );
-                }
-
-                if (@$this->periods[$period])
-                {
-                    switch ($period)
+                    if (!$period)
                     {
-                        case 'live':
-                            $date = Carbon::now()->subMinutes(30)->format('Y-m-d H:i');
-                            $group = implode(':', [ $module, 'live', date('Y.m.d-H:i') ]);
-                        break;
-                        case 'daily':
-                            $date = Carbon::now()->subDays(1)->format('Y-m-d H:i');
-                            $group = implode(':', [ $module, 'daily', date('Y.m.d') ]);
-                        break;
-                        case 'weekly':
-                            $date = Carbon::now()->subDays(7)->format('Y-m-d H:i');
-                            $group = implode(':', [ $module, 'weekly', date('Y.m-W') ]);
-                        break;
-                        case 'monthly':
-                            $date = Carbon::now()->subMonths(1)->format('Y-m-d H:i');
-                            $group = implode(':', [ $module, 'monthly', date('Y.m') ]);
-                        break;
-                        case 'yearly':
-                            $date = Carbon::now()->subYears(1)->format('Y-m-d H:i');
-                            $group = implode(':', [ $module, 'yearly', date('Y') ]);
-                        break;
+                        $period = $this->choice(
+                            'Periyot seçin:',
+                            $this->periods,
+                            'live'
+                        );
                     }
 
-                    return $class->{$module}($period, $date, $group);
+                    if (@$this->periods[$period])
+                    {
+                        switch ($period)
+                        {
+                            case 'live':
+                                $date = Carbon::now()->subMinutes(30)->format('Y-m-d H:i');
+                                $group = implode(':', [ $module, 'live', date('Y.m.d-H:i') ]);
+                            break;
+                            case 'daily':
+                                $date = Carbon::now()->subDays(1)->format('Y-m-d H:i');
+                                $group = implode(':', [ $module, 'daily', date('Y.m.d') ]);
+                            break;
+                            case 'weekly':
+                                $date = Carbon::now()->subDays(7)->format('Y-m-d H:i');
+                                $group = implode(':', [ $module, 'weekly', date('Y.m-W') ]);
+                            break;
+                        }
+
+                        return $class->{$module}($period, $date, $group);
+                    }
+                    else
+                    {
+                        $this->error('Geçersiz periyot!');
+                    }
                 }
                 else
                 {
-                    $this->error('Geçersiz periyot!');
+                    return $class->{$module}();
                 }
             }
             else
@@ -157,7 +155,165 @@ class Update extends Command
     }
 
     /**
-     * Trend Haber Tespiti
+     * Trend Sözlük: Tespit
+     *
+     * @return mixed
+     */
+    public static function sozluk(string $period, string $date, string $group)
+    {
+        $items = [];
+        $chunk = [];
+
+        switch ($period)
+        {
+            case 'live':
+                $group_title = 'Sözlük: Anlık Trend, '.date('d.m.Y');
+            break;
+            case 'daily':
+                $group_title = 'Sözlük: Günlük Trend, '.date('d.m.Y');
+            break;
+            case 'weekly':
+                $group_title = 'Sözlük: Haftalık Trend, '.date('m.Y').' hafta: '.date('W');
+            break;
+        }
+
+        $query = @Document::list([ 'sozluk', '*' ], 'entry', [
+            'size' => 0,
+            'query' => [
+                'bool' => [
+                    'filter' => [
+                        [
+                            'range' => [
+                                'created_at' => [
+                                    'format' => 'YYYY-MM-dd HH:mm',
+                                    'gte' => $date
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'aggs' => [
+                'hit_keywords' => [
+                    'significant_terms' => [
+                        'field' => 'title',
+                        'size' => 25,
+                        'min_doc_count' => 5
+                    ]
+                ]
+            ]
+        ])->data['aggregations']['hit_keywords']['buckets'];
+
+        if ($query)
+        {
+            $i = 0;
+
+            foreach ($query as $row)
+            {
+                $title = @Document::list([ 'sozluk', '*' ], 'entry', [
+                    'size' => 1,
+                    'query' => [
+                        'bool' => [
+                            'must' => [
+                                [
+                                    'more_like_this' => [
+                                        'fields' => [ 'title' ],
+                                        'like' => $row['key'],
+                                        'min_term_freq' => 1,
+                                        'min_doc_freq' => 1,
+                                        'max_query_terms' => 10
+                                    ]
+                                ]
+                            ],
+                            'filter' => [
+                                [
+                                    'range' => [
+                                        'created_at' => [
+                                            'format' => 'YYYY-MM-dd HH:mm',
+                                            'gte' => $date
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ],
+                    '_source' => [ 'title' ]
+                ])->data['hits']['hits'][0]['_source']['title'];
+
+                if ($title)
+                {
+                    $sper = 0;
+
+                    foreach ($items as $item)
+                    {
+                        similar_text($item['title'], $title, $percent);
+
+                        $sper = $percent > $sper ? $percent : $sper;
+                    }
+
+                    if ($sper <= 40)
+                    {
+                        $i++;
+                        $key = md5($row['key']);
+                        $id = 'news_'.$key.'_'.date('Y.m.d-H:i');
+
+                        $items[$i] = [
+                            'key' => $key,
+                            'title' => $title
+                        ];
+
+                        ################
+
+                        $chunk['body'][] = [
+                            'create' => [
+                                '_index' => Indices::name([ 'trend', 'titles' ]),
+                                '_type' => 'title',
+                                '_id' => $id
+                            ]
+                        ];
+
+                        $chunk['body'][] = [
+                            'id' => $id,
+                            'key' => $key,
+                            'group' => $group,
+                            'module' => 'sozluk',
+                            'rank' => $i,
+                            'title' => $title,
+                            'created_at' => date('Y-m-d H:i:s')
+                        ];
+
+                        ################
+
+                        echo Term::line($i.' - '.$title);
+                    }
+                }
+            }
+
+            if ($i)
+            {
+                if ($period == 'live')
+                {
+                    echo self::redis('news', $items, $date);
+                }
+                else
+                {
+                    echo self::archive($group, $group_title);
+                }
+            }
+
+            if (count($chunk))
+            {
+                BulkInsertJob::dispatch($chunk)->onQueue('elasticsearch');
+            }
+        }
+        else
+        {
+            echo Term::line('Trend tespit edilemedi.');
+        }
+    }
+
+    /**
+     * Trend Haber: Tespit
      *
      * @return mixed
      */
@@ -177,15 +333,9 @@ class Update extends Command
             case 'weekly':
                 $group_title = 'Medya: Haftalık Trend, '.date('m.Y').' hafta: '.date('W');
             break;
-            case 'monthly':
-                $group_title = 'Medya: Aylık Trend, '.date('m.Y');
-            break;
-            case 'yearly':
-                $group_title = 'Medya: Yıllık Trend, '.date('Y');
-            break;
         }
 
-        $query = @Document::list([ 'media', '*' ], 'article', [
+        $query = @Document::list([ 'media', 's*' ], 'article', [
             'size' => 0,
             'query' => [
                 'bool' => [
@@ -211,7 +361,7 @@ class Update extends Command
                     'significant_terms' => [
                         'field' => 'title',
                         'size' => 25,
-                        'min_doc_count' => 2
+                        'min_doc_count' => 5
                     ]
                 ]
             ]
@@ -265,7 +415,7 @@ class Update extends Command
                         $sper = $percent > $sper ? $percent : $sper;
                     }
 
-                    if ($sper <= 50)
+                    if ($sper <= 40)
                     {
                         $i++;
                         $key = md5($row['key']);
@@ -327,12 +477,133 @@ class Update extends Command
     }
 
     /**
-     * Trend Tweet Tespiti
+     * Trend Google Arama: Tespit
      *
      * @return mixed
      */
-    public static function twitter(string $period, string $date, string $group)
+    public static function youtube(string $period, string $date, string $group)
     {
+        $items = [];
+        $chunk = [];
+
+        switch ($period)
+        {
+            case 'live':
+                $group_title = 'YouTube: Anlık Trend, '.date('d.m.Y');
+            break;
+            case 'daily':
+                $group_title = 'YouTube: Günlük Trend, '.date('d.m.Y');
+            break;
+            case 'weekly':
+                $group_title = 'YouTube: Haftalık Trend, '.date('m.Y').' hafta: '.date('W');
+            break;
+        }
+
+        $query = @Document::list([ 'youtube', 'comments', '*' ], 'comment', [
+            'size' => 0,
+            'query' => [
+                'bool' => [
+                    'filter' => [
+                        [
+                            'range' => [
+                                'created_at' => [
+                                    'format' => 'YYYY-MM-dd HH:mm',
+                                    'gte' => $date
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'aggs' => [
+                'hit_keywords' => [
+                    'significant_terms' => [
+                        'field' => 'video_id',
+                        'size' => 25,
+                        'min_doc_count' => 5
+                    ]
+                ]
+            ]
+        ])->data['aggregations']['hit_keywords']['buckets'];
+
+        if ($query)
+        {
+            $i = 0;
+
+            foreach ($query as $row)
+            {
+                $title = @Document::get([ 'youtube', 'videos' ], 'video', $row['key'])->data['_source']['title'];
+
+                if ($title)
+                {
+                    $i++;
+                    $key = md5($row['key']);
+                    $id = 'youtube_'.$key.'_'.date('Y.m.d-H:i');
+
+                    $items[$i] = [
+                        'key' => $key,
+                        'id' => $row['key'],
+                        'title' => $title
+                    ];
+
+                    ################
+
+                    $chunk['body'][] = [
+                        'create' => [
+                            '_index' => Indices::name([ 'trend', 'titles' ]),
+                            '_type' => 'title',
+                            '_id' => $id
+                        ]
+                    ];
+
+                    $chunk['body'][] = [
+                        'id' => $id,
+                        'key' => $key,
+                        'group' => $group,
+                        'module' => 'youtube',
+                        'rank' => $i,
+                        'title' => $title,
+                        'created_at' => date('Y-m-d H:i:s')
+                    ];
+
+                    ################
+
+                    echo Term::line($i.' - '.$title);
+                }
+            }
+
+            if ($i)
+            {
+                if ($period == 'live')
+                {
+                    echo self::redis('youtube', $items, $date);
+                }
+                else
+                {
+                    echo self::archive($group, $group_title);
+                }
+            }
+
+            if (count($chunk))
+            {
+                BulkInsertJob::dispatch($chunk)->onQueue('elasticsearch');
+            }
+        }
+        else
+        {
+            echo Term::line('Trend tespit edilemedi.');
+        }
+    }
+
+    /**
+     * Trend Tweet: Tespit
+     *
+     * @return mixed
+     */
+    public static function twitter()
+    {
+        $group = implode(':', [ 'twitter', 'live', date('Y.m.d-H') ]);
+
         $items = [];
         $chunk = [];
         $i = 0;
@@ -412,26 +683,14 @@ class Update extends Command
         }
         catch (\Exception $e)
         {
-            if ($e->getCode() == 401)
-            {
-                $level = 10;
-            }
-            else
-            {
-                $level = 6;
-            }
-
             echo Term::line($e->getMessage());
 
-            System::log($e->getMessage(), 'App\Console\Commands\Trend\Update::twitter('.$period.', '.$date.', '.$group.')', $level);
+            System::log($e->getMessage(), 'App\Console\Commands\Trend\Update::twitter()', $e->getCode() == 401 ? 10 : 6);
         }
 
         if ($i)
         {
-            if ($period == 'live')
-            {
-                echo self::redis('twitter', $items, $date);
-            }
+            echo self::redis('twitter', $items, Carbon::now()->subHours(1)->format('Y-m-d H:i'));
         }
 
         if (count($chunk))
@@ -441,12 +700,14 @@ class Update extends Command
     }
 
     /**
-     * Trend Google Arama Tespiti
+     * Trend Google Arama: Tespit
      *
      * @return mixed
      */
-    public static function google(string $period, string $date, string $group)
+    public static function google()
     {
+        $group = implode(':', [ 'google', 'live', date('Y.m.d') ]);
+
         $items = [];
         $chunk = [];
         $i = 0;
@@ -524,114 +785,18 @@ class Update extends Command
         {
             echo Term::line($e->getMessage());
 
-            System::log($e->getMessage(), 'App\Console\Commands\Trend\Update::google::handle('.$period.', '.$date.', '.$group.')', 2);
+            System::log($e->getMessage(), 'App\Console\Commands\Trend\Update::google::handle()', 2);
         }
 
         if ($i)
         {
-            if ($period == 'live')
-            {
-                echo self::redis('google', $items, $date);
-            }
+            echo self::redis('google', $items, Carbon::now()->subDays(2)->format('Y-m-d H:i'));
         }
 
         if (count($chunk))
         {
             BulkInsertJob::dispatch($chunk)->onQueue('elasticsearch');
         }
-    }
-
-    /**
-     * Trend Google Arama Tespiti
-     *
-     * @return mixed
-     */
-    public static function youtube(string $period, string $date, string $group)
-    {
-        $items = [];
-        $chunk = [];
-        $i = 0;
-
-        try
-        {
-            $trends = YouTube::getPopularVideos('tr', 50);
-
-            foreach ($trends as $item)
-            {
-                $title = Term::convertAscii($item->snippet->title);
-
-                if (Term::languageDetector([ $title ]))
-                {
-                    $i++;
-                    $key = md5($title);
-                    $id = 'youtube_'.$key.'_'.date('Y.m.d-H:i');
-
-                    $items[$i] = [
-                        'id' => $item->id,
-                        'key' => $key,
-                        'title' => $title
-                    ];
-
-                    ################
-
-                    $chunk['body'][] = [
-                        'create' => [
-                            '_index' => Indices::name([ 'trend', 'titles' ]),
-                            '_type' => 'title',
-                            '_id' => $id
-                        ]
-                    ];
-
-                    $chunk['body'][] = [
-                        'id' => $id,
-                        'key' => $key,
-                        'group' => $group,
-                        'module' => 'youtube',
-                        'rank' => $i,
-                        'title' => $title,
-                        'created_at' => date('Y-m-d H:i:s')
-                    ];
-
-                    ################
-
-                    echo Term::line($i.' - '.$title);
-                }
-            }
-        }
-        catch (\Exception $e)
-        {
-            echo Term::line($e->getMessage());
-
-            System::log($e->getMessage(), 'App\Console\Commands\Trend\Update::youtube::handle('.$period.', '.$date.', '.$group.')', 2);
-        }
-
-        if ($i)
-        {
-            if ($period == 'live')
-            {
-                echo self::redis('youtube', $items, $date);
-            }
-        }
-
-        if (count($chunk))
-        {
-            BulkInsertJob::dispatch($chunk)->onQueue('elasticsearch');
-        }
-    }
-
-    /**
-     * Gelen verinin trend arşivlerine (sql) alınması.
-     *
-     * @return string
-     */
-    private static function archive(string $group, string $group_title)
-    {
-        Trend::updateOrCreate(
-            [ 'group' => $group ],
-            [ 'title' => $group_title ]
-        );
-
-        return Term::line('Arşiv alındı.');
     }
 
     /**
@@ -645,7 +810,11 @@ class Update extends Command
 
         foreach ($items as $rank => $item)
         {
-            $array[$rank]['id'] = $item['id'];
+            if (@$item['id'])
+            {
+                $array[$rank]['id'] = $item['id'];
+            }
+
             $array[$rank]['title'] = $item['title'];
 
             $ranks = array_reverse(array_map(
@@ -685,5 +854,20 @@ class Update extends Command
         RedisCache::set(implode(':', [ $alias, 'trends', $module ]), json_encode($array));
 
         return Term::line('Redis güncellendi.');
+    }
+
+    /**
+     * Gelen verinin trend arşivlerine (sql) alınması.
+     *
+     * @return string
+     */
+    private static function archive(string $group, string $group_title)
+    {
+        Trend::updateOrCreate(
+            [ 'group' => $group ],
+            [ 'title' => $group_title ]
+        );
+
+        return Term::line('Arşiv alındı.');
     }
 }

@@ -24,7 +24,7 @@ class ServerAlertMail extends Mailable implements ShouldQueue
      */
     public function __construct(string $subject, string $body, string $queue = 'email')
     {
-        $this->subject = $subject;
+        $this->subject = config('app.env') == 'local' ? implode(' ', [ '[LOCAL]', $subject ]) : $subject;
         $this->body = $body;
         $this->queue = $queue;
     }
