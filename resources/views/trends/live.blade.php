@@ -295,9 +295,6 @@
                     <a href="#" class="btn-flat waves-effect grey-text text-darken-2">
                         <i class="material-icons">show_chart</i>
                     </a>
-                    <a href="#" class="btn-flat waves-effect grey-text text-darken-2">
-                        <i class="material-icons">link</i>
-                    </a>
                     <div class="chart align-self-center ml-auto" style="width: 64px; height: 32px;">
                         <canvas width="64" height="32" data-name="chart"></canvas>
                     </div>

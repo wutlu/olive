@@ -92,9 +92,9 @@
                     <i class="material-icons">youtube_searched_for</i>
                     <span class="d-block">Arama Motoru</span>
                 </a>
-                <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" style="opacity: .4;" href="#">
+                <a href="{{ route('trend.live') }}">
                     <i class="material-icons">trending_up</i>
-                    <span class="d-block">Trend Analizi</span>
+                    <span class="d-block">Trend Analizi <sup>Beta</sup></span>
                 </a>
                 <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" style="opacity: .4;" href="#">
                     <i class="material-icons">pie_chart</i>
