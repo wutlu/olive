@@ -1724,6 +1724,10 @@ nav .nav-wrapper > ul > li > a > i {
   overflow: visible;
 }
 
+.collection.collection-hoverable > .collection-item:hover {
+  background-color: rgba(200, 200, 200, .2);
+}
+
 .collection a.collection-item:not(.active):hover {
   background-color: rgba(200, 200, 200, .2);
 }
