@@ -519,7 +519,7 @@ class Update extends Command
                 'hit_keywords' => [
                     'significant_terms' => [
                         'field' => 'video_id',
-                        'size' => 25,
+                        'size' => 20,
                         'min_doc_count' => 1
                     ]
                 ]

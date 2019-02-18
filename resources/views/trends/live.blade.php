@@ -41,7 +41,7 @@
         loop: true
     })
 
-    $('.owl-google').owlCarousel({
+    $('.owl-googlex').owlCarousel({
         responsiveClass: true,
         autoWidth: true,
         dotClass: 'hide',
@@ -87,29 +87,32 @@
     {
         if (obj.status == 'ok')
         {
-            $('#' + __.data('module') + '-loader').addClass('hide')
+            var module = __.data('module');
+
+            $('#' + module + '-loader').addClass('hide')
 
             var collection = __,
                 model = collection.children('[data-model]')
 
-            __.children('.item').removeClass('on')
+            collection.children('.item').removeClass('on')
 
             $.each(obj.data, function(rank, o) {
-                var hasItem = collection.children('#' + __.data('module') + '-item-' + rank).length;
+                var hasItem = collection.children('#' + module + '-item-' + rank).length;
 
-                var item = hasItem ? $('#' + __.data('module') + '-item-' + rank) : model.clone().removeAttr('data-model').removeClass('hide').attr('id', __.data('module') + '-item-' + rank);
+                var item = hasItem ? $('#' + module + '-item-' + rank) : model.clone().removeAttr('data-model').removeClass('hide').attr('id', module + '-item-' + rank);
 
                     item.addClass('on')
 
                     item.find('[data-name=rank]').html(rank)
-                    item.find('[data-name=title]')
-                        .attr('href', 'https://www.youtube.com/watch?v=' + o.id)
-                        .html(o.title)
+                    item.find('[data-name=title]').html(o.title)
 
-                    if (__.data('module') == 'youtube')
+                    if (module == 'youtube')
                     {
+                        item.find('[data-name=title]')
+                            .attr('href', 'https://www.youtube.com/watch?v=' + o.id)
+
                         item.find('[data-name=image]')
-                            .attr('src', 'https://i.ytimg.com/vi/' + o.id + '/maxresdefault.jpg')
+                            .attr('src', 'https://i.ytimg.com/vi/' + o.id + '/default.jpg')
                             .attr('alt', o.title);
                     }
 
@@ -177,13 +180,40 @@
                 })
             })
 
-            __.children('.item:not(.on)').remove()
+            collection.children('.item:not(.on)').remove()
 
             window.clearTimeout(trendTimer)
 
             trendTimer = window.setTimeout(function() {
-                vzAjax(__)
+                vzAjax(collection)
             }, 60000)
+        }
+    }
+
+    var owlTrendTimer;
+
+    function __owl_trends(__, obj)
+    {
+        if (obj.status == 'ok')
+        {
+            var module = __.data('module');
+
+            $('#' + module + '-loader').addClass('hide')
+
+            var collection = $('.owl-' + module),
+                model = collection.children('[data-model]')
+
+            collection.children('.item').removeClass('on')
+
+            $.each(obj.data, function(rank, o) {
+                var hasItem = collection.children('#' + module + '-item-' + rank).length;
+                var item = hasItem ? $('#' + module + '-item-' + rank) : model.clone().removeAttr('data-model').removeClass('hide').attr('id', module + '-item-' + rank);
+
+                    item.addClass('on')
+
+                    item.html(o.title)
+                    item.appendTo(collection)
+            })
         }
     }
 @endpush
@@ -200,11 +230,14 @@
                     <a href="#" class="p-1 d-table">Örnek Trend {{ $i }}</a>
                 @endfor
             </div>
-            <small class="grey-text d-block">Google</small>
-            <div class="owl-carousel owl-google">
-                @for ($i = 0; $i <= 50; $i++)
-                    <a href="#" class="p-1 d-table">Örnek Trend {{ $i }}</a>
-                @endfor
+            <small
+                class="grey-text d-block load"
+                data-href="{{ route('trend.live.redis') }}"
+                data-method="post"
+                data-callback="__owl_trends"
+                data-module="google">Google</small>
+            <div class="owl-carouselx owl-google">
+                <a href="#" class="item p-1" data-model></a>
             </div>
         </div>
     </div>
@@ -212,7 +245,7 @@
 
 @section('content')
     <div class="row">
-        <div class="col s6">
+        <div class="col m12 l6">
             <div class="card">
                 <div class="card-content">
                     <span class="card-title">Sözlük</span>
@@ -241,7 +274,7 @@
                 @endcomponent
             </div>
         </div>
-        <div class="col s6">
+        <div class="col m12 l6">
             <div class="card">
                 <div class="card-content">
                     <span class="card-title">Medya</span>
@@ -270,40 +303,35 @@
                 @endcomponent
             </div>
         </div>
-    </div>
-@endsection
-
-@section('subcard')
-    <div class="container container-wide">
-        <div class="card card-unstyled">
-            <div class="card-content">
-                <span class="card-title">YouTube</span>
+        <div class="col m12 l12">
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title">YouTube</span>
+                </div>
+                <ul
+                    class="collection trend-collection load"
+                    data-method="post"
+                    data-href="{{ route('trend.live.redis') }}"
+                    data-callback="__trends"
+                    data-module="youtube">
+                    <li class="collection-item item hide" data-model>
+                        <div class="d-flex">
+                            <img data-name="image" style="height: 32px;" class="mr-1" />
+                            <i class="material-icons align-self-center" data-name="arrow"></i>
+                            <span class="rank align-self-center center-align" data-name="rank" style="width: 48px;"></span>
+                            <a href="#" target="_blank" class="align-self-center" data-name="title"></a>
+                            <div class="chart align-self-center ml-auto" style="width: 64px; height: 32px;">
+                                <canvas width="64" height="32" data-name="chart"></canvas>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                @component('components.loader')
+                    @slot('id', 'youtube-loader')
+                    @slot('color', 'cyan')
+                    @slot('class', 'card-loader-unstyled')
+                @endcomponent
             </div>
         </div>
-        <div
-            class="card-columns trend-collection load"
-            data-method="post"
-            data-href="{{ route('trend.live.redis') }}"
-            data-callback="__trends"
-            data-module="youtube">
-            <div class="card item hide" data-model>
-                <div class="card-image cyan">
-                    <img data-name="image" style="opacity: .6;" />
-                    <a target="_blank" href="#" class="card-title card-title-small" data-name="title"></a>
-                </div>
-                <div class="card-action d-flex">
-                    <a href="#" class="btn-flat waves-effect grey-text text-darken-2">
-                        <i class="material-icons">show_chart</i>
-                    </a>
-                    <div class="chart align-self-center ml-auto" style="width: 64px; height: 32px;">
-                        <canvas width="64" height="32" data-name="chart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-        @component('components.loader')
-            @slot('id', 'youtube-loader')
-            @slot('color', 'cyan')
-        @endcomponent
     </div>
 @endsection
