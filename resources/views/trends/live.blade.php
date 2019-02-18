@@ -80,8 +80,6 @@
         })
     }
 
-    var newsTimer;
-
     function __news(__, obj)
     {
         if (obj.status == 'ok')
@@ -169,9 +167,7 @@
 
             $('.trend-collection').children('.collection-item:not(.on)').remove()
 
-            window.clearTimeout(newsTimer)
-
-            newsTimer = window.setTimeout(function() {
+            window.setTimeout(function() {
                 vzAjax($('#news-collection'))
             }, 60000)
         }

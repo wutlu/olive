@@ -103,7 +103,7 @@ class Kernel extends ConsoleKernel
             # [ gerçek zamanlı trend ] #
             $schedule->command('nohup "trend:update --module=sozluk --period=live" --type=restart')->everyTenMinutes()->timezone(config('app.timezone'));
             $schedule->command('nohup "trend:update --module=news --period=live" --type=restart')->everyMinute()->timezone(config('app.timezone'));
-            $schedule->command('nohup "trend:update --module=youtube --period=live" --type=restart')->everyTenMinutes()->timezone(config('app.timezone'));
+            $schedule->command('nohup "trend:update --module=youtube --period=live" --type=restart')->everyMinute()->timezone(config('app.timezone'));
 
             # [ arşiv trend ] #
             $schedule->command('nohup "trend:update --module=sozluk --period=daily" --type=restart')->dailyAt('23:00')->timezone(config('app.timezone'));
@@ -119,7 +119,7 @@ class Kernel extends ConsoleKernel
 
             # [ gerçek trend ] #
             $schedule->command('nohup "trend:update --module=twitter" --type=restart')->everyTenMinutes()->timezone(config('app.timezone'));
-            $schedule->command('nohup "trend:update --module=google" --type=restart')->twiceDaily(9, 1)->hourly()->timezone(config('app.timezone'));
+            $schedule->command('nohup "trend:update --module=google" --type=restart')->hourly()->timezone(config('app.timezone'));
 
             /**
              * YouTube botlarının tetiklenmesi.
@@ -129,7 +129,6 @@ class Kernel extends ConsoleKernel
             if ($option)
             {
                 $schedule->command('nohup "youtube:video_detect --type=trends" --type=start')
-                         ->twiceDaily(9, 1)
                          ->everyTenMinutes()
                          ->timezone(config('app.timezone'))
                          ->withoutOverlapping();

@@ -210,7 +210,7 @@ class VideoDetect extends Command
 
         $arr = [
             'id' => @$item->id->videoId ? $item->id->videoId : $item->id,
-            'title' => $term->convertAscii($item->snippet->title),
+            'title' => $item->snippet->title,
             'created_at' => date('Y-m-d H:i:s', strtotime($item->snippet->publishedAt)),
             'called_at' => date('Y-m-d H:i:s'),
             'channel' => [
