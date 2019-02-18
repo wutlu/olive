@@ -81,13 +81,7 @@
         })
     }
 
-<<<<<<< HEAD
-    function __news(__, obj)
-=======
-    var trendTimer;
-
     function __trends(__, obj)
->>>>>>> 20b525fe751e326303abbb84721fdef9017d7032
     {
         if (obj.status == 'ok')
         {
@@ -186,15 +180,8 @@
 
             collection.children('.item:not(.on)').remove()
 
-<<<<<<< HEAD
             window.setTimeout(function() {
-                vzAjax($('#news-collection'))
-=======
-            window.clearTimeout(trendTimer)
-
-            trendTimer = window.setTimeout(function() {
                 vzAjax(collection)
->>>>>>> 20b525fe751e326303abbb84721fdef9017d7032
             }, 60000)
         }
     }
