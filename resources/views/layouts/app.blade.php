@@ -162,7 +162,7 @@
                 </ul>
             @endauth
             <nav class="white">
-                <div class="{{ auth()->check() ? 'sidenav-fixed-layout' : 'container' }}">
+                <div class="{{ auth()->check() ? 'sidenav-fixed-layout' : isset($wide) ? 'container container-wide' : 'container' }}">
                     <div class="nav-wrapper">
                         <a href="{{ route('dashboard') }}" class="brand-logo center">
                             <img alt="{{ config('app.name') }}" src="{{ asset('img/olive-logo.svg') }}" />
@@ -423,7 +423,7 @@
             @endphp
             <nav class="grey darken-4" id="breadcrumb">
                 <div class="{{ auth()->check() ? 'sidenav-fixed-layout' : '' }}">
-                    <div class="container">
+                    <div class="{{ isset($wide) ? 'container container-wide' : 'container' }}">
                         <a href="{{ route('dashboard') }}" class="breadcrumb">Olive</a>
                         @foreach ($breadcrumb as $key => $row)
                             @if (@$row['link'])
@@ -444,7 +444,7 @@
         <main class="indigo lighten-5">
             <div class="{{ auth()->check() ? 'sidenav-fixed-layout' : '' }}">
                 @if (trim($__env->yieldContent('action-bar')))
-                    <div class="container">
+                    <div class="{{ isset($wide) ? 'container container-wide' : 'container' }}">
                         <div class="action-bar">
                             @yield('action-bar')
                         </div>
@@ -457,22 +457,22 @@
                     </div>
                 @endif
 
-                <div class="container">
+                <div class="{{ isset($wide) ? 'container container-wide' : 'container' }}">
                     @isset($dock)
-                    <aside id="dock-content">
-                        <div class="content">
-                            @if (trim($__env->yieldContent('action-bar:half')))
-                                <div class="action-bar action-bar-half">
-                                    @yield('action-bar:half')
-                                </div>
-                            @endif
+                        <aside id="dock-content">
+                            <div class="content">
+                                @if (trim($__env->yieldContent('action-bar:half')))
+                                    <div class="action-bar action-bar-half">
+                                        @yield('action-bar:half')
+                                    </div>
+                                @endif
 
-                            @yield('content')
-                        </div>
-                        <div class="menu">
-                            @yield('dock')
-                        </div>
-                    </aside>
+                                @yield('content')
+                            </div>
+                            <div class="menu">
+                                @yield('dock')
+                            </div>
+                        </aside>
                     @else
                         @yield('content')
                     @endisset
@@ -718,7 +718,7 @@
         </ul>
 
         <footer class="page-footer indigo lighten-5">
-            <div class="container">
+            <div class="{{ isset($wide) ? 'container container-wide' : 'container' }}">
                 <div class="row">
                     <div class="col l6 s12">
                         <img id="vz-logo" src="{{ asset('img/veri.zone-logo-grey.svg') }}" alt="veri.zone-logo" />
@@ -762,7 +762,7 @@
                 </div>
             </div>
             <div class="footer-copyright indigo lighten-5">
-                <div class="container grey-text">
+                <div class="{{ isset($wide) ? 'container container-wide' : 'container' }} grey-text">
                     © {{ date('Y') }} <a class="teal-text" href="http://veri.zone">veri.zone</a> | Tüm hakları saklıdır.
                 </div>
             </div>

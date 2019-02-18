@@ -8,7 +8,8 @@
             'text' => 'Canlı Trend'
         ]
     ],
-    'dock' => true
+    'dock' => true,
+    'wide' => true
 ])
 
 @section('dock')
@@ -80,32 +81,41 @@
         })
     }
 
-    var newsTimer;
+    var trendTimer;
 
-    function __news(__, obj)
+    function __trends(__, obj)
     {
         if (obj.status == 'ok')
         {
-            $('#news-loader').addClass('hide')
+            $('#' + __.data('module') + '-loader').addClass('hide')
 
-            var collection = $('#news-collection'),
+            var collection = __,
                 model = collection.children('[data-model]')
 
-            $('.trend-collection').children('.collection-item').removeClass('on')
+            __.children('.item').removeClass('on')
 
             $.each(obj.data, function(rank, o) {
-                var hasItem = collection.children('#news-item-' + rank).length;
+                var hasItem = collection.children('#' + __.data('module') + '-item-' + rank).length;
 
-                var item = hasItem ? $('#news-item-' + rank) : model.clone().removeAttr('data-model').removeClass('hide').attr('id', 'news-item-' + rank);
+                var item = hasItem ? $('#' + __.data('module') + '-item-' + rank) : model.clone().removeAttr('data-model').removeClass('hide').attr('id', __.data('module') + '-item-' + rank);
 
                     item.addClass('on')
 
                     item.find('[data-name=rank]').html(rank)
-                    item.find('[data-name=title]').html(o.title)
+                    item.find('[data-name=title]')
+                        .attr('href', 'https://www.youtube.com/watch?v=' + o.id)
+                        .html(o.title)
+
+                    if (__.data('module') == 'youtube')
+                    {
+                        item.find('[data-name=image]')
+                            .attr('src', 'https://i.ytimg.com/vi/' + o.id + '/maxresdefault.jpg')
+                            .attr('alt', o.title);
+                    }
 
                 var elements = {
-                    'first': o.chart[0],
-                    'last': o.chart[o.chart.length-1]
+                    'first': o.ranks[0],
+                    'last': o.ranks[o.ranks.length-1]
                 };
 
                 var colors = {
@@ -138,7 +148,7 @@
                     icon = icons.down;
                 }
 
-                if (o.chart.length == 1)
+                if (o.ranks.length == 1)
                 {
                     color_dark = colors.green.dark;
                     color_light = colors.green.light;
@@ -154,11 +164,11 @@
                     item.appendTo(collection)
 
                 __chart(item.find('[data-name=chart]'), {
-                    labels: o.chart,
+                    labels: o.ranks,
                     datasets: [{
                         backgroundColor: color_light,
                         borderColor: color_dark,
-                        data: o.chart,
+                        data: o.ranks,
                         tension: 0.1,
                         borderWidth: 1,
                         radius: 0,
@@ -167,27 +177,30 @@
                 })
             })
 
-            $('.trend-collection').children('.collection-item:not(.on)').remove()
+            __.children('.item:not(.on)').remove()
 
-            window.clearTimeout(newsTimer)
+            window.clearTimeout(trendTimer)
 
-            newsTimer = window.setTimeout(function() {
-                vzAjax($('#news-collection'))
+            trendTimer = window.setTimeout(function() {
+                vzAjax(__)
             }, 60000)
         }
     }
 @endpush
 
 @section('wildcard')
+    <div class="cyan lighten-5 cyan-text pt-1 pb-1 center-align">
+        <p class="mb-0">Trend verileri Olive trend algoritması tarafından oluşturulur. Kaynak sitelerdeki trend verileri ile uyuşması beklenemez.</p>
+    </div>
     <div class="z-depth-2 pt-1 pb-1">
-        <div class="container">
-            <small class="grey-text">Twitter</small>
+        <div class="container container-wide">
+            <small class="grey-text d-block">Twitter</small>
             <div class="owl-carousel owl-twitter">
                 @for ($i = 0; $i <= 50; $i++)
                     <a href="#" class="p-1 d-table">Örnek Trend {{ $i }}</a>
                 @endfor
             </div>
-            <small class="grey-text">Google</small>
+            <small class="grey-text d-block">Google</small>
             <div class="owl-carousel owl-google">
                 @for ($i = 0; $i <= 50; $i++)
                     <a href="#" class="p-1 d-table">Örnek Trend {{ $i }}</a>
@@ -198,62 +211,85 @@
 @endsection
 
 @section('content')
-    <div class="card">
-        <div class="card-content">
-            <span class="card-title">Sözlük</span>
-        </div>
-    </div>
-    <div class="card">
-        <div class="card-content">
-            <span class="card-title">Medya</span>
-        </div>
-        <ul
-            id="news-collection"
-            class="collection trend-collection load"
-            data-method="post"
-            data-href="{{ route('trend.live.redis', 'news') }}"
-            data-callback="__news">
-            <li class="collection-item hide" data-model>
-                <div class="d-flex">
-                    <i class="material-icons align-self-center" data-name="arrow"></i>
-                    <span class="rank align-self-center center-align" data-name="rank" style="width: 48px;"></span>
-                    <a href="#" class="align-self-center" data-name="title"></a>
-                    <div class="chart align-self-center ml-auto" style="width: 64px; height: 32px;">
-                        <canvas width="64" height="32" data-name="chart"></canvas>
-                    </div>
+    <div class="row">
+        <div class="col s6">
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title">Sözlük</span>
                 </div>
-            </li>
-        </ul>
-        @component('components.loader')
-            @slot('id', 'news-loader')
-            @slot('color', 'cyan')
-            @slot('class', 'card-loader-unstyled')
-        @endcomponent
+                <ul
+                    class="collection trend-collection load"
+                    data-method="post"
+                    data-href="{{ route('trend.live.redis') }}"
+                    data-callback="__trends"
+                    data-module="sozluk">
+                    <li class="collection-item item hide" data-model>
+                        <div class="d-flex">
+                            <i class="material-icons align-self-center" data-name="arrow"></i>
+                            <span class="rank align-self-center center-align" data-name="rank" style="width: 48px;"></span>
+                            <a href="#" class="align-self-center" data-name="title"></a>
+                            <div class="chart align-self-center ml-auto" style="width: 64px; height: 32px;">
+                                <canvas width="64" height="32" data-name="chart"></canvas>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                @component('components.loader')
+                    @slot('id', 'sozluk-loader')
+                    @slot('color', 'cyan')
+                    @slot('class', 'card-loader-unstyled')
+                @endcomponent
+            </div>
+        </div>
+        <div class="col s6">
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title">Medya</span>
+                </div>
+                <ul
+                    class="collection trend-collection load"
+                    data-method="post"
+                    data-href="{{ route('trend.live.redis') }}"
+                    data-callback="__trends"
+                    data-module="news">
+                    <li class="collection-item item hide" data-model>
+                        <div class="d-flex">
+                            <i class="material-icons align-self-center" data-name="arrow"></i>
+                            <span class="rank align-self-center center-align" data-name="rank" style="width: 48px;"></span>
+                            <a href="#" class="align-self-center" data-name="title"></a>
+                            <div class="chart align-self-center ml-auto" style="width: 64px; height: 32px;">
+                                <canvas width="64" height="32" data-name="chart"></canvas>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                @component('components.loader')
+                    @slot('id', 'news-loader')
+                    @slot('color', 'cyan')
+                    @slot('class', 'card-loader-unstyled')
+                @endcomponent
+            </div>
+        </div>
     </div>
 @endsection
 
 @section('subcard')
-<div class="container">
-    <div class="card-columns">
-        @for ($i = 1; $i <= 48; $i++)
-            @push('local.scripts')
-                __chart('#v-chart-{{ $i }}', {
-                    labels: [ '', '', '', '', '' ],
-                    datasets: [{
-                        backgroundColor: '#FFEBEE',
-                        borderColor: '#F44336',
-                        data: [ 1, 2, 5, 4, 8 ],
-                        tension: 0.1,
-                        borderWidth: 1,
-                        radius: 0
-                    }]
-                })
-            @endpush
-
-            <div class="card">
+    <div class="container container-wide">
+        <div class="card card-unstyled">
+            <div class="card-content">
+                <span class="card-title">YouTube</span>
+            </div>
+        </div>
+        <div
+            class="card-columns trend-collection load"
+            data-method="post"
+            data-href="{{ route('trend.live.redis') }}"
+            data-callback="__trends"
+            data-module="youtube">
+            <div class="card item hide" data-model>
                 <div class="card-image cyan">
-                    <img src="https://i.ytimg.com/vi/bS3uSzk4VwY/maxresdefault.jpg" alt="..." style="opacity: .6;" />
-                    <span class="card-title card-title-small">Oğuzhan Uğur'la P!NÇ: Selçuk Aydemir, Burak Aksak, Doğan Kabak, 14 Şubat, Doğum Günü, Homofobi</span>
+                    <img data-name="image" style="opacity: .6;" />
+                    <a target="_blank" href="#" class="card-title card-title-small" data-name="title"></a>
                 </div>
                 <div class="card-action d-flex">
                     <a href="#" class="btn-flat waves-effect grey-text text-darken-2">
@@ -263,11 +299,14 @@
                         <i class="material-icons">link</i>
                     </a>
                     <div class="chart align-self-center ml-auto" style="width: 64px; height: 32px;">
-                        <canvas id="v-chart-{{ $i }}" width="64" height="32"></canvas>
+                        <canvas width="64" height="32" data-name="chart"></canvas>
                     </div>
                 </div>
             </div>
-        @endfor
+        </div>
+        @component('components.loader')
+            @slot('id', 'youtube-loader')
+            @slot('color', 'cyan')
+        @endcomponent
     </div>
-</div>
 @endsection

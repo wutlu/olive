@@ -104,7 +104,7 @@ Route::prefix('gercek-zamanli')->namespace('RealTime')->group(function () {
 Route::prefix('trend')->namespace('Trend')->group(function () {
     Route::prefix('canli')->group(function () {
         Route::get('/', 'TrendController@live')->name('trend.live');
-        Route::post('redis/{module}', 'TrendController@liveRedis')->name('trend.live.redis')->where('module', '(news|sozluk)');
+        Route::post('redis', 'TrendController@liveRedis')->name('trend.live.redis');
     });
     Route::get('arsiv', 'TrendController@archive')->name('trend.archive');
 });

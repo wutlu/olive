@@ -846,7 +846,7 @@ class Update extends Command
 
             $ranks[] = $rank;
 
-            $array[$rank]['chart'] = $ranks;
+            $array[$rank]['ranks'] = $ranks;
         }
 
         $alias = str_slug(config('app.name'));

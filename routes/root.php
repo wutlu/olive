@@ -68,14 +68,14 @@ Route::prefix('forum-yonetimi')->namespace('Forum')->group(function () {
     });
 });
 
-Route::prefix('trend')->group(function () {
-    Route::get('/', 'TrendController@dashboard')->name('admin.trend.settings');
-    Route::patch('ayar', 'TrendController@statusSet')->name('admin.trend.status.set');
+Route::prefix('trend')->namespace('Trend')->group(function () {
+    Route::get('/', 'RootController@dashboard')->name('admin.trend.settings');
+    Route::patch('ayar', 'RootController@statusSet')->name('admin.trend.status.set');
 
-    Route::post('log-ekrani', 'TrendController@logJson')->name('admin.trend.monitoring.log');
+    Route::post('log-ekrani', 'RootController@logJson')->name('admin.trend.monitoring.log');
 
-    Route::post('index-durumu', 'TrendController@indexStatus')->name('admin.trend.index.status');
-    Route::post('index-olustur', 'TrendController@indexCreate')->name('admin.trend.index.create');
+    Route::post('index-durumu', 'RootController@indexStatus')->name('admin.trend.index.status');
+    Route::post('index-olustur', 'RootController@indexCreate')->name('admin.trend.index.create');
 });
 
 Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {

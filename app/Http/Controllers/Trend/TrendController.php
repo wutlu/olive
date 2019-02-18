@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Trend;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\Trend\TrendRequest;
 
 use App\Elasticsearch\Document;
 
@@ -40,13 +41,13 @@ class TrendController extends Controller
      *
      * @return array
      */
-    public function liveRedis(string $module)
+    public function liveRedis(TrendRequest $request)
     {
         $alias = str_slug(config('app.name'));
 
         return [
             'status' => 'ok',
-            'data' => json_decode(RedisCache::get(implode(':', [ $alias, 'trends', $module ])))
+            'data' => json_decode(RedisCache::get(implode(':', [ $alias, 'trends', $request->module ])))
         ];
     }
 
