@@ -18,7 +18,7 @@
                         <p class="cyan-text lead">Internet artık daha net!</p>
                     </div>
                     <div class="col l7 offset-l1 xl5 offset-xl3">
-                        <div class="card teal">
+                        <div class="card cyan darken-2">
                             <div class="card-content">
                                 <p class="white-text">Hemen bir hesap oluşturun ve bir çok aracı <strong>ücretsiz</strong> olarak kullanmaya başlayın.</p>
                             </div>
