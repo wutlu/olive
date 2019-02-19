@@ -13,7 +13,7 @@ class PageTableSeeder extends Seeder
      */
     public function run()
     {
-        Page::updateOrCreate(
+        Page::firstOrCreate(
         	[
         		'slug' => 'hakkimizda'
         	],
@@ -25,7 +25,7 @@ class PageTableSeeder extends Seeder
         	]
         );
 
-        Page::updateOrCreate(
+        Page::firstOrCreate(
         	[
         		'slug' => 'iletisim'
         	],
@@ -37,7 +37,7 @@ class PageTableSeeder extends Seeder
         	]
         );
 
-        Page::updateOrCreate(
+        Page::firstOrCreate(
         	[
         		'slug' => 'gizlilik-politikasi'
         	],
@@ -49,7 +49,7 @@ class PageTableSeeder extends Seeder
         	]
         );
 
-        Page::updateOrCreate(
+        Page::firstOrCreate(
         	[
         		'slug' => 'kullanim-kosullari'
         	],

@@ -17,17 +17,9 @@ class DatabaseSeeder extends Seeder
                 CountriesTableSeeder::class,
                 StatesTableSeeder::class,
                 UserTableSeeder::class,
-                OrganisationTableSeeder::class,
                 PageTableSeeder::class,
-                MediaCrawlersTableSeeder::class,
-                SozlukCrawlersTableSeeder::class,
-                ShoppingCrawlersTableSeeder::class,
-                TwitterTokensTableSeeder::class,
                 OptionTableSeeder::class,
                 ModuleSearchesTableSeeder::class,
-                CarouselsTableSeeder::class,
-                ForumCategoriesTableSeeder::class,
-                ForumMessagesTableSeeder::class,
             ]);
         }
     }

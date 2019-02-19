@@ -4,7 +4,7 @@
     <style>
       .cls-1 {
         fill-rule: evenodd;
-        fill: #999;
+        fill: #ccc;
       }
     </style>
   </defs>

@@ -1176,6 +1176,76 @@ ul.partners > li.partner a:hover {
 }
 
 /**
+ * ful-screen
+ */
+body.fs-active .fullscreen {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  overflow: auto;
+  padding: 0 2rem;
+  background-color: #f0f0f0;
+  overflow-x: hidden;
+}
+body.fs-active .fullscreen > .fs-container {
+  width: 100%;
+
+  display: -ms-flexbox;
+  display: flex;
+
+  -ms-flex-direction: column;
+      flex-direction: column;
+
+  -ms-flex-flow: row wrap;
+      flex-flow: row wrap;
+}
+body.fs-active .fullscreen > .fs-container > .card {
+  -ms-flex: 1 0 0%;
+      flex: 1 0 0%;
+
+  -ms-flex-direction: column;
+      flex-direction: column;
+
+  min-width: 30%;
+
+          transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  -webkit-transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+body.fs-active .fullscreen > .fs-container > .card:hover {
+  min-width: 40%;
+}
+
+@media only screen and (max-width: 1024px) {
+  .fullscreen > .fs-container > .card {
+    min-width: 100%;
+  }
+}
+
+.fullscreen > header.fs-header {
+  display: none;
+}
+.fullscreen > .fs-element {
+  margin: 0 0 1rem;
+}
+
+body.fs-active .fullscreen > .fs-container > .card > .card-content > span.card-title {
+  font-size: 16px;
+}
+body.fs-active .fullscreen > header.fs-header {
+  display: block;
+  padding: 1rem 0;
+}
+body.fs-active .fullscreen > header.fs-header .logo {
+  height: 4rem;
+}
+body.fs-active .fullscreen > .fs-element {
+  display: none;
+}
+
+/**
  * more step
  */
 #more-step {

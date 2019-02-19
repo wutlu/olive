@@ -13,7 +13,7 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
-        User::updateOrCreate(
+        User::firstOrCreate(
             [
                 'email' => 'alper@veri.zone'
             ],

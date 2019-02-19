@@ -95,11 +95,13 @@
 
         parent.html(chart)
 
-        return new Chart(chart, {
-            type: 'line',
-            data: data,
-            options: options
-        })
+        setTimeout(function() {
+            new Chart(chart, {
+                type: 'line',
+                data: data,
+                options: options
+            })
+        }, 100)
     }
 
     var sozlukTrendTimer;
@@ -185,6 +187,7 @@
             })
 
             collection.children('.item:not(.on)').remove()
+            collection.removeClass('hide')
 
             window.clearTimeout(window[module + 'TrendTimer'])
             window[module + 'TrendTimer'] = window.setTimeout(function() {
@@ -223,47 +226,81 @@
     })
 @endpush
 
+@section('wildcard')
+    <div class="teal lighten-5 z-depth-1 pt-1 pb-1">
+        <div class="container">
+            <p class="d-flex mb-0">
+                <i class="material-icons mr-1 teal-text text-lighten-2">help_outline</i>
+                <span class="teal-text text-lighten-2">Web trendleri, Olive trend algoritmasıyla oluşturulur. Kaynak sitelerin trend analizleriyle eşleşmesi beklenmemelidir.</span>
+            </p>
+        </div>
+    </div>
+@endsection
+
 @section('content')
-<div class="sortable">
-    @foreach (
-        [
-            'sozluk' => 'Sözlük',
-            'news' => 'Haber',
-            'google' => 'Google',
-            'twitter' => 'Twitter',
-            'youtube' => 'YouTube'
-        ]
-        as $key => $name
-    )
-        <div class="card">
-            <div class="card-content d-flex">
-                <a href="#" class="handle align-self-center btn-floating btn-flat mr-1">
-                    <i class="material-icons">drag_handle</i>
-                </a>
-                <span class="card-title align-self-center">{{ $name }}</span>
-                <a href="#" class="align-self-center btn-floating cyan darken-2 ml-auto" data-run="off" data-name="{{ $key }}">
-                    <i class="material-icons">play_arrow</i>
+    <div class="fullscreen">
+        <div class="fs-element">
+            <div class="d-flex justify-content-end">
+                <a href="#" class="btn-floating btn-flat waves-effect" data-class="body" data-class-add="fs-active">
+                    <i class="material-icons">fullscreen</i>
                 </a>
             </div>
-            <ul
-                class="collection collection-hoverable trend-collection load_"
-                data-method="post"
-                data-href="{{ route('trend.live.redis') }}"
-                data-callback="__trends"
-                data-module="{{ $key }}">
-                <li class="collection-item item hide" data-model>
-                    <div class="d-flex">
-                        <i class="material-icons align-self-center" data-name="arrow"></i>
-                        <span class="rank align-self-center center-align" data-name="rank" style="width: 48px;"></span>
-                        @if ($key == 'youtube')
-                            <img data-name="image" style="height: 24px;" class="align-self-center mr-1" />
-                        @endif
-                        <a href="#" class="align-self-center" data-name="title"></a>
-                        <div class="align-self-center ml-auto" data-name="chart-parent"></div>
-                    </div>
-                </li>
-            </ul>
         </div>
-    @endforeach
-</div>
+        <header class="fs-header">
+            <div class="d-flex justify-content-between">
+                <img alt="Olive" src="{{ asset('img/olive-logo-grey.svg') }}" class="logo" />
+                <a href="#" class="btn-floating btn-flat waves-effect" data-class="body" data-class-remove="fs-active">
+                    <i class="material-icons">fullscreen_exit</i>
+                </a>
+            </div>
+        </header>
+        <div class="fs-container sortable">
+            @foreach (
+                [
+                    'sozluk' => 'Sözlük',
+                    'news' => 'Haber',
+                    'google' => 'Google',
+                    'twitter' => 'Twitter',
+                    'youtube' => 'YouTube'
+                ]
+                as $key => $name
+            )
+                <div class="card">
+                    <div class="card-content d-flex">
+                        <a href="#" class="handle align-self-center btn-floating btn-flat mr-1">
+                            <i class="material-icons">drag_handle</i>
+                        </a>
+                        <span class="card-title align-self-center">{{ $name }}</span>
+                        <span class="align-self-center ml-auto d-flex">
+                            <a href="#" class="align-self-center btn-floating btn-flat waves-effect" data-name="{{ $key }}">
+                                <i class="material-icons">cloud_download</i>
+                            </a>
+                            <span>&nbsp;</span>
+                            <a href="#" class="align-self-center btn-floating cyan darken-2" data-run="off" data-name="{{ $key }}">
+                                <i class="material-icons">play_arrow</i>
+                            </a>
+                        </span>
+                    </div>
+                    <ul
+                        class="collection collection-hoverable trend-collection hide"
+                        data-method="post"
+                        data-href="{{ route('trend.live.redis') }}"
+                        data-callback="__trends"
+                        data-module="{{ $key }}">
+                        <li class="collection-item item hide" data-model>
+                            <div class="d-flex">
+                                <i class="material-icons align-self-center" data-name="arrow"></i>
+                                <span class="rank align-self-center center-align" data-name="rank" style="width: 48px;"></span>
+                                @if ($key == 'youtube')
+                                    <img data-name="image" style="height: 24px;" class="align-self-center mr-1" />
+                                @endif
+                                <a href="#" class="align-self-center" data-name="title"></a>
+                                <div class="align-self-center ml-auto" data-name="chart-parent"></div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            @endforeach
+        </div>
+    </div>
 @endsection
