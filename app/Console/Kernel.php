@@ -105,7 +105,6 @@ class Kernel extends ConsoleKernel
             $schedule->command('nohup "trend:update --module=news --period=live" --type=restart')->everyMinute()->timezone(config('app.timezone'));
             $schedule->command('nohup "trend:update --module=youtube --period=live" --type=restart')->everyMinute()->timezone(config('app.timezone'));
 
-
             # [ arşiv trend ] #
             $schedule->command('nohup "trend:update --module=sozluk --period=daily" --type=restart')->dailyAt('23:00')->timezone(config('app.timezone'));
             $schedule->command('nohup "trend:update --module=sozluk --period=weekly" --type=restart')->weeklyOn(7, '23:00')->timezone(config('app.timezone'));
@@ -129,22 +128,22 @@ class Kernel extends ConsoleKernel
 
             if ($option)
             {
-                $schedule->command('nohup "youtube:video_detect --type=trends" --type=start')
+                $schedule->command('nohup "youtube:video_detect --type=trends" --type=restart')
                          ->everyTenMinutes()
                          ->timezone(config('app.timezone'))
                          ->withoutOverlapping();
 
-                $schedule->command('nohup "youtube:video_detect --type=followed_videos" --type=start')
+                $schedule->command('nohup "youtube:video_detect --type=followed_videos" --type=restart')
                          ->hourly()
                          ->timezone(config('app.timezone'))
                          ->withoutOverlapping();
 
-                $schedule->command('nohup "youtube:video_detect --type=followed_keywords" --type=start')
+                $schedule->command('nohup "youtube:video_detect --type=followed_keywords" --type=restart')
                          ->hourly()
                          ->timezone(config('app.timezone'))
                          ->withoutOverlapping();
 
-                $schedule->command('nohup "youtube:video_detect --type=followed_channels" --type=start')
+                $schedule->command('nohup "youtube:video_detect --type=followed_channels" --type=restart')
                          ->hourly()
                          ->timezone(config('app.timezone'))
                          ->withoutOverlapping();
