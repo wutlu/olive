@@ -188,8 +188,8 @@
                                     'data-href': '{{ route('intro', 'welcome.create.organisation') }}'
                                 }))
                             }
-                        });
-                        $('[data-target=start]').tapTarget('open');
+                        })
+                        $('[data-target=start]').tapTarget('open')
                     @endpush
                 @endif
             @endif

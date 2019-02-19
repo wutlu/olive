@@ -1178,6 +1178,9 @@ ul.partners > li.partner a:hover {
 /**
  * ful-screen
  */
+body.fs-active {
+  overflow-y: hidden;
+}
 body.fs-active .fullscreen {
   position: fixed;
   top: 0;
@@ -1185,9 +1188,9 @@ body.fs-active .fullscreen {
   bottom: 0;
   left: 0;
   z-index: 1000;
-  overflow: auto;
   padding: 0 2rem;
   background-color: #f0f0f0;
+  overflow-y: auto;
   overflow-x: hidden;
 }
 body.fs-active .fullscreen > .fs-container {
@@ -1219,7 +1222,7 @@ body.fs-active .fullscreen > .fs-container > .card:hover {
 }
 
 @media only screen and (max-width: 1024px) {
-  .fullscreen > .fs-container > .card {
+  body.fs-active .fullscreen > .fs-container > .card {
     min-width: 100%;
   }
 }

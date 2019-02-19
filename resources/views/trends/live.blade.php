@@ -60,10 +60,6 @@
         'new': 'star'
     };
 
-    var color_dark = colors.grey.dark;
-    var color_light = colors.grey.light;
-    var icon = icons.stable;
-
     var options = {
         legend: { display: false },
         scales: {
@@ -105,6 +101,10 @@
     }
 
     var sozlukTrendTimer;
+    var newsTrendTimer;
+    var googleTrendTimer;
+    var twitterTrendTimer;
+    var youtubeTrendTimer;
 
     function __trends(__, obj)
     {
@@ -134,12 +134,19 @@
                     item.find('[data-name=image]')
                         .attr('src', 'https://i.ytimg.com/vi/' + o.id + '/default.jpg')
                         .attr('alt', o.title);
+
+                    item.find('[data-name=youtube-link]')
+                        .attr('href', 'https://www.youtube.com/watch?v=' + o.id)
                 }
 
                 var elements = {
                     'first': o.ranks[0],
                     'last': o.ranks[o.ranks.length-1]
                 };
+
+                var color_dark = colors.grey.dark;
+                var color_light = colors.grey.light;
+                var icon = icons.stable;
 
                 if (elements.last < elements.first)
                 {
@@ -161,13 +168,25 @@
                     icon = icons.new;
                 }
 
+                var id = Math.floor(Math.random() * 999999);
+
+                    item.find('[data-name=dropdown-trigger]').attr('data-target', 'dropdown-item-' + id)
+                    item.find('[data-name=dropdown]').attr('id', 'dropdown-item-' + id)
+
                     item.find('[data-name=arrow]')
                         .html(icon)
                         .css({
                             'color': color_dark
                         })
 
+                    item.find('[data-name=google]')
+                        .attr('href', 'https://www.google.com/search?q=%22' + encodeURIComponent(o.title) + '%22')
+
                     item.appendTo(collection)
+
+                $('[data-target=dropdown-item-' + id + ']').dropdown({
+                    'alignment': 'right'
+                })
 
                 if (o.ranks.length)
                 {
@@ -273,10 +292,10 @@
                         <span class="card-title align-self-center">{{ $name }}</span>
                         <span class="align-self-center ml-auto d-flex">
                             <a href="#" class="align-self-center btn-floating btn-flat waves-effect" data-name="{{ $key }}">
-                                <i class="material-icons">cloud_download</i>
+                                <i class="material-icons">archive</i>
                             </a>
                             <span>&nbsp;</span>
-                            <a href="#" class="align-self-center btn-floating cyan darken-2" data-run="off" data-name="{{ $key }}">
+                            <a href="#" class="align-self-center btn-floating cyan darken-2" data-run="off" data-name="{{ $key }}" id="{{ $key }}-tap">
                                 <i class="material-icons">play_arrow</i>
                             </a>
                         </span>
@@ -294,9 +313,25 @@
                                 @if ($key == 'youtube')
                                     <img data-name="image" style="height: 24px;" class="align-self-center mr-1" />
                                 @endif
-                                <a href="#" class="align-self-center" data-name="title"></a>
-                                <div class="align-self-center ml-auto" data-name="chart-parent"></div>
+                                <span class="align-self-center" data-name="title"></span>
+                                <span class="align-self-center d-flex ml-auto">
+                                    <div class="align-self-center" data-name="chart-parent"></div>
+                                    <span>&nbsp;</span>
+                                    <a href="#" class="btn-floating btn-small btn-flat waves-effect align-self-center dropdown-trigger" data-name="dropdown-trigger" data-target="dropdown-{{ $key }}">
+                                        <i class="material-icons">more_vert</i>
+                                    </a>
+                                </span>
                             </div>
+                            <ul class="dropdown-content" data-name="dropdown" id="dropdown-{{ $key }}">
+                                <li>
+                                    <a href="#" data-name="google" target="_blank">Google Sonuçları</a>
+                                </li>
+                                @if ($key == 'youtube')
+                                    <li>
+                                        <a href="#" data-name="youtube-link" target="_blank">YouTube ile Aç</a>
+                                    </li>
+                                @endif
+                            </ul>
                         </li>
                     </ul>
                 </div>
