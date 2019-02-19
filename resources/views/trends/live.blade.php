@@ -8,7 +8,6 @@
             'text' => 'Canlı Trend'
         ]
     ],
-    'wide' => true,
     'dock' => true
 ])
 
@@ -31,13 +30,13 @@
         opacity: 1;
     }
 
-    .trend-collection > .collection-item .chart {
+    .trend-collection > .collection-item [data-name=chart] {
         width: 64px;
         height: 24px;
     }
 
     @media (max-width: 1200px) {
-        .trend-collection > .collection-item .chart {
+        .trend-collection > .collection-item [data-name=chart] {
             display: none;
         }
     }
@@ -86,14 +85,24 @@
         maintainAspectRatio: false
     };
 
-    function __chart(selector, data)
+    function __chart(parent, data)
     {
-        return new Chart($(selector), {
+        var chart = $('<canvas />', {
+            'width': '64',
+            'height': '24',
+            'data-name': 'chart'
+        })
+
+        parent.html(chart)
+
+        return new Chart(chart, {
             type: 'line',
             data: data,
             options: options
         })
     }
+
+    var sozlukTrendTimer;
 
     function __trends(__, obj)
     {
@@ -158,9 +167,9 @@
 
                     item.appendTo(collection)
 
-                if (o.ranks.length && item.find('[data-name=chart]').length)
+                if (o.ranks.length)
                 {
-                    __chart(item.find('[data-name=chart]'), {
+                    __chart(item.find('[data-name=chart-parent]'), {
                         labels: o.ranks,
                         datasets: [{
                             backgroundColor: color_light,
@@ -177,9 +186,10 @@
 
             collection.children('.item:not(.on)').remove()
 
-            window.setTimeout(function() {
+            window.clearTimeout(window[module + 'TrendTimer'])
+            window[module + 'TrendTimer'] = window.setTimeout(function() {
                 vzAjax(collection)
-            }, 60000)
+            }, 30000)
         }
     }
 
@@ -188,141 +198,72 @@
 
         if (__.data('status') == 'on')
         {
-            console.log('stopped')
-
             __.data('status', 'off')
             __.find('i.material-icons').html('play_arrow')
+            __.removeClass('pulse red')
+            __.addClass('cyan')
 
             M.toast({ html: 'Canlı Trend Durduruldu', 'classes': 'red' })
+
+            setTimeout(function() {
+                window.clearTimeout(window[__.data('name') + 'TrendTimer'])
+            }, 1000)
         }
         else
         {
             __.data('status', 'on')
             __.find('i.material-icons').html('pause')
+            __.addClass('pulse red')
+            __.removeClass('cyan')
 
             M.toast({ html: 'Canlı Trend Başlatıldı', 'classes': 'green' })
+
+            vzAjax($('[data-module=' + __.data('name') + ']'))
         }
     })
 @endpush
 
 @section('content')
 <div class="sortable">
-            <div class="card">
-                <div class="card-content d-flex">
-                    <a href="#" class="handle align-self-center btn-floating btn-flat mr-1">
-                        <i class="material-icons">drag_handle</i>
-                    </a>
-                    <span class="card-title align-self-center">Sözlük</span>
-                    <a href="#" class="align-self-center btn-floating cyan darken-2 waves-effect ml-auto" data-run="off" data-module="sozluk">
-                        <i class="material-icons">play_arrow</i>
-                    </a>
-                </div>
-                <ul
-                    class="collection collection-hoverable trend-collection load_"
-                    data-method="post"
-                    data-href="{{ route('trend.live.redis') }}"
-                    data-callback="__trends"
-                    data-module="sozluk">
-                    <li class="collection-item item hide" data-model>
-                        <div class="d-flex">
-                            <i class="material-icons align-self-center" data-name="arrow"></i>
-                            <span class="rank align-self-center center-align" data-name="rank" style="width: 48px;"></span>
-                            <a href="#" class="align-self-center" data-name="title"></a>
-                            <div class="chart align-self-center ml-auto">
-                                <canvas width="64" height="24" data-name="chart"></canvas>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
+    @foreach (
+        [
+            'sozluk' => 'Sözlük',
+            'news' => 'Haber',
+            'google' => 'Google',
+            'twitter' => 'Twitter',
+            'youtube' => 'YouTube'
+        ]
+        as $key => $name
+    )
+        <div class="card">
+            <div class="card-content d-flex">
+                <a href="#" class="handle align-self-center btn-floating btn-flat mr-1">
+                    <i class="material-icons">drag_handle</i>
+                </a>
+                <span class="card-title align-self-center">{{ $name }}</span>
+                <a href="#" class="align-self-center btn-floating cyan darken-2 ml-auto" data-run="off" data-name="{{ $key }}">
+                    <i class="material-icons">play_arrow</i>
+                </a>
             </div>
-            <div class="card">
-                <div class="card-content">
-                    <span class="card-title">Medya</span>
-                </div>
-                <ul
-                    class="collection collection-hoverable trend-collection load_"
-                    data-method="post"
-                    data-href="{{ route('trend.live.redis') }}"
-                    data-callback="__trends"
-                    data-module="news">
-                    <li class="collection-item item hide" data-model>
-                        <div class="d-flex">
-                            <i class="material-icons align-self-center" data-name="arrow"></i>
-                            <span class="rank align-self-center center-align" data-name="rank" style="width: 48px;"></span>
-                            <a href="#" class="align-self-center" data-name="title"></a>
-                            <div class="chart align-self-center ml-auto">
-                                <canvas width="64" height="24" data-name="chart"></canvas>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="card">
-                <div class="card-content">
-                    <span class="card-title">Google</span>
-                </div>
-                <ul
-                    class="collection collection-hoverable trend-collection load_"
-                    data-method="post"
-                    data-href="{{ route('trend.live.redis') }}"
-                    data-callback="__trends"
-                    data-module="google">
-                    <li class="collection-item item hide" data-model>
-                        <div class="d-flex">
-                            <i class="material-icons align-self-center" data-name="arrow"></i>
-                            <span class="rank align-self-center center-align" data-name="rank" style="width: 48px;"></span>
-                            <a href="#" class="align-self-center" data-name="title"></a>
-                            <div class="chart align-self-center ml-auto">
-                                <canvas width="64" height="24" data-name="chart"></canvas>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="card">
-                <div class="card-content">
-                    <span class="card-title">Twitter</span>
-                </div>
-                <ul
-                    class="collection collection-hoverable trend-collection load_"
-                    data-method="post"
-                    data-href="{{ route('trend.live.redis') }}"
-                    data-callback="__trends"
-                    data-module="twitter">
-                    <li class="collection-item item hide" data-model>
-                        <div class="d-flex">
-                            <i class="material-icons align-self-center" data-name="arrow"></i>
-                            <span class="rank align-self-center center-align" data-name="rank" style="width: 48px;"></span>
-                            <a href="#" class="align-self-center" data-name="title"></a>
-                            <div class="chart align-self-center ml-auto">
-                                <canvas width="64" height="24" data-name="chart"></canvas>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="card">
-                <div class="card-content">
-                    <span class="card-title">YouTube</span>
-                </div>
-                <ul
-                    class="collection collection-hoverable trend-collection load_"
-                    data-method="post"
-                    data-href="{{ route('trend.live.redis') }}"
-                    data-callback="__trends"
-                    data-module="youtube">
-                    <li class="collection-item item hide" data-model>
-                        <div class="d-flex">
-                            <i class="material-icons align-self-center center-align" data-name="arrow"></i>
-                            <span class="rank align-self-center center-align" data-name="rank" style="width: 48px;"></span>
+            <ul
+                class="collection collection-hoverable trend-collection load_"
+                data-method="post"
+                data-href="{{ route('trend.live.redis') }}"
+                data-callback="__trends"
+                data-module="{{ $key }}">
+                <li class="collection-item item hide" data-model>
+                    <div class="d-flex">
+                        <i class="material-icons align-self-center" data-name="arrow"></i>
+                        <span class="rank align-self-center center-align" data-name="rank" style="width: 48px;"></span>
+                        @if ($key == 'youtube')
                             <img data-name="image" style="height: 24px;" class="align-self-center mr-1" />
-                            <a href="#" class="align-self-center" data-name="title"></a>
-                            <div class="chart align-self-center ml-auto">
-                                <canvas width="64" height="24" data-name="chart"></canvas>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
+                        @endif
+                        <a href="#" class="align-self-center" data-name="title"></a>
+                        <div class="align-self-center ml-auto" data-name="chart-parent"></div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    @endforeach
 </div>
 @endsection

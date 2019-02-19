@@ -240,7 +240,8 @@
         })
     })
 
-    function addData(chart, label, data) {
+    function addData(chart, label, data)
+    {
         chart.data.labels.splice(0, 1)
         chart.data.labels.push(label)
         chart.data.datasets.forEach((dataset) => {
