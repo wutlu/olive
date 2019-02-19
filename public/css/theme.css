@@ -1171,7 +1171,7 @@ ul.partners > li.partner a:hover {
  * container
  */
 .container.container-wide {
-  width: 90% !important;
+  width: 96% !important;
   max-width: 100% !important;
 }
 
@@ -2074,6 +2074,7 @@ nav,
   margin: 0 .4rem 0 0;
   padding: 0 1rem;
   font-size: 16px;
+  color: #ccc;
 }
 
 /**

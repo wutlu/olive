@@ -416,7 +416,7 @@ return [
                 'name' => 'Arama Motoru',
                 'route' => 'search.dashboard',
                 'icon' => 'search'
-            ]
+            ],
         ]
     ],
 ];

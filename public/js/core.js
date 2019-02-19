@@ -130,7 +130,7 @@ $(document).on('keydown keyup change click', '.goodbye', function() {
     var __ = $(this);
 
     return modal({
-        'id': 'err',
+        'id': 'alert',
         'body': $('<span />', {
             'html': __.data('modal-alert'),
             'css': {

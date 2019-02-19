@@ -8,8 +8,8 @@
             'text' => 'Canlı Trend'
         ]
     ],
-    'dock' => true,
-    'wide' => true
+    'wide' => true,
+    'dock' => true
 ])
 
 @section('dock')
@@ -18,6 +18,7 @@
 
 @push('external.include.footer')
     <script src="{{ asset('js/chart.js?v='.config('system.version')) }}"></script>
+    <script src="{{ asset('js/jquery.ui.min.js?v='.config('system.version')) }}"></script>
 @endpush
 
 @push('local.styles')
@@ -25,15 +26,28 @@
         opacity: .2;
         padding: 6px 24px;
     }
-    .trend-collection > .collection-item.on { opacity: 1; }
 
-    .chart {
+    .trend-collection > .collection-item.on {
+        opacity: 1;
+    }
+
+    .trend-collection > .collection-item .chart {
         width: 64px;
         height: 24px;
+    }
+
+    @media (max-width: 1200px) {
+        .trend-collection > .collection-item .chart {
+            display: none;
+        }
     }
 @endpush
 
 @push('local.scripts')
+    $('.sortable').sortable({
+        handle: '.handle'
+    })
+
     var colors = {
         'red': { 'dark': '#f44336', 'light': '#ffebee' },
         'green': { 'dark': '#4caf50', 'light': '#e8f5e9' },
@@ -106,9 +120,6 @@
 
                 if (module == 'youtube')
                 {
-                    item.find('[data-name=title]')
-                        .attr('href', 'https://www.youtube.com/watch?v=' + o.id)
-
                     item.find('[data-name=image]')
                         .attr('src', 'https://i.ytimg.com/vi/' + o.id + '/default.jpg')
                         .attr('alt', o.title);
@@ -171,17 +182,43 @@
             }, 60000)
         }
     }
+
+    $(document).on('click', '[data-run]', function() {
+        var __ = $(this);
+
+        if (__.data('status') == 'on')
+        {
+            console.log('stopped')
+
+            __.data('status', 'off')
+            __.find('i.material-icons').html('play_arrow')
+
+            M.toast({ html: 'Canlı Trend Durduruldu', 'classes': 'red' })
+        }
+        else
+        {
+            __.data('status', 'on')
+            __.find('i.material-icons').html('pause')
+
+            M.toast({ html: 'Canlı Trend Başlatıldı', 'classes': 'green' })
+        }
+    })
 @endpush
 
 @section('content')
-    <div class="row">
-        <div class="col m12 l6">
+<div class="sortable">
             <div class="card">
-                <div class="card-content">
-                    <span class="card-title">Sözlük</span>
+                <div class="card-content d-flex">
+                    <a href="#" class="handle align-self-center btn-floating btn-flat mr-1">
+                        <i class="material-icons">drag_handle</i>
+                    </a>
+                    <span class="card-title align-self-center">Sözlük</span>
+                    <a href="#" class="align-self-center btn-floating cyan darken-2 waves-effect ml-auto" data-run="off" data-module="sozluk">
+                        <i class="material-icons">play_arrow</i>
+                    </a>
                 </div>
                 <ul
-                    class="collection collection-hoverable trend-collection load"
+                    class="collection collection-hoverable trend-collection load_"
                     data-method="post"
                     data-href="{{ route('trend.live.redis') }}"
                     data-callback="__trends"
@@ -192,25 +229,18 @@
                             <span class="rank align-self-center center-align" data-name="rank" style="width: 48px;"></span>
                             <a href="#" class="align-self-center" data-name="title"></a>
                             <div class="chart align-self-center ml-auto">
-                                <canvas width="64" height="32" data-name="chart"></canvas>
+                                <canvas width="64" height="24" data-name="chart"></canvas>
                             </div>
                         </div>
                     </li>
                 </ul>
-                @component('components.loader')
-                    @slot('id', 'sozluk-loader')
-                    @slot('color', 'cyan')
-                    @slot('class', 'card-loader-unstyled')
-                @endcomponent
             </div>
-        </div>
-        <div class="col m12 l6">
             <div class="card">
                 <div class="card-content">
                     <span class="card-title">Medya</span>
                 </div>
                 <ul
-                    class="collection collection-hoverable trend-collection load"
+                    class="collection collection-hoverable trend-collection load_"
                     data-method="post"
                     data-href="{{ route('trend.live.redis') }}"
                     data-callback="__trends"
@@ -221,55 +251,18 @@
                             <span class="rank align-self-center center-align" data-name="rank" style="width: 48px;"></span>
                             <a href="#" class="align-self-center" data-name="title"></a>
                             <div class="chart align-self-center ml-auto">
-                                <canvas width="64" height="32" data-name="chart"></canvas>
+                                <canvas width="64" height="24" data-name="chart"></canvas>
                             </div>
                         </div>
                     </li>
                 </ul>
-                @component('components.loader')
-                    @slot('id', 'news-loader')
-                    @slot('color', 'cyan')
-                    @slot('class', 'card-loader-unstyled')
-                @endcomponent
             </div>
-        </div>
-        <div class="col m12 l12">
-            <div class="card">
-                <div class="card-content">
-                    <span class="card-title">YouTube</span>
-                </div>
-                <ul
-                    class="collection collection-hoverable trend-collection load"
-                    data-method="post"
-                    data-href="{{ route('trend.live.redis') }}"
-                    data-callback="__trends"
-                    data-module="youtube">
-                    <li class="collection-item item hide" data-model>
-                        <div class="d-flex">
-                            <img data-name="image" style="height: 32px;" class="mr-1" />
-                            <i class="material-icons align-self-center" data-name="arrow"></i>
-                            <span class="rank align-self-center center-align" data-name="rank" style="width: 48px;"></span>
-                            <a href="#" target="_blank" class="align-self-center" data-name="title"></a>
-                            <div class="chart align-self-center ml-auto">
-                                <canvas width="64" height="32" data-name="chart"></canvas>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-                @component('components.loader')
-                    @slot('id', 'youtube-loader')
-                    @slot('color', 'cyan')
-                    @slot('class', 'card-loader-unstyled')
-                @endcomponent
-            </div>
-        </div>
-        <div class="col m12 l6">
             <div class="card">
                 <div class="card-content">
                     <span class="card-title">Google</span>
                 </div>
                 <ul
-                    class="collection collection-hoverable trend-collection load"
+                    class="collection collection-hoverable trend-collection load_"
                     data-method="post"
                     data-href="{{ route('trend.live.redis') }}"
                     data-callback="__trends"
@@ -280,25 +273,18 @@
                             <span class="rank align-self-center center-align" data-name="rank" style="width: 48px;"></span>
                             <a href="#" class="align-self-center" data-name="title"></a>
                             <div class="chart align-self-center ml-auto">
-                                <canvas width="64" height="32" data-name="chart"></canvas>
+                                <canvas width="64" height="24" data-name="chart"></canvas>
                             </div>
                         </div>
                     </li>
                 </ul>
-                @component('components.loader')
-                    @slot('id', 'google-loader')
-                    @slot('color', 'cyan')
-                    @slot('class', 'card-loader-unstyled')
-                @endcomponent
             </div>
-        </div>
-        <div class="col m12 l6">
             <div class="card">
                 <div class="card-content">
                     <span class="card-title">Twitter</span>
                 </div>
                 <ul
-                    class="collection collection-hoverable trend-collection load"
+                    class="collection collection-hoverable trend-collection load_"
                     data-method="post"
                     data-href="{{ route('trend.live.redis') }}"
                     data-callback="__trends"
@@ -309,17 +295,34 @@
                             <span class="rank align-self-center center-align" data-name="rank" style="width: 48px;"></span>
                             <a href="#" class="align-self-center" data-name="title"></a>
                             <div class="chart align-self-center ml-auto">
-                                <canvas width="64" height="32" data-name="chart"></canvas>
+                                <canvas width="64" height="24" data-name="chart"></canvas>
                             </div>
                         </div>
                     </li>
                 </ul>
-                @component('components.loader')
-                    @slot('id', 'twitter-loader')
-                    @slot('color', 'cyan')
-                    @slot('class', 'card-loader-unstyled')
-                @endcomponent
             </div>
-        </div>
-    </div>
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title">YouTube</span>
+                </div>
+                <ul
+                    class="collection collection-hoverable trend-collection load_"
+                    data-method="post"
+                    data-href="{{ route('trend.live.redis') }}"
+                    data-callback="__trends"
+                    data-module="youtube">
+                    <li class="collection-item item hide" data-model>
+                        <div class="d-flex">
+                            <i class="material-icons align-self-center center-align" data-name="arrow"></i>
+                            <span class="rank align-self-center center-align" data-name="rank" style="width: 48px;"></span>
+                            <img data-name="image" style="height: 24px;" class="align-self-center mr-1" />
+                            <a href="#" class="align-self-center" data-name="title"></a>
+                            <div class="chart align-self-center ml-auto">
+                                <canvas width="64" height="24" data-name="chart"></canvas>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+</div>
 @endsection
