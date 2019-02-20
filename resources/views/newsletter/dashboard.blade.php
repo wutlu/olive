@@ -35,9 +35,9 @@
                         item.appendTo(ul)
                 })
             }
-
-            $('#home-loader').hide()
         }
+
+        $('#home-loader').hide()
     }
 @endpush
 

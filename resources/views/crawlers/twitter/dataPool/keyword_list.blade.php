@@ -122,9 +122,9 @@
                         item.appendTo(ul)
                 })
             }
-
-            $('#home-loader').hide()
         }
+
+        $('#home-loader').hide()
     }
 
     function __form(__, obj)

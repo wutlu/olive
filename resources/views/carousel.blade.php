@@ -44,9 +44,9 @@
             }
 
             $('[data-name=count]').html(obj.hits.length)
-
-            $('#home-loader').hide()
         }
+
+        $('#home-loader').hide()
     }
 
     function form_modal()

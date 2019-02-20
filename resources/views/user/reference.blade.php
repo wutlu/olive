@@ -156,9 +156,9 @@
                                     item.appendTo(ul)
                             })
                         }
-
-                        $('#references-loader').hide()
                     }
+
+                    $('#references-loader').hide()
                 }
 
                 function __transactions(__, obj)
@@ -201,9 +201,9 @@
                                     item.appendTo(ul)
                             })
                         }
-
-                        $('#transactions-loader').hide()
                     }
+
+                    $('#transactions-loader').hide()
                 }
             @endpush
         @else

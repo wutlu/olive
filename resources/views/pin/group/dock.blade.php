@@ -103,9 +103,9 @@
                         item.appendTo(ul)
                 })
             }
-
-            $('#pin-groups-loader').hide()
         }
+
+        $('#pin-groups-loader').hide()
     }
 
     function pin_group_modal()

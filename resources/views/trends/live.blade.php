@@ -179,6 +179,9 @@
                             'color': color_dark
                         })
 
+                    item.find('[data-name=olive]')
+                        .attr('href', '{{ route('search.dashboard') }}?q=' + encodeURIComponent(o.title))
+
                     item.find('[data-name=google]')
                         .attr('href', 'https://www.google.com/search?q=%22' + encodeURIComponent(o.title) + '%22')
 
@@ -323,6 +326,9 @@
                                 </span>
                             </div>
                             <ul class="dropdown-content" data-name="dropdown" id="dropdown-{{ $key }}">
+                                <li>
+                                    <a href="#" data-name="olive" target="_blank">Olive Sonuçları</a>
+                                </li>
                                 <li>
                                     <a href="#" data-name="google" target="_blank">Google Sonuçları</a>
                                 </li>

@@ -111,9 +111,9 @@
                         item.appendTo(ul)
                 })
             }
-
-            $('#transactions-loader').hide()
         }
+
+        $('#transactions-loader').hide()
     }
 
     function __transaction(__, obj)

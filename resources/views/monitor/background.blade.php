@@ -40,8 +40,6 @@
                 })
             }
 
-            $('#home-loader').hide()
-
             collection.removeClass('hide')
 
             window.clearTimeout(logTimer)
@@ -50,6 +48,8 @@
                 vzAjax(collection)
             }, 10000)
         }
+
+        $('#home-loader').hide()
     }
 
     function __kill(__, obj)

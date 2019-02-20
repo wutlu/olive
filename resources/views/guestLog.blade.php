@@ -65,7 +65,7 @@
 
                         if (o.is_desktop)
                         {
-                        	type = 'Masaüstü';
+                        	type = 'PC';
                         }
                         else if (o.is_phone)
                         {
@@ -86,8 +86,6 @@
                 })
             }
 
-            $('#home-loader').hide()
-
             collection.removeClass('hide')
 
             window.clearTimeout(logTimer)
@@ -96,6 +94,8 @@
                 vzAjax(collection)
             }, 10000)
         }
+
+        $('#home-loader').hide()
     }
 @endpush
 

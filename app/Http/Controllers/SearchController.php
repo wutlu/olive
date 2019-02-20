@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Search\ArchiveRequest;
+use App\Http\Requests\QRequest;
+
 use App\Elasticsearch\Document;
 
 use Term;
@@ -37,9 +39,11 @@ class SearchController extends Controller
      *
      * @return view
      */
-    public static function dashboard()
+    public static function dashboard(QRequest $request)
     {
-        return view('search.dashboard');
+        $q = $request->q;
+
+        return view('search.dashboard', compact('q'));
     }
 
     /**

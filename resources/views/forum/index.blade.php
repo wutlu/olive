@@ -465,9 +465,9 @@
                         }
                 })
             }
-
-            $('#cat-loader').hide()
         }
+
+        $('#cat-loader').hide()
     }
 @endpush
 

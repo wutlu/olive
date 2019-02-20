@@ -45,9 +45,9 @@
 
                 $('[data-tooltip]').tooltip()
             }
-
-            $('#home-loader').hide()
         }
+
+        $('#home-loader').hide()
     }
 
     function __connection_failed(__)

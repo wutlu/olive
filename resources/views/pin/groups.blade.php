@@ -31,9 +31,9 @@
                         item.appendTo(ul)
                 })
             }
-
-            $('#home-loader').hide()
         }
+
+        $('#home-loader').hide()
     }
 
     function pin_group_modal()

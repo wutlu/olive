@@ -158,10 +158,10 @@
                 $('[data-tooltip]').tooltip()
             }
 
-            $('#home-loader').hide()
-
             $('[data-name=count]').html(obj.hits.length + '/{{ auth()->user()->organisation->youtube_follow_limit_keyword }}')
         }
+
+        $('#home-loader').hide()
 
         window.clearTimeout(collection_timer)
 

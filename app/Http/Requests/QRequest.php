@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SearchRequest extends FormRequest
+class QRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,7 @@ class SearchRequest extends FormRequest
     public function rules()
     {
         return [
-            'string' => 'nullable|string|min:2|max:255',
-            'skip' => 'required|integer',
-            'take' => 'required|integer|max:100'
+            'q' => 'nullable|string|max:255'
         ];
     }
 }

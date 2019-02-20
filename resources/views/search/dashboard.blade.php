@@ -371,10 +371,14 @@
                         item.appendTo(ul)
                 })
             }
-
-            $('#home-loader').hide()
         }
+
+        $('#home-loader').hide()
     }
+
+    @if ($q)
+        vzAjax($('#search'))
+    @endif
 @endpush
 
 @section('content')
@@ -406,7 +410,8 @@
                            type="search"
                            class="validate json json-search white"
                            data-json-target="#search"
-                           placeholder="Ara" />
+                           placeholder="Ara"
+                           value="{{ $q }}" />
                     <label class="label-icon" for="string">
                         <i class="material-icons">search</i>
                     </label>

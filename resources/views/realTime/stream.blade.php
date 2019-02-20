@@ -561,9 +561,9 @@
 
             $('[data-name=keyword-group-count]').html(obj.hits.length)
             $('[data-name=keyword-group-limit]').html(obj.limit)
-
-            $('#keyword-group-loader').hide()
         }
+
+        $('#keyword-group-loader').hide()
     }
 
     function keyword_group_modal()

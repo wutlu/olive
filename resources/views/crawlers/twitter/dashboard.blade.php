@@ -74,9 +74,9 @@
                         }
                 })
             }
-
-            $('#home-loader').hide()
         }
+
+        $('#home-loader').hide()
 
         window.clearTimeout(collection_timer)
 
