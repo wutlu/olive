@@ -21,6 +21,13 @@
 @endpush
 
 @push('local.styles')
+    .fullscreen {
+        background-image: url('{{ asset('img/olive-logo-opacity.svg') }}');
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: 50%;
+    }
+
     .trend-collection > .collection-item {
         opacity: .2;
         padding: 6px 24px;
