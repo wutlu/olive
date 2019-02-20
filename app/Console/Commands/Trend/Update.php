@@ -875,7 +875,7 @@ class Update extends Command
                 ],
                 [
                     'title' => $group_title,
-                    'data' => json_encode($items)
+                    'data' => $items
                 ]
             );
         }
