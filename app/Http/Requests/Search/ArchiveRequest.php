@@ -24,7 +24,7 @@ class ArchiveRequest extends FormRequest
     public function rules()
     {
         return [
-            'string' => 'nullable|string|max:64',
+            'string' => 'nullable|string|max:255',
             'skip' => 'required|integer',
             'take' => 'required|integer|max:100',
             'start_date' => 'required|date_format:Y-m-d',
