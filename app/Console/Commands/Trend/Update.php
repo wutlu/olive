@@ -12,7 +12,7 @@ use App\Jobs\Elasticsearch\BulkInsertJob;
 use Carbon\Carbon;
 
 use App\Models\Option;
-use App\Models\Trend;
+use App\Models\TrendArchive;
 use App\Models\Proxy;
 
 use App\Utilities\Term;
@@ -297,7 +297,7 @@ class Update extends Command
                 }
                 else
                 {
-                    echo self::archive($group, $group_title);
+                    echo self::archive($group, $group_title, 'sozluk', $items);
                 }
             }
 
@@ -325,13 +325,13 @@ class Update extends Command
         switch ($period)
         {
             case 'live':
-                $group_title = 'Medya: Anlık Trend, '.date('d.m.Y');
+                $group_title = 'Haber: Anlık Trend, '.date('d.m.Y');
             break;
             case 'daily':
-                $group_title = 'Medya: Günlük Trend, '.date('d.m.Y');
+                $group_title = 'Haber: Günlük Trend, '.date('d.m.Y');
             break;
             case 'weekly':
-                $group_title = 'Medya: Haftalık Trend, '.date('m.Y').' hafta: '.date('W');
+                $group_title = 'Haber: Haftalık Trend, '.date('m.Y').' hafta: '.date('W');
             break;
         }
 
@@ -461,7 +461,7 @@ class Update extends Command
                 }
                 else
                 {
-                    echo self::archive($group, $group_title);
+                    echo self::archive($group, $group_title, 'news', $items);
                 }
             }
 
@@ -580,7 +580,7 @@ class Update extends Command
                 }
                 else
                 {
-                    echo self::archive($group, $group_title);
+                    echo self::archive($group, $group_title, 'youtube', $items);
                 }
             }
 
@@ -861,12 +861,24 @@ class Update extends Command
      *
      * @return string
      */
-    private static function archive(string $group, string $group_title)
+    private static function archive(string $group, string $group_title, string $module, array $items)
     {
-        Trend::updateOrCreate(
-            [ 'group' => $group ],
-            [ 'title' => $group_title ]
-        );
+        $alias = str_slug(config('app.name'));
+
+        if (count($items))
+        {
+            $name = config('system.trends')[implode('.', [ 'trend', 'status', $module ])];
+
+            TrendArchive::updateOrCreate(
+                [
+                    'group' => $group
+                ],
+                [
+                    'title' => $group_title,
+                    'data' => json_encode($items)
+                ]
+            );
+        }
 
         return Term::line('Arşiv alındı.');
     }

@@ -106,7 +106,11 @@ Route::prefix('trend')->namespace('Trend')->group(function () {
         Route::get('/', 'TrendController@live')->name('trend.live');
         Route::post('redis', 'TrendController@liveRedis')->name('trend.live.redis');
     });
-    Route::get('arsiv', 'TrendController@archive')->name('trend.archive');
+
+    Route::prefix('arsiv')->group(function () {
+        Route::get('/', 'TrendController@archive')->name('trend.archive');
+        Route::post('kayit', 'TrendController@archiveSave')->name('trend.archive.save');
+    });
 });
 
 Route::prefix('pinleme')->group(function () {

@@ -201,7 +201,7 @@ class Kernel extends ConsoleKernel
              */
             $schedule->command('nohup "youtube:video_detect --type=trends" --type=restart')
                      ->unlessBetween('1:00', '9:00')
-                     ->everyMinute()
+                     ->everyFifteenMinutes()
                      ->timezone(config('app.timezone'))
                      ->withoutOverlapping(1)
                      ->skip(function() {

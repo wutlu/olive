@@ -67,45 +67,60 @@ class VideoDetect extends Command
             $type = $this->choice('Hangi eylemi uygulamak istiyorsunuz?', $types, $type);
         }
 
-        switch ($type)
+        try
         {
-            case 'trends':
-                $item_chunk = array_chunk(YouTube::getPopularVideos('tr', 50), 10);
-            break;
-            case 'followed_videos':
-                $ids = FollowingVideos::select('video_id')->whereNull('reason')->get();
+            switch ($type)
+            {
+                case 'trends':
+                    $item_chunk = array_chunk(YouTube::getPopularVideos('tr', 50), 10);
+                break;
+                case 'followed_videos':
+                    $ids = FollowingVideos::select('video_id')->whereNull('reason')->get();
 
-                $item_chunk = array_map(function($chunk) {
-                    return Youtube::getVideoInfo(array_map(function($chunk) {
-                        return $chunk['video_id'];
-                    }, $chunk));
-                }, $ids->chunk(10)->toArray());
-            break;
-            case 'followed_keywords':
-                $keywords = FollowingKeywords::select('keyword')->whereNull('reason')->get()->toArray();
+                    $item_chunk = array_map(function($chunk) {
+                        return Youtube::getVideoInfo(array_map(function($chunk) {
+                            return $chunk['video_id'];
+                        }, $chunk));
+                    }, $ids->chunk(10)->toArray());
+                break;
+                case 'followed_keywords':
+                    $keywords = FollowingKeywords::select('keyword')->whereNull('reason')->get()->toArray();
 
-                $item_chunk = array_map(function ($item) {
-                    return Youtube::searchAdvanced([
-                        'q' => $item['keyword'],
-                        'type' => 'video',
-                        'part' => 'id, snippet',
-                        'maxResults' => 50
-                    ]);
-                }, $keywords);
+                    $item_chunk = array_map(function ($item) {
+                        return Youtube::searchAdvanced([
+                            'q' => $item['keyword'],
+                            'type' => 'video',
+                            'part' => 'id, snippet',
+                            'maxResults' => 50
+                        ]);
+                    }, $keywords);
 
-                $item_chunk = array_flatten($item_chunk);
-                $item_chunk = array_chunk($item_chunk, 10);
-            break;
-            case 'followed_channels':
-                $channels = FollowingChannels::select('channel_id')->whereNull('reason')->get()->toArray();
+                    $item_chunk = array_flatten($item_chunk);
+                    $item_chunk = array_chunk($item_chunk, 10);
+                break;
+                case 'followed_channels':
+                    $channels = FollowingChannels::select('channel_id')->whereNull('reason')->get()->toArray();
 
-                $item_chunk = array_map(function ($item) {
-                    return Youtube::listChannelVideos($item['channel_id'], 50);
-                }, $channels);
+                    $item_chunk = array_map(function ($item) {
+                        return Youtube::listChannelVideos($item['channel_id'], 50);
+                    }, $channels);
 
-                $item_chunk = array_flatten($item_chunk);
-                $item_chunk = array_chunk($item_chunk, 10);
-            break;
+                    $item_chunk = array_flatten($item_chunk);
+                    $item_chunk = array_chunk($item_chunk, 10);
+                break;
+            }
+        }
+        catch (\Exception $e)
+        {
+            $this->error($e->getMessage());
+
+            System::log(
+                json_encode($e->getMessage()),
+                'App\Console\Commands\Crawler\YouTube\VideoDetect::handle('.$type.')',
+                2
+            );
+
+            die();
         }
 
         if (count($item_chunk))

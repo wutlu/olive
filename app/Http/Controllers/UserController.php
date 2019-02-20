@@ -77,7 +77,7 @@ class UserController extends Controller
         ### [ 5 işlemden sonra 5 dakika ile sınırla ] ###
         $this->middleware('throttle:5,5')->only('passwordPost');
 
-        ### [ 5 işlemden sonra 1 dakika ile sınırla ] ###
+        ### [ 10 işlemden sonra 1 dakika ile sınırla ] ###
         $this->middleware('throttle:10,1')->only('loginPost');
 
         ### [ 1 işlemden sonra 1 dakika ile sınırla ] ###

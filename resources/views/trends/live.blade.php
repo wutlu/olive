@@ -253,25 +253,81 @@
             vzAjax($('[data-module=' + __.data('name') + ']'))
         }
     })
+
+    function __archive(__, obj)
+    {
+        if (obj.status == 'ok')
+        {
+            $('#modal-alert').modal('close')
+
+            M.toast({ 'html': 'Anlık trend görüntüsü alındı. Trend Arşivi sayfasından tüm arşivlere erişebilirsiniz.', 'classes': 'green' })
+        }
+        else if (obj.status == 'err')
+        {
+            return modal({
+                'id': 'alert',
+                'body': 'Trend günlüğü boş olduğundan arşiv alınamadı.',
+                'title': 'Hata',
+                'size': 'modal-small',
+                'options': {},
+                'footer': [
+                   $('<a />', {
+                       'href': '#',
+                       'class': 'modal-close waves-effect btn-flat cyan-text',
+                       'html': buttons.ok
+                   })
+                ]
+            })
+        }
+    }
+
+    $(document).on('click', '[data-trigger=archive]', function() {
+        return modal({
+            'id': 'alert',
+            'body': 'Trend görüntüsü arşivlenecek. Son 1 dakika içerisinde yapacağınız her istek bir önceki görüntü ile birleştirilecektir.',
+            'size': 'modal-small',
+            'title': 'Arşiv',
+            'footer': [
+                $('<a />', {
+                    'href': '#',
+                    'class': 'modal-close waves-effect grey-text btn-flat',
+                    'html': buttons.cancel
+                }),
+                $('<span />', {
+                    'html': ' '
+                }),
+                $('<a />', {
+                    'href': '#',
+                    'class': 'waves-effect btn-flat json',
+                    'html': buttons.ok,
+                    'data-href': '{{ route('trend.archive.save') }}',
+                    'data-method': 'post',
+                    'data-key': $(this).data('name'),
+                    'data-callback': '__archive'
+                })
+            ],
+            'options': {}
+        })
+    })
 @endpush
 
 @section('wildcard')
-    <div class="teal lighten-5 z-depth-1 pt-1 pb-1">
+    <div class="teal lighten-2 z-depth-1 pt-1 pb-1">
         <div class="container">
             <p class="d-flex mb-0">
-                <i class="material-icons mr-1 teal-text text-lighten-2">help_outline</i>
-                <span class="teal-text text-lighten-2">Web trendlerini, Olive trend algoritması oluşturur. Kaynak sitelerin trend algoritmalarıyla eşleşmesi beklenmemelidir.</span>
+                <i class="material-icons mr-1 white-text align-self-center">help_outline</i>
+                <span class="white-text align-self-center">Web trendlerini, Olive trend algoritması oluşturur.<br />Kaynak sitelerin trend algoritmalarıyla eşleşmesi beklenmemelidir.</span>
             </p>
         </div>
     </div>
 @endsection
 
 @section('content')
-    <div class="fullscreen">
+    <div class="fullscreen nowrap">
         <div class="fs-element">
             <div class="d-flex justify-content-end">
-                <a href="#" class="btn-floating btn-flat waves-effect" data-class="body" data-class-add="fs-active">
-                    <i class="material-icons">fullscreen</i>
+                <a href="#" class="btn-floating white waves-effect" data-class="body" data-class-add="fs-active" data-tooltip="Tam Ekran" data-position="left">
+                    <i class="material-icons grey-text text-darken-2">fullscreen</i>
                 </a>
             </div>
         </div>
@@ -301,11 +357,11 @@
                         </a>
                         <span class="card-title align-self-center">{{ $name }}</span>
                         <span class="align-self-center ml-auto d-flex">
-                            <a href="#" class="align-self-center btn-floating btn-flat waves-effect" data-name="{{ $key }}">
+                            <a href="#" class="align-self-center btn-floating btn-flat waves-effect" data-trigger="archive" data-name="{{ $key }}">
                                 <i class="material-icons">archive</i>
                             </a>
                             <span>&nbsp;</span>
-                            <a href="#" class="align-self-center btn-floating cyan darken-2" data-run="off" data-name="{{ $key }}" id="{{ $key }}-tap">
+                            <a href="#" class="align-self-center btn-floating cyan darken-2" data-run="off" data-name="{{ $key }}">
                                 <i class="material-icons">play_arrow</i>
                             </a>
                         </span>

@@ -6,12 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 use App\Elasticsearch\Indices;
 
-class Trend extends Model
+class TrendArchive extends Model
 {
-    protected $table = 'trends';
+    protected $table = 'trend_archives';
     protected $fillable = [
         'title',
-        'group'
+        'group',
+        'data',
+        'organisation_id'
     ];
 
     # index crate

@@ -269,5 +269,6 @@ return [
         'modules'                      => 'Modüller',
         'sentiment'                    => 'Duygu',
         'full_match'                   => 'Kelimesi Kelimesine',
+        'module'                       => 'Modül',
     ],
 ];

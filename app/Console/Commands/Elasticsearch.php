@@ -10,8 +10,6 @@ use App\Elasticsearch\Indices;
 
 use App\Utilities\Term;
 
-use App\Models\Trend;
-
 use App\Jobs\Elasticsearch\CreateTrendIndexJob;
 
 use App\Models\Option;

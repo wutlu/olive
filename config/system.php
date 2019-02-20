@@ -61,6 +61,7 @@ return [
         'trend.status.news' => 'Haber',
         'trend.status.forum' => 'Forum',
         'trend.status.blog' => 'Blog',
+        'trend.status.instagram' => 'Instagram',
         'trend.status.twitter' => 'Twitter',
     ],
 
@@ -83,6 +84,7 @@ return [
         'trend.status.forum' => 'string|in:on,off',
         'trend.status.blog' => 'string|in:on,off',
         'trend.status.youtube' => 'string|in:on,off',
+        'trend.status.instagram' => 'string|in:on,off',
 
         'twitter.index.auto' => 'string|in:on,off',
         'twitter.status' => 'string|in:on,off',

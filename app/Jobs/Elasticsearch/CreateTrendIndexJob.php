@@ -8,7 +8,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
-use App\Models\Trend;
+use App\Models\TrendArchive;
 use App\Models\Option;
 
 use System;
@@ -41,13 +41,17 @@ class CreateTrendIndexJob implements ShouldQueue
      */
     public function handle()
     {
-        $es = new Trend;
+        $es = new TrendArchive;
 
         $indices = $es->indexCreate();
 
         if ($indices->status == 'created' || $indices->status == 'exists')
         {
-            System::log('Trend indexi oluşturuldu.', 'App\Jobs\Elasticsearch::handle('.$indices->status.')', 1);
+            System::log(
+                'Trend indexi oluşturuldu.',
+                'App\Jobs\Elasticsearch::handle('.$indices->status.')',
+                1
+            );
 
             Option::where('key', 'trend.index')->update([
                 'value' => 'on'
