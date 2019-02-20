@@ -23,8 +23,8 @@
         -webkit-transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
     #string:focus {
-                box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .2);
-        -webkit-box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .2);
+                box-shadow: .4rem .4rem 1rem 0 rgba(0, 0, 0, .2);
+        -webkit-box-shadow: .4rem .4rem 1rem 0 rgba(0, 0, 0, .2);
     }
 @endpush
 

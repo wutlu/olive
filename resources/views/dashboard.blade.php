@@ -94,7 +94,7 @@
                 </a>
                 <a href="{{ route('trend.live') }}">
                     <i class="material-icons">trending_up</i>
-                    <span class="d-block">Trend Analizi <sup>Beta</sup></span>
+                    <span class="d-block">Trend Analizi</span>
                 </a>
                 <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" style="opacity: .4;" href="#">
                     <i class="material-icons">pie_chart</i>

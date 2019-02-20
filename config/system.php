@@ -4,7 +4,7 @@ return [
     /**
      * Sistem Versiyonu
      */
-    'version' => '1.4.24-alpha',
+    'version' => '1.4.25-alpha',
 
     /**
      * Gizlilik Politikası ve Kullanım Koşulları Versiyonu
@@ -62,6 +62,7 @@ return [
         'trend.status.forum' => 'Forum',
         'trend.status.blog' => 'Blog',
         'trend.status.instagram' => 'Instagram',
+        'trend.status.facebook' => 'Facebook',
         'trend.status.twitter' => 'Twitter',
     ],
 

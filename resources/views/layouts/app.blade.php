@@ -237,6 +237,18 @@
                                     E-ticaret Botları
                                 </a>
                             </li>
+                            <li class="tiny" style="opacity: 0.4;">
+                                <a class="waves-effect" href="#">
+                                    <i class="material-icons">widgets</i>
+                                    Forum Botları
+                                </a>
+                            </li>
+                            <li class="tiny" style="opacity: 0.4;">
+                                <a class="waves-effect" href="#">
+                                    <i class="material-icons">widgets</i>
+                                    Blog Botları
+                                </a>
+                            </li>
                             <li class="divider"></li>
                             <li class="tiny">
                                 <a class="waves-effect" href="{{ route('admin.twitter.settings') }}">
@@ -248,6 +260,18 @@
                                 <a class="waves-effect" href="{{ route('admin.youtube.settings') }}">
                                     <i class="material-icons">widgets</i>
                                     YouTube Ayarları
+                                </a>
+                            </li>
+                            <li class="tiny" style="opacity: 0.4;">
+                                <a class="waves-effect" href="#">
+                                    <i class="material-icons">widgets</i>
+                                    Facebook Ayarları
+                                </a>
+                            </li>
+                            <li class="tiny" style="opacity: 0.4;">
+                                <a class="waves-effect" href="#">
+                                    <i class="material-icons">widgets</i>
+                                    Instagram Ayarları
                                 </a>
                             </li>
                             <li>

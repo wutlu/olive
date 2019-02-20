@@ -1612,6 +1612,8 @@ header#main > .parallax-container > .parallax > video#background-video {
 .card-panel.card-loader.card-loader-unstyled {
           box-shadow: none;
   -webkit-box-shadow: none;
+
+  background-color: transparent;
 }
 
 /**

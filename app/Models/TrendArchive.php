@@ -16,6 +16,15 @@ class TrendArchive extends Model
         'organisation_id'
     ];
 
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'data' => 'array'
+    ];
+
     # index crate
     public function indexCreate()
     {

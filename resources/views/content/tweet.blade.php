@@ -94,7 +94,7 @@
 @endsection
 
 @push('external.include.footer')
-    <script src="{{ asset('js/chart.js?v='.config('system.version')) }}"></script>
+    <script src="{{ asset('js/chart.min.js?v='.config('system.version')) }}"></script>
 @endpush
 
 @push('local.scripts')

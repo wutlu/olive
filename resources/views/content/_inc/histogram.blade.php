@@ -2,7 +2,7 @@
  /**
   * Histogram için chart.js sayfaya import edilmeli.
   *
-  * <script src="{{ asset('js/chart.js?v='.config('system.version')) }}"></script>
+  * <script src="{{ asset('js/chart.min.js?v='.config('system.version')) }}"></script>
   */
 @endphp
 

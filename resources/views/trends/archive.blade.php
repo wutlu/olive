@@ -15,11 +15,24 @@
     $('.collapsible').collapsible()
 @endpush
 
+@push('local.styles')
+    .image-area > img {
+        width: 100%;
+        display: block;
+
+        border-width: 1px;
+        border-style: dashed;
+        border-color: #ccc;
+    }
+@endpush
+
 @section('dock')
     @include('trends._menu', [ 'active' => 'archive' ])
 @endsection
 
-@section('header.title', 'Test')
+@push('external.include.footer')
+    <script src="{{ asset('js/html2canvas.min.js?v='.config('system.version')) }}"></script>
+@endpush
 
 @section('content')
     <div class="card with-bg">
@@ -33,7 +46,7 @@
                            name="string"
                            type="search"
                            class="validate json json-search"
-                           data-json-target="#crawlers"
+                           data-json-target="#archives"
                            placeholder="Ara" />
                     <label class="label-icon" for="string">
                         <i class="material-icons">search</i>
@@ -42,55 +55,149 @@
                 </div>
             </div>
         </nav>
-        <ul class="collapsible with-header">
-            <li>
-                <div class="collapsible-header d-flex justify-content-between">
-                    <div>
-                        <span class="d-block">Yıllık Web Trendleri: 2019</span>
-                        <span class="grey-text">2018-12-12 14:02:00</span>
-                    </div>
-                    <i class="material-icons arrow">keyboard_arrow_down</i>
-                </div>
-                <div class="collapsible-body grey lighten-4">
-                    <span>test</span>
-                </div>
+        <ul class="collapsible load json-clear" 
+            id="archives"
+            data-href="{{ route('trend.archive') }}"
+            data-skip="0"
+            data-take="10"
+            data-more-button="#archives-more_button"
+            data-callback="__archives"
+            data-method="post"
+            data-include="string"
+            data-nothing>
+            <li class="nothing hide pb-1">
+                @component('components.nothing')@endcomponent
             </li>
-            <li>
-                <div class="collapsible-header d-flex justify-content-between">
-                    <div>
-                        <span class="d-block">Web Trendleri: Ocak</span>
-                        <span class="grey-text">2018-12-12 14:02:00</span>
-                    </div>
+            <li class="model hide">
+                <div class="collapsible-header">
+                    <span>
+                        <p></p>
+                        <time class="timeago grey-text"></time>
+                    </span>
                     <i class="material-icons arrow">keyboard_arrow_down</i>
                 </div>
-                <div class="collapsible-body grey lighten-4">
-                    <span>test</span>
-                </div>
-            </li>
-            <li>
-                <div class="collapsible-header d-flex justify-content-between">
-                    <div>
-                        <span class="d-block">Haftalık Web Trendleri: Ocak Ayı 1. Hafta</span>
-                        <span class="grey-text">2018-12-12 14:02:00</span>
+                <div class="collapsible-body grey lighten-5">
+                    <span>
+                        <span data-name="title" class="d-block right-align grey-text"></span>
+                        <span data-name="data"></span>
+                    </span>
+                    <div class="p-1 center-align">
+                        <a href="#" class="btn-flat waves-effect" data-trigger="image-save">Resim Kaydet</a>
                     </div>
-                    <i class="material-icons arrow">keyboard_arrow_down</i>
-                </div>
-                <div class="collapsible-body grey lighten-4">
-                    <span>test</span>
-                </div>
-            </li>
-            <li>
-                <div class="collapsible-header d-flex justify-content-between">
-                    <div>
-                        <span class="d-block">Web Trendleri: 01 Ocak 2019</span>
-                        <span class="grey-text">2018-12-12 14:02:00</span>
-                    </div>
-                    <i class="material-icons arrow">keyboard_arrow_down</i>
-                </div>
-                <div class="collapsible-body grey lighten-4">
-                    <span>test</span>
                 </div>
             </li>
         </ul>
+
+        @component('components.loader')
+            @slot('color', 'cyan')
+            @slot('class', 'card-loader-unstyled')
+            @slot('id', 'home-loader')
+        @endcomponent
+
+        <div class="center-align">
+            <button class="btn-flat waves-effect hide json"
+                    id="archives-more_button"
+                    type="button"
+                    data-json-target="ul#archives">Daha Fazla</button>
+        </div>
     </div>
 @endsection
+
+@push('local.scripts')
+    $(document).on('click', '[data-trigger=image-save]', function() {
+        var __ = $(this);
+
+        html2canvas(document.querySelector('#' + __.data('id')), {
+            'logging': false,
+            'max-width': '100%'
+        }).then(canvas => {
+            return modal({
+                'id': 'save',
+                'body': [
+                    $('<div />', {
+                        'class': 'teal lighten-2 white-text p-1 mb-1',
+                        'html': 'Aşağıdaki resmin üzerine sağ tıklayın ve bilgisayarınıza kaydedin.'
+                    }),
+                    $('<a />', {
+                        'class': 'image-area',
+                        'target': '_blank',
+                        'href': canvas.toDataURL(),
+                        'html': $('<img />', {
+                            'src': canvas.toDataURL()
+                        })
+                    })
+                ],
+                'title': 'Görüntü Kaydet',
+                'size': 'modal-large',
+                'options': {},
+                'footer': [
+                   $('<a />', {
+                       'href': '#',
+                       'class': 'modal-close waves-effect btn-flat cyan-text',
+                       'html': buttons.ok
+                   })
+                ]
+            })
+        })
+    })
+
+    function __archives(__, obj)
+    {
+        var ul = $('#archives');
+        var item_model = ul.children('li.model');
+
+        if (obj.status == 'ok')
+        {
+            item_model.addClass('hide')
+
+            if (obj.hits.length)
+            {
+                $.each(obj.hits, function(key, o) {
+                    var item = item_model.clone();
+                        item.removeClass('model hide').addClass('_tmp').attr('data-id', 'list-item-' + o.id)
+
+                        item.find('.collapsible-header > span > p').html(o.title)
+                        item.find('.collapsible-header > span > time').attr('data-time', o.updated_at).html(o.updated_at)
+
+                        var list = $('<ul />', {
+                            'class': 'collection',
+                            'css': {
+                                'background-image': 'url(\'{{ asset('img/olive-logo-opacity.svg') }}\')',
+                                'background-repeat': 'no-repeat',
+                                'background-position': 'center',
+                                'background-size': '50%'
+                            }
+                        });
+
+                        $.each(o.data, function(key, o) {
+                            var it = $('<li />', {
+                                'class': 'collection-item',
+                                'html': [
+                                    $('<span />', {
+                                        'class': 'rank',
+                                        'html': key
+                                    }),
+                                    $('<span />', {
+                                        'html': o.title
+                                    })
+                                ]
+                            })
+
+                            it.appendTo(list)
+                        })
+
+                        item.find('[data-name=title]').html(o.title)
+                        item.find('[data-name=data]').append(list)
+
+                        item.find('[data-trigger=image-save]').attr('data-id', 'capture-' + o.id)
+
+                        item.find('.collapsible-body > span').attr('id', 'capture-' + o.id)
+
+                        item.appendTo(ul)
+                })
+            }
+        }
+
+        $('#home-loader').hide()
+    }
+@endpush

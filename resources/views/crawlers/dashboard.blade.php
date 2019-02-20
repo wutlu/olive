@@ -23,6 +23,15 @@
         <i class="material-icons">widgets</i>
         <span class="d-block">E-ticaret Botları</span>
     </a>
+    <a href="#" class="d-block card-panel hoverable" style="opacity: .4;" data-tooltip="Facebook Ayarları" data-position="right">
+        <i class="material-icons">widgets</i>
+        <span class="d-block">Forum Botları</span>
+    </a>
+    <a href="#" class="d-block card-panel hoverable" style="opacity: .4;" data-tooltip="Facebook Ayarları" data-position="right">
+        <i class="material-icons">widgets</i>
+        <span class="d-block">Blog Botları</span>
+    </a>
+
     <a href="{{ route('admin.twitter.settings') }}" class="d-block card-panel hoverable" data-tooltip="Twitter Ayarları" data-position="right">
         <i class="material-icons">widgets</i>
         <span class="d-block">Twitter Ayarları</span>
@@ -30,5 +39,13 @@
     <a href="{{ route('admin.youtube.settings') }}" class="d-block card-panel hoverable" data-tooltip="YouTube Ayarları" data-position="right">
         <i class="material-icons">widgets</i>
         <span class="d-block">YouTube Ayarları</span>
+    </a>
+    <a href="#" class="d-block card-panel hoverable" style="opacity: .4;" data-tooltip="Facebook Ayarları" data-position="right">
+        <i class="material-icons">widgets</i>
+        <span class="d-block">Facebook Ayarları</span>
+    </a>
+    <a href="#" class="d-block card-panel hoverable" style="opacity: .4;" data-tooltip="Facebook Ayarları" data-position="right">
+        <i class="material-icons">widgets</i>
+        <span class="d-block">Instagram Ayarları</span>
     </a>
 @endsection

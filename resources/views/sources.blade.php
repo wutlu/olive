@@ -34,12 +34,18 @@
                         <li class="tab">
                             <a href="#social">Sosyal Medya</a>
                         </li>
+                        <li class="tab">
+                            <a href="#blog">Blog</a>
+                        </li>
+                        <li class="tab">
+                            <a href="#forum">Forum</a>
+                        </li>
                     </ul>
                     <div id="media" class="collection max-height white">
                         @forelse ($media as $key => $m)
                             <a href="{{ $m->site }}" target="_blank" class="collection-item d-flex justify-content-end">
                                 <span class="mr-auto">{{ ($key+1).' - '.$m->name }}</span>
-                                <span class="badge red white-text">{{ $m->id }}</span> 
+                                <span class="badge cyan white-text">{{ $m->id }}</span> 
 
                                 @if ($m->status)
                                     <span class="badge green white-text">Aktif</span>
@@ -55,7 +61,7 @@
                         @forelse ($shopping as $key => $s)
                             <a href="{{ $s->site }}" target="_blank" class="collection-item d-flex justify-content-end">
                                 <span class="mr-auto">{{ ($key+1).' - '.$s->name }}</span>
-                                <span class="badge red white-text">{{ $s->id }}</span> 
+                                <span class="badge cyan white-text">{{ $s->id }}</span> 
 
                                 @if ($s->status)
                                     <span class="badge green white-text">Aktif</span>
@@ -68,6 +74,14 @@
                         @endforelse
                     </div>
                     <div id="social" class="collection max-height white" style="display: none;">
+                        <a href="https://www.facebook.com" target="_blank" class="collection-item">
+                            Facebook
+                            <span class="badge red white-text">Pasif</span>
+                        </a>
+                        <a href="https://www.instagram.com" target="_blank" class="collection-item">
+                            Instagram
+                            <span class="badge red white-text">Pasif</span>
+                        </a>
                         <a href="https://twitter.com" target="_blank" class="collection-item">
                             Twitter
 
@@ -99,7 +113,7 @@
                         @forelse ($sozluk as $s)
                             <a href="{{ $s->site }}" target="_blank" class="collection-item d-flex justify-content-end">
                                 <span class="mr-auto">{{ $s->name }}</span>
-                                <span class="badge red white-text">{{ $s->id }}</span> 
+                                <span class="badge cyan white-text">{{ $s->id }}</span> 
 
                                 @if ($s->status)
                                     <span class="badge green white-text">Aktif</span>
@@ -110,6 +124,12 @@
                         @empty
                             <div class="collection-item grey-text">Şu an için aktif kaynak bulunmuyor.</div>
                         @endforelse
+                    </div>
+                    <div id="blog" class="collection max-height white" style="display: none;">
+                        <div class="collection-item grey-text">Şu an için aktif kaynak bulunmuyor.</div>
+                    </div>
+                    <div id="forum" class="collection max-height white" style="display: none;">
+                        <div class="collection-item grey-text">Şu an için aktif kaynak bulunmuyor.</div>
                     </div>
                 </div>
             </div>
