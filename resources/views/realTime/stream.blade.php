@@ -726,12 +726,15 @@
 
                 M.textareaAutoResize($('textarea[name=keywords]'))
 
-                mdl.find('[name=module_youtube_video]').prop('checked', obj.data.modules.youtube_video ? true : false)
-                mdl.find('[name=module_youtube_comment]').prop('checked', obj.data.modules.youtube_comment ? true : false)
-                mdl.find('[name=module_twitter]').prop('checked', obj.data.modules.twitter ? true : false)
-                mdl.find('[name=module_sozluk]').prop('checked', obj.data.modules.sozluk ? true : false)
-                mdl.find('[name=module_news]').prop('checked', obj.data.modules.news ? true : false)
-                mdl.find('[name=module_shopping]').prop('checked', obj.data.modules.shopping ? true : false)
+                if (obj.data.modules)
+                {
+                    mdl.find('[name=module_youtube_video]').prop('checked', obj.data.modules.youtube_video ? true : false)
+                    mdl.find('[name=module_youtube_comment]').prop('checked', obj.data.modules.youtube_comment ? true : false)
+                    mdl.find('[name=module_twitter]').prop('checked', obj.data.modules.twitter ? true : false)
+                    mdl.find('[name=module_sozluk]').prop('checked', obj.data.modules.sozluk ? true : false)
+                    mdl.find('[name=module_news]').prop('checked', obj.data.modules.news ? true : false)
+                    mdl.find('[name=module_shopping]').prop('checked', obj.data.modules.shopping ? true : false)
+                }
 
             $('[data-trigger=delete-keyword-group]').data('id', obj.data.id).removeClass('hide')
         }
