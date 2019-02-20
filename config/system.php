@@ -238,13 +238,11 @@ return [
                 'route' => 'trend.live',
                 'icon' => 'whatshot'
             ],
-            /*
             25 => [
-                'name' => 'Trend Endeksi',
-                'route' => 'trend.index',
-                'icon' => 'trending_up'
+                'name' => 'Alarmlar',
+                'route' => 'alarm.dashboard',
+                'icon' => 'alarm'
             ],
-            */
             26 => [
                 'name' => 'Trend Arşivi',
                 'route' => 'trend.archive',

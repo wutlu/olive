@@ -284,7 +284,7 @@
     $(document).on('click', '[data-trigger=archive]', function() {
         return modal({
             'id': 'alert',
-            'body': 'Trend görüntüsü arşivlenecek. Son 1 dakika içerisinde yapacağınız her istek bir önceki görüntü ile birleştirilecektir.',
+            'body': 'Anlık trend görüntüsü arşivlenecek. Son 1 dakika içerisinde yapacağınız her istek bir önceki görüntü ile birleştirilecektir.',
             'size': 'modal-small',
             'title': 'Arşiv',
             'footer': [

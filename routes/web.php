@@ -114,6 +114,10 @@ Route::prefix('trend')->namespace('Trend')->group(function () {
     });
 });
 
+Route::prefix('alarm')->group(function () {
+    Route::get('/', 'AlarmController@dashboard')->name('alarm.dashboard');
+});
+
 Route::prefix('pinleme')->group(function () {
     Route::prefix('gruplar')->group(function () {
         Route::get('/', 'PinController@groups')->name('pin.groups');

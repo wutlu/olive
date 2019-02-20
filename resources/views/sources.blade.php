@@ -26,7 +26,7 @@
                     </div>
                     <ul class="tabs card-transparent">
                         <li class="tab">
-                            <a href="#media" class="active">Basın</a>
+                            <a href="#media" class="active">Medya</a>
                         </li>
                         <li class="tab">
                             <a href="#shopping">E-Ticaret</a>

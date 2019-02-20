@@ -1,23 +1,19 @@
 <?php
 
-namespace App\Models\RealTime;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class KeywordGroup extends Model
+class Alarm extends Model
 {
-    protected $table = 'real_time_keyword_groups';
-    protected $fillable = [
-    	'name',
-    	'keywords'
-    ];
-
     /**
      * The attributes that should be cast to native types.
      *
      * @var array
      */
     protected $casts = [
+		'weekdays' => 'array',
 		'modules' => 'array',
+		'emails' => 'array',
     ];
 }

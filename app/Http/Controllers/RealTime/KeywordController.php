@@ -65,12 +65,7 @@ class KeywordController extends Controller
             'id',
             'name',
             'keywords',
-            'module_youtube_video',
-            'module_youtube_comment',
-            'module_twitter',
-            'module_sozluk',
-            'module_news',
-            'module_shopping'
+            'modules'
         )->where([
             'id' => $request->id,
             'organisation_id' => $organisation->id
@@ -98,12 +93,17 @@ class KeywordController extends Controller
         $data->name = $request->name;
         $data->keywords = trim($request->keywords);
 
-        $data->module_youtube_video = $request->module_youtube_video ? true : false;
-        $data->module_youtube_comment = $request->module_youtube_comment ? true : false;
-        $data->module_twitter = $request->module_twitter ? true : false;
-        $data->module_sozluk = $request->module_sozluk ? true : false;
-        $data->module_news = $request->module_news ? true : false;
-        $data->module_shopping = $request->module_shopping ? true : false;
+        $modules = [];
+
+        if ($request->module_youtube_video) $modules['youtube_video'] = 'on';
+        if ($request->module_youtube_comment) $modules['youtube_comment'] = 'on';
+        if ($request->module_twitter) $modules['twitter'] = 'on';
+        if ($request->module_sozluk) $modules['sozluk'] = 'on';
+        if ($request->module_news) $modules['news'] = 'on';
+        if ($request->module_shopping) $modules['shopping'] = 'on';
+
+        $data->modules = $modules;
+
         $data->save();
 
         return [
@@ -131,12 +131,17 @@ class KeywordController extends Controller
         $data->name = $request->name;
         $data->keywords = trim($request->keywords);
 
-        $data->module_youtube_video = $request->module_youtube_video ? true : false;
-        $data->module_youtube_comment = $request->module_youtube_comment ? true : false;
-        $data->module_twitter = $request->module_twitter ? true : false;
-        $data->module_sozluk = $request->module_sozluk ? true : false;
-        $data->module_news = $request->module_news ? true : false;
-        $data->module_shopping = $request->module_shopping ? true : false;
+        $modules = [];
+
+        if ($request->module_youtube_video) $modules['youtube_video'] = 'on';
+        if ($request->module_youtube_comment) $modules['youtube_comment'] = 'on';
+        if ($request->module_twitter) $modules['twitter'] = 'on';
+        if ($request->module_sozluk) $modules['sozluk'] = 'on';
+        if ($request->module_news) $modules['news'] = 'on';
+        if ($request->module_shopping) $modules['shopping'] = 'on';
+
+        $data->modules = $modules;
+
         $data->save();
 
         return [
