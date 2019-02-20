@@ -89,7 +89,7 @@
                         <a href="https://www.google.com" target="_blank" class="collection-item">
                             Google
 
-                            @if ($options['google.status'] == 'on')
+                            @if ($options['trend.status.google'] == 'on')
                                 <span class="badge green white-text">Aktif</span>
                             @else
                                 <span class="badge red white-text">Pasif</span>

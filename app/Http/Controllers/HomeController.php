@@ -83,7 +83,7 @@ class HomeController extends Controller
         $options_query = Option::whereIn('key', [
             'youtube.status',
             'twitter.status',
-            'google.status',
+            'trend.status.google',
         ])->get();
 
         $options = [];
