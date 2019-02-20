@@ -78,12 +78,9 @@
 @endpush
 
 @section('content')
-    <div class="card">
+    <div class="card with-bg">
         <div class="card-content">
             <span class="card-title">Arkaplan İşleri</span>
-
-            <p class="grey-text">Sunucu üzerinde çalışan sisteme özgü işlemleri dinamik olarak izleyebilirsiniz.</p>
-            <p class="grey-text">Sonlandırmak için sonlandırmak istediğiniz işlemin üzerine tıklayın.</p>
         </div>
         <div
             id="console"

@@ -214,7 +214,7 @@ class MonitorController extends Controller
 
         $redis = new Redis;
 
-        exec('ps axo time,pid,cmd | grep '.base_path('artisan'), $output);
+        exec('ps axo time,pid,cmd | grep artisan', $output);
 
         if (count($output))
         {

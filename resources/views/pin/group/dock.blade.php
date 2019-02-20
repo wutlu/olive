@@ -24,7 +24,6 @@
         data-href="{{ route('pin.groups') }}"
         data-skip="0"
         data-take="4"
-        data-include="string"
         data-more-button="#pin-groups-more_button"
         data-callback="__pin_groups"
         data-method="post"

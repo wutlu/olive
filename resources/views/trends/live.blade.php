@@ -221,7 +221,7 @@
             window.clearTimeout(window[module + 'TrendTimer'])
             window[module + 'TrendTimer'] = window.setTimeout(function() {
                 vzAjax(collection)
-            }, 30000)
+            }, 60000)
         }
     }
 
@@ -260,7 +260,7 @@
         <div class="container">
             <p class="d-flex mb-0">
                 <i class="material-icons mr-1 teal-text text-lighten-2">help_outline</i>
-                <span class="teal-text text-lighten-2">Web trendleri, Olive trend algoritmasıyla oluşturulur. Kaynak sitelerin trend analizleriyle eşleşmesi beklenmemelidir.</span>
+                <span class="teal-text text-lighten-2">Web trendlerini, Olive trend algoritması oluşturur. Kaynak sitelerin trend algoritmalarıyla eşleşmesi beklenmemelidir.</span>
             </p>
         </div>
     </div>
