@@ -191,8 +191,7 @@
         {
             var mdl = pin_group_modal();
                 mdl.find('.modal-title').html('Grup Güncelle')
-                mdl.find('form#pin-group-form').data('id', obj.data.id)
-                                               .data('method', 'patch')
+                mdl.find('form#pin-group-form').data('id', obj.data.id).data('method', 'patch')
                 mdl.find('[name=name]').val(obj.data.name)
 
             $('[data-trigger=delete-pin-group]').data('id', obj.data.id).removeClass('hide')

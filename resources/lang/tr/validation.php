@@ -1,6 +1,6 @@
 <?php
 
-return [
+$arr = [
     /*
     |--------------------------------------------------------------------------
     | Validation Language Lines
@@ -220,12 +220,6 @@ return [
         'proxy'                        => 'Vekil Sunucu',
         'min_health'                   => 'Yaşam Değeri',
         'reason'                       => 'Sebep',
-        'module_youtube_video'         => 'YouTube Video Modülü',
-        'module_youtube_comment'       => 'YouTube Yorum Modülü',
-        'module_twitter'               => 'Twitter Modülü',
-        'module_sozluk'                => 'Sözlük Modülü',
-        'module_news'                  => 'Haber Modülü',
-        'module_shopping'              => 'E-ticaret Modülü',
         'keyword_group'                => 'Kelime Grubu',
         'pin_group'                    => 'Pin Grubu',
         'keyword_group.*'              => 'Kelime Grubu',
@@ -270,5 +264,27 @@ return [
         'sentiment'                    => 'Duygu',
         'full_match'                   => 'Kelimesi Kelimesine',
         'module'                       => 'Modül',
+
+        'day_1'                        => 'Pazartesi',
+        'day_2'                        => 'Salı',
+        'day_3'                        => 'Çarşamba',
+        'day_4'                        => 'Perşembe',
+        'day_5'                        => 'Cuma',
+        'day_6'                        => 'Cumartesi',
+        'day_7'                        => 'Pazar',
+
+        'interval'                     => 'Aralık',
+
+        'query'                        => 'Sorgu',
+        'emails'                       => 'E-posta Adresleri',
+
+        'hit'                          => 'Bildirim Sayısı',
     ],
 ];
+
+foreach (config('system.modules') as $key => $module)
+{
+    $arr['attributes'][implode('_', [ 'module', $key ])] = implode(' ', [ $module, 'Modülü' ]);
+}
+
+return $arr;

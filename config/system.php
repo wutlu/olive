@@ -100,7 +100,7 @@ return [
         'twitter' => 'Twitter',
         'sozluk' => 'Sözlük',
         'news' => 'Haber',
-        'shopping' => 'E-ticaret',
+        'shopping' => 'E-ticaret'
     ],
 
     /**

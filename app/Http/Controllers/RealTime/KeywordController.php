@@ -95,12 +95,10 @@ class KeywordController extends Controller
 
         $modules = [];
 
-        if ($request->module_youtube_video) $modules['youtube_video'] = 'on';
-        if ($request->module_youtube_comment) $modules['youtube_comment'] = 'on';
-        if ($request->module_twitter) $modules['twitter'] = 'on';
-        if ($request->module_sozluk) $modules['sozluk'] = 'on';
-        if ($request->module_news) $modules['news'] = 'on';
-        if ($request->module_shopping) $modules['shopping'] = 'on';
+        foreach (config('system.modules') as $key => $module)
+        {
+            if ($request->{implode('_', [ 'module', $key ])}) $modules[$key] = 'on';
+        }
 
         $data->modules = $modules;
 
@@ -133,12 +131,10 @@ class KeywordController extends Controller
 
         $modules = [];
 
-        if ($request->module_youtube_video) $modules['youtube_video'] = 'on';
-        if ($request->module_youtube_comment) $modules['youtube_comment'] = 'on';
-        if ($request->module_twitter) $modules['twitter'] = 'on';
-        if ($request->module_sozluk) $modules['sozluk'] = 'on';
-        if ($request->module_news) $modules['news'] = 'on';
-        if ($request->module_shopping) $modules['shopping'] = 'on';
+        foreach (config('system.modules') as $key => $module)
+        {
+            if ($request->{implode('_', [ 'module', $key ])}) $modules[$key] = 'on';
+        }
 
         $data->modules = $modules;
 

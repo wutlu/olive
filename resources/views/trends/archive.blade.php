@@ -157,6 +157,11 @@
                     var item = item_model.clone();
                         item.removeClass('model hide').addClass('_tmp').attr('data-id', 'list-item-' + o.id)
 
+                        if (!o.organisation_id)
+                        {
+                            item.addClass('orange lighten-5')
+                        }
+
                         item.find('.collapsible-header > span > p').html(o.title)
                         item.find('.collapsible-header > span > time').attr('data-time', o.updated_at).html(o.updated_at)
 

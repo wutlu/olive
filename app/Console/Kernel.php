@@ -198,6 +198,8 @@ class Kernel extends ConsoleKernel
 
             /**
              * YouTube botlarının tetiklenmesi.
+             *
+             * - Sabah 09:00 ile gece 01:00 arası her 15 dakikada bir.
              */
             $schedule->command('nohup "youtube:video_detect --type=trends" --type=restart')
                      ->unlessBetween('1:00', '9:00')

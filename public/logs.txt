@@ -1,0 +1,8 @@
+0
+0
+0
+0
+query
+2
+3
+OR || asdasf || afasfa || asgdgadg OR asdasf OR asdads

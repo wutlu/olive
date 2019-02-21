@@ -117,6 +117,11 @@ Route::prefix('trend')->namespace('Trend')->group(function () {
 Route::prefix('alarm')->group(function () {
     Route::get('/', 'AlarmController@dashboard')->name('alarm.dashboard');
     Route::post('liste', 'AlarmController@data')->name('alarm.data');
+
+    Route::post('/', 'AlarmController@get')->name('alarm');
+    Route::put('/', 'AlarmController@create');
+    Route::patch('/', 'AlarmController@update');
+    Route::delete('/', 'AlarmController@delete');
 });
 
 Route::prefix('pinleme')->group(function () {
