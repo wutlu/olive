@@ -76,8 +76,6 @@
             }
         }
 
-        $('#home-loader').hide()
-
         window.clearTimeout(collection_timer)
 
         collection_timer = window.setTimeout(function() {
@@ -351,8 +349,6 @@
             form.attr('method', 'patch')
             form.data('callback', '__update')
 
-            M.updateTextFields()
-
             if (obj.data.off_reason)
             {
                 setTimeout(function() {
@@ -418,6 +414,7 @@
                     data-timeout="4000"
                     data-method="post"
                     data-callback="__statistics"
+                    data-loader="#home-loader"
                     data-error-callback="__connection_failed">
                     <div class="item">
                         <small class="d-block grey-text">Alınan Tweet</small>

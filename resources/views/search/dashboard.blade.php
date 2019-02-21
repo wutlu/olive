@@ -372,8 +372,6 @@
                 })
             }
         }
-
-        $('#home-loader').hide()
     }
 
     @if ($q)

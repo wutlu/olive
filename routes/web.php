@@ -116,6 +116,7 @@ Route::prefix('trend')->namespace('Trend')->group(function () {
 
 Route::prefix('alarm')->group(function () {
     Route::get('/', 'AlarmController@dashboard')->name('alarm.dashboard');
+    Route::post('liste', 'AlarmController@data')->name('alarm.data');
 });
 
 Route::prefix('pinleme')->group(function () {

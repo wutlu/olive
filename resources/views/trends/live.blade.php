@@ -221,16 +221,16 @@
                 }
             })
 
-            if (obj.data.length)
+            if (obj.data != null)
             {
                 collection.children('.item:not(.on)').remove()
                 collection.removeClass('hide')
 
-                $('[data-id=nothing-' + module + ']').removeClass('hide')
+                $('[data-id=nothing-' + module + ']').addClass('hide')
             }
             else
             {
-                $('[data-id=nothing-' + module + ']').addClass('hide')
+                $('[data-id=nothing-' + module + ']').removeClass('hide')
             }
 
             window.clearTimeout(window[module + 'TrendTimer'])

@@ -34,9 +34,9 @@
                         item.appendTo(ul)
                 })
             }
-        }
 
-        $('#home-loader').hide()
+            $('[data-name=count]').html(obj.total)
+        }
     }
 @endpush
 
@@ -55,6 +55,7 @@
     <div class="card with-bg">
         <div class="card-content">
             <span class="card-title">Organizasyonlar</span>
+            <span data-name="count" class="grey-text text-darken-2">0</span>
         </div>
         <nav class="nav-half">
             <div class="nav-wrapper">
@@ -81,6 +82,7 @@
              data-include="string,status"
              data-more-button="#organisations-more_button"
              data-callback="__organisations"
+             data-loader="#home-loader"
              data-nothing>
             <div class="collection-item nothing hide">
                 @component('components.nothing')@endcomponent

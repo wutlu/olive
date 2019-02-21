@@ -31,32 +31,32 @@
     }
 
     $(document).on('click', '[data-trigger=delete]', function() {
-        var mdl = modal({
-                'id': 'alert',
-                'body': 'Sayfa silinecek?',
-                'size': 'modal-small',
-                'title': 'Sil',
-                'options': {},
-                'footer': [
-                    $('<a />', {
-                        'href': '#',
-                        'class': 'modal-close waves-effect btn-flat grey-text',
-                        'html': buttons.cancel
-                    }),
-                    $('<span />', {
-                        'html': ' '
-                    }),
-                    $('<a />', {
-                        'href': '#',
-                        'class': 'waves-effect btn-flat red-text json',
-                        'html': buttons.ok,
-                        'data-include': 'id',
-                        'data-href': '{{ route('admin.page') }}',
-                        'data-method': 'delete',
-                        'data-callback': '__delete'
-                    })
-                ]
-            });
+        return modal({
+            'id': 'alert',
+            'body': 'Sayfa silinecek?',
+            'size': 'modal-small',
+            'title': 'Sil',
+            'options': {},
+            'footer': [
+                $('<a />', {
+                    'href': '#',
+                    'class': 'modal-close waves-effect btn-flat grey-text',
+                    'html': buttons.cancel
+                }),
+                $('<span />', {
+                    'html': ' '
+                }),
+                $('<a />', {
+                    'href': '#',
+                    'class': 'waves-effect btn-flat red-text json',
+                    'html': buttons.ok,
+                    'data-include': 'id',
+                    'data-href': '{{ route('admin.page') }}',
+                    'data-method': 'delete',
+                    'data-callback': '__delete'
+                })
+            ]
+        })
     })
 
     function __delete(__, obj)

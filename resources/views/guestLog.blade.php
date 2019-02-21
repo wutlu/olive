@@ -94,8 +94,6 @@
                 vzAjax(collection)
             }, 10000)
         }
-
-        $('#home-loader').hide()
     }
 @endpush
 
@@ -128,6 +126,7 @@
             class="collection load hide"
             data-href="{{ route('admin.session.logs') }}"
             data-callback="__log"
+            data-loader="#home-loader"
             data-method="post">
             <li class="collection-item hide">
                 <div class="d-flex justify-content-between">

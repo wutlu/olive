@@ -49,8 +49,6 @@
                 $('[data-tooltip]').tooltip()
             }
         }
-
-        $('#home-loader').hide()
     }
 
     function __connection_failed(__)
@@ -156,6 +154,7 @@
              data-include="string"
              data-more-button="#crawlers-more_button"
              data-callback="__crawlers"
+             data-loader="#home-loader"
              data-nothing>
             <div class="collection-item nothing hide">
                 @component('components.nothing')@endcomponent

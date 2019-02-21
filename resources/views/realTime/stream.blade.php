@@ -562,8 +562,6 @@
             $('[data-name=keyword-group-count]').html(obj.hits.length)
             $('[data-name=keyword-group-limit]').html(obj.limit)
         }
-
-        $('#keyword-group-loader').hide()
     }
 
     function keyword_group_modal()
@@ -688,9 +686,9 @@
             }
         });
 
-        mdl.find('input[name=name], textarea[name=keywords]').characterCounter()
-
         M.updateTextFields()
+
+        mdl.find('input[name=name], textarea[name=keywords]').characterCounter()
 
         return mdl;
     }
@@ -824,6 +822,7 @@
              data-href="{{ route('realtime.keyword.groups') }}"
              data-callback="__keyword_groups"
              data-method="post"
+             data-loader="#keyword-group-loader"
              data-nothing>
             <li class="collection-item nothing hide grey-text">Henüz kelime grubu oluşturmadınız.</li>
             <li class="collection-item model hide justify-content-between">

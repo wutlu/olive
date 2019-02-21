@@ -54,8 +54,6 @@
             }
         }
 
-        $('#home-loader').hide()
-
         window.clearTimeout(collection_timer)
 
         collection_timer = window.setTimeout(function() {
@@ -65,8 +63,6 @@
 
     function __timeout(__)
     {
-        $('#home-loader').hide()
-
         __.find('.nothing').removeClass('hide')
     }
 @endpush
@@ -83,6 +79,7 @@
              data-method="post"
              data-nothing
              data-timeout="4000"
+             data-loader="#home-loader"
              data-error-callback="__timeout">
             <li class="collection-item nothing hide">
                 @component('components.nothing')@endcomponent

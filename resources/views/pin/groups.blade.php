@@ -32,8 +32,6 @@
                 })
             }
         }
-
-        $('#home-loader').hide()
     }
 
     function pin_group_modal()
@@ -242,6 +240,7 @@
              data-more-button="#pin-groups-more_button"
              data-callback="__pin_groups"
              data-method="post"
+             data-loader="#home-loader"
              data-nothing>
             <li class="collection-item nothing hide">
                 @component('components.nothing')@endcomponent
@@ -279,6 +278,7 @@
         @slot('color', 'cyan')
         @slot('id', 'home-loader')
     @endcomponent
+
     <div class="center-align">
         <button class="btn-flat waves-effect hide json"
                 id="pin-groups-more_button"

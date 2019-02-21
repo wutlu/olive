@@ -66,6 +66,7 @@
                      data-take="5"
                      data-more-button="#smilars-more_button"
                      data-callback="__smilars"
+                     data-loader="#home-loader"
                      data-nothing>
                     <div class="collection-item nothing hide">
                         @component('components.nothing')@endcomponent
@@ -128,7 +129,5 @@
                 })
             }
         }
-
-        $('#home-loader').hide()
     }
 @endpush

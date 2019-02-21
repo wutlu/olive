@@ -26,6 +26,7 @@
              data-href="{{ route('youtube.channel.list') }}"
              data-callback="__collections"
              data-method="post"
+             data-loader="#home-loader"
              data-nothing>
             <div class="collection-item nothing hide">
                 @component('components.nothing')@endcomponent
@@ -165,8 +166,6 @@
 
             $('[data-name=count]').html(obj.hits.length + '/{{ auth()->user()->organisation->youtube_follow_limit_channel }}')
         }
-
-        $('#home-loader').hide()
 
         window.clearTimeout(collection_timer)
 

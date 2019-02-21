@@ -51,8 +51,6 @@
             }
         }
 
-        $('#home-loader').hide()
-
         window.clearTimeout(collection_timer)
 
         collection_timer = window.setTimeout(function() {
@@ -229,8 +227,6 @@
             form.data('id', obj.data.id)
             form.attr('method', 'patch')
             form.data('callback', '__update')
-
-            M.updateTextFields()
         }
     }
 @endpush
@@ -255,6 +251,7 @@
              data-href="{{ route('admin.proxies.json') }}"
              data-callback="__collections"
              data-method="post"
+             data-loader="#home-loader"
              data-nothing>
             <div class="collection-item nothing hide">
                 @component('components.nothing')@endcomponent

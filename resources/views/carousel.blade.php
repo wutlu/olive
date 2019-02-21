@@ -45,8 +45,6 @@
 
             $('[data-name=count]').html(obj.hits.length)
         }
-
-        $('#home-loader').hide()
     }
 
     function form_modal()
@@ -284,8 +282,8 @@
         form.attr('method', 'put')
         form.data('callback', '__create')
 
-        M.updateTextFields()
         M.textareaAutoResize($('textarea[name=description]'))
+        M.updateTextFields()
     })
 
     function __delete(__, obj)
@@ -362,7 +360,6 @@
             form.attr('method', 'patch')
             form.data('callback', '__update')
 
-            M.updateTextFields()
             M.textareaAutoResize($('textarea[name=description]'))
         }
     }
@@ -385,6 +382,7 @@
              data-href="{{ route('admin.carousels.json') }}"
              data-callback="__collections"
              data-method="post"
+             data-loader="#home-loader"
              data-nothing>
             <li class="collection-item nothing hide">
                 @component('components.nothing')@endcomponent

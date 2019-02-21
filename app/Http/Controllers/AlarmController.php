@@ -18,12 +18,24 @@ class AlarmController extends Controller
     }
 
     /**
-     * Trend Analizi Ana Sayfa
+     * Alarmlar Ana Sayfa
      *
      * @return view
      */
     public function dashboard()
     {
         return view('alarm.dashboard');
+    }
+
+    /**
+     * Alarmlar Data
+     *
+     * @return view
+     */
+    public function data()
+    {
+        return [
+            'status' => 'ok'
+        ];
     }
 }

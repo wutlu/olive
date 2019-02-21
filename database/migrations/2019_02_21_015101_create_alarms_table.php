@@ -19,7 +19,7 @@ class CreateAlarmsTable extends Migration
             $table->string('title');
             $table->text('query');
 
-            $table->unsignedSmallInteger('hit')->default(1); // girilen değer kadar bildirim alınacak.
+            $table->unsignedSmallInteger('hit')->default(1);
 
             $table->json('weekdays');
 

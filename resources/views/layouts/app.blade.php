@@ -855,16 +855,19 @@
         }
     }
     </script>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id={{ config('services.google.analytics.code') }}"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
 
-        function gtag(){dataLayer.push(arguments);}
+    @if (config('services.google.analytics.code'))
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id={{ config('services.google.analytics.code') }}"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
 
-        gtag('js', new Date());
+            function gtag(){dataLayer.push(arguments);}
 
-        gtag('config', '{{ config('services.google.analytics.code') }}');
-    </script>
+            gtag('js', new Date());
+
+            gtag('config', '{{ config('services.google.analytics.code') }}');
+        </script>
+    @endif
 </body>
 </html>

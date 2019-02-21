@@ -912,19 +912,19 @@ function vzAjax(__)
             if (obj.verification)
             {
                 var mdl = modal({
-                        'id': 'alert',
-                        'title': keywords.verification,
-                        'body': verifications[obj.verification],
-                        'size': 'modal-small',
-                        'options': {},
-                        'footer': [
-                            $('<a />', {
-                                'href': '#',
-                                'class': 'modal-close waves-effect btn-flat cyan-text',
-                                'html': buttons.ok
-                            })
-                        ]
-                    })
+                    'id': 'alert',
+                    'title': keywords.verification,
+                    'body': verifications[obj.verification],
+                    'size': 'modal-small',
+                    'options': {},
+                    'footer': [
+                        $('<a />', {
+                            'href': '#',
+                            'class': 'modal-close waves-effect btn-flat cyan-text',
+                            'html': buttons.ok
+                        })
+                    ]
+                })
             }
 
             __result(__)
@@ -936,6 +936,11 @@ function vzAjax(__)
 
 function __result(__)
 {
+    if (__.data('loader') != undefined)
+    {
+        eval(element(__.data('loader'))).addClass('hide')
+    }
+
     setTimeout(function() {
         if (__.is('form'))
         {

@@ -36,8 +36,6 @@
                 })
             }
         }
-
-        $('#home-loader').hide()
     }
 @endpush
 
@@ -78,6 +76,7 @@
              data-include="string"
              data-more-button="#newsletters-more_button"
              data-callback="__newsletters"
+             data-loader="#home-loader"
              data-nothing>
             <div class="collection-item nothing hide">
                 @component('components.nothing')@endcomponent

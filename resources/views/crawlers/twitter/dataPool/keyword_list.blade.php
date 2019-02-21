@@ -57,6 +57,7 @@
              data-more-button="#users-more_button"
              data-callback="__keywords"
              data-method="post"
+             data-loader="#home-loader"
              data-nothing>
             <div class="collection-item nothing hide">
                 @component('components.nothing')@endcomponent
@@ -123,8 +124,6 @@
                 })
             }
         }
-
-        $('#home-loader').hide()
     }
 
     function __form(__, obj)

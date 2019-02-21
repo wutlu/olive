@@ -52,8 +52,6 @@
                         }
                 })
             }
-
-            $('#home-loader').hide()
         }
 
         window.clearTimeout(collection_timer)
@@ -65,8 +63,6 @@
 
     function __timeout(__)
     {
-        $('#home-loader').hide()
-
         __.find('.nothing').removeClass('hide')
     }
 @endpush
@@ -83,6 +79,7 @@
              data-method="post"
              data-nothing
              data-timeout="4000"
+             data-loader="#home-loader"
              data-error-callback="__timeout">
             <li class="collection-item nothing hide">
                 @component('components.nothing')@endcomponent
@@ -116,6 +113,7 @@
                     class="collection-item waves-effect d-block json"
                     data-href="{{ route('crawlers.media.index.create') }}"
                     data-method="post"
+                    data-loader="#index-trigger-loader"
                     data-callback="__index_create"
                     data-callbefore="__index_create_before">Eksik Indexleri Oluştur</a>
             </div>
@@ -149,7 +147,6 @@
             M.toast({ html: 'Indexler oluşturulamadı.', classes: 'red darken-2' })
         }
 
-        $('#index-trigger-loader').addClass('hide')
         __.removeClass('disabled')
     }
 @endpush

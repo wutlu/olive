@@ -37,7 +37,7 @@ return [
 
     'google' => [
         'analytics' => [
-            'code' => env('GOOGLE_ANALYTICS_CODE')
+            'code' => env('GOOGLE_ANALYTICS_CODE', '')
         ],
         'recaptcha' => [
             'site_key' => env('GOOGLE_RECAPTCHA_SITE_KEY'),

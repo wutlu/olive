@@ -64,6 +64,7 @@
             data-callback="__archives"
             data-method="post"
             data-include="string"
+            data-loader="#home-loader"
             data-nothing>
             <li class="nothing hide pb-1">
                 @component('components.nothing')@endcomponent
@@ -93,13 +94,13 @@
             @slot('class', 'card-loader-unstyled')
             @slot('id', 'home-loader')
         @endcomponent
+    </div>
 
-        <div class="center-align">
-            <button class="btn-flat waves-effect hide json"
-                    id="archives-more_button"
-                    type="button"
-                    data-json-target="ul#archives">Daha Fazla</button>
-        </div>
+    <div class="center-align">
+        <button class="btn-flat waves-effect hide json"
+                id="archives-more_button"
+                type="button"
+                data-json-target="ul#archives">Daha Fazla</button>
     </div>
 @endsection
 
@@ -197,7 +198,5 @@
                 })
             }
         }
-
-        $('#home-loader').hide()
     }
 @endpush

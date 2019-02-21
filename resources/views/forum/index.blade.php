@@ -424,8 +424,6 @@
                     form.data('id', obj.data.id)
                     form.attr('method', 'patch')
                     form.data('callback', '__update_cat')
-
-                    M.updateTextFields()
                 }
             }
         @endpush
@@ -466,8 +464,6 @@
                 })
             }
         }
-
-        $('#cat-loader').hide()
     }
 @endpush
 
@@ -505,6 +501,7 @@
             data-href="{{ route('forum.categories') }}"
             data-callback="__forum_categories"
             data-method="post"
+            data-loader="#cat-loader"
             data-nothing>
             <li class="collection-item nothing hide">
                 @component('components.nothing')@endcomponent

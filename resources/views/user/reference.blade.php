@@ -61,6 +61,7 @@
                     data-more-button="#references-more_button"
                     data-callback="__references"
                     data-method="post"
+                    data-loader="#references-loader"
                     data-nothing>
                     <li class="collection-item nothing hide p-2">
                         @component('components.nothing')
@@ -98,6 +99,7 @@
                     data-more-button="#transactions-more_button"
                     data-callback="__transactions"
                     data-method="post"
+                    data-loader="#transactions-loader"
                     data-nothing>
                     <li class="collection-item nothing hide p-2">
                         @component('components.nothing')
@@ -157,8 +159,6 @@
                             })
                         }
                     }
-
-                    $('#references-loader').hide()
                 }
 
                 function __transactions(__, obj)
@@ -202,8 +202,6 @@
                             })
                         }
                     }
-
-                    $('#transactions-loader').hide()
                 }
             @endpush
         @else

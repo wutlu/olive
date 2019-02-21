@@ -27,6 +27,7 @@
         data-more-button="#pin-groups-more_button"
         data-callback="__pin_groups"
         data-method="post"
+        data-loader="#pin-groups-loader"
         data-nothing>
         <li class="collection-item nothing hide">
             @component('components.nothing')
@@ -103,8 +104,6 @@
                 })
             }
         }
-
-        $('#pin-groups-loader').hide()
     }
 
     function pin_group_modal()
@@ -172,8 +171,6 @@
         });
 
         mdl.find('input[name=name]').characterCounter()
-
-        M.updateTextFields()
 
         return mdl;
     }

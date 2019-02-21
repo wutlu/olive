@@ -48,8 +48,6 @@
                 vzAjax(collection)
             }, 10000)
         }
-
-        $('#home-loader').hide()
     }
 
     function __kill(__, obj)
@@ -87,6 +85,7 @@
             class="collection load hide"
             data-href="{{ route('admin.monitoring.background.processes') }}"
             data-callback="__log"
+            data-loader="#home-loader"
             data-method="post">
             <a
                 href="#"

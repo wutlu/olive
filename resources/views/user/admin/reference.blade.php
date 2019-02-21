@@ -23,6 +23,7 @@
             data-more-button="#transactions-more_button"
             data-callback="__transactions"
             data-method="post"
+            data-loader="#transactions-loader"
             data-nothing>
             <li class="collection-item nothing hide p-2">
                 @component('components.nothing')
@@ -112,8 +113,6 @@
                 })
             }
         }
-
-        $('#transactions-loader').hide()
     }
 
     function __transaction(__, obj)

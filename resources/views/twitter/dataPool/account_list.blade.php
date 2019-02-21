@@ -26,6 +26,7 @@
              data-href="{{ route('twitter.account.list') }}"
              data-callback="__collections"
              data-method="post"
+             data-loader="#home-loader"
              data-nothing>
             <div class="collection-item nothing hide">
                 @component('components.nothing')@endcomponent
@@ -162,8 +163,6 @@
 
             $('[data-name=count]').html(obj.hits.length + '/{{ auth()->user()->organisation->twitter_follow_limit_user }}')
         }
-
-        $('#home-loader').hide()
 
         window.clearTimeout(collection_timer)
 

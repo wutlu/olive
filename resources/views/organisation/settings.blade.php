@@ -203,62 +203,63 @@
                     var org_name = $('#organisation-card').find('span.card-title').children('span').html();
                     var user_name = __.closest('li.collection-item').find('span.title').html();
 
-                    var mdl = modal({
-                            'id': 'transfer',
-                            'body': 'Sahip olduğunuz [' + org_name + '] adlı organizasyonu, ' + user_name + ' adlı kullanıcıya devretmek üzeresiniz!',
-                            'size': 'modal-small',
-                            'title': 'Devret',
-                            'options': {},
-                            'footer': [
-                               $('<a />', {
-                                   'href': '#',
-                                   'class': 'modal-close waves-effect btn-flat grey-text',
-                                   'html': buttons.cancel
-                               }),
-                               $('<span />', {
-                                   'html': ' '
-                               }),
-                               $('<a />', {
-                                   'href': '#',
-                                   'class': 'waves-effect btn-flat cyan-text json',
-                                   'data-href': '{{ route('settings.organisation.transfer') }}',
-                                   'data-user_id': __.data('user-id'),
-                                   'data-method': 'post',
-                                   'data-callback': '__transfer',
-                                   'html': buttons.ok
-                               })
-                            ]
-                        });
+                    return modal({
+                        'id': 'transfer',
+                        'body': 'Sahip olduğunuz [' + org_name + '] adlı organizasyonu, ' + user_name + ' adlı kullanıcıya devretmek üzeresiniz!',
+                        'size': 'modal-small',
+                        'title': 'Devret',
+                        'options': {},
+                        'footer': [
+                           $('<a />', {
+                               'href': '#',
+                               'class': 'modal-close waves-effect btn-flat grey-text',
+                               'html': buttons.cancel
+                           }),
+                           $('<span />', {
+                               'html': ' '
+                           }),
+                           $('<a />', {
+                               'href': '#',
+                               'class': 'waves-effect btn-flat cyan-text json',
+                               'data-href': '{{ route('settings.organisation.transfer') }}',
+                               'data-user_id': __.data('user-id'),
+                               'data-method': 'post',
+                               'data-callback': '__transfer',
+                               'html': buttons.ok
+                           })
+                        ]
+                    })
                 }).on('click', '[data-button=__remove_user]', function() {
                     var __ = $(this);
 
                     var user_name = __.closest('li.collection-item').find('span.title').html();
-                    var mdl = modal({
-                            'id': 'remove',
-                            'body': user_name + ' adlı kullanıcıyı organizasyondan çıkarmak üzeresiniz!',
-                            'size': 'modal-small',
-                            'title': 'Çıkar',
-                            'options': {},
-                            'footer': [
-                               $('<a />', {
-                                   'href': '#',
-                                   'class': 'modal-close waves-effect btn-flat grey-text',
-                                   'html': buttons.cancel
-                               }),
-                               $('<span />', {
-                                   'html': ' '
-                               }),
-                               $('<a />', {
-                                   'href': '#',
-                                   'class': 'waves-effect btn-flat red-text json',
-                                   'data-href': '{{ route('settings.organisation.remove') }}',
-                                   'data-user_id': __.data('user-id'),
-                                   'data-method': 'delete',
-                                   'data-callback': '__remove_user',
-                                   'html': buttons.ok
-                               })
-                            ]
-                        });
+
+                    return modal({
+                        'id': 'remove',
+                        'body': user_name + ' adlı kullanıcıyı organizasyondan çıkarmak üzeresiniz!',
+                        'size': 'modal-small',
+                        'title': 'Çıkar',
+                        'options': {},
+                        'footer': [
+                           $('<a />', {
+                               'href': '#',
+                               'class': 'modal-close waves-effect btn-flat grey-text',
+                               'html': buttons.cancel
+                           }),
+                           $('<span />', {
+                               'html': ' '
+                           }),
+                           $('<a />', {
+                               'href': '#',
+                               'class': 'waves-effect btn-flat red-text json',
+                               'data-href': '{{ route('settings.organisation.remove') }}',
+                               'data-user_id': __.data('user-id'),
+                               'data-method': 'delete',
+                               'data-callback': '__remove_user',
+                               'html': buttons.ok
+                           })
+                        ]
+                    })
                 })
 
                 function __transfer(__, obj)
@@ -601,7 +602,7 @@
 
                 @push('local.scripts')
                     $(document).on('click', '#cancel-button', function() {
-                        var mdl = modal({
+                        return modal({
                             'id': 'alert',
                             'body': 'Şu anda ödeme bildirimi bekliyoruz. Faturayı iptal etmek istiyor musunuz?',
                             'size': 'modal-small',
@@ -625,7 +626,7 @@
                                    'html': buttons.ok
                                })
                             ]
-                        });
+                        })
                     })
 
                     function __cancel(__, obj)
@@ -670,76 +671,78 @@
 
                         $(document).on('click', '[data-button=__delete]', function() {
                             var mdl = modal({
-                                    'id': 'delete',
-                                    'body': [
-                                        $('<p />', {
-                                            'html': 'Organizasyonu silmek için aşağıdaki alana küçük harflerle "{{ $key }}" yazmanız gerekiyor.'
-                                        }),
-                                        $('<p />', {
-                                            'html': 'Bu işlem geri alınamaz!',
-                                            'class': 'red-text'
-                                        }),
-                                        $('<div />', {
-                                            'class': 'input-field',
-                                            'html': [
-                                                $('<input />', {
-                                                    'id': 'delete_key',
-                                                    'name': 'delete_key',
-                                                    'type': 'text',
-                                                    'class': 'validate',
-                                                    'pattern': '^\{{ $key }}$'
-                                                }),
-                                                $('<span />', {
-                                                    'class': 'helper-text',
-                                                    'html': 'Organizasyonu silmek için belirlenen kelimeleri girin.'
-                                                })
-                                            ]
-                                        }),
-                                        $('<div />', {
-                                            'class': 'input-field',
-                                            'html': [
-                                                $('<input />', {
-                                                    'id': 'password',
-                                                    'name': 'password',
-                                                    'type': 'password',
-                                                    'class': 'validate'
-                                                }),
-                                                $('<label />', {
-                                                    'for': 'password',
-                                                    'html': 'Mevcut Şifreniz'
-                                                }),
-                                                $('<span />', {
-                                                    'class': 'helper-text',
-                                                    'html': 'Hesap şifrenizi girin.'
-                                                })
-                                            ]
-                                        })
-                                    ],
-                                    'size': 'modal-medium',
-                                    'title': 'Sil',
-                                    'options': {},
-                                    'footer': [
-                                       $('<a />', {
-                                           'href': '#',
-                                           'class': 'modal-close waves-effect btn-flat grey-text',
-                                           'html': buttons.cancel
-                                       }),
-                                       $('<span />', {
-                                           'html': ' '
-                                       }),
-                                       $('<a />', {
-                                           'href': '#',
-                                           'class': 'waves-effect btn-flat red-text json',
-                                           'data-href': '{{ route('settings.organisation.delete') }}',
-                                           'data-include': 'delete_key,password',
-                                           'data-method': 'delete',
-                                           'data-callback': '__delete',
-                                           'html': buttons.ok
-                                       })
-                                    ]
-                                });
+                                'id': 'delete',
+                                'body': [
+                                    $('<p />', {
+                                        'html': 'Organizasyonu silmek için aşağıdaki alana küçük harflerle "{{ $key }}" yazmanız gerekiyor.'
+                                    }),
+                                    $('<p />', {
+                                        'html': 'Bu işlem geri alınamaz!',
+                                        'class': 'red-text'
+                                    }),
+                                    $('<div />', {
+                                        'class': 'input-field',
+                                        'html': [
+                                            $('<input />', {
+                                                'id': 'delete_key',
+                                                'name': 'delete_key',
+                                                'type': 'text',
+                                                'class': 'validate',
+                                                'pattern': '^\{{ $key }}$'
+                                            }),
+                                            $('<span />', {
+                                                'class': 'helper-text',
+                                                'html': 'Organizasyonu silmek için belirlenen kelimeleri girin.'
+                                            })
+                                        ]
+                                    }),
+                                    $('<div />', {
+                                        'class': 'input-field',
+                                        'html': [
+                                            $('<input />', {
+                                                'id': 'password',
+                                                'name': 'password',
+                                                'type': 'password',
+                                                'class': 'validate'
+                                            }),
+                                            $('<label />', {
+                                                'for': 'password',
+                                                'html': 'Mevcut Şifreniz'
+                                            }),
+                                            $('<span />', {
+                                                'class': 'helper-text',
+                                                'html': 'Hesap şifrenizi girin.'
+                                            })
+                                        ]
+                                    })
+                                ],
+                                'size': 'modal-medium',
+                                'title': 'Sil',
+                                'options': {},
+                                'footer': [
+                                   $('<a />', {
+                                       'href': '#',
+                                       'class': 'modal-close waves-effect btn-flat grey-text',
+                                       'html': buttons.cancel
+                                   }),
+                                   $('<span />', {
+                                       'html': ' '
+                                   }),
+                                   $('<a />', {
+                                       'href': '#',
+                                       'class': 'waves-effect btn-flat red-text json',
+                                       'data-href': '{{ route('settings.organisation.delete') }}',
+                                       'data-include': 'delete_key,password',
+                                       'data-method': 'delete',
+                                       'data-callback': '__delete',
+                                       'html': buttons.ok
+                                   })
+                                ]
+                            })
 
-                                M.updateTextFields()
+                            M.updateTextFields()
+
+                            return mdl;
                         })
 
                         function __delete(__, obj)
@@ -780,57 +783,59 @@
                         @endphp
                         $(document).on('click', '[data-button=__leave]', function() {
                             var mdl = modal({
-                                    'id': 'leave',
-                                    'body': [
-                                        $('<p />', {
-                                            'html': 'Organizasyondan ayrılmak için aşağıdaki alana küçük harflerle "{{ $key }}" yazmanız gerekiyor.'
-                                        }),
-                                        $('<p />', {
-                                            'html': 'Bu işlem geri alınamaz!',
-                                            'class': 'red-text'
-                                        }),
-                                        $('<div />', {
-                                            'class': 'input-field',
-                                            'html': [
-                                                $('<input />', {
-                                                    'id': 'leave_key',
-                                                    'name': 'leave_key',
-                                                    'type': 'text',
-                                                    'class': 'validate',
-                                                    'pattern': '^\{{ $key }}$'
-                                                }),
-                                                $('<span />', {
-                                                    'class': 'helper-text',
-                                                    'html': 'Organizasyondan ayrılmak için belirlenen kelimeleri girin.'
-                                                })
-                                            ]
-                                        })
-                                    ],
-                                    'size': 'modal-medium',
-                                    'title': 'Ayrıl',
-                                    'options': {},
-                                    'footer': [
-                                       $('<a />', {
-                                           'href': '#',
-                                           'class': 'modal-close waves-effect btn-flat grey-text',
-                                           'html': buttons.cancel
-                                       }),
-                                       $('<span />', {
-                                           'html': ' '
-                                       }),
-                                       $('<a />', {
-                                           'href': '#',
-                                           'class': 'waves-effect btn-flat red-text json',
-                                           'data-href': '{{ route('settings.organisation.leave') }}',
-                                           'data-include': 'leave_key',
-                                           'data-method': 'post',
-                                           'data-callback': '__leave',
-                                           'html': buttons.ok
-                                       })
-                                    ]
-                                });
+                                'id': 'leave',
+                                'body': [
+                                    $('<p />', {
+                                        'html': 'Organizasyondan ayrılmak için aşağıdaki alana küçük harflerle "{{ $key }}" yazmanız gerekiyor.'
+                                    }),
+                                    $('<p />', {
+                                        'html': 'Bu işlem geri alınamaz!',
+                                        'class': 'red-text'
+                                    }),
+                                    $('<div />', {
+                                        'class': 'input-field',
+                                        'html': [
+                                            $('<input />', {
+                                                'id': 'leave_key',
+                                                'name': 'leave_key',
+                                                'type': 'text',
+                                                'class': 'validate',
+                                                'pattern': '^\{{ $key }}$'
+                                            }),
+                                            $('<span />', {
+                                                'class': 'helper-text',
+                                                'html': 'Organizasyondan ayrılmak için belirlenen kelimeleri girin.'
+                                            })
+                                        ]
+                                    })
+                                ],
+                                'size': 'modal-medium',
+                                'title': 'Ayrıl',
+                                'options': {},
+                                'footer': [
+                                   $('<a />', {
+                                       'href': '#',
+                                       'class': 'modal-close waves-effect btn-flat grey-text',
+                                       'html': buttons.cancel
+                                   }),
+                                   $('<span />', {
+                                       'html': ' '
+                                   }),
+                                   $('<a />', {
+                                       'href': '#',
+                                       'class': 'waves-effect btn-flat red-text json',
+                                       'data-href': '{{ route('settings.organisation.leave') }}',
+                                       'data-include': 'leave_key',
+                                       'data-method': 'post',
+                                       'data-callback': '__leave',
+                                       'html': buttons.ok
+                                   })
+                                ]
+                            })
 
-                                M.updateTextFields()
+                            M.updateTextFields()
+
+                            return mdl;
                         })
 
                         function __leave(__, obj)

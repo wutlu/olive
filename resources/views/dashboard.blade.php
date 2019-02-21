@@ -236,8 +236,6 @@
                             })
                         }
                     }
-
-                    $('#home-loader').hide()
                 }
             @endpush
 
@@ -249,6 +247,7 @@
                 data-more-button="#activities-more_button"
                 data-callback="__activities"
                 data-method="post"
+                data-loader="#home-loader"
                 data-nothing>
                 <li class="nothing hide">
                     @component('components.nothing')

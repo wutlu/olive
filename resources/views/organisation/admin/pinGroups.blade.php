@@ -33,6 +33,7 @@
              data-more-button="#pin-groups-more_button"
              data-callback="__pin_groups"
              data-method="post"
+             data-loader="#home-loader"
              data-nothing>
             <li class="collection-item nothing hide">
                 @component('components.nothing')@endcomponent
@@ -87,7 +88,5 @@
                 })
             }
         }
-
-        $('#home-loader').hide()
     }
 @endpush
