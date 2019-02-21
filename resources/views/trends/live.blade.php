@@ -146,6 +146,12 @@
                         .attr('href', 'https://www.youtube.com/watch?v=' + o.id)
                 }
 
+                if (module == 'twitter')
+                {
+                    item.find('[data-name=twitter-link]')
+                        .attr('href', 'https://twitter.com/search?q=' + encodeURIComponent(o.title))
+                }
+
                 var elements = {
                     'first': o.ranks[0],
                     'last': o.ranks[o.ranks.length-1]
@@ -215,8 +221,17 @@
                 }
             })
 
-            collection.children('.item:not(.on)').remove()
-            collection.removeClass('hide')
+            if (obj.data.length)
+            {
+                collection.children('.item:not(.on)').remove()
+                collection.removeClass('hide')
+
+                $('[data-id=nothing-' + module + ']').addClass('hide')
+            }
+            else
+            {
+                $('[data-id=nothing-' + module + ']').removeClass('hide')
+            }
 
             window.clearTimeout(window[module + 'TrendTimer'])
             window[module + 'TrendTimer'] = window.setTimeout(function() {
@@ -399,10 +414,19 @@
                                     <li>
                                         <a href="#" data-name="youtube-link" target="_blank">YouTube ile Aç</a>
                                     </li>
+                                @elseif ($key == 'twitter')
+                                    <li>
+                                        <a href="#" data-name="twitter-link" target="_blank">Twitter Sonuçları</a>
+                                    </li>
                                 @endif
                             </ul>
                         </li>
                     </ul>
+                    <div class="nothing hide pb-1" data-id="nothing-{{ $key }}">
+                        @component('components.nothing')
+                            @slot('size', 'small')
+                        @endcomponent
+                    </div>
                 </div>
             @endforeach
         </div>

@@ -167,13 +167,13 @@ class Update extends Command
         switch ($period)
         {
             case 'live':
-                $group_title = 'Sözlük: Anlık Trend, '.date('d.m.Y');
+                $group_title = 'Sözlük: Anlık Trend, '.date('Y.m.d H:i');
             break;
             case 'daily':
-                $group_title = 'Sözlük: Günlük Trend, '.date('d.m.Y');
+                $group_title = 'Sözlük: Günlük Trend, '.date('Y.m.d');
             break;
             case 'weekly':
-                $group_title = 'Sözlük: Haftalık Trend, '.date('m.Y').' hafta: '.date('W');
+                $group_title = 'Sözlük: Haftalık Trend, '.date('Y.m').' Hafta: '.date('W');
             break;
         }
 
@@ -325,13 +325,13 @@ class Update extends Command
         switch ($period)
         {
             case 'live':
-                $group_title = 'Haber: Anlık Trend, '.date('d.m.Y');
+                $group_title = 'Haber: Anlık Trend, '.date('Y.m.d H:i');
             break;
             case 'daily':
-                $group_title = 'Haber: Günlük Trend, '.date('d.m.Y');
+                $group_title = 'Haber: Günlük Trend, '.date('Y.m.d');
             break;
             case 'weekly':
-                $group_title = 'Haber: Haftalık Trend, '.date('m.Y').' hafta: '.date('W');
+                $group_title = 'Haber: Haftalık Trend, '.date('Y.m').' Hafta: '.date('W');
             break;
         }
 
@@ -489,13 +489,13 @@ class Update extends Command
         switch ($period)
         {
             case 'live':
-                $group_title = 'YouTube: Anlık Trend, '.date('d.m.Y');
+                $group_title = 'YouTube: Anlık Trend, '.date('Y.m.d H:i');
             break;
             case 'daily':
-                $group_title = 'YouTube: Günlük Trend, '.date('d.m.Y');
+                $group_title = 'YouTube: Günlük Trend, '.date('Y.m.d');
             break;
             case 'weekly':
-                $group_title = 'YouTube: Haftalık Trend, '.date('m.Y').' hafta: '.date('W');
+                $group_title = 'YouTube: Haftalık Trend, '.date('Y.m').' Hafta: '.date('W');
             break;
         }
 
