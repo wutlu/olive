@@ -226,11 +226,11 @@
                 collection.children('.item:not(.on)').remove()
                 collection.removeClass('hide')
 
-                $('[data-id=nothing-' + module + ']').addClass('hide')
+                $('[data-id=nothing-' + module + ']').removeClass('hide')
             }
             else
             {
-                $('[data-id=nothing-' + module + ']').removeClass('hide')
+                $('[data-id=nothing-' + module + ']').addClass('hide')
             }
 
             window.clearTimeout(window[module + 'TrendTimer'])
