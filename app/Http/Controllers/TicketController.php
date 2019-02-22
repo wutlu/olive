@@ -150,9 +150,11 @@ class TicketController extends Controller
             $subject = 'Destek #'.$request->ticket_id.' [YANITLANDI]';
             $markdown = 'Destek talebiniz, '.$user->name.' tarafından yanıtlandı.';
 
-            if ($ticket->ticket->user->notification('important'))
+            $top_message = Ticket::where('id', $request->ticket_id)->first();
+
+            if ($top_message->user->notification('important'))
             {
-                $ticket->ticket->user->notify(
+                $top_message->ticket->user->notify(
                     (
                         new TicketNotification(
                             $subject,

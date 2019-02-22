@@ -1956,28 +1956,42 @@ table tr {
 .modal.with-bg {
   background-color: #fff;
 }
-.modal .modal-content {
-  padding: 0;
-}
-.modal .modal-content > .modal-title {
-  padding: 2rem 2rem 1rem;
+.modal > .modal-content > .modal-title {
+  margin: 0;
+  padding: 1rem;
   font-size: 18px;
+  background-color: #fff;
 }
-.modal .modal-content > .modal-title:empty,
-.modal .modal-content > .modal-footer:empty {
+.modal > .modal-content > .modal-title:empty {
   display: none;
 }
-.modal .modal-content > .modal-body {
+.modal > .modal-content {
+  padding: 0;
+}
+.modal > .modal-footer {
+  padding: 1rem 1rem .5rem;
+  height: auto;
+  background-color: #fff;
+}
+.modal > .modal-footer:empty {
+  display: none;
+}
+.modal > .modal-footer > .btn,
+.modal > .modal-footer > .btn-flat {
+  margin: 0;
+}
+.modal > .modal-content > .modal-body {
   overflow-y: auto;
   overflow-x: hidden;
   max-height: 300px;
-  padding: 1rem 2rem;
-  background-color: #fff;
+
+  padding: 0 2rem;
 }
-.modal .modal-content > .modal-footer {
-  padding: .5rem 1rem;
-  background-color: #fff;
-  height: auto;
+.modal > .modal-content > .modal-body .collection {
+  margin: 0 -2rem;
+}
+.modal > .modal-content > .modal-body .collection > .collection-item {
+  padding: 1rem 2rem;
 }
 
 .modal.modal-small {
@@ -1988,11 +2002,6 @@ table tr {
 }
 .modal.modal-large {
   max-width: 660px;
-}
-
-.modal .modal-title {
-  margin: 0;
-  padding: 0 0 1rem;
 }
 
 .timepicker-modal,

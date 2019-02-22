@@ -121,14 +121,15 @@
                         'class': 'input-field',
                         'html': [
                             $('<input />', {
-                                'id': 'name',
-                                'name': 'name',
+                                'id': 'group_name',
+                                'name': 'group_name',
+                                'data-alias': 'name',
                                 'type': 'text',
                                 'class': 'validate',
                                 'data-length': 32
                             }),
                             $('<label />', {
-                                'for': 'name',
+                                'for': 'group_name',
                                 'html': 'Grup Adı'
                             }),
                             $('<span />', {
@@ -163,7 +164,7 @@
                 }),
                 $('<button />', {
                     'type': 'submit',
-                    'class': 'waves-effect btn-flat cyan-text',
+                    'class': 'waves-effect btn-flat',
                     'data-submit': 'form#pin-group-form',
                     'html': buttons.ok
                 })
@@ -180,7 +181,7 @@
             mdl.find('.modal-title').html('Grup Oluştur')
             mdl.find('form#pin-group-form').data('method', 'put')
 
-            mdl.find('[name=name]').val('')
+            mdl.find('[name=group_name]').val('')
 
         $('[data-trigger=delete-pin-group]').removeAttr('data-id').addClass('hide')
     })
@@ -192,7 +193,7 @@
             var mdl = pin_group_modal();
                 mdl.find('.modal-title').html('Grup Güncelle')
                 mdl.find('form#pin-group-form').data('id', obj.data.id).data('method', 'patch')
-                mdl.find('[name=name]').val(obj.data.name)
+                mdl.find('[name=group_name]').val(obj.data.name)
 
             $('[data-trigger=delete-pin-group]').data('id', obj.data.id).removeClass('hide')
         }

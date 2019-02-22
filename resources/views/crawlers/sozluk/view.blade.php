@@ -62,7 +62,7 @@
                     }),
                     $('<a />', {
                         'href': '#',
-                        'class': 'waves-effect btn-flat cyan-text json',
+                        'class': 'waves-effect btn-flat json',
                         'html': buttons.ok,
                         'data-href': '{{ route('crawlers.sozluk.bot.status') }}',
                         'data-id': '{{ $crawler->id }}',
@@ -348,7 +348,7 @@
             'footer': [
                 $('<a />', {
                     'href': '#',
-                    'class': 'modal-close waves-effect btn-flat cyan-text',
+                    'class': 'modal-close waves-effect btn-flat',
                     'html': buttons.ok
                 })
             ]

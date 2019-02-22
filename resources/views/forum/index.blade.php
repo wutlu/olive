@@ -290,7 +290,7 @@
                        }),
                        $('<button />', {
                            'type': 'submit',
-                           'class': 'waves-effect btn-flat cyan-text',
+                           'class': 'waves-effect btn-flat',
                            'data-submit': 'form#category-form',
                            'html': buttons.ok
                        })

@@ -220,7 +220,7 @@
                     }),
                     $('<a />', {
                         'href': '#',
-                        'class': 'waves-effect btn-flat cyan-text json',
+                        'class': 'waves-effect btn-flat json',
                         'html': buttons.ok,
                         'data-href': __.data('href'),
                         'data-method': 'post',

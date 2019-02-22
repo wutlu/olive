@@ -57,7 +57,7 @@
                }),
                $('<a />', {
                    'href': '#',
-                   'class': 'waves-effect btn-flat cyan-text json',
+                   'class': 'waves-effect btn-flat json',
                    'data-href': '{{ route('settings.support.ticket.close', $ticket->id) }}',
                    'data-method': 'patch',
                    'data-callback': '__close',
@@ -112,7 +112,9 @@
         </div>
     </div>
     @empty
-        @component('components.nothing')@endcomponent
+        @component('components.nothing')
+            @slot('cloud_class', 'white-text')
+        @endcomponent
     @endforelse
 
     @if ($ticket->status == 'open')

@@ -675,7 +675,7 @@
                 }),
                 $('<button />', {
                     'type': 'submit',
-                    'class': 'waves-effect btn-flat cyan-text',
+                    'class': 'waves-effect btn-flat',
                     'data-submit': 'form#keyword-group-form',
                     'html': buttons.ok
                 })

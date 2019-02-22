@@ -105,53 +105,91 @@
         </div>
     </div>
 
-    <div id="modal-alarm" class="modal bottom-sheet">
+    <div id="modal-alarm" class="modal with-bg modal-large">
         <div class="modal-content">
-            <div class="card mb-0">
-                <div class="card-content">
-                    <span class="card-title"></span>
-
-                    <div class="d-flex flex-wrap mt-1">
-                        <div class="d-flex flex-column">
-                            <div class="input-field">
+            <div class="modal-title"></div>
+            <div class="modal-body">
+                <form>
+                    <ul class="collection mb-0">
+                        <li class="collection-item">
+                            <div class="input-field" style="margin: 0;">
                                 <input name="name" id="name" type="text" class="validate" data-length="100" />
                                 <label for="name">Alarm Adı</label>
+                                <span class="helper-text">Oluşturacağınız alarmın adını girin.</span>
                             </div>
-                            @foreach ([
-                                'day_1' => 'Pazartesi',
-                                'day_2' => 'Salı',
-                                'day_3' => 'Çarşamba',
-                                'day_4' => 'Perşembe',
-                                'day_5' => 'Cuma',
-                                'day_6' => 'Cumartesi',
-                                'day_7' => 'Pazar'
-                            ] as $key => $day)
-                                <label class="pl-1">
-                                    <input type="checkbox" name="{{ $key }}" />
-                                    <span>{{ $day }}</span>
-                                </label>
-                            @endforeach
-                        </div>
-                        <div class="d-flex flex-column ml-1">
-                            <div class="input-field">
-                                <input name="start_time" id="start_time" type="text" class="validate timepicker" />
-                                <label for="start_time">Başlama Zamanı</label>
+                        </li>
+                        <li class="collection-item">
+                            <div class="input-field" style="margin: 0;">
+                                <textarea id="query" name="query" class="materialize-textarea"></textarea>
+                                <label for="query">Sorgu</label>
+                                <a href="#" class="d-flex" data-trigger="info">
+                                    <i class="material-icons mr-1 grey-text align-self-center">info_outline</i>
+                                    <span class="grey-text align-self-center">Arama İfadeleri</span>
+                                </a>
+                                <span class="helper-text"></span>
                             </div>
-                            <div class="input-field">
-                                <input name="end_time" id="end_time" type="text" class="validate timepicker" />
-                                <label for="end_time">Bitirme Zamanı</label>
+                        </li>
+                        <li class="collection-item">
+                            <span class="grey-text text-darken-2">Çalışacak Saat Aralığı</span>
+                            <div class="d-flex">
+                                <div class="input-field m-0" style="width: 72px;">
+                                    <input name="start_time" id="start_time" type="text" value="09:00" class="validate timepicker" />
+                                </div>
+                                <div class="input-field m-0" style="width: 72px;">
+                                    <input name="end_time" id="end_time" type="text" value="18:00" class="validate timepicker" />
+                                </div>
+                                <div class="input-field m-0" style="width: 64px;">
+                                    <input name="interval" id="interval" type="number" value="5" min="1" max="120" class="validate" />
+                                </div>
                             </div>
-                            <div class="input-field">
-                                <input name="interval" id="interval" type="number" value="5" min="1" max="120" class="validate" />
-                                <label for="interval">Bildirim Aralığı</label>
+                            <span class="grey-text">
+                                Örnek kullanım: "<span class="teal-text">09:00</span> ile <span class="teal-text">18:00</span> arası <span class="teal-text">5</span> dakikada bir bildirim gönder."
+                            </span>
+                        </li>
+                        <li class="collection-item">
+                            <div class="d-flex flex-wrap">
+                                <div style="min-width: 50%;">
+                                    <h6>Çalışacak Günler</h6>
+                                    @foreach ([
+                                        'day_1' => 'Pazartesi',
+                                        'day_2' => 'Salı',
+                                        'day_3' => 'Çarşamba',
+                                        'day_4' => 'Perşembe',
+                                        'day_5' => 'Cuma',
+                                        'day_6' => 'Cumartesi',
+                                        'day_7' => 'Pazar'
+                                    ] as $key => $day)
+                                        <label class="d-block">
+                                            <input type="checkbox" name="{{ $key }}" />
+                                            <span>{{ $day }}</span>
+                                        </label>
+                                    @endforeach
+                                </div>
+                                <div style="min-width: 50%;">
+                                    <h6>Kaynaklar</h6>
+                                    @foreach (config('system.modules') as $key => $module)
+                                        <label class="d-block">
+                                            <input type="checkbox" name="{{ $key }}" />
+                                            <span>{{ $module }}</span>
+                                        </label>
+                                    @endforeach
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-action">
-                    <button href="#" class="waves-effect btn-flat modal-close">Tamam</button>
-                </div>
+                        </li>
+                        <li class="collection-item">
+                            <div class="input-field" style="margin: 0;">
+                                <textarea id="emails" name="emails" class="materialize-textarea"></textarea>
+                                <label for="emails">Alıcı E-posta Adresleri</label>
+                                <span class="helper-text"></span>
+                            </div>
+                        </li>
+                    </ul>
+                </form>
             </div>
+        </div>
+        <div class="modal-footer">
+            <a data-trigger="delete-alarm" href="#" class="waves-effect btn-flat red-text hide">Sil</a>
+            <button type="submit" class="waves-effect btn-flat" data-submit="form#test">Tamam</button>
         </div>
     </div>
 @endsection
@@ -193,7 +231,7 @@
 
     $(document).on('click', '[data-trigger=create-alarm]', function() {
         var mdl = $('#modal-alarm');
-            mdl.find('.card-title').html('Alarm Oluştur')
+            mdl.find('.modal-title').html('Alarm Oluştur')
             mdl.find('form#alarm-form').data('method', 'put')
 
             mdl.find('[name=name]').val('')
@@ -208,7 +246,7 @@
         if (obj.status == 'ok')
         {
             var mdl = $('#modal-alarm');
-                mdl.find('.card-title').html('Alarm Güncelle')
+                mdl.find('.modal-title').html('Alarm Güncelle')
                 mdl.find('form#alarm-form').data('id', obj.data.id).data('method', 'patch')
                 mdl.find('[name=name]').val(obj.data.name)
 

@@ -92,7 +92,7 @@
                 }),
                 $('<a />', {
                     'href': '#',
-                    'class': 'waves-effect btn-flat cyan-text',
+                    'class': 'waves-effect btn-flat',
                     'data-submit': 'form#form',
                     'html': buttons.ok
                 })

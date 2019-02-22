@@ -143,7 +143,7 @@ $(document).on('keydown keyup change click', '.goodbye', function() {
         'footer': [
            $('<a />', {
                'href': '#',
-               'class': 'modal-close waves-effect btn-flat cyan-text',
+               'class': 'modal-close waves-effect btn-flat',
                'html': buttons.ok
            })
         ]
@@ -717,7 +717,7 @@ function vzAjax(__)
                                 'footer': [
                                    $('<a />', {
                                        'href': '#',
-                                       'class': 'modal-close waves-effect btn-flat cyan-text',
+                                       'class': 'modal-close waves-effect btn-flat',
                                        'html': buttons.ok
                                    })
                                 ]
@@ -801,7 +801,7 @@ function vzAjax(__)
                             'footer': [
                                 $('<a />', {
                                     'href': '#',
-                                    'class': 'modal-close waves-effect btn-flat cyan-text',
+                                    'class': 'modal-close waves-effect btn-flat',
                                     'html': buttons.ok
                                 })
                             ]
@@ -844,7 +844,7 @@ function vzAjax(__)
                         'footer': [
                             $('<a />', {
                                 'href': '#',
-                                'class': 'modal-close waves-effect btn-flat cyan-text',
+                                'class': 'modal-close waves-effect btn-flat',
                                 'html': buttons.ok
                             })
                         ]
@@ -920,7 +920,7 @@ function vzAjax(__)
                     'footer': [
                         $('<a />', {
                             'href': '#',
-                            'class': 'modal-close waves-effect btn-flat cyan-text',
+                            'class': 'modal-close waves-effect btn-flat',
                             'html': buttons.ok
                         })
                     ]
@@ -1094,21 +1094,23 @@ function modal(obj)
             'class': 'modal with-bg ' + modal_size + ' ' + modal_class,
             'data-z-index': z_index,
             'css': { 'z-index': z_index },
-            'html': $('<div />', {
-                'class': 'modal-content',
-                'html': [
-                    $('<div />', {
-                        'class': 'modal-title'
-                    }),
-                    $('<div />', {
-                        'class': 'modal-body',
-                        'style': obj.minHeight ? 'min-height: ' + obj.minHeight : ''
-                    }),
-                    $('<div />', {
-                        'class': 'modal-footer'
-                    })
-                ]
-            })
+            'html': [
+                $('<div />', {
+                    'class': 'modal-content',
+                    'html': [
+                        $('<div />', {
+                            'class': 'modal-title'
+                        }),
+                        $('<div />', {
+                            'class': 'modal-body',
+                            'style': obj.minHeight ? 'min-height: ' + obj.minHeight : ''
+                        })
+                    ]
+                }),
+                $('<div />', {
+                    'class': 'modal-footer'
+                })
+            ]
         });
 
     if (!$(modal_id).length)

@@ -266,7 +266,7 @@
                             'footer': [
                                $('<a />', {
                                    'href': '#',
-                                   'class': 'modal-close waves-effect btn-flat cyan-text',
+                                   'class': 'modal-close waves-effect btn-flat',
                                    'html': buttons.ok
                                })
                             ]
@@ -379,7 +379,7 @@
                 }),
                 $('<button />', {
                     'type': 'submit',
-                    'class': 'waves-effect btn-flat cyan-text',
+                    'class': 'waves-effect btn-flat',
                     'data-submit': 'form#form',
                     'html': buttons.ok
                 })

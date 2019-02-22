@@ -72,7 +72,7 @@
                     }),
                     $('<button />', {
                         'type': 'submit',
-                        'class': 'waves-effect btn-flat cyan-text',
+                        'class': 'waves-effect btn-flat',
                         'data-submit': 'form#form',
                         'html': buttons.update
                     })
@@ -220,7 +220,7 @@
                            }),
                            $('<a />', {
                                'href': '#',
-                               'class': 'waves-effect btn-flat cyan-text json',
+                               'class': 'waves-effect btn-flat json',
                                'data-href': '{{ route('settings.organisation.transfer') }}',
                                'data-user_id': __.data('user-id'),
                                'data-method': 'post',

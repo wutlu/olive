@@ -46,16 +46,18 @@ class TicketReplyRequest extends FormRequest
             }
             else
             {
-                $ticket = Ticket::where([ 'id' => $id, 'user_id' => $user->id, 'status' => 'open' ])
-                                ->whereNull('ticket_id')
-                                ->first();
+                $ticket = Ticket::where([
+                    'id' => $id,
+                    'user_id' => $user->id,
+                    'status' => 'open'
+                ])->whereNull('ticket_id')->first();
 
                 return @$ticket ? true : false;
             }
         });
 
         return [
-            'ticket_id' => 'required|integer|permission',
+            'ticket_id' => 'required|integer|exists:tickets,id|permission',
             'message'   => 'required|string|min:10,max:500'
         ];
     }

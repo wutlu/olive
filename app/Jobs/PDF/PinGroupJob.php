@@ -397,7 +397,7 @@ class PinGroupJob implements ShouldQueue
                                     'type' => 'http',
                                     'method' => 'GET',
                                     'action' => url($pg->pdf_path).'?v='.date('dmyHi'),
-                                    'class' => 'btn cyan waves-effect',
+                                    'class' => 'btn-flat waves-effect',
                                     'text' => 'İndir'
                                 ]
                             ]

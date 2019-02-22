@@ -94,7 +94,7 @@
                             }),
                             $('<a />', {
                                 'href': '#',
-                                'class': 'waves-effect btn-flat cyan-text json',
+                                'class': 'waves-effect btn-flat json',
                                 'html': buttons.ok,
                                 'data-href': '{{ route('forum.message.delete') }}',
                                 'data-id': __.data('id'),
@@ -226,7 +226,7 @@
                             }),
                             $('<button />', {
                                 'type': 'submit',
-                                'class': 'waves-effect btn-flat cyan-text',
+                                'class': 'waves-effect btn-flat',
                                 'data-submit': 'form#move-form',
                                 'html': buttons.ok
                             })
@@ -315,7 +315,7 @@
                         }),
                         $('<a />', {
                             'href': '#',
-                            'class': 'waves-effect btn-flat cyan-text json',
+                            'class': 'waves-effect btn-flat json',
                             'html': buttons.ok,
                             'data-href': '{{ route('forum.message.spam') }}',
                             'data-id': __.data('id'),
