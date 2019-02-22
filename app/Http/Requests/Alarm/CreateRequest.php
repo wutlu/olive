@@ -7,6 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Validator;
 
 use App\Models\User\User;
+use App\Models\Alarm;
 
 class CreateRequest extends FormRequest
 {
@@ -29,7 +30,8 @@ class CreateRequest extends FormRequest
     {
         return [
             'email_validation' => 'E-posta adreslerinin organizasyonunuzda olması gerekir.',
-            'or_params' => 'En fazla 4 adet OR (||) parametresi kullanabilirsiniz.'
+            'or_params' => 'En fazla 4 adet OR (||) parametresi kullanabilirsiniz.',
+            'limit' => 'Alarm limitiniz doldu.',
         ];
     }
 
@@ -40,24 +42,16 @@ class CreateRequest extends FormRequest
      */
     public function rules()
     {
-        Validator::extend('email_validation', function($key, $emails) {
-            $user = auth()->user();
+        $user = auth()->user();
 
-            $return = true;
+        Validator::extend('limit', function($attribute) use ($user) {
+            $total_alarm = Alarm::where('organisation_id', $user->organisation_id)->count();
 
-            $emails = explode(PHP_EOL, $emails);
+            return $total_alarm < $user->organisation->capacity*2;
+        });
 
-            foreach($emails as $email)
-            {
-                $has_org = User::where('organisation_id', $user->organisation_id)->where('email', $email)->exists();
-
-                if (!$has_org)
-                {
-                    $return = false;
-                }
-            }
-
-            return $return;
+        Validator::extend('email_validation', function($key, $id) use ($user) {
+            return User::where('organisation_id', $user->organisation_id)->where('id', $id)->exists();
         });
 
         Validator::extend('or_params', function($key, $query) {
@@ -69,33 +63,25 @@ class CreateRequest extends FormRequest
             return $total <= 4;
         });
 
-        $arr = [
-            'name' => 'required|string|max:100',
+        return [
+            'name' => 'required|string|max:100|limit',
             'text' => 'required|string|max:255|or_params',
 
             'hit' => 'required|integer|min:1|max:120',
-
-            'day_1' => 'nullable|string|in:on',
-            'day_2' => 'nullable|string|in:on',
-            'day_3' => 'nullable|string|in:on',
-            'day_4' => 'nullable|string|in:on',
-            'day_5' => 'nullable|string|in:on',
-            'day_6' => 'nullable|string|in:on',
-            'day_7' => 'nullable|string|in:on',
 
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'required|date_format:H:i|after:start_time',
 
             'interval' => 'required|integer|min:1|max:120',
 
-            'emails' => 'required|bail|string|email_validation'
+            'weekdays' => 'required|array|min:1',
+            'weekdays.*' => 'required|string|in:day_1,day_2,day_3,day_4,day_5,day_6,day_7',
+
+            'emails' => 'required|array|min:1',
+            'emails.*' => 'required|integer|email_validation',
+
+            'sources' => 'required|array|min:1',
+            'sources.*' => 'required|string|in:'.implode(',', array_keys(config('system.modules')))
         ];
-
-        foreach (config('system.modules') as $key => $module)
-        {
-            $arr[implode('_', [ 'module', $key ])] = 'sometimes|boolean';
-        }
-
-        return $arr;
     }
 }

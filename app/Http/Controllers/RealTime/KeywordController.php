@@ -128,15 +128,7 @@ class KeywordController extends Controller
 
         $data->name = $request->name;
         $data->keywords = trim($request->keywords);
-
-        $modules = [];
-
-        foreach (config('system.modules') as $key => $module)
-        {
-            if ($request->{implode('_', [ 'module', $key ])}) $modules[$key] = 'on';
-        }
-
-        $data->modules = $modules;
+        $data->modules = $request->modules;
 
         $data->save();
 

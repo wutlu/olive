@@ -768,44 +768,44 @@ function vzAjax(__)
                 if (debug)
                 {
                     var mdl = modal({
-                            'id': 'err',
-                            'body': [
-                                $('<div />', {
-                                    'class': 'error-area',
-                                    'append': [
-                                        $('<input />', {
-                                            'type': 'text',
-                                            'readonly': true,
-                                            'value': method + ': ' + URL
-                                        }),
-                                        $('<input />', {
-                                            'type': 'text',
-                                            'readonly': true,
-                                            'value': jqXHR.responseJSON.file
-                                        }),
-                                        $('<input />', {
-                                            'type': 'text',
-                                            'readonly': true,
-                                            'value': 'Line: ' + jqXHR.responseJSON.line
-                                        }),
-                                        $('<pre />', {
-                                            'html': jqXHR.responseJSON.message
-                                        }),
-                                        $('<ul />')
-                                    ]
-                                })
-                            ],
-                            'size': 'modal-large',
-                            'title': title,
-                            'options': {},
-                            'footer': [
-                                $('<a />', {
-                                    'href': '#',
-                                    'class': 'modal-close waves-effect btn-flat',
-                                    'html': buttons.ok
-                                })
-                            ]
-                        })
+                        'id': 'err',
+                        'body': [
+                            $('<div />', {
+                                'class': 'error-area',
+                                'append': [
+                                    $('<input />', {
+                                        'type': 'text',
+                                        'readonly': true,
+                                        'value': method + ': ' + URL
+                                    }),
+                                    $('<input />', {
+                                        'type': 'text',
+                                        'readonly': true,
+                                        'value': jqXHR.responseJSON.file
+                                    }),
+                                    $('<input />', {
+                                        'type': 'text',
+                                        'readonly': true,
+                                        'value': 'Line: ' + jqXHR.responseJSON.line
+                                    }),
+                                    $('<pre />', {
+                                        'html': jqXHR.responseJSON.message
+                                    }),
+                                    $('<ul />')
+                                ]
+                            })
+                        ],
+                        'size': 'modal-large',
+                        'title': title,
+                        'options': {},
+                        'footer': [
+                            $('<a />', {
+                                'href': '#',
+                                'class': 'modal-close waves-effect btn-flat',
+                                'html': buttons.ok
+                            })
+                        ]
+                    })
 
                     $.each(variables, function(key, val) {
                         $('<li />', {
@@ -836,19 +836,19 @@ function vzAjax(__)
             else if (jqXHR.status == 419)
             {
                 var mdl = modal({
-                        'id': 'err',
-                        'body': errors.time_out,
-                        'title': keywords.info,
-                        'size': 'modal-small',
-                        'options': {},
-                        'footer': [
-                            $('<a />', {
-                                'href': '#',
-                                'class': 'modal-close waves-effect btn-flat',
-                                'html': buttons.ok
-                            })
-                        ]
-                    })
+                    'id': 'err',
+                    'body': errors.time_out,
+                    'title': keywords.info,
+                    'size': 'modal-small',
+                    'options': {},
+                    'footer': [
+                        $('<a />', {
+                            'href': '#',
+                            'class': 'modal-close waves-effect btn-flat',
+                            'html': buttons.ok
+                        })
+                    ]
+                })
             }
             else
             {
@@ -1090,28 +1090,28 @@ function modal(obj)
     var modal_class = obj.class ? obj.class : '';
 
     var modal_element = $('<div >', {
-            'id': 'modal-' + obj.id,
-            'class': 'modal with-bg ' + modal_size + ' ' + modal_class,
-            'data-z-index': z_index,
-            'css': { 'z-index': z_index },
-            'html': [
-                $('<div />', {
-                    'class': 'modal-content',
-                    'html': [
-                        $('<div />', {
-                            'class': 'modal-title'
-                        }),
-                        $('<div />', {
-                            'class': 'modal-body',
-                            'style': obj.minHeight ? 'min-height: ' + obj.minHeight : ''
-                        })
-                    ]
-                }),
-                $('<div />', {
-                    'class': 'modal-footer'
-                })
-            ]
-        });
+        'id': 'modal-' + obj.id,
+        'class': 'modal with-bg ' + modal_size + ' ' + modal_class,
+        'data-z-index': z_index,
+        'css': { 'z-index': z_index },
+        'html': [
+            $('<div />', {
+                'class': 'modal-content',
+                'html': [
+                    $('<div />', {
+                        'class': 'modal-title'
+                    }),
+                    $('<div />', {
+                        'class': 'modal-body',
+                        'style': obj.minHeight ? 'min-height: ' + obj.minHeight : ''
+                    })
+                ]
+            }),
+            $('<div />', {
+                'class': 'modal-footer'
+            })
+        ]
+    });
 
     if (!$(modal_id).length)
     {

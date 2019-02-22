@@ -9,6 +9,7 @@ use App\Http\Requests\Alarm\CreateRequest;
 use App\Http\Requests\Alarm\UpdateRequest;
 
 use App\Models\Alarm;
+use App\Models\User\User;
 
 class AlarmController extends Controller
 {
@@ -30,7 +31,9 @@ class AlarmController extends Controller
      */
     public function dashboard()
     {
-        return view('alarm.dashboard');
+        $members = User::where('organisation_id', auth()->user()->organisation_id)->where('verified', true)->get();
+
+        return view('alarm.dashboard', compact('members'));
     }
 
     /**
@@ -40,7 +43,7 @@ class AlarmController extends Controller
      */
     public function data()
     {
-        $query = Alarm::where('organisation_id', auth()->user()->organisation_id)->orderBy('hit', 'ASC');
+        $query = Alarm::where('organisation_id', auth()->user()->organisation_id)->orderBy('id', 'ASC');
 
         return [
             'status' => 'ok',
@@ -56,10 +59,7 @@ class AlarmController extends Controller
      */
     public function get(IdRequest $request)
     {
-        $data = Alarm::where([
-            'id' => $request->id,
-            'organisation_id' => auth()->user()->organisation_id
-        ])->firstOrFail();
+        $data = Alarm::where([ 'id' => $request->id, 'organisation_id' => auth()->user()->organisation_id ])->firstOrFail();
 
         return [
             'status' => 'ok',
@@ -74,44 +74,11 @@ class AlarmController extends Controller
      */
     public function create(CreateRequest $request)
     {
-        $weekdays = [];
-
-        if ($request->day_1) $weekdays['day_1'] = 'on';
-        if ($request->day_2) $weekdays['day_2'] = 'on';
-        if ($request->day_3) $weekdays['day_3'] = 'on';
-        if ($request->day_4) $weekdays['day_4'] = 'on';
-        if ($request->day_5) $weekdays['day_5'] = 'on';
-        if ($request->day_6) $weekdays['day_6'] = 'on';
-        if ($request->day_7) $weekdays['day_7'] = 'on';
-
-        $modules = [];
-
-        foreach (config('system.modules') as $key => $module)
-        {
-            if ($request->{implode('_', [ 'module', $key ])}) $modules[$key] = 'on';
-        }
-
-        $emails = [];
-
-        foreach (explode(PHP_EOL, $request->emails) as $email)
-        {
-            $emails[$email] = $email;
-        }
-
         $data = new Alarm;
-        $data->name = $request->name;
+
+        $data->fill($request->all());
         $data->query = $request->text;
-
-        $data->hit = $request->hit;
-        $data->interval = $request->interval;
-
-        $data->start_time = $request->start_time;
-        $data->end_time = $request->end_time;
-
-        $data->weekdays = $weekdays;
-        $data->modules = $modules;
-        $data->emails = $emails;
-
+        $data->modules = $request->sources;
         $data->organisation_id = auth()->user()->organisation_id;
         $data->save();
 
@@ -133,7 +100,9 @@ class AlarmController extends Controller
             'organisation_id' => auth()->user()->organisation_id
         ])->firstOrFail();
 
-        $data->name = $request->name;
+        $data->fill($request->all());
+        $data->query = $request->text;
+        $data->modules = $request->sources;
         $data->save();
 
         return [

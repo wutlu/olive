@@ -1,6 +1,6 @@
 <?php
 
-$arr = [
+return [
     /*
     |--------------------------------------------------------------------------
     | Validation Language Lines
@@ -260,18 +260,19 @@ $arr = [
 
         'status_message'               => 'Durum Mesajı',
 
+        'module'                       => 'Modül',
         'modules'                      => 'Modüller',
+        'modules.*'                    => 'Modül',
+
+        'source'                       => 'Kaynak',
+        'sources'                      => 'Kaynaklar',
+        'sources.*'                    => 'Kaynak',
+
         'sentiment'                    => 'Duygu',
         'full_match'                   => 'Kelimesi Kelimesine',
-        'module'                       => 'Modül',
 
-        'day_1'                        => 'Pazartesi',
-        'day_2'                        => 'Salı',
-        'day_3'                        => 'Çarşamba',
-        'day_4'                        => 'Perşembe',
-        'day_5'                        => 'Cuma',
-        'day_6'                        => 'Cumartesi',
-        'day_7'                        => 'Pazar',
+        'weekdays'                     => 'Günler',
+        'weekdays.*'                   => 'Gün',
 
         'interval'                     => 'Aralık',
 
@@ -281,10 +282,3 @@ $arr = [
         'hit'                          => 'Bildirim Sayısı',
     ],
 ];
-
-foreach (config('system.modules') as $key => $module)
-{
-    $arr['attributes'][implode('_', [ 'module', $key ])] = implode(' ', [ $module, 'Modülü' ]);
-}
-
-return $arr;

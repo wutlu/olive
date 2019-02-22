@@ -241,7 +241,8 @@
                     else
                     {
                         return modal({
-                            'id': 'err',
+                            'id': 'alert',
+                            'title': 'Başvuru',
                             'body': [
                                 $('<div />', {
                                     'class': 'teal-text',

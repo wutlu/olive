@@ -41,9 +41,7 @@
     <div class="card with-bg">
         <div class="card-content">
             <span class="card-title">Pinlemeler</span>
-        </div>
-        <div class="card-content">
-            Ekleyeceğiniz yorumlar, PDF raporlarınızda analiz sonucu olarak yer alacaktır.
+            <p class="grey-text text-darken-2">Ekleyeceğiniz yorumlar, PDF raporlarınızda analiz sonucu olarak yer alacaktır.</p>
         </div>
         @if ($pg->html_to_pdf == 'success')
             <div class="card-action d-flex justify-content-between">
@@ -239,17 +237,19 @@
             <div class="card-panel red">
                 @component('components.nothing')
                     @slot('cloud_class', 'white-text')
+                    @slot('text_class', 'grey-text text-darken-2')
                     @slot('cloud', 'cloud_off')
                     @slot('sun', 'sentiment_very_dissatisfied')
-                    @slot('text', 'Kaynak Okunamadı')
+                    @slot('text', 'Kaynak Okunamadı!')
                 @endcomponent
             </div>
         @endif
     @empty
         @component('components.nothing')
             @slot('cloud_class', 'white-text')
+            @slot('text_class', 'grey-text text-darken-2')
             @slot('size', 'small')
-            @slot('text', 'Pinleme Yok')
+            @slot('text', 'Pinleme Yapılmadı!')
         @endcomponent
     @endforelse
 

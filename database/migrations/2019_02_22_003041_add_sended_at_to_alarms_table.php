@@ -26,7 +26,7 @@ class AddSendedAtToAlarmsTable extends Migration
     public function down()
     {
         Schema::table('alarms', function (Blueprint $table) {
-            $table->dropColumn('modules');
+            $table->dropColumn('sended_at');
         });
     }
 }

@@ -8,6 +8,16 @@ class Alarm extends Model
 {
     protected $table = 'alarms';
 
+    protected $fillable = [
+        'name',
+        'hit',
+        'interval',
+        'start_time',
+        'end_time',
+        'weekdays',
+        'emails',
+    ];
+
     /**
      * The attributes that should be cast to native types.
      *
@@ -25,6 +35,5 @@ class Alarm extends Model
      * @var array
      */
     protected $hidden = [
-        'modules'
     ];
 }

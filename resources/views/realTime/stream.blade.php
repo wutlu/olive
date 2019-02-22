@@ -640,10 +640,10 @@
                                 'class': 'collection-item waves-effect d-block',
                                 'html': [
                                     $('<input />', {
-                                        'name': 'module_{{ $key }}',
-                                        'id': 'module_{{ $key }}',
-                                        'value': '1',
-                                        'type': 'checkbox'
+                                        'name': 'modules',
+                                        'value': '{{ $key }}',
+                                        'type': 'checkbox',
+                                        'data-multiple': 'true',
                                     }),
                                     $('<span />', {
                                         'html': '{{ title_case($module) }} Verilerini Dahil Et'
@@ -698,12 +698,7 @@
             mdl.find('.modal-title').html('Grup Oluştur')
             mdl.find('form#keyword-group-form').data('method', 'put')
 
-            mdl.find('[name=module_youtube_video]').prop('checked', false)
-            mdl.find('[name=module_youtube_comment]').prop('checked', false)
-            mdl.find('[name=module_twitter]').prop('checked', false)
-            mdl.find('[name=module_sozluk]').prop('checked', false)
-            mdl.find('[name=module_news]').prop('checked', false)
-            mdl.find('[name=module_shopping]').prop('checked', false)
+            mdl.find('[name=modules]').prop('checked', false)
 
             mdl.find('[name=name]').val('')
             mdl.find('[name=keywords]').val('')
@@ -726,12 +721,9 @@
 
                 if (obj.data.modules)
                 {
-                    mdl.find('[name=module_youtube_video]').prop('checked', obj.data.modules.youtube_video ? true : false)
-                    mdl.find('[name=module_youtube_comment]').prop('checked', obj.data.modules.youtube_comment ? true : false)
-                    mdl.find('[name=module_twitter]').prop('checked', obj.data.modules.twitter ? true : false)
-                    mdl.find('[name=module_sozluk]').prop('checked', obj.data.modules.sozluk ? true : false)
-                    mdl.find('[name=module_news]').prop('checked', obj.data.modules.news ? true : false)
-                    mdl.find('[name=module_shopping]').prop('checked', obj.data.modules.shopping ? true : false)
+                    $.each(obj.data.modules, function(number, key) {
+                        mdl.find('[name=modules][value=' + key + ']').prop('checked', true)
+                    })
                 }
 
             $('[data-trigger=delete-keyword-group]').data('id', obj.data.id).removeClass('hide')

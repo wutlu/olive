@@ -106,7 +106,7 @@ class RealTimeController extends Controller
                 if (count($keywords))
                 {
                     ### [ twitter modülü ] ###
-                    if (@$group->modules['twitter'])
+                    if (in_array('twitter', $group->modules))
                     {
                         $q = $this->query;
 
@@ -151,7 +151,7 @@ class RealTimeController extends Controller
                 }
 
                 ### [ haber modülü ] ###
-                if (@$group->modules['news'])
+                if (in_array('news', $group->modules))
                 {
                     $q = $this->query;
 
@@ -201,7 +201,7 @@ class RealTimeController extends Controller
                 }
 
                 ### [ sözlük modülü ] ###
-                if (@$group->modules['sozluk'])
+                if (in_array('sozluk', $group->modules))
                 {
                     $q = $this->query;
 
@@ -251,7 +251,7 @@ class RealTimeController extends Controller
                 }
 
                 ### [ alışveriş modülü ] ###
-                if (@$group->modules['shopping'])
+                if (in_array('shopping', $group->modules))
                 {
                     $q = $this->query;
 
@@ -307,7 +307,7 @@ class RealTimeController extends Controller
                 }
 
                 ### [ youtube, video modülü ] ###
-                if (@$group->modules['youtube_video'])
+                if (in_array('youtube_video', $group->modules))
                 {
                     $q = $this->query;
 
@@ -358,7 +358,7 @@ class RealTimeController extends Controller
                 }
 
                 ### [ youtube, yorum modülü ] ###
-                if (@$group->modules['youtube_comment'])
+                if (in_array('youtube_comment', $group->modules))
                 {
                     $q = $this->query;
 

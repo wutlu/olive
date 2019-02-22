@@ -23,9 +23,15 @@ class UpdateRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'id' => 'required|integer',
-            'name' => 'required|string|max:100'
-        ];
+        $arr = new CreateRequest;
+        $arr = $arr->rules();
+
+        unset($arr['name']);
+
+        $arr['name'] = 'required|string|max:100';
+
+        $arr = array_merge($arr, [ 'id' => 'required|integer|exists:alarms,id' ]);
+
+        return $arr;
     }
 }

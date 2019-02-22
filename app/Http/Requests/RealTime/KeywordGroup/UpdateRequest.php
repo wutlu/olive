@@ -65,18 +65,12 @@ class UpdateRequest extends FormRequest
             return $return;
         });
 
-        $arr = [
+        return [
             'id' => 'required|integer|exists:real_time_keyword_groups,id',
-
             'name' => 'required|string|max:10',
-            'keywords' => 'bail|nullable|required_with:module_twitter|string|max:64|keyword_max_line|empty_lines'
+            'keywords' => 'bail|nullable|string|max:64|keyword_max_line|empty_lines',
+            'modules' => 'nullable|array',
+            'modules.*' => 'required|string|in:'.implode(',', array_keys(config('system.modules')))
         ];
-
-        foreach (config('system.modules') as $key => $module)
-        {
-            $arr[implode('_', [ 'module', $key ])] = 'sometimes|boolean';
-        }
-
-        return $arr;
     }
 }
