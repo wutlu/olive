@@ -66,16 +66,12 @@ class CreateRequest extends FormRequest
 
             $total = $or + $pipe;
 
-            file_put_contents('logs.txt', $or.PHP_EOL, FILE_APPEND | LOCK_EX);
-            file_put_contents('logs.txt', $pipe.PHP_EOL, FILE_APPEND | LOCK_EX);
-            file_put_contents('logs.txt', $query.PHP_EOL, FILE_APPEND | LOCK_EX);
-
             return $total <= 4;
         });
 
         $arr = [
             'name' => 'required|string|max:100',
-            'query' => 'required|string|max:64|or_params',
+            'text' => 'required|string|max:255|or_params',
 
             'hit' => 'required|integer|min:1|max:120',
 

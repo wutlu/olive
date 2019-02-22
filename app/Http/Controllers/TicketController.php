@@ -150,11 +150,9 @@ class TicketController extends Controller
             $subject = 'Destek #'.$request->ticket_id.' [YANITLANDI]';
             $markdown = 'Destek talebiniz, '.$user->name.' tarafından yanıtlandı.';
 
-            $top_message = Ticket::where('id', $request->ticket_id)->first();
-
-            if ($top_message->user->notification('important'))
+            if ($ticket->ticket->user->notification('important'))
             {
-                $top_message->ticket->user->notify(
+                $ticket->ticket->user->notify(
                     (
                         new TicketNotification(
                             $subject,
@@ -168,9 +166,9 @@ class TicketController extends Controller
             UserActivityUtility::push(
                 $subject,
                 [
-                    'key'       => implode('-', [ 'user', 'support', $ticket->user->id ]),
-                    'icon'      => 'message',
-                    'markdown'  => $markdown,
+                    'key' => implode('-', [ 'user', 'support', $ticket->ticket->user->id ]),
+                    'icon' => 'message',
+                    'markdown' => $markdown,
                     'button' => [
                         'type' => 'http',
                         'method' => 'GET',
@@ -178,7 +176,7 @@ class TicketController extends Controller
                         'class' => 'btn-flat waves-effect',
                         'text' => 'Yanıtı Gör'
                     ],
-                    'user_id' => $ticket->user->id
+                    'user_id' => $ticket->ticket->user->id
                 ]
             );
         }
@@ -186,7 +184,7 @@ class TicketController extends Controller
         return [
             'status' => 'ok',
             'data' => [
-                'id' => $ticket->id
+                'id' => $request->ticket_id
             ]
         ];
     }

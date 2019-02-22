@@ -16,7 +16,7 @@
 @push('local.scripts')
     function __collections(__, obj)
     {
-        var ul = $('#alarm');
+        var ul = $('#alarms');
         var item_model = ul.children('.model');
 
         if (obj.status == 'ok')
@@ -24,7 +24,7 @@
             if (obj.hits.length)
             {
                 $.each(obj.hits, function(key, o) {
-                    var selector = $('[data-id=' + o.id + '].collection-item'),
+                    var selector = $('[data-id=' + o.id + '].card'),
 
                         item = selector.length ? selector : item_model.clone();
 
@@ -32,13 +32,46 @@
                             .addClass('_tmp')
                             .attr('data-id', o.id)
 
+                        item.find('[data-name=name]').html(o.name)
+                        item.find('[data-name=hit]').html(o.hit)
+                        item.find('[data-name=interval]').html(o.interval)
+
+                        $.each({
+                            'day_1': 'day-1',
+                            'day_2': 'day-2',
+                            'day_3': 'day-3',
+                            'day_4': 'day-4',
+                            'day_5': 'day-5',
+                            'day_6': 'day-6',
+                            'day_7': 'day-7',
+                        }, function(key, name) {
+                            item.find('[data-name=' + name + ']').removeClass('grey teal').addClass(o.weekdays[key] == 'on' ? 'teal' : 'grey')
+                        })
+
+                        item.find('[data-name=start-time]').html(o.start_time)
+                        item.find('[data-name=end-time]').html(o.end_time)
+
+                        item.find('[data-name=emails]').html('')
+
+                    $.each(o.emails, function(key, email) {
+                        item.find('[data-name=emails]').append($('<span />', { 'class': 'chip', 'html': email }))
+                    })
+
+                        item.find('[data-name=dropdown-content]').attr('id', 'dropdown-' + o.id)
+                        item.find('[data-name=dropdown-trigger]').attr('data-target', 'dropdown-' + o.id).addClass('dropdown-trigger')
+
+                        item.find('[data-name=edit]').attr('data-id', o.id)
+                        item.find('[data-trigger=delete]').attr('data-id', o.id)
+
                         if (!selector.length)
                         {
                             item.appendTo(ul)
                         }
                 })
 
-                $('[data-tooltip]').tooltip()
+                $('.dropdown-trigger').dropdown({
+                    alignment: 'right'
+                })
             }
 
             $('[data-name=count]').html(obj.hits.length + '/{{ auth()->user()->organisation->capacity*2 }}')
@@ -51,6 +84,7 @@
         <div class="card-content">
             <span class="card-title">Alarmlar</span>
             <span class="d-block" data-name="count"></span>
+            <p class="teal-text">İlgilendiğiniz konularda alarm oluşturarak gündemden çok daha hızlı bir şekidle haberdar olabilirsiniz.</p>
         </div>
 
         @component('components.loader')
@@ -86,19 +120,35 @@
                     <span class="card-title card-title-small" data-name="name"></span>
                     <small class="grey-text">Alıcılar</small>
                     <span class="d-block" data-name="emails"></span>
-                    <small class="grey-text">Kaynaklar</small>
-                    <span class="d-block" data-name="sources"></span>
+
+                    <a href="#" data-name="dropdown-trigger" class="btn-floating btn-flat btn-small waves-effect">
+                        <i class="material-icons">arrow_drop_down</i>
+                    </a>
+                    <ul class="dropdown-content" data-name="dropdown-content">
+                        <li>
+                            <a
+                                href="#"
+                                data-name="edit"
+                                data-method="post"
+                                data-href="{{ route('alarm') }}"
+                                data-callback="__get_alarm"
+                                class="json">Güncelle</a>
+                        </li>
+                        <li>
+                            <a href="#" data-trigger="delete">Sil</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
 
             <ul class="days d-flex">
-                <li class="day red lighten-2 white-text" data-name="day-1">Pt</li>
-                <li class="day red lighten-2 white-text" data-name="day-2">Sa</li>
-                <li class="day red lighten-2 white-text" data-name="day-3">Ça</li>
-                <li class="day red lighten-2 white-text" data-name="day-4">Pe</li>
-                <li class="day red lighten-2 white-text" data-name="day-5">Cu</li>
-                <li class="day red lighten-3 white-text" data-name="day-6">Ct</li>
-                <li class="day red lighten-3 white-text" data-name="day-7">Pa</li>
+                <li class="day lighten-2 white-text" data-name="day-1">Pt</li>
+                <li class="day lighten-2 white-text" data-name="day-2">Sa</li>
+                <li class="day lighten-2 white-text" data-name="day-3">Ça</li>
+                <li class="day lighten-2 white-text" data-name="day-4">Pe</li>
+                <li class="day lighten-2 white-text" data-name="day-5">Cu</li>
+                <li class="day lighten-3 white-text" data-name="day-6">Ct</li>
+                <li class="day lighten-3 white-text" data-name="day-7">Pa</li>
                 <li class="hour grey lighten-2 grey-text" data-name="start-time"></li>
                 <li class="hour grey lighten-2 grey-text" data-name="end-time"></li>
             </ul>
@@ -109,7 +159,11 @@
         <div class="modal-content">
             <div class="modal-title"></div>
             <div class="modal-body">
-                <form>
+                <form
+                    action="{{ route('alarm') }}"
+                    id="alarm-form"
+                    class="json"
+                    data-callback="__alarm_callback">
                     <ul class="collection mb-0">
                         <li class="collection-item">
                             <div class="input-field" style="margin: 0;">
@@ -120,8 +174,8 @@
                         </li>
                         <li class="collection-item">
                             <div class="input-field" style="margin: 0;">
-                                <textarea id="query" name="query" class="materialize-textarea"></textarea>
-                                <label for="query">Sorgu</label>
+                                <textarea id="text" name="text" class="materialize-textarea validate" data-length="255"></textarea>
+                                <label for="text">Sorgu</label>
                                 <a href="#" class="d-flex" data-trigger="info">
                                     <i class="material-icons mr-1 grey-text align-self-center">info_outline</i>
                                     <span class="grey-text align-self-center">Arama İfadeleri</span>
@@ -141,9 +195,12 @@
                                 <div class="input-field m-0" style="width: 64px;">
                                     <input name="interval" id="interval" type="number" value="5" min="1" max="120" class="validate" />
                                 </div>
+                                <div class="input-field m-0" style="width: 64px;">
+                                    <input name="hit" id="hit" type="number" value="20" min="1" max="120" class="validate" />
+                                </div>
                             </div>
                             <span class="grey-text">
-                                Örnek kullanım: "<span class="teal-text">09:00</span> ile <span class="teal-text">18:00</span> arası <span class="teal-text">5</span> dakikada bir bildirim gönder."
+                                Örnek kullanım: "<span class="teal-text">09:00</span> ile <span class="teal-text">18:00</span> arası <span class="teal-text">5</span> dakikada bir toplamda <span class="teal-text">20</span> adet bildirim gönder."
                             </span>
                         </li>
                         <li class="collection-item">
@@ -169,7 +226,7 @@
                                     <h6>Kaynaklar</h6>
                                     @foreach (config('system.modules') as $key => $module)
                                         <label class="d-block">
-                                            <input type="checkbox" name="{{ $key }}" />
+                                            <input type="checkbox" value="1" name="{{ 'module_'.$key }}" />
                                             <span>{{ $module }}</span>
                                         </label>
                                     @endforeach
@@ -178,9 +235,9 @@
                         </li>
                         <li class="collection-item">
                             <div class="input-field" style="margin: 0;">
-                                <textarea id="emails" name="emails" class="materialize-textarea"></textarea>
+                                <textarea id="emails" name="emails" class="materialize-textarea validate"></textarea>
                                 <label for="emails">Alıcı E-posta Adresleri</label>
-                                <span class="helper-text"></span>
+                                <span class="helper-text">Her satırda 1 e-posta adresi olacak şekilde alıcı e-posta adreslerini girin.</span>
                             </div>
                         </li>
                     </ul>
@@ -188,8 +245,8 @@
             </div>
         </div>
         <div class="modal-footer">
-            <a data-trigger="delete-alarm" href="#" class="waves-effect btn-flat red-text hide">Sil</a>
-            <button type="submit" class="waves-effect btn-flat" data-submit="form#test">Tamam</button>
+            <a href="#" class="waves-effect btn-flat grey-text modal-close">Vazgeç</a>
+            <button type="submit" class="waves-effect btn-flat" data-submit="form#alarm-form">Tamam</button>
         </div>
     </div>
 @endsection
@@ -218,27 +275,30 @@
     .card-alarm > .group > .card-content:last-child {
         width: calc(100% - 96px);
     }
+    .card-alarm > .group > .card-content > .dropdown-trigger {
+        position: absolute;
+        right: 1rem;
+        top: 1rem;
+    }
 @endpush
 
 @push('local.scripts')
     $('.timepicker').timepicker({
         format: 'hh:MM',
         twelveHour: false,
-        i18n: date.i18n
+        i18n: date.i18n,
+        container: 'body'
     })
-
-    $('[data-length]').characterCounter()
 
     $(document).on('click', '[data-trigger=create-alarm]', function() {
         var mdl = $('#modal-alarm');
             mdl.find('.modal-title').html('Alarm Oluştur')
             mdl.find('form#alarm-form').data('method', 'put')
 
-            mdl.find('[name=name]').val('')
-
             mdl.modal('open')
-
-        $('[data-trigger=delete-alarm]').removeAttr('data-id').addClass('hide')
+            mdl.find('[data-length]').characterCounter()
+        M.textareaAutoResize($('textarea'))
+        M.updateTextFields()
     })
 
     function __get_alarm(__, obj)
@@ -248,11 +308,37 @@
             var mdl = $('#modal-alarm');
                 mdl.find('.modal-title').html('Alarm Güncelle')
                 mdl.find('form#alarm-form').data('id', obj.data.id).data('method', 'patch')
+
                 mdl.find('[name=name]').val(obj.data.name)
+                mdl.find('[name=text]').val(obj.data.text)
+                mdl.find('[name=start_time]').val(obj.data.start_time)
+                mdl.find('[name=end_time]').val(obj.data.end_time)
+                mdl.find('[name=interval]').val(obj.data.interval)
+                mdl.find('[name=hit]').val(obj.data.hit)
+
+            $.each(obj.data.emails, function(key, email) {
+                mdl.find('[name=emails]').append(email)
+            })
+
+            $.each({
+                'day_1': 'day-1',
+                'day_2': 'day-2',
+                'day_3': 'day-3',
+                'day_4': 'day-4',
+                'day_5': 'day-5',
+                'day_6': 'day-6',
+                'day_7': 'day-7',
+            }, function(key, name) {
+                mdl.find('[name=' + key + ']').prop('checked', obj.data.weekdays[key] == 'on')
+
+                console.log(obj.data.weekdays[key])
+            })
 
                 mdl.modal('open')
+                mdl.find('[data-length]').characterCounter()
 
-            $('[data-trigger=delete-alarm]').data('id', obj.data.id).removeClass('hide')
+            M.textareaAutoResize($('textarea'))
+            M.updateTextFields()
         }
     }
 
@@ -264,21 +350,21 @@
 
             if (obj.type == 'created')
             {
-                vzAjax($('#alarms').data('skip', 0).addClass('json-clear'))
+                vzAjax($('#alarms'))
             }
             else if (obj.type == 'updated')
             {
-                $('#alarms').children('[data-id=' + obj.data.id + ']').find('[data-trigger=pin-go]').html(obj.data.name)
+                // updated
             }
 
             M.toast({
-                html: obj.type == 'created' ? 'Alarm Oluşturuldu' : obj.type == 'updated' ? 'Alarm Güncellendi' : 'İşlem Gerçekleşti',
+                html: obj.type == 'created' ? 'Alarm Oluşturuldu' : 'Alarm Güncellendi',
                 classes: 'green darken-2'
             })
         }
     }
 
-    $(document).on('click', '[data-trigger=delete-alarm]', function() {
+    $(document).on('click', '[data-trigger=delete]', function() {
         var mdl = modal({
             'id': 'alarm-alert',
             'body': 'Alarm silinecek?',
@@ -324,7 +410,7 @@
                 classes: 'red darken-2'
             })
 
-            vzAjax($('#alarms').data('skip', 0).addClass('json-clear'))
+            vzAjax($('#alarms'))
         }
     }
 @endpush

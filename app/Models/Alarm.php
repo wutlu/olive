@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Alarm extends Model
 {
+    protected $table = 'alarms';
+
     /**
      * The attributes that should be cast to native types.
      *
@@ -15,5 +17,14 @@ class Alarm extends Model
 		'weekdays' => 'array',
 		'modules' => 'array',
 		'emails' => 'array',
+    ];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'modules'
     ];
 }

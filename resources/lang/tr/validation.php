@@ -275,7 +275,7 @@ $arr = [
 
         'interval'                     => 'Aralık',
 
-        'query'                        => 'Sorgu',
+        'text'                         => 'Sorgu',
         'emails'                       => 'E-posta Adresleri',
 
         'hit'                          => 'Bildirim Sayısı',

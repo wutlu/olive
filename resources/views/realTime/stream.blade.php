@@ -684,11 +684,11 @@
             'options': {
                 dismissible: false
             }
-        });
+        })
 
         M.updateTextFields()
 
-        mdl.find('input[name=name], textarea[name=keywords]').characterCounter()
+        mdl.find('[data-length]').characterCounter()
 
         return mdl;
     }
