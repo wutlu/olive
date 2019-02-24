@@ -78,11 +78,11 @@ class Trigger extends Command
 
                     foreach ($es_data as $item)
                     {
-                        $data[] = '['.str_replace('#', '', $item['text']).']('.route('content', [
+                        $data[] = implode(' ', [ $item['text'], route('content', [
                             'es_index' => $item['_index'],
                             'es_type' => $item['_type'],
                             'es_id' => $item['_id']
-                        ]).')';
+                        ]) ]);
                     }
 
                     $alarm->update([
