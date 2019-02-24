@@ -52,6 +52,14 @@ class Kernel extends ConsoleKernel
             }
 
             /**
+             * Alarmlar için E-posta gönder.
+             */
+            $schedule->command('nohup "alarm:trigger" --type=start')
+                      ->everyMinute()
+                      ->timezone(config('app.timezone'))
+                      ->withoutOverlapping(1);
+
+            /**
              * Kaynak Tespiti
              */
             $schedule->command('nohup "media:detector" --type=start')

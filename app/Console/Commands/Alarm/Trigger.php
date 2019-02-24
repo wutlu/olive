@@ -62,37 +62,44 @@ class Trigger extends Command
             {
                 $es_data = self::elasticsearch($alarm);
 
-                $sources[] = '| Kaynak  | İçerik |';
-                $sources[] = '|:--------|-------:|';
-
-                foreach ($alarm->modules as $module)
-                {
-                    $sources[] = '| '.config('system.modules')[$module].' | 1 |';
-                }
-
-                $data[] = '[Örnek İçerik](https://google.com)';
-                $data[] = '[Örnek İçerik](https://google.com)';
-                $data[] = '[Örnek İçerik](https://google.com)';
-                $data[] = '[Örnek İçerik](https://google.com)';
-                $data[] = '[Örnek İçerik](https://google.com)';
-                $data[] = '[Örnek İçerik](https://google.com)';
-
-                $alarm->update([
-                    //'sended_at' => date('Y-m-d H:i:s'),
-                    //'hit' => $alarm->hit-1
-                ]);
-
-                Mail::queue(
-                    new AlarmMail(
-                        [
-                            'data' => $data,
-                            'alarm' => $alarm,
-                            'sources' => implode(PHP_EOL, $sources)
-                        ]
-                    )
-                );
-
                 $this->info($alarm->name);
+
+                if (count($es_data))
+                {
+                    $this->info(count($es_data));
+
+                    $sources[] = '| Kaynak  | İçerik |';
+                    $sources[] = '|:--------|-------:|';
+
+                    foreach ($alarm->modules as $module)
+                    {
+                        $sources[] = '| '.config('system.modules')[$module].' | '.intval(@$es_data[$module]['count']).' |';
+                    }
+
+                    foreach ($es_data as $item)
+                    {
+                        $data[] = '['.$item['text'].']('.route('content', [
+                            'es_index' => $item['_index'],
+                            'es_type' => $item['_type'],
+                            'es_id' => $item['_id']
+                        ]).')';
+                    }
+
+                    $alarm->update([
+                        'sended_at' => date('Y-m-d H:i:s'),
+                        'hit' => $alarm->hit-1
+                    ]);
+
+                    Mail::queue(
+                        new AlarmMail(
+                            [
+                                'data' => $data,
+                                'alarm' => $alarm,
+                                'sources' => implode(PHP_EOL, $sources)
+                            ]
+                        )
+                    );
+                }
             }
         }
     }
@@ -137,20 +144,19 @@ class Trigger extends Command
                 $q['query']['bool']['must_not'][] = [ 'match' => [ 'external.type' => 'retweet' ] ];
                 $q['_source'] = [ 'user.name', 'user.screen_name', 'text' ];
 
-                $query = @Document::list([ 'twitter', 'tweets', date('Y.m') ], 'tweet', $q)->data['hits']['hits'];
+                $query = @Document::list([ 'twitter', 'tweets', date('Y.m') ], 'tweet', $q);
 
-                if ($query)
+                if (@$query->data['hits']['hits'])
                 {
-                    foreach ($query as $object)
+                    foreach ($query->data['hits']['hits'] as $object)
                     {
-                        $data[] = [
-                            '_id' => $object['_id'], '_type' => $object['_type'], '_index' => $object['_index'],
-                            'module' => 'twitter',
-                            'user' => [
-                                'name' => $object['_source']['user']['name'],
-                                'screen_name' => $object['_source']['user']['screen_name']
-                            ],
-                            'text' => $object['_source']['text']
+                        $data['twitter'] = [
+                            '_id' => $object['_id'],
+                            '_type' => $object['_type'],
+                            '_index' => $object['_index'],
+
+                            'text' => $object['_source']['user']['name'].' : '.$object['_source']['text'],
+                            'count' => $query->data['hits']['total']
                         ];
                     }
                 }
@@ -174,16 +180,19 @@ class Trigger extends Command
                     ]
                 ];
 
-                $query = @Document::list([ 'media', '*' ], 'article', $q)->data['hits']['hits'];
+                $query = Document::list([ 'media', '*' ], 'article', $q);
 
-                if ($query)
+                if (@$query->data['hits']['hits'])
                 {
-                    foreach ($query as $object)
+                    foreach ($query->data['hits']['hits'] as $object)
                     {
-                        $data[] = [
-                            '_id' => $object['_id'], '_type' => $object['_type'], '_index' => $object['_index'],
-                            'module' => 'haber',
-                            'title' => $object['_source']['title']
+                        $data['news'] = [
+                            '_id' => $object['_id'],
+                            '_type' => $object['_type'],
+                            '_index' => $object['_index'],
+
+                            'text' => $object['_source']['title'],
+                            'count' => $query->data['hits']['total']
                         ];
                     }
                 }
@@ -206,16 +215,19 @@ class Trigger extends Command
                     ]
                 ];
 
-                $query = @Document::list([ 'sozluk', '*' ], 'entry', $q)->data['hits']['hits'];
+                $query = Document::list([ 'sozluk', '*' ], 'entry', $q);
 
-                if ($query)
+                if (@$query->data['hits']['hits'])
                 {
-                    foreach ($query as $object)
+                    foreach ($query->data['hits']['hits'] as $object)
                     {
-                        $data[] = [
-                            '_id' => $object['_id'], '_type' => $object['_type'], '_index' => $object['_index'],
-                            'module' => 'sozluk',
-                            'title' => $object['_source']['title']
+                        $data['sozluk'] = [
+                            '_id' => $object['_id'],
+                            '_type' => $object['_type'],
+                            '_index' => $object['_index'],
+
+                            'text' => $object['_source']['title'],
+                            'count' => $query->data['hits']['total']
                         ];
                     }
                 }
@@ -239,16 +251,19 @@ class Trigger extends Command
                     ]
                 ];
 
-                $query = @Document::list([ 'shopping', '*' ], 'product', $q)->data['hits']['hits'];
+                $query = @Document::list([ 'shopping', '*' ], 'product', $q);
 
-                if ($query)
+                if (@$query->data['hits']['hits'])
                 {
-                    foreach ($query as $object)
+                    foreach ($query->data['hits']['hits'] as $object)
                     {
-                        $data[] = [
-                            '_id' => $object['_id'], '_type' => $object['_type'], '_index' => $object['_index'],
-                            'module' => 'alisveris',
-                            'title' => $object['_source']['title']
+                        $data['shopping'] = [
+                            '_id' => $object['_id'],
+                            '_type' => $object['_type'],
+                            '_index' => $object['_index'],
+
+                            'text' => $object['_source']['title'],
+                            'count' => $query->data['hits']['total']
                         ];
                     }
                 }
@@ -271,19 +286,19 @@ class Trigger extends Command
                     ]
                 ];
 
-                $query = @Document::list([ 'youtube', 'videos' ], 'video', $q)->data['hits']['hits'];
+                $query = @Document::list([ 'youtube', 'videos' ], 'video', $q);
 
-                if ($query)
+                if (@$query->data['hits']['hits'])
                 {
-                    foreach ($query as $object)
+                    foreach ($query->data['hits']['hits'] as $object)
                     {
-                        $data[] = [
-                            '_id' => $object['_id'], '_type' => $object['_type'], '_index' => $object['_index'],
-                            'module' => 'youtube-video',
-                            'channel' => [
-                                'title' => $object['_source']['channel']['title']
-                            ],
-                            'title' => $object['_source']['title']
+                        $data['youtube_video'] = [
+                            '_id' => $object['_id'],
+                            '_type' => $object['_type'],
+                            '_index' => $object['_index'],
+
+                            'text' => $object['_source']['channel']['title'].' : '.$object['_source']['title'],
+                            'count' => $query->data['hits']['total']
                         ];
                     }
                 }
@@ -303,27 +318,25 @@ class Trigger extends Command
                     ]
                 ];
 
-                $query = @Document::list([ 'youtube', 'comments', '*' ], 'comment', $q)->data['hits']['hits'];
+                $query = @Document::list([ 'youtube', 'comments', '*' ], 'comment', $q);
 
-                if ($query)
+                if (@$query->data['hits']['hits'])
                 {
-                    foreach ($query as $object)
+                    foreach ($query->data['hits']['hits'] as $object)
                     {
-                        $data[] = [
-                            '_id' => $object['_id'], '_type' => $object['_type'], '_index' => $object['_index'],
-                            'module' => 'youtube-comment',
-                            'channel' => [
-                                'title' => $object['_source']['channel']['title']
-                            ],
-                            'text' => $object['_source']['text']
+                        $data['youtube_comment'] = [
+                            '_id' => $object['_id'],
+                            '_type' => $object['_type'],
+                            '_index' => $object['_index'],
+
+                            'text' => $object['_source']['channel']['title'].' : '.$object['_source']['text'],
+                            'count' => $query->data['hits']['total']
                         ];
                     }
                 }
             }
         }
 
-        print_r($data);
-
-        exit();
+        return $data;
     }
 }
