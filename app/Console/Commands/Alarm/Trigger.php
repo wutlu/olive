@@ -78,7 +78,7 @@ class Trigger extends Command
 
                     foreach ($es_data as $item)
                     {
-                        $data[] = '['.$item['text'].']('.route('content', [
+                        $data[] = '['.str_replace('#', '', $item['text']).']('.route('content', [
                             'es_index' => $item['_index'],
                             'es_type' => $item['_type'],
                             'es_id' => $item['_id']
@@ -155,7 +155,7 @@ class Trigger extends Command
                             '_type' => $object['_type'],
                             '_index' => $object['_index'],
 
-                            'text' => $object['_source']['user']['name'].' : '.$object['_source']['text'],
+                            'text' => $object['_source']['text'],
                             'count' => $query->data['hits']['total']
                         ];
                     }
@@ -297,7 +297,7 @@ class Trigger extends Command
                             '_type' => $object['_type'],
                             '_index' => $object['_index'],
 
-                            'text' => $object['_source']['channel']['title'].' : '.$object['_source']['title'],
+                            'text' => $object['_source']['title'],
                             'count' => $query->data['hits']['total']
                         ];
                     }
@@ -329,7 +329,7 @@ class Trigger extends Command
                             '_type' => $object['_type'],
                             '_index' => $object['_index'],
 
-                            'text' => $object['_source']['channel']['title'].' : '.$object['_source']['text'],
+                            'text' => $object['_source']['text'],
                             'count' => $query->data['hits']['total']
                         ];
                     }

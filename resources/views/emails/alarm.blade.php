@@ -19,7 +19,7 @@ Son {{ $data['alarm']->interval }} dakika içerisinde alınan değerler.
     'e' => date('Y-m-d')
 ]), 'color' => 'green']){{ 'Tüm İçerikler' }}@endcomponent
 
-Geciken içeriklerden dolayı Olive üzerinde sorgulayacağınız rakamlar bu rakamlardan daha yüksek değerler gösterebilir.
+Geciken içeriklerden dolayı, Olive üzerinde sorgulayacağınız rakamlar bu rakamlardan daha yüksek değerler gösterebilir.
 
 > ** Alarm Bilgisi **
 
