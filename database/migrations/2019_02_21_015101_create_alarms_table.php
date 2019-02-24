@@ -33,7 +33,7 @@ class CreateAlarmsTable extends Migration
             $table->unsignedInteger('organisation_id')->index();
             $table->foreign('organisation_id')->references('id')->on('organisations')->onDelete('cascade')->onUpdate('cascade');
 
-            $table->json('emails');
+            $table->json('user_ids');
 
             $table->timestamps();
         });

@@ -11,22 +11,16 @@ class AlarmMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    public $subject;
-    public $body;
-    public $emails;
-    public $link;
+    public $data;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(string $subject, string $body, string $link, array $emails, string $queue = 'email')
+    public function __construct(array $data, string $queue = 'email')
     {
-        $this->subject = $subject;
-        $this->body = $body;
-        $this->emails = $emails;
-        $this->link = $link;
+        $this->data = $data;
         $this->queue = $queue;
     }
 
@@ -37,12 +31,12 @@ class AlarmMail extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->subject($this->subject)
-                    ->markdown('emails.newsletter', [
-                        'subject' => $this->subject,
-                        'body' => $this->body
+        $alarm = $this->data['alarm'];
+
+        return $this->subject(implode(' ', [ '🔔', $alarm->name, '🔔' ]))
+                    ->markdown('emails.alarm', [
+                        'data' => $this->data
                     ])
-                    ->action('Olive ile İncele', $this->link);
-                    ->to($this->email);
+                    ->to($alarm->emails());
     }
 }

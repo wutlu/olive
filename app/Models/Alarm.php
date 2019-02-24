@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User\User;
 
 class Alarm extends Model
 {
@@ -15,7 +16,7 @@ class Alarm extends Model
         'start_time',
         'end_time',
         'weekdays',
-        'emails',
+        'user_ids',
 
         'sended_at',
     ];
@@ -28,18 +29,15 @@ class Alarm extends Model
     protected $casts = [
 		'weekdays' => 'array',
 		'modules' => 'array',
-		'emails' => 'array',
+		'user_ids' => 'array',
     ];
 
     protected $dates = [
         'sended_at',
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-    ];
+    public function emails()
+    {
+        return User::whereIn('id', $this->user_ids)->get()->pluck('email')->toArray();
+    }
 }

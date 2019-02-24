@@ -395,7 +395,7 @@
                                 'class': 'collection-item',
                                 'html': [
                                     $('<h6 />', {
-                                        'html': 'Bildirim Gönderilecek E-posta Adresleri'
+                                        'html': 'Bildirim Gönderilecek Kullanıcılar'
                                     }),
                                     @foreach ($members as $member)
                                         $('<label />', {
@@ -404,7 +404,7 @@
                                             'html': [
                                                 $('<input />', {
                                                     'type': 'checkbox',
-                                                    'name': 'emails',
+                                                    'name': 'user_ids',
                                                     'data-multiple': 'true',
                                                     'value': '{{ $member->id }}'
                                                 }),
@@ -486,8 +486,8 @@
                 mdl.find('[name=sources][value=' + source + ']').prop('checked', true)
             })
 
-            $.each(obj.data.emails, function(key, id) {
-                mdl.find('[name=emails][value=' + id + ']').prop('checked', true)
+            $.each(obj.data.user_ids, function(key, id) {
+                mdl.find('[name=user_ids][value=' + id + ']').prop('checked', true)
             })
 
                 mdl.modal('open')

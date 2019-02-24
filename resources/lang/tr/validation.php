@@ -67,7 +67,7 @@ return [
     'numeric' => ':attribute sayı olmalıdır.',
     'present' => ':attribute alanı mevcut olmalıdır.',
     'regex' => ':attribute biçimi geçersiz.',
-    'required' => ':attribute alanı zorunludur.',
+    'required' => ':attribute alanını boş bırakamazsınız.',
     'required_if' => ':attribute alanını boş bırakamazsınız.', // :attribute alanı, :other :value değerine sahip olduğunda zorunludur.
     'required_unless' => ':attribute alanını boş bırakamazsınız.', // :attribute alanı, :other alanı :value değerlerinden birine sahip olmadığında zorunludur.
     'required_with' => ':attribute alanı :values varken zorunludur.',
@@ -277,7 +277,7 @@ return [
         'interval'                     => 'Aralık',
 
         'text'                         => 'Sorgu',
-        'emails'                       => 'E-posta Adresleri',
+        'user_ids'                     => 'Kullanıcılar',
 
         'hit'                          => 'Bildirim Sayısı',
     ],

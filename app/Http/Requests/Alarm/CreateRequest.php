@@ -77,8 +77,8 @@ class CreateRequest extends FormRequest
             'weekdays' => 'required|array|min:1',
             'weekdays.*' => 'required|string|in:day_1,day_2,day_3,day_4,day_5,day_6,day_7',
 
-            'emails' => 'required|array|min:1',
-            'emails.*' => 'required|integer|email_validation',
+            'user_ids' => 'required|array|min:1',
+            'user_ids.*' => 'required|integer|email_validation',
 
             'sources' => 'required|array|min:1',
             'sources.*' => 'required|string|in:'.implode(',', array_keys(config('system.modules')))

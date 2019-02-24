@@ -71,8 +71,8 @@
                     </li>
                     <li class="collection-item model hide">
                         <div class="d-flex justify-content-between">
-                            <p data-name="name"></p>
-                            <time class="timeago grey-text"></time>
+                            <p data-name="name" class="align-self-center"></p>
+                            <time class="timeago grey-text align-self-center"></time>
                         </div>
                     </li>
                 </ul>

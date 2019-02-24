@@ -41,6 +41,10 @@
                     $('<li />', {
                         'class': 'collection-item',
                         'html': '<code class="red white-text">~</code> operatörü ile yazım hatalarını düzelterek arama yapabilirsiniz. <code class="red white-text">~1</code> veya <code class="red white-text">~2</code> gibi düzeltme oranını yükseltebilirsiniz. Bkz: <code class="red white-text">ankaar~</code>'
+                    }),
+                    $('<li />', {
+                        'class': 'collection-item',
+                        'html': 'Duygu analizinde 0.0 ile 1 arası derecelendirme yapıyoruz. Pozitif için <code class="red white-text">sentiment.pos</code>, negatif için <code class="red white-text">sentiment.neg</code> ve nötr için <code class="red white-text">sentiment.neu</code> operatörlerini, <code class="red white-text">sentiment.neg:>0.4</code> vb. şekilde kullanabilirsiniz.'
                     })
                 ]
             }),
