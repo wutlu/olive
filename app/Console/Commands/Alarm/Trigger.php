@@ -114,7 +114,7 @@ class Trigger extends Command
                     'filter' => [
                         [
                             'range' => [
-                                'created_at' => [
+                                'called_at' => [
                                     'format' => 'YYYY-MM-dd HH:mm',
                                     'gte' => date('Y-m-d H:i', strtotime('-'.$alarm->interval.' minutes'))
                                 ]
