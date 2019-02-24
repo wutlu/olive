@@ -192,6 +192,7 @@ class ForumController extends Controller
                         $title = 'Haftanın Popülerleri';
 
                         $date = Carbon::now()->subDays(7)->format('Y-m-d H:i:s');
+
                         $data->where('created_at', '>=', $date);
                         $data->orderBy('hit', 'DESC');
                     break;

@@ -225,12 +225,8 @@
             </li>
             <li class="collection-item">
                 <p class="d-flex">
-                    <img alt="Pin" src="{{ asset('img/icons/pin.png') }}" style="width: 32px; height: 32px; margin: 0 .2rem 0 0;" />
-                    <span class="align-self-center">Sağdaki menüden bir pin grubu seçin. Pin grubunuz yoksa oluşturabilirsiniz.</span>
-                </p>
-                <p class="d-flex">
-                    <img alt="Pin" src="{{ asset('img/icons/snowflake.png') }}" style="width: 32px; height: 32px; margin: 0 .2rem 0 0;" />
-                    <span class="align-self-center">Akışı durdurmak için fareyi akışın üzerine getirin.</span>
+                    <i class="material-icons realtime">navigate_next</i>
+                    <span class="align-self-center">Herhangi bir kelime grubu oluşturun varsa aktif edin.</span>
                 </p>
             </li>
         </ul>

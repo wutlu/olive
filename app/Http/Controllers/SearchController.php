@@ -42,8 +42,10 @@ class SearchController extends Controller
     public static function dashboard(QRequest $request)
     {
         $q = $request->q;
+        $s = $request->s;
+        $e = $request->e;
 
-        return view('search.dashboard', compact('q'));
+        return view('search.dashboard', compact('q', 's', 'e'));
     }
 
     /**

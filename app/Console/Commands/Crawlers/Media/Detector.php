@@ -10,6 +10,8 @@ use App\Models\Crawlers\MediaCrawler;
 
 use Carbon\Carbon;
 
+use DB;
+
 class Detector extends Command
 {
     /**
@@ -43,18 +45,18 @@ class Detector extends Command
      */
     public function handle()
     {
-        $crawlers = MediaCrawler::where('status', true)->orderBy('control_date', 'ASC')->get();
+        $crawlers = MediaCrawler::where('status', true)
+                                ->where('control_date', '<=', DB::raw("NOW() - INTERVAL '1 minutes' * control_interval"))
+                                ->orderBy('control_date', 'ASC')
+                                ->get();
 
         if (@$crawlers)
         {
             foreach ($crawlers as $crawler)
             {
-                if (Carbon::now() > Carbon::createFromFormat('Y-m-d H:i:s', $crawler->control_date)->addMinutes($crawler->control_interval))
-                {
-                    $this->info($crawler->name);
+                $this->info($crawler->name);
 
-                    DetectorJob::dispatch($crawler)->onQueue('crawler');
-                }
+                DetectorJob::dispatch($crawler)->onQueue('crawler');
             }
         }
     }

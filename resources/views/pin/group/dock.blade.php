@@ -15,8 +15,8 @@
         </a>
     </div>
 
-    <div class="card-content grey-text">
-        Pinlenen içerikler seçili grup altına kaydedilir.
+    <div class="card-content cyan lighten-5">
+        <p class="grey-text text-darken-2">İlginizi çeken içeriklere daha sonra ulaşabilmek için pinleyebilirsiniz. Bir pin grubu seçin ve ilgilendiğiniz içeriğin (+) butonuna tıklayın.</p>
     </div>
 
     <ul id="pin-groups"

@@ -38,7 +38,6 @@ class CreateRequest extends FormRequest
             'keyword_max_line' => 'Her grup için en fazla '.$this->max_line.' satır girebilirsiniz.',
             'limit' => 'Grup limitiniz doldu.',
             'empty_lines' => 'Her kelime satırı en az 3 karakter olabilir. (bir, ile... vb. kaçamak kelimeler kullanamazsınız!)',
-            'except_list' => 'Bu kelimeyi kullanamazsınız.'
         ];
     }
 

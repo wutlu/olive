@@ -34,7 +34,7 @@
 
                         item.find('[data-name=name]').html(o.name)
                         item.find('[data-name=query]').html(o.query)
-                        item.find('[data-name=hit]').html(o.hit)
+                        item.find('[data-name=hit]').html(o.hit).addClass(o.hit == 0 ? 'red-text' : '')
                         item.find('[data-name=interval]').html(o.interval)
 
                         $.each({
@@ -228,12 +228,12 @@
                                 'html': $('<div />', {
                                     'class': 'input-field m-0',
                                     'html': [
-                                        $('<textarea />', {
+                                        $('<input />', {
                                             'name': 'text',
                                             'id': 'text',
                                             'type': 'text',
-                                            'class': 'materialize-textarea validate',
-                                            'data-length': 100
+                                            'class': 'validate',
+                                            'data-length': 255
                                         }),
                                         $('<label />', {
                                             'for': 'text',
@@ -255,7 +255,8 @@
                                             ]
                                         }),
                                         $('<span />', {
-                                            'class': 'helper-text'
+                                            'class': 'helper-text',
+                                            'html': 'Hassas kelimeler ve dakikalık bildirimler durumunda rahatsız edici bildirim e-postaları alabilirsiniz. Böyle bir durumla karşılaşmamak için, ilgi odaklı çalışmanız gerekmektedir.'
                                         })
                                     ]
                                 })
@@ -265,7 +266,7 @@
                                 'html': [
                                     $('<span />', {
                                         'class': 'grey-text text-darken-2',
-                                        'html': 'Çalışacak Saat Aralığı'
+                                        'html': 'Çalışılacak Saat Aralığı'
                                     }),
                                     $('<div />', {
                                         'class': 'd-flex',
@@ -399,6 +400,7 @@
                                     @foreach ($members as $member)
                                         $('<label />', {
                                             'class': 'd-block',
+                                            'css': { 'width': '100%' },
                                             'html': [
                                                 $('<input />', {
                                                     'type': 'checkbox',
@@ -407,7 +409,7 @@
                                                     'value': '{{ $member->id }}'
                                                 }),
                                                 $('<span />', {
-                                                    'html': '{{ $member->name }} ({{ $member->email }})'
+                                                    'html': '{{ $member->email }}'
                                                 })
                                             ]
                                         }),
@@ -443,7 +445,6 @@
             mdl.find('[data-length]').characterCounter()
 
         M.updateTextFields()
-        M.textareaAutoResize($('textarea'))
 
         $('.timepicker').timepicker({
             format: 'hh:MM',

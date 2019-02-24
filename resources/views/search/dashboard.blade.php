@@ -420,7 +420,7 @@
         <div class="time-line">
             <ul class="collection json-clear" 
                 id="search"
-                data-href="{{ route('search.request') }}"
+                data-href="{{ route('search.dashboard') }}"
                 data-skip="0"
                 data-take="10"
                 data-more-button="#search-more_button"
@@ -463,8 +463,8 @@
                     <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center mr-1" data-class=".wild-content" data-class-remove="active">
                         <i class="material-icons">close</i>
                     </a>
-                    <input style="max-width: 96px;" type="text" class="datepicker" name="start_date" value="{{ date('Y-m-d', strtotime('-1 day')) }}" placeholder="Başlangıç" />
-                    <input style="max-width: 96px;" type="text" class="datepicker" name="end_date" value="{{ date('Y-m-d') }}" placeholder="Bitiş" />
+                    <input style="max-width: 96px;" type="text" class="datepicker" name="start_date" value="{{ $s ? $s : date('Y-m-d', strtotime('-1 day')) }}" placeholder="Başlangıç" />
+                    <input style="max-width: 96px;" type="text" class="datepicker" name="end_date" value="{{ $e ? $e : date('Y-m-d') }}" placeholder="Bitiş" />
                 </span>
             </div>
             <div class="wild-content d-flex" data-wild="sentiment">

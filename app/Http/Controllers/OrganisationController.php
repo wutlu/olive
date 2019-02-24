@@ -14,6 +14,7 @@ use App\Models\User\User;
 use App\Models\RealTime\KeywordGroup;
 use App\Models\Pin\Group as PinGroup;
 use App\Models\User\Transaction;
+use App\Models\BillingInformation;
 
 use App\Http\Requests\PlanRequest;
 use App\Http\Requests\PlanCalculateRequest;
@@ -39,8 +40,6 @@ use App\Notifications\OrganisationWasUpdatedNotification;
 use App\Notifications\MessageNotification;
 
 use Request as RequestStatic;
-
-use App\Models\BillingInformation;
 
 use Carbon\Carbon;
 

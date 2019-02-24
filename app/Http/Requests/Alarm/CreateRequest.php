@@ -31,7 +31,7 @@ class CreateRequest extends FormRequest
         return [
             'email_validation' => 'E-posta adreslerinin organizasyonunuzda olması gerekir.',
             'or_params' => 'En fazla 4 adet OR (||) parametresi kullanabilirsiniz.',
-            'limit' => 'Alarm limitiniz doldu.',
+            'limit' => 'Alarm limitiniz doldu.'
         ];
     }
 

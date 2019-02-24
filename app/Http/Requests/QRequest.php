@@ -24,7 +24,9 @@ class QRequest extends FormRequest
     public function rules()
     {
         return [
-            'q' => 'nullable|string|max:255'
+            'q' => 'nullable|string|max:255',
+            's' => 'nullable|date_format:Y-m-d',
+            'e' => 'nullable|required_with:s|date_format:Y-m-d',
         ];
     }
 }

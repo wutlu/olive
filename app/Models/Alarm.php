@@ -16,6 +16,8 @@ class Alarm extends Model
         'end_time',
         'weekdays',
         'emails',
+
+        'sended_at',
     ];
 
     /**
@@ -27,6 +29,10 @@ class Alarm extends Model
 		'weekdays' => 'array',
 		'modules' => 'array',
 		'emails' => 'array',
+    ];
+
+    protected $dates = [
+        'sended_at',
     ];
 
     /**
