@@ -24,16 +24,30 @@
 @endpush
 
 @section('content')
-	<div class="card">
-	    <div class="card-content">
-	        <div class="markdown">{!! Term::tweet($document['_source']['text']) !!}</div>
-	    </div>
-	    @include('content._inc.sentiment_bar', [
-	        'pos' => $document['_source']['sentiment']['pos'],
-	        'neg' => $document['_source']['sentiment']['neg'],
-	        'neu' => $document['_source']['sentiment']['neu']
-	    ])
+<div class="row">
+	<div class="col m6 s12">
+		<div class="card">
+		    <div class="card-content">
+		        <div class="markdown">{!! Term::tweet($document['_source']['text']) !!}</div>
+		    </div>
+		    @include('content._inc.sentiment_bar', [
+		        'pos' => $document['_source']['sentiment']['pos'],
+		        'neg' => $document['_source']['sentiment']['neg'],
+		        'neu' => $document['_source']['sentiment']['neu']
+		    ])
+		</div>
 	</div>
+	<div class="col m6 s12">
+		<div class="card">
+	        @include('content._inc.sentiment', [
+	            'total' => $data['total']->data['count'],
+	            'pos' => $data['pos']->data['count'],
+	            'neg' => $data['neg']->data['count'],
+	            'alert' => 'İlgili kullanıcıdan toplam '.$data['total']->data['count'].' tweet alındı. Sayfadaki istatistik verileri, alınan tweetler üzerinden gerçekleştirilmiştir.'
+	        ])
+	    </div>
+    </div>
+</div>
 	<div class="card">
 	    <div class="card-content">
 	        <span class="card-title">Diğer Tweetler ({{ $data['total']->data['count'] }})</span>

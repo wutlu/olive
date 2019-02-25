@@ -149,6 +149,26 @@ class ContentController extends Controller
                                     'must' => $user
                                 ]
                             ]
+                        ]),
+                        'pos' => Document::count([ 'twitter', 'tweets', '*' ], 'entry', [
+                            'query' => [
+                                'bool' => [
+                                    'must' => $user,
+                                    'filter' => [
+                                        [ 'range' => [ 'sentiment.pos' => [ 'gte' => .34 ] ] ]
+                                    ]
+                                ]
+                            ]
+                        ]),
+                        'neg' => Document::count([ 'twitter', 'tweets', '*' ], 'entry', [
+                            'query' => [
+                                'bool' => [
+                                    'must' => $user,
+                                    'filter' => [
+                                        [ 'range' => [ 'sentiment.neg' => [ 'gte' => .34 ] ] ]
+                                    ]
+                                ]
+                            ]
                         ])
                     ];
                 break;
