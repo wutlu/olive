@@ -141,63 +141,6 @@ class ContentController extends Controller
                     $user = [
                         [ 'match' => [ 'user.id' => $document['_source']['user']['id'] ] ]
                     ];
-
-                    $data = [
-                        'total' => Document::count($es_index, 'tweet', [
-                            'query' => [
-                                'bool' => [
-                                    'must' => $user
-                                ]
-                            ]
-                        ]),
-                        'pos' => Document::count($es_index, 'tweet', [
-                            'query' => [
-                                'bool' => [
-                                    'must' => $user,
-                                    'filter' => [
-                                        [ 'range' => [ 'sentiment.pos' => [ 'gte' => .34 ] ] ]
-                                    ]
-                                ]
-                            ]
-                        ]),
-                        'neg' => Document::count($es_index, 'tweet', [
-                            'query' => [
-                                'bool' => [
-                                    'must' => $user,
-                                    'filter' => [
-                                        [ 'range' => [ 'sentiment.neg' => [ 'gte' => .34 ] ] ]
-                                    ]
-                                ]
-                            ]
-                        ]),
-                        'popular' => Document::list($es_index, 'tweet', [
-                            'size' => 0,
-                            'query' => [
-                                'bool' => [
-                                    'must' => $user
-                                ]
-                            ],
-                            'aggs' => [
-                                'popular_keywords' => [
-                                    'terms' => [
-                                        'field' => 'text',
-                                        'size' => 100
-                                    ]
-                                ]
-                            ]
-                        ])
-                    ];
-
-                    $bucket = @$data['popular']->data['aggregations']['popular_keywords']['buckets'];
-
-                    if ($bucket)
-                    {
-                        $bucket = implode(' ', array_map(function($a) {
-                            return $a['key'];
-                        }, $bucket));
-
-                        $data['keywords'] = Term::commonWords($bucket, 100);
-                    }
                 break;
 
                 case 'video':
