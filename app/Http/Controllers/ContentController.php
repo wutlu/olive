@@ -150,7 +150,7 @@ class ContentController extends Controller
                                 ]
                             ]
                         ]),
-                        'pos' => Document::count([ 'twitter', 'tweets', '*' ], 'entry', [
+                        'pos' => Document::count([ 'twitter', 'tweets', '*' ], 'tweet', [
                             'query' => [
                                 'bool' => [
                                     'must' => $user,
@@ -160,7 +160,7 @@ class ContentController extends Controller
                                 ]
                             ]
                         ]),
-                        'neg' => Document::count([ 'twitter', 'tweets', '*' ], 'entry', [
+                        'neg' => Document::count([ 'twitter', 'tweets', '*' ], 'tweet', [
                             'query' => [
                                 'bool' => [
                                     'must' => $user,
@@ -169,6 +169,23 @@ class ContentController extends Controller
                                     ]
                                 ]
                             ]
+                        ]),
+                        'aggregations' => Document::list([ 'twitter', 'tweets', '*' ], 'tweet', [
+                            'query' => [
+                                'bool' => [
+                                    'must' => $user,
+                                    'filter' => [
+                                        [ 'range' => [ 'sentiment.neg' => [ 'gte' => .34 ] ] ]
+                                    ]
+                                ]
+                            ],
+                            'aggs' => [
+                                'names' => [ 'terms' => [ 'field' => 'user.screen_name' ] ],
+                                'screen_names' => [ 'terms' => [ 'field' => 'user.name' ] ],
+                                'platforms' => [ 'terms' => [ 'field' => 'platform' ] ],
+                                'langs' => [ 'terms' => [ 'field' => 'lang' ] ]
+                            ],
+                            'size' => 0
                         ])
                     ];
                 break;
@@ -408,7 +425,10 @@ class ContentController extends Controller
                     ],
                     'from' => $request->skip,
                     'size' => $request->take,
-                    //'_source' => [ 'url', 'title', 'description', 'created_at' ]
+                    '_source' => [ 'id', 'user.id', 'user.name', 'user.screen_name', 'text', 'created_at' ],
+                    'sort' => [
+                        'created_at' => 'DESC'
+                    ]
                 ]);
             }
             else

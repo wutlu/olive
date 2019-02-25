@@ -24,30 +24,56 @@
 @endpush
 
 @section('content')
-<div class="row">
-	<div class="col m6 s12">
-		<div class="card">
-		    <div class="card-content">
-		        <div class="markdown">{!! Term::tweet($document['_source']['text']) !!}</div>
-		    </div>
-		    @include('content._inc.sentiment_bar', [
-		        'pos' => $document['_source']['sentiment']['pos'],
-		        'neg' => $document['_source']['sentiment']['neg'],
-		        'neu' => $document['_source']['sentiment']['neu']
-		    ])
+	<div class="row">
+		<div class="col m6 s12">
+			<div class="card">
+			    <div class="card-content">
+			        <div class="markdown">{!! Term::tweet($document['_source']['text']) !!}</div>
+			    </div>
+			    @include('content._inc.sentiment_bar', [
+			        'pos' => $document['_source']['sentiment']['pos'],
+			        'neg' => $document['_source']['sentiment']['neg'],
+			        'neu' => $document['_source']['sentiment']['neu']
+			    ])
+			</div>
 		</div>
-	</div>
-	<div class="col m6 s12">
-		<div class="card">
-	        @include('content._inc.sentiment', [
-	            'total' => $data['total']->data['count'],
-	            'pos' => $data['pos']->data['count'],
-	            'neg' => $data['neg']->data['count'],
-	            'alert' => 'İlgili kullanıcıdan toplam '.$data['total']->data['count'].' tweet alındı. Sayfadaki istatistik verileri, alınan tweetler üzerinden gerçekleştirilmiştir.'
-	        ])
+		<div class="col m6 s12">
+			<div class="card">
+		        @include('content._inc.sentiment', [
+		            'total' => $data['total']->data['count'],
+		            'pos' => $data['pos']->data['count'],
+		            'neg' => $data['neg']->data['count'],
+		            'alert' => 'İlgili kullanıcıdan toplam '.$data['total']->data['count'].' tweet alındı. Sayfadaki istatistik verileri, alınan tweetler üzerinden gerçekleştirilmiştir.'
+		        ])
+		    </div>
 	    </div>
-    </div>
-</div>
+	</div>
+	<div class="row">
+		@foreach (
+			[
+				'names' => 'Kullanıcı Adları',
+				'screen_names' => 'Adlar',
+				'platforms' => 'Platformlar',
+				'langs' => 'Diller'
+			] as $key => $model
+		)
+		<div class="col l3 m6 s12">
+			<div class="card">
+				<div class="card-content cyan darken-2">
+					<span class="card-title card-title-small white-text">{{ $model }}</span>
+				</div>
+				<ul class="collection">
+					@foreach ($data['aggregations']->data['aggregations'][$key]['buckets'] as $item)
+						<li class="collection-item d-flex justify-content-between">
+							<span class="align-self-center">{{ $item['key'] }}</span>
+							<span class="grey align-self-center" style="padding: 0 .4rem;">{{ $item['doc_count'] }}</span>
+						</li>
+					@endforeach
+				</ul>
+			</div>
+		</div>
+		@endforeach
+	</div>
 	<div class="card">
 	    <div class="card-content">
 	        <span class="card-title">Diğer Tweetler ({{ $data['total']->data['count'] }})</span>
