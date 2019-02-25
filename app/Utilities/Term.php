@@ -237,4 +237,25 @@ class Term
             'words' => $words_raw
         ];
     }
+
+    /**
+     * Auto Link
+     *
+     * - Twitter Tweet gövdelerindeki hashtag, mention ve linkleri html formatında çıktı verir.
+     *
+     * @return string
+     */
+    public static function tweet(string $tweet)
+    {
+        //Convert urls to <a> links
+        $tweet = preg_replace('/([\w]+\:\/\/[\w-?&;#~=\.\/\@]+[\w\/])/', '<a target="_blank" href="$1">$1</a>', $tweet);
+
+        //Convert hashtags to twitter searches in <a> links
+        $tweet = preg_replace('/#([A-ZğüşıöçĞÜŞİÖÇa-z0-9\/\.]*)/', '<a target="_blank" href="https://twitter.com/search?q=$1">#$1</a>', $tweet);
+
+        //Convert attags to twitter profiles in &lt;a&gt; links
+        $tweet = preg_replace('/@([A-Za-z0-9\/\.]*)/', '<a target="_blank" href="https://twitter.com/$1">@$1</a>', $tweet);
+
+        return $tweet;
+    }
 }

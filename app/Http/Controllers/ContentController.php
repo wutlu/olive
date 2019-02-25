@@ -136,15 +136,76 @@ class ContentController extends Controller
                 break;
 
                 case 'tweet':
-                    $title = implode(' ', [ 'Twitter', 'Tweet', '#'.$es_id ]);
+                    $title = implode(' / ', [ 'Twitter', $document['_source']['user']['name'], '#'.$es_id ]);
+
+                    $user = [
+                        [ 'match' => [ 'user.id' => $document['_source']['user']['id'] ] ]
+                    ];
+
+                    $data = [
+                        'total' => Document::count($es_index, 'tweet', [
+                            'query' => [
+                                'bool' => [
+                                    'must' => $user
+                                ]
+                            ]
+                        ]),
+                        'pos' => Document::count($es_index, 'tweet', [
+                            'query' => [
+                                'bool' => [
+                                    'must' => $user,
+                                    'filter' => [
+                                        [ 'range' => [ 'sentiment.pos' => [ 'gte' => .34 ] ] ]
+                                    ]
+                                ]
+                            ]
+                        ]),
+                        'neg' => Document::count($es_index, 'tweet', [
+                            'query' => [
+                                'bool' => [
+                                    'must' => $user,
+                                    'filter' => [
+                                        [ 'range' => [ 'sentiment.neg' => [ 'gte' => .34 ] ] ]
+                                    ]
+                                ]
+                            ]
+                        ]),
+                        'popular' => Document::list($es_index, 'tweet', [
+                            'size' => 0,
+                            'query' => [
+                                'bool' => [
+                                    'must' => $user
+                                ]
+                            ],
+                            'aggs' => [
+                                'popular_keywords' => [
+                                    'terms' => [
+                                        'field' => 'text',
+                                        'size' => 100
+                                    ]
+                                ]
+                            ]
+                        ])
+                    ];
+
+                    $bucket = @$data['popular']->data['aggregations']['popular_keywords']['buckets'];
+
+                    if ($bucket)
+                    {
+                        $bucket = implode(' ', array_map(function($a) {
+                            return $a['key'];
+                        }, $bucket));
+
+                        $data['keywords'] = Term::commonWords($bucket, 100);
+                    }
                 break;
 
                 case 'video':
-                    $title = implode(' ', [ 'YouTube', 'Video', '#'.$es_id ]);
+                    $title = implode(' / ', [ 'YouTube', $document['_source']['title'], '#'.$es_id ]);
                 break;
 
                 case 'comment':
-                    $title = implode(' ', [ 'YouTube', 'Comment', '#'.$es_id ]);
+                    $title = implode(' / ', [ 'YouTube', $document['_source']['channel']['title'], '#'.$es_id ]);
                 break;
 
                 case 'article':
@@ -212,7 +273,7 @@ class ContentController extends Controller
                         $data['keywords'] = Term::commonWords($bucket, 100);
                     }
 
-                    $title = implode(' ', [ $crawler->name, '/', $document['_source']['title'] ]);
+                    $title = implode(' / ', [ $crawler->name, '/', $document['_source']['title'] ]);
                 break;
 
                 default: abort(404); break;
@@ -276,20 +337,14 @@ class ContentController extends Controller
         switch ($es_type)
         {
             case 'entry':
-
                 $arr['query']['bool']['must'][] = [
                     'match' => [ 'group_name' => $es_id ]
                 ];
-
             break;
             case 'article':
-
                 $arr['query']['bool']['must'][] = [ 'match' => [ 'site_id' => $es_id ] ];
-
             break;
-
             case 'product':
-
                 $doc = Document::get($es_index, $es_type, $es_id);
 
                 if ($doc->status != 'ok')
@@ -315,7 +370,25 @@ class ContentController extends Controller
                         ]
                     ];
                 }
+            break;
+            case 'tweet':
+                $doc = Document::get($es_index, $es_type, $es_id);
 
+                if ($doc->status != 'ok')
+                {
+                    return [
+                        'status' => 'err',
+                        'data' => [
+                            'reason' => 'not found'
+                        ]
+                    ];
+                }
+
+                $arr['query']['bool']['must'][] = [
+                    'match' => [
+                        'user.id' => $doc->data['_source']['user']['id']
+                    ]
+                ];
             break;
         }
 
@@ -340,97 +413,115 @@ class ContentController extends Controller
 
         if ($document->status == 'ok')
         {
-            $smilar = Term::commonWords($document->data['_source']['title']);
-
-            if ($smilar)
+            if ($es_type == 'tweet')
             {
-                switch ($es_type)
-                {
-                    case 'article':
-                        $documents = Document::list([ 'media', '*' ], $es_type, [
-                            'query' => [
-                                'bool' => [
-                                    'must' => [
-                                        [
-                                            'match' => [ 'status' => 'ok' ]
-                                        ],
-                                        [
-                                            'more_like_this' => [
-                                                'fields' => [ 'title' ],
-                                                'like' => array_keys($smilar),
-                                                'min_term_freq' => 1,
-                                                'min_doc_freq' => 1
-                                            ]
-                                        ]
-                                    ]
+                $documents = Document::list([ 'twitter', 'tweets', '*' ], $es_type, [
+                    'query' => [
+                        'bool' => [
+                            'must' => [
+                                [
+                                    'match' => [ 'user.id' => $document->data['_source']['user']['id'] ]
                                 ]
-                            ],
-                            'min_score' => 10,
-                            'from' => $request->skip,
-                            'size' => $request->take,
-                            '_source' => [ 'url', 'title', 'description', 'created_at' ]
-                        ]);
-                    break;
-
-                    case 'entry':
-                        $documents = Document::list([ 'sozluk', '*' ], $es_type, [
-                            'query' => [
-                                'bool' => [
-                                    'must' => [
-                                        [
-                                            'more_like_this' => [
-                                                'fields' => [ 'title' ],
-                                                'like' => array_keys($smilar),
-                                                'min_term_freq' => 1,
-                                                'min_doc_freq' => 1
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                            ],
-                            'min_score' => 10,
-                            'from' => $request->skip,
-                            'size' => $request->take,
-                            '_source' => [ 'url', 'title', 'entry', 'author', 'created_at' ]
-                        ]);
-                    break;
-
-                    case 'product':
-                        $documents = Document::list([ 'shopping', '*' ], $es_type, [
-                            'query' => [
-                                'bool' => [
-                                    'must' => [
-                                        [
-                                            'more_like_this' => [
-                                                'fields' => [ 'title' ],
-                                                'like' => array_keys($smilar),
-                                                'min_term_freq' => 1,
-                                                'min_doc_freq' => 1
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                            ],
-                            'min_score' => 10,
-                            'from' => $request->skip,
-                            'size' => $request->take,
-                            '_source' => [ 'url', 'title', 'description', 'price', 'breadcrumb', 'created_at' ]
-                        ]);
-                    break;
-                }
-
-                return [
-                    'status' => 'ok',
-                    'hits' => $documents->data['hits']['hits']
-                ];
+                            ]
+                        ]
+                    ],
+                    'from' => $request->skip,
+                    'size' => $request->take,
+                    //'_source' => [ 'url', 'title', 'description', 'created_at' ]
+                ]);
             }
             else
             {
-                return [
-                    'status' => 'ok',
-                    'hits' => []
-                ];
+                $smilar = Term::commonWords($document->data['_source']['title']);
+
+                if ($smilar)
+                {
+                    switch ($es_type)
+                    {
+                        case 'article':
+                            $documents = Document::list([ 'media', '*' ], $es_type, [
+                                'query' => [
+                                    'bool' => [
+                                        'must' => [
+                                            [
+                                                'match' => [ 'status' => 'ok' ]
+                                            ],
+                                            [
+                                                'more_like_this' => [
+                                                    'fields' => [ 'title' ],
+                                                    'like' => array_keys($smilar),
+                                                    'min_term_freq' => 1,
+                                                    'min_doc_freq' => 1
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                'min_score' => 10,
+                                'from' => $request->skip,
+                                'size' => $request->take,
+                                '_source' => [ 'url', 'title', 'description', 'created_at' ]
+                            ]);
+                        break;
+                        case 'entry':
+                            $documents = Document::list([ 'sozluk', '*' ], $es_type, [
+                                'query' => [
+                                    'bool' => [
+                                        'must' => [
+                                            [
+                                                'more_like_this' => [
+                                                    'fields' => [ 'title' ],
+                                                    'like' => array_keys($smilar),
+                                                    'min_term_freq' => 1,
+                                                    'min_doc_freq' => 1
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                'min_score' => 10,
+                                'from' => $request->skip,
+                                'size' => $request->take,
+                                '_source' => [ 'url', 'title', 'entry', 'author', 'created_at' ]
+                            ]);
+                        break;
+                        case 'product':
+                            $documents = Document::list([ 'shopping', '*' ], $es_type, [
+                                'query' => [
+                                    'bool' => [
+                                        'must' => [
+                                            [
+                                                'more_like_this' => [
+                                                    'fields' => [ 'title' ],
+                                                    'like' => array_keys($smilar),
+                                                    'min_term_freq' => 1,
+                                                    'min_doc_freq' => 1
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                'min_score' => 10,
+                                'from' => $request->skip,
+                                'size' => $request->take,
+                                '_source' => [ 'url', 'title', 'description', 'price', 'breadcrumb', 'created_at' ]
+                            ]);
+                        break;
+                    }
+                }
+                else
+                {
+                    return [
+                        'status' => 'ok',
+                        'hits' => []
+                    ];
+                }
             }
+
+            return [
+                'status' => 'ok',
+                'hits' => $documents->data['hits']['hits']
+            ];
         }
         else
         {

@@ -20,7 +20,7 @@
 @endpush
 
 @section('wildcard')
-	@php
+    @php
         switch ($type)
         {
             case 'entry':
@@ -34,15 +34,19 @@
             case 'product':
                 $tab_title = 'Benzer Ürün Grafiği';
             break;
+
+            case 'tweet':
+                $tab_title = 'Kullanıcının Tweet Grafiği';
+            break;
         }
-	@endphp
-	<div class="z-depth-2">
+    @endphp
+    <div class="z-depth-2">
         <ul class="tabs tabs-fixed-width tabs-transparent cyan darken-2 histogram-tabs">
             <li class="tab">
-                <a class="active" href="#weekly">Haftalık {{ $tab_title }}</a>
+                <a class="active" href="#weekly">{{ $tab_title }} (Haftalık)</a>
             </li>
             <li class="tab">
-                <a href="#hourly">Saatlik {{ $tab_title }}</a>
+                <a href="#hourly">{{ $tab_title }} (Saatlik)</a>
             </li>
         </ul>
 
@@ -72,7 +76,7 @@
             data-callback="__hourly_chart">
             <canvas id="hourly-chart"></canvas>
         </div>
-	</div>
+    </div>
 @endsection
 
 @push('local.scripts')

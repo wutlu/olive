@@ -437,52 +437,52 @@
 @section('wildcard')
     <div class="container container-wide">
         <div class="wild-area">
-                <div class="wild-content d-flex" data-wild="date">
-                    <span class="wild-body d-flex">
-                        <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center mr-1" data-class=".wild-content" data-class-remove="active">
-                            <i class="material-icons">close</i>
-                        </a>
-                        <input style="max-width: 96px;" type="text" class="datepicker" name="start_date" value="{{ $s ? $s : date('Y-m-d', strtotime('-1 day')) }}" placeholder="Başlangıç" />
-                        <input style="max-width: 96px;" type="text" class="datepicker" name="end_date" value="{{ $e ? $e : date('Y-m-d') }}" placeholder="Bitiş" />
-                    </span>
-                </div>
-                <div class="wild-content d-flex" data-wild="sentiment">
-                    <span class="wild-body d-flex">
-                        <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center mr-1" data-class=".wild-content" data-class-remove="active">
-                            <i class="material-icons">close</i>
-                        </a>
-                        <label class="align-self-center mr-1" data-tooltip="Pozitif">
-                            <input type="radio" name="sentiment" value="pos" />
-                            <span class="material-icons grey-text text-darken-2">sentiment_satisfied</span>
-                        </label>
-                        <label class="align-self-center mr-1" data-tooltip="Nötr">
-                            <input type="radio" name="sentiment" value="neu" />
-                            <span class="material-icons grey-text text-darken-2">sentiment_neutral</span>
-                        </label>
-                        <label class="align-self-center mr-1" data-tooltip="Negatif">
-                            <input type="radio" name="sentiment" value="neg" />
-                            <span class="material-icons grey-text text-darken-2">sentiment_dissatisfied</span>
-                        </label>
-                        <label class="align-self-center mr-1" data-tooltip="Tümü">
-                            <input type="radio" name="sentiment" value="all" checked="" />
-                            <span class="material-icons grey-text text-darken-2">fullscreen</span>
-                        </label>
-                    </span>
-                </div>
-                <ul class="wild-menu">
-                    <li>
-                        <a class="d-flex" href="#" data-class="[data-wild=date]" data-class-add="active">
-                            <i class="material-icons mr-1">date_range</i>
-                            <span class="align-self-center">Tarih</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="d-flex" href="#" data-class="[data-wild=sentiment]" data-class-add="active">
-                            <i class="material-icons mr-1">mood</i>
-                            <span class="align-self-center">Duygu</span>
-                        </a>
-                    </li>
-                </ul>
+            <div class="wild-content d-flex" data-wild="date">
+                <span class="wild-body d-flex">
+                    <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center mr-1" data-class=".wild-content" data-class-remove="active">
+                        <i class="material-icons">close</i>
+                    </a>
+                    <input style="max-width: 96px;" type="text" class="datepicker" name="start_date" value="{{ $s ? $s : date('Y-m-d', strtotime('-1 day')) }}" placeholder="Başlangıç" />
+                    <input style="max-width: 96px;" type="text" class="datepicker" name="end_date" value="{{ $e ? $e : date('Y-m-d') }}" placeholder="Bitiş" />
+                </span>
+            </div>
+            <div class="wild-content d-flex" data-wild="sentiment">
+                <span class="wild-body d-flex">
+                    <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center mr-1" data-class=".wild-content" data-class-remove="active">
+                        <i class="material-icons">close</i>
+                    </a>
+                    <label class="align-self-center mr-1" data-tooltip="Pozitif">
+                        <input type="radio" name="sentiment" value="pos" />
+                        <span class="material-icons grey-text text-darken-2">sentiment_satisfied</span>
+                    </label>
+                    <label class="align-self-center mr-1" data-tooltip="Nötr">
+                        <input type="radio" name="sentiment" value="neu" />
+                        <span class="material-icons grey-text text-darken-2">sentiment_neutral</span>
+                    </label>
+                    <label class="align-self-center mr-1" data-tooltip="Negatif">
+                        <input type="radio" name="sentiment" value="neg" />
+                        <span class="material-icons grey-text text-darken-2">sentiment_dissatisfied</span>
+                    </label>
+                    <label class="align-self-center mr-1" data-tooltip="Tümü">
+                        <input type="radio" name="sentiment" value="all" checked="" />
+                        <span class="material-icons grey-text text-darken-2">fullscreen</span>
+                    </label>
+                </span>
+            </div>
+            <ul class="wild-menu">
+                <li>
+                    <a class="d-flex" href="#" data-class="[data-wild=date]" data-class-add="active">
+                        <i class="material-icons mr-1">date_range</i>
+                        <span class="align-self-center">Tarih</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="d-flex" href="#" data-class="[data-wild=sentiment]" data-class-add="active">
+                        <i class="material-icons mr-1">mood</i>
+                        <span class="align-self-center">Duygu</span>
+                    </a>
+                </li>
+            </ul>
         </div>
     </div>
     <div class="z-depth-1">

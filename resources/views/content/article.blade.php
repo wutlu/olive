@@ -48,7 +48,7 @@
                 <div class="card-content"> 
                     @if (@$data['keywords'])
                         @foreach ($data['keywords'] as $key => $word)
-                            <span class="chip">{{ $key }}</span>
+                            <a href="{{ route('search.dashboard', [ 'q' => $key ]) }}" target="_blank" class="chip waves-effect">{{ $key }}</a>
                         @endforeach
                     @else
                         <span class="chip red white-text">Tespit Edilemedi</span>
@@ -61,7 +61,7 @@
                 'total' => $data['total']->data['count'],
                 'pos' => $data['pos']->data['count'],
                 'neg' => $data['neg']->data['count'],
-                'alert' => 'İlgili siteden toplam '.$data['total']->data['count'].' içerik alındı. Sayfadaki istatistik verileri alınan haberler üzerinden gerçekleştirilmiştir.'
+                'alert' => 'İlgili siteden toplam '.$data['total']->data['count'].' içerik alındı. Sayfadaki istatistik verileri, alınan haberler üzerinden gerçekleştirilmiştir.'
             ])
         </div>
         <div class="col m12 xl12">
