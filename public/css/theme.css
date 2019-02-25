@@ -1094,8 +1094,8 @@ body.fs-active .fullscreen > .fs-container {
   -ms-flex-direction: column;
       flex-direction: column;
 
-  -ms-flex-flow: row nowrap;
-      flex-flow: row nowrap;
+  -ms-flex-flow: row wrap;
+      flex-flow: row wrap;
 }
 body.fs-active .fullscreen > .fs-container > .card {
   -ms-flex: 1 0 0%;
