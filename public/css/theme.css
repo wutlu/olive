@@ -1473,7 +1473,6 @@ header#main > .parallax-container > .parallax > video#background-video {
 
 .card .card-title {
   margin: 0 !important;
-  line-height: 24px !important;
 }
 .card .card-title.card-title-small {
   font-size: 18px;

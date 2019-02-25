@@ -28,6 +28,7 @@
         <div class="col m6 s12">
             <div class="card">
                 <div class="card-content">
+                    <a href="https://twitter.com/{{ $document['_source']['user']['screen_name'] }}" class="card-title d-table" target="_blank">{{ $document['_source']['user']['name'] }}</a>
                     <div class="markdown">{!! Term::tweet($document['_source']['text']) !!}</div>
                 </div>
                 @include('content._inc.sentiment_bar', [
