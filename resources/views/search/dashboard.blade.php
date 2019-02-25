@@ -5,7 +5,8 @@
             'text' => 'Arama Motoru'
         ]
     ],
-    'dock' => true
+    'dock' => true,
+    'wide' => true
 ])
 
 @push('local.styles')
@@ -15,16 +16,31 @@
     }
 
     .time-line > .collection > .collection-item {
-        word-break: break-all;
+        word-break: break-word;
+        padding: 2rem;
+
+    }
+    .time-line > .collection > .collection-item .title {
+        font-size: 16px;
     }
 
-    #string {
+    .search-field {
+        padding: 1rem 0;
+    }
+
+    .search-field #string {
                 transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
         -webkit-transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
-    #string:focus {
-                box-shadow: .4rem .4rem 1rem 0 rgba(0, 0, 0, .2);
-        -webkit-box-shadow: .4rem .4rem 1rem 0 rgba(0, 0, 0, .2);
+
+        margin: 0;
+        padding: 0 1rem;
+        border-width: 0;
+
+                box-shadow: .1rem .1rem .2rem 0 rgba(0, 0, 0, .1);
+        -webkit-box-shadow: .1rem .1rem .2rem 0 rgba(0, 0, 0, .1);
+
+        width: calc(100% - 2rem);
+        max-width: 512px;
     }
 @endpush
 
@@ -34,16 +50,11 @@
 
     function __pin(__, obj)
     {
-        var pins_button = $('[data-button=pins-button]');
-        var pin_count = pins_button.children('span.count');
-
         if (obj.status == 'removed')
         {
             $('[data-pin-uuid=' + __.attr('data-pin-uuid') + ']').removeClass('on')
 
             M.toast({ html: 'Pin Kaldırıldı', classes: 'red darken-2' })
-
-            pin_count.html(parseInt(pin_count.html()) - 1)
         }
         else if (obj.status == 'pinned')
         {
@@ -73,8 +84,6 @@
             });
 
             M.toast({ html: toastHTML.get(0).outerHTML })
-
-            pin_count.html(parseInt(pin_count.html()) + 1)
         }
         else if (obj.status == 'failed')
         {
@@ -86,7 +95,7 @@
     {
         if (obj.status == 'ok')
         {
-            $('[data-button=pins-button]').removeAttr('disabled').attr('data-id', obj.data.id).children('span.count').html(obj.data.pins.length)
+            M.toast({ html: 'Grup Seçildi' })
         }
     }
 
@@ -111,24 +120,24 @@
                                 'html': [
                                     $('<div />', {
                                         'html': [
-                                            $('<time>', {
-                                                'html': o.created_at,
-                                                'class': 'd-table grey-text text-lighten-1'
-                                            }),
-                                            $('<a />', {
-                                                'html': 'https://twitter.com/' + o.user.screen_name + '/status/' + o._id,
-                                                'href': 'https://twitter.com/' + o.user.screen_name + '/status/' + o._id,
-                                                'class': 'd-table green-text'
-                                            }).attr('target', '_blank'),
                                             $('<a />', {
                                                 'html': o.user.name,
                                                 'href': 'https://twitter.com/' + o.user.screen_name,
                                                 'class': 'd-table red-text'
                                             }).attr('target', 'blank'),
+                                            $('<time>', {
+                                                'html': o.created_at,
+                                                'class': 'd-table grey-text text-lighten-1'
+                                            }),
                                             $('<span />', {
                                                 'html': o.text,
-                                                'class': 'black-text'
-                                            })
+                                                'class': 'grey-text text-darken-2'
+                                            }),
+                                            $('<a />', {
+                                                'html': 'https://twitter.com/' + o.user.screen_name + '/status/' + o._id,
+                                                'href': 'https://twitter.com/' + o.user.screen_name + '/status/' + o._id,
+                                                'class': 'd-table green-text'
+                                            }).attr('target', '_blank')
                                         ]
                                     })
                                 ]
@@ -149,27 +158,27 @@
                                 'html': [
                                     $('<div />', {
                                         'html': [
-                                            $('<time>', {
-                                                'html': o.created_at,
-                                                'class': 'd-table grey-text text-lighten-1'
-                                            }),
-                                            $('<a />', {
-                                                'html': o.url,
-                                                'href': o.url,
-                                                'class': 'd-table green-text'
-                                            }).attr('target', '_blank'),
                                             $('<span />', {
                                                 'html': o.title,
-                                                'class': 'd-table teal-text'
+                                                'class': 'd-table blue-text title'
                                             }),
                                             $('<span />', {
                                                 'html': o.author,
                                                 'class': 'd-table red-text'
                                             }),
+                                            $('<time>', {
+                                                'html': o.created_at,
+                                                'class': 'd-table grey-text text-lighten-1'
+                                            }),
                                             $('<span />', {
                                                 'html': o.text,
-                                                'class': 'black-text'
-                                            })
+                                                'class': 'grey-text text-darken-2'
+                                            }),
+                                            $('<a />', {
+                                                'html': o.url,
+                                                'href': o.url,
+                                                'class': 'd-table green-text'
+                                            }).attr('target', '_blank')
                                         ]
                                     })
                                 ]
@@ -190,23 +199,23 @@
                                 'html': [
                                     $('<div />', {
                                         'html': [
+                                            $('<span />', {
+                                                'html': o.title,
+                                                'class': 'd-table blue-text title'
+                                            }),
                                             $('<time>', {
                                                 'html': o.created_at,
                                                 'class': 'd-table grey-text text-lighten-1'
+                                            }),
+                                            $('<span />', {
+                                                'html': o.text,
+                                                'class': 'grey-text text-darken-2'
                                             }),
                                             $('<a />', {
                                                 'html': str_limit(o.url, 96),
                                                 'href': o.url,
                                                 'class': 'd-table green-text'
-                                            }).attr('target', '_blank'),
-                                            $('<span />', {
-                                                'html': o.title,
-                                                'class': 'd-table teal-text'
-                                            }),
-                                            $('<span />', {
-                                                'html': o.text,
-                                                'class': 'black-text'
-                                            })
+                                            }).attr('target', '_blank')
                                         ]
                                     })
                                 ]
@@ -227,23 +236,23 @@
                                 'html': [
                                     $('<div />', {
                                         'html': [
+                                            $('<span />', {
+                                                'html': o.title,
+                                                'class': 'd-table blue-text title'
+                                            }),
                                             $('<time>', {
                                                 'html': o.created_at,
                                                 'class': 'd-table grey-text text-lighten-1'
+                                            }),
+                                            $('<span />', {
+                                                'html': o.text ? o.text : 'Açıklama Yok',
+                                                'class': 'grey-text text-darken-2'
                                             }),
                                             $('<a />', {
                                                 'html': str_limit(o.url, 96),
                                                 'href': o.url,
                                                 'class': 'd-table green-text'
-                                            }).attr('target', '_blank'),
-                                            $('<span />', {
-                                                'html': o.title,
-                                                'class': 'd-table teal-text'
-                                            }),
-                                            $('<span />', {
-                                                'html': o.text ? o.text : 'Açıklama Yok',
-                                                'class': 'black-text'
-                                            })
+                                            }).attr('target', '_blank')
                                         ]
                                     })
                                 ]
@@ -264,24 +273,24 @@
                                 'html': [
                                     $('<div />', {
                                         'html': [
-                                            $('<time>', {
-                                                'html': o.created_at,
-                                                'class': 'd-table grey-text text-lighten-1'
-                                            }),
                                             $('<a />', {
                                                 'html': o.channel.title,
                                                 'href': 'https://www.youtube.com/channel/' + o.channel.id,
                                                 'class': 'd-table teal-text'
                                             }).attr('target', '_blank'),
+                                            $('<time>', {
+                                                'html': o.created_at,
+                                                'class': 'd-table grey-text text-lighten-1'
+                                            }),
+                                            $('<span />', {
+                                                'html': o.text,
+                                                'class': 'grey-text text-darken-2'
+                                            }),
                                             $('<a />', {
                                                 'html': 'https://www.youtube.com/watch?v=' + o.video_id,
                                                 'href': 'https://www.youtube.com/watch?v=' + o.video_id,
                                                 'class': 'd-table green-text'
-                                            }).attr('target', '_blank'),
-                                            $('<span />', {
-                                                'html': o.text,
-                                                'class': 'black-text'
-                                            })
+                                            }).attr('target', '_blank')
                                         ]
                                     })
                                 ]
@@ -302,10 +311,6 @@
                                 'html': [
                                     $('<div />', {
                                         'html': [
-                                            $('<time>', {
-                                                'html': o.created_at,
-                                                'class': 'd-table grey-text text-lighten-1'
-                                            }),
                                             $('<a />', {
                                                 'html': o.channel.title,
                                                 'href': 'https://www.youtube.com/channel/' + o.channel.id,
@@ -314,11 +319,15 @@
                                             $('<a />', {
                                                 'html': o.title,
                                                 'href': 'https://www.youtube.com/watch?v=' + o._id,
-                                                'class': 'd-table green-text'
+                                                'class': 'd-table blue-text title'
                                             }).attr('target', '_blank'),
+                                            $('<time>', {
+                                                'html': o.created_at,
+                                                'class': 'd-table grey-text text-lighten-1'
+                                            }),
                                             $('<span />', {
                                                 'html': o.text,
-                                                'class': 'black-text'
+                                                'class': 'grey-text text-darken-2'
                                             })
                                         ]
                                     })
@@ -339,10 +348,10 @@
                             'class': 'mt-1',
                             'html': [
                                 $('<a />', {
-                                    'class': 'btn-small waves-effect white grey-text text-darken-2',
+                                    'class': 'btn-floating btn-small waves-effect white',
                                     'href': '{{ url('/') }}/db/' + o._index + '/' + o._type + '/' + o._id,
                                     'html': $('<i />', {
-                                        'class': 'material-icons',
+                                        'class': 'material-icons grey-text text-darken-2',
                                         'html': 'info'
                                     })
                                 }),
@@ -350,10 +359,10 @@
                                 $('<a />', {
                                     'href': '#',
                                     'html': $('<i />', {
-                                        'class': 'material-icons',
+                                        'class': 'material-icons grey-text text-darken-2',
                                         'html': 'add'
                                     }),
-                                    'class': 'btn-small waves-effect white grey-text text-darken-2 json',
+                                    'class': 'btn-floating btn-small waves-effect white json',
                                     'data-href': '{{ route('pin', 'add') }}',
                                     'data-method': 'post',
                                     'data-include': 'group_id',
@@ -370,6 +379,10 @@
                         item.html(model)
                         item.appendTo(ul)
                 })
+
+                $('.dropdown-trigger').dropdown({
+                    alignment: 'right'
+                })
             }
         }
     }
@@ -380,43 +393,7 @@
 @endpush
 
 @section('content')
-    <div class="card card-unstyled">
-        <div class="card-content d-flex justify-content-between">
-            <span class="card-title d-flex">
-                <span class="mr-1">Arama Motoru</span>
-                <a href="#" class="align-self-center mr-1" data-trigger="info">
-                    <i class="material-icons grey-text text-darken-4">info_outline</i>
-                </a>
-            </span>
-            <div class="d-flex justify-content-end">
-                <a
-                    class="btn white grey-text text-darken-2 waves-effect align-self-center json"
-                    disabled
-                    data-button="pins-button"
-                    data-href="{{ route('route.generate.id') }}"
-                    data-method="post"
-                    data-name="pin.pins"
-                    data-callback="__go"
-                    href="#">Pinler (<span class="count">0</span>)</a>
-            </div>
-        </div>
-        <nav class="nav-half mb-2">
-            <div class="nav-wrapper">
-                <div class="input-field">
-                    <input id="string"
-                           name="string"
-                           type="search"
-                           class="validate json json-search white"
-                           data-json-target="#search"
-                           placeholder="Ara"
-                           value="{{ $q }}" />
-                    <label class="label-icon" for="string">
-                        <i class="material-icons">search</i>
-                    </label>
-                    <i class="material-icons">close</i>
-                </div>
-            </div>
-        </nav>
+    <div class="card">
         <div class="time-line">
             <ul class="collection json-clear" 
                 id="search"
@@ -431,9 +408,7 @@
                 <li class="collection-item nothing hide">
                     @component('components.nothing')
                         @slot('size', 'small')
-                        @slot('cloud_class', 'white-text')
                         @slot('text', 'Sonuç bulunamadı!')
-                        @slot('text_class', 'grey-text')
                     @endcomponent
                 </li>
                 <li class="collection-item model hide"></li>
@@ -456,54 +431,73 @@
 @endpush
 
 @section('wildcard')
+    <div class="container container-wide">
+        <div class="wild-area">
+                <div class="wild-content d-flex" data-wild="date">
+                    <span class="wild-body d-flex">
+                        <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center mr-1" data-class=".wild-content" data-class-remove="active">
+                            <i class="material-icons">close</i>
+                        </a>
+                        <input style="max-width: 96px;" type="text" class="datepicker" name="start_date" value="{{ $s ? $s : date('Y-m-d', strtotime('-1 day')) }}" placeholder="Başlangıç" />
+                        <input style="max-width: 96px;" type="text" class="datepicker" name="end_date" value="{{ $e ? $e : date('Y-m-d') }}" placeholder="Bitiş" />
+                    </span>
+                </div>
+                <div class="wild-content d-flex" data-wild="sentiment">
+                    <span class="wild-body d-flex">
+                        <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center mr-1" data-class=".wild-content" data-class-remove="active">
+                            <i class="material-icons">close</i>
+                        </a>
+                        <label class="align-self-center mr-1" data-tooltip="Pozitif">
+                            <input type="radio" name="sentiment" value="pos" />
+                            <span class="material-icons grey-text text-darken-2">sentiment_satisfied</span>
+                        </label>
+                        <label class="align-self-center mr-1" data-tooltip="Nötr">
+                            <input type="radio" name="sentiment" value="neu" />
+                            <span class="material-icons grey-text text-darken-2">sentiment_neutral</span>
+                        </label>
+                        <label class="align-self-center mr-1" data-tooltip="Negatif">
+                            <input type="radio" name="sentiment" value="neg" />
+                            <span class="material-icons grey-text text-darken-2">sentiment_dissatisfied</span>
+                        </label>
+                        <label class="align-self-center mr-1" data-tooltip="Tümü">
+                            <input type="radio" name="sentiment" value="all" checked="" />
+                            <span class="material-icons grey-text text-darken-2">fullscreen</span>
+                        </label>
+                    </span>
+                </div>
+                <ul class="wild-menu">
+                    <li>
+                        <a class="d-flex" href="#" data-class="[data-wild=date]" data-class-add="active">
+                            <i class="material-icons mr-1">date_range</i>
+                            <span class="align-self-center">Tarih</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="d-flex" href="#" data-class="[data-wild=sentiment]" data-class-add="active">
+                            <i class="material-icons mr-1">mood</i>
+                            <span class="align-self-center">Duygu</span>
+                        </a>
+                    </li>
+                </ul>
+        </div>
+    </div>
     <div class="z-depth-1">
-        <div class="container wild-area">
-            <div class="wild-content d-flex" data-wild="date">
-                <span class="wild-body d-flex">
-                    <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center mr-1" data-class=".wild-content" data-class-remove="active">
-                        <i class="material-icons">close</i>
+        <div class="search-field indigo lighten-5">
+            <div class="container container-wide">
+                <div class="d-flex">
+                    <input id="string"
+                           name="string"
+                           type="search"
+                           class="validate json json-search white mr-1"
+                           data-json-target="#search"
+                           placeholder="Ara"
+                           value="{{ $q }}" />
+
+                    <a href="#" class="align-self-center mr-1" data-trigger="info">
+                        <i class="material-icons grey-text text-darken-2">info_outline</i>
                     </a>
-                    <input style="max-width: 96px;" type="text" class="datepicker" name="start_date" value="{{ $s ? $s : date('Y-m-d', strtotime('-1 day')) }}" placeholder="Başlangıç" />
-                    <input style="max-width: 96px;" type="text" class="datepicker" name="end_date" value="{{ $e ? $e : date('Y-m-d') }}" placeholder="Bitiş" />
-                </span>
+                </div>
             </div>
-            <div class="wild-content d-flex" data-wild="sentiment">
-                <span class="wild-body d-flex">
-                    <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center mr-1" data-class=".wild-content" data-class-remove="active">
-                        <i class="material-icons">close</i>
-                    </a>
-                    <label class="align-self-center mr-1" data-tooltip="Pozitif">
-                        <input type="radio" name="sentiment" value="pos" />
-                        <span class="material-icons grey-text text-darken-2">sentiment_satisfied</span>
-                    </label>
-                    <label class="align-self-center mr-1" data-tooltip="Nötr">
-                        <input type="radio" name="sentiment" value="neu" />
-                        <span class="material-icons grey-text text-darken-2">sentiment_neutral</span>
-                    </label>
-                    <label class="align-self-center mr-1" data-tooltip="Negatif">
-                        <input type="radio" name="sentiment" value="neg" />
-                        <span class="material-icons grey-text text-darken-2">sentiment_dissatisfied</span>
-                    </label>
-                    <label class="align-self-center mr-1" data-tooltip="Tümü">
-                        <input type="radio" name="sentiment" value="all" checked="" />
-                        <span class="material-icons grey-text text-darken-2">fullscreen</span>
-                    </label>
-                </span>
-            </div>
-            <ul class="wild-menu">
-                <li>
-                    <a class="d-flex" href="#" data-class="[data-wild=date]" data-class-add="active">
-                        <i class="material-icons mr-1">date_range</i>
-                        <span class="align-self-center">Tarih</span>
-                    </a>
-                </li>
-                <li>
-                    <a class="d-flex" href="#" data-class="[data-wild=sentiment]" data-class-add="active">
-                        <i class="material-icons mr-1">mood</i>
-                        <span class="align-self-center">Duygu</span>
-                    </a>
-                </li>
-            </ul>
         </div>
     </div>
 @endsection

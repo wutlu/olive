@@ -52,8 +52,8 @@
                         item.find('[data-name=start-time]').html(o.start_time)
                         item.find('[data-name=end-time]').html(o.end_time)
 
+                        item.find('[data-name=dropdown-trigger]').attr('data-target', 'dropdown-' + o.id).addClass('dropdown-trigger dropdown-trigger--content')
                         item.find('[data-name=dropdown-content]').attr('id', 'dropdown-' + o.id)
-                        item.find('[data-name=dropdown-trigger]').attr('data-target', 'dropdown-' + o.id).addClass('dropdown-trigger')
 
                         item.find('[data-name=edit]').attr('data-id', o.id)
                         item.find('[data-trigger=delete]').attr('data-id', o.id)
@@ -64,7 +64,7 @@
                         }
                 })
 
-                $('.dropdown-trigger').dropdown({
+                $('.dropdown-trigger--content').dropdown({
                     alignment: 'right'
                 })
             }

@@ -5,7 +5,8 @@
             'text' => 'Gerçek Zamanlı'
         ]
     ],
-    'dock' => true
+    'dock' => true,
+    'wide' => true
 ])
 
 @push('local.styles')
@@ -28,13 +29,16 @@
     }
 
     .time-line > .collection > .collection-item {
-        word-break: break-all;
+        word-break: break-word;
     }
 
     .time-line > .collection > .lined {
         position: relative;
         border-radius: 1rem 0 0 1rem;
         margin: 1rem 0 1rem 1rem;
+    }
+    .time-line > .collection > .lined > span[data-name=title] {
+        font-size: 18px;
     }
 
     .list-alert {
@@ -91,7 +95,7 @@
     <div id="wildcard-pin-history" class="owl-carousel owl-wildcard z-depth-2 hide"></div>
 
     <div class="grey lighten-4 z-depth-1">
-        <div class="container wild-area">
+        <div class="container container-wide wild-area">
             <div class="wild-content d-flex grey lighten-4" data-wild="volume">
                 <span class="wild-body d-flex">
                     <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center mr-1" data-class=".wild-content" data-class-remove="active">
@@ -202,25 +206,25 @@
         <ul class="collection">
             <li class="collection-item hide model grey-text lined">
                 <div class="mb-1">
-                    <a href="#" class="btn waves-effect white grey-text text-darken-2" data-button="view">
-                        <i class="material-icons">info</i>
+                    <a href="#" class="btn-floating btn-small waves-effect white" data-button="view">
+                        <i class="material-icons grey-text text-darken-2">info</i>
                     </a>
                     <a
                         href="#"
-                        class="btn waves-effect white grey-text text-darken-2 json"
+                        class="btn-floating btn-small waves-effect white json"
                         data-href="{{ route('pin', 'add') }}"
                         data-method="post"
                         data-include="group_id"
                         data-callback="__pin"
                         data-trigger="pin">
-                            <i class="material-icons">add</i>
+                            <i class="material-icons grey-text text-darken-2">add</i>
                     </a>
                 </div>
-                <time data-name="created-at"></time>
-                <a href="#" data-name="url" class="indigo-text d-table" target="_blank"></a>
-                <p data-name="author" class="red-text mb-0"></p>
-                <p data-name="title" class="mb-0"></p>
-                <p data-name="text" class="black-text mb-0"></p>
+                <span data-name="title" class="blue-text"></span>
+                <time data-name="created-at" class="d-block grey-text"></time>
+                <span data-name="author" class="d-block red-text"></span>
+                <span data-name="text" class="d-block grey-text text-darken-2"></span>
+                <a href="#" data-name="url" class="d-block green-text" target="_blank"></a>
                 <span class="material-icons" data-name="sentiment"></span>
             </li>
             <li class="collection-item">
