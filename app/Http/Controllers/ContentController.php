@@ -169,23 +169,6 @@ class ContentController extends Controller
                                     ]
                                 ]
                             ]
-                        ]),
-                        'aggregations' => Document::list([ 'twitter', 'tweets', '*' ], 'tweet', [
-                            'query' => [
-                                'bool' => [
-                                    'must' => $user,
-                                    'filter' => [
-                                        [ 'range' => [ 'sentiment.neg' => [ 'gte' => .34 ] ] ]
-                                    ]
-                                ]
-                            ],
-                            'aggs' => [
-                                'names' => [ 'terms' => [ 'field' => 'user.screen_name' ] ],
-                                'screen_names' => [ 'terms' => [ 'field' => 'user.name' ] ],
-                                'platforms' => [ 'terms' => [ 'field' => 'platform' ] ],
-                                'langs' => [ 'terms' => [ 'field' => 'lang' ] ]
-                            ],
-                            'size' => 0
                         ])
                     ];
                 break;
@@ -279,6 +262,33 @@ class ContentController extends Controller
         }
 
         return abort(404);
+    }
+
+    /**
+     * Aggregations
+     */
+    public static function aggregation(string $type, int $user_id)
+    {
+        $data = [
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [ 'match' => [ 'user.id' => $user_id ] ]
+                    ]
+                ]
+            ],
+            'size' => 0
+        ];
+
+        if ($type == 'names') $data['aggs']['names'] = [ 'terms' => [ 'field' => 'user.name' ] ];
+        if ($type == 'screen_names') $data['aggs']['screen_names'] = [ 'terms' => [ 'field' => 'user.screen_name' ] ];
+        if ($type == 'platforms') $data['aggs']['platforms'] = [ 'terms' => [ 'field' => 'platform' ] ];
+        if ($type == 'langs') $data['aggs']['langs'] = [ 'terms' => [ 'field' => 'lang' ] ];
+
+        return [
+            'status' => 'ok',
+            'data' => Document::list([ 'twitter', 'tweets', '*' ], 'tweet', $data)->data['aggregations'][$type]['buckets']
+        ];
     }
 
     /**
