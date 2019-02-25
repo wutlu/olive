@@ -70,8 +70,8 @@
 
         <div class="container">
             <div class="d-table mx-auto">
-                <span class="d-flex white-text" id="data-count">
-                    <small class="align-self-center">Türkiye'nin en enlamlı büyük verisi.</small>
+                <span class="d-flex white-text">
+                    <h5 class="align-self-center">Türkiye'nin en enlamlı büyük verisi.</h5>
                 </span>
             </div>
         </div>
@@ -83,7 +83,7 @@
         </div>
 
         <div class="container">
-            <img id="vz-logo-top" src="{{ asset('img/veri.zone-logo-grey.svg') }}" alt="veri.zone-logo" />
+            <img id="vz-logo-top" src="{{ asset('img/olive_logo-grey.svg') }}" alt="olive-logo" />
             <div class="item-group" id="features">
                 <div class="item grey-text text-darken-2">
                     <i class="large material-icons analytics">poll</i>
@@ -143,12 +143,12 @@
 
         <div class="container">
             <div class="d-table mx-auto">
-                <span class="d-flex white-text" id="data-count">
+                <h5 class="d-flex white-text" id="data-count">
                     <small class="align-self-center mr-1">Hızla büyüyen veritabanı ve</small>
                     <span class="align-self-center load" data-id="loader" data-href="{{ route('home.data.counter') }}" data-method="post" data-callback="__counter">0</span>
                     <i class="align-self-center material-icons">add</i>
                     <small class="align-self-center ml-1">veri.</small>
-                </span>
+                </h5>
             </div>
         </div>
     </div>

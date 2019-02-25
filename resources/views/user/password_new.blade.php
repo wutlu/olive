@@ -13,7 +13,7 @@
                 <form id="password-form" data-callback="__password" action="{{ route('user.password.new', [ 'id' => $user->id, 'sid' => $user->session_id ]) }}" method="patch" class="json">
                     <div class="card" style="max-width: 460px;">
                         <div class="card-content">
-                            <img src="{{ asset('img/olive-logo.svg') }}" alt="olive-logo" class="responsive-img" style="width: 128px;" />
+                            <img src="{{ asset('img/olive_logo.svg') }}" alt="olive-logo" class="responsive-img" style="width: 128px;" />
                         </div>
                         <div class="card-content teal lighten-5 teal-text">Yeni şifrenizi oluşturun.</div>
                         <div class="card-content">

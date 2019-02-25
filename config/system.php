@@ -22,11 +22,12 @@ return [
      */
     'ticket' => [
         'types' => [
+            'geri-bildirim' => 'Geri Bildirim',
             'kaynak-istegi' => 'Kaynak İsteği',
             'teknik' => 'Teknik Konular',
             'diger' => 'Diğer Konular',
             'odeme-bildirimi' => 'Ödeme Bildirimi',
-            'hak-sahipligi' => 'Hak Sahipliği'
+            'hak-sahipligi' => 'Hak Sahipliği',
         ]
     ],
 

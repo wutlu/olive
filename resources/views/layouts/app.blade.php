@@ -165,7 +165,7 @@
                 <div class="{{ auth()->check() ? 'sidenav-fixed-layout' : 'container' }}">
                     <div class="nav-wrapper">
                         <a href="{{ route('dashboard') }}" class="brand-logo center">
-                            <img alt="{{ config('app.name') }}" src="{{ asset('img/olive-logo.svg') }}" />
+                            <img alt="{{ config('app.name') }}" src="{{ asset('img/olive_logo.svg') }}" />
                         </a>
                         @auth
                         <a href="#" data-target="slide-out" class="sidenav-trigger">

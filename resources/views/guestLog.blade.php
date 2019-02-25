@@ -101,7 +101,7 @@
     #console.collection {
     	min-height: 400px;
 
-        background-image: url('{{ asset('img/olive-logo-opacity.svg') }}');
+        background-image: url('{{ asset('img/olive_logo-opacity.svg') }}');
         background-repeat: no-repeat;
         background-position: center;
         padding: 1rem 0;

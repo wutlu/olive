@@ -11,7 +11,7 @@
                 <div class="row">
                     <div class="col l4">
                         <a href="{{ route('home') }}" id="logo">
-                            <img src="{{ asset('img/olive-logo.svg') }}" alt="olive-logo" class="responsive-img" />
+                            <img src="{{ asset('img/olive_logo.svg') }}" alt="olive-logo" class="responsive-img" />
                         </a>
 
                         <p id="dword">Olive, daha anlamlı bir internet deneyimi sunar...</p>

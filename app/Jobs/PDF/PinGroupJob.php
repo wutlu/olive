@@ -155,7 +155,7 @@ class PinGroupJob implements ShouldQueue
                         <div class="clearfix">
                             <div class="left">
                                 <a href="'.config('app.url').'" target="_blank">
-                                    <img class="logo" alt="Logo" src="'.asset('img/olive-logo.png').'" />
+                                    <img class="logo" alt="Logo" src="'.asset('img/olive_logo.png').'" />
                                 </a>
                             </div>
                             <div class="right">

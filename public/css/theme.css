@@ -1149,15 +1149,8 @@ body.fs-active .fullscreen > .fs-element {
 }
 #more-step > .container > img#vz-logo-top {
   display: table;
-  max-width: 240px;
+  max-width: 172px;
   margin: 4rem 0;
-}
-
-/**
- * data count
- */
-#data-count {
-  font-size: 32px;
 }
 
 /**
@@ -1462,7 +1455,7 @@ header#main > .parallax-container > .parallax > video#background-video {
 
 .card {
   margin: 0 0 1rem;
-  word-break: break-all;
+  word-break: break-word;
 }
 
 .card.with-bg {
@@ -1480,6 +1473,7 @@ header#main > .parallax-container > .parallax > video#background-video {
 
 .card .card-title {
   margin: 0 !important;
+  line-height: 24px !important;
 }
 .card .card-title.card-title-small {
   font-size: 18px;
@@ -1678,12 +1672,13 @@ header#main > .parallax-container > .parallax > video#background-video {
 ul#console {
     height: 400px;
     overflow-y: scroll;
-    background-image: url('../img/olive-logo-opacity.svg');
+    background-image: url('../img/olive_logo-opacity.svg');
     background-repeat: no-repeat;
     background-position: center;
     background-size: 70% auto;
     background-color: #000;
-    word-break: break-all;
+  
+    word-break: break-word;
 }
 
 ul#console > li textarea {

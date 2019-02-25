@@ -22,7 +22,7 @@
 
 @push('local.styles')
     .fullscreen {
-        background-image: url('{{ asset('img/olive-logo-opacity.svg') }}');
+        background-image: url('{{ asset('img/olive_logo-opacity.svg') }}');
         background-repeat: no-repeat;
         background-position: center center;
         background-size: 50%;
@@ -348,7 +348,7 @@
         </div>
         <header class="fs-header">
             <div class="d-flex justify-content-between">
-                <img alt="Olive" src="{{ asset('img/olive-logo-grey.svg') }}" class="logo" />
+                <img alt="Olive" src="{{ asset('img/olive_logo-grey.svg') }}" class="logo" />
                 <a href="#" class="btn-floating btn-flat waves-effect" data-class="body" data-class-remove="fs-active">
                     <i class="material-icons">fullscreen_exit</i>
                 </a>

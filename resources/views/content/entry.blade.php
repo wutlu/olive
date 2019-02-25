@@ -13,12 +13,40 @@
     'id' => $document['_source']['group_name'],
 ])
 
+@push('local.styles')
+    [data-name=title] {
+        font-size: 18px;
+    }
+@endpush
+
 @section('content')
     <div class="row">
+        <div class="col m12 xl12">
+            <div class="card">
+                <div class="card-content">
+                    <a href="{{ $document['_source']['url'] }}" class="card-title d-flex" target="_blank">
+                        <i class="material-icons mr-1">insert_link</i>
+                        <span>{{ $document['_source']['title'] }}</span>
+                    </a>
+                    <span class="red-text">{{ $document['_source']['author'] }}</span>
+                    <div class="markdown">{!! Term::markdown($document['_source']['entry']) !!}</div>
+                </div>
+                @include('content._inc.sentiment_bar', [
+                    'pos' => $document['_source']['sentiment']['pos'],
+                    'neg' => $document['_source']['sentiment']['neg'],
+                    'neu' => $document['_source']['sentiment']['neu']
+                ])
+            </div>
+        </div>
         <div class="col m12 xl6">
             <div class="card">
                 <div class="card-content">
-                    <span class="card-title">Yanıtlarda Sık Kullanılan Kelimeler</span>
+                    <span class="card-title">Sık Kullanılan Kelimeler</span>
+                </div>
+                <div class="card-content cyan darken-2">
+                    <p class="white-text">Bu kelimeler başlık altına girilen entrylerden elde edilmiştir.</p>
+                </div> 
+                <div class="card-content"> 
                     @if (@$data['keywords'])
                         @foreach ($data['keywords'] as $key => $word)
                             <span class="chip">{{ $key }}</span>
@@ -40,23 +68,8 @@
         <div class="col m12 xl12">
             <div class="card">
                 <div class="card-content">
-                    <a href="{{ $document['_source']['url'] }}" class="card-title d-flex" target="_blank">
-                        <i class="material-icons mr-1">insert_link</i>
-                        <span>{{ $document['_source']['title'] }}</span>
-                    </a>
-                    <span class="orange-text">{{ $document['_source']['author'] }}</span>
-                    <div class="markdown">{!! Term::markdown($document['_source']['entry']) !!}</div>
-                </div>
-                @include('content._inc.sentiment_bar', [
-                    'pos' => $document['_source']['sentiment']['pos'],
-                    'neg' => $document['_source']['sentiment']['neg'],
-                    'neu' => $document['_source']['sentiment']['neu']
-                ])
-            </div>
-
-            <div class="card">
-                <div class="card-content cyan darken-2">
-                    <span class="card-title white-text mb-0">Benzer Entryler</span>
+                    <span class="card-title">Benzer Entryler</span>
+                    <small class="grey-text text-darken-2">Diğer sözlükler dahildir.</small>
                 </div>
                 <div class="collection load json-clear"
                      id="smilars"
@@ -69,14 +82,17 @@
                      data-loader="#home-loader"
                      data-nothing>
                     <div class="collection-item nothing hide">
-                        @component('components.nothing')@endcomponent
+                        @component('components.nothing')
+                            @slot('size', 'small')
+                            @slot('text', 'Üzgünüz, hiç benzer içerik yok.')
+                        @endcomponent
                     </div>
                     <div class="collection-item z-depth-1 model hide">
-                        <a href="#" class="d-table" data-name="title"></a>
-                        <span class="d-table orange-text" data-name="author"></span>
-                        <span class="d-table grey-text" data-name="entry"></span>
-                        <a href="#" class="orange-text" data-name="url" target="_blank"></a>
-                        <time class="d-table grey-text mb-0" data-name="created-at"></time>
+                        <a href="#" class="d-table blue-text" data-name="title"></a>
+                        <span class="d-table red-text" data-name="author"></span>
+                        <time class="d-table grey-text" data-name="created-at"></time>
+                        <span class="d-table grey-text text-darken-2" data-name="entry"></span>
+                        <a href="#" class="d-table green-text" data-name="url" target="_blank"></a>
                     </div>
                 </div>
             </div>

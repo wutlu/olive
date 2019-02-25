@@ -276,7 +276,7 @@
                                             $('<a />', {
                                                 'html': o.channel.title,
                                                 'href': 'https://www.youtube.com/channel/' + o.channel.id,
-                                                'class': 'd-table teal-text'
+                                                'class': 'd-table red-text'
                                             }).attr('target', '_blank'),
                                             $('<time>', {
                                                 'html': o.created_at,
@@ -311,15 +311,14 @@
                                 'html': [
                                     $('<div />', {
                                         'html': [
+                                            $('<span />', {
+                                                'html': o.title,
+                                                'class': 'd-table blue-text title'
+                                            }),
                                             $('<a />', {
                                                 'html': o.channel.title,
                                                 'href': 'https://www.youtube.com/channel/' + o.channel.id,
-                                                'class': 'd-table teal-text'
-                                            }).attr('target', '_blank'),
-                                            $('<a />', {
-                                                'html': o.title,
-                                                'href': 'https://www.youtube.com/watch?v=' + o._id,
-                                                'class': 'd-table blue-text title'
+                                                'class': 'd-table red-text'
                                             }).attr('target', '_blank'),
                                             $('<time>', {
                                                 'html': o.created_at,
@@ -328,7 +327,12 @@
                                             $('<span />', {
                                                 'html': o.text,
                                                 'class': 'grey-text text-darken-2'
-                                            })
+                                            }),
+                                            $('<a />', {
+                                                'html': 'https://www.youtube.com/watch?v=' + o._id,
+                                                'href': 'https://www.youtube.com/watch?v=' + o._id,
+                                                'class': 'd-table green-text'
+                                            }).attr('target', '_blank')
                                         ]
                                     })
                                 ]

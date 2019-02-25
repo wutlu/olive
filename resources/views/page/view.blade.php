@@ -24,7 +24,7 @@
                 <i class="material-icons grey-text">menu</i>
             </a>
             <a href="{{ route('home') }}" class="brand-logo center">
-                <img alt="{{ config('app.name') }}" src="{{ asset('img/olive-logo.svg') }}" />
+                <img alt="{{ config('app.name') }}" src="{{ asset('img/olive_logo.svg') }}" />
             </a>
         </nav>
     </div>
@@ -46,7 +46,7 @@
 
     <ul id="slide-out" class="sidenav">
         <li class="p-1">
-            <img alt="{{ config('app.name') }}" src="{{ asset('img/olive-logo.svg') }}" style="width: 96px;" />
+            <img alt="{{ config('app.name') }}" src="{{ asset('img/olive_logo.svg') }}" style="width: 96px;" />
         </li>
         @forelse ($pages as $page)
             <li>

@@ -14,6 +14,12 @@
     'id' => $document['_source']['id'],
 ])
 
+@push('local.styles')
+    [data-name=title] {
+        font-size: 18px;
+    }
+@endpush
+
 @section('content')
     <div class="row">
         <div class="col m12 xl12">
@@ -31,8 +37,9 @@
             </div>
 
             <div class="card">
-                <div class="card-content cyan darken-2">
-                    <span class="card-title white-text mb-0">Benzer Ürünler</span>
+                <div class="card-content">
+                    <span class="card-title">Benzer Ürünler</span>
+                    <small class="grey-text text-darken-2">Diğer e-ticaret siteleri dahildir.</small>
                 </div>
                 <div class="collection load json-clear"
                      id="smilars"
@@ -45,21 +52,20 @@
                      data-loader="#home-loader"
                      data-nothing>
                     <div class="collection-item nothing hide">
-                        @component('components.nothing')@endcomponent
+                        @component('components.nothing')
+                            @slot('size', 'small')
+                            @slot('text', 'Üzgünüz, hiç benzer içerik yok.')
+                        @endcomponent
                     </div>
                     <div class="collection-item z-depth-1 model hide">
-                        <a href="#" class="d-table" data-name="title"></a>
-
-                        <span class="price red white-text">
+                        <a href="#" class="d-table blue-text" data-name="title"></a>
+                        <time class="d-table grey-text" data-name="created-at"></time>
+                        <ul class="d-flex" data-name="breadcrumb"></ul>
+                        <span class="d-table red-text">
                             <span data-name="price-amount"></span>
                             <span data-name="price-currency"></span>
                         </span>
-
-                        <ul class="d-flex" data-name="breadcrumb"></ul>
-
-                        <a href="#" class="orange-text" data-name="url" target="_blank"></a>
-
-                        <time class="d-table grey-text mb-0" data-name="created-at"></time>
+                        <a href="#" class="d-table green-text" data-name="url" target="_blank"></a>
                     </div>
                 </div>
             </div>
@@ -80,22 +86,22 @@
 @endsection
 
 @section('dock')
-    <div class="card">
-        <div class="card-content yellow lighten-4">
-            <span class="grey-text text-darken-4">{{ number_format($document['_source']['price']['amount']) }}</span>
-            <span class="grey-text">{{ $document['_source']['price']['currency'] }}</span>
+    <div class="card cyan">
+        <div class="card-content cyan darken-2">
+            <span class="white-text text-darken-4">{{ number_format($document['_source']['price']['amount']) }}</span>
+            <span class="white-text">{{ $document['_source']['price']['currency'] }}</span>
         </div>
         <div class="card-content">
-            <span class="red-text">{{ title_case($document['_source']['seller']['name']) }}</span>
+            <span class="cyan-text text-lighten-4">{{ title_case($document['_source']['seller']['name']) }}</span>
             @isset ($document['_source']['seller']['phones'])
                 @foreach ($document['_source']['seller']['phones'] as $key => $phone)
-                    <p class="grey-text">{{ $phone['phone'] }}</p>
+                    <p class="white-text">{{ $phone['phone'] }}</p>
                 @endforeach
             @endisset
         </div>
 
         <div class="card-tabs">
-            <ul class="tabs dock-tabs cyan tabs-transparent tabs-fixed-width">
+            <ul class="tabs dock-tabs tabs-transparent tabs-fixed-width">
                 <li class="tab">
                     <a href="#category" class="active">Kategori</a>
                 </li>
@@ -106,7 +112,7 @@
         </div>
 
         @isset ($document['_source']['breadcrumb'])
-            <ul class="collection" id="category">
+            <ul class="collection white" id="category">
                 @foreach ($document['_source']['breadcrumb'] as $key => $segment)
                     <li class="collection-item" data-icon="»">{{ $segment['segment'] }}</li>
                 @endforeach
@@ -114,7 +120,7 @@
         @endisset
 
         @isset ($document['_source']['address'])
-            <ul class="collection" id="address" style="display: none;">
+            <ul class="collection white" id="address" style="display: none;">
                 @foreach ($document['_source']['address'] as $key => $segment)
                     <li class="collection-item" data-icon="»">{{ $segment['segment'] }}</li>
                 @endforeach
@@ -156,7 +162,7 @@
                             }))
                         })
 
-                        item.find('[data-name=url]').html(o._source.url).attr('href', o._source.url)
+                        item.find('[data-name=url]').html(str_limit(o._source.url, 72)).attr('href', o._source.url)
                         item.find('[data-name=created-at]').html(o._source.created_at)
 
                         item.appendTo(ul)

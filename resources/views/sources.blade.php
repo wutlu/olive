@@ -6,7 +6,7 @@
     <div class="navbar-fixed">
         <nav class="white">
             <a href="{{ route('dashboard') }}" class="brand-logo center">
-                <img alt="{{ config('app.name') }}" src="{{ asset('img/olive-logo.svg') }}" />
+                <img alt="{{ config('app.name') }}" src="{{ asset('img/olive_logo.svg') }}" />
             </a>
         </nav>
     </div>
