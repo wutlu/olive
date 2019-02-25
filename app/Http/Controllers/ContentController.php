@@ -293,9 +293,15 @@ class ContentController extends Controller
                 $arr['query']['bool']['must'][] = [
                     'match' => [ 'group_name' => $es_id ]
                 ];
+
+                $document = Document::list($es_index, $es_type, $arr);
             break;
             case 'article':
-                $arr['query']['bool']['must'][] = [ 'match' => [ 'site_id' => $es_id ] ];
+                $arr['query']['bool']['must'][] = [
+                    'match' => [ 'site_id' => $es_id ]
+                ];
+
+                $document = Document::list($es_index, $es_type, $arr);
             break;
             case 'product':
                 $doc = Document::get($es_index, $es_type, $es_id);
@@ -323,9 +329,11 @@ class ContentController extends Controller
                         ]
                     ];
                 }
+
+                $document = Document::list($es_index, $es_type, $arr);
             break;
             case 'tweet':
-                $doc = Document::get([ 'twitter', 'tweets', '*' ], $es_type, $es_id);
+                $doc = Document::get($es_index, $es_type, $es_id);
 
                 if ($doc->status != 'ok')
                 {
@@ -342,10 +350,10 @@ class ContentController extends Controller
                         'user.id' => $doc->data['_source']['user']['id']
                     ]
                 ];
+
+                $document = Document::list([ 'twitter', 'tweets', '*' ], $es_type, $arr);
             break;
         }
-
-        $document = Document::list($es_index, $es_type, $arr);
 
         //$document = json_encode(json_decode($document->message), JSON_PRETTY_PRINT); print_r($document); exit();
 
