@@ -36,6 +36,23 @@
 	</div>
 	<div class="card">
 	    <div class="card-content">
+	        <span class="card-title">Sık Kullanılan Kelimeler</span>
+	    </div>
+	    <div class="card-content cyan darken-2">
+	        <p class="white-text">İlgili kullanıcıdan toplam {{ $data['total']->data['count'] }} tweet alındı. Sayfadaki istatistik verileri, alınan tweetler üzerinden gerçekleştirilmiştir.</p>
+	    </div> 
+	    <div class="card-content"> 
+	        @if (@$data['keywords'])
+	            @foreach ($data['keywords'] as $key => $word)
+	                <a href="{{ route('search.dashboard', [ 'q' => $key ]) }}" target="_blank" class="chip waves-effect">{{ $key }}</a>
+	            @endforeach
+	        @else
+	            <span class="chip red white-text">Tespit Edilemedi</span>
+	        @endif
+	    </div>
+	</div>
+	<div class="card">
+	    <div class="card-content">
 	        <span class="card-title">Diğer Tweetler</span>
 	    </div>
 	    <div class="collection load json-clear"
