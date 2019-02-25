@@ -45,6 +45,10 @@
                     $('<li />', {
                         'class': 'collection-item',
                         'html': 'Duygu analizinde 0.0 ile 1 arası derecelendirme yapıyoruz. Pozitif için <code class="red white-text">sentiment.pos</code>, negatif için <code class="red white-text">sentiment.neg</code> ve nötr için <code class="red white-text">sentiment.neu</code> operatörlerini, <code class="red white-text">sentiment.neg:>0.4</code> vb. şekilde kullanabilirsiniz.'
+                    }),
+                    $('<li />', {
+                        'class': 'collection-item',
+                        'html': 'YouTube yorumları için ilgilendiğiniz video id`sini kullanabilirsiniz. <code class="red white-text">video_id:47-rQKinD8Y</code>'
                     })
                 ]
             }),
