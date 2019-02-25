@@ -149,35 +149,8 @@ class ContentController extends Controller
                                     'must' => $user
                                 ]
                             ]
-                        ]),
-                        'popular' => Document::list([ 'twitter', 'tweets', '*' ], 'tweet', [
-                            'size' => 0,
-                            'query' => [
-                                'bool' => [
-                                    'must' => $user
-                                ]
-                            ],
-                            'aggs' => [
-                                'popular_keywords' => [
-                                    'terms' => [
-                                        'field' => 'text',
-                                        'size' => 100
-                                    ]
-                                ]
-                            ]
                         ])
                     ];
-
-                    $bucket = @$data['popular']->data['aggregations']['popular_keywords']['buckets'];
-
-                    if ($bucket)
-                    {
-                        $bucket = implode(' ', array_map(function($a) {
-                            return $a['key'];
-                        }, $bucket));
-
-                        $data['keywords'] = Term::commonWords($bucket, 100);
-                    }
                 break;
 
                 case 'video':
