@@ -267,7 +267,7 @@ class ContentController extends Controller
     /**
      * Aggregations
      */
-    public static function aggregation(string $type, int $user_id)
+    public static function tweetAggregation(string $type, int $user_id)
     {
         $data = [
             'query' => [

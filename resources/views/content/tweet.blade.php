@@ -52,8 +52,8 @@
     <div class="row">
         @foreach (
             [
-                'names' => 'Kullanıcı Adları',
-                'screen_names' => 'Adlar',
+                'names' => 'Adlar',
+                'screen_names' => 'Kullanıcı Adları',
                 'platforms' => 'Platformlar',
                 'langs' => 'Diller'
             ] as $key => $model
