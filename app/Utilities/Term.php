@@ -254,7 +254,7 @@ class Term
         $tweet = preg_replace('/#([A-ZğüşıöçĞÜŞİÖÇa-z0-9\/\.]*)/', '<a target="_blank" href="https://twitter.com/search?q=$1">#$1</a>', $tweet);
 
         //Convert attags to twitter profiles in &lt;a&gt; links
-        $tweet = preg_replace('/@([A-Za-z0-9\/\.]*)/', '<a target="_blank" href="https://twitter.com/$1">@$1</a>', $tweet);
+        $tweet = preg_replace('/@([A-Za-z0-9_\/\.]*)/', '<a target="_blank" href="https://twitter.com/$1">@$1</a>', $tweet);
 
         return $tweet;
     }
