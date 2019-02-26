@@ -100,13 +100,16 @@
     </div>
 
     <div class="card cyan darken-2">
+        <div class="card-content">
+            <p class="white-text">Tüm Tweetler ve ReTweetler kullanıcıya ait ve veritabanımıza alınmış periyodik verilerden oluşmaktadır.</p>
+        </div>
         <div class="card-tabs">
             <ul class="tabs tabs-transparent sub-tabs">
                 <li class="tab">
                     <a class="active" href="#all-tweets">Tüm Tweetler ({{ $data['total']->data['count'] }})</a>
                 </li>
                 <li class="tab">
-                    <a class="active" href="#all-retweets">ReTweetler ({{ $data['retweet']->data['count'] }})</a>
+                    <a class="active" href="#all-retweets">Tweetin ReTweetleri ({{ $data['retweet']->data['count'] }})</a>
                 </li>
                 @isset ($data['stats'])
                     <li class="tab">
@@ -152,7 +155,7 @@
                         data-json-target="#all_tweets">Daha Fazla</button>
             </div>
         </div>
-        <div id="all-retweets" class="white">
+        <div id="all-retweets" class="white" style="display: none;">
             <div class="collection load json-clear mb-0"
                  id="all_retweets"
                  data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id, 'type' => 'retweet' ]) }}"
