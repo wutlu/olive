@@ -142,11 +142,42 @@ class ContentController extends Controller
                         [ 'match' => [ 'user.id' => $document['_source']['user']['id'] ] ]
                     ];
 
+                    $follow_graph = Document::list([ 'twitter', 'tweets', '*' ], 'tweet', [
+                        'size' => 100,
+                        'query' => [
+                            'bool' => [
+                                'must' => [
+                                    [ 'match' => [ 'user.id' => $document['_source']['user']['id'] ] ]
+                                ]
+                            ]
+                        ],
+                        '_source' => [
+                            'user.counts.friends',
+                            'user.counts.followers',
+                            'user.counts.statuses',
+                            'user.counts.listed',
+                            'user.counts.favourites',
+                            'created_at'
+                        ],
+                        'sort' => [
+                             'created_at' => 'DESC'
+                        ]
+                    ]);
+
                     $data = [
                         'total' => Document::count([ 'twitter', 'tweets', '*' ], 'tweet', [
                             'query' => [
                                 'bool' => [
                                     'must' => $user
+                                ]
+                            ]
+                        ]),
+                        'retweet' => Document::count([ 'twitter', 'tweets', '*' ], 'tweet', [
+                            'query' => [
+                                'bool' => [
+                                    'must' => [
+                                        [ 'match' => [ 'external.id' => $document['_source']['id'] ] ]
+                                    ]
                                 ]
                             ]
                         ]),
@@ -171,6 +202,83 @@ class ContentController extends Controller
                             ]
                         ])
                     ];
+
+                    if (@$follow_graph->data['hits']['hits'])
+                    {
+                        $stats = [];
+
+                        $_created_at = null;
+                        $_followers = null;
+                        $_friends = null;
+                        $_statuses = null;
+                        $_listed = null;
+                        $_favourites = null;
+
+                        foreach (array_reverse($follow_graph->data['hits']['hits']) as $arr)
+                        {
+                            $created_at = date('Y.m.d', strtotime($arr['_source']['created_at']));
+
+                            if ($created_at != $_created_at)
+                            {
+                                $followers = $arr['_source']['user']['counts']['followers'];
+                                $friends = $arr['_source']['user']['counts']['friends'];
+                                $statuses = $arr['_source']['user']['counts']['statuses'];
+                                $listed = $arr['_source']['user']['counts']['listed'];
+                                $favourites = $arr['_source']['user']['counts']['favourites'];
+
+                                $stats[] = [
+                                    'created_at' => $created_at,
+                                    'followers' => $followers,
+                                    'friends' => $friends,
+                                    'statuses' => $statuses,
+                                    'listed' => $listed,
+                                    'favourites' => $favourites,
+
+                                    'diff' => [
+                                        'followers'  => $followers  < $_followers  ? 'red' : ($followers  == $_followers  ? 'grey' : 'green'),
+                                        'friends'    => $friends    < $_friends    ? 'red' : ($friends    == $_friends    ? 'grey' : 'green'),
+                                        'statuses'   => $statuses   < $_statuses   ? 'red' : ($statuses   == $_statuses   ? 'grey' : 'green'),
+                                        'listed'     => $listed     < $_listed     ? 'red' : ($listed     == $_listed     ? 'grey' : 'green'),
+                                        'favourites' => $favourites < $_favourites ? 'red' : ($favourites == $_favourites ? 'grey' : 'green'),
+
+                                        '_followers'  => $followers  - $_followers,
+                                        '_friends'    => $friends    - $_friends,
+                                        '_statuses'   => $statuses   - $_statuses,
+                                        '_listed'     => $listed     - $_listed,
+                                        '_favourites' => $favourites - $_favourites,
+                                    ]
+                                ];
+
+                                $_followers = $followers;
+                                $_friends = $friends;
+                                $_statuses = $statuses;
+                                $_listed = $listed;
+                                $_favourites = $favourites;
+                            }
+
+                            $_created_at = $created_at;
+                        }
+
+                        $data['stats'] = array_reverse($stats);
+
+                        $_followers  = array_map(function($arr) { return $arr['diff']['_followers'];  }, $data['stats']);
+                        $_friends    = array_map(function($arr) { return $arr['diff']['_friends'];    }, $data['stats']);
+                        $_statuses   = array_map(function($arr) { return $arr['diff']['_statuses'];   }, $data['stats']);
+                        $_listed     = array_map(function($arr) { return $arr['diff']['_listed'];     }, $data['stats']);
+                        $_favourites = array_map(function($arr) { return $arr['diff']['_favourites']; }, $data['stats']);
+
+                        array_pop($_followers);
+                        array_pop($_friends);
+                        array_pop($_statuses);
+                        array_pop($_listed);
+                        array_pop($_favourites);
+
+                        $data['statistics']['diff']['_followers']  = $_followers;
+                        $data['statistics']['diff']['_friends']    = $_friends;
+                        $data['statistics']['diff']['_statuses']   = $_statuses;
+                        $data['statistics']['diff']['_listed']     = $_listed;
+                        $data['statistics']['diff']['_favourites'] = $_favourites;
+                    }
                 break;
 
                 case 'video':
@@ -424,7 +532,7 @@ class ContentController extends Controller
      *
      * @return array
      */
-    public static function smilar(string $es_index, string $es_type, string $es_id, SearchRequest $request)
+    public static function smilar(string $es_index, string $es_type, string $es_id, string $type = '', SearchRequest $request)
     {
         $document = Document::get($es_index, $es_type, $es_id);
 
@@ -437,7 +545,7 @@ class ContentController extends Controller
                         'bool' => [
                             'must' => [
                                 [
-                                    'match' => [ 'user.id' => $document->data['_source']['user']['id'] ]
+                                    'match' => $type == 'retweet' ? [ 'external.id' => $es_id ] : [ 'user.id' => $document->data['_source']['user']['id'] ]
                                 ]
                             ]
                         ]

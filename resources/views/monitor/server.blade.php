@@ -146,9 +146,7 @@
 @endpush
 
 @push('local.scripts')
-    $(document).ready(function() {
-        $('.tabs').tabs()
-    });
+    $('.tabs').tabs()
 
     var options = {
         legend: { display: false },

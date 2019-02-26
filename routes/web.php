@@ -81,7 +81,7 @@ Route::get('uyari', 'HomeController@alert')->name('alert');
 Route::prefix('db')->group(function () {
     Route::get('{es_index}/{es_type}/{es_id}', 'ContentController@module')->name('content');
     Route::post('histogram/{type}/{es_index}/{es_type}/{es_id}', 'ContentController@histogram')->name('content.histogram')->where('type', '(hourly|weekly|tweet)');
-    Route::post('benzer/{es_index}/{es_type}/{es_id}', 'ContentController@smilar')->name('content.smilar');
+    Route::post('benzer/{es_index}/{es_type}/{es_id}/{type?}', 'ContentController@smilar')->name('content.smilar')->where('type', '(tweet|retweet)');
     Route::post('tweet/{type}/{id}', 'ContentController@tweetAggregation')->name('tweet.aggregation')->where('type', '(names|screen_names|platforms|langs)');
 });
 

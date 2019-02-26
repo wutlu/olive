@@ -1599,6 +1599,8 @@ header#main > .parallax-container > .parallax > video#background-video {
       -ms-user-select: none;
      -moz-user-select: none;
   -webkit-user-select: none;
+
+  margin: 0;
 }
 .card-panel.card-loader.card-loader-unstyled {
           box-shadow: none;
@@ -1891,8 +1893,6 @@ nav .nav-wrapper > ul > li > a > i {
 }
 
 .collapsible > li > .card-loader {
-  margin: 0;
-
           box-shadow: none !important;
   -webkit-box-shadow: none !important;
 }
