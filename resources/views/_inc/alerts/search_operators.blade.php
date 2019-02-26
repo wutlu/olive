@@ -49,6 +49,10 @@
                     $('<li />', {
                         'class': 'collection-item',
                         'html': 'YouTube yorumları için ilgilendiğiniz video id`sini kullanabilirsiniz. <code class="red white-text">video_id:47-rQKinD8Y</code>'
+                    }),
+                    $('<li />', {
+                        'class': 'collection-item',
+                        'html': 'Sözlük kullanıcıları için <code class="red white-text">author:"saulreaver"</code> operatörü kullanılabilir.'
                     })
                 ]
             }),
