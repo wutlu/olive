@@ -11,6 +11,7 @@
     'index' => $es->index,
     'type' => $es->type,
     'id' => $document['_source']['site_id'],
+    'tab_title' => 'Haber Grafiği'
 ])
 
 @push('local.styles')

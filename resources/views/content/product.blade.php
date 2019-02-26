@@ -12,6 +12,7 @@
     'index' => $es->index,
     'type' => $es->type,
     'id' => $document['_source']['id'],
+    'tab_title' => 'Benzer Ürün Grafiği'
 ])
 
 @push('local.styles')

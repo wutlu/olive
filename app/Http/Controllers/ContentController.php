@@ -400,6 +400,15 @@ class ContentController extends Controller
 
                 $document = Document::list([ 'twitter', 'tweets', '*' ], $es_type, $arr);
             break;
+            case 'video':
+                $arr['query']['bool']['must'][] = [
+                    'match' => [
+                        'video_id' => $es_id
+                    ]
+                ];
+
+                $document = Document::list([ 'youtube', 'comments', '*' ], $es_type, $arr);
+            break;
         }
 
         //$document = json_encode(json_decode($document->message), JSON_PRETTY_PRINT); print_r($document); exit();

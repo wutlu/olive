@@ -106,7 +106,7 @@ class SearchController extends Controller
                     ]
                 ];
                 $q['query']['bool']['must_not'][] = [ 'match' => [ 'external.type' => 'retweet' ] ];
-                $q['_source'] = [ 'user.name', 'user.screen_name', 'text', 'created_at', 'sentiment' ];
+                $q['_source'] = [ 'user.name', 'user.screen_name', 'text', 'created_at' ];
 
                 if ($request->sentiment != 'all')
                 {
@@ -124,7 +124,6 @@ class SearchController extends Controller
                             '_id' => $object['_id'],
                             '_type' => $object['_type'],
                             '_index' => $object['_index'],
-                            'sentiment' => $object['_source']['sentiment'],
                             'module' => 'twitter',
                             'user' => [
                                 'name' => $object['_source']['user']['name'],
@@ -143,7 +142,7 @@ class SearchController extends Controller
                 $q = $mquery;
 
                 $q['query']['bool']['must'][] = [ 'match' => [ 'status' => 'ok' ] ];
-                $q['_source'] = [ 'url', 'title', 'description', 'created_at', 'sentiment' ];
+                $q['_source'] = [ 'url', 'title', 'description', 'created_at' ];
                 $q['query']['bool']['must'][] = [
                     'query_string' => [
                         'fields' => [
@@ -172,7 +171,6 @@ class SearchController extends Controller
                             '_type' => $object['_type'],
                             '_index' => $object['_index'],
                             'module' => 'haber',
-                            'sentiment' => $object['_source']['sentiment'],
                             'url' => $object['_source']['url'],
                             'title' => $object['_source']['title'],
                             'text' => $object['_source']['description'],
@@ -187,7 +185,7 @@ class SearchController extends Controller
             {
                 $q = $mquery;
 
-                $q['_source'] = [ 'url', 'title', 'entry', 'author', 'created_at', 'sentiment' ];
+                $q['_source'] = [ 'url', 'title', 'entry', 'author', 'created_at' ];
                 $q['query']['bool']['must'][] = [
                     'query_string' => [
                         'fields' => [
@@ -216,7 +214,6 @@ class SearchController extends Controller
                             '_type' => $object['_type'],
                             '_index' => $object['_index'],
                             'module' => 'sozluk',
-                            'sentiment' => $object['_source']['sentiment'],
                             'url' => $object['_source']['url'],
                             'title' => $object['_source']['title'],
                             'text' => $object['_source']['entry'],
@@ -233,7 +230,7 @@ class SearchController extends Controller
                 $q = $mquery;
 
                 $q['query']['bool']['must'][] = [ 'match' => [ 'status' => 'ok' ] ];
-                $q['_source'] = [ 'url', 'title', 'description', 'created_at', 'sentiment' ];
+                $q['_source'] = [ 'url', 'title', 'description', 'created_at' ];
                 $q['query']['bool']['must'][] = [
                     'query_string' => [
                         'fields' => [
@@ -262,7 +259,6 @@ class SearchController extends Controller
                             '_type' => $object['_type'],
                             '_index' => $object['_index'],
                             'module' => 'alisveris',
-                            'sentiment' => $object['_source']['sentiment'],
                             'url' => $object['_source']['url'],
                             'title' => $object['_source']['title'],
                             'created_at' => date('d.m.Y H:i:s', strtotime($object['_source']['created_at']))
@@ -283,7 +279,7 @@ class SearchController extends Controller
             {
                 $q = $mquery;
 
-                $q['_source'] = [ 'title', 'description', 'created_at', 'channel.title', 'channel.id', 'sentiment' ];
+                $q['_source'] = [ 'title', 'description', 'created_at', 'channel.title', 'channel.id' ];
                 $q['query']['bool']['must'][] = [
                     'query_string' => [
                         'fields' => [
@@ -312,7 +308,6 @@ class SearchController extends Controller
                             '_type' => $object['_type'],
                             '_index' => $object['_index'],
                             'module' => 'youtube-video',
-                            'sentiment' => $object['_source']['sentiment'],
                             'title' => $object['_source']['title'],
                             'text' => @$object['_source']['description'],
                             'channel' => [
@@ -330,7 +325,7 @@ class SearchController extends Controller
             {
                 $q = $mquery;
 
-                $q['_source'] = [ 'video_id', 'text', 'channel.id', 'channel.title', 'created_at', 'sentiment' ];
+                $q['_source'] = [ 'video_id', 'text', 'channel.id', 'channel.title', 'created_at' ];
                 $q['query']['bool']['must'][] = [
                     'query_string' => [
                         'default_field' => 'text',
@@ -356,7 +351,6 @@ class SearchController extends Controller
                             '_type' => $object['_type'],
                             '_index' => $object['_index'],
                             'module' => 'youtube-comment',
-                            'sentiment' => $object['_source']['sentiment'],
                             'video_id' => $object['_source']['video_id'],
                             'channel' => [
                                 'id' => $object['_source']['channel']['id'],

@@ -620,4 +620,18 @@ class Crawler
 
         return (object) $data;
     }
+
+    /**
+     * Boş Sentiment
+     *
+     * @return array
+     */
+    public static function emptySentiment(array $arr)
+    {
+        return @$arr ? $arr : [
+            'pos' => 0,
+            'neg' => 0,
+            'neu' => 1
+        ];
+    }
 }

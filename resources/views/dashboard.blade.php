@@ -104,10 +104,6 @@
                     <i class="material-icons">pie_chart</i>
                     <span class="d-block">Model Analizi</span>
                 </a>
-                <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" style="opacity: .4;" href="#">
-                    <i class="material-icons">settings</i>
-                    <span class="d-block">Araçlar</span>
-                </a>
             </div>
         </div>
 

@@ -11,6 +11,7 @@
     'index' => $es->index,
     'type' => $es->type,
     'id' => $document['_source']['group_name'],
+    'tab_title' => 'Cevap Grafiği'
 ])
 
 @push('local.styles')

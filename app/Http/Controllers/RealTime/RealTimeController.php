@@ -13,6 +13,7 @@ use App\Http\Requests\RealTime\RealTimeRequest;
 
 use App\Elasticsearch\Document;
 use App\Utilities\Term;
+use App\Utilities\Crawler;
 
 use Carbon\Carbon;
 
@@ -136,7 +137,7 @@ class RealTimeController extends Controller
                                     '_id' => $object['_id'],
                                     '_type' => $object['_type'],
                                     '_index' => $object['_index'],
-                                    'sentiment' => $object['_source']['sentiment'],
+                                    'sentiment' => Crawler::emptySentiment(@$object['_source']['sentiment']),
                                     'module' => 'twitter',
                                     'user' => [
                                         'name' => $object['_source']['user']['name'],
@@ -190,7 +191,7 @@ class RealTimeController extends Controller
                                 '_type' => $object['_type'],
                                 '_index' => $object['_index'],
                                 'module' => 'haber',
-                                'sentiment' => $object['_source']['sentiment'],
+                                'sentiment' => Crawler::emptySentiment(@$object['_source']['sentiment']),
                                 'url' => $object['_source']['url'],
                                 'title' => $object['_source']['title'],
                                 'text' => $object['_source']['description'],
@@ -239,7 +240,7 @@ class RealTimeController extends Controller
                                 '_type' => $object['_type'],
                                 '_index' => $object['_index'],
                                 'module' => 'sozluk',
-                                'sentiment' => $object['_source']['sentiment'],
+                                'sentiment' => Crawler::emptySentiment(@$object['_source']['sentiment']),
                                 'url' => $object['_source']['url'],
                                 'title' => $object['_source']['title'],
                                 'text' => $object['_source']['entry'],
@@ -290,7 +291,7 @@ class RealTimeController extends Controller
                                 '_type' => $object['_type'],
                                 '_index' => $object['_index'],
                                 'module' => 'alisveris',
-                                'sentiment' => $object['_source']['sentiment'],
+                                'sentiment' => Crawler::emptySentiment(@$object['_source']['sentiment']),
                                 'url' => $object['_source']['url'],
                                 'title' => $object['_source']['title'],
                                 'created_at' => date('d.m.Y H:i:s', strtotime($object['_source']['created_at']))
@@ -345,7 +346,7 @@ class RealTimeController extends Controller
                                 '_type' => $object['_type'],
                                 '_index' => $object['_index'],
                                 'module' => 'youtube-video',
-                                'sentiment' => $object['_source']['sentiment'],
+                                'sentiment' => @Crawler::emptySentiment(@$object['_source']['sentiment']),
                                 'title' => $object['_source']['title'],
                                 'text' => @$object['_source']['description'],
                                 'channel' => [
@@ -393,7 +394,7 @@ class RealTimeController extends Controller
                                 '_type' => $object['_type'],
                                 '_index' => $object['_index'],
                                 'module' => 'youtube-comment',
-                                'sentiment' => $object['_source']['sentiment'],
+                                'sentiment' => Crawler::emptySentiment(@$object['_source']['sentiment']),
                                 'video_id' => $object['_source']['video_id'],
                                 'channel' => [
                                     'id' => $object['_source']['channel']['id'],

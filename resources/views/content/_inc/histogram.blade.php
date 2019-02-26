@@ -20,26 +20,6 @@
 @endpush
 
 @section('wildcard')
-    @php
-        switch ($type)
-        {
-            case 'entry':
-                $tab_title = 'Cevap Grafiği';
-            break;
-
-            case 'article':
-                $tab_title = 'Haber Grafiği';
-            break;
-
-            case 'product':
-                $tab_title = 'Benzer Ürün Grafiği';
-            break;
-
-            case 'tweet':
-                $tab_title = 'Kullanıcının Tweet Grafiği';
-            break;
-        }
-    @endphp
     <div class="z-depth-2">
         <ul class="tabs tabs-fixed-width tabs-transparent cyan darken-2 histogram-tabs">
             <li class="tab">

@@ -17,6 +17,7 @@
     'index' => $es->index,
     'type' => $es->type,
     'id' => $document['_source']['id'],
+    'tab_title' => 'Kullanıcının Tweet Grafiği'
 ])
 
 @push('external.include.footer')
@@ -167,7 +168,7 @@
                             .attr('href', '{{ url('/') }}/db/' + o._index + '/' + o._type + '/' + o._id)
 
                         item.find('[data-name=text]').html(o._source.text)
-                        item.find('[data-name=url]').html('https://twitter.com/' + o._source.user.screen_name + '/' + o._source.id).attr('href', 'https://twitter.com/' + o._source.user.screen_name + '/' + o._source.id)
+                        item.find('[data-name=url]').html('https://twitter.com/' + o._source.user.screen_name + '/status/' + o._source.id).attr('href', 'https://twitter.com/' + o._source.user.screen_name + '/status/' + o._source.id)
                         item.find('[data-name=created-at]').html(o._source.created_at)
 
                         item.appendTo(ul)
