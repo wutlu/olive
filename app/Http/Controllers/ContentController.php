@@ -405,12 +405,35 @@ class ContentController extends Controller
             case 'screen_names': $data['aggs']['screen_names'] = [ 'terms' => [ 'field' => 'user.screen_name' ] ]; break;
             case 'platforms': $data['aggs']['platforms'] = [ 'terms' => [ 'field' => 'platform' ] ]; break;
             case 'langs': $data['aggs']['langs'] = [ 'terms' => [ 'field' => 'lang' ] ]; break;
+            case 'places': $data['aggs']['places'] = [ 'terms' => [ 'field' => 'place.full_name' ] ]; break;
             case 'mention_out': $data['aggs']['mention_out'] = [
                 'nested' => [ 'path' => 'entities.mentions' ],
                 'aggs' => [
                     'hit_items' => [
                         'terms' => [
                             'field' => 'entities.mentions.mention.screen_name',
+                            'size' => 15
+                        ]
+                    ]
+                ]
+            ]; break;
+            case 'hashtags': $data['aggs']['hashtags'] = [
+                'nested' => [ 'path' => 'entities.hashtags' ],
+                'aggs' => [
+                    'hit_items' => [
+                        'terms' => [
+                            'field' => 'entities.hashtags.hashtag',
+                            'size' => 15
+                        ]
+                    ]
+                ]
+            ]; break;
+            case 'urls': $data['aggs']['urls'] = [
+                'nested' => [ 'path' => 'entities.urls' ],
+                'aggs' => [
+                    'hit_items' => [
+                        'terms' => [
+                            'field' => 'entities.urls.url',
                             'size' => 15
                         ]
                     ]
@@ -426,13 +449,16 @@ class ContentController extends Controller
 
         $data = Document::list([ 'twitter', 'tweets', '*' ], 'tweet', $data);
 
-        if ($type == 'mention_out')
+        switch ($type)
         {
-            $data = $data->data['aggregations'][$type]['hit_items']['buckets'];
-        }
-        else
-        {
-            $data = $data->data['aggregations'][$type]['buckets'];
+            case 'mention_out':
+            case 'hashtags':
+            case 'urls':
+                $data = $data->data['aggregations'][$type]['hit_items']['buckets'];
+            break;
+            default:
+                $data = $data->data['aggregations'][$type]['buckets'];
+            break;
         }
 
         return [

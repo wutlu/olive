@@ -23,6 +23,11 @@
     .stat-chart canvas {
         width: 100%;
     }
+
+    .aggregation-collection {
+        height: 200px;
+        overflow: auto;
+    }
 @endpush
 
 @include('content._inc.histogram', [
@@ -68,17 +73,20 @@
                 'names' => 'Adlar',
                 'screen_names' => 'Kullanıcı Adları',
                 'platforms' => 'Platformlar',
-                'langs' => 'Diller',
+                'langs' => 'Sık Kullandığı Diller',
                 'mention_out' => 'Sık Andığı Kişiler',
-                'mention_in' => 'Sık Anan Kişiler'
+                'mention_in' => 'Sık Anıldığı Kişiler',
+                'hashtags' => 'Sık Kullandığı Hashtagler',
+                'places' => 'Sık Girdiği Konumlar',
+                'urls' => 'Sık Kullandığı Bağlantılar',
             ] as $key => $model
         )
-        <div class="col l3 m6 s12">
+        <div class="col l4 m6 s12">
             <div class="card">
                 <div class="card-content cyan darken-2">
                     <span class="card-title card-title-small white-text">{{ $model }}</span>
                 </div>
-                <ul class="collection">
+                <ul class="collection aggregation-collection">
                     <li class="collection-item hide" data-model>
                         <div class="d-flex justify-content-between">
                             <span class="align-self-center" data-name="name"></span>
@@ -91,9 +99,15 @@
                             class="btn-floating waves-effect btn-flat json"
                             data-method="post"
                             data-callback="__aggregation"
+                            data-type="{{ $key }}"
                             data-href="{{ route('tweet.aggregation', [ 'type' => $key, 'id' => $document['_source']['user']['id'] ]) }}">
                             <i class="material-icons grey-text">refresh</i>
                         </a>
+                    </li>
+                    <li class="collection-item nothing hide">
+                        @component('components.nothing')
+                            @slot('size', 'small')
+                        @endcomponent
                     </li>
                 </ul>
             </div>
@@ -305,14 +319,60 @@
             var collection = __.closest('ul.collection');
             var model = collection.children('li.collection-item[data-model]')
 
-            $.each(obj.data, function(key, o) {
-                var item = model.clone();
-                    item.removeAttr('data-model').removeClass('hide')
-                    item.find('[data-name=name]').html(o.key)
-                    item.find('[data-name=count]').html(o.doc_count)
+            if (obj.data.length)
+            {
+                $.each(obj.data, function(key, o) {
+                    var item = model.clone();
+                        item.removeAttr('data-model').removeClass('hide')
 
-                item.appendTo(collection)
-            })
+                    var name = item.find('[data-name=name]');
+
+                    if (__.attr('data-type') == 'mention_out')
+                    {
+                        name.html($('<a />', {
+                            'html': '@' + o.key,
+                            'href': '{{ route('search.dashboard') }}?q=' + encodeURIComponent('user.screen_name:' + o.key),
+                            'target': '_blank'
+                        }))
+                    }
+                    else if (__.attr('data-type') == 'mention_in')
+                    {
+                        name.html($('<a />', {
+                            'html': '@' + o.key,
+                            'href': '{{ route('search.dashboard') }}?q=' + encodeURIComponent('user.screen_name:' + o.key),
+                            'target': '_blank'
+                        }))
+                    }
+                    else if (__.attr('data-type') == 'hashtags')
+                    {
+                        name.html($('<a />', {
+                            'html': '#' + o.key,
+                            'href': '{{ route('search.dashboard') }}?q=' + encodeURIComponent(o.key),
+                            'target': '_blank'
+                        }))
+                    }
+                    else if (__.attr('data-type') == 'urls')
+                    {
+                        name.html($('<a />', {
+                            'html': o.key,
+                            'href': o.key,
+                            'target': '_blank'
+                        }))
+                    }
+                    else
+                    {
+                        name.html(o.key)
+                    }
+
+                        item.find('[data-name=count]').html(o.doc_count)
+
+                    item.appendTo(collection)
+                })
+            }
+            else
+            {
+                collection.find('.nothing').removeClass('hide')
+            }
         }
     }
 
