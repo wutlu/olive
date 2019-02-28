@@ -200,6 +200,8 @@ class StreamProcess extends Command
                     {
                         $store = null;
 
+                        //file_put_contents('tweets.txt', json_encode($obj, JSON_PRETTY_PRINT).PHP_EOL, FILE_APPEND | LOCK_EX);
+
                         if (@$obj['retweeted_status'])
                         {
                             if ($dateUtility->checkDate($obj['retweeted_status']['created_at']))

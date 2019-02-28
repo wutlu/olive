@@ -42,19 +42,12 @@ class TwitterCrawler
             'text' => @$object['extended_tweet']['full_text'] ? $object['extended_tweet']['full_text'] : $object['text'],
             'platform' => strip_tags($object['source']),
             'lang' => $object['lang'],
-            'counts' => (object) [
-                'rt' => intval($object['retweet_count']),
-                'fav' => intval($object['favorite_count']),
-                'quote' => intval($object['quote_count']),
-                'reply' => intval($object['reply_count'])
-            ],
             'created_at' => date('Y-m-d H:i:s', strtotime($object['created_at'])),
             'called_at' => date('Y-m-d H:i:s'),
             'user' => (object) [
                 'id' => $object['user']['id_str'],
                 'screen_name' => $object['user']['screen_name'],
                 'name' => $object['user']['name'],
-                'image' => $object['user']['profile_image_url'],
                 'lang' => $object['user']['lang'],
                 'counts' => [
                     'statuses' => intval($object['user']['statuses_count']),
@@ -150,9 +143,11 @@ class TwitterCrawler
         {
             $arr['entities']['mentions'] = array_map(function($obj) {
                 return (object) [
-                    'id'  => $obj['id_str'],
-                    'name'  => $obj['name'],
-                    'screen_name'  => $obj['screen_name']
+                    'mention' => [
+                        'id'  => $obj['id_str'],
+                        'name'  => $obj['name'],
+                        'screen_name'  => $obj['screen_name']
+                    ]
                 ];
             }, $object['entities']['user_mentions']);
         }
@@ -179,7 +174,7 @@ class TwitterCrawler
                     }
                 }
 
-                return (object) $media_arr;
+                return (object) [ 'media' => $media_arr ];
             }, $object['extended_entities']['media']);
         }
 
@@ -190,7 +185,10 @@ class TwitterCrawler
     public function indexCreate(string $type)
     {
         return Indices::create(
-            [ 'twitter', $type ],
+            [
+                'twitter',
+                $type
+            ],
             [
                 'tweet' => [
                     'properties' => [
@@ -207,24 +205,8 @@ class TwitterCrawler
                                 'neu' => [ 'type' => 'float' ]
                             ]
                         ],
-                        'lang' => [
-                            'type' => 'text',
-                            'analyzer' => 'keyword',
-                            'fielddata' => true
-                        ],
-                        'platform' => [
-                            'type' => 'text',
-                            'analyzer' => 'keyword',
-                            'fielddata' => true
-                        ],
-                        'counts' => [
-                            'properties' => [
-                                'rt' => [ 'type' => 'integer' ],
-                                'fav' => [ 'type' => 'integer' ],
-                                'quote' => [ 'type' => 'integer' ],
-                                'reply' => [ 'type' => 'integer' ]
-                            ]
-                        ],
+                        'lang' => [ 'type' => 'keyword' ],
+                        'platform' => [ 'type' => 'keyword' ],
                         'created_at' => [
                             'type' => 'date',
                             'format' => 'YYYY-MM-dd HH:mm:ss'
@@ -240,60 +222,28 @@ class TwitterCrawler
                         'external' => [
                             'properties' => [
                                 'id' => [ 'type' => 'long' ],
-                                'type' => [ 'type' => 'text' ]
+                                'type' => [ 'type' => 'keyword' ]
                             ]
                         ],
                         'place' => [
                             'properties' => [
-                                'name' => [
-                                    'type' => 'text',
-                                    'analyzer' => 'keyword',
-                                    'fielddata' => true
-                                ],
-                                'full_name' => [
-                                    'type' => 'text',
-                                    'analyzer' => 'keyword',
-                                    'fielddata' => true
-                                ],
-                                'country_code' => [
-                                    'type' => 'text',
-                                    'analyzer' => 'keyword',
-                                    'fielddata' => true
-                                ]
+                                'name' => [ 'type' => 'keyword' ],
+                                'full_name' => [ 'type' => 'keyword' ],
+                                'country_code' => [ 'type' => 'keyword' ]
                             ]
                         ],
                         'user' => [
                             'properties' => [
                                 'id' => [ 'type' => 'long' ],
-                                'name' => [
-                                    'type' => 'text',
-                                    'analyzer' => 'keyword',
-                                    'fielddata' => true
-                                ],
-                                'screen_name' => [
-                                    'type' => 'text',
-                                    'analyzer' => 'keyword',
-                                    'fielddata' => true
-                                ],
+                                'name' => [ 'type' => 'keyword' ],
+                                'screen_name' => [ 'type' => 'keyword' ],
                                 'description' => [
                                     'type' => 'text',
                                     'analyzer' => 'turkish',
                                     'fielddata' => true
                                 ],
-                                'image' => [
-                                    'type' => 'text',
-                                    'index' => false
-                                ],
-                                'location' => [
-                                    'type' => 'text',
-                                    'analyzer' => 'keyword',
-                                    'fielddata' => true
-                                ],
-                                'lang' => [
-                                    'type' => 'text',
-                                    'analyzer' => 'keyword',
-                                    'fielddata' => true
-                                ],
+                                'location' => [ 'type' => 'keyword' ],
+                                'lang' => [ 'type' => 'keyword' ],
                                 'verified' => [ 'type' => 'boolean' ],
                                 'protected' => [ 'type' => 'boolean' ],
                                 'counts' => [
@@ -312,11 +262,7 @@ class TwitterCrawler
                                 'hashtags' => [
                                     'type' => 'nested',
                                     'properties' => [
-                                        'hashtag' => [
-                                            'type' => 'text',
-                                            'analyzer' => 'keyword',
-                                            'fielddata' => true
-                                        ]
+                                        'hashtag' => [ 'type' => 'keyword' ]
                                     ]
                                 ],
                                 'urls' => [
@@ -335,16 +281,8 @@ class TwitterCrawler
                                         'mention' => [
                                             'properties' => [
                                                 'id' => [ 'type' => 'long' ],
-                                                'name' => [
-                                                    'type' => 'text',
-                                                    'analyzer' => 'keyword',
-                                                    'fielddata' => true
-                                                ],
-                                                'screen_name' => [
-                                                    'type' => 'text',
-                                                    'analyzer' => 'keyword',
-                                                    'fielddata' => true
-                                                ]
+                                                'name' => [ 'type' => 'keyword' ],
+                                                'screen_name' => [ 'type' => 'keyword' ]
                                             ]
                                         ]
                                     ]
@@ -362,11 +300,7 @@ class TwitterCrawler
                                                     'type' => 'text',
                                                     'index' => false
                                                 ],
-                                                'type' => [
-                                                    'type' => 'text',
-                                                    'analyzer' => 'keyword',
-                                                    'fielddata' => true
-                                                ]
+                                                'type' => [ 'type' => 'keyword' ]
                                             ]
                                         ]
                                     ]
