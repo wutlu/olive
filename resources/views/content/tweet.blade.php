@@ -68,7 +68,9 @@
                 'names' => 'Adlar',
                 'screen_names' => 'Kullanıcı Adları',
                 'platforms' => 'Platformlar',
-                'langs' => 'Diller'
+                'langs' => 'Diller',
+                'mention_out' => 'Sık Andığı Kişiler',
+                'mention_in' => 'Sık Anan Kişiler'
             ] as $key => $model
         )
         <div class="col l3 m6 s12">
@@ -106,94 +108,18 @@
         <div class="card-tabs">
             <ul class="tabs tabs-transparent sub-tabs">
                 <li class="tab">
-                    <a class="active" href="#all-tweets">Tüm Tweetler ({{ $data['total']->data['count'] }})</a>
+                    <a href="#stats" class="active">Profil Değerleri</a>
                 </li>
                 <li class="tab">
-                    <a class="active" href="#all-retweets">Tweetin ReTweetleri ({{ $data['retweet']->data['count'] }})</a>
+                    <a href="#all_tweets">Tüm Tweetler ({{ $data['total']->data['count'] }})</a>
                 </li>
-                @isset ($data['stats'])
-                    <li class="tab">
-                        <a href="#stats">Profil Değerleri</a>
-                    </li>
-                @endisset
+                <li class="tab">
+                    <a href="#all_retweets">Tweetin ReTweetleri ({{ $data['retweet']->data['count'] }})</a>
+                </li>
             </ul>
         </div>
-        <div id="all-tweets" class="white">
-            <div class="collection load json-clear mb-0"
-                 id="all_tweets"
-                 data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id ]) }}"
-                 data-method="post"
-                 data-skip="0"
-                 data-take="20"
-                 data-more-button="#all_tweets-more_button"
-                 data-callback="__all"
-                 data-loader="#home-loader"
-                 data-nothing>
-                <div class="collection-item nothing hide">
-                    @component('components.nothing')
-                        @slot('size', 'small')
-                    @endcomponent
-                </div>
-                <div class="collection-item z-depth-1 model hide">
-                    <span href="#" class="d-table red-text" data-name="author"></span>
-                    <time class="d-table grey-text" data-name="created-at"></time>
-                    <a href="#" class="d-table grey-text text-darken-2" data-name="text"></a>
-                    <a href="#" class="d-table green-text" data-name="url" target="_blank"></a>
-                </div>
-            </div>
-
-            @component('components.loader')
-                @slot('color', 'cyan')
-                @slot('class', 'card-loader-unstyled')
-                @slot('id', 'home-loader')
-            @endcomponent
-
-            <div class="center-align mt-1">
-                <button class="btn-flat waves-effect hide json"
-                        id="all_tweets-more_button"
-                        type="button"
-                        data-json-target="#all_tweets">Daha Fazla</button>
-            </div>
-        </div>
-        <div id="all-retweets" class="white" style="display: none;">
-            <div class="collection load json-clear mb-0"
-                 id="all_retweets"
-                 data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id, 'type' => 'retweet' ]) }}"
-                 data-method="post"
-                 data-skip="0"
-                 data-take="20"
-                 data-more-button="#all_retweets-more_button"
-                 data-callback="__all"
-                 data-loader="#home-loader-rt"
-                 data-nothing>
-                <div class="collection-item nothing hide">
-                    @component('components.nothing')
-                        @slot('size', 'small')
-                    @endcomponent
-                </div>
-                <div class="collection-item z-depth-1 model hide">
-                    <span href="#" class="d-table red-text" data-name="author"></span>
-                    <time class="d-table grey-text" data-name="created-at"></time>
-                    <a href="#" class="d-table grey-text text-darken-2" data-name="text"></a>
-                    <a href="#" class="d-table green-text" data-name="url" target="_blank"></a>
-                </div>
-            </div>
-
-            @component('components.loader')
-                @slot('color', 'cyan')
-                @slot('class', 'card-loader-unstyled')
-                @slot('id', 'home-loader-rt')
-            @endcomponent
-
-            <div class="center-align mt-1">
-                <button class="btn-flat waves-effect hide json"
-                        id="all_retweets-more_button"
-                        type="button"
-                        data-json-target="#all_retweets">Daha Fazla</button>
-            </div>
-        </div>
-        @isset ($data['stats'])
-            <div class="card-content white" id="stats" style="display: none;">
+        <div class="card-content white" id="stats">
+            @isset ($data['stats'])
                 @foreach (
                     [
                         '_followers' => 'Takipçi Performans Grafiği',
@@ -288,8 +214,84 @@
                         @endforeach
                     </tbody>
                 </table>
+            @else
+                test
+            @endisset
+        </div>
+        <div id="all_tweets" class="halfload white" style="display: none;">
+            <div class="collection json-clear mb-0"
+                 id="loader-all_tweets"
+                 data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id ]) }}"
+                 data-method="post"
+                 data-skip="0"
+                 data-take="20"
+                 data-more-button="#all_tweets-more_button"
+                 data-callback="__all"
+                 data-loader="#home-loader"
+                 data-nothing>
+                <div class="collection-item nothing hide">
+                    @component('components.nothing')
+                        @slot('size', 'small')
+                    @endcomponent
+                </div>
+                <div class="collection-item z-depth-1 model hide">
+                    <span href="#" class="d-table red-text" data-name="author"></span>
+                    <time class="d-table grey-text" data-name="created-at"></time>
+                    <a href="#" class="d-table grey-text text-darken-2" data-name="text"></a>
+                    <a href="#" class="d-table green-text" data-name="url" target="_blank"></a>
+                </div>
             </div>
-        @endisset
+
+            @component('components.loader')
+                @slot('color', 'cyan')
+                @slot('class', 'card-loader-unstyled')
+                @slot('id', 'home-loader')
+            @endcomponent
+
+            <div class="center-align mt-1">
+                <button class="btn-flat waves-effect hide json"
+                        id="all_tweets-more_button"
+                        type="button"
+                        data-json-target="#all_tweets">Daha Fazla</button>
+            </div>
+        </div>
+        <div id="all_retweets" class="halfload white" style="display: none;">
+            <div class="collection json-clear mb-0"
+                 id="loader-all_retweets"
+                 data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id, 'type' => 'retweet' ]) }}"
+                 data-method="post"
+                 data-skip="0"
+                 data-take="20"
+                 data-more-button="#all_retweets-more_button"
+                 data-callback="__all"
+                 data-loader="#home-loader-rt"
+                 data-nothing>
+                <div class="collection-item nothing hide">
+                    @component('components.nothing')
+                        @slot('size', 'small')
+                    @endcomponent
+                </div>
+                <div class="collection-item z-depth-1 model hide">
+                    <span href="#" class="d-table red-text" data-name="author"></span>
+                    <time class="d-table grey-text" data-name="created-at"></time>
+                    <a href="#" class="d-table grey-text text-darken-2" data-name="text"></a>
+                    <a href="#" class="d-table green-text" data-name="url" target="_blank"></a>
+                </div>
+            </div>
+
+            @component('components.loader')
+                @slot('color', 'cyan')
+                @slot('class', 'card-loader-unstyled')
+                @slot('id', 'home-loader-rt')
+            @endcomponent
+
+            <div class="center-align mt-1">
+                <button class="btn-flat waves-effect hide json"
+                        id="all_retweets-more_button"
+                        type="button"
+                        data-json-target="#all_retweets">Daha Fazla</button>
+            </div>
+        </div>
     </div>
 @endsection
 
@@ -341,7 +343,20 @@
         }
     }
 
-    $('.sub-tabs').tabs()
+    $('.sub-tabs').tabs({
+        onShow: function(tab) {
+            var loader = $('#loader-' + tab.id);
+
+            if ($('#' + tab.id).hasClass('halfload'))
+            {
+                if (!loader.hasClass('loaded'))
+                {
+                    loader.addClass('loaded')
+                    vzAjax(loader)
+                }
+            }
+        }
+    })
 
     $(document).on('click', '[data-chart]', function() {
         var __ = $(this);

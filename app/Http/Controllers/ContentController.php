@@ -142,28 +142,6 @@ class ContentController extends Controller
                         [ 'match' => [ 'user.id' => $document['_source']['user']['id'] ] ]
                     ];
 
-                    $follow_graph = Document::list([ 'twitter', 'tweets', '*' ], 'tweet', [
-                        'size' => 100,
-                        'query' => [
-                            'bool' => [
-                                'must' => [
-                                    [ 'match' => [ 'user.id' => $document['_source']['user']['id'] ] ]
-                                ]
-                            ]
-                        ],
-                        '_source' => [
-                            'user.counts.friends',
-                            'user.counts.followers',
-                            'user.counts.statuses',
-                            'user.counts.listed',
-                            'user.counts.favourites',
-                            'created_at'
-                        ],
-                        'sort' => [
-                             'created_at' => 'DESC'
-                        ]
-                    ]);
-
                     $data = [
                         'total' => Document::count([ 'twitter', 'tweets', '*' ], 'tweet', [
                             'query' => [
@@ -202,6 +180,28 @@ class ContentController extends Controller
                             ]
                         ])
                     ];
+
+                    $follow_graph = Document::list([ 'twitter', 'tweets', '*' ], 'tweet', [
+                        'size' => 100,
+                        'query' => [
+                            'bool' => [
+                                'must' => [
+                                    [ 'match' => [ 'user.id' => $document['_source']['user']['id'] ] ]
+                                ]
+                            ]
+                        ],
+                        '_source' => [
+                            'user.counts.friends',
+                            'user.counts.followers',
+                            'user.counts.statuses',
+                            'user.counts.listed',
+                            'user.counts.favourites',
+                            'created_at'
+                        ],
+                        'sort' => [
+                             'created_at' => 'DESC'
+                        ]
+                    ]);
 
                     if (@$follow_graph->data['hits']['hits'])
                     {
@@ -378,7 +378,18 @@ class ContentController extends Controller
     public static function tweetAggregation(string $type, int $user_id)
     {
         $data = [
-            'query' => [
+            'query' => ($type == 'mention_in') ? [
+                'nested' => [
+                    'path' => 'entities.mentions',
+                    'query' => [
+                        'bool' => [
+                            'must' => [
+                                [ 'match' => [ 'entities.mentions.mention.id' => $user_id ] ]
+                            ]
+                        ]
+                    ]
+                ]
+            ] : [
                 'bool' => [
                     'must' => [
                         [ 'match' => [ 'user.id' => $user_id ] ]
@@ -388,14 +399,45 @@ class ContentController extends Controller
             'size' => 0
         ];
 
-        if ($type == 'names') $data['aggs']['names'] = [ 'terms' => [ 'field' => 'user.name' ] ];
-        if ($type == 'screen_names') $data['aggs']['screen_names'] = [ 'terms' => [ 'field' => 'user.screen_name' ] ];
-        if ($type == 'platforms') $data['aggs']['platforms'] = [ 'terms' => [ 'field' => 'platform' ] ];
-        if ($type == 'langs') $data['aggs']['langs'] = [ 'terms' => [ 'field' => 'lang' ] ];
+        switch ($type)
+        {
+            case 'names': $data['aggs']['names'] = [ 'terms' => [ 'field' => 'user.name' ] ]; break;
+            case 'screen_names': $data['aggs']['screen_names'] = [ 'terms' => [ 'field' => 'user.screen_name' ] ]; break;
+            case 'platforms': $data['aggs']['platforms'] = [ 'terms' => [ 'field' => 'platform' ] ]; break;
+            case 'langs': $data['aggs']['langs'] = [ 'terms' => [ 'field' => 'lang' ] ]; break;
+            case 'mention_out': $data['aggs']['mention_out'] = [
+                'nested' => [ 'path' => 'entities.mentions' ],
+                'aggs' => [
+                    'hit_items' => [
+                        'terms' => [
+                            'field' => 'entities.mentions.mention.screen_name',
+                            'size' => 15
+                        ]
+                    ]
+                ]
+            ]; break;
+            case 'mention_in': $data['aggs']['mention_in'] = [
+                'terms' => [
+                    'field' => 'user.screen_name',
+                    'size' => 15
+                ]
+            ]; break;
+        }
+
+        $data = Document::list([ 'twitter', 'tweets', '*' ], 'tweet', $data);
+
+        if ($type == 'mention_out')
+        {
+            $data = $data->data['aggregations'][$type]['hit_items']['buckets'];
+        }
+        else
+        {
+            $data = $data->data['aggregations'][$type]['buckets'];
+        }
 
         return [
             'status' => 'ok',
-            'data' => Document::list([ 'twitter', 'tweets', '*' ], 'tweet', $data)->data['aggregations'][$type]['buckets']
+            'data' => $data
         ];
     }
 
