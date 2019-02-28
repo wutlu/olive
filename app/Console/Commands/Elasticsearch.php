@@ -111,8 +111,8 @@ class Elasticsearch extends Command
 
                     $indices[] = [
                         'key' => $name,
-                        'count' => number_format(@$stats[$no]['total']['docs']['count']),
-                        'size' => @$stats[$no]['total']['store']['size_in_bytes']
+                        'count' => number_format(@$stats[$no]['primaries']['docs']['count']),
+                        'size' => @$stats[$no]['primaries']['store']['size_in_bytes']
                     ];
 
                     $autocomlete[] = $name;
