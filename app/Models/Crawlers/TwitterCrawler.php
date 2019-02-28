@@ -48,6 +48,7 @@ class TwitterCrawler
                 'id' => $object['user']['id_str'],
                 'screen_name' => $object['user']['screen_name'],
                 'name' => $object['user']['name'],
+                'image' => $object['user']['profile_image_url'],
                 'lang' => $object['user']['lang'],
                 'counts' => [
                     'statuses' => intval($object['user']['statuses_count']),
@@ -237,6 +238,10 @@ class TwitterCrawler
                                 'id' => [ 'type' => 'long' ],
                                 'name' => [ 'type' => 'keyword' ],
                                 'screen_name' => [ 'type' => 'keyword' ],
+                                'image' => [
+                                    'type' => 'text',
+                                    'index' => false
+                                ],
                                 'description' => [
                                     'type' => 'text',
                                     'analyzer' => 'turkish',
