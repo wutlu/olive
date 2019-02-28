@@ -266,7 +266,7 @@
                 <button class="btn-flat waves-effect hide json"
                         id="all_tweets-more_button"
                         type="button"
-                        data-json-target="#all_tweets">Daha Fazla</button>
+                        data-json-target="#loader-all_tweets">Daha Fazla</button>
             </div>
         </div>
         <div id="all_retweets" class="halfload white" style="display: none;">
@@ -303,7 +303,7 @@
                 <button class="btn-flat waves-effect hide json"
                         id="all_retweets-more_button"
                         type="button"
-                        data-json-target="#all_retweets">Daha Fazla</button>
+                        data-json-target="#loader-all_retweets">Daha Fazla</button>
             </div>
         </div>
     </div>
