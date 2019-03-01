@@ -54,7 +54,7 @@ class DataController extends Controller
      *
      * @return array
      */
-    public function keywordListJson(int $skip = 0, int $take = 27)
+    public function keywordListJson(int $skip = 0, int $take = 4000)
     {
         $query = StreamingKeywords::where('organisation_id', auth()->user()->organisation_id)->skip($skip)->take($take)->orderBy('updated_at', 'DESC');
 
@@ -118,7 +118,7 @@ class DataController extends Controller
      *
      * @return array
      */
-    public function accountListJson(int $skip = 0, int $take = 27)
+    public function accountListJson(int $skip = 0, int $take = 400)
     {
         $query = StreamingUsers::where('organisation_id', auth()->user()->organisation_id)->skip($skip)->take($take)->orderBy('updated_at', 'DESC');
 

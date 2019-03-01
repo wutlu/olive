@@ -96,11 +96,11 @@ return [
      * Uygulama Modülleri
      */
     'modules' => [
-        'youtube_video' => 'YouTube Video',
-        'youtube_comment' => 'YouTube Yorum',
         'twitter' => 'Twitter',
         'sozluk' => 'Sözlük',
         'news' => 'Haber',
+        'youtube_video' => 'YouTube Video',
+        'youtube_comment' => 'YouTube Yorum',
         'shopping' => 'E-ticaret'
     ],
 

@@ -56,7 +56,7 @@ class DataController extends Controller
      *
      * @return array
      */
-    public function keywordListJson(int $skip = 0, int $take = 27)
+    public function keywordListJson(int $skip = 0, int $take = 100)
     {
         $query = FollowingKeywords::where('organisation_id', auth()->user()->organisation_id)->skip($skip)->take($take)->orderBy('updated_at', 'ASC');
 
@@ -122,7 +122,7 @@ class DataController extends Controller
      *
      * @return array
      */
-    public function channelListJson(int $skip = 0, int $take = 27)
+    public function channelListJson(int $skip = 0, int $take = 100)
     {
         $query = FollowingChannels::where('organisation_id', auth()->user()->organisation_id)->skip($skip)->take($take)->orderBy('updated_at', 'ASC');
 
@@ -188,7 +188,7 @@ class DataController extends Controller
      *
      * @return array
      */
-    public function videoListJson(int $skip = 0, int $take = 27)
+    public function videoListJson(int $skip = 0, int $take = 100)
     {
         $query = FollowingVideos::where('organisation_id', auth()->user()->organisation_id)->skip($skip)->take($take)->orderBy('updated_at', 'ASC');
 
