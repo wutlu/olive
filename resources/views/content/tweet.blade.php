@@ -47,7 +47,12 @@
             <div class="card">
                 <div class="card-content">
                     <div class="d-flex">
-                        <img class="mr-1" style="width: 64px; height: 64px;" src="{{ str_replace('_normal', '', $document['_source']['user']['image']) }}" alt="{{ $document['_source']['user']['name'] }}" />
+                        <img
+                            class="mr-1"
+                            style="width: 64px; height: 64px;"
+                            onerror="this.src='{{ asset('img/icons/people.png') }}'"
+                            src="{{ str_replace('_normal', '', $document['_source']['user']['image']) }}"
+                            alt="{{ $document['_source']['user']['name'] }}" />
                         <span>
                             <span class="d-flex justify-content-between">
                                 <a class="card-title align-self-center" href="https://twitter.com/{{ $document['_source']['user']['screen_name'] }}" target="_blank">{{ $document['_source']['user']['name'] }}</a>
