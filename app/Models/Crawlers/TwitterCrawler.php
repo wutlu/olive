@@ -50,7 +50,7 @@ class TwitterCrawler
                 'name' => $object['user']['name'],
                 'image' => $object['user']['profile_image_url'],
                 'lang' => $object['user']['lang'],
-                'created_at' => $object['user']['created_at'],
+                'created_at' => date('Y-m-d H:i:s', strtotime($object['user']['created_at'])),
                 'counts' => [
                     'statuses' => intval($object['user']['statuses_count']),
                     'favourites' => intval($object['user']['favourites_count']),
