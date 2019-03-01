@@ -46,25 +46,15 @@
         <div class="col m6 s12">
             <div class="card">
                 <div class="card-content">
-                    <div class="d-flex">
-                        <img
-                            class="mr-1"
-                            style="width: 64px; height: 64px;"
-                            onerror="this.src='{{ asset('img/icons/people.png') }}'"
-                            src="{{ str_replace('_normal', '', $document['_source']['user']['image']) }}"
-                            alt="{{ $document['_source']['user']['name'] }}" />
-                        <span>
-                            <span class="d-flex justify-content-between">
-                                <a class="card-title align-self-center" href="https://twitter.com/{{ $document['_source']['user']['screen_name'] }}" target="_blank">{{ $document['_source']['user']['name'] }}</a>
-                                @isset ($document['_source']['user']['verified'])
-                                    <i class="material-icons blue-text align-self-center">check</i>
-                                @endisset
-                            </span>
-                            @isset ($document['_source']['user']['description'])
-                                <div class="markdown">{{ $document['_source']['user']['description'] }}</div>
-                            @endisset
-                        </span>
-                    </div>
+                    <span class="d-flex justify-content-between">
+                        <a class="card-title align-self-center" href="https://twitter.com/{{ $document['_source']['user']['screen_name'] }}" target="_blank">{{ $document['_source']['user']['name'] }}</a>
+                        @isset ($document['_source']['user']['verified'])
+                            <i class="material-icons blue-text align-self-center">check</i>
+                        @endisset
+                    </span>
+                    @isset ($document['_source']['user']['description'])
+                        <div class="markdown">{{ $document['_source']['user']['description'] }}</div>
+                    @endisset
                 </div>
                 @isset ($document['_source']['user']['created_at'])
                     <div class="card-action d-flex justify-content-end">
