@@ -153,6 +153,7 @@
         </div>
     </div>
 
+@section('hide')
     <div class="parallax-container">
         <div class="parallax">
             <img src="{{ asset('img/obg.svg') }}" alt="obg" />
@@ -205,6 +206,7 @@
             </div>
         </div>
     </div>
+@endsection
 @endsection
 
 @push('local.scripts')
