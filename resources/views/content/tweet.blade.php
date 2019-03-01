@@ -46,7 +46,32 @@
         <div class="col m6 s12">
             <div class="card">
                 <div class="card-content">
-                    <a href="https://twitter.com/{{ $document['_source']['user']['screen_name'] }}" class="card-title d-table" target="_blank">{{ $document['_source']['user']['name'] }}</a>
+                    <div class="d-flex">
+                        <img class="mr-1" style="width: 64px; height: 64px;" src="{{ str_replace('_normal', '', $document['_source']['user']['image']) }}" alt="{{ $document['_source']['user']['name'] }}" />
+                        <span>
+                            <span class="d-flex justify-content-between">
+                                <a class="card-title align-self-center" href="https://twitter.com/{{ $document['_source']['user']['screen_name'] }}" target="_blank">{{ $document['_source']['user']['name'] }}</a>
+                                @isset ($document['_source']['user']['verified'])
+                                    <i class="material-icons blue-text align-self-center">check</i>
+                                @endisset
+                            </span>
+                            @isset ($document['_source']['user']['description'])
+                                <div class="markdown">{{ $document['_source']['user']['description'] }}</div>
+                            @endisset
+                        </span>
+                    </div>
+                </div>
+                @isset ($document['_source']['user']['created_at'])
+                    <div class="card-action d-flex justify-content-end">
+                        <span class="right-align">
+                            <small class="d-block grey-text">OLUŞTURULDU</small>
+                            <span>{{ date('d.m.Y H:i', strtotime($document['_source']['user']['created_at'])) }}</span>
+                        </span>
+                    </div>
+                @endisset
+            </div>
+            <div class="card">
+                <div class="card-content">
                     <div class="markdown">{!! Term::tweet($document['_source']['text']) !!}</div>
                 </div>
                 @include('content._inc.sentiment_bar', [

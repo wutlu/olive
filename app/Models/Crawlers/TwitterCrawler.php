@@ -50,6 +50,7 @@ class TwitterCrawler
                 'name' => $object['user']['name'],
                 'image' => $object['user']['profile_image_url'],
                 'lang' => $object['user']['lang'],
+                'created_at' => $object['user']['created_at'],
                 'counts' => [
                     'statuses' => intval($object['user']['statuses_count']),
                     'favourites' => intval($object['user']['favourites_count']),
@@ -246,6 +247,10 @@ class TwitterCrawler
                                     'type' => 'text',
                                     'analyzer' => 'turkish',
                                     'fielddata' => true
+                                ],
+                                'created_at' => [
+                                    'type' => 'date',
+                                    'format' => 'YYYY-MM-dd HH:mm:ss'
                                 ],
                                 'location' => [ 'type' => 'keyword' ],
                                 'lang' => [ 'type' => 'keyword' ],

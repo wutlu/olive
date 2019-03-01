@@ -289,3 +289,18 @@ class Indices
         }
     }
 }
+
+// curl -X PUT "192.168.44.1:9201/olive__twitter-tweets-2019.01/_mapping/tweet?pretty" -H 'Content-Type: application/json' -d'
+// {
+//   "properties": {
+//     "user": {
+//       "properties": {
+//         "created_at": { 
+//           "type": "date",
+//           "format": "YYYY-MM-dd HH:mm:ss"
+//         }
+//       }
+//     }
+//   }
+// }
+// '
