@@ -186,24 +186,32 @@
     {
         if (obj.status == 'ok')
         {
-            var indice = obj.elasticsearch.data.indices['olive__trend-titles'];
-
-            if (indice)
+            try
             {
-                $('[data-name=trend-count]').html(number_format(indice.primaries.docs.count))
-                $('[data-name=trend-size]').html(humanFileSize(indice.total.store.size_in_bytes))
+                var indice = obj.elasticsearch.data.indices['{{ config('system.db.alias') }}__trend-titles'];
 
-                $('[data-name=alert]').addClass('hide')
-                $('[data-trigger=trend-index]').remove()
+                if (indice)
+                {
+                    $('[data-name=trend-count]').html(number_format(indice.primaries.docs.count))
+                    $('[data-name=trend-size]').html(humanFileSize(indice.total.store.size_in_bytes))
 
-                $.each(obj.data, function(key, o) {
-                    if (o != 'off')
-                    {
-                        $('[data-name=' + key + '-trend-count]').html(number_format(o.data.count))
-                    }
-                })
+                    $('[data-name=alert]').addClass('hide')
+                    $('[data-trigger=trend-index]').remove()
+
+                    $.each(obj.data, function(key, o) {
+                        if (o != 'off')
+                        {
+                            $('[data-name=' + key + '-trend-count]').html(number_format(o.data.count))
+                        }
+                    })
+                }
+                else
+                {
+                    $('[data-elasticsearch]').html('Indexe ulaşılamıyor!')
+                    $('[data-name=alert]').html('İlgili index daha önce oluşturulmuştu. Şu an bu indexe ulaşılamıyor.').removeClass('hide')
+                }
             }
-            else
+            catch (err)
             {
                 $('[data-elasticsearch]').html('Indexe ulaşılamıyor!')
                 $('[data-name=alert]').html('İlgili index daha önce oluşturulmuştu. Şu an bu indexe ulaşılamıyor.').removeClass('hide')

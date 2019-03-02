@@ -443,7 +443,7 @@ class MediaController extends Controller
             'handler' => HandlerStack::create()
         ]);
 
-        $source = $client->get('/_cat/indices/olive__media*?format=json&s=index:desc')->getBody();
+        $source = $client->get('/_cat/indices/'.config('system.db.alias').'__media*?format=json&s=index:desc')->getBody();
         $source = json_decode($source);
 
         return [

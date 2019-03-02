@@ -239,7 +239,10 @@ class TwitterCrawler
                                 'id' => [ 'type' => 'long' ],
                                 'name' => [ 'type' => 'keyword' ],
                                 'screen_name' => [ 'type' => 'keyword' ],
-                                'image' => [ 'type' => 'keyword' ],
+                                'image' => [
+                                    'type' => 'keyword',
+                                    'index' => false
+                                ],
                                 'description' => [
                                     'type' => 'text',
                                     'analyzer' => 'turkish',
@@ -296,10 +299,12 @@ class TwitterCrawler
                                         'media' => [
                                             'properties' => [
                                                 'media_url' => [
-                                                    'type' => 'keyword'
+                                                    'type' => 'keyword',
+                                                    'index' => false
                                                 ],
                                                 'source_url' => [
-                                                    'type' => 'keyword'
+                                                    'type' => 'keyword',
+                                                    'index' => false
                                                 ],
                                                 'type' => [ 'type' => 'keyword' ]
                                             ]

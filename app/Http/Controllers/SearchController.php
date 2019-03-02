@@ -14,6 +14,7 @@ use Term;
 use Carbon\Carbon;
 
 use App\Models\Pin\Group as PinGroup;
+use App\Models\Crawlers\MediaCrawler;
 
 class SearchController extends Controller
 {
@@ -31,6 +32,12 @@ class SearchController extends Controller
 
         ### [ zorunlu aktif organizasyon ] ###
         $this->middleware('can:organisation-status')->only([
+            'search',
+            'aggregation'
+        ]);
+
+        ### [ 500 işlemden sonra 60 dakika ile sınırla ] ###
+        $this->middleware('throttle:500,60')->only([
             'search',
             'aggregation'
         ]);
@@ -59,124 +66,218 @@ class SearchController extends Controller
                         ]
                     ],
                     'must' => [
-                        [ 'exists' => [ 'field' => 'created_at' ] ]
+                        [ 'exists' => [ 'field' => 'created_at' ] ],
+                        [
+                            'query_string' => [
+                                'query' => $request->string,
+                                'default_operator' => 'AND'
+                            ]
+                        ]
                     ]
                 ]
             ]
         ];
 
+        if ($request->sentiment != 'all')
+        {
+            $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
+        }
+
         switch ($request->type)
         {
             case 'hourly':
-            # ------------------------------------------------------ #
-
-            $arr = array_merge($mquery, [
-                'aggs' => [
-                    'results' => [
-                        'histogram' => [
-                            'script' => 'doc.created_at.value.getHourOfDay()',
-                            'interval' => 1,
-                            'min_doc_count' => 0,
-                            'extended_bounds' => [ 'min' => 1, 'max' => 23 ]
+                $arr = array_merge($mquery, [
+                    'aggs' => [
+                        'results' => [
+                            'histogram' => [
+                                'script' => 'doc.created_at.value.getHourOfDay()',
+                                'interval' => 1,
+                                'min_doc_count' => 0,
+                                'extended_bounds' => [ 'min' => 1, 'max' => 23 ]
+                            ]
                         ]
                     ]
-                ]
-            ]);
+                ]);
 
-            $document = Document::list([ '*' ], 'tweet,article,entry,video,comment', $arr);
+                $query = Document::list([ '*' ], 'tweet,article,entry,video,comment', $arr);
 
-            # ------------------------------------------------------ #
+                $data = [
+                    'results' => $query->data['aggregations']['results']['buckets'],
+                    'hits' => $query->data['hits']['total']
+                ];
             break;
 
             case 'daily':
-            # ------------------------------------------------------ #
-
-            $arr = array_merge($mquery, [
-                'aggs' => [
-                    'results' => [
-                        'histogram' => [
-                            'script' => 'doc.created_at.value.getDayOfWeek()',
-                            'interval' => 1,
-                            'min_doc_count' => 0,
-                            'extended_bounds' => [ 'min' => 1, 'max' => 6 ]
+                $arr = array_merge($mquery, [
+                    'aggs' => [
+                        'results' => [
+                            'histogram' => [
+                                'script' => 'doc.created_at.value.getDayOfWeek()',
+                                'interval' => 1,
+                                'min_doc_count' => 0,
+                                'extended_bounds' => [ 'min' => 1, 'max' => 6 ]
+                            ]
                         ]
                     ]
-                ]
-            ]);
+                ]);
 
-            $document = Document::list([ '*' ], 'tweet,article,entry,video,comment', $arr);
+                $query = Document::list([ '*' ], 'tweet,article,entry,video,comment', $arr);
 
-            # ------------------------------------------------------ #
+                $data = [
+                    'results' => $query->data['aggregations']['results']['buckets'],
+                    'hits' => $query->data['hits']['total']
+                ];
             break;
 
             case 'location':
-            # ------------------------------------------------------ #
-
-            $arr = array_merge($mquery, [
-                'aggs' => [
-                    'places' => [
-                        'terms' => [
-                            'field' => 'place.full_name'
+                $arr = array_merge($mquery, [
+                    'aggs' => [
+                        'places' => [
+                            'terms' => [
+                                'field' => 'place.full_name'
+                            ]
                         ]
                     ]
-                ]
-            ]);
+                ]);
 
-            $document = Document::list([ 'twitter', 'tweets', '*' ], 'tweet', $arr);
+                $query = Document::list([ 'twitter', 'tweets', '*' ], 'tweet', $arr);
 
-            # ------------------------------------------------------ #
+                $data = [
+                    'results' => $query->data['aggregations']['places']['buckets'],
+                    'hits' => $query->data['hits']['total']
+                ];
             break;
 
             case 'platform':
-            # ------------------------------------------------------ #
-
-            $arr = array_merge($mquery, [
-                'aggs' => [
-                    'places' => [
-                        'terms' => [
-                            'field' => 'platform'
+                $arr = array_merge($mquery, [
+                    'aggs' => [
+                        'platforms' => [
+                            'terms' => [
+                                'field' => 'platform'
+                            ]
                         ]
                     ]
-                ]
-            ]);
+                ]);
 
-            $document = Document::list([ 'twitter', 'tweets', '*' ], 'tweet', $arr);
+                $query = Document::list([ 'twitter', 'tweets', '*' ], 'tweet', $arr);
 
-            # ------------------------------------------------------ #
+                $data = [
+                    'results' => $query->data['aggregations']['platforms']['buckets'],
+                    'hits' => $query->data['hits']['total']
+                ];
             break;
 
             case 'mention':
-            # ------------------------------------------------------ #
-
-            $arr = array_merge($mquery, [
-                'aggs' => [
-                    'twitter' => [
-                        'terms' => [
-                            'field' => 'user.screen_name'
-                        ]
-                    ],
-                    'sozluk' => [
-                        'terms' => [
-                            'field' => 'author'
-                        ]
-                    ],
-                    'youtube_video' => [
-                        'terms' => [
-                            'field' => 'channel.name'
+                $arr = array_merge($mquery, [
+                    'aggs' => [
+                        'twitter' => [
+                            'terms' => [
+                                'field' => 'user.screen_name',
+                                'size' => 10
+                            ]
+                        ],
+                        'sozluk' => [
+                            'terms' => [
+                                'field' => 'author',
+                                'size' => 10
+                            ]
+                        ],
+                        'youtube_video' => [
+                            'terms' => [
+                                'field' => 'channel.title',
+                                'size' => 10
+                            ]
+                        ],
+                        'youtube_comment' => [
+                            'terms' => [
+                                'field' => 'channel.title',
+                                'size' => 10
+                            ]
+                        ],
+                        'article' => [
+                            'terms' => [
+                                'field' => 'site_id',
+                                'size' => 10
+                            ]
                         ]
                     ]
-                ]
-            ]);
+                ]);
 
-            $document = Document::list([ '*' ], 'tweet,entry,video,comment', $arr);
+                $query = Document::list([ '*' ], 'tweet,entry,video,comment,article', $arr);
+
+                $modules = [];
+
+                foreach ($query->data['aggregations'] as $key => $module)
+                {
+                    if ($key == 'article')
+                    {
+                        $modules[$key] = array_map(function($item) {
+                            $site = MediaCrawler::where('id', $item['key'])->first();
+
+                            $item['key'] = @$site ? $site->site : 'N/A('.$item['key'].')';
+
+                            return $item;
+                        }, $module['buckets']);
+                    }
+                    else
+                    {
+                        $modules[$key] = $module['buckets'];
+                    }
+                }
+
+                $data = [
+                    'results' => $modules,
+                    'hits' => $query->data['hits']['total']
+                ];
+            break;
+
+            case 'hashtag':
+                $arr = array_merge($mquery, [
+                    'aggs' => [
+                        'hashtag' => [
+                            'nested' => [ 'path' => 'entities.hashtags' ],
+                            'aggs' => [
+                                'hit_items' => [
+                                    'terms' => [
+                                        'field' => 'entities.hashtags.hashtag',
+                                        'size' => 15
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]);
+
+                $query = Document::list([ '*' ], 'tweet,entry,video,comment,article', $arr);
+
+                $data = [
+                    'results' => $query->data['aggregations']['hashtag']['hit_items']['buckets'],
+                    'hits' => $query->data['hits']['total']
+                ];
+            break;
+
+            case 'source':
+            # ------------------------------------------------------ #
+
+            $arr = $mquery;
+
+            unset($arr['size']);
+
+            $data = [
+                'tweet' => Document::count([ 'twitter', 'tweets', '*' ], 'tweet', $arr),
+                'article' => Document::count([ 'media', 's*' ], 'article', $arr),
+                'comment' => Document::count([ 'youtube', 'comments', '*' ], 'comment', $arr),
+                'video' => Document::count([ 'youtube', 'videos' ], 'video', $arr),
+                'entry' => Document::count([ 'sozluk', '*' ], 'entry', $arr),
+            ];
 
             # ------------------------------------------------------ #
             break;
         }
 
         return [
-            'status' => $document->status,
-            'data' => $document->data
+            'status' => 'ok',
+            'data' => $data
         ];
     }
 
@@ -224,6 +325,11 @@ class SearchController extends Controller
             ]
         ];
 
+        if ($request->sentiment != 'all')
+        {
+            $mquery['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
+        }
+
         $data = [];
 
         if ($request->string)
@@ -253,11 +359,6 @@ class SearchController extends Controller
                 ];
                 $q['query']['bool']['must_not'][] = [ 'match' => [ 'external.type' => 'retweet' ] ];
                 $q['_source'] = [ 'user.name', 'user.screen_name', 'text', 'created_at' ];
-
-                if ($request->sentiment != 'all')
-                {
-                    $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
-                }
 
                 $query = @Document::list([ 'twitter', 'tweets', '*' ], 'tweet', $q)->data['hits']['hits'];
 
@@ -300,11 +401,6 @@ class SearchController extends Controller
                     ]
                 ];
 
-                if ($request->sentiment != 'all')
-                {
-                    $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
-                }
-
                 $query = @Document::list([ 'media', '*' ], 'article', $q)->data['hits']['hits'];
 
                 if ($query)
@@ -342,11 +438,6 @@ class SearchController extends Controller
                         'default_operator' => 'AND'
                     ]
                 ];
-
-                if ($request->sentiment != 'all')
-                {
-                    $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
-                }
 
                 $query = @Document::list([ 'sozluk', '*' ], 'entry', $q)->data['hits']['hits'];
 
@@ -387,11 +478,6 @@ class SearchController extends Controller
                         'default_operator' => 'AND'
                     ]
                 ];
-
-                if ($request->sentiment != 'all')
-                {
-                    $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
-                }
 
                 $query = @Document::list([ 'shopping', '*' ], 'product', $q)->data['hits']['hits'];
 
@@ -437,11 +523,6 @@ class SearchController extends Controller
                     ]
                 ];
 
-                if ($request->sentiment != 'all')
-                {
-                    $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
-                }
-
                 $query = @Document::list([ 'youtube', 'videos' ], 'video', $q)->data['hits']['hits'];
 
                 if ($query)
@@ -479,11 +560,6 @@ class SearchController extends Controller
                         'default_operator' => 'AND'
                     ]
                 ];
-
-                if ($request->sentiment != 'all')
-                {
-                    $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
-                }
 
                 $query = @Document::list([ 'youtube', 'comments', '*' ], 'comment', $q)->data['hits']['hits'];
 

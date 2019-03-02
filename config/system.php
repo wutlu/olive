@@ -7,6 +7,13 @@ return [
     'version' => '1.4.32-alpha',
 
     /**
+     * db
+     */
+    'db' => [
+        'alias' => 'oliveone'
+    ],
+
+    /**
      * Gizlilik Politikası ve Kullanım Koşulları Versiyonu
      *
      * - Gizlilik Politikası veya Kullanım Koşullarında yapılacak

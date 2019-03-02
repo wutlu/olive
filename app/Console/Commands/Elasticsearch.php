@@ -88,7 +88,7 @@ class Elasticsearch extends Command
         }
         else
         {
-            $alias = str_slug(config('app.name'));
+            $alias = config('system.db.alias');
 
             $client = ClientBuilder::fromConfig([
                 'hosts' => config('database.connections.elasticsearch.hosts'),

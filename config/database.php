@@ -185,7 +185,7 @@ return [
                     'refresh_interval' => '5s'
                 ]
             ]
-        ],
+        ]
     ],
 
     /*

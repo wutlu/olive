@@ -55,9 +55,15 @@ class MediaCrawler extends Model
                             'type' => 'date',
                             'format' => 'YYYY-MM-dd HH:mm:ss'
                         ],
-                        'url' => [ 'type' => 'keyword' ],
+                        'url' => [
+                            'type' => 'keyword',
+                            'index' => false
+                        ],
                         'status' => [ 'type' => 'keyword' ],
-                        'message' => [ 'type' => 'text' ],
+                        'message' => [
+                            'type' => 'text',
+                            'index' => false
+                        ],
                         'sentiment' => [
                             'properties' => [
                                 'neg' => [ 'type' => 'float' ],

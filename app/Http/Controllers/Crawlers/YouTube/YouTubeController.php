@@ -91,7 +91,7 @@ class YouTubeController extends Controller
             'handler' => HandlerStack::create()
         ]);
 
-        $source = $client->get('/_cat/indices/olive__youtube*?format=json&s=index:desc')->getBody();
+        $source = $client->get('/_cat/indices/'.config('system.db.alias').'__youtube*?format=json&s=index:desc')->getBody();
         $source = json_decode($source);
 
         return [

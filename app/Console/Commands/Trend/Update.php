@@ -808,52 +808,61 @@ class Update extends Command
     {
         $array = [];
 
-        foreach ($items as $rank => $item)
+        try
         {
-            if (@$item['id'])
+            foreach ($items as $rank => $item)
             {
-                $array[$rank]['id'] = $item['id'];
-            }
+                if (@$item['id'])
+                {
+                    $array[$rank]['id'] = $item['id'];
+                }
 
-            $array[$rank]['title'] = $item['title'];
+                $array[$rank]['title'] = $item['title'];
 
-            $ranks = array_reverse(array_map(
-                function($q) {
-                    return $q['_source']['rank'];
-                },
-                Document::list([ 'trend', 'titles' ], 'title', [
-                    'query' => [
-                        'bool' => [
-                            'must' => [
-                                [ 'match' => [ 'key' => $item['key'] ] ],
-                                [ 'match' => [ 'module' => $module ] ]
-                            ],
-                            'filter' => [
-                                [
-                                    'range' => [
-                                        'created_at' => [
-                                            'format' => 'YYYY-MM-dd HH:mm',
-                                            'gte' => $date
+                $ranks = array_reverse(array_map(
+                    function($q) {
+                        return $q['_source']['rank'];
+                    },
+                    Document::list([ 'trend', 'titles' ], 'title', [
+                        'query' => [
+                            'bool' => [
+                                'must' => [
+                                    [ 'match' => [ 'key' => $item['key'] ] ],
+                                    [ 'match' => [ 'module' => $module ] ]
+                                ],
+                                'filter' => [
+                                    [
+                                        'range' => [
+                                            'created_at' => [
+                                                'format' => 'YYYY-MM-dd HH:mm',
+                                                'gte' => $date
+                                            ]
                                         ]
                                     ]
                                 ]
                             ]
-                        ]
-                    ],
-                    'sort' => [ 'created_at' => 'DESC' ]
-                ])->data['hits']['hits']
-            ));
+                        ],
+                        'sort' => [ 'created_at' => 'DESC' ]
+                    ])->data['hits']['hits']
+                ));
 
-            $ranks[] = $rank;
+                $ranks[] = $rank;
 
-            $array[$rank]['ranks'] = $ranks;
+                $array[$rank]['ranks'] = $ranks;
+            }
+
+            $alias = config('system.db.alias');
+
+            RedisCache::set(implode(':', [ $alias, 'trends', $module ]), json_encode($array));
+
+            return Term::line('Redis güncellendi.');
         }
+        catch (\Exception $e)
+        {
+            echo Term::line('Elasticsearch hatası!');
 
-        $alias = str_slug(config('app.name'));
-
-        RedisCache::set(implode(':', [ $alias, 'trends', $module ]), json_encode($array));
-
-        return Term::line('Redis güncellendi.');
+            System::log($e->getMessage(), 'App\Console\Commands\Trend\Update::redis()', 10);
+        }
     }
 
     /**
@@ -863,7 +872,7 @@ class Update extends Command
      */
     private static function archive(string $group, string $group_title, string $module, array $items)
     {
-        $alias = str_slug(config('app.name'));
+        $alias = config('system.db.alias');
 
         if (count($items))
         {

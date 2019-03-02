@@ -160,7 +160,7 @@
                     <small class="grey-text">DÖKÜMAN / BOYUT</small>
                     <div class="d-flex">
                         <span data-elasticsearch data-name="total-docs">-</span>
-                        <span>/</span>
+                        <span> / </span>
                         <span data-elasticsearch data-name="total-size">-</span>
                     </div>
                 </div>

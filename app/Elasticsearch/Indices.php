@@ -18,7 +18,7 @@ class Indices
      */
     public static function name(array $name)
     {
-        return str_slug(config('app.name')).'__'.implode('-', $name);
+        return config('system.db.alias').'__'.implode('-', $name);
     }
 
     /**

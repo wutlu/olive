@@ -51,7 +51,7 @@ class TrendController extends Controller
      */
     public function liveRedis(TrendRequest $request)
     {
-        $alias = str_slug(config('app.name'));
+        $alias = config('system.db.alias');
 
         return [
             'status' => 'ok',
@@ -115,7 +115,7 @@ class TrendController extends Controller
     {
         $user = auth()->user();
 
-        $alias = str_slug(config('app.name'));
+        $alias = config('system.db.alias');
 
         $redis_data = RedisCache::get(implode(':', [ $alias, 'trends', $request->key ]));
 

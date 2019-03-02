@@ -35,7 +35,7 @@ class UserControl extends Command
      */
     public function __construct()
     {
-        $this->alias = implode(':', [ str_slug(config('app.name')), 'security', 'server', 'online-users' ]);
+        $this->alias = implode(':', [ config('system.db.alias'), 'security', 'server', 'online-users' ]);
 
         parent::__construct();
     }

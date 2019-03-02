@@ -73,6 +73,11 @@ class RealTimeController extends Controller
      */
     public function query(RealTimeRequest $request)
     {
+        if ($request->sentiment != 'all')
+        {
+            $this->query['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
+        }
+
         $user = auth()->user();
 
         $data = [];
@@ -120,11 +125,6 @@ class RealTimeController extends Controller
                             ]
                         ];
                         $q['_source'] = [ 'user.name', 'user.screen_name', 'text', 'created_at', 'sentiment' ];
-
-                        if ($request->sentiment != 'all')
-                        {
-                            $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
-                        }
 
                         $query = @Document::list([ 'twitter', 'tweets', date('Y.m') ], 'tweet', $q)->data['hits']['hits'];
 
@@ -174,11 +174,6 @@ class RealTimeController extends Controller
                         ];
                     }
 
-                    if ($request->sentiment != 'all')
-                    {
-                        $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
-                    }
-
                     $query = @Document::list([ 'media', '*' ], 'article', $q)->data['hits']['hits'];
 
                     if ($query)
@@ -221,11 +216,6 @@ class RealTimeController extends Controller
                                 'default_operator' => 'AND'
                             ]
                         ];
-                    }
-
-                    if ($request->sentiment != 'all')
-                    {
-                        $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
                     }
 
                     $query = @Document::list([ 'sozluk', '*' ], 'entry', $q)->data['hits']['hits'];
@@ -272,11 +262,6 @@ class RealTimeController extends Controller
                                 'default_operator' => 'AND'
                             ]
                         ];
-                    }
-
-                    if ($request->sentiment != 'all')
-                    {
-                        $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
                     }
 
                     $query = @Document::list([ 'shopping', '*' ], 'product', $q)->data['hits']['hits'];
@@ -329,11 +314,6 @@ class RealTimeController extends Controller
                         ];
                     }
 
-                    if ($request->sentiment != 'all')
-                    {
-                        $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
-                    }
-
                     $query = @Document::list([ 'youtube', 'videos' ], 'video', $q)->data['hits']['hits'];
 
                     if ($query)
@@ -375,11 +355,6 @@ class RealTimeController extends Controller
                                 'default_operator' => 'AND'
                             ]
                         ];
-                    }
-
-                    if ($request->sentiment != 'all')
-                    {
-                        $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
                     }
 
                     $query = @Document::list([ 'youtube', 'comments', '*' ], 'comment', $q)->data['hits']['hits'];

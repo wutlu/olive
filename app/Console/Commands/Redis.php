@@ -39,7 +39,7 @@ class Redis extends Command
     {
         parent::__construct();
 
-        $this->alias = str_slug(config('app.name'));
+        $this->alias = config('system.db.alias');
     }
 
     /**
@@ -80,7 +80,7 @@ class Redis extends Command
             'handler' => HandlerStack::create()
         ]);
 
-        $source = $client->get('/_cat/indices/olive__*?format=json')->getBody();
+        $source = $client->get('/_cat/indices/'.$this->alias.'__*?format=json')->getBody();
         $source = json_decode($source);
 
         $data = array_map(function($arr) {

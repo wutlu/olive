@@ -404,7 +404,7 @@
                         'color': '#ccff90'
                     }, 1000 );
 
-                item.find('[data-name=sentiment]').addClass(obj.sentiment.neu >= 0.34 ? 'neu' : obj.sentiment.pos >= 0.34 ? 'pos' : 'neg')
+                item.find('[data-name=sentiment]').addClass(obj.sentiment.neu >= 0.4 ? 'neu' : obj.sentiment.pos >= 0.4 ? 'pos' : 'neg')
 
                 item.prependTo(bucket)
 

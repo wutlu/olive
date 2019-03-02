@@ -48,7 +48,7 @@ class SozlukCrawler extends Model
                         'group_name' => [ 'type' => 'keyword' ],
                         'site_id' => [ 'type' => 'integer' ],
                         'title' => [
-                            'type' => 'keyword',
+                            'type' => 'text',
                             'analyzer' => 'turkish',
                             'fielddata' => true
                         ],
@@ -66,7 +66,10 @@ class SozlukCrawler extends Model
                             'type' => 'date',
                             'format' => 'YYYY-MM-dd HH:mm:ss'
                         ],
-                        'url' => [ 'type' => 'keyword' ],
+                        'url' => [
+                            'type' => 'keyword',
+                            'index' => false
+                        ],
                         'sentiment' => [
                             'properties' => [
                                 'neg' => [ 'type' => 'float' ],
