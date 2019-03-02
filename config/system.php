@@ -94,6 +94,7 @@ return [
         'trend.status.blog' => 'string|in:on,off',
         'trend.status.youtube' => 'string|in:on,off',
         'trend.status.instagram' => 'string|in:on,off',
+        'trend.status.facebook' => 'string|in:on,off',
 
         'twitter.index.auto' => 'string|in:on,off',
         'twitter.status' => 'string|in:on,off',
