@@ -18,7 +18,13 @@
         @endif
     </div>
 </div>
-<div class="card-content d-flex justify-content-between">
-    <time data-position="right" data-tooltip="Oluşturuldu" data-time="{{ $document['_source']['created_at'] }}">{{ date('d.m.Y H:i', strtotime($document['_source']['created_at'])) }}</time>
-    <time data-position="left" data-tooltip="Alındı" data-time="{{ $document['_source']['called_at'] }}">{{ date('d.m.Y H:i', strtotime($document['_source']['called_at'])) }}</time>
+<div class="card-action d-flex justify-content-between">
+    <span class="left-align">
+        <small class="d-block grey-text">OLUŞTURULDU</small>
+        <time>{{ date('d.m.Y H:i', strtotime($document['_source']['created_at'])) }}</time>
+    </span>
+     <span class="right-align">
+        <small class="d-block grey-text">OLUŞTURULDU</small>
+        <time>{{ date('d.m.Y H:i', strtotime($document['_source']['called_at'])) }}</time>
+    </span>
 </div>

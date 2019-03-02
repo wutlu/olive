@@ -4,7 +4,8 @@
         [
             'text' => $title
         ]
-    ]
+    ],
+    'dock' => true
 ])
 
 @push('local.styles')
@@ -25,7 +26,7 @@
     }
 
     .aggregation-collection {
-        height: 200px;
+        max-height: 200px;
         overflow: auto;
     }
 @endpush
@@ -47,20 +48,21 @@
             <div class="card">
                 <div class="card-content">
                     <span class="d-flex justify-content-between">
-                        <a class="card-title align-self-center" href="https://twitter.com/{{ $document['_source']['user']['screen_name'] }}" target="_blank">{{ $document['_source']['user']['name'] }}</a>
+                        <span class="card-title align-self-center">{{ $document['_source']['user']['name'] }}</span>
                         @isset ($document['_source']['user']['verified'])
-                            <i class="material-icons blue-text align-self-center">check</i>
+                            <i class="material-icons cyan-text align-self-center">check</i>
                         @endisset
                     </span>
+                    <a class="grey-text text-darken-2" href="https://twitter.com/{{ $document['_source']['user']['screen_name'] }}" target="_blank">{{ '@'.$document['_source']['user']['screen_name'] }}</a>
                     @isset ($document['_source']['user']['description'])
-                        <div class="markdown">{{ $document['_source']['user']['description'] }}</div>
+                        <div class="markdown grey-text">{!! Term::tweet($document['_source']['user']['description']) !!}</div>
                     @endisset
                 </div>
                 @isset ($document['_source']['user']['created_at'])
                     <div class="card-action d-flex justify-content-end">
                         <span class="right-align">
-                            <small class="d-block grey-text">OLUŞTURULDU</small>
-                            <span>{{ date('d.m.Y H:i', strtotime($document['_source']['user']['created_at'])) }}</span>
+                            <small class="d-block grey-text">HESAP OLUŞTURULDU</small>
+                            <time>{{ date('d.m.Y H:i', strtotime($document['_source']['user']['created_at'])) }}</time>
                         </span>
                     </div>
                 @endisset
@@ -87,53 +89,6 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        @foreach (
-            [
-                'names' => 'Adlar',
-                'screen_names' => 'Kullanıcı Adları',
-                'platforms' => 'Platformlar',
-                'langs' => 'Sık Kullandığı Diller',
-                'mention_out' => 'Sık Andığı Kişiler',
-                'mention_in' => 'Sık Anıldığı Kişiler',
-                'hashtags' => 'Sık Kullandığı Hashtagler',
-                'places' => 'Sık Girdiği Konumlar',
-                'urls' => 'Sık Kullandığı Bağlantılar',
-            ] as $key => $model
-        )
-        <div class="col l4 m6 s12">
-            <div class="card">
-                <div class="card-content cyan darken-2">
-                    <span class="card-title card-title-small white-text">{{ $model }}</span>
-                </div>
-                <ul class="collection aggregation-collection">
-                    <li class="collection-item hide" data-model>
-                        <div class="d-flex justify-content-between">
-                            <span class="align-self-center" data-name="name"></span>
-                            <span class="grey align-self-center" data-name="count" style="padding: 0 .4rem;"></span>
-                        </div>
-                    </li>
-                    <li class="collection-item center-align">
-                        <a
-                            href="#"
-                            class="btn-floating waves-effect btn-flat json"
-                            data-method="post"
-                            data-callback="__aggregation"
-                            data-type="{{ $key }}"
-                            data-href="{{ route('tweet.aggregation', [ 'type' => $key, 'id' => $document['_source']['user']['id'] ]) }}">
-                            <i class="material-icons grey-text">refresh</i>
-                        </a>
-                    </li>
-                    <li class="collection-item nothing hide">
-                        @component('components.nothing')
-                            @slot('size', 'small')
-                        @endcomponent
-                    </li>
-                </ul>
-            </div>
-        </div>
-        @endforeach
-    </div>
 
     <div class="card cyan darken-2">
         <div class="card-content">
@@ -152,8 +107,8 @@
                 </li>
             </ul>
         </div>
-        <div class="card-content white" id="stats">
-            @isset ($data['stats'])
+        @isset ($data['stats'])
+            <div class="card-content white" id="stats">
                 @foreach (
                     [
                         '_followers' => 'Takipçi Performans Grafiği',
@@ -248,10 +203,8 @@
                         @endforeach
                     </tbody>
                 </table>
-            @else
-                test
-            @endisset
-        </div>
+            </div>
+        @endisset
         <div id="all_tweets" class="halfload white" style="display: none;">
             <div class="collection json-clear mb-0"
                  id="loader-all_tweets"
@@ -269,9 +222,10 @@
                     @endcomponent
                 </div>
                 <div class="collection-item z-depth-1 model hide">
-                    <span href="#" class="d-table red-text" data-name="author"></span>
+                    <span class="d-table grey-text text-darken-2" data-name="author"></span>
+                    <a href="#" target="_blank" class="d-table grey-text text-darken-2" data-name="screen-name"></a>
                     <time class="d-table grey-text" data-name="created-at"></time>
-                    <a href="#" class="d-table grey-text text-darken-2" data-name="text"></a>
+                    <span class="d-block" data-name="text"></span>
                     <a href="#" class="d-table green-text" data-name="url" target="_blank"></a>
                 </div>
             </div>
@@ -306,9 +260,10 @@
                     @endcomponent
                 </div>
                 <div class="collection-item z-depth-1 model hide">
-                    <span href="#" class="d-table red-text" data-name="author"></span>
+                    <span class="d-table grey-text text-darken-2" data-name="author"></span>
+                    <a href="#" target="_blank" class="d-table grey-text text-darken-2" data-name="screen-name"></a>
                     <time class="d-table grey-text" data-name="created-at"></time>
-                    <a href="#" class="d-table grey-text text-darken-2" data-name="text"></a>
+                    <span class="d-block" data-name="text"></span>
                     <a href="#" class="d-table green-text" data-name="url" target="_blank"></a>
                 </div>
             </div>
@@ -327,6 +282,52 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('dock')
+        @foreach (
+            [
+                'names' => 'Adlar',
+                'screen_names' => 'Kullanıcı Adları',
+                'platforms' => 'Platformlar',
+                'langs' => 'Sık Kullandığı Diller',
+                'mention_out' => 'Sık Andığı Kişiler',
+                'mention_in' => 'Sık Anıldığı Kişiler',
+                'hashtags' => 'Sık Kullandığı Hashtagler',
+                'places' => 'Sık Girdiği Konumlar',
+                'urls' => 'Sık Kullandığı Bağlantılar',
+            ] as $key => $model
+        )
+            <div class="card">
+                <div class="card-content grey lighten-5">
+                    <span class="card-title card-title-small">{{ $model }}</span>
+                </div>
+                <ul class="collection aggregation-collection">
+                    <li class="collection-item hide" data-model>
+                        <div class="d-flex justify-content-between">
+                            <span class="align-self-center" data-name="name"></span>
+                            <span class="grey align-self-center" data-name="count" style="padding: 0 .4rem;"></span>
+                        </div>
+                    </li>
+                    <li class="collection-item center-align">
+                        <a
+                            href="#"
+                            class="btn-floating waves-effect btn-flat json"
+                            data-method="post"
+                            data-callback="__aggregation"
+                            data-type="{{ $key }}"
+                            data-href="{{ route('tweet.aggregation', [ 'type' => $key, 'id' => $document['_source']['user']['id'] ]) }}">
+                            <i class="material-icons grey-text">refresh</i>
+                        </a>
+                    </li>
+                    <li class="collection-item nothing hide">
+                        @component('components.nothing')
+                            @slot('size', 'small')
+                        @endcomponent
+                    </li>
+                </ul>
+            </div>
+        @endforeach
 @endsection
 
 @push('local.scripts')
@@ -351,7 +352,7 @@
                     {
                         name.html($('<a />', {
                             'html': '@' + o.key,
-                            'href': '{{ route('search.dashboard') }}?q=' + encodeURIComponent('user.screen_name:' + o.key),
+                            'href': 'https://twitter.com/' + o.key,
                             'target': '_blank'
                         }))
                     }
@@ -359,7 +360,7 @@
                     {
                         name.html($('<a />', {
                             'html': '@' + o.key,
-                            'href': '{{ route('search.dashboard') }}?q=' + encodeURIComponent('user.screen_name:' + o.key),
+                            'href': 'https://twitter.com/' + o.key,
                             'target': '_blank'
                         }))
                     }
@@ -376,6 +377,14 @@
                         name.html($('<a />', {
                             'html': o.key,
                             'href': o.key,
+                            'target': '_blank'
+                        }))
+                    }
+                    else if (__.attr('data-type') == 'screen_names')
+                    {
+                        name.html($('<a />', {
+                            'html': '@' + o.key,
+                            'href': 'https://twitter.com/' + o.key,
                             'target': '_blank'
                         }))
                     }
@@ -412,7 +421,7 @@
                         item.removeClass('model hide').addClass('_tmp').attr('data-id', o.id)
 
                         item.find('[data-name=author]').html(o._source.user.name)
-                        item.find('[data-name=text]').attr('href', '{{ url('/') }}/db/' + o._index + '/' + o._type + '/' + o._id)
+                        item.find('[data-name=screen-name]').html('@' + o._source.user.screen_name).attr('href', 'https://twitter.com/' + o._source.user.screen_name)
                         item.find('[data-name=text]').html(o._source.text)
                         item.find('[data-name=url]').html('https://twitter.com/' + o._source.user.screen_name + '/status/' + o._source.id).attr('href', 'https://twitter.com/' + o._source.user.screen_name + '/status/' + o._source.id)
                         item.find('[data-name=created-at]').html(o._source.created_at)

@@ -33,7 +33,7 @@ class AlarmController extends Controller
     {
         $members = User::where('organisation_id', auth()->user()->organisation_id)->where('verified', true)->get();
 
-        return view('alarm.dashboard', compact('members'));
+        return view('alarm', compact('members'));
     }
 
     /**

@@ -469,6 +469,21 @@
                     </label>
                 </span>
             </div>
+            <div class="wild-content d-flex" data-wild="graph">
+                <span class="wild-body d-flex">
+                    <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center mr-1" data-class=".wild-content" data-class-remove="active">
+                        <i class="material-icons">close</i>
+                    </a>
+                    <a href="#" data-tooltip="Saatlik İçerik Grafiği" class="align-self-center mr-1">Saatlik</a>
+                    <a href="#" data-tooltip="Günlük İçerik Grafiği" class="align-self-center mr-1">Günlük</a>
+                    <a href="#" data-tooltip="Konum Grafiği" class="align-self-center mr-1">Konum</a>
+                    <a href="#" data-tooltip="Platform Grafiği" class="align-self-center mr-1">Platform</a>
+                    <a href="#" data-tooltip="Kaynklara Göre Grafik" class="align-self-center mr-1">Kaynak</a>
+                    <a href="#" data-tooltip="Paylaşımcılar" class="align-self-center mr-1">@</a>
+                    <a href="#" data-tooltip="Hashtag Grafiği" class="align-self-center mr-1">#</a>
+                    
+                </span>
+            </div>
             <ul class="wild-menu">
                 <li>
                     <a class="d-flex" href="#" data-class="[data-wild=date]" data-class-add="active">
@@ -480,6 +495,12 @@
                     <a class="d-flex" href="#" data-class="[data-wild=sentiment]" data-class-add="active">
                         <i class="material-icons mr-1">mood</i>
                         <span class="align-self-center">Duygu</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="d-flex" href="#" data-class="[data-wild=graph]" data-class-add="active">
+                        <i class="material-icons mr-1">show_chart</i>
+                        <span class="align-self-center">Grafik</span>
                     </a>
                 </li>
             </ul>

@@ -2,6 +2,7 @@
     <div class="card-content cyan darken-2 white-text">{{ $alert }}</div>
     <div class="card-content">
         <span class="card-title">Duygu Analizi</span>
+
         <canvas id="sentiment-chart"></canvas>
 
         @push('local.scripts')
