@@ -161,7 +161,7 @@ class HomeController extends Controller
      */
     public static function dataCounter()
     {
-        $counts = RedisCache::get(implode(':', [ str_slug(config('app.name')), 'documents', 'total' ]));
+        $counts = RedisCache::get(implode(':', [ config('system.db.alias'), 'documents', 'total' ]));
 
         return [
             'status' => 'ok',
