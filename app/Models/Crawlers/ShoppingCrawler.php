@@ -98,15 +98,9 @@ class ShoppingCrawler extends Model
                             'type' => 'date',
                             'format' => 'YYYY-MM-dd HH:mm:ss'
                         ],
-                        'url' => [
-                            'type' => 'text',
-                            'index' => false
-                        ],
+                        'url' => [ 'type' => 'keyword' ],
                         'status' => [ 'type' => 'keyword' ],
-                        'message' => [
-                            'type' => 'text',
-                            'index' => false
-                        ]
+                        'message' => [ 'type' => 'text' ]
                     ]
                 ]
             ],

@@ -239,10 +239,7 @@ class TwitterCrawler
                                 'id' => [ 'type' => 'long' ],
                                 'name' => [ 'type' => 'keyword' ],
                                 'screen_name' => [ 'type' => 'keyword' ],
-                                'image' => [
-                                    'type' => 'text',
-                                    'index' => false
-                                ],
+                                'image' => [ 'type' => 'keyword' ],
                                 'description' => [
                                     'type' => 'text',
                                     'analyzer' => 'turkish',
@@ -278,11 +275,7 @@ class TwitterCrawler
                                 'urls' => [
                                     'type' => 'nested',
                                     'properties' => [
-                                        'url' => [
-                                            'type' => 'text',
-                                            'analyzer' => 'keyword',
-                                            'fielddata' => true
-                                        ]
+                                        'url' => [ 'type' => 'keyword' ]
                                     ]
                                 ],
                                 'mentions' => [
@@ -303,12 +296,10 @@ class TwitterCrawler
                                         'media' => [
                                             'properties' => [
                                                 'media_url' => [
-                                                    'type' => 'text',
-                                                    'index' => false
+                                                    'type' => 'keyword'
                                                 ],
                                                 'source_url' => [
-                                                    'type' => 'text',
-                                                    'index' => false
+                                                    'type' => 'keyword'
                                                 ],
                                                 'type' => [ 'type' => 'keyword' ]
                                             ]

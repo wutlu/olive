@@ -27,7 +27,8 @@ class YouTubeCrawler
                                 ],
                                 'description' => [
                                     'type' => 'text',
-                                    'analyzer' => 'turkish'
+                                    'analyzer' => 'turkish',
+                                    'fielddata' => true
                                 ],
                                 'tags' => [
                                     'type' => 'nested',

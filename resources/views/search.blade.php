@@ -442,8 +442,8 @@
                     <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center mr-1" data-class=".wild-content" data-class-remove="active">
                         <i class="material-icons">close</i>
                     </a>
-                    <input style="max-width: 96px;" type="text" class="datepicker" name="start_date" value="{{ $s ? $s : date('Y-m-d', strtotime('-1 day')) }}" placeholder="Başlangıç" />
-                    <input style="max-width: 96px;" type="text" class="datepicker" name="end_date" value="{{ $e ? $e : date('Y-m-d') }}" placeholder="Bitiş" />
+                    <input style="max-width: 96px;" type="text" class="datepicker" name="start_date" value="{{ $s ? $s : date('d.m.Y', strtotime('-1 day')) }}" placeholder="Başlangıç" />
+                    <input style="max-width: 96px;" type="text" class="datepicker" name="end_date" value="{{ $e ? $e : date('d.m.Y') }}" placeholder="Bitiş" />
                 </span>
             </div>
             <div class="wild-content d-flex" data-wild="sentiment">
@@ -474,14 +474,15 @@
                     <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center mr-1" data-class=".wild-content" data-class-remove="active">
                         <i class="material-icons">close</i>
                     </a>
-                    <a href="#" data-tooltip="Saatlik İçerik Grafiği" class="align-self-center mr-1">Saatlik</a>
-                    <a href="#" data-tooltip="Günlük İçerik Grafiği" class="align-self-center mr-1">Günlük</a>
-                    <a href="#" data-tooltip="Konum Grafiği" class="align-self-center mr-1">Konum</a>
-                    <a href="#" data-tooltip="Platform Grafiği" class="align-self-center mr-1">Platform</a>
-                    <a href="#" data-tooltip="Kaynklara Göre Grafik" class="align-self-center mr-1">Kaynak</a>
-                    <a href="#" data-tooltip="Paylaşımcılar" class="align-self-center mr-1">@</a>
-                    <a href="#" data-tooltip="Hashtag Grafiği" class="align-self-center mr-1">#</a>
-                    
+                    <a href="#" data-type="hourly" data-tooltip="Saatlik İçerik Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string" data-href="{{ route('search.aggregation') }}" data-method="post" class="json align-self-center mr-1">Saatlik</a>
+                    <a href="#" data-type="daily" data-tooltip="Günlük İçerik Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string" data-href="{{ route('search.aggregation') }}" data-method="post" class="json align-self-center mr-1">Günlük</a>
+                    <a href="#" data-type="location" data-tooltip="Konum Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string" data-href="{{ route('search.aggregation') }}" data-method="post" class="json align-self-center mr-1">Konum</a>
+                    <a href="#" data-type="platform" data-tooltip="Platform Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string" data-href="{{ route('search.aggregation') }}" data-method="post" class="json align-self-center mr-1">Platform</a>
+                    <a href="#" data-type="source" data-tooltip="Kaynak Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string" data-href="{{ route('search.aggregation') }}" data-method="post" class="json align-self-center mr-1">Kaynak</a>
+                    <a href="#" data-type="mention" data-tooltip="Kimler Bahsetti?" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string" data-href="{{ route('search.aggregation') }}" data-method="post" class="json align-self-center mr-1">@</a>
+                    <a href="#" data-type="hashtag" data-tooltip="Hangi Hashtagler Kullanıldı?" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string" data-href="{{ route('search.aggregation') }}" data-method="post" class="json align-self-center mr-1">#</a>
+
+                    <span class="teal-text align-self-center">Bu bölüm kaynak alanından bağımsız çalışır.</span>
                 </span>
             </div>
             <ul class="wild-menu">
@@ -535,7 +536,7 @@
         <div class="collection collection-bordered">
             @foreach (config('system.modules') as $key => $module)
                 <label class="collection-item waves-effect d-block">
-                    <input name="modules" checked value="{{ $key }}" type="checkbox" />
+                    <input name="modules" checked value="{{ $key }}" data-multiple="true" type="checkbox" />
                     <span>{{ $module }}</span>
                 </label>
             @endforeach
@@ -546,9 +547,17 @@
 @endsection
 
 @push('local.scripts')
+    function __aggregation(__, obj)
+    {
+        if (obj.status == 'ok')
+        {
+            alert(1)
+        }
+    }
+
     $('.datepicker').datepicker({
         firstDay: 0,
-        format: 'yyyy-mm-dd',
+        format: 'dd.mm.yyyy',
         i18n: date.i18n,
         container: 'body'
     })

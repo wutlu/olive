@@ -4,7 +4,7 @@ namespace App\Http\Requests\Search;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ArchiveRequest extends FormRequest
+class ArchiveAggregationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,14 +24,11 @@ class ArchiveRequest extends FormRequest
     public function rules()
     {
         return [
+            'type' => 'required|string|in:hourly,daily,location,platform,source,mention,hashtag',
             'string' => 'nullable|string|max:255',
-            'skip' => 'required|integer',
-            'take' => 'required|integer|max:100',
             'start_date' => 'required|date_format:d.m.Y',
             'end_date' => 'required|date_format:d.m.Y|after_or_equal:start_date',
-            'sentiment' => 'required|string|in:pos,neu,neg,all',
-            'modules' => 'required|array|min:1',
-            'modules.*' => 'required|string|in:'.implode(',',array_keys(config('system.modules')))
+            'sentiment' => 'required|string|in:pos,neu,neg,all'
         ];
     }
 }

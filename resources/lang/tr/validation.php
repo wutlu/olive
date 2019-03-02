@@ -280,5 +280,8 @@ return [
         'user_ids'                     => 'Kullanıcılar',
 
         'hit'                          => 'Bildirim Sayısı',
+
+        'skip'                         => 'Geç',
+        'take'                         => 'Yakala',
     ],
 ];

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Search\ArchiveRequest;
+use App\Http\Requests\Search\ArchiveAggregationRequest;
 use App\Http\Requests\QRequest;
 
 use App\Elasticsearch\Document;
@@ -30,8 +31,153 @@ class SearchController extends Controller
 
         ### [ zorunlu aktif organizasyon ] ###
         $this->middleware('can:organisation-status')->only([
-            'search'
+            'search',
+            'aggregation'
         ]);
+    }
+
+    /**
+     * Arama Sonuçları için Aggregation
+     *
+     * @return view
+     */
+    public static function aggregation(ArchiveAggregationRequest $request)
+    {
+        $mquery = [
+            'size' => 0,
+            'query' => [
+                'bool' => [
+                    'filter' => [
+                        [
+                            'range' => [
+                                'created_at' => [
+                                    'format' => 'dd.MM.YYYY',
+                                    'gte' => $request->start_date,
+                                    'lte' => $request->end_date
+                                ]
+                            ]
+                        ]
+                    ],
+                    'must' => [
+                        [ 'exists' => [ 'field' => 'created_at' ] ]
+                    ]
+                ]
+            ]
+        ];
+
+        switch ($request->type)
+        {
+            case 'hourly':
+            # ------------------------------------------------------ #
+
+            $arr = array_merge($mquery, [
+                'aggs' => [
+                    'results' => [
+                        'histogram' => [
+                            'script' => 'doc.created_at.value.getHourOfDay()',
+                            'interval' => 1,
+                            'min_doc_count' => 0,
+                            'extended_bounds' => [ 'min' => 1, 'max' => 23 ]
+                        ]
+                    ]
+                ]
+            ]);
+
+            $document = Document::list([ '*' ], 'tweet,article,entry,video,comment', $arr);
+
+            # ------------------------------------------------------ #
+            break;
+
+            case 'daily':
+            # ------------------------------------------------------ #
+
+            $arr = array_merge($mquery, [
+                'aggs' => [
+                    'results' => [
+                        'histogram' => [
+                            'script' => 'doc.created_at.value.getDayOfWeek()',
+                            'interval' => 1,
+                            'min_doc_count' => 0,
+                            'extended_bounds' => [ 'min' => 1, 'max' => 6 ]
+                        ]
+                    ]
+                ]
+            ]);
+
+            $document = Document::list([ '*' ], 'tweet,article,entry,video,comment', $arr);
+
+            # ------------------------------------------------------ #
+            break;
+
+            case 'location':
+            # ------------------------------------------------------ #
+
+            $arr = array_merge($mquery, [
+                'aggs' => [
+                    'places' => [
+                        'terms' => [
+                            'field' => 'place.full_name'
+                        ]
+                    ]
+                ]
+            ]);
+
+            $document = Document::list([ 'twitter', 'tweets', '*' ], 'tweet', $arr);
+
+            # ------------------------------------------------------ #
+            break;
+
+            case 'platform':
+            # ------------------------------------------------------ #
+
+            $arr = array_merge($mquery, [
+                'aggs' => [
+                    'places' => [
+                        'terms' => [
+                            'field' => 'platform'
+                        ]
+                    ]
+                ]
+            ]);
+
+            $document = Document::list([ 'twitter', 'tweets', '*' ], 'tweet', $arr);
+
+            # ------------------------------------------------------ #
+            break;
+
+            case 'mention':
+            # ------------------------------------------------------ #
+
+            $arr = array_merge($mquery, [
+                'aggs' => [
+                    'twitter' => [
+                        'terms' => [
+                            'field' => 'user.screen_name'
+                        ]
+                    ],
+                    'sozluk' => [
+                        'terms' => [
+                            'field' => 'author'
+                        ]
+                    ],
+                    'youtube_video' => [
+                        'terms' => [
+                            'field' => 'channel.name'
+                        ]
+                    ]
+                ]
+            ]);
+
+            $document = Document::list([ '*' ], 'tweet,entry,video,comment', $arr);
+
+            # ------------------------------------------------------ #
+            break;
+        }
+
+        return [
+            'status' => $document->status,
+            'data' => $document->data
+        ];
     }
 
     /**
@@ -45,7 +191,7 @@ class SearchController extends Controller
         $s = $request->s;
         $e = $request->e;
 
-        return view('search.dashboard', compact('q', 's', 'e'));
+        return view('search', compact('q', 's', 'e'));
     }
 
     /**
@@ -67,7 +213,7 @@ class SearchController extends Controller
                         [
                             'range' => [
                                 'created_at' => [
-                                    'format' => 'YYYY-MM-dd',
+                                    'format' => 'dd.MM.YYYY',
                                     'gte' => $request->start_date,
                                     'lte' => $request->end_date
                                 ]

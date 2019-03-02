@@ -48,7 +48,7 @@ class SozlukCrawler extends Model
                         'group_name' => [ 'type' => 'keyword' ],
                         'site_id' => [ 'type' => 'integer' ],
                         'title' => [
-                            'type' => 'text',
+                            'type' => 'keyword',
                             'analyzer' => 'turkish',
                             'fielddata' => true
                         ],
@@ -57,9 +57,7 @@ class SozlukCrawler extends Model
                             'analyzer' => 'turkish',
                             'fielddata' => true
                         ],
-                        'author' => [
-                            'type' => 'text'
-                        ],
+                        'author' => [ 'type' => 'keyword' ],
                         'created_at' => [
                             'type' => 'date',
                             'format' => 'YYYY-MM-dd HH:mm:ss'
@@ -68,10 +66,7 @@ class SozlukCrawler extends Model
                             'type' => 'date',
                             'format' => 'YYYY-MM-dd HH:mm:ss'
                         ],
-                        'url' => [
-                            'type' => 'text',
-                            'index' => false
-                        ],
+                        'url' => [ 'type' => 'keyword' ],
                         'sentiment' => [
                             'properties' => [
                                 'neg' => [ 'type' => 'float' ],

@@ -354,7 +354,7 @@ class ContentController extends Controller
                         $data['keywords'] = Term::commonWords($bucket, 100);
                     }
 
-                    $title = implode(' / ', [ $crawler->name, '/', $document['_source']['title'] ]);
+                    $title = $crawler->name . ' / ' . $document['_source']['title'];
                 break;
 
                 default: abort(404); break;

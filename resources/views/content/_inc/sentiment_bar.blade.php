@@ -24,7 +24,7 @@
         <time>{{ date('d.m.Y H:i', strtotime($document['_source']['created_at'])) }}</time>
     </span>
      <span class="right-align">
-        <small class="d-block grey-text">OLUŞTURULDU</small>
+        <small class="d-block grey-text">ALINDI</small>
         <time>{{ date('d.m.Y H:i', strtotime($document['_source']['called_at'])) }}</time>
     </span>
 </div>

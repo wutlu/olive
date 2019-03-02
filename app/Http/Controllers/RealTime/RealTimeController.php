@@ -63,7 +63,7 @@ class RealTimeController extends Controller
      */
     public function stream()
     {
-        return view('realTime.stream');
+        return view('stream');
     }
 
     /**

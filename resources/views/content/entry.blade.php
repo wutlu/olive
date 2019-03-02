@@ -25,12 +25,10 @@
         <div class="col m12 xl12">
             <div class="card">
                 <div class="card-content">
-                    <a href="{{ $document['_source']['url'] }}" class="card-title d-flex" target="_blank">
-                        <i class="material-icons mr-1">insert_link</i>
-                        <span>{{ $document['_source']['title'] }}</span>
-                    </a>
+                    <span class="card-title d-flex">{{ $document['_source']['title'] }}</span>
                     <span class="red-text">{{ $document['_source']['author'] }}</span>
                     <div class="markdown">{!! Term::markdown($document['_source']['entry']) !!}</div>
+                    <a class="green-text" href="{{ $document['_source']['url'] }}" target="_blank">{{ $document['_source']['url'] }}</a>
                 </div>
                 @include('content._inc.sentiment_bar', [
                     'pos' => $document['_source']['sentiment']['pos'],

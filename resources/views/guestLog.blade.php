@@ -129,7 +129,7 @@
             data-loader="#home-loader"
             data-method="post">
             <li class="collection-item hide">
-                <div class="d-flex justify-content-between">
+                <div class="d-flex justify-content-between flex-wrap">
                 	<span>
                         <span class="d-block">
                             <span data-name="ip" style="padding: .1rem;"></span>
