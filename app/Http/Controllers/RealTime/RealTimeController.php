@@ -189,7 +189,8 @@ class RealTimeController extends Controller
                         'channel.title',
                         'channel.id',
 
-                        'video_id'
+                        'video_id',
+                        'text'
                     ]
                 ];
 
