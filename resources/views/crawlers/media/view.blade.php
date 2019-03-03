@@ -145,7 +145,7 @@
                     <small class="grey-text">BAŞARILI / BAŞARISIZ</small>
                     <div class="d-flex">
                         <span data-elasticsearch data-name="total-docs-success">-</span>
-                        <span>/</span>
+                        <span> / </span>
                         <span data-elasticsearch data-name="total-docs-failed">-</span>
                     </div>
                 </div>

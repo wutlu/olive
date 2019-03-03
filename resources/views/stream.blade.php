@@ -238,7 +238,7 @@
 @endsection
 
 @push('local.scripts')
-    $('.owl-carousel').owlCarousel({
+    $('.owl-wildcard').owlCarousel({
         responsiveClass: true,
         responsive: {
             0: {
@@ -307,7 +307,7 @@
                 'class': 'pin-history-link',
                 'target': '_blank',
                 'html': str_limit(__.data('url'), 100)
-            }), 0]).trigger('refresh.owl.carousel');
+            }), 0]).trigger('refresh.owl.carousel')
 
             pin_count.html(parseInt(pin_count.html()) + 1)
         }

@@ -326,7 +326,7 @@ class RealTimeController extends Controller
                                 '_type' => $object['_type'],
                                 '_index' => $object['_index'],
                                 'module' => 'youtube-video',
-                                'sentiment' => @Crawler::emptySentiment(@$object['_source']['sentiment']),
+                                'sentiment' => Crawler::emptySentiment(@$object['_source']['sentiment']),
                                 'title' => $object['_source']['title'],
                                 'text' => @$object['_source']['description'],
                                 'channel' => [

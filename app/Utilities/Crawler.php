@@ -626,7 +626,7 @@ class Crawler
      *
      * @return array
      */
-    public static function emptySentiment(array $arr)
+    public static function emptySentiment($arr = [])
     {
         return @$arr ? $arr : [
             'pos' => 0,

@@ -394,6 +394,43 @@
     @if ($q)
         vzAjax($('#search'))
     @endif
+
+    function __aggregation(__, obj)
+    {
+        if (obj.status == 'ok')
+        {
+            alert(1)
+        }
+    }
+
+    $('.datepicker').datepicker({
+        firstDay: 0,
+        format: 'dd.mm.yyyy',
+        i18n: date.i18n,
+        container: 'body'
+    })
+
+    $('.owl-wildcard').owlCarousel({
+        responsiveClass: true,
+        responsive: {
+            0: {
+                items: 1
+            },
+            600: {
+                items: 2
+            },
+            1440: {
+                items: 3
+            }
+        },
+        autoWidth: true,
+        dotClass: 'hide'
+    })
+
+    $('.owl-wildcard').trigger('add.owl.carousel', [$('<a />', {
+        'href': '#',
+        'html': 'test'
+    }), 0]).trigger('refresh.owl.carousel')
 @endpush
 
 @section('content')
@@ -430,8 +467,12 @@
 
 @include('_inc.alerts.search_operators')
 
+@push('external.include.header')
+    <link rel="stylesheet" href="{{ asset('css/owl.carousel.min.css?v='.config('system.version')) }}" />
+@endpush
 @push('external.include.footer')
     <script src="{{ asset('js/jquery.mark.min.js?v='.config('system.version')) }}" charset="UTF-8"></script>
+    <script src="{{ asset('js/owl.carousel.min.js?v='.config('system.version')) }}"></script>
 @endpush
 
 @section('wildcard')
@@ -526,6 +567,13 @@
             </div>
         </div>
     </div>
+    <div class="z-depth-1">
+        <div class="container container-wide">
+            <div class="pt-1 pb-1">
+                <div class="owl-carousel owl-wildcard"></div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('dock')
@@ -545,20 +593,3 @@
 
     @include('pin.group.dock')
 @endsection
-
-@push('local.scripts')
-    function __aggregation(__, obj)
-    {
-        if (obj.status == 'ok')
-        {
-            alert(1)
-        }
-    }
-
-    $('.datepicker').datepicker({
-        firstDay: 0,
-        format: 'dd.mm.yyyy',
-        i18n: date.i18n,
-        container: 'body'
-    })
-@endpush

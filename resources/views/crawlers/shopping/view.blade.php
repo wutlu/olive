@@ -162,12 +162,12 @@
                 </div>
 
                 <div class="item">
-                    <small class="grey-text">KUYRUK/BAŞARILI/BAŞARISIZ</small>
+                    <small class="grey-text">KUYRUK / BAŞARILI / BAŞARISIZ</small>
                     <div class="d-flex">
                         <span data-elasticsearch data-name="total-docs-buffer">-</span>
-                        <span>/</span>
+                        <span> / </span>
                         <span data-elasticsearch data-name="total-docs-success">-</span>
-                        <span>/</span>
+                        <span> / </span>
                         <span data-elasticsearch data-name="total-docs-failed">-</span>
                     </div>
                 </div>

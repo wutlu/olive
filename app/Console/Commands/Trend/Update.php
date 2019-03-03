@@ -714,71 +714,91 @@ class Update extends Command
 
         try
         {
-            $client = new Client([
-                'base_uri' => 'https://trends.google.com',
-                'handler' => HandlerStack::create()
-            ]);
+            $each = true;
 
-            $arr = [
-                'timeout' => 10,
-                'connect_timeout' => 5,
-                'headers' => [
-                    'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))]
-                ]
-            ];
-
-            $proxy = Proxy::where('health', '>', 5)->inRandomOrder()->first();
-
-            if (@$proxy)
+            while ($each == true)
             {
-                $arr['proxy'] = $proxy->proxy;
-            }
+                $client = new Client([
+                    'base_uri' => 'https://trends.google.com',
+                    'handler' => HandlerStack::create()
+                ]);
 
-            $source = $client->get(
-                '/trends/hottrends/atom/feed?pn=p24', // p24 parametresi Türkiye trendlerini temsil eder.
-                $arr
-            )->getBody();
-
-            $saw = new Wrawler($source);
-
-            $array = $saw->get('item')->toArray();
-
-            foreach ($array as $item)
-            {
-                $title = $item['title'][0]['#text'][0];
-
-                $i++;
-                $key = md5($title);
-                $id = 'google_'.$key.'_'.date('Y.m.d-H:i');
-
-                $items[$i] = [
-                    'key' => $key,
-                    'title' => $title
-                ];
-
-                ################
-
-                $chunk['body'][] = [
-                    'create' => [
-                        '_index' => Indices::name([ 'trend', 'titles' ]),
-                        '_type' => 'title',
-                        '_id' => $id
+                $arr = [
+                    'timeout' => 10,
+                    'connect_timeout' => 5,
+                    'headers' => [
+                        'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))]
                     ]
                 ];
 
-                $chunk['body'][] = [
-                    'id' => $id,
-                    'key' => $key,
-                    'group' => $group,
-                    'module' => 'google',
-                    'rank' => $i,
-                    'title' => $title,
-                    'created_at' => date('Y-m-d H:i:s')
-                ];
+                $proxy = Proxy::where('health', '>', 5)->inRandomOrder()->first();
 
-                ################
+                if (@$proxy)
+                {
+                    $arr['proxy'] = $proxy->proxy;
+                }
 
-                echo Term::line($i.' - '.$title);
+                $source = $client->get(
+                    '/trends/hottrends/atom/feed?pn=p24', // p24 parametresi Türkiye trendlerini temsil eder.
+                    $arr
+                )->getBody();
+
+                $saw = new Wrawler($source);
+
+                $array = $saw->get('item')->toArray();
+
+                foreach ($array as $item)
+                {
+                    $title = $item['title'][0]['#text'][0];
+
+                    $i++;
+                    $key = md5($title);
+                    $id = 'google_'.$key.'_'.date('Y.m.d-H:i');
+
+                    $items[$i] = [
+                        'key' => $key,
+                        'title' => $title
+                    ];
+
+                    ################
+
+                    $chunk['body'][] = [
+                        'create' => [
+                            '_index' => Indices::name([ 'trend', 'titles' ]),
+                            '_type' => 'title',
+                            '_id' => $id
+                        ]
+                    ];
+
+                    $chunk['body'][] = [
+                        'id' => $id,
+                        'key' => $key,
+                        'group' => $group,
+                        'module' => 'google',
+                        'rank' => $i,
+                        'title' => $title,
+                        'created_at' => date('Y-m-d H:i:s')
+                    ];
+
+                    ################
+
+                    echo Term::line($i.' - '.$title);
+                }
+
+                if ($i > 0)
+                {
+                    $each = false;
+                }
+                else
+                {
+                    $message = 'İçerik tespit edilemedi. 10 saniye sonra tekrar denenecek.';
+
+                    echo Term::line($message);
+
+                    System::log($message, 'App\Console\Commands\Trend\Update::google::handle()', 5);
+
+                    sleep(10);
+                }
             }
         }
         catch (\Exception $e)
