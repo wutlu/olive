@@ -345,21 +345,21 @@
 
                 var url = '';
 
-                if (obj.module == 'twitter')
+                if (obj._type == 'tweet')
                 {
                     url = 'https://twitter.com/' + obj.user.screen_name + '/status/' + obj._id;
 
                     item.find('[data-name=author]').html(obj.user.name + ' @' + obj.user.screen_name)
                     item.find('[data-name=url]').html(url).attr('href', url)
                 }
-                else if (obj.module == 'haber')
+                else if (obj._type == 'article')
                 {
                     url = obj.url;
 
                     item.find('[data-name=url]').html(url).attr('href', url)
                     item.find('[data-name=title]').html(obj.title)
                 }
-                else if (obj.module == 'sozluk')
+                else if (obj._type == 'entry')
                 {
                     url = obj.url;
 
@@ -367,14 +367,14 @@
                     item.find('[data-name=url]').html(url).attr('href', url)
                     item.find('[data-name=title]').html(obj.title)
                 }
-                else if (obj.module == 'alisveris')
+                else if (obj._type == 'product')
                 {
                     url = obj.url;
 
                     item.find('[data-name=url]').html(obj.url).attr('href', url)
                     item.find('[data-name=title]').html(obj.title)
                 }
-                else if (obj.module == 'youtube-video')
+                else if (obj._type == 'video')
                 {
                     url = 'https://www.youtube.com/watch?v=' + obj._id;
 
@@ -382,7 +382,7 @@
                     item.find('[data-name=title]').html(obj.title)
                     item.find('[data-name=url]').html(url).attr('href', url)
                 }
-                else if (obj.module == 'youtube-comment')
+                else if (obj._type == 'comment')
                 {
                     url = 'https://www.youtube.com/channel/' + obj.channel.id;
 

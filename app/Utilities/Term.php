@@ -221,7 +221,7 @@ class Term
      *
      * @return object
      */
-    public static function cleanSearchQuery(string $text)
+    public static function cleanSearchQuery($text = '')
     {
         /*
         $line = str_replace(' ', ' AND ', $text);

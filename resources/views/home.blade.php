@@ -121,7 +121,7 @@
             </div>
         </div>
     </div>
-
+@section('hide')
     <div class="parallax-container">
         <div class="parallax">
             <img src="{{ asset('img/sepbg.svg') }}" alt="sep" />
@@ -153,7 +153,6 @@
         </div>
     </div>
 
-@section('hide')
     <div class="parallax-container">
         <div class="parallax">
             <img src="{{ asset('img/obg.svg') }}" alt="obg" />

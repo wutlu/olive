@@ -480,7 +480,7 @@ class ContentController extends Controller
                 $script = 'doc.created_at.value.getHourOfDay()';
                 $max = 23;
             break;
-            case 'weekly':
+            case 'daily':
                 $script = 'doc.created_at.value.getDayOfWeek()';
                 $max = 6;
             break;

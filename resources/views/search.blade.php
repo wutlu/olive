@@ -110,6 +110,8 @@
 
             if (obj.hits.length)
             {
+                $('[data-name=stats]').html('Yaklaşık ' + obj.stats.hits + ' sonuç bulundu (' + obj.stats.took + ' saniye) ');
+
                 $.each(obj.hits, function(key, o) {
                     var item = item_model.clone();
                         item.removeClass('model hide').addClass('_tmp').attr('data-id', 'list-item-' + o.id)
@@ -427,20 +429,65 @@
         dotClass: 'hide'
     })
 
-    $('.owl-wildcard').trigger('add.owl.carousel', [$('<a />', {
-        'href': '#',
-        'html': 'test'
+    $('.owl-wildcard').trigger('add.owl.carousel', [$('<div />', {
+        'html': $('<div />', {
+            'html': [
+                $('<span />', {
+                    'class': 'grey-text',
+                    'html': 'Saatlik İçerik Grafiği'
+                }),
+                $('<div />', {
+                    'class': 'owl-chart',
+                    'html': $('<canvas />', {
+                        'id': 'hourly-chart',
+                        'height': '100'
+                    })
+                })
+            ]
+        })
     }), 0]).trigger('refresh.owl.carousel')
+
+    function __chart(parent, data)
+    {
+        var chart = $('<canvas />', {
+            'width': '64',
+            'height': '24',
+            'data-name': 'chart'
+        })
+
+        parent.html(chart)
+
+        setTimeout(function() {
+            new Chart(chart, {
+                type: 'line',
+                data: data,
+                options: options
+            })
+        }, 100)
+    }
+@endpush
+
+@push('local.styles')
+    .owl-chart {
+        width: 100%;
+        height: 100px;
+    }
+
+    .owl-chart > #hourly-chart {
+        background: #f00;
+        width: 100%;
+    }
 @endpush
 
 @section('content')
+    <div class="grey-text mb-1" data-name="stats"></div>
     <div class="card">
         <div class="time-line">
             <ul class="collection json-clear" 
                 id="search"
                 data-href="{{ route('search.dashboard') }}"
                 data-skip="0"
-                data-take="10"
+                data-take="100"
                 data-more-button="#search-more_button"
                 data-callback="__search_archive"
                 data-method="post"
@@ -516,7 +563,7 @@
                         <i class="material-icons">close</i>
                     </a>
                     <a href="#" data-type="hourly" data-tooltip="Saatlik İçerik Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string" data-href="{{ route('search.aggregation') }}" data-method="post" class="json waves-effect align-self-center mr-1">Saatlik</a>
-                    <a href="#" data-type="daily" data-tooltip="Günlük İçerik Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string" data-href="{{ route('search.aggregation') }}" data-method="post" class="json waves-effect align-self-center mr-1">Günlük</a>
+                    <a href="#" data-type="weekly" data-tooltip="Günlük İçerik Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string" data-href="{{ route('search.aggregation') }}" data-method="post" class="json waves-effect align-self-center mr-1">Günlük</a>
                     <a href="#" data-type="location" data-tooltip="Konum Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string" data-href="{{ route('search.aggregation') }}" data-method="post" class="json waves-effect align-self-center mr-1">Konum</a>
                     <a href="#" data-type="platform" data-tooltip="Platform Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string" data-href="{{ route('search.aggregation') }}" data-method="post" class="json waves-effect align-self-center mr-1">Platform</a>
                     <a href="#" data-type="source" data-tooltip="Kaynak Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string" data-href="{{ route('search.aggregation') }}" data-method="post" class="json waves-effect align-self-center mr-1">Kaynak</a>

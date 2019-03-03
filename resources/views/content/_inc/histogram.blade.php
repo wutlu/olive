@@ -7,13 +7,13 @@
 @endphp
 
 @push('local.styles')
-    #weekly,
+    #daily,
     #hourly {
         line-height: 1px;
         height: 100px;
     }
 
-    #weekly canvas,
+    #daily canvas,
     #hourly canvas {
         width: 100%;
     }
@@ -23,7 +23,7 @@
     <div class="z-depth-2">
         <ul class="tabs tabs-fixed-width tabs-transparent cyan darken-2 histogram-tabs">
             <li class="tab">
-                <a class="active" href="#weekly">{{ $tab_title }} (Haftalık)</a>
+                <a class="active" href="#daily">{{ $tab_title }} (Günlük)</a>
             </li>
             <li class="tab">
                 <a href="#hourly">{{ $tab_title }} (Saatlik)</a>
@@ -31,17 +31,17 @@
         </ul>
 
         <div
-            id="weekly"
+            id="daily"
             class="load loaded"
             data-method= "post"
             data-href="{{ route('content.histogram', [
-                'type' => 'weekly',
+                'type' => 'daily',
                 'es_index' => $index,
                 'es_type' => $type,
                 'es_id' => $id
             ]) }}"
-            data-callback="__weekly_chart">
-            <canvas id="weekly-chart"></canvas>
+            data-callback="__daily_chart">
+            <canvas id="daily-chart"></canvas>
         </div>
         <div
             id="hourly"
@@ -98,7 +98,7 @@
         maintainAspectRatio: false
     };
 
-    function __weekly_chart(__, obj)
+    function __daily_chart(__, obj)
     {
         if (obj.status == 'ok')
         {
@@ -108,7 +108,7 @@
                 data.push(o.doc_count);
             })
 
-            var weekly_chart = new Chart(document.getElementById('weekly-chart'), {
+            var daily_chart = new Chart(document.getElementById('daily-chart'), {
                 type: 'bar',
                 data: {
                     labels: [

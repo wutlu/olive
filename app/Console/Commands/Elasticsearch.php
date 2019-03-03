@@ -239,7 +239,6 @@ class Elasticsearch extends Command
                                     'number_of_replicas' => @$item['settings']['index']['number_of_replicas'],
                                     'read_only_allow_delete' => @$item['settings']['index']['blocks']['read_only_allow_delete'],
                                     'refresh_interval' => @$item['settings']['index']['refresh_interval'],
-                                    'index_mapper_dynamic' => @$item['settings']['index.mapper.dynamic'],
                                 ];
 
                                 $this->info(json_encode($settings, JSON_PRETTY_PRINT));
