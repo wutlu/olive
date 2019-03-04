@@ -153,9 +153,7 @@ class ContentController extends Controller
                         'retweet' => Document::count([ 'twitter', 'tweets', '*' ], 'tweet', [
                             'query' => [
                                 'bool' => [
-                                    'must' => [
-                                        [ 'match' => [ 'external.id' => $document['_source']['id'] ] ]
-                                    ]
+                                    'must' => [[ 'match' => [ 'external.id' => $document['_source']['id'] ] ]]
                                 ]
                             ]
                         ]),
@@ -163,9 +161,7 @@ class ContentController extends Controller
                             'query' => [
                                 'bool' => [
                                     'must' => $user,
-                                    'filter' => [
-                                        [ 'range' => [ 'sentiment.pos' => [ 'gte' => .34 ] ] ]
-                                    ]
+                                    'filter' => [[ 'range' => [ 'sentiment.pos' => [ 'gte' => .34 ] ] ]]
                                 ]
                             ]
                         ]),
@@ -173,13 +169,17 @@ class ContentController extends Controller
                             'query' => [
                                 'bool' => [
                                     'must' => $user,
-                                    'filter' => [
-                                        [ 'range' => [ 'sentiment.neg' => [ 'gte' => .34 ] ] ]
-                                    ]
+                                    'filter' => [[ 'range' => [ 'sentiment.neg' => [ 'gte' => .34 ] ] ]]]
                                 ]
-                            ]
                         ])
                     ];
+
+                    if (@$document['_source']['external']['id'])
+                    {
+                        $external = Document::list([ 'twitter', 'tweets', '*' ], 'tweet', [ 'query' => [ 'match' => [ 'id' => $document['_source']['external']['id'] ] ] ]);
+
+                        $data['external'] = @$external->data['hits']['hits'][0];
+                    }
 
                     $follow_graph = Document::list([ 'twitter', 'tweets', '*' ], 'tweet', [
                         'size' => 100,

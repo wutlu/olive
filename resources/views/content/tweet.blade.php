@@ -35,6 +35,7 @@
     'index' => $es->index,
     'type' => $es->type,
     'id' => $document['_source']['id'],
+
     'tab_title' => 'Kullanıcının Tweet Grafiği'
 ])
 
@@ -45,10 +46,10 @@
 @section('content')
     <div class="row">
         <div class="col m6 s12">
-            <div class="card">
+            <div class="card grey darken-4">
                 <div class="card-content">
                     <span class="d-flex justify-content-between">
-                        <span class="card-title align-self-center">{{ $document['_source']['user']['name'] }}</span>
+                        <span class="card-title align-self-center grey-text">{{ $document['_source']['user']['name'] }}</span>
                         @isset ($document['_source']['user']['verified'])
                             <i class="material-icons cyan-text align-self-center">check</i>
                         @endisset
@@ -58,11 +59,12 @@
                         <div class="markdown grey-text">{!! Term::tweet($document['_source']['user']['description']) !!}</div>
                     @endisset
                 </div>
+
                 @isset ($document['_source']['user']['created_at'])
                     <div class="card-action d-flex justify-content-end">
                         <span class="right-align">
                             <small class="d-block grey-text">HESAP OLUŞTURULDU</small>
-                            <time>{{ date('d.m.Y H:i', strtotime($document['_source']['user']['created_at'])) }}</time>
+                            <time data-time="" class="grey-text">{{ date('d.m.Y H:i', strtotime($document['_source']['user']['created_at'])) }}</time>
                         </span>
                     </div>
                 @endisset
@@ -71,6 +73,37 @@
                 <div class="card-content">
                     <div class="markdown">{!! Term::tweet($document['_source']['text']) !!}</div>
                 </div>
+
+                @isset ($data['external'])
+                    @php
+                        $external_url = 'https://twitter.com/'.$data['external']['_source']['user']['screen_name'].'/status/'.$data['external']['_source']['id'];
+                    @endphp
+                    <ul class="collapsible">
+                        <li>
+                            <div class="collapsible-header orange lighten-5 d-block">
+                                <div class="d-flex justify-content-between">
+                                    <span class="align-self-center">
+                                        <span class="red-text">{{ '@'.$data['external']['_source']['user']['screen_name'] }}</span>
+                                        <span class="grey-text">{{ $data['external']['_source']['user']['name'] }}</span>
+                                    </span>
+                                    <a href="{{ route('content', [
+                                        'es_index' => $data['external']['_index'],
+                                        'es_type' => $data['external']['_type'],
+                                        'es_id' => $data['external']['_id']
+                                    ]) }}" class="btn-flat waves-effect align-self-center center-align">Kaynak</a>
+                                </div>
+                            </div>
+                            <div class="collapsible-body">
+                                <div class="p-1">
+                                    <p class="grey-text mb-1">{{ date('d.m.Y H:i:s', strtotime($data['external']['_source']['created_at'])) }}</p>
+                                    <div class="markdown mb-1">{!! Term::tweet($data['external']['_source']['text']) !!}</div>
+                                    <a class="green-text" href="{{ $external_url }}" target="_blank">{{ $external_url }}</a>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                @endisset
+
                 @include('content._inc.sentiment_bar', [
                     'pos' => $document['_source']['sentiment']['pos'],
                     'neg' => $document['_source']['sentiment']['neg'],
@@ -224,7 +257,7 @@
                 <div class="collection-item z-depth-1 model hide">
                     <span class="d-table grey-text text-darken-2" data-name="author"></span>
                     <a href="#" target="_blank" class="d-table grey-text text-darken-2" data-name="screen-name"></a>
-                    <time class="d-table grey-text" data-name="created-at"></time>
+                    <time data-time="" class="d-table grey-text" data-name="created-at"></time>
                     <span class="d-block" data-name="text"></span>
                     <a href="#" class="d-table green-text" data-name="url" target="_blank"></a>
                 </div>
@@ -262,7 +295,7 @@
                 <div class="collection-item z-depth-1 model hide">
                     <span class="d-table grey-text text-darken-2" data-name="author"></span>
                     <a href="#" target="_blank" class="d-table grey-text text-darken-2" data-name="screen-name"></a>
-                    <time class="d-table grey-text" data-name="created-at"></time>
+                    <time data-time="" class="d-table grey-text" data-name="created-at"></time>
                     <span class="d-block" data-name="text"></span>
                     <a href="#" class="d-table green-text" data-name="url" target="_blank"></a>
                 </div>

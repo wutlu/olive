@@ -166,6 +166,7 @@
                         @endisset
                     @endif
                 </div>
+
                 @isset ($source['external'])
                     <div class="card-content">
                         @php
@@ -193,6 +194,7 @@
                         @endif
                     </div>
                 @endif
+
                 @if ($pin->organisation_id == auth()->user()->organisation_id)
                     <div class="card-comment">
                         <div class="input-field">
