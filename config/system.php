@@ -10,7 +10,7 @@ return [
      * db
      */
     'db' => [
-        'alias' => 'oliveone'
+        'alias' => env('DB_ALIAS', 'oliveone')
     ],
 
     /**
