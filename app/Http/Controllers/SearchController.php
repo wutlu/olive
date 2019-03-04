@@ -309,7 +309,7 @@ class SearchController extends Controller
         $q = [
             'from' => $request->skip,
             'size' => $request->take,
-            'sort' => [ 'created_at' => 'DESC' ],
+            'sort' => [ 'created_at' => $request->sort ? $request->sort : 'desc' ],
             'query' => [
                 'bool' => [
                     'filter' => [

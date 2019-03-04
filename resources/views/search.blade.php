@@ -491,7 +491,7 @@
                 data-more-button="#search-more_button"
                 data-callback="__search_archive"
                 data-method="post"
-                data-include="start_date,end_date,sentiment,modules,string"
+                data-include="start_date,end_date,sentiment,modules,string,sort"
                 data-nothing>
                 <li class="collection-item nothing hide">
                     @component('components.nothing')
@@ -573,23 +573,36 @@
                     <span class="teal-text align-self-center">Bu bölüm kaynak alanından bağımsız çalışır.</span>
                 </span>
             </div>
+            <div class="wild-content d-flex" data-wild="settings">
+                <span class="wild-body d-flex">
+                    <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center mr-1" data-class=".wild-content" data-class-remove="active">
+                        <i class="material-icons">close</i>
+                    </a>
+                    <label class="align-self-center mr-1">
+                        <input type="checkbox" name="sort" value="asc" />
+                        <span class="grey-text text-darken-2">İlk İçerikler</span>
+                    </label>
+                </span>
+            </div>
             <ul class="wild-menu">
                 <li>
                     <a class="d-flex" href="#" data-class="[data-wild=date]" data-class-add="active">
-                        <i class="material-icons mr-1">date_range</i>
-                        <span class="align-self-center">Tarih</span>
+                        <i class="material-icons">date_range</i>
                     </a>
                 </li>
                 <li>
                     <a class="d-flex" href="#" data-class="[data-wild=sentiment]" data-class-add="active">
-                        <i class="material-icons mr-1">mood</i>
-                        <span class="align-self-center">Duygu</span>
+                        <i class="material-icons">mood</i>
                     </a>
                 </li>
                 <li>
                     <a class="d-flex" href="#" data-class="[data-wild=graph]" data-class-add="active">
-                        <i class="material-icons mr-1">show_chart</i>
-                        <span class="align-self-center">Grafik</span>
+                        <i class="material-icons">show_chart</i>
+                    </a>
+                </li>
+                <li>
+                    <a class="d-flex" href="#" data-class="[data-wild=settings]" data-class-add="active">
+                        <i class="material-icons">settings</i>
                     </a>
                 </li>
             </ul>
