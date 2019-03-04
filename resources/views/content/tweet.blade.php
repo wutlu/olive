@@ -84,7 +84,7 @@
                         <div class="mb-1">
                             @if ($item['media']['type'] == 'photo')
                                 <img alt="" width="100%" class="materialboxed" src="{{ $item['media']['media_url'] }}" />
-                            @elseif ($item['media']['type'] == 'animated_gif')
+                            @elseif ($item['media']['type'] == 'animated_gif' || $item['media']['type'] == 'video')
                                 <video width="100%" height="240" controls>
                                     <source src="{{ $item['media']['source_url'] }}" type="video/mp4">
                                     Your browser does not support the video tag.
