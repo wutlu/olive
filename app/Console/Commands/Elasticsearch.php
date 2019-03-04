@@ -198,7 +198,7 @@ class Elasticsearch extends Command
                                         'id' => $id
                                     ]);
 
-                                    $this->info('Index deleted!');
+                                    $this->info('Document deleted!');
                                 }
                                 catch (\Exception $e)
                                 {

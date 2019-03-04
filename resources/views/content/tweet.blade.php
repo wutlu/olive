@@ -70,9 +70,31 @@
                 @endisset
             </div>
             <div class="card">
+                @php
+                    $url = 'https://twitter.com/'.$document['_source']['user']['screen_name'].'/status/'.$document['_source']['id'];
+                @endphp
+
                 <div class="card-content">
                     <div class="markdown">{!! Term::tweet($document['_source']['text']) !!}</div>
+                    <a class="green-text" href="{{ $url }}" target="_blank">{{ $url }}</a>
                 </div>
+
+                @isset ($document['_source']['entities']['medias'])
+                    @foreach ($document['_source']['entities']['medias'] as $item)
+                        <div class="mb-1">
+                            @if ($item['media']['type'] == 'photo')
+                                <img alt="" width="100%" class="materialboxed" src="{{ $item['media']['media_url'] }}" />
+                            @elseif ($item['media']['type'] == 'animated_gif')
+                                <video width="100%" height="240" controls>
+                                    <source src="{{ $item['media']['source_url'] }}" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video> 
+                            @else
+                                {{ $item['media']['type'] }}
+                            @endif
+                        </div>
+                    @endforeach
+                @endisset
 
                 @isset ($data['external'])
                     @php
@@ -318,52 +340,54 @@
 @endsection
 
 @section('dock')
-        @foreach (
-            [
-                'names' => 'Adlar',
-                'screen_names' => 'Kullanıcı Adları',
-                'platforms' => 'Platformlar',
-                'langs' => 'Sık Kullandığı Diller',
-                'mention_out' => 'Sık Andığı Kişiler',
-                'mention_in' => 'Sık Anıldığı Kişiler',
-                'hashtags' => 'Sık Kullandığı Hashtagler',
-                'places' => 'Sık Girdiği Konumlar',
-                'urls' => 'Sık Kullandığı Bağlantılar',
-            ] as $key => $model
-        )
-            <div class="card">
-                <div class="card-content grey lighten-5">
-                    <span class="card-title card-title-small">{{ $model }}</span>
-                </div>
-                <ul class="collection aggregation-collection">
-                    <li class="collection-item hide" data-model>
-                        <div class="d-flex justify-content-between">
-                            <span class="align-self-center" data-name="name"></span>
-                            <span class="grey align-self-center" data-name="count" style="padding: 0 .4rem;"></span>
-                        </div>
-                    </li>
-                    <li class="collection-item center-align">
-                        <a
-                            href="#"
-                            class="btn-floating waves-effect btn-flat json"
-                            data-method="post"
-                            data-callback="__aggregation"
-                            data-type="{{ $key }}"
-                            data-href="{{ route('tweet.aggregation', [ 'type' => $key, 'id' => $document['_source']['user']['id'] ]) }}">
-                            <i class="material-icons grey-text">refresh</i>
-                        </a>
-                    </li>
-                    <li class="collection-item nothing hide">
-                        @component('components.nothing')
-                            @slot('size', 'small')
-                        @endcomponent
-                    </li>
-                </ul>
+    @foreach (
+        [
+            'names' => 'Adlar',
+            'screen_names' => 'Kullanıcı Adları',
+            'platforms' => 'Platformlar',
+            'langs' => 'Sık Kullandığı Diller',
+            'mention_out' => 'Sık Andığı Kişiler',
+            'mention_in' => 'Sık Anıldığı Kişiler',
+            'hashtags' => 'Sık Kullandığı Hashtagler',
+            'places' => 'Sık Girdiği Konumlar',
+            'urls' => 'Sık Kullandığı Bağlantılar',
+        ] as $key => $model
+    )
+        <div class="card">
+            <div class="card-content grey lighten-5">
+                <span class="card-title card-title-small">{{ $model }}</span>
             </div>
-        @endforeach
+            <ul class="collection aggregation-collection">
+                <li class="collection-item hide" data-model>
+                    <div class="d-flex justify-content-between">
+                        <span class="align-self-center" data-name="name"></span>
+                        <span class="grey align-self-center" data-name="count" style="padding: 0 .4rem;"></span>
+                    </div>
+                </li>
+                <li class="collection-item center-align">
+                    <a
+                        href="#"
+                        class="btn-floating waves-effect btn-flat json"
+                        data-method="post"
+                        data-callback="__aggregation"
+                        data-type="{{ $key }}"
+                        data-href="{{ route('tweet.aggregation', [ 'type' => $key, 'id' => $document['_source']['user']['id'] ]) }}">
+                        <i class="material-icons grey-text">refresh</i>
+                    </a>
+                </li>
+                <li class="collection-item nothing hide">
+                    @component('components.nothing')
+                        @slot('size', 'small')
+                    @endcomponent
+                </li>
+            </ul>
+        </div>
+    @endforeach
 @endsection
 
 @push('local.scripts')
+    $('.materialboxed').materialbox()
+
     function __aggregation(__, obj)
     {
         if (obj.status == 'ok')
