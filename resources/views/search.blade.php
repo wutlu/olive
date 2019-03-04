@@ -108,7 +108,7 @@
         {
             item_model.addClass('hide')
 
-            $('[data-name=stats]').html('Yaklaşık ' + obj.stats.hits + ' sonuç bulundu (' + obj.stats.took + ' saniye) ');
+            $('[data-name=stats]').html('Yaklaşık ' + obj.stats.hits + ' sonuç bulundu (' + obj.stats.took + ' saniye) (Twitter için ReTweetler arama sonuçlarına dahil edilmemiştir.)');
 
             if (obj.hits.length)
             {
@@ -487,7 +487,16 @@
                                     '#4dd0e1',
                                     '#80deea',
                                     '#b2ebf2',
-                                    '#e0f7fa'
+                                    '#e0f7fa',
+                                    '#006064',
+                                    '#00838f',
+                                    '#0097a7',
+                                    '#00acc1',
+                                    '#00bcd4',
+                                    '#26c6da',
+                                    '#4dd0e1',
+                                    '#80deea',
+                                    '#b2ebf2'
                                 ],
                                 data: counts
                             }
@@ -497,6 +506,57 @@
                     },
                     options: option
                 })
+            }
+            else if (__.data('type') == 'platform')
+            {
+                var counts = [];
+                var labels = [];
+                var option = pieOption;
+                    option['title']['text'] = 'PLATFORMLARA GÖRE İÇERİK GRAFİĞİ';
+
+                $.each(obj.data.results, function(key, o) {
+                    counts.push(o.doc_count);
+                    labels.push(o.key);
+                })
+
+                new Chart(document.getElementById(__.data('type') + '-chart'), {
+                    type: 'doughnut',
+                    data: {
+                        datasets: [
+                            {
+                                backgroundColor: [
+                                    '#006064',
+                                    '#00838f',
+                                    '#0097a7',
+                                    '#00acc1',
+                                    '#00bcd4',
+                                    '#26c6da',
+                                    '#4dd0e1',
+                                    '#80deea',
+                                    '#b2ebf2',
+                                    '#e0f7fa',
+                                    '#006064',
+                                    '#00838f',
+                                    '#0097a7',
+                                    '#00acc1',
+                                    '#00bcd4',
+                                    '#26c6da',
+                                    '#4dd0e1',
+                                    '#80deea',
+                                    '#b2ebf2'
+                                ],
+                                data: counts
+                            }
+                        ],
+
+                        labels: labels
+                    },
+                    options: option
+                })
+            }
+            else if (__.data('type') == 'source')
+            {
+
             }
         }
     }
