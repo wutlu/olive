@@ -108,10 +108,10 @@
         {
             item_model.addClass('hide')
 
+            $('[data-name=stats]').html('Yaklaşık ' + obj.stats.hits + ' sonuç bulundu (' + obj.stats.took + ' saniye) ');
+
             if (obj.hits.length)
             {
-                $('[data-name=stats]').html('Yaklaşık ' + obj.stats.hits + ' sonuç bulundu (' + obj.stats.took + ' saniye) ');
-
                 $.each(obj.hits, function(key, o) {
                     var item = item_model.clone();
                         item.removeClass('model hide').addClass('_tmp').attr('data-id', 'list-item-' + o.id)
@@ -401,9 +401,160 @@
     {
         if (obj.status == 'ok')
         {
-            alert(1)
+            $('#' + __.data('type') + '-chart').remove()
+            $('#chart-area').removeClass('hide')
+
+            $('.owl-wildcard').trigger('add.owl.carousel', [$('<div />', {
+                'class': 'owl-chart',
+                'html': $('<canvas />', {
+                    'id': __.data('type') + '-chart',
+                    'height': '200'
+                })
+            }), 0]).trigger('refresh.owl.carousel')
+
+            if (__.data('type') == 'hourly')
+            {
+                var data = [];
+                var option = histogramOption;
+                    option['title']['text'] = 'SAATLİK İÇERİK GRAFİĞİ';
+
+                $.each(obj.data.results, function(key, o) {
+                    data.push(o.doc_count);
+                })
+
+                new Chart(document.getElementById(__.data('type') + '-chart'), {
+                    type: 'bar',
+                    data: {
+                        labels: [ "00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00" ],
+                        datasets: [
+                            {
+                                backgroundColor: '#0097a7',
+                                data: data
+                            }
+                        ]
+                    },
+                    options: option
+                })
+            }
+            else if (__.data('type') == 'daily')
+            {
+                var data = [];
+                var option = histogramOption;
+                    option['title']['text'] = 'GÜNLÜK İÇERİK GRAFİĞİ';
+
+                $.each(obj.data.results, function(key, o) {
+                    data.push(o.doc_count);
+                })
+
+                new Chart(document.getElementById(__.data('type') + '-chart'), {
+                    type: 'bar',
+                    data: {
+                        labels: [ "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi", "Pazar" ],
+                        datasets: [
+                            {
+                                backgroundColor: '#0097a7',
+                                data: data
+                            }
+                        ]
+                    },
+                    options: option
+                })
+            }
+            else if (__.data('type') == 'location')
+            {
+                var counts = [];
+                var labels = [];
+                var option = pieOption;
+                    option['title']['text'] = 'KONUMA GÖRE İÇERİK GRAFİĞİ';
+
+                $.each(obj.data.results, function(key, o) {
+                    counts.push(o.doc_count);
+                    labels.push(o.key);
+                })
+
+                new Chart(document.getElementById(__.data('type') + '-chart'), {
+                    type: 'doughnut',
+                    data: {
+                        datasets: [
+                            {
+                                backgroundColor: [
+                                    '#006064',
+                                    '#00838f',
+                                    '#0097a7',
+                                    '#00acc1',
+                                    '#00bcd4',
+                                    '#26c6da',
+                                    '#4dd0e1',
+                                    '#80deea',
+                                    '#b2ebf2',
+                                    '#e0f7fa'
+                                ],
+                                data: counts
+                            }
+                        ],
+
+                        labels: labels
+                    },
+                    options: option
+                })
+            }
         }
     }
+
+    var pieOption = {
+        title: {
+            display: true
+        },
+        legend: {
+            display: true,
+            position: 'right'
+        },
+        scales: {
+            yAxes: [{
+                display: false,
+                ticks: {
+                    min: 0,
+                    max: this.max,
+                    callback: function (value) {
+                        return (value / this.max * 100).toFixed(0) + '%';
+                    }
+                }
+            }]
+        },
+        layout: {
+            padding: {
+                top: 10,
+                bottom: 0
+            }
+        },
+        maintainAspectRatio: false
+    };
+
+    var histogramOption = {
+        title: {
+            display: true
+        },
+        legend: { display: false },
+        scales: {
+            yAxes: [{
+                display: false,
+                ticks: {
+                    min: 0,
+                    max: this.max,
+                    callback: function (value) {
+                        return (value / this.max * 100).toFixed(0) + '%';
+                    }
+                }
+            }]
+        },
+        layout: {
+            padding: {
+                top: 10,
+                bottom: 0
+            }
+        },
+        maintainAspectRatio: false
+    };
 
     $('.datepicker').datepicker({
         firstDay: 0,
@@ -414,38 +565,11 @@
 
     $('.owl-wildcard').owlCarousel({
         responsiveClass: true,
-        responsive: {
-            0: {
-                items: 1
-            },
-            600: {
-                items: 2
-            },
-            1440: {
-                items: 3
-            }
-        },
         autoWidth: true,
-        dotClass: 'hide'
+        dotClass: 'hide',
+        items: 1,
+        singleItem: true
     })
-
-    $('.owl-wildcard').trigger('add.owl.carousel', [$('<div />', {
-        'html': $('<div />', {
-            'html': [
-                $('<span />', {
-                    'class': 'grey-text',
-                    'html': 'Saatlik İçerik Grafiği'
-                }),
-                $('<div />', {
-                    'class': 'owl-chart',
-                    'html': $('<canvas />', {
-                        'id': 'hourly-chart',
-                        'height': '100'
-                    })
-                })
-            ]
-        })
-    }), 0]).trigger('refresh.owl.carousel')
 
     function __chart(parent, data)
     {
@@ -470,12 +594,12 @@
 @push('local.styles')
     .owl-chart {
         width: 100%;
-        height: 100px;
+        height: 200px;
     }
 
+    .owl-chart > #daily-chart,
     .owl-chart > #hourly-chart {
-        background: #f00;
-        width: 100%;
+        min-width: 600px;
     }
 @endpush
 
@@ -517,7 +641,9 @@
 @push('external.include.header')
     <link rel="stylesheet" href="{{ asset('css/owl.carousel.min.css?v='.config('system.version')) }}" />
 @endpush
+
 @push('external.include.footer')
+    <script src="{{ asset('js/chart.min.js?v='.config('system.version')) }}"></script>
     <script src="{{ asset('js/jquery.mark.min.js?v='.config('system.version')) }}" charset="UTF-8"></script>
     <script src="{{ asset('js/owl.carousel.min.js?v='.config('system.version')) }}"></script>
 @endpush
@@ -563,7 +689,7 @@
                         <i class="material-icons">close</i>
                     </a>
                     <a href="#" data-type="hourly" data-tooltip="Saatlik İçerik Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string" data-href="{{ route('search.aggregation') }}" data-method="post" class="json waves-effect align-self-center mr-1">Saatlik</a>
-                    <a href="#" data-type="weekly" data-tooltip="Günlük İçerik Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string" data-href="{{ route('search.aggregation') }}" data-method="post" class="json waves-effect align-self-center mr-1">Günlük</a>
+                    <a href="#" data-type="daily" data-tooltip="Günlük İçerik Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string" data-href="{{ route('search.aggregation') }}" data-method="post" class="json waves-effect align-self-center mr-1">Günlük</a>
                     <a href="#" data-type="location" data-tooltip="Konum Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string" data-href="{{ route('search.aggregation') }}" data-method="post" class="json waves-effect align-self-center mr-1">Konum</a>
                     <a href="#" data-type="platform" data-tooltip="Platform Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string" data-href="{{ route('search.aggregation') }}" data-method="post" class="json waves-effect align-self-center mr-1">Platform</a>
                     <a href="#" data-type="source" data-tooltip="Kaynak Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string" data-href="{{ route('search.aggregation') }}" data-method="post" class="json waves-effect align-self-center mr-1">Kaynak</a>
@@ -627,7 +753,7 @@
             </div>
         </div>
     </div>
-    <div class="z-depth-1">
+    <div class="z-depth-1 hide" id="chart-area">
         <div class="container container-wide">
             <div class="pt-1 pb-1">
                 <div class="owl-carousel owl-wildcard"></div>
