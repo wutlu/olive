@@ -423,7 +423,7 @@
                 })
 
                 new Chart(document.getElementById(__.data('type') + '-chart'), {
-                    type: 'bar',
+                    type: 'line',
                     data: {
                         labels: [ "00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00" ],
                         datasets: [
@@ -447,7 +447,7 @@
                 })
 
                 new Chart(document.getElementById(__.data('type') + '-chart'), {
-                    type: 'bar',
+                    type: 'line',
                     data: {
                         labels: [ "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi", "Pazar" ],
                         datasets: [
@@ -501,7 +501,6 @@
                                 data: counts
                             }
                         ],
-
                         labels: labels
                     },
                     options: option
@@ -512,7 +511,7 @@
                 var counts = [];
                 var labels = [];
                 var option = pieOption;
-                    option['title']['text'] = 'PLATFORMLARA GÖRE İÇERİK GRAFİĞİ';
+                    option['title']['text'] = 'PLATFORMA GÖRE İÇERİK GRAFİĞİ';
 
                 $.each(obj.data.results, function(key, o) {
                     counts.push(o.doc_count);
@@ -548,7 +547,6 @@
                                 data: counts
                             }
                         ],
-
                         labels: labels
                     },
                     options: option
@@ -556,7 +554,102 @@
             }
             else if (__.data('type') == 'source')
             {
+                var counts = [];
+                var labels = [];
+                var option = pieOption;
+                    option['title']['text'] = 'KAYNAĞINA GÖRE İÇERİK GRAFİĞİ';
 
+                $.each(obj.data, function(key, item) {
+                    counts.push(item);
+                    labels.push(key);
+                })
+
+                new Chart(document.getElementById(__.data('type') + '-chart'), {
+                    type: 'doughnut',
+                    data: {
+                        datasets: [
+                            {
+                                backgroundColor: [
+                                    '#006064',
+                                    '#00838f',
+                                    '#0097a7',
+                                    '#00acc1',
+                                    '#00bcd4',
+                                    '#26c6da',
+                                    '#4dd0e1',
+                                    '#80deea',
+                                    '#b2ebf2',
+                                    '#e0f7fa',
+                                    '#006064',
+                                    '#00838f',
+                                    '#0097a7',
+                                    '#00acc1',
+                                    '#00bcd4',
+                                    '#26c6da',
+                                    '#4dd0e1',
+                                    '#80deea',
+                                    '#b2ebf2'
+                                ],
+                                data: counts
+                            }
+                        ],
+                        labels: labels
+                    },
+                    options: option
+                })
+            }
+            else if (__.data('type') == 'mention')
+            {
+                $('#' + __.data('type') + '-chart').remove()
+
+                $.each(obj.data, function(key, set) {
+                    var collection = $('<ul />', {
+                        'class': 'collection collection-small'
+                    });
+
+                    if (key == 'twitter')
+                    { var title = 'Twitter'; }
+                    if (key == 'news')
+                    { var title = 'Medya'; }
+                    if (key == 'comment')
+                    { var title = 'YouTube (yorum)'; }
+                    if (key == 'video')
+                    { var title = 'YouTube (video)'; }
+                    if (key == 'entry')
+                    { var title = 'Sözlük (girdi)'; }
+                    if (key == 'product')
+                    { var title = 'E-ticaret (ürün)'; }
+
+                    $('<li />', {
+                        'class': 'collection-item collection-header',
+                        'html': title
+                    }).appendTo(collection)
+
+                    $.each(set, function(k, item) {
+                        var collection_item = $('<li />', {
+                            'class': 'collection-item',
+                            'html': [
+                                item['key'],
+                                $('<span />', {
+                                    'class': 'badge grey',
+                                    'html': item['value']
+                                })
+                            ]
+                        })
+
+                        collection_item.appendTo(collection)
+                    })
+
+                    $('.owl-wildcard').trigger('add.owl.carousel', [$('<div />', {
+                        'class': 'owl-chart',
+                        'id': __.data('type') + '-chart',
+                        'css': {
+                            'width': '400px',
+                            'overflow': 'auto'
+                        },
+                        'html': collection
+                    }), 0]).trigger('refresh.owl.carousel')
+                })
             }
         }
     }
@@ -581,12 +674,6 @@
                 }
             }]
         },
-        layout: {
-            padding: {
-                top: 10,
-                bottom: 0
-            }
-        },
         maintainAspectRatio: false
     };
 
@@ -595,22 +682,28 @@
             display: true
         },
         legend: { display: false },
-        scales: {
-            yAxes: [{
-                display: false,
-                ticks: {
-                    min: 0,
-                    max: this.max,
-                    callback: function (value) {
-                        return (value / this.max * 100).toFixed(0) + '%';
-                    }
-                }
-            }]
-        },
         layout: {
             padding: {
-                top: 10,
-                bottom: 0
+                top: 20,
+                right: 20,
+                bottom: 20,
+                left: 20
+            }
+        },
+        maintainAspectRatio: false
+    };
+
+    var barOption = {
+        title: {
+            display: true
+        },
+        legend: { display: false },
+        layout: {
+            padding: {
+                top: 20,
+                right: 20,
+                bottom: 20,
+                left: 20
             }
         },
         maintainAspectRatio: false
@@ -748,15 +841,13 @@
                     <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center mr-1" data-class=".wild-content" data-class-remove="active">
                         <i class="material-icons">close</i>
                     </a>
-                    <a href="#" data-type="hourly" data-tooltip="Saatlik İçerik Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string" data-href="{{ route('search.aggregation') }}" data-method="post" class="json waves-effect align-self-center mr-1">Saatlik</a>
-                    <a href="#" data-type="daily" data-tooltip="Günlük İçerik Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string" data-href="{{ route('search.aggregation') }}" data-method="post" class="json waves-effect align-self-center mr-1">Günlük</a>
-                    <a href="#" data-type="location" data-tooltip="Konum Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string" data-href="{{ route('search.aggregation') }}" data-method="post" class="json waves-effect align-self-center mr-1">Konum</a>
-                    <a href="#" data-type="platform" data-tooltip="Platform Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string" data-href="{{ route('search.aggregation') }}" data-method="post" class="json waves-effect align-self-center mr-1">Platform</a>
-                    <a href="#" data-type="source" data-tooltip="Kaynak Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string" data-href="{{ route('search.aggregation') }}" data-method="post" class="json waves-effect align-self-center mr-1">Kaynak</a>
-                    <a href="#" data-type="mention" data-tooltip="Kimler Bahsetti?" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string" data-href="{{ route('search.aggregation') }}" data-method="post" class="json waves-effect align-self-center mr-1">@</a>
-                    <a href="#" data-type="hashtag" data-tooltip="Hangi Hashtagler Kullanıldı?" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string" data-href="{{ route('search.aggregation') }}" data-method="post" class="json waves-effect align-self-center mr-1">#</a>
-
-                    <span class="teal-text align-self-center">Bu bölüm kaynak alanından bağımsız çalışır.</span>
+                    <a href="#" data-type="hourly" data-tooltip="Saatlik İçerik Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules" data-href="{{ route('search.aggregation') }}" data-method="post" class="json waves-effect align-self-center mr-1">Saatlik</a>
+                    <a href="#" data-type="daily" data-tooltip="Günlük İçerik Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules" data-href="{{ route('search.aggregation') }}" data-method="post" class="json waves-effect align-self-center mr-1">Günlük</a>
+                    <a href="#" data-type="location" data-tooltip="Konum Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules" data-href="{{ route('search.aggregation') }}" data-method="post" class="json waves-effect align-self-center mr-1">Konum</a>
+                    <a href="#" data-type="platform" data-tooltip="Platform Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules" data-href="{{ route('search.aggregation') }}" data-method="post" class="json waves-effect align-self-center mr-1">Platform</a>
+                    <a href="#" data-type="source" data-tooltip="Kaynak Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules" data-href="{{ route('search.aggregation') }}" data-method="post" class="json waves-effect align-self-center mr-1">Kaynak</a>
+                    <a href="#" data-type="mention" data-tooltip="Kimler Bahsetti?" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules" data-href="{{ route('search.aggregation') }}" data-method="post" class="json waves-effect align-self-center mr-1">@</a>
+                    <a href="#" data-type="hashtag" data-tooltip="Hangi Hashtagler Kullanıldı?" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules" data-href="{{ route('search.aggregation') }}" data-method="post" class="json waves-effect align-self-center mr-1">#</a>
                 </span>
             </div>
             <div class="wild-content d-flex" data-wild="settings">

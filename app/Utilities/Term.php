@@ -180,7 +180,7 @@ class Term
             $str = str_replace(array_keys($char_map), $char_map, $str);
         }
 
-        $str = preg_replace('/[^\p{L}\p{Nd}\.\/\'\"\,\$\(\)\:\;\#\-\?\!\=\n]+/u', $options['delimiter'], $str);
+        $str = preg_replace('/[^\p{L}\p{Nd}\.\/\'\"\,\$\(\)\:\;\#\-\?\!\=\n\%]+/u', $options['delimiter'], $str);
         $str = preg_replace('/(' . preg_quote($options['delimiter'], '/') . '){2,}/', '$1', $str);
         $str = mb_substr($str, 0, ($options['limit'] ? $options['limit'] : mb_strlen($str, 'UTF-8')), 'UTF-8');
         $str = trim($str, $options['delimiter']);

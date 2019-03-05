@@ -10,7 +10,7 @@
     #daily,
     #hourly {
         line-height: 1px;
-        height: 100px;
+        height: 200px;
     }
 
     #daily canvas,
@@ -77,22 +77,12 @@
             display: false
         },
         legend: { display: false },
-        scales: {
-            yAxes: [{
-                display: false,
-                ticks: {
-                    min: 0,
-                    max: this.max,
-                    callback: function (value) {
-                        return (value / this.max * 100).toFixed(0) + '%';
-                    }
-                }
-            }]
-        },
         layout: {
             padding: {
-                top: 10,
-                bottom: 0
+                top: 20,
+                right: 20,
+                bottom: 20,
+                left: 20
             }
         },
         maintainAspectRatio: false
@@ -109,7 +99,7 @@
             })
 
             var daily_chart = new Chart(document.getElementById('daily-chart'), {
-                type: 'bar',
+                type: 'line',
                 data: {
                     labels: [
                         "Pazartesi",
@@ -143,7 +133,7 @@
             })
 
             new Chart(document.getElementById('hourly-chart'), {
-                type: 'bar',
+                type: 'line',
                 data: {
                     labels: [
                         "00:00",

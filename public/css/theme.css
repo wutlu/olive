@@ -1819,6 +1819,9 @@ nav .nav-wrapper > ul > li > a > i {
   border-width: 0;
   color: #666 !important;
 }
+.collection.collection-small > .collection-item {
+  padding: 4px 24px;
+}
 
 .collection > .collection-item > i.material-icons {
   width: 48px;

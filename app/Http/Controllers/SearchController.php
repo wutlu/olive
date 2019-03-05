@@ -14,7 +14,9 @@ use Term;
 use Carbon\Carbon;
 
 use App\Models\Pin\Group as PinGroup;
+
 use App\Models\Crawlers\MediaCrawler;
+use App\Models\Crawlers\ShoppingCrawler;
 
 class SearchController extends Controller
 {
@@ -83,6 +85,21 @@ class SearchController extends Controller
             $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
         }
 
+        $modules = [];
+
+        foreach ($request->modules as $module)
+        {
+            switch ($module)
+            {
+                case 'twitter'        : $modules[] = 'tweet';   break;
+                case 'sozluk'         : $modules[] = 'entry';   break;
+                case 'news'           : $modules[] = 'article'; break;
+                case 'youtube_video'  : $modules[] = 'video';   break;
+                case 'youtube_comment': $modules[] = 'comment'; break;
+                case 'shopping'       : $modules[] = 'product'; break;
+            }
+        }
+
         switch ($request->type)
         {
             case 'hourly':
@@ -99,7 +116,7 @@ class SearchController extends Controller
                     ]
                 ]);
 
-                $query = Document::list([ '*' ], 'tweet,article,entry,video,comment', $arr);
+                $query = Document::list([ '*' ], implode(',', $modules), $arr);
 
                 $data = [
                     'results' => $query->data['aggregations']['results']['buckets'],
@@ -121,7 +138,7 @@ class SearchController extends Controller
                     ]
                 ]);
 
-                $query = Document::list([ '*' ], 'tweet,article,entry,video,comment', $arr);
+                $query = Document::list([ '*' ], implode(',', $modules), $arr);
 
                 $data = [
                     'results' => $query->data['aggregations']['results']['buckets'],
@@ -168,67 +185,88 @@ class SearchController extends Controller
             break;
 
             case 'mention':
-                $arr = array_merge($mquery, [
-                    'aggs' => [
-                        'twitter' => [
-                            'terms' => [
-                                'field' => 'user.screen_name',
-                                'size' => 10
-                            ]
-                        ],
-                        'sozluk' => [
-                            'terms' => [
-                                'field' => 'author',
-                                'size' => 10
-                            ]
-                        ],
-                        'youtube_video' => [
-                            'terms' => [
-                                'field' => 'channel.title',
-                                'size' => 10
-                            ]
-                        ],
-                        'youtube_comment' => [
-                            'terms' => [
-                                'field' => 'channel.title',
-                                'size' => 10
-                            ]
-                        ],
-                        'article' => [
-                            'terms' => [
-                                'field' => 'site_id',
-                                'size' => 10
+                $arr = [];
+
+                foreach ($request->modules as $module)
+                {
+                    switch ($module)
+                    {
+                        case 'twitter':
+                            $index = [ 'twitter', 'tweets', '*' ];
+                            $field = 'user.screen_name';
+                            $type = 'tweet';
+                        break;
+                        case 'news':
+                            $index = [ 'media', 's*' ];
+                            $field = 'site_id';
+                            $type = 'article';
+                        break;
+                        case 'youtube_comment':
+                            $index = [ 'youtube', 'comments', '*' ];
+                            $field = 'channel.title';
+                            $type = 'comment';
+                        break;
+                        case 'youtube_video':
+                            $index = [ 'youtube', 'videos' ];
+                            $field = 'channel.title';
+                            $type = 'video';
+                        break;
+                        case 'sozluk':
+                            $index = [ 'sozluk', '*' ];
+                            $field = 'author';
+                            $type = 'entry';
+                        break;
+                        case 'shopping':
+                            $index = [ 'shopping', '*' ];
+                            $field = 'site_id';
+                            $type = 'product';
+                        break;
+                    }
+
+                    $document = Document::list($index, $type, array_merge($mquery, [
+                        'aggs' => [
+                            'results' => [
+                                'terms' => [
+                                    'field' => $field,
+                                    'size' => 16
+                                ]
                             ]
                         ]
-                    ]
-                ]);
+                    ]));
 
-                $query = Document::list([ '*' ], 'tweet,entry,video,comment,article', $arr);
-
-                $modules = [];
-
-                foreach ($query->data['aggregations'] as $key => $module)
-                {
-                    if ($key == 'article')
+                    if (@$document->data['aggregations']['results']['buckets'])
                     {
-                        $modules[$key] = array_map(function($item) {
-                            $site = MediaCrawler::where('id', $item['key'])->first();
+                        if ($module == 'news')
+                        {
+                            $arr[$module] = array_map(function($item) {
+                                $site = MediaCrawler::where('id', $item['key'])->first();
 
-                            $item['key'] = @$site ? $site->site : 'N/A('.$item['key'].')';
+                                return [
+                                    'key' => @$site ? $site->site : 'N/A('.$item['key'].')',
+                                    'value' => $item['doc_count']
+                                ];
+                            }, $document->data['aggregations']['results']['buckets']);
+                        }
+                        elseif ($module == 'shopping')
+                        {
 
-                            return $item;
-                        }, $module['buckets']);
-                    }
-                    else
-                    {
-                        $modules[$key] = $module['buckets'];
+                            $arr[$module] = array_map(function($item) {
+                                $site = ShoppingCrawler::where('id', $item['key'])->first();
+
+                                return [
+                                    'key' => @$site ? $site->site : 'N/A('.$item['key'].')',
+                                    'value' => $item['doc_count']
+                                ];
+                            }, $document->data['aggregations']['results']['buckets']);
+                        }
+                        else
+                        {
+                            $arr[$module] = $document->data['aggregations']['results']['buckets'];
+                        }
                     }
                 }
 
-                $data = [
-                    'results' => $modules,
-                    'hits' => $query->data['hits']['total']
-                ];
+                $data = $arr;
             break;
 
             case 'hashtag':
@@ -248,7 +286,7 @@ class SearchController extends Controller
                     ]
                 ]);
 
-                $query = Document::list([ '*' ], 'tweet,entry,video,comment,article', $arr);
+                $query = Document::list([ 'twitter', 'tweets', '*' ], 'tweet', $arr);
 
                 $data = [
                     'results' => $query->data['aggregations']['hashtag']['hit_items']['buckets'],
@@ -257,21 +295,43 @@ class SearchController extends Controller
             break;
 
             case 'source':
-            # ------------------------------------------------------ #
 
-            $arr = $mquery;
+                $arr = $mquery;
 
-            unset($arr['size']);
+                unset($arr['size']);
 
-            $data = [
-                'tweet' => Document::count([ 'twitter', 'tweets', '*' ], 'tweet', $arr),
-                'article' => Document::count([ 'media', 's*' ], 'article', $arr),
-                'comment' => Document::count([ 'youtube', 'comments', '*' ], 'comment', $arr),
-                'video' => Document::count([ 'youtube', 'videos' ], 'video', $arr),
-                'entry' => Document::count([ 'sozluk', '*' ], 'entry', $arr),
-            ];
+                foreach ($modules as $module)
+                {
+                    switch ($module)
+                    {
+                        case 'tweet':
+                            $index = [ 'twitter', 'tweets', '*' ];
+                            $title = 'Twitter, (Tweet)';
+                        break;
+                        case 'article':
+                            $index = [ 'media', 's*' ];
+                            $title = 'Medya, (haber)';
+                        break;
+                        case 'comment':
+                            $index = [ 'youtube', 'comments', '*' ];
+                            $title = 'YouTube, (yorum)';
+                        break;
+                        case 'video':
+                            $index = [ 'youtube', 'videos' ];
+                            $title = 'YouTube, (video)';
+                        break;
+                        case 'entry':
+                            $index = [ 'sozluk', '*' ];
+                            $title = 'Sözlük, (girdi)';
+                        break;
+                        case 'product':
+                            $index = [ 'shopping', '*' ];
+                            $title = 'E-ticaret, (ürün)';
+                        break;
+                    }
+                    $data[$title] = Document::count($index, $module, $arr)->data['count'];
+                }
 
-            # ------------------------------------------------------ #
             break;
         }
 

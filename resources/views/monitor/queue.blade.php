@@ -27,6 +27,6 @@
 
 @section('content')
     <div class="card with-bg">
-        <iframe src="{{ config('app.ssl') ? secure_url('horizon') : url('horizon') }}"></iframe>
+        <iframe src="{{ url('horizon') }}"></iframe>
     </div>
 @endsection
