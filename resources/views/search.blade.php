@@ -108,7 +108,7 @@
         {
             item_model.addClass('hide')
 
-            $('[data-name=stats]').html('Yaklaşık ' + obj.stats.hits + ' sonuç bulundu (' + obj.stats.took + ' saniye) (Twitter için ReTweetler arama sonuçlarına dahil edilmemiştir.)');
+            $('[data-name=stats]').html('Yaklaşık ' + obj.stats.hits + ' sonuç bulundu (' + obj.stats.took + ' saniye)');
 
             if (obj.hits.length)
             {
@@ -401,16 +401,14 @@
     {
         if (obj.status == 'ok')
         {
-            $('#' + __.data('type') + '-chart').remove()
             $('#chart-area').removeClass('hide')
 
-            $('.owl-wildcard').trigger('add.owl.carousel', [$('<div />', {
+            $('#' + __.data('type') + '-chart').remove()
+
+            $('.owl-wildcard').trigger('add.owl.carousel', [ $('<div />', {
                 'class': 'owl-chart',
-                'html': $('<canvas />', {
-                    'id': __.data('type') + '-chart',
-                    'height': '200'
-                })
-            }), 0]).trigger('refresh.owl.carousel')
+                'html': $('<canvas />', { 'id': __.data('type') + '-chart', 'height': '200' })
+            }), 0 ]).trigger('refresh.owl.carousel')
 
             if (__.data('type') == 'hourly')
             {
@@ -552,6 +550,52 @@
                     options: option
                 })
             }
+            else if (__.data('type') == 'hashtag')
+            {
+                var counts = [];
+                var labels = [];
+                var option = pieOption;
+                    option['title']['text'] = 'HASHTAG GRAFİĞİ';
+
+                $.each(obj.data.results, function(key, o) {
+                    counts.push(o.doc_count);
+                    labels.push(o.key);
+                })
+
+                new Chart(document.getElementById(__.data('type') + '-chart'), {
+                    type: 'doughnut',
+                    data: {
+                        datasets: [
+                            {
+                                backgroundColor: [
+                                    '#006064',
+                                    '#00838f',
+                                    '#0097a7',
+                                    '#00acc1',
+                                    '#00bcd4',
+                                    '#26c6da',
+                                    '#4dd0e1',
+                                    '#80deea',
+                                    '#b2ebf2',
+                                    '#e0f7fa',
+                                    '#006064',
+                                    '#00838f',
+                                    '#0097a7',
+                                    '#00acc1',
+                                    '#00bcd4',
+                                    '#26c6da',
+                                    '#4dd0e1',
+                                    '#80deea',
+                                    '#b2ebf2'
+                                ],
+                                data: counts
+                            }
+                        ],
+                        labels: labels
+                    },
+                    options: option
+                })
+            }
             else if (__.data('type') == 'source')
             {
                 var counts = [];
@@ -603,27 +647,25 @@
                 $('#' + __.data('type') + '-chart').remove()
 
                 $.each(obj.data, function(key, set) {
+                    $('#' + key + '-list').closest('.owl-item').remove()
+
                     var collection = $('<ul />', {
-                        'class': 'collection collection-small'
+                        'class': 'collection collection-small',
+                        'id': key + '-list'
                     });
 
                     if (key == 'twitter')
                     { var title = 'Twitter'; }
                     if (key == 'news')
                     { var title = 'Medya'; }
-                    if (key == 'comment')
+                    if (key == 'youtube_comment')
                     { var title = 'YouTube (yorum)'; }
-                    if (key == 'video')
+                    if (key == 'youtube_video')
                     { var title = 'YouTube (video)'; }
-                    if (key == 'entry')
+                    if (key == 'sozluk')
                     { var title = 'Sözlük (girdi)'; }
-                    if (key == 'product')
+                    if (key == 'shopping')
                     { var title = 'E-ticaret (ürün)'; }
-
-                    $('<li />', {
-                        'class': 'collection-item collection-header',
-                        'html': title
-                    }).appendTo(collection)
 
                     $.each(set, function(k, item) {
                         var collection_item = $('<li />', {
@@ -631,8 +673,8 @@
                             'html': [
                                 item['key'],
                                 $('<span />', {
-                                    'class': 'badge grey',
-                                    'html': item['value']
+                                    'class': 'badge grey lighten-5',
+                                    'html': item['doc_count']
                                 })
                             ]
                         })
@@ -641,13 +683,19 @@
                     })
 
                     $('.owl-wildcard').trigger('add.owl.carousel', [$('<div />', {
-                        'class': 'owl-chart',
-                        'id': __.data('type') + '-chart',
+                        'class': 'owl-list',
                         'css': {
-                            'width': '400px',
+                            'width': '500px',
+                            'height': '200px',
                             'overflow': 'auto'
                         },
-                        'html': collection
+                        'html': [
+                            $('<span />', {
+                                'class': 'pl-1 lr-1 teal-text',
+                                'html': title
+                            }),
+                            collection
+                        ]
                     }), 0]).trigger('refresh.owl.carousel')
                 })
             }

@@ -151,7 +151,8 @@ class SearchController extends Controller
                     'aggs' => [
                         'places' => [
                             'terms' => [
-                                'field' => 'place.full_name'
+                                'field' => 'place.full_name',
+                                'size' => 7
                             ]
                         ]
                     ]
@@ -170,7 +171,8 @@ class SearchController extends Controller
                     'aggs' => [
                         'platforms' => [
                             'terms' => [
-                                'field' => 'platform'
+                                'field' => 'platform',
+                                'size' => 7
                             ]
                         ]
                     ]
@@ -228,7 +230,7 @@ class SearchController extends Controller
                             'results' => [
                                 'terms' => [
                                     'field' => $field,
-                                    'size' => 16
+                                    'size' => 10
                                 ]
                             ]
                         ]
@@ -243,7 +245,7 @@ class SearchController extends Controller
 
                                 return [
                                     'key' => @$site ? $site->site : 'N/A('.$item['key'].')',
-                                    'value' => $item['doc_count']
+                                    'doc_count' => $item['doc_count']
                                 ];
                             }, $document->data['aggregations']['results']['buckets']);
                         }
@@ -255,7 +257,7 @@ class SearchController extends Controller
 
                                 return [
                                     'key' => @$site ? $site->site : 'N/A('.$item['key'].')',
-                                    'value' => $item['doc_count']
+                                    'doc_count' => $item['doc_count']
                                 ];
                             }, $document->data['aggregations']['results']['buckets']);
                         }
@@ -278,7 +280,7 @@ class SearchController extends Controller
                                 'hit_items' => [
                                     'terms' => [
                                         'field' => 'entities.hashtags.hashtag',
-                                        'size' => 15
+                                        'size' => 7
                                     ]
                                 ]
                             ]
@@ -306,29 +308,30 @@ class SearchController extends Controller
                     {
                         case 'tweet':
                             $index = [ 'twitter', 'tweets', '*' ];
-                            $title = 'Twitter, (Tweet)';
+                            $title = 'Twitter (tweet)';
                         break;
                         case 'article':
                             $index = [ 'media', 's*' ];
-                            $title = 'Medya, (haber)';
+                            $title = 'Medya (haber)';
                         break;
                         case 'comment':
                             $index = [ 'youtube', 'comments', '*' ];
-                            $title = 'YouTube, (yorum)';
+                            $title = 'YouTube (yorum)';
                         break;
                         case 'video':
                             $index = [ 'youtube', 'videos' ];
-                            $title = 'YouTube, (video)';
+                            $title = 'YouTube (video)';
                         break;
                         case 'entry':
                             $index = [ 'sozluk', '*' ];
-                            $title = 'Sözlük, (girdi)';
+                            $title = 'Sözlük (girdi)';
                         break;
-                        case 'product':
+                        case 'shopping':
                             $index = [ 'shopping', '*' ];
-                            $title = 'E-ticaret, (ürün)';
+                            $title = 'E-ticaret (ürün)';
                         break;
                     }
+
                     $data[$title] = Document::count($index, $module, $arr)->data['count'];
                 }
 
