@@ -197,6 +197,32 @@ class SearchController extends Controller
                             $index = [ 'twitter', 'tweets', '*' ];
                             $field = 'user.screen_name';
                             $type = 'tweet';
+
+                            ############################
+
+                            $document = Document::list([ 'twitter', 'tweets', '*' ], 'tweet', array_merge($mquery, [
+                                'aggs' => [
+                                    'results' => [
+                                        'nested' => [ 'path' => 'entities.mentions' ],
+                                        'aggs' => [
+                                            'hit_items' => [
+                                                'terms' => [
+                                                    'field' => 'entities.mentions.mention.screen_name',
+                                                    'size' => 15
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ]));
+
+                            if (@$document->data['aggregations']['results']['buckets'])
+                            {
+                                $arr['twitter_out'] = $document->data['aggregations']['results']['buckets'];
+                            }
+
+                            ############################
+
                         break;
                         case 'news':
                             $index = [ 'media', 's*' ];

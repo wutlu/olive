@@ -656,6 +656,8 @@
 
                     if (key == 'twitter')
                     { var title = 'Twitter'; }
+                    if (key == 'twitter_out')
+                    { var title = 'Twitter (bu kişiler konuşuldu)'; }
                     if (key == 'news')
                     { var title = 'Medya'; }
                     if (key == 'youtube_comment')
