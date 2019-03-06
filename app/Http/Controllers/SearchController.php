@@ -14,7 +14,9 @@ use Term;
 use Carbon\Carbon;
 
 use App\Models\Pin\Group as PinGroup;
+
 use App\Models\Crawlers\MediaCrawler;
+use App\Models\Crawlers\ShoppingCrawler;
 
 class SearchController extends Controller
 {
@@ -37,7 +39,7 @@ class SearchController extends Controller
         ]);
 
         ### [ 500 işlemden sonra 60 dakika ile sınırla ] ###
-        $this->middleware('throttle:500,60')->only([
+        $this->middleware('throttle:120,60')->only([
             'search',
             'aggregation'
         ]);
@@ -83,6 +85,21 @@ class SearchController extends Controller
             $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
         }
 
+        $modules = [];
+
+        foreach ($request->modules as $module)
+        {
+            switch ($module)
+            {
+                case 'twitter'        : $modules[] = 'tweet';   break;
+                case 'sozluk'         : $modules[] = 'entry';   break;
+                case 'news'           : $modules[] = 'article'; break;
+                case 'youtube_video'  : $modules[] = 'video';   break;
+                case 'youtube_comment': $modules[] = 'comment'; break;
+                case 'shopping'       : $modules[] = 'product'; break;
+            }
+        }
+
         switch ($request->type)
         {
             case 'hourly':
@@ -99,7 +116,7 @@ class SearchController extends Controller
                     ]
                 ]);
 
-                $query = Document::list([ '*' ], 'tweet,article,entry,video,comment', $arr);
+                $query = Document::list([ '*' ], implode(',', $modules), $arr);
 
                 $data = [
                     'results' => $query->data['aggregations']['results']['buckets'],
@@ -121,7 +138,7 @@ class SearchController extends Controller
                     ]
                 ]);
 
-                $query = Document::list([ '*' ], 'tweet,article,entry,video,comment', $arr);
+                $query = Document::list([ '*' ], implode(',', $modules), $arr);
 
                 $data = [
                     'results' => $query->data['aggregations']['results']['buckets'],
@@ -134,7 +151,8 @@ class SearchController extends Controller
                     'aggs' => [
                         'places' => [
                             'terms' => [
-                                'field' => 'place.full_name'
+                                'field' => 'place.full_name',
+                                'size' => 7
                             ]
                         ]
                     ]
@@ -153,7 +171,8 @@ class SearchController extends Controller
                     'aggs' => [
                         'platforms' => [
                             'terms' => [
-                                'field' => 'platform'
+                                'field' => 'platform',
+                                'size' => 7
                             ]
                         ]
                     ]
@@ -168,67 +187,238 @@ class SearchController extends Controller
             break;
 
             case 'mention':
-                $arr = array_merge($mquery, [
-                    'aggs' => [
-                        'twitter' => [
-                            'terms' => [
-                                'field' => 'user.screen_name',
-                                'size' => 10
-                            ]
-                        ],
-                        'sozluk' => [
-                            'terms' => [
-                                'field' => 'author',
-                                'size' => 10
-                            ]
-                        ],
-                        'youtube_video' => [
-                            'terms' => [
-                                'field' => 'channel.title',
-                                'size' => 10
-                            ]
-                        ],
-                        'youtube_comment' => [
-                            'terms' => [
-                                'field' => 'channel.title',
-                                'size' => 10
-                            ]
-                        ],
-                        'article' => [
-                            'terms' => [
-                                'field' => 'site_id',
-                                'size' => 10
-                            ]
-                        ]
-                    ]
-                ]);
+                $arr = [];
 
-                $query = Document::list([ '*' ], 'tweet,entry,video,comment,article', $arr);
-
-                $modules = [];
-
-                foreach ($query->data['aggregations'] as $key => $module)
+                foreach ($request->modules as $module)
                 {
-                    if ($key == 'article')
+                    switch ($module)
                     {
-                        $modules[$key] = array_map(function($item) {
-                            $site = MediaCrawler::where('id', $item['key'])->first();
+                        case 'twitter':
+                            $document = Document::list([ 'twitter', 'tweets', '*' ], 'tweet', array_merge($mquery, [
+                                'aggs' => [
+                                    'results' => [
+                                        'terms' => [
+                                            'field' => 'user.id',
+                                            'size' => 10
+                                        ],
+                                        'aggs' => [
+                                            'properties' => [
+                                                'top_hits' => [
+                                                    'size' => 1,
+                                                    '_source' => [
+                                                        'include' => [
+                                                            'user.name',
+                                                            'user.screen_name'
+                                                        ]
+                                                    ]
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ]));
 
-                            $item['key'] = @$site ? $site->site : 'N/A('.$item['key'].')';
+                            if (@$document->data['aggregations']['results']['buckets'])
+                            {
+                                $arr['twitter'] = array_map(function($arr) {
+                                    return [
+                                        'key' => $arr['key'],
+                                        'name' => $arr['properties']['hits']['hits'][0]['_source']['user']['name'],
+                                        'screen_name' => $arr['properties']['hits']['hits'][0]['_source']['user']['screen_name'],
+                                        'doc_count' => $arr['doc_count']
+                                    ];
+                                }, $document->data['aggregations']['results']['buckets']);
+                            }
 
-                            return $item;
-                        }, $module['buckets']);
-                    }
-                    else
-                    {
-                        $modules[$key] = $module['buckets'];
+                            if (@$document->data['aggregations']['results']['hit_items']['buckets'])
+                            {
+                                $arr['twitter_out'] = array_map(function($arr) {
+                                    return [
+                                        'key' => $arr['key'],
+                                        'name' => $arr['properties']['hits']['hits'][0]['_source']['mention']['name'],
+                                        'screen_name' => $arr['properties']['hits']['hits'][0]['_source']['mention']['screen_name'],
+                                        'doc_count' => $arr['doc_count']
+                                    ];
+                                }, $document->data['aggregations']['results']['hit_items']['buckets']);
+                            }
+
+                            ############################
+
+                            $document = Document::list([ 'twitter', 'tweets', '*' ], 'tweet', array_merge($mquery, [
+                                'aggs' => [
+                                    'results' => [
+                                        'nested' => [ 'path' => 'entities.mentions' ],
+                                        'aggs' => [
+                                            'hit_items' => [
+                                                'terms' => [
+                                                    'field' => 'entities.mentions.mention.id',
+                                                    'size' => 15
+                                                ],
+                                                'aggs' => [
+                                                    'properties' => [
+                                                        'top_hits' => [
+                                                            'size' => 1,
+                                                            '_source' => [
+                                                                'include' => [
+                                                                    'entities.mentions.mention.name',
+                                                                    'entities.mentions.mention.screen_name'
+                                                                ]
+                                                            ]
+                                                        ]
+                                                    ]
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ]));
+
+                            if (@$document->data['aggregations']['results']['hit_items']['buckets'])
+                            {
+                                $arr['twitter_out'] = array_map(function($arr) {
+                                    return [
+                                        'key' => $arr['key'],
+                                        'name' => $arr['properties']['hits']['hits'][0]['_source']['mention']['name'],
+                                        'screen_name' => $arr['properties']['hits']['hits'][0]['_source']['mention']['screen_name'],
+                                        'doc_count' => $arr['doc_count']
+                                    ];
+                                }, $document->data['aggregations']['results']['hit_items']['buckets']);
+                            }
+                        break;
+                        case 'news':
+                        case 'shopping':
+                            switch ($module)
+                            {
+                                case 'shopping':
+                                    $index = [ 'shopping', '*' ];
+                                    $type = 'product';
+                                    $site = new ShoppingCrawler;
+                                break;
+                                case 'news':
+                                    $index = [ 'media', 's*' ];
+                                    $type = 'article';
+                                    $site = new MediaCrawler;
+                                break;
+                            }
+
+                            $document = Document::list($index, $type, array_merge($mquery, [
+                                'aggs' => [
+                                    'results' => [
+                                        'terms' => [
+                                            'field' => 'site_id',
+                                            'size' => 10
+                                        ]
+                                    ]
+                                ]
+                            ]));
+
+                            if (@$document->data['aggregations']['results']['buckets'])
+                            {
+                                $arr[$module] = array_map(function($item) use ($site) {
+                                    $site = $site->where('id', $item['key'])->first();
+
+                                    return @$site ? [
+                                        'key' => $item['key'],
+                                        'name' => $site['name'],
+                                        'site' => $site['site'],
+                                        'doc_count' => $item['doc_count']
+                                    ] : [
+                                        'key' => $item['key'],
+                                        'name' => 'N/A ('.$item['key'].')',
+                                        'site' => null,
+                                        'doc_count' => $item['doc_count']
+                                    ];
+                                }, $document->data['aggregations']['results']['buckets']);
+                            }
+                        break;
+                        case 'youtube_video':
+                        case 'youtube_comment':
+                            switch ($module)
+                            {
+                                case 'youtube_video':
+                                    $index = [ 'youtube', 'videos' ];
+                                    $type = 'video';
+                                break;
+                                case 'youtube_comment':
+                                    $index = [ 'youtube', 'comments', '*' ];
+                                    $type = 'comment';
+                                break;
+                            }
+
+                            $document = Document::list($index, $type, array_merge($mquery, [
+                                'aggs' => [
+                                    'results' => [
+                                        'terms' => [
+                                            'field' => 'channel.id',
+                                            'size' => 10
+                                        ],
+                                        'aggs' => [
+                                            'properties' => [
+                                                'top_hits' => [
+                                                    'size' => 1,
+                                                    '_source' => [
+                                                        'include' => [
+                                                            'channel.title'
+                                                        ]
+                                                    ]
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ]));
+
+                            if (@$document->data['aggregations']['results']['buckets'])
+                            {
+                                $arr[$module] = array_map(function($arr) {
+                                    return [
+                                        'key' => $arr['key'],
+                                        'title' => $arr['properties']['hits']['hits'][0]['_source']['channel']['title'],
+                                        'doc_count' => $arr['doc_count']
+                                    ];
+                                }, $document->data['aggregations']['results']['buckets']);
+                            }
+                        break;
+                        case 'sozluk':
+                            $document = Document::list([ 'sozluk', '*' ], 'entry', array_merge($mquery, [
+                                'aggs' => [
+                                    'results' => [
+                                        'terms' => [
+                                            'field' => 'author',
+                                            'size' => 10
+                                        ]
+                                    ]
+                                ]
+                            ]));
+
+                            if (@$document->data['aggregations']['results']['buckets'])
+                            {
+                                $arr['sozluk'] = array_map(function($arr) {
+                                    return [
+                                        'key' => $arr['key'],
+                                        'slug' => str_slug($arr['key']),
+                                        'doc_count' => $arr['doc_count']
+                                    ];
+                                }, $document->data['aggregations']['results']['buckets']);
+                            }
+                        break;
                     }
                 }
 
-                $data = [
-                    'results' => $modules,
-                    'hits' => $query->data['hits']['total']
-                ];
+                $data = $arr;
+            break;
+
+            case 'sentiment':
+                $arr = array_merge($mquery, [
+                    'aggs' => [
+                        'positive' => [ 'avg' => [ 'field' => 'sentiment.pos' ] ],
+                        'neutral' => [ 'avg' => [ 'field' => 'sentiment.neu' ] ],
+                        'negative' => [ 'avg' => [ 'field' => 'sentiment.neg' ] ]
+                    ]
+                ]);
+
+                $query = Document::list([ '*' ], implode(',', $modules), $arr);
+
             break;
 
             case 'hashtag':
@@ -240,7 +430,7 @@ class SearchController extends Controller
                                 'hit_items' => [
                                     'terms' => [
                                         'field' => 'entities.hashtags.hashtag',
-                                        'size' => 15
+                                        'size' => 7
                                     ]
                                 ]
                             ]
@@ -248,7 +438,7 @@ class SearchController extends Controller
                     ]
                 ]);
 
-                $query = Document::list([ '*' ], 'tweet,entry,video,comment,article', $arr);
+                $query = Document::list([ 'twitter', 'tweets', '*' ], 'tweet', $arr);
 
                 $data = [
                     'results' => $query->data['aggregations']['hashtag']['hit_items']['buckets'],
@@ -257,21 +447,44 @@ class SearchController extends Controller
             break;
 
             case 'source':
-            # ------------------------------------------------------ #
 
-            $arr = $mquery;
+                $arr = $mquery;
 
-            unset($arr['size']);
+                unset($arr['size']);
 
-            $data = [
-                'tweet' => Document::count([ 'twitter', 'tweets', '*' ], 'tweet', $arr),
-                'article' => Document::count([ 'media', 's*' ], 'article', $arr),
-                'comment' => Document::count([ 'youtube', 'comments', '*' ], 'comment', $arr),
-                'video' => Document::count([ 'youtube', 'videos' ], 'video', $arr),
-                'entry' => Document::count([ 'sozluk', '*' ], 'entry', $arr),
-            ];
+                foreach ($modules as $module)
+                {
+                    switch ($module)
+                    {
+                        case 'tweet':
+                            $index = [ 'twitter', 'tweets', '*' ];
+                            $title = 'Twitter (tweet)';
+                        break;
+                        case 'article':
+                            $index = [ 'media', 's*' ];
+                            $title = 'Medya (haber)';
+                        break;
+                        case 'comment':
+                            $index = [ 'youtube', 'comments', '*' ];
+                            $title = 'YouTube (yorum)';
+                        break;
+                        case 'video':
+                            $index = [ 'youtube', 'videos' ];
+                            $title = 'YouTube (video)';
+                        break;
+                        case 'entry':
+                            $index = [ 'sozluk', '*' ];
+                            $title = 'Sözlük (girdi)';
+                        break;
+                        case 'shopping':
+                            $index = [ 'shopping', '*' ];
+                            $title = 'E-ticaret (ürün)';
+                        break;
+                    }
 
-            # ------------------------------------------------------ #
+                    $data[$title] = Document::count($index, $module, $arr)->data['count'];
+                }
+
             break;
         }
 
