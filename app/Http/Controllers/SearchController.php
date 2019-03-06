@@ -292,10 +292,12 @@ class SearchController extends Controller
                                 case 'shopping':
                                     $index = [ 'shopping', '*' ];
                                     $type = 'product';
+                                    $site = new ShoppingCrawler;
                                 break;
                                 case 'news':
                                     $index = [ 'media', 's*' ];
                                     $type = 'article';
+                                    $site = new MediaCrawler;
                                 break;
                             }
 
@@ -312,8 +314,8 @@ class SearchController extends Controller
 
                             if (@$document->data['aggregations']['results']['buckets'])
                             {
-                                $arr[$module] = array_map(function($item) {
-                                    $site = MediaCrawler::where('id', $item['key'])->first();
+                                $arr[$module] = array_map(function($item) use ($site) {
+                                    $site = $site->where('id', $item['key'])->first();
 
                                     return @$site ? [
                                         'key' => $item['key'],
@@ -404,6 +406,19 @@ class SearchController extends Controller
                 }
 
                 $data = $arr;
+            break;
+
+            case 'sentiment':
+                $arr = array_merge($mquery, [
+                    'aggs' => [
+                        'positive' => [ 'avg' => [ 'field' => 'sentiment.pos' ] ],
+                        'neutral' => [ 'avg' => [ 'field' => 'sentiment.neu' ] ],
+                        'negative' => [ 'avg' => [ 'field' => 'sentiment.neg' ] ]
+                    ]
+                ]);
+
+                $query = Document::list([ '*' ], implode(',', $modules), $arr);
+
             break;
 
             case 'hashtag':

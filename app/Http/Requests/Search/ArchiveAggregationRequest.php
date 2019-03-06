@@ -24,7 +24,7 @@ class ArchiveAggregationRequest extends FormRequest
     public function rules()
     {
         return [
-            'type' => 'required|string|in:hourly,daily,location,platform,source,mention,hashtag',
+            'type' => 'required|string|in:hourly,daily,location,platform,source,mention,hashtag,sentiment',
             'string' => 'required|string|max:255',
             'start_date' => 'required|date_format:d.m.Y',
             'end_date' => 'required|date_format:d.m.Y|after_or_equal:start_date',
