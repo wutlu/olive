@@ -136,10 +136,10 @@
         <div class="col m6 s12">
             <div class="card">
                 @include('content._inc.sentiment', [
-                    'total' => $data['total']->data['count'],
-                    'pos' => $data['pos']->data['count'],
-                    'neg' => $data['neg']->data['count'],
-                    'alert' => 'İlgili kullanıcıdan toplam '.$data['total']->data['count'].' tweet alındı. Sayfadaki istatistik verileri, alınan tweetler üzerinden gerçekleştirilmiştir.'
+                    'neu' => $data['total']->data['aggregations']['neutral']['value'],
+                    'pos' => $data['total']->data['aggregations']['positive']['value'],
+                    'neg' => $data['total']->data['aggregations']['negative']['value'],
+                    'alert' => 'İlgili kullanıcıdan toplam '.$data['total']->data['hits']['total'].' tweet alındı. Sayfadaki istatistik verileri, alınan tweetler üzerinden gerçekleştirilmiştir.'
                 ])
             </div>
         </div>
@@ -155,7 +155,7 @@
                     <a href="#stats" class="active">Profil Değerleri</a>
                 </li>
                 <li class="tab">
-                    <a href="#all_tweets">Tüm Tweetler ({{ $data['total']->data['count'] }})</a>
+                    <a href="#all_tweets">Tüm Tweetler ({{ $data['total']->data['hits']['total'] }})</a>
                 </li>
                 <li class="tab">
                     <a href="#all_retweets">Tweetin ReTweetleri ({{ $data['retweet']->data['count'] }})</a>

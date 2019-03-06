@@ -642,6 +642,42 @@
                     options: option
                 })
             }
+            else if (__.data('type') == 'sentiment')
+            {
+                var counts = [];
+                var labels = [];
+                var option = pieOptionPercentable;
+                    option['title']['text'] = 'DUYGU GRAFİĞİ';
+
+                var readable_labels = {
+                    'neutral': 'Nötr',
+                    'negative': 'Negatif',
+                    'positive': 'Pozitif'
+                };
+
+                $.each(obj.data.results, function(key, item) {
+                    counts.push(item.value);
+                    labels.push(readable_labels[key]);
+                })
+
+                new Chart(document.getElementById(__.data('type') + '-chart'), {
+                    type: 'doughnut',
+                    data: {
+                        datasets: [
+                            {
+                                backgroundColor: [
+                                    '#e53935',
+                                    '#bdbdbd',
+                                    '#0097a7'
+                                ],
+                                data: counts
+                            }
+                        ],
+                        labels: labels
+                    },
+                    options: option
+                })
+            }
             else if (__.data('type') == 'mention')
             {
                 $('#' + __.data('type') + '-chart').remove()
@@ -743,7 +779,7 @@
         }
     }
 
-    var pieOption = {
+    var pieOptionPercentable = {
         title: {
             display: true
         },
@@ -751,17 +787,31 @@
             display: true,
             position: 'right'
         },
-        scales: {
-            yAxes: [{
-                display: false,
-                ticks: {
-                    min: 0,
-                    max: this.max,
-                    callback: function (value) {
-                        return (value / this.max * 100).toFixed(0) + '%';
-                    }
+        maintainAspectRatio: false,
+        tooltips: {
+            callbacks: {
+                label: function(tooltipItem, data) {
+                    var dataset = data.datasets[tooltipItem.datasetIndex];
+                    var total = dataset.data.reduce(function(previousValue, currentValue, currentIndex, array) {
+                        return previousValue + currentValue;
+                    });
+
+                    var currentValue = dataset.data[tooltipItem.index];
+                    var percentage = Math.floor(((currentValue/total) * 100)+0.5);
+
+                    return percentage + '%';
                 }
-            }]
+            }
+        }
+    };
+
+    var pieOption = {
+        title: {
+            display: true
+        },
+        legend: {
+            display: true,
+            position: 'right'
         },
         maintainAspectRatio: false
     };
@@ -795,8 +845,7 @@
                 left: 20
             }
         },
-        maintainAspectRatio: false,
-        bezierCurve : false
+        maintainAspectRatio: false
     };
 
     $('.datepicker').datepicker({

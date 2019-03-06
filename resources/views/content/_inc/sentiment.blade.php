@@ -19,7 +19,7 @@
                         data: [
                             {{ $pos }},
                             {{ $neg }},
-                            {{ $total - ($pos + $neg) }}
+                            {{ $neu }}
                         ]
                     }]
                 },

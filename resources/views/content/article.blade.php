@@ -55,12 +55,13 @@
                 </div>
             </div>
         </div>
+
         <div class="col m12 xl6">
             @include('content._inc.sentiment', [
-                'total' => $data['total']->data['count'],
-                'pos' => $data['pos']->data['count'],
-                'neg' => $data['neg']->data['count'],
-                'alert' => 'İlgili siteden toplam '.$data['total']->data['count'].' içerik alındı. Sayfadaki istatistik verileri, alınan haberler üzerinden gerçekleştirilmiştir.'
+                'neu' => $data['total']->data['aggregations']['neutral']['value'],
+                'pos' => $data['total']->data['aggregations']['positive']['value'],
+                'neg' => $data['total']->data['aggregations']['negative']['value'],
+                'alert' => 'İlgili siteden toplam '.$data['total']->data['hits']['total'].' içerik alındı. Sayfadaki istatistik verileri, alınan haberler üzerinden gerçekleştirilmiştir.'
             ])
         </div>
         <div class="col m12 xl12">

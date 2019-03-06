@@ -409,16 +409,18 @@ class SearchController extends Controller
             break;
 
             case 'sentiment':
-                $arr = array_merge($mquery, [
+                $query = Document::list([ '*' ], implode(',', $modules), array_merge($mquery, [
                     'aggs' => [
                         'positive' => [ 'avg' => [ 'field' => 'sentiment.pos' ] ],
                         'neutral' => [ 'avg' => [ 'field' => 'sentiment.neu' ] ],
                         'negative' => [ 'avg' => [ 'field' => 'sentiment.neg' ] ]
                     ]
-                ]);
+                ]));
 
-                $query = Document::list([ '*' ], implode(',', $modules), $arr);
-
+                $data = [
+                    'results' => $query->data['aggregations'],
+                    'hits' => $query->data['hits']['total']
+                ];
             break;
 
             case 'hashtag':
@@ -447,7 +449,6 @@ class SearchController extends Controller
             break;
 
             case 'source':
-
                 $arr = $mquery;
 
                 unset($arr['size']);
@@ -476,7 +477,7 @@ class SearchController extends Controller
                             $index = [ 'sozluk', '*' ];
                             $title = 'Sözlük (girdi)';
                         break;
-                        case 'shopping':
+                        case 'product':
                             $index = [ 'shopping', '*' ];
                             $title = 'E-ticaret (ürün)';
                         break;

@@ -65,52 +65,28 @@ class ContentController extends Controller
                     ];
 
                     $data = [
-                        'total' => Document::count($es_index, 'entry', [
-                            'query' => [
-                                'bool' => [
-                                    'must' => $site
-                                ]
-                            ]
-                        ]),
-                        'pos' => Document::count($es_index, 'entry', [
-                            'query' => [
-                                'bool' => [
-                                    'must' => $site,
-                                    'filter' => [
-                                        [ 'range' => [ 'sentiment.pos' => [ 'gte' => .34 ] ] ]
-                                    ]
-                                ]
-                            ]
-                        ]),
-                        'neg' => Document::count($es_index, 'entry', [
-                            'query' => [
-                                'bool' => [
-                                    'must' => $site,
-                                    'filter' => [
-                                        [ 'range' => [ 'sentiment.neg' => [ 'gte' => .34 ] ] ]
-                                    ]
-                                ]
-                            ]
-                        ]),
-                        'popular' => Document::list($es_index, 'entry', [
-                            'size' => 0,
+                        'total' => Document::list($es_index, 'entry', [
                             'query' => [
                                 'bool' => [
                                     'must' => $site
                                 ]
                             ],
                             'aggs' => [
+                                'positive' => [ 'avg' => [ 'field' => 'sentiment.pos' ] ],
+                                'neutral' => [ 'avg' => [ 'field' => 'sentiment.neu' ] ],
+                                'negative' => [ 'avg' => [ 'field' => 'sentiment.neg' ] ],
                                 'popular_keywords' => [
                                     'terms' => [
                                         'field' => 'entry',
                                         'size' => 100
                                     ]
                                 ]
-                            ]
+                            ],
+                            'size' => 0
                         ])
                     ];
 
-                    $bucket = @$data['popular']->data['aggregations']['popular_keywords']['buckets'];
+                    $bucket = @$data['total']->data['aggregations']['popular_keywords']['buckets'];
 
                     if ($bucket)
                     {
@@ -143,12 +119,18 @@ class ContentController extends Controller
                     ];
 
                     $data = [
-                        'total' => Document::count([ 'twitter', 'tweets', '*' ], 'tweet', [
+                        'total' => Document::list([ 'twitter', 'tweets', '*' ], 'tweet', [
                             'query' => [
                                 'bool' => [
                                     'must' => $user
                                 ]
-                            ]
+                            ],
+                            'aggs' => [
+                                'positive' => [ 'avg' => [ 'field' => 'sentiment.pos' ] ],
+                                'neutral' => [ 'avg' => [ 'field' => 'sentiment.neu' ] ],
+                                'negative' => [ 'avg' => [ 'field' => 'sentiment.neg' ] ]
+                            ],
+                            'size' => 0
                         ]),
                         'retweet' => Document::count([ 'twitter', 'tweets', '*' ], 'tweet', [
                             'query' => [
@@ -156,21 +138,6 @@ class ContentController extends Controller
                                     'must' => [[ 'match' => [ 'external.id' => $document['_source']['id'] ] ]]
                                 ]
                             ]
-                        ]),
-                        'pos' => Document::count([ 'twitter', 'tweets', '*' ], 'tweet', [
-                            'query' => [
-                                'bool' => [
-                                    'must' => $user,
-                                    'filter' => [[ 'range' => [ 'sentiment.pos' => [ 'gte' => .34 ] ] ]]
-                                ]
-                            ]
-                        ]),
-                        'neg' => Document::count([ 'twitter', 'tweets', '*' ], 'tweet', [
-                            'query' => [
-                                'bool' => [
-                                    'must' => $user,
-                                    'filter' => [[ 'range' => [ 'sentiment.neg' => [ 'gte' => .34 ] ] ]]]
-                                ]
                         ])
                     ];
 
@@ -298,52 +265,28 @@ class ContentController extends Controller
                     ];
 
                     $data = [
-                        'total' => Document::count($es_index, 'article', [
-                            'query' => [
-                                'bool' => [
-                                    'must' => $site
-                                ]
-                            ]
-                        ]),
-                        'pos' => Document::count($es_index, 'article', [
-                            'query' => [
-                                'bool' => [
-                                    'must' => $site,
-                                    'filter' => [
-                                        [ 'range' => [ 'sentiment.pos' => [ 'gte' => .34 ] ] ]
-                                    ]
-                                ]
-                            ]
-                        ]),
-                        'neg' => Document::count($es_index, 'article', [
-                            'query' => [
-                                'bool' => [
-                                    'must' => $site,
-                                    'filter' => [
-                                        [ 'range' => [ 'sentiment.neg' => [ 'gte' => .34 ] ] ]
-                                    ]
-                                ]
-                            ]
-                        ]),
-                        'popular' => Document::list($es_index, 'article', [
-                            'size' => 0,
+                        'total' => Document::list($es_index, 'article', [
                             'query' => [
                                 'bool' => [
                                     'must' => $site
                                 ]
                             ],
                             'aggs' => [
+                                'positive' => [ 'avg' => [ 'field' => 'sentiment.pos' ] ],
+                                'neutral' => [ 'avg' => [ 'field' => 'sentiment.neu' ] ],
+                                'negative' => [ 'avg' => [ 'field' => 'sentiment.neg' ] ],
                                 'popular_keywords' => [
                                     'terms' => [
                                         'field' => 'description',
                                         'size' => 100
                                     ]
                                 ]
-                            ]
+                            ],
+                            'size' => 0
                         ])
                     ];
 
-                    $bucket = @$data['popular']->data['aggregations']['popular_keywords']['buckets'];
+                    $bucket = @$data['total']->data['aggregations']['popular_keywords']['buckets'];
 
                     if ($bucket)
                     {

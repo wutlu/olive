@@ -58,10 +58,10 @@
         </div>
         <div class="col m12 xl6">
             @include('content._inc.sentiment', [
-                'total' => $data['total']->data['count'],
-                'pos' => $data['pos']->data['count'],
-                'neg' => $data['neg']->data['count'],
-                'alert' => 'İlgili başlıktan toplam '.$data['total']->data['count'].' girdi alındı. Sayfadaki istatistik verileri, alınan girdiler üzerinden gerçekleştirilmiştir.'
+                'neu' => $data['total']->data['aggregations']['neutral']['value'],
+                'pos' => $data['total']->data['aggregations']['positive']['value'],
+                'neg' => $data['total']->data['aggregations']['negative']['value'],
+                'alert' => 'İlgili başlıktan toplam '.$data['total']->data['hits']['total'].' girdi alındı. Sayfadaki istatistik verileri, alınan girdiler üzerinden gerçekleştirilmiştir.'
             ])
         </div>
         <div class="col m12 xl12">
