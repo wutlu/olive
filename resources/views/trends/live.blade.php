@@ -232,12 +232,12 @@
             {
                 $('[data-id=nothing-' + module + ']').removeClass('hide')
             }
-
-            window.clearTimeout(window[module + 'TrendTimer'])
-            window[module + 'TrendTimer'] = window.setTimeout(function() {
-                vzAjax(collection)
-            }, 60000)
         }
+
+        window.clearTimeout(window[module + 'TrendTimer'])
+        window[module + 'TrendTimer'] = window.setTimeout(function() {
+            vzAjax(collection)
+        }, 60000)
     }
 
     $(document).on('click', '[data-run]', function() {
