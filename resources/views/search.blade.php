@@ -613,7 +613,8 @@
                 bottom: 0
             }
         },
-        maintainAspectRatio: false
+        maintainAspectRatio: false,
+        bezierCurve : false
     };
 
     $('.datepicker').datepicker({
