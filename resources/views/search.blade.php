@@ -654,26 +654,65 @@
                         'id': key + '-list'
                     });
 
-                    if (key == 'twitter')
-                    { var title = 'Twitter'; }
-                    if (key == 'twitter_out')
-                    { var title = 'Twitter (bu kişiler konuşuldu)'; }
-                    if (key == 'news')
-                    { var title = 'Medya'; }
-                    if (key == 'youtube_comment')
-                    { var title = 'YouTube (yorum)'; }
-                    if (key == 'youtube_video')
-                    { var title = 'YouTube (video)'; }
-                    if (key == 'sozluk')
-                    { var title = 'Sözlük (girdi)'; }
-                    if (key == 'shopping')
-                    { var title = 'E-ticaret (ürün)'; }
+                    var title = '';
+
+                    switch(key)
+                    {
+                        case 'twitter':           title = 'Twitter (bu hesaplar konuştu)';            break;
+                        case 'twitter_out':       title = 'Twitter (bu hesaplar konuşuldu)';          break;
+                        case 'news':              title = 'Haber (bu siteler haber yaptı)';           break;
+                        case 'youtube_comment':   title = 'YouTube (bu kanallar yorum yaptı)';        break;
+                        case 'youtube_video':     title = 'YouTube (bu kanallar video paylaştı)';     break;
+                        case 'sozluk':            title = 'Sözlük (bu kişiler entry girdi)';          break;
+                        case 'shopping':          title = 'E-ticaret (bu sitelerde ürün paylaşıldı)'; break;
+                    }
 
                     $.each(set, function(k, item) {
+                        var value = '';
+
+                        switch(key)
+                        {
+                            case 'twitter':
+                            case 'twitter_out':
+                                value = $('<a />', {
+                                    'html': item['name'],
+                                    'href': '#',
+                                    'data-search': 'user.screen_name:' + item['screen_name'],
+                                    'class': 'red-text'
+                                });
+                            break;
+                            case 'news':
+                            case 'shopping':
+                                value = $('<a />', {
+                                    'html': item['name'],
+                                    'href': item['site'],
+                                    'target': '_blank',
+                                    'class': 'green-text'
+                                });
+                            break;
+                            case 'youtube_comment':
+                            case 'youtube_video':
+                                value = $('<a />', {
+                                    'html': item['title'],
+                                    'href': 'https://www.youtube.com/channel/' + item['key'],
+                                    'target': '_blank',
+                                    'class': 'red-text'
+                                });
+                            break;
+                            case 'sozluk':
+                                value = $('<a />', {
+                                    'html': item['key'],
+                                    'href': '#',
+                                    'data-search': 'author:' + '"' + item['key'] + '"',
+                                    'class': 'red-text'
+                                });
+                            break;
+                        }
+
                         var collection_item = $('<li />', {
                             'class': 'collection-item',
                             'html': [
-                                item['key'],
+                                value,
                                 $('<span />', {
                                     'class': 'badge grey lighten-5',
                                     'html': item['doc_count']
@@ -792,6 +831,16 @@
             })
         }, 100)
     }
+
+    $(document).on('click', '[data-search]', function() {
+        $('input[name=string]').val($(this).data('search'))
+
+        M.toast({ html: 'Arama güncelleniyor...' })
+
+        setTimeout(function() {
+            $('input[name=string]').trigger('enterKey')
+        }, 400)
+    })
 @endpush
 
 @push('local.styles')
@@ -939,16 +988,29 @@
         <div class="search-field indigo lighten-5">
             <div class="container container-wide">
                 <div class="d-flex">
-                    <input id="string"
-                           name="string"
-                           type="search"
-                           class="validate json json-search white mr-1"
-                           data-json-target="#search"
-                           placeholder="Ara"
-                           value="{{ $q }}" />
-
-                    <a href="#" class="align-self-center mr-1" data-trigger="info">
-                        <i class="material-icons grey-text text-darken-2">info_outline</i>
+                    <input
+                        class="validate json json-search white align-self-center"
+                        id="string"
+                        name="string"
+                        type="search"
+                        data-json-target="#search"
+                        placeholder="Ara"
+                        value="{{ $q }}"
+                        style="margin: 0 .4rem 0 0;" />
+                    <button
+                        class="btn-flat waves-effect align-self-center json"
+                        type="button"
+                        data-json-target="ul#search"
+                        data-enter="input[name=string]"
+                        style="margin: 0 .4rem 0 0;">
+                        <i class="material-icons">search</i>
+                    </button>
+                    <a
+                        class="btn-flat waves-effect align-self-center"
+                        href="#"
+                        data-trigger="info"
+                        style="margin: 0 .4rem 0 0;">
+                        <i class="material-icons text-darken-2">info_outline</i>
                     </a>
                 </div>
             </div>

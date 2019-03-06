@@ -542,6 +542,12 @@ $(document).on('change', 'select.json, input[type=radio].json, input[type=checkb
         target = eval(element(__.data('json-target')));
 
         target.data('skip', 0).addClass('json-clear')
+
+        if (__.data('enter'))
+        {
+            var enter = eval(element(__.data('enter')));
+                enter.trigger('enterKey')
+        }
 }).on('change', 'select.json-search', function() {
     var __ = $(this),
         target = eval(element(__.data('json-target')));
