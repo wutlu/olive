@@ -685,8 +685,8 @@
                             case 'shopping':
                                 value = $('<a />', {
                                     'html': item['name'],
-                                    'href': item['site'],
-                                    'target': '_blank',
+                                    'href': '#',
+                                    'data-search': 'site_id:' + item['key'],
                                     'class': 'green-text'
                                 });
                             break;
@@ -694,8 +694,8 @@
                             case 'youtube_video':
                                 value = $('<a />', {
                                     'html': item['title'],
-                                    'href': 'https://www.youtube.com/channel/' + item['key'],
-                                    'target': '_blank',
+                                    'href': '#',
+                                    'data-search': 'channel.id:' + item['key'],
                                     'class': 'red-text'
                                 });
                             break;
@@ -833,13 +833,18 @@
     }
 
     $(document).on('click', '[data-search]', function() {
-        $('input[name=string]').val($(this).data('search'))
+        var input = $('input[name=string]');
+        var search = $('ul#search');
 
-        M.toast({ html: 'Arama güncelleniyor...' })
+            input.val($(this).data('search'))
+
+            search.data('skip', 0).addClass('json-clear')
 
         setTimeout(function() {
-            $('input[name=string]').trigger('enterKey')
+            vzAjax(search)
         }, 400)
+
+        M.toast({ html: 'Arama güncelleniyor...' })
     })
 @endpush
 
@@ -1002,6 +1007,7 @@
                         type="button"
                         data-json-target="ul#search"
                         data-enter="input[name=string]"
+                        data-clear
                         style="margin: 0 .4rem 0 0;">
                         <i class="material-icons">search</i>
                     </button>

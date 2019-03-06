@@ -511,7 +511,14 @@ $(document).on('change', 'select.json, input[type=radio].json, input[type=checkb
     window.clearTimeout(jsonTimer);
 
     jsonTimer = window.setTimeout(function() {
-        vzAjax(__.data('json-target') ? eval(element(__.data('json-target'))) : __)
+        var target = __.data('json-target') ? eval(element(__.data('json-target'))) : __;
+
+        if (__.data('clear'))
+        {
+            target.data('skip', 0).addClass('json-clear')
+        }
+
+        vzAjax(target)
     }, __.data('delay') ? __.data('delay') : 500)
 
     return false;
@@ -521,20 +528,39 @@ $(document).on('change', 'select.json, input[type=radio].json, input[type=checkb
     window.clearTimeout(jsonTimer);
 
     jsonTimer = window.setTimeout(function() {
-        vzAjax(__.data('json-target') ? eval(element(__.data('json-target'))) : __)
+        var target = __.data('json-target') ? eval(element(__.data('json-target'))) : __;
+
+        if (__.data('clear'))
+        {
+            target.data('skip', 0).addClass('json-clear')
+        }
+
+        vzAjax(target)
     }, __.data('delay') ? __.data('delay') : 500)
 
     return false;
 }).on('click', '.json:not(form):not(select):not(input):not(textarea)', function() {
     var __ = $(this);
+    var target = __.data('json-target') ? eval(element(__.data('json-target'))) : __;
 
-    vzAjax(__.data('json-target') ? eval(element(__.data('json-target'))) : __)
+    if (__.data('clear'))
+    {
+        target.data('skip', 0).addClass('json-clear')
+    }
+
+    vzAjax(target)
 
     return false;
 }).on('submit', 'form.json', function() {
     var __ = $(this);
+    var target = __.data('json-target') ? eval(element(__.data('json-target'))) : __;
 
-    vzAjax(__.data('json-target') ? eval(element(__.data('json-target'))) : __)
+    if (__.data('clear'))
+    {
+        target.data('skip', 0).addClass('json-clear')
+    }
+
+    vzAjax(target)
 
     return false;
 }).on('keydown', 'input.json-search', function() {
@@ -542,12 +568,6 @@ $(document).on('change', 'select.json, input[type=radio].json, input[type=checkb
         target = eval(element(__.data('json-target')));
 
         target.data('skip', 0).addClass('json-clear')
-
-        if (__.data('enter'))
-        {
-            var enter = eval(element(__.data('enter')));
-                enter.trigger('enterKey')
-        }
 }).on('change', 'select.json-search', function() {
     var __ = $(this),
         target = eval(element(__.data('json-target')));
