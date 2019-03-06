@@ -1007,7 +1007,7 @@
                         type="button"
                         data-json-target="ul#search"
                         data-enter="input[name=string]"
-                        data-clear
+                        data-clear="true"
                         style="margin: 0 .4rem 0 0;">
                         <i class="material-icons">search</i>
                     </button>

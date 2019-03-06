@@ -39,7 +39,7 @@ class SearchController extends Controller
         ]);
 
         ### [ 500 işlemden sonra 60 dakika ile sınırla ] ###
-        $this->middleware('throttle:500,60')->only([
+        $this->middleware('throttle:120,60')->only([
             'search',
             'aggregation'
         ]);
