@@ -1921,10 +1921,6 @@ table tr {
   outline: none !important;
 }
 
-.btn-large:hover {
-  background-color: #DFDFDF;
-}
-
 .btn-large:focus {
   background-color: transparent;
 }
@@ -1945,6 +1941,12 @@ table tr {
 
 .card .card-action a:not(.btn):not(.btn-large):not(.btn-small):not(.btn-large):not(.btn-floating) {
   margin-right: 2px;
+}
+
+.btn:hover,
+.btn-large:hover,
+.btn-small:hover {
+  background-color: #DFDFDF;
 }
 
 /**
