@@ -1108,7 +1108,7 @@
                 <div class="chip-s pt-1">
                     @if (@$trends)
                         @foreach ($trends as $trend)
-                            <a class="chip waves-effect" data-search="{{ $trend->title }}" href="#">{{ $trend->title }}</a>
+                            <a class="chip indigo waves-effect" data-search="{{ $trend->title }}" href="#">{{ $trend->title }}</a>
                         @endforeach
                     @endif
                 </div>

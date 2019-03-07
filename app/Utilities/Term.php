@@ -229,7 +229,7 @@ class Term
         $line = str_replace(' AND OR AND ', ' OR ', $line);
         */
 
-        $words_raw = str_replace([ ' OR ', ' AND ', ')', '(', '"', '\'', '-', '+', '^', '~' ], ' ', $text);
+        $words_raw = str_replace([ ' OR ', ' AND ', ')', '(', '"', '\'', '-', '+', '^', '~', '#' ], ' ', $text);
         $words_raw = explode(' ', $words_raw);
 
         return (object) [
