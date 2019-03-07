@@ -51,11 +51,9 @@ class TrendController extends Controller
      */
     public function liveRedis(TrendRequest $request)
     {
-        $alias = config('system.db.alias');
-
         return [
             'status' => 'ok',
-            'data' => json_decode(RedisCache::get(implode(':', [ $alias, 'trends', $request->module ])))
+            'data' => json_decode(RedisCache::get(implode(':', [ config('system.db.alias'), 'trends', $request->module ])))
         ];
     }
 

@@ -4,7 +4,7 @@ return [
     /**
      * Sistem Versiyonu
      */
-    'version' => '1.4.37-alpha',
+    'version' => '1.4.38-alpha',
 
     /**
      * db

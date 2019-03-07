@@ -40,7 +40,10 @@
         -webkit-box-shadow: .1rem .1rem .2rem 0 rgba(0, 0, 0, .1);
 
         width: calc(100% - 2rem);
-        max-width: 512px;
+    }
+    .search-field #string:focus {
+                box-shadow: .1rem .1rem 1rem 0 rgba(0, 0, 0, .1);
+        -webkit-box-shadow: .1rem .1rem 1rem 0 rgba(0, 0, 0, .1);
     }
 @endpush
 
@@ -101,7 +104,7 @@
 
     function __search_archive(__, obj)
     {
-        var ul = $('#search');
+        var ul = $('ul#search');
         var item_model = ul.children('.model');
 
         if (obj.status == 'ok')
@@ -393,9 +396,15 @@
         }
     }
 
-    @if ($q)
-        vzAjax($('#search'))
-    @endif
+    $(window).on('load', function() {
+        var input = $('input[name=string]');
+
+        if (input.val().length)
+        {
+            vzAjax($('ul#search'))
+            chip(input)
+        }
+    })
 
     function __aggregation(__, obj)
     {
@@ -895,7 +904,31 @@
         }, 400)
 
         M.toast({ html: 'Arama güncelleniyor...' })
+    }).on('keyup', 'input[name=string]', function(e) {
+        var __ = $(this);
+        var keycode = (e.keyCode ? e.keyCode : e.which);
+
+        if (keycode == '13')
+        {
+            chip(__)
+        }
     })
+
+    function chip(__)
+    {
+        var id = hashCode(__.val());
+
+        if (!$('.chip-s').find('.chip[data-id=' + id + ']').length)
+        {
+            $('.chip-s').prepend($('<a />', {
+                'href': '#',
+                'class': 'chip waves-effect white grey-text text-darken-2',
+                'data-search': __.val(),
+                'html': __.val(),
+                'data-id': id
+            }))
+        }
+    }
 @endpush
 
 @push('local.styles')
@@ -1043,7 +1076,7 @@
         </div>
     </div>
     <div class="z-depth-1">
-        <div class="search-field indigo lighten-5">
+        <div class="search-field indigo lighten-4">
             <div class="container container-wide">
                 <div class="d-flex">
                     <input
@@ -1051,7 +1084,7 @@
                         id="string"
                         name="string"
                         type="search"
-                        data-json-target="#search"
+                        data-json-target="ul#search"
                         placeholder="Ara"
                         value="{{ $q }}"
                         style="margin: 0 .4rem 0 0;" />
@@ -1071,6 +1104,13 @@
                         style="margin: 0 .4rem 0 0;">
                         <i class="material-icons text-darken-2">info_outline</i>
                     </a>
+                </div>
+                <div class="chip-s pt-1">
+                    @if (@$trends)
+                        @foreach ($trends as $trend)
+                            <a class="chip waves-effect" data-search="{{ $trend->title }}" href="#">{{ $trend->title }}</a>
+                        @endforeach
+                    @endif
                 </div>
             </div>
         </div>

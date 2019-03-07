@@ -18,6 +18,8 @@ use App\Models\Pin\Group as PinGroup;
 use App\Models\Crawlers\MediaCrawler;
 use App\Models\Crawlers\ShoppingCrawler;
 
+use Illuminate\Support\Facades\Redis as RedisCache;
+
 class SearchController extends Controller
 {
     /**
@@ -506,7 +508,9 @@ class SearchController extends Controller
         $s = $request->s;
         $e = $request->e;
 
-        return view('search', compact('q', 's', 'e'));
+        $trends = json_decode(RedisCache::get(implode(':', [ config('system.db.alias'), 'trends', 'twitter' ])));
+
+        return view('search', compact('q', 's', 'e', 'trends'));
     }
 
     /**

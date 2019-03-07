@@ -11,14 +11,11 @@
 
 @push('local.styles')
     .carousel-slider {
-        border-radius: 1rem 1rem 0 0;
-    }
-    .wildcard {
-        background-color: #222;
+        margin-bottom: 1rem;
     }
 @endpush
 
-@section('wildcard')
+@section('content')
     @if (count($modals))
         @foreach ($modals as $carousel)
             @if ($carousel->modal)
@@ -45,35 +42,34 @@
         @endforeach
     @endif
 
-    @if (count($carousels))
-        <div class="carousel carousel-slider center">
-            @php
-            $i = 0;
-            @endphp
-                @foreach ($carousels as $carousel)
-                <div class="{{ implode(' ', [ 'carousel-item', $i == 0 ? 'active' : '', 'white-text' ]) }}">
-                    <h2>{{ $carousel->title }}</h2>
-                    <div class="markdown">
-                        {!! $carousel->markdown() !!}
-                    </div>
-                    <div class="{{ implode(' ', [ 'anim', $carousel->pattern ]) }}"></div>
-
-                    @if ($carousel->button_text)
-                        <a href="{{ $carousel->button_action }}" class="btn-flat waves-effect waves-red white-text">
-                            {{ $carousel->button_text }}
-                        </a>
-                    @endif
-                </div>
-                @php
-                $i++;
-                @endphp
-            @endforeach
-        </div>
-    @endif
-@endsection
-
-@section('content')
     <div class="row">
+        @if (count($carousels))
+            <div class="col s12">
+                <div class="card carousel carousel-slider center">
+                    @php
+                    $i = 0;
+                    @endphp
+                        @foreach ($carousels as $carousel)
+                        <div class="{{ implode(' ', [ 'carousel-item', $i == 0 ? 'active' : '', '' ]) }}">
+                            <h2>{{ $carousel->title }}</h2>
+                            <div class="markdown">
+                                {!! $carousel->markdown() !!}
+                            </div>
+                            <div class="{{ implode(' ', [ 'anim', $carousel->pattern ]) }}"></div>
+
+                            @if ($carousel->button_text)
+                                <a href="{{ $carousel->button_action }}" class="btn-flat waves-effect">
+                                    {{ $carousel->button_text }}
+                                </a>
+                            @endif
+                        </div>
+                        @php
+                        $i++;
+                        @endphp
+                    @endforeach
+                </div>
+            </div>
+        @endif
         <div class="col s12">
             <div class="fast-menu">
                 <a href="{{ route('forum.index') }}">

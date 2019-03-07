@@ -1158,7 +1158,6 @@ body.fs-active .fullscreen > .fs-element {
  */
 main {
   padding: 1rem 0;
-  background-image: url(../img/bg-small.svg);
   background-repeat: no-repeat;
   background-size: 75%;
   background-position: top right;
@@ -1167,6 +1166,9 @@ main {
 /**
  * footer
  */
+footer.page-footer {
+  padding-top: 2rem;
+}
 footer.page-footer > .container > .row > .col > img#vz-logo {
   max-width: 128px;
 }
@@ -1459,13 +1461,11 @@ header#main > .parallax-container > .parallax > video#background-video {
 }
 
 .card.with-bg {
-  background-image: url('../img/card-bg.svg');
+  background-image: url('../img/card-bg-soft.svg');
   background-repeat: no-repeat;
-  background-position: top center;
   background-size: contain;
 }
 .card.with-bg.bg-soft {
-  background-image: url('../img/card-bg-soft.svg');
 }
 .card.with-bg > .card-tabs > .tabs {
   background-color: transparent;
@@ -1624,11 +1624,6 @@ header#main > .parallax-container > .parallax > video#background-video {
   padding: 32px 32px 0;
   margin-bottom: 8px;
   height: 182px;
-
-  background-image: url('../img/card-bg.svg');
-  background-repeat: no-repeat;
-  background-position: top center;
-  background-size: contain;
 }
 
 .sidenav .user-view .circle,
@@ -2041,17 +2036,13 @@ ul#slide-out li > .collapsible-header > .material-icons {
  */
 .z-depth-1,
 nav,
+.card,
 .card-panel,
 .toast,
 .dropdown-content,
 .sidenav {
-          box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .10), 0 3px 1px -2px rgba(0, 0, 0, .08), 0 1px 5px 0 rgba(0, 0, 0, .1);
-  -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .10), 0 3px 1px -2px rgba(0, 0, 0, .08), 0 1px 5px 0 rgba(0, 0, 0, .1);
-}
-
-.card {
-          box-shadow: 0 10px 10px 0 rgba(0, 0, 0, .10), 0 15px 5px -10px rgba(0, 0, 0, .08), 0 5px 25px 0 rgba(0, 0, 0, .1);
-  -webkit-box-shadow: 0 10px 10px 0 rgba(0, 0, 0, .10), 0 15px 5px -10px rgba(0, 0, 0, .08), 0 5px 25px 0 rgba(0, 0, 0, .1);
+          box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .1);
+  -webkit-box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .1);
 }
 
 /**

@@ -745,7 +745,7 @@
             <div class="{{ isset($wide) ? 'container container-wide' : 'container' }}">
                 <div class="row">
                     <div class="col l6 s12">
-                        <img id="vz-logo" src="{{ asset('img/veri.zone-logo-grey.svg') }}" alt="veri.zone-logo" />
+                        <img id="vz-logo" src="{{ asset('img/veri.zone-logo.svg') }}" alt="veri.zone-logo" />
                         <p class="grey-text">veri.zone, açık kaynak internet verilerini toplar ve elde ettiği verilerden anlamlı analizler çıkaran araçlar geliştirir.</p>
                     </div>
                     <div class="col l2 offset-l2 s12">
@@ -785,9 +785,9 @@
                     </div>
                 </div>
             </div>
-            <div class="footer-copyright indigo lighten-5">
+            <div class="footer-copyright center-align">
                 <div class="{{ isset($wide) ? 'container container-wide' : 'container' }} grey-text">
-                    © {{ date('Y') }} <a class="teal-text" href="http://veri.zone">veri.zone</a> | Tüm hakları saklıdır.
+                    © {{ date('Y') }} <a class="grey-text text-darken-2" href="http://veri.zone">veri.zone</a> | Tüm hakları saklıdır.
                 </div>
             </div>
         </footer>
