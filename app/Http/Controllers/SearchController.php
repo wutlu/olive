@@ -54,6 +54,8 @@ class SearchController extends Controller
      */
     public static function aggregation(ArchiveAggregationRequest $request)
     {
+        $clean = Term::cleanSearchQuery($request->string);
+
         $mquery = [
             'size' => 0,
             'query' => [
@@ -73,7 +75,7 @@ class SearchController extends Controller
                         [ 'exists' => [ 'field' => 'created_at' ] ],
                         [
                             'query_string' => [
-                                'query' => $request->string,
+                                'query' => $clean->line,
                                 'default_operator' => 'AND'
                             ]
                         ]

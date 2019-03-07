@@ -719,7 +719,7 @@
                                 value = $('<a />', {
                                     'html': item['name'],
                                     'href': '#',
-                                    'data-search': 'user.screen_name:' + item['screen_name'],
+                                    'data-search': '@' + item['screen_name'],
                                     'class': 'red-text'
                                 });
                             break;
