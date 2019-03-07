@@ -119,238 +119,235 @@
                     var item = item_model.clone();
                         item.removeClass('model hide').addClass('_tmp').attr('data-id', 'list-item-' + o.id)
 
-                        if  (o._type == 'tweet')
+                        switch(o._type)
                         {
-                            var model = $('<div />', {
-                                'html': [
-                                    $('<div />', {
-                                        'html': [
-                                            $('<a />', {
-                                                'html': o.user.name,
-                                                'href': 'https://twitter.com/' + o.user.screen_name,
-                                                'class': 'd-table red-text'
-                                            }).attr('target', 'blank'),
-                                            $('<time>', {
-                                                'html': o.created_at,
-                                                'class': 'd-table grey-text text-lighten-1'
-                                            }),
-                                            $('<span />', {
-                                                'html': o.text,
-                                                'class': 'grey-text text-darken-2'
-                                            }),
-                                            $('<a />', {
-                                                'html': 'https://twitter.com/' + o.user.screen_name + '/status/' + o._id,
-                                                'href': 'https://twitter.com/' + o.user.screen_name + '/status/' + o._id,
-                                                'class': 'd-table green-text'
-                                            }).attr('target', '_blank')
-                                        ]
-                                    })
-                                ]
-                            }).mark(obj.words, {
-                                'element': 'span',
-                                'className': 'marked yellow black-text',
-                                'accuracy': 'complementary'
-                            });
+                            case 'tweet':
+                                var model = $('<div />', {
+                                    'html': [
+                                        $('<div />', {
+                                            'html': [
+                                                $('<a />', {
+                                                    'html': o.user.name,
+                                                    'href': 'https://twitter.com/' + o.user.screen_name,
+                                                    'class': 'd-table red-text'
+                                                }).attr('target', 'blank'),
+                                                $('<time>', {
+                                                    'html': o.created_at,
+                                                    'class': 'd-table grey-text text-lighten-1'
+                                                }),
+                                                $('<span />', {
+                                                    'html': o.text,
+                                                    'class': 'grey-text text-darken-2'
+                                                }),
+                                                $('<a />', {
+                                                    'html': 'https://twitter.com/' + o.user.screen_name + '/status/' + o._id,
+                                                    'href': 'https://twitter.com/' + o.user.screen_name + '/status/' + o._id,
+                                                    'class': 'd-table green-text'
+                                                }).attr('target', '_blank')
+                                            ]
+                                        })
+                                    ]
+                                }).mark(obj.words, {
+                                    'element': 'span',
+                                    'className': 'marked yellow black-text',
+                                    'accuracy': 'complementary'
+                                });
 
-                            if (o.deleted_at)
-                            {
-                                model.css({ 'opacity': '.4' })
-                            }
-                        }
-                        else if  (o._type == 'entry')
-                        {
-                            var model = $('<div />', {
-                                'html': [
-                                    $('<div />', {
-                                        'html': [
-                                            $('<span />', {
-                                                'html': o.title,
-                                                'class': 'd-table blue-text title'
-                                            }),
-                                            $('<span />', {
-                                                'html': o.author,
-                                                'class': 'd-table red-text'
-                                            }),
-                                            $('<time>', {
-                                                'html': o.created_at,
-                                                'class': 'd-table grey-text text-lighten-1'
-                                            }),
-                                            $('<span />', {
-                                                'html': o.text,
-                                                'class': 'grey-text text-darken-2'
-                                            }),
-                                            $('<a />', {
-                                                'html': o.url,
-                                                'href': o.url,
-                                                'class': 'd-table green-text'
-                                            }).attr('target', '_blank')
-                                        ]
-                                    })
-                                ]
-                            }).mark(obj.words, {
-                                'element': 'span',
-                                'className': 'marked yellow black-text',
-                                'accuracy': 'complementary'
-                            });
+                                if (o.deleted_at)
+                                {
+                                    model.css({ 'opacity': '.4' })
+                                }
+                            break;
+                            case 'entry':
+                                var model = $('<div />', {
+                                    'html': [
+                                        $('<div />', {
+                                            'html': [
+                                                $('<span />', {
+                                                    'html': o.title,
+                                                    'class': 'd-table blue-text title'
+                                                }),
+                                                $('<span />', {
+                                                    'html': o.author,
+                                                    'class': 'd-table red-text'
+                                                }),
+                                                $('<time>', {
+                                                    'html': o.created_at,
+                                                    'class': 'd-table grey-text text-lighten-1'
+                                                }),
+                                                $('<span />', {
+                                                    'html': o.text,
+                                                    'class': 'grey-text text-darken-2'
+                                                }),
+                                                $('<a />', {
+                                                    'html': o.url,
+                                                    'href': o.url,
+                                                    'class': 'd-table green-text'
+                                                }).attr('target', '_blank')
+                                            ]
+                                        })
+                                    ]
+                                }).mark(obj.words, {
+                                    'element': 'span',
+                                    'className': 'marked yellow black-text',
+                                    'accuracy': 'complementary'
+                                });
 
-                            if (o.deleted_at)
-                            {
-                                model.css({ 'opacity': '.4' })
-                            }
-                        }
-                        else if (o._type == 'article')
-                        {
-                            var model = $('<div />', {
-                                'html': [
-                                    $('<div />', {
-                                        'html': [
-                                            $('<span />', {
-                                                'html': o.title,
-                                                'class': 'd-table blue-text title'
-                                            }),
-                                            $('<time>', {
-                                                'html': o.created_at,
-                                                'class': 'd-table grey-text text-lighten-1'
-                                            }),
-                                            $('<span />', {
-                                                'html': o.text,
-                                                'class': 'grey-text text-darken-2'
-                                            }),
-                                            $('<a />', {
-                                                'html': str_limit(o.url, 96),
-                                                'href': o.url,
-                                                'class': 'd-table green-text'
-                                            }).attr('target', '_blank')
-                                        ]
-                                    })
-                                ]
-                            }).mark(obj.words, {
-                                'element': 'span',
-                                'className': 'marked yellow black-text',
-                                'accuracy': 'complementary'
-                            });
+                                if (o.deleted_at)
+                                {
+                                    model.css({ 'opacity': '.4' })
+                                }
+                            break;
+                            case 'article':
+                                var model = $('<div />', {
+                                    'html': [
+                                        $('<div />', {
+                                            'html': [
+                                                $('<span />', {
+                                                    'html': o.title,
+                                                    'class': 'd-table blue-text title'
+                                                }),
+                                                $('<time>', {
+                                                    'html': o.created_at,
+                                                    'class': 'd-table grey-text text-lighten-1'
+                                                }),
+                                                $('<span />', {
+                                                    'html': o.text,
+                                                    'class': 'grey-text text-darken-2'
+                                                }),
+                                                $('<a />', {
+                                                    'html': str_limit(o.url, 96),
+                                                    'href': o.url,
+                                                    'class': 'd-table green-text'
+                                                }).attr('target', '_blank')
+                                            ]
+                                        })
+                                    ]
+                                }).mark(obj.words, {
+                                    'element': 'span',
+                                    'className': 'marked yellow black-text',
+                                    'accuracy': 'complementary'
+                                });
 
-                            if (o.deleted_at)
-                            {
-                                model.css({ 'opacity': '.4' })
-                            }
-                        }
-                        else if (o._type == 'product')
-                        {
-                            var model = $('<div />', {
-                                'html': [
-                                    $('<div />', {
-                                        'html': [
-                                            $('<span />', {
-                                                'html': o.title,
-                                                'class': 'd-table blue-text title'
-                                            }),
-                                            $('<time>', {
-                                                'html': o.created_at,
-                                                'class': 'd-table grey-text text-lighten-1'
-                                            }),
-                                            $('<span />', {
-                                                'html': o.text ? o.text : 'Açıklama Yok',
-                                                'class': 'grey-text text-darken-2'
-                                            }),
-                                            $('<a />', {
-                                                'html': str_limit(o.url, 96),
-                                                'href': o.url,
-                                                'class': 'd-table green-text'
-                                            }).attr('target', '_blank')
-                                        ]
-                                    })
-                                ]
-                            }).mark(obj.words, {
-                                'element': 'span',
-                                'className': 'marked yellow black-text',
-                                'accuracy': 'complementary'
-                            });
+                                if (o.deleted_at)
+                                {
+                                    model.css({ 'opacity': '.4' })
+                                }
+                            break;
+                            case 'product':
+                                var model = $('<div />', {
+                                    'html': [
+                                        $('<div />', {
+                                            'html': [
+                                                $('<span />', {
+                                                    'html': o.title,
+                                                    'class': 'd-table blue-text title'
+                                                }),
+                                                $('<time>', {
+                                                    'html': o.created_at,
+                                                    'class': 'd-table grey-text text-lighten-1'
+                                                }),
+                                                $('<span />', {
+                                                    'html': o.text ? o.text : 'Açıklama Yok',
+                                                    'class': 'grey-text text-darken-2'
+                                                }),
+                                                $('<a />', {
+                                                    'html': str_limit(o.url, 96),
+                                                    'href': o.url,
+                                                    'class': 'd-table green-text'
+                                                }).attr('target', '_blank')
+                                            ]
+                                        })
+                                    ]
+                                }).mark(obj.words, {
+                                    'element': 'span',
+                                    'className': 'marked yellow black-text',
+                                    'accuracy': 'complementary'
+                                });
 
-                            if (o.deleted_at)
-                            {
-                                model.css({ 'opacity': '.4' })
-                            }
-                        }
-                        else if (o._type == 'comment')
-                        {
-                            var model = $('<div />', {
-                                'html': [
-                                    $('<div />', {
-                                        'html': [
-                                            $('<a />', {
-                                                'html': o.channel.title,
-                                                'href': 'https://www.youtube.com/channel/' + o.channel.id,
-                                                'class': 'd-table red-text'
-                                            }).attr('target', '_blank'),
-                                            $('<time>', {
-                                                'html': o.created_at,
-                                                'class': 'd-table grey-text text-lighten-1'
-                                            }),
-                                            $('<span />', {
-                                                'html': o.text,
-                                                'class': 'grey-text text-darken-2'
-                                            }),
-                                            $('<a />', {
-                                                'html': 'https://www.youtube.com/watch?v=' + o.video_id,
-                                                'href': 'https://www.youtube.com/watch?v=' + o.video_id,
-                                                'class': 'd-table green-text'
-                                            }).attr('target', '_blank')
-                                        ]
-                                    })
-                                ]
-                            }).mark(obj.words, {
-                                'element': 'span',
-                                'className': 'marked yellow black-text',
-                                'accuracy': 'complementary'
-                            });
+                                if (o.deleted_at)
+                                {
+                                    model.css({ 'opacity': '.4' })
+                                }
+                            break;
+                            case 'comment':
+                                var model = $('<div />', {
+                                    'html': [
+                                        $('<div />', {
+                                            'html': [
+                                                $('<a />', {
+                                                    'html': o.channel.title,
+                                                    'href': 'https://www.youtube.com/channel/' + o.channel.id,
+                                                    'class': 'd-table red-text'
+                                                }).attr('target', '_blank'),
+                                                $('<time>', {
+                                                    'html': o.created_at,
+                                                    'class': 'd-table grey-text text-lighten-1'
+                                                }),
+                                                $('<span />', {
+                                                    'html': o.text,
+                                                    'class': 'grey-text text-darken-2'
+                                                }),
+                                                $('<a />', {
+                                                    'html': 'https://www.youtube.com/watch?v=' + o.video_id,
+                                                    'href': 'https://www.youtube.com/watch?v=' + o.video_id,
+                                                    'class': 'd-table green-text'
+                                                }).attr('target', '_blank')
+                                            ]
+                                        })
+                                    ]
+                                }).mark(obj.words, {
+                                    'element': 'span',
+                                    'className': 'marked yellow black-text',
+                                    'accuracy': 'complementary'
+                                });
 
-                            if (o.deleted_at)
-                            {
-                                model.css({ 'opacity': '.4' })
-                            }
-                        }
-                        else if (o._type == 'video')
-                        {
-                            var model = $('<div />', {
-                                'html': [
-                                    $('<div />', {
-                                        'html': [
-                                            $('<span />', {
-                                                'html': o.title,
-                                                'class': 'd-table blue-text title'
-                                            }),
-                                            $('<a />', {
-                                                'html': o.channel.title,
-                                                'href': 'https://www.youtube.com/channel/' + o.channel.id,
-                                                'class': 'd-table red-text'
-                                            }).attr('target', '_blank'),
-                                            $('<time>', {
-                                                'html': o.created_at,
-                                                'class': 'd-table grey-text text-lighten-1'
-                                            }),
-                                            $('<span />', {
-                                                'html': o.text,
-                                                'class': 'grey-text text-darken-2'
-                                            }),
-                                            $('<a />', {
-                                                'html': 'https://www.youtube.com/watch?v=' + o._id,
-                                                'href': 'https://www.youtube.com/watch?v=' + o._id,
-                                                'class': 'd-table green-text'
-                                            }).attr('target', '_blank')
-                                        ]
-                                    })
-                                ]
-                            }).mark(obj.words, {
-                                'element': 'span',
-                                'className': 'marked yellow black-text',
-                                'accuracy': 'complementary'
-                            });
+                                if (o.deleted_at)
+                                {
+                                    model.css({ 'opacity': '.4' })
+                                }
+                            break;
+                            case 'video':
+                                var model = $('<div />', {
+                                    'html': [
+                                        $('<div />', {
+                                            'html': [
+                                                $('<span />', {
+                                                    'html': o.title,
+                                                    'class': 'd-table blue-text title'
+                                                }),
+                                                $('<a />', {
+                                                    'html': o.channel.title,
+                                                    'href': 'https://www.youtube.com/channel/' + o.channel.id,
+                                                    'class': 'd-table red-text'
+                                                }).attr('target', '_blank'),
+                                                $('<time>', {
+                                                    'html': o.created_at,
+                                                    'class': 'd-table grey-text text-lighten-1'
+                                                }),
+                                                $('<span />', {
+                                                    'html': o.text,
+                                                    'class': 'grey-text text-darken-2'
+                                                }),
+                                                $('<a />', {
+                                                    'html': 'https://www.youtube.com/watch?v=' + o._id,
+                                                    'href': 'https://www.youtube.com/watch?v=' + o._id,
+                                                    'class': 'd-table green-text'
+                                                }).attr('target', '_blank')
+                                            ]
+                                        })
+                                    ]
+                                }).mark(obj.words, {
+                                    'element': 'span',
+                                    'className': 'marked yellow black-text',
+                                    'accuracy': 'complementary'
+                                });
 
-                            if (o.deleted_at)
-                            {
-                                model.css({ 'opacity': '.4' })
-                            }
+                                if (o.deleted_at)
+                                {
+                                    model.css({ 'opacity': '.4' })
+                                }
+                            break;
                         }
 
                         $('<div />', {
@@ -872,6 +869,12 @@
         singleItem: true
     })
 
+    $('.owl-chips').owlCarousel({
+        responsiveClass: true,
+        autoWidth: true,
+        dotClass: 'hide'
+    })
+
     function __chart(parent, data)
     {
         var chart = $('<canvas />', {
@@ -1105,10 +1108,10 @@
                         <i class="material-icons text-darken-2">info_outline</i>
                     </a>
                 </div>
-                <div class="chip-s pt-1">
+                <div class="chip-s owl-chips owl-carousel pt-1">
                     @if (@$trends)
                         @foreach ($trends as $trend)
-                            <a class="chip indigo waves-effect" data-search="{{ $trend->title }}" href="#">{{ $trend->title }}</a>
+                            <a class="chip indigo white-text waves-effect" data-search="{{ $trend->title }}" href="#">{{ $trend->title }}</a>
                         @endforeach
                     @endif
                 </div>
