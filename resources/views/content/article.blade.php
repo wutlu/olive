@@ -8,10 +8,25 @@
 ])
 
 @include('content._inc.histogram', [
-    'index' => $es->index,
-    'type' => $es->type,
-    'id' => $document['_source']['site_id'],
-    'tab_title' => 'Haber Grafiği'
+    'charts' => [
+        [
+            'type' => 'article',
+            'period' => 'daily',
+            'title' => 'Site Haber Paylaşımı (Gün)',
+            'id' => $data['crawler']->id,
+            'unique_id' => 'tab_1',
+            'es_index_key' => $data['crawler']->elasticsearch_index_name,
+            'active' => true
+        ],
+        [
+            'type' => 'article',
+            'period' => 'hourly',
+            'title' => 'Site Haber Paylaşımı (Saat)',
+            'id' => $data['crawler']->id,
+            'unique_id' => 'tab_2',
+            'es_index_key' => $data['crawler']->elasticsearch_index_name
+        ]
+    ]
 ])
 
 @push('local.styles')

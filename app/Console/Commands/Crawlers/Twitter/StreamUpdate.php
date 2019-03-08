@@ -99,7 +99,7 @@ class StreamUpdate extends Command
 
         if ($type == 'trend')
         {
-            $query = Document::list(
+            $query = Document::search(
                 [ 'trend', 'titles' ],
                 'title',
                 [

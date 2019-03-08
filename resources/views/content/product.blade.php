@@ -9,10 +9,25 @@
 ])
 
 @include('content._inc.histogram', [
-    'index' => $es->index,
-    'type' => $es->type,
-    'id' => $document['_source']['id'],
-    'tab_title' => 'Benzer Ürün Grafiği'
+    'charts' => [
+        [
+            'type' => 'product',
+            'period' => 'daily',
+            'title' => 'Benzer Ürün (Gün)',
+            'id' => $document['_id'],
+            'unique_id' => 'tab_1',
+            'es_index_key' => $document['_source']['site_id'],
+            'active' => true
+        ],
+        [
+            'type' => 'product',
+            'period' => 'hourly',
+            'title' => 'Benzer Ürün (Saat)',
+            'id' => $document['_id'],
+            'unique_id' => 'tab_2',
+            'es_index_key' => $document['_source']['site_id']
+        ]
+    ]
 ])
 
 @push('local.styles')

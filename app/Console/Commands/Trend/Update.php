@@ -177,7 +177,7 @@ class Update extends Command
             break;
         }
 
-        $query = @Document::list([ 'sozluk', '*' ], 'entry', [
+        $query = Document::search([ 'sozluk', '*' ], 'entry', [
             'size' => 0,
             'query' => [
                 'bool' => [
@@ -202,7 +202,9 @@ class Update extends Command
                     ]
                 ]
             ]
-        ])->data['aggregations']['hit_keywords']['buckets'];
+        ]);
+
+        $query = @$query->data['aggregations']['hit_keywords']['buckets'];
 
         if ($query)
         {
@@ -210,7 +212,7 @@ class Update extends Command
 
             foreach ($query as $row)
             {
-                $title = @Document::list([ 'sozluk', '*' ], 'entry', [
+                $document = Document::search([ 'sozluk', '*' ], 'entry', [
                     'size' => 1,
                     'query' => [
                         'bool' => [
@@ -238,7 +240,9 @@ class Update extends Command
                         ]
                     ],
                     '_source' => [ 'title' ]
-                ])->data['hits']['hits'][0]['_source']['title'];
+                ]);
+
+                $title = @$document->data['hits']['hits'][0]['_source']['title'];
 
                 if ($title)
                 {
@@ -335,7 +339,7 @@ class Update extends Command
             break;
         }
 
-        $query = @Document::list([ 'media', 's*' ], 'article', [
+        $query = Document::search([ 'media', 's*' ], 'article', [
             'size' => 0,
             'query' => [
                 'bool' => [
@@ -365,7 +369,9 @@ class Update extends Command
                     ]
                 ]
             ]
-        ])->data['aggregations']['hit_keywords']['buckets'];
+        ]);
+
+        $query = @$query->data['aggregations']['hit_keywords']['buckets'];
 
         if ($query)
         {
@@ -373,7 +379,7 @@ class Update extends Command
 
             foreach ($query as $row)
             {
-                $title = @Document::list([ 'media', '*' ], 'article', [
+                $document = Document::search([ 'media', '*' ], 'article', [
                     'size' => 1,
                     'query' => [
                         'bool' => [
@@ -402,7 +408,9 @@ class Update extends Command
                         ]
                     ],
                     '_source' => [ 'title' ]
-                ])->data['hits']['hits'][0]['_source']['title'];
+                ]);
+
+                $title = @$document->data['hits']['hits'][0]['_source']['title'];
 
                 if ($title)
                 {
@@ -499,7 +507,7 @@ class Update extends Command
             break;
         }
 
-        $query = @Document::list([ 'youtube', 'comments', '*' ], 'comment', [
+        $query = Document::search([ 'youtube', 'comments', '*' ], 'comment', [
             'size' => 0,
             'query' => [
                 'bool' => [
@@ -524,7 +532,9 @@ class Update extends Command
                     ]
                 ]
             ]
-        ])->data['aggregations']['hit_keywords']['buckets'];
+        ]);
+
+        $query = @$query->data['aggregations']['hit_keywords']['buckets'];
 
         if ($query)
         {
@@ -863,7 +873,7 @@ class Update extends Command
                     function($q) {
                         return $q['_source']['rank'];
                     },
-                    Document::list([ 'trend', 'titles' ], 'title', [
+                    Document::search([ 'trend', 'titles' ], 'title', [
                         'query' => [
                             'bool' => [
                                 'must' => [

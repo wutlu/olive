@@ -23,9 +23,9 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Route::pattern('es_id', '[a-zA-Z0-9]+');
-        Route::pattern('es_type', '[a-z]+');
         Route::pattern('es_index', '[a-z0-9-\._]+');
+        Route::pattern('es_type', '[a-z]+');
+        Route::pattern('es_id', '[a-zA-Z0-9-]+');
 
         Route::pattern('key', '[a-zA-Z0-9-\/:=_]+');
         Route::pattern('id', '[0-9]+');
@@ -35,6 +35,7 @@ class RouteServiceProvider extends ServiceProvider
         Route::pattern('fake_slug', '[a-zA-Z0-9-_]+');
         Route::pattern('name', '[a-zA-Z0-9-\._]+');
         Route::pattern('sid', '[a-zA-Z0-9-_]+');
+        Route::pattern('type', '[a-z0-9-_]+');
         Route::pattern('skip', '[0-9]+');
         Route::pattern('take', '[0-9]{1,2}');
         Route::pattern('status', '(true|false)');

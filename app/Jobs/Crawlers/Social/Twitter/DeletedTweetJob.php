@@ -44,7 +44,7 @@ class DeletedTweetJob implements ShouldQueue
     {
     	$timestamp = date('Y-m-d H:i:s', $this->data['timestamp_ms'] / 1000);
 
-    	$doc = Document::list([ 'twitter', 'tweets', '*' ], 'tweet', [
+    	$doc = Document::search([ 'twitter', 'tweets', '*' ], 'tweet', [
     		'query' => [
 	    		'match' => [
 	    			'id' => $this->data['status']['id_str']

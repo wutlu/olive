@@ -8,10 +8,25 @@
 ])
 
 @include('content._inc.histogram', [
-    'index' => $es->index,
-    'type' => $es->type,
-    'id' => $document['_source']['group_name'],
-    'tab_title' => 'Cevap Grafiği'
+    'charts' => [
+        [
+            'type' => 'entry',
+            'period' => 'daily',
+            'title' => 'Başlığa Cevap (Gün)',
+            'id' => $document['_id'],
+            'unique_id' => 'tab_1',
+            'es_index_key' => $document['_source']['site_id'],
+            'active' => true
+        ],
+        [
+            'type' => 'entry',
+            'period' => 'hourly',
+            'title' => 'Başlığa Cevap (Saat)',
+            'id' => $document['_id'],
+            'unique_id' => 'tab_2',
+            'es_index_key' => $document['_source']['site_id']
+        ]
+    ]
 ])
 
 @push('local.styles')

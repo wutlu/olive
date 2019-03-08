@@ -65,7 +65,7 @@ class ContentController extends Controller
                     ];
 
                     $data = [
-                        'total' => Document::list($es_index, 'entry', [
+                        'total' => Document::search($es_index, 'entry', [
                             'query' => [
                                 'bool' => [
                                     'must' => $site
@@ -119,7 +119,7 @@ class ContentController extends Controller
                     ];
 
                     $data = [
-                        'total' => Document::list([ 'twitter', 'tweets', '*' ], 'tweet', [
+                        'total' => Document::search([ 'twitter', 'tweets', '*' ], 'tweet', [
                             'query' => [
                                 'bool' => [
                                     'must' => $user
@@ -143,12 +143,12 @@ class ContentController extends Controller
 
                     if (@$document['_source']['external']['id'])
                     {
-                        $external = Document::list([ 'twitter', 'tweets', '*' ], 'tweet', [ 'query' => [ 'match' => [ 'id' => $document['_source']['external']['id'] ] ] ]);
+                        $external = Document::search([ 'twitter', 'tweets', '*' ], 'tweet', [ 'query' => [ 'match' => [ 'id' => $document['_source']['external']['id'] ] ] ]);
 
                         $data['external'] = @$external->data['hits']['hits'][0];
                     }
 
-                    $follow_graph = Document::list([ 'twitter', 'tweets', '*' ], 'tweet', [
+                    $follow_graph = Document::search([ 'twitter', 'tweets', '*' ], 'tweet', [
                         'size' => 100,
                         'query' => [
                             'bool' => [
@@ -249,11 +249,11 @@ class ContentController extends Controller
                 break;
 
                 case 'video':
-                    $title = implode(' / ', [ 'YouTube', $document['_source']['title'], '#'.$es_id ]);
+                    $title = implode(' / ', [ 'YouTube', 'Video', $document['_source']['title'], '#'.$es_id ]);
                 break;
 
                 case 'comment':
-                    $title = implode(' / ', [ 'YouTube', $document['_source']['channel']['title'], '#'.$es_id ]);
+                    $title = implode(' / ', [ 'YouTube', 'Yorum', $document['_source']['channel']['title'], '#'.$es_id ]);
                 break;
 
                 case 'article':
@@ -265,7 +265,8 @@ class ContentController extends Controller
                     ];
 
                     $data = [
-                        'total' => Document::list($es_index, 'article', [
+                        'crawler' => $crawler,
+                        'total' => Document::search($es_index, 'article', [
                             'query' => [
                                 'bool' => [
                                     'must' => $site
@@ -390,7 +391,7 @@ class ContentController extends Controller
             ]; break;
         }
 
-        $data = Document::list([ 'twitter', 'tweets', '*' ], 'tweet', $data);
+        $data = Document::search([ 'twitter', 'tweets', '*' ], 'tweet', $data);
 
         switch ($type)
         {
@@ -415,9 +416,9 @@ class ContentController extends Controller
      *
      * @return array
      */
-    public static function histogram(string $type, string $es_index, string $es_type, string $es_id)
+    public static function histogram(string $type, string $period, string $es_id, string $es_index_key = 'xxx')
     {
-        switch ($type)
+        switch ($period)
         {
             case 'hourly':
                 $script = 'doc.created_at.value.getHourOfDay()';
@@ -453,88 +454,102 @@ class ContentController extends Controller
                 ]
         ];
 
-        switch ($es_type)
+        switch ($type)
         {
-            case 'entry':
-                $arr['query']['bool']['must'][] = [
-                    'match' => [ 'group_name' => $es_id ]
-                ];
-
-                $document = Document::list($es_index, $es_type, $arr);
-            break;
-            case 'article':
-                $arr['query']['bool']['must'][] = [
-                    'match' => [ 'site_id' => $es_id ]
-                ];
-
-                $document = Document::list($es_index, $es_type, $arr);
-            break;
-            case 'product':
-                $doc = Document::get($es_index, $es_type, $es_id);
-
-                if ($doc->status != 'ok')
-                {
-                    return [
-                        'status' => 'err',
-                        'data' => [
-                            'reason' => 'not found'
-                        ]
-                    ];
-                }
-
-                $smilar = Term::commonWords($doc->data['_source']['title']);
-
-                if (count($smilar))
-                {
-                    $arr['query']['bool']['must'][] = [
-                        'more_like_this' => [
-                            'fields' => [ 'title', 'description' ],
-                            'like' => array_keys($smilar),
-                            'min_term_freq' => 1,
-                            'min_doc_freq' => 1
-                        ]
-                    ];
-                }
-
-                $document = Document::list($es_index, $es_type, $arr);
-            break;
-            case 'tweet':
-                $doc = Document::get($es_index, $es_type, $es_id);
-
-                if ($doc->status != 'ok')
-                {
-                    return [
-                        'status' => 'err',
-                        'data' => [
-                            'reason' => 'not found'
-                        ]
-                    ];
-                }
-
-                $arr['query']['bool']['must'][] = [
-                    'match' => [
-                        'user.id' => $doc->data['_source']['user']['id']
-                    ]
-                ];
-
-                $document = Document::list([ 'twitter', 'tweets', '*' ], $es_type, $arr);
-            break;
-            case 'video':
+            case 'video-comments':
                 $arr['query']['bool']['must'][] = [
                     'match' => [
                         'video_id' => $es_id
                     ]
                 ];
 
-                $document = Document::list([ 'youtube', 'comments', '*' ], $es_type, $arr);
+                $document = Document::search([ 'youtube', 'comments', '*' ], 'comment', $arr);
             break;
+            case 'video-by-video':
+            case 'comment-by-video':
+                $doc = Document::get([ 'youtube', 'videos' ], 'video', $es_id);
+
+                $arr['query']['bool']['must'][] = [
+                    'match' => [
+                        'channel.id' => $doc->data['_source']['channel']['id']
+                    ]
+                ];
+
+                switch ($type)
+                {
+                    case 'video-by-video':
+                        $es_index = [ 'youtube', 'videos' ];
+                        $es_type = 'video';
+                    break;
+                    case 'comment-by-video':
+                        $es_index = [ 'youtube', 'comments', '*' ];
+                        $es_type = 'comment';
+                    break;
+                }
+
+                $document = Document::search($es_index, $es_type, $arr);
+            break;
+            case 'entry':
+                $doc = Document::get([ 'sozluk', $es_index_key ], 'entry', $es_id);
+
+                if ($doc->status == 'ok')
+                {
+                    $arr['query']['bool']['must'][] = [
+                        'match' => [ 'group_name' => $doc->data['_source']['group_name'] ]
+                    ];
+
+                    $document = Document::search([ 'sozluk', $es_index_key ], 'entry', $arr);
+                }
+            break;
+            case 'article':
+                $arr['query']['bool']['must'][] = [
+                    'match' => [ 'site_id' => $es_id ]
+                ];
+
+                $document = Document::search([ 'media', $es_index_key ], 'article', $arr);
+            break;
+            case 'product':
+                $doc = Document::get([ 'shopping', $es_index_key ], 'product', $es_id);
+
+                if ($doc->status == 'ok')
+                {
+                    $smilar = Term::commonWords($doc->data['_source']['title']);
+
+                    if (count($smilar))
+                    {
+                        $arr['query']['bool']['must'][] = [
+                            'more_like_this' => [
+                                'fields' => [ 'title', 'description' ],
+                                'like' => array_keys($smilar),
+                                'min_term_freq' => 1,
+                                'min_doc_freq' => 1
+                            ]
+                        ];
+                    }
+
+                    $document = Document::search([ 'shopping', '*' ], 'product', $arr);
+                }
+            break;
+            case 'tweet':
+                $doc = Document::get([ 'twitter', 'tweets', $es_index_key ], 'tweet', $es_id);
+
+                if ($doc->status = 'ok')
+                {
+                    $arr['query']['bool']['must'][] = [
+                        'match' => [
+                            'user.id' => $doc->data['_source']['user']['id']
+                        ]
+                    ];
+
+                    $document = Document::search([ 'twitter', 'tweets', '*' ], 'tweet', $arr);
+                }
+            break;
+            default: return abort(404); break;
         }
 
-        //$document = json_encode(json_decode($document->message), JSON_PRETTY_PRINT); print_r($document); exit();
-
         return [
-            'status' => $document->status,
-            'data' => $document->data
+            'status' => 'ok',
+            'data' => @$document->data['aggregations']['results']
         ];
     }
 
@@ -551,7 +566,7 @@ class ContentController extends Controller
         {
             if ($es_type == 'tweet')
             {
-                $documents = Document::list([ 'twitter', 'tweets', '*' ], $es_type, [
+                $documents = Document::search([ 'twitter', 'tweets', '*' ], $es_type, [
                     'query' => [
                         'bool' => [
                             'must' => [
@@ -578,7 +593,7 @@ class ContentController extends Controller
                     switch ($es_type)
                     {
                         case 'article':
-                            $documents = Document::list([ 'media', '*' ], $es_type, [
+                            $documents = Document::search([ 'media', '*' ], $es_type, [
                                 'query' => [
                                     'bool' => [
                                         'must' => [
@@ -603,7 +618,7 @@ class ContentController extends Controller
                             ]);
                         break;
                         case 'entry':
-                            $documents = Document::list([ 'sozluk', '*' ], $es_type, [
+                            $documents = Document::search([ 'sozluk', '*' ], $es_type, [
                                 'query' => [
                                     'bool' => [
                                         'must' => [
@@ -625,7 +640,7 @@ class ContentController extends Controller
                             ]);
                         break;
                         case 'product':
-                            $documents = Document::list([ 'shopping', '*' ], $es_type, [
+                            $documents = Document::search([ 'shopping', '*' ], $es_type, [
                                 'query' => [
                                     'bool' => [
                                         'must' => [

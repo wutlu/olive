@@ -120,7 +120,7 @@ class SearchController extends Controller
                     ]
                 ]);
 
-                $query = Document::list([ '*' ], implode(',', $modules), $arr);
+                $query = Document::search([ '*' ], implode(',', $modules), $arr);
 
                 $data = [
                     'results' => $query->data['aggregations']['results']['buckets'],
@@ -142,7 +142,7 @@ class SearchController extends Controller
                     ]
                 ]);
 
-                $query = Document::list([ '*' ], implode(',', $modules), $arr);
+                $query = Document::search([ '*' ], implode(',', $modules), $arr);
 
                 $data = [
                     'results' => $query->data['aggregations']['results']['buckets'],
@@ -162,7 +162,7 @@ class SearchController extends Controller
                     ]
                 ]);
 
-                $query = Document::list([ 'twitter', 'tweets', '*' ], 'tweet', $arr);
+                $query = Document::search([ 'twitter', 'tweets', '*' ], 'tweet', $arr);
 
                 $data = [
                     'results' => $query->data['aggregations']['places']['buckets'],
@@ -182,7 +182,7 @@ class SearchController extends Controller
                     ]
                 ]);
 
-                $query = Document::list([ 'twitter', 'tweets', '*' ], 'tweet', $arr);
+                $query = Document::search([ 'twitter', 'tweets', '*' ], 'tweet', $arr);
 
                 $data = [
                     'results' => $query->data['aggregations']['platforms']['buckets'],
@@ -198,7 +198,7 @@ class SearchController extends Controller
                     switch ($module)
                     {
                         case 'twitter':
-                            $document = Document::list([ 'twitter', 'tweets', '*' ], 'tweet', array_merge($mquery, [
+                            $document = Document::search([ 'twitter', 'tweets', '*' ], 'tweet', array_merge($mquery, [
                                 'aggs' => [
                                     'results' => [
                                         'terms' => [
@@ -248,7 +248,7 @@ class SearchController extends Controller
 
                             ############################
 
-                            $document = Document::list([ 'twitter', 'tweets', '*' ], 'tweet', array_merge($mquery, [
+                            $document = Document::search([ 'twitter', 'tweets', '*' ], 'tweet', array_merge($mquery, [
                                 'aggs' => [
                                     'results' => [
                                         'nested' => [ 'path' => 'entities.mentions' ],
@@ -305,7 +305,7 @@ class SearchController extends Controller
                                 break;
                             }
 
-                            $document = Document::list($index, $type, array_merge($mquery, [
+                            $document = Document::search($index, $type, array_merge($mquery, [
                                 'aggs' => [
                                     'results' => [
                                         'terms' => [
@@ -349,7 +349,7 @@ class SearchController extends Controller
                                 break;
                             }
 
-                            $document = Document::list($index, $type, array_merge($mquery, [
+                            $document = Document::search($index, $type, array_merge($mquery, [
                                 'aggs' => [
                                     'results' => [
                                         'terms' => [
@@ -384,7 +384,7 @@ class SearchController extends Controller
                             }
                         break;
                         case 'sozluk':
-                            $document = Document::list([ 'sozluk', '*' ], 'entry', array_merge($mquery, [
+                            $document = Document::search([ 'sozluk', '*' ], 'entry', array_merge($mquery, [
                                 'aggs' => [
                                     'results' => [
                                         'terms' => [
@@ -413,7 +413,7 @@ class SearchController extends Controller
             break;
 
             case 'sentiment':
-                $query = Document::list([ '*' ], implode(',', $modules), array_merge($mquery, [
+                $query = Document::search([ '*' ], implode(',', $modules), array_merge($mquery, [
                     'aggs' => [
                         'positive' => [ 'avg' => [ 'field' => 'sentiment.pos' ] ],
                         'neutral' => [ 'avg' => [ 'field' => 'sentiment.neu' ] ],
@@ -444,7 +444,7 @@ class SearchController extends Controller
                     ]
                 ]);
 
-                $query = Document::list([ 'twitter', 'tweets', '*' ], 'tweet', $arr);
+                $query = Document::search([ 'twitter', 'tweets', '*' ], 'tweet', $arr);
 
                 $data = [
                     'results' => $query->data['aggregations']['hashtag']['hit_items']['buckets'],
@@ -604,7 +604,7 @@ class SearchController extends Controller
             }
         }
 
-        $query = Document::list([ '*' ], implode(',', $modules), $q);
+        $query = Document::search([ '*' ], implode(',', $modules), $q);
 
         $stats = [
             'took' => 0,

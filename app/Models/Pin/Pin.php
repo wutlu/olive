@@ -33,7 +33,9 @@ class Pin extends Model
     {
         if ($id)
         {
-            return @Document::list([ 'twitter', 'tweets', '*' ], 'tweet', [ 'query' => [ 'match' => [ 'id' => $id ] ] ])->data['hits']['hits'][0];
+            $document = Document::search([ 'twitter', 'tweets', '*' ], 'tweet', [ 'query' => [ 'match' => [ 'id' => $id ] ] ]);
+
+            return @$document->data['hits']['hits'][0];
         }
         else
         {

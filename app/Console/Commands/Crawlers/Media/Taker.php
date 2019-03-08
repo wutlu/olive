@@ -41,7 +41,7 @@ class Taker extends Command
      */
     public function handle()
     {
-        $query = Document::list(
+        $query = Document::search(
             [
                 'media',
                 '*'
@@ -51,11 +51,7 @@ class Taker extends Command
                 'query' => [
                     'bool' => [
                         'filter' => [
-                            [
-                                'match' => [
-                                    'status' => 'buffer'
-                                ]
-                            ]
+                            [ 'match' => [ 'status' => 'buffer' ] ]
                         ]
                     ]
                 ],

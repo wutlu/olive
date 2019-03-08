@@ -32,11 +32,25 @@
 @endpush
 
 @include('content._inc.histogram', [
-    'index' => $es->index,
-    'type' => $es->type,
-    'id' => $document['_source']['id'],
-
-    'tab_title' => 'Kullanıcının Tweet Grafiği'
+    'charts' => [
+        [
+            'type' => 'tweet',
+            'period' => 'daily',
+            'title' => 'Tweet Paylaşımı (Gün)',
+            'id' => $document['_id'],
+            'unique_id' => 'tab_1',
+            'es_index_key' => date('Y.m', strtotime($document['_source']['created_at'])),
+            'active' => true
+        ],
+        [
+            'type' => 'tweet',
+            'period' => 'hourly',
+            'title' => 'Tweet Paylaşımı (Saat)',
+            'id' => $document['_id'],
+            'unique_id' => 'tab_2',
+            'es_index_key' => date('Y.m', strtotime($document['_source']['created_at']))
+        ]
+    ]
 ])
 
 @push('external.include.footer')

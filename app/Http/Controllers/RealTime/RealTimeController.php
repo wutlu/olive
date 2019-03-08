@@ -128,7 +128,7 @@ class RealTimeController extends Controller
                             $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
                         }
 
-                        $query = Document::list([ 'twitter', 'tweets', date('Y.m') ], 'tweet', $q);
+                        $query = Document::search([ 'twitter', 'tweets', date('Y.m') ], 'tweet', $q);
 
                         if (@$query->data['hits']['hits'])
                         {
@@ -229,7 +229,7 @@ class RealTimeController extends Controller
                         }
                     }
 
-                    $query = Document::list([ '*' ], implode(',', $modules), $q);
+                    $query = Document::search([ '*' ], implode(',', $modules), $q);
 
                     if (@$query->data['hits']['hits'])
                     {

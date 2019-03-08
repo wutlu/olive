@@ -144,7 +144,7 @@ class Trigger extends Command
                 $q['query']['bool']['must_not'][] = [ 'match' => [ 'external.type' => 'retweet' ] ];
                 $q['_source'] = [ 'user.name', 'user.screen_name', 'text' ];
 
-                $query = @Document::list([ 'twitter', 'tweets', date('Y.m') ], 'tweet', $q);
+                $query = Document::search([ 'twitter', 'tweets', date('Y.m') ], 'tweet', $q);
 
                 if (@$query->data['hits']['hits'])
                 {
@@ -180,7 +180,7 @@ class Trigger extends Command
                     ]
                 ];
 
-                $query = Document::list([ 'media', '*' ], 'article', $q);
+                $query = Document::search([ 'media', '*' ], 'article', $q);
 
                 if (@$query->data['hits']['hits'])
                 {
@@ -215,7 +215,7 @@ class Trigger extends Command
                     ]
                 ];
 
-                $query = Document::list([ 'sozluk', '*' ], 'entry', $q);
+                $query = Document::search([ 'sozluk', '*' ], 'entry', $q);
 
                 if (@$query->data['hits']['hits'])
                 {
@@ -251,7 +251,7 @@ class Trigger extends Command
                     ]
                 ];
 
-                $query = @Document::list([ 'shopping', '*' ], 'product', $q);
+                $query = Document::search([ 'shopping', '*' ], 'product', $q);
 
                 if (@$query->data['hits']['hits'])
                 {
@@ -286,7 +286,7 @@ class Trigger extends Command
                     ]
                 ];
 
-                $query = @Document::list([ 'youtube', 'videos' ], 'video', $q);
+                $query = Document::search([ 'youtube', 'videos' ], 'video', $q);
 
                 if (@$query->data['hits']['hits'])
                 {
@@ -318,7 +318,7 @@ class Trigger extends Command
                     ]
                 ];
 
-                $query = @Document::list([ 'youtube', 'comments', '*' ], 'comment', $q);
+                $query = Document::search([ 'youtube', 'comments', '*' ], 'comment', $q);
 
                 if (@$query->data['hits']['hits'])
                 {

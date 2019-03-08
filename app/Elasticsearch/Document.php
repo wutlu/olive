@@ -59,7 +59,7 @@ class Document
      *
      * @return object
      */
-    public static function list($name, string $type, array $query)
+    public static function search($name, string $type, array $query)
     {
         if (is_array($name))
         {
@@ -92,7 +92,7 @@ class Document
                 json_encode(
                     $e->getMessage()
                 ),
-                'App\Elasticsearch\Document::list('.$name.', '.$type.', '.json_encode($query).')'
+                'App\Elasticsearch\Document::search('.$name.', '.$type.', '.json_encode($query).')'
             );
 
             return (object) [

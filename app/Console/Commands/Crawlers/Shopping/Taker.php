@@ -41,7 +41,7 @@ class Taker extends Command
      */
     public function handle()
     {
-        $query = Document::list(
+        $query = Document::search(
             [
                 'shopping',
                 '*'

@@ -7,14 +7,13 @@
 @endphp
 
 @push('local.styles')
-    #daily,
-    #hourly {
+    [data-type=canvas] {
         line-height: 1px;
         height: 200px;
     }
 
-    #daily canvas,
-    #hourly canvas {
+    canvas,
+    canvas {
         width: 100%;
     }
 @endpush
@@ -22,40 +21,34 @@
 @section('wildcard')
     <div class="z-depth-2">
         <ul class="tabs tabs-fixed-width tabs-transparent cyan darken-2 histogram-tabs">
-            <li class="tab">
-                <a class="active" href="#daily">{{ $tab_title }} (Günlük)</a>
-            </li>
-            <li class="tab">
-                <a href="#hourly">{{ $tab_title }} (Saatlik)</a>
-            </li>
+            @foreach ($charts as $chart)
+                <li class="tab">
+                    <a class="@isset($chart['active']){{ 'active' }}@endisset" href="#{{ $chart['unique_id'] }}">{{ $chart['title'] }}</a>
+                </li>
+            @endforeach
         </ul>
 
-        <div
-            id="daily"
-            class="load loaded"
-            data-method= "post"
-            data-href="{{ route('content.histogram', [
-                'type' => 'daily',
-                'es_index' => $index,
-                'es_type' => $type,
-                'es_id' => $id
-            ]) }}"
-            data-callback="__daily_chart">
-            <canvas id="daily-chart"></canvas>
-        </div>
-        <div
-            id="hourly"
-            style="display: none;"
-            data-method="post"
-            data-href="{{ route('content.histogram', [
-                'type' => 'hourly',
-                'es_index' => $index,
-                'es_type' => $type,
-                'es_id' => $id
-            ]) }}"
-            data-callback="__hourly_chart">
-            <canvas id="hourly-chart"></canvas>
-        </div>
+        @foreach ($charts as $chart)
+            <div
+                @isset($chart['active'])
+                    class="active loaded load"
+                @else
+                    style="display: none;"
+                @endisset
+                data-type="canvas"
+                id="{{ $chart['unique_id'] }}"
+                data-method= "post"
+                data-href="{{ route('content.histogram', [
+                    'type' => $chart['type'],
+                    'period' => $chart['period'],
+                    'id' => $chart['id'],
+                    'es_index_key' => @$chart['es_index_key']
+                ]) }}"
+                data-callback="__{{ $chart['period'] }}_chart"
+                data-canvas-id="{{ $chart['unique_id'] }}-chart">
+                <canvas id="{{ $chart['unique_id'] }}-chart"></canvas>
+            </div>
+        @endforeach
     </div>
 @endsection
 
@@ -90,15 +83,15 @@
 
     function __daily_chart(__, obj)
     {
-        if (obj.status == 'ok')
+        if (obj.status == 'ok' && obj.data)
         {
             var data = [];
 
-            $.each(obj.data.aggregations.results.buckets, function(key, o) {
+            $.each(obj.data.buckets, function(key, o) {
                 data.push(o.doc_count);
             })
 
-            var daily_chart = new Chart(document.getElementById('daily-chart'), {
+            var daily_chart = new Chart(document.getElementById(__.data('canvas-id')), {
                 type: 'line',
                 data: {
                     labels: [
@@ -120,19 +113,23 @@
                 options: options
             })
         }
+        else
+        {
+            M.toast({ html: 'Grafik yüklenemedi.', 'classes': 'red darken-2' })
+        }
     }
 
     function __hourly_chart(__, obj)
     {
-        if (obj.status == 'ok')
+        if (obj.status == 'ok' && obj.data)
         {
             var data = [];
 
-            $.each(obj.data.aggregations.results.buckets, function(key, o) {
+            $.each(obj.data.buckets, function(key, o) {
                 data.push(o.doc_count);
             })
 
-            new Chart(document.getElementById('hourly-chart'), {
+            new Chart(document.getElementById(__.data('canvas-id')), {
                 type: 'line',
                 data: {
                     labels: [
@@ -170,6 +167,10 @@
                 },
                 options: options
             })
+        }
+        else
+        {
+            M.toast({ html: 'Grafik yüklenemedi.', 'classes': 'red darken-2' })
         }
     }
 @endpush
