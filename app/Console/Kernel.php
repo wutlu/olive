@@ -62,26 +62,22 @@ class Kernel extends ConsoleKernel
             /**
              * Kaynak Tespiti
              */
-            $schedule->command('nohup "media:detector" --type=start')
+            $schedule->command('media:detector')
                       ->everyMinute()
-                      ->timezone(config('app.timezone'))
-                      ->withoutOverlapping(1);
-            $schedule->command('nohup "shopping:detector" --type=start')
+                      ->timezone(config('app.timezone'));
+            $schedule->command('shopping:detector')
                       ->everyMinute()
-                      ->timezone(config('app.timezone'))
-                      ->withoutOverlapping(1);
+                      ->timezone(config('app.timezone'));
 
             /**
              * Kaynak Toplama
              */
-            $schedule->command('nohup "media:taker" --type=start')
+            $schedule->command('media:taker')
                       ->everyMinute()
-                      ->timezone(config('app.timezone'))
-                      ->withoutOverlapping(1);
-            $schedule->command('nohup "shopping:taker" --type=start')
+                      ->timezone(config('app.timezone'));
+            $schedule->command('shopping:taker')
                       ->everyMinute()
-                      ->timezone(config('app.timezone'))
-                      ->withoutOverlapping(1);
+                      ->timezone(config('app.timezone'));
 
             /**
              * Medya botları için kontrol aralığı belirle.

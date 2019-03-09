@@ -349,50 +349,88 @@ class ContentController extends Controller
 
         switch ($type)
         {
-            case 'names': $data['aggs']['names'] = [ 'terms' => [ 'field' => 'user.name' ] ]; break;
-            case 'screen_names': $data['aggs']['screen_names'] = [ 'terms' => [ 'field' => 'user.screen_name' ] ]; break;
-            case 'platforms': $data['aggs']['platforms'] = [ 'terms' => [ 'field' => 'platform' ] ]; break;
-            case 'langs': $data['aggs']['langs'] = [ 'terms' => [ 'field' => 'lang' ] ]; break;
-            case 'places': $data['aggs']['places'] = [ 'terms' => [ 'field' => 'place.full_name' ] ]; break;
-            case 'mention_out': $data['aggs']['mention_out'] = [
-                'nested' => [ 'path' => 'entities.mentions' ],
-                'aggs' => [
-                    'hit_items' => [
-                        'terms' => [
-                            'field' => 'entities.mentions.mention.screen_name',
-                            'size' => 15
+            case 'names':
+                $data['aggs']['names'] = [
+                    'terms' => [
+                        'field' => 'user.name'
+                    ]
+                ];
+            break;
+            case 'screen_names':
+                $data['aggs']['screen_names'] = [
+                    'terms' => [
+                        'field' => 'user.screen_name'
+                    ]
+                ];
+            break;
+            case 'platforms':
+                $data['aggs']['platforms'] = [
+                    'terms' => [
+                        'field' => 'platform'
+                    ]
+                ];
+            break;
+            case 'langs':
+                $data['aggs']['langs'] = [
+                    'terms' => [
+                        'field' => 'lang'
+                    ]
+                ];
+            break;
+            case 'places':
+                $data['aggs']['places'] = [
+                    'terms' => [
+                        'field' => 'place.full_name'
+                    ]
+                ];
+            break;
+            case 'mention_out':
+                $data['aggs']['mention_out'] = [
+                    'nested' => [ 'path' => 'entities.mentions' ],
+                    'aggs' => [
+                        'hit_items' => [
+                            'terms' => [
+                                'field' => 'entities.mentions.mention.screen_name',
+                                'size' => 15
+                            ]
                         ]
                     ]
-                ]
-            ]; break;
-            case 'hashtags': $data['aggs']['hashtags'] = [
-                'nested' => [ 'path' => 'entities.hashtags' ],
-                'aggs' => [
-                    'hit_items' => [
-                        'terms' => [
-                            'field' => 'entities.hashtags.hashtag',
-                            'size' => 15
+                ];
+            break;
+            case 'hashtags':
+                $data['aggs']['hashtags'] = [
+                    'nested' => [ 'path' => 'entities.hashtags' ],
+                    'aggs' => [
+                        'hit_items' => [
+                            'terms' => [
+                                'field' => 'entities.hashtags.hashtag',
+                                'size' => 15
+                            ]
                         ]
                     ]
-                ]
-            ]; break;
-            case 'urls': $data['aggs']['urls'] = [
-                'nested' => [ 'path' => 'entities.urls' ],
-                'aggs' => [
-                    'hit_items' => [
-                        'terms' => [
-                            'field' => 'entities.urls.url',
-                            'size' => 15
+                ];
+            break;
+            case 'urls':
+                $data['aggs']['urls'] = [
+                    'nested' => [ 'path' => 'entities.urls' ],
+                    'aggs' => [
+                        'hit_items' => [
+                            'terms' => [
+                                'field' => 'entities.urls.url',
+                                'size' => 15
+                            ]
                         ]
                     ]
-                ]
-            ]; break;
-            case 'mention_in': $data['aggs']['mention_in'] = [
-                'terms' => [
-                    'field' => 'user.screen_name',
-                    'size' => 15
-                ]
-            ]; break;
+                ];
+            break;
+            case 'mention_in':
+                $data['aggs']['mention_in'] = [
+                    'terms' => [
+                        'field' => 'user.screen_name',
+                        'size' => 15
+                    ]
+                ];
+            break;
         }
 
         $data = Document::search([ 'twitter', 'tweets', '*' ], 'tweet', $data);
