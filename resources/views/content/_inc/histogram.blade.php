@@ -19,11 +19,11 @@
 @endpush
 
 @section('wildcard')
-    <div class="z-depth-2">
+    <div class="z-depth-1">
         <ul class="tabs tabs-fixed-width tabs-transparent cyan darken-2 histogram-tabs">
             @foreach ($charts as $chart)
                 <li class="tab">
-                    <a class="@isset($chart['active']){{ 'active' }}@endisset" href="#{{ $chart['unique_id'] }}">{{ $chart['title'] }}</a>
+                    <a class="@isset($chart['active']){{ 'active' }}@endisset d-flex" href="#{{ $chart['unique_id'] }}">{!! $chart['title'] !!}</a>
                 </li>
             @endforeach
         </ul>
@@ -35,7 +35,6 @@
                 @else
                     style="display: none;"
                 @endisset
-                data-type="canvas"
                 id="{{ $chart['unique_id'] }}"
                 data-method= "post"
                 data-href="{{ route('content.histogram', [
@@ -46,7 +45,15 @@
                 ]) }}"
                 data-callback="__{{ $chart['period'] }}_chart"
                 data-canvas-id="{{ $chart['unique_id'] }}-chart">
-                <canvas id="{{ $chart['unique_id'] }}-chart"></canvas>
+            @isset ($chart['info'])
+                <p class="p-1 grey-text text-darken-2 d-flex">
+                    <i class="material-icons align-self-center mr-1">info</i>
+                    {{ $chart['info'] }}
+                </p>
+            @endisset
+                <div data-type="canvas">
+                    <canvas id="{{ $chart['unique_id'] }}-chart"></canvas>
+                </div>
             </div>
         @endforeach
     </div>

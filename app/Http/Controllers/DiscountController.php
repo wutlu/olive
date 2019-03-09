@@ -155,9 +155,9 @@ class DiscountController extends Controller
      */
     public static function adminCouponDelete(IdRequest $request)
     {
-        $coupon = Coupon::where('id', $request->id)->firstOrFail();
+        $coupon = Coupon::where('id', $request->id)->whereNull('invoice_id')->firstOrFail();
 
-        Coupon::where('key', $coupon->key)->delete();
+        Coupon::where('key', $coupon->key)->whereNull('invoice_id')->delete();
 
         session()->flash('status', 'deleted');
 

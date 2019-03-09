@@ -312,12 +312,16 @@ class ContentController extends Controller
 
             return view(implode('.', [ 'content', $es_type ]), compact('document', 'title', 'es', 'data'));
         }
-
-        return abort(404);
+        else
+        {
+            return abort(404);
+        }
     }
 
     /**
-     * Aggregations
+     * tweet Aggregations
+     *
+     * @return array
      */
     public static function tweetAggregation(string $type, int $user_id)
     {
@@ -404,6 +408,39 @@ class ContentController extends Controller
                 $data = $data->data['aggregations'][$type]['buckets'];
             break;
         }
+
+        return [
+            'status' => 'ok',
+            'data' => $data
+        ];
+    }
+
+    /**
+     * video Aggregations
+     *
+     * @return array
+     */
+    public static function videoAggregation(string $type, string $channel_id)
+    {
+        $data = [
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [ 'match' => [ 'channel.id' => $channel_id ] ]
+                    ]
+                ]
+            ],
+            'size' => 0
+        ];
+
+        switch ($type)
+        {
+            case 'titles': $data['aggs']['titles'] = [ 'terms' => [ 'field' => 'channel.title' ] ]; break;
+        }
+
+        $query = Document::search([ 'youtube', '*' ], 'video,comment', $data);
+
+        $data = $query->data['aggregations'][$type]['buckets'];
 
         return [
             'status' => 'ok',

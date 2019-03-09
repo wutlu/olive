@@ -1133,8 +1133,12 @@ body.fs-active .fullscreen > header.fs-header {
   display: block;
   padding: 1rem 0;
 }
-body.fs-active .fullscreen > header.fs-header .logo {
+body.fs-active .fullscreen > header.fs-header img.fs-logo {
   height: 4rem;
+}
+body.fs-active .fullscreen > header.fs-header span.fs-title {
+  font-size: 16px;
+  padding: 0 .4rem;
 }
 body.fs-active .fullscreen > .fs-element {
   display: none;
