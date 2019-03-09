@@ -53,8 +53,6 @@ class VideoDetect extends Command
      */
     public function handle()
     {
-        print_r(YouTube::getPopularVideos('tr', 1));
-        exit();
         $type = $this->option('type');
 
         $types = [
