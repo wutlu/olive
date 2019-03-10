@@ -22,6 +22,8 @@ use Artisan;
 
 use App\Mail\ServerAlertMail;
 
+use App\Jobs\Crawlers\Sozluk\SingleJob;
+
 class Crawler extends Command
 {
     /**
@@ -59,7 +61,7 @@ class Crawler extends Command
 
         $id = $id ? $id : $this->ask('Enter a sözlük id');
 
-        $sozluk = SozlukCrawler::where('id', $id)->where('status', true)->first();
+        $sozluk = SozlukCrawler::where('id', $id)->where('status', false)->first();
 
         if (@$sozluk)
         {
@@ -84,10 +86,12 @@ class Crawler extends Command
 
                 if ($second >= 10)
                 {
+                    /*
                     SozlukCrawler::where('id', $id)->update([
                         'pid' => getmypid(),
                         'status' => true
                     ]);
+                    */
 
                     $timeStart = time();
 
@@ -182,10 +186,7 @@ class Crawler extends Command
                     {
                         $this->info('['.$i.']->boosted');
 
-                        Artisan::call('nohup', [
-                            'cmd' => 'sozluk:single --id='.$sozluk->id.' --entry_id='.$i,
-                            '--type' => 'start'
-                        ]);
+                        SingleJob::dispatch($sozluk->id, $i)->onQueue('power-crawler');
 
                         $entry_id++;
                     }
