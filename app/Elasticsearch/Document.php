@@ -21,7 +21,7 @@ class Document
         }
 
         $client = ClientBuilder::fromConfig([
-            'hosts' => config('database.connections.elasticsearch.hosts'),
+            'hosts' => config('database.connections.elasticsearch.node.ips'),
             'retries' => 5
         ]);
 
@@ -67,7 +67,7 @@ class Document
         }
 
         $client = ClientBuilder::fromConfig([
-            'hosts' => config('database.connections.elasticsearch.hosts'),
+            'hosts' => config('database.connections.elasticsearch.node.ips'),
             'retries' => 5
         ]);
 
@@ -110,7 +110,7 @@ class Document
     public static function listByMultiQuery(array $query)
     {
         $client = ClientBuilder::fromConfig([
-            'hosts' => config('database.connections.elasticsearch.hosts'),
+            'hosts' => config('database.connections.elasticsearch.node.ips'),
             'retries' => 5
         ]);
 
@@ -147,7 +147,7 @@ class Document
     public static function bulkInsert(array $chunk)
     {
         $client = ClientBuilder::fromConfig([
-            'hosts' => config('database.connections.elasticsearch.hosts'),
+            'hosts' => config('database.connections.elasticsearch.node.ips'),
             'retries' => 5
         ]);
 
@@ -208,7 +208,7 @@ class Document
         $name = Indices::name($name);
 
         $client = ClientBuilder::fromConfig([
-            'hosts' => config('database.connections.elasticsearch.hosts'),
+            'hosts' => config('database.connections.elasticsearch.node.ips'),
             'retries' => 5
         ]);
 
@@ -259,7 +259,7 @@ class Document
         }
 
         $client = ClientBuilder::fromConfig([
-            'hosts' => config('database.connections.elasticsearch.hosts'),
+            'hosts' => config('database.connections.elasticsearch.node.ips'),
             'retries' => 5
         ]);
 
@@ -315,7 +315,7 @@ class Document
         }
 
         $client = ClientBuilder::fromConfig([
-            'hosts' => config('database.connections.elasticsearch.hosts'),
+            'hosts' => config('database.connections.elasticsearch.node.ips'),
             'retries' => 5
         ]);
 
@@ -384,7 +384,7 @@ class Document
         }
 
         $client = ClientBuilder::fromConfig([
-            'hosts' => config('database.connections.elasticsearch.hosts'),
+            'hosts' => config('database.connections.elasticsearch.node.ips'),
             'retries' => 5
         ]);
 

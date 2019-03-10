@@ -3,12 +3,11 @@
 namespace App\Console\Commands\Server;
 
 use Illuminate\Console\Command;
-
-use Mail;
-use App\Mail\ServerAlertMail;
 use Illuminate\Support\Facades\Redis as RedisCache;
 
 use Term;
+use Mail;
+use App\Mail\ServerAlertMail;
 
 class UserControl extends Command
 {
@@ -26,7 +25,7 @@ class UserControl extends Command
      *
      * @var string
      */
-    protected $description = 'Sunucuya bağlı makineleri e-posta ile yöneticilere bildir.';
+    protected $description = 'Sunucuya bağlı cihazları e-posta ile yöneticilere bildir.';
 
     /**
      * Create a new command instance.

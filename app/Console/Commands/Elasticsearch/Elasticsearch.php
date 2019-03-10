@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Elasticsearch;
 
 use Illuminate\Console\Command;
 
@@ -91,7 +91,7 @@ class Elasticsearch extends Command
             $alias = config('system.db.alias');
 
             $client = ClientBuilder::fromConfig([
-                'hosts' => config('database.connections.elasticsearch.hosts'),
+                'hosts' => config('database.connections.elasticsearch.node.ips'),
                 'retries' => 5
             ]);
 

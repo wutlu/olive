@@ -79,7 +79,10 @@ return [
         ],
 
         'elasticsearch' => [
-            'hosts' => explode('|', env('ELASTICSEARCH_IPS', '127.0.0.1:9200'))
+            'node' => [
+                'ips' => explode('|', env('ELASTICSEARCH_NODE_IPS', '127.0.0.1:9200')),
+                'names' => explode('|', env('ELASTICSEARCH_NODE_NAMES', 'node-1'))
+            ]
         ]
 
     ],

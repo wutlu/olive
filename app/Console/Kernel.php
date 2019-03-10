@@ -331,6 +331,14 @@ class Kernel extends ConsoleKernel
                      ->hourly()
                      ->timezone(config('app.timezone'))
                      ->withoutOverlapping(1);
+
+            /**
+             * Herhangi bir node kapanırsa yönetime e-posta gönder.
+             */
+            $schedule->command('nohup "elasticsearch:node_control" --type=restart')
+                     ->everyMinute()
+                     ->timezone(config('app.timezone'))
+                     ->withoutOverlapping(1);
         }
     }
 

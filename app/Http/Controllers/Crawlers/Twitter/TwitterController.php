@@ -85,7 +85,7 @@ class TwitterController extends Controller
     public static function indicesJson()
     {
         $client = new Client([
-            'base_uri' => array_random(config('database.connections.elasticsearch.hosts')),
+            'base_uri' => array_random(config('database.connections.elasticsearch.node.ips')),
             'handler' => HandlerStack::create()
         ]);
 

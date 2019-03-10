@@ -40,7 +40,7 @@ class Indices
         $params = (object) array_merge($default_params, $params);
 
         $client = ClientBuilder::fromConfig([
-            'hosts' => config('database.connections.elasticsearch.hosts'),
+            'hosts' => config('database.connections.elasticsearch.node.ips'),
             'retries' => 5
         ]);
 
@@ -179,7 +179,7 @@ class Indices
         $name = self::name($name);
 
         $client = ClientBuilder::fromConfig([
-            'hosts' => config('database.connections.elasticsearch.hosts'),
+            'hosts' => config('database.connections.elasticsearch.node.ips'),
             'retries' => 5
         ]);
 
@@ -219,7 +219,7 @@ class Indices
         $name = self::name($name);
 
         $client = ClientBuilder::fromConfig([
-            'hosts' => config('database.connections.elasticsearch.hosts'),
+            'hosts' => config('database.connections.elasticsearch.node.ips'),
             'retries' => 5
         ]);
 
@@ -260,7 +260,7 @@ class Indices
         $name = self::name($name);
 
         $client = ClientBuilder::fromConfig([
-            'hosts' => config('database.connections.elasticsearch.hosts'),
+            'hosts' => config('database.connections.elasticsearch.node.ips'),
             'retries' => 5
         ]);
 
