@@ -86,7 +86,7 @@ class StreamUpdate extends Command
             break;
             case 'keyword':
                 $kquery = StreamingKeywords::with('organisation')->whereNull('reason')->whereHas('organisation', function ($query) { $query->where('status', true); })->orderBy('keyword', 'ASC')->get();
-                $klimit = 400;
+                $klimit = 100;
                 $kcolumn = 'keyword';
             break;
             case 'trend':
