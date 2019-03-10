@@ -18,6 +18,7 @@ use App\Jobs\Elasticsearch\BulkInsertJob;
 use Sentiment;
 use System;
 use Mail;
+use Artisan;
 
 use App\Mail\ServerAlertMail;
 
@@ -103,10 +104,14 @@ class Crawler extends Command
                     $sozluk->proxy
                 );
 
+                $minuteBetween = 0;
+
                 if ($item->status == 'ok')
                 {
                     if ($entry_id >= $last_entry_id)
                     {
+                        $minuteBetween = time() - strtotime($item->data['created_at']);
+
                         $chunk['body'][] = [
                             'create' => [
                                 '_index' => Indices::name([ 'sozluk', $sozluk->id ]),
@@ -169,7 +174,35 @@ class Crawler extends Command
                     $this->error('['.$entry_id.']');
                 }
 
-                $entry_id++;
+                if ($minuteBetween >= 120)
+                {
+                    $boost = $entry_id + 10;
+
+                    for ($i = $entry_id; $i <= $boost; $i++)
+                    {
+                        $this->info('['.$i.']->boosted');
+
+                        Artisan::call('nohup', [
+                            'cmd' => 'sozluk:single --id='.$sozluk->id.' --entry_id='.$i,
+                            '--type' => 'start'
+                        ]);
+
+                        $entry_id++;
+                    }
+
+                    sleep(1);
+
+                    $updated = SozlukCrawler::where('id', $sozluk->id)->first();
+
+                    if (@$updated)
+                    {
+                        $entry_id = $updated->last_id;
+                    }
+                }
+                else
+                {
+                    $entry_id++;
+                }
 
                 $this->line('error: ['.$tmp_error.'/'.$max_try.' deep: '.$deep_try.'] chunk: ['.$chunk_count.']');
 
