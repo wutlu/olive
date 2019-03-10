@@ -62,20 +62,20 @@ class Kernel extends ConsoleKernel
             /**
              * Kaynak Tespiti
              */
-            $schedule->command('media:detector')
+            $schedule->command('nohup "media:detector" --type=restart')
                       ->everyMinute()
                       ->timezone(config('app.timezone'));
-            $schedule->command('shopping:detector')
+            $schedule->command('nohup "shopping:detector" --type=restart')
                       ->everyMinute()
                       ->timezone(config('app.timezone'));
 
             /**
              * Kaynak Toplama
              */
-            $schedule->command('media:taker')
+            $schedule->command('nohup "media:taker" --type=restart')
                       ->everyMinute()
                       ->timezone(config('app.timezone'));
-            $schedule->command('shopping:taker')
+            $schedule->command('nohup "shopping:taker" --type=restart')
                       ->everyMinute()
                       ->timezone(config('app.timezone'));
 
