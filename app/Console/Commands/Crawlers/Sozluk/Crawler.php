@@ -61,7 +61,7 @@ class Crawler extends Command
 
         $id = $id ? $id : $this->ask('Enter a sözlük id');
 
-        $sozluk = SozlukCrawler::where('id', $id)->where('status', false)->first();
+        $sozluk = SozlukCrawler::where('id', $id)->where('status', true)->first();
 
         if (@$sozluk)
         {
@@ -86,12 +86,10 @@ class Crawler extends Command
 
                 if ($second >= 10)
                 {
-                    /*
                     SozlukCrawler::where('id', $id)->update([
                         'pid' => getmypid(),
                         'status' => true
                     ]);
-                    */
 
                     $timeStart = time();
 
