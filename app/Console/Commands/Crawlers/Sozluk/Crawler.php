@@ -176,7 +176,7 @@ class Crawler extends Command
 
                 if ($minuteBetween >= 180)
                 {
-                    $boost = $entry_id + 10;
+                    $boost = $entry_id + 20;
 
                     for ($i = $entry_id; $i <= $boost; $i++)
                     {
@@ -187,14 +187,7 @@ class Crawler extends Command
                         $entry_id++;
                     }
 
-                    sleep(1);
-
-                    $updated = SozlukCrawler::where('id', $sozluk->id)->first();
-
-                    if (@$updated)
-                    {
-                        $entry_id = $updated->last_id;
-                    }
+                    sleep(2);
                 }
                 else
                 {
