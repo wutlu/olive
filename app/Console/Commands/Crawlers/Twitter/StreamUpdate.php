@@ -80,14 +80,30 @@ class StreamUpdate extends Command
         switch ($type)
         {
             case 'user':
-                $kquery = StreamingUsers::with('organisation')->whereNull('reason')->whereHas('organisation', function ($query) { $query->where('status', true); })->orderBy('user_id', 'ASC')->get();
                 $klimit = 5000;
                 $kcolumn = 'user_id';
+
+                $kquery = new StreamingUsers;
+                $kquery = $kquery::with('organisation')
+                                 ->whereNull('reason')
+                                 ->whereHas('organisation', function ($query) {
+                                     $query->where('status', true);
+                                 })
+                                 ->orderBy('user_id', 'ASC')
+                                 ->get();
             break;
             case 'keyword':
-                $kquery = StreamingKeywords::with('organisation')->whereNull('reason')->whereHas('organisation', function ($query) { $query->where('status', true); })->orderBy('keyword', 'ASC')->get();
                 $klimit = 100;
                 $kcolumn = 'keyword';
+
+                $kquery = new StreamingKeywords;
+                $kquery = $kquery::with('organisation')
+                                 ->whereNull('reason')
+                                 ->whereHas('organisation', function ($query) {
+                                      $query->where('status', true);
+                                  })
+                                 ->orderBy('keyword', 'ASC')
+                                 ->get();
             break;
             case 'trend':
                 $klimit = 150;
@@ -100,7 +116,10 @@ class StreamUpdate extends Command
         if ($type == 'trend')
         {
             $query = Document::search(
-                [ 'trend', 'titles' ],
+                [
+                    'trend',
+                    'titles'
+                ],
                 'title',
                 [
                     'size' => 0,
@@ -225,10 +244,10 @@ class StreamUpdate extends Command
 
             $new_value = implode(',', $chunk);
 
-            $token->type = ($type == 'keyword' || $type == 'trend') ? 'track' : 'follow';
             $token->tmp_key = $tmp_key;
-            $token->status = $token->status == 'off' ? 'start' : ($token->status == 'restart' ? 'restart' : ((md5($token->value) == md5($new_value)) ? 'on' : 'restart'));
-            $token->value = $new_value;
+            $token->type    = ($type == 'keyword' || $type == 'trend') ? 'track' : 'follow';
+            $token->status  = $token->status == 'off' ? 'start' : ($token->status == 'restart' ? 'restart' : ((md5($token->value) == md5($new_value)) ? 'on' : 'restart'));
+            $token->value   = $new_value;
             $token->save();
         }
         else

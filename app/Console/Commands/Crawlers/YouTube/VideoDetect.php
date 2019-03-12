@@ -56,16 +56,13 @@ class VideoDetect extends Command
         $type = $this->option('type');
 
         $types = [
-            'trends' => 'Trend Videolar',
+            'trends'            => 'Trend Videolar',
             'followed_channels' => 'Takip Edilen Kanal Videoları',
-            'followed_videos' => 'Takip Edilen Videolar',
+            'followed_videos'   => 'Takip Edilen Videolar',
             'followed_keywords' => 'Takip Edilen Kelimeler',
         ];
 
-        if (!$type)
-        {
-            $type = $this->choice('Hangi eylemi uygulamak istiyorsunuz?', $types, $type);
-        }
+        $type = $type ? $type : $this->choice('Hangi eylemi uygulamak istiyorsunuz?', $types, $type);
 
         try
         {
@@ -220,16 +217,16 @@ class VideoDetect extends Command
      */
     public static function video($item)
     {   
-        $term = new Term;
+        $term      = new Term;
         $sentiment = new Sentiment;
 
         $arr = [
-            'id' => @$item->id->videoId ? $item->id->videoId : $item->id,
-            'title' => $item->snippet->title,
+            'id'         => @$item->id->videoId ? $item->id->videoId : $item->id,
+            'title'      => $item->snippet->title,
             'created_at' => date('Y-m-d H:i:s', strtotime($item->snippet->publishedAt)),
-            'called_at' => date('Y-m-d H:i:s'),
+            'called_at'  => date('Y-m-d H:i:s'),
             'channel' => [
-                'id' => $item->snippet->channelId,
+                'id'    => $item->snippet->channelId,
                 'title' => $item->snippet->channelTitle
             ]
         ];
@@ -243,8 +240,8 @@ class VideoDetect extends Command
 
         if (@$item->snippet->description)
         {
+            $arr['sentiment']   = $sentiment->score($arr['description']);
             $arr['description'] = $term->convertAscii($item->snippet->description);
-            $arr['sentiment'] = $sentiment->score($arr['description']);
         }
 
         if ($term->languageDetector([ $arr['title'], @$arr['description'] ], 'tr'))
@@ -273,8 +270,8 @@ class VideoDetect extends Command
         return [
             'create' => [
                 '_index' => Indices::name([ 'youtube', 'videos' ]),
-                '_type' => 'video',
-                '_id' => $id
+                '_type'  => 'video',
+                '_id'    => $id
             ]
         ];
     }

@@ -50,40 +50,39 @@ class StreamTrigger extends Command
             {
                 $this->line('Token: ['.$token->id.']');
 
+                $clear         = false;
+                $stop_trigger  = false;
                 $start_trigger = false;
-                $stop_trigger = false;
-                $clear = false;
 
                 $option = Option::where('key', 'twitter.status')->where('value', 'on')->exists();
 
                 if ($option)
                 {
-                    if ($token->status == 'on')
+                    switch ($token->status)
                     {
-                        if (!$token->pid)
-                        {
+                        case 'on':
+                            if (!$token->pid)
+                            {
+                                $start_trigger = true;
+                            }
+                        break;
+                        case 'restart':
+                            $stop_trigger  = true;
                             $start_trigger = true;
-                        }
-                    }
-                    else if ($token->status == 'restart')
-                    {
-                        $stop_trigger = true;
-                        $start_trigger = true;
-                    }
-                    else if ($token->status == 'stop')
-                    {
-                        $stop_trigger = true;
-                        $clear = true;
-                    }
-                    else if ($token->status == 'start')
-                    {
-                        $start_trigger = true;
+                        break;
+                        case 'stop':
+                            $clear         = true;
+                            $stop_trigger  = true;
+                        break;
+                        case 'start':
+                            $start_trigger = true;
+                        break;
                     }
                 }
                 else
                 {
+                    $clear        = true;
                     $stop_trigger = true;
-                    $clear = true;
                 }
 
                 if ($stop_trigger)
@@ -107,11 +106,11 @@ class StreamTrigger extends Command
 
                     if ($clear)
                     {
-                        $token->pid = null;
-                        $token->status = 'off';
-                        $token->type = null;
+                        $token->status  = 'off';
+                        $token->pid     = null;
+                        $token->type    = null;
                         $token->tmp_key = null;
-                        $token->value = null;
+                        $token->value   = null;
                     }
                 }
 
@@ -121,7 +120,7 @@ class StreamTrigger extends Command
 
                     sleep(1);
 
-                    $sh = 'twitter:stream:process --tokenId='.$token->id.'';
+                    $sh = 'twitter:stream:process --tokenId='.$token->id;
 
                     $key = implode('/', [ 'processes', md5($sh) ]);
                     $cmd = implode(' ', [
@@ -138,7 +137,15 @@ class StreamTrigger extends Command
 
                     $pid = trim(shell_exec($cmd));
 
-                    Storage::put($key, json_encode([ 'pid' => trim($pid), 'command' => $sh ]));
+                    Storage::put(
+                        $key,
+                        json_encode(
+                            [
+                                'pid' => trim($pid),
+                                'command' => $sh
+                            ]
+                        )
+                    );
 
                     $this->info('['.$sh.'] process started.');
 

@@ -57,23 +57,24 @@ class Taker extends Command
                         ]
                     ]
                 ],
-                '_source' => [ 'id', 'url', 'source', 'site_id', 'status' ],
+                '_source' => [
+                    'id',
+                    'url',
+                    'source',
+                    'site_id',
+                    'status'
+                ],
                 'size' => 500
             ]
         );
 
-        if ($query->status == 'ok')
+        if (@$query->data['hits']['hits'])
         {
-            if (@$query->data['hits']['hits'])
+            foreach ($query->data['hits']['hits'] as $array)
             {
-                foreach ($query->data['hits']['hits'] as $array)
-                {
-                    $obj = (object) $array;
+                $this->info($array['_source']['url']);
 
-                    $this->info($obj->_source['url']);
-
-                    TakerJob::dispatch($obj->_source)->onQueue('crawler')->delay(now()->addSeconds(rand(1, 40)));
-                }
+                TakerJob::dispatch($array['_source'])->onQueue('crawler')->delay(now()->addSeconds(rand(1, 40)));
             }
         }
     }

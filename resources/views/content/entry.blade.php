@@ -12,7 +12,7 @@
         [
             'type' => 'entry',
             'period' => 'daily',
-            'title' => 'Başlığa Cevap (Gün)',
+            'title' => 'Başlığa Günlük Cevap',
             'id' => $document['_id'],
             'unique_id' => 'tab_1',
             'es_index_key' => $document['_source']['site_id'],
@@ -21,13 +21,25 @@
         [
             'type' => 'entry',
             'period' => 'hourly',
-            'title' => 'Başlığa Cevap (Saat)',
+            'title' => 'Başlığa Saatlik Cevap',
             'id' => $document['_id'],
             'unique_id' => 'tab_2',
             'es_index_key' => $document['_source']['site_id']
         ]
     ]
 ])
+
+@push('wildcard-top')
+    <div class="card mb-0">
+        <div class="card-content d-flex justify-content-between">
+            <span class="align-self-center">
+                <span class="card-title">{{ $document['_source']['title'] }}</span>
+                <a href="{{ $document['_source']['url'] }}" target="_blank" class="grey-text">{{ $document['_source']['url'] }}</a>
+            </span>
+            <img alt="{{ $data['slug'] }}" src="{{ asset('img/logos/'.$data['slug'].'.svg') }}" class="align-self-center" style="width: 64px;" />
+        </div>
+    </div>
+@endpush
 
 @push('local.styles')
     [data-name=title] {
@@ -40,10 +52,8 @@
         <div class="col m12 xl12">
             <div class="card">
                 <div class="card-content">
-                    <span class="card-title d-flex">{{ $document['_source']['title'] }}</span>
                     <span class="red-text">{{ $document['_source']['author'] }}</span>
                     <div class="markdown">{!! Term::markdown($document['_source']['entry']) !!}</div>
-                    <a class="green-text" href="{{ $document['_source']['url'] }}" target="_blank">{{ $document['_source']['url'] }}</a>
                 </div>
                 @include('content._inc.sentiment_bar', [
                     'pos' => $document['_source']['sentiment']['pos'],
@@ -106,7 +116,6 @@
                         <span class="d-table red-text" data-name="author"></span>
                         <time class="d-table grey-text" data-name="created-at"></time>
                         <span class="d-table grey-text text-darken-2" data-name="entry"></span>
-                        <a href="#" class="d-table green-text" data-name="url" target="_blank"></a>
                     </div>
                 </div>
             </div>
@@ -147,12 +156,11 @@
                         item.removeClass('model hide').addClass('_tmp').attr('data-id', o.id)
 
                         item.find('[data-name=title]')
-                            .html('🔗 ' + o._source.title)
+                            .html(o._source.title)
                             .attr('href', '{{ url('/') }}/db/' + o._index + '/' + o._type + '/' + o._id)
 
                         item.find('[data-name=entry]').html(o._source.entry)
                         item.find('[data-name=author]').html(o._source.author)
-                        item.find('[data-name=url]').html(o._source.url).attr('href', o._source.url)
                         item.find('[data-name=created-at]').html(o._source.created_at)
 
                         item.appendTo(ul)

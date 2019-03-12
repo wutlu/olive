@@ -12,7 +12,7 @@
         [
             'type' => 'article',
             'period' => 'daily',
-            'title' => 'Site Haber Paylaşımı (Gün)',
+            'title' => 'Günlük Haber Paylaşımı',
             'id' => $data['crawler']->id,
             'unique_id' => 'tab_1',
             'es_index_key' => $data['crawler']->elasticsearch_index_name,
@@ -21,13 +21,22 @@
         [
             'type' => 'article',
             'period' => 'hourly',
-            'title' => 'Site Haber Paylaşımı (Saat)',
+            'title' => 'Saatlik Haber Paylaşımı',
             'id' => $data['crawler']->id,
             'unique_id' => 'tab_2',
             'es_index_key' => $data['crawler']->elasticsearch_index_name
         ]
     ]
 ])
+
+@push('wildcard-top')
+    <div class="card red mb-0">
+        <div class="card-content">
+            <span class="card-title white-text">{{ $data['crawler']->name }}</span>
+            <a href="{{ $data['crawler']->site }}" target="_blank" class="red-text text-darken-4">{{ $data['crawler']->site }}</a>
+        </div>
+    </div>
+@endpush
 
 @push('local.styles')
     [data-name=title] {

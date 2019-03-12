@@ -546,6 +546,12 @@ class SearchController extends Controller
                     'must' => [
                         [
                             'query_string' => [
+                                'fields' => [
+                                    'title',
+                                    'description',
+                                    'entry',
+                                    'text'
+                                ],
                                 'query' => $clean->line,
                                 'default_operator' => 'AND'
                             ]

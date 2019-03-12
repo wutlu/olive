@@ -67,22 +67,24 @@ class Crawler extends Command
         {
             $timeStart = time()-20;
 
-            $entry_id = $sozluk->last_id;
-            $max_attempt = $sozluk->max_attempt;
-            $errors = [];
-            $chunk = [ 'body' => [] ];
-            $chunk_count = 0;
-            $stream = true;
-            $tmp_error = 0;
-            $deep_try = 1;
+            $entry_id      = $sozluk->last_id;
+            $max_attempt   = $sozluk->max_attempt;
+            $errors        = [];
+            $chunk         = [ 'body' => [] ];
+            $chunk_count   = 0;
+            $stream        = true;
+            $tmp_error     = 0;
+            $deep_try      = 1;
             $last_entry_id = $entry_id;
+
+            $sentiment = new Sentiment;
 
             while ($stream)
             {
-                $save = false;
-                $max_try = $deep_try*$max_attempt;
-                $timeNow = time();
-                $second = $timeNow - $timeStart;
+                $save          = false;
+                $max_try       = $deep_try*$max_attempt;
+                $second        = time() - $timeStart;
+                $minuteBetween = 0;
 
                 if ($second >= 10)
                 {
@@ -106,8 +108,6 @@ class Crawler extends Command
                     $sozluk->proxy
                 );
 
-                $minuteBetween = 0;
-
                 if ($item->status == 'ok')
                 {
                     if ($entry_id >= $last_entry_id)
@@ -117,56 +117,54 @@ class Crawler extends Command
                         $chunk['body'][] = [
                             'create' => [
                                 '_index' => Indices::name([ 'sozluk', $sozluk->id ]),
-                                '_type' => 'entry',
-                                '_id' => $entry_id
+                                '_type'  => 'entry',
+                                '_id'    => $entry_id
                             ]
                         ];
 
-                        $sentiment = new Sentiment;
-
                         $chunk['body'][] = [
-                            'id' => $entry_id,
+                            'id'         => $entry_id,
 
-                            'url' => $item->page,
+                            'url'        => $item->page,
+
                             'group_name' => $item->group_name,
 
-                            'title' => $item->data['title'],
-                            'entry' => $item->data['entry'],
-                            'author' => $item->data['author'],
+                            'title'      => $item->data['title'],
+                            'entry'      => $item->data['entry'],
+                            'author'     => $item->data['author'],
 
                             'created_at' => $item->data['created_at'],
-                            'called_at' => date('Y-m-d H:i:s'),
+                            'called_at'  => date('Y-m-d H:i:s'),
 
-                            'site_id' => $sozluk->id,
+                            'site_id'    => $sozluk->id,
 
-                            'sentiment' => $sentiment->score($item->data['entry'])
+                            'sentiment'  => $sentiment->score($item->data['entry'])
                         ];
 
-                        $chunk_count++;
+                        $errors = [];
 
                         $tmp_error = 0;
                         $deep_try = 1;
 
-                        $errors = [];
-
                         $last_entry_id++;
+                        $chunk_count++;
                     }
 
                     $this->info('['.$entry_id.']');
 
                     if ($chunk_count >= $sozluk->chunk)
                     {
-                        $sozluk->last_id = $entry_id;
-
-                        $save = true;
-
                         BulkInsertJob::dispatch($chunk)->onQueue('elasticsearch');
 
-                        $chunk = [ 'body' => [] ];
-
-                        $chunk_count = 0;
-
                         $this->info('chunk saved');
+
+                        $sozluk->last_id = $entry_id;
+
+                        $save            = true;
+
+                        $chunk           = [ 'body' => [] ];
+                        $chunk_count     = 0;
+
                     }
                 }
                 else
@@ -221,10 +219,11 @@ class Crawler extends Command
                     }
                     else
                     {
-                        $sozluk->status = false;
-                        $sozluk->test = false;
-                        $sozluk->pid = null;
                         $sozluk->off_reason = json_encode($errors);
+
+                        $sozluk->status     = false;
+                        $sozluk->test       = false;
+                        $sozluk->pid        = null;
 
                         $save = true;
 

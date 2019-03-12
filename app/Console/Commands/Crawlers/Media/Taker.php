@@ -22,7 +22,7 @@ class Taker extends Command
      *
      * @var string
      */
-    protected $description = 'Tespit edilen medya kaynaklarını topla.';
+    protected $description = 'Tespit edilen medya kaynaklarını toplar.';
 
     /**
      * Create a new command instance.
@@ -55,23 +55,23 @@ class Taker extends Command
                         ]
                     ]
                 ],
-                '_source' => [ 'id', 'url', 'source', 'site_id' ],
+                '_source' => [
+                    'id',
+                    'url',
+                    'source',
+                    'site_id'
+                ],
                 'size' => 500
             ]
         );
 
-        if ($query->status == 'ok')
+        if (@$query->data['hits']['hits'])
         {
-            if (@$query->data['hits']['hits'])
+            foreach ($query->data['hits']['hits'] as $array)
             {
-                foreach ($query->data['hits']['hits'] as $array)
-                {
-                    $obj = (object) $array;
+                $this->info($array['_source']['url']);
 
-                    $this->info($obj->_source['url']);
-
-                    TakerJob::dispatch($obj->_source)->onQueue('power-crawler')->delay(now()->addSeconds(rand(1, 4)));
-                }
+                TakerJob::dispatch($array['_source'])->onQueue('power-crawler')->delay(now()->addSeconds(rand(1, 4)));
             }
         }
     }

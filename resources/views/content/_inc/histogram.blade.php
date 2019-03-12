@@ -72,18 +72,13 @@
         }
     })
 
-    var options = {
+    var sentimentOptions = {
         title: {
             display: false
         },
         legend: { display: false },
         layout: {
-            padding: {
-                top: 20,
-                right: 20,
-                bottom: 20,
-                left: 20
-            }
+            padding: 40
         },
         maintainAspectRatio: false
     };
@@ -117,7 +112,7 @@
                         }
                     ]
                 },
-                options: options
+                options: sentimentOptions
             })
         }
         else
@@ -172,7 +167,7 @@
                         }
                     ]
                 },
-                options: options
+                options: sentimentOptions
             })
         }
         else

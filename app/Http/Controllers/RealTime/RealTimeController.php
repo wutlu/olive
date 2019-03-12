@@ -209,6 +209,12 @@ class RealTimeController extends Controller
                     {
                         $q['query']['bool']['must'][] = [
                             'query_string' => [
+                                'fields' => [
+                                    'title',
+                                    'description',
+                                    'entry',
+                                    'text'
+                                ],
                                 'query' => implode(' OR ', $keywords),
                                 'default_operator' => 'AND'
                             ]

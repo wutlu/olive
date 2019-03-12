@@ -71,16 +71,15 @@ class StreamProcess extends Command
         {
             if (!$token->value)
             {
-                $die = true; $this->error('Value not found.');
+                $this->error('Value not found.');
+
+                die();
             }
 
             if (!$token->type)
             {
-                $die = true; $this->error('Type not found.');
-            }
+                $this->error('Type not found.');
 
-            if (@$die)
-            {
                 die();
             }
 
@@ -131,9 +130,9 @@ class StreamProcess extends Command
             $this->client = new Client(
                 [
                     'base_uri' => $this->endpoint,
-                    'handler' => $stack,
-                    'auth' => 'oauth',
-                    'stream' => true
+                    'handler'  => $stack,
+                    'auth'     => 'oauth',
+                    'stream'   => true
                 ]
             );
 
@@ -150,7 +149,7 @@ class StreamProcess extends Command
                 System::log(
                     $message,
                     'App\Jobs\Crawlers\Twitter\StreamProcess::handle('.$token->type.', '.$token_id.')',
-                    10
+                    9
                 );
                 $this->error($message);
 
@@ -161,8 +160,8 @@ class StreamProcess extends Command
                     Mail::queue(new ServerAlertMail('Twitter [Token Durdu]', $message));
 
                     $token->off_reason = $message;
-                    $token->pid = null;
-                    $token->status = 'disabled';
+                    $token->pid        = null;
+                    $token->status     = 'disabled';
                 }
 
                 $token->save();
@@ -178,9 +177,9 @@ class StreamProcess extends Command
 
             $this->info($token->value);
 
-            $crawler = new TwitterCrawler;
-            $sentiment = new Sentiment;
+            $crawler     = new TwitterCrawler;
             $dateUtility = new DateUtility;
+            $sentiment   = new Sentiment;
 
             $bulk = [];
 

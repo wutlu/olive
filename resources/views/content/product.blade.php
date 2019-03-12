@@ -13,7 +13,7 @@
         [
             'type' => 'product',
             'period' => 'daily',
-            'title' => 'Benzer Ürün (Gün)',
+            'title' => 'Benzer Ürün Grafiği (Günlük)',
             'id' => $document['_id'],
             'unique_id' => 'tab_1',
             'es_index_key' => $document['_source']['site_id'],
@@ -22,13 +22,25 @@
         [
             'type' => 'product',
             'period' => 'hourly',
-            'title' => 'Benzer Ürün (Saat)',
+            'title' => 'Benzer Ürün Grafiği (Saatlik)',
             'id' => $document['_id'],
             'unique_id' => 'tab_2',
             'es_index_key' => $document['_source']['site_id']
         ]
     ]
 ])
+
+@push('wildcard-top')
+    <div class="card yellow mb-0">
+        <div class="card-content d-flex justify-content-between">
+            <span class="align-self-center">
+                <span class="card-title">{{ $document['_source']['title'] }}</span>
+                <a href="{{ $document['_source']['url'] }}" target="_blank" class="yellow-text text-darken-4">{{ $document['_source']['url'] }}</a>
+            </span>
+            <img alt="E-ticaret" src="{{ asset('img/logos/sahibinden.svg') }}" class="white align-self-center z-depth-1" style="width: 64px;" />
+        </div>
+    </div>
+@endpush
 
 @push('local.styles')
     [data-name=title] {
@@ -39,18 +51,13 @@
 @section('content')
     <div class="row">
         <div class="col m12 xl12">
-            <div class="card">
-                <div class="card-content">
-                    <a href="{{ $document['_source']['url'] }}" class="card-title d-flex" target="_blank">
-                        <i class="material-icons mr-1">insert_link</i>
-                        <span>{{ $document['_source']['title'] }}</span>
-                    </a>
-
-                    @isset ($document['_source']['description'])
+            @isset ($document['_source']['description'])
+                <div class="card">
+                    <div class="card-content">
                         <div class="markdown">{!! Term::markdown($document['_source']['description']) !!}</div>
-                    @endisset
+                    </div>
                 </div>
-            </div>
+            @endisset
 
             <div class="card">
                 <div class="card-content">

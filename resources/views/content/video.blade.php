@@ -64,6 +64,18 @@
     ]
 ])
 
+@push('wildcard-top')
+    <div class="card red mb-0">
+        <div class="card-content d-flex justify-content-between">
+            <span class="align-self-center">
+                <span class="card-title white-text">{{ $document['_source']['title'] }}</span>
+                <a href="https://www.youtube.com/watch?v={{ $document['_source']['id'] }}" target="_blank" class="red-text text-darken-4">https://www.youtube.com/watch?v={{ $document['_source']['id'] }}</a>
+            </span>
+            <img alt="YouTube" src="{{ asset('img/logos/youtube.svg') }}" class="white align-self-center z-depth-1" style="width: 64px;" />
+        </div>
+    </div>
+@endpush
+
 @section('content')
     <div class="card">
         <div class="card-content">

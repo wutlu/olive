@@ -24,7 +24,7 @@ class Detector extends Command
      *
      * @var string
      */
-    protected $description = 'Ürün tespit et.';
+    protected $description = 'Ürün tespit eder.';
 
     /**
      * Create a new command instance.
@@ -45,7 +45,7 @@ class Detector extends Command
     {
         $crawlers = ShoppingCrawler::where('status', true)->orderBy('control_date', 'ASC')->get();
 
-        if (@$crawlers)
+        if (count($crawlers))
         {
             foreach ($crawlers as $crawler)
             {

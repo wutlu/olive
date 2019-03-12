@@ -435,12 +435,6 @@
             </ul>
         @endauth
 
-        @push('local.scripts')
-            $('#slide-out').sidenav({
-                draggable: true
-            });
-        @endpush
-
         @isset($breadcrumb)
             @php
                 $br_count = count($breadcrumb)-1;
@@ -477,7 +471,9 @@
 
                 @if (trim($__env->yieldContent('wildcard')))
                     <div class="wildcard">
+                        @stack('wildcard-top')
                         @yield('wildcard')
+                        @stack('wildcard-bottom')
                     </div>
                 @endif
 
@@ -842,8 +838,12 @@
             alignment: __.data('align') ? __.data('align') : 'left'
         })
     })
-    $('[data-tooltip]').tooltip()
     $('.collapsible').collapsible()
+    $('[data-tooltip]').tooltip()
+
+    $('ul#slide-out').sidenav({
+        draggable: true
+    })
 
     @stack('local.scripts')
 

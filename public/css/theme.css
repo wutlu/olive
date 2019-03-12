@@ -1461,7 +1461,7 @@ header#main > .parallax-container > .parallax > video#background-video {
 
 .card {
   margin: 0 0 1rem;
-  word-break: break-word;
+  word-break: break-all;
 }
 
 .card.with-bg {
@@ -1506,7 +1506,7 @@ header#main > .parallax-container > .parallax > video#background-video {
 
 .card > .card-sentiment > .sentiment-item {
   padding: 0 .6rem .6rem;
-  border-width: 0 0 1rem;
+  border-width: 0 0 .2rem;
   border-style: solid;
   border-color: inline;
 }

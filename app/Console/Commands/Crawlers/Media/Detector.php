@@ -26,7 +26,7 @@ class Detector extends Command
      *
      * @var string
      */
-    protected $description = 'Medya kaynaklarını tespit et.';
+    protected $description = 'Medya kaynaklarını tespit eder.';
 
     /**
      * Create a new command instance.
@@ -46,7 +46,11 @@ class Detector extends Command
     public function handle()
     {
         $crawlers = MediaCrawler::where('status', true)
-                                ->where('control_date', '<=', DB::raw("NOW() - INTERVAL '1 minutes' * control_interval"))
+                                ->where(
+                                    'control_date',
+                                    '<=',
+                                    DB::raw("NOW() - INTERVAL '1 minutes' * control_interval")
+                                )
                                 ->orderBy('control_date', 'ASC')
                                 ->get();
 

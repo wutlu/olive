@@ -26,7 +26,7 @@ class Minuter extends Command
      *
      * @var string
      */
-    protected $description = 'Medya sitelerine gidilecek zaman aralığını belirle.';
+    protected $description = 'Medya sitelerine gidilecek zaman aralığını belirler.';
 
     /**
      * Create a new command instance.

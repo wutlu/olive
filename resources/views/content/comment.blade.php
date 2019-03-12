@@ -12,7 +12,7 @@
         [
             'type' => 'video-by-comment',
             'period' => 'daily',
-            'title' => 'Video Yükledi (Gün)',
+            'title' => 'Günlük Video Yükleme',
             'id' => $document['_id'],
             'unique_id' => 'tab_1',
             'active' => true
@@ -20,14 +20,14 @@
         [
             'type' => 'video-by-comment',
             'period' => 'hourly',
-            'title' => 'Video Yükledi (Saat)',
+            'title' => 'Saatlik Video Yükleme',
             'id' => $document['_id'],
             'unique_id' => 'tab_2'
         ],
         [
             'type' => 'comment-by-comment',
             'period' => 'daily',
-            'title' => 'Yorum Yaptı (Gün)',
+            'title' => 'Günlük Yorum',
             'id' => $document['_id'],
             'unique_id' => 'tab_3'
         ],

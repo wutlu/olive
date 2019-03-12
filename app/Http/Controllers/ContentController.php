@@ -86,6 +86,23 @@ class ContentController extends Controller
                         ])
                     ];
 
+                    if (strpos($document['_source']['url'], 'eksisozluk.com/'))
+                    {
+                        $data['slug'] = 'eksi';
+                    }
+                    elseif (strpos($document['_source']['url'], 'instela.com/'))
+                    {
+                        $data['slug'] = 'instela';
+                    }
+                    elseif (strpos($document['_source']['url'], 'incisozluk.com/'))
+                    {
+                        $data['slug'] = 'inci';
+                    }
+                    elseif (strpos($document['_source']['url'], 'uludagsozluk.com/'))
+                    {
+                        $data['slug'] = 'uludag';
+                    }
+
                     $bucket = @$data['total']->data['aggregations']['popular_keywords']['buckets'];
 
                     if ($bucket)
@@ -108,7 +125,7 @@ class ContentController extends Controller
                         [ 'match' => [ 'status' => 'ok' ] ]
                     ];
 
-                    $title = implode(' ', [ $crawler->name, '/', $document['_source']['title'] ]);
+                    $title = implode(' ', [ $crawler->name, '/', '#'.$document['_source']['id'] ]);
                 break;
 
                 case 'tweet':
@@ -135,7 +152,22 @@ class ContentController extends Controller
                         'retweet' => Document::count([ 'twitter', 'tweets', '*' ], 'tweet', [
                             'query' => [
                                 'bool' => [
-                                    'must' => [[ 'match' => [ 'external.id' => $document['_source']['id'] ] ]]
+                                    'must' => [
+                                        [ 'match' => [ 'external.id' => $document['_source']['id'] ] ],
+                                        [ 'match' => [ 'external.type' => 'retweet' ] ]
+                                    ]
+                                ]
+                            ]
+                        ]),
+                        'reply' => Document::count([ 'twitter', 'tweets', '*' ], 'tweet', [
+                            'query' => [
+                                'bool' => [
+                                    'must' => [
+                                        [ 'match' => [ 'external.id' => $document['_source']['id'] ] ]
+                                    ],
+                                    'must_not' => [
+                                        [ 'match' => [ 'external.type' => 'retweet' ] ]
+                                    ]
                                 ]
                             ]
                         ])
@@ -249,11 +281,11 @@ class ContentController extends Controller
                 break;
 
                 case 'video':
-                    $title = implode(' / ', [ 'YouTube', 'Video', $document['_source']['title'], '#'.$es_id ]);
+                    $title = implode(' / ', [ 'YouTube', 'Video', '#'.$es_id ]);
                 break;
 
                 case 'comment':
-                    $title = implode(' / ', [ 'YouTube', 'Yorum', $document['_source']['channel']['title'], '#'.$es_id ]);
+                    $title = implode(' / ', [ 'YouTube', 'Yorum', '#'.$es_id ]);
                 break;
 
                 case 'article':
@@ -298,7 +330,7 @@ class ContentController extends Controller
                         $data['keywords'] = Term::commonWords($bucket, 100);
                     }
 
-                    $title = $crawler->name . ' / ' . $document['_source']['title'];
+                    $title = $crawler->name . ' / ' . '#'.$document['_source']['id'];
                 break;
 
                 default: abort(404); break;
@@ -506,27 +538,27 @@ class ContentController extends Controller
         }
 
         $arr = [
-                'size' => 0,
-                'query' => [
-                    'bool' => [
-                        'must' => [
-                            [ 'exists' => [ 'field' => 'created_at' ] ]
-                        ]
+            'size' => 0,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [ 'exists' => [ 'field' => 'created_at' ] ]
                     ]
-                ],
-                'aggs' => [
-                    'results' => [
-                        'histogram' => [
-                            'script' => $script,
-                            'interval' => 1,
-                            'min_doc_count' => 0,
-                            'extended_bounds' => [
-                                'min' => 1,
-                                'max' => $max
-                            ]
+                ]
+            ],
+            'aggs' => [
+                'results' => [
+                    'histogram' => [
+                        'script' => $script,
+                        'interval' => 1,
+                        'min_doc_count' => 0,
+                        'extended_bounds' => [
+                            'min' => 1,
+                            'max' => $max
                         ]
                     ]
                 ]
+            ]
         ];
 
         switch ($type)
@@ -586,24 +618,27 @@ class ContentController extends Controller
             case 'product':
                 $doc = Document::get([ 'shopping', $es_index_key ], 'product', $es_id);
 
-                if ($doc->status == 'ok')
-                {
-                    $smilar = Term::commonWords($doc->data['_source']['title']);
-
-                    if (count($smilar))
-                    {
-                        $arr['query']['bool']['must'][] = [
-                            'more_like_this' => [
-                                'fields' => [ 'title', 'description' ],
-                                'like' => array_keys($smilar),
-                                'min_term_freq' => 1,
-                                'min_doc_freq' => 1
+                $arr['query']['bool']['must'][] = [
+                    'match' => [ 'status' => 'ok' ]
+                ];
+                $arr['query']['bool']['must'][] = [
+                    'nested' => [
+                        'path' => 'breadcrumb',
+                        'query' => [
+                            'query_string' => [
+                                'fields' => [
+                                    'breadcrumb.segment'
+                                ],
+                                'query' => implode(' || ', array_map(function($arr) { return $arr['segment']; }, $doc->data['_source']['breadcrumb'])),
+                                'default_operator' => 'OR'
                             ]
-                        ];
-                    }
+                        ]
+                    ]
+                ];
 
-                    $document = Document::search([ 'shopping', '*' ], 'product', $arr);
-                }
+                $arr['min_score'] = 4;
+
+                $document = Document::search([ 'shopping', '*' ], 'product', $arr);
             break;
             case 'tweet':
                 $doc = Document::get([ 'twitter', 'tweets', $es_index_key ], 'tweet', $es_id);
@@ -641,23 +676,32 @@ class ContentController extends Controller
         {
             if ($es_type == 'tweet')
             {
-                $documents = Document::search([ 'twitter', 'tweets', '*' ], $es_type, [
-                    'query' => [
-                        'bool' => [
-                            'must' => [
-                                [
-                                    'match' => $type == 'retweet' ? [ 'external.id' => $es_id ] : [ 'user.id' => $document->data['_source']['user']['id'] ]
-                                ]
-                            ]
-                        ]
-                    ],
+                $arr = [
                     'from' => $request->skip,
                     'size' => $request->take,
                     '_source' => [ 'id', 'user.id', 'user.name', 'user.screen_name', 'text', 'created_at' ],
                     'sort' => [
                         'created_at' => 'DESC'
                     ]
-                ]);
+                ];
+
+                if ($type == 'retweet')
+                {
+                    $arr['query']['bool']['must'][] = [
+                        'match' => [ 'external.id' => $es_id ]
+                    ];
+                    $arr['query']['bool']['must_not'][] = [
+                        'match' => [ 'external.type' => 'retweet' ]
+                    ];
+                }
+                else
+                {
+                    $arr['query']['bool']['must'][] = [
+                        'match' => [ 'user.id' => $document->data['_source']['user']['id'] ]
+                    ];
+                }
+
+                $documents = Document::search([ 'twitter', 'tweets', '*' ], $es_type, $arr);
             }
             else
             {
@@ -720,20 +764,34 @@ class ContentController extends Controller
                                     'bool' => [
                                         'must' => [
                                             [
-                                                'more_like_this' => [
-                                                    'fields' => [ 'title' ],
-                                                    'like' => array_keys($smilar),
-                                                    'min_term_freq' => 1,
-                                                    'min_doc_freq' => 1
+                                                'nested' => [
+                                                    'path' => 'breadcrumb',
+                                                    'query' => [
+                                                        'query_string' => [
+                                                            'fields' => [
+                                                                'breadcrumb.segment'
+                                                            ],
+                                                            'query' => implode(' || ', array_map(function($arr) { return $arr['segment']; }, $document->data['_source']['breadcrumb'])),
+                                                            'default_operator' => 'OR'
+                                                        ]
+                                                    ]
                                                 ]
-                                            ]
+                                            ],
+                                            [ 'match' => [ 'status' => 'ok' ] ]
                                         ]
                                     ]
                                 ],
-                                'min_score' => 10,
+                                'min_score' => 3,
                                 'from' => $request->skip,
                                 'size' => $request->take,
-                                '_source' => [ 'url', 'title', 'description', 'price', 'breadcrumb', 'created_at' ]
+                                '_source' => [
+                                    'url',
+                                    'title',
+                                    'description',
+                                    'price',
+                                    'breadcrumb',
+                                    'created_at'
+                                ]
                             ]);
                         break;
                     }
