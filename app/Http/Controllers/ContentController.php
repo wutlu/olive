@@ -94,7 +94,7 @@ class ContentController extends Controller
                     {
                         $data['slug'] = 'instela';
                     }
-                    elseif (strpos($document['_source']['url'], 'incisozluk.com/'))
+                    elseif (strpos($document['_source']['url'], 'incisozluk.com.tr/'))
                     {
                         $data['slug'] = 'inci';
                     }
