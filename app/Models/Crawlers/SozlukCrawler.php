@@ -7,7 +7,7 @@ use App\Elasticsearch\Indices;
 
 class SozlukCrawler extends Model
 {
-	protected $table = 'sozluk_crawlers';
+    protected $table = 'sozluk_crawlers';
     protected $fillable = [
         'name',
         'site',
@@ -25,6 +25,17 @@ class SozlukCrawler extends Model
         'status',
         'pid',
         'proxy',
+
+        'cookie'
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'cookie' => 'array',
     ];
 
     public function getPidAttribute($pid)

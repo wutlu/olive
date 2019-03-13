@@ -279,12 +279,15 @@ class SozlukController extends Controller
         for ($i = $request->last_id; $i < $request->last_id+$request->test_count; $i++)
         {
             $item = Crawler::entryDetection(
-                $request->site,
-                $request->url_pattern,
+                [
+                    'site' => $request->site,
+                    'url_pattern' => $request->url_pattern,
+                    'selector_title' => $request->selector_title,
+                    'selector_entry' => $request->selector_entry,
+                    'selector_author' => $request->selector_author,
+                    'cookie' => json_decode($request->cookie, true)
+                ],
                 $i,
-                $request->selector_title,
-                $request->selector_entry,
-                $request->selector_author,
                 $request->proxy ? true : false
             );
 
@@ -305,6 +308,7 @@ class SozlukController extends Controller
             $crawler->test = true;
             $crawler->off_reason = null;
             $crawler->status = false;
+            $crawler->cookie = json_decode($request->cookie);
 
             $data['status'] = 'ok';
 

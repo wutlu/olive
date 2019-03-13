@@ -243,10 +243,16 @@
                         </div>
                     </div>
                     <div class="collection-item">
+                        <div class="input-field">
+                            <input type="text" id="cookie" name="cookie" class="validate" value="{{ $crawler->cookie ? json_encode($crawler->cookie) : '' }}" />
+                            <label for="cookie">Çerez Bilgisi</label>
+                        </div>
+                    </div>
+                    <div class="collection-item">
                         <div class="d-flex flex-wrap">
                             <div style="width: 30%; padding: 1rem;">
                                 <div class="input-field">
-                                    <input name="chunk" id="chunk" value="{{ $crawler->chunk }}" type="number" class="validate" max="255" min="10" />
+                                    <input name="chunk" id="chunk" value="{{ $crawler->chunk }}" type="number" class="validate" max="255" min="1" />
                                     <label for="chunk">Chunk</label>
                                     <small class="helper-text">Veritabanına gönderim sayısı.</small>
                                 </div>

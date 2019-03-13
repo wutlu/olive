@@ -43,12 +43,15 @@ class Test extends Command
         $sozluk = SozlukCrawler::where('id', 3)->first();
 
         $item = CrawlerUtility::entryDetection(
-            $sozluk->site,
-            $sozluk->url_pattern,
-            204064979,
-            $sozluk->selector_title,
-            $sozluk->selector_entry,
-            $sozluk->selector_author,
+            [
+                'site' => $sozluk->site,
+                'url_pattern' => $sozluk->url_pattern,
+                'selector_title' => $sozluk->selector_title,
+                'selector_entry' => $sozluk->selector_entry,
+                'selector_author' => $sozluk->selector_author,
+                'cookie' => $sozluk->cookie
+            ],
+            204071396,
             $sozluk->proxy
         );
 

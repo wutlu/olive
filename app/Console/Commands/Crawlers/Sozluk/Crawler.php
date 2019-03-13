@@ -99,12 +99,15 @@ class Crawler extends Command
                 }
 
                 $item = CrawlerUtility::entryDetection(
-                    $sozluk->site,
-                    $sozluk->url_pattern,
+                    [
+                        'site' => $sozluk->site,
+                        'url_pattern' => $sozluk->url_pattern,
+                        'selector_title' => $sozluk->selector_title,
+                        'selector_entry' => $sozluk->selector_entry,
+                        'selector_author' => $sozluk->selector_author,
+                        'cookie' => $sozluk->cookie
+                    ],
                     $entry_id,
-                    $sozluk->selector_title,
-                    $sozluk->selector_entry,
-                    $sozluk->selector_author,
                     $sozluk->proxy
                 );
 

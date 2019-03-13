@@ -33,10 +33,11 @@ class UpdateRequest extends FormRequest
             'selector_entry'       => 'required|string|max:255',
             'selector_author'      => 'required|string|max:255',
             'last_id'              => 'required|integer|min:0',
-            'max_attempt'          => 'required|integer|max:1000|min:10',
+            'max_attempt'          => 'required|integer|max:1000|min:1',
             'deep_try'             => 'required|integer|max:100|min:1',
             'test_count'           => 'required|integer|max:100|min:1',
             'proxy'                => 'nullable|string|in:on',
+            'cookie'               => 'nullable|json',
         ];
     }
 }

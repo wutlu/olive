@@ -509,27 +509,18 @@ class Crawler
      *
      * @return array
      */
-    public static function entryDetection(string $site, string $page, int $id, string $title_selector, string $entry_selector, string $author_selector, bool $proxy = false)
+    public static function entryDetection(array $options, int $id, bool $proxy = false)
     {
-        $data['page'] = $site.'/'.str_replace('__id__', $id, $page);
+        $data['page'] = $options['site'].'/'.str_replace('__id__', $id, $options['url_pattern']);
 
         $client = new Client([
-            'base_uri' => $site,
-            'handler' => HandlerStack::create()
+            'base_uri' => $options['site'],
+            'handler' => HandlerStack::create(),
+            'cookies' => true
         ]);
 
         try
         {
-            /*
-            $cookie = CookieJar::fromArray(
-                [
-                    'PHPSESSID' => 'qnlvnfpomp4bhdoa8mb6vmek80',
-                    '18_ok' => 277546100
-                ],
-                '.incisozluk.com.tr'
-            );
-            */
-
             $arr = [
                 'timeout' => 10,
                 'connect_timeout' => 5,
@@ -539,9 +530,18 @@ class Crawler
                 'curl' => [
                     CURLOPT_REFERER => $data['page']
                 ],
-                'verify' => false,
-                //'cookies' => $cookie
+                'verify' => false
             ];
+
+            if ($options['cookie'])
+            {
+                $cookieJar = CookieJar::fromArray(
+                    $options['cookie']['cookies'],
+                    $options['cookie']['domain']
+                );
+
+                $arr['cookies'] = $cookieJar;
+            }
 
             if ($proxy)
             {
@@ -558,15 +558,15 @@ class Crawler
             $saw = new Wrawler($dom);
 
             # title detect
-            $title = $saw->get($title_selector)->toText();
+            $title = $saw->get($options['selector_title'])->toText();
             $title = Term::convertAscii($title);
 
             # entry detect
-            $entry = $saw->get($entry_selector)->toText();
+            $entry = $saw->get($options['selector_entry'])->toText();
             $entry = Term::convertAscii($entry);
 
             # author detect
-            $author = $saw->get($author_selector)->toText();
+            $author = $saw->get($options['selector_author'])->toText();
             $author = Term::convertAscii($author);
 
             # date
