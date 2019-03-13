@@ -91,6 +91,12 @@ class SingleJob implements ShouldQueue
                 ];
 
                 BulkInsertJob::dispatch($chunk)->onQueue('elasticsearch');
+
+                if ($entry_id > $sozluk->last_id)
+                {
+                    $sozluk->last_id = $entry_id;
+                    $sozluk->save();
+                }
             }
             else
             {

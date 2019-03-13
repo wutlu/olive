@@ -61,7 +61,7 @@ class Crawler extends Command
 
         $id = $id ? $id : $this->ask('Enter a sözlük id');
 
-        $sozluk = SozlukCrawler::where('id', $id)->where('status', true)->first();
+        $sozluk = SozlukCrawler::where('id', $id)->where('status', false)->first();
 
         if (@$sozluk)
         {
@@ -88,10 +88,12 @@ class Crawler extends Command
 
                 if ($second >= 10)
                 {
+                    /*
                     SozlukCrawler::where('id', $id)->update([
                         'pid' => getmypid(),
                         'status' => true
                     ]);
+                    */
 
                     $timeStart = time();
 
@@ -184,11 +186,14 @@ class Crawler extends Command
                         $this->info('['.$i.']->boosted');
 
                         SingleJob::dispatch($sozluk->id, $i)->onQueue('power-crawler');
-
-                        $entry_id++;
                     }
 
-                    sleep(2);
+                    sleep(6);
+
+                    $ent = SozlukCrawler::where('id', $sozluk->id)->first();
+                    $entry_id = $ent->last_id;
+
+                    $entry_id++;
                 }
                 else
                 {
