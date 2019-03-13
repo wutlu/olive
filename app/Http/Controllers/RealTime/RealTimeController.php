@@ -85,8 +85,10 @@ class RealTimeController extends Controller
                     }
                 }
 
+                $selected_modules = $group->modules ? $group->modules : [];
+
                 ### [ twitter modülü ] ###
-                if (in_array('twitter', $group->modules))
+                if (in_array('twitter', $selected_modules))
                 {
                     if (count($keywords))
                     {
@@ -153,7 +155,7 @@ class RealTimeController extends Controller
                     }
                 }
 
-                $haystack = $group->modules;
+                $haystack = $selected_modules;
 
                 $target = [ 'youtube_video', 'youtube_comment', 'shopping', 'news', 'sozluk' ];
 
@@ -223,7 +225,7 @@ class RealTimeController extends Controller
 
                     $modules = [];
 
-                    foreach ($group->modules as $module)
+                    foreach ($selected_modules as $module)
                     {
                         switch ($module)
                         {

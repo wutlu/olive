@@ -176,6 +176,7 @@ class Crawler extends Command
 
                 if ($minuteBetween >= 180)
                 {
+                    $entry_id++;
                     $boost = $entry_id + 20;
 
                     for ($i = $entry_id; $i <= $boost; $i++)
