@@ -4,6 +4,7 @@ namespace App\Utilities;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Cookie\CookieJar;
 
 use App\Wrawler;
 use App\Utilities\DateUtility;
@@ -519,6 +520,16 @@ class Crawler
 
         try
         {
+            /*
+            $cookie = CookieJar::fromArray(
+                [
+                    'PHPSESSID' => 'qnlvnfpomp4bhdoa8mb6vmek80',
+                    '18_ok' => 277546100
+                ],
+                '.incisozluk.com.tr'
+            );
+            */
+
             $arr = [
                 'timeout' => 10,
                 'connect_timeout' => 5,
@@ -528,7 +539,8 @@ class Crawler
                 'curl' => [
                     CURLOPT_REFERER => $data['page']
                 ],
-                'verify' => false
+                'verify' => false,
+                //'cookies' => $cookie
             ];
 
             if ($proxy)

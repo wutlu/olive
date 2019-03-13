@@ -4,6 +4,9 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
+use App\Models\Crawlers\SozlukCrawler;
+use App\Utilities\Crawler as CrawlerUtility;
+
 class Test extends Command
 {
     /**
@@ -37,6 +40,18 @@ class Test extends Command
      */
     public function handle()
     {
+        $sozluk = SozlukCrawler::where('id', 3)->first();
 
+        $item = CrawlerUtility::entryDetection(
+            $sozluk->site,
+            $sozluk->url_pattern,
+            204064979,
+            $sozluk->selector_title,
+            $sozluk->selector_entry,
+            $sozluk->selector_author,
+            $sozluk->proxy
+        );
+
+        print_r($item);
     }
 }

@@ -174,7 +174,7 @@ class Crawler extends Command
                     $this->error('['.$entry_id.']');
                 }
 
-                if ($minuteBetween >= 300)
+                if ($minuteBetween >= 150)
                 {
                     $entry_id++;
                     $boost = $entry_id + 20;
