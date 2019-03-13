@@ -240,8 +240,8 @@ class VideoDetect extends Command
 
         if (@$item->snippet->description)
         {
-            $arr['sentiment']   = $sentiment->score($arr['description']);
             $arr['description'] = $term->convertAscii($item->snippet->description);
+            $arr['sentiment']   = $sentiment->score($arr['description']);
         }
 
         if ($term->languageDetector([ $arr['title'], @$arr['description'] ], 'tr'))
