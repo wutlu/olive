@@ -45,7 +45,7 @@
     <div class="row">
         @if (count($carousels))
             <div class="col s12">
-                <div class="card">
+                <div class="card card-unstyled">
                     <div class="card-content">
                         <div class="carousel carousel-slider center mb-0">
                             @php
@@ -60,7 +60,7 @@
                                     <div class="{{ implode(' ', [ 'anim', $carousel->pattern ]) }}"></div>
 
                                     @if ($carousel->button_text)
-                                        <a href="{{ $carousel->button_action }}" class="btn-flat waves-effect">
+                                        <a href="{{ $carousel->button_action }}" class="btn-flat waves-effect mt-1">
                                             {{ $carousel->button_text }}
                                         </a>
                                     @endif

@@ -13,7 +13,7 @@
         [
             'type' => 'video-comments',
             'period' => 'daily',
-            'title' => '<i class="material-icons align-self-center mr-1">people</i> Yorum Grafiği',
+            'title' => '<i class="material-icons align-self-center mr-1">people</i> Video Yorum Grafiği',
             'id' => $document['_id'],
             'unique_id' => 'tab_1',
             'active' => true,
@@ -22,7 +22,7 @@
         [
             'type' => 'video-comments',
             'period' => 'hourly',
-            'title' => '<i class="material-icons align-self-center mr-1">people</i> Yorum Grafiği',
+            'title' => '<i class="material-icons align-self-center mr-1">people</i> Video Yorum Grafiği',
             'id' => $document['_id'],
             'unique_id' => 'tab_2',
             'info' => 'İlgili videoya yapılan yorumların saatlere dağılım grafiği.'
@@ -31,7 +31,7 @@
         [
             'type' => 'video-by-video',
             'period' => 'daily',
-            'title' => '<i class="material-icons align-self-center mr-1">play_arrow</i> Yükleme Grafiği',
+            'title' => '<i class="material-icons align-self-center mr-1">play_arrow</i> Kanal Yükleme Grafiği',
             'id' => $document['_id'],
             'unique_id' => 'tab_3',
             'info' => 'İlgili videoyu yükleyen kullanıcının yüklemelerinin günlere dağılımı.'
@@ -39,7 +39,7 @@
         [
             'type' => 'video-by-video',
             'period' => 'hourly',
-            'title' => '<i class="material-icons align-self-center mr-1">play_arrow</i> Yükleme Grafiği',
+            'title' => '<i class="material-icons align-self-center mr-1">play_arrow</i> Kanal Yükleme Grafiği',
             'id' => $document['_id'],
             'unique_id' => 'tab_4',
             'info' => 'İlgili videoyu yükleyen kullanıcının yüklemelerinin saatlere dağılımı.'
@@ -48,7 +48,7 @@
         [
             'type' => 'comment-by-video',
             'period' => 'daily',
-            'title' => '<i class="material-icons align-self-center mr-1">person</i> Yorum Grafiği',
+            'title' => '<i class="material-icons align-self-center mr-1">person</i> Kanal Yorum Grafiği',
             'id' => $document['_id'],
             'unique_id' => 'tab_5',
             'info' => 'İlgili videoyu yükleyen kullanıcının yaptığı yorumların günlere dağılımı.'
@@ -56,7 +56,7 @@
         [
             'type' => 'comment-by-video',
             'period' => 'hourly',
-            'title' => '<i class="material-icons align-self-center mr-1">person</i> Yorum Grafiği',
+            'title' => '<i class="material-icons align-self-center mr-1">person</i> Kanal Yorum Grafiği',
             'id' => $document['_id'],
             'unique_id' => 'tab_6',
             'info' => 'İlgili videoyu yükleyen kullanıcının yaptığı yorumların saatlere dağılımı.'
@@ -90,7 +90,50 @@
             src="http://www.youtube.com/embed/{{ $document['_source']['id'] }}?origin={{ config('app.url') }}"
             frameborder="0">
         </iframe>
-    </div> 
+    </div>
+    @foreach ([
+        'all_tweets' => '',
+        'all_retweets' => 'retweet'
+    ] as $key => $type)
+        <div id="{{ $key }}" class="halfload white" style="display: none;">
+            <div class="collection json-clear mb-0"
+                 id="loader-{{ $key }}"
+                 data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id, 'type' => $type ]) }}"
+                 data-method="post"
+                 data-skip="0"
+                 data-take="20"
+                 data-more-button="#{{ $key }}-more_button"
+                 data-callback="__all"
+                 data-loader="#{{ $key }}-loader"
+                 data-nothing>
+                <div class="collection-item nothing hide">
+                    @component('components.nothing')
+                        @slot('size', 'small')
+                    @endcomponent
+                </div>
+                <div class="collection-item z-depth-1 model hide">
+                    <span class="d-table grey-text text-darken-2" data-name="author"></span>
+                    <a href="#" target="_blank" class="d-table grey-text text-darken-2" data-name="screen-name"></a>
+                    <time data-time="" class="d-table grey-text" data-name="created-at"></time>
+                    <span class="d-block" data-name="text"></span>
+                    <a href="#" class="d-table green-text" data-name="url" target="_blank"></a>
+                </div>
+            </div>
+
+            @component('components.loader')
+                @slot('color', 'cyan')
+                @slot('class', 'card-loader-unstyled')
+                @slot('id', $key.'-loader')
+            @endcomponent
+
+            <div class="center-align mt-1">
+                <button class="btn-flat waves-effect hide json"
+                        id="{{ $key }}-more_button"
+                        type="button"
+                        data-json-target="#loader-{{ $key }}">Daha Fazla</button>
+            </div>
+        </div>
+    @endforeach
 @endsection
 
 @push('local.scripts')

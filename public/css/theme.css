@@ -535,6 +535,8 @@ table.invoice tfoot > tr {
  */
 #breadcrumb {
   height: auto;
+  height: 48px;
+  line-height: 48px;
 }
 @media (max-width: 1024px) {
   #breadcrumb {
@@ -1463,11 +1465,14 @@ header#main > .parallax-container > .parallax > video#background-video {
   margin: 0 0 1rem;
   word-break: break-all;
 }
-
+.card > .card-content {
+  padding: 1rem;
+}
 .card.with-bg {
-  background-image: url('../img/card-bg-soft.svg');
+  background-image: url('../img/low_full.png');
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: 50%;
+  background-position: right top;
 }
 .card.with-bg.bg-soft {
 }
@@ -1629,9 +1634,10 @@ header#main > .parallax-container > .parallax > video#background-video {
   margin-bottom: 8px;
   height: 182px;
 
-  background-image: url('../img/card-bg-soft.svg');
+  background-image: url('../img/low_full.png');
   background-repeat: no-repeat;
   background-size: contain;
+  background-position: right bottom;
 }
 
 .sidenav .user-view .circle,
@@ -1742,7 +1748,7 @@ nav .nav-wrapper > ul > li {
 nav .nav-wrapper > ul > li > a,
 nav .nav-wrapper > ul > li > a > i {
   line-height: 64px;
-  color: #666;
+  color: #fff;
 }
 
 @media only screen and (max-width: 601px) {
@@ -2049,8 +2055,8 @@ nav,
 .toast,
 .dropdown-content,
 .sidenav {
-          box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .1);
-  -webkit-box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .1);
+          box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, .1);
+  -webkit-box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, .1);
 }
 
 /**
@@ -2101,13 +2107,15 @@ nav,
  */
 .card-columns {
   -webkit-column-count: 3;
-  -moz-column-count: 3;
-  column-count: 3;
+     -moz-column-count: 3;
+          column-count: 3;
+
   -webkit-column-gap: 1.25rem;
-  -moz-column-gap: 1.25rem;
-  column-gap: 1.25rem;
-  orphans: 1;
+     -moz-column-gap: 1.25rem;
+          column-gap: 1.25rem;
+
   widows: 1;
+  orphans: 1;
 }
 @media (min-width: 576px) {
   .card-columns {
@@ -2117,8 +2125,8 @@ nav,
     -webkit-column-gap: 1.25rem;
        -moz-column-gap: 1.25rem;
             column-gap: 1.25rem;
-    orphans: 1;
     widows: 1;
+    orphans: 1;
   }
   .card-columns .card {
     display: inline-block;
