@@ -107,6 +107,8 @@
         var ul = $('ul#search');
         var item_model = ul.children('.model');
 
+            ul.closest('.card').removeClass('hide')
+
         if (obj.status == 'ok')
         {
             item_model.addClass('hide')
@@ -948,7 +950,7 @@
 
 @section('content')
     <div class="grey-text mb-1" data-name="stats"></div>
-    <div class="card">
+    <div class="card hide">
         <div class="time-line">
             <ul class="collection json-clear" 
                 id="search"
@@ -1079,7 +1081,7 @@
         </div>
     </div>
     <div class="z-depth-1">
-        <div class="search-field indigo lighten-4">
+        <div class="search-field grey lighten-4">
             <div class="container container-wide">
                 <div class="d-flex">
                     <input
@@ -1111,7 +1113,7 @@
                 <div class="chip-s owl-chips owl-carousel pt-1">
                     @if (@$trends)
                         @foreach ($trends as $trend)
-                            <a class="chip indigo white-text waves-effect" data-search="{{ $trend->title }}" href="#">{{ $trend->title }}</a>
+                            <a class="chip teal white-text waves-effect" data-search="{{ $trend->title }}" href="#">{{ $trend->title }}</a>
                         @endforeach
                     @endif
                 </div>

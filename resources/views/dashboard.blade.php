@@ -1,5 +1,10 @@
 @extends('layouts.app', [
-    'sidenav_fixed_layout' => true
+    'sidenav_fixed_layout' => true,
+    'breadcrumb' => [
+        [
+            'text' => 'Ana Sayfa'
+        ]
+    ]
 ])
 
 @push('local.scripts')
@@ -14,6 +19,36 @@
         margin-bottom: 1rem;
     }
 @endpush
+
+@if (count($carousels))
+    @section('wildcard')
+        <div class="grey darken-4 z-depth-1 pt-1 pb-1">
+            <div class="carousel carousel-slider center mb-0">
+                @php
+                $i = 0;
+                @endphp
+                    @foreach ($carousels as $carousel)
+                    <div class="{{ implode(' ', [ 'carousel-item', $i == 0 ? 'active' : '', '' ]) }}">
+                        <h2 class="teal-text">{{ $carousel->title }}</h2>
+                        <div class="markdown white-text">
+                            {!! $carousel->markdown() !!}
+                        </div>
+                        <div class="{{ implode(' ', [ 'anim', $carousel->pattern ]) }}"></div>
+
+                        @if ($carousel->button_text)
+                            <a href="{{ $carousel->button_action }}" class="btn-flat white-text waves-effect mt-1">
+                                {{ $carousel->button_text }}
+                            </a>
+                        @endif
+                    </div>
+                    @php
+                    $i++;
+                    @endphp
+                @endforeach
+            </div>
+        </div>
+    @endsection
+@endif
 
 @section('content')
     @if (count($modals))
@@ -43,37 +78,6 @@
     @endif
 
     <div class="row">
-        @if (count($carousels))
-            <div class="col s12">
-                <div class="card card-unstyled">
-                    <div class="card-content">
-                        <div class="carousel carousel-slider center mb-0">
-                            @php
-                            $i = 0;
-                            @endphp
-                                @foreach ($carousels as $carousel)
-                                <div class="{{ implode(' ', [ 'carousel-item', $i == 0 ? 'active' : '', '' ]) }}">
-                                    <h2>{{ $carousel->title }}</h2>
-                                    <div class="markdown">
-                                        {!! $carousel->markdown() !!}
-                                    </div>
-                                    <div class="{{ implode(' ', [ 'anim', $carousel->pattern ]) }}"></div>
-
-                                    @if ($carousel->button_text)
-                                        <a href="{{ $carousel->button_action }}" class="btn-flat waves-effect mt-1">
-                                            {{ $carousel->button_text }}
-                                        </a>
-                                    @endif
-                                </div>
-                                @php
-                                $i++;
-                                @endphp
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endif
         <div class="col s12">
             <div class="fast-menu">
                 <a href="{{ route('forum.index') }}">
