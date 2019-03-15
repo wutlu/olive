@@ -535,7 +535,6 @@ table.invoice tfoot > tr {
  */
 #breadcrumb {
   height: auto;
-  height: 48px;
   line-height: 48px;
 }
 @media (max-width: 1024px) {
@@ -1460,7 +1459,6 @@ header#main > .parallax-container > .parallax > video#background-video {
 /**
  * card
  */
-
 .card {
   margin: 0 0 1rem;
   word-break: break-all;
@@ -1482,6 +1480,7 @@ header#main > .parallax-container > .parallax > video#background-video {
 
 .card .card-title {
   margin: 0 !important;
+  font-size: 20px;
 }
 .card .card-title.card-title-small {
   font-size: 18px;
@@ -1704,7 +1703,7 @@ ul#console > li textarea {
 }
 
 nav .sidenav-trigger > .material-icons {
-  color: #666;
+  color: #fff;
 }
 
 @media only screen and (max-width : 992px) {
@@ -2029,11 +2028,10 @@ ul#slide-out {
   height: 100% !important;
 }
 ul#slide-out li.tiny {
-  max-width: 90%;
-  padding: 1px 0;
+
 }
 ul#slide-out li.tiny > a {
-  border-radius: 0 2rem 2rem 0;
+
 }
 ul#slide-out li > a > span.badge {
   min-width: 1rem;
@@ -2046,7 +2044,7 @@ ul#slide-out li > .collapsible-header > .material-icons {
 }
 
 /**
- * box-shadow
+ * box shadows
  */
 .z-depth-1,
 nav,
@@ -2055,8 +2053,8 @@ nav,
 .toast,
 .dropdown-content,
 .sidenav {
-          box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, .1);
-  -webkit-box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, .1);
+          box-shadow: 0 0 2px 1px rgba(0, 0, 0, .1);
+  -webkit-box-shadow: 0 0 2px 1px rgba(0, 0, 0, .1);
 }
 
 /**

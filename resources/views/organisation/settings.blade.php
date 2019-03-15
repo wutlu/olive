@@ -321,7 +321,7 @@
                     <label for="email">E-posta</label>
                     <small class="helper-text">Gireceğiniz e-posta adresine bağlı hesap organizasyonunuza eklenir.</small>
                 </div>
-                <button type="submit" class="waves-effect waves-dark btn-small">Ekle</button>
+                <button type="submit" class="btn-flat waves-effect">Ekle</button>
             </form>
             @push('local.scripts')
                 function __invite(__, obj)

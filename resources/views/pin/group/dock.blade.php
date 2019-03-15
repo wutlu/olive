@@ -15,10 +15,6 @@
         </a>
     </div>
 
-    <div class="card-content cyan lighten-5">
-        <p class="grey-text text-darken-2">İlginizi çeken içeriklere daha sonra ulaşabilmek için pinleyebilirsiniz. Bir pin grubu seçin ve ilgilendiğiniz içeriğin (+) butonuna tıklayın.</p>
-    </div>
-
     <ul id="pin-groups"
         class="collection load json-clear mb-0" 
         data-href="{{ route('pin.groups') }}"

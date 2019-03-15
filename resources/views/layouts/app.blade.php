@@ -162,11 +162,11 @@
                     </li>
                 </ul>
             @endauth
-            <nav class="cyan darken-2">
+            <nav class="grey darken-4">
                 <div class="{{ auth()->check() ? 'sidenav-fixed-layout' : 'container' }}">
                     <div class="nav-wrapper">
                         <a href="{{ route('dashboard') }}" class="brand-logo center">
-                            <img alt="{{ config('app.name') }}" src="{{ asset('img/olive_logo-white.svg') }}" />
+                            <img alt="{{ config('app.name') }}" src="{{ asset('img/olive_logo.svg') }}" />
                         </a>
                         @auth
                         <a href="#" data-target="slide-out" class="sidenav-trigger">
@@ -185,7 +185,7 @@
                         <ul class="right hide-on-med-and-down">
                             @auth
                             <li>
-                                <a class="dropdown-trigger waves-effect" href="#" data-target="user-top-dropdown" data-align="right">
+                                <a class="dropdown-trigger waves-effect waves-light" href="#" data-target="user-top-dropdown" data-align="right">
                                     {{ auth()->user()->name }} <i class="material-icons right">arrow_drop_down</i>
                                 </a>
                             </li>
@@ -440,7 +440,7 @@
             @php
                 $br_count = count($breadcrumb)-1;
             @endphp
-            <nav class="grey darken-4" id="breadcrumb">
+            <nav class="cyan darken-4" id="breadcrumb">
                 <div class="{{ auth()->check() ? 'sidenav-fixed-layout' : '' }}">
                     <div class="{{ isset($wide) ? 'container container-wide' : 'container' }}">
                         <a href="{{ route('dashboard') }}" class="breadcrumb">Olive</a>
@@ -460,7 +460,7 @@
             </nav>
         @endisset
 
-        <main class="indigo lighten-5">
+        <main class="grey lighten-5">
             <div class="{{ auth()->check() ? 'sidenav-fixed-layout' : '' }}">
                 @if (trim($__env->yieldContent('action-bar')))
                     <div class="{{ isset($wide) ? 'container container-wide' : 'container' }}">
@@ -738,7 +738,7 @@
             </li>
         </ul>
 
-        <footer class="page-footer indigo lighten-5">
+        <footer class="page-footer grey lighten-5">
             <div class="{{ isset($wide) ? 'container container-wide' : 'container' }}">
                 <div class="row">
                     <div class="col l6 s12">
