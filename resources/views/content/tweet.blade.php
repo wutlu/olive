@@ -54,7 +54,7 @@
 ])
 
 @push('wildcard-top')
-    <div class="card cyan d-block mb-0">
+    <div class="card cyan d-block">
         <div class="card-content d-flex justify-content-between">
             <span class="align-self-center">
                 <span class="card-title white-text">{{ $document['_source']['user']['name'] }}</span>
@@ -72,7 +72,7 @@
 @section('content')
     <div class="row">
         <div class="col m6 s12">
-            <div class="card grey darken-4">
+            <div class="card grey darken-4 mb-1">
                 <div class="card-content">
                     <span class="d-flex justify-content-between">
                         <span class="card-title align-self-center grey-text">{{ $document['_source']['user']['name'] }}</span>
@@ -95,7 +95,7 @@
                     </div>
                 @endisset
             </div>
-            <div class="card">
+            <div class="card mb-1">
                 @php
                     $url = 'https://twitter.com/'.$document['_source']['user']['screen_name'].'/status/'.$document['_source']['id'];
                 @endphp
@@ -160,14 +160,12 @@
             </div>
         </div>
         <div class="col m6 s12">
-            <div class="card">
-                @include('content._inc.sentiment', [
-                    'neu' => $data['total']->data['aggregations']['neutral']['value'],
-                    'pos' => $data['total']->data['aggregations']['positive']['value'],
-                    'neg' => $data['total']->data['aggregations']['negative']['value'],
-                    'alert' => 'İlgili kullanıcıdan toplam '.$data['total']->data['hits']['total'].' tweet alındı. Sayfadaki istatistik verileri, alınan tweetler üzerinden gerçekleştirilmiştir.'
-                ])
-            </div>
+            @include('content._inc.sentiment', [
+                'neu' => $data['total']->data['aggregations']['neutral']['value'],
+                'pos' => $data['total']->data['aggregations']['positive']['value'],
+                'neg' => $data['total']->data['aggregations']['negative']['value'],
+                'alert' => 'İlgili kullanıcıdan toplam '.$data['total']->data['hits']['total'].' tweet alındı. Sayfadaki istatistik verileri, alınan tweetler üzerinden gerçekleştirilmiştir.'
+            ])
         </div>
     </div>
 
@@ -346,7 +344,7 @@
             'urls' => 'Bağlantı Geçmişi',
         ] as $key => $model
     )
-        <div class="card">
+        <div class="card mb-1">
             <div class="card-content grey lighten-5">
                 <span class="card-title card-title-small">{{ $model }}</span>
             </div>

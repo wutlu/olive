@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card mb-1">
     <div class="card-content cyan darken-2 white-text">{{ $alert }}</div>
     <div class="card-content">
         <span class="card-title">Duygu Analizi</span>

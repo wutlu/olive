@@ -5,8 +5,7 @@
             'text' => 'Arama Motoru'
         ]
     ],
-    'dock' => true,
-    'wide' => true
+    'dock' => true
 ])
 
 @push('local.styles')
@@ -949,7 +948,7 @@
 @endpush
 
 @section('content')
-    <div class="grey-text mb-1" data-name="stats"></div>
+    <div class="grey-text p-1" data-name="stats"></div>
     <div class="card hide">
         <div class="time-line">
             <ul class="collection json-clear" 
@@ -960,7 +959,7 @@
                 data-more-button="#search-more_button"
                 data-callback="__search_archive"
                 data-method="post"
-                data-include="start_date,end_date,sentiment,modules,string,sort"
+                data-include="start_date,end_date,sentiment,modules,string,sort,retweet"
                 data-nothing>
                 <li class="collection-item nothing hide">
                     @component('components.nothing')
@@ -1054,6 +1053,10 @@
                         <input type="checkbox" name="sort" value="asc" />
                         <span class="grey-text text-darken-2">İlk İçerikler</span>
                     </label>
+                    <label class="align-self-center mr-1">
+                        <input type="checkbox" name="retweet" value="on" />
+                        <span class="grey-text text-darken-2">ReTweetleri Dahil</span>
+                    </label>
                 </span>
             </div>
             <ul class="wild-menu">
@@ -1130,7 +1133,7 @@
 @endsection
 
 @section('dock')
-    <div class="card with-bg">
+    <div class="card with-bg mb-1">
         <div class="card-content">
             <span class="card-title">Kaynak</span>
         </div>

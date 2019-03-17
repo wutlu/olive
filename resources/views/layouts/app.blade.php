@@ -440,7 +440,7 @@
             @php
                 $br_count = count($breadcrumb)-1;
             @endphp
-            <nav class="cyan darken-4" id="breadcrumb">
+            <nav class="grey darken-2" id="breadcrumb">
                 <div class="{{ auth()->check() ? 'sidenav-fixed-layout' : '' }}">
                     <div class="{{ isset($wide) ? 'container container-wide' : 'container' }}">
                         <a href="{{ route('dashboard') }}" class="breadcrumb">Olive</a>
@@ -460,8 +460,8 @@
             </nav>
         @endisset
 
-        <main class="grey lighten-5">
-            <div class="{{ auth()->check() ? 'sidenav-fixed-layout' : '' }}">
+        <main class="grey lighten-2">
+            <div class="{{ auth()->check() ? 'content sidenav-fixed-layout' : 'content' }}">
                 @if (trim($__env->yieldContent('action-bar')))
                     <div class="{{ isset($wide) ? 'container container-wide' : 'container' }}">
                         <div class="action-bar">
@@ -715,30 +715,7 @@
     @endauth
 
     <div class="@auth{{ @$sidenav_fixed_layout ? 'sidenav-fixed-layout' : '' }}@endauth">
-        <ul class="partners white">
-            <li class="partner">
-                <a href="https://laravel.com/" target="_blank">
-                    <img alt="client" src="{{ asset('img/clients-logo1.png') }}" />
-                </a>
-            </li>
-            <li class="partner">
-                <a href="https://materializecss.com/" target="_blank">
-                    <img alt="client" src="{{ asset('img/clients-logo2.png') }}" />
-                </a>
-            </li>
-            <li class="partner">
-                <a href="https://www.elastic.co/" target="_blank">
-                    <img alt="client" src="{{ asset('img/clients-logo3.png') }}" />
-                </a>
-            </li>
-            <li class="partner">
-                <a href="https://www.postgresql.org/" target="_blank">
-                    <img alt="client" src="{{ asset('img/clients-logo4.png') }}" />
-                </a>
-            </li>
-        </ul>
-
-        <footer class="page-footer grey lighten-5">
+        <footer class="page-footer grey darken-4">
             <div class="{{ isset($wide) ? 'container container-wide' : 'container' }}">
                 <div class="row">
                     <div class="col l6 s12">
@@ -782,9 +759,9 @@
                     </div>
                 </div>
             </div>
-            <div class="footer-copyright center-align">
+            <div class="footer-copyright center-align grey darken-2">
                 <div class="{{ isset($wide) ? 'container container-wide' : 'container' }} grey-text">
-                    © {{ date('Y') }} <a class="grey-text text-darken-2" href="http://veri.zone">veri.zone</a> | Tüm hakları saklıdır.
+                    © {{ date('Y') }} <a class="white-text" href="http://veri.zone">veri.zone</a> | Tüm hakları saklıdır.
                 </div>
             </div>
         </footer>

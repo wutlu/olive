@@ -65,7 +65,7 @@
 ])
 
 @push('wildcard-top')
-    <div class="card red mb-0">
+    <div class="card red">
         <div class="card-content d-flex justify-content-between">
             <span class="align-self-center">
                 <span class="card-title white-text">{{ $document['_source']['title'] }}</span>

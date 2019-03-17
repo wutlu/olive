@@ -560,9 +560,6 @@ class SearchController extends Controller
                     ],
                     'should' => [
                         [ 'match' => [ 'status' => 'ok' ] ]
-                    ],
-                    'must_not' => [
-                        [ 'match' => [ 'external.type' => 'retweet' ] ]
                     ]
                 ]
             ],
@@ -585,6 +582,13 @@ class SearchController extends Controller
                 'video_id'
             ]
         ];
+
+        if ($request->retweet)
+        {
+            $q['query']['bool']['must_not'] = [
+                [ 'match' => [ 'external.type' => 'retweet' ] ]
+            ];
+        }
 
         if ($request->sentiment != 'all')
         {

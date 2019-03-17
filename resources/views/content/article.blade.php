@@ -30,7 +30,7 @@
 ])
 
 @push('wildcard-top')
-    <div class="card red mb-0">
+    <div class="card red">
         <div class="card-content">
             <span class="card-title white-text">{{ $data['crawler']->name }}</span>
             <a href="{{ $data['crawler']->site }}" target="_blank" class="red-text text-darken-4">{{ $data['crawler']->site }}</a>
@@ -47,7 +47,7 @@
 @section('content')
     <div class="row">
         <div class="col m12 xl12">
-            <div class="card">
+            <div class="card mb-1">
                 <div class="card-content">
                     <span class="card-title d-flex">{{ $document['_source']['title'] }}</span>
                     <div class="markdown">{!! Term::markdown($document['_source']['description']) !!}</div>
@@ -61,7 +61,7 @@
             </div>
         </div>
         <div class="col m12 xl6">
-            <div class="card">
+            <div class="card mb-1">
                 <div class="card-content">
                     <span class="card-title">Sık Kullanılan Kelimeler</span>
                 </div>
@@ -79,7 +79,6 @@
                 </div>
             </div>
         </div>
-
         <div class="col m12 xl6">
             @include('content._inc.sentiment', [
                 'neu' => $data['total']->data['aggregations']['neutral']['value'],
@@ -110,7 +109,7 @@
                             @slot('text', 'Üzgünüz, hiç benzer içerik yok.')
                         @endcomponent
                     </div>
-                    <div class="collection-item z-depth-1 model hide">
+                    <div class="collection-item model hide">
                         <a href="#" class="d-table blue-text" data-name="title"></a>
                         <time class="d-table grey-text" data-name="created-at"></time>
                         <span class="d-table grey-text text-darken-2" data-name="description"></span>

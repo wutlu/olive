@@ -30,7 +30,7 @@
 ])
 
 @push('wildcard-top')
-    <div class="card mb-0">
+    <div class="card">
         <div class="card-content d-flex justify-content-between">
             <span class="align-self-center">
                 <span class="card-title">{{ $document['_source']['title'] }}</span>
@@ -50,7 +50,7 @@
 @section('content')
     <div class="row">
         <div class="col m12 xl12">
-            <div class="card">
+            <div class="card mb-1">
                 <div class="card-content">
                     <span class="red-text">{{ $document['_source']['author'] }}</span>
                     <div class="markdown">{!! Term::markdown($document['_source']['entry']) !!}</div>
@@ -63,7 +63,7 @@
             </div>
         </div>
         <div class="col m12 xl6">
-            <div class="card">
+            <div class="card mb-1">
                 <div class="card-content">
                     <span class="card-title">Sık Kullanılan Kelimeler</span>
                 </div>
@@ -111,7 +111,7 @@
                             @slot('text', 'Üzgünüz, hiç benzer içerik yok.')
                         @endcomponent
                     </div>
-                    <div class="collection-item z-depth-1 model hide">
+                    <div class="collection-item model hide">
                         <a href="#" class="d-table blue-text" data-name="title"></a>
                         <span class="d-table red-text" data-name="author"></span>
                         <time class="d-table grey-text" data-name="created-at"></time>

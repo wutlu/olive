@@ -32,7 +32,8 @@ class ArchiveRequest extends FormRequest
             'sentiment' => 'required|string|in:pos,neu,neg,all',
             'modules' => 'required|array|min:1',
             'modules.*' => 'required|string|in:'.implode(',',array_keys(config('system.modules'))),
-            'sort' => 'nullable|string|in:asc,desc'
+            'sort' => 'nullable|string|in:asc,desc',
+            'retweet' => 'nullable|string|in:on'
         ];
     }
 }

@@ -38,7 +38,7 @@
 @endsection
 
 @section('content')
-    <div class="card with-bg">
+    <div class="card with-bg mb-1">
         <div class="card-content">
             <span class="card-title">Pinlemeler</span>
             <p class="grey-text text-darken-2">Ekleyeceğiniz yorumlar, PDF raporlarınızda analiz sonucu olarak yer alacaktır.</p>

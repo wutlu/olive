@@ -481,7 +481,7 @@
                     </a>
                 </div>
 
-                <div class="card-content white">Bu alan sadece root yetkisine sahip kullanıcılarda görünür.</div>
+                <div class="card-content cyan">Bu alan sadece root yetkisine sahip kullanıcılarda görünür.</div>
             @endif
         @endauth
 

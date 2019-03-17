@@ -31,7 +31,7 @@
 ])
 
 @push('wildcard-top')
-    <div class="card yellow mb-0">
+    <div class="card yellow">
         <div class="card-content d-flex justify-content-between">
             <span class="align-self-center">
                 <span class="card-title">{{ $document['_source']['title'] }}</span>
@@ -52,7 +52,7 @@
     <div class="row">
         <div class="col m12 xl12">
             @isset ($document['_source']['description'])
-                <div class="card">
+                <div class="card mb-1">
                     <div class="card-content">
                         <div class="markdown">{!! Term::markdown($document['_source']['description']) !!}</div>
                     </div>
@@ -80,7 +80,7 @@
                             @slot('text', 'Üzgünüz, hiç benzer içerik yok.')
                         @endcomponent
                     </div>
-                    <div class="collection-item z-depth-1 model hide">
+                    <div class="collection-item model hide">
                         <a href="#" class="d-table blue-text" data-name="title"></a>
                         <time class="d-table grey-text" data-name="created-at"></time>
                         <ul class="d-flex" data-name="breadcrumb"></ul>
