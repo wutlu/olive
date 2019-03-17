@@ -583,11 +583,9 @@ class SearchController extends Controller
             ]
         ];
 
-        if ($request->retweet)
+        if (!$request->retweet)
         {
-            $q['query']['bool']['must_not'] = [
-                [ 'match' => [ 'external.type' => 'retweet' ] ]
-            ];
+            $q['query']['bool']['must_not'][] = [ 'match' => [ 'external.type' => 'retweet' ] ];
         }
 
         if ($request->sentiment != 'all')
