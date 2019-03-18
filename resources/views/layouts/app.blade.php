@@ -440,7 +440,7 @@
             @php
                 $br_count = count($breadcrumb)-1;
             @endphp
-            <nav class="grey darken-2" id="breadcrumb">
+            <nav class="cyan darken-2" id="breadcrumb">
                 <div class="{{ auth()->check() ? 'sidenav-fixed-layout' : '' }}">
                     <div class="{{ isset($wide) ? 'container container-wide' : 'container' }}">
                         <a href="{{ route('dashboard') }}" class="breadcrumb">Olive</a>
@@ -759,9 +759,9 @@
                     </div>
                 </div>
             </div>
-            <div class="footer-copyright center-align grey darken-2">
-                <div class="{{ isset($wide) ? 'container container-wide' : 'container' }} grey-text">
-                    © {{ date('Y') }} <a class="white-text" href="http://veri.zone">veri.zone</a> | Tüm hakları saklıdır.
+            <div class="footer-copyright center-align cyan darken-2">
+                <div class="{{ isset($wide) ? 'container container-wide' : 'container' }} white-text">
+                    © {{ date('Y') }} <a class="cyan-text text-lighten-4" href="http://veri.zone">veri.zone</a> | Tüm hakları saklıdır.
                 </div>
             </div>
         </footer>

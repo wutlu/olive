@@ -5,7 +5,8 @@
             'text' => 'Arama Motoru'
         ]
     ],
-    'dock' => true
+    'dock' => true,
+    'wide' => true
 ])
 
 @push('local.styles')
@@ -1055,7 +1056,7 @@
                     </label>
                     <label class="align-self-center mr-1">
                         <input type="checkbox" name="retweet" value="on" />
-                        <span class="grey-text text-darken-2">ReTweetleri Dahil</span>
+                        <span class="grey-text text-darken-2">ReTweetler Dahil</span>
                     </label>
                 </span>
             </div>
@@ -1116,7 +1117,7 @@
                 <div class="chip-s owl-chips owl-carousel pt-1">
                     @if (@$trends)
                         @foreach ($trends as $trend)
-                            <a class="chip teal white-text waves-effect" data-search="{{ $trend->title }}" href="#">{{ $trend->title }}</a>
+                            <a class="chip cyan darken-2 white-text waves-effect" data-search="{{ $trend->title }}" href="#">{{ $trend->title }}</a>
                         @endforeach
                     @endif
                 </div>

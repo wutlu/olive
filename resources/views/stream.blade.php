@@ -797,7 +797,7 @@
 @endpush
 
 @section('dock')
-    <div class="card with-bg">
+    <div class="card with-bg mb-1">
         <div class="card-content">
             <span class="card-title">Kelime Grupları</span>
         </div>

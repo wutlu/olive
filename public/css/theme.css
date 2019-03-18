@@ -536,6 +536,7 @@ table.invoice tfoot > tr {
 #breadcrumb {
   height: auto;
   margin: 0;
+  line-height: 48px;
 }
 @media (max-width: 1024px) {
   #breadcrumb {
