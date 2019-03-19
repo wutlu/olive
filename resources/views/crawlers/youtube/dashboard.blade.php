@@ -167,13 +167,13 @@
                     item.appendTo(collection)
                 })
             }
-
-            window.clearTimeout(logTimer)
-
-            logTimer = window.setTimeout(function() {
-                vzAjax($('ul#console'))
-            }, 10000)
         }
+
+        window.clearTimeout(logTimer)
+
+        logTimer = window.setTimeout(function() {
+            vzAjax($('ul#console'))
+        }, 10000)
     }
 
     function __connection_failed(__)

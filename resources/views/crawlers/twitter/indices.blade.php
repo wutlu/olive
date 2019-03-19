@@ -95,16 +95,16 @@
                 </small>
             </li>
         </ul>
+        @component('components.loader')
+            @slot('color', 'cyan')
+            @slot('id', 'home-loader')
+            @slot('class', 'card-loader-unstyled')
+        @endcomponent
     </div>
-
-    @component('components.loader')
-        @slot('color', 'cyan')
-        @slot('id', 'home-loader')
-    @endcomponent
 @endsection
 
 @section('dock')
-    <div class="card">
+    <div class="card mb-1">
         <div class="collection">
             <label class="collection-item waves-effect d-block">
                 <input

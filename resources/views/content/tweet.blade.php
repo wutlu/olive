@@ -60,7 +60,7 @@
                 <span class="card-title white-text">{{ $document['_source']['user']['name'] }}</span>
                 <a href="https://twitter.com/intent/user?user_id={{ $document['_source']['user']['id'] }}" target="_blank" class="cyan-text text-darken-4">https://twitter.com/intent/user?user_id={{ $document['_source']['user']['id'] }}</a>
             </span>
-            <img alt="Twitter" src="{{ asset('img/logos/twitter.svg') }}" class="white align-self-center z-depth-1" style="width: 64px;" />
+            <img alt="Twitter" src="{{ asset('img/logos/twitter.svg') }}" class="white align-self-center" style="width: 64px;" />
         </div>
     </div>
 @endpush
@@ -72,7 +72,7 @@
 @section('content')
     <div class="row">
         <div class="col m6 s12">
-            <div class="card grey darken-4 mb-1">
+            <div class="card mb-1">
                 <div class="card-content">
                     <span class="d-flex justify-content-between">
                         <span class="card-title align-self-center grey-text">{{ $document['_source']['user']['name'] }}</span>
@@ -94,8 +94,7 @@
                         </span>
                     </div>
                 @endisset
-            </div>
-            <div class="card mb-1">
+
                 @php
                     $url = 'https://twitter.com/'.$document['_source']['user']['screen_name'].'/status/'.$document['_source']['id'];
                 @endphp
@@ -186,6 +185,7 @@
                 </li>
             </ul>
         </div>
+
         @isset ($data['stats'])
             <div class="card-content white" id="stats">
                 @foreach (
@@ -284,12 +284,13 @@
                 </table>
             </div>
         @endisset
+
         @foreach ([
             'all_tweets' => '',
             'all_retweets' => 'retweet'
         ] as $key => $type)
             <div id="{{ $key }}" class="halfload white" style="display: none;">
-                <div class="collection json-clear mb-0"
+                <div class="collection json-clear"
                      id="loader-{{ $key }}"
                      data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id, 'type' => $type ]) }}"
                      data-method="post"
@@ -304,7 +305,7 @@
                             @slot('size', 'small')
                         @endcomponent
                     </div>
-                    <div class="collection-item z-depth-1 model hide">
+                    <div class="collection-item model hide">
                         <span class="d-table grey-text text-darken-2" data-name="author"></span>
                         <a href="#" target="_blank" class="d-table grey-text text-darken-2" data-name="screen-name"></a>
                         <time data-time="" class="d-table grey-text" data-name="created-at"></time>

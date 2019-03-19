@@ -77,7 +77,7 @@
 @endpush
 
 @section('content')
-    <div class="card">
+    <div class="card mb-1">
         <div class="card-content">
             <span class="card-title">{{ $document['_source']['channel']['title'] }}</span>
             <a href="https://www.youtube.com/channel/{{ $document['_source']['channel']['id'] }}" target="_blank" class="grey-text">{{ '@'.$document['_source']['channel']['id'] }}</a>
@@ -90,50 +90,71 @@
             src="http://www.youtube.com/embed/{{ $document['_source']['id'] }}?origin={{ config('app.url') }}"
             frameborder="0">
         </iframe>
+        @isset ($document['_source']['description'])
+            <div class="card-content">
+                {!! Term::linked($document['_source']['description']) !!}
+            </div>
+        @endisset
     </div>
-    @foreach ([
-        'all_tweets' => '',
-        'all_retweets' => 'retweet'
-    ] as $key => $type)
-        <div id="{{ $key }}" class="halfload white" style="display: none;">
-            <div class="collection json-clear mb-0"
-                 id="loader-{{ $key }}"
-                 data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id, 'type' => $type ]) }}"
-                 data-method="post"
-                 data-skip="0"
-                 data-take="20"
-                 data-more-button="#{{ $key }}-more_button"
-                 data-callback="__all"
-                 data-loader="#{{ $key }}-loader"
-                 data-nothing>
-                <div class="collection-item nothing hide">
-                    @component('components.nothing')
-                        @slot('size', 'small')
-                    @endcomponent
-                </div>
-                <div class="collection-item z-depth-1 model hide">
-                    <span class="d-table grey-text text-darken-2" data-name="author"></span>
-                    <a href="#" target="_blank" class="d-table grey-text text-darken-2" data-name="screen-name"></a>
-                    <time data-time="" class="d-table grey-text" data-name="created-at"></time>
-                    <span class="d-block" data-name="text"></span>
-                    <a href="#" class="d-table green-text" data-name="url" target="_blank"></a>
-                </div>
-            </div>
 
-            @component('components.loader')
-                @slot('color', 'cyan')
-                @slot('class', 'card-loader-unstyled')
-                @slot('id', $key.'-loader')
-            @endcomponent
-
-            <div class="center-align mt-1">
-                <button class="btn-flat waves-effect hide json"
-                        id="{{ $key }}-more_button"
-                        type="button"
-                        data-json-target="#loader-{{ $key }}">Daha Fazla</button>
-            </div>
+    <div class="card cyan darken-2">
+        <div class="card-content">
+            <p class="white-text">Tüm Tweetler ve ReTweetler kullanıcıya ait ve veritabanımıza alınmış periyodik verilerden oluşmaktadır.</p>
         </div>
-    @endforeach
+        <div class="card-tabs">
+            <ul class="tabs tabs-transparent sub-tabs">
+                <li class="tab">
+                    <a href="#comments" class="active">Videoya Yapılan Yorumlar</a>
+                </li>
+                <li class="tab">
+                    <a href="#comments_channel">Kanalın Tüm Yorumları</a>
+                </li>
+            </ul>
+        </div>
+        @foreach ([
+            'comments' => 'comment-video',
+            'comments_channel' => 'comment-channel'
+        ] as $key => $type)
+            <div id="{{ $key }}" class="halfload white" style="@if ($key != 'comments'){{ 'display: none;' }}@endif">
+                <div class="collection json-clear @if ($key != 'comments'){{ 'load' }}@endif"
+                     id="loader-{{ $key }}"
+                     data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id, 'type' => $type ]) }}"
+                     data-method="post"
+                     data-skip="0"
+                     data-take="20"
+                     data-more-button="#{{ $key }}-more_button"
+                     data-callback="__all"
+                     data-loader="#{{ $key }}-loader"
+                     data-nothing>
+                    <div class="collection-item nothing hide">
+                        @component('components.nothing')
+                            @slot('size', 'small')
+                        @endcomponent
+                    </div>
+                    <div class="collection-item z-depth-1 model hide">
+                        <span class="d-table grey-text text-darken-2" data-name="author"></span>
+                        <a href="#" target="_blank" class="d-table grey-text text-darken-2" data-name="screen-name"></a>
+                        <time data-time="" class="d-table grey-text" data-name="created-at"></time>
+                        <span class="d-block" data-name="text"></span>
+                        <a href="#" class="d-table green-text" data-name="url" target="_blank"></a>
+                    </div>
+                </div>
+
+                @component('components.loader')
+                    @slot('color', 'cyan')
+                    @slot('class', 'card-loader-unstyled')
+                    @slot('id', $key.'-loader')
+                @endcomponent
+
+                <div class="center-align mt-1">
+                    <button class="btn-flat waves-effect hide json"
+                            id="{{ $key }}-more_button"
+                            type="button"
+                            data-json-target="#loader-{{ $key }}">Daha Fazla</button>
+                </div>
+            </div>
+        @endforeach
+    </div>
 @endsection
 
 @push('local.scripts')
@@ -210,6 +231,48 @@
             }
         }
     }
+
+    function __all(__, obj)
+    {
+        var ul = $('#' + __.attr('id'));
+        var item_model = ul.children('.model');
+
+        if (obj.status == 'ok')
+        {
+            item_model.addClass('hide')
+
+            if (obj.hits.length)
+            {
+                $.each(obj.hits, function(key, o) {
+                    var item = item_model.clone();
+                        item.removeClass('model hide').addClass('_tmp').attr('data-id', o.id)
+
+                        item.find('[data-name=author]').html(o._source.user.name)
+                        item.find('[data-name=screen-name]').html('@' + o._source.user.screen_name).attr('href', 'https://twitter.com/' + o._source.user.screen_name)
+                        item.find('[data-name=text]').html(o._source.text)
+                        item.find('[data-name=url]').html('https://twitter.com/' + o._source.user.screen_name + '/status/' + o._source.id).attr('href', 'https://twitter.com/' + o._source.user.screen_name + '/status/' + o._source.id)
+                        item.find('[data-name=created-at]').html(o._source.created_at)
+
+                        item.appendTo(ul)
+                })
+            }
+        }
+    }
+
+    $('.sub-tabs').tabs({
+        onShow: function(tab) {
+            var loader = $('#loader-' + tab.id);
+
+            if ($('#' + tab.id).hasClass('halfload'))
+            {
+                if (!loader.hasClass('loaded'))
+                {
+                    loader.addClass('loaded')
+                    vzAjax(loader)
+                }
+            }
+        }
+    })
 @endpush
 
 @section('dock')

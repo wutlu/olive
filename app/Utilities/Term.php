@@ -260,4 +260,24 @@ class Term
 
         return $tweet;
     }
+
+    /**
+     * Auto Link
+     *
+     * - Genel kullanım için linklerin Olive için çevrilmesini sağlar.
+     *
+     * @return string
+     */
+    public static function linked(string $string)
+    {
+        //Convert urls to <a> links
+        $string = preg_replace('/([\w]+\:\/\/[\w-?&;#~=\.\/\@]+[\w\/])/', '<a target="_blank" href="$1">$1</a>', $string);
+
+        //Convert hashtags to twitter searches in <a> links
+        $string = preg_replace('/#([A-ZğüşıöçĞÜŞİÖÇa-z0-9\/\.]*)/', '<a target="_blank" href="'.route('search.dashboard').'?q=$1">#$1</a>', $string);
+
+        $string = nl2br($string);
+
+        return $string;
+    }
 }

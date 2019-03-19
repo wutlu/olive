@@ -553,7 +553,7 @@ class ContentController extends Controller
                         'interval' => 1,
                         'min_doc_count' => 0,
                         'extended_bounds' => [
-                            'min' => 1,
+                            'min' => 0,
                             'max' => $max
                         ]
                     ]
@@ -674,135 +674,136 @@ class ContentController extends Controller
 
         if ($document->status == 'ok')
         {
-            if ($es_type == 'tweet')
+            switch ($es_type)
             {
-                $arr = [
-                    'from' => $request->skip,
-                    'size' => $request->take,
-                    '_source' => [ 'id', 'user.id', 'user.name', 'user.screen_name', 'text', 'created_at' ],
-                    'sort' => [
-                        'created_at' => 'DESC'
-                    ]
-                ];
-
-                if ($type == 'retweet')
-                {
-                    $arr['query']['bool']['must'][] = [
-                        'match' => [ 'external.id' => $es_id ]
+                case 'tweet':
+                    $arr = [
+                        'from' => $request->skip,
+                        'size' => $request->take,
+                        '_source' => [ 'id', 'user.id', 'user.name', 'user.screen_name', 'text', 'created_at' ],
+                        'sort' => [
+                            'created_at' => 'DESC'
+                        ]
                     ];
-                    $arr['query']['bool']['must_not'][] = [
-                        'match' => [ 'external.type' => 'retweet' ]
-                    ];
-                }
-                else
-                {
-                    $arr['query']['bool']['must'][] = [
-                        'match' => [ 'user.id' => $document->data['_source']['user']['id'] ]
-                    ];
-                }
 
-                $documents = Document::search([ 'twitter', 'tweets', '*' ], $es_type, $arr);
-            }
-            else
-            {
-                $smilar = Term::commonWords($document->data['_source']['title']);
-
-                if ($smilar)
-                {
-                    switch ($es_type)
+                    if ($type == 'retweet')
                     {
-                        case 'article':
-                            $documents = Document::search([ 'media', '*' ], $es_type, [
-                                'query' => [
-                                    'bool' => [
-                                        'must' => [
-                                            [
-                                                'match' => [ 'status' => 'ok' ]
-                                            ],
-                                            [
-                                                'more_like_this' => [
-                                                    'fields' => [ 'title' ],
-                                                    'like' => array_keys($smilar),
-                                                    'min_term_freq' => 1,
-                                                    'min_doc_freq' => 1
-                                                ]
-                                            ]
-                                        ]
-                                    ]
-                                ],
-                                'min_score' => 10,
-                                'from' => $request->skip,
-                                'size' => $request->take,
-                                '_source' => [ 'url', 'title', 'description', 'created_at' ]
-                            ]);
-                        break;
-                        case 'entry':
-                            $documents = Document::search([ 'sozluk', '*' ], $es_type, [
-                                'query' => [
-                                    'bool' => [
-                                        'must' => [
-                                            [
-                                                'more_like_this' => [
-                                                    'fields' => [ 'title' ],
-                                                    'like' => array_keys($smilar),
-                                                    'min_term_freq' => 1,
-                                                    'min_doc_freq' => 1
-                                                ]
-                                            ]
-                                        ]
-                                    ]
-                                ],
-                                'min_score' => 10,
-                                'from' => $request->skip,
-                                'size' => $request->take,
-                                '_source' => [ 'url', 'title', 'entry', 'author', 'created_at' ]
-                            ]);
-                        break;
-                        case 'product':
-                            $documents = Document::search([ 'shopping', '*' ], $es_type, [
-                                'query' => [
-                                    'bool' => [
-                                        'must' => [
-                                            [
-                                                'nested' => [
-                                                    'path' => 'breadcrumb',
-                                                    'query' => [
-                                                        'query_string' => [
-                                                            'fields' => [
-                                                                'breadcrumb.segment'
-                                                            ],
-                                                            'query' => implode(' || ', array_map(function($arr) { return $arr['segment']; }, $document->data['_source']['breadcrumb'])),
-                                                            'default_operator' => 'OR'
-                                                        ]
+                        $arr['query']['bool']['must'][] = [
+                            'match' => [ 'external.id' => $es_id ]
+                        ];
+                        $arr['query']['bool']['must_not'][] = [
+                            'match' => [ 'external.type' => 'retweet' ]
+                        ];
+                    }
+                    else
+                    {
+                        $arr['query']['bool']['must'][] = [
+                            'match' => [ 'user.id' => $document->data['_source']['user']['id'] ]
+                        ];
+                    }
+
+                    $documents = Document::search([ 'twitter', 'tweets', '*' ], $es_type, $arr);
+                break;
+                default:
+                    $smilar = Term::commonWords($document->data['_source']['title']);
+
+                    if ($smilar)
+                    {
+                        switch ($es_type)
+                        {
+                            case 'article':
+                                $documents = Document::search([ 'media', '*' ], $es_type, [
+                                    'query' => [
+                                        'bool' => [
+                                            'must' => [
+                                                [
+                                                    'match' => [ 'status' => 'ok' ]
+                                                ],
+                                                [
+                                                    'more_like_this' => [
+                                                        'fields' => [ 'title' ],
+                                                        'like' => array_keys($smilar),
+                                                        'min_term_freq' => 1,
+                                                        'min_doc_freq' => 1
                                                     ]
                                                 ]
-                                            ],
-                                            [ 'match' => [ 'status' => 'ok' ] ]
+                                            ]
                                         ]
+                                    ],
+                                    'min_score' => 10,
+                                    'from' => $request->skip,
+                                    'size' => $request->take,
+                                    '_source' => [ 'url', 'title', 'description', 'created_at' ]
+                                ]);
+                            break;
+                            case 'entry':
+                                $documents = Document::search([ 'sozluk', '*' ], $es_type, [
+                                    'query' => [
+                                        'bool' => [
+                                            'must' => [
+                                                [
+                                                    'more_like_this' => [
+                                                        'fields' => [ 'title' ],
+                                                        'like' => array_keys($smilar),
+                                                        'min_term_freq' => 1,
+                                                        'min_doc_freq' => 1
+                                                    ]
+                                                ]
+                                            ]
+                                        ]
+                                    ],
+                                    'min_score' => 10,
+                                    'from' => $request->skip,
+                                    'size' => $request->take,
+                                    '_source' => [ 'url', 'title', 'entry', 'author', 'created_at' ]
+                                ]);
+                            break;
+                            case 'product':
+                                $documents = Document::search([ 'shopping', '*' ], $es_type, [
+                                    'query' => [
+                                        'bool' => [
+                                            'must' => [
+                                                [
+                                                    'nested' => [
+                                                        'path' => 'breadcrumb',
+                                                        'query' => [
+                                                            'query_string' => [
+                                                                'fields' => [
+                                                                    'breadcrumb.segment'
+                                                                ],
+                                                                'query' => implode(' || ', array_map(function($arr) { return $arr['segment']; }, $document->data['_source']['breadcrumb'])),
+                                                                'default_operator' => 'OR'
+                                                            ]
+                                                        ]
+                                                    ]
+                                                ],
+                                                [ 'match' => [ 'status' => 'ok' ] ]
+                                            ]
+                                        ]
+                                    ],
+                                    'min_score' => 3,
+                                    'from' => $request->skip,
+                                    'size' => $request->take,
+                                    '_source' => [
+                                        'url',
+                                        'title',
+                                        'description',
+                                        'price',
+                                        'breadcrumb',
+                                        'created_at'
                                     ]
-                                ],
-                                'min_score' => 3,
-                                'from' => $request->skip,
-                                'size' => $request->take,
-                                '_source' => [
-                                    'url',
-                                    'title',
-                                    'description',
-                                    'price',
-                                    'breadcrumb',
-                                    'created_at'
-                                ]
-                            ]);
-                        break;
+                                ]);
+                            break;
+                        }
                     }
-                }
-                else
-                {
-                    return [
-                        'status' => 'ok',
-                        'hits' => []
-                    ];
-                }
+                    else
+                    {
+                        return [
+                            'status' => 'ok',
+                            'hits' => []
+                        ];
+                    }
+                break;
             }
 
             return [

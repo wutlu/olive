@@ -95,12 +95,13 @@
                 </small>
             </li>
         </ul>
-    </div>
 
-    @component('components.loader')
-        @slot('color', 'cyan')
-        @slot('id', 'home-loader')
-    @endcomponent
+        @component('components.loader')
+            @slot('color', 'cyan')
+            @slot('id', 'home-loader')
+            @slot('class', 'card-loader-unstyled')
+        @endcomponent
+    </div>
 @endsection
 
 @section('dock')

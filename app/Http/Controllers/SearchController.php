@@ -114,7 +114,7 @@ class SearchController extends Controller
                                 'script' => 'doc.created_at.value.getHourOfDay()',
                                 'interval' => 1,
                                 'min_doc_count' => 0,
-                                'extended_bounds' => [ 'min' => 1, 'max' => 23 ]
+                                'extended_bounds' => [ 'min' => 0, 'max' => 23 ]
                             ]
                         ]
                     ]
@@ -136,7 +136,7 @@ class SearchController extends Controller
                                 'script' => 'doc.created_at.value.getDayOfWeek()',
                                 'interval' => 1,
                                 'min_doc_count' => 0,
-                                'extended_bounds' => [ 'min' => 1, 'max' => 6 ]
+                                'extended_bounds' => [ 'min' => 0, 'max' => 6 ]
                             ]
                         ]
                     ]

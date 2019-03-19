@@ -1655,7 +1655,8 @@ ul#console {
     background-repeat: no-repeat;
     background-position: center;
     background-size: 70% auto;
-  
+    background-color: #333;
+
     word-break: break-word;
 }
 
@@ -2041,8 +2042,8 @@ ul#slide-out li > .collapsible-header > .material-icons {
  * grid
  */
 .row {
-  margin-left: -.4rem;
-  margin-right: -.4rem;
+  margin-left: -12px;
+  margin-right: -12px;
   margin-bottom: 0;
 }
 @media only screen and (max-width: 992px) {

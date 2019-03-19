@@ -450,7 +450,7 @@
             </div>
         </div>
         <div id="logs" style="display: none;">
-            <div class="card-content grey-text">Bu alan sadece "Twitter" modülü ile ilgili logları gösterir.</div>
+            <div class="card-content orange lighten-4">Bu alan sadece "Twitter" modülü ile ilgili logları gösterir.</div>
             <ul
                 id="console"
                 class="collection load d-flex align-items-end flex-wrap no-select"
@@ -473,12 +473,12 @@
                 </li>
             </ul>
         </div>
+        @component('components.loader')
+            @slot('color', 'cyan')
+            @slot('id', 'home-loader')
+            @slot('class', 'card-loader-unstyled')
+        @endcomponent
     </div>
-
-    @component('components.loader')
-        @slot('color', 'cyan')
-        @slot('id', 'home-loader')
-    @endcomponent
 @endsection
 
 @push('local.scripts')
@@ -556,7 +556,7 @@
 @endpush
 
 @section('dock')
-    <div class="card">
+    <div class="card mb-1">
         <div class="collection">
             @if ($options['twitter.index.tweets'] == date('Y.m', strtotime('+ 1 month')))
                 <label class="collection-item waves-effect d-block">
