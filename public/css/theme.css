@@ -576,7 +576,6 @@ table.invoice tfoot > tr {
  */
 code {
   padding: .2rem .4rem;
-  border-radius: 1.2rem;
 }
 
 /*!
@@ -592,7 +591,7 @@ code {
 }
 .markdown code {
   padding: 2rem;
-  margin: 0 -24px;
+  margin: 0 -1rem;
 }
 
 .markdown > h1 { font-size: 3rem; }

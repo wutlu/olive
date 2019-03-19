@@ -24,7 +24,7 @@
                         <p class="white-text">- Diğer hukuksal bilgilere <a href="{{ route('page.view', 'gizlilik-politikasi') }}">Gizlilik Politikası</a> ve <a href="{{ route('page.view', 'kullanim-kosullari') }}">Kullanım Koşulları</a> sayfalarından ulaşabilirsiniz.</p>
                         <p class="white-text">- Yerel veya farklı kaynak istekleriniz, <a href="{{ route('settings.support', 'kaynak-istegi') }}">DESTEK</a> bölümünden bize bildirebilirsiniz.</p>
                     </div>
-                    <ul class="tabs card-transparent">
+                    <ul class="tabs tabs-transparent">
                         <li class="tab">
                             <a href="#media" class="active">Medya</a>
                         </li>

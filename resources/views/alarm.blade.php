@@ -75,7 +75,7 @@
 @endpush
 
 @section('content')
-    <div class="card with-bg">
+    <div class="card with-bg mb-1">
         <div class="card-content">
             <span class="card-title">Alarmlar</span>
             <span class="d-block" data-name="count"></span>

@@ -239,7 +239,7 @@
             <div class="card-panel red">
                 @component('components.nothing')
                     @slot('cloud_class', 'white-text')
-                    @slot('text_class', 'grey-text text-darken-2')
+                    @slot('text_class', 'white-text text-darken-2')
                     @slot('cloud', 'cloud_off')
                     @slot('sun', 'sentiment_very_dissatisfied')
                     @slot('text', 'Kaynak Okunamadı!')

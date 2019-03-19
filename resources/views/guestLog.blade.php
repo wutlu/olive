@@ -162,10 +162,10 @@
                 </div>
             </li>
         </ul>
+        @component('components.loader')
+            @slot('color', 'cyan')
+            @slot('id', 'home-loader')
+            @slot('class', 'card-loader-unstyled')
+        @endcomponent
     </div>
-
-    @component('components.loader')
-        @slot('color', 'cyan')
-        @slot('id', 'home-loader')
-    @endcomponent
 @endsection
