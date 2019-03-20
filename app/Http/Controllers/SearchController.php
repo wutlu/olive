@@ -112,9 +112,7 @@ class SearchController extends Controller
                         'results' => [
                             'histogram' => [
                                 'script' => 'doc.created_at.value.getHourOfDay()',
-                                'interval' => 1,
-                                'min_doc_count' => 0,
-                                'extended_bounds' => [ 'min' => 0, 'max' => 23 ]
+                                'interval' => 1
                             ]
                         ]
                     ]
@@ -134,9 +132,7 @@ class SearchController extends Controller
                         'results' => [
                             'histogram' => [
                                 'script' => 'doc.created_at.value.getDayOfWeek()',
-                                'interval' => 1,
-                                'min_doc_count' => 0,
-                                'extended_bounds' => [ 'min' => 0, 'max' => 6 ]
+                                'interval' => 1
                             ]
                         ]
                     ]

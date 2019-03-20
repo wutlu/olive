@@ -125,7 +125,7 @@
                     @php
                         $external_url = 'https://twitter.com/'.$data['external']['_source']['user']['screen_name'].'/status/'.$data['external']['_source']['id'];
                     @endphp
-                    <ul class="collapsible">
+                    <ul class="collapsible mb-1">
                         <li>
                             <div class="collapsible-header orange lighten-5 d-block">
                                 <div class="d-flex justify-content-between">

@@ -529,11 +529,9 @@ class ContentController extends Controller
         {
             case 'hourly':
                 $script = 'doc.created_at.value.getHourOfDay()';
-                $max = 23;
             break;
             case 'daily':
                 $script = 'doc.created_at.value.getDayOfWeek()';
-                $max = 6;
             break;
         }
 
@@ -550,12 +548,7 @@ class ContentController extends Controller
                 'results' => [
                     'histogram' => [
                         'script' => $script,
-                        'interval' => 1,
-                        'min_doc_count' => 0,
-                        'extended_bounds' => [
-                            'min' => 0,
-                            'max' => $max
-                        ]
+                        'interval' => 1
                     ]
                 ]
             ]
