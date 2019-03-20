@@ -212,14 +212,6 @@ class StreamProcess extends Command
                                 $tweet['sentiment'] = $sentiment->score($tweet['text']);
                                 $tweet = (object) $tweet;
 
-                                if (@$tweet->user->verified && $tweet->user->lang == 'tr')
-                                {
-                                    $tracked_users[] = [
-                                        'id' => $tweet->user->id,
-                                        'screen_name' => $tweet->user->screen_name
-                                    ];
-                                }
-
                                 $store = true;
 
                                 $bulk = $crawler->chunk($tweet, $bulk);
@@ -239,14 +231,6 @@ class StreamProcess extends Command
                                 $tweet = $crawler->pattern($obj['quoted_status']);
                                 $tweet['sentiment'] = $sentiment->score($tweet['text']);
                                 $tweet = (object) $tweet;
-
-                                if (@$tweet->user->verified && $tweet->user->lang == 'tr')
-                                {
-                                    $tracked_users[] = [
-                                        'id' => $tweet->user->id,
-                                        'screen_name' => $tweet->user->screen_name
-                                    ];
-                                }
 
                                 $store = true;
 
