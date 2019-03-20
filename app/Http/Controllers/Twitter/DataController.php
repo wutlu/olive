@@ -142,6 +142,7 @@ class DataController extends Controller
         $query->organisation_id = auth()->user()->organisation_id;
         $query->user_id = $account->id_str;
         $query->screen_name = $account->screen_name;
+        $query->verified = @$account->verified ? true : false;
         $query->save();
 
         return [

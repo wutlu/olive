@@ -8,7 +8,10 @@ class StreamingUsers extends Model
 {
     protected $table = 'twitter_streaming_users';
     protected $fillable = [
+        'user_id',
+        'organisation_id',
 		'screen_name',
+        'verified',
 		'reason'
     ];
 

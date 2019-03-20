@@ -107,7 +107,14 @@ return [
      *
      * - Sistemsel sorunlar bu e-posta grubuna gönderilir.
      */
-    'group_email' => env('GROUP_EMAIL'),
+    'group_email' => env('GROUP_EMAIL', 'admin@veri.zone'),
+
+    /**
+     * Admin Organizasyon ID
+     *
+     * - Herhangi bir ROOT yetkisine sahip organizasyon ID'si.
+     */
+    'organisation_id_root' => env('ORGANISATION_ID_ROOT', 1),
 
     /**
      * Log Dosyaları

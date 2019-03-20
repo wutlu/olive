@@ -19,6 +19,8 @@ use Mail;
 use App\Mail\ServerAlertMail;
 use App\Models\Crawlers\TwitterCrawler;
 
+use App\Models\Twitter\StreamingUsers;
+
 use App\Utilities\DateUtility;
 
 class StreamProcess extends Command
@@ -182,6 +184,7 @@ class StreamProcess extends Command
             $sentiment   = new Sentiment;
 
             $bulk = [];
+            $tracked_users = [];
 
             while (!$stream->eof())
             {
@@ -209,6 +212,14 @@ class StreamProcess extends Command
                                 $tweet['sentiment'] = $sentiment->score($tweet['text']);
                                 $tweet = (object) $tweet;
 
+                                if (@$tweet->user->verified && $tweet->user->lang == 'tr')
+                                {
+                                    $tracked_users[] = [
+                                        'id' => $tweet->user->id,
+                                        'screen_name' => $tweet->user->screen_name
+                                    ];
+                                }
+
                                 $store = true;
 
                                 $bulk = $crawler->chunk($tweet, $bulk);
@@ -229,6 +240,14 @@ class StreamProcess extends Command
                                 $tweet['sentiment'] = $sentiment->score($tweet['text']);
                                 $tweet = (object) $tweet;
 
+                                if (@$tweet->user->verified && $tweet->user->lang == 'tr')
+                                {
+                                    $tracked_users[] = [
+                                        'id' => $tweet->user->id,
+                                        'screen_name' => $tweet->user->screen_name
+                                    ];
+                                }
+
                                 $store = true;
 
                                 $bulk = $crawler->chunk($tweet, $bulk);
@@ -246,6 +265,14 @@ class StreamProcess extends Command
                             $tweet = $crawler->pattern($obj);
                             $tweet['sentiment'] = $sentiment->score($tweet['text']);
                             $tweet = (object) $tweet;
+
+                            if (@$tweet->user->verified && $tweet->user->lang == 'tr')
+                            {
+                                $tracked_users[] = [
+                                    'id' => $tweet->user->id,
+                                    'screen_name' => $tweet->user->screen_name
+                                ];
+                            }
 
                             $bulk = $crawler->chunk($tweet, $bulk);
 
@@ -268,6 +295,40 @@ class StreamProcess extends Command
                                 5
                             );
                         }
+                    }
+
+                    if (count($tracked_users))
+                    {
+                        foreach ($tracked_users as $tu)
+                        {
+                            try
+                            {
+                                StreamingUsers::updateOrCreate(
+                                    [
+                                        'user_id' => $tu['id'],
+                                        'organisation_id' => config('app.organisation_id_root')
+                                    ],
+                                    [
+                                        'screen_name' => $tu['screen_name'],
+                                        'verified' => true
+                                    ]
+                                );
+
+                                echo $tu['screen_name'].PHP_EOL;
+                            }
+                            catch (\Exception $e)
+                            {
+                                System::log(
+                                    $e->getMessage(),
+                                    'App\Jobs\Crawlers\Twitter\StreamProcess::handle(Verified UPSERT, '.$tu['id'].')',
+                                    10
+                                );
+                            }
+                        }
+
+                        unset($tracked_users);
+
+                        $tracked_users = [];
                     }
                 }
             }
