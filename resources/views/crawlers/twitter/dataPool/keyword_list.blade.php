@@ -30,6 +30,7 @@
         @endif
         <div class="card-content">
             <span class="card-title">Takip Edilen Kelimeler</span>
+            <span data-name="count" class="grey-text text-darken-2">0</span>
         </div>
         <nav class="nav-half">
             <div class="nav-wrapper">
@@ -52,7 +53,7 @@
              id="users"
              data-href="{{ route('admin.twitter.stream.keywords') }}"
              data-skip="0"
-             data-take="5"
+             data-take="10"
              data-include="string"
              data-more-button="#users-more_button"
              data-callback="__keywords"
@@ -123,6 +124,8 @@
                         item.appendTo(ul)
                 })
             }
+
+            $('[data-name=count]').html(obj.total)
         }
     }
 
