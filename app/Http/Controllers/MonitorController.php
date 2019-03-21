@@ -137,7 +137,7 @@ class MonitorController extends Controller
      */
     public static function logJson()
     {
-        $date = Carbon::now()->subHours(24)->format('Y-m-d H:i:s');
+        $date = Carbon::now()->subHours(2)->format('Y-m-d H:i:s');
 
         $logs = Log::where('updated_at', '>', $date)->orderBy('updated_at', 'DESC')->get();
 
