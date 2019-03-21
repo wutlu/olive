@@ -116,7 +116,7 @@
             'comments_channel' => 'comment-channel'
         ] as $key => $type)
             <div id="{{ $key }}" class="halfload white" style="@if ($key != 'comments'){{ 'display: none;' }}@endif">
-                <div class="collection json-clear @if ($key != 'comments'){{ 'load' }}@endif"
+                <div class="collection json-clear @if ($key == 'comments'){{ 'load' }}@endif"
                      id="{{ $key }}"
                      data-href="{{ route('video.comments', $es->id) }}"
                      data-method="post"

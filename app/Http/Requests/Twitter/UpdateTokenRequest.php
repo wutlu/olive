@@ -27,7 +27,7 @@ class UpdateTokenRequest extends FormRequest
     {
         return [
             'id' => 'required|integer|exists:twitter_tokens,id',
-            'consumer_key' => 'required|string|max:255|unique:twitter_tokens,consumer_key,'.$request->id.'',
+            'consumer_key' => 'required|string|max:255',
             'consumer_secret' => 'required|string|max:255',
             'access_token' => 'required|string|max:255',
             'access_token_secret' => 'required|string|max:255',
