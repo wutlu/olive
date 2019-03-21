@@ -180,7 +180,7 @@ class Crawler extends Command
                 if ($minuteBetween >= 150)
                 {
                     $entry_id++;
-                    $boost = $entry_id + 20;
+                    $boost = $entry_id + 50;
 
                     for ($i = $entry_id; $i <= $boost; $i++)
                     {
@@ -189,7 +189,7 @@ class Crawler extends Command
                         SingleJob::dispatch($sozluk->id, $i)->onQueue('power-crawler');
                     }
 
-                    sleep(6);
+                    sleep(10);
 
                     $ent = SozlukCrawler::where('id', $sozluk->id)->first();
                     $entry_id = $ent->last_id;

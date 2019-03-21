@@ -971,6 +971,7 @@ function __result(__)
 {
     if (__.data('loader') != undefined)
     {
+        alert(__.data('loader'))
         eval(element(__.data('loader'))).addClass('hide')
     }
 

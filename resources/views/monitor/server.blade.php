@@ -65,7 +65,7 @@
         data-method="post"></div>
     <div class="row">
         <div class="col s12 xl6">
-            <div class="card with-bg bg-soft">
+            <div class="card with-bg bg-soft mb-1">
                 <div class="card-metric">
                     <div class="card-metric-title">RAM</div>
                     <div class="card-metric-value">

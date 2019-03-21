@@ -107,7 +107,7 @@
                     <a href="#comments" class="active">Videoya Yapılan Yorumlar</a>
                 </li>
                 <li class="tab">
-                    <a href="#comments_channel">Kanalın Tüm Yorumları</a>
+                    <a href="#comments_channel">Kanalın Yaptığı Tüm Yorumlar</a>
                 </li>
             </ul>
         </div>
@@ -117,13 +117,13 @@
         ] as $key => $type)
             <div id="{{ $key }}" class="halfload white" style="@if ($key != 'comments'){{ 'display: none;' }}@endif">
                 <div class="collection json-clear @if ($key != 'comments'){{ 'load' }}@endif"
-                     id="loader-{{ $key }}"
-                     data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id, 'type' => $type ]) }}"
+                     id="{{ $key }}"
+                     data-href="{{ route('video.comments', $es->id) }}"
                      data-method="post"
                      data-skip="0"
                      data-take="20"
                      data-more-button="#{{ $key }}-more_button"
-                     data-callback="__all"
+                     data-callback="__comments"
                      data-loader="#{{ $key }}-loader"
                      data-nothing>
                     <div class="collection-item nothing hide">
@@ -132,11 +132,10 @@
                         @endcomponent
                     </div>
                     <div class="collection-item z-depth-1 model hide">
-                        <span class="d-table grey-text text-darken-2" data-name="author"></span>
-                        <a href="#" target="_blank" class="d-table grey-text text-darken-2" data-name="screen-name"></a>
+                        <span class="d-table grey-text text-darken-2" data-name="channel-title"></span>
+                        <a href="#" target="_blank" class="d-table grey-text text-darken-2" data-name="channel-id"></a>
                         <time data-time="" class="d-table grey-text" data-name="created-at"></time>
                         <span class="d-block" data-name="text"></span>
-                        <a href="#" class="d-table green-text" data-name="url" target="_blank"></a>
                     </div>
                 </div>
 
@@ -232,25 +231,22 @@
         }
     }
 
-    function __all(__, obj)
+    function __comments(__, obj)
     {
         var ul = $('#' + __.attr('id'));
         var item_model = ul.children('.model');
 
         if (obj.status == 'ok')
         {
-            item_model.addClass('hide')
-
             if (obj.hits.length)
             {
                 $.each(obj.hits, function(key, o) {
                     var item = item_model.clone();
                         item.removeClass('model hide').addClass('_tmp').attr('data-id', o.id)
 
-                        item.find('[data-name=author]').html(o._source.user.name)
-                        item.find('[data-name=screen-name]').html('@' + o._source.user.screen_name).attr('href', 'https://twitter.com/' + o._source.user.screen_name)
+                        item.find('[data-name=channel-title]').html(o._source.channel.title)
+                        item.find('[data-name=channel-id]').html('@' + o._source.channel.id).attr('href', 'https://www.youtube.com/channel/' + o._source.channel.id)
                         item.find('[data-name=text]').html(o._source.text)
-                        item.find('[data-name=url]').html('https://twitter.com/' + o._source.user.screen_name + '/status/' + o._source.id).attr('href', 'https://twitter.com/' + o._source.user.screen_name + '/status/' + o._source.id)
                         item.find('[data-name=created-at]').html(o._source.created_at)
 
                         item.appendTo(ul)

@@ -89,8 +89,9 @@ Route::prefix('db')->group(function () {
         ]
     );
     Route::post('benzer/{es_index}/{es_type}/{es_id}/{type?}', 'ContentController@smilar')->name('content.smilar')->where('type', '(tweet|retweet|comment-video|comment-channel)');
-    Route::post('tweet/{type}/{id}', 'ContentController@tweetAggregation')->name('tweet.aggregation')->where('type', '(names|screen_names|platforms|langs|mention_in|mention_out|hashtags|places|urls)');
-    Route::post('video/{type}/{id}', 'ContentController@videoAggregation')->name('video.aggregation')->where('type', '(titles)')->where('id', '[0-9a-zA-Z_-]+');
+    Route::post('aggregation/tweet/{type}/{id}', 'ContentController@tweetAggregation')->name('tweet.aggregation')->where('type', '(names|screen_names|platforms|langs|mention_in|mention_out|hashtags|places|urls)');
+    Route::post('aggregation/video/{type}/{id}', 'ContentController@videoAggregation')->name('video.aggregation')->where([ 'type' => '(titles)', 'id' => '[0-9a-zA-Z_-]+']);
+    Route::post('video/yorum/{id}', 'ContentController@videoComments')->name('video.comments')->where('id', '[0-9a-zA-Z_-]+');
 });
 
 Route::prefix('gercek-zamanli')->namespace('RealTime')->group(function () {

@@ -160,7 +160,7 @@
                 $('[data-tooltip]').tooltip()
             }
 
-            $('[data-name=count]').html(obj.hits.length + '/{{ auth()->user()->organisation->twitter_follow_limit_keyword }}')
+            $('[data-name=count]').html(obj.total + '/{{ auth()->user()->organisation->twitter_follow_limit_keyword }}')
         }
 
         window.clearTimeout(collection_timer)

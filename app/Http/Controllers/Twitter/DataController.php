@@ -54,7 +54,7 @@ class DataController extends Controller
      *
      * @return array
      */
-    public function keywordListJson(int $skip = 0, int $take = 30)
+    public function keywordListJson(int $skip = 0, int $take = 40)
     {
         $query = StreamingKeywords::where('organisation_id', auth()->user()->organisation_id)->skip($skip)->take($take)->orderBy('updated_at', 'DESC');
 

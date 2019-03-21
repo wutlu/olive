@@ -814,4 +814,45 @@ class ContentController extends Controller
             ];
         }
     }
+
+    /**
+     * Video Yorumları
+     *
+     * @return array
+     */
+    public static function videoComments(string $id, SearchRequest $request)
+    {
+        $comments = Document::search([ 'youtube', 'comments', '*' ], 'comment', [
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [ 'match' => strlen($id) == 11 ? [ 'video_id' => $id ] : [ 'channel.id' => $id ] ]
+                    ]
+                ]
+            ],
+            '_source' => [
+                'text',
+                'channel.id',
+                'channel.title',
+                'created_at'
+            ]
+        ]);
+
+        if ($comments->status == 'ok')
+        {
+            return [
+                'status' => 'ok',
+                'hits' => $comments->data['hits']['hits']
+            ];
+        }
+        else
+        {
+            return [
+                'status' => 'err',
+                'data' => [
+                    'reason' => 'db connection failed'
+                ]
+            ];
+        }
+    }
 }

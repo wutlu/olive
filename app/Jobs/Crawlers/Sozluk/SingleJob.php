@@ -100,6 +100,8 @@ class SingleJob implements ShouldQueue
                     $sozluk->last_id = $entry_id;
                     $sozluk->save();
                 }
+
+                echo Term::line($entry_id);
             }
             else
             {
