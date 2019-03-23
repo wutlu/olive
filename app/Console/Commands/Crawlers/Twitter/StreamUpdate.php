@@ -106,7 +106,7 @@ class StreamUpdate extends Command
                                  ->get();
             break;
             case 'trend':
-                $klimit = 100;
+                $klimit = 200;
             break;
         }
 
@@ -160,7 +160,7 @@ class StreamUpdate extends Command
 
                 if (count($filtered))
                 {
-                    foreach (array_chunk($filtered, 50) as $query)
+                    foreach (array_chunk($filtered, 40) as $query)
                     {
                         foreach ($query as $row)
                         {
