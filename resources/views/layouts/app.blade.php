@@ -460,7 +460,7 @@
             </nav>
         @endisset
 
-        <main class="grey lighten-2">
+        <main>
             <div class="{{ auth()->check() ? 'content sidenav-fixed-layout' : 'content' }}">
                 @if (trim($__env->yieldContent('action-bar')))
                     <div class="{{ isset($wide) ? 'container container-wide' : 'container' }}">
@@ -759,9 +759,9 @@
                     </div>
                 </div>
             </div>
-            <div class="footer-copyright center-align cyan darken-2">
-                <div class="{{ isset($wide) ? 'container container-wide' : 'container' }} white-text">
-                    © {{ date('Y') }} <a class="cyan-text text-lighten-4" href="http://veri.zone">veri.zone</a> | Tüm hakları saklıdır.
+            <div class="footer-copyright center-align white">
+                <div class="{{ isset($wide) ? 'container container-wide' : 'container' }} grey-text">
+                    © {{ date('Y') }} <a class="cyan-text" href="http://veri.zone">veri.zone</a> | Tüm hakları saklıdır.
                 </div>
             </div>
         </footer>

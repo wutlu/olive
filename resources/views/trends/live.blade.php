@@ -28,6 +28,14 @@
         background-size: 50%;
     }
 
+    .fullscreen > .fs-container {
+        margin: -.5rem;
+    }
+
+    .fullscreen > .fs-container > .card {
+        margin: .5rem;
+    }
+
     .trend-collection > .collection-item {
         opacity: .2;
         padding: 6px 24px;
@@ -350,7 +358,7 @@
             <div class="d-flex justify-content-between">
                 <span class="d-flex">
                     <img class="fs-logo" alt="Olive" src="{{ asset('img/olive_logo-grey.svg') }}" />
-                    <span class="fs-title cyan white-text align-self-center ml-1">trend</span>
+                    <span class="fs-title grey-text align-self-center ml-1">trend</span>
                 </span>
                 <a href="#" class="btn-floating btn-flat waves-effect" data-class="body" data-class-remove="fs-active">
                     <i class="material-icons">fullscreen_exit</i>

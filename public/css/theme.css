@@ -537,6 +537,7 @@ table.invoice tfoot > tr {
   height: auto;
   margin: 0;
   line-height: 48px;
+  background-image: url(../img/hexagons.svg);
 }
 @media (max-width: 1024px) {
   #breadcrumb {
@@ -1170,9 +1171,8 @@ body.fs-active .fullscreen > .fs-element {
  */
 main {
   padding: 1rem 0;
-  background-repeat: no-repeat;
-  background-size: 75%;
-  background-position: top right;
+  background-image: url(../img/hexagons.svg);
+  background-color: #c9c9c9;
 }
 
 @media only screen and (max-width: 992px) {
@@ -1475,9 +1475,11 @@ header#main > .parallax-container > .parallax > video#background-video {
 .card {
   margin: 0;
   word-break: break-word;
+  border-radius: 0;
 }
 .card > .card-content {
   padding: 1rem;
+  border-radius: 0;
 }
 .card.with-bg {
 }
@@ -1649,13 +1651,11 @@ header#main > .parallax-container > .parallax > video#background-video {
  * console
  */
 ul#console {
-    height: 400px;
-    overflow-y: scroll;
+    overflow-y: auto;
     background-image: url('../img/olive_logo-opacity.svg');
     background-repeat: no-repeat;
     background-position: center;
     background-size: 70% auto;
-    background-color: #222;
 
     word-break: break-word;
 }
@@ -1781,8 +1781,9 @@ nav .nav-wrapper > ul > li > a > i {
  */
 .collection {
   margin: 0;
-  background-color: transparent;
   border-width: 0;
+  border-radius: 0;
+  background-color: transparent;
   overflow: visible;
 }
 
@@ -1801,8 +1802,9 @@ nav .nav-wrapper > ul > li > a > i {
 .collection > .collection-item {
   padding: 12px 24px;
   margin: 0;
-  background-color: transparent;
   border-width: 0;
+  border-radius: 0;
+  background-color: transparent;
   color: #666 !important;
 }
 .collection.collection-small > .collection-item {

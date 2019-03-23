@@ -94,7 +94,7 @@
             })
 
             var daily_chart = new Chart(document.getElementById(__.data('canvas-id')), {
-                type: 'line',
+                type: 'bar',
                 data: {
                     labels: [
                         "Pazartesi",
@@ -132,7 +132,7 @@
             })
 
             new Chart(document.getElementById(__.data('canvas-id')), {
-                type: 'line',
+                type: 'bar',
                 data: {
                     labels: [
                         "00:00",

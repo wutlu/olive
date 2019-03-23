@@ -101,11 +101,11 @@
 
         <ul
             id="console"
-            class="collection load d-flex align-items-end flex-wrap no-select"
+            class="collection load no-select"
             data-href="{{ route('admin.youtube.monitoring.log') }}"
             data-callback="__log"
             data-method="post">
-            <li class="collection-item hide" style="width: 100%;">
+            <li class="collection-item hide">
                 <p>
                     <span data-name="level"></span>
                     <span class="grey-text text-lighten-2" style="padding: 0 .2rem;">/</span>

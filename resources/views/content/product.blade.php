@@ -31,13 +31,13 @@
 ])
 
 @push('wildcard-top')
-    <div class="card yellow">
+    <div class="card">
         <div class="card-content d-flex justify-content-between">
             <span class="align-self-center">
                 <span class="card-title">{{ $document['_source']['title'] }}</span>
-                <a href="{{ $document['_source']['url'] }}" target="_blank" class="yellow-text text-darken-4">{{ $document['_source']['url'] }}</a>
+                <a href="{{ $document['_source']['url'] }}" target="_blank" class="green-text">{{ $document['_source']['url'] }}</a>
             </span>
-            <img alt="E-ticaret" src="{{ asset('img/logos/sahibinden.svg') }}" class="white align-self-center z-depth-1" style="width: 64px;" />
+            <img alt="E-ticaret" src="{{ asset('img/logos/sahibinden.svg') }}" class="align-self-center" style="width: 64px;" />
         </div>
     </div>
 @endpush

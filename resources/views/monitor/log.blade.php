@@ -135,22 +135,13 @@
 
 @section('content')
     <div class="card with-bg">
-        <div class="card-content">
-            <span class="card-title">Log Dosyaları</span>
-        </div>
-        <ul id="files" class="collection">
-            <li class="collection-item hide" data-href="{{ route('admin.monitoring.log.clear') }}">
-                <span data-name="path"></span>
-                <span data-name="size" class="badge grey darken-4 white-text"></span>
-            </li>
-        </ul>
         <ul
             id="console"
-            class="collection load d-flex align-items-end flex-wrap no-select"
+            class="collection load no-select"
             data-href="{{ route('admin.monitoring.log') }}"
             data-callback="__log"
             data-method="post">
-            <li class="collection-item hide" style="width: 100%;">
+            <li class="collection-item hide">
                 <p>
                     <span data-name="level"></span>
                     <span class="grey-text text-lighten-2" style="padding: 0 .2rem;">/</span>
@@ -163,6 +154,15 @@
                     <span data-name="module" class="grey-text text-darken-2"></span>
                 </p>
                 <textarea data-name="message" class="green-text d-block"></textarea>
+            </li>
+        </ul>
+        <div class="card-content">
+            <span class="card-title">Log Dosyaları</span>
+        </div>
+        <ul id="files" class="collection">
+            <li class="collection-item hide" data-href="{{ route('admin.monitoring.log.clear') }}">
+                <span data-name="path"></span>
+                <span data-name="size" class="badge grey darken-4 white-text"></span>
             </li>
         </ul>
     </div>

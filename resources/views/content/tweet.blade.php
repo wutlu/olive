@@ -54,13 +54,13 @@
 ])
 
 @push('wildcard-top')
-    <div class="card cyan d-block">
+    <div class="card d-block">
         <div class="card-content d-flex justify-content-between">
             <span class="align-self-center">
-                <span class="card-title white-text">{{ $document['_source']['user']['name'] }}</span>
-                <a href="https://twitter.com/intent/user?user_id={{ $document['_source']['user']['id'] }}" target="_blank" class="cyan-text text-darken-4">https://twitter.com/intent/user?user_id={{ $document['_source']['user']['id'] }}</a>
+                <span class="card-title">{{ $document['_source']['user']['name'] }}</span>
+                <a href="https://twitter.com/intent/user?user_id={{ $document['_source']['user']['id'] }}" target="_blank" class="green-text">https://twitter.com/intent/user?user_id={{ $document['_source']['user']['id'] }}</a>
             </span>
-            <img alt="Twitter" src="{{ asset('img/logos/twitter.svg') }}" class="white align-self-center" style="width: 64px;" />
+            <img alt="Twitter" src="{{ asset('img/logos/twitter.svg') }}" class="align-self-center" style="width: 64px;" />
         </div>
     </div>
 @endpush
@@ -90,7 +90,7 @@
                     <div class="card-action d-flex justify-content-end">
                         <span class="right-align">
                             <small class="d-block grey-text">HESAP OLUŞTURULDU</small>
-                            <time data-time="" class="grey-text">{{ date('d.m.Y H:i', strtotime($document['_source']['user']['created_at'])) }}</time>
+                            <time data-time="">{{ date('d.m.Y H:i', strtotime($document['_source']['user']['created_at'])) }}</time>
                         </span>
                     </div>
                 @endisset

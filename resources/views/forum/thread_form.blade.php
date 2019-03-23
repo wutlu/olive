@@ -80,7 +80,7 @@
                 @endif
             </div>
             <div class="card-tabs">
-                <ul class="tabs tabs-transparent cyan darken-2">
+                <ul class="tabs tabs-transparent cyan darken-2 tabs-fixed-width">
                     <li class="tab">
                         <a href="#textarea" class="active">Konu İçeriği</a>
                     </li>

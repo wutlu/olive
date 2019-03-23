@@ -30,10 +30,10 @@
 ])
 
 @push('wildcard-top')
-    <div class="card red">
+    <div class="card">
         <div class="card-content">
-            <span class="card-title white-text">{{ $data['crawler']->name }}</span>
-            <a href="{{ $data['crawler']->site }}" target="_blank" class="red-text text-darken-4">{{ $data['crawler']->site }}</a>
+            <span class="card-title">{{ $data['crawler']->name }}</span>
+            <a href="{{ $data['crawler']->site }}" target="_blank" class="green-text">{{ $data['crawler']->site }}</a>
         </div>
     </div>
 @endpush

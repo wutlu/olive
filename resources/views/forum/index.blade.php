@@ -468,9 +468,9 @@
 @endpush
 
 @section('dock')
-    <div class="card with-bg">
+    <div class="card cyan with-bg">
         <div class="card-content">
-            <span class="card-title">Kategoriler</span>
+            <span class="card-title white-text">Kategoriler</span>
         </div>
 
         @auth
@@ -481,7 +481,7 @@
                     </a>
                 </div>
 
-                <div class="card-content cyan">Bu alan sadece root yetkisine sahip kullanıcılarda görünür.</div>
+                <div class="card-content white">Bu alan sadece root yetkisine sahip kullanıcılarda görünür.</div>
             @endif
         @endauth
 

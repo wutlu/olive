@@ -842,7 +842,13 @@ class ContentController extends Controller
         {
             return [
                 'status' => 'ok',
-                'hits' => $comments->data['hits']['hits']
+                'hits' => array_map(function($arr) {
+                    return [
+                        'text' => $arr['_source']['text'],
+                        'channel' => $arr['_source']['channel'],
+                        'created_at' => $arr['_source']['created_at'],
+                    ];
+                }, $comments->data['hits']['hits'])
             ];
         }
         else

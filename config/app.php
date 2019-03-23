@@ -184,6 +184,7 @@ return [
         Alaouy\Youtube\YoutubeServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+        App\Providers\HorizonServiceProvider::class,
 
         /*
          * Local Service Providers...
