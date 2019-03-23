@@ -93,7 +93,7 @@ class StreamUpdate extends Command
                                  ->get();
             break;
             case 'keyword':
-                $klimit = 100;
+                $klimit = 50;
                 $kcolumn = 'keyword';
 
                 $kquery = new StreamingKeywords;
@@ -106,7 +106,7 @@ class StreamUpdate extends Command
                                  ->get();
             break;
             case 'trend':
-                $klimit = 150;
+                $klimit = 100;
             break;
         }
 
