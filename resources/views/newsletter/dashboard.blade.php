@@ -95,17 +95,16 @@
                 <time data-name="updated-at" class="timeago"></time>
             </a>
         </div>
+
+        @component('components.loader')
+            @slot('color', 'cyan')
+            @slot('id', 'home-loader')
+            @slot('class', 'card-loader-unstyled')
+        @endcomponent
     </div>
 
-    @component('components.loader')
-        @slot('color', 'cyan')
-        @slot('id', 'home-loader')
-    @endcomponent
-
-    <div class="center-align">
-        <button class="btn-flat waves-effect hide json"
-                id="newsletters-more_button"
-                type="button"
-                data-json-target="#newsletters">Daha Fazla</button>
-    </div>
+    <a href="#"
+       class="btn-small white grey-text more hide json"
+       id="newsletters-more_button"
+       data-json-target="#newsletters">Daha Fazla</a>
 @endsection

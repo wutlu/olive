@@ -86,12 +86,10 @@
         @endcomponent
     </div>
 
-    <div class="center-align">
-        <button class="btn-flat waves-effect hide json"
-                id="users-more_button"
-                type="button"
-                data-json-target="#users">Daha Fazla</button>
-    </div>
+    <a href="#"
+       class="btn-small white grey-text more hide json"
+       id="users-more_button"
+       data-json-target="#users">Daha Fazla</a>
 @endsection
 
 @section('dock')

@@ -62,17 +62,15 @@
 
         @component('components.loader')
             @slot('color', 'cyan')
-            @slot('class', 'card-loader-unstyled')
             @slot('id', 'transactions-loader')
+            @slot('class', 'card-loader-unstyled')
         @endcomponent
     </div>
 
-    <div class="center-align">
-        <button class="btn-flat waves-effect hide json"
-                id="transactions-more_button"
-                type="button"
-                data-json-target="ul#transactions">Daha Fazla</button>
-    </div>
+    <a href="#"
+       class="btn-small white grey-text more hide json"
+       id="transactions-more_button"
+       data-json-target="#transactions">Daha Fazla</a>
 @endsection
 
 @push('local.scripts')

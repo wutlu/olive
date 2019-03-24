@@ -118,19 +118,18 @@
                         <span class="d-table grey-text text-darken-2" data-name="entry"></span>
                     </div>
                 </div>
+
+                @component('components.loader')
+                    @slot('color', 'cyan')
+                    @slot('id', 'home-loader')
+                    @slot('class', 'card-loader-unstyled')
+                @endcomponent
             </div>
 
-            @component('components.loader')
-                @slot('color', 'cyan')
-                @slot('id', 'home-loader')
-            @endcomponent
-
-            <div class="center-align">
-                <button class="btn-flat waves-effect hide json"
-                        id="smilars-more_button"
-                        type="button"
-                        data-json-target="#smilars">Daha Fazla</button>
-            </div>
+            <a href="#"
+               class="btn-small white grey-text more hide json"
+               id="smilars-more_button"
+               data-json-target="#smilars">Daha Fazla</a>
         </div>
     </div>
 @endsection

@@ -715,11 +715,11 @@
     @endauth
 
     <div class="@auth{{ @$sidenav_fixed_layout ? 'sidenav-fixed-layout' : '' }}@endauth">
-        <footer class="page-footer grey darken-4">
+        <footer class="page-footer grey lighten-4">
             <div class="{{ isset($wide) ? 'container container-wide' : 'container' }}">
                 <div class="row mb-1">
                     <div class="col l6 s12">
-                        <img id="vz-logo" src="{{ asset('img/veri.zone-logo-white.svg') }}" alt="veri.zone-logo" />
+                        <img id="vz-logo" src="{{ asset('img/veri.zone-logo-grey.svg') }}" alt="veri.zone-logo" />
                         <p class="grey-text">veri.zone, açık kaynak internet verilerini toplar ve elde ettiği verilerden anlamlı analizler çıkaran araçlar geliştirir.</p>
                     </div>
                     <div class="col l2 offset-l2 s12">

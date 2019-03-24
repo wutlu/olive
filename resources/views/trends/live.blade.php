@@ -28,14 +28,6 @@
         background-size: 50%;
     }
 
-    .fullscreen > .fs-container {
-        margin: -.5rem;
-    }
-
-    .fullscreen > .fs-container > .card {
-        margin: .5rem;
-    }
-
     .trend-collection > .collection-item {
         opacity: .2;
         padding: 6px 24px;
@@ -368,11 +360,11 @@
         <div class="fs-container sortable">
             @foreach (
                 [
+                    'twitter' => 'Twitter',
                     'sozluk' => 'Sözlük',
                     'news' => 'Haber',
+                    'youtube' => 'YouTube',
                     'google' => 'Google',
-                    'twitter' => 'Twitter',
-                    'youtube' => 'YouTube'
                 ]
                 as $key => $name
             )

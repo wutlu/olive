@@ -892,49 +892,69 @@ function vzAjax(__)
         {
             var callback = __.data('callback');
 
-            if (__.data('skip') !== undefined)
+            if (obj.status == 'ok')
             {
-                if (__.hasClass('json-clear'))
+                if (__.data('skip') !== undefined)
                 {
-                    __.children('._tmp').remove()
-                    __.removeClass('json-clear')
-                }
-
-                if (obj.hits)
-                {
-                    if (obj.hits.length)
+                    if (__.hasClass('json-clear'))
                     {
-                        __.data('skip', __.data('skip') + obj.hits.length)
+                        __.children('._tmp').remove()
+                        __.removeClass('json-clear')
                     }
-                }
 
-                var more_button = eval(element(__.data('more-button')));
-
-                if (__.data('take') > obj.hits.length)
-                {
-                    more_button.addClass('hide')
-                    more_button.parent('.card-footer').addClass('hide')
-                }
-                else
-                {
-                    more_button.removeClass('hide')
-                    more_button.parent('.card-footer').removeClass('hide')
-                }
-            }
-
-            if (__.data('nothing') != undefined)
-            {
-                if (!__.children('._tmp').length)
-                {
-                    if (obj.hits.length)
+                    if (obj.hits)
                     {
-                        __.children('.nothing').addClass('hide')
+                        if (obj.hits.length)
+                        {
+                            __.data('skip', __.data('skip') + obj.hits.length)
+                        }
+                    }
+
+                    var more_button = eval(element(__.data('more-button')));
+
+                    if (__.data('take') > obj.hits.length)
+                    {
+                        more_button.addClass('hide')
+                        more_button.parent('.card-footer').addClass('hide')
                     }
                     else
                     {
-                        __.children('.nothing').removeClass('hide')
+                        more_button.removeClass('hide')
+                        more_button.parent('.card-footer').removeClass('hide')
                     }
                 }
+
+                if (__.data('nothing') != undefined)
+                {
+                    if (!__.children('._tmp').length)
+                    {
+                        if (obj.hits.length)
+                        {
+                            __.children('.nothing').addClass('hide')
+                        }
+                        else
+                        {
+                            __.children('.nothing').removeClass('hide')
+                        }
+                    }
+                }
+            }
+            else if (obj.status == 'err' && obj.reason)
+            {
+                modal({
+                    'id': 'error',
+                    'title': keywords.err,
+                    'body': obj.reason,
+                    'size': 'modal-small',
+                    'options': {},
+                    'footer': [
+                        $('<a />', {
+                            'href': '#',
+                            'class': 'modal-close waves-effect btn-flat',
+                            'html': buttons.ok
+                        })
+                    ]
+                })
             }
 
             if (callback)
@@ -944,7 +964,7 @@ function vzAjax(__)
 
             if (obj.verification)
             {
-                var mdl = modal({
+                modal({
                     'id': 'alert',
                     'title': keywords.verification,
                     'body': verifications[obj.verification],

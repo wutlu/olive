@@ -822,7 +822,10 @@ class ContentController extends Controller
      */
     public static function videoComments(string $id, SearchRequest $request)
     {
-        $comments = Document::search([ 'youtube', 'comments', '*' ], 'comment', [
+        $arr = [
+            'from' => $request->skip,
+            'size' => $request->take,
+            'sort' => [ 'created_at' => 'desc' ],
             'query' => [
                 'bool' => [
                     'must' => [
@@ -836,28 +839,76 @@ class ContentController extends Controller
                 'channel.title',
                 'created_at'
             ]
-        ]);
+        ];
+
+        $clean = Term::cleanSearchQuery($request->string);
+
+        if ($request->string)
+        {
+            $arr['query']['bool']['must'][] = [
+                'query_string' => [
+                    'query' => $request->string,
+                    'default_operator' => 'AND'
+                ]
+            ];
+        }
+
+        $comments = Document::search([ 'youtube', 'comments', '*' ], 'comment', $arr);
 
         if ($comments->status == 'ok')
         {
             return [
                 'status' => 'ok',
+                'total' => $comments->data['hits']['total'],
                 'hits' => array_map(function($arr) {
+                    $replies = @Document::search([ 'youtube', 'comments', '*' ], 'comment', [
+                        'sort' => [ 'created_at' => 'desc' ],
+                        'query' => [
+                            'bool' => [
+                                'must' => [
+                                    [ 'match' => [ 'comment_id' => $arr['_id'] ] ],
+                                ]
+                            ]
+                        ],
+                        '_source' => [
+                            'text',
+                            'channel.id',
+                            'channel.title',
+                            'created_at'
+                        ]
+                    ])->data['hits']['hits'];
+
                     return [
+                        'id' => $arr['_id'],
                         'text' => $arr['_source']['text'],
                         'channel' => $arr['_source']['channel'],
                         'created_at' => $arr['_source']['created_at'],
+
+                        '_index' => $arr['_index'],
+                        '_type' => $arr['_type'],
+                        '_id' => $arr['_id'],
+
+                        'replies' => array_map(function($sarr) {
+                            return [
+                                'text' => $sarr['_source']['text'],
+                                'channel' => $sarr['_source']['channel'],
+                                'created_at' => $sarr['_source']['created_at'],
+
+                                '_index' => $sarr['_index'],
+                                '_type' => $sarr['_type'],
+                                '_id' => $sarr['_id'],
+                            ];
+                        }, $replies)
                     ];
-                }, $comments->data['hits']['hits'])
+                }, $comments->data['hits']['hits']),
+                'words' => $clean->words
             ];
         }
         else
         {
             return [
                 'status' => 'err',
-                'data' => [
-                    'reason' => 'db connection failed'
-                ]
+                'reason' => 'Veritabanı bağlantısı kurulamadı.'
             ];
         }
     }

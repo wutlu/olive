@@ -39,7 +39,7 @@
                            name="string"
                            type="search"
                            class="validate json json-search"
-                           data-json-target="#users"
+                           data-json-target="#keywords"
                            placeholder="Ara"
                            value="{{ $organisation ? '@'.@$organisation->name : '' }}" />
                     <label class="label-icon" for="string">
@@ -50,12 +50,12 @@
             </div>
         </nav>
         <div class="collection load json-clear" 
-             id="users"
+             id="keywords"
              data-href="{{ route('admin.twitter.stream.keywords') }}"
              data-skip="0"
              data-take="10"
              data-include="string"
-             data-more-button="#users-more_button"
+             data-more-button="#keywords-more_button"
              data-callback="__keywords"
              data-method="post"
              data-loader="#home-loader"
@@ -85,12 +85,10 @@
         @endcomponent
     </div>
 
-    <div class="center-align">
-        <button class="btn-flat waves-effect hide json"
-                id="users-more_button"
-                type="button"
-                data-json-target="#users">Daha Fazla</button>
-    </div>
+    <a href="#"
+       class="btn-small white grey-text more hide json"
+       id="keywords-more_button"
+       data-json-target="#keywords">Daha Fazla</a>
 @endsection
 
 @section('dock')
@@ -100,7 +98,7 @@
 @push('local.scripts')
     function __keywords(__, obj)
     {
-        var ul = $('#users');
+        var ul = $('#keywords');
         var item_model = ul.children('.model');
 
         if (obj.status == 'ok')

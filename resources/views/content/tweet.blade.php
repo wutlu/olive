@@ -295,7 +295,7 @@
                      data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id, 'type' => $type ]) }}"
                      data-method="post"
                      data-skip="0"
-                     data-take="20"
+                     data-take="10"
                      data-more-button="#{{ $key }}-more_button"
                      data-callback="__all"
                      data-loader="#{{ $key }}-loader"
@@ -320,12 +320,10 @@
                     @slot('id', $key.'-loader')
                 @endcomponent
 
-                <div class="center-align mt-1">
-                    <button class="btn-flat waves-effect hide json"
-                            id="{{ $key }}-more_button"
-                            type="button"
-                            data-json-target="#loader-{{ $key }}">Daha Fazla</button>
-                </div>
+                <a href="#"
+                   class="btn-small white grey-text more more-unstyled hide json"
+                   id="{{ $key }}-more_button"
+                   data-json-target="#loader-{{ $key }}">Daha Fazla</a>
             </div>
         @endforeach
     </div>

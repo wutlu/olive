@@ -2,6 +2,7 @@
 
 return [
     'keywords' => [
+        'err' => 'Hata',
         'alert' => 'Uyarı',
         'ok' => 'Tamam',
         'cancel' => 'Vazgeç',

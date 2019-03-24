@@ -78,7 +78,7 @@
              data-href="{{ route('admin.organisation.list.json') }}"
              data-method="post"
              data-skip="0"
-             data-take="5"
+             data-take="10"
              data-include="string,status"
              data-more-button="#organisations-more_button"
              data-callback="__organisations"
@@ -102,19 +102,18 @@
                 <span data-name="status" class="ml-auto"></span>
             </a>
         </div>
+
+        @component('components.loader')
+            @slot('color', 'cyan')
+            @slot('id', 'home-loader')
+            @slot('class', 'card-loader-unstyled')
+        @endcomponent
     </div>
 
-    @component('components.loader')
-        @slot('color', 'cyan')
-        @slot('id', 'home-loader')
-    @endcomponent
-
-    <div class="center-align">
-        <button class="btn-flat waves-effect hide json"
-                id="organisations-more_button"
-                type="button"
-                data-json-target="#organisations">Daha Fazla</button>
-    </div>
+    <a href="#"
+       class="btn-small white grey-text more hide json"
+       id="organisations-more_button"
+       data-json-target="#organisations">Daha Fazla</a>
 @endsection
 
 @push('local.scripts')

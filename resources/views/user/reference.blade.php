@@ -83,12 +83,10 @@
                     @slot('id', 'references-loader')
                 @endcomponent
 
-                <div class="center-align">
-                    <button class="btn-flat waves-effect hide json"
-                            id="references-more_button"
-                            type="button"
-                            data-json-target="ul#references">Daha Fazla</button>
-                </div>
+                <a href="#"
+                   class="btn-small white grey-text more more-unstyled hide json"
+                   id="references-more_button"
+                   data-json-target="#references">Daha Fazla</a>
             </div>
             <div id="islem-gecmisi" style="display: none;">
                 <ul class="collection load json-clear" 
@@ -128,12 +126,10 @@
                     @slot('id', 'transactions-loader')
                 @endcomponent
 
-                <div class="center-align">
-                    <button class="btn-flat waves-effect hide json"
-                            id="transactions-more_button"
-                            type="button"
-                            data-json-target="ul#transactions">Daha Fazla</button>
-                </div>
+                <a href="#"
+                   class="btn-small white grey-text more more-unstyled hide json"
+                   id="transactions-more_button"
+                   data-json-target="#transactions">Daha Fazla</a>
             </div>
 
             @push('local.scripts')

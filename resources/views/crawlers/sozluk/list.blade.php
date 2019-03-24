@@ -180,19 +180,18 @@
                 </small>
             </a>
         </div>
+
+        @component('components.loader')
+            @slot('color', 'cyan')
+            @slot('id', 'home-loader')
+            @slot('class', 'card-loader-unstyled')
+        @endcomponent
     </div>
 
-    @component('components.loader')
-        @slot('color', 'cyan')
-        @slot('id', 'home-loader')
-    @endcomponent
-
-    <div class="center-align">
-        <button class="btn-flat waves-effect hide json"
-                id="crawlers-more_button"
-                type="button"
-                data-json-target="#crawlers">Daha Fazla</button>
-    </div>
+    <a href="#"
+       class="btn-small white grey-text more hide json"
+       id="crawlers-more_button"
+       data-json-target="#crawlers">Daha Fazla</a>
 @endsection
 
 @push('local.scripts')

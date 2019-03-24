@@ -973,12 +973,10 @@
         </div>
     </div>
 
-    <div class="center-align">
-        <button class="btn-flat waves-effect hide json"
-                id="search-more_button"
-                type="button"
-                data-json-target="ul#search">Daha Fazla</button>
-    </div>
+    <a href="#"
+       class="btn-small white grey-text more hide json"
+       id="search-more_button"
+       data-json-target="#search">Daha Fazla</a>
 @endsection
 
 @include('_inc.alerts.search_operators')
