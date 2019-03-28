@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 
-use App\Http\Requests\SearchRequest;
+use App\Http\Requests\Crawlers\Media\ListRequest;
 use App\Http\Requests\Crawlers\Media\StatusRequest;
 use App\Http\Requests\Crawlers\Media\UpdateRequest;
 use App\Http\Requests\Crawlers\Media\DeleteRequest;
@@ -49,14 +49,22 @@ class MediaController extends Controller
      *
      * @return array
      */
-    public static function listViewJson(SearchRequest $request)
+    public static function listViewJson(ListRequest $request)
     {
         $take = $request->take;
         $skip = $request->skip;
 
         $query = new MediaCrawler;
-        $query = $request->string ? $query->orWhere('name', 'ILIKE', '%'.$request->string.'%')
-                                          ->orWhere('site', 'ILIKE', '%'.$request->string.'%') : $query;
+        $query = $request->string ? $query->where(function($q) {
+            $q->orWhere('name', 'ILIKE', '%'.$request->string.'%');
+            $q->orWhere('site', 'ILIKE', '%'.$request->string.'%');
+        }) : $query;
+
+        if ($request->status)
+        {
+            $query = $query->where('status', $request->status == 'on' ? true : false);
+        }
+
         $query = $query->skip($skip)
                        ->take($take)
                        ->orderBy('status', 'ASC')

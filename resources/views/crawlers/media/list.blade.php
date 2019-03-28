@@ -120,6 +120,23 @@
 
 @section('dock')
     @include('crawlers.media._menu', [ 'active' => 'list' ])
+
+    <div class="card">
+        <div class="collection">
+            <label class="collection-item waves-effect d-block">
+                <input name="status" id="status-all" type="radio" value="" />
+                <span>Tümü</span>
+            </label>
+            <label class="collection-item waves-effect d-block">
+                <input name="status" id="status-on" type="radio" value="on" checked />
+                <span>Aktif Botlar</span>
+            </label>
+            <label class="collection-item waves-effect d-block">
+                <input name="status" id="status-off" type="radio" value="off" />
+                <span>Pasif Botlar</span>
+            </label>
+        </div>
+    </div>
 @endsection
 
 @section('content')
@@ -151,7 +168,7 @@
              data-href="{{ route('crawlers.media.list.json') }}"
              data-skip="0"
              data-take="50"
-             data-include="string"
+             data-include="string,status"
              data-more-button="#crawlers-more_button"
              data-callback="__crawlers"
              data-loader="#home-loader"
@@ -275,4 +292,11 @@
             }, 10000)
         }
     }
+
+    $(document).on('change', 'input[name=status]', function() {
+        var list = $('#crawlers');
+            list.data('skip', 0).addClass('json-clear')
+
+        vzAjax(list)
+    })
 @endpush
