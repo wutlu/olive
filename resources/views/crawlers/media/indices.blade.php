@@ -106,7 +106,7 @@
 
 @section('dock')
     @if ($options['media.index.status'] != count($index_groups))
-        <div class="card" data-name="index-trigger-menu">
+        <div class="card" data-name="index-trigger-menu mb-1">
             <div class="card-content red white-text">Uyarı! Medya tarafında eksik indexler mevcut!</div>
             <div class="collection">
                 <a
