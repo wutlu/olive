@@ -50,8 +50,9 @@ class TakerJob implements ShouldQueue
             $item = Crawler::articleDetection(
                 $crawler->site,
                 $this->data['url'],
-                $crawler->selector_title,
-                $crawler->selector_description,
+                $crawler->selector_title ? $crawler->selector_title : null,
+                $crawler->selector_description ? $crawler->selector_description : null,
+                $crawler->standard,
                 $crawler->proxy
             );
 

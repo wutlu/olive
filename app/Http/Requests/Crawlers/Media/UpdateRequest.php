@@ -29,13 +29,14 @@ class UpdateRequest extends FormRequest
             'name'                 => 'required|string|max:24|unique:media_crawlers,name,'.$request->id,
             'site'                 => 'required|string|max:255|url',
             'base'                 => 'required|string|max:255',
-            'url_pattern'          => 'required|string|max:255',
-            'selector_title'       => 'required|string|max:255',
-            'selector_description' => 'required|string|max:255',
+            'url_pattern'          => 'nullable|required_without:standard|string|max:255',
+            'selector_title'       => 'nullable|required_without:standard|string|max:255',
+            'selector_description' => 'nullable|required_without:standard|string|max:255',
             'control_interval'     => 'required|integer|max:60|min:1',
             'off_limit'            => 'required|integer|max:255|min:10',
             'test_count'           => 'required|integer|max:100|min:1',
             'proxy'                => 'nullable|string|in:on',
+            'standard'             => 'nullable|string|in:on',
         ];
     }
 }

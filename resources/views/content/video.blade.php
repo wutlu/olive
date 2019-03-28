@@ -84,7 +84,7 @@
         <div class="card-tabs">
             <ul class="tabs tabs-fixed-width sub-tabs">
                 <li class="tab">
-                    <a href="#tab-0">Video</a>
+                    <a href="#tab-0" class="active">Video</a>
                 </li>
                 <li class="tab">
                     <a href="#commentsVideo">Videoya Yapılan Yorumlar</a>
@@ -101,8 +101,7 @@
                 type="text/html"
                 width="100%"
                 height="360"
-                class="mt-1"
-                src="http://www.youtube.com/embed/{{ $document['_source']['id'] }}?origin={{ config('app.url') }}"
+                src="http://www.youtube.com/embed/{{ $document['_source']['id'] }}?origin={{ url('/') }}"
                 frameborder="0">
             </iframe>
             @isset ($document['_source']['description'])
@@ -172,7 +171,6 @@
                id="ajax-commentsVideo-more_button"
                data-json-target="#ajax-commentsVideo">Daha Fazla</a>
         </div>
-
         <div class="card card-unstyled halfload" id="commentsUser">
             <div class="card-content grey-text">
                 Kullanıcı için <span data-name="count">0</span> yorum bulundu.
@@ -234,14 +232,6 @@
                data-json-target="#ajax-commentsUser">Daha Fazla</a>
         </div>
     </div>
-
-
-
-
-
-
-
-
 @endsection
 
 @push('local.scripts')
@@ -384,6 +374,12 @@
         </div>
     @endforeach
 @endsection
+
+@push('external.include.header')
+    @if (config('app.env') == 'production')
+        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+    @endif
+@endpush
 
 @push('external.include.footer')
     <script src="{{ asset('js/chart.min.js?v='.config('system.version')) }}"></script>

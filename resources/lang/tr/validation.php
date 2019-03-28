@@ -284,5 +284,6 @@ return [
         'skip'                         => 'Geç',
         'take'                         => 'Yakala',
         'cookie'                       => 'Çerez',
+        'standard'                     => 'Standart',
     ],
 ];

@@ -190,6 +190,19 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="collection-item">
+                        <label>
+                            <input
+                                name="standard"
+                                id="standard"
+                                value="on"
+                                type="checkbox"
+                                {{ $crawler->standard ? 'checked' : '' }} />
+                            <span>RSS ile Standart Toplama</span>
+                        </label>
+                    </div>
+
                     @push('local.scripts')
                         $(document).on('click', '[data-id=match]', function() {
                             var __ = $(this);
@@ -200,7 +213,7 @@
                                 M.updateTextFields()
                         })
                     @endpush
-                    <div class="collection-item green lighten-5 z-depth-1">
+                    <div class="collection-item green lighten-5 z-depth-1 {{ $crawler->standard ? 'hide' : '' }}" data-name="patterns">
                         <div class="input-field">
                             <input name="url_pattern" id="url_pattern" value="{{ $crawler->url_pattern }}" type="text" class="validate" data-length="255" />
                             <label for="url_pattern">Makale URL Deseni</label>
@@ -208,7 +221,7 @@
                         </div>
                         @include('crawlers._inc.regex')
                     </div>
-                    <div class="collection-item">
+                    <div class="collection-item {{ $crawler->standard ? 'hide' : '' }}" data-name="patterns">
                         <div class="d-flex flex-wrap">
                             <div style="min-width: 50%; padding: 1rem;">
                                 <div class="input-field">
@@ -226,6 +239,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="collection-item">
                         <div class="d-flex flex-wrap">
                             <div style="width: 50%; padding: 1rem;">
@@ -279,6 +293,19 @@
 @endsection
 
 @push('local.scripts')
+    $(document).on('change', 'input[name=standard]', function() {
+        var patterns = $('[data-name=patterns]');
+
+        if ($('#standard:checkbox:checked').length > 0)
+        {
+            patterns.addClass('hide')
+        }
+        else
+        {
+            patterns.removeClass('hide')
+        }
+    })
+
     $(document).on('click', '[data-trigger=delete]', function() {
         var mdl = modal({
                 'id': 'status',

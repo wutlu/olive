@@ -22,7 +22,7 @@ class Crawler
      *
      * @return array
      */
-    public static function mediaLinkDetection(string $site, string $url_pattern, string $base = '/', bool $proxy = false)
+    public static function mediaLinkDetection(string $site, string $url_pattern = null, string $base, bool $standard, bool $proxy)
     {
         $data = [];
 
@@ -45,6 +45,11 @@ class Crawler
                 'verify' => false
             ];
 
+            if ($standard)
+            {
+                $arr['headers']['Accept'] = 'application/xml';
+            }
+
             if ($proxy)
             {
                 $p = Proxy::where('health', '>', 7)->inRandomOrder()->first();
@@ -66,20 +71,33 @@ class Crawler
                 ]
             );
 
-            preg_match_all('/'.$url_pattern.'/', $dom, $match);
-
-            if (@$match[0])
+            if ($standard)
             {
-                $match = array_unique($match[0]); 
+                $xml = new \SimpleXMLElement($dom);
+                $feed = (array) $xml->channel;
 
-                foreach ($match as $item)
+                foreach ($feed['item'] as $item)
                 {
-                    $data['links'][] = $site.'/'.str_after($item, $site.'/');
+                    $data['links'][] = ((array) $item->link)[0];
                 }
             }
             else
             {
-                $data['error_reasons'][] = 'Girilen desen hiçbir sonuç ile eşleşmedi.';
+                preg_match_all('/'.$url_pattern.'/', $dom, $match);
+
+                if (@$match[0])
+                {
+                    $match = array_unique($match[0]); 
+
+                    foreach ($match as $item)
+                    {
+                        $data['links'][] = $site.'/'.str_after($item, $site.'/');
+                    }
+                }
+                else
+                {
+                    $data['error_reasons'][] = 'Girilen desen hiçbir sonuç ile eşleşmedi.';
+                }
             }
         }
         catch (\Exception $e)
@@ -170,7 +188,7 @@ class Crawler
      *
      * @return array
      */
-    public static function articleDetection(string $site, string $page, string $title_selector, string $description_selector, bool $proxy = false)
+    public static function articleDetection(string $site, string $page, string $title_selector = null, string $description_selector = null, bool $standard, bool $proxy)
     {
         $data = [
             'page' => $page,
@@ -215,12 +233,22 @@ class Crawler
             $meta_property = $saw->get('meta[property]')->toArray();
             $meta_name = $saw->get('meta[name]')->toArray();
 
-            # title detect
-            $title = $saw->get($title_selector)->toText();
+            if ($standard)
+            {
+                $title = null;
+            }
+            else
+            {
+                # title detect
+                $title = $saw->get($title_selector)->toText();
+            }
 
             if (!$title)
             {
-                $data['error_reasons'][] = 'Başlık tespit edilemedi. Alternatif denendi.';
+                if (!$standard)
+                {
+                    $data['error_reasons'][] = 'Başlık tespit edilemedi. Alternatif denendi.';
+                }
 
                 $title = @array_first($meta_property, function ($value, $key) { return @$value['property'] == 'og:title'; })['content'];
 
@@ -232,12 +260,22 @@ class Crawler
 
             $title = Term::convertAscii($title);
 
-            # description detect
-            $description = $saw->get($description_selector)->toText();
+            if ($standard)
+            {
+                $description = null;
+            }
+            else
+            {
+                # description detect
+                $description = $saw->get($description_selector)->toText();
+            }
 
             if (!$description)
             {
-                $data['error_reasons'][] = 'Açıklama tespit edilemedi. Alternatif denendi.';
+                if (!$standard)
+                {
+                    $data['error_reasons'][] = 'Açıklama tespit edilemedi. Alternatif denendi.';
+                }
 
                 $description = @array_first($meta_property, function ($value, $key) { return @$value['property'] == 'og:description'; })['content'];
 
