@@ -118,12 +118,12 @@
                     data-callback="__index_create"
                     data-callbefore="__index_create_before">Eksik Indexleri Oluştur</a>
             </div>
+            @component('components.loader')
+                @slot('color', 'cyan')
+                @slot('class', 'hide card-loader-unstyled')
+                @slot('id', 'index-trigger-loader')
+            @endcomponent
         </div>
-        @component('components.loader')
-            @slot('color', 'cyan')
-            @slot('class', 'hide')
-            @slot('id', 'index-trigger-loader')
-        @endcomponent
     @endif
     @include('crawlers.media._menu', [ 'active' => 'indices' ])
 @endsection
