@@ -20,7 +20,7 @@ use App\Mail\ServerAlertMail;
 use System;
 use Sentiment;
 
-class TakerJob// implements ShouldQueue
+class TakerJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
