@@ -59,6 +59,10 @@ class MediaCrawler extends Model
                             'type' => 'keyword',
                             'index' => false
                         ],
+                        'image_url' => [
+                            'type' => 'keyword',
+                            'index' => false
+                        ],
                         'status' => [ 'type' => 'keyword' ],
                         'message' => [
                             'type' => 'text',

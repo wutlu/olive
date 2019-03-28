@@ -55,9 +55,9 @@ class MediaController extends Controller
         $skip = $request->skip;
 
         $query = new MediaCrawler;
-        $query = $request->string ? $query->where(function($q) {
-            $q->orWhere('name', 'ILIKE', '%'.$request->string.'%');
-            $q->orWhere('site', 'ILIKE', '%'.$request->string.'%');
+        $query = $request->string ? $query->where(function($query) use ($request) {
+            $query->orWhere('name', 'ILIKE', '%'.$request->string.'%');
+            $query->orWhere('site', 'ILIKE', '%'.$request->string.'%');
         }) : $query;
 
         if ($request->status)

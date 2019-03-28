@@ -292,12 +292,33 @@ class Crawler
 
             $description = Term::convertAscii($description);
 
+            $image = @array_first($meta_property, function ($value, $key) { return @$value['property'] == 'og:image'; })['content'];
+
+            if (!$image)
+            {
+                $image = @array_first($meta_name, function ($value, $key) { return @$value['name'] == 'twitter:image'; })['content'];
+            }
+
+            if (!$image)
+            {
+                $image = @array_first($meta_name, function ($value, $key) { return @$value['itemprop'] == 'image'; })['content'];
+            }
+
+            if ($image)
+            {
+                $data['data']['image'] = $image;
+            }
+            else
+            {
+                $data['error_reasons'][] = 'Resim tespit edilemedi.';
+            }
+
             $created_at = DateUtility::getDateInDom($dom);
 
             $data['data'] = [
                 'title' => $title,
                 'description' => $description,
-                'created_at' => $created_at
+                'created_at' => $created_at,
             ];
 
             # date
