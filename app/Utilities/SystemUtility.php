@@ -285,5 +285,4 @@ class SystemUtility
         
         return $numCpus;
     }
-
 }

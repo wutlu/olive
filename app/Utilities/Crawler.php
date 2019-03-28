@@ -15,6 +15,8 @@ use Carbon\Carbon;
 use App\Models\Proxy;
 use App\Models\Crawlers\Host;
 
+use App\Utilities\ImageUtility;
+
 class Crawler
 {
     /**
@@ -306,11 +308,10 @@ class Crawler
 
             if ($image)
             {
-                $data['data']['image'] = $image;
-            }
-            else
-            {
-                $data['error_reasons'][] = 'Resim tespit edilemedi.';
+                if (!filter_var($image, FILTER_VALIDATE_URL))
+                {
+                    $image = null;
+                }
             }
 
             $created_at = DateUtility::getDateInDom($dom);
@@ -320,6 +321,16 @@ class Crawler
                 'description' => $description,
                 'created_at' => $created_at,
             ];
+
+            # image
+            if ($image)
+            {
+                $data['data']['image_url'] = $image;
+            }
+            else
+            {
+                $data['error_reasons'][] = 'Resim tespit edilemedi.';
+            }
 
             # date
             if (!$created_at)
