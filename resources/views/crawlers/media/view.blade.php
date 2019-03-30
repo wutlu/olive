@@ -178,7 +178,7 @@
                                 <div class="input-field">
                                     <input name="site" id="site" value="{{ $crawler->site }}" type="text" class="validate" data-length="255" />
                                     <label for="site">Ana Sayfa</label>
-                                    <small class="helper-text">Veri toplanacak sitenin Ana Sayfa http(s) adresi.</small>
+                                    <small class="helper-text">Veri toplanacak sitenin kök http(s) adresi.</small>
                                 </div>
                             </div>
                             <div style="min-width: 50%; padding: 1rem;">
