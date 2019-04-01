@@ -291,6 +291,8 @@ class MediaController extends Controller
             $crawler->selector_title = 'h1';
             $crawler->selector_description = 'h2';
             $crawler->elasticsearch_index_name = self::getBestIndex();
+            $crawler->off_limit = 20;
+            $crawler->proxy = true;
             $crawler->save();
 
             return redirect()->route('crawlers.media.bot', $crawler->id);

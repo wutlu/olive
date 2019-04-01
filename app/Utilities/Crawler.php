@@ -13,7 +13,6 @@ use App\Utilities\Term;
 use Carbon\Carbon;
 
 use App\Models\Proxy;
-use App\Models\Crawlers\Host;
 
 use App\Utilities\ImageUtility;
 
@@ -63,15 +62,6 @@ class Crawler
             }
 
             $dom = $client->get($base, $arr)->getBody();
-
-            $ip = gethostbyname(str_replace([ 'https://', 'http://', 'www.' ], '', $site));
-
-            Host::firstOrCreate(
-                [
-                    'site' => $site,
-                    'ip_address' => $ip
-                ]
-            );
 
             if ($standard)
             {
@@ -150,15 +140,6 @@ class Crawler
                 }
 
                 $dom = $client->get('https://www.google.com/search?q='.$query.'&tbs=qdr:'.$google_time.',sbd:1&start='.$page, $arr)->getBody();
-
-                $ip = gethostbyname(str_replace([ 'https://', 'http://', 'www.' ], '', $site));
-
-                Host::firstOrCreate(
-                    [
-                        'site' => $site,
-                        'ip_address' => $ip
-                    ]
-                );
 
                 preg_match_all('/'.$url_pattern.'/', $dom, $match);
 

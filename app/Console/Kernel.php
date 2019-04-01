@@ -201,6 +201,20 @@ class Kernel extends ConsoleKernel
                      });
 
             /**
+             * Medya siteleri dns adreslerinin toplanması.
+             */
+            $schedule->command('nohup "media:host" --type=restart')
+                     ->dailyAt('03:00')
+                     ->timezone(config('app.timezone'));
+
+            /**
+             * Medya siteleri alexa durumlarının belirlenmesi.
+             */
+            $schedule->command('nohup "media:alexa_ranker" --type=restart')
+                     ->dailyAt('04:00')
+                     ->timezone(config('app.timezone'));
+
+            /**
              * YouTube botlarının tetiklenmesi.
              *
              * - Sabah 09:00 ile gece 01:00 arası her 15 dakikada bir.

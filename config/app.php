@@ -116,6 +116,17 @@ return [
      */
     'organisation_id_root' => env('ORGANISATION_ID_ROOT', 1),
 
+    'alexa' => [
+        /**
+         * Alexa Rank Min
+         *
+         * - Alexa sıralaması girilen değerden yüksek olan
+         * kaynak sitelerinden veri toplanmaz.
+         */
+
+        'rank_min' => env('ALEXA_RANK_MIN', 20000)
+    ],
+
     /**
      * Log Dosyaları
      */

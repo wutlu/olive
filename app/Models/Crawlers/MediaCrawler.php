@@ -18,6 +18,7 @@ class MediaCrawler extends Model
 
         'off_limit',
         'control_interval',
+        'alexa_rank',
 
         'status',
         'error_count',
