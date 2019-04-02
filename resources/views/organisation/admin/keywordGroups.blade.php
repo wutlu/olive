@@ -46,12 +46,12 @@
                         </div>
                     </div>
                     <div>
-                        {!! $group->module_youtube_video ? '<span class="chip">YouTube Video</span>' : '' !!}
-                        {!! $group->module_youtube_comment ? '<span class="chip">YouTube Yorum</span>' : '' !!}
-                        {!! $group->module_twitter ? '<span class="chip">Twitter</span>' : '' !!}
-                        {!! $group->module_sozluk ? '<span class="chip">Sözlük</span>' : '' !!}
-                        {!! $group->module_news ? '<span class="chip">Haber</span>' : '' !!}
-                        {!! $group->module_shopping ? '<span class="chip">E-ticaret</span>' : '' !!}
+                        {!! in_array('youtube_video', $group->modules) ? '<span class="chip">YouTube Video</span>' : '' !!}
+                        {!! in_array('youtube_comment', $group->modules) ? '<span class="chip">YouTube Yorum</span>' : '' !!}
+                        {!! in_array('twitter', $group->modules) ? '<span class="chip">Twitter</span>' : '' !!}
+                        {!! in_array('sozluk', $group->modules) ? '<span class="chip">Sözlük</span>' : '' !!}
+                        {!! in_array('news', $group->modules) ? '<span class="chip">Haber</span>' : '' !!}
+                        {!! in_array('shopping', $group->modules) ? '<span class="chip">E-ticaret</span>' : '' !!}
                     </div>
                 </li>
             @empty

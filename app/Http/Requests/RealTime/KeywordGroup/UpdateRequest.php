@@ -68,7 +68,7 @@ class UpdateRequest extends FormRequest
         return [
             'id' => 'required|integer|exists:real_time_keyword_groups,id',
             'name' => 'required|string|max:10',
-            'keywords' => 'bail|nullable|string|max:64|keyword_max_line|empty_lines',
+            'keywords' => 'bail|nullable|string|max:255|keyword_max_line|empty_lines',
             'modules' => 'nullable|array',
             'modules.*' => 'required|string|in:'.implode(',', array_keys(config('system.modules')))
         ];

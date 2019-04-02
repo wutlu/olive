@@ -603,7 +603,7 @@
                                 'id': 'keywords',
                                 'name': 'keywords',
                                 'class': 'materialize-textarea validate',
-                                'data-length': 64
+                                'data-length': 255
                             }),
                             $('<label />', {
                                 'for': 'keywords',

@@ -104,7 +104,7 @@
                 $('<a />', {
                     'data-trigger': 'delete',
                     'href': '#',
-                    'class': 'waves-effect btn-flat grey-text hide',
+                    'class': 'waves-effect btn-flat red-text hide',
                     'html': buttons.remove
                 }),
                 $('<span />', {

@@ -78,7 +78,7 @@ class CreateRequest extends FormRequest
 
         return [
             'name' => 'required|string|max:10|limit',
-            'keywords' => 'bail|nullable|string|max:64|keyword_max_line|empty_lines',
+            'keywords' => 'bail|nullable|string|max:255|keyword_max_line|empty_lines',
             'modules' => 'nullable|array',
             'modules.*' => 'required|string|in:'.implode(',', array_keys(config('system.modules')))
         ];
