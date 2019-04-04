@@ -218,6 +218,11 @@ $(document).on('click', '[data-focus]', function() {
 
     window.clearTimeout(focusDelay)
 
+    if (__.data('value'))
+    {
+        target.val(__.data('value'))
+    }
+
     focusDelay = window.setTimeout(function() {
         target.focus()
     }, __.data('focus-delay'))
@@ -611,6 +616,11 @@ function vzAjax(__)
     if (__.hasClass('disabled'))
     {
         return false;
+    }
+
+    if (__.hasClass('loading'))
+    {
+        $('#loading').fadeIn()
     }
 
     var method = 'GET',
@@ -1022,6 +1032,11 @@ function __result(__)
         }
 
         M.updateTextFields()
+
+        if (__.hasClass('loading'))
+        {
+            $('#loading').fadeOut()
+        }
     }, 100)
 }
 

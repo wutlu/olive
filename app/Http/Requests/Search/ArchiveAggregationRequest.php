@@ -26,8 +26,8 @@ class ArchiveAggregationRequest extends FormRequest
         return [
             'type' => 'required|string|in:hourly,daily,location,platform,source,mention,hashtag,sentiment',
             'string' => 'required|string|max:255',
-            'start_date' => 'required|date_format:d.m.Y',
-            'end_date' => 'required|date_format:d.m.Y|after_or_equal:start_date',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
             'sentiment' => 'required|string|in:pos,neu,neg,all',
             'modules' => 'required|array|min:1',
             'modules.*' => 'required|string|in:'.implode(',',array_keys(config('system.modules')))

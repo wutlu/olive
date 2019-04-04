@@ -121,8 +121,8 @@ class SearchController extends Controller
                 $query = Document::search([ '*' ], implode(',', $modules), $arr);
 
                 $data = [
-                    'results' => $query->data['aggregations']['results']['buckets'],
-                    'hits' => $query->data['hits']['total']
+                    'results' => @$query->data['aggregations']['results']['buckets'],
+                    'hits' => @$query->data['hits']['total']
                 ];
             break;
 
@@ -141,8 +141,8 @@ class SearchController extends Controller
                 $query = Document::search([ '*' ], implode(',', $modules), $arr);
 
                 $data = [
-                    'results' => $query->data['aggregations']['results']['buckets'],
-                    'hits' => $query->data['hits']['total']
+                    'results' => @$query->data['aggregations']['results']['buckets'],
+                    'hits' => @$query->data['hits']['total']
                 ];
             break;
 
@@ -161,8 +161,8 @@ class SearchController extends Controller
                 $query = Document::search([ 'twitter', 'tweets', '*' ], 'tweet', $arr);
 
                 $data = [
-                    'results' => $query->data['aggregations']['places']['buckets'],
-                    'hits' => $query->data['hits']['total']
+                    'results' => @$query->data['aggregations']['places']['buckets'],
+                    'hits' => @$query->data['hits']['total']
                 ];
             break;
 
@@ -181,8 +181,8 @@ class SearchController extends Controller
                 $query = Document::search([ 'twitter', 'tweets', '*' ], 'tweet', $arr);
 
                 $data = [
-                    'results' => $query->data['aggregations']['platforms']['buckets'],
-                    'hits' => $query->data['hits']['total']
+                    'results' => @$query->data['aggregations']['platforms']['buckets'],
+                    'hits' => @$query->data['hits']['total']
                 ];
             break;
 
@@ -418,8 +418,8 @@ class SearchController extends Controller
                 ]));
 
                 $data = [
-                    'results' => $query->data['aggregations'],
-                    'hits' => $query->data['hits']['total']
+                    'results' => @$query->data['aggregations'],
+                    'hits' => @$query->data['hits']['total']
                 ];
             break;
 
@@ -443,8 +443,8 @@ class SearchController extends Controller
                 $query = Document::search([ 'twitter', 'tweets', '*' ], 'tweet', $arr);
 
                 $data = [
-                    'results' => $query->data['aggregations']['hashtag']['hit_items']['buckets'],
-                    'hits' => $query->data['hits']['total']
+                    'results' => @$query->data['aggregations']['hashtag']['hit_items']['buckets'],
+                    'hits' => @$query->data['hits']['total']
                 ];
             break;
 
@@ -483,7 +483,7 @@ class SearchController extends Controller
                         break;
                     }
 
-                    $data[$title] = Document::count($index, $module, $arr)->data['count'];
+                    $data[$title] = @Document::count($index, $module, $arr)->data['count'];
                 }
 
             break;

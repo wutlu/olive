@@ -24,30 +24,24 @@
         font-size: 16px;
     }
 
-    .search-field {
-        padding: 1rem 0;
-    }
-
-    .search-field #string {
-                transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        -webkit-transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-
+    #string {
         margin: 0;
-        padding: 0 1rem;
+        padding: 1rem;
+
+                box-shadow: none !important;
+        -webkit-box-shadow: none !important;
+
         border-width: 0;
-
-                box-shadow: .1rem .1rem .2rem 0 rgba(0, 0, 0, .1);
-        -webkit-box-shadow: .1rem .1rem .2rem 0 rgba(0, 0, 0, .1);
-
-        width: calc(100% - 2rem);
-    }
-    .search-field #string:focus {
-                box-shadow: .1rem .1rem 1rem 0 rgba(0, 0, 0, .1);
-        -webkit-box-shadow: .1rem .1rem 1rem 0 rgba(0, 0, 0, .1);
     }
 @endpush
 
 @push('local.scripts')
+    $(document).on('change', '[data-update]', function() {
+        vzAjax($('#search'))
+    }).on('click', '[data-update-click]', function() {
+        vzAjax($('#search'))
+    })
+
     var group_select = $('select[name=group_id]');
         group_select.formSelect()
 
@@ -113,7 +107,7 @@
         {
             item_model.addClass('hide')
 
-            $('[data-name=stats]').html('Yaklaşık ' + obj.stats.hits + ' sonuç bulundu (' + obj.stats.took + ' saniye)');
+            $('[data-name=stats]').html('Yaklaşık ' + obj.stats.hits + ' sonuç bulundu (' + obj.stats.took + ' saniye)').removeClass('hide');
 
             if (obj.hits.length)
             {
@@ -907,8 +901,6 @@
         setTimeout(function() {
             vzAjax(search)
         }, 400)
-
-        M.toast({ html: 'Arama güncelleniyor...' })
     }).on('keyup', 'input[name=string]', function(e) {
         var __ = $(this);
         var keycode = (e.keyCode ? e.keyCode : e.which);
@@ -927,7 +919,7 @@
         {
             $('.chip-s').prepend($('<a />', {
                 'href': '#',
-                'class': 'chip waves-effect white grey-text text-darken-2',
+                'class': 'chip waves-effect indigo white-text',
                 'data-search': __.val(),
                 'html': __.val(),
                 'data-id': id
@@ -949,10 +941,9 @@
 @endpush
 
 @section('content')
-    <div class="grey-text p-1" data-name="stats"></div>
     <div class="card hide">
         <div class="time-line">
-            <ul class="collection json-clear" 
+            <ul class="collection json-clear loading" 
                 id="search"
                 data-href="{{ route('search.dashboard') }}"
                 data-skip="0"
@@ -991,137 +982,141 @@
     <script src="{{ asset('js/owl.carousel.min.js?v='.config('system.version')) }}"></script>
 @endpush
 
-@section('wildcard')
-    <div class="container container-wide">
-        <div class="wild-area">
-            <div class="wild-content d-flex" data-wild="date">
-                <span class="wild-body d-flex">
-                    <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center mr-1" data-class=".wild-content" data-class-remove="active">
-                        <i class="material-icons">close</i>
-                    </a>
-                    <input style="max-width: 96px;" type="text" class="datepicker" name="start_date" value="{{ $s ? $s : date('d.m.Y', strtotime('-1 day')) }}" placeholder="Başlangıç" />
-                    <input style="max-width: 96px;" type="text" class="datepicker" name="end_date" value="{{ $e ? $e : date('d.m.Y') }}" placeholder="Bitiş" />
-                </span>
-            </div>
-            <div class="wild-content d-flex" data-wild="sentiment">
-                <span class="wild-body d-flex">
-                    <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center mr-1" data-class=".wild-content" data-class-remove="active">
-                        <i class="material-icons">close</i>
-                    </a>
-                    <label class="align-self-center mr-1" data-tooltip="Pozitif">
-                        <input type="radio" name="sentiment" value="pos" />
-                        <span class="material-icons grey-text text-darken-2">sentiment_satisfied</span>
-                    </label>
-                    <label class="align-self-center mr-1" data-tooltip="Nötr">
-                        <input type="radio" name="sentiment" value="neu" />
-                        <span class="material-icons grey-text text-darken-2">sentiment_neutral</span>
-                    </label>
-                    <label class="align-self-center mr-1" data-tooltip="Negatif">
-                        <input type="radio" name="sentiment" value="neg" />
-                        <span class="material-icons grey-text text-darken-2">sentiment_dissatisfied</span>
-                    </label>
-                    <label class="align-self-center mr-1" data-tooltip="Tümü">
-                        <input type="radio" name="sentiment" value="all" checked="" />
-                        <span class="material-icons grey-text text-darken-2">fullscreen</span>
-                    </label>
-                </span>
-            </div>
-            <div class="wild-content d-flex" data-wild="graph">
-                <span class="wild-body d-flex">
-                    <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center mr-1" data-class=".wild-content" data-class-remove="active">
-                        <i class="material-icons">close</i>
-                    </a>
-                    <button type="button" data-type="hourly" data-tooltip="Saatlik İçerik Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center" style="margin: 0 .2rem 0 0;">Saatlik</button>
-                    <button type="button" data-type="daily" data-tooltip="Günlük İçerik Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center" style="margin: 0 .2rem 0 0;">Günlük</button>
-                    <button type="button" data-type="location" data-tooltip="Konum Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center" style="margin: 0 .2rem 0 0;">Konum</button>
-                    <button type="button" data-type="platform" data-tooltip="Platform Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center" style="margin: 0 .2rem 0 0;">Platform</button>
-                    <button type="button" data-type="source" data-tooltip="Kaynak Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center" style="margin: 0 .2rem 0 0;">Kaynak</button>
-                    <button type="button" data-type="mention" data-tooltip="Kimler Bahsetti?" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center" style="margin: 0 .2rem 0 0;">@</button>
-                    <button type="button" data-type="hashtag" data-tooltip="Hangi Hashtagler Kullanıldı?" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center" style="margin: 0 .2rem 0 0;">#</button>
-                    <button type="button" data-type="sentiment" data-tooltip="Duygu Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center" style="margin: 0 .2rem 0 0;">
-                        <i class="material-icons">sentiment_satisfied</i>
-                    </button>
-                </span>
-            </div>
-            <div class="wild-content d-flex" data-wild="settings">
-                <span class="wild-body d-flex">
-                    <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center mr-1" data-class=".wild-content" data-class-remove="active">
-                        <i class="material-icons">close</i>
-                    </a>
-                    <label class="align-self-center mr-1">
-                        <input type="checkbox" name="sort" value="asc" />
-                        <span class="grey-text text-darken-2">İlk İçerikler</span>
-                    </label>
-                    <label class="align-self-center mr-1">
-                        <input type="checkbox" name="retweet" value="on" />
-                        <span class="grey-text text-darken-2">ReTweetler Dahil</span>
-                    </label>
-                </span>
-            </div>
-            <ul class="wild-menu">
-                <li>
-                    <a class="d-flex" href="#" data-class="[data-wild=date]" data-class-add="active">
-                        <i class="material-icons">date_range</i>
-                    </a>
-                </li>
-                <li>
-                    <a class="d-flex" href="#" data-class="[data-wild=sentiment]" data-class-add="active">
-                        <i class="material-icons">mood</i>
-                    </a>
-                </li>
-                <li>
-                    <a class="d-flex" href="#" data-class="[data-wild=graph]" data-class-add="active">
-                        <i class="material-icons">show_chart</i>
-                    </a>
-                </li>
-                <li>
-                    <a class="d-flex" href="#" data-class="[data-wild=settings]" data-class-add="active">
-                        <i class="material-icons">settings</i>
-                    </a>
-                </li>
-            </ul>
+@section('panel')
+    <div class="card">
+        <div class="card-content cyan darken-2">
+            <span class="card-title white-text d-flex">
+                <i class="material-icons mr-1">date_range</i>
+                Tarih Aralığı
+            </span>
         </div>
+        <div class="card-content">
+            <input data-update type="date" class="d-block" name="start_date" value="{{ $s ? $s : date('Y-m-d', strtotime('-1 day')) }}" placeholder="Başlangıç" />
+            <input data-update type="date" class="d-block" name="end_date" value="{{ $e ? $e : date('Y-m-d') }}" placeholder="Bitiş" />
+        </div>
+        <div class="collection">
+            <a href="#" data-update-click class="collection-item waves-effect" data-focus="input[name=start_date]" data-value="{{ date('Y-m-d') }}">Bugün</a>
+            <a href="#" data-update-click class="collection-item waves-effect" data-focus="input[name=start_date]" data-value="{{ date('Y-m-d', strtotime('-7 day')) }}">Bu Hafta</a>
+            <a href="#" data-update-click class="collection-item waves-effect" data-focus="input[name=start_date]" data-value="{{ date('Y-m-d', strtotime('-30 day')) }}">Bu Ay</a>
+            <a href="#" data-update-click class="collection-item waves-effect" data-focus="input[name=start_date]" data-value="{{ date('Y-m-d', strtotime('-90 day')) }}">Son 3 Ay</a>
+        </div>
+    </div>
+@endsection
+
+@section('wildcard')
+    <div class="wild-area">
+        <div class="wild-content d-flex" data-wild="sentiment">
+            <span class="wild-body d-flex">
+                <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center" data-class=".wild-content" data-class-remove="active" style="margin: 0 .4rem 0 0;">
+                    <i class="material-icons">close</i>
+                </a>
+                <label class="align-self-center mr-1" data-tooltip="Pozitif">
+                    <input type="radio" name="sentiment" value="pos" />
+                    <span class="material-icons grey-text text-darken-2">sentiment_satisfied</span>
+                </label>
+                <label class="align-self-center mr-1" data-tooltip="Nötr">
+                    <input type="radio" name="sentiment" value="neu" />
+                    <span class="material-icons grey-text text-darken-2">sentiment_neutral</span>
+                </label>
+                <label class="align-self-center mr-1" data-tooltip="Negatif">
+                    <input type="radio" name="sentiment" value="neg" />
+                    <span class="material-icons grey-text text-darken-2">sentiment_dissatisfied</span>
+                </label>
+                <label class="align-self-center mr-1" data-tooltip="Tümü">
+                    <input type="radio" name="sentiment" value="all" checked="" />
+                    <span class="material-icons grey-text text-darken-2">fullscreen</span>
+                </label>
+            </span>
+        </div>
+        <div class="wild-content d-flex" data-wild="lists">
+            <span class="wild-body d-flex">
+                <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center" data-class=".wild-content" data-class-remove="active" style="margin: 0 .4rem 0 0;">
+                    <i class="material-icons">close</i>
+                </a>
+                <button type="button" data-type="mention" data-tooltip="Kimler Bahsetti?" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center" style="margin: 0 .2rem 0 0;">@</button>
+                <button type="button" data-type="hashtag" data-tooltip="Hangi Hashtagler Kullanıldı?" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center" style="margin: 0 .2rem 0 0;">#</button>
+                <button type="button" data-type="source" data-tooltip="Kaynak Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center" style="margin: 0 .2rem 0 0;">Kaynaklar</button>
+            </span>
+        </div>
+        <div class="wild-content d-flex" data-wild="graph">
+            <span class="wild-body d-flex">
+                <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center" data-class=".wild-content" data-class-remove="active" style="margin: 0 .4rem 0 0;">
+                    <i class="material-icons">close</i>
+                </a>
+                <button type="button" data-type="hourly" data-tooltip="Saatlik İçerik Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center" style="margin: 0 .2rem 0 0;">S</button>
+                <button type="button" data-type="daily" data-tooltip="Günlük İçerik Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center" style="margin: 0 .2rem 0 0;">G</button>
+                <button type="button" data-type="location" data-tooltip="Konum Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center" style="margin: 0 .2rem 0 0;">
+                    <i class="material-icons">location_on</i>
+                </button>
+                <button type="button" data-type="platform" data-tooltip="Platform Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center" style="margin: 0 .2rem 0 0;">
+                    <i class="material-icons">devices</i>
+                </button>
+                <button type="button" data-type="sentiment" data-tooltip="Duygu Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center" style="margin: 0 .2rem 0 0;">
+                    <i class="material-icons">sentiment_satisfied</i>
+                </button>
+            </span>
+        </div>
+        <div class="wild-content d-flex" data-wild="settings">
+            <span class="wild-body d-flex">
+                <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center" data-class=".wild-content" data-class-remove="active" style="margin: 0 .4rem 0 0;">
+                    <i class="material-icons">close</i>
+                </a>
+                <label class="align-self-center mr-1">
+                    <input type="checkbox" name="sort" data-update value="asc" />
+                    <span class="grey-text text-darken-2">İlk İçerikler</span>
+                </label>
+                <label class="align-self-center mr-1">
+                    <input type="checkbox" name="retweet" data-update value="on" />
+                    <span class="grey-text text-darken-2">ReTweetler Dahil</span>
+                </label>
+            </span>
+        </div>
+        <ul class="wild-menu">
+            <li>
+                <a class="d-flex" href="#" data-class="[data-wild=sentiment]" data-class-add="active">
+                    <i class="material-icons">mood</i>
+                </a>
+            </li>
+            <li>
+                <a class="d-flex" href="#" data-class="[data-wild=graph]" data-class-add="active">
+                    <i class="material-icons">show_chart</i>
+                </a>
+            </li>
+            <li>
+                <a class="d-flex" href="#" data-class="[data-wild=lists]" data-class-add="active">
+                    <i class="material-icons">people</i>
+                </a>
+            </li>
+            <li>
+                <a class="d-flex" href="#" data-class="[data-wild=settings]" data-class-add="active">
+                    <i class="material-icons">settings</i>
+                </a>
+            </li>
+            <li>
+                <a class="d-flex" href="#" data-trigger="info">
+                    <i class="material-icons">info_outline</i>
+                </a>
+            </li>
+        </ul>
     </div>
     <div class="z-depth-1">
-        <div class="search-field grey lighten-4">
-            <div class="container container-wide">
-                <div class="d-flex">
-                    <input
-                        class="validate json json-search white align-self-center"
-                        id="string"
-                        name="string"
-                        type="search"
-                        data-json-target="ul#search"
-                        placeholder="Ara"
-                        value="{{ $q }}"
-                        style="margin: 0 .4rem 0 0;" />
-                    <button
-                        class="btn-flat waves-effect align-self-center json"
-                        type="button"
-                        data-json-target="ul#search"
-                        data-enter="input[name=string]"
-                        data-clear="true"
-                        style="margin: 0 .4rem 0 0;">
-                        <i class="material-icons">search</i>
-                    </button>
-                    <a
-                        class="btn-flat waves-effect align-self-center"
-                        href="#"
-                        data-trigger="info"
-                        style="margin: 0 .4rem 0 0;">
-                        <i class="material-icons text-darken-2">info_outline</i>
-                    </a>
-                </div>
-                <div class="chip-s owl-chips owl-carousel pt-1">
-                    @if (@$trends)
-                        @foreach ($trends as $trend)
-                            <a class="chip cyan darken-2 white-text waves-effect" data-search="{{ $trend->title }}" href="#">{{ $trend->title }}</a>
-                        @endforeach
-                    @endif
-                </div>
-            </div>
-        </div>
+        <input
+            class="validate json json-search grey lighten-4"
+            id="string"
+            name="string"
+            type="search"
+            data-json-target="ul#search"
+            placeholder="Ara"
+            value="{{ $q }}" />
     </div>
+    <div class="z-depth-1 chip-s owl-chips owl-carousel p-1">
+        @if (@$trends)
+            @foreach ($trends as $trend)
+                <a class="chip cyan darken-2 white-text waves-effect" data-search="{{ $trend->title }}" href="#">{{ $trend->title }}</a>
+            @endforeach
+        @endif
+    </div>
+    <div class="z-depth-1 grey lighten-4 grey-text p-1 hide" data-name="stats"></div>
     <div class="z-depth-1 hide" id="chart-area">
         <div class="container container-wide">
             <div class="pt-1 pb-1">
@@ -1139,7 +1134,7 @@
         <div class="collection collection-bordered">
             @foreach (config('system.modules') as $key => $module)
                 <label class="collection-item waves-effect d-block">
-                    <input name="modules" checked value="{{ $key }}" data-multiple="true" type="checkbox" />
+                    <input data-update name="modules" checked value="{{ $key }}" data-multiple="true" type="checkbox" />
                     <span>{{ $module }}</span>
                 </label>
             @endforeach

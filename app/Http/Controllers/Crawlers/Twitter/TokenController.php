@@ -232,17 +232,7 @@ class TokenController extends Controller
 
             try
             {
-                $response = $client->get('statuses/show.json', [
-                    'query' => [
-                        'id' => 20
-                    ],
-                    'timeout' => 10,
-                    'connect_timeout' => 5,
-                    'headers' => [
-                        'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))],
-                        'Accept' => 'application/json'
-                    ]
-                ]);
+                $response = $client->get('account/verify_credentials.json');
 
                 $obj = json_decode($response->getBody());
 

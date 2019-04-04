@@ -680,6 +680,9 @@ code {
   -webkit-transform: translateY(0);
 }
 
+.wild-area > .wild-content > span.wild-body {
+  padding: 0 1rem;
+}
 .wild-area > .wild-content > span.wild-body > input[type=text] {
   padding: 0;
   margin: 0;
@@ -2581,7 +2584,7 @@ nav.nav-half {
  * container
  */
 .container.container-wide {
-  width: 96%;
+  width: calc(100% - 2rem);
   max-width: 100%;
 }
 @media only screen and (max-width: 992px) {
