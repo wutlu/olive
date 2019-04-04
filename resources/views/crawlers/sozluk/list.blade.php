@@ -11,7 +11,8 @@
         [
             'text' => '🐞 Sözlük Botları'
         ]
-    ]
+    ],
+    'wide' => true
 ])
 
 @push('local.scripts')
@@ -61,10 +62,10 @@
                 <i class="material-icons grey-text text-darken-2">more_vert</i>
             </a>
         </div>
-        <div class="container">
+        <div class="container container-wide">
             <div
                 id="stats"
-                class="item-group pt-1 pb-1 load"
+                class="item-group p-1 load"
                 data-method="post"
                 data-timeout="4000",
                 data-href="{{ route('crawlers.sozluk.bot.statistics.all') }}"

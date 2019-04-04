@@ -27,7 +27,8 @@ class ListRequest extends FormRequest
             'string' => 'nullable|string|min:2|max:255',
             'skip' => 'required|integer',
             'take' => 'required|integer|max:100',
-            'status' => 'nullable|string|in:on,off'
+            'status' => 'nullable|string|in:on,off',
+            'sort' => 'nullable|string|in:error,interval,hit-up,hit-down,alexa-up,alexa-down'
         ];
     }
 }

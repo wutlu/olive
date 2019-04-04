@@ -12,7 +12,8 @@
             'text' => '🐞 Medya Botları'
         ]
     ],
-    'dock' => true
+    'dock' => true,
+    'wide' => true
 ])
 
 @push('local.scripts')
@@ -36,12 +37,13 @@
                         item.find('[data-name=id]').html(o.id)
                         item.find('[data-name=error]').html(o.error_count + ' hata').removeClass(o.error_count ? 'grey-text' : 'red-text').addClass(o.error_count ? 'red-text' : 'grey-text')
                         item.find('[data-name=control-time]').attr('data-time', o.control_date).html(o.control_date)
-                        item.find('[data-name=control-interval]').html(o.control_interval + ' dakika')
+                        item.find('[data-name=control-interval]').html(o.control_interval)
                         item.find('[data-name=name]').html(o.name)
                         item.find('[data-name=site]').html(o.site)
                         item.find('[data-name=status]').addClass(o.status ? 'green-text' : 'red-text')
                         item.find('[data-name=test]').addClass(o.test ? 'green-text' : 'red-text')
-                        item.find('[data-name=index]').html(o.elasticsearch_index_name + ' - ' + o.count + ' döküman')
+                        item.find('[data-name=index]').html(o.elasticsearch_index_name + ' / ' + number_format(o.count))
+                        item.find('[data-name=alexa-rank]').html(number_format(o.alexa_rank))
 
                         item.appendTo(ul)
                 })
@@ -65,10 +67,10 @@
             </a>
         </div>
 
-        <div class="container">
+        <div class="container container-wide">
             <div
                 id="stats"
-                class="item-group load pt-1 pb-1"
+                class="item-group load p-1"
                 data-method="post"
                 data-timeout="4000"
                 data-href="{{ route('crawlers.media.bot.statistics.all') }}"
@@ -121,7 +123,13 @@
 @section('dock')
     @include('crawlers.media._menu', [ 'active' => 'list' ])
 
-    <div class="card">
+    <div class="card mb-1">
+        <div class="card-content">
+            <span class="card-title d-flex">
+                <i class="material-icons mr-1">filter_list</i>
+                Filtrele
+            </span>
+        </div>
         <div class="collection">
             <label class="collection-item waves-effect d-block">
                 <input name="status" id="status-all" type="radio" value="" />
@@ -134,6 +142,45 @@
             <label class="collection-item waves-effect d-block">
                 <input name="status" id="status-off" type="radio" value="off" />
                 <span>Pasif Botlar</span>
+            </label>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-content">
+            <span class="card-title d-flex">
+                <i class="material-icons mr-1">sort_by_alpha</i>
+                Sırala
+            </span>
+        </div>
+        <div class="collection">
+            <label class="collection-item waves-effect d-block">
+                <input name="sort" id="sort-normal" type="radio" value="" checked />
+                <span>Normal</span>
+            </label>
+            <label class="collection-item waves-effect d-block">
+                <input name="sort" id="sort-error" type="radio" value="error" />
+                <span>Önce Hatalılar</span>
+            </label>
+            <label class="collection-item waves-effect d-block">
+                <input name="sort" id="sort-interval" type="radio" value="interval" />
+                <span>Dar Aralık</span>
+            </label>
+            <label class="collection-item waves-effect d-block">
+                <input name="sort" id="sort-hit-up" type="radio" value="hit-up" />
+                <span>Haber Sayısı (Artan)</span>
+            </label>
+            <label class="collection-item waves-effect d-block">
+                <input name="sort" id="sort-hit-down" type="radio" value="hit-down" />
+                <span>Haber Sayısı (Azalan)</span>
+            </label>
+            <label class="collection-item waves-effect d-block">
+                <input name="sort" id="sort-alexa-up" type="radio" value="alexa-up" />
+                <span>Alexa (Artan)</span>
+            </label>
+            <label class="collection-item waves-effect d-block">
+                <input name="sort" id="sort-alexa-down" type="radio" value="alexa-down" />
+                <span>Alexa (Azalan)</span>
             </label>
         </div>
     </div>
@@ -168,7 +215,7 @@
              data-href="{{ route('crawlers.media.list.json') }}"
              data-skip="0"
              data-take="50"
-             data-include="string,status"
+             data-include="string,status,sort"
              data-more-button="#crawlers-more_button"
              data-callback="__crawlers"
              data-loader="#home-loader"
@@ -191,14 +238,26 @@
                     <p>
                         <span data-name="site" class="grey-text"></span>
                     </p>
-                    <time class="timeago" data-name="control-time"></time> / <span data-name="control-interval"></span>
+                    <p class="mb-0">
+                        <span data-name="control-interval"></span>
+                        dakika da bir
+                    </p>
+                    <p class="mb-0">
+                        <time class="timeago" data-name="control-time"></time>
+                        kontrol edildi
+                    </p>
                 </span>
-                <small class="right-align">
+                <span class="right-align">
                     <i class="material-icons" data-name="test">sentiment_very_satisfied</i>
                     <i class="material-icons" data-name="status">power</i>
                     <p class="grey-text mb-0" data-name="error"></p>
-                    <p class="grey-text mb-0" data-name="index"></p>
-                </small>
+                    <p class="grey-text mb-0">
+                        <span data-name="index"></span> haber alındı
+                    </p>
+                    <p class="grey-text mb-0">
+                        Alexa <span data-name="alexa-rank"></span>
+                    </p>
+                </span>
             </a>
         </div>
 
@@ -293,7 +352,7 @@
         }
     }
 
-    $(document).on('change', 'input[name=status]', function() {
+    $(document).on('change', 'input[name=status], input[name=sort]', function() {
         var list = $('#crawlers');
             list.data('skip', 0).addClass('json-clear')
 

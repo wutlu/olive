@@ -1083,11 +1083,15 @@ body.fs-active .fullscreen {
   right: 0;
   bottom: 0;
   left: 0;
+
   z-index: 1000;
+
   padding: 0 2rem;
-  background-color: #f0f0f0;
+
   overflow-y: auto;
   overflow-x: hidden;
+
+  background-color: #f0f0f0;
 }
 body.fs-active .fullscreen > .fs-container {
   width: 100%;
@@ -2583,5 +2587,27 @@ nav.nav-half {
 @media only screen and (max-width: 992px) {
   .container.container-wide {
     width: 100%;
+  }
+}
+
+/*!
+ * panel
+ */
+#panel {
+  min-width: 240px;
+  padding: 0 1rem 1rem 0;
+
+          transition: all 400ms cubic-bezier(.25, .46, .45, .94);
+  -webkit-transition: all 400ms cubic-bezier(.25, .46, .45, .94);
+}
+
+@media only screen and (max-width: 992px) {
+  #panel {
+    padding: 1rem;
+    display: none;
+  }
+
+  #panel.active {
+    display: block;
   }
 }

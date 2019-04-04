@@ -590,6 +590,11 @@ $(window).on('load', function() {
             vzAjax(__)
         }, __.data('load-delay'))
     })
+}).on('resize', function(e) {
+    if ($(window).width() <= 992)
+    {
+        $('#slide-out').sidenav('close')
+    }
 })
 
 $.ajaxSetup({

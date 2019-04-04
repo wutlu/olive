@@ -85,7 +85,7 @@ class Minuter extends Command
                 $this->info('data: ['.$count->data['count'].']');
 
                 $division = $count->data['count'] ? $count->data['count'] : 1;
-                $division = $division/310;
+                $division = $division/1440;
                 $division = intval(1/$division);
                 $division = $division > 1440 ? 1440 : ($division == 0 ? 1 : $division);
 

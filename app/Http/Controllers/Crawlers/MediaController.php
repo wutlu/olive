@@ -65,11 +65,38 @@ class MediaController extends Controller
             $query = $query->where('status', $request->status == 'on' ? true : false);
         }
 
-        $query = $query->skip($skip)
-                       ->take($take)
-                       ->orderBy('status', 'ASC')
-                       ->orderBy('error_count', 'DESC')
-                       ->orderBy('control_interval', 'ASC');
+        $query = $query->skip($skip)->take($take);
+
+        if ($request->sort)
+        {
+            switch ($request->sort)
+            {
+                case 'alexa-down':
+                    $query = $query->orderBy('alexa_rank', 'DESC');
+                break;
+                case 'alexa-up':
+                    $query = $query->orderBy('alexa_rank', 'ASC');
+                break;
+                case 'hit-down':
+                    $query = $query->orderBy('count', 'DESC');
+                break;
+                case 'hit-up':
+                    $query = $query->orderBy('count', 'ASC');
+                break;
+                case 'interval':
+                    $query = $query->orderBy('control_interval', 'ASC');
+                break;
+                case 'error':
+                    $query = $query->orderBy('error_count', 'DESC');
+                break;
+            }
+        }
+        else
+        {
+            $query = $query->orderBy('status', 'ASC');
+            $query = $query->orderBy('error_count', 'DESC');
+            $query = $query->orderBy('control_interval', 'ASC');
+        }
 
         return [
             'status' => 'ok',

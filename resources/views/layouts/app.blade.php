@@ -168,11 +168,18 @@
                         <a href="{{ route('dashboard') }}" class="brand-logo center">
                             <img alt="{{ config('app.name') }}" src="{{ asset('img/olive_logo.svg') }}" />
                         </a>
+
                         @auth
-                        <a href="#" data-target="slide-out" class="sidenav-trigger">
-                            <i class="material-icons">menu</i>
-                        </a>
+                            <a href="#" data-target="slide-out" class="sidenav-trigger">
+                                <i class="material-icons">menu</i>
+                            </a>
+                            @if (trim($__env->yieldContent('panel')))
+                                <a href="#" data-class="#panel" data-class-toggle="active" class="sidenav-trigger">
+                                    <i class="material-icons">view_compact</i>
+                                </a>
+                            @endif
                         @endauth
+
                         <ul class="right">
                             @isset($dock)
                             <li>
@@ -478,25 +485,32 @@
                     </div>
                 @endif
 
-                <div class="{{ isset($wide) ? 'container container-wide' : 'container' }}">
-                    @isset($dock)
-                        <aside id="dock-content">
-                            <div class="content">
-                                @if (trim($__env->yieldContent('action-bar:half')))
-                                    <div class="action-bar action-bar-half">
-                                        @yield('action-bar:half')
-                                    </div>
-                                @endif
+                <div class="{{ isset($wide) ? 'container container-wide' : 'container' }} d-flex">
+                    @if (trim($__env->yieldContent('panel')))
+                        <div id="panel">
+                            @yield('panel')
+                        </div>
+                    @endif
+                    <div class="flex-fill">
+                        @isset($dock)
+                            <aside id="dock-content">
+                                <div class="content">
+                                    @if (trim($__env->yieldContent('action-bar:half')))
+                                        <div class="action-bar action-bar-half">
+                                            @yield('action-bar:half')
+                                        </div>
+                                    @endif
 
-                                @yield('content')
-                            </div>
-                            <div class="menu">
-                                @yield('dock')
-                            </div>
-                        </aside>
-                    @else
-                        @yield('content')
-                    @endisset
+                                    @yield('content')
+                                </div>
+                                <div class="menu">
+                                    @yield('dock')
+                                </div>
+                            </aside>
+                        @else
+                            @yield('content')
+                        @endisset
+                    </div>
                 </div>
 
                 @if (trim($__env->yieldContent('subcard')))
@@ -709,13 +723,12 @@
             $('.push-notifications').on('click', '[data-name=ok]', function() {
                 var __ = $(this);
                     __.closest('.notification').remove()
-
             })
         @endpush
     @endauth
 
     <div class="@auth{{ @$sidenav_fixed_layout ? 'sidenav-fixed-layout' : '' }}@endauth">
-        <footer class="page-footer grey lighten-4">
+        <footer class="page-footer grey darken-2 z-depth-1">
             <div class="{{ isset($wide) ? 'container container-wide' : 'container' }}">
                 <div class="row mb-1">
                     <div class="col l6 s12">
@@ -759,7 +772,7 @@
                     </div>
                 </div>
             </div>
-            <div class="footer-copyright center-align white">
+            <div class="footer-copyright center-align grey darken-4">
                 <div class="{{ isset($wide) ? 'container container-wide' : 'container' }} grey-text">
                     © {{ date('Y') }} <a class="cyan-text" href="http://veri.zone">veri.zone</a> | Tüm hakları saklıdır.
                 </div>

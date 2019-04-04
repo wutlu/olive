@@ -11,7 +11,8 @@
         [
             'text' => '🐞 Alışveriş Botları'
         ]
-    ]
+    ],
+    'wide' => true
 ])
 
 @push('local.scripts')
@@ -64,10 +65,10 @@
             </a>
         </div>
 
-        <div class="container">
+        <div class="container container-wide">
             <div
                 id="stats"
-                class="item-group pt-1 pb-1 load"
+                class="item-group p-1 load"
                 data-method="post"
                 data-timeout="4000"
                 data-href="{{ route('crawlers.shopping.bot.statistics.all') }}"
