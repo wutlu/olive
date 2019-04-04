@@ -105,7 +105,7 @@
 @endpush
 
 @section('dock')
-    <div class="card">
+    <div class="card mb-1">
         <div
             class="collection load"
             data-method="post"

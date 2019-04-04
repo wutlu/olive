@@ -4,8 +4,7 @@
 @section('title', __('Servis Modu'))
 
 @section('image')
-<div style="background-image: url({{ asset('/svg/503.svg') }});" class="absolute pin bg-cover bg-no-repeat md:bg-left lg:bg-center">
-</div>
+	<div style="background-image: url({{ asset('/svg/503.svg') }});" class="absolute pin bg-cover bg-no-repeat md:bg-left lg:bg-center"></div>
 @endsection
 
 @section('message', __($exception->getMessage() ?: 'Üzgünüz, biraz bakım yapıyoruz. Lütfen kısa süre sonra tekrar deneyin.'))

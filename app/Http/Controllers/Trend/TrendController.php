@@ -28,7 +28,8 @@ class TrendController extends Controller
          * - Kullanıcı
          * - Organizasyon
          */
-        $this->middleware([ 'auth', 'organisation:have', 'can:organisation-status' ]);
+        $this->middleware([ 'auth', 'organisation:have' ]);
+        $this->middleware([ 'can:organisation-status' ])->except([ 'live' ]);
 
         ### [ 10 işlemden sonra 1 dakika ile sınırla ] ###
         $this->middleware('throttle:10,1')->only('archiveSave');
