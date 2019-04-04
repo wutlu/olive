@@ -253,7 +253,7 @@
                             </div>
                             <div style="width: 50%; padding: 1rem;">
                                 <div class="input-field">
-                                    <input name="control_interval" id="control_interval" value="{{ $crawler->control_interval }}" type="number" class="validate" max="120" min="1" />
+                                    <input name="control_interval" id="control_interval" value="{{ $crawler->control_interval }}" type="number" class="validate" max="1440" min="1" />
                                     <label for="control_interval">Kontrol Aralığı (Dakika)</label>
                                     <small class="helper-text" data-name="minute">Girilen değer aralığında içerik kontrolü yapılır. (Bu değeri sistem optimum olarak güncelleyecktir.)</small>
                                 </div>

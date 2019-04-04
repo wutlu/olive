@@ -335,13 +335,13 @@ time {
 
   font-size: 2rem;
 
-  z-index: 8;
+  z-index: 7;
 }
 .not-found > i.material-icons:nth-of-type(2) {
   -webkit-transform: translate(0, 0);
           transform: translate(0, 0);
   font-size: 6rem;
-  z-index: 10;
+  z-index: 9;
 
 }
 .not-found > i.material-icons:nth-of-type(3) {
@@ -354,7 +354,7 @@ time {
   font-size: 4rem;
   color: #ffeb3b;
 
-  z-index: 9;
+  z-index: 8;
 }
 .not-found > p {
   margin: 1rem 0;

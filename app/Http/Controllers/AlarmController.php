@@ -21,7 +21,8 @@ class AlarmController extends Controller
          * - Kullanıcı
          * - Organizasyon
          */
-        $this->middleware([ 'auth', 'organisation:have', 'can:organisation-status' ]);
+        $this->middleware([ 'auth', 'organisation:have' ]);
+        $this->middleware([ 'can:organisation-status' ])->except([ 'dashboard', 'data', 'get', 'delete' ]);
     }
 
     /**

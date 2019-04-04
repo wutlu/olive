@@ -968,7 +968,7 @@ class OrganisationController extends Controller
         $query = new Organisation;
         $query = $query->with('author');
         $query = $request->status ? $query->where('status', $request->status == 'on' ? true : false) : $query;
-        $query = $request->string ? $query->were('name', 'ILIKE', '%'.$request->string.'%') : $query;
+        $query = $request->string ? $query->where('name', 'ILIKE', '%'.$request->string.'%') : $query;
         $query = $query->skip($skip)
                        ->take($take)
                        ->orderBy('id', 'DESC');

@@ -32,7 +32,7 @@ class UpdateRequest extends FormRequest
             'url_pattern'          => 'nullable|required_without:standard|string|max:255',
             'selector_title'       => 'nullable|required_without:standard|string|max:255',
             'selector_description' => 'nullable|required_without:standard|string|max:255',
-            'control_interval'     => 'required|integer|max:120|min:1',
+            'control_interval'     => 'required|integer|max:1440|min:1',
             'off_limit'            => 'required|integer|max:255|min:10',
             'test_count'           => 'required|integer|max:100|min:1',
             'proxy'                => 'nullable|string|in:on',
