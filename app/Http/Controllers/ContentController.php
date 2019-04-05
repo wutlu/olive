@@ -183,7 +183,7 @@ class ContentController extends Controller
                             'query' => [
                                 'bool' => [
                                     'must' => [
-                                        [ 'match' => [ 'external.id' => $document['_source']['id'] ] ],
+                                        [ 'match' => [ 'user.id' => $document['_source']['user']['id'] ] ],
                                         [ 'exists' => [ 'field' => 'deleted_at' ] ]
                                     ]
                                 ]
