@@ -79,11 +79,6 @@
                             'accuracy': 'complementary'
                         })
 
-                        if (o.deleted_at)
-                        {
-                            model.css({ 'opacity': '.4' })
-                        }
-
                         item.html(model).appendTo(ul)
                 })
 
