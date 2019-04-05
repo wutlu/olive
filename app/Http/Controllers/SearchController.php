@@ -64,7 +64,7 @@ class SearchController extends Controller
                         [
                             'range' => [
                                 'created_at' => [
-                                    'format' => 'dd.MM.YYYY',
+                                    'format' => 'YYYY-MM-dd',
                                     'gte' => $request->start_date,
                                     'lte' => $request->end_date
                                 ]
@@ -532,7 +532,7 @@ class SearchController extends Controller
                         [
                             'range' => [
                                 'created_at' => [
-                                    'format' => 'dd.MM.YYYY',
+                                    'format' => 'YYYY-MM-dd',
                                     'gte' => $request->start_date,
                                     'lte' => $request->end_date
                                 ]

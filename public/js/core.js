@@ -230,6 +230,19 @@ $(document).on('click', '[data-focus]', function() {
     return false;
 })
 
+/* --- focus function --- */
+
+$(document).on('click', '[data-input]', function() {
+    var __ = $(this);
+
+    var target = __.data('input'),
+        target = element(target);
+
+        target.val(__.data('input-value'))
+
+    return false;
+})
+
 /* --- submit --- */
 
 $(document).on('click', '[data-submit]', function() {

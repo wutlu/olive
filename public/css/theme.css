@@ -1182,8 +1182,8 @@ body.fs-active .fullscreen > .fs-element {
  * more button
  */
 .more {
-  margin: 0 auto 1rem;
-  border-radius: 0 0 1rem 1rem;
+  margin: 0;
+  border-radius: 0;
   width: 100%;
 }
 .more.more-unstyled {

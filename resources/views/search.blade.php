@@ -37,9 +37,15 @@
 
 @push('local.scripts')
     $(document).on('change', '[data-update]', function() {
-        vzAjax($('#search'))
+        var search = $('ul#search');
+            search.data('skip', 0).addClass('json-clear');
+
+        vzAjax(search)
     }).on('click', '[data-update-click]', function() {
-        vzAjax($('#search'))
+        var search = $('ul#search');
+            search.data('skip', 0).addClass('json-clear');
+
+        vzAjax(search)
     })
 
     var group_select = $('select[name=group_id]');
@@ -99,9 +105,9 @@
     function __search_archive(__, obj)
     {
         var ul = $('ul#search');
-        var item_model = ul.children('.model');
-
             ul.closest('.card').removeClass('hide')
+
+        var item_model = ul.children('.model');
 
         if (obj.status == 'ok')
         {
@@ -387,6 +393,8 @@
                 })
             }
         }
+
+        $('#chart-area').addClass('hide')
     }
 
     $(window).on('load', function() {
@@ -894,7 +902,7 @@
         var input = $('input[name=string]');
         var search = $('ul#search');
 
-            input.val($(this).data('search'))
+            input.val(input.val() + ' ' + $(this).data('search'))
 
             search.data('skip', 0).addClass('json-clear')
 
@@ -947,11 +955,10 @@
                 id="search"
                 data-href="{{ route('search.dashboard') }}"
                 data-skip="0"
-                data-take="100"
                 data-more-button="#search-more_button"
                 data-callback="__search_archive"
                 data-method="post"
-                data-include="start_date,end_date,sentiment,modules,string,sort,retweet"
+                data-include="start_date,end_date,sentiment,modules,string,sort,retweet,take"
                 data-nothing>
                 <li class="collection-item nothing hide">
                     @component('components.nothing')
@@ -983,7 +990,7 @@
 @endpush
 
 @section('panel')
-    <div class="card">
+    <div class="card mb-1">
         <div class="card-content cyan darken-2">
             <span class="card-title white-text d-flex">
                 <i class="material-icons mr-1">date_range</i>
@@ -991,17 +998,76 @@
             </span>
         </div>
         <div class="card-content">
-            <input data-update type="date" class="d-block" name="start_date" value="{{ $s ? $s : date('Y-m-d', strtotime('-1 day')) }}" placeholder="Başlangıç" />
+            <input data-update type="date" class="d-block" name="start_date" value="{{ $s ? $s : date('Y-m-d') }}" placeholder="Başlangıç" />
             <input data-update type="date" class="d-block" name="end_date" value="{{ $e ? $e : date('Y-m-d') }}" placeholder="Bitiş" />
         </div>
         <div class="collection">
-            <a href="#" data-update-click class="collection-item waves-effect" data-focus="input[name=start_date]" data-value="{{ date('Y-m-d') }}">Bugün</a>
-            <a href="#" data-update-click class="collection-item waves-effect" data-focus="input[name=start_date]" data-value="{{ date('Y-m-d', strtotime('-7 day')) }}">Bu Hafta</a>
-            <a href="#" data-update-click class="collection-item waves-effect" data-focus="input[name=start_date]" data-value="{{ date('Y-m-d', strtotime('-30 day')) }}">Bu Ay</a>
-            <a href="#" data-update-click class="collection-item waves-effect" data-focus="input[name=start_date]" data-value="{{ date('Y-m-d', strtotime('-90 day')) }}">Son 3 Ay</a>
+            <a
+                href="#"
+                data-update-click
+                class="collection-item waves-effect"
+                data-input="input[name=end_date]"
+                data-focus="input[name=start_date]"
+                data-input-value="{{ date('Y-m-d') }}"
+                data-value="{{ date('Y-m-d') }}">Bugün</a>
+            <a
+                href="#"
+                data-update-click
+                class="collection-item waves-effect"
+                data-input="input[name=end_date]"
+                data-focus="input[name=start_date]"
+                data-input-value="{{ date('Y-m-d') }}"
+                data-value="{{ date('Y-m-d', strtotime('-1 day')) }}">Dün ve Bugün</a>
+            <a
+                href="#"
+                data-update-click
+                class="collection-item waves-effect"
+                data-input="input[name=end_date]"
+                data-focus="input[name=start_date]"
+                data-input-value="{{ date('Y-m-d') }}"
+                data-value="{{ date('Y-m-d', strtotime('-7 day')) }}">Son 7 Gün</a>
+            <a
+                href="#"
+                data-update-click
+                class="collection-item waves-effect"
+                data-input="input[name=end_date]"
+                data-focus="input[name=start_date]"
+                data-input-value="{{ date('Y-m-d') }}"
+                data-value="{{ date('Y-m-d', strtotime('-30 day')) }}">Bu Ay</a>
+            <a
+                href="#"
+                data-update-click
+                class="collection-item waves-effect"
+                data-input="input[name=end_date]"
+                data-focus="input[name=start_date]"
+                data-input-value="{{ date('Y-m-d') }}"
+                data-value="{{ date('Y-m-d', strtotime('-90 day')) }}">Son 3 Ay</a>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-content cyan darken-2">
+            <span class="card-title white-text d-flex">
+                <i class="material-icons mr-1">grain</i>
+                Sayfalama
+            </span>
+        </div>
+        <div class="card-content">
+            <div class="input-field">
+                <select name="take" id="take" data-update>
+                    <option value="10" selected>10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+                <label>Sayfalama</label>
+            </div>
         </div>
     </div>
 @endsection
+
+@push('local.scripts')
+    $('select').formSelect()
+@endpush
 
 @section('wildcard')
     <div class="wild-area">
@@ -1011,19 +1077,19 @@
                     <i class="material-icons">close</i>
                 </a>
                 <label class="align-self-center mr-1" data-tooltip="Pozitif">
-                    <input type="radio" name="sentiment" value="pos" />
-                    <span class="material-icons grey-text text-darken-2">sentiment_satisfied</span>
+                    <input data-update type="radio" name="sentiment" value="pos" />
+                    <span class="material-icons green-text">sentiment_very_satisfied</span>
                 </label>
                 <label class="align-self-center mr-1" data-tooltip="Nötr">
-                    <input type="radio" name="sentiment" value="neu" />
+                    <input data-update type="radio" name="sentiment" value="neu" />
                     <span class="material-icons grey-text text-darken-2">sentiment_neutral</span>
                 </label>
                 <label class="align-self-center mr-1" data-tooltip="Negatif">
-                    <input type="radio" name="sentiment" value="neg" />
-                    <span class="material-icons grey-text text-darken-2">sentiment_dissatisfied</span>
+                    <input data-update type="radio" name="sentiment" value="neg" />
+                    <span class="material-icons red-text">sentiment_very_dissatisfied</span>
                 </label>
                 <label class="align-self-center mr-1" data-tooltip="Tümü">
-                    <input type="radio" name="sentiment" value="all" checked="" />
+                    <input data-update type="radio" name="sentiment" value="all" checked="" />
                     <span class="material-icons grey-text text-darken-2">fullscreen</span>
                 </label>
             </span>
@@ -1062,11 +1128,11 @@
                     <i class="material-icons">close</i>
                 </a>
                 <label class="align-self-center mr-1">
-                    <input type="checkbox" name="sort" data-update value="asc" />
+                    <input data-update type="checkbox" name="sort" value="asc" />
                     <span class="grey-text text-darken-2">İlk İçerikler</span>
                 </label>
                 <label class="align-self-center mr-1">
-                    <input type="checkbox" name="retweet" data-update value="on" />
+                    <input data-update type="checkbox" name="retweet" value="on" />
                     <span class="grey-text text-darken-2">ReTweetler Dahil</span>
                 </label>
             </span>
