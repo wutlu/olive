@@ -119,6 +119,7 @@ class RealTimeController extends Controller
                             '_source' => [
                                 'user.name',
                                 'user.screen_name',
+                                'user.image',
                                 'text',
                                 'created_at',
                                 'sentiment'
@@ -127,7 +128,7 @@ class RealTimeController extends Controller
 
                         if ($request->sentiment != 'all')
                         {
-                            $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
+                            $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.34 ] ] ];
                         }
 
                         $query = Document::search([ 'twitter', 'tweets', date('Y.m') ], 'tweet', $q);
@@ -145,9 +146,10 @@ class RealTimeController extends Controller
                                     'module' => 'twitter',
                                     'user' => [
                                         'name' => $object['_source']['user']['name'],
-                                        'screen_name' => $object['_source']['user']['screen_name']
+                                        'screen_name' => $object['_source']['user']['screen_name'],
+                                        'image' => $object['_source']['user']['image']
                                     ],
-                                    'text' => $object['_source']['text'],
+                                    'text' => Term::tweet($object['_source']['text']),
                                     'created_at' => date('d.m.Y H:i:s', strtotime($object['_source']['created_at']))
                                 ];
                             }

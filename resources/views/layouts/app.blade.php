@@ -728,7 +728,7 @@
     @endauth
 
     <div class="@auth{{ @$sidenav_fixed_layout ? 'sidenav-fixed-layout' : '' }}@endauth">
-        <footer class="page-footer grey darken-2 z-depth-1">
+        <footer class="page-footer grey lighten-4 z-depth-1">
             <div class="{{ isset($wide) ? 'container container-wide' : 'container' }}">
                 <div class="row mb-1">
                     <div class="col l6 s12">

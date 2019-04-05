@@ -2620,3 +2620,11 @@ nav.nav-half {
     display: block;
   }
 }
+
+/*!
+ * content
+ */
+.data {
+  margin: 0 -1rem;
+  padding: 1rem;
+}

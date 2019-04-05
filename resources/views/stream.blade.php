@@ -38,23 +38,13 @@
         max-height: 1000px;
         overflow: auto;
 
-        border-width: 0 1rem 0 1rem;
+        border-width: 0 0 0 1rem;
         border-style: solid;
         border-color: #4caf50;
     }
 
     .time-line > .collection.active {
         border-color: #f44336;
-    }
-
-    .time-line > .collection > .collection-item {
-        word-break: break-word;
-        padding: 2rem;
-
-    }
-
-    .time-line > .collection > .collection-item .title {
-        font-size: 16px;
     }
 @endpush
 

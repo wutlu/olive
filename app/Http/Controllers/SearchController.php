@@ -86,7 +86,7 @@ class SearchController extends Controller
 
         if ($request->sentiment != 'all')
         {
-            $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
+            $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.34 ] ] ];
         }
 
         $modules = [];
@@ -562,6 +562,7 @@ class SearchController extends Controller
             '_source' => [
                 'user.name',
                 'user.screen_name',
+                'user.image',
                 'text',
                 'created_at',
 
@@ -639,9 +640,10 @@ class SearchController extends Controller
                         $data[] = array_merge($arr, [
                             'user' => [
                                 'name' => $object['_source']['user']['name'],
-                                'screen_name' => $object['_source']['user']['screen_name']
+                                'screen_name' => $object['_source']['user']['screen_name'],
+                                'image' => $object['_source']['user']['image']
                             ],
-                            'text' => $object['_source']['text'],
+                            'text' => Term::tweet($object['_source']['text']),
                         ]);
                     break;
                     case 'article':

@@ -15,15 +15,6 @@
         border-radius: .2rem;
     }
 
-    .time-line > .collection > .collection-item {
-        word-break: break-word;
-        padding: 2rem;
-
-    }
-    .time-line > .collection > .collection-item .title {
-        font-size: 16px;
-    }
-
     #string {
         margin: 0;
         padding: 1rem;
@@ -929,7 +920,7 @@
             class="validate json json-search grey lighten-4"
             id="string"
             name="string"
-            type="search"
+            type="text"
             data-json-target="ul#search"
             placeholder="Ara"
             value="{{ $q }}" />

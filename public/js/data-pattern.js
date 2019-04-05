@@ -1,10 +1,15 @@
-function __joints__(o)
+function __joints(o)
 {
     return $('<div />', {
         'class': 'card card-unstyled',
         'html': [
+            $('<time>', {
+                'html': o.created_at,
+                'class': 'd-table mb-1'
+            }),
+
             $('<div />', {
-                'class': 'card-sentiment d-flex justify-content-between mt-1',
+                'class': 'card-sentiment d-flex justify-content-between mb-1',
                 'html': [
                     $('<div />', {
                         'css': {
@@ -59,10 +64,6 @@ function __joints__(o)
                 ]
             }),
 
-            $('<time>', {
-                'html': o.created_at,
-                'class': 'd-table grey-text text-lighten-1 mb-1'
-            }),
             $('<a />', {
                 'class': 'btn-floating btn-small waves-effect white',
                 'href': '/db/' + o._index + '/' + o._type + '/' + o._id,
@@ -96,17 +97,43 @@ function __joints__(o)
 function _tweet_(o)
 {
     return $('<div />', {
+        'class': 'data data-tweet',
         'html': [
             $('<div />', {
                 'html': [
-                    $('<a />', {
-                        'html': o.user.name,
-                        'href': 'https://twitter.com/' + o.user.screen_name,
-                        'class': 'd-table red-text'
-                    }).attr('target', 'blank'),
+                    $('<div />', {
+                        'class': 'd-flex mb-1',
+                        'html': [
+                            $('<a />', {
+                                'html': $('<img />', {
+                                    'src': o.user.image,
+                                    'onerror': "this.onerror=null;this.src='../img/no_image-twitter.svg';",
+                                    'css': {
+                                        'width': '48px',
+                                        'height': '48px'
+                                    }
+                                }),
+                                'href': 'https://twitter.com/' + o.user.screen_name,
+                                'class': 'mr-1 align-self-center'
+                            }).attr('target', 'blank'),
+                            $('<div />', {
+                                'class': 'align-self-center',
+                                'html': [
+                                    $('<a />', {
+                                        'html': o.user.name,
+                                        'href': 'https://twitter.com/' + o.user.screen_name,
+                                        'class': 'd-table red-text'
+                                    }).attr('target', 'blank'),
+                                    $('<span />', {
+                                        'html': '@' + o.user.screen_name,
+                                        'class': 'd-table grey-text'
+                                    })
+                                ]
+                            })
+                        ]
+                    }),
                     $('<span />', {
-                        'html': o.text,
-                        'class': 'grey-text text-darken-2'
+                        'html': o.text
                     }),
                     $('<a />', {
                         'data-name': 'url',
@@ -115,7 +142,7 @@ function _tweet_(o)
                         'class': 'd-table green-text'
                     }).attr('target', '_blank'),
                     $('<div />', {
-                        'html': __joints__(o)
+                        'html': __joints(o)
                     })
                 ]
             })
@@ -148,7 +175,7 @@ function _entry_(o)
                         'class': 'd-table green-text'
                     }).attr('target', '_blank'),
                     $('<div />', {
-                        'html': __joints__(o)
+                        'html': __joints(o)
                     })
                 ]
             })
@@ -177,7 +204,7 @@ function _article_(o)
                         'class': 'd-table green-text'
                     }).attr('target', '_blank'),
                     $('<div />', {
-                        'html': __joints__(o)
+                        'html': __joints(o)
                     })
                 ]
             })
@@ -206,7 +233,7 @@ function _product_(o)
                         'class': 'd-table green-text'
                     }).attr('target', '_blank'),
                     $('<div />', {
-                        'html': __joints__(o)
+                        'html': __joints(o)
                     })
                 ]
             })
@@ -236,7 +263,7 @@ function _comment_(o)
                         'class': 'd-table green-text'
                     }).attr('target', '_blank'),
                     $('<div />', {
-                        'html': __joints__(o)
+                        'html': __joints(o)
                     })
                 ]
             })
@@ -270,7 +297,7 @@ function _video_(o)
                         'class': 'd-table green-text'
                     }).attr('target', '_blank'),
                     $('<div />', {
-                        'html': __joints__(o)
+                        'html': __joints(o)
                     })
                 ]
             })
