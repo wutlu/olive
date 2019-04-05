@@ -401,7 +401,7 @@
                     {
                         name.html($('<a />', {
                             'html': '@' + o.key,
-                            'href': 'https://twitter.com/' + o.key,
+                            'href': '{{ route('search.dashboard') }}?q={{ '@'.$document['_source']['user']['screen_name'] }} ' + o.key,
                             'target': '_blank'
                         }))
                     }
@@ -409,7 +409,7 @@
                     {
                         name.html($('<a />', {
                             'html': '@' + o.key,
-                            'href': 'https://twitter.com/' + o.key,
+                            'href': '{{ route('search.dashboard') }}?q=@' + o.key + ' {{ $document['_source']['user']['screen_name'] }}',
                             'target': '_blank'
                         }))
                     }
@@ -417,7 +417,7 @@
                     {
                         name.html($('<a />', {
                             'html': '#' + o.key,
-                            'href': '{{ route('search.dashboard') }}?q=' + encodeURIComponent(o.key),
+                            'href': '{{ route('search.dashboard') }}?q={{ '@'.$document['_source']['user']['screen_name'] }} ' + encodeURIComponent(o.key),
                             'target': '_blank'
                         }))
                     }
@@ -433,7 +433,7 @@
                     {
                         name.html($('<a />', {
                             'html': '@' + o.key,
-                            'href': 'https://twitter.com/' + o.key,
+                            'href': '{{ route('search.dashboard') }}?q=@' + o.key,
                             'target': '_blank'
                         }))
                     }

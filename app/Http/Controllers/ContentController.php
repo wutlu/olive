@@ -173,10 +173,8 @@ class ContentController extends Controller
                             'query' => [
                                 'bool' => [
                                     'must' => [
-                                        [ 'match' => [ 'external.id' => $document['_source']['id'] ] ]
-                                    ],
-                                    'must_not' => [
-                                        [ 'match' => [ 'external.type' => 'retweet' ] ]
+                                        [ 'match' => [ 'external.id' => $document['_source']['id'] ] ],
+                                        [ 'match' => [ 'external.type' => 'reply' ] ]
                                     ]
                                 ]
                             ]
@@ -701,7 +699,7 @@ class ContentController extends Controller
                     if ($type == 'retweet' || $type == 'quote' || $type == 'reply')
                     {
                         $arr['query']['bool']['must'][] = [ 'match' => [ 'external.id' => $es_id ] ];
-                        $arr['query']['bool']['must_not'][] = [ 'match' => [ 'external.type' => $type ] ];
+                        $arr['query']['bool']['must'][] = [ 'match' => [ 'external.type' => $type ] ];
                     }
                     else
                     {

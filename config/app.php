@@ -14,6 +14,13 @@ return [
     'env' => env('APP_ENV', 'production'),
 
     /**
+     * Üyelik
+     *
+     * @return boolean
+     */
+    'registration' => env('APP_REGISTRATION', true),
+
+    /**
      * İlk Kurulum
      *
      * @var boolean
@@ -139,6 +146,7 @@ return [
         base_path('supervisor/logs/trigger.log'),
         base_path('supervisor/logs/horizon.log'),
         base_path('supervisor/logs/user_control.log'),
+
         storage_path('logs/laravel.log')
     ],
 

@@ -116,7 +116,7 @@ function __joints(o)
 function _tweet_(o)
 {
     return $('<div />', {
-        'class': 'data deleted',
+        'class': 'data',
         'html': [
             $('<div />', {
                 'class': 'd-flex mb-1',

@@ -4,7 +4,8 @@
         [
             'text' => $title
         ]
-    ]
+    ],
+    'pin_group' => true
 ])
 
 @include('content._inc.histogram', [

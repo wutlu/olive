@@ -110,7 +110,7 @@
                             <span class="grey-text">{{ $source['user']['name'] }}</span>
                             <span class="grey-text">({{ $source['platform'] }})</span>
                         </p>
-                        <div class="text grey-text text-darken-2">{!! nl2br($source['text']) !!}</div>
+                        <div class="text grey-text text-darken-2">{!! Term::tweet($source['text']) !!}</div>
                     @elseif ($type == 'article')
                         <a href="{{ $source['url'] }}" target="_blank">{{ str_limit($source['url'], 96) }}</a>
                         <div class="text grey-text text-darken-2">{!! nl2br($source['description']) !!}</div>

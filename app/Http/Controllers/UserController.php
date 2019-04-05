@@ -751,48 +751,57 @@ class UserController extends Controller
      */
     public static function registerPut(RegisterRequest $request)
     {
-        $user = new User;
-        $user->name = $request->name;
-        $user->password = bcrypt($request->password);
-        $user->email = $request->email;
-        $user->session_id = Session::getId();
-        $user->term_version = config('system.term_version');
-
-        if ($request->reference_code)
+        if (config('app.registration'))
         {
-            $referencer = User::where('reference_code', $request->reference_code)->first();
+            $user = new User;
+            $user->name = $request->name;
+            $user->password = bcrypt($request->password);
+            $user->email = $request->email;
+            $user->session_id = Session::getId();
+            $user->term_version = config('system.term_version');
 
-            if (@$referencer)
+            if ($request->reference_code)
             {
-                $user->reference_id = $referencer->id;
+                $referencer = User::where('reference_code', $request->reference_code)->first();
+
+                if (@$referencer)
+                {
+                    $user->reference_id = $referencer->id;
+                }
             }
+
+            $user->save();
+
+            foreach (config('system.notifications') as $key => $val)
+            {
+                UserNotification::create([
+                    'user_id' => $user->id,
+                    'key' => $key
+                ]);
+            }
+
+            $user->notify(
+                (
+                    new EmailValidationNotification(
+                        $user->id,
+                        $user->session_id,
+                        $user->name
+                    )
+                )->onQueue('email')
+            );
+
+            Auth::login($user);
+
+            return [
+                'status' => 'ok'
+            ];
         }
-
-        $user->save();
-
-        foreach (config('system.notifications') as $key => $val)
+        else
         {
-            UserNotification::create([
-                'user_id' => $user->id,
-                'key' => $key
-            ]);
+            return [
+                'status' => 'err'
+            ];
         }
-
-        $user->notify(
-            (
-                new EmailValidationNotification(
-                    $user->id,
-                    $user->session_id,
-                    $user->name
-                )
-            )->onQueue('email')
-        );
-
-        Auth::login($user);
-
-        return [
-            'status' => 'ok'
-        ];
     }
 
     /**

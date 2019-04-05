@@ -5,7 +5,8 @@
             'text' => $title
         ]
     ],
-    'dock' => true
+    'dock' => true,
+    'pin_group' => true
 ])
 
 @include('content._inc.histogram', [

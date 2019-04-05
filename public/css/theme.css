@@ -2630,6 +2630,10 @@ nav.nav-half {
   padding: 1rem;
   word-wrap: anywhere;
 }
+.data .title {
+  font-size: 20px;
+  margin: 0 0 .4rem;
+}
 
 /*!
  * pin groups
