@@ -178,6 +178,16 @@ class ContentController extends Controller
                                     ]
                                 ]
                             ]
+                        ]),
+                        'deleted' => Document::count([ 'twitter', 'tweets', '*' ], 'tweet', [
+                            'query' => [
+                                'bool' => [
+                                    'must' => [
+                                        [ 'match' => [ 'external.id' => $document['_source']['id'] ] ],
+                                        [ 'exists' => [ 'field' => 'deleted_at' ] ]
+                                    ]
+                                ]
+                            ]
                         ])
                     ];
 
@@ -701,6 +711,15 @@ class ContentController extends Controller
                     {
                         $arr['query']['bool']['must'][] = [ 'match' => [ 'external.id' => $es_id ] ];
                         $arr['query']['bool']['must'][] = [ 'match' => [ 'external.type' => $type ] ];
+                    }
+                    else if ($type == 'deleted')
+                    {
+                        $arr['query']['bool']['must'][] = [
+                            'match' => [ 'user.id' => $document->data['_source']['user']['id'] ]
+                        ];
+                        $arr['query']['bool']['must'][] = [
+                            'exists' => [ 'field' => 'deleted_at' ]
+                        ];
                     }
                     else
                     {

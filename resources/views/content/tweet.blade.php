@@ -189,6 +189,9 @@
                 <li class="tab">
                     <a href="#all_tweets">Tüm Tweetleri ({{ $data['total']->data['hits']['total'] }})</a>
                 </li>
+                <li class="tab">
+                    <a href="#all_deleted_tweets">Silinen Tweetleri ({{ $data['deleted']->data['count'] }})</a>
+                </li>
             </ul>
         </div>
 
@@ -296,6 +299,7 @@
             'all_retweets' => 'retweet',
             'all_quotes' => 'quote',
             'all_replies' => 'reply',
+            'all_deleted_tweets' => 'deleted'
         ] as $key => $type)
             <div id="{{ $key }}" class="halfload white" style="display: none;">
                 <div class="collection json-clear"
