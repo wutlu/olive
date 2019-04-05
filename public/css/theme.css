@@ -1554,6 +1554,12 @@ header#main > .parallax-container > .parallax > video#background-video {
   border-color: inline;
 }
 
+@media only screen and (max-width: 992px) {
+  .card > .card-sentiment {
+    display: none !important;
+  }
+}
+
 .card.card-data > .card-content {
   padding: 24px 24px 24px 72px;
 }

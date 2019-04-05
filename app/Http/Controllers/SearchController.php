@@ -575,7 +575,8 @@ class SearchController extends Controller
                 'channel.title',
                 'channel.id',
 
-                'video_id'
+                'video_id',
+                'sentiment'
             ]
         ];
 
@@ -629,6 +630,7 @@ class SearchController extends Controller
                     '_index' => $object['_index'],
 
                     'created_at' => date('d.m.Y H:i:s', strtotime($object['_source']['created_at'])),
+                    'sentiment' => $object['_source']['sentiment']
                 ];
 
                 switch ($object['_type'])
