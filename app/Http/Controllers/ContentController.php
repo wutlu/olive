@@ -689,6 +689,7 @@ class ContentController extends Controller
                             'user.image',
                             'text',
                             'created_at',
+                            'deleted_at',
                             'sentiment'
                         ],
                         'sort' => [
@@ -739,7 +740,13 @@ class ContentController extends Controller
                                     'min_score' => 10,
                                     'from' => $request->skip,
                                     'size' => $request->take,
-                                    '_source' => [ 'url', 'title', 'description', 'created_at' ]
+                                    '_source' => [
+                                        'url',
+                                        'title',
+                                        'description',
+                                        'created_at',
+                                        'deleted_at'
+                                    ]
                                 ]);
                             break;
                             case 'entry':
@@ -761,7 +768,14 @@ class ContentController extends Controller
                                     'min_score' => 10,
                                     'from' => $request->skip,
                                     'size' => $request->take,
-                                    '_source' => [ 'url', 'title', 'entry', 'author', 'created_at' ]
+                                    '_source' => [
+                                        'url',
+                                        'title',
+                                        'entry',
+                                        'author',
+                                        'created_at',
+                                        'deleted_at'
+                                    ]
                                 ]);
                             break;
                             case 'product':
@@ -796,7 +810,8 @@ class ContentController extends Controller
                                         'description',
                                         'price',
                                         'breadcrumb',
-                                        'created_at'
+                                        'created_at',
+                                        'deleted_at'
                                     ]
                                 ]);
                             break;

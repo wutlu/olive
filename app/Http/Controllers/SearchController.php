@@ -564,7 +564,9 @@ class SearchController extends Controller
                 'user.screen_name',
                 'user.image',
                 'text',
+
                 'created_at',
+                'deleted_at',
 
                 'url',
                 'title',
@@ -589,9 +591,7 @@ class SearchController extends Controller
         if ($request->sentiment != 'all')
         {
             $q['query']['bool']['filter'][] = [
-                'range' => [
-                    implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ]
-                ]
+                'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.34 ] ]
             ];
         }
 
@@ -631,8 +631,14 @@ class SearchController extends Controller
                     '_index' => $object['_index'],
 
                     'created_at' => date('d.m.Y H:i:s', strtotime($object['_source']['created_at'])),
+
                     'sentiment' => $object['_source']['sentiment']
                 ];
+
+                if (@$object['_source']['deleted_at'])
+                {
+                    $arr['deleted_at'] = date('d.m.Y H:i:s', strtotime($object['_source']['deleted_at']));
+                }
 
                 switch ($object['_type'])
                 {

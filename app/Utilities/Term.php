@@ -258,7 +258,7 @@ class Term
         //Convert attags to twitter profiles in &lt;a&gt; links
         $tweet = preg_replace('/@([A-Za-z0-9_\/\.]*)/', '<a target="_blank" href="'.route('search.dashboard').'?q=@$1">@$1</a>', $tweet);
 
-        return $tweet;
+        return mb_convert_encoding($tweet, 'UTF-8', 'UTF-8');
     }
 
     /**
