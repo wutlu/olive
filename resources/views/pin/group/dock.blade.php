@@ -5,7 +5,7 @@
     }
 @endpush
 
-<div class="card with-bg">
+<div class="card with-bg z-depth-5" id="pin-groups-dock">
     <div class="card-content">
         <span class="card-title">Pin Grupları</span>
     </div>
@@ -14,6 +14,7 @@
             <i class="material-icons grey-text text-darken-2">add</i>
         </a>
     </div>
+    <div class="card-content orange lighten-4">Pinleyeceğiniz içerik, burada seçili olan guruba kaydedilir.</div>
 
     <ul id="pin-groups"
         class="collection load json-clear mb-0" 
@@ -41,15 +42,7 @@
                 <i class="material-icons grey-text text-darken-2">create</i>        
             </a>
             <label class="align-self-center">
-                <input
-                    autocomplete="off"
-                    name="group_id"
-                    class="json"
-                    data-href="{{ route('pin.group') }}"
-                    data-method="post"
-                    data-delay="1"
-                    type="radio"
-                    data-callback="__pin_group" />
+                <input name="group_id" type="radio" />
                 <span class="d-flex">
                     <a
                         data-trigger="pin-go"
@@ -218,32 +211,32 @@
     }
 
     $(document).on('click', '[data-trigger=delete-pin-group]', function() {
-        var mdl = modal({
-                'id': 'pin-group-alert',
-                'body': 'Pin grubu silinecek?',
-                'size': 'modal-small',
-                'title': 'Sil',
-                'options': {},
-                'footer': [
-                    $('<a />', {
-                        'href': '#',
-                        'class': 'modal-close waves-effect btn-flat grey-text',
-                        'html': buttons.cancel
-                    }),
-                    $('<span />', {
-                        'html': ' '
-                    }),
-                    $('<a />', {
-                        'href': '#',
-                        'class': 'waves-effect btn-flat red-text json',
-                        'html': buttons.ok,
-                        'data-href': '{{ route('pin.group') }}',
-                        'data-method': 'delete',
-                        'data-id': $(this).data('id'),
-                        'data-callback': '__delete_pin_group'
-                    })
-                ]
-            });
+        return modal({
+            'id': 'pin-group-alert',
+            'body': 'Pin grubu silinecek?',
+            'size': 'modal-small',
+            'title': 'Sil',
+            'options': {},
+            'footer': [
+                $('<a />', {
+                    'href': '#',
+                    'class': 'modal-close waves-effect btn-flat grey-text',
+                    'html': buttons.cancel
+                }),
+                $('<span />', {
+                    'html': ' '
+                }),
+                $('<a />', {
+                    'href': '#',
+                    'class': 'waves-effect btn-flat red-text json',
+                    'html': buttons.ok,
+                    'data-href': '{{ route('pin.group') }}',
+                    'data-method': 'delete',
+                    'data-id': $(this).data('id'),
+                    'data-callback': '__delete_pin_group'
+                })
+            ]
+        })
     })
 
     function __delete_pin_group(__, obj)
@@ -264,6 +257,49 @@
             })
 
             vzAjax($('#pin-groups').data('skip', 0).addClass('json-clear'))
+        }
+    }
+
+    function __pin(__, obj)
+    {
+        if (obj.status == 'removed')
+        {
+            $('[data-pin-uuid=' + __.attr('data-pin-uuid') + ']').removeClass('on')
+
+            M.toast({ html: 'Pin Kaldırıldı', classes: 'red darken-2' })
+        }
+        else if (obj.status == 'pinned')
+        {
+            $('[data-pin-uuid=' + __.attr('data-pin-uuid') + ']').addClass('on')
+
+            var toastHTML = $('<div />', {
+                'html': [
+                    $('<span />', {
+                        'html': 'İçerik Pinlendi',
+                        'class': 'white-text'
+                    }),
+                    $('<a />', {
+                        'href': '#',
+                        'class': 'btn-flat toast-action json',
+                        'html': 'Geri Al',
+                        'data-undo': 'true',
+                        'data-href': '{{ route('pin', 'remove') }}',
+                        'data-method': 'post',
+                        'data-callback': '__pin',
+                        'data-id': __.data('id'),
+                        'data-type': __.data('type'),
+                        'data-index': __.data('index'),
+                        'data-pin-uuid': __.data('pin-uuid'),
+                        'data-include': 'group_id'
+                    })
+                ]
+            });
+
+            M.toast({ html: toastHTML.get(0).outerHTML })
+        }
+        else if (obj.status == 'failed')
+        {
+            M.toast({ html: 'Hay aksi, beklenmedik bir durum.', classes: 'orange darken-2' })
         }
     }
 @endpush

@@ -5,14 +5,11 @@
             'text' => $title
         ]
     ],
-    'dock' => true
+    'dock' => true,
+    'pin_group' => true
 ])
 
 @push('local.styles')
-    [data-name=author] {
-        font-size: 18px;
-    }
-
     table > thead > tr > th { padding: .2rem .4rem; }
     table > tbody > tr > td { padding: .2rem .4rem; }
 
@@ -73,27 +70,30 @@
     <div class="row">
         <div class="col m6 s12">
             <div class="card mb-1">
+                @isset ($document['_source']['user']['created_at'])
+                    <div class="card-content d-flex justify-content-between grey lighten-2">
+                        <small class="grey-text align-self-center">HESAP OLUŞTURULDU</small>
+                        <time class="grey-text align-self-center" data-time="">{{ date('d.m.Y H:i', strtotime($document['_source']['user']['created_at'])) }}</time>
+                    </div>
+                @endisset
                 <div class="card-content">
-                    <span class="d-flex justify-content-between">
-                        <span class="card-title align-self-center grey-text">{{ $document['_source']['user']['name'] }}</span>
-                        @isset ($document['_source']['user']['verified'])
-                            <i class="material-icons cyan-text align-self-center">check</i>
-                        @endisset
-                    </span>
-                    <a class="grey-text text-darken-2" href="https://twitter.com/{{ $document['_source']['user']['screen_name'] }}" target="_blank">{{ '@'.$document['_source']['user']['screen_name'] }}</a>
+                    <div class="d-flex mb-1">
+                        <img alt="Avatar" style="width: 48px; height: 48px;" src="{{ $document['_source']['user']['image'] }}" class="mr-1" />
+                        <div>
+                            <span class="d-flex justify-content-between">
+                                <span class="align-self-center">{{ $document['_source']['user']['name'] }}</span>
+                                @isset ($document['_source']['user']['verified'])
+                                    <i class="material-icons cyan-text align-self-center">check</i>
+                                @endisset
+                            </span>
+                            <a class="grey-text" href="https://twitter.com/{{ $document['_source']['user']['screen_name'] }}" target="_blank">{{ '@'.$document['_source']['user']['screen_name'] }}</a>
+                        </div>
+                    </div>
+
                     @isset ($document['_source']['user']['description'])
                         <div class="markdown grey-text">{!! Term::tweet($document['_source']['user']['description']) !!}</div>
                     @endisset
                 </div>
-
-                @isset ($document['_source']['user']['created_at'])
-                    <div class="card-action d-flex justify-content-end">
-                        <span class="right-align">
-                            <small class="d-block grey-text">HESAP OLUŞTURULDU</small>
-                            <time data-time="">{{ date('d.m.Y H:i', strtotime($document['_source']['user']['created_at'])) }}</time>
-                        </span>
-                    </div>
-                @endisset
 
                 @php
                     $url = 'https://twitter.com/'.$document['_source']['user']['screen_name'].'/status/'.$document['_source']['id'];
@@ -178,10 +178,16 @@
                     <a href="#stats" class="active">Profil Değerleri</a>
                 </li>
                 <li class="tab">
-                    <a href="#all_retweets">Tweet'e Yanıtları (YNT:{{ $data['reply']->data['count'] }}/RT:{{ $data['retweet']->data['count'] }})</a>
+                    <a href="#all_replies">Yanıtlar ({{ $data['reply']->data['count'] }})</a>
                 </li>
                 <li class="tab">
-                    <a href="#all_tweets">Tüm Tweetler ({{ $data['total']->data['hits']['total'] }})</a>
+                    <a href="#all_quotes">Alıntılar ({{ $data['quote']->data['count'] }})</a>
+                </li>
+                <li class="tab">
+                    <a href="#all_retweets">ReTweetler ({{ $data['retweet']->data['count'] }})</a>
+                </li>
+                <li class="tab">
+                    <a href="#all_tweets">Tüm Tweetleri ({{ $data['total']->data['hits']['total'] }})</a>
                 </li>
             </ul>
         </div>
@@ -287,7 +293,9 @@
 
         @foreach ([
             'all_tweets' => '',
-            'all_retweets' => 'retweet'
+            'all_retweets' => 'retweet',
+            'all_quotes' => 'quote',
+            'all_replies' => 'reply',
         ] as $key => $type)
             <div id="{{ $key }}" class="halfload white" style="display: none;">
                 <div class="collection json-clear"
@@ -305,13 +313,7 @@
                             @slot('size', 'small')
                         @endcomponent
                     </div>
-                    <div class="collection-item model hide">
-                        <span class="d-table grey-text text-darken-2" data-name="author"></span>
-                        <a href="#" target="_blank" class="d-table grey-text text-darken-2" data-name="screen-name"></a>
-                        <time data-time="" class="d-table grey-text" data-name="created-at"></time>
-                        <span class="d-block" data-name="text"></span>
-                        <a href="#" class="d-table green-text" data-name="url" target="_blank"></a>
-                    </div>
+                    <div class="collection-item model hide"></div>
                 </div>
 
                 @component('components.loader')
@@ -464,15 +466,8 @@
             if (obj.hits.length)
             {
                 $.each(obj.hits, function(key, o) {
-                    var item = item_model.clone();
+                    var item = item_model.clone().html(_tweet_(o));
                         item.removeClass('model hide').addClass('_tmp').attr('data-id', o.id)
-
-                        item.find('[data-name=author]').html(o._source.user.name)
-                        item.find('[data-name=screen-name]').html('@' + o._source.user.screen_name).attr('href', 'https://twitter.com/' + o._source.user.screen_name)
-                        item.find('[data-name=text]').html(o._source.text)
-                        item.find('[data-name=url]').html('https://twitter.com/' + o._source.user.screen_name + '/status/' + o._source.id).attr('href', 'https://twitter.com/' + o._source.user.screen_name + '/status/' + o._source.id)
-                        item.find('[data-name=created-at]').html(o._source.created_at)
-
                         item.appendTo(ul)
                 })
             }

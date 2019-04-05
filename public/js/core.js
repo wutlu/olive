@@ -940,15 +940,13 @@ function vzAjax(__)
 
                     var more_button = eval(element(__.data('more-button')));
 
-                    if (__.data('take') > obj.hits.length)
+                    if (__.data('take') > obj.hits.length || obj.hits.length == 0)
                     {
                         more_button.addClass('hide')
-                        more_button.parent('.card-footer').addClass('hide')
                     }
                     else
                     {
                         more_button.removeClass('hide')
-                        more_button.parent('.card-footer').removeClass('hide')
                     }
                 }
 

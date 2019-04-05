@@ -1,6 +1,6 @@
 function __joints(o)
 {
-    return $('<div />', {
+    var card = $('<div />', {
         'class': 'card card-unstyled',
         'html': [
             $('<time>', {
@@ -92,59 +92,72 @@ function __joints(o)
             })
         ]
     })
+
+    if (o.deleted_at)
+    {
+        card.append($('<div />', {
+            'class': 'd-flex justify-content-between red mt-1 p-1 z-depth-1',
+            'html': [
+                $('<span />', {
+                    'html': 'Silindi',
+                    'class': 'white-text'
+                }),
+                $('<span />', {
+                    'html': o.deleted_at,
+                    'class': 'white-text'
+                })
+            ]
+        }))
+    }
+
+    return card;
 }
 
 function _tweet_(o)
 {
     return $('<div />', {
-        'class': 'data data-tweet',
+        'class': 'data deleted',
         'html': [
             $('<div />', {
+                'class': 'd-flex mb-1',
                 'html': [
+                    $('<img />', {
+                        'src': o.user.image,
+                        'alt': 'Avatar',
+                        'onerror': "this.onerror=null;this.src='/img/no_image-twitter.svg';",
+                        'css': {
+                            'width': '48px',
+                            'height': '48px'
+                        },
+                        'class': 'mr-1 align-self-center'
+                    }),
                     $('<div />', {
-                        'class': 'd-flex mb-1',
+                        'class': 'align-self-center',
                         'html': [
                             $('<a />', {
-                                'html': $('<img />', {
-                                    'src': o.user.image,
-                                    'onerror': "this.onerror=null;this.src='../img/no_image-twitter.svg';",
-                                    'css': {
-                                        'width': '48px',
-                                        'height': '48px'
-                                    }
-                                }),
+                                'html': o.user.name,
                                 'href': 'https://twitter.com/' + o.user.screen_name,
-                                'class': 'mr-1 align-self-center'
+                                'class': 'd-table red-text'
                             }).attr('target', 'blank'),
-                            $('<div />', {
-                                'class': 'align-self-center',
-                                'html': [
-                                    $('<a />', {
-                                        'html': o.user.name,
-                                        'href': 'https://twitter.com/' + o.user.screen_name,
-                                        'class': 'd-table red-text'
-                                    }).attr('target', 'blank'),
-                                    $('<span />', {
-                                        'html': '@' + o.user.screen_name,
-                                        'class': 'd-table grey-text'
-                                    })
-                                ]
+                            $('<span />', {
+                                'html': '@' + o.user.screen_name,
+                                'class': 'd-table grey-text'
                             })
                         ]
-                    }),
-                    $('<span />', {
-                        'html': o.text
-                    }),
-                    $('<a />', {
-                        'data-name': 'url',
-                        'html': 'https://twitter.com/' + o.user.screen_name + '/status/' + o._id,
-                        'href': 'https://twitter.com/' + o.user.screen_name + '/status/' + o._id,
-                        'class': 'd-table green-text'
-                    }).attr('target', '_blank'),
-                    $('<div />', {
-                        'html': __joints(o)
                     })
                 ]
+            }),
+            $('<span />', {
+                'html': o.text
+            }),
+            $('<a />', {
+                'data-name': 'url',
+                'html': 'https://twitter.com/' + o.user.screen_name + '/status/' + o._id,
+                'href': 'https://twitter.com/' + o.user.screen_name + '/status/' + o._id,
+                'class': 'd-table green-text'
+            }).attr('target', '_blank'),
+            $('<div />', {
+                'html': __joints(o)
             })
         ]
     })
@@ -153,31 +166,28 @@ function _tweet_(o)
 function _entry_(o)
 {
     return $('<div />', {
+        'class': 'data',
         'html': [
+            $('<span />', {
+                'html': o.title,
+                'class': 'd-table blue-text title'
+            }),
+            $('<span />', {
+                'html': o.author,
+                'class': 'd-table red-text'
+            }),
+            $('<span />', {
+                'html': o.text,
+                'class': 'grey-text text-darken-2'
+            }),
+            $('<a />', {
+                'data-name': 'url',
+                'html': o.url,
+                'href': o.url,
+                'class': 'd-table green-text'
+            }).attr('target', '_blank'),
             $('<div />', {
-                'html': [
-                    $('<span />', {
-                        'html': o.title,
-                        'class': 'd-table blue-text title'
-                    }),
-                    $('<span />', {
-                        'html': o.author,
-                        'class': 'd-table red-text'
-                    }),
-                    $('<span />', {
-                        'html': o.text,
-                        'class': 'grey-text text-darken-2'
-                    }),
-                    $('<a />', {
-                        'data-name': 'url',
-                        'html': o.url,
-                        'href': o.url,
-                        'class': 'd-table green-text'
-                    }).attr('target', '_blank'),
-                    $('<div />', {
-                        'html': __joints(o)
-                    })
-                ]
+                'html': __joints(o)
             })
         ]
     })
@@ -186,27 +196,24 @@ function _entry_(o)
 function _article_(o)
 {
     return $('<div />', {
+        'class': 'data',
         'html': [
+            $('<span />', {
+                'html': o.title,
+                'class': 'd-table blue-text title'
+            }),
+            $('<span />', {
+                'html': o.text,
+                'class': 'grey-text text-darken-2'
+            }),
+            $('<a />', {
+                'data-name': 'url',
+                'html': str_limit(o.url, 96),
+                'href': o.url,
+                'class': 'd-table green-text'
+            }).attr('target', '_blank'),
             $('<div />', {
-                'html': [
-                    $('<span />', {
-                        'html': o.title,
-                        'class': 'd-table blue-text title'
-                    }),
-                    $('<span />', {
-                        'html': o.text,
-                        'class': 'grey-text text-darken-2'
-                    }),
-                    $('<a />', {
-                        'data-name': 'url',
-                        'html': str_limit(o.url, 96),
-                        'href': o.url,
-                        'class': 'd-table green-text'
-                    }).attr('target', '_blank'),
-                    $('<div />', {
-                        'html': __joints(o)
-                    })
-                ]
+                'html': __joints(o)
             })
         ]
     })
@@ -215,27 +222,24 @@ function _article_(o)
 function _product_(o)
 {
     return $('<div />', {
+        'class': 'data',
         'html': [
+            $('<span />', {
+                'html': o.title,
+                'class': 'd-table blue-text title'
+            }),
+            $('<span />', {
+                'html': o.text ? o.text : 'Açıklama Yok',
+                'class': 'grey-text text-darken-2'
+            }),
+            $('<a />', {
+                'data-name': 'url',
+                'html': str_limit(o.url, 96),
+                'href': o.url,
+                'class': 'd-table green-text'
+            }).attr('target', '_blank'),
             $('<div />', {
-                'html': [
-                    $('<span />', {
-                        'html': o.title,
-                        'class': 'd-table blue-text title'
-                    }),
-                    $('<span />', {
-                        'html': o.text ? o.text : 'Açıklama Yok',
-                        'class': 'grey-text text-darken-2'
-                    }),
-                    $('<a />', {
-                        'data-name': 'url',
-                        'html': str_limit(o.url, 96),
-                        'href': o.url,
-                        'class': 'd-table green-text'
-                    }).attr('target', '_blank'),
-                    $('<div />', {
-                        'html': __joints(o)
-                    })
-                ]
+                'html': __joints(o)
             })
         ]
     })
@@ -244,28 +248,25 @@ function _product_(o)
 function _comment_(o)
 {
     return $('<div />', {
+        'class': 'data',
         'html': [
+            $('<a />', {
+                'html': o.channel.title,
+                'href': 'https://www.youtube.com/channel/' + o.channel.id,
+                'class': 'd-table red-text'
+            }).attr('target', '_blank'),
+            $('<span />', {
+                'html': o.text,
+                'class': 'grey-text text-darken-2'
+            }),
+            $('<a />', {
+                'data-name': 'url',
+                'html': 'https://www.youtube.com/watch?v=' + o.video_id,
+                'href': 'https://www.youtube.com/watch?v=' + o.video_id,
+                'class': 'd-table green-text'
+            }).attr('target', '_blank'),
             $('<div />', {
-                'html': [
-                    $('<a />', {
-                        'html': o.channel.title,
-                        'href': 'https://www.youtube.com/channel/' + o.channel.id,
-                        'class': 'd-table red-text'
-                    }).attr('target', '_blank'),
-                    $('<span />', {
-                        'html': o.text,
-                        'class': 'grey-text text-darken-2'
-                    }),
-                    $('<a />', {
-                        'data-name': 'url',
-                        'html': 'https://www.youtube.com/watch?v=' + o.video_id,
-                        'href': 'https://www.youtube.com/watch?v=' + o.video_id,
-                        'class': 'd-table green-text'
-                    }).attr('target', '_blank'),
-                    $('<div />', {
-                        'html': __joints(o)
-                    })
-                ]
+                'html': __joints(o)
             })
         ]
     })
@@ -274,32 +275,29 @@ function _comment_(o)
 function _video_(o)
 {
     return $('<div />', {
+        'class': 'data',
         'html': [
+            $('<span />', {
+                'html': o.title,
+                'class': 'd-table blue-text title'
+            }),
+            $('<a />', {
+                'html': o.channel.title,
+                'href': 'https://www.youtube.com/channel/' + o.channel.id,
+                'class': 'd-table red-text'
+            }).attr('target', '_blank'),
+            $('<span />', {
+                'html': o.text,
+                'class': 'grey-text text-darken-2'
+            }),
+            $('<a />', {
+                'data-name': 'url',
+                'html': 'https://www.youtube.com/watch?v=' + o._id,
+                'href': 'https://www.youtube.com/watch?v=' + o._id,
+                'class': 'd-table green-text'
+            }).attr('target', '_blank'),
             $('<div />', {
-                'html': [
-                    $('<span />', {
-                        'html': o.title,
-                        'class': 'd-table blue-text title'
-                    }),
-                    $('<a />', {
-                        'html': o.channel.title,
-                        'href': 'https://www.youtube.com/channel/' + o.channel.id,
-                        'class': 'd-table red-text'
-                    }).attr('target', '_blank'),
-                    $('<span />', {
-                        'html': o.text,
-                        'class': 'grey-text text-darken-2'
-                    }),
-                    $('<a />', {
-                        'data-name': 'url',
-                        'html': 'https://www.youtube.com/watch?v=' + o._id,
-                        'href': 'https://www.youtube.com/watch?v=' + o._id,
-                        'class': 'd-table green-text'
-                    }).attr('target', '_blank'),
-                    $('<div />', {
-                        'html': __joints(o)
-                    })
-                ]
+                'html': __joints(o)
             })
         ]
     })

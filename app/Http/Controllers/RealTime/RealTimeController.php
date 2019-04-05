@@ -122,7 +122,8 @@ class RealTimeController extends Controller
                                 'user.image',
                                 'text',
                                 'created_at',
-                                'sentiment'
+                                'sentiment',
+                                'deleted_at'
                             ]
                         ];
 
@@ -137,7 +138,7 @@ class RealTimeController extends Controller
                         {
                             foreach ($query->data['hits']['hits'] as $object)
                             {
-                                $data[] = [
+                                $arr = [
                                     'uuid' => md5($object['_id'].'.'.$object['_index']),
                                     '_id' => $object['_id'],
                                     '_type' => $object['_type'],
@@ -152,6 +153,13 @@ class RealTimeController extends Controller
                                     'text' => Term::tweet($object['_source']['text']),
                                     'created_at' => date('d.m.Y H:i:s', strtotime($object['_source']['created_at']))
                                 ];
+
+                                if (@$object['_source']['deleted_at'])
+                                {
+                                    $arr['deleted_at'] = $object['_source']['deleted_at'];
+                                }
+
+                                $data[] = $arr;
                             }
                         }
                     }
@@ -200,7 +208,9 @@ class RealTimeController extends Controller
                             'channel.id',
 
                             'video_id',
-                            'text'
+                            'text',
+
+                            'deleted_at'
                         ]
                     ];
 
@@ -253,6 +263,11 @@ class RealTimeController extends Controller
                                 'created_at' => date('d.m.Y H:i:s', strtotime($object['_source']['created_at'])),
                                 'sentiment' => Crawler::emptySentiment(@$object['_source']['sentiment'])
                             ];
+
+                            if (@$object['_source']['deleted_at'])
+                            {
+                                $arr['deleted_at'] = $object['_source']['deleted_at'];
+                            }
 
                             switch ($object['_type'])
                             {

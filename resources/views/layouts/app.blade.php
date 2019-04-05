@@ -69,7 +69,12 @@
                 @endpush
             @endif
         @endif
+
+        @isset($pin_group)
+            @include('pin.group.dock')
+        @endisset
     @endauth
+
     @if (@$sidenav_fixed_layout)
         @auth
             @if (!auth()->user()->verified)
@@ -173,6 +178,7 @@
                             <a href="#" data-target="slide-out" class="sidenav-trigger">
                                 <i class="material-icons">menu</i>
                             </a>
+
                             @if (trim($__env->yieldContent('panel')))
                                 <a href="#" data-class="#panel" data-class-toggle="active" class="sidenav-trigger">
                                     <i class="material-icons">view_compact</i>
@@ -182,22 +188,31 @@
 
                         <ul class="right">
                             @isset($dock)
-                            <li>
-                                <a href="#" data-class="body" data-class-toggle="dock-active" class="dock-menu">
-                                    <i class="material-icons">blur_linear</i>
-                                </a>
-                            </li>
+                                <li>
+                                    <a href="#" data-class="body" data-class-toggle="dock-active" class="dock-menu">
+                                        <i class="material-icons">blur_linear</i>
+                                    </a>
+                                </li>
                             @endisset
                         </ul>
                         <ul class="right hide-on-med-and-down">
-                            @auth
-                            <li>
-                                <a class="dropdown-trigger waves-effect waves-light" href="#" data-target="user-top-dropdown" data-align="right">
-                                    {{ auth()->user()->name }} <i class="material-icons right">arrow_drop_down</i>
-                                </a>
-                            </li>
+                                @auth
+                                <li>
+                                    <a class="dropdown-trigger waves-effect waves-light" href="#" data-target="user-top-dropdown" data-align="right">
+                                        {{ auth()->user()->name }} <i class="material-icons right">arrow_drop_down</i>
+                                    </a>
+                                </li>
                             @endauth
                         </ul>
+                        @isset($pin_group)
+                            <ul class="right">
+                                <li>
+                                    <a class="waves-effect waves-light" href="#" data-class="#pin-groups-dock" data-class-toggle="active">
+                                        <i class="material-icons">fiber_pin</i>
+                                    </a>
+                                </li>
+                            </ul>
+                        @endisset
                     </div>
                 </div>
             </nav>

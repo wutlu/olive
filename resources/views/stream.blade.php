@@ -6,7 +6,8 @@
         ]
     ],
     'dock' => true,
-    'wide' => true
+    'wide' => true,
+    'pin_group' => true
 ])
 
 @push('local.styles')
@@ -25,18 +26,9 @@
         border-radius: .2rem;
     }
 
-    .pin-history-link {
-        background-image: url({{ asset('img/icons/pin.png') }});
-        background-repeat: no-repeat;
-        background-position: left center;
-        background-size: 32px 32px;
-        padding: 1rem 1rem 1rem 32px;
-        display: table;
-    }
-
     .time-line > .collection {
-        max-height: 1000px;
-        overflow: auto;
+        max-height: 4000px;
+        overflow: hidden;
 
         border-width: 0 0 0 1rem;
         border-style: solid;
@@ -59,8 +51,6 @@
 @endpush
 
 @section('wildcard')
-    <div id="wildcard-pin-history" class="owl-carousel owl-wildcard hide"></div>
-
     <div class="wild-area z-depth-1">
         <div class="wild-content d-flex grey lighten-4" data-wild="volume">
             <span class="wild-body d-flex">
@@ -155,19 +145,7 @@
         data-method="post"
         data-include="keyword_group,sentiment">
         <div class="card-content">
-            <div class="d-flex justify-content-between">
-                <span class="card-title mr-auto mb-0 align-self-center">Gerçek Zamanlı</span>
-
-                <a
-                    class="btn-flat waves-effect json"
-                    disabled
-                    data-button="pins-button"
-                    data-href="{{ route('route.generate.id') }}"
-                    data-method="post"
-                    data-name="pin.pins"
-                    data-callback="__go"
-                    href="#">Pinler (<span class="count">0</span>)</a>
-            </div>
+            <span class="card-title">Gerçek Zamanlı</span>
         </div>
         <ul class="collection">
             <li class="collection-item model hide">test</li>
@@ -202,65 +180,6 @@
     var group_select = $('select[name=group_id]');
         group_select.formSelect()
 
-    function __pin(__, obj)
-    {
-        var pins_button = $('[data-button=pins-button]');
-        var pin_count = pins_button.children('span.count');
-
-        if (obj.status == 'removed')
-        {
-            $('[data-pin-uuid=' + __.attr('data-pin-uuid') + ']').removeClass('on')
-
-            M.toast({ html: 'Pin Kaldırıldı', classes: 'red darken-2' })
-
-            pin_count.html(parseInt(pin_count.html()) - 1)
-        }
-        else if (obj.status == 'pinned')
-        {
-            $('[data-pin-uuid=' + __.attr('data-pin-uuid') + ']').addClass('on')
-
-            var toastHTML = $('<div />', {
-                'html': [
-                    $('<span />', {
-                        'html': 'İçerik Pinlendi',
-                        'class': 'white-text'
-                    }),
-                    $('<a />', {
-                        'href': '#',
-                        'class': 'btn-flat toast-action json',
-                        'html': 'Geri Al',
-                        'data-undo': 'true',
-                        'data-href': '{{ route('pin', 'remove') }}',
-                        'data-method': 'post',
-                        'data-callback': '__pin',
-                        'data-id': __.data('id'),
-                        'data-type': __.data('type'),
-                        'data-index': __.data('index'),
-                        'data-pin-uuid': __.data('pin-uuid'),
-                        'data-include': 'group_id'
-                    })
-                ]
-            });
-
-            M.toast({ html: toastHTML.get(0).outerHTML })
-
-            $('#wildcard-pin-history').removeClass('hide')
-
-            $('.owl-wildcard').trigger('add.owl.carousel', [$('<a />', {
-                'href': __.data('url'),
-                'class': 'pin-history-link',
-                'target': '_blank',
-                'html': str_limit(__.data('url'), 100)
-            }), 0]).trigger('refresh.owl.carousel')
-
-            pin_count.html(parseInt(pin_count.html()) + 1)
-        }
-        else if (obj.status == 'failed')
-        {
-            M.toast({ html: 'Hay aksi, beklenmedik bir durum.', classes: 'orange darken-2' })
-        }
-    }
-
     var buffer = [];
     var words = [];
 
@@ -283,46 +202,32 @@
 
             if (!$('#' + obj.uuid).length)
             {
-                var pattern;
+                var pattern,
+                    url = obj.url;
 
                 switch(obj._type)
                 {
-                    case 'tweet'  : pattern = _tweet_  (obj); break;
-                    case 'entry'  : pattern = _entry_  (obj); break;
-                    case 'article': pattern = _article_(obj); break;
-                    case 'product': pattern = _product_(obj); break;
-                    case 'comment': pattern = _comment_(obj); break;
-                    case 'video'  : pattern = _video_  (obj); break;
+                    case 'tweet':
+                        pattern = _tweet_(obj);
+                    break;
+                    case 'entry':
+                        pattern = _entry_(obj);
+                    break;
+                    case 'article':
+                        pattern = _article_(obj);
+                    break;
+                    case 'product':
+                        pattern = _product_(obj);
+                    break;
+                    case 'comment':
+                        pattern = _comment_(obj);
+                    break;
+                    case 'video':
+                        pattern = _video_(obj);
+                    break;
                 }
 
                 var item = model.clone().html(pattern);
-
-                var url = '';
-
-                if (obj._type == 'tweet')
-                {
-                    url = 'https://twitter.com/' + obj.user.screen_name + '/status/' + obj._id;
-                }
-                else if (obj._type == 'article')
-                {
-                    url = obj.url;
-                }
-                else if (obj._type == 'entry')
-                {
-                    url = obj.url;
-                }
-                else if (obj._type == 'product')
-                {
-                    url = obj.url;
-                }
-                else if (obj._type == 'video')
-                {
-                    url = 'https://www.youtube.com/watch?v=' + obj._id;
-                }
-                else if (obj._type == 'comment')
-                {
-                    url = 'https://www.youtube.com/channel/' + obj.channel.id;
-                }
 
                 item.mark(words, {
                     'element': 'span',
@@ -344,20 +249,13 @@
                     $.playSound('{{ asset('alert-message.mp3') }}')
                 }
 
-                item.find('[data-callback=__pin]')
-                    .attr('data-id', obj._id)
-                    .attr('data-pin-uuid', obj.uuid)
-                    .attr('data-index', obj._index)
-                    .attr('data-type', obj._type)
-                    .attr('data-url', url)
-
                 item.find('[data-button=view]')
                     .attr('href', '{{ url('/') }}/db/' + obj._index + '/' + obj._type + '/' + obj._id)
             }
 
             buffer.shift()
 
-            if (bucket.children('.collection-item').length > 1000)
+            if (bucket.children('.collection-item').length > 400)
             {
                 bucket.children('.collection-item:last-child').remove()
             }
@@ -455,14 +353,6 @@
             window.clearTimeout(streamTimer)
         }
     })
-
-    function __pin_group(__, obj)
-    {
-        if (obj.status == 'ok')
-        {
-            $('[data-button=pins-button]').removeAttr('disabled').attr('data-id', obj.data.id).children('span.count').html(obj.data.pins.length)
-        }
-    }
 
     function __keyword_groups(__, obj)
     {
@@ -677,32 +567,32 @@
     }
 
     $(document).on('click', '[data-trigger=delete-keyword-group]', function() {
-        var mdl = modal({
-                'id': 'keyword-group-alert',
-                'body': 'Kelime grubu silinecek?',
-                'size': 'modal-small',
-                'title': 'Sil',
-                'options': {},
-                'footer': [
-                    $('<a />', {
-                        'href': '#',
-                        'class': 'modal-close waves-effect btn-flat grey-text',
-                        'html': buttons.cancel
-                    }),
-                    $('<span />', {
-                        'html': ' '
-                    }),
-                    $('<a />', {
-                        'href': '#',
-                        'class': 'waves-effect btn-flat red-text json',
-                        'html': buttons.ok,
-                        'data-href': '{{ route('realtime.keyword.group') }}',
-                        'data-method': 'delete',
-                        'data-id': $(this).data('id'),
-                        'data-callback': '__delete_keyword_group'
-                    })
-                ]
-            })
+        return modal({
+            'id': 'keyword-group-alert',
+            'body': 'Kelime grubu silinecek?',
+            'size': 'modal-small',
+            'title': 'Sil',
+            'options': {},
+            'footer': [
+                $('<a />', {
+                    'href': '#',
+                    'class': 'modal-close waves-effect btn-flat grey-text',
+                    'html': buttons.cancel
+                }),
+                $('<span />', {
+                    'html': ' '
+                }),
+                $('<a />', {
+                    'href': '#',
+                    'class': 'waves-effect btn-flat red-text json',
+                    'html': buttons.ok,
+                    'data-href': '{{ route('realtime.keyword.group') }}',
+                    'data-method': 'delete',
+                    'data-id': $(this).data('id'),
+                    'data-callback': '__delete_keyword_group'
+                })
+            ]
+        })
     })
 
     function __delete_keyword_group(__, obj)
@@ -772,8 +662,6 @@
             @slot('class', 'card-loader-unstyled')
         @endcomponent
     </div>
-
-    @include('pin.group.dock')
 @endsection
 
 @include('_inc.alerts.search_operators')

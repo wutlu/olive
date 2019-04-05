@@ -159,6 +159,16 @@ class ContentController extends Controller
                                 ]
                             ]
                         ]),
+                        'quote' => Document::count([ 'twitter', 'tweets', '*' ], 'tweet', [
+                            'query' => [
+                                'bool' => [
+                                    'must' => [
+                                        [ 'match' => [ 'external.id' => $document['_source']['id'] ] ],
+                                        [ 'match' => [ 'external.type' => 'quote' ] ]
+                                    ]
+                                ]
+                            ]
+                        ]),
                         'reply' => Document::count([ 'twitter', 'tweets', '*' ], 'tweet', [
                             'query' => [
                                 'bool' => [
@@ -673,20 +683,25 @@ class ContentController extends Controller
                     $arr = [
                         'from' => $request->skip,
                         'size' => $request->take,
-                        '_source' => [ 'id', 'user.id', 'user.name', 'user.screen_name', 'text', 'created_at' ],
+                        '_source' => [
+                            'id',
+                            'user.id',
+                            'user.name',
+                            'user.screen_name',
+                            'user.image',
+                            'text',
+                            'created_at',
+                            'sentiment'
+                        ],
                         'sort' => [
                             'created_at' => 'DESC'
                         ]
                     ];
 
-                    if ($type == 'retweet')
+                    if ($type == 'retweet' || $type == 'quote' || $type == 'reply')
                     {
-                        $arr['query']['bool']['must'][] = [
-                            'match' => [ 'external.id' => $es_id ]
-                        ];
-                        $arr['query']['bool']['must_not'][] = [
-                            'match' => [ 'external.type' => 'retweet' ]
-                        ];
+                        $arr['query']['bool']['must'][] = [ 'match' => [ 'external.id' => $es_id ] ];
+                        $arr['query']['bool']['must_not'][] = [ 'match' => [ 'external.type' => $type ] ];
                     }
                     else
                     {
@@ -799,9 +814,34 @@ class ContentController extends Controller
                 break;
             }
 
+            if (@$documents->data['hits']['hits'])
+            {
+                $hits = array_map(function($arr) {
+                    $array = $arr['_source'];
+
+                    if ($arr['_type'] == 'tweet')
+                    {
+                        $array['text'] = Term::tweet($array['text']);
+                    }
+
+                    return array_merge(
+                        $array,
+                        [
+                            '_id' => $arr['_id'],
+                            '_type' => $arr['_type'],
+                            '_index' => $arr['_index']
+                        ]
+                    );
+                }, $documents->data['hits']['hits']);
+            }
+            else
+            {
+                $hits = [];
+            }
+
             return [
                 'status' => 'ok',
-                'hits' => $documents->data['hits']['hits']
+                'hits' => $hits
             ];
         }
         else

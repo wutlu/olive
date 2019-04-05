@@ -88,7 +88,7 @@ Route::prefix('db')->group(function () {
             'es_index_key' => '[a-z0-9-\.]+'
         ]
     );
-    Route::post('benzer/{es_index}/{es_type}/{es_id}/{type?}', 'ContentController@smilar')->name('content.smilar')->where('type', '(tweet|retweet|comment-video|comment-channel)');
+    Route::post('benzer/{es_index}/{es_type}/{es_id}/{type?}', 'ContentController@smilar')->name('content.smilar')->where('type', '(tweet|retweet|quote|reply|comment-video|comment-channel)');
     Route::post('aggregation/tweet/{type}/{id}', 'ContentController@tweetAggregation')->name('tweet.aggregation')->where('type', '(names|screen_names|platforms|langs|mention_in|mention_out|hashtags|places|urls)');
     Route::post('aggregation/video/{type}/{id}', 'ContentController@videoAggregation')->name('video.aggregation')->where([ 'type' => '(titles)', 'id' => '[0-9a-zA-Z_-]+']);
     Route::post('video/yorum/{id}', 'ContentController@videoComments')->name('youtube.comments')->where('id', '[0-9a-zA-Z_-]+');

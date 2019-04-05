@@ -95,8 +95,8 @@ blockquote {
   display: none;
   padding: 2rem;
 
-          transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  -webkit-transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          transition: all 400ms cubic-bezier(.25, .46, .45, .94);
+  -webkit-transition: all 400ms cubic-bezier(.25, .46, .45, .94);
 
           transform: translateY(90%);
   -webkit-transform: translateY(90%);
@@ -672,8 +672,8 @@ code {
           transform: translateY(-100%);
   -webkit-transform: translateY(-100%);
 
-          transition: all 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  -webkit-transition: all 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          transition: all 200ms cubic-bezier(.25, .46, .45, .94);
+  -webkit-transition: all 200ms cubic-bezier(.25, .46, .45, .94);
 }
 .wild-area > .wild-content.active {
           transform: translateY(0);
@@ -829,8 +829,8 @@ code {
  * search
  */
 .search-wrapper {
-          transition: all 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  -webkit-transition: all 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          transition: all 200ms cubic-bezier(.25, .46, .45, .94);
+  -webkit-transition: all 200ms cubic-bezier(.25, .46, .45, .94);
 
   position: fixed;
   top: 0;
@@ -983,8 +983,8 @@ body.module-search-active > .search-wrapper {
   border-width: 2px;
   border-style: dashed;
 
-          transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  -webkit-transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          transition: all 200ms cubic-bezier(.25, .46, .45, .94);
+  -webkit-transition: all 200ms cubic-bezier(.25, .46, .45, .94);
 }
 .fast-menu > a:hover {
   border-radius: 1rem;
@@ -1019,8 +1019,8 @@ ul.partners > li.partner a {
           filter: grayscale(100%);
   -webkit-filter: grayscale(100%);
 
-          transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  -webkit-transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          transition: all 200ms cubic-bezier(.25, .46, .45, .94);
+  -webkit-transition: all 200ms cubic-bezier(.25, .46, .45, .94);
 }
 ul.partners > li.partner a:hover {
           filter: grayscale(0);
@@ -1119,8 +1119,8 @@ body.fs-active .fullscreen > .fs-container > .card {
 
   min-width: 30%;
 
-          transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  -webkit-transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          transition: all 200ms cubic-bezier(.25, .46, .45, .94);
+  -webkit-transition: all 200ms cubic-bezier(.25, .46, .45, .94);
 }
 body.fs-active .fullscreen > .fs-container > .card:hover {
   min-width: 40%;
@@ -1282,8 +1282,8 @@ header#main > .parallax-container > .parallax > video#background-video {
 
   margin: 0 0 1rem 1rem;
 
-          transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  -webkit-transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          transition: all 200ms cubic-bezier(.25, .46, .45, .94);
+  -webkit-transition: all 200ms cubic-bezier(.25, .46, .45, .94);
 }
 
 #dock-content > .menu > .collection > a.collection-item {
@@ -1306,8 +1306,8 @@ header#main > .parallax-container > .parallax > video#background-video {
 }
 
 .dock-overlay {
-          transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  -webkit-transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          transition: all 200ms cubic-bezier(.25, .46, .45, .94);
+  -webkit-transition: all 200ms cubic-bezier(.25, .46, .45, .94);
 }
 
 @media only screen and (max-width: 1440px) {
@@ -1902,8 +1902,8 @@ nav .nav-wrapper > ul > li > a > i {
   height: 2rem;
   line-height: 2rem;
 
-  -webkit-transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-          transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          transition: all 200ms cubic-bezier(.25, .46, .45, .94);
+  -webkit-transition: all 200ms cubic-bezier(.25, .46, .45, .94);
 
   margin-left: auto;
 }
@@ -2542,8 +2542,8 @@ nav.nav-half {
   padding: 2rem;
   border-radius: 2rem;
 
-          transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  -webkit-transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          transition: all 200ms cubic-bezier(.25, .46, .45, .94);
+  -webkit-transition: all 200ms cubic-bezier(.25, .46, .45, .94);
 }
 .plans > .plan:hover,
 .plans > .plan.active {
@@ -2603,7 +2603,8 @@ nav.nav-half {
  * panel
  */
 #panel {
-  min-width: 240px;
+  min-width: 190px;
+  max-width: 190px;
   padding: 0 1rem 1rem 0;
 
           transition: all 400ms cubic-bezier(.25, .46, .45, .94);
@@ -2612,7 +2613,7 @@ nav.nav-half {
 
 @media only screen and (max-width: 992px) {
   #panel {
-    padding: 1rem;
+    padding: 0;
     display: none;
   }
 
@@ -2627,4 +2628,36 @@ nav.nav-half {
 .data {
   margin: 0 -1rem;
   padding: 1rem;
+  word-wrap: anywhere;
+}
+
+/*!
+ * pin groups
+ */
+#pin-groups-dock {
+  width: 240px;
+
+  position: fixed;
+  z-index: 10;
+  top: 64px;
+  right: 0;
+  bottom: 0;
+  left: auto;
+
+          transform: translateX(100%);
+  -webkit-transform: translateX(100%);
+
+          transition: all 200ms cubic-bezier(.25, .46, .45, .94);
+  -webkit-transition: all 200ms cubic-bezier(.25, .46, .45, .94);
+}
+
+#pin-groups-dock.active {
+          transform: translateX(0);
+  -webkit-transform: translateX(0);
+}
+
+@media only screen and (max-width: 992px) {
+  #pin-groups-dock {
+    top:56px;
+  }
 }

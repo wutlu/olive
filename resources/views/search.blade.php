@@ -6,7 +6,8 @@
         ]
     ],
     'dock' => true,
-    'wide' => true
+    'wide' => true,
+    'pin_group' => true
 ])
 
 @push('local.styles')
@@ -23,6 +24,8 @@
         -webkit-box-shadow: none !important;
 
         border-width: 0;
+
+        width: calc(100% - 2rem)
     }
 @endpush
 
@@ -38,60 +41,6 @@
 
         vzAjax(search)
     })
-
-    var group_select = $('select[name=group_id]');
-        group_select.formSelect()
-
-    function __pin(__, obj)
-    {
-        if (obj.status == 'removed')
-        {
-            $('[data-pin-uuid=' + __.attr('data-pin-uuid') + ']').removeClass('on')
-
-            M.toast({ html: 'Pin Kaldırıldı', classes: 'red darken-2' })
-        }
-        else if (obj.status == 'pinned')
-        {
-            $('[data-pin-uuid=' + __.attr('data-pin-uuid') + ']').addClass('on')
-
-            var toastHTML = $('<div />', {
-                'html': [
-                    $('<span />', {
-                        'html': 'İçerik Pinlendi',
-                        'class': 'white-text'
-                    }),
-                    $('<a />', {
-                        'href': '#',
-                        'class': 'btn-flat toast-action json',
-                        'html': 'Geri Al',
-                        'data-undo': 'true',
-                        'data-href': '{{ route('pin', 'remove') }}',
-                        'data-method': 'post',
-                        'data-callback': '__pin',
-                        'data-id': __.data('id'),
-                        'data-type': __.data('type'),
-                        'data-index': __.data('index'),
-                        'data-pin-uuid': __.data('pin-uuid'),
-                        'data-include': 'group_id'
-                    })
-                ]
-            });
-
-            M.toast({ html: toastHTML.get(0).outerHTML })
-        }
-        else if (obj.status == 'failed')
-        {
-            M.toast({ html: 'Hay aksi, beklenmedik bir durum.', classes: 'orange darken-2' })
-        }
-    }
-
-    function __pin_group(__, obj)
-    {
-        if (obj.status == 'ok')
-        {
-            M.toast({ html: 'Grup Seçildi' })
-        }
-    }
 
     function __search_archive(__, obj)
     {
@@ -673,7 +622,7 @@
     {
         var id = hashCode(__.val());
 
-        if (!$('.chip-s').find('.chip[data-id=' + id + ']').length)
+        if (!$('.chip-s').find('.chip[data-id=' + id + ']').length && __.val().length)
         {
             $('.chip-s').prepend($('<a />', {
                 'href': '#',
@@ -744,7 +693,7 @@
         <div class="card-content cyan darken-2">
             <span class="card-title white-text d-flex">
                 <i class="material-icons mr-1">date_range</i>
-                Tarih Aralığı
+                Tarih
             </span>
         </div>
         <div class="card-content">
@@ -798,7 +747,7 @@
         <div class="card-content cyan darken-2">
             <span class="card-title white-text d-flex">
                 <i class="material-icons mr-1">grain</i>
-                Sayfalama
+                Sayfa
             </span>
         </div>
         <div class="card-content">
@@ -820,7 +769,7 @@
 @endpush
 
 @section('wildcard')
-    <div class="wild-area">
+    <div class="wild-area z-depth-1">
         <div class="wild-content d-flex" data-wild="sentiment">
             <span class="wild-body d-flex">
                 <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center" data-class=".wild-content" data-class-remove="active" style="margin: 0 .4rem 0 0;">
@@ -915,16 +864,14 @@
             </li>
         </ul>
     </div>
-    <div class="z-depth-1">
-        <input
-            class="validate json json-search grey lighten-4"
-            id="string"
-            name="string"
-            type="text"
-            data-json-target="ul#search"
-            placeholder="Ara"
-            value="{{ $q }}" />
-    </div>
+    <input
+        class="validate json json-search grey lighten-4"
+        id="string"
+        name="string"
+        type="text"
+        data-json-target="ul#search"
+        placeholder="Ara"
+        value="{{ $q }}" />
     <div class="z-depth-1 chip-s owl-chips owl-carousel p-1">
         @if (@$trends)
             @foreach ($trends as $trend)
@@ -956,6 +903,4 @@
             @endforeach
         </div>
     </div>
-
-    @include('pin.group.dock')
 @endsection
