@@ -582,6 +582,7 @@ class SearchController extends Controller
                 'url',
                 'title',
                 'description',
+                'image',
 
                 'entry',
                 'author',

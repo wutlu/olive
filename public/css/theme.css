@@ -2375,6 +2375,11 @@ nav.nav-half {
   align-self: center !important;
 }
 
+.align-self-start {
+  -ms-flex-item-align: start;
+  align-self: flex-start;
+}
+
 .align-items-end {
     -ms-flex-align: end;
     align-items: flex-end;

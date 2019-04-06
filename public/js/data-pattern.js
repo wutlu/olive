@@ -199,16 +199,28 @@ function _entry_(o)
 
 function _article_(o)
 {
-    return $('<div />', {
+    var article = $('<div />', {
         'class': 'data',
         'html': [
-            $('<span />', {
-                'html': o.title,
-                'class': 'd-table blue-text title'
-            }),
-            $('<span />', {
-                'html': o.text,
-                'class': 'grey-text text-darken-2'
+            $('<div />', {
+                'class': 'd-flex',
+                'html': [
+                    $('<span />', {
+                        'data-name': 'avatar'
+                    }),
+                    $('<div />', {
+                        'html': [
+                            $('<span />', {
+                                'html': o.title,
+                                'class': 'd-table blue-text title'
+                            }),
+                            $('<span />', {
+                                'html': o.text,
+                                'class': 'grey-text text-darken-2'
+                            })
+                        ]
+                    })
+                ]
             }),
             $('<a />', {
                 'data-name': 'url',
@@ -221,6 +233,22 @@ function _article_(o)
             })
         ]
     })
+
+    if (o.image)
+    {
+        article.find('[data-name=avatar]').html($('<img />', {
+            'src': o.image,
+            'alt': 'Image',
+            'css': {
+                'min-width': '96px',
+                'max-width': '96px',
+                'max-height': '128px'
+            },
+            'class': 'align-self-start mr-1'
+        }))
+    }
+
+    return article;
 }
 
 function _product_(o)
