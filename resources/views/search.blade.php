@@ -125,7 +125,7 @@
                 })
 
                 new Chart(document.getElementById(__.data('type') + '-chart'), {
-                    type: 'line',
+                    type: 'bar',
                     data: {
                         labels: [ "00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00" ],
                         datasets: [
@@ -140,16 +140,24 @@
             }
             else if (__.data('type') == 'daily')
             {
-                var data = [];
+                var data = [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ];
                 var option = histogramOption;
                     option['title']['text'] = 'GÜNLÜK İÇERİK GRAFİĞİ';
 
                 $.each(obj.data.results, function(key, o) {
-                    data.push(o.doc_count);
+                    data[o.key - 1] = o.doc_count;
                 })
 
                 new Chart(document.getElementById(__.data('type') + '-chart'), {
-                    type: 'line',
+                    type: 'bar',
                     data: {
                         labels: [ "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi", "Pazar" ],
                         datasets: [
@@ -585,7 +593,7 @@
 
         setTimeout(function() {
             new Chart(chart, {
-                type: 'line',
+                type: 'bar',
                 data: data,
                 options: options
             })
