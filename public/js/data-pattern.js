@@ -206,7 +206,8 @@ function _article_(o)
                 'class': 'd-flex',
                 'html': [
                     $('<span />', {
-                        'data-name': 'avatar'
+                        'data-name': 'avatar',
+                        'class': 'align-self-center'
                     }),
                     $('<div />', {
                         'html': [
@@ -245,7 +246,7 @@ function _article_(o)
                 'max-width': '96px',
                 'max-height': '128px'
             },
-            'class': 'align-self-start mr-1',
+            'class': 'mr-1',
             'onerror': "this.onerror=null;this.src='/img/no_image-article.svg';"
         }))
     }
