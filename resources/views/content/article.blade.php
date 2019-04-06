@@ -49,8 +49,11 @@
     <div class="row">
         <div class="col m12 xl12">
             <div class="card mb-1">
+                <div class="card-image">
+                    <img src="{{ @$document['_source']['image_url'] }}" onerror="this.onerror=null;this.src='/img/md-s/21.jpg';" alt="Image" />
+                    <span class="card-title">{{ $document['_source']['title'] }}</span>
+                </div>
                 <div class="card-content">
-                    <span class="card-title d-flex">{{ $document['_source']['title'] }}</span>
                     <div class="markdown">{!! Term::markdown($document['_source']['description']) !!}</div>
                     <a class="green-text" href="{{ $document['_source']['url'] }}" target="_blank">{{ $document['_source']['url'] }}</a>
                 </div>
