@@ -83,7 +83,7 @@
                             <span class="d-flex justify-content-between">
                                 <span class="align-self-center">{{ $document['_source']['user']['name'] }}</span>
                                 @isset ($document['_source']['user']['verified'])
-                                    <i class="material-icons cyan-text align-self-center">check</i>
+                                    <i class="material-icons cyan-text align-self-center ml-1">check</i>
                                 @endisset
                             </span>
                             <a class="grey-text" href="https://twitter.com/{{ $document['_source']['user']['screen_name'] }}" target="_blank">{{ '@'.$document['_source']['user']['screen_name'] }}</a>

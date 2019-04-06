@@ -34,6 +34,7 @@ class ArchiveRequest extends FormRequest
             'modules.*' => 'required|string|in:'.implode(',',array_keys(config('system.modules'))),
             'sort' => 'nullable|string|in:asc,desc',
             'retweet' => 'nullable|string|in:on',
+            'verified' => 'nullable|string|in:on',
         ];
     }
 }

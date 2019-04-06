@@ -144,7 +144,11 @@ function _tweet_(o)
                                 'class': 'd-table grey-text'
                             })
                         ]
-                    })
+                    }),
+                    $('<i />', {
+                        'class': 'material-icons cyan-text hide ml-1',
+                        'html': 'check'
+                    }).removeClass(o.user.verified ? 'hide' : '')
                 ]
             }),
             $('<span />', {

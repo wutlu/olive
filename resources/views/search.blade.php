@@ -652,7 +652,7 @@
                 data-more-button="#search-more_button"
                 data-callback="__search_archive"
                 data-method="post"
-                data-include="start_date,end_date,sentiment,modules,string,sort,retweet,take"
+                data-include="start_date,end_date,sentiment,modules,string,sort,retweet,verified,take"
                 data-nothing>
                 <li class="collection-item nothing hide">
                     @component('components.nothing')
@@ -793,9 +793,9 @@
                 <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center" data-class=".wild-content" data-class-remove="active" style="margin: 0 .4rem 0 0;">
                     <i class="material-icons">close</i>
                 </a>
-                <button type="button" data-type="mention" data-tooltip="Kimler Bahsetti?" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center" style="margin: 0 .2rem 0 0;">@</button>
-                <button type="button" data-type="hashtag" data-tooltip="Hangi Hashtagler Kullanıldı?" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center" style="margin: 0 .2rem 0 0;">#</button>
-                <button type="button" data-type="source" data-tooltip="Kaynak Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center" style="margin: 0 .2rem 0 0;">Kaynaklar</button>
+                <button type="button" data-type="mention" data-tooltip="Kimler Bahsetti?" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules,verified,retweet" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center" style="margin: 0 .2rem 0 0;">@</button>
+                <button type="button" data-type="hashtag" data-tooltip="Hangi Hashtagler Kullanıldı?" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules,verified,retweet" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center" style="margin: 0 .2rem 0 0;">#</button>
+                <button type="button" data-type="source" data-tooltip="Kaynak Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules,verified,retweet" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center" style="margin: 0 .2rem 0 0;">Kaynaklar</button>
             </span>
         </div>
         <div class="wild-content d-flex" data-wild="graph">
@@ -803,15 +803,15 @@
                 <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center" data-class=".wild-content" data-class-remove="active" style="margin: 0 .4rem 0 0;">
                     <i class="material-icons">close</i>
                 </a>
-                <button type="button" data-type="hourly" data-tooltip="Saatlik İçerik Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center" style="margin: 0 .2rem 0 0;">S</button>
-                <button type="button" data-type="daily" data-tooltip="Günlük İçerik Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center" style="margin: 0 .2rem 0 0;">G</button>
-                <button type="button" data-type="location" data-tooltip="Konum Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center" style="margin: 0 .2rem 0 0;">
+                <button type="button" data-type="hourly" data-tooltip="Saatlik İçerik Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules,verified,retweet" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center" style="margin: 0 .2rem 0 0;">S</button>
+                <button type="button" data-type="daily" data-tooltip="Günlük İçerik Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules,verified,retweet" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center" style="margin: 0 .2rem 0 0;">G</button>
+                <button type="button" data-type="location" data-tooltip="Konum Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules,verified,retweet" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center" style="margin: 0 .2rem 0 0;">
                     <i class="material-icons">location_on</i>
                 </button>
-                <button type="button" data-type="platform" data-tooltip="Platform Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center" style="margin: 0 .2rem 0 0;">
+                <button type="button" data-type="platform" data-tooltip="Platform Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules,verified,retweet" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center" style="margin: 0 .2rem 0 0;">
                     <i class="material-icons">devices</i>
                 </button>
-                <button type="button" data-type="sentiment" data-tooltip="Duygu Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center" style="margin: 0 .2rem 0 0;">
+                <button type="button" data-type="sentiment" data-tooltip="Duygu Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules,verified,retweet" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center" style="margin: 0 .2rem 0 0;">
                     <i class="material-icons">sentiment_satisfied</i>
                 </button>
             </span>
@@ -827,7 +827,11 @@
                 </label>
                 <label class="align-self-center mr-1">
                     <input data-update type="checkbox" name="retweet" value="on" />
-                    <span class="grey-text text-darken-2">ReTweetler Dahil</span>
+                    <span class="grey-text text-darken-2">RT Dahil</span>
+                </label>
+                <label class="align-self-center mr-1">
+                    <input data-update type="checkbox" name="verified" value="on" />
+                    <span class="grey-text text-darken-2">Mavi Tik</span>
                 </label>
             </span>
         </div>

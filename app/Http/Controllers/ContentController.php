@@ -697,6 +697,7 @@ class ContentController extends Controller
                             'user.name',
                             'user.screen_name',
                             'user.image',
+                            'user.verified',
                             'text',
                             'created_at',
                             'deleted_at',

@@ -84,9 +84,19 @@ class SearchController extends Controller
             ]
         ];
 
+        if (!$request->retweet)
+        {
+            $mquery['query']['bool']['must_not'][] = [ 'match' => [ 'external.type' => 'retweet' ] ];
+        }
+
+        if ($request->verified)
+        {
+            $mquery['query']['bool']['must'][] = [ 'exists' => [ 'field' => 'user.verified' ] ];
+        }
+
         if ($request->sentiment != 'all')
         {
-            $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.34 ] ] ];
+            $mquery['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.34 ] ] ];
         }
 
         $modules = [];
@@ -563,6 +573,7 @@ class SearchController extends Controller
                 'user.name',
                 'user.screen_name',
                 'user.image',
+                'user.verified',
                 'text',
 
                 'created_at',
@@ -586,6 +597,11 @@ class SearchController extends Controller
         if (!$request->retweet)
         {
             $q['query']['bool']['must_not'][] = [ 'match' => [ 'external.type' => 'retweet' ] ];
+        }
+
+        if ($request->verified)
+        {
+            $q['query']['bool']['must'][] = [ 'exists' => [ 'field' => 'user.verified' ] ];
         }
 
         if ($request->sentiment != 'all')
@@ -647,7 +663,8 @@ class SearchController extends Controller
                             'user' => [
                                 'name' => $object['_source']['user']['name'],
                                 'screen_name' => $object['_source']['user']['screen_name'],
-                                'image' => $object['_source']['user']['image']
+                                'image' => $object['_source']['user']['image'],
+                                'verified' => $object['_source']['user']['verified']
                             ],
                             'text' => Term::tweet($object['_source']['text']),
                         ]);

@@ -30,7 +30,9 @@ class ArchiveAggregationRequest extends FormRequest
             'end_date' => 'required|date|after_or_equal:start_date',
             'sentiment' => 'required|string|in:pos,neu,neg,all',
             'modules' => 'required|array|min:1',
-            'modules.*' => 'required|string|in:'.implode(',',array_keys(config('system.modules')))
+            'modules.*' => 'required|string|in:'.implode(',',array_keys(config('system.modules'))),
+            'retweet' => 'nullable|string|in:on',
+            'verified' => 'nullable|string|in:on',
         ];
     }
 }

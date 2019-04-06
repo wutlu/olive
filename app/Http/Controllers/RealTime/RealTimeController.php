@@ -120,10 +120,11 @@ class RealTimeController extends Controller
                                 'user.name',
                                 'user.screen_name',
                                 'user.image',
+                                'user.verified',
                                 'text',
                                 'created_at',
+                                'deleted_at',
                                 'sentiment',
-                                'deleted_at'
                             ]
                         ];
 
@@ -157,6 +158,11 @@ class RealTimeController extends Controller
                                 if (@$object['_source']['deleted_at'])
                                 {
                                     $arr['deleted_at'] = $object['_source']['deleted_at'];
+                                }
+
+                                if (@$object['_source']['verified'])
+                                {
+                                    $arr['user']['verified'] = true;
                                 }
 
                                 $data[] = $arr;
