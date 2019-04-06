@@ -204,7 +204,8 @@ class RealTimeController extends Controller
                             'url',
                             'title',
                             'description',
-                            'created_at',
+                            'image_url',
+
                             'sentiment',
 
                             'entry',
@@ -216,6 +217,7 @@ class RealTimeController extends Controller
                             'video_id',
                             'text',
 
+                            'created_at',
                             'deleted_at'
                         ]
                     ];
@@ -263,9 +265,11 @@ class RealTimeController extends Controller
                         {
                             $arr = [
                                 'uuid' => md5($object['_id'].'.'.$object['_index']),
+
                                 '_id' => $object['_id'],
                                 '_type' => $object['_type'],
                                 '_index' => $object['_index'],
+
                                 'created_at' => date('d.m.Y H:i:s', strtotime($object['_source']['created_at'])),
                                 'sentiment' => Crawler::emptySentiment(@$object['_source']['sentiment'])
                             ];
@@ -278,11 +282,18 @@ class RealTimeController extends Controller
                             switch ($object['_type'])
                             {
                                 case 'article':
-                                    $data[] = array_merge($arr, [
+                                    $article = [
                                         'url' => $object['_source']['url'],
                                         'title' => $object['_source']['title'],
                                         'text' => $object['_source']['description']
-                                    ]);
+                                    ];
+
+                                    if (@$object['_source']['image_url'])
+                                    {
+                                        $article['image'] = $object['_source']['image_url'];
+                                    }
+
+                                    $data[] = array_merge($arr, $article);
                                 break;
                                 case 'entry':
                                     $data[] = array_merge($arr, [

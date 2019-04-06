@@ -240,11 +240,13 @@ function _article_(o)
             'src': o.image,
             'alt': 'Image',
             'css': {
+                'width': '96px',
                 'min-width': '96px',
                 'max-width': '96px',
                 'max-height': '128px'
             },
-            'class': 'align-self-start mr-1'
+            'class': 'align-self-start mr-1',
+            'onerror': "this.onerror=null;this.src='/img/no_image-article.svg';"
         }))
     }
 

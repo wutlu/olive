@@ -582,7 +582,7 @@ class SearchController extends Controller
                 'url',
                 'title',
                 'description',
-                'image',
+                'image_url',
 
                 'entry',
                 'author',
@@ -677,11 +677,18 @@ class SearchController extends Controller
                         ]);
                     break;
                     case 'article':
-                        $data[] = array_merge($arr, [
+                        $article = [
                             'url' => $object['_source']['url'],
                             'title' => $object['_source']['title'],
                             'text' => $object['_source']['description'],
-                        ]);
+                        ];
+
+                        if (@$object['_source']['image_url'])
+                        {
+                            $article['image'] = $object['_source']['image_url'];
+                        }
+
+                        $data[] = array_merge($arr, $article);
                     break;
                     case 'entry':
                         $data[] = array_merge($arr, [
