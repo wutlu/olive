@@ -312,18 +312,33 @@ function _video_(o)
     return $('<div />', {
         'class': 'data',
         'html': [
-            $('<span />', {
-                'html': o.title,
-                'class': 'd-table blue-text title'
-            }),
-            $('<a />', {
-                'html': o.channel.title,
-                'href': 'https://www.youtube.com/channel/' + o.channel.id,
-                'class': 'd-table red-text'
-            }).attr('target', '_blank'),
-            $('<span />', {
-                'html': o.text,
-                'class': 'grey-text text-darken-2'
+            $('<div />', {
+                'class': 'd-flex',
+                'html': [
+                    $('<img />', {
+                        'src': 'https://i.ytimg.com/vi/' + o._id + '/hqdefault.jpg',
+                        'alt': 'Image',
+                        'css': {
+                            'width': '96px',
+                            'height': '54px'
+                        },
+                        'class': 'align-self-center mr-1'
+                    }),
+                    $('<div />', {
+                        'class': 'align-self-center',
+                        'html': [
+                            $('<span />', {
+                                'html': o.title,
+                                'class': 'd-table blue-text title mb-0'
+                            }),
+                            $('<a />', {
+                                'html': o.channel.title,
+                                'href': 'https://www.youtube.com/channel/' + o.channel.id,
+                                'class': 'd-table red-text'
+                            }).attr('target', '_blank')
+                        ]
+                    })
+                ]
             }),
             $('<a />', {
                 'data-name': 'url',

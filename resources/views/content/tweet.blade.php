@@ -76,6 +76,7 @@
                         <time class="grey-text align-self-center" data-time="">{{ date('d.m.Y H:i', strtotime($document['_source']['user']['created_at'])) }}</time>
                     </div>
                 @endisset
+
                 <div class="card-content">
                     <div class="d-flex mb-1">
                         <img alt="Avatar" style="width: 48px; height: 48px;" src="{{ $document['_source']['user']['image'] }}" class="mr-1" />

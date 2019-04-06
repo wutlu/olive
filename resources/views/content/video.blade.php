@@ -112,6 +112,12 @@
                     </div>
                 </div>
             @endisset
+
+            @include('content._inc.sentiment_bar', [
+                'pos' => $document['_source']['sentiment']['pos'],
+                'neg' => $document['_source']['sentiment']['neg'],
+                'neu' => $document['_source']['sentiment']['neu']
+            ])
         </div>
         <div class="card card-unstyled halfload" id="commentsVideo">
             <div class="card-content grey-text">
