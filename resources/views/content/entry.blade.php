@@ -152,17 +152,8 @@
             if (obj.hits.length)
             {
                 $.each(obj.hits, function(key, o) {
-                    var item = item_model.clone();
+                    var item = item_model.clone().html(_entry_(o));
                         item.removeClass('model hide').addClass('_tmp').attr('data-id', o.id)
-
-                        item.find('[data-name=title]')
-                            .html(o._source.title)
-                            .attr('href', '{{ url('/') }}/db/' + o._index + '/' + o._type + '/' + o._id)
-
-                        item.find('[data-name=entry]').html(o._source.entry)
-                        item.find('[data-name=author]').html(o._source.author)
-                        item.find('[data-name=created-at]').html(o._source.created_at)
-
                         item.appendTo(ul)
                 })
             }

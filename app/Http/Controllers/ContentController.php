@@ -765,7 +765,8 @@ class ContentController extends Controller
                                         'title',
                                         'description',
                                         'created_at',
-                                        'deleted_at'
+                                        'deleted_at',
+                                        'sentiment'
                                     ]
                                 ]);
                             break;
@@ -794,7 +795,8 @@ class ContentController extends Controller
                                         'entry',
                                         'author',
                                         'created_at',
-                                        'deleted_at'
+                                        'deleted_at',
+                                        'sentiment'
                                     ]
                                 ]);
                             break;

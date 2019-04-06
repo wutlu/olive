@@ -659,13 +659,19 @@ class SearchController extends Controller
                 switch ($object['_type'])
                 {
                     case 'tweet':
+                        $user = [
+                            'name' => $object['_source']['user']['name'],
+                            'screen_name' => $object['_source']['user']['screen_name'],
+                            'image' => $object['_source']['user']['image']
+                        ];
+
+                        if (@$object['_source']['user']['verified'])
+                        {
+                            $user['verified'] = true;
+                        }
+
                         $data[] = array_merge($arr, [
-                            'user' => [
-                                'name' => $object['_source']['user']['name'],
-                                'screen_name' => $object['_source']['user']['screen_name'],
-                                'image' => $object['_source']['user']['image'],
-                                'verified' => $object['_source']['user']['verified']
-                            ],
+                            'user' => $user,
                             'text' => Term::tweet($object['_source']['text']),
                         ]);
                     break;

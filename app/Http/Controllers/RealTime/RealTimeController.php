@@ -160,7 +160,7 @@ class RealTimeController extends Controller
                                     $arr['deleted_at'] = $object['_source']['deleted_at'];
                                 }
 
-                                if (@$object['_source']['user']['verified'])
+                                if (@$object['_source']['user']['verified'] == true)
                                 {
                                     $arr['user']['verified'] = true;
                                 }
