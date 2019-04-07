@@ -73,9 +73,7 @@
     })
 
     var sentimentOptions = {
-        title: {
-            display: false
-        },
+        title: { display: false },
         legend: { display: false },
         layout: {
             padding: 40

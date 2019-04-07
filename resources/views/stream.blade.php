@@ -52,7 +52,7 @@
 
 @section('wildcard')
     <div class="wild-area z-depth-1">
-        <div class="wild-content d-flex grey lighten-4" data-wild="volume">
+        <div class="wild-content d-flex grey lighten-4" data-wild="settings">
             <span class="wild-body d-flex">
                 <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center" style="margin: 0 .4rem 0 0;" data-class=".wild-content" data-class-remove="active">
                     <i class="material-icons">close</i>
@@ -116,9 +116,9 @@
         </div>
         <ul class="wild-menu">
             <li>
-                <a class="d-flex" href="#" data-class="[data-wild=volume]" data-class-add="active">
-                    <i class="material-icons mr-1">volume_up</i>
-                    <span class="align-self-center">Sesler</span>
+                <a class="d-flex" href="#" data-class="[data-wild=settings]" data-class-add="active">
+                    <i class="material-icons mr-1">settings</i>
+                    <span class="align-self-center">Ayarlar</span>
                 </a>
             </li>
             <li>
@@ -619,8 +619,12 @@
 
 @section('dock')
     <div class="card with-bg mb-1">
-        <div class="card-content">
-            <span class="card-title">Kelime Grupları</span>
+        <div class="card-image">
+            <img src="{{ asset('img/md/23.jpg') }}" alt="Image" />
+            <span class="card-title white-text d-flex">
+                <i class="material-icons mr-1">speaker_notes</i>
+                Kelime Grupları
+            </span>
         </div>
         <div class="card-image">
             <a href="#" class="btn-floating halfway-fab waves-effect white" data-trigger="create-keyword-group">

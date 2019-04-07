@@ -693,7 +693,8 @@
 
 @section('panel')
     <div class="card mb-1">
-        <div class="card-content cyan darken-2">
+        <div class="card-image">
+            <img src="{{ asset('img/md/23.jpg') }}" alt="Image" />
             <span class="card-title white-text d-flex">
                 <i class="material-icons mr-1">date_range</i>
                 Tarih
@@ -718,8 +719,16 @@
                 class="collection-item waves-effect"
                 data-input="input[name=end_date]"
                 data-focus="input[name=start_date]"
+                data-input-value="{{ date('Y-m-d', strtotime('-1 day')) }}"
+                data-value="{{ date('Y-m-d', strtotime('-1 day')) }}">Dün</a>
+            <a
+                href="#"
+                data-update-click
+                class="collection-item waves-effect"
+                data-input="input[name=end_date]"
+                data-focus="input[name=start_date]"
                 data-input-value="{{ date('Y-m-d') }}"
-                data-value="{{ date('Y-m-d', strtotime('-1 day')) }}">Dün ve Bugün</a>
+                data-value="{{ date('Y-m-d', strtotime('-1 day')) }}">Son 2 Gün</a>
             <a
                 href="#"
                 data-update-click
@@ -735,7 +744,7 @@
                 data-input="input[name=end_date]"
                 data-focus="input[name=start_date]"
                 data-input-value="{{ date('Y-m-d') }}"
-                data-value="{{ date('Y-m-d', strtotime('-30 day')) }}">Bu Ay</a>
+                data-value="{{ date('Y-m-d', strtotime('-30 day')) }}">Bu 30 Gün</a>
             <a
                 href="#"
                 data-update-click
@@ -743,11 +752,12 @@
                 data-input="input[name=end_date]"
                 data-focus="input[name=start_date]"
                 data-input-value="{{ date('Y-m-d') }}"
-                data-value="{{ date('Y-m-d', strtotime('-90 day')) }}">Son 3 Ay</a>
+                data-value="{{ date('Y-m-d', strtotime('-90 day')) }}">Son 90 Gün</a>
         </div>
     </div>
     <div class="card">
-        <div class="card-content cyan darken-2">
+        <div class="card-image">
+            <img src="{{ asset('img/md/23.jpg') }}" alt="Image" />
             <span class="card-title white-text d-flex">
                 <i class="material-icons mr-1">grain</i>
                 Sayfa
@@ -898,7 +908,8 @@
 
 @section('dock')
     <div class="card with-bg mb-1">
-        <div class="card-content">
+        <div class="card-image">
+            <img src="{{ asset('img/md/23.jpg') }}" alt="Image" />
             <span class="card-title">Kaynak</span>
         </div>
         <div class="collection collection-bordered">

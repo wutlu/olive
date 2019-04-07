@@ -1,4 +1,12 @@
 /*!
+ |-------------------------------
+ | veri.zone 1.0
+ |-------------------------------
+ | (c) 2019 - veri.zone
+ |-------------------------------
+ */
+
+/*!
  * fonts
  */
 @font-face {
@@ -551,15 +559,22 @@ table.invoice tfoot > tr {
     line-height: 24px;
   }
 }
+
 @media only screen and (max-width: 992px) {
   #breadcrumb {
-    padding: 1rem;
+    padding: .4rem 1rem;
+    background-color: #333 !important;
+  }
+  #breadcrumb .breadcrumb {
+    padding: 0;
+    line-height: 32px;
+  }
+  #breadcrumb .breadcrumb:before {
+    content: '' !important;
+    margin: 0;
   }
 }
 
-/*
- * breadcrumb
- */
 [data-name=breadcrumb] {
     margin: 0;
     padding: 0;
