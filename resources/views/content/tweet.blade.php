@@ -16,6 +16,7 @@
 
     .stat-chart {
         line-height: 1px;
+        width: 100%;
         height: 64px;
     }
 
@@ -119,9 +120,17 @@
                     <div class="collection-item model hide"></div>
                 </div>
 
-                <div id="{{ $key }}-loader" class="p-1 center-align">
-                    <a href="#" class="btn-flat waves-effect json" data-json-target="{{ '#loader-'.$key }}">Yükle</a>
-                </div>
+                @if ($key == 'all_replies')
+                    <div id="{{ $key }}-loader" class="p-1 center-align">
+                        <a href="#" class="btn-flat waves-effect json" data-json-target="{{ '#loader-'.$key }}">Yükle</a>
+                    </div>
+                @else
+                    @component('components.loader')
+                        @slot('color', 'cyan')
+                        @slot('class', 'card-loader-unstyled')
+                        @slot('id', $key.'-loader')
+                    @endcomponent
+                @endif
 
                 <a href="#"
                    class="btn-small white grey-text more more-unstyled hide json"
@@ -234,100 +243,95 @@
         </div>
         <div class="card-content"> 
             @isset ($data['stats'])
-                    @foreach (
-                        [
-                            '_followers' => 'Takipçi Performans Grafiği',
-                            '_friends' => 'Takip Performans Grafiği',
-                            '_statuses' => 'Tweet Performans Grafiği',
-                            '_listed' => 'Liste Performans Grafiği',
-                            '_favourites' => 'Favori Performans Grafiği',
-                        ] as $key => $name
-                    )
-                        @if (count($data['statistics']['diff'][$key]) >= 2)
-                            <div id="{{ $key }}" class="stat-charts hide">
-                                @push('local.scripts')
-                                    new Chart($('#{{ $key }}-chart'), {
-                                        type: 'line',
-                                        data: {
-                                            labels: {{ json_encode($data['statistics']['diff'][$key]) }},
-                                            datasets: [{
-                                                backgroundColor: 'transparent',
-                                                borderColor: '#00796b',
-                                                data: {{ json_encode($data['statistics']['diff'][$key]) }},
-                                                tension: 0.1,
-                                                borderWidth: 1,
-                                                radius: 0
-                                            }]
+                @foreach (
+                    [
+                        '_followers' => 'Takipçi Performans Grafiği',
+                        '_friends' => 'Takip Performans Grafiği',
+                        '_statuses' => 'Tweet Performans Grafiği',
+                        '_listed' => 'Liste Performans Grafiği',
+                        '_favourites' => 'Favori Performans Grafiği',
+                    ] as $key => $name
+                )
+                    @if (count($data['statistics']['diff'][$key]) >= 2)
+                        <div id="{{ $key }}" class="stat-charts hide">
+                            @push('local.scripts')
+                                new Chart($('#{{ $key }}-chart'), {
+                                    type: 'line',
+                                    data: {
+                                        labels: {{ json_encode($data['statistics']['diff'][$key]) }},
+                                        datasets: [{
+                                            backgroundColor: 'transparent',
+                                            borderColor: '#00796b',
+                                            data: {{ json_encode($data['statistics']['diff'][$key]) }},
+                                            tension: 0.1,
+                                            borderWidth: 1,
+                                            radius: 0
+                                        }]
+                                    },
+                                    options: {
+                                        legend: { display: false },
+                                        scales: {
+                                            xAxes: [{ display: false }],
+                                            yAxes: [{ display: false }]
                                         },
-                                        options: {
-                                            legend: { display: false },
-                                            scales: {
-                                                xAxes: [{ display: false }],
-                                                yAxes: [{ display: false }]
-                                            },
-                                            tooltips: {
-                                                 enabled: false
-                                            },
-                                            maintainAspectRatio: false
-                                        }
-                                    })
-                                @endpush
-                                <span class="teal-text text-darken-2">{{ $name }}</span>
-                                <div class="stat-chart">
-                                    <canvas id="{{ $key }}-chart" height="64"></canvas>
-                                </div>
+                                        tooltips: {
+                                             enabled: false
+                                        },
+                                        maintainAspectRatio: false
+                                    }
+                                })
+                            @endpush
+                            <span class="teal-text text-darken-2">{{ $name }}</span>
+                            <div class="stat-chart">
+                                <canvas id="{{ $key }}-chart" height="64"></canvas>
                             </div>
-                        @endif
-                    @endforeach
-                    <table>
-                        <thead>
+                        </div>
+                    @endif
+                @endforeach
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="grey-text text-lighten-2">Tarih</th>
+                            <th class="right-align">
+                                <a href="#" class="d-flex justify-content-end" data-chart="_followers">
+                                    Tkpçi
+                                </a>
+                            </th>
+                            <th class="right-align">
+                                <a href="#" class="d-flex justify-content-end" data-chart="_friends">
+                                    Tkp
+                                </a>
+                            </th>
+                            <th class="right-align">
+                                <a href="#" class="d-flex justify-content-end" data-chart="_statuses">
+                                    Tweet
+                                </a>
+                            </th>
+                            <th class="right-align">
+                                <a href="#" class="d-flex justify-content-end" data-chart="_listed">
+                                    Liste
+                                </a>
+                            </th>
+                            <th class="right-align">
+                                <a href="#" class="d-flex justify-content-end" data-chart="_favourites">
+                                    Fav
+                                </a>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($data['stats'] as $item)
                             <tr>
-                                <th class="grey-text text-lighten-2">Tarih</th>
-                                <th class="right-align">
-                                    <a href="#" class="d-flex justify-content-end" data-chart="_followers">
-                                        <i class="material-icons">show_chart</i>
-                                        Takipçi
-                                    </a>
-                                </th>
-                                <th class="right-align">
-                                    <a href="#" class="d-flex justify-content-end" data-chart="_friends">
-                                        <i class="material-icons">show_chart</i>
-                                        Takip
-                                    </a>
-                                </th>
-                                <th class="right-align">
-                                    <a href="#" class="d-flex justify-content-end" data-chart="_statuses">
-                                        <i class="material-icons">show_chart</i>
-                                        Tweet
-                                    </a>
-                                </th>
-                                <th class="right-align">
-                                    <a href="#" class="d-flex justify-content-end" data-chart="_listed">
-                                        <i class="material-icons">show_chart</i>
-                                        Liste
-                                    </a>
-                                </th>
-                                <th class="right-align">
-                                    <a href="#" class="d-flex justify-content-end" data-chart="_favourites">
-                                        <i class="material-icons">show_chart</i>
-                                        Favori
-                                    </a>
-                                </th>
+                                <td class="grey-text">{{ $item['created_at'] }}</td>
+                                <td class="right-align {{ $item['diff']['followers'] }}-text">{{ number_format($item['followers']) }}</td>
+                                <td class="right-align {{ $item['diff']['friends'] }}-text">{{ number_format($item['friends']) }}</td>
+                                <td class="right-align {{ $item['diff']['statuses'] }}-text">{{ number_format($item['statuses']) }}</td>
+                                <td class="right-align {{ $item['diff']['listed'] }}-text">{{ number_format($item['listed']) }}</td>
+                                <td class="right-align {{ $item['diff']['favourites'] }}-text">{{ number_format($item['favourites']) }}</td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($data['stats'] as $item)
-                                <tr>
-                                    <td class="grey-text">{{ $item['created_at'] }}</td>
-                                    <td class="right-align {{ $item['diff']['followers'] }}-text">{{ number_format($item['followers']) }}</td>
-                                    <td class="right-align {{ $item['diff']['friends'] }}-text">{{ number_format($item['friends']) }}</td>
-                                    <td class="right-align {{ $item['diff']['statuses'] }}-text">{{ number_format($item['statuses']) }}</td>
-                                    <td class="right-align {{ $item['diff']['listed'] }}-text">{{ number_format($item['listed']) }}</td>
-                                    <td class="right-align {{ $item['diff']['favourites'] }}-text">{{ number_format($item['favourites']) }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                        @endforeach
+                    </tbody>
+                </table>
             @endisset
         </div>
     </div>

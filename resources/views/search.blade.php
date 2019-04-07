@@ -744,7 +744,7 @@
                 data-input="input[name=end_date]"
                 data-focus="input[name=start_date]"
                 data-input-value="{{ date('Y-m-d') }}"
-                data-value="{{ date('Y-m-d', strtotime('-30 day')) }}">Bu 30 Gün</a>
+                data-value="{{ date('Y-m-d', strtotime('-30 day')) }}">Son 30 Gün</a>
             <a
                 href="#"
                 data-update-click
@@ -910,7 +910,10 @@
     <div class="card with-bg mb-1">
         <div class="card-image">
             <img src="{{ asset('img/md/23.jpg') }}" alt="Image" />
-            <span class="card-title">Kaynak</span>
+            <span class="card-title white-text d-flex">
+                <i class="material-icons mr-1">device_hub</i>
+                Kaynak
+            </span>
         </div>
         <div class="collection collection-bordered">
             @foreach (config('system.modules') as $key => $module)

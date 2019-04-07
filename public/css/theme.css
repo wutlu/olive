@@ -1520,6 +1520,10 @@ header#main > .parallax-container > .parallax > video#background-video {
   word-break: break-word;
   border-radius: 0;
 }
+.card > .card-image,
+.card > .card-image > img {
+  border-radius: 0;
+}
 .card > .card-content {
   padding: 1rem;
   border-radius: 0;

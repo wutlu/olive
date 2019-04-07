@@ -833,7 +833,8 @@ class ContentController extends Controller
                                         'price',
                                         'breadcrumb',
                                         'created_at',
-                                        'deleted_at'
+                                        'deleted_at',
+                                        'sentiment'
                                     ]
                                 ]);
                             break;

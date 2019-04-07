@@ -92,12 +92,12 @@
                         <a href="#" class="d-table green-text" data-name="url" target="_blank"></a>
                     </div>
                 </div>
+                @component('components.loader')
+                    @slot('color', 'cyan')
+                    @slot('id', 'home-loader')
+                    @slot('class', 'card-loader-unstyled')
+                @endcomponent
             </div>
-
-            @component('components.loader')
-                @slot('color', 'cyan')
-                @slot('id', 'home-loader')
-            @endcomponent
 
             <div class="center-align">
                 <button class="btn-flat waves-effect hide json"
@@ -170,25 +170,8 @@
             if (obj.hits.length)
             {
                 $.each(obj.hits, function(key, o) {
-                    var item = item_model.clone();
+                    var item = item_model.clone().html(_product_(o));
                         item.removeClass('model hide').addClass('_tmp').attr('data-id', o.id)
-
-                        item.find('[data-name=title]')
-                            .html('🔗 ' + o._source.title)
-                            .attr('href', '{{ url('/') }}/db/' + o._index + '/' + o._type + '/' + o._id)
-
-                        item.find('[data-name=price-amount]').html(o._source.price.amount)
-                        item.find('[data-name=price-currency]').html(o._source.price.currency)
-
-                        $.each(o._source.breadcrumb, function(key, o) {
-                            item.find('[data-name=breadcrumb]').append($('<li />', {
-                                'html': o.segment
-                            }))
-                        })
-
-                        item.find('[data-name=url]').html(str_limit(o._source.url, 72)).attr('href', o._source.url)
-                        item.find('[data-name=created-at]').html(o._source.created_at)
-
                         item.appendTo(ul)
                 })
             }

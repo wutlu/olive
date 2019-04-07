@@ -5,8 +5,35 @@
             'text' => $title
         ]
     ],
-    'pin_group' => true
+    'pin_group' => true,
+    'dock' => true
 ])
+
+@section('dock')
+    @include('content._inc.sentiment', [
+        'neu' => $data['total']->data['aggregations']['neutral']['value'],
+        'pos' => $data['total']->data['aggregations']['positive']['value'],
+        'neg' => $data['total']->data['aggregations']['negative']['value'],
+        'alert' => 'İlgili siteden toplam '.$data['total']->data['hits']['total'].' içerik alındı. Sayfadaki istatistik verileri, alınan haberler üzerinden gerçekleştirilmiştir.'
+    ])
+    <div class="card mb-1">
+        <div class="card-content">
+            <span class="card-title">Sık Kullanılan Kelimeler</span>
+        </div>
+        <div class="card-content cyan darken-2">
+            <p class="white-text">Bu kelimeler ilgili siteye girilen haberlerden elde edilmiştir.</p>
+        </div> 
+        <div class="card-content"> 
+            @if (@$data['keywords'])
+                @foreach ($data['keywords'] as $key => $word)
+                    <a href="{{ route('search.dashboard', [ 'q' => $key ]) }}" target="_blank" class="chip waves-effect">{{ $key }}</a>
+                @endforeach
+            @else
+                <span class="chip red white-text">Tespit Edilemedi</span>
+            @endif
+        </div>
+    </div>
+@endsection
 
 @include('content._inc.histogram', [
     'charts' => [
@@ -46,94 +73,61 @@
 @endpush
 
 @section('content')
-    <div class="row">
-        <div class="col m12 xl12">
-            <div class="card mb-1">
-                <div class="card-image">
-                    <img src="{{ @$document['_source']['image_url'] }}" onerror="this.onerror=null;this.src='/img/md-s/21.jpg';" alt="Image" />
-                    <span class="card-title">{{ $document['_source']['title'] }}</span>
-                </div>
-                <div class="card-content">
-                    <div class="markdown">{!! Term::markdown($document['_source']['description']) !!}</div>
-                    <a class="green-text" href="{{ $document['_source']['url'] }}" target="_blank">{{ $document['_source']['url'] }}</a>
-                </div>
-                @include('content._inc.sentiment_bar', [
-                    'pos' => $document['_source']['sentiment']['pos'],
-                    'neg' => $document['_source']['sentiment']['neg'],
-                    'neu' => $document['_source']['sentiment']['neu']
-                ])
-            </div>
+    <div class="card mb-1">
+        <div class="card-image">
+            <img src="{{ @$document['_source']['image_url'] }}" onerror="this.onerror=null;this.src='/img/md-s/21.jpg';" alt="Image" />
+            <span class="card-title">{{ $document['_source']['title'] }}</span>
         </div>
-        <div class="col m12 xl6">
-            <div class="card mb-1">
-                <div class="card-content">
-                    <span class="card-title">Sık Kullanılan Kelimeler</span>
-                </div>
-                <div class="card-content cyan darken-2">
-                    <p class="white-text">Bu kelimeler ilgili siteye girilen haberlerden elde edilmiştir.</p>
-                </div> 
-                <div class="card-content"> 
-                    @if (@$data['keywords'])
-                        @foreach ($data['keywords'] as $key => $word)
-                            <a href="{{ route('search.dashboard', [ 'q' => $key ]) }}" target="_blank" class="chip waves-effect">{{ $key }}</a>
-                        @endforeach
-                    @else
-                        <span class="chip red white-text">Tespit Edilemedi</span>
-                    @endif
-                </div>
-            </div>
+        <div class="card-content">
+            <div class="markdown">{!! Term::markdown($document['_source']['description']) !!}</div>
+            <a class="green-text" href="{{ $document['_source']['url'] }}" target="_blank">{{ $document['_source']['url'] }}</a>
         </div>
-        <div class="col m12 xl6">
-            @include('content._inc.sentiment', [
-                'neu' => $data['total']->data['aggregations']['neutral']['value'],
-                'pos' => $data['total']->data['aggregations']['positive']['value'],
-                'neg' => $data['total']->data['aggregations']['negative']['value'],
-                'alert' => 'İlgili siteden toplam '.$data['total']->data['hits']['total'].' içerik alındı. Sayfadaki istatistik verileri, alınan haberler üzerinden gerçekleştirilmiştir.'
-            ])
+        @include('content._inc.sentiment_bar', [
+            'pos' => $document['_source']['sentiment']['pos'],
+            'neg' => $document['_source']['sentiment']['neg'],
+            'neu' => $document['_source']['sentiment']['neu']
+        ])
+    </div>
+    <div class="card">
+        <div class="card-content">
+            <span class="card-title">Benzer Haberler</span>
+            <small class="grey-text text-darken-2">Diğer haber siteleri dahildir.</small>
         </div>
-        <div class="col m12 xl12">
-            <div class="card">
-                <div class="card-content">
-                    <span class="card-title">Benzer Haberler</span>
-                    <small class="grey-text text-darken-2">Diğer haber siteleri dahildir.</small>
-                </div>
-                <div class="collection load json-clear"
-                     id="smilars"
-                     data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id ]) }}"
-                     data-method="post"
-                     data-skip="0"
-                     data-take="5"
-                     data-more-button="#smilars-more_button"
-                     data-callback="__smilars"
-                     data-loader="#home-loader"
-                     data-nothing>
-                    <div class="collection-item nothing hide">
-                        @component('components.nothing')
-                            @slot('size', 'small')
-                            @slot('text', 'Üzgünüz, hiç benzer içerik yok.')
-                        @endcomponent
-                    </div>
-                    <div class="collection-item model hide">
-                        <a href="#" class="d-table blue-text" data-name="title"></a>
-                        <time class="d-table grey-text" data-name="created-at"></time>
-                        <span class="d-table grey-text text-darken-2" data-name="description"></span>
-                        <a href="#" class="d-table green-text" data-name="url" target="_blank"></a>
-                    </div>
-                </div>
-
-                @component('components.loader')
-                    @slot('color', 'cyan')
-                    @slot('id', 'home-loader')
-                    @slot('class', 'card-loader-unstyled')
+        <div class="collection load json-clear"
+             id="smilars"
+             data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id ]) }}"
+             data-method="post"
+             data-skip="0"
+             data-take="5"
+             data-more-button="#smilars-more_button"
+             data-callback="__smilars"
+             data-loader="#home-loader"
+             data-nothing>
+            <div class="collection-item nothing hide">
+                @component('components.nothing')
+                    @slot('size', 'small')
+                    @slot('text', 'Üzgünüz, hiç benzer içerik yok.')
                 @endcomponent
             </div>
-
-            <a href="#"
-               class="btn-small white grey-text more hide json"
-               id="smilars-more_button"
-               data-json-target="#smilars">Daha Fazla</a>
+            <div class="collection-item model hide">
+                <a href="#" class="d-table blue-text" data-name="title"></a>
+                <time class="d-table grey-text" data-name="created-at"></time>
+                <span class="d-table grey-text text-darken-2" data-name="description"></span>
+                <a href="#" class="d-table green-text" data-name="url" target="_blank"></a>
+            </div>
         </div>
+
+        @component('components.loader')
+            @slot('color', 'cyan')
+            @slot('id', 'home-loader')
+            @slot('class', 'card-loader-unstyled')
+        @endcomponent
     </div>
+
+    <a href="#"
+       class="btn-small white grey-text more hide json"
+       id="smilars-more_button"
+       data-json-target="#smilars">Daha Fazla</a>
 @endsection
 
 @push('external.include.footer')
