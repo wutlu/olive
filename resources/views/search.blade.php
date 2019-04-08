@@ -73,7 +73,7 @@
                             case 'video'  : model = _video_  (o); break;
                         }
 
-                        model.mark(obj.words, {
+                        model.find('.text-area').mark(obj.words, {
                             'element': 'span',
                             'className': 'marked yellow black-text',
                             'accuracy': 'complementary'

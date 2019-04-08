@@ -160,6 +160,7 @@ function _tweet_(o)
                 ]
             }),
             $('<span />', {
+                'class': 'text-area',
                 'html': o.text
             }),
             $('<a />', {
@@ -182,7 +183,7 @@ function _entry_(o)
         'html': [
             $('<span />', {
                 'html': o.title,
-                'class': 'd-table blue-text title'
+                'class': 'd-table blue-text title text-area'
             }),
             $('<span />', {
                 'html': o.author,
@@ -190,7 +191,7 @@ function _entry_(o)
             }),
             $('<span />', {
                 'html': o.text,
-                'class': 'grey-text text-darken-2'
+                'class': 'grey-text text-darken-2 text-area'
             }),
             $('<a />', {
                 'data-name': 'url',
@@ -221,11 +222,11 @@ function _article_(o)
                         'html': [
                             $('<span />', {
                                 'html': o.title,
-                                'class': 'd-table blue-text title'
+                                'class': 'd-table blue-text title text-area'
                             }),
                             $('<span />', {
                                 'html': o.text,
-                                'class': 'grey-text text-darken-2'
+                                'class': 'grey-text text-darken-2 text-area'
                             })
                         ]
                     })
@@ -269,11 +270,11 @@ function _product_(o)
         'html': [
             $('<span />', {
                 'html': o.title,
-                'class': 'd-table blue-text title'
+                'class': 'd-table blue-text title text-area'
             }),
             $('<span />', {
                 'html': o.text ? o.text : 'Açıklama Yok',
-                'class': 'grey-text text-darken-2'
+                'class': 'grey-text text-darken-2 text-area'
             }),
             $('<a />', {
                 'data-name': 'url',
@@ -296,11 +297,11 @@ function _comment_(o)
             $('<a />', {
                 'html': o.channel.title,
                 'href': 'https://www.youtube.com/channel/' + o.channel.id,
-                'class': 'd-table red-text'
+                'class': 'd-table red-text text-area'
             }).attr('target', '_blank'),
             $('<span />', {
                 'html': o.text,
-                'class': 'grey-text text-darken-2'
+                'class': 'grey-text text-darken-2 text-area'
             }),
             $('<a />', {
                 'data-name': 'url',
@@ -337,7 +338,7 @@ function _video_(o)
                         'html': [
                             $('<span />', {
                                 'html': o.title,
-                                'class': 'd-table blue-text title mb-0'
+                                'class': 'd-table blue-text title text-area'
                             }),
                             $('<a />', {
                                 'html': o.channel.title,
