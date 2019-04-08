@@ -641,8 +641,8 @@
     }
 
     $(document).on('click', '[data-search]', function() {
-        var input = $('input[name=string]');
-        var search = $('ul#search');
+        var input = $('input[name=string]'),
+            search = $('ul#search');
 
             input.val(input.val() + ' ' + $(this).data('search'))
 
@@ -652,8 +652,8 @@
             vzAjax(search)
         }, 400)
     }).on('keyup', 'input[name=string]', function(e) {
-        var __ = $(this);
-        var keycode = (e.keyCode ? e.keyCode : e.which);
+        var __ = $(this),
+            keycode = (e.keyCode ? e.keyCode : e.which);
 
         if (keycode == '13')
         {

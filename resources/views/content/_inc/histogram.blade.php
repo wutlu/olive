@@ -84,7 +84,6 @@
                 {
                     ticks: {
                         fontColor: "white",
-                        stepSize: 1,
                         beginAtZero: true
                     }
                 }
