@@ -11,7 +11,7 @@
 @section('content')
     <div class="card">
         <div class="card-image">
-            <img src="{{ asset('img/md-s/23.jpg') }}" alt="Image" />
+            <img src="{{ asset('img/md-s/21.jpg') }}" alt="Image" />
             <span class="card-title white-text d-flex">
                 <i class="material-icons mr-1">filter_list</i>
                 Veri Havuzu

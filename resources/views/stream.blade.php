@@ -32,7 +32,7 @@
 
         border-width: 0 0 0 1rem;
         border-style: solid;
-        border-color: #4caf50;
+        border-color: #009688;
     }
 
     .time-line > .collection.active {
@@ -620,9 +620,9 @@
 @section('dock')
     <div class="card with-bg mb-1">
         <div class="card-image">
-            <img src="{{ asset('img/md/23.jpg') }}" alt="Image" />
+            <img src="{{ asset('img/md/21.jpg') }}" alt="Image" />
             <span class="card-title white-text d-flex">
-                <i class="material-icons mr-1">speaker_notes</i>
+                <i class="material-icons align-self-center mr-1">speaker_notes</i>
                 Kelime Grupları
             </span>
         </div>

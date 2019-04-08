@@ -21,7 +21,7 @@
                                 <div class="input-field col s12">
                                     <input name="email" id="email" type="email" class="validate" />
                                     <label for="email">E-posta</label>
-                                    <span class="helper-text">Geçerli e-posta adresiniz.</span>
+                                    <span class="helper-text">Mevcut e-posta adresiniz.</span>
                                 </div>
                                 <div class="input-field col s12">
                                     <input name="password" id="password" type="password" class="validate" />
