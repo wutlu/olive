@@ -1,6 +1,6 @@
-<div class="card mb-1 pb-1">
+<div class="card mb-1 pb-1 cyan darken-2">
     <div class="card-content">
-        <span class="card-title">Duygu Grafiği</span>
+        <span class="card-title white-text">Duygu Grafiği</span>
     </div>
     <canvas id="sentiment-chart"></canvas>
 </div>

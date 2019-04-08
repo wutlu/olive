@@ -66,9 +66,6 @@
 
 @push('wildcard-bottom')
     <div class="card cyan darken-2">
-        <div class="card-content">
-            <p class="white-text">Tüm Tweetler ve ReTweetler kullanıcıya ait ve veritabanımıza alınmış periyodik verilerden oluşmaktadır.</p>
-        </div>
         <div class="card-tabs">
             <ul class="tabs tabs-transparent sub-tabs">
                 <li class="tab">

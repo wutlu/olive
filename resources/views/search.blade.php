@@ -27,6 +27,15 @@
 
         width: calc(100% - 2rem)
     }
+
+    .owl-chart {
+        position: relative;
+    }
+    .owl-chart .owl-wildcard-close {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
 @endpush
 
 @push('local.scripts')
@@ -40,6 +49,18 @@
             search.data('skip', 0).addClass('json-clear');
 
         vzAjax(search)
+    }).on('click', '.owl-wildcard-close', function() {
+        var __ = $(this),
+            owl = $('.owl-wildcard');
+
+        owl.trigger('remove.owl.carousel', [__.closest('.owl-item').index()]).trigger('refresh.owl.carousel')
+
+        var item_length = owl.find('.owl-item').length;
+
+        if (item_length == 0)
+        {
+            $('#chart-area').addClass('hide')
+        }
     })
 
     function __search_archive(__, obj)
@@ -111,7 +132,17 @@
 
             $('.owl-wildcard').trigger('add.owl.carousel', [ $('<div />', {
                 'class': 'owl-chart',
-                'html': $('<canvas />', { 'id': __.data('type') + '-chart', 'height': '200' })
+                'html': [
+                    $('<canvas />', { 'id': __.data('type') + '-chart', 'height': '200' }),
+                    $('<a />', {
+                        'html': $('<i />', {
+                            'class': 'material-icons',
+                            'html': 'close'
+                        }),
+                        'href': '#',
+                        'class': 'btn-floating btn-small red darken-2 owl-wildcard-close waves-effect'
+                    })
+                ]
             }), 0 ]).trigger('refresh.owl.carousel')
 
             if (__.data('type') == 'hourly')
@@ -571,14 +602,23 @@
         responsiveClass: true,
         autoWidth: true,
         dotClass: 'hide',
-        items: 1,
-        singleItem: true
+        singleItem: true,
+        navText: [
+            '<div class="nav-btn prev-slide d-flex"><i class="material-icons align-self-center">keyboard_arrow_left</i></div>',
+            '<div class="nav-btn next-slide d-flex"><i class="material-icons align-self-center">keyboard_arrow_right</i></div>'
+        ],
+        nav: true
     })
 
     $('.owl-chips').owlCarousel({
         responsiveClass: true,
         autoWidth: true,
-        dotClass: 'hide'
+        dotClass: 'hide',
+        navText: [
+            '<div class="nav-btn prev-slide d-flex"><i class="material-icons align-self-center">keyboard_arrow_left</i></div>',
+            '<div class="nav-btn next-slide d-flex"><i class="material-icons align-self-center">keyboard_arrow_right</i></div>'
+        ],
+        nav: true
     })
 
     function __chart(parent, data)
@@ -627,13 +667,13 @@
 
         if (!$('.chip-s').find('.chip[data-id=' + id + ']').length && __.val().length)
         {
-            $('.chip-s').prepend($('<a />', {
+            $('.owl-chips').trigger('add.owl.carousel', [ $('<a />', {
                 'href': '#',
-                'class': 'chip waves-effect indigo white-text',
+                'class': 'chip waves-effect indigo white-text mb-0',
                 'data-search': __.val(),
                 'html': __.val(),
                 'data-id': id
-            }))
+            }), 0 ]).trigger('refresh.owl.carousel')
         }
     }
 @endpush
@@ -811,9 +851,9 @@
                 <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center" data-class=".wild-content" data-class-remove="active" style="margin: 0 .4rem 0 0;">
                     <i class="material-icons">close</i>
                 </a>
-                <button type="button" data-type="mention" data-tooltip="Kimler Bahsetti?" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules,verified,retweet" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center" style="margin: 0 .2rem 0 0;">@</button>
-                <button type="button" data-type="hashtag" data-tooltip="Hangi Hashtagler Kullanıldı?" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules,verified,retweet" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center" style="margin: 0 .2rem 0 0;">#</button>
-                <button type="button" data-type="source" data-tooltip="Kaynak Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules,verified,retweet" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center" style="margin: 0 .2rem 0 0;">Kaynaklar</button>
+                <button type="button" data-type="mention" data-tooltip="Kimler Bahsetti?" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules,verified,retweet" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center loading" style="margin: 0 .2rem 0 0;">@</button>
+                <button type="button" data-type="hashtag" data-tooltip="Hangi Hashtagler Kullanıldı?" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules,verified,retweet" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center loading" style="margin: 0 .2rem 0 0;">#</button>
+                <button type="button" data-type="source" data-tooltip="Kaynak Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules,verified,retweet" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center loading" style="margin: 0 .2rem 0 0;">Kaynaklar</button>
             </span>
         </div>
         <div class="wild-content d-flex" data-wild="graph">
@@ -821,15 +861,15 @@
                 <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center" data-class=".wild-content" data-class-remove="active" style="margin: 0 .4rem 0 0;">
                     <i class="material-icons">close</i>
                 </a>
-                <button type="button" data-type="hourly" data-tooltip="Saatlik İçerik Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules,verified,retweet" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center" style="margin: 0 .2rem 0 0;">S</button>
-                <button type="button" data-type="daily" data-tooltip="Günlük İçerik Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules,verified,retweet" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center" style="margin: 0 .2rem 0 0;">G</button>
-                <button type="button" data-type="location" data-tooltip="Konum Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules,verified,retweet" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center" style="margin: 0 .2rem 0 0;">
+                <button type="button" data-type="hourly" data-tooltip="Saatlik İçerik Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules,verified,retweet" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center loading" style="margin: 0 .2rem 0 0;">S</button>
+                <button type="button" data-type="daily" data-tooltip="Günlük İçerik Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules,verified,retweet" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center loading" style="margin: 0 .2rem 0 0;">G</button>
+                <button type="button" data-type="location" data-tooltip="Konum Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules,verified,retweet" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center loading" style="margin: 0 .2rem 0 0;">
                     <i class="material-icons">location_on</i>
                 </button>
-                <button type="button" data-type="platform" data-tooltip="Platform Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules,verified,retweet" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center" style="margin: 0 .2rem 0 0;">
+                <button type="button" data-type="platform" data-tooltip="Platform Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules,verified,retweet" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center loading" style="margin: 0 .2rem 0 0;">
                     <i class="material-icons">devices</i>
                 </button>
-                <button type="button" data-type="sentiment" data-tooltip="Duygu Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules,verified,retweet" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center" style="margin: 0 .2rem 0 0;">
+                <button type="button" data-type="sentiment" data-tooltip="Duygu Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules,verified,retweet" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center loading" style="margin: 0 .2rem 0 0;">
                     <i class="material-icons">sentiment_satisfied</i>
                 </button>
             </span>
@@ -889,20 +929,16 @@
         data-json-target="ul#search"
         placeholder="Ara"
         value="{{ $q }}" />
-    <div class="z-depth-1 chip-s owl-chips owl-carousel p-1">
+    <div class="grey lighten-4 grey-text p-1 hide" data-name="stats"></div>
+    <div class="chip-s owl-chips owl-carousel grey lighten-4 z-depth-1">
         @if (@$trends)
             @foreach ($trends as $trend)
-                <a class="chip cyan darken-2 white-text waves-effect" data-search="{{ $trend->title }}" href="#">{{ $trend->title }}</a>
+                <a class="chip cyan darken-2 white-text waves-effect mb-0" data-search="{{ $trend->title }}" href="#">{{ $trend->title }}</a>
             @endforeach
         @endif
     </div>
-    <div class="z-depth-1 grey lighten-4 grey-text p-1 hide" data-name="stats"></div>
     <div class="z-depth-1 hide" id="chart-area">
-        <div class="container container-wide">
-            <div class="pt-1 pb-1">
-                <div class="owl-carousel owl-wildcard"></div>
-            </div>
-        </div>
+        <div class="owl-carousel owl-wildcard"></div>
     </div>
 @endsection
 

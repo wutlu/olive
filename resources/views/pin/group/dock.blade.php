@@ -5,7 +5,7 @@
     }
 @endpush
 
-<div class="card with-bg z-depth-5" id="pin-groups-dock">
+<div class="card with-bg" id="pin-groups-dock">
     <div class="card-content">
         <span class="card-title">Pin Grupları</span>
     </div>

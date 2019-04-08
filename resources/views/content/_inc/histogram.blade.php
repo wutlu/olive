@@ -19,8 +19,8 @@
 @endpush
 
 @section('wildcard')
-    <div class="z-depth-1">
-        <ul class="tabs tabs-fixed-width tabs-transparent cyan darken-2 histogram-tabs">
+    <div class="z-depth-1 cyan darken-2">
+        <ul class="tabs tabs-fixed-width tabs-transparent histogram-tabs">
             @foreach ($charts as $chart)
                 <li class="tab">
                     <a class="@isset($chart['active']){{ 'active' }}@endisset d-flex" href="#{{ $chart['unique_id'] }}">{!! $chart['title'] !!}</a>
@@ -78,7 +78,25 @@
         layout: {
             padding: 40
         },
-        maintainAspectRatio: false
+        maintainAspectRatio: false,
+        scales: {
+            yAxes: [
+                {
+                    ticks: {
+                        fontColor: "white",
+                        stepSize: 1,
+                        beginAtZero: true
+                    }
+                }
+            ],
+            xAxes: [
+                {
+                    ticks: {
+                        fontColor: "white"
+                    }
+                }
+            ]
+        }
     };
 
     function __daily_chart(__, obj)
@@ -105,7 +123,7 @@
                     ],
                     datasets: [
                         {
-                            backgroundColor: '#0097a7',
+                            backgroundColor: '#006064',
                             data: data
                         }
                     ]
@@ -160,7 +178,7 @@
                     ],
                     datasets: [
                         {
-                            backgroundColor: '#0097a7',
+                            backgroundColor: '#006064',
                             data: data
                         }
                     ]
