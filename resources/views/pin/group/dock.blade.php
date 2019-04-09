@@ -14,17 +14,19 @@
         </span>
     </div>
     <div class="card-image">
-        <a href="#" class="btn-floating halfway-fab waves-effect white" data-trigger="create-pin-group">
-            <i class="material-icons grey-text text-darken-2">add</i>
+        <a href="#" class="btn-floating halfway-fab waves-effect blue darken-2" data-trigger="create-pin-group">
+            <i class="material-icons">add</i>
         </a>
     </div>
-    <div class="card-content grey-text">Pinleyeceğiniz içerik, burada seçili olan guruba kaydedilir.</div>
+    <div class="card-content grey-text">
+        <span data-name="display-pin-group">0</span> / <span data-name="total-pin-group">0</span>
+    </div>
 
     <ul id="pin-groups"
         class="collection load json-clear mb-0" 
         data-href="{{ route('pin.groups') }}"
         data-skip="0"
-        data-take="4"
+        data-take="5"
         data-more-button="#pin-groups-more_button"
         data-callback="__pin_groups"
         data-method="post"
@@ -67,8 +69,8 @@
         @slot('class', 'card-loader-unstyled')
     @endcomponent
 
-    <div class="card-content">
-        <a href="{{ route('pin.groups') }}">Tüm Gruplar</a>
+    <div class="card-content center-align">
+        <a href="{{ route('pin.groups') }}" class="btn-flat waves-effect">Tüm Gruplar</a>
     </div>
 </div>
 
@@ -96,6 +98,9 @@
                         item.appendTo(ul)
                 })
             }
+
+            $('[data-name=display-pin-group]').html(ul.children('.collection-item._tmp').length)
+            $('[data-name=total-pin-group]').html(obj.total)
         }
     }
 
@@ -201,6 +206,11 @@
             if (obj.type == 'created')
             {
                 vzAjax($('#pin-groups').data('skip', 0).addClass('json-clear'))
+
+                if ($('[data-name=total-pin-group]').html() == 0)
+                {
+                    $('[data-trigger=create-pin-group]').removeClass('pulse')
+                }
             }
             else if (obj.type == 'updated')
             {
@@ -261,6 +271,28 @@
             })
 
             vzAjax($('#pin-groups').data('skip', 0).addClass('json-clear'))
+        }
+    }
+
+    function __pin_dock(__)
+    {
+        $('#pin-groups-dock').addClass('active')
+
+        if ($('[data-name=total-pin-group]').html() == 0)
+        {
+            $('[data-trigger=create-pin-group]').addClass('pulse')
+
+            M.toast({
+                html: 'Öncelikle bir pin grubu oluşturmalısınız.',
+                classes: 'blue darken-2'
+            })
+        }
+        else
+        {
+            M.toast({
+                html: 'Lütfen bir pin grubu seçin!',
+                classes: 'red'
+            })
         }
     }
 

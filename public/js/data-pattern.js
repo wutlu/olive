@@ -92,6 +92,7 @@ function __joints(o)
                 'data-method': 'post',
                 'data-include': 'group_id',
                 'data-callback': '__pin',
+                'data-error-callback': '__pin_dock',
                 'data-trigger': 'pin',
                 'data-id': o._id,
                 'data-pin-uuid': o.uuid,

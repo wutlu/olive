@@ -202,16 +202,19 @@
     }
 @endpush
 
-@section('action-bar')
-    <a href="#" class="btn-floating btn-large halfway-fab waves-effect white" data-trigger="create-pin-group">
-        <i class="material-icons grey-text text-darken-2">add</i>
-    </a>
-@endsection
-
 @section('content')
     <div class="card with-bg">
+        <div class="card-image">
+            <img src="{{ asset('img/md-s/13.jpg') }}" alt="Image" />
+            <span class="card-title white-text d-flex">
+                <i class="material-icons align-self-center mr-1">speaker_notes</i>
+                Pin Grupları
+            </span>
+            <a href="#" class="btn-floating btn-large halfway-fab waves-effect white" data-trigger="create-pin-group">
+                <i class="material-icons grey-text text-darken-2">add</i>
+            </a>
+        </div>
         <div class="card-content">
-            <span class="card-title">Pin Grupları</span>
             <p class="grey-text text-darken-2">Araştırmalarınız sonucu elde ettiğiniz ham verileri pinleme gruplarında saklayabilirsiniz.</p>
             <p class="grey-text text-darken-2">Ayrıca pinlediğiniz verileri PDF halinde rapor alabilirsiniz.</p>
         </div>
@@ -243,7 +246,9 @@
              data-loader="#home-loader"
              data-nothing>
             <li class="collection-item nothing hide">
-                @component('components.nothing')@endcomponent
+                @component('components.nothing')
+                    @slot('size', 'small')
+                @endcomponent
             </li>
             <li data-name="item" class="collection-item model hide">
                 <span>

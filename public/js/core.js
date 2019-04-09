@@ -726,46 +726,46 @@ function vzAjax(__)
         {
             __result(__)
 
-            if
-            (
-                jqXHR.status == 0 ||
-                jqXHR.status == 403 ||
-                jqXHR.status == 404 ||
-                jqXHR.status == 405 ||
-                jqXHR.status == 429 ||
-                jqXHR.status == 'warn' ||
-                jqXHR.status == undefined
-            )
+            var err_callback = __.data('error-callback');
+
+            if (err_callback)
             {
-                if (jqXHR.status == 0)
+                eval(err_callback)(__);
+            }
+            else
+            {
+                if
+                (
+                    jqXHR.status == 0 ||
+                    jqXHR.status == 403 ||
+                    jqXHR.status == 404 ||
+                    jqXHR.status == 405 ||
+                    jqXHR.status == 429 ||
+                    jqXHR.status == 'warn' ||
+                    jqXHR.status == undefined
+                )
                 {
-                    title = errors.disconnected;
-                }
-                else if (jqXHR.status == 429)
-                {
-                    title = errors.calm;
-                }
-                else if (jqXHR.status == 404)
-                {
-                    title = errors.notfound;
-                }
-                else if (jqXHR.status == 403)
-                {
-                    title = errors.permission;
-                }
-                else if (jqXHR.status == 'warn')
-                {
-                    title = jqXHR.reason;
-                }
+                    if (jqXHR.status == 0)
+                    {
+                        title = errors.disconnected;
+                    }
+                    else if (jqXHR.status == 429)
+                    {
+                        title = errors.calm;
+                    }
+                    else if (jqXHR.status == 404)
+                    {
+                        title = errors.notfound;
+                    }
+                    else if (jqXHR.status == 403)
+                    {
+                        title = errors.permission;
+                    }
+                    else if (jqXHR.status == 'warn')
+                    {
+                        title = jqXHR.reason;
+                    }
 
-                var err_callback = __.data('error-callback');
-
-                if (err_callback)
-                {
-                    eval(err_callback)(__);
-                }
-                else
-                {
                     window.clearTimeout(error_timer);
 
                     error_timer = setTimeout(function() {
@@ -785,79 +785,121 @@ function vzAjax(__)
                             })
                     }, jqXHR.status == 0 ? 2000 : 500)
                 }
-            }
-            else if (jqXHR.status == 401)
-            {
-                location.href = jqXHR.responseJSON.redirect;
-            }
-            else if (jqXHR.status == 422)
-            {
-                $.each(jqXHR.responseJSON.errors, function(key, text) {
-                    key = key.replace(/([0-9.]+)/i, '');
+                else if (jqXHR.status == 401)
+                {
+                    location.href = jqXHR.responseJSON.redirect;
+                }
+                else if (jqXHR.status == 422)
+                {
+                    $.each(jqXHR.responseJSON.errors, function(key, text) {
+                        key = key.replace(/([0-9.]+)/i, '');
 
-                    var element = __.is('form') ? __.find('[name=' + key + ']') :  $('[name=' + key + ']');
-                    var feedback = element.closest('.input-field').find('.helper-text');
+                        var element = __.is('form') ? __.find('[name=' + key + ']') :  $('[name=' + key + ']');
+                        var feedback = element.closest('.input-field').find('.helper-text');
 
-                    if (feedback.length)
-                    {
-                        if (__.is('form'))
+                        if (feedback.length)
                         {
-                            if ($('#' + __.attr('id')).closest('.model'))
+                            if (__.is('form'))
                             {
+                                if ($('#' + __.attr('id')).closest('.model'))
+                                {
 
+                                }
+                                else
+                                {
+                                    scrollTo({
+                                        'target': '#' + __.attr('id'),
+                                        'tolerance': '-72px'
+                                    })
+                                }
                             }
-                            else
-                            {
-                                scrollTo({
-                                    'target': '#' + __.attr('id'),
-                                    'tolerance': '-72px'
-                                })
-                            }
+
+                            element.addClass('invalid')
+                            feedback.attr('data-error', text.join(' '))
                         }
+                        else
+                        {
+                            M.toast({ html: text[0], classes: 'red' })
+                        }
+                    })
+                }
+                else if (jqXHR.status == 500)
+                {
+                    if (debug)
+                    {
+                        var mdl = modal({
+                            'id': 'err',
+                            'body': [
+                                $('<div />', {
+                                    'class': 'error-area',
+                                    'append': [
+                                        $('<input />', {
+                                            'type': 'text',
+                                            'readonly': true,
+                                            'value': method + ': ' + URL
+                                        }),
+                                        $('<input />', {
+                                            'type': 'text',
+                                            'readonly': true,
+                                            'value': jqXHR.responseJSON.file
+                                        }),
+                                        $('<input />', {
+                                            'type': 'text',
+                                            'readonly': true,
+                                            'value': 'Line: ' + jqXHR.responseJSON.line
+                                        }),
+                                        $('<pre />', {
+                                            'html': jqXHR.responseJSON.message
+                                        }),
+                                        $('<ul />')
+                                    ]
+                                })
+                            ],
+                            'size': 'modal-large',
+                            'title': title,
+                            'options': {},
+                            'footer': [
+                                $('<a />', {
+                                    'href': '#',
+                                    'class': 'modal-close waves-effect btn-flat',
+                                    'html': buttons.ok
+                                })
+                            ]
+                        })
 
-                        element.addClass('invalid')
-                        feedback.attr('data-error', text.join(' '))
+                        $.each(variables, function(key, val) {
+                            $('<li />', {
+                                'append': [
+                                    $('<label />', {
+                                        'html': key
+                                    }),
+                                    $('<input />', {
+                                        'type': 'text',
+                                        'readonly': true,
+                                        'value': $('[name="' + key + '"]').attr('type') == 'password' ? '[secret]' : val
+                                    })
+                                ]
+                            }).appendTo('.error-area > ul')
+                        })
                     }
                     else
                     {
-                        M.toast({ html: text[0], classes: 'red' })
+                        var mdl = modal({
+                            'id': 'err',
+                            'body': title,
+                            'title': keywords.info,
+                            'size': 'modal-small',
+                            'options': {}
+                        })
                     }
-                })
-            }
-            else if (jqXHR.status == 500)
-            {
-                if (debug)
+                }
+                else if (jqXHR.status == 419)
                 {
                     var mdl = modal({
                         'id': 'err',
-                        'body': [
-                            $('<div />', {
-                                'class': 'error-area',
-                                'append': [
-                                    $('<input />', {
-                                        'type': 'text',
-                                        'readonly': true,
-                                        'value': method + ': ' + URL
-                                    }),
-                                    $('<input />', {
-                                        'type': 'text',
-                                        'readonly': true,
-                                        'value': jqXHR.responseJSON.file
-                                    }),
-                                    $('<input />', {
-                                        'type': 'text',
-                                        'readonly': true,
-                                        'value': 'Line: ' + jqXHR.responseJSON.line
-                                    }),
-                                    $('<pre />', {
-                                        'html': jqXHR.responseJSON.message
-                                    }),
-                                    $('<ul />')
-                                ]
-                            })
-                        ],
-                        'size': 'modal-large',
-                        'title': title,
+                        'body': errors.time_out,
+                        'title': keywords.info,
+                        'size': 'modal-small',
                         'options': {},
                         'footer': [
                             $('<a />', {
@@ -867,53 +909,11 @@ function vzAjax(__)
                             })
                         ]
                     })
-
-                    $.each(variables, function(key, val) {
-                        $('<li />', {
-                            'append': [
-                                $('<label />', {
-                                    'html': key
-                                }),
-                                $('<input />', {
-                                    'type': 'text',
-                                    'readonly': true,
-                                    'value': $('[name="' + key + '"]').attr('type') == 'password' ? '[secret]' : val
-                                })
-                            ]
-                        }).appendTo('.error-area > ul')
-                    })
                 }
                 else
                 {
-                    var mdl = modal({
-                        'id': 'err',
-                        'body': title,
-                        'title': keywords.info,
-                        'size': 'modal-small',
-                        'options': {}
-                    })
+                    console.error(jqXHR.status)
                 }
-            }
-            else if (jqXHR.status == 419)
-            {
-                var mdl = modal({
-                    'id': 'err',
-                    'body': errors.time_out,
-                    'title': keywords.info,
-                    'size': 'modal-small',
-                    'options': {},
-                    'footer': [
-                        $('<a />', {
-                            'href': '#',
-                            'class': 'modal-close waves-effect btn-flat',
-                            'html': buttons.ok
-                        })
-                    ]
-                })
-            }
-            else
-            {
-                console.error(jqXHR.status)
             }
         },
         success: function(obj)
