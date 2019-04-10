@@ -31,6 +31,7 @@
         data-method="post"
         data-include="group_id"
         data-callback="__pin"
+        data-error-callback="__pin_dock"
         data-trigger="pin"
         data-id="{{ $document['_id'] }}"
         data-type="{{ $document['_type'] }}"
