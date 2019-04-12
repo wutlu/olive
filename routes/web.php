@@ -62,11 +62,8 @@ Route::post('modul-ara', 'ModuleSearchController@search')->name('module.search')
 Route::post('modul-git', 'ModuleSearchController@go')->name('module.go');
 
 Route::prefix('organizasyon')->group(function () {
-    Route::get('plan', 'OrganisationController@select')->name('organisation.create.select');
-    Route::get('plan/{id}', 'OrganisationController@details')->name('organisation.create.details');
-    Route::put('/', 'OrganisationController@create')->name('organisation.create');
+    Route::get('teklif', 'OrganisationController@offer')->name('organisation.create.offer');
     Route::patch('/', 'OrganisationController@update')->name('organisation.update');
-    Route::get('/', 'OrganisationController@result')->name('organisation.create.result');
 
     Route::patch('update/name', 'OrganisationController@updateName')->name('organisation.update.name');
 });
@@ -177,14 +174,6 @@ Route::prefix('ayarlar')->group(function () {
     Route::get('hesap-bilgileri', 'UserController@account')->name('settings.account');
     Route::post('hesap-bilgileri', 'UserController@accountUpdate');
 
-    Route::prefix('partner-sistemi')->group(function () {
-        Route::get('/', 'UserController@reference')->name('settings.reference');
-        Route::post('referanslar', 'UserController@references')->name('settings.references');
-        Route::post('islem', 'UserController@transaction')->name('settings.transaction');
-        Route::post('islemler', 'UserController@transactions')->name('settings.transactions');
-        Route::post('basla', 'UserController@referenceStart')->name('settings.reference.start');
-    });
-
     Route::get('e-posta-bildirimleri', 'UserController@notifications')->name('settings.notifications');
     Route::patch('e-posta-bildirimleri', 'UserController@notificationUpdate')->name('settings.notification');
 
@@ -196,8 +185,6 @@ Route::prefix('ayarlar')->group(function () {
 
 Route::prefix('fatura')->group(function () {
     Route::get('{id}/{key?}', 'OrganisationController@invoice')->name('organisation.invoice');
-    Route::post('hesapla', 'OrganisationController@calculate')->name('organisation.create.calculate');
-    Route::post('hesapla-uzat', 'OrganisationController@calculateRenew')->name('organisation.create.calculate.renew');
 });
 
 Route::prefix('geo')->group(function () {

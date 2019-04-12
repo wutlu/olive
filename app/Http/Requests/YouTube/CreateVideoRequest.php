@@ -75,7 +75,7 @@ class CreateVideoRequest extends FormRequest
         });
 
         Validator::extend('limit', function($attribute) use ($user) {
-            return $user->organisation->youtubeFollowingVideos()->count() < $user->organisation->youtube_follow_limit_channel;
+            return $user->organisation->youtubeFollowingVideos()->count() < $user->organisation->data_pool_youtube_video_limit;
         });
 
         return [

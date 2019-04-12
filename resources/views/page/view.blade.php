@@ -1,5 +1,6 @@
 @extends('layouts.app', [
     'term' => 'hide',
+    'email' => 'hide',
     'dock' => true
 ])
 

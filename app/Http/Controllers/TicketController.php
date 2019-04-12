@@ -27,7 +27,7 @@ class TicketController extends Controller
          * - Organizasyon
          * -- support
          */
-        $this->middleware([ 'auth', 'organisation:have,support' ]);
+        $this->middleware([ 'auth' ]);
 
         /**
          ***** ZORUNLU *****
@@ -75,9 +75,9 @@ class TicketController extends Controller
 
         if ($user->organisation)
         {
-            if ($user->organisation->lastInvoice)
+            if ($user->organisation->invoices()->count())
             {
-                $ticket->invoice_id = $user->organisation->lastInvoice->paid_at ? null : $user->organisation->lastInvoice->invoice_id;
+                $ticket->invoice_id = $user->organisation->invoices[0]->paid_at ? null : $user->organisation->invoices[0]->invoice_id;
             }
         }
 

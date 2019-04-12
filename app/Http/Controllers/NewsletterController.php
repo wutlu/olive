@@ -207,7 +207,14 @@ class NewsletterController extends Controller
      */
     public static function users()
     {
-        $users = User::select('email')->where('verified', true)->get()->pluck('email');
+        $users = User::select('email')
+                     ->whereHas('notifications', function($q) {
+                        $q->where('key', 'newsletter');
+                     })
+                     ->whereNotNull('email')
+                     ->where('verified', true)
+                     ->get()
+                     ->pluck('email');
 
         return [
             'status' => 'ok',

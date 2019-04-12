@@ -30,10 +30,10 @@
                 <a href="{{ route('organisation.invoice', $invoice->invoice_id) }}" class="collection-item d-flex justify-content-between waves-effect {{ $invoice->paid_at ? 'green-text' : 'red-text' }}">
                     <i class="material-icons align-self-center">history</i>
                     <span class="align-self-center">
-                        <p>{{ $invoice->plan()->name }} ({{ $invoice->plan()->properties->capacity->value }} kullanıcı)</p>
+                        <p>#{{ $invoice->invoice_id }}</p>
                         <p class="grey-text">{{ date('d.m.Y H:i', strtotime($invoice->created_at)) }}</p>
                     </span>
-                    <span class="ml-auto">{{ $invoice->paid_at ? date('d.m.Y H:i', strtotime($invoice->paid_at)) : 'ÖDENMEDİ' }}</span>
+                    <span class="ml-auto {{ $invoice->paid_at ? 'green-text' : 'red-text' }}">{{ $invoice->paid_at ? date('d.m.Y H:i', strtotime($invoice->paid_at)) : 'ÖDENMEDİ' }}</span>
                 </a>
                 @endforeach
             </div>
@@ -43,6 +43,7 @@
             </div>
         @endif
     </div>
+
 	{!! $organisation->invoices()->paginate(5)->links('vendor.pagination.materializecss') !!}
 @endsection
 

@@ -38,14 +38,111 @@
             $('[data-name=count]').html(obj.total)
         }
     }
+
+    $(document).on('click', '[data-trigger=create]', function() {
+        return modal({
+            'id': 'user',
+            'title': 'Kullanıcı Oluştur',
+            'body': $('<form />', {
+                'data-callback': '__create',
+
+                'action': '{{ route('admin.user.register') }}',
+                'method': 'post',
+                'id': 'user-form',
+                'class': 'json',
+                'html': [
+                    $('<div />', {
+                        'class': 'input-field',
+                        'html': [
+                            $('<input />', {
+                                'id': 'name',
+                                'name': 'name',
+                                'type': 'text',
+                                'class': 'validate'
+                            }),
+                            $('<label />', {
+                                'for': 'name',
+                                'html': 'Kullanıcı Adı'
+                            }),
+                            $('<span />', {
+                                'class': 'helper-text',
+                                'html': 'Benzersiz bir kullanıcı adı girin.'
+                            })
+                        ]
+                    }),
+                    $('<div />', {
+                        'class': 'input-field',
+                        'html': [
+                            $('<input />', {
+                                'id': 'password',
+                                'name': 'password',
+                                'type': 'password',
+                                'class': 'validate',
+                                'data-length': 32
+                            }),
+                            $('<label />', {
+                                'for': 'password',
+                                'html': 'Şifre'
+                            }),
+                            $('<span />', {
+                                'class': 'helper-text',
+                                'html': 'Kullanıcı için bir şifre girin.'
+                            })
+                        ]
+                    })
+                ]
+            }),
+            'size': 'modal-medium',
+            'options': {
+                dismissible: false
+            },
+            'footer': [
+               $('<a />', {
+                   'href': '#',
+                   'class': 'modal-close waves-effect btn-flat grey-text',
+                   'html': buttons.cancel
+               }),
+               $('<span />', {
+                   'html': ' '
+               }),
+               $('<button />', {
+                   'type': 'submit',
+                   'class': 'waves-effect btn-flat',
+                   'data-submit': 'form#user-form',
+                   'html': buttons.ok
+               })
+            ]
+        })
+    })
+
+    function __create(__, obj)
+    {
+        if (obj.status == 'ok')
+        {
+            var collection = $('#users');
+                collection.data('skip', 0).addClass('json-clear')
+
+            vzAjax(collection)
+
+            $('#modal-user').modal('close')
+        }
+    }
 @endpush
 
 @section('content')
     <div class="card with-bg">
-        <div class="card-content">
-            <span class="card-title">Kullanıcılar</span>
-            <span data-name="count" class="grey-text text-darken-2">0</span>
+        <div class="card-image mb-1">
+            <img src="{{ asset('img/md-s/21.jpg') }}" alt="Image" />
+            <span class="card-title white-text d-flex">
+                <i class="material-icons align-self-center mr-1">people</i>
+                Kullanıcılar
+                (<span data-name="count">0</span>)
+            </span>
+            <a href="#" class="btn-floating btn-large halfway-fab waves-effect white" data-trigger="create">
+                <i class="material-icons grey-text text-darken-2">add</i>
+            </a>
         </div>
+
         <nav class="nav-half">
             <div class="nav-wrapper">
                 <div class="input-field">
@@ -58,7 +155,6 @@
                     <label class="label-icon" for="string">
                         <i class="material-icons">search</i>
                     </label>
-                    <i class="material-icons">close</i>
                 </div>
             </div>
         </nav>

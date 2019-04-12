@@ -98,7 +98,7 @@
                         <img alt="Avatar" src="{{ $user->avatar() }}" class="user-avatar" style="width: 64px; height: 64px;" />
                     </label>
                 </div>
-                <div class="collection green lighten-5 z-depth-1">
+                <div class="collection">
                     <label class="collection-item waves-effect d-block">
                         <input name="root" id="root" value="on" type="checkbox" {{ $user->root() ? 'checked' : '' }} />
                         <span>Yönetici</span>
@@ -107,21 +107,6 @@
                         <input name="moderator" id="moderator" value="on" type="checkbox" {{ $user->moderator() ? 'checked' : '' }} />
                         <span>Moderatör</span>
                     </label>
-                </div>
-                <div class="collection orange lighten-5 z-depth-1">
-                    <label class="collection-item waves-effect d-block">
-                        <input name="partner" id="partner" value="on" type="checkbox" {{ $user->partner ? 'checked' : '' }} />
-                        <span>Partner</span>
-                    </label>
-                    <div class="collection-item">
-                        <div class="range-field">
-                            <input name="partner_rate" id="partner_rate" type="number" max="50" value="{{ $user->partner_rate }}" class="validate" />
-                            <label for="partner_rate">Partner Pay Oranı (%)</label>
-                            <small class="helper-text">Partnerlerin referans olduğu müşterilerden alacakları komisyon oranı.</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="collection red lighten-5 z-depth-1">
                     <div class="collection-item">
                         <div class="input-field">
                             <input name="ban_reason" id="ban_reason" value="{{ $user->ban_reason }}" type="text" class="validate" />

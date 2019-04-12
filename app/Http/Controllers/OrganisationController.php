@@ -9,18 +9,11 @@ use App\Utilities\Term;
 
 use App\Models\Organisation\Organisation;
 use App\Models\Organisation\OrganisationInvoice as Invoice;
-use App\Models\Discount\DiscountCoupon as Coupon;
 use App\Models\User\User;
 use App\Models\RealTime\KeywordGroup;
 use App\Models\Pin\Group as PinGroup;
-use App\Models\User\Transaction;
 use App\Models\BillingInformation;
 
-use App\Http\Requests\PlanRequest;
-use App\Http\Requests\PlanCalculateRequest;
-use App\Http\Requests\PlanCalculateRenewRequest;
-
-use App\Http\Requests\Organisation\BillingRequest;
 use App\Http\Requests\Organisation\BillingUpdateRequest;
 use App\Http\Requests\Organisation\NameRequest;
 use App\Http\Requests\Organisation\TransferAndRemoveRequest;
@@ -28,6 +21,7 @@ use App\Http\Requests\Organisation\InviteRequest;
 use App\Http\Requests\Organisation\LeaveRequest;
 use App\Http\Requests\Organisation\DeleteRequest;
 use App\Http\Requests\Organisation\Admin\UpdateRequest as AdminUpdateRequest;
+use App\Http\Requests\Organisation\Admin\CreateRequest as AdminCreateRequest;
 use App\Http\Requests\Organisation\Admin\InvoiceApproveRequest;
 
 use App\Http\Requests\RealTime\KeywordGroup\AdminUpdateRequest as KeywordGroupAdminUpdateRequest;
@@ -38,8 +32,6 @@ use App\Http\Requests\SearchRequest;
 use App\Notifications\OrganisationWasCreatedNotification;
 use App\Notifications\OrganisationWasUpdatedNotification;
 use App\Notifications\MessageNotification;
-
-use Request as RequestStatic;
 
 use Carbon\Carbon;
 
@@ -59,18 +51,6 @@ class OrganisationController extends Controller
         /**
          ***** ZORUNLU *****
          *
-         * - Organizasyonu Olmayanlar
-         */
-        $this->middleware('organisation:have_not')->only([
-            'select',
-            'details',
-            'create',
-            'calculate'
-        ]);
-
-        /**
-         ***** ZORUNLU *****
-         *
          * - Organizasyonu Olanlar
          */
         $this->middleware('organisation:have')->only([
@@ -81,9 +61,17 @@ class OrganisationController extends Controller
             'remove',
             'delete',
             'invite',
-            'calculateRenew',
             'update',
             'invoiceCancel'
+        ]);
+
+        /**
+         ***** ZORUNLU *****
+         *
+         * - Organizasyonu Olmayanlar
+         */
+        $this->middleware('organisation:have_not')->only([
+            'offer'
         ]);
 
         /**
@@ -103,13 +91,24 @@ class OrganisationController extends Controller
 
     /**
      *
+     * Organizasyon, Plan Seçimi
+     *
+     * @return view
+     */
+    public static function offer()
+    {
+        return view('organisation.create.offer');
+    }
+
+    /**
+     *
      * Organizasyon, Ödeme Bildirimleri
      *
      * @return mixed
      */
     public static function checkUpcomingPayments()
     {
-        $organisations = Organisation::whereBetween('end_date', [ Carbon::now()->subDays(2), Carbon::now()->addDays(1) ])->get();
+        $organisations = Organisation::whereBetween('end_date', [ Carbon::now()->subDays(2), Carbon::now()->addDays(2) ])->get();
 
         if (count($organisations))
         {
@@ -119,13 +118,13 @@ class OrganisationController extends Controller
 
                 if ($organisation->status == true)
                 {
-                    if ($organisation->days() == 0)
+                    if ($organisation->days() <= 0)
                     {
                         $message = [
                             'title' => 'Üzgünüm :(',
                             'info' => 'Organizasyon Süreniz Doldu',
                             'body' => implode(PHP_EOL, [
-                                'Tüm araçlardan tekrar faydalanabilmek için organizasyon sürenizi uzatmanız gerekiyor.'
+                                'Araçlardan tekrar faydalanabilmek için organizasyon sürenizi uzatmanız gerekiyor.'
                             ])
                         ];
 
@@ -134,9 +133,10 @@ class OrganisationController extends Controller
                     }
                     else
                     {
+                        $day_message = $organisation->days() ? $organisation->days().' gün kaldı!' : 'Son gün!';
                         $message = [
                             'title' => 'Yenileyin',
-                            'info' => 'Organizasyon Süresi Dolmak Üzere',
+                            'info' => $day_message,
                             'body' => implode(PHP_EOL, [
                                 'Kesinti yaşamamak için organizasyon sürenizi uzatmanız gerekiyor.'
                             ])
@@ -189,9 +189,8 @@ class OrganisationController extends Controller
     public static function settings()
     {
         $user = auth()->user();
-        $plan = $user->organisation->lastInvoice->plan();
 
-        return view('organisation.settings', compact('user', 'plan'));
+        return view('organisation.settings', compact('user'));
     }
 
     /**
@@ -218,6 +217,31 @@ class OrganisationController extends Controller
     public static function invite(InviteRequest $request)
     {
         $user = User::where('email', $request->email)->first();
+
+        if (!@$user)
+        {
+            $new_password = str_random(6);
+            $new_name = null;
+
+            while ($new_name === null)
+            {
+                $generated_name = str_random(6);
+
+                $new_name = @User::where('name', $generated_name)->exists() ? null : $generated_name;
+            }
+
+            $user = new User;
+            $user->name = $new_name;
+            $user->email = $request->email;
+            $user->password = bcrypt($new_password);
+            $user->session_id = str_random(100);
+            $user->save();
+
+            $user = User::find($user->id);
+
+            // e-posta gönder
+        }
+
         $user->organisation_id = auth()->user()->organisation_id;
         $user->save();
 
@@ -386,33 +410,41 @@ class OrganisationController extends Controller
         $user = auth()->user();
 
         $removed_user = User::where('id', $request->user_id)->first();
-        $removed_user->organisation_id = null;
-        $removed_user->save();
 
-        $title = 'Organizasyondan Çıkarıldınız';
-        $message = $user->organisation->name.'; '.$user->name.' tarafından çıkarıldınız.';
-
-        if ($removed_user->notification('important'))
+        if ($removed_user->verified)
         {
-            $removed_user->notify(
-                (
-                    new MessageNotification(
-                        'Olive: '.$title,
-                        'Merhaba, '.$removed_user->name,
-                        $message
-                    )
-                )->onQueue('email')
+            $removed_user->organisation_id = null;
+            $removed_user->save();
+
+            $title = 'Organizasyondan Çıkarıldınız';
+            $message = $user->organisation->name.'; '.$user->name.' tarafından çıkarıldınız.';
+
+            if ($removed_user->notification('important'))
+            {
+                $removed_user->notify(
+                    (
+                        new MessageNotification(
+                            'Olive: '.$title,
+                            'Merhaba, '.$removed_user->name,
+                            $message
+                        )
+                    )->onQueue('email')
+                );
+            }
+
+            Activity::push(
+                $title,
+                [
+                    'icon' => 'exit_to_app',
+                    'markdown' => $message,
+                    'user_id' => $removed_user->id
+                ]
             );
         }
-
-        Activity::push(
-            $title,
-            [
-                'icon' => 'exit_to_app',
-                'markdown' => $message,
-                'user_id' => $removed_user->id
-            ]
-        );
+        else
+        {
+            $removed_user->delete();
+        }
 
         return [
             'status' => 'ok'
@@ -485,272 +517,6 @@ class OrganisationController extends Controller
 
     /**
      *
-     * Organizasyon, Plan Seçimi
-     *
-     * @return view
-     */
-    public static function select()
-    {
-        return view('organisation.create.select');
-    }
-
-    /**
-     *
-     * Organizasyon, Plan Detayı
-     *
-     * @return view
-     */
-    public static function details(int $id)
-    {
-        if (@config('plans')[$id]['buy'])
-        {
-            $user = auth()->user();
-
-            if (!$user->verified)
-            {
-                return view('organisation.create.non-verified');
-            }
-
-            $plan = config('plans')[$id];
-
-            return view('organisation.create.details', compact('plan', 'id'));
-        }
-        else
-        {
-            return abort(404);
-        }
-    }
-
-    /**
-     *
-     * Organizasyon, Plan Hesapla
-     *
-     * @return array
-     */
-    public static function calculate(PlanCalculateRequest $request)
-    {
-        $session['plan'] = (object) config('plans')[$request->plan_id];
-
-        $session['unit_price'] = $session['plan']->price;
-        $session['month'] = $request->month;
-        $session['total_price'] = $session['unit_price'] * $request->month;
-
-        # kupon varsa
-        if ($request->coupon_code)
-        {
-            $coupon = Coupon::where('key', $request->coupon_code)->whereNull('invoice_id')->first();
-            $discount_with_year = config('formal.discount_with_year');
-
-            if ($request->month >= 12)
-            {
-                $rate = $coupon->rate + $discount_with_year;
-
-                $session['discount']['rate_year'] = intval($discount_with_year);
-            }
-            else
-            {
-                $rate = $coupon->rate;
-            }
-
-            $rate = $rate >= 100 ? 100 : $rate;
-
-            $session['discount']['rate'] = $rate;
-            $session['discount']['price'] = $coupon->price;
-            $session['discount']['amount'] = ($session['total_price'] * $rate / 100) + $session['discount']['price'];
-            $session['discount']['coupon_key'] = $coupon->key;
-        }
-
-        $session['discounted_price'] = (@$session['discount'] ? $session['total_price'] - $session['discount']['amount'] : $session['total_price']);
-        $session['discounted_price'] = $session['discounted_price'] < 0 ? 0 : $session['discounted_price'];
-        $session['amount_of_tax'] = (@$session['discount'] ? $session['discounted_price'] : $session['total_price']) * config('formal.tax') / 100;
-        $session['total_price_with_tax'] = (@$session['discount'] ? $session['discounted_price'] : $session['total_price']) + $session['amount_of_tax'];
-
-        return [
-            'status' => 'ok',
-            'result' => $session
-        ];
-    }
-
-    /**
-     *
-     * Organizasyon ve Fatura oluştur.
-     *
-     * @return array
-     */
-    public static function create(BillingRequest $request)
-    {
-        $user = auth()->user();
-
-        $plan = config('plans')[$request->plan_id];
-
-        if (!@config('plans')[$request->plan_id]['buy'])
-        {
-            return abort(404);
-        }
-
-        $billing_information = new BillingInformation;
-        $billing_information->user_id = $user->id;
-        $billing_information->fill($request->all());
-        $billing_information->save();
-
-        $organisation = new Organisation;
-        $organisation->name = $user->id.str_random(4, 12);
-        $organisation->capacity = $plan['properties']['capacity']['value'];
-        $organisation->start_date = date('Y-m-d H:i:s');
-        $organisation->end_date = Carbon::now()->addMonths($request->month);
-        $organisation->user_id = $user->id;
-        $organisation->save();
-
-        $user->organisation_id = $organisation->id;
-        $user->save();
-
-        $invoice_id = 0;
-
-        while ($invoice_id == 0)
-        {
-            $invoice_id = date('ymdhis').rand(10, 99);
-
-            $invoice_count = Invoice::where('invoice_id', $invoice_id)->count();
-
-            if ($invoice_count == 0)
-            {
-                Invoice::create([
-                                'invoice_id' => $invoice_id,
-                           'organisation_id' => $organisation->id,
-                                   'user_id' => $user->id,
-
-                                'unit_price' => $plan['price'],
-                                     'month' => $request->month,
-                               'total_price' => $request->month * $plan['price'],
-                                       'tax' => config('formal.tax'),
-
-                    'billing_information_id' => $billing_information->id,
-
-                                   'plan_id' => $request->plan_id
-                ]);
-
-                $ok = true;
-
-                if ($user->notification('important'))
-                {
-                    $user->notify(
-                        (
-                            new OrganisationWasCreatedNotification(
-                                $user->name,
-                                $invoice_id
-                            )
-                        )->onQueue('email')
-                    );
-                }
-
-                Activity::push(
-                    'Organizasyon Oluşturuldu',
-                    [
-                        'icon' => 'flag',
-                        'markdown' => implode(PHP_EOL, [
-                            'Ödeme bilgileri ve diğer detaylar e-posta adresinize gönderildi.',
-                            'Sanal faturanız hazır. Ödemenizi gerçekleştirdikten sonra sanal faturanız, resmi fatura olarak güncellenecek ve organizasyon aktif hale gelecektir.'
-                        ]),
-                        'button' => [
-                            'type' => 'http',
-                            'method' => 'GET',
-                            'action' => route('organisation.invoice', [ 'id' => $invoice_id ]),
-                            'class' => 'btn-flat waves-effect',
-                            'text' => 'Fatura'
-                        ]
-                    ]
-                );
-            }
-            else
-            {
-                $invoice_id = 0;
-            }
-        }
-
-        if ($request->coupon_code)
-        {
-            $coupon = Coupon::where('key', $request->coupon_code)->whereNull('invoice_id')->first();
-            $coupon->invoice_id = $invoice_id;
-            $coupon->rate_year = $request->month >= 12 ? config('formal.discount_with_year') : 0;
-            $coupon->save();
-        }
-        else
-        {
-            if ($request->month >= 12)
-            {
-                $ok = false;
-
-                while ($ok == false)
-                {
-                    $generate_key = str_random(8);
-
-                    $key = Coupon::where('key', $generate_key)->count();
-
-                    if ($key == 0)
-                    {
-                        $coupon = new Coupon;
-                        $coupon->key = $generate_key;
-                        $coupon->rate_year = config('formal.discount_with_year');
-                        $coupon->invoice_id = $invoice_id;
-                        $coupon->save();
-
-                        $ok = true;
-                    }
-                }
-            }
-        }
-
-        session()->flash('created', true);
-
-        return [
-            'status' => 'ok',
-            'created' => true
-        ];
-    }
-
-    /**
-     *
-     * Organizasyon, Plan Hesapla
-     *
-     * @return array
-     */
-    public static function calculateRenew(PlanCalculateRenewRequest $request)
-    {
-        $user = auth()->user();
-
-        $session['plan'] = $user->organisation->lastInvoice->plan();
-
-        $session['unit_price'] = $session['plan']->price;
-        $session['month'] = $request->month;
-        $session['total_price'] = $session['unit_price'] * $request->month;
-
-        $discount_with_year = config('formal.discount_with_year');
-
-        if ($request->month >= 12)
-        {
-            $rate = $discount_with_year;
-
-            $session['discount']['rate'] = intval($discount_with_year);
-
-            $rate = $rate >= 100 ? 100 : $rate;
-
-            $session['discount']['rate'] = $rate;
-            $session['discount']['amount'] = ($session['total_price'] * $rate / 100);
-        }
-
-        $session['discounted_price'] = (@$session['discount'] ? $session['total_price'] - $session['discount']['amount'] : $session['total_price']);
-        $session['discounted_price'] = $session['discounted_price'] < 0 ? 0 : $session['discounted_price'];
-        $session['amount_of_tax'] = (@$session['discount'] ? $session['discounted_price'] : $session['total_price']) * config('formal.tax') / 100;
-        $session['total_price_with_tax'] = (@$session['discount'] ? $session['discounted_price'] : $session['total_price']) + $session['amount_of_tax'];
-
-        return [
-            'status' => 'ok',
-            'result' => $session
-        ];
-    }
-
-    /**
-     *
      * Organizasyon, Süre Uzat
      *
      * @return array
@@ -759,116 +525,68 @@ class OrganisationController extends Controller
     {
         $user = auth()->user();
 
-        $plan = $user->organisation->lastInvoice->plan();
+        $discount_rate = $request->month >= config('formal.discount_with_year') ? config('formal.discount_with_year') : 0;
 
         $billing_information = new BillingInformation;
         $billing_information->user_id = $user->id;
         $billing_information->fill($request->all());
         $billing_information->save();
 
-        $organisation = $user->organisation;
+        $invoice_id = date('ymdhis').$user->id.$user->organisation_id.rand(10, 99);
 
-        $invoice_id = 0;
+        $unit_price = $user->organisation->unit_price;
 
-        while ($invoice_id == 0)
+        $total_price = $request->month * $unit_price;
+
+        Invoice::create([
+                        'invoice_id' => $invoice_id,
+                   'organisation_id' => $user->organisation_id,
+                           'user_id' => $user->id,
+
+                        'unit_price' => $unit_price,
+                             'month' => $request->month,
+                       'total_price' => $total_price,
+                               'tax' => config('formal.tax'),
+
+                              'plan' => $user->organisation->toJson(),
+                     'discount_rate' => $discount_rate,
+
+            'billing_information_id' => $billing_information->id,
+        ]);
+
+        if ($user->notification('important'))
         {
-            $invoice_id = date('ymdhis').rand(10, 99);
-
-            $invoice_count = Invoice::where('invoice_id', $invoice_id)->count();
-
-            if ($invoice_count == 0)
-            {
-                Invoice::create([
-                                'invoice_id' => $invoice_id,
-                           'organisation_id' => $organisation->id,
-                                   'user_id' => $user->id,
-
-                                'unit_price' => $plan->price,
-                                     'month' => $request->month,
-                               'total_price' => $request->month * $plan->price,
-                                       'tax' => config('formal.tax'),
-
-                    'billing_information_id' => $billing_information->id,
-
-                                   'plan_id' => $user->organisation->lastInvoice->plan_id
-                ]);
-
-                if ($request->month >= 12)
-                {
-                    $ok = false;
-
-                    while ($ok == false)
-                    {
-                        $generate_key = str_random(8);
-
-                        $key = Coupon::where('key', $generate_key)->count();
-
-                        if ($key == 0)
-                        {
-                            $coupon = new Coupon;
-                            $coupon->key = $generate_key;
-                            $coupon->rate_year = config('formal.discount_with_year');
-                            $coupon->invoice_id = $invoice_id;
-                            $coupon->save();
-
-                            $ok = true;
-                        }
-                    }
-                }
-
-                $ok = true;
-
-                if ($user->notification('important'))
-                {
-                    $user->notify(
-                        (
-                            new OrganisationWasUpdatedNotification(
-                                $user->name,
-                                $invoice_id
-                            )
-                        )->onQueue('email')
-                    );
-                }
-
-                Activity::push(
-                    'Fatura oluşturuldu',
-                    [
-                        'icon' => 'flag',
-                        'markdown' => implode(PHP_EOL, [
-                            'Ödeme bilgileri ve diğer detaylar e-posta adresinize gönderildi.',
-                            'Sanal faturanız hazır. Ödemenizi gerçekleştirdikten sonra sanal faturanız, resmi fatura olarak güncellenecek ve organizasyon süresi uzatılacaktır.'
-                        ]),
-                        'button' => [
-                            'type' => 'http',
-                            'method' => 'GET',
-                            'action' => route('organisation.invoice', [ 'id' => $invoice_id ]),
-                            'class' => 'btn-flat waves-effect',
-                            'text' => 'Fatura'
-                        ]
-                    ]
-                );
-            }
-            else
-            {
-                $invoice_id = 0;
-            }
+            $user->notify(
+                (
+                    new OrganisationWasUpdatedNotification(
+                        $user->name,
+                        $invoice_id
+                    )
+                )->onQueue('email')
+            );
         }
 
-        return [
-            'status' => 'ok',
-            'updated' => true
-        ];
-    }
+        Activity::push(
+            'Fatura oluşturuldu',
+            [
+                'icon' => 'flag',
+                'markdown' => implode(PHP_EOL, [
+                    'Ödeme bilgileri ve diğer detaylar e-posta adresinize gönderildi.',
+                    'Ödemenizi gerçekleştirdikten sonra e-faturanız e-posta adresinize gönderilecektir.'
+                ]),
+                'button' => [
+                    'type' => 'http',
+                    'method' => 'GET',
+                    'action' => route('organisation.invoice', [ 'id' => $invoice_id ]),
+                    'class' => 'btn-flat waves-effect',
+                    'text' => 'Fatura'
+                ]
+            ]
+        );
 
-    /**
-     *
-     * Organizasyon, Oluşturma Sonucu
-     *
-     * @return view
-     */
-    public static function result()
-    {
-        return view('organisation.create.result');
+        return [
+            'status' => 'ok'
+        ];
     }
 
     /**
@@ -912,7 +630,7 @@ class OrganisationController extends Controller
     {
         $user = auth()->user();
 
-        $invoice = Invoice::where('invoice_id', $user->organisation->lastInvoice->invoice_id)->whereNull('paid_at')->delete();
+        $invoice = Invoice::where('invoice_id', $user->organisation->invoices[0]->invoice_id)->whereNull('paid_at')->delete();
 
         if ($user->notification('important'))
         {
@@ -921,7 +639,7 @@ class OrganisationController extends Controller
                     new MessageNotification
                     (
                         'Olive: Fatura İptal Edildi',
-                        'Organizasyon Faturasını İptal Ettiniz!',
+                        'Faturanızı İptal Ettiniz!',
                         'Organizasyon ödemesi için oluşturduğunuz fatura, ödeme tamamlanmadan iptal edildi.'
                     )
                 )->onQueue('email')
@@ -1008,23 +726,111 @@ class OrganisationController extends Controller
     public static function adminUpdate(int $id, AdminUpdateRequest $request)
     {
         $organisation = Organisation::where('id', $id)->firstOrFail();
+
         $organisation->name = $request->name;
-        $organisation->capacity = $request->capacity;
+        $organisation->user_capacity = $request->user_capacity;
         $organisation->status = $request->status ? true : false;
         $organisation->end_date = $request->end_date.' '.$request->end_time;
+        $organisation->historical_days = $request->historical_days;
+        $organisation->real_time_group_limit = $request->real_time_group_limit;
+        $organisation->search_limit = $request->search_limit;
+        $organisation->alarm_limit = $request->alarm_limit;
+        $organisation->pin_group_limit = $request->pin_group_limit;
 
-        $organisation->twitter_follow_limit_user = $request->twitter_follow_limit_user;
-        $organisation->twitter_follow_limit_keyword = $request->twitter_follow_limit_keyword;
+        $organisation->data_pool_youtube_channel_limit = $request->data_pool_youtube_channel_limit;
+        $organisation->data_pool_youtube_video_limit = $request->data_pool_youtube_video_limit;
+        $organisation->data_pool_youtube_keyword_limit = $request->data_pool_youtube_keyword_limit;
+        $organisation->data_pool_twitter_keyword_limit = $request->data_pool_twitter_keyword_limit;
+        $organisation->data_pool_twitter_user_limit = $request->data_pool_twitter_user_limit;
+        $organisation->unit_price = $request->unit_price;
 
-        $organisation->youtube_follow_limit_channel = $request->youtube_follow_limit_channel;
-        $organisation->youtube_follow_limit_keyword = $request->youtube_follow_limit_keyword;
-        $organisation->youtube_follow_limit_video = $request->youtube_follow_limit_video;
+        /**
+         * modules
+         */
+        foreach (config('system.modules') as $key => $module)
+        {
+            $organisation->{'data_'.$key} = $request->{'data_'.$key} ? true : false;
+        }
 
         $organisation->save();
 
         return [
             'status' => 'ok'
         ];
+    }
+
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Organizasyon Oluştur
+     *
+     * @return array
+     */
+    public static function adminCreate(AdminCreateRequest $request)
+    {
+        $user = User::where('name', $request->user_name)->first();
+
+        if (@$user)
+        {
+            $organisation = new Organisation;
+
+            $organisation->name = $request->organisation_name;
+            $organisation->user_id = $user->id;
+            $organisation->start_date = date('Y-m-d H:i:s');
+            $organisation->end_date = date('Y-m-d H:i:s', strtotime('+7 day'));
+            $organisation->status = false;
+            $organisation->user_capacity = 1;
+            $organisation->unit_price = 0;
+
+            $organisation->data_twitter = true;
+            $organisation->data_sozluk = true;
+            $organisation->data_news = true;
+            $organisation->data_youtube_video = true;
+            $organisation->data_youtube_comment = true;
+            $organisation->data_shopping = true;
+            $organisation->data_forum = false;
+            $organisation->data_facebook = false;
+            $organisation->data_instagram = false;
+            $organisation->data_blog = false;
+
+            $organisation->real_time_group_limit = 1;
+            $organisation->search_limit = 20;
+            $organisation->alarm_limit = 1;
+            $organisation->pin_group_limit = 1;
+
+            $organisation->data_pool_youtube_channel_limit = 10;
+            $organisation->data_pool_youtube_video_limit = 10;
+            $organisation->data_pool_youtube_keyword_limit = 10;
+            $organisation->data_pool_twitter_keyword_limit = 10;
+            $organisation->data_pool_twitter_user_limit = 10;
+            $organisation->data_pool_facebook_keyword_limit = 10;
+            $organisation->data_pool_facebook_user_limit = 10;
+            $organisation->data_pool_instagram_keyword_limit = 10;
+            $organisation->data_pool_instagram_user_limit = 10;
+
+            $organisation->historical_days = 1;
+
+            $organisation->save();
+
+            $user->organisation_id = $organisation->id;
+            $user->save();
+
+            return [
+                'status' => 'ok',
+                'data' => [
+                    'route' => route('admin.organisation', $organisation->id)
+                ]
+            ];
+        }
+        else
+        {
+            return [
+                'status' => 'err',
+                'reason' => 'Kullanıcı bulunamadı!'
+            ];
+        }
     }
 
     /**
@@ -1072,23 +878,10 @@ class OrganisationController extends Controller
             $organisation->save();
 
             $title = 'Olive: Fatura Onayı';
-            $greeting = 'Fatura Onaylandı!';
-            $message = 'Organizasyonu aktif bir şekilde kullanabilirsiniz. İyi araştırmalar...';
+            $greeting = 'Faturanız Onaylandı!';
+            $message = 'Organizasyonunuzu aktifleştirdik. İyi araştırmalar dileriz...';
 
             $fee = $invoice->fee();
-
-            if ($organisation->author->reference_id && intval($fee->total_price))
-            {
-                $price = $fee->total_price - $fee->amount_of_tax;
-                $share = $price*$organisation->author->partner_rate/100;
-
-                $transaction = new Transaction;
-                $transaction->price = $share;
-                $transaction->currency = config('formal.currency');
-                $transaction->status_message = $organisation->author->id.'.'.$organisation->author->name.', ödemesinden partner payı aldınız.';
-                $transaction->user_id = $organisation->author->reference_id;
-                $transaction->save();
-            }
 
             if ($organisation->author->notification('important'))
             {

@@ -46,12 +46,13 @@
                 <span data-name="count" class="grey-text ml-auto"></span>
             </li>
         </ul>
+        @component('components.loader')
+            @slot('color', 'cyan')
+            @slot('id', 'home-loader')
+            @slot('class', 'card-loader-unstyled')
+        @endcomponent
     </div>
 
-    @component('components.loader')
-        @slot('color', 'cyan')
-        @slot('id', 'home-loader')
-    @endcomponent
     <div class="center-align">
         <button class="btn-flat waves-effect hide json"
                 id="pin-groups-more_button"

@@ -147,16 +147,18 @@
     @endif
 @endpush
 
-@section('action-bar:half')
-    <a href="javascript:form()" class="btn-floating btn-large halfway-fab waves-effect white">
-        <i class="material-icons grey-text text-darken-2">add</i>
-    </a>
-@endsection
-
 @section('content')
     <div class="card with-bg">
+        <div class="card-image">
+            <img src="{{ asset('img/md-s/21.jpg') }}" alt="Image" />
+            <span class="card-title white-text d-flex">
+                Destek Taleplerim
+            </span>
+            <a href="javascript:form()" class="btn-floating btn-large halfway-fab waves-effect white">
+                <i class="material-icons grey-text text-darken-2">add</i>
+            </a>
+        </div>
         <div class="card-content">
-            <span class="card-title">Destek Taleplerim</span>
             <p class="grey-text text-darken-2">{{ count($tickets).'/'.$tickets->total() }}</p>
 
             @if (!count($tickets))

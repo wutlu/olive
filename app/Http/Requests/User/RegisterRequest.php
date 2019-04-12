@@ -24,10 +24,9 @@ class RegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'               => 'required|string|max:48|min:4',
+            'name'               => 'required|string|max:48|min:4|unique:users,name',
             'email'              => 'required|email|max:64|unique:users,email',
             'password'           => 'required|string|max:32|min:4',
-            'reference_code'     => ''.config('system.user.referential').'|string|exists:users,reference_code',
             'terms'              => 'accepted',
             'gRecaptchaResponse' => 'required|recaptcha'
         ];

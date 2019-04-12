@@ -32,23 +32,24 @@
     'dock' => true
 ])
 
+@auth
+    @if (@$category->lock == false || auth()->user()->root())
+        @section('action-bar')
+            <a href="{{ route('forum.thread.form') }}" class="btn-floating btn-large halfway-fab waves-effect white" data-tooltip="Konu Başlat" data-position="left">
+                <i class="material-icons grey-text text-darken-2">add</i>
+            </a>
+        @endsection
+    @endif
+@else
+    @section('action-bar')
+        <a href="{{ route('user.login') }}" class="btn-floating btn-large halfway-fab waves-effect white" data-tooltip="Giriş Yap" data-position="left">
+            <i class="material-icons grey-text text-darken-2">person</i>
+        </a>
+    @endsection
+@endauth
+
 @section('wildcard')
     <div class="card wild-background">
-        @auth
-            @if (@$category->lock == false || auth()->user()->root())
-                <div class="card-image">
-                    <a href="{{ route('forum.thread.form') }}" class="btn-floating btn-large halfway-fab waves-effect white" data-tooltip="Konu Başlat" data-position="left">
-                        <i class="material-icons grey-text text-darken-2">add</i>
-                    </a>
-                </div>
-            @endif
-        @else
-            <div class="card-image">
-                <a href="{{ route('user.login') }}" class="btn-floating btn-large halfway-fab waves-effect white" data-tooltip="Giriş Yap" data-position="left">
-                    <i class="material-icons grey-text text-darken-2">person</i>
-                </a>
-            </div>
-        @endauth
         <div class="container">
             <span class="wildcard-title white-text">
                 @isset ($title)
@@ -174,7 +175,7 @@
         @push('local.scripts')
             function cat_modal()
             {
-                var mdl = modal({
+                return modal({
                     'id': 'category',
                     'body': $('<form />', {
                         'action': '{{ route('admin.forum.category') }}',
@@ -295,9 +296,7 @@
                            'html': buttons.ok
                        })
                     ]
-                });
-
-                return mdl;
+                })
             }
 
             $(document).on('click', '[data-trigger=delete_cat]', function() {
@@ -468,25 +467,28 @@
 @endpush
 
 @section('dock')
-    <div class="card cyan with-bg">
-        <div class="card-content">
-            <span class="card-title white-text">Kategoriler</span>
-        </div>
-
+    <div class="card teal with-bg">
         @auth
             @if (auth()->user()->root())
                 <div class="card-image">
+                    <img src="{{ asset('img/md-s/21.jpg') }}" alt="Image" />
+                    <span class="card-title white-text d-flex">
+                        <i class="material-icons align-self-center mr-1">date_range</i>
+                        Kategoriler
+                    </span>
                     <a href="#" class="btn-floating halfway-fab waves-effect white" data-trigger="create-cat">
                         <i class="material-icons grey-text text-darken-2">add</i>
                     </a>
                 </div>
 
-                <div class="card-content white">Bu alan sadece root yetkisine sahip kullanıcılarda görünür.</div>
+                <div class="card-content teal">
+                    <p class="white-text">Bu alan sadece root yetkisine sahip kullanıcılarda görünür.</p>
+                </div>
             @endif
         @endauth
 
         <div class="card-tabs">
-            <ul class="tabs cyan tabs-transparent tabs-fixed-width">
+            <ul class="tabs teal tabs-transparent tabs-fixed-width">
                 <li class="tab">
                     <a href="#categories" class="active">Kategori</a>
                 </li>
@@ -528,7 +530,7 @@
         </ul>
 
         @component('components.loader')
-            @slot('color', 'cyan')
+            @slot('color', 'teal')
             @slot('id', 'cat-loader')
             @slot('class', 'm-0')
         @endcomponent

@@ -87,7 +87,7 @@ class CreateChannelRequest extends FormRequest
         });
 
         Validator::extend('limit', function($attribute) use ($user) {
-            return $user->organisation->youtubeFollowingChannels()->count() < $user->organisation->youtube_follow_limit_channel;
+            return $user->organisation->youtubeFollowingChannels()->count() < $user->organisation->data_pool_youtube_channel_limit;
         });
 
         return [

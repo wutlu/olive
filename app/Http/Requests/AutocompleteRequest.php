@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Discount\Day;
+namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateRequest extends FormRequest
+class AutocompleteRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,11 +24,8 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'id'             => 'required|integer',
-            'first_day'      => 'required|date_format:Y-m-d|before:last_day',
-            'last_day'       => 'required|date_format:Y-m-d',
-            'discount_rate'  => 'required|integer|min:0|max:100',
-            'discount_price' => 'required|numeric'
+            'string' => 'nullable|string|max:50',
+            'limit' => 'required|integer|max:10'
         ];
     }
 }

@@ -13,7 +13,7 @@ class Organisation
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next, $type, $modules = '')
+    public function handle($request, Closure $next, $type, $module = '')
     {
         if ($type == 'have_not')
         {
@@ -41,27 +41,13 @@ class Organisation
         {
             if (auth()->user()->organisation_id)
             {
-                if ($modules)
+                if ($module)
                 {
-                    $modules = explode('|', $modules);
-
                     $organisation = auth()->user()->organisation;
-                    $invoice      = $organisation->lastInvoice;
-                    $plan         = $invoice->plan();
 
-                    $names = [];
-
-                    foreach ($modules as $module)
+                    if (!$organisation->{$module})
                     {
-                        if (!$plan->properties->{$module}->value)
-                        {
-                            $names[] = $plan->properties->{$module}->text;
-                        }
-                    }
-
-                    if (count($names))
-                    {
-                        session()->flash('alert', 'Bu işlemi yapmak için gerekli plana sahip değilsiniz. Plan gereksinimleri: '.implode(',', $names));
+                        session()->flash('alert', 'Bu işlemi yapmak için gerekli plana sahip değilsiniz.');
 
                         return $request->expectsJson() ?
                             response()->json([

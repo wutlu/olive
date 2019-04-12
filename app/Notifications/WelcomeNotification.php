@@ -48,7 +48,7 @@ class WelcomeNotification extends Notification implements ShouldQueue
                     ->subject('Olive: Hoşgeldiniz!')
                     ->greeting('Tebrikler!')
                     ->level('olive')
-                    ->line('Hesabınızı başarılı bir şekilde doğruladınız.')
+                    ->line('E-posta adresinizi başarılı bir şekilde doğruladınız.')
                     ->line($this->text);
     }
 

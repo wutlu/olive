@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddPlanIdToOrganisationInvoicesTable extends Migration
+class AddUniqueToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddPlanIdToOrganisationInvoicesTable extends Migration
      */
     public function up()
     {
-        Schema::table('organisation_invoices', function (Blueprint $table) {
-            $table->unsignedSmallInteger('plan_id')->nullable()->default(null);
+        Schema::table('users', function (Blueprint $table) {
+            $table->unique('name');
         });
     }
 
@@ -25,8 +25,8 @@ class AddPlanIdToOrganisationInvoicesTable extends Migration
      */
     public function down()
     {
-        Schema::table('organisation_invoices', function (Blueprint $table) {
-            $table->dropColumn('plan_id');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropUnique('name');
         });
     }
 }

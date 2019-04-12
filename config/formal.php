@@ -5,22 +5,22 @@ return [
     'tax_name' => 'K.D.V.',
     'company' => [
         'logo' => 'img/veri.zone-logo.svg',
-        'name' => 'veri.zone',
+        'name' => 'Veri Zone Bilişim Tek. ve Dan. Ltd. Şti.',
         'address' => [
-            'Yeni Mah. Eti Cad. 78/B',
-            'Polatlı/ANKARA',
-            'Mustafa Toksöz'
+            'İnönü Mahallesi, 1769. Sk. 1D, 06370',
+            'Ostim Osb',
+            'Yenimahalle/ANKARA'
         ],
         'contact' => [
             'www.veri.zone',
-            'destek@veri.zone',
+            'bilgi@veri.zone',
             '+90 850 302 1630'
         ],
         'taxOffice' => [
-            'name' => 'Polatlı Vergi Dairesi',
-            'no' => '8490002944'
+            'name' => 'Ostim Vergi Dairesi',
+            'no' => '9240813158'
         ],
-        'tradeRegisterNo' => '11047286234'
+        //'tradeRegisterNo' => '0957521689'
     ],
 
     /**
@@ -32,14 +32,6 @@ return [
     'tax' => env('TAX', 18),
 
     /**
-     * partner payı
-     *
-     * @var integer
-     */
-
-    'reference_rate' => env('REFERENCE_RATE', 10),
-
-    /**
      * yıllık alımlarda indirim oranı
      *
      * @var integer
@@ -48,7 +40,7 @@ return [
 
     'banks' => [
         [
-            'name' => 'Mustafa TOKSÖZ',
+            'name' => 'Veri Zone Bilişim Teknolojileri ve Danışmanlık Ltd. Şti.',
             'iban' => 'TR 04 0006 2000 8490 0006 2979 12'
         ]
     ]

@@ -46,12 +46,39 @@
 </head>
 <body>
     @auth
+        @if (@$email != 'hide')
+            @push('local.scripts')
+                @if (auth()->user()->email == 'anonymous@veri.zone')
+                    modal({
+                        'title': 'E-posta',
+                        'id': 'modal-registration',
+                        'body': $('<span />', {
+                            'class': 'red-text',
+                            'html': 'Hesabınızı aktif edebilmek için bir e-posta adresi tanımlamanız gerekiyor.'
+                        }),
+                        'size': 'modal-small',
+                        'options': {
+                            'dismissible': false
+                        },
+                        'footer': [
+                            $('<a />', {
+                                'href': '{{ route('settings.account') }}',
+                                'class': 'waves-effect btn-flat grey-text text-darken-4',
+                                'html': buttons.ok
+                            })
+                        ]
+                    })
+                @endif
+            @endpush
+        @endif
+
         @if (@$term != 'hide')
             @if (auth()->user()->term_version != config('system.term_version'))
                 @push('local.scripts')
                     modal({
-                        'id': 'carousel-term',
-                        'body': '<a class="grey-text" href="{{ route('page.view', 'gizlilik-politikasi') }}">Gizlilik Politikası</a> ve <a class="grey-text" href="{{ route('page.view', 'kullanim-kosullari') }}">Kullanım Koşulları</a> güncellendi. Tekrar gözden geçirip onaylamanız gerekiyor.',
+                        'title': 'Koşullar',
+                        'id': 'modal-term',
+                        'body': '<a class="grey-text" target="_blank" href="{{ route('page.view', 'gizlilik-politikasi') }}">Gizlilik Politikası</a> ve <a class="grey-text" target="_blank" href="{{ route('page.view', 'kullanim-kosullari') }}">Kullanım Koşulları</a> güncellendi. Tekrar gözden geçirip kabul etmeniz gerekiyor.',
                         'size': 'modal-small',
                         'options': {
                             'dismissible': false
@@ -219,7 +246,7 @@
         </div>
 
         @auth
-            <ul id="slide-out" class="sidenav sidenav-fixed collapsible white">
+            <ul id="slide-out" class="sidenav sidenav-fixed collapsible">
                 <li>
                     <div class="user-view">
                         <small class="right">{{ config('system.version') }}</small>
@@ -371,13 +398,6 @@
                         <span class="badge grey white-text" data-id="ticket-count">0</span>
                     </a>
                 </li>
-                <li>
-                    <a class="waves-effect" href="{{ route('admin.reference') }}">
-                        <i class="material-icons">money</i>
-                        Partner Sistemi
-                        <span class="badge grey white-text" data-id="partner-count">0</span>
-                    </a>
-                </li>
                 <li class="divider"></li>
                 <li class="tiny">
                     <a class="waves-effect" href="{{ route('admin.page.list') }}">
@@ -407,12 +427,6 @@
                     <a class="waves-effect" href="{{ route('admin.newsletter') }}">
                         <i class="material-icons">email</i>
                         E-posta Bülteni
-                    </a>
-                </li>
-                <li class="tiny">
-                    <a class="waves-effect" href="{{ route('admin.discount.coupon.list') }}">
-                        <i class="material-icons">card_giftcard</i>
-                        İndirim Kuponları
                     </a>
                 </li>
                 <li class="divider"></li>
@@ -462,7 +476,7 @@
             @php
                 $br_count = count($breadcrumb)-1;
             @endphp
-            <nav class="cyan darken-2" id="breadcrumb">
+            <nav class="white" id="breadcrumb">
                 <div class="{{ auth()->check() ? 'sidenav-fixed-layout' : '' }}">
                     <div class="{{ isset($wide) ? 'container container-wide' : 'container' }}">
                         <a href="{{ route('dashboard') }}" class="breadcrumb">Olive</a>
@@ -692,9 +706,6 @@
                         $('[data-id=ticket-count]').html(obj.data.ticket.count)
                                                    .addClass(obj.data.ticket.count > 0 ? 'red' : 'grey')
                                                    .removeClass(obj.data.ticket.count > 0 ? 'grey' : 'red')
-                        $('[data-id=partner-count]').html(obj.data.partner.count)
-                                                   .addClass(obj.data.partner.count > 0 ? 'red' : 'grey')
-                                                   .removeClass(obj.data.partner.count > 0 ? 'grey' : 'red')
                     @endif
 
                     if (obj.data.push_notifications.length)
@@ -743,7 +754,7 @@
     @endauth
 
     <div class="@auth{{ @$sidenav_fixed_layout ? 'sidenav-fixed-layout' : '' }}@endauth">
-        <footer class="page-footer grey lighten-4 z-depth-1">
+        <footer class="page-footer grey lighten-4">
             <div class="{{ isset($wide) ? 'container container-wide' : 'container' }}">
                 <div class="row mb-1">
                     <div class="col l6 s12">
@@ -780,16 +791,13 @@
                             <li>
                                 <a class="grey-text" href="{{ route('page.view', 'cerez-politikasi') }}">Çerez Politikası</a>
                             </li>
-                            <li>
-                                <a class="grey-text" href="{{ route('settings.reference') }}">Partner Girişi</a>
-                            </li>
                         </ul>
                     </div>
                 </div>
             </div>
-            <div class="footer-copyright center-align grey darken-4">
+            <div class="footer-copyright center-align white">
                 <div class="{{ isset($wide) ? 'container container-wide' : 'container' }} grey-text">
-                    © {{ date('Y') }} <a class="cyan-text" href="http://veri.zone">veri.zone</a> | Tüm hakları saklıdır.
+                    © {{ date('Y') }} <a class="teal-text" href="http://veri.zone">veri.zone</a> | Tüm hakları saklıdır.
                 </div>
             </div>
         </footer>

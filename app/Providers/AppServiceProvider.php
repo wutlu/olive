@@ -11,8 +11,6 @@ use Hash;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Schema;
 
-use App\Models\Discount\DiscountCoupon;
-
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -168,10 +166,6 @@ class AppServiceProvider extends ServiceProvider
 
         Validator::extend('slug', function($attribute, $value) {
             return !preg_match('/[^a-z0-9\-]/', $value);
-        });
-
-        Validator::extend('coupon_exists', function($attribute, $key) {
-            return DiscountCoupon::whereNull('invoice_id')->where('key', $key)->count();
         });
 
         Validator::extend('tckn', function($attribute, $value, $parameters) {

@@ -26,17 +26,15 @@ class UpdateRequest extends FormRequest
     {
         return [
             'id'           => 'required|integer|exists:users,id',
-            'name'         => 'required|string|max:100',
+            'name'         => 'required|string|max:100|unique:users,name,'.$request->id,
             'root'         => 'nullable|string|in:on',
             'password'     => 'nullable|string|max:32',
             'email'        => 'required|email|unique:users,email,'.$request->id,
             'verified'     => 'nullable|string|in:on',
             'avatar'       => 'nullable|string|in:on',
             'moderator'    => 'nullable|string|in:on',
-            'partner'      => 'nullable|string|in:on',
             'ban_reason'   => 'nullable|string|max:255',
             'about'        => 'nullable|string|max:10000',
-            'partner_rate' => 'required|integer|min:0|max:50',
         ];
     }
 }

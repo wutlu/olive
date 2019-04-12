@@ -14,13 +14,6 @@ return [
     'env' => env('APP_ENV', 'production'),
 
     /**
-     * Üyelik
-     *
-     * @return boolean
-     */
-    'registration' => env('APP_REGISTRATION', true),
-
-    /**
      * İlk Kurulum
      *
      * @var boolean

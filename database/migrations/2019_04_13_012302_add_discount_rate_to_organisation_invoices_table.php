@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDiscountDaysTable extends Migration
+class AddDiscountRateToOrganisationInvoicesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,8 @@ class CreateDiscountDaysTable extends Migration
      */
     public function up()
     {
-        Schema::create('discount_days', function (Blueprint $table) {
-            $table->increments('id')->unsigned();
-
-            $table->date('first_day');
-            $table->date('last_day');
-
+        Schema::table('organisation_invoices', function (Blueprint $table) {
             $table->unsignedSmallInteger('discount_rate')->default(0);
-
-            $table->decimal('discount_price', 9, 2)->default(0);
-
-            $table->timestamps();
         });
     }
 
@@ -34,6 +25,8 @@ class CreateDiscountDaysTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('discount_days');
+        Schema::table('organisation_invoices', function (Blueprint $table) {
+            $table->dropColumn('discount_rate');
+        });
     }
 }

@@ -50,7 +50,7 @@
                         </div>
                         <p class="grey-text text-darken-2 lead">Internet artık daha net!</p>
 
-                        <a href="{{ route('user.login') }}" class="waves-effect btn btn-large cyan darken-2">@auth{{ 'Olive\'e Gidin'}}@else{{ 'Giriş Yapın' }}@endauth</a>
+                        <a href="{{ route('user.login') }}" class="waves-effect btn btn-large teal darken-2">@auth{{ 'Olive\'e Gidin'}}@else{{ 'Giriş Yapın' }}@endauth</a>
 
                         <div class="down-area center-align">
                             <a href="#" class="waves-effect btn-large btn-floating pulse grey darken-4">
@@ -121,91 +121,6 @@
             </div>
         </div>
     </div>
-@section('hide')
-    <div class="parallax-container">
-        <div class="parallax">
-            <img src="{{ asset('img/sepbg.svg') }}" alt="sep" />
-        </div>
-
-        @push('local.scripts')
-            function __counter(__, obj)
-            {
-                if (obj.status == 'ok')
-                {
-                    __.html(obj.data.count)
-
-                    setTimeout(function() {
-                        vzAjax($('[data-id=loader]'))
-                    }, 30000)
-                }
-            }
-        @endpush
-
-        <div class="container">
-            <div class="d-table mx-auto">
-                <h5 class="d-flex white-text" id="data-count">
-                    <small class="align-self-center mr-1">Hızla büyüyen veritabanı ve</small>
-                    <span class="align-self-center load" data-id="loader" data-href="{{ route('home.data.counter') }}" data-method="post" data-callback="__counter">0</span>
-                    <i class="align-self-center material-icons">add</i>
-                    <small class="align-self-center ml-1">veri.</small>
-                </h5>
-            </div>
-        </div>
-    </div>
-
-    <div class="parallax-container">
-        <div class="parallax">
-            <img src="{{ asset('img/obg.svg') }}" alt="obg" />
-        </div>
-
-        <div class="container">
-            @if (@$discountDay)
-                <p class="center-align grey-text text-darken-2">Hemen şimdi üye olun ve bugüne özel <span class="chip">{{ $discountDay->discount_rate }}%</span> indirim kuponuna anında sahip olun.</p>
-            @endif
-
-            <div class="plans">
-                @foreach (config('plans') as $key => $plan)
-                    <div class="plan {{ $plan['class'] }}" data-title="{{ $plan['name'] }}">
-                        <ul>
-                            @foreach ($plan['properties'] as $item)
-                                <li class="d-flex justify-content-between">
-                                    <span>{{ $item['text'] }}</span>
-
-                                    @if ($item['value'] === true)
-                                        <i class="material-icons green-text">check</i>
-                                    @elseif ($item['value'] === false)
-                                        <i class="material-icons red-text">close</i>
-                                    @elseif (is_integer($item['value']))
-                                        <span>{{ $item['value'] }}</span>
-                                    @else
-                                        <i class="material-icons teal-text">streetview</i>
-                                    @endif
-                                </li>
-                            @endforeach
-                        </ul>
-                        <div class="price teal white-text">
-                            <div class="d-flex justify-content-between">
-                                <span class="new">
-                                    <small>1 Ay</small>
-                                    {{ config('formal.currency') }} {{ $plan['price'] }}
-                                </span>
-                                <span class="new">
-                                    <small>12+ Ay</small>
-                                    {{ config('formal.currency') }} {{ $plan['price'] - ($plan['price'] / 100 * config('formal.discount_with_year')) }}
-                                </span>
-                            </div>
-                            <small>Vergiler dahil değildir.</small>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-
-            <div class="center-align">
-                <a href="{{ route('user.login') }}" class="waves-effect btn-flat btn-large">Hemen Başlayın!</a>
-            </div>
-        </div>
-    </div>
-@endsection
 @endsection
 
 @push('local.scripts')

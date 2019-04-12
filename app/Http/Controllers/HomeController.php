@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Http\Requests\SearchRequest;
 
 use App\Models\User\UserActivity;
-use App\Models\Discount\DiscountDay;
 use App\Models\User\UserIntro;
 use App\Models\Option;
 use App\Models\Carousel;
@@ -147,11 +146,7 @@ class HomeController extends Controller
      */
     public static function index()
     {
-        $discountDay = DiscountDay::where('first_day', '<=', date('Y-m-d'))
-                                  ->where('last_day', '>=', date('Y-m-d'))
-                                  ->first();
-
-        return view('home', compact('discountDay'));
+        return view('home');
     }
 
     /**
@@ -235,9 +230,6 @@ class HomeController extends Controller
             'ticket' => [
                 'count' => 0
             ],
-            'partner' => [
-                'count' => 0
-            ],
             'push_notifications' => []
         ];
 
@@ -246,7 +238,6 @@ class HomeController extends Controller
         if ($user->root())
         {
             $data['ticket']['count'] = Option::where('key', 'root_alert.support')->value('value');
-            $data['partner']['count'] = Option::where('key', 'root_alert.partner')->value('value');
         }
 
         $activities = UserActivity::where('user_id', $user->id)->where('push_notification', 'on')->limit(3)->get();

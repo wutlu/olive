@@ -164,7 +164,7 @@
                 $('[data-tooltip]').tooltip()
             }
 
-            $('[data-name=count]').html(obj.hits.length + '/{{ auth()->user()->organisation->youtube_follow_limit_channel }}')
+            $('[data-name=count]').html(obj.hits.length + ' / {{ auth()->user()->organisation->data_pool_youtube_channel_limit }}')
         }
 
         window.clearTimeout(collection_timer)

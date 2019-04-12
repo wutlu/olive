@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\User\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PlanCalculateRenewRequest extends FormRequest
+class CreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,8 @@ class PlanCalculateRenewRequest extends FormRequest
     public function rules()
     {
         return [
-            'month' => 'required|integer|min:1|max:24'
+            'name' => 'required|string|max:100|unique:users,name',
+            'password' => 'required|string|max:32'
         ];
     }
 }

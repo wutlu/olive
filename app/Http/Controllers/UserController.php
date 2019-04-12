@@ -11,25 +11,22 @@ use App\Http\Requests\User\PasswordNewRequest;
 use App\Http\Requests\User\UpdateRequest as AccountUpdateRequest;
 use App\Http\Requests\User\AvatarRequest;
 use App\Http\Requests\User\Admin\UpdateRequest as AdminUpdateRequest;
-use App\Http\Requests\User\TransactionRequest;
-use App\Http\Requests\User\Admin\TransactionRequest as AdminTransactionRequest;
+use App\Http\Requests\User\Admin\CreateRequest as AdminCreateRequest;
+
 use App\Http\Requests\SearchRequest;
+use App\Http\Requests\AutocompleteRequest;
 
 use App\Notifications\PasswordValidationNotification;
 use App\Notifications\EmailValidationNotification;
 use App\Notifications\WelcomeNotification;
 use App\Notifications\NewPasswordNotification;
 use App\Notifications\LoginNotification;
-use App\Notifications\DiscountCouponNotification;
 use App\Notifications\MessageNotification;
 
 use App\Utilities\UserActivityUtility;
 
-use App\Models\Discount\DiscountDay;
-use App\Models\Discount\DiscountCoupon;
 use App\Models\User\User;
 use App\Models\User\UserNotification;
-use App\Models\User\Transaction;
 use App\Models\Option;
 
 use Auth;
@@ -67,11 +64,6 @@ class UserController extends Controller
             'notificationUpdate',
             'avatar',
             'avatarUpload',
-            'reference',
-            'references',
-            'referenceStart',
-            'transactions',
-            'transaction',
         ]);
 
         ### [ 5 işlemden sonra 5 dakika ile sınırla ] ###
@@ -83,224 +75,6 @@ class UserController extends Controller
         ### [ 1 işlemden sonra 1 dakika ile sınırla ] ###
         $this->middleware('throttle:1,1')->only('registerResend');
 	}
-
-
-    /**
-     ********************
-     ******* ROOT *******
-     ********************
-     *
-     * Üye, Refenras Sistemi
-     *
-     * @return view
-     */
-    public static function adminReference()
-    {
-        return view('user.admin.reference');
-    }
-
-    /**
-     ********************
-     ******* ROOT *******
-     ********************
-     *
-     * Üye, Refenras Sistemi, işlem geçmişi.
-     *
-     * @return array
-     */
-    public static function adminTransactions(SearchRequest $request)
-    {
-        $take = $request->take;
-        $skip = $request->skip;
-
-        $query = new Transaction;
-        $query = $query->with('user');
-        $query = $request->string ? $query->where('status_message', 'ILIKE', '%'.$request->string.'%') : $query;
-        $query = $query->skip($skip)
-                       ->take($take)
-                       ->orderBy('created_at', 'DESC');
-
-        return [
-            'status' => 'ok',
-            'hits' => $query->get(),
-            'total' => $query->count()
-        ];
-    }
-
-    /**
-     ********************
-     ******* ROOT *******
-     ********************
-     *
-     * Üye, Refenras Sistemi, işlem yap.
-     *
-     * @return array
-     */
-    public static function adminTransaction(AdminTransactionRequest $request)
-    {
-        $option = Option::where('key', 'root_alert.partner')->first();
-
-        $transaction = Transaction::where('id', $request->id)->first();
-
-        if ($transaction->withdraw == 'wait' && $request->withdraw != 'wait')
-        {
-            $option->decr();
-        }
-        else if ($transaction->withdraw != 'wait' && $request->withdraw == 'wait')
-        {
-            $option->incr();
-        }
-
-        $transaction->withdraw = $request->withdraw;
-        $transaction->status_message = $request->status_message;
-        $transaction->save();
-
-        return [
-            'status' => 'ok',
-            'data' => [
-                'id' => $transaction->id,
-                'withdraw' => $transaction->withdraw,
-            ]
-        ];
-    }
-
-    /**
-     * Üye, Refenras Sistemi
-     *
-     * @return view
-     */
-    public static function reference($id = 0)
-    {
-        $root = $id ? true : false;
-        $user = $id ? User::where('id', $id)->firstOrFail() : auth()->user();
-
-        if ($root && !$user->reference_code)
-        {
-            return abort(404);
-        }
-
-        return view('user.reference', compact('user', 'root'));
-    }
-
-    /**
-     * Üye, Refenras Sistemi
-     *
-     * @return array
-     */
-    public static function references($id = 0, SearchRequest $request)
-    {
-        $take = $request->take;
-        $skip = $request->skip;
-
-        $query = new User;
-        $query = $query->select('name', 'id', 'created_at');
-        $query = $request->string ? $query->where('name', 'ILIKE', '%'.$request->string.'%') : $query;
-        $query = $query->where('reference_id', $id ? $id : auth()->user()->id);
-        $query = $query->skip($skip)
-                       ->take($take)
-                       ->orderBy('created_at', 'DESC');
-
-        return [
-            'status' => 'ok',
-            'hits' => $query->get(),
-            'total' => $query->count()
-        ];
-    }
-
-    /**
-     * Üye, Refenras Sistemi
-     *
-     * @return array
-     */
-    public static function referenceStart()
-    {
-        $user = auth()->user();
-
-        if ($user->partner)
-        {
-            if (!$user->reference_code)
-            {
-                $code = null;
-
-                while ($code === null)
-                {
-                    $code_random = str_random(6);
-
-                    $exists = User::where('reference_code', $code_random)->exists();
-
-                    if (!$exists)
-                    {
-                        $code = $code_random;
-                    }
-                }
-
-                $user->addBadge(11);
-                $user->update([ 'reference_code' => $code ]);
-            }
-
-            return [
-                'status' => 'ok'
-            ];
-        }
-        else
-        {
-            return [
-                'status' => 'err'
-            ];
-        }
-    }
-
-    /**
-     * Üye, Refenras Sistemi, işlem geçmişi.
-     *
-     * @return array
-     */
-    public static function transactions($id = 0, SearchRequest $request)
-    {
-        $user = $id ? User::where('id', $id)->firstOrFail() : auth()->user();
-
-        $take = $request->take;
-        $skip = $request->skip;
-
-        $query = new Transaction;
-        $query = $query->select('id', 'price', 'currency', 'status_message', 'withdraw', 'iban', 'created_at');
-        $query = $request->string ? $query->where('status_message', 'ILIKE', '%'.$request->string.'%') : $query;
-        $query = $query->where('user_id', $user->id);
-        $query = $query->skip($skip)
-                       ->take($take)
-                       ->orderBy('created_at', 'DESC');
-
-        return [
-            'status' => 'ok',
-            'hits' => $query->get(),
-            'total' => $query->count()
-        ];
-    }
-
-    /**
-     * Üye, Refenras Sistemi, işlem oluştur.
-     *
-     * @return array
-     */
-    public static function transaction(TransactionRequest $request)
-    {
-        $query = new Transaction;
-        $query->price = '-'.$request->price;
-        $query->withdraw = 'wait';
-        $query->iban = $request->iban;
-        $query->iban_name = $request->iban_name;
-        $query->user_id = auth()->user()->id;
-        $query->currency = config('formal.currency');
-        $query->save();
-
-        session()->flash('transaction', 'success');
-
-        Option::where('key', 'root_alert.partner')->first()->incr();
-
-        return [
-            'status' => 'ok'
-        ];
-    }
 
     /**
      * Forum, Kullanıcı Profili
@@ -331,12 +105,14 @@ class UserController extends Controller
      */
     public static function loginPost(LoginRequest $request)
     {
-        $email = $request->email_login;
+        $value = $request->value_login;
         $password = $request->password_login;
 
-        if (Auth::attempt([ 'email' => $email, 'password' => $password ]))
+        $key = filter_var($value, FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
+
+        if (Auth::attempt([ $key => $value, 'password' => $password ]))
         {
-            $user = User::where('email', $email)->first();
+            $user = User::where($key, $value)->first();
 
             if ($user->banned_at)
             {
@@ -344,7 +120,7 @@ class UserController extends Controller
 
                 System::log(
                     'Yasaklı bir kullanıcı giriş denemesi yaptı.',
-                    'App\Http\Controllers\UserController::loginPost('.$email.':'.$password.')', 1
+                    'App\Http\Controllers\UserController::loginPost('.$key.':'.$password.')', 1
                 );
 
                 return [
@@ -357,16 +133,12 @@ class UserController extends Controller
 
             $diffYears = Carbon::now()->diffInYears($user->created_at);
 
-            $gift = 0;
-
             if ($diffYears >= 5)
             {
                 if (!$user->badge(10))
                 {
                     ### [ 5 yıl dolduruldu ] ###
                     $user->addBadge(10);
-
-                    $gift = 30;
                 }
             }
             else if ($diffYears >= 4)
@@ -375,8 +147,6 @@ class UserController extends Controller
                 {
                     ### [ 4 yıl dolduruldu ] ###
                     $user->addBadge(9);
-
-                    $gift = 20;
                 }
             }
             else if ($diffYears >= 3)
@@ -385,8 +155,6 @@ class UserController extends Controller
                 {
                     ### [ 3 yıl dolduruldu ] ###
                     $user->addBadge(8);
-
-                    $gift = 10;
                 }
             }
             else if ($diffYears >= 2)
@@ -395,8 +163,6 @@ class UserController extends Controller
                 {
                     ### [ 2 yıl dolduruldu ] ###
                     $user->addBadge(7);
-
-                    $gift = 10;
                 }
             }
             else if ($diffYears >= 1)
@@ -405,54 +171,6 @@ class UserController extends Controller
                 {
                     ### [ 1 yıl dolduruldu ] ###
                     $user->addBadge(6);
-
-                    $gift = 10;
-                }
-            }
-
-            if ($gift)
-            {
-                $ok = false;
-
-                while ($ok == false)
-                {
-                    $generate_key = str_random(8);
-
-                    $key = DiscountCoupon::where('key', $generate_key)->count();
-
-                    if ($key == 0)
-                    {
-                        $coupon = new DiscountCoupon;
-                        $coupon->key = $generate_key;
-                        $coupon->rate = $gift;
-                        $coupon->price = 0;
-                        $coupon->save();
-
-                        $ok = true;
-
-                        $message[] = $diffYears == 1 ? 'Sizinle bir yılı geride bıraktık!' : 'Sizinle bir yılı daha geride bıraktık!';
-                        $message[] = 'Birlikte geçecek nice yıllar adına sizin için bir indirim kuponu hazırladık.';
-                        $message[] = 'İyi günlerde kullanın...';
-
-                        $discount[] = '| Kupon Kodu        | İndirim Oranı                                              |';
-                        $discount[] = '| ----------------: |:---------------------------------------------------------- |';
-
-                        $discount[] = '| '.$generate_key.' | '.$gift.'%                                                 |';
-
-                        # --- [] --- #
-
-                        $discount = implode(PHP_EOL, $discount);
-
-                        $user->notify(
-                            (
-                                new DiscountCouponNotification(
-                                    $user->name,
-                                    $discount,
-                                    implode(PHP_EOL, $message)
-                                )
-                            )->onQueue('email')
-                        );
-                    }
                 }
             }
 
@@ -689,56 +407,6 @@ class UserController extends Controller
             )->onQueue('email')
         );
 
-        ### [ indirim günü varsa kupon yarat ] ###
-
-        $discountDay = DiscountDay::where('first_day', '<=', date('Y-m-d'))->where('last_day', '>=', date('Y-m-d'))->first();
-
-        if (@$discountDay)
-        {
-            $ok = false;
-
-            while ($ok == false)
-            {
-                $generate_key = str_random(8);
-
-                $key = DiscountCoupon::where('key', $generate_key)->count();
-
-                if ($key == 0)
-                {
-                    $coupon = new DiscountCoupon;
-                    $coupon->key = $generate_key;
-                    $coupon->rate = $discountDay->discount_rate;
-                    $coupon->price = $discountDay->discount_price;
-                    $coupon->save();
-
-                    $ok = true;
-
-                    $discount[] = '| Kupon Kodu        | İndirim Oranı                                              |';
-                    $discount[] = '| ----------------: |:---------------------------------------------------------- |';
-
-                    $discount[] = '| '.$generate_key.' | '.$discountDay->discount_rate.'%                           |';
-
-                if ($discountDay->discount_price)
-                {
-                    $discount[] = '| Ek            | '.config('formal.currency').' '.$discountDay->discount_price.' |';
-                }
-
-                    # --- [] --- #
-
-                    $discount = implode(PHP_EOL, $discount);
-
-                    $user->notify(
-                        (
-                            new DiscountCouponNotification(
-                                $user->name,
-                                $discount
-                            )
-                        )->onQueue('email')
-                    );
-                }
-            }
-        }
-
         # --- #
 
         return redirect()->route('dashboard');
@@ -751,7 +419,7 @@ class UserController extends Controller
      */
     public static function registerPut(RegisterRequest $request)
     {
-        if (config('app.registration'))
+        if (config('system.user.registration'))
         {
             $user = new User;
             $user->name = $request->name;
@@ -759,16 +427,6 @@ class UserController extends Controller
             $user->email = $request->email;
             $user->session_id = Session::getId();
             $user->term_version = config('system.term_version');
-
-            if ($request->reference_code)
-            {
-                $referencer = User::where('reference_code', $request->reference_code)->first();
-
-                if (@$referencer)
-                {
-                    $user->reference_id = $referencer->id;
-                }
-            }
 
             $user->save();
 
@@ -884,14 +542,17 @@ class UserController extends Controller
 
         $user->name = $request->name;
         $user->password = $request->password ? bcrypt($request->password) : $user->password;
-        $user->email = $request->email;
+
+        if ($request->email != $user->email)
+        {
+            $user->email = $request->email;
+        }
+
         $user->verified = $request->verified ? true : false;
         $user->avatar = $request->avatar ? null : $user->avatar;
         $user->root = $request->root ? true : false;
         $user->moderator = $request->moderator ? true : false;
-        $user->partner = $request->partner ? true : false;
         $user->about = $request->about ? $request->about : null;
-        $user->partner_rate = $request->partner_rate;
 
         if ($request->ban_reason)
         {
@@ -1202,5 +863,57 @@ class UserController extends Controller
         $user->save();
 
         return redirect()->route('settings.avatar');
+    }
+
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Kullanıcı Oluştur
+     *
+     * @return array
+     */
+    public static function adminCreate(AdminCreateRequest $request)
+    {
+        $user = new User;
+        $user->name = $request->name;
+        $user->password = bcrypt($request->password);
+        $user->session_id = str_random(100);
+        $user->verified = true;
+        $user->save();
+
+        return [
+            'status' => 'ok'
+        ];
+    }
+
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Kullanıcı Listesi, Otomatik Tamamlama
+     *
+     * @return array
+     */
+    public static function adminAutocomplete()
+    {
+        $data = [];
+
+        $users = User::select('name', 'avatar')->get();
+
+        if (count($users))
+        {
+            foreach ($users as $user)
+            {
+                $data[$user->name] = $user->avatar();
+            }
+        }
+
+        return [
+            'status' => 'ok',
+            'data' => $data
+        ];
     }
 }

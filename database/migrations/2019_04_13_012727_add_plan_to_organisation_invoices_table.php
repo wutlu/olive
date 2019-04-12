@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddPartnerRateToUsersTable extends Migration
+class AddPlanToOrganisationInvoicesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddPartnerRateToUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->unsignedSmallInteger('partner_rate')->default(0);
+        Schema::table('organisation_invoices', function (Blueprint $table) {
+            $table->json('plan')->default('{}');
         });
     }
 
@@ -25,8 +25,8 @@ class AddPartnerRateToUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('partner_rate');
+        Schema::table('organisation_invoices', function (Blueprint $table) {
+            $table->dropColumn('plan');
         });
     }
 }

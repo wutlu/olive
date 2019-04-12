@@ -230,7 +230,6 @@
                     <label class="label-icon" for="string">
                         <i class="material-icons">search</i>
                     </label>
-                    <i class="material-icons">close</i>
                 </div>
             </div>
         </nav>

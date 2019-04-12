@@ -18,8 +18,9 @@ class OrganisationInvoice extends Model
 		'paid_at',
 		'serial',
 		'no',
-		'plan_id',
-		'billing_information_id'
+		'billing_information_id',
+        'plan',
+        'discount_rate',
 	];
 
 	public $incrementing = false;
@@ -31,18 +32,6 @@ class OrganisationInvoice extends Model
     public function info()
     {
         return $this->hasOne('App\Models\BillingInformation', 'id', 'billing_information_id');
-    }
-
-    # indirim kuponu
-    public function discountCoupon()
-    {
-        return $this->hasOne('App\Models\Discount\DiscountCoupon', 'invoice_id', 'invoice_id');
-    }
-
-    # plan
-    public function plan()
-    {
-        return json_decode(json_encode(config('plans')[$this->plan_id]));
     }
 
     # ücret bilgileri

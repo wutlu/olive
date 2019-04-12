@@ -8,7 +8,8 @@
             'text' => 'Hesap Bilgileri'
         ]
     ],
-    'dock' => true
+    'dock' => true,
+    'email' => 'hide'
 ])
 
 @push('local.scripts')
@@ -19,7 +20,7 @@
             $('input[name=password]').val('')
 
             M.toast({
-                html: 'Hesap Güncellendi',
+                html: 'Bilgiler Güncellendi',
                 classes: 'green darken-2'
             })
         }

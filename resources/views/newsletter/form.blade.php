@@ -98,7 +98,7 @@
                     <label for="email_list">Alıcı Listesi</label>
                     <span class="helper-text">Bültenin gönderileceği kullanıcıların e-posta adreslerini girin.</span>
                 </div>
-                <a href="#" class="btn waves-effect" data-trigger="call-users">Kayıtlı Kullanıcıları Getir</a>
+                <a href="#" class="btn teal waves-effect" data-trigger="call-users">Kayıtlı Kullanıcıları Getir</a>
             </div>
             <div class="card-action red {{ @$newsletter->status == 'process' ? '' : 'hide' }}" data-name="process">
                 <span class="white-text">

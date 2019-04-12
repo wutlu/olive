@@ -28,8 +28,6 @@ class CreateOrganisationInvoicesTable extends Migration
 
             $table->unsignedSmallInteger('tax')->default(0);
 
-            $table->json('plan');
-
             $table->timestamp('paid_at')->nullable()->default(null);
 
             $table->string('no')->nullable()->default(null);

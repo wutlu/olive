@@ -15,10 +15,10 @@
                         </a>
 
                         <p id="dword">Olive, daha anlamlı bir internet deneyimi sunar...</p>
-                        <p class="cyan-text lead">Internet artık daha net!</p>
+                        <p class="teal-text lead">Internet artık daha net!</p>
                     </div>
                     <div class="col l7 offset-l1 xl5 offset-xl3">
-                        <div class="card cyan darken-2">
+                        <div class="card teal darken-2">
                             <div class="card-content">
                                 <p class="white-text">Hemen bir hesap oluşturun ve bir çok aracı <strong>ücretsiz</strong> olarak kullanmaya başlayın.</p>
                             </div>
@@ -27,7 +27,7 @@
                                     <li class="tab">
                                         <a href="#tab-giris" class="active waves-effect waves-light">Giriş</a>
                                     </li>
-                                    @if (config('app.registration'))
+                                    @if (config('system.user.registration'))
                                         <li class="tab">
                                             <a href="#tab-kaydol" class="waves-effect waves-light">Kayıt</a>
                                         </li>
@@ -40,9 +40,9 @@
                             <div class="card-content white" id="tab-giris">
                                 <form id="login-form" data-callback="__login" action="{{ route('user.login') }}" method="post" class="json">
                                     <div class="input-field">
-                                        <input name="email_login" id="email_login" type="email" class="validate" />
-                                        <label for="email_login">E-posta</label>
-                                        <span class="helper-text">E-posta adresiniz.</span>
+                                        <input name="value_login" id="value_login" type="text" class="validate" />
+                                        <label for="value_login">E-posta veya Kullanıcı Adı</label>
+                                        <span class="helper-text">E-posta adresiniz veya kullanıcı adınız.</span>
                                     </div>
                                     <div class="input-field">
                                         <input name="password_login" id="password_login" type="password" class="validate" />
@@ -54,7 +54,8 @@
                                     </div>
                                 </form>
                             </div>
-                            @if (config('app.registration'))
+
+                            @if (config('system.user.registration'))
                                 <div class="card-content white" id="tab-kaydol" style="display: none;">
                                     <form id="register-form" data-callback="__register" action="{{ route('user.register') }}" method="put" class="json">
                                         <div class="input-field">
@@ -69,13 +70,8 @@
                                         </div>
                                         <div class="input-field">
                                             <input name="name" id="name" type="text" class="validate" />
-                                            <label for="name">Ad</label>
-                                            <span class="helper-text">Kullanıcı Adınız.</span>
-                                        </div>
-                                        <div class="input-field">
-                                            <input name="reference_code" id="reference_code" type="text" class="validate" />
-                                            <label for="reference_code">Referans Kodu</label>
-                                            <span class="helper-text">Varsa referans kodunuz.</span>
+                                            <label for="name">Kullanıcı Adı</label>
+                                            <span class="helper-text">Eşsiz kullanıcı adınız.</span>
                                         </div>
                                         <div class="input-field">
                                             <div class="captcha" data-id="register-captcha"></div>
@@ -92,12 +88,13 @@
                                     </form>
                                 </div>
                             @endif
+
                             <div class="card-content white" id="tab-sifre" style="display: none;">
                                 <form id="password-form" data-callback="__password" action="{{ route('user.password') }}" method="post" class="json">
                                     <div class="input-field">
                                         <input name="email_password" id="email_password" type="email" class="validate" />
                                         <label for="email_password">E-posta</label>
-                                        <span class="helper-text">E-posta adresiniz.</span>
+                                        <span class="helper-text">Sisteme kayıtlı e-posta adresiniz.</span>
                                     </div>
                                     <div class="input-field">
                                         <div class="captcha" data-id="password-captcha"></div>

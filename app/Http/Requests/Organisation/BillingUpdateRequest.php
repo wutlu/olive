@@ -3,7 +3,10 @@
 namespace App\Http\Requests\Organisation;
 
 use Illuminate\Foundation\Http\FormRequest;
+
 use Validator;
+
+use App\Models\Organisation\OrganisationInvoice;
 
 class BillingUpdateRequest extends FormRequest
 {
@@ -39,11 +42,11 @@ class BillingUpdateRequest extends FormRequest
         $user = auth()->user();
 
         Validator::extend('flood', function() use ($user) {
-            return @$user->organisation->lastInvoice->paid_at ? true : false;
+            return !OrganisationInvoice::where('organisation_id', $user->organisation_id)->whereNull('paid_at')->exists();
         });
 
         return [
-            'month'              => 'required|integer|min:3|max:24',
+            'month'              => 'required|integer|min:3|max:48',
 
             'type'               => 'required|string|in:individual,corporate,person',
 

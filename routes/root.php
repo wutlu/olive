@@ -22,20 +22,6 @@ Route::prefix('sistem-izleme')->group(function () {
     });
 });
 
-Route::prefix('kupon-yonetimi')->group(function () {
-    Route::get('/', 'DiscountController@adminCouponListView')->name('admin.discount.coupon.list');
-    Route::get('kupon/{id?}', 'DiscountController@adminCouponView')->name('admin.discount.coupon');
-    Route::put('kupon', 'DiscountController@adminCouponCreate');
-    Route::patch('kupon', 'DiscountController@adminCouponUpdate');
-    Route::delete('kupon', 'DiscountController@adminCouponDelete');
-
-    Route::get('indirim-gunleri', 'DiscountController@adminDayListView')->name('admin.discount.day.list');
-    Route::get('indirim-gunu/{id?}', 'DiscountController@adminDayView')->name('admin.discount.day');
-    Route::put('indirim-gunu', 'DiscountController@adminDayCreate');
-    Route::patch('indirim-gunu', 'DiscountController@adminDayUpdate');
-    Route::delete('indirim-gunu', 'DiscountController@adminDayDelete');
-});
-
 Route::prefix('vekil-sunucu-yonetimi')->group(function () {
     Route::get('/', 'ProxyController@proxies')->name('admin.proxies');
     Route::post('json', 'ProxyController@proxiesJson')->name('admin.proxies.json');
@@ -229,8 +215,10 @@ Route::prefix('destek-talepleri')->group(function () {
 Route::prefix('kullanici-yonetimi')->group(function () {
     Route::get('/', 'UserController@adminListView')->name('admin.user.list');
     Route::post('json', 'UserController@adminListViewJson')->name('admin.user.list.json');
+    Route::post('json/autocomplete', 'UserController@adminAutocomplete')->name('admin.user.autocomplete');
 
     Route::get('kullanici/{id}', 'UserController@adminView')->name('admin.user');
+    Route::post('kullanici', 'UserController@adminCreate')->name('admin.user.register');
     Route::post('kullanici/{id}', 'UserController@adminUpdate');
 
     Route::get('kullanici/{id}/bildirimler', 'UserController@adminNotifications')->name('admin.user.notifications');
@@ -238,18 +226,6 @@ Route::prefix('kullanici-yonetimi')->group(function () {
 
     Route::get('kullanici/{id}/fatura-gecmisi', 'UserController@adminInvoiceHistory')->name('admin.user.invoices');
     Route::get('kullanici/{id}/destek-talepleri', 'UserController@adminTickets')->name('admin.user.tickets');
-
-    Route::prefix('partner-sistemi')->group(function () {
-        Route::get('{id}/', 'UserController@reference')->name('admin.settings.reference');
-        Route::post('{id}/referanslar', 'UserController@references')->name('admin.settings.references');
-        Route::post('{id}/islemler', 'UserController@transactions')->name('admin.settings.transactions');
-    });
-});
-
-Route::prefix('partner-sistemi')->group(function () {
-    Route::get('/', 'UserController@adminReference')->name('admin.reference');
-    Route::post('islemler', 'UserController@adminTransactions')->name('admin.transactions');
-    Route::post('islem', 'UserController@adminTransaction')->name('admin.transaction');
 });
 
 Route::prefix('bulten')->group(function () {
@@ -270,6 +246,7 @@ Route::prefix('organizasyon-yonetimi')->group(function () {
     Route::prefix('organizasyon')->group(function () {
         Route::get('{id}', 'OrganisationController@adminView')->name('admin.organisation');
         Route::post('{id}', 'OrganisationController@adminUpdate');
+        Route::post('/', 'OrganisationController@adminCreate')->name('admin.organisation.create');
 
         Route::get('{id}/gercek-zamanli/kelime-gruplari', 'OrganisationController@keywordGroups')->name('admin.organisation.keyword_groups');
         Route::post('gercek-zamanli/kelime-gruplari/guncelle', 'OrganisationController@keywordGroupsUpdate')->name('admin.organisation.keyword_groups.update');

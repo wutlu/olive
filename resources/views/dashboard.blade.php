@@ -138,7 +138,7 @@
                     <a class="card-content card-content-image d-flex justify-content-between waves-effect" href="{{ route('settings.organisation') }}">
                         <span>
                             <span class="card-title">{{ $user->organisation->name }}</span>
-                            <p class="grey-text">{{ count($user->organisation->users) }}/{{ $user->organisation->capacity }} kullanıcı</p>
+                            <p class="grey-text">{{ count($user->organisation->users) }} / {{ $user->organisation->user_capacity }} kullanıcı</p>
                             @if ($user->id == $user->organisation->user_id)
                                 @if ($user->organisation->status)
                                     <p class="grey-text">{{ $user->organisation->days() }} gün kaldı</p>
@@ -161,21 +161,26 @@
                     </ul>
                 </div>
             @else
-                <div class="card">
+                <div class="card mb-1">
+                    <div class="card-image">
+                        <img src="{{ asset('img/md-s/21.jpg') }}" alt="Image" />
+                        <span class="card-title white-text d-flex">
+                            Teklif Alın
+                        </span>
+                    </div>
                     <div class="card-content">
-                        <span class="card-title">Başlayın</span>
-                        <p class="grey-text">Profesyonel bir ortamda tüm modüllerden faydalanabilmek için hemen bir organizasyon oluşturun.</p>
+                        <p class="grey-text">Size uygun en iyi teklifler için hemen bizimle iletişime geçin..</p>
                     </div>
                     <div class="card-action">
-                        <a href="{{ route('organisation.create.select') }}" id="start">Plan Seçin</a>
+                        <a href="{{ route('organisation.create.offer') }}" id="start">Başlayın</a>
                     </div>
                 </div>
 
-                @if (!auth()->user()->intro('welcome.create.organisation') && auth()->user()->verified)
+                @if (!auth()->user()->intro('welcome.create.organisation') && auth()->user()->verified && auth()->user()->term_version == config('system.term_version'))
                     <div class="tap-target cyan darken-4 white-text" data-target="start">
                         <div class="tap-target-content">
-                            <h5>Organizasyon Oluşturun</h5>
-                            <p>Hemen profesyonel olarak başlayın!</p>
+                            <h5>Teklif Alın</h5>
+                            <p>Olive ayrıcalıklarından faydalanarak profesyonel dünyada yerinizi almak için hemen başlayın.</p>
                         </div>
                     </div>
 
@@ -259,7 +264,7 @@
                         <i class="material-icons" data-name="icon"></i>
                         <span>
                             <p></p>
-                            <time class="timeago grey-text"></time>
+                            <time class="timeago teal-text"></time>
                         </span>
                         <i class="material-icons arrow">keyboard_arrow_down</i>
                     </div>

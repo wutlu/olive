@@ -18,8 +18,6 @@ class CreateOrganisationsTable extends Migration
 
             $table->string('name');
 
-            $table->unsignedSmallInteger('capacity')->default(1);
-
             $table->datetime('start_date');
             $table->datetime('end_date');
 
@@ -27,13 +25,6 @@ class CreateOrganisationsTable extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
 
             $table->boolean('status')->default(0);
-
-            $table->unsignedInteger('twitter_follow_limit_user')->default(10);
-            $table->unsignedInteger('twitter_follow_limit_keyword')->default(10);
-
-            $table->unsignedInteger('youtube_follow_limit_channel')->default(10);
-            $table->unsignedInteger('youtube_follow_limit_video')->default(10);
-            $table->unsignedInteger('youtube_follow_limit_keyword')->default(10);
 
             $table->timestamps();
         });

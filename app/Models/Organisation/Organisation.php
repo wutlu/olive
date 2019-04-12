@@ -30,12 +30,6 @@ class Organisation extends Model
         return $this->hasOne('App\Models\Twitter\Account', 'id', 'twitter_account_id');
     }
 
-    # son fature
-    public function lastInvoice()
-    {
-        return $this->hasOne('App\Models\Organisation\OrganisationInvoice', 'organisation_id', 'id')->orderBy('created_at', 'DESC');
-    }
-
     # faturalar
     public function invoices()
     {
@@ -90,7 +84,11 @@ class Organisation extends Model
         }
         else
         {
-            // kalan gün
+            // kalan gün negatif
+            $days = (new \DateTime())->diff(new \DateTime($this->end_date))->format('%r%a');
+            return $days <= 0 ? 0 : $days;
+
+            // kalan gün negatif olmuyor - hatalı
             return Carbon::parse($this->end_date)->diffInDays(Carbon::now());
         }
     }

@@ -99,7 +99,7 @@ class CreateAccountRequest extends FormRequest
         });
 
         Validator::extend('limit', function($attribute) use ($user) {
-            return $user->organisation->streamingUsers()->count() < $user->organisation->twitter_follow_limit_user;
+            return $user->organisation->streamingUsers()->count() < $user->organisation->data_pool_twitter_user_limit;
         });
 
         return [

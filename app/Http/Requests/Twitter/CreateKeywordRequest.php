@@ -47,7 +47,7 @@ class CreateKeywordRequest extends FormRequest
         });
 
         Validator::extend('limit', function($attribute) use ($user) {
-            return $user->organisation->streamingKeywords()->count() < $user->organisation->twitter_follow_limit_keyword;
+            return $user->organisation->streamingKeywords()->count() < $user->organisation->data_pool_twitter_keyword_limit;
         });
 
         return [

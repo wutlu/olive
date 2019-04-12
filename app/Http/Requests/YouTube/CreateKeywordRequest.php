@@ -50,7 +50,7 @@ class CreateKeywordRequest extends FormRequest
         });
 
         Validator::extend('limit', function($attribute) use ($user) {
-            return $user->organisation->youtubeFollowingKeywords()->count() < $user->organisation->youtube_follow_limit_keyword;
+            return $user->organisation->youtubeFollowingKeywords()->count() < $user->organisation->data_pool_youtube_keyword_limit;
         });
 
         return [

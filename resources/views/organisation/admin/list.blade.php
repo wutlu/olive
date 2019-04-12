@@ -27,7 +27,7 @@
                         item.removeClass('model hide').addClass('_tmp d-flex').attr('data-id', o.id)
 
                         item.find('[data-name=name]').html(o.name)
-                        item.find('[data-name=status]').html(o.status ? 'Ödeme Alındı!' : 'Ödeme Alınmadı!').addClass(o.status ? 'green-text' : 'red-text')
+                        item.find('[data-name=status]').html(o.status ? 'Pasif' : 'Aktif').addClass(o.status ? 'green-text' : 'red-text')
                         item.find('[data-name=author]').html(o.author.name)
                         item.find('[data-name=avatar]').attr('src', o.author.avatar ? '{{ asset('/') }}' + o.author.avatar : '{{ asset('img/icons/people.png') }}')
 
@@ -38,11 +38,108 @@
             $('[data-name=count]').html(obj.total)
         }
     }
+
+    function __autocomplete(__, obj)
+    {
+        if (obj.status == 'ok')
+        {
+            var mdl = modal({
+                'id': 'organisation',
+                'title': 'Organizasyon Oluştur',
+                'body': $('<form />', {
+                    'data-callback': '__create',
+
+                    'action': '{{ route('admin.organisation.create') }}',
+                    'method': 'post',
+                    'id': 'organisation-form',
+                    'class': 'json',
+                    'html': [
+                        $('<div />', {
+                            'class': 'input-field',
+                            'html': [
+                                $('<input />', {
+                                    'id': 'user_name',
+                                    'name': 'user_name',
+                                    'type': 'text',
+                                    'class': 'validate autocomplete'
+                                }),
+                                $('<label />', {
+                                    'for': 'user_name',
+                                    'html': 'Kullanıcı Adı'
+                                }),
+                                $('<span />', {
+                                    'class': 'helper-text',
+                                    'html': 'Tanımlanacak kullanıcının kullanıcı adını girin.'
+                                })
+                            ]
+                        }),
+                        $('<div />', {
+                            'class': 'input-field',
+                            'html': [
+                                $('<input />', {
+                                    'id': 'organisation_name',
+                                    'name': 'organisation_name',
+                                    'type': 'text',
+                                    'class': 'validate',
+                                    'data-length': 32
+                                }),
+                                $('<label />', {
+                                    'for': 'organisation_name',
+                                    'html': 'Organizasyon Adı'
+                                }),
+                                $('<span />', {
+                                    'class': 'helper-text',
+                                    'html': 'Organizasyonun adını girin.'
+                                })
+                            ]
+                        })
+                    ]
+                }),
+                'size': 'modal-medium',
+                'options': {
+                    dismissible: false
+                },
+                'footer': [
+                   $('<a />', {
+                       'href': '#',
+                       'class': 'modal-close waves-effect btn-flat grey-text',
+                       'html': buttons.cancel
+                   }),
+                   $('<span />', {
+                       'html': ' '
+                   }),
+                   $('<button />', {
+                       'type': 'submit',
+                       'class': 'waves-effect btn-flat',
+                       'data-submit': 'form#organisation-form',
+                       'html': buttons.ok
+                   })
+                ]
+            })
+
+            $('input[name=user_name]').autocomplete({
+                data: obj.data,
+                limit: 2
+            })
+
+            return mdl;
+        }
+    }
+
+    function __create(__, obj)
+    {
+        if (obj.status == 'ok')
+        {
+            $('#modal-organisation').modal('close')
+
+            window.location = obj.data.route
+        }
+    }
 @endpush
 
 @section('content')
-    <div class="row">
-        <div class="col m4 offset-m8 s6 offset-s6 l2 offset-l10">
+    <div class="card with-bg">
+        <div class="card-content d-flex justify-content-end">
             <div class="input-field">
                 <select name="status" id="status" class="json json-search" data-json-target="#organisations">
                     <option value="" selected>Tümü</option>
@@ -51,12 +148,24 @@
                 </select>
             </div>
         </div>
-    </div>
-    <div class="card with-bg">
-        <div class="card-content">
-            <span class="card-title">Organizasyonlar</span>
-            <span data-name="count" class="grey-text text-darken-2">0</span>
+
+        <div class="card-image mb-1">
+            <img src="{{ asset('img/md-s/21.jpg') }}" alt="Image" />
+            <span class="card-title white-text d-flex">
+                <i class="material-icons align-self-center mr-1">people</i>
+                Organizasyonlar
+                (<span data-name="count">0</span>)
+            </span>
+            <a
+                href="#"
+                class="btn-floating btn-large halfway-fab waves-effect white json"
+                data-method="post"
+                data-href="{{ route('admin.user.autocomplete') }}"
+                data-callback="__autocomplete">
+                <i class="material-icons grey-text text-darken-2">add</i>
+            </a>
         </div>
+
         <nav class="nav-half">
             <div class="nav-wrapper">
                 <div class="input-field">
@@ -69,7 +178,6 @@
                     <label class="label-icon" for="string">
                         <i class="material-icons">search</i>
                     </label>
-                    <i class="material-icons">close</i>
                 </div>
             </div>
         </nav>

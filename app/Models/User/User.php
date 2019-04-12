@@ -21,8 +21,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'term_version',
-        'reference_code',
+        'term_version'
     ];
 
     /**
@@ -36,8 +35,7 @@ class User extends Authenticatable
         'session_id',
         'organisation_id',
         'root',
-        'moderator',
-        'partner'
+        'moderator'
     ];
 
     /**
@@ -129,12 +127,6 @@ class User extends Authenticatable
         return $this->hasOne('App\Models\Organisation\Organisation', 'id', 'organisation_id');
     }
 
-    # referans
-    public function reference()
-    {
-        return $this->hasOne('App\Models\User\User', 'id', 'reference_id');
-    }
-
     # ödeme bilgileri
     public function billingInformations()
     {
@@ -151,12 +143,6 @@ class User extends Authenticatable
     public function tickets(int $pager = 5)
     {
         return $this->hasMany('App\Models\Ticket', 'user_id', 'id')->whereNull('ticket_id')->orderBy('updated_at', 'DESC')->paginate($pager);
-    }
-
-    # maddi işlem geçmişi
-    public function transactions()
-    {
-        return $this->hasMany('App\Models\User\Transaction', 'user_id', 'id');
     }
 
     # intro
@@ -179,6 +165,12 @@ class User extends Authenticatable
         ])->exists();
     }
 
+    # notifications
+    public function notifications()
+    {
+        return $this->hasMany('App\Models\User\UserNotification', 'user_id', 'id');
+    }
+
     public function root()
     {
         return $this->root;
@@ -189,8 +181,8 @@ class User extends Authenticatable
         return $this->moderator;
     }
 
-    public function balance()
+    public function getEmailAttribute($value)
     {
-        return $this->transactions->whereNotIn('withdraw', [ 'failed' ])->sum('price');
+        return $value ? $value : 'anonymous@veri.zone';
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddReferenceToUsersTable extends Migration
+class AddNullableToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,10 +14,7 @@ class AddReferenceToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('reference_code')->nullable()->default(null)->unique();
-
-            $table->unsignedInteger('reference_id')->nullable()->default(null)->index();
-            $table->foreign('reference_id')->references('id')->on('users')->onDelete('SET NULL')->onUpdate('cascade');
+            $table->string('email')->nullable()->change();
         });
     }
 
@@ -29,8 +26,7 @@ class AddReferenceToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('reference_code');
-            $table->dropColumn('reference_id');
+            $table->string('email')->nullable(false)->change();
         });
     }
 }

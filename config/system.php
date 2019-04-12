@@ -4,7 +4,7 @@ return [
     /**
      * Sistem Versiyonu
      */
-    'version' => '1.4.68-alpha',
+    'version' => '1.5.0-alpha',
 
     /**
      * db
@@ -35,6 +35,7 @@ return [
             'diger' => 'Diğer Konular',
             'odeme-bildirimi' => 'Ödeme Bildirimi',
             'hak-sahipligi' => 'Hak Sahipliği',
+            'organisayon-teklifi' => 'Organizasyon Teklifi',
         ]
     ],
 
@@ -179,11 +180,13 @@ return [
                 'image_src' => 'img/icons/badges/nostalgie_5.png',
                 'description' => '5 yılınızı doldurun.'
             ],
+            /*
             11 => [
                 'name' => 'Partner',
                 'image_src' => 'img/icons/badges/partner.png',
                 'description' => 'Partner sistemine dahil olun.'
             ],
+            */
 
             /* ... */
 
@@ -205,11 +208,11 @@ return [
         ],
 
         /**
-         * Referans ile Üyelik
+         * Üyelik
          *
-         * @return required|nullable
+         * @return boolean
          */
-        'referential' => env('REFERENTIAL_REGISTRATION', 'required')
+        'registration' => env('REGISTRATION', true)
     ],
 
     /**
@@ -290,6 +293,7 @@ return [
                 'root' => true,
                 'icon' => 'hourglass_empty'
             ],
+            /*
             10 => [
                 'name' => 'Kupon Yönetimi',
                 'route' => 'admin.discount.coupon.list',
@@ -302,6 +306,7 @@ return [
                 'root' => true,
                 'icon' => 'card_giftcard'
             ],
+            */
             12 => [
                 'name' => 'Vekil Sunucu Yönetimi',
                 'route' => 'admin.proxies',

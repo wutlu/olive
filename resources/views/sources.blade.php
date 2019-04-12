@@ -17,7 +17,7 @@
             </div>
 
             <div class="container">
-                <div class="card cyan darken-2">
+                <div class="card teal darken-2">
                     <div class="card-content">
                         <span class="card-title white-text">Kaynaklar</span>
                         <p class="white-text">- Tüm kaynaklar açık kaynak olup, yasal olarak kaynak belirtilerek kullanılmaktadır.</p>
@@ -45,7 +45,7 @@
                         @forelse ($media as $key => $m)
                             <a href="{{ $m->site }}" target="_blank" class="collection-item d-flex justify-content-end">
                                 <span class="mr-auto">{{ ($key+1).' - '.$m->name }}</span>
-                                <span class="badge cyan white-text">{{ $m->id }}</span> 
+                                <span class="badge teal white-text">{{ $m->id }}</span> 
 
                                 @if ($m->status)
                                     <span class="badge green white-text">Aktif</span>
@@ -61,7 +61,7 @@
                         @forelse ($shopping as $key => $s)
                             <a href="{{ $s->site }}" target="_blank" class="collection-item d-flex justify-content-end">
                                 <span class="mr-auto">{{ ($key+1).' - '.$s->name }}</span>
-                                <span class="badge cyan white-text">{{ $s->id }}</span> 
+                                <span class="badge teal white-text">{{ $s->id }}</span> 
 
                                 @if ($s->status)
                                     <span class="badge green white-text">Aktif</span>
@@ -113,7 +113,7 @@
                         @forelse ($sozluk as $s)
                             <a href="{{ $s->site }}" target="_blank" class="collection-item d-flex justify-content-end">
                                 <span class="mr-auto">{{ $s->name }}</span>
-                                <span class="badge cyan white-text">{{ $s->id }}</span> 
+                                <span class="badge teal white-text">{{ $s->id }}</span> 
 
                                 @if ($s->status)
                                     <span class="badge green white-text">Aktif</span>

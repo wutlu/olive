@@ -3,7 +3,7 @@
         Organizasyon Bilgileri
     </a>
     <a href="{{ route('admin.organisation.invoices', $id) }}" class="collection-item waves-effect {{ $active == 'invoices' ? 'active' : '' }}">
-        Fatura Geçmişi <span class="badge cyan white-text">{{ $organisation->invoices()->count() }}</span>
+        Fatura Geçmişi <span class="badge teal white-text">{{ $organisation->invoices()->count() }}</span>
     </a>
     <div class="divider"></div>
 

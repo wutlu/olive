@@ -12,7 +12,8 @@ return [
         'login' => 'Giriş',
         'remove' => 'Sil',
         'verification' => 'Doğrulama',
-        'iagree' => 'Kabul Ediyorum'
+        'iagree' => 'Kabul Ediyorum',
+        'go' => 'Git'
     ],
     'errors' => [
         'disconnected' => 'Sunucu bağlantısı sağlanamadı.',
