@@ -76,6 +76,7 @@ Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {
 
         Route::get('bot/{id?}', 'ShoppingController@view')->name('crawlers.shopping.bot');
         Route::post('bot/{id}/istatistik', 'ShoppingController@statistics')->name('crawlers.shopping.bot.statistics');
+        Route::post('bot/{id}/temizle', 'ShoppingController@clear')->name('crawlers.shopping.bot.clear');
         Route::post('bot/durum', 'ShoppingController@status')->name('crawlers.shopping.bot.status');
         Route::patch('bot', 'ShoppingController@update');
         Route::delete('bot', 'ShoppingController@delete');
@@ -84,6 +85,7 @@ Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {
         Route::post('genel/baslat', 'ShoppingController@allStart')->name('crawlers.shopping.bot.start.all');
         Route::post('genel/durdur', 'ShoppingController@allStop')->name('crawlers.shopping.bot.stop.all');
         Route::post('genel/index-olustur', 'ShoppingController@allIndex')->name('crawlers.shopping.bot.index.all');
+        Route::post('genel/temizle', 'ShoppingController@allClear')->name('crawlers.shopping.bot.clear.all');
     });
 
     # 
@@ -163,6 +165,7 @@ Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {
 
         Route::get('bot/{id?}', 'MediaController@view')->name('crawlers.media.bot');
         Route::post('bot/{id}/istatistik', 'MediaController@statistics')->name('crawlers.media.bot.statistics');
+        Route::post('bot/{id}/temizle', 'MediaController@clear')->name('crawlers.media.bot.clear');
         Route::post('bot/durum', 'MediaController@status')->name('crawlers.media.bot.status');
         Route::patch('bot', 'MediaController@update');
         Route::delete('bot', 'MediaController@delete');
@@ -170,6 +173,7 @@ Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {
         Route::post('genel/istatistik', 'MediaController@allStatistics')->name('crawlers.media.bot.statistics.all');
         Route::post('genel/baslat', 'MediaController@allStart')->name('crawlers.media.bot.start.all');
         Route::post('genel/durdur', 'MediaController@allStop')->name('crawlers.media.bot.stop.all');
+        Route::post('genel/temizle', 'MediaController@allClear')->name('crawlers.media.bot.clear.all');
 
         Route::get('index-yonetimi', 'MediaController@indices')->name('crawlers.media.indices');
         Route::post('index-yonetimi/json', 'MediaController@indicesJson')->name('crawlers.media.indices.json');

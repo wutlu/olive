@@ -124,6 +124,15 @@
                 data-href="{{ route('crawlers.shopping.bot.stop.all') }}"
                 data-callback="__stop_all">Aktif Botları Durdur</a>
         </li>
+        <li>
+            <a
+                href="#"
+                class="waves-effect"
+                data-message="Başarısız içerikler silinecek?"
+                data-trigger="trigger"
+                data-href="{{ route('crawlers.shopping.bot.clear.all') }}"
+                data-callback="__clear_all">Başarısız İçerikleri Temizle</a>
+        </li>
     </ul>
 @endsection
 
@@ -211,31 +220,31 @@
     $(document).on('click', '[data-trigger=trigger]', function() {
         var __ = $(this);
 
-        var mdl = modal({
-                'id': 'trigger',
-                'body': __.data('message'),
-                'size': 'modal-small',
-                'title': 'Uyarı',
-                'options': {},
-                'footer': [
-                    $('<a />', {
-                        'href': '#',
-                        'class': 'modal-close waves-effect btn-flat grey-text',
-                        'html': buttons.cancel
-                    }),
-                    $('<span />', {
-                        'html': ' '
-                    }),
-                    $('<a />', {
-                        'href': '#',
-                        'class': 'waves-effect btn-flat json',
-                        'html': buttons.ok,
-                        'data-href': __.data('href'),
-                        'data-method': 'post',
-                        'data-callback': __.data('callback')
-                    })
-                ]
-            });
+        return modal({
+            'id': 'trigger',
+            'body': __.data('message'),
+            'size': 'modal-small',
+            'title': 'Uyarı',
+            'options': {},
+            'footer': [
+                $('<a />', {
+                    'href': '#',
+                    'class': 'modal-close waves-effect btn-flat grey-text',
+                    'html': buttons.cancel
+                }),
+                $('<span />', {
+                    'html': ' '
+                }),
+                $('<a />', {
+                    'href': '#',
+                    'class': 'waves-effect btn-flat json',
+                    'html': buttons.ok,
+                    'data-href': __.data('href'),
+                    'data-method': 'post',
+                    'data-callback': __.data('callback')
+                })
+            ]
+        })
     })
 
     function __create_all_index(__, obj)
@@ -253,6 +262,16 @@
         if (obj.status == 'ok')
         {
             M.toast({ html: 'Aktif tüm botlar durduruldu.', classes: 'green darken-2' })
+
+            $('#modal-trigger').modal('close')
+        } 
+    }
+
+    function __clear_all(__, obj)
+    {
+        if (obj.status == 'ok')
+        {
+            M.toast({ html: 'Tüm başarısız içerikler silinmek üzere planlandı.', classes: 'green darken-2' })
 
             $('#modal-trigger').modal('close')
         } 

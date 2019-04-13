@@ -45,32 +45,32 @@
     }
 
     $(document).on('click', '[data-trigger=status]', function() {
-        var mdl = modal({
-                'id': 'status',
-                'body': 'Bot durumunu değiştirmek istediğinizden emin misiniz?',
-                'size': 'modal-small',
-                'title': 'Durum',
-                'options': {},
-                'footer': [
-                    $('<a />', {
-                        'href': '#',
-                        'class': 'modal-close waves-effect btn-flat grey-text',
-                        'html': buttons.cancel
-                    }),
-                    $('<span />', {
-                        'html': ' '
-                    }),
-                    $('<a />', {
-                        'href': '#',
-                        'class': 'waves-effect btn-flat json',
-                        'html': buttons.ok,
-                        'data-href': '{{ route('crawlers.shopping.bot.status') }}',
-                        'data-id': '{{ $crawler->id }}',
-                        'data-method': 'post',
-                        'data-callback': '__status'
-                    })
-                ]
-            });
+        return modal({
+            'id': 'status',
+            'body': 'Bot durumunu değiştirmek istediğinizden emin misiniz?',
+            'size': 'modal-small',
+            'title': 'Durum',
+            'options': {},
+            'footer': [
+                $('<a />', {
+                    'href': '#',
+                    'class': 'modal-close waves-effect btn-flat grey-text',
+                    'html': buttons.cancel
+                }),
+                $('<span />', {
+                    'html': ' '
+                }),
+                $('<a />', {
+                    'href': '#',
+                    'class': 'waves-effect btn-flat json',
+                    'html': buttons.ok,
+                    'data-href': '{{ route('crawlers.shopping.bot.status') }}',
+                    'data-id': '{{ $crawler->id }}',
+                    'data-method': 'post',
+                    'data-callback': '__status'
+                })
+            ]
+        })
     })
 
     var statTimer;
@@ -116,6 +116,46 @@
     {
         $('[data-elasticsearch]').html('ES Bağlantı Hatası')
     }
+
+    function __clear(__, obj)
+    {
+        if (obj.status == 'ok')
+        {
+            M.toast({ html: 'Tüm başarısız içerikler silinmek üzere planlandı.', classes: 'green darken-2' })
+
+            $('#modal-trigger').modal('close')
+        } 
+    }
+
+    $(document).on('click', '[data-trigger=trigger]', function() {
+        var __ = $(this);
+
+        return modal({
+            'id': 'trigger',
+            'body': __.data('message'),
+            'size': 'modal-small',
+            'title': 'Uyarı',
+            'options': {},
+            'footer': [
+                $('<a />', {
+                    'href': '#',
+                    'class': 'modal-close waves-effect btn-flat grey-text',
+                    'html': buttons.cancel
+                }),
+                $('<span />', {
+                    'html': ' '
+                }),
+                $('<a />', {
+                    'href': '#',
+                    'class': 'waves-effect btn-flat json',
+                    'html': buttons.ok,
+                    'data-href': __.data('href'),
+                    'data-method': 'post',
+                    'data-callback': __.data('callback')
+                })
+            ]
+        });
+    })
 @endpush
 
 @section('content')
@@ -162,7 +202,11 @@
                 </div>
 
                 <div class="item">
-                    <small class="grey-text">KUYRUK / BAŞARILI / BAŞARISIZ</small>
+                    <small class="grey-text">KUYRUK / BAŞARILI / <a href="#"
+                                                                    data-message="Başarısız içerikler silinecek?"
+                                                                    data-trigger="trigger"
+                                                                    data-href="{{ route('crawlers.shopping.bot.clear', $crawler->id) }}"
+                                                                    data-callback="__clear">BAŞARISIZ</a></small>
                     <div class="d-flex">
                         <span data-elasticsearch data-name="total-docs-buffer">-</span>
                         <span> / </span>
@@ -357,32 +401,32 @@
 
 @push('local.scripts')
     $(document).on('click', '[data-trigger=delete]', function() {
-        var mdl = modal({
-                'id': 'status',
-                'body': 'Bot silinecek?',
-                'size': 'modal-small',
-                'title': 'Sil',
-                'options': {},
-                'footer': [
-                    $('<a />', {
-                        'href': '#',
-                        'class': 'modal-close waves-effect btn-flat grey-text',
-                        'html': buttons.cancel
-                    }),
-                    $('<span />', {
-                        'html': ' '
-                    }),
-                    $('<a />', {
-                        'href': '#',
-                        'class': 'waves-effect btn-flat red-text json',
-                        'html': buttons.ok,
-                        'data-href': '{{ route('crawlers.shopping.bot') }}',
-                        'data-id': '{{ $crawler->id }}',
-                        'data-method': 'delete',
-                        'data-callback': '__delete'
-                    })
-                ]
-            });
+        return modal({
+            'id': 'status',
+            'body': 'Bot silinecek?',
+            'size': 'modal-small',
+            'title': 'Sil',
+            'options': {},
+            'footer': [
+                $('<a />', {
+                    'href': '#',
+                    'class': 'modal-close waves-effect btn-flat grey-text',
+                    'html': buttons.cancel
+                }),
+                $('<span />', {
+                    'html': ' '
+                }),
+                $('<a />', {
+                    'href': '#',
+                    'class': 'waves-effect btn-flat red-text json',
+                    'html': buttons.ok,
+                    'data-href': '{{ route('crawlers.shopping.bot') }}',
+                    'data-id': '{{ $crawler->id }}',
+                    'data-method': 'delete',
+                    'data-callback': '__delete'
+                })
+            ]
+        })
     })
 
     function __delete(__, obj)

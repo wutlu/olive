@@ -22,6 +22,8 @@ use App\Utilities\Crawler;
 use App\Elasticsearch\Indices;
 use App\Elasticsearch\Document;
 
+use App\Jobs\Elasticsearch\DeleteDocumentJob;
+
 class ShoppingController extends Controller
 {
     /**
@@ -155,6 +157,61 @@ class ShoppingController extends Controller
     public static function allStop()
     {
         $crawlers = ShoppingCrawler::where('status', true)->update([ 'status' => false ]);
+
+        return [
+            'status' => 'ok'
+        ];
+    }
+
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Alışveriş Modülü, başarısız içerikleri silme tetikleyicisi.
+     *
+     * @return array
+     */
+    public static function allClear()
+    {
+        DeleteDocumentJob::dispatch([ 'shopping', '*' ], 'product', [
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [ 'match' => [ 'status' => 'failed' ] ]
+                    ]
+                ]
+            ]
+        ])->onQueue('elasticsearch');
+
+        return [
+            'status' => 'ok'
+        ];
+    }
+
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Alışveriş Modülü, başarısız içerikleri silme tetikleyicisi.
+     *
+     * @return array
+     */
+    public static function clear(int $id)
+    {
+        $bot = ShoppingCrawler::where('id', $id)->firstOrFail();
+
+        DeleteDocumentJob::dispatch([ 'shopping', $bot->id ], 'product', [
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [ 'match' => [ 'status' => 'failed' ] ],
+                        [ 'match' => [ 'site_id' => $bot->id ] ]
+                    ]
+                ]
+            ]
+        ])->onQueue('elasticsearch');
 
         return [
             'status' => 'ok'

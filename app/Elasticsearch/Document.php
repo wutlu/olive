@@ -103,43 +103,6 @@ class Document
     }
 
     /**
-     * Birden fazla query ile döküman listele
-     *
-     * @return object
-     */
-    public static function listByMultiQuery(array $query)
-    {
-        $client = ClientBuilder::fromConfig([
-            'hosts' => config('database.connections.elasticsearch.node.ips'),
-            'retries' => 5
-        ]);
-
-        try
-        {
-            return (object) [
-                'status' => 'ok',
-                'data' => $client->msearch([
-                    'body' => $query
-                ])
-            ];
-        }
-        catch (\Exception $e)
-        {
-            System::log(
-                json_encode(
-                    $e->getMessage()
-                ),
-                'App\Elasticsearch\Document::listByMultiQuery('.json_encode($query).')'
-            );
-
-            return (object) [
-                'status' => 'err',
-                'message' => $e->getMessage()
-            ];
-        }
-    }
-
-    /**
      * Toplu İş Girişi
      *
      * @return object
