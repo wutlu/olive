@@ -100,6 +100,8 @@ class SearchController extends Controller
 
         $modules = [];
 
+        $organisation = auth()->user()->organisation;
+
         foreach ($request->modules as $module)
         {
             switch ($module)
@@ -645,16 +647,48 @@ class SearchController extends Controller
 
         $modules = [];
 
+        $organisation = auth()->user()->organisation;
+
         foreach ($request->modules as $module)
         {
             switch ($module)
             {
-                case 'twitter'        : $modules[] = 'tweet';   break;
-                case 'sozluk'         : $modules[] = 'entry';   break;
-                case 'news'           : $modules[] = 'article'; break;
-                case 'youtube_video'  : $modules[] = 'video';   break;
-                case 'youtube_comment': $modules[] = 'comment'; break;
-                case 'shopping'       : $modules[] = 'product'; break;
+                case 'twitter':
+                    if ($organisation->data_twitter)
+                    {
+                        $modules[] = 'tweet';
+                    }
+                break;
+                case 'sozluk':
+                    if ($organisation->data_sozluk)
+                    {
+                        $modules[] = 'entry';
+                    }
+                break;
+                case 'news':
+                    if ($organisation->data_news)
+                    {
+                        $modules[] = 'article';
+                    }
+                break;
+                case 'youtube_video':
+                    if ($organisation->data_youtube_video)
+                    {
+                        $modules[] = 'video';
+                    }
+                break;
+                case 'youtube_comment':
+                    if ($organisation->data_youtube_comment)
+                    {
+                        $modules[] = 'comment';
+                    }
+                break;
+                case 'shopping':
+                    if ($organisation->data_shopping)
+                    {
+                        $modules[] = 'product';
+                    }
+                break;
             }
         }
 
