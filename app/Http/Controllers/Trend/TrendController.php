@@ -33,6 +33,13 @@ class TrendController extends Controller
 
         ### [ 10 işlemden sonra 1 dakika ile sınırla ] ###
         $this->middleware('throttle:10,1')->only('archiveSave');
+
+        $this->middleware('organisation:have,module_trend')->only([
+            'liveRedis',
+            'archive',
+            'archiveListJson',
+            'archiveSave',
+        ]);
     }
 
     /**

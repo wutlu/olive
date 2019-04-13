@@ -148,7 +148,7 @@
             <span class="card-title">Gerçek Zamanlı</span>
         </div>
         <ul class="collection">
-            <li class="collection-item model hide">test</li>
+            <li class="collection-item model hide"></li>
             <li class="collection-item">
                 <p class="d-flex">
                     <i class="material-icons realtime">navigate_next</i>
@@ -457,20 +457,22 @@
                         'class': 'collection',
                         'html': [
                         @foreach (config('system.modules') as $key => $module)
-                            $('<label />', {
-                                'class': 'collection-item waves-effect d-block',
-                                'html': [
-                                    $('<input />', {
-                                        'name': 'modules',
-                                        'value': '{{ $key }}',
-                                        'type': 'checkbox',
-                                        'data-multiple': 'true',
-                                    }),
-                                    $('<span />', {
-                                        'html': '{{ title_case($module) }} Verilerini Dahil Et'
-                                    })
-                                ]
-                            }),
+                            @if ($organisation->{'data_'.$key})
+                                $('<label />', {
+                                    'class': 'collection-item waves-effect d-block',
+                                    'html': [
+                                        $('<input />', {
+                                            'name': 'modules',
+                                            'value': '{{ $key }}',
+                                            'type': 'checkbox',
+                                            'data-multiple': 'true',
+                                        }),
+                                        $('<span />', {
+                                            'html': '{{ title_case($module) }} Verilerini Dahil Et'
+                                        })
+                                    ]
+                                }),
+                            @endif
                         @endforeach
                         ]
                     })

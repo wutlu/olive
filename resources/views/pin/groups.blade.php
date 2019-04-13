@@ -32,6 +32,8 @@
                 })
             }
         }
+
+        $('[data-name=group-count]').html(obj.hits.length + ' / {{ auth()->user()->organisation->pin_group_limit }}')
     }
 
     function pin_group_modal()
@@ -215,8 +217,8 @@
             </a>
         </div>
         <div class="card-content">
-            <p class="grey-text text-darken-2">Araştırmalarınız sonucu elde ettiğiniz ham verileri pinleme gruplarında saklayabilirsiniz.</p>
-            <p class="grey-text text-darken-2">Ayrıca pinlediğiniz verileri PDF halinde rapor alabilirsiniz.</p>
+            <span class="d-block grey-text text-darken-2" data-name="group-count"></span>
+            <p class="grey-text text-darken-2">İlgilendiğiniz içerikleri pinleyerek daha sonra kullanmak üzere saklayabilirsiniz.</p>
         </div>
         <nav class="nav-half">
             <div class="nav-wrapper">

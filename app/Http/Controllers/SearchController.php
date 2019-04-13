@@ -11,10 +11,6 @@ use App\Elasticsearch\Document;
 
 use Term;
 
-use Carbon\Carbon;
-
-use App\Models\Pin\Group as PinGroup;
-
 use App\Models\Crawlers\MediaCrawler;
 use App\Models\Crawlers\ShoppingCrawler;
 
@@ -35,7 +31,10 @@ class SearchController extends Controller
         $this->middleware([ 'auth', 'organisation:have' ]);
 
         ### [ zorunlu aktif organizasyon ] ###
-        $this->middleware('can:organisation-status')->only([
+        $this->middleware([
+            'can:organisation-status',
+            'organisation:have,module_search'
+        ])->only([
             'search',
             'aggregation'
         ]);
@@ -105,12 +104,42 @@ class SearchController extends Controller
         {
             switch ($module)
             {
-                case 'twitter'        : $modules[] = 'tweet';   break;
-                case 'sozluk'         : $modules[] = 'entry';   break;
-                case 'news'           : $modules[] = 'article'; break;
-                case 'youtube_video'  : $modules[] = 'video';   break;
-                case 'youtube_comment': $modules[] = 'comment'; break;
-                case 'shopping'       : $modules[] = 'product'; break;
+                case 'twitter':
+                    if ($organisation->data_twitter)
+                    {
+                        $modules[] = 'tweet';
+                    }
+                break;
+                case 'sozluk':
+                    if ($organisation->data_sozluk)
+                    {
+                        $modules[] = 'entry';
+                    }
+                break;
+                case 'news':
+                    if ($organisation->data_news)
+                    {
+                        $modules[] = 'article';
+                    }
+                break;
+                case 'youtube_video':
+                    if ($organisation->data_youtube_video)
+                    {
+                        $modules[] = 'video';
+                    }
+                break;
+                case 'youtube_comment':
+                    if ($organisation->data_youtube_comment)
+                    {
+                        $modules[] = 'comment';
+                    }
+                break;
+                case 'shopping':
+                    if ($organisation->data_shopping)
+                    {
+                        $modules[] = 'product';
+                    }
+                break;
             }
         }
 
@@ -516,9 +545,11 @@ class SearchController extends Controller
         $s = $request->s;
         $e = $request->e;
 
+        $organisation = auth()->user()->organisation;
+
         $trends = json_decode(RedisCache::get(implode(':', [ config('system.db.alias'), 'trends', 'twitter' ])));
 
-        return view('search', compact('q', 's', 'e', 'trends'));
+        return view('search', compact('q', 's', 'e', 'trends', 'organisation'));
     }
 
     /**

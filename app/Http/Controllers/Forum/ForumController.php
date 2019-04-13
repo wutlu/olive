@@ -73,7 +73,10 @@ class ForumController extends Controller
          *
          * - E-posta Doğrulaması
          */
-        $this->middleware('verification.email')->only([
+        $this->middleware([
+            'verification.email',
+            'organisation:have,module_forum'
+        ])->only([
             'replySave',
             'replyGet',
             'replyUpdate',

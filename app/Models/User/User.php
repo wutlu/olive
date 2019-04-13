@@ -159,10 +159,10 @@ class User extends Authenticatable
     # - user_id ve key için kayıt varsa bildirim alınacak.
     public function notification(string $key)
     {
-        return UserNotification::where([
+        return $this->verified ? UserNotification::where([
             'user_id' => $this->id,
             'key' => $key
-        ])->exists();
+        ])->exists() : false;
     }
 
     # notifications

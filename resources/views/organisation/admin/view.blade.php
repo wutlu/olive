@@ -81,6 +81,27 @@
                 <div class="d-flex flex-wrap">
                     <div class="collection d-flex flex-column">
                         <div class="collection-header">
+                            <h6>Modüller</h6>
+                        </div>
+
+                        @foreach ([
+                            'module_real_time' => 'Gerçek Zamanlı',
+                            'module_search' => 'Arama',
+                            'module_trend' => 'Trend',
+                            'module_alarm' => 'Alarm',
+                            'module_pin' => 'Pin',
+                            'module_model' => 'Model',
+                            'module_forum' => 'Forum',
+                        ] as $key => $module)
+                            <label class="collection-item">
+                                <input name="{{ $key }}" id="{{ $key }}" value="on" type="checkbox" {{ $organisation->{$key} ? 'checked' : '' }} />
+                                <span>{{ $module }}</span>
+                            </label>
+                        @endforeach
+                    </div>
+
+                    <div class="collection d-flex flex-column">
+                        <div class="collection-header">
                             <h6>Veri Kaynakları</h6>
                         </div>
 
@@ -91,7 +112,8 @@
                             </label>
                         @endforeach
                     </div>
-                    <div class="collection d-flex flex-column">
+
+                    <div class="collection d-flex flex-column" style="width: 164px;">
                         <div class="collection-header">
                             <h6>Limitler</h6>
                         </div>
@@ -102,10 +124,6 @@
                         <div class="collection-item input-field">
                             <input name="real_time_group_limit" id="real_time_group_limit" max="12" min="1" value="{{ $organisation->real_time_group_limit }}" type="number" class="validate" />
                             <small class="helper-text">Gerçek Zamanlı Kelime Grubu</small>
-                        </div>
-                        <div class="collection-item input-field">
-                            <input name="search_limit" id="search_limit" max="1000" min="20" value="{{ $organisation->search_limit }}" type="number" class="validate" />
-                            <small class="helper-text">Arama (Günlük)</small>
                         </div>
                         <div class="collection-item input-field">
                             <input name="alarm_limit" id="alarm_limit" max="12" min="1" value="{{ $organisation->alarm_limit }}" type="number" class="validate" />
@@ -120,7 +138,8 @@
                             <small class="helper-text">Geriye Dönük Arama (Gün)</small>
                         </div>
                     </div>
-                    <div class="collection d-flex flex-column">
+
+                    <div class="collection d-flex flex-column" style="width: 164px;">
                         <div class="collection-header">
                             <h6>Veri Havuzu</h6>
                         </div>

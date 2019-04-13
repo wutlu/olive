@@ -753,46 +753,56 @@
                 data-focus="input[name=start_date]"
                 data-input-value="{{ date('Y-m-d') }}"
                 data-value="{{ date('Y-m-d') }}">Bugün</a>
-            <a
-                href="#"
-                data-update-click
-                class="collection-item waves-effect"
-                data-input="input[name=end_date]"
-                data-focus="input[name=start_date]"
-                data-input-value="{{ date('Y-m-d', strtotime('-1 day')) }}"
-                data-value="{{ date('Y-m-d', strtotime('-1 day')) }}">Dün</a>
-            <a
-                href="#"
-                data-update-click
-                class="collection-item waves-effect"
-                data-input="input[name=end_date]"
-                data-focus="input[name=start_date]"
-                data-input-value="{{ date('Y-m-d') }}"
-                data-value="{{ date('Y-m-d', strtotime('-1 day')) }}">Son 2 Gün</a>
-            <a
-                href="#"
-                data-update-click
-                class="collection-item waves-effect"
-                data-input="input[name=end_date]"
-                data-focus="input[name=start_date]"
-                data-input-value="{{ date('Y-m-d') }}"
-                data-value="{{ date('Y-m-d', strtotime('-7 day')) }}">Son 7 Gün</a>
-            <a
-                href="#"
-                data-update-click
-                class="collection-item waves-effect"
-                data-input="input[name=end_date]"
-                data-focus="input[name=start_date]"
-                data-input-value="{{ date('Y-m-d') }}"
-                data-value="{{ date('Y-m-d', strtotime('-30 day')) }}">Son 30 Gün</a>
-            <a
-                href="#"
-                data-update-click
-                class="collection-item waves-effect"
-                data-input="input[name=end_date]"
-                data-focus="input[name=start_date]"
-                data-input-value="{{ date('Y-m-d') }}"
-                data-value="{{ date('Y-m-d', strtotime('-90 day')) }}">Son 90 Gün</a>
+            @if ($organisation->historical_days >= 1)
+                <a
+                    href="#"
+                    data-update-click
+                    class="collection-item waves-effect"
+                    data-input="input[name=end_date]"
+                    data-focus="input[name=start_date]"
+                    data-input-value="{{ date('Y-m-d', strtotime('-1 day')) }}"
+                    data-value="{{ date('Y-m-d', strtotime('-1 day')) }}">Dün</a>
+            @endif
+            @if ($organisation->historical_days >= 2)
+                <a
+                    href="#"
+                    data-update-click
+                    class="collection-item waves-effect"
+                    data-input="input[name=end_date]"
+                    data-focus="input[name=start_date]"
+                    data-input-value="{{ date('Y-m-d') }}"
+                    data-value="{{ date('Y-m-d', strtotime('-1 day')) }}">Son 2 Gün</a>
+            @endif
+            @if ($organisation->historical_days >= 7)
+                <a
+                    href="#"
+                    data-update-click
+                    class="collection-item waves-effect"
+                    data-input="input[name=end_date]"
+                    data-focus="input[name=start_date]"
+                    data-input-value="{{ date('Y-m-d') }}"
+                    data-value="{{ date('Y-m-d', strtotime('-7 day')) }}">Son 7 Gün</a>
+            @endif
+            @if ($organisation->historical_days >= 30)
+                <a
+                    href="#"
+                    data-update-click
+                    class="collection-item waves-effect"
+                    data-input="input[name=end_date]"
+                    data-focus="input[name=start_date]"
+                    data-input-value="{{ date('Y-m-d') }}"
+                    data-value="{{ date('Y-m-d', strtotime('-30 day')) }}">Son 30 Gün</a>
+            @endif
+            @if ($organisation->historical_days >= 90)
+                <a
+                    href="#"
+                    data-update-click
+                    class="collection-item waves-effect"
+                    data-input="input[name=end_date]"
+                    data-focus="input[name=start_date]"
+                    data-input-value="{{ date('Y-m-d') }}"
+                    data-value="{{ date('Y-m-d', strtotime('-90 day')) }}">Son 90 Gün</a>
+            @endif
         </div>
     </div>
     <div class="card">
@@ -953,10 +963,12 @@
         </div>
         <div class="collection collection-bordered">
             @foreach (config('system.modules') as $key => $module)
-                <label class="collection-item waves-effect d-block">
-                    <input data-update name="modules" checked value="{{ $key }}" data-multiple="true" type="checkbox" />
-                    <span>{{ $module }}</span>
-                </label>
+                @if ($organisation->{'data_'.$key})
+                    <label class="collection-item waves-effect d-block">
+                        <input data-update name="modules" checked value="{{ $key }}" data-multiple="true" type="checkbox" />
+                        <span>{{ $module }}</span>
+                    </label>
+                @endif
             @endforeach
         </div>
     </div>

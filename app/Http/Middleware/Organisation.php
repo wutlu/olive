@@ -47,7 +47,7 @@ class Organisation
 
                     if (!$organisation->{$module})
                     {
-                        session()->flash('alert', 'Bu işlemi yapmak için gerekli plana sahip değilsiniz.');
+                        session()->flash('alert', 'Bu bölümü kullanabilmek için gerekli plana sahip değilsiniz.');
 
                         return $request->expectsJson() ?
                             response()->json([
@@ -65,7 +65,7 @@ class Organisation
             }
             else
             {
-                session()->flash('alert', 'Bu modülü kullanabilmek için bir organizasyona dahil olmanız gerekiyor.');
+                session()->flash('alert', 'Bu bölümü kullanabilmek için bir organizasyona dahil olmanız gerekiyor.');
 
                 return $request->expectsJson() ?
                     response()->json([

@@ -53,7 +53,7 @@ return [
      * E-posta Bildirimi Türleri
      */
     'notifications' => [
-        'important' => 'Önemli olay bildirimleri.',
+        'important' => 'Sadece önemli bildirimler.',
         'login' => 'Giriş bildirimleri.',
         'forum' => 'Forum takip ve uyarı bildirimleri.',
         'badge' => 'Yeni kazanılan etiket bildirimleri.',

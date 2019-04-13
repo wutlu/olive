@@ -10,13 +10,6 @@ use App\Models\RealTime\KeywordGroup;
 
 class CreateRequest extends FormRequest
 {
-    private $max_line;
-
-    public function __construct()
-    {
-        $this->max_line = auth()->user()->organisation->capacity * 2;
-    }
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -35,7 +28,6 @@ class CreateRequest extends FormRequest
     public function messages()
     {
         return [
-            'keyword_max_line' => 'Her grup için en fazla '.$this->max_line.' satır girebilirsiniz.',
             'limit' => 'Grup limitiniz doldu.',
             'empty_lines' => 'Her kelime satırı en az 3 karakter olabilir. (bir, ile... vb. kaçamak kelimeler kullanamazsınız!)',
         ];
@@ -53,11 +45,7 @@ class CreateRequest extends FormRequest
         Validator::extend('limit', function($attribute) use ($user) {
             $total_group = KeywordGroup::where('organisation_id', $user->organisation_id)->count();
 
-            return $total_group < $user->organisation->capacity;
-        });
-
-        Validator::extend('keyword_max_line', function($attribute, $value) {
-            return count(explode(PHP_EOL, $value)) <= $this->max_line ? true : false;
+            return $total_group < $user->organisation->real_time_group_limit;
         });
 
         Validator::extend('empty_lines', function($attribute, $value) {
@@ -69,8 +57,10 @@ class CreateRequest extends FormRequest
                 {
                     $return = false;
                 }
-
-                $return = !in_array(str_slug($line, ' '), config('services.twitter.unaccepted_keywords'));
+                else
+                {
+                    $return = !in_array(str_slug($line, ' '), config('services.twitter.unaccepted_keywords'));
+                }
             }
 
             return $return;
@@ -78,7 +68,7 @@ class CreateRequest extends FormRequest
 
         return [
             'name' => 'required|string|max:10|limit',
-            'keywords' => 'bail|nullable|string|max:255|keyword_max_line|empty_lines',
+            'keywords' => 'bail|nullable|string|max:255|empty_lines',
             'modules' => 'nullable|array',
             'modules.*' => 'required|string|in:'.implode(',', array_keys(config('system.modules')))
         ];

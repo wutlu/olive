@@ -14,7 +14,7 @@ class CreateRequest extends FormRequest
 
     public function __construct()
     {
-        $this->max_item = auth()->user()->organisation->capacity * 2;
+        $this->max_item = auth()->user()->organisation->pin_group_limit;
     }
 
     /**
@@ -35,7 +35,7 @@ class CreateRequest extends FormRequest
     public function messages()
     {
         return [
-            'max_item' => 'En fazla '.$this->max_item.' grup oluşturabilirsiniz.',
+            'max_item' => 'En fazla '.$this->max_item.' adet pin grubu oluşturabilirsiniz.',
         ];
     }
 
@@ -46,10 +46,8 @@ class CreateRequest extends FormRequest
      */
     public function rules()
     {
-        $user = auth()->user();
-
-        Validator::extend('max_item', function($attribute) use ($user) {
-            return PinGroup::where('organisation_id', $user->organisation_id)->count() <= $this->max_item;
+        Validator::extend('max_item', function($attribute) {
+            return PinGroup::where('organisation_id', auth()->user()->organisation_id)->count() < $this->max_item;
         });
 
         return [

@@ -211,7 +211,7 @@ class UserController extends Controller
                 ];
 
                 $data[] = '| Özellik         | Değer                                                  |';
-                $data[] = '| --------------: |:------------------------------------------------------ |';
+                $data[] = '| --------------: | :----------------------------------------------------- |';
                 $data[] = '| IP              | '.$info->ip.'                                          |';
                 $data[] = '| Konum           | '.$info->location->city.'/'.$info->location->country.' |';
 

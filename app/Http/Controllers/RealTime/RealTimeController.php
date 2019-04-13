@@ -32,7 +32,10 @@ class RealTimeController extends Controller
         $this->middleware([ 'auth', 'organisation:have' ]);
 
         ### [ zorunlu aktif organizasyon ] ###
-        $this->middleware('can:organisation-status')->only([
+        $this->middleware([
+            'can:organisation-status',
+            'organisation:have,module_real_time'
+        ])->only([
             'query'
         ]);
     }
@@ -44,7 +47,9 @@ class RealTimeController extends Controller
      */
     public function stream()
     {
-        return view('stream');
+        $organisation = auth()->user()->organisation;
+
+        return view('stream', compact('organisation'));
     }
 
     /**
@@ -55,6 +60,7 @@ class RealTimeController extends Controller
     public function query(RealTimeRequest $request)
     {
         $user = auth()->user();
+        $organisation = $user->organisation;
 
         $data = [];
         $words = [];
@@ -88,7 +94,7 @@ class RealTimeController extends Controller
                 $selected_modules = $group->modules ? $group->modules : [];
 
                 ### [ twitter modülü ] ###
-                if (in_array('twitter', $selected_modules))
+                if (in_array('twitter', $selected_modules) && $organisation->data_twitter)
                 {
                     if (count($keywords))
                     {
@@ -249,11 +255,36 @@ class RealTimeController extends Controller
                     {
                         switch ($module)
                         {
-                            case 'sozluk'         : $modules[] = 'entry';   break;
-                            case 'news'           : $modules[] = 'article'; break;
-                            case 'youtube_video'  : $modules[] = 'video';   break;
-                            case 'youtube_comment': $modules[] = 'comment'; break;
-                            case 'shopping'       : $modules[] = 'product'; break;
+                            case 'sozluk':
+                                if ($organisation->data_sozluk)
+                                {
+                                    $modules[] = 'entry';
+                                }
+                            break;
+                            case 'news':
+                                if ($organisation->data_news)
+                                {
+                                    $modules[] = 'article';
+                                }
+                            break;
+                            case 'youtube_video':
+                                if ($organisation->data_youtube_video)
+                                {
+                                    $modules[] = 'video';
+                                }
+                            break;
+                            case 'youtube_comment':
+                                if ($organisation->data_youtube_comment)
+                                {
+                                    $modules[] = 'comment';
+                                }
+                            break;
+                            case 'shopping':
+                                if ($organisation->data_shopping)
+                                {
+                                    $modules[] = 'product';
+                                }
+                            break;
                         }
                     }
 

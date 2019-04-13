@@ -7,24 +7,22 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class MessageNotification extends Notification implements ShouldQueue
+class SendPasswordNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    protected $subject;
-    protected $greeting;
-    protected $text;
+    protected $name;
+    protected $password;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(string $subject, string $greeting, string $text)
+    public function __construct(string $name, string $password)
     {
-        $this->subject  = $subject;
-        $this->greeting = $greeting;
-        $this->text     = $text;
+        $this->name = $name;
+        $this->password = $password;
     }
 
     /**
@@ -46,10 +44,17 @@ class MessageNotification extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
+        $message[] = '| Kullanıcı Adı   | Şifre                  |';
+        $message[] = '| --------------: | :--------------------- |';
+        $message[] = '| '.$this->name.' | '.$this->password.'    |';
+
         return (new MailMessage)
-                ->subject($this->subject)
-                ->greeting($this->greeting)
-                ->line($this->text);
+                ->subject('Olive: Hesap Bilgileriniz')
+                ->greeting('Merhaba,')
+                ->line('Olive giriş bilgileriniz aşağıdadır. Güvenliğiniz için, oturum açtıktan sonra şifrenizi güncelleyin.')
+                ->with([
+                    'table' => implode(PHP_EOL, $message)
+                ]);
     }
 
     /**

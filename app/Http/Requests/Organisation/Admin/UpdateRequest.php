@@ -49,7 +49,6 @@ class UpdateRequest extends FormRequest
             'historical_days' => 'required|integer|max:90|min:1',
 
             'real_time_group_limit' => 'required|integer|max:12|min:1',
-            'search_limit' => 'required|integer|max:1000|min:20',
             'alarm_limit' => 'required|integer|max:12|min:1',
             'pin_group_limit' => 'required|integer|max:12|min:1',
 
@@ -60,6 +59,14 @@ class UpdateRequest extends FormRequest
             'data_pool_twitter_user_limit' => 'required|integer|max:5000|min:10',
 
             'unit_price' => 'required|numeric',
+
+            'module_real_time' => 'nullable|string|in:on',
+            'module_search' => 'nullable|string|in:on',
+            'module_trend' => 'nullable|string|in:on',
+            'module_alarm' => 'nullable|string|in:on',
+            'module_pin' => 'nullable|string|in:on',
+            'module_model' => 'nullable|string|in:on',
+            'module_forum' => 'nullable|string|in:on',
         ];
 
         /**

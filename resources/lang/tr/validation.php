@@ -289,7 +289,6 @@ $arr = [
         'data_shopping'                   => 'E-ticaret Verileri',
 
         'real_time_group_limit'           => 'Gerçek Zamanlı Kelime Grubu Limiti',
-        'search_limit'                    => 'Arama Limiti',
         'alarm_limit'                     => 'Alarm Limiti',
         'pin_group_limit'                 => 'Pin Grubu Limiti',
         'historical_days'                 => 'Geriye Dönük Arama Limiti',
@@ -301,6 +300,14 @@ $arr = [
         'data_pool_twitter_user_limit'    => 'Twitter Kullanıcı Limiti',
 
         'unit_price'                      => 'Birim Fiyat',
+
+        'module_real_time'                => 'Gerçek Zamanlı Modülü',
+        'module_search'                   => 'Arama Modülü',
+        'module_trend'                    => 'Trend Modülü',
+        'module_alarm'                    => 'Alarm Modülü',
+        'module_pin'                      => 'Pin Modülü',
+        'module_model'                    => 'Model Modülü',
+        'module_forum'                    => 'Forum Modülü',
     ],
 ];
 

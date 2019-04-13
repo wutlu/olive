@@ -7,12 +7,6 @@
     ]
 ])
 
-@section('action-bar')
-    <a href="#" class="btn-floating btn-large halfway-fab waves-effect white" data-trigger="create-alarm">
-        <i class="material-icons grey-text text-darken-2">add</i>
-    </a>
-@endsection
-
 @push('local.scripts')
     function __collections(__, obj)
     {
@@ -69,16 +63,25 @@
                 })
             }
 
-            $('[data-name=count]').html(obj.hits.length + '/{{ auth()->user()->organisation->capacity*2 }}')
+            $('[data-name=count]').html(obj.hits.length + ' / {{ auth()->user()->organisation->alarm_limit }}')
         }
     }
 @endpush
 
 @section('content')
     <div class="card with-bg mb-1">
+        <div class="card-image">
+            <img src="{{ asset('img/md-s/21.jpg') }}" alt="Image" />
+            <span class="card-title white-text d-flex">
+                <i class="material-icons align-self-center mr-1">access_alarm</i>
+                Alarmlar
+            </span>
+            <a href="#" class="btn-floating btn-large halfway-fab waves-effect white" data-trigger="create-alarm">
+                <i class="material-icons grey-text text-darken-2">add</i>
+            </a>
+        </div>
         <div class="card-content">
-            <span class="card-title">Alarmlar</span>
-            <span class="d-block" data-name="count"></span>
+            <span class="d-block grey-text text-darken-2" data-name="count"></span>
             <p class="grey-text text-darken-2">İlgilendiğiniz konularda alarm oluşturarak gündemden çok daha hızlı bir şekidle haberdar olabilirsiniz.</p>
         </div>
 

@@ -29,7 +29,6 @@ class AddManyColumnToOrganisationsTable extends Migration
             $table->boolean('data_blog')->default(false);
 
             $table->unsignedSmallInteger('real_time_group_limit')->default(0);
-            $table->unsignedInteger('search_limit')->default(0);
             $table->unsignedSmallInteger('alarm_limit')->default(0);
             $table->unsignedSmallInteger('pin_group_limit')->default(0);
 
@@ -70,7 +69,6 @@ class AddManyColumnToOrganisationsTable extends Migration
             $table->dropColumn('data_blog');
 
             $table->dropColumn('real_time_group_limit');
-            $table->dropColumn('search_limit');
             $table->dropColumn('alarm_limit');
             $table->dropColumn('pin_group_limit');
 

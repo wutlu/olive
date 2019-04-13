@@ -32,6 +32,7 @@ use App\Http\Requests\SearchRequest;
 use App\Notifications\OrganisationWasCreatedNotification;
 use App\Notifications\OrganisationWasUpdatedNotification;
 use App\Notifications\MessageNotification;
+use App\Notifications\SendPasswordNotification;
 
 use Carbon\Carbon;
 
@@ -233,13 +234,14 @@ class OrganisationController extends Controller
             $user = new User;
             $user->name = $new_name;
             $user->email = $request->email;
+            $user->verified = true;
             $user->password = bcrypt($new_password);
             $user->session_id = str_random(100);
             $user->save();
 
             $user = User::find($user->id);
 
-            // e-posta gönder
+            $user->notify((new SendPasswordNotification($new_name, $new_password))->onQueue('email'));
         }
 
         $user->organisation_id = auth()->user()->organisation_id;
@@ -411,7 +413,7 @@ class OrganisationController extends Controller
 
         $removed_user = User::where('id', $request->user_id)->first();
 
-        if ($removed_user->verified)
+        if ($removed_user->term_version == 1)
         {
             $removed_user->organisation_id = null;
             $removed_user->save();
@@ -733,7 +735,6 @@ class OrganisationController extends Controller
         $organisation->end_date = $request->end_date.' '.$request->end_time;
         $organisation->historical_days = $request->historical_days;
         $organisation->real_time_group_limit = $request->real_time_group_limit;
-        $organisation->search_limit = $request->search_limit;
         $organisation->alarm_limit = $request->alarm_limit;
         $organisation->pin_group_limit = $request->pin_group_limit;
 
@@ -743,6 +744,14 @@ class OrganisationController extends Controller
         $organisation->data_pool_twitter_keyword_limit = $request->data_pool_twitter_keyword_limit;
         $organisation->data_pool_twitter_user_limit = $request->data_pool_twitter_user_limit;
         $organisation->unit_price = $request->unit_price;
+
+        $organisation->module_real_time = $request->module_real_time ? true : false;
+        $organisation->module_search = $request->module_search ? true : false;
+        $organisation->module_trend = $request->module_trend ? true : false;
+        $organisation->module_alarm = $request->module_alarm ? true : false;
+        $organisation->module_pin = $request->module_pin ? true : false;
+        $organisation->module_model = $request->module_model ? true : false;
+        $organisation->module_forum = $request->module_forum ? true : false;
 
         /**
          * modules
@@ -796,7 +805,6 @@ class OrganisationController extends Controller
             $organisation->data_blog = false;
 
             $organisation->real_time_group_limit = 1;
-            $organisation->search_limit = 20;
             $organisation->alarm_limit = 1;
             $organisation->pin_group_limit = 1;
 
@@ -809,6 +817,14 @@ class OrganisationController extends Controller
             $organisation->data_pool_facebook_user_limit = 10;
             $organisation->data_pool_instagram_keyword_limit = 10;
             $organisation->data_pool_instagram_user_limit = 10;
+
+            $organisation->module_real_time = true;
+            $organisation->module_search = true;
+            $organisation->module_trend = true;
+            $organisation->module_alarm = true;
+            $organisation->module_pin = true;
+            $organisation->module_model = true;
+            $organisation->module_forum = true;
 
             $organisation->historical_days = 1;
 

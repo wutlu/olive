@@ -48,7 +48,7 @@ class KeywordController extends Controller
         return [
             'status' => 'ok',
             'hits' => $data,
-            'limit' => $organisation->capacity
+            'limit' => $organisation->real_time_group_limit
         ];
     }
 

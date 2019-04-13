@@ -47,7 +47,7 @@ class CreateRequest extends FormRequest
         Validator::extend('limit', function($attribute) use ($user) {
             $total_alarm = Alarm::where('organisation_id', $user->organisation_id)->count();
 
-            return $total_alarm < $user->organisation->capacity*2;
+            return $total_alarm < $user->organisation->alarm_limit;
         });
 
         Validator::extend('email_validation', function($key, $id) use ($user) {

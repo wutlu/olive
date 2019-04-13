@@ -4,8 +4,16 @@ namespace App\Http\Requests\Search;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+use Validator;
+
+use Carbon\Carbon;
+
+use App\Http\Requests\StartEndDateRequest;
+
 class ArchiveAggregationRequest extends FormRequest
 {
+    public $historical_days;
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -16,18 +24,44 @@ class ArchiveAggregationRequest extends FormRequest
         return true;
     }
 
+    public function __construct()
+    {
+        $this->historical_days = auth()->user()->organisation->historical_days;
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'date_limit' => 'Başlangıç tarihi '.$this->historical_days.' günden önce olamaz.',
+            'date_limit_between' => 'Arama raporları için tarih aralığı 7 günden geniş olamaz.',
+        ];
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
-    public function rules()
+    public function rules(StartEndDateRequest $request)
     {
+        Validator::extend('date_limit', function($attribute, $value) {
+            return Carbon::now()->diffInDays($value) <= $this->historical_days;
+        });
+
+        Validator::extend('date_limit_between', function($attribute, $value) use($request) {
+            return Carbon::parse($request->start_date)->diffInDays($request->end_date) <= 7;
+        });
+
         return [
             'type' => 'required|string|in:hourly,daily,location,platform,source,mention,hashtag,sentiment',
             'string' => 'required|string|max:255',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
+            'start_date' => 'required|date|date_limit',
+            'end_date' => 'required|date|after_or_equal:start_date|date_limit_between',
             'sentiment' => 'required|string|in:pos,neu,neg,all',
             'modules' => 'required|array|min:1',
             'modules.*' => 'required|string|in:'.implode(',',array_keys(config('system.modules'))),
