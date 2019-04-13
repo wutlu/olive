@@ -26,6 +26,7 @@
 
     <a href="{{ route('admin.organisation.keyword_groups', $organisation->id) }}" class="collection-item waves-effect {{ $active == 'groups.keyword' ? 'active' : '' }}">Gerçek Zamanlı Kelime Grupları</a>
     <a href="{{ route('admin.organisation.pin_groups', $organisation->id) }}" class="collection-item waves-effect {{ $active == 'groups.pin' ? 'active' : '' }}">Pin Grupları</a>
+    <a href="{{ route('admin.organisation.alarms', $organisation->id) }}" class="collection-item waves-effect {{ $active == 'alarms' ? 'active' : '' }}">Alarmlar</a>
 
     <div class="divider"></div>
 

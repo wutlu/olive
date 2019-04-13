@@ -13,6 +13,7 @@ use App\Models\User\User;
 use App\Models\RealTime\KeywordGroup;
 use App\Models\Pin\Group as PinGroup;
 use App\Models\BillingInformation;
+use App\Models\Alarm;
 
 use App\Http\Requests\Organisation\BillingUpdateRequest;
 use App\Http\Requests\Organisation\NameRequest;
@@ -981,6 +982,46 @@ class OrganisationController extends Controller
      ******* ROOT *******
      ********************
      *
+     * Organizasyon, Alarmları
+     *
+     * @return view
+     */
+    public static function alarms(int $id)
+    {
+        $organisation = Organisation::where('id', $id)->firstOrFail();
+
+        return view('organisation.admin.alarms', compact('organisation'));
+    }
+
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Organizasyon, Alarmları
+     *
+     * @return array
+     */
+    public function alarmListJson(int $id)
+    {
+        $organisation = Organisation::where('id', $id)->firstOrFail();
+
+        $query = Alarm::where('organisation_id', $organisation->id)->orderBy('id', 'DESC')->get();
+
+        return [
+            'status' => 'ok',
+            'hits' => $query,
+            'total' => count($query)
+        ];
+    }
+
+    ### ### ###
+
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
      * Organizasyon, Pin Grupları
      *
      * @return view
@@ -1013,12 +1054,13 @@ class OrganisationController extends Controller
         $query = $request->string ? $query->where('name', 'ILIKE', '%'.$request->string.'%') : $query;
         $query = $query->skip($skip)
                        ->take($take)
-                       ->orderBy('id', 'DESC');
+                       ->orderBy('id', 'DESC')
+                       ->get();
 
         return [
             'status' => 'ok',
-            'hits' => $query->get(),
-            'total' => $query->count()
+            'hits' => $query,
+            'total' => count($query)
         ];
     }
 }

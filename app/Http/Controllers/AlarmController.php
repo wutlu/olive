@@ -48,12 +48,12 @@ class AlarmController extends Controller
      */
     public function data()
     {
-        $query = Alarm::where('organisation_id', auth()->user()->organisation_id)->orderBy('id', 'ASC');
+        $query = Alarm::where('organisation_id', auth()->user()->organisation_id)->orderBy('id', 'ASC')->get();
 
         return [
             'status' => 'ok',
-            'hits' => $query->get(),
-            'total' => $query->count()
+            'hits' => $query,
+            'total' => count($query)
         ];
     }
 
@@ -82,6 +82,7 @@ class AlarmController extends Controller
         $data = new Alarm;
 
         $data->fill($request->all());
+
         $data->query = $request->text;
         $data->modules = $request->sources;
         $data->organisation_id = auth()->user()->organisation_id;

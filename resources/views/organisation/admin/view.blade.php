@@ -78,93 +78,99 @@
                         </div>
                     </div>
                 </div>
-                <div class="d-flex flex-wrap">
-                    <div class="collection d-flex flex-column">
-                        <div class="collection-header">
-                            <h6>Modüller</h6>
-                        </div>
 
-                        @foreach ([
-                            'module_real_time' => 'Gerçek Zamanlı',
-                            'module_search' => 'Arama',
-                            'module_trend' => 'Trend',
-                            'module_alarm' => 'Alarm',
-                            'module_pin' => 'Pin',
-                            'module_model' => 'Model',
-                            'module_forum' => 'Forum',
-                        ] as $key => $module)
-                            <label class="collection-item">
-                                <input name="{{ $key }}" id="{{ $key }}" value="on" type="checkbox" {{ $organisation->{$key} ? 'checked' : '' }} />
-                                <span>{{ $module }}</span>
-                            </label>
-                        @endforeach
-                    </div>
+                <ul class="item-group">
+                    <li class="item">
+                        <div class="collection d-flex flex-column">
+                            <div class="collection-header">
+                                <h6>Modüller</h6>
+                            </div>
 
-                    <div class="collection d-flex flex-column">
-                        <div class="collection-header">
-                            <h6>Veri Kaynakları</h6>
+                            @foreach ([
+                                'module_real_time' => 'Gerçek Zamanlı',
+                                'module_search' => 'Arama',
+                                'module_trend' => 'Trend',
+                                'module_alarm' => 'Alarm',
+                                'module_pin' => 'Pin',
+                                'module_model' => 'Model',
+                                'module_forum' => 'Forum',
+                            ] as $key => $module)
+                                <label class="collection-item">
+                                    <input name="{{ $key }}" id="{{ $key }}" value="on" type="checkbox" {{ $organisation->{$key} ? 'checked' : '' }} />
+                                    <span>{{ $module }}</span>
+                                </label>
+                            @endforeach
                         </div>
+                    </li>
+                    <li class="item">
+                        <div class="collection d-flex flex-column">
+                            <div class="collection-header">
+                                <h6>Veri Kaynakları</h6>
+                            </div>
 
-                        @foreach (config('system.modules') as $key => $module)
-                            <label class="collection-item">
-                                <input name="data_{{ $key }}" id="data_{{ $key }}" value="on" type="checkbox" {{ $organisation->{'data_'.$key} ? 'checked' : '' }} />
-                                <span>{{ $module }}</span>
-                            </label>
-                        @endforeach
-                    </div>
-
-                    <div class="collection d-flex flex-column" style="width: 164px;">
-                        <div class="collection-header">
-                            <h6>Limitler</h6>
+                            @foreach (config('system.modules') as $key => $module)
+                                <label class="collection-item">
+                                    <input name="data_{{ $key }}" id="data_{{ $key }}" value="on" type="checkbox" {{ $organisation->{'data_'.$key} ? 'checked' : '' }} />
+                                    <span>{{ $module }}</span>
+                                </label>
+                            @endforeach
                         </div>
-                        <div class="collection-item input-field">
-                            <input name="user_capacity" id="user_capacity" max="12" min="1" value="{{ $organisation->user_capacity }}" type="number" class="validate" />
-                            <small class="helper-text">Kullanıcı Kapasitesi</small>
+                    </li>
+                    <li class="item">
+                        <div class="collection d-flex flex-column">
+                            <div class="collection-header">
+                                <h6>Limitler</h6>
+                            </div>
+                            <div class="collection-item input-field">
+                                <input name="user_capacity" id="user_capacity" max="12" min="1" value="{{ $organisation->user_capacity }}" type="number" class="validate" />
+                                <small class="helper-text">Kullanıcı Kapasitesi</small>
+                            </div>
+                            <div class="collection-item input-field">
+                                <input name="real_time_group_limit" id="real_time_group_limit" max="12" min="1" value="{{ $organisation->real_time_group_limit }}" type="number" class="validate" />
+                                <small class="helper-text">Gerçek Zamanlı Kelime Grubu</small>
+                            </div>
+                            <div class="collection-item input-field">
+                                <input name="alarm_limit" id="alarm_limit" max="12" min="1" value="{{ $organisation->alarm_limit }}" type="number" class="validate" />
+                                <small class="helper-text">Alarm</small>
+                            </div>
+                            <div class="collection-item input-field">
+                                <input name="pin_group_limit" id="pin_group_limit" max="12" min="1" value="{{ $organisation->pin_group_limit }}" type="number" class="validate" />
+                                <small class="helper-text">Pin Grubu</small>
+                            </div>
+                            <div class="collection-item input-field">
+                                <input name="historical_days" id="historical_days" max="90" min="1" value="{{ $organisation->historical_days }}" type="number" class="validate" />
+                                <small class="helper-text">Geriye Dönük Arama (Gün)</small>
+                            </div>
                         </div>
-                        <div class="collection-item input-field">
-                            <input name="real_time_group_limit" id="real_time_group_limit" max="12" min="1" value="{{ $organisation->real_time_group_limit }}" type="number" class="validate" />
-                            <small class="helper-text">Gerçek Zamanlı Kelime Grubu</small>
+                    </li>
+                    <li class="item">
+                        <div class="collection d-flex flex-column">
+                            <div class="collection-header">
+                                <h6>Veri Havuzu</h6>
+                            </div>
+                            <div class="collection-item input-field">
+                                <input name="data_pool_youtube_channel_limit" id="data_pool_youtube_channel_limit" max="100" min="10" value="{{ $organisation->data_pool_youtube_channel_limit }}" type="number" class="validate" />
+                                <small class="helper-text">YouTube Kanal Takibi</small>
+                            </div>
+                            <div class="collection-item input-field">
+                                <input name="data_pool_youtube_video_limit" id="data_pool_youtube_video_limit" max="100" min="10" value="{{ $organisation->data_pool_youtube_video_limit }}" type="number" class="validate" />
+                                <small class="helper-text">YouTube Video Takibi</small>
+                            </div>
+                            <div class="collection-item input-field">
+                                <input name="data_pool_youtube_keyword_limit" id="data_pool_youtube_keyword_limit" max="100" min="10" value="{{ $organisation->data_pool_youtube_keyword_limit }}" type="number" class="validate" />
+                                <small class="helper-text">YouTube Kelime Takibi</small>
+                            </div>
+                            <div class="collection-item input-field">
+                                <input name="data_pool_twitter_keyword_limit" id="data_pool_twitter_keyword_limit" max="400" min="10" value="{{ $organisation->data_pool_twitter_keyword_limit }}" type="number" class="validate" />
+                                <small class="helper-text">Twitter Kelime Takibi</small>
+                            </div>
+                            <div class="collection-item input-field">
+                                <input name="data_pool_twitter_user_limit" id="data_pool_twitter_user_limit" max="5000" min="10" value="{{ $organisation->data_pool_twitter_user_limit }}" type="number" class="validate" />
+                                <small class="helper-text">Twitter Kullanıcı Takibi</small>
+                            </div>
                         </div>
-                        <div class="collection-item input-field">
-                            <input name="alarm_limit" id="alarm_limit" max="12" min="1" value="{{ $organisation->alarm_limit }}" type="number" class="validate" />
-                            <small class="helper-text">Alarm</small>
-                        </div>
-                        <div class="collection-item input-field">
-                            <input name="pin_group_limit" id="pin_group_limit" max="12" min="1" value="{{ $organisation->pin_group_limit }}" type="number" class="validate" />
-                            <small class="helper-text">Pin Grubu</small>
-                        </div>
-                        <div class="collection-item input-field">
-                            <input name="historical_days" id="historical_days" max="90" min="1" value="{{ $organisation->historical_days }}" type="number" class="validate" />
-                            <small class="helper-text">Geriye Dönük Arama (Gün)</small>
-                        </div>
-                    </div>
-
-                    <div class="collection d-flex flex-column" style="width: 164px;">
-                        <div class="collection-header">
-                            <h6>Veri Havuzu</h6>
-                        </div>
-                        <div class="collection-item input-field">
-                            <input name="data_pool_youtube_channel_limit" id="data_pool_youtube_channel_limit" max="100" min="10" value="{{ $organisation->data_pool_youtube_channel_limit }}" type="number" class="validate" />
-                            <small class="helper-text">YouTube Kanal Takibi</small>
-                        </div>
-                        <div class="collection-item input-field">
-                            <input name="data_pool_youtube_video_limit" id="data_pool_youtube_video_limit" max="100" min="10" value="{{ $organisation->data_pool_youtube_video_limit }}" type="number" class="validate" />
-                            <small class="helper-text">YouTube Video Takibi</small>
-                        </div>
-                        <div class="collection-item input-field">
-                            <input name="data_pool_youtube_keyword_limit" id="data_pool_youtube_keyword_limit" max="100" min="10" value="{{ $organisation->data_pool_youtube_keyword_limit }}" type="number" class="validate" />
-                            <small class="helper-text">YouTube Kelime Takibi</small>
-                        </div>
-                        <div class="collection-item input-field">
-                            <input name="data_pool_twitter_keyword_limit" id="data_pool_twitter_keyword_limit" max="400" min="10" value="{{ $organisation->data_pool_twitter_keyword_limit }}" type="number" class="validate" />
-                            <small class="helper-text">Twitter Kelime Takibi</small>
-                        </div>
-                        <div class="collection-item input-field">
-                            <input name="data_pool_twitter_user_limit" id="data_pool_twitter_user_limit" max="5000" min="10" value="{{ $organisation->data_pool_twitter_user_limit }}" type="number" class="validate" />
-                            <small class="helper-text">Twitter Kullanıcı Takibi</small>
-                        </div>
-                    </div>
-                </div>
+                    </li>
+                </ul>
             </div>
             <div class="card-content grey lighten-2">
                 <div class="input-field">

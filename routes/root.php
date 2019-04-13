@@ -251,6 +251,9 @@ Route::prefix('organizasyon-yonetimi')->group(function () {
         Route::get('{id}/gercek-zamanli/kelime-gruplari', 'OrganisationController@keywordGroups')->name('admin.organisation.keyword_groups');
         Route::post('gercek-zamanli/kelime-gruplari/guncelle', 'OrganisationController@keywordGroupsUpdate')->name('admin.organisation.keyword_groups.update');
 
+        Route::get('{id}/alarmlar', 'OrganisationController@alarms')->name('admin.organisation.alarms');
+        Route::post('{id}/alarmlar', 'OrganisationController@alarmListJson');
+
         Route::get('{id}/pin-gruplari', 'OrganisationController@pinGroups')->name('admin.organisation.pin_groups');
         Route::post('{id}/pin-gruplari', 'OrganisationController@pinGroupListJson');
 

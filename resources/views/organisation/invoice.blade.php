@@ -331,10 +331,12 @@
                 <li class="row-col p-1 title">ARA TOPLAM</li>
                 <li class="row-col p-1">{{ config('formal.currency').' '.number_format($total_price) }}</li>
             </ul>
-            <ul class="row mb-0">
-                <li class="row-col title">İndirim</li>
-                <li class="row-col">({{ $invoice->discount_rate }}%) {{ number_format($discount) }}</li>
-            </ul>
+            @if ($invoice->discount_rate)
+                <ul class="row mb-0">
+                    <li class="row-col title">İndirim</li>
+                    <li class="row-col">({{ $invoice->discount_rate }}%) {{ number_format($discount) }}</li>
+                </ul>
+            @endif
             <ul class="row mb-0">
                 <li class="row-col title">{{ config('formal.tax_name') }}</li>
                 <li class="row-col">({{ $invoice->tax }}%) {{ number_format($total_tax) }}</li>

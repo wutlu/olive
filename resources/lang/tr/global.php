@@ -50,7 +50,7 @@ return [
         'i18n' => [
             'months' => [ 'Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık' ],
             'monthsShort' => [ 'Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara' ],
-            'weekdays' => [ 'Pazrtesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi', 'Pazar' ],
+            'weekdays' => [ 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi', 'Pazar' ],
             'weekdaysShort' => [ 'Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Pzr' ],
             'weekdaysAbbrev' => [ 'Pt', 'S', 'Ç', 'Pe', 'C', 'Ct', 'P' ],
             'cancel' => 'Vazgeç',

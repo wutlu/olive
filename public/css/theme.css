@@ -2567,7 +2567,6 @@ nav.nav-half {
   left: 0;
   overflow: normal;
 }
-
 .owl-carousel .prev-slide,
 .owl-carousel .next-slide {
   position: absolute;
@@ -2609,4 +2608,36 @@ nav.nav-half {
 .user-view {
   background-repeat: no-repeat;
   background-size: cover;
+}
+
+/*!
+ * card alarm
+ */
+.card-alarm > ul.days {
+    margin: 0;
+}
+.card-alarm > ul.days > li {
+    height: 24px;
+    line-height: 24px;
+
+    display: table-row;
+
+    -ms-flex: 1 1 auto;
+        flex: 1 1 auto;
+
+    text-align: center;
+}
+.card-alarm > ul.days > li.day {
+    width: 24px;
+}
+.card-alarm > .group > .card-content:first-child {
+    width: 128px;
+}
+.card-alarm > .group > .card-content:last-child {
+    width: calc(100% - 96px);
+}
+.card-alarm > .group > .card-content > .dropdown-trigger {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
 }
