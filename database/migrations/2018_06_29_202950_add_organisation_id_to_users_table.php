@@ -27,7 +27,7 @@ class AddOrganisationIdToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('organisation_idn');
+            $table->dropColumn('organisation_id');
         });
     }
 }

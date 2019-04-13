@@ -14,7 +14,7 @@ class DropUniqueConsumerKeyToTwitterTokens extends Migration
     public function up()
     {
         Schema::table('twitter_tokens', function (Blueprint $table) {
-            $table->dropUnique([ 'consumer_key' ]);
+            //$table->dropUnique('consumer_key');
         });
     }
 
@@ -26,7 +26,7 @@ class DropUniqueConsumerKeyToTwitterTokens extends Migration
     public function down()
     {
         Schema::table('twitter_tokens', function (Blueprint $table) {
-            $table->unique([ 'consumer_key' ]);
+            //$table->unique('consumer_key');
         });
     }
 }

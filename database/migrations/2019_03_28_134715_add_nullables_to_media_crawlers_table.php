@@ -28,9 +28,9 @@ class AddNullablesToMediaCrawlersTable extends Migration
     public function down()
     {
         Schema::table('media_crawlers', function (Blueprint $table) {
-            $table->string('url_pattern')->nullable(false)->change();
-            $table->string('selector_title')->nullable(false)->change();
-            $table->string('selector_description')->nullable(false)->change();
+            //$table->string('url_pattern')->nullable(false)->change();
+            //$table->string('selector_title')->nullable(false)->change();
+            //$table->string('selector_description')->nullable(false)->change();
         });
     }
 }

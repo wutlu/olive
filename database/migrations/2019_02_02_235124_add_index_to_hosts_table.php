@@ -27,8 +27,8 @@ class AddIndexToHostsTable extends Migration
     public function down()
     {
         Schema::table('hosts', function (Blueprint $table) {
-            $table->dropIndex('site');
-            $table->dropIndex('ip_address');
+            //$table->dropIndex('site');
+            //$table->dropIndex('ip_address');
         });
     }
 }
