@@ -4,7 +4,7 @@ return [
     'currency' => '₺',
     'tax_name' => 'K.D.V.',
     'company' => [
-        'logo' => 'img/veri.zone-logo.svg',
+        'logo' => 'img/veri.zone_logo.svg',
         'name' => 'Veri Zone Bilişim Tek. ve Dan. Ltd. Şti.',
         'address' => [
             'İnönü Mahallesi, 1769. Sk. 1D, 06370',

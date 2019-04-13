@@ -106,7 +106,7 @@
 </head>
 <body>
 	<header class="main">
-		<img alt="veri.zone" src="{{ asset('img/veri.zone-logo.svg') }}" />
+		<img alt="veri.zone" src="{{ asset('img/veri.zone_logo.svg') }}" />
 	</header>
 	<footer class="main">
 		<a href="https://www.instagram.com/veri.zone">
