@@ -80,34 +80,43 @@
     <div class="row">
         <div class="col s12">
             <div class="fast-menu">
-                <a href="{{ route('forum.index') }}">
-                    <i class="material-icons">forum</i>
-                    <span class="d-block">Forum</span>
-                </a>
-                <a href="{{ route('data_pool.dashboard') }}">
-                    <i class="material-icons">hearing</i>
-                    <span class="d-block">Veri Havuzu</span>
-                </a>
-                <a href="{{ route('realtime.stream') }}">
-                    <i class="material-icons">watch_later</i>
-                    <span class="d-block">Gerçek Zamanlı</span>
-                </a>
-                <a href="{{ route('search.dashboard') }}">
-                    <i class="material-icons">youtube_searched_for</i>
-                    <span class="d-block">Arama Motoru</span>
-                </a>
-                <a href="{{ route('trend.live') }}">
-                    <i class="material-icons">trending_up</i>
-                    <span class="d-block">Trend Analizi</span>
-                </a>
-                <a href="{{ route('alarm.dashboard') }}">
-                    <i class="material-icons">access_alarm</i>
-                    <span class="d-block">Alarmlar</span>
-                </a>
-                <a data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" style="opacity: .4;" href="#">
-                    <i class="material-icons">pie_chart</i>
-                    <span class="d-block">Model Analizi</span>
-                </a>
+                @foreach ([
+                    [
+                        'route' => route('forum.index'),
+                        'icon' => 'forum',
+                        'name' => 'Forum'
+                    ],
+                    [
+                        'route' => route('data_pool.dashboard'),
+                        'icon' => 'hearing',
+                        'name' => 'Veri Havuzu'
+                    ],
+                    [
+                        'route' => route('realtime.stream'),
+                        'icon' => 'watch_later',
+                        'name' => 'Gerçek Zamanlı'
+                    ],
+                    [
+                        'route' => route('search.dashboard'),
+                        'icon' => 'youtube_searched_for',
+                        'name' => 'Arama Motoru'
+                    ],
+                    [
+                        'route' => route('trend.live'),
+                        'icon' => 'trending_up',
+                        'name' => 'Trend Analizi'
+                    ],
+                    [
+                        'route' => route('alarm.dashboard'),
+                        'icon' => 'access_alarm',
+                        'name' => 'Alarmlar'
+                    ]
+                ] as $key => $item)
+                    <a href="{{ $item['route'] }}">
+                        <i class="material-icons">{{ $item['icon'] }}</i>
+                        <span class="d-block">{{ $item['name'] }}</span>
+                    </a>
+                @endforeach
             </div>
         </div>
 

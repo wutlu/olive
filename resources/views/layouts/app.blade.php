@@ -476,7 +476,7 @@
             @php
                 $br_count = count($breadcrumb)-1;
             @endphp
-            <nav class="grey lighten-2" id="breadcrumb">
+            <nav class="teal" id="breadcrumb">
                 <div class="{{ auth()->check() ? 'sidenav-fixed-layout' : '' }}">
                     <div class="{{ isset($wide) ? 'container container-wide' : 'container' }}">
                         <a href="{{ route('dashboard') }}" class="breadcrumb">Olive</a>

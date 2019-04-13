@@ -144,7 +144,7 @@ $(document).on('keydown keyup change click', '.goodbye', function() {
                 'font-size': '18px'
             }
         }),
-        'title': __.data('modal-alert-title'),
+        'title': __.data('modal-alert-title') ? __.data('modal-alert-title') : 'Bilgi',
         'size': 'modal-small',
         'options': {},
         'footer': [

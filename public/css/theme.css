@@ -553,7 +553,7 @@ table.invoice tfoot > tr {
 }
 #breadcrumb .breadcrumb:before,
 #breadcrumb .breadcrumb {
-  color: #666;
+  color: #fff;
 }
 @media (max-width: 1024px) {
   #breadcrumb {

@@ -174,6 +174,7 @@ class HomeController extends Controller
     public static function dashboard()
     {
         $user = auth()->user();
+        $organisation = $user->organisation;
 
         $carousels = Carousel::where('carousel', true)->orderBy('updated_at', 'DESC')->get();
         $modals = Carousel::where('modal', true)->orderBy('updated_at', 'DESC')->get();
