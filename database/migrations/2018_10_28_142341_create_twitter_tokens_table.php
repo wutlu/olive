@@ -20,7 +20,7 @@ class CreateTwitterTokensTable extends Migration
 
             $table->enum('status', [ 'on', 'off', 'disabled', 'restart', 'stop', 'start' ])->default('off');
 
-            $table->string('consumer_key')->unique();
+            $table->string('consumer_key');
             $table->string('consumer_secret');
             $table->string('access_token');
             $table->string('access_token_secret');

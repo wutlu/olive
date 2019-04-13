@@ -19,9 +19,9 @@ class CreateMediaCrawlersTable extends Migration
             $table->string('name')->unique();
             $table->string('site');
             $table->string('base')->default('/');
-            $table->string('url_pattern');
-            $table->string('selector_title');
-            $table->string('selector_description');
+            $table->string('url_pattern')->nullable()->default(null);
+            $table->string('selector_title')->nullable()->default(null);
+            $table->string('selector_description')->nullable()->default(null);
 
             $table->unsignedSmallInteger('error_count')->default(0);
             $table->unsignedSmallInteger('off_limit')->default(100);

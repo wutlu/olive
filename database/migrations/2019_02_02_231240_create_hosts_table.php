@@ -16,8 +16,8 @@ class CreateHostsTable extends Migration
         Schema::create('hosts', function (Blueprint $table) {
             $table->increments('id')->unsigned();
 
-            $table->string('site');
-            $table->ipAddress('ip_address');
+            $table->string('site')->index();
+            $table->ipAddress('ip_address')->index();
 
             $table->unique([ 'site', 'ip_address' ]);
 
