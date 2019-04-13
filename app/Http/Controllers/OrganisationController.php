@@ -415,6 +415,10 @@ class OrganisationController extends Controller
 
         if ($removed_user->term_version == 1)
         {
+            $removed_user->delete();
+        }
+        else
+        {
             $removed_user->organisation_id = null;
             $removed_user->save();
 
@@ -442,10 +446,6 @@ class OrganisationController extends Controller
                     'user_id' => $removed_user->id
                 ]
             );
-        }
-        else
-        {
-            $removed_user->delete();
         }
 
         return [
