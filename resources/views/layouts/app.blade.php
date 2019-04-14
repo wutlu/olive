@@ -235,52 +235,54 @@
 
                             <ul class="right">
                                 @isset($delete)
-                                    @push('local.scripts')
-                                        $(document).on('click', '[data-trigger=delete-forever]', function() {
-                                            return modal({
-                                                'id': 'confirmation',
-                                                'body': $('<span />', {
-                                                    'html': 'Bu içeriğin kaynağına tekrar gidilmediği sürece veritabanlarımızdan kalıcı olarak silinecektir. Bu işlemi onalıyor musunuz?'
-                                                }),
-                                                'title': '[Admin] İçerik Sil',
-                                                'size': 'modal-small',
-                                                'options': {},
-                                                'footer': [
-                                                    $('<a />', {
-                                                        'href': '#',
-                                                        'class': 'modal-close waves-effect btn-flat green-text',
-                                                        'html': buttons.cancel
+                                    @if (auth()->user()->root())
+                                        @push('local.scripts')
+                                            $(document).on('click', '[data-trigger=delete-forever]', function() {
+                                                return modal({
+                                                    'id': 'confirmation',
+                                                    'body': $('<span />', {
+                                                        'html': 'Bu içeriğin kaynağına tekrar gidilmediği sürece veritabanlarımızdan kalıcı olarak silinecektir. Bu işlemi onalıyor musunuz?'
                                                     }),
-                                                    $('<span />', {
-                                                        'html': ' '
-                                                    }),
-                                                    $('<a />', {
-                                                        'href': '#',
-                                                        'class': 'waves-effect btn-flat red-text json',
-                                                        'data-method': 'delete',
-                                                        'data-href': '{{ route('admin.content.delete', [ 'es_index' => $delete['index'], 'es_type' => $delete['type'], 'es_id' => $delete['id'] ]) }}',
-                                                        'data-callback': '__forever_deleted',
-                                                        'html': buttons.ok
-                                                    })
-                                                ]
+                                                    'title': '[Admin] İçerik Sil',
+                                                    'size': 'modal-small',
+                                                    'options': {},
+                                                    'footer': [
+                                                        $('<a />', {
+                                                            'href': '#',
+                                                            'class': 'modal-close waves-effect btn-flat green-text',
+                                                            'html': buttons.cancel
+                                                        }),
+                                                        $('<span />', {
+                                                            'html': ' '
+                                                        }),
+                                                        $('<a />', {
+                                                            'href': '#',
+                                                            'class': 'waves-effect btn-flat red-text json',
+                                                            'data-method': 'delete',
+                                                            'data-href': '{{ route('admin.content.delete', [ 'es_index' => $delete['index'], 'es_type' => $delete['type'], 'es_id' => $delete['id'] ]) }}',
+                                                            'data-callback': '__forever_deleted',
+                                                            'html': buttons.ok
+                                                        })
+                                                    ]
+                                                })
                                             })
-                                        })
 
-                                        function __forever_deleted(__, obj)
-                                        {
-                                            if (obj.status == 'ok')
+                                            function __forever_deleted(__, obj)
                                             {
-                                                M.toast({ html: 'İçerik Silindi', classes: 'teal darken-2' })
+                                                if (obj.status == 'ok')
+                                                {
+                                                    M.toast({ html: 'İçerik Silindi', classes: 'teal darken-2' })
 
-                                                $('#modal-confirmation').modal('close')
+                                                    $('#modal-confirmation').modal('close')
+                                                }
                                             }
-                                        }
-                                    @endpush
-                                    <li>
-                                        <a class="waves-effect waves-light" data-trigger="delete-forever" href="#">
-                                            <i class="material-icons">delete_forever</i>
-                                        </a>
-                                    </li>
+                                        @endpush
+                                        <li>
+                                            <a class="waves-effect waves-light" data-trigger="delete-forever" href="#">
+                                                <i class="material-icons">delete_forever</i>
+                                            </a>
+                                        </li>
+                                    @endif
                                 @endisset
                                 @isset($pin_group)
                                     <li>

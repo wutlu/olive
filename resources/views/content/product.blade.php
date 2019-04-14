@@ -5,8 +5,13 @@
             'text' => $title
         ]
     ],
+    'pin_group' => true,
     'dock' => true,
-    'pin_group' => true
+    'delete' => [
+        'id' => $document['_id'],
+        'type' => $document['_type'],
+        'index' => $document['_index']
+    ]
 ])
 
 @include('content._inc.histogram', [

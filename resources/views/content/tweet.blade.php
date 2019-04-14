@@ -7,7 +7,12 @@
     ],
     'dock' => true,
     'pin_group' => true,
-    'wide' => true
+    'wide' => true,
+    'delete' => [
+        'id' => $document['_id'],
+        'type' => $document['_type'],
+        'index' => $document['_index']
+    ]
 ])
 
 @push('local.styles')

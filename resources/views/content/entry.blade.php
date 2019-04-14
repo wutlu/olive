@@ -6,7 +6,12 @@
         ]
     ],
     'pin_group' => true,
-    'dock' => true
+    'dock' => true,
+    'delete' => [
+        'id' => $document['_id'],
+        'type' => $document['_type'],
+        'index' => $document['_index']
+    ]
 ])
 
 @section('dock')
