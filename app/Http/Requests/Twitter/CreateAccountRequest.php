@@ -12,6 +12,8 @@ use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Subscriber\Oauth\Oauth1;
 
+use System;
+
 class CreateAccountRequest extends FormRequest
 {
     /**
@@ -44,9 +46,9 @@ class CreateAccountRequest extends FormRequest
      */
     public function rules()
     {
-        $user = auth()->user();
+        Validator::extend('twitter_account', function($attribute, $screen_name) {
+            $user = auth()->user();
 
-        Validator::extend('twitter_account', function($attribute, $screen_name) use ($user) {
             try
             {
                 $stack = HandlerStack::create();
@@ -94,6 +96,12 @@ class CreateAccountRequest extends FormRequest
             }
             catch (\Exception $e)
             {
+                System::log(
+                    $e->getMessage(),
+                    'App\Http\Requests\Twitter\CreateAccountRequest::rules('.$screen_name.')',
+                    9
+                );
+
                 return false;
             }
         });
