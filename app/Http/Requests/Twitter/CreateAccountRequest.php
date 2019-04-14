@@ -46,9 +46,9 @@ class CreateAccountRequest extends FormRequest
      */
     public function rules()
     {
-        Validator::extend('twitter_account', function($attribute, $screen_name) {
-            $user = auth()->user();
+        $user = auth()->user();
 
+        Validator::extend('twitter_account', function($attribute, $screen_name) use ($user) {
             try
             {
                 $stack = HandlerStack::create();
