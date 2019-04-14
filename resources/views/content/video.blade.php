@@ -167,7 +167,7 @@
             </ul>
 
             @component('components.loader')
-                @slot('color', 'cyan')
+                @slot('color', 'teal')
                 @slot('id', 'home-loader-2')
                 @slot('class', 'card-loader-unstyled')
             @endcomponent
@@ -226,7 +226,7 @@
             </ul>
 
             @component('components.loader')
-                @slot('color', 'cyan')
+                @slot('color', 'teal')
                 @slot('id', 'home-loader-1')
                 @slot('class', 'card-loader-unstyled')
             @endcomponent

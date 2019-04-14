@@ -65,7 +65,7 @@
 @endpush
 
 @push('wildcard-bottom')
-    <div class="card cyan darken-2">
+    <div class="card teal">
         <div class="card-tabs">
             <ul class="tabs tabs-transparent sub-tabs">
                 <li class="tab">
@@ -123,7 +123,7 @@
                     </div>
                 @else
                     @component('components.loader')
-                        @slot('color', 'cyan')
+                        @slot('color', 'teal')
                         @slot('class', 'card-loader-unstyled')
                         @slot('id', $key.'-loader')
                     @endcomponent
@@ -156,7 +156,7 @@
                     <span class="d-flex justify-content-between">
                         <span class="align-self-center">{{ $document['_source']['user']['name'] }}</span>
                         @isset ($document['_source']['user']['verified'])
-                            <i class="material-icons cyan-text align-self-center ml-1">check</i>
+                            <i class="material-icons teal-text align-self-center ml-1">check</i>
                         @endisset
                     </span>
                     <a class="grey-text" href="https://twitter.com/{{ $document['_source']['user']['screen_name'] }}" target="_blank">{{ '@'.$document['_source']['user']['screen_name'] }}</a>
@@ -356,7 +356,7 @@
         ] as $key => $model
     )
         <div class="card mb-1">
-            <div class="card-content d-flex justify-content-between cyan darken-2">
+            <div class="card-content d-flex justify-content-between teal">
                 <span class="card-title card-title-small white-text align-self-center">{{ $model }}</span>
                 <a
                     href="#"

@@ -19,7 +19,7 @@
 @endpush
 
 @section('wildcard')
-    <div class="z-depth-1 cyan darken-2">
+    <div class="z-depth-1 teal">
         <ul class="tabs tabs-fixed-width tabs-transparent histogram-tabs">
             @foreach ($charts as $chart)
                 <li class="tab">

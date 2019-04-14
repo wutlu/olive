@@ -265,3 +265,5 @@ Route::prefix('organizasyon-yonetimi')->group(function () {
         Route::post('{id}/fatura-onay', 'OrganisationController@adminInvoiceApprove')->name('admin.organisation.invoice.approve');
     });
 });
+
+Route::delete('sil/{es_index}/{es_type}/{es_id}', 'ContentController@delete')->name('admin.content.delete');

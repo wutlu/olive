@@ -955,7 +955,7 @@
 @section('dock')
     <div class="card with-bg mb-1">
         <div class="card-image">
-            <img src="{{ asset('img/md/21.jpg') }}" alt="Image" />
+            <img src="{{ asset('img/md-s/21.jpg') }}" alt="Image" />
             <span class="card-title white-text d-flex">
                 <i class="material-icons align-self-center mr-1">device_hub</i>
                 Kaynak

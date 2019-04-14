@@ -194,11 +194,12 @@
                     </li>
                 </ul>
             @endauth
-            <nav class="grey darken-4">
+
+            <nav class="teal darken-1">
                 <div class="{{ auth()->check() ? 'sidenav-fixed-layout' : 'container' }}">
                     <div class="nav-wrapper">
                         <a href="{{ route('dashboard') }}" class="brand-logo center">
-                            <img alt="{{ config('app.name') }}" src="{{ asset('img/olive_logo.svg') }}" />
+                            <img alt="{{ config('app.name') }}" src="{{ asset('img/olive_logo-white.svg') }}" />
                         </a>
 
                         @auth
@@ -222,24 +223,74 @@
                                 </li>
                             @endisset
                         </ul>
-                        <ul class="right hide-on-med-and-down">
-                                @auth
+
+                        @auth
+                            <ul class="right hide-on-med-and-down">
                                 <li>
                                     <a class="dropdown-trigger waves-effect waves-light" href="#" data-target="user-top-dropdown" data-align="right">
                                         {{ auth()->user()->name }} <i class="material-icons right">arrow_drop_down</i>
                                     </a>
                                 </li>
-                            @endauth
-                        </ul>
-                        @isset($pin_group)
-                            <ul class="right">
-                                <li>
-                                    <a class="waves-effect waves-light" href="#" data-class="#pin-groups-dock" data-class-toggle="active">
-                                        <i class="material-icons">fiber_pin</i>
-                                    </a>
-                                </li>
                             </ul>
-                        @endisset
+
+                            <ul class="right">
+                                @isset($delete)
+                                    @push('local.scripts')
+                                        $(document).on('click', '[data-trigger=delete-forever]', function() {
+                                            return modal({
+                                                'id': 'confirmation',
+                                                'body': $('<span />', {
+                                                    'html': 'Bu içeriğin kaynağına tekrar gidilmediği sürece veritabanlarımızdan kalıcı olarak silinecektir. Bu işlemi onalıyor musunuz?'
+                                                }),
+                                                'title': '[Admin] İçerik Sil',
+                                                'size': 'modal-small',
+                                                'options': {},
+                                                'footer': [
+                                                    $('<a />', {
+                                                        'href': '#',
+                                                        'class': 'modal-close waves-effect btn-flat green-text',
+                                                        'html': buttons.cancel
+                                                    }),
+                                                    $('<span />', {
+                                                        'html': ' '
+                                                    }),
+                                                    $('<a />', {
+                                                        'href': '#',
+                                                        'class': 'waves-effect btn-flat red-text json',
+                                                        'data-method': 'delete',
+                                                        'data-href': '{{ route('admin.content.delete', [ 'es_index' => $delete['index'], 'es_type' => $delete['type'], 'es_id' => $delete['id'] ]) }}',
+                                                        'data-callback': '__forever_deleted',
+                                                        'html': buttons.ok
+                                                    })
+                                                ]
+                                            })
+                                        })
+
+                                        function __forever_deleted(__, obj)
+                                        {
+                                            if (obj.status == 'ok')
+                                            {
+                                                M.toast({ html: 'İçerik Silindi', classes: 'teal darken-2' })
+
+                                                $('#modal-confirmation').modal('close')
+                                            }
+                                        }
+                                    @endpush
+                                    <li>
+                                        <a class="waves-effect waves-light" data-trigger="delete-forever" href="#">
+                                            <i class="material-icons">delete_forever</i>
+                                        </a>
+                                    </li>
+                                @endisset
+                                @isset($pin_group)
+                                    <li>
+                                        <a class="waves-effect waves-light" href="#" data-class="#pin-groups-dock" data-class-toggle="active">
+                                            <i class="material-icons">fiber_pin</i>
+                                        </a>
+                                    </li>
+                                @endisset
+                            </ul>
+                        @endauth
                     </div>
                 </div>
             </nav>
@@ -476,7 +527,7 @@
             @php
                 $br_count = count($breadcrumb)-1;
             @endphp
-            <nav class="cyan darken-2" id="breadcrumb">
+            <nav id="breadcrumb">
                 <div class="{{ auth()->check() ? 'sidenav-fixed-layout' : '' }}">
                     <div class="{{ isset($wide) ? 'container container-wide' : 'container' }}">
                         <a href="{{ route('dashboard') }}" class="breadcrumb">Olive</a>
@@ -756,10 +807,10 @@
     <div class="@auth{{ @$sidenav_fixed_layout ? 'sidenav-fixed-layout' : '' }}@endauth">
         <footer class="page-footer grey lighten-4">
             <div class="{{ isset($wide) ? 'container container-wide' : 'container' }}">
-                <div class="row mb-1">
+                <div class="row">
                     <div class="col l6 s12">
                         <img id="vz-logo" src="{{ asset('img/veri.zone_logo-grey.svg') }}" alt="veri.zone-logo" />
-                        <p class="grey-text">veri.zone, açık kaynak internet verilerini toplar ve elde ettiği verilerden anlamlı analizler çıkaran araçlar geliştirir.</p>
+                        <p class="grey-text">© {{ date('Y') }} Veri Zone Bilişim Tek. ve Dan. Ltd. Şti. | Tüm hakları saklıdır.</p>
                     </div>
                     <div class="col l2 offset-l2 s12">
                         <ul>
@@ -793,11 +844,6 @@
                             </li>
                         </ul>
                     </div>
-                </div>
-            </div>
-            <div class="footer-copyright center-align white">
-                <div class="{{ isset($wide) ? 'container container-wide' : 'container' }} grey-text">
-                    © {{ date('Y') }} <a class="teal-text" href="http://veri.zone">veri.zone</a> | Tüm hakları saklıdır.
                 </div>
             </div>
         </footer>

@@ -6,7 +6,12 @@
         ]
     ],
     'pin_group' => true,
-    'dock' => true
+    'dock' => true,
+    'delete' => [
+        'id' => $document['_id'],
+        'type' => $document['_type'],
+        'index' => $document['_index']
+    ]
 ])
 
 @section('dock')
@@ -20,7 +25,7 @@
         <div class="card-content">
             <span class="card-title">Sık Kullanılan Kelimeler</span>
         </div>
-        <div class="card-content cyan darken-2">
+        <div class="card-content teal">
             <p class="white-text">Bu kelimeler ilgili siteye girilen haberlerden elde edilmiştir.</p>
         </div> 
         <div class="card-content"> 
@@ -118,7 +123,7 @@
         </div>
 
         @component('components.loader')
-            @slot('color', 'cyan')
+            @slot('color', 'teal')
             @slot('id', 'home-loader')
             @slot('class', 'card-loader-unstyled')
         @endcomponent

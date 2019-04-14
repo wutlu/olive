@@ -93,7 +93,7 @@
                     </div>
                 </div>
                 @component('components.loader')
-                    @slot('color', 'cyan')
+                    @slot('color', 'teal')
                     @slot('id', 'home-loader')
                     @slot('class', 'card-loader-unstyled')
                 @endcomponent
@@ -110,13 +110,13 @@
 @endsection
 
 @section('dock')
-    <div class="card cyan">
-        <div class="card-content cyan darken-2">
+    <div class="card teal">
+        <div class="card-content teal darken-2">
             <span class="white-text text-darken-4">{{ number_format($document['_source']['price']['amount']) }}</span>
             <span class="white-text">{{ $document['_source']['price']['currency'] }}</span>
         </div>
         <div class="card-content">
-            <span class="cyan-text text-lighten-4">{{ title_case($document['_source']['seller']['name']) }}</span>
+            <span class="teal-text text-lighten-4">{{ title_case($document['_source']['seller']['name']) }}</span>
             @isset ($document['_source']['seller']['phones'])
                 @foreach ($document['_source']['seller']['phones'] as $key => $phone)
                     <p class="white-text">{{ $phone['phone'] }}</p>

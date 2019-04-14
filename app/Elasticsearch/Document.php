@@ -297,6 +297,13 @@ class Document
         }
         catch (\Exception $e)
         {
+            System::log(
+                json_encode(
+                    $e->getMessage()
+                ),
+                'App\Elasticsearch\Document::exists('.$name.', '.$type.', '.$id.')'
+            );
+
             return (object) [
                 'status' => 'err',
                 'message' => $e->getMessage()
@@ -366,6 +373,53 @@ class Document
         }
         catch (\Exception $e)
         {
+            return (object) [
+                'status' => 'err',
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
+    /**
+     * Tekil Döküman Sİl
+     *
+     * @return array
+     *
+     */
+    public static function delete($name, string $type, string $id)
+    {
+        if (is_array($name))
+        {
+            $name = Indices::name($name);
+        }
+
+        $client = ClientBuilder::fromConfig([
+            'hosts' => config('database.connections.elasticsearch.node.ips'),
+            'retries' => 5
+        ]);
+
+        try
+        {
+            $doc = $client->delete([
+                'index' => $name,
+                'type' => $type,
+                'id' => $id
+            ]);
+
+            return (object) [
+                'status' => 'ok',
+                'data' => $doc
+            ];
+        }
+        catch (\Exception $e)
+        {
+            System::log(
+                json_encode(
+                    $e->getMessage()
+                ),
+                'App\Elasticsearch\Document::delete('.$name.', '.$type.', '.$id.')'
+            );
+
             return (object) [
                 'status' => 'err',
                 'message' => $e->getMessage()

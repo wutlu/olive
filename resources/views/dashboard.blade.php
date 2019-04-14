@@ -273,7 +273,7 @@
                         <i class="material-icons" data-name="icon"></i>
                         <span>
                             <p></p>
-                            <time class="timeago teal-text"></time>
+                            <time class="timeago grey-text"></time>
                         </span>
                         <i class="material-icons arrow">keyboard_arrow_down</i>
                     </div>

@@ -965,12 +965,12 @@ function vzAjax(__)
                     }
                 }
             }
-            else if (obj.status == 'err' && obj.reason)
+            else if (obj.status == 'err' && (obj.reason || obj.message))
             {
                 modal({
-                    'id': 'error',
+                    'id': 'err',
                     'title': keywords.err,
-                    'body': obj.reason,
+                    'body': obj.reason ? obj.reason : obj.message,
                     'size': 'modal-small',
                     'options': {},
                     'footer': [

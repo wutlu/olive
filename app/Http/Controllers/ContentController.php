@@ -15,6 +15,8 @@ use App\Utilities\Term;
 
 use App\Http\Requests\SearchRequest;
 
+use System;
+
 class ContentController extends Controller
 {
     public function __construct()
@@ -39,6 +41,25 @@ class ContentController extends Controller
          * - Organizasyon Onayı
          */
         $this->middleware('can:organisation-status');
+    }
+
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Organizasyon Listesi
+     *
+     * @return array
+     */
+    public static function delete(string $es_index, string $es_type, string $es_id)
+    {
+        System::log(auth()->user()->name.' tarafından bir içerik silindi!',
+            'App\Http\Controllers\ContentController::delete('.$es_index.', '.$es_type.', '.$es_id.')',
+            10
+        );
+
+        return json_encode(Document::delete($es_index, $es_type, $es_id));
     }
 
     /**

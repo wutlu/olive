@@ -207,7 +207,7 @@
 @section('content')
     <div class="card with-bg">
         <div class="card-image">
-            <img src="{{ asset('img/md-s/13.jpg') }}" alt="Image" />
+            <img src="{{ asset('img/md-s/25.jpg') }}" alt="Image" />
             <span class="card-title white-text d-flex">
                 <i class="material-icons align-self-center mr-1">speaker_notes</i>
                 Pin Grupları

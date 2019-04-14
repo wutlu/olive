@@ -385,16 +385,17 @@
     }
 @endpush
 
-@section('action-bar:half')
-    <a href="#" class="btn-floating btn-large halfway-fab waves-effect white" data-trigger="create">
-        <i class="material-icons grey-text text-darken-2">add</i>
-    </a>
-@endsection
-
 @section('content')
     <div class="card with-bg">
-        <div class="card-content">
-            <span class="card-title">Twitter Ayarları</span>
+        <div class="card-image">
+            <img src="{{ asset('img/md-s/21.jpg') }}" alt="Image" />
+            <span class="card-title white-text d-flex">
+                <i class="material-icons align-self-center mr-1">settings</i>
+                Twitter Ayarları
+            </span>
+            <a href="#" class="btn-floating btn-large halfway-fab waves-effect white" data-trigger="create">
+                <i class="material-icons grey-text text-darken-2">add</i>
+            </a>
         </div>
         <div class="card-tabs">
             <ul class="tabs tabs-fixed-width">

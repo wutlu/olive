@@ -1,4 +1,4 @@
-<div class="card mb-1 pb-1 cyan darken-2">
+<div class="card mb-1 pb-1 teal">
     <div class="card-content">
         <span class="card-title white-text">Duygu Grafiği</span>
     </div>
