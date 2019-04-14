@@ -191,7 +191,7 @@ function _entry_(o)
                 'class': 'd-table red-text'
             }),
             $('<span />', {
-                'html': o.entry,
+                'html': o.entry ? o.entry : o.text,
                 'class': 'grey-text text-darken-2 text-area'
             }),
             $('<a />', {
@@ -226,7 +226,7 @@ function _article_(o)
                                 'class': 'd-table blue-text title text-area'
                             }),
                             $('<span />', {
-                                'html': o.text,
+                                'html': o.description ? o.description : o.text,
                                 'class': 'grey-text text-darken-2 text-area'
                             })
                         ]
@@ -274,7 +274,7 @@ function _product_(o)
                 'class': 'd-table blue-text title text-area'
             }),
             $('<span />', {
-                'html': o.text ? o.text : 'Açıklama Yok',
+                'html': o.description ? o.description : (o.text ? o.text : '-'),
                 'class': 'grey-text text-darken-2 text-area'
             }),
             $('<a />', {
