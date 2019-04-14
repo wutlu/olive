@@ -880,9 +880,11 @@ class ContentController extends Controller
                     {
                         case 'tweet':
                             $array['text'] = Term::tweet($array['text']);
+                        break;
                         case 'entry':
                             $array['text'] = $array['entry'];
                             unset($array['entry']);
+                        break;
                         case 'article':
                         case 'product':
                             $array['text'] = $array['description'];
