@@ -18,7 +18,7 @@
         <div class="card-content">
             <span class="card-title">Uzatın</span>
         </div>
-        <div class="card-content yellow lighten-4">
+        <div class="card-content white">
             <table class="invoice">
                 <thead>
                     <tr>

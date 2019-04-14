@@ -41,9 +41,7 @@ class Document
         catch (\Exception $e)
         {
             System::log(
-                json_encode(
-                    $e->getMessage()
-                ),
+                $e->getMessage(),
                 'App\Elasticsearch\Document::get('.$name.', '.$type.', '.$id.')'
             );
 
@@ -89,9 +87,7 @@ class Document
         catch (\Exception $e)
         {
             System::log(
-                json_encode(
-                    $e->getMessage()
-                ),
+                $e->getMessage(),
                 'App\Elasticsearch\Document::search('.$name.', '.$type.', '.json_encode($query).')'
             );
 
@@ -252,9 +248,7 @@ class Document
         catch (\Exception $e)
         {
             System::log(
-                json_encode(
-                    $e->getMessage()
-                ),
+                $e->getMessage(),
                 'App\Elasticsearch\Document::count('.$name.', '.$type.', '.json_encode($body).')'
             );
 
@@ -298,9 +292,7 @@ class Document
         catch (\Exception $e)
         {
             System::log(
-                json_encode(
-                    $e->getMessage()
-                ),
+                $e->getMessage(),
                 'App\Elasticsearch\Document::exists('.$name.', '.$type.', '.$id.')'
             );
 

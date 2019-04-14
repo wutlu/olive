@@ -529,7 +529,7 @@
             @php
                 $br_count = count($breadcrumb)-1;
             @endphp
-            <nav id="breadcrumb">
+            <nav id="breadcrumb" class="grey lighten-4">
                 <div class="{{ auth()->check() ? 'sidenav-fixed-layout' : '' }}">
                     <div class="{{ isset($wide) ? 'container container-wide' : 'container' }}">
                         <a href="{{ route('dashboard') }}" class="breadcrumb">Olive</a>
@@ -807,12 +807,13 @@
     @endauth
 
     <div class="@auth{{ @$sidenav_fixed_layout ? 'sidenav-fixed-layout' : '' }}@endauth">
-        <footer class="page-footer grey lighten-4">
+        <footer class="page-footer grey lighten-4 pb-1">
             <div class="{{ isset($wide) ? 'container container-wide' : 'container' }}">
                 <div class="row">
                     <div class="col l6 s12">
                         <img id="vz-logo" src="{{ asset('img/veri.zone_logo-grey.svg') }}" alt="veri.zone-logo" />
-                        <p class="grey-text">© {{ date('Y') }} Veri Zone Bilişim Tek. ve Dan. Ltd. Şti. | Tüm hakları saklıdır.</p>
+                        <p class="grey-text mb-0">© {{ date('Y') }} Veri Zone Bilişim Teknolojileri ve Danışmanlık Ltd. Şti.</p>
+                        <p class="grey-text mb-0">Tüm hakları saklıdır.</p>
                     </div>
                     <div class="col l2 offset-l2 s12">
                         <ul>
