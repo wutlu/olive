@@ -18,11 +18,11 @@
             </span>
         </div>
         <ul class="collection">
-            <li class="collection-item">Sizi yakından ilgilendiren kriterleri belirterek veri toplama sonasında yüksek analiz sonuçları elde edebilirsiniz.</li>
-            <li class="collection-item">Veri toplayıcı örümceklerimiz; ilgilendiğiniz alanlara yoğunlaşarak, veri kaçırmama odağıyla çalışırlar.</li>
+            <li class="collection-item">Sizi yakından ilgilendiren kriterleri belirterek veri toplama sonrasında yüksek analiz sonuçları elde edebilirsiniz.</li>
+            <li class="collection-item">Veri toplayıcı örümceklerimiz; ilgilendiğiniz alanlara yoğunlaşarak, kaynak odağıyla çalışırlar.</li>
             <li class="collection-item">Bu ayarlar bulunduğunuz organizasyon için geçerlidir.</li>
-            <li class="collection-item">Organizasyona dahil tüm kullanıcıların takip havuzları ortaktır.</li>
-            <li class="collection-item">Elde edilen veriler tüm veri.zone kullanıcıları tarafından ortak veritabanından analize açık halde olacaktır.</li>
+            <li class="collection-item">Organizasyonunuza dahil tüm kullanıcıların takip havuzları ortaktır.</li>
+            <li class="collection-item">Elde edilen veriler tüm Olive kullanıcıları tarafından ortak veritabanından analize açık hale getirilir.</li>
         </ul>
     </div>
 @endsection

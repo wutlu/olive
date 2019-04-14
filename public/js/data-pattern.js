@@ -191,7 +191,7 @@ function _entry_(o)
                 'class': 'd-table red-text'
             }),
             $('<span />', {
-                'html': o.text,
+                'html': o.entry,
                 'class': 'grey-text text-darken-2 text-area'
             }),
             $('<a />', {
