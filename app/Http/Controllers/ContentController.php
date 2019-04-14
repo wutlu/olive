@@ -876,9 +876,18 @@ class ContentController extends Controller
                 $hits = array_map(function($arr) {
                     $array = $arr['_source'];
 
-                    if ($arr['_type'] == 'tweet')
+                    switch ($arr['_type'])
                     {
-                        $array['text'] = Term::tweet($array['text']);
+                        case 'tweet':
+                            $array['text'] = Term::tweet($array['text']);
+                        case 'entry':
+                            $array['text'] = $array['entry'];
+                            unset($array['entry']);
+                        case 'article':
+                        case 'product':
+                            $array['text'] = $array['description'];
+                            unset($array['description']);
+                        break;
                     }
 
                     return array_merge(
