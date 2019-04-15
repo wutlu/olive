@@ -13,12 +13,35 @@
         font-size: 32px;
     }
 
-    .head-section {
-        padding: 4rem 0;
-        background-image: url({{ asset('img/obg.svg') }});
+    section {
         background-repeat: no-repeat;
         background-position: center center;
         background-size: cover;
+    }
+
+    .head-section {
+        background-image: url({{ asset('img/obg.svg') }});
+        padding: 4rem 0;
+    }
+    .head-section h1 {
+        font-size: 48px;
+    }
+
+    .demo-section {
+        background-image: url({{ asset('img/photo/contact.jpg') }});
+        background-attachment: fixed;
+    }
+
+    .section-overlay {
+        background-color: rgba(40, 200, 200, .6);
+        padding: 4rem 0;
+        top: -4rem;
+        bottom: -4rem;
+    }
+
+    .section-overlay h2 {
+        font-size: 32px;
+        color: #fff;
     }
 @endpush
 
@@ -47,8 +70,6 @@
 
     $(window).on( 'scroll', function(e) {
         var nav = $('nav.scrolled');
-
-        console.log(e.pageY)
 
         if (e.pageY < 48)
         {
@@ -91,74 +112,79 @@
         <nav class="white scrolled">
             <div class="container">
                 <div class="nav-wrapper">
-                    <a href="#" class="brand-logo">
+                    <a href="#" class="brand-logo left">
                         <img alt="Olive" src="{{ asset('img/olive_logo.svg') }}" />
                     </a>
-                    <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <ul class="right">
                         <li>
-                            <a href="#" class="grey-text text-darken-2 waves-effect">Veri Kaynakları</a>
-                        </li>
-                        <li>
-                            <a href="#" class="grey-text text-darken-2 waves-effect">Hizmetler</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('dashboard') }}" class="white-text text-darken-2 waves-effect teal">Giriş</a>
+                            <a href="{{ route('dashboard') }}" class="grey-text text-darken-2 waves-effect">GİRİŞ</a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
     </div>
+
     <section class="head-section d-flex">
         <div class="container align-self-center">
             <h1>Medya & Sosyal Medya Takip Platformu</h1>
             <p id="dword" class="mb-2">Olive, <span class="text"></span></p>
-            <a data-tooltip="DEMO İSTEYİN" data-position="right" href="#" class="btn-floating btn-large white waves-effect pulse">
+            <a data-tooltip="DEMO İSTEYİN" data-scroll-to=".demo-section" data-scroll-to-tolerance="64px" data-position="right" href="#" class="btn-floating btn-large white waves-effect pulse">
                 <i class="material-icons grey-text text-darken-2">contacts</i>
             </a>
         </div>
     </section>
-    <div class="container">
-        <div class="item-group pt-2 pb-2" id="features">
-            <div class="item grey-text text-darken-2">
-                <i class="large material-icons analytics">poll</i>
-                <h5>Analiz</h5>
-                <ul>
-                    <li>- Ürün veya markanızı rakiplerinizle kıyaslayın.</li>
-                    <li>- İlgilendiğiniz konuları daha anlamlı bir şekilde inceleyin.</li>
-                </ul>
-            </div>
-            <div class="item grey-text text-darken-2">
-                <i class="large material-icons realtime">subject</i>
-                <h5>Gerçek Zamanlı Veri</h5>
-                <ul>
-                    <li>- Herhangi bir konu trend olmadan gündemine hakim olun.</li>
-                    <li>- Ürün veya markanızı anlık ve duygusal olarak takip edin.</li>
-                    <li>- Anlık gündemi yakalayın ve daha sonra inceleyin.</li>
-                </ul>
-            </div>
-            <div class="item grey-text text-darken-2">
-                <i class="large material-icons rotate">toys</i>
-                <h5>Araçlar</h5>
-                <ul>
-                    <li>- Orjinal kaynaktaki verinin dahasını inceleyin.</li>
-                    <li>- Gerçek zamanlı veya geçmişe dönük API'ler alın.</li>
-                </ul>
-            </div>
-            <div class="item grey-text text-darken-2">
-                <i class="large material-icons cloud">cloud</i>
-                <h5>Arşiv</h5>
-                <ul>
-                    <li>- Kriter belirleyin sizin için erişelim.</li>
-                    <li>- Konu odaklı veri arşivi.</li>
-                </ul>
+
+    @push('local.scripts')
+        function __demo_request(__, obj)
+        {
+            if (obj.status == 'ok')
+            {
+                M.toast({ html: 'Formunuzu Aldık!', classes: 'green darken-2' })
+                M.toast({ html: 'Ekibimiz en kısa sürede sizinle iletişime geçecektir.', classes: 'teal' })
+
+                __.find('input[type=text]').html('')
+            }
+        }
+    @endpush
+
+    <section class="demo-section">
+        <div class="section-overlay">
+            <div class="container">
+                <h2>Demo İsteyin</h2>
+                <form id="demo-form" method="post" action="{{ route('demo.request') }}" class="json" data-callback="__demo_request">
+                    <div class="row">
+                        <div class="col m12 l5">
+                            <div class="input-field white-text">
+                                <i class="material-icons prefix">account_circle</i>
+                                <input id="icon_prefix" name="name" type="text" class="validate" />
+                                <label for="icon_prefix">Firma / Kurum</label>
+                            </div>
+                        </div>
+                        <div class="col m12 l5">
+                            <div class="input-field white-text">
+                                <i class="material-icons prefix">phone</i>
+                                <input id="icon_telephone" name="phone" type="text" class="validate" />
+                                <label for="icon_telephone">Telefon</label>
+                            </div>
+                        </div>
+                        <div class="col m12 l2">
+                            <div class="input-field">
+                                <div class="captcha" data-id="demo-captcha"></div>
+                            </div>
+                            <button type="submit" class="btn-flat waves-effect white-text">Gönder</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
-    </div>
+    </section>
+
     <div class="owl-carousel main-slider z-depth-1 grey lighten-5">
         <div class="item grey-text text-darken-2">Online itibarınızı takip edin</div>
         <div class="item grey-text text-darken-2">Gündemi anlık trendlerle veya anlık akışlarla takip edin</div>
         <div class="item grey-text text-darken-2">Gerçek zamanlı alarmlar kurun</div>
+        <div class="item grey-text text-darken-2">Arama sonuçlarınızı görselleştirin</div>
         <div class="item grey-text text-darken-2">Rakiplerinizin ve sektörünüzün yeniliklerinden haberdar olun</div>
     </div>
 @endsection
@@ -170,4 +196,5 @@
 @push('external.include.footer')
     <script src="{{ asset('js/jquery.typewrite.min.js?v='.config('system.version')) }}"></script>
     <script src="{{ asset('js/owl.carousel.min.js?v='.config('system.version')) }}"></script>
+    <script src='//www.google.com/recaptcha/api.js'></script>
 @endpush

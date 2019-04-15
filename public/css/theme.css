@@ -611,7 +611,7 @@ code {
 .markdown > h4,
 .markdown > h5,
 .markdown > h6 {
-  margin: 0 0 1rem;
+  margin: 0 0 .4rem;
 }
 .markdown code {
   padding: 2rem;
@@ -620,7 +620,7 @@ code {
 
 .markdown > h1 { font-size: 3rem; }
 .markdown > h2 { font-size: 2.6rem; }
-.markdown > h3 { font-size: 2.2rem; }
+.markdown > h3 { font-size: 2.2rem; margin: 0 0 1rem; }
 .markdown > h4 { font-size: 1.8rem; }
 .markdown > h5 { font-size: 1.4rem; }
 .markdown > h6 { font-size: 1rem; }
@@ -632,8 +632,11 @@ code {
   color: #6610f2;
 }
 
-.markdown > p + p {
-  margin: 1rem 0 0 !important;
+.markdown > p {
+  margin: 0 0 1rem !important;
+}
+.markdown > p:last-child {
+  margin: 0 !important;
 }
 
 /*!
@@ -968,11 +971,9 @@ body.module-search-active > .search-wrapper {
   overflow: hidden;
 
   width: 200px;
-  height: 4.6rem;
+  height: 64px;
 
   margin: 0 0 1rem;
-
-  box-shadow: .1rem .1rem .4rem 0 rgba(0, 0, 0, .1);
 }
 
 .captcha > .g-recaptcha {
@@ -1670,10 +1671,9 @@ nav .nav-wrapper > ul > li > a > i {
 @media only screen and (max-width: 601px) {
   nav .nav-wrapper > ul > li > a,
   nav .nav-wrapper > ul > li > a > i {
-    line-height: 54px;
+    line-height: 56px;
   }
 }
-
 
 @media only screen and (min-width: 601px) {
   nav,
@@ -2603,8 +2603,8 @@ nav.nav-half {
 }
 .card-alarm > .group > .card-content > .dropdown-trigger {
     position: absolute;
-    right: 1rem;
     top: 1rem;
+    right: 1rem;
 }
 
 /*!
@@ -2621,6 +2621,7 @@ nav.scrolled {
 /*!
  * z-depth
  */
+.captcha,
 .z-depth-1,
 nav,
 nav.scrolled.active,
@@ -2629,4 +2630,53 @@ nav.scrolled.active,
 .sidenav {
           box-shadow: 0 3px 1px -2px rgba(100, 100, 100, .1), 0 2px 2px 0 rgba(100, 100, 100, .1), 0 1px 5px 0px rgba(100, 100, 100, .1);
   -webkit-box-shadow: 0 3px 1px -2px rgba(100, 100, 100, .1), 0 2px 2px 0 rgba(100, 100, 100, .1), 0 1px 5px 0px rgba(100, 100, 100, .1);
+}
+
+/*!
+ * white input
+ */
+.input-field.white-text label {
+  color: #fff !important;
+}
+.input-field input[type=text]:focus + label {
+  color: #fff !important;
+}
+.input-field.white-text input[type=text] {
+  border-bottom: 1px solid #fff !important;
+  box-shadow: 0 1px 0 0 #fff !important;
+}
+.input-field.white-text .prefix.active {
+  color: #fff !important;
+}
+
+/*!
+ * social media icon
+ */
+@font-face {
+  font-family: 'fontello';
+  src: url('../fonts/fontello/fontello.eot?5270261');
+  src: url('../fonts/fontello/fontello.eot?5270261#iefix') format('embedded-opentype'),
+       url('../fonts/fontello/fontello.woff?5270261') format('woff'),
+       url('../fonts/fontello/fontello.ttf?5270261') format('truetype'),
+       url('../fonts/fontello/fontello.svg?5270261#fontello') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.social-icon {
+  font-family: "fontello";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px !important;
+  speak: none;
+ 
+  display: inline-block;
+  text-decoration: inherit;
+  text-align: center;
+
+  font-variant: normal;
+  text-transform: none;
+ 
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }

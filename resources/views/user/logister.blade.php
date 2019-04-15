@@ -1,18 +1,24 @@
 @extends('layouts.app', [ 'header' => 'hide' ])
 
+@push('local.styles')
+    body {
+        background-color: #f0f0f0;
+    }
+@endpush
+
 @section('content')
     <div class="d-table mx-auto pt-2 mt-2 pb-2 mb-2">
-        <div class="right-align">
+        <div class="mb-1">
             <a href="{{ route('home') }}">
-                <img alt="Olive" src="{{ asset('img/olive_logo-grey.svg') }}" style="width: 128px;" />
+                <img alt="Olive" src="{{ asset('img/olive_logo.svg') }}" style="width: 128px;" />
             </a>
         </div>
-        <div class="card teal">
+        <div class="card" style="max-width: 340px;">
             <div class="card-content">
-                <p class="white-text">Hemen bir hesap oluşturun ve bir çok aracı <strong>ücretsiz</strong> olarak kullanmaya başlayın.</p>
+                <p>Hemen bir hesap oluşturun ve bir çok aracı <strong>ücretsiz</strong> olarak kullanmaya başlayın.</p>
             </div>
             <div class="card-tabs">
-                <ul class="tabs tabs-transparent tabs-fixed-width">
+                <ul class="tabs tabs-fixed-width">
                     <li class="tab">
                         <a href="#tab-giris" class="active waves-effect waves-light">Giriş</a>
                     </li>
@@ -108,7 +114,7 @@
         {
             M.toast({ html: 'Giriş gerçekleştiriliyor...', classes: 'green darken-2' })
 
-            setTimeout(goDashboard, 1000)
+            setTimeout(__goDashboard, 1000)
         }
         else if (obj.status == 'ban')
         {
@@ -135,11 +141,11 @@
         {
             M.toast({ html: 'Hesap Oluşturuluyor...', classes: 'green darken-2' })
 
-            setTimeout(goDashboard, 1000)
+            setTimeout(__goDashboard, 1000)
         }
     }
 
-    function goDashboard()
+    function __goDashboard()
     {
         location.href = '{{ route('dashboard') }}';
     }
@@ -151,6 +157,7 @@
             M.toast({ html: 'Size bir doğrulama bağlantısı gönderdik.', classes: 'green darken-2' })
 
             $('#password-form')[0].reset()
+
             captcha()
         }
     }
@@ -174,5 +181,5 @@
         })
 
         $('.parallax').parallax()
-    });
+    })
 @endpush

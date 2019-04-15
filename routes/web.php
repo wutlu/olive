@@ -49,6 +49,8 @@ Route::get('/', 'HomeController@index')->name('home');
 
 Route::get('test', 'TestController@test');
 
+Route::post('demo-istek', 'HomeController@demoRequest')->name('demo.request');
+
 Route::get('panel', 'HomeController@dashboard')->name('dashboard');
 
 Route::post('aktiviteler', 'HomeController@activity')->name('dashboard.activities');

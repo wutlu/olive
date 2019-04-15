@@ -116,6 +116,13 @@ return [
      */
     'organisation_id_root' => env('ORGANISATION_ID_ROOT', 1),
 
+    /**
+     * Destek Kullanıcısı ID
+     *
+     * - Destek mesajlarını yazacak bot destek hesabı ID'si.
+     */
+    'user_id_support' => env('USER_ID_SUPPORT', 1),
+
     'alexa' => [
         /**
          * Alexa Rank Min

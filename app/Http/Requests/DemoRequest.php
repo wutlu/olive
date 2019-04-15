@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PasswordGetRequest extends FormRequest
+class DemoRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,9 @@ class PasswordGetRequest extends FormRequest
     public function rules()
     {
         return [
-            'email_password' => 'required|email|max:64|exists:users,email',
-            'gRecaptchaResponse' => 'required|recaptcha'
+            'name' => 'required|string|max:100',
+            'phone' => 'required|string|max:50',
+            //'gRecaptchaResponse' => 'required|recaptcha'
         ];
     }
 }

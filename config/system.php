@@ -4,7 +4,7 @@ return [
     /**
      * Sistem Versiyonu
      */
-    'version' => '1.5.7-alpha',
+    'version' => '1.5.8-alpha',
 
     /**
      * db
@@ -35,7 +35,7 @@ return [
             'diger' => 'Diğer Konular',
             'odeme-bildirimi' => 'Ödeme Bildirimi',
             'hak-sahipligi' => 'Hak Sahipliği',
-            'organisayon-teklifi' => 'Organizasyon Teklifi',
+            'organisayon-teklifi' => 'Organizasyon Teklifi (Demo İsteği)',
         ]
     ],
 

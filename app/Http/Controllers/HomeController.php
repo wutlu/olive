@@ -10,8 +10,7 @@ use App\Models\User\UserActivity;
 use App\Models\User\UserIntro;
 use App\Models\Option;
 use App\Models\Carousel;
-
-use App\Ticket;
+use App\Models\Ticket;
 
 use YouTube;
 
@@ -24,6 +23,8 @@ use App\Elasticsearch\Document;
 use App\Utilities\Term;
 
 use Illuminate\Support\Facades\Redis as RedisCache;
+
+use App\Http\Requests\DemoRequest;
 
 class HomeController extends Controller
 {
@@ -40,7 +41,8 @@ class HomeController extends Controller
             'intro',
             'alert',
             'monitor',
-            'sources'
+            'sources',
+            'termVersion'
         ]);
     }
 
@@ -62,6 +64,32 @@ class HomeController extends Controller
     public static function termVersion()
     {
         auth()->user()->update([ 'term_version' => config('system.term_version') ]);
+
+        return [
+            'status' => 'ok'
+        ];
+    }
+
+    /**
+     * Demo istek formu.
+     *
+     * @return array
+     */
+    public static function demoRequest(DemoRequest $request)
+    {
+        $ticket = new Ticket;
+        $ticket->user_id = config('app.user_id_support');
+        $ticket->status = 'open';
+
+        $ticket->subject = 'Demo İsteği';
+        $ticket->message = '"'.$request->name.'" | "'.$request->phone.'"';
+        $ticket->type = 'organisayon-teklifi';
+
+        $ticket->save();
+        $ticket->id = $ticket->id.rand(100, 999);
+        $ticket->save();
+
+        Option::where('key', 'root_alert.support')->first()->incr();
 
         return [
             'status' => 'ok'

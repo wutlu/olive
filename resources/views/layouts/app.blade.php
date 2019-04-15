@@ -814,6 +814,25 @@
                         <img id="vz-logo" src="{{ asset('img/veri.zone_logo-grey.svg') }}" alt="veri.zone-logo" />
                         <p class="grey-text mb-0">© {{ date('Y') }} Veri Zone Bilişim Teknolojileri ve Danışmanlık Ltd. Şti.</p>
                         <p class="grey-text mb-0">İnönü Mahallesi, 1769. Sk. 1D, 06370 Ostim Osb / Yenimahalle / ANKARA</p>
+                        <!--
+                        <i class="social-icon icon-tumblr">&#xe800;</i>
+                        <i class="social-icon icon-email">&#xe801;</i>
+                        <i class="social-icon icon-youtube">&#xe802;</i>
+                        <i class="social-icon icon-skype">&#xe804;</i>
+                        <i class="social-icon icon-call">&#xe806;</i>
+                        -->
+                        <a href="#" class="btn-flat btn-small btn-floating waves-effect teal mt-1">
+                            <i class="social-icon icon-twitter white-text">&#xe803;</i>
+                        </a>
+                        <a href="#" class="btn-flat btn-small btn-floating waves-effect teal mt-1">
+                            <i class="social-icon icon-linkedin white-text">&#xe805;</i>
+                        </a>
+                        <a href="#" class="btn-flat btn-small btn-floating waves-effect teal mt-1">
+                            <i class="social-icon icon-facebook white-text">&#xe807;</i>
+                        </a>
+                        <a href="#" class="btn-flat btn-small btn-floating waves-effect teal mt-1">
+                            <i class="social-icon icon-instagram white-text">&#xe808;</i>
+                        </a>
                     </div>
                     <div class="col l2 offset-l2 s12">
                         <ul>

@@ -267,6 +267,17 @@ $(document).on('keydown keyup change click', '[data-image-to]', function() {
     target.attr('src', __.val())
 })
 
+/* --- scroll to --- */
+
+$(document).on('click', '[data-scroll-to]', function() {
+    var __ = $(this);
+
+    scrollTo({
+        'target': __.data('scroll-to'),
+        'tolerance': __.data('scroll-to-tolerance')
+    })
+})
+
 /* --- input to html --- */
 
 $(document).on('keydown keyup change click', '[data-slug]', function() {

@@ -309,6 +309,8 @@ $arr = [
         'module_pin'                      => 'Pin Modülü',
         'module_model'                    => 'Model Modülü',
         'module_forum'                    => 'Forum Modülü',
+
+        'phone'                           => 'Telefon',
     ],
 ];
 

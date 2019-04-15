@@ -4,6 +4,12 @@
     'dock' => true
 ])
 
+@push('local.styles')
+    body {
+        background-color: #f0f0f0;
+    }
+@endpush
+
 @section('title', $page->title)
 
 @push('external.include.header')
@@ -29,10 +35,13 @@
             </a>
         </nav>
     </div>
-    <div class="container">
+
+    <div class="container pt-2 pb-2">
         <div class="card card-unstyled">
             <div class="card-content">
-                {!! $page->markdown() !!}
+                <div class="markdown"> 
+                    {!! $page->markdown() !!}
+                </div>
             </div>
         </div>
     </div>
@@ -51,7 +60,6 @@
 
 @push('local.scripts')
     $(document).ready(function() {
-        $('.parallax').parallax()
         $('.sidenav').sidenav()
         $('.tabs').tabs()
     })
