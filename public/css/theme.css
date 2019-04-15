@@ -1208,49 +1208,6 @@ footer.page-footer > .container > .row > .col > img#vz-logo {
 }
 
 /*!
- * parallax
- */
-.parallax-container {
-  height: auto;
-  padding: 6rem 0;
-}
-
-/*!
- * header
- */
-header#main {
-  margin: 0;
-}
-header#main > .parallax-container {
-  min-height: 100vh;
-
-  display: -ms-flexbox;
-  display: flex;
-}
-header#main > .parallax-container > .container > .row > .col > a#logo {
-  display: table;
-  margin: 2rem 0;
-}
-header#main > .parallax-container > .container > .row > .col > a#logo > img {
-  max-width: 172px;
-}
-header#main > .parallax-container > .container > .row > .col > a {
-  margin: 2rem 0;
-}
-header#main > .parallax-container > .container > .row > .col > .down-area {
-  position: absolute !important;
-  top: auto;
-  z-index: 4;
-  right: 0;
-  bottom: 4rem;
-  left: 0;
-}
-header#main > .parallax-container > .parallax > video#background-video {
-  min-width: 100%;
-  min-height: 100%;
-}
-
-/*!
  * dock
  */
 #dock-content {
@@ -2651,10 +2608,22 @@ nav.nav-half {
 }
 
 /*!
+ * nav scrolled
+ */
+nav.scrolled {
+          box-shadow: none;
+  -webkit-box-shadow: none;
+
+          transition: all .4s cubic-bezier(.25, .46, .45, .94);
+  -webkit-transition: all .4s cubic-bezier(.25, .46, .45, .94);
+}
+
+/*!
  * z-depth
  */
 .z-depth-1,
 nav,
+nav.scrolled.active,
 .card-panel,
 .card,
 .sidenav {

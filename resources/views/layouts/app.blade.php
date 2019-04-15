@@ -807,13 +807,13 @@
     @endauth
 
     <div class="@auth{{ @$sidenav_fixed_layout ? 'sidenav-fixed-layout' : '' }}@endauth">
-        <footer class="page-footer grey lighten-4 pb-1">
+        <footer class="page-footer grey lighten-4">
             <div class="{{ isset($wide) ? 'container container-wide' : 'container' }}">
                 <div class="row">
                     <div class="col l6 s12">
                         <img id="vz-logo" src="{{ asset('img/veri.zone_logo-grey.svg') }}" alt="veri.zone-logo" />
                         <p class="grey-text mb-0">© {{ date('Y') }} Veri Zone Bilişim Teknolojileri ve Danışmanlık Ltd. Şti.</p>
-                        <p class="grey-text mb-0">Tüm hakları saklıdır.</p>
+                        <p class="grey-text mb-0">İnönü Mahallesi, 1769. Sk. 1D, 06370 Ostim Osb / Yenimahalle / ANKARA</p>
                     </div>
                     <div class="col l2 offset-l2 s12">
                         <ul>
@@ -847,6 +847,11 @@
                             </li>
                         </ul>
                     </div>
+                </div>
+            </div>
+            <div class="footer-copyright mt-1">
+                <div class="{{ isset($wide) ? 'container container-wide' : 'container' }} grey-text text-darken-2">
+                    {{ date('Y') }} © <a href="https://veri.zone/">Veri Zone</a> | Tüm hakları saklıdır.
                 </div>
             </div>
         </footer>
