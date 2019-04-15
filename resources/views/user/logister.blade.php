@@ -112,7 +112,7 @@
     {
         if (obj.status == 'ok')
         {
-            M.toast({ html: 'Giriş gerçekleştiriliyor...', classes: 'green darken-2' })
+            M.toast({ html: 'Giriş Gerçekleştirildi!', classes: 'teal' })
 
             setTimeout(__goDashboard, 1000)
         }
@@ -139,7 +139,7 @@
     {
         if (obj.status == 'ok')
         {
-            M.toast({ html: 'Hesap Oluşturuluyor...', classes: 'green darken-2' })
+            M.toast({ html: 'Hesap Oluşturuldu!', classes: 'green darken-2' })
 
             setTimeout(__goDashboard, 1000)
         }

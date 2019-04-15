@@ -21,7 +21,8 @@
 
     .head-section {
         background-image: url({{ asset('img/obg.svg') }});
-        padding: 4rem 0;
+        padding: 4rem 0 0;
+        background-size: contain;
     }
     .head-section h1 {
         font-size: 48px;
@@ -42,6 +43,11 @@
     .section-overlay h2 {
         font-size: 32px;
         color: #fff;
+    }
+
+    .browser-mockup {
+        margin: 2rem auto 0;
+        max-width: 1024px;
     }
 @endpush
 
@@ -125,15 +131,55 @@
         </nav>
     </div>
 
-    <section class="head-section d-flex">
-        <div class="container align-self-center">
+    <section class="head-section">
+        <div class="container center-align">
             <h1>Medya & Sosyal Medya Takip Platformu</h1>
             <p id="dword" class="mb-2">Olive, <span class="text"></span></p>
-            <a data-tooltip="DEMO İSTEYİN" data-scroll-to=".demo-section" data-scroll-to-tolerance="64px" data-position="right" href="#" class="btn-floating btn-large white waves-effect pulse">
-                <i class="material-icons grey-text text-darken-2">contacts</i>
-            </a>
+            <div class="browser-mockup with-tab">
+                <img src="{{ asset('img/search.jpg') }}" alt="Olive Mockup" />
+            </div>
         </div>
     </section>
+
+    <div class="pt-2 pb-2">
+        <div class="container">
+            <div class="item-group pt-2 pb-2" id="features">
+                <div class="item grey-text text-darken-2">
+                    <i class="large material-icons analytics">poll</i>
+                    <h5>Analiz</h5>
+                    <ul>
+                        <li>- Ürün veya markanızı rakiplerinizle kıyaslayın.</li>
+                        <li>- İlgilendiğiniz konuları daha anlamlı bir şekilde inceleyin.</li>
+                    </ul>
+                </div>
+                <div class="item grey-text text-darken-2">
+                    <i class="large material-icons realtime">subject</i>
+                    <h5>Gerçek Zamanlı Veri</h5>
+                    <ul>
+                        <li>- Herhangi bir konu trend olmadan gündemine hakim olun.</li>
+                        <li>- Ürün veya markanızı anlık ve duygusal olarak takip edin.</li>
+                        <li>- Anlık gündemi yakalayın ve daha sonra inceleyin.</li>
+                    </ul>
+                </div>
+                <div class="item grey-text text-darken-2">
+                    <i class="large material-icons rotate">toys</i>
+                    <h5>Araçlar</h5>
+                    <ul>
+                        <li>- Orjinal kaynaktaki veriden fazlasını inceleyin.</li>
+                        <li>- Gerçek zamanlı veya geçmişe dönük API'ler edinin.</li>
+                    </ul>
+                </div>
+                <div class="item grey-text text-darken-2">
+                    <i class="large material-icons cloud">cloud</i>
+                    <h5>Arşiv</h5>
+                    <ul>
+                        <li>- Kriter belirtin sizin için erişelim.</li>
+                        <li>- Konu odaklı veri arşivi.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 
     @push('local.scripts')
         function __demo_request(__, obj)
