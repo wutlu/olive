@@ -29,21 +29,13 @@
             </a>
         </nav>
     </div>
-    <header id="main">
-        <div class="parallax-container">
-            <div class="parallax indigo lighten-5">
-                <img src="{{ asset('img/bg-small.svg') }}" alt="bg" />
-            </div>
-
-            <div class="container">
-                <div class="card card-unstyled">
-                    <div class="card-content">
-                        {!! $page->markdown() !!}
-                    </div>
-                </div>
+    <div class="container">
+        <div class="card card-unstyled">
+            <div class="card-content">
+                {!! $page->markdown() !!}
             </div>
         </div>
-    </header>
+    </div>
 
     <ul id="slide-out" class="sidenav">
         <li class="p-1">
