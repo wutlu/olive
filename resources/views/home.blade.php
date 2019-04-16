@@ -326,13 +326,13 @@
                     <div class="col s12 m6">
                         <div class="p-1">
                             <span class="chip red d-table white-text">haber</span>
-                            <span class="chip white">bilgi</span>
-                            <span class="chip white">teknoloji</span>
-                            <span class="chip white">türkiye</span>
-                            <span class="chip white">internet</span>
-                            <span class="chip white">spor</span>
-                            <span class="chip white">futbol</span>
-                            <span class="chip white">basketbol</span>
+                            <span class="chip white">+bilgi</span>
+                            <span class="chip white">+teknoloji</span>
+                            <span class="chip white">+türkiye</span>
+                            <span class="chip white">+internet</span>
+                            <span class="chip white">+spor</span>
+                            <span class="chip white">+futbol</span>
+                            <span class="chip white">+basketbol</span>
                         </div>
                     </div>
                 </div>

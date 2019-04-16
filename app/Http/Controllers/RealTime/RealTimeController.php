@@ -406,7 +406,7 @@ class RealTimeController extends Controller
                             'range' => [
                                 'called_at' => [
                                     'format' => 'YYYY-MM-dd HH:mm',
-                                    'gte' => Carbon::now()->subMinutes(5)->format('Y-m-d H:i')
+                                    'gte' => Carbon::now()->subMinutes(2)->format('Y-m-d H:i')
                                 ]
                             ]
                         ]
@@ -419,7 +419,8 @@ class RealTimeController extends Controller
                         [
                             'query_string' => [
                                 'fields' => [
-                                    'title'
+                                    'title',
+                                    'description'
                                 ],
                                 'query' => implode(' ', $words),
                                 'default_operator' => 'OR'

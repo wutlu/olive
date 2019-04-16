@@ -7,8 +7,7 @@ return [
         'logo' => 'img/veri.zone_logo.svg',
         'name' => 'Veri Zone Bilişim Tek. ve Dan. Ltd. Şti.',
         'address' => [
-            'İnönü Mahallesi, 1769. Sk. 1D, 06370',
-            'Ostim Osb',
+            'İnönü Mahallesi, 1769. Sk. 1D/1, 06370',
             'Yenimahalle/ANKARA'
         ],
         'contact' => [
