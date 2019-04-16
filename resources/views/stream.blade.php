@@ -627,8 +627,6 @@
                 <i class="material-icons align-self-center mr-1">speaker_notes</i>
                 Kelime Grupları
             </span>
-        </div>
-        <div class="card-image">
             <a href="#" class="btn-floating halfway-fab waves-effect white" data-trigger="create-keyword-group">
                 <i class="material-icons grey-text text-darken-2">add</i>
             </a>

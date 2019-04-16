@@ -97,6 +97,7 @@ Route::prefix('gercek-zamanli')->namespace('RealTime')->group(function () {
     Route::get('akis', 'RealTimeController@stream')->name('realtime.stream');
 
     Route::post('sorgu', 'RealTimeController@query')->name('realtime.query');
+    Route::post('sorgu/ornek', 'RealTimeController@querySample')->name('realtime.query.sample');
 
     Route::prefix('kelime')->group(function () {
         Route::prefix('gruplar')->group(function () {

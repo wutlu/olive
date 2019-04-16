@@ -33,14 +33,19 @@
         background-attachment: fixed;
     }
 
+    .rt-section {
+        background-image: url({{ asset('img/photo/live.jpg') }});
+        background-attachment: fixed;
+        margin: 2rem 0 0;
+    }
+
     .section-overlay {
         background-color: rgba(40, 200, 200, .6);
         padding: 4rem 0;
-        top: -4rem;
-        bottom: -4rem;
     }
 
     .section-overlay h2 {
+        margin: 0 0 1rem;
         font-size: 32px;
         color: #fff;
     }
@@ -48,6 +53,23 @@
     .browser-mockup {
         margin: 2rem auto 0;
         max-width: 1024px;
+    }
+
+    .marked {
+        padding: .4rem;
+        border-radius: .2rem;
+    }
+
+    .time-line > .collection {
+        height: 200px;
+        overflow: hidden;
+
+        border-width: .4rem;
+        border-style: solid;
+        border-color: #fff;
+    }
+    .time-line > .collection.active {
+        border-color: #f44336;
     }
 @endpush
 
@@ -90,27 +112,168 @@
     $('#dword').children('.text').typewrite({
         actions: [
             { delay: 500 },
-            { type: 'daha temiz!' },
+            { type: '1k+ haber kaynağı' },
+            { delay: 2000 },
+            { select: { from: 0, to: 17 } },
             { delay: 1000 },
-            { select: { from: 5, to: 11 } },
-            { delay: 1000 },
-            { remove: { num: 6, type: 'whole' } },
+            { remove: { num: 17, type: 'whole' } },
 
-            { type: 'net!' },
+            { type: 'günlük 50k+ haber' },
+            { delay: 2000 },
+            { select: { from: 0, to: 17 } },
             { delay: 1000 },
-            { select: { from: 5, to: 9 } },
-            { delay: 1000 },
-            { remove: { num: 4, type: 'whole' } },
+            { remove: { num: 17, type: 'whole' } },
 
-            { type: 'anlamlı!' },
+            { type: '4 büyük sözlük' },
+            { delay: 2000 },
+            { select: { from: 0, to: 14 } },
             { delay: 1000 },
-            { select: { from: 12, to: 13 } },
-            { delay: 1000 },
-            { remove: { num: 1, type: 'whole' } },
+            { remove: { num: 14, type: 'whole' } },
 
-            { type: ' bir internet deneyimi sunar...' },
+            { type: 'günlük 40k+ entry' },
+            { delay: 2000 },
+            { select: { from: 0, to: 17 } },
+            { delay: 1000 },
+            { remove: { num: 17, type: 'whole' } },
+
+            { type: 'aylık 200m+ tweet' },
+            { delay: 2000 },
+            { select: { from: 0, to: 17 } },
+            { delay: 1000 },
+            { remove: { num: 17, type: 'whole' } },
+
+            { type: 'aylık 1m+ youtube video yorumu' },
+            { delay: 2000 },
+            { select: { from: 0, to: 30 } },
+            { delay: 1000 },
+            { remove: { num: 30, type: 'whole' } },
+
+            { type: 'sürekli gelişen bir veri ekosistemi' }
         ]
     })
+
+    var buffer = [];
+    var words = [];
+
+    var speed = 600; // default
+    var time = speed;
+    var liveTimer;
+
+    $(window).on('load', function() {
+        livePush()
+    })
+
+    var bucket = $('.time-line > .collection');
+    var model = bucket.children('.model');
+
+    function livePush()
+    {
+        if (buffer.length)
+        {
+            var obj = buffer[0];
+
+            if (!$('#' + obj.uuid).length)
+            {
+                var item = model.clone().html($('<div />', {
+                    'html': [
+                        $('<span />', {
+                            'html': obj.called_at,
+                            'class': 'grey-text align-self-center d-table',
+                            'css': {
+                                'width': '48px'
+                            }
+                        }),
+                        $('<span />', {
+                            'class': 'align-self-center',
+                            'html': obj.title
+                        })
+                    ],
+                    'class': 'd-flex grey-text text-darken-2'
+                }));
+
+                item.mark(words, {
+                    'element': 'span',
+                    'className': 'marked yellow black-text',
+                    'accuracy': 'complementary'
+                })
+
+                item.attr('id', obj.uuid)
+                    .hide()
+                    .removeClass('model hide')
+                    .show( 'highlight', {
+                        'color': '#ffe0b2'
+                    }, 1000 );
+
+                item.prependTo(bucket)
+            }
+
+            buffer.shift()
+
+            if (bucket.children('.collection-item').length > 200)
+            {
+                bucket.children('.collection-item:last-child').remove()
+            }
+        }
+
+        window.clearTimeout(liveTimer);
+
+        liveTimer = window.setTimeout(function() {
+            livePush()
+        }, time)
+    }
+
+    $(document).on('mouseenter', '.time-line > .collection', function() {
+        time = 60000;
+
+        $('.time-line > .collection').addClass('active')
+    }).on('mouseleave', '.time-line', speed_change)
+
+    function speed_change()
+    {
+        time = speed;
+
+        window.clearTimeout(liveTimer);
+
+        liveTimer = window.setTimeout(function() {
+            livePush()
+        }, time)
+
+        $('.time-line > .collection').removeClass('active')
+    }
+
+    var streamTimer;
+
+    function __realtime(__, obj)
+    {
+        if (obj.status == 'ok')
+        {
+            words = obj.words;
+
+            $.each(obj.data, function(key, o) {
+                if ($('#' + o.uuid).length)
+                {
+                    //
+                }
+                else
+                {
+                    var item = buffer.filter(function (x) {
+                         return x.uuid === o.uuid
+                    })[0];
+    
+                    if (!item)
+                    {
+                        buffer.push(o)
+                    }
+                }
+            })
+
+            window.clearTimeout(streamTimer)
+
+            streamTimer = window.setTimeout(function() {
+                vzAjax($('.time-line'))
+            }, 10000)
+        }
+    }
 @endpush
 
 @section('content')
@@ -134,9 +297,45 @@
     <section class="head-section">
         <div class="container center-align">
             <h1>Medya & Sosyal Medya Takip Platformu</h1>
-            <p id="dword" class="mb-2">Olive, <span class="text"></span></p>
+            <p id="dword" class="mb-2">
+                ( <span class="text"></span> )
+            </p>
+
             <div class="browser-mockup with-tab">
                 <img src="{{ asset('img/search.jpg') }}" alt="Olive Mockup" />
+            </div>
+        </div>
+    </section>
+
+    <section class="rt-section">
+        <div class="section-overlay">
+            <div class="container">
+                <h2>Tam Manasıyla Gerçek Zamanlı!</h2>
+                <div class="row">
+                    <div class="col s12 m6">
+                        <div
+                            class="card time-line load"
+                            data-href="{{ route('realtime.query.sample') }}"
+                            data-callback="__realtime"
+                            data-method="post"
+                            data-include="keyword_group,sentiment">
+                            <ul class="collection">
+                                <li class="collection-item model hide"></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col s12 m6">
+                        <div class="p-1">
+                            <span class="chip red d-table white-text">haber</span>
+                            <span class="chip white">bilgi</span>
+                            <span class="chip white">teknoloji</span>
+                            <span class="chip white">türkiye</span>
+                            <span class="chip white">internet</span>
+                            <span class="chip white">veri</span>
+                            <span class="chip white">data</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -240,7 +439,9 @@
 @endpush
 
 @push('external.include.footer')
+    <script src='//www.google.com/recaptcha/api.js'></script>
     <script src="{{ asset('js/jquery.typewrite.min.js?v='.config('system.version')) }}"></script>
     <script src="{{ asset('js/owl.carousel.min.js?v='.config('system.version')) }}"></script>
-    <script src='//www.google.com/recaptcha/api.js'></script>
+    <script src="{{ asset('js/jquery.mark.min.js?v='.config('system.version')) }}" charset="UTF-8"></script>
+    <script src="{{ asset('js/jquery.ui.min.js?v='.config('system.version')) }}"></script>
 @endpush

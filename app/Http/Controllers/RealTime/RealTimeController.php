@@ -29,7 +29,7 @@ class RealTimeController extends Controller
     public function __construct()
     {
         ### [ üyelik ve organizasyon zorunlu ve organizasyonun zorunlu olarak real_time özelliği desteklemesi ] ###
-        $this->middleware([ 'auth', 'organisation:have' ]);
+        $this->middleware([ 'auth', 'organisation:have' ])->except('querySample');
 
         ### [ zorunlu aktif organizasyon ] ###
         $this->middleware([
@@ -368,6 +368,93 @@ class RealTimeController extends Controller
                         }
                     }
                 }
+            }
+        }
+
+        usort($data, '\App\Utilities\DateUtility::dateSort');
+
+        return [
+            'status' => 'ok',
+            'data' => $data,
+            'words' => $words
+        ];
+    }
+
+    /**
+     * Gerçek Zamanlı, akış sorgusu. (Örnek)
+     *
+     * @return array
+     */
+    public function querySample()
+    {
+        $data = [];
+        $words = [
+            'bilgi',
+            'teknoloji',
+            'türkiye',
+            'internet',
+            'veri',
+            'data'
+        ];
+
+        $query = Document::search([ 'media', '*' ], 'article', [
+            'query' => [
+                'bool' => [
+                    'filter' => [
+                        [
+                            'range' => [
+                                'called_at' => [
+                                    'format' => 'YYYY-MM-dd HH:mm',
+                                    'gte' => Carbon::now()->subMinutes(2)->format('Y-m-d H:i')
+                                ]
+                            ]
+                        ]
+                    ],
+                    'should' => [
+                        [ 'match' => [ 'status' => 'ok' ] ]
+                    ],
+                    'must' => [
+                        [ 'exists' => [ 'field' => 'created_at' ] ],
+                        [
+                            'query_string' => [
+                                'fields' => [
+                                    'title'
+                                ],
+                                'query' => implode(' ', $words),
+                                'default_operator' => 'OR'
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'sort' => [ 'created_at' => 'DESC' ],
+            'size' => 100,
+            '_source' => [
+                'url',
+                'title',
+                'created_at',
+                'called_at'
+            ]
+        ]);
+
+        if (@$query->data['hits']['hits'])
+        {
+            foreach ($query->data['hits']['hits'] as $object)
+            {
+                $arr = [
+                    'uuid' => md5($object['_id'].'.'.$object['_index']),
+
+                    '_id' => $object['_id'],
+                    '_type' => $object['_type'],
+                    '_index' => $object['_index'],
+
+                    'created_at' => date('d.m.Y H:i:s', strtotime($object['_source']['created_at'])),
+                    'called_at' => date('H:i', strtotime($object['_source']['called_at']))
+                ];
+
+                $data[] = array_merge($arr, [
+                    'title' => $object['_source']['title']
+                ]);
             }
         }
 
