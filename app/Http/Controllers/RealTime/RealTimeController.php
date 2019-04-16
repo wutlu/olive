@@ -448,7 +448,6 @@ class RealTimeController extends Controller
                     '_type' => $object['_type'],
                     '_index' => $object['_index'],
 
-                    'created_at' => date('d.m.Y H:i:s', strtotime($object['_source']['created_at'])),
                     'called_at' => date('H:i', strtotime($object['_source']['called_at']))
                 ];
 
@@ -457,8 +456,6 @@ class RealTimeController extends Controller
                 ]);
             }
         }
-
-        usort($data, '\App\Utilities\DateUtility::dateSort');
 
         return [
             'status' => 'ok',

@@ -317,8 +317,7 @@
                             class="card time-line load"
                             data-href="{{ route('realtime.query.sample') }}"
                             data-callback="__realtime"
-                            data-method="post"
-                            data-include="keyword_group,sentiment">
+                            data-method="post">
                             <ul class="collection">
                                 <li class="collection-item model hide"></li>
                             </ul>
