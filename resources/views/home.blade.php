@@ -339,6 +339,14 @@
         </div>
     </section>
 
+    <div class="owl-carousel main-slider z-depth-1 grey lighten-5">
+        <div class="item grey-text text-darken-2">Online itibarınızı takip edin</div>
+        <div class="item grey-text text-darken-2">Gündemi anlık trendlerle veya anlık akışlarla takip edin</div>
+        <div class="item grey-text text-darken-2">Gerçek zamanlı alarmlar kurun</div>
+        <div class="item grey-text text-darken-2">Arama sonuçlarınızı görselleştirin</div>
+        <div class="item grey-text text-darken-2">Rakiplerinizin ve sektörünüzün yeniliklerinden haberdar olun</div>
+    </div>
+
     <div class="pt-2 pb-2">
         <div class="container">
             <div class="item-group pt-2 pb-2" id="features">
@@ -423,14 +431,6 @@
             </div>
         </div>
     </section>
-
-    <div class="owl-carousel main-slider z-depth-1 grey lighten-5">
-        <div class="item grey-text text-darken-2">Online itibarınızı takip edin</div>
-        <div class="item grey-text text-darken-2">Gündemi anlık trendlerle veya anlık akışlarla takip edin</div>
-        <div class="item grey-text text-darken-2">Gerçek zamanlı alarmlar kurun</div>
-        <div class="item grey-text text-darken-2">Arama sonuçlarınızı görselleştirin</div>
-        <div class="item grey-text text-darken-2">Rakiplerinizin ve sektörünüzün yeniliklerinden haberdar olun</div>
-    </div>
 @endsection
 
 @push('external.include.header')
