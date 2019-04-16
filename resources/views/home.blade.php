@@ -310,7 +310,7 @@
     <section class="rt-section">
         <div class="section-overlay">
             <div class="container">
-                <h2>Tam Manasıyla Gerçek Zamanlı!</h2>
+                <h2>Tam Anlamıyla Gerçek Zamanlı!</h2>
                 <div class="row">
                     <div class="col s12 m6">
                         <div
@@ -330,8 +330,9 @@
                             <span class="chip white">teknoloji</span>
                             <span class="chip white">türkiye</span>
                             <span class="chip white">internet</span>
-                            <span class="chip white">veri</span>
-                            <span class="chip white">data</span>
+                            <span class="chip white">spor</span>
+                            <span class="chip white">futbol</span>
+                            <span class="chip white">basketbol</span>
                         </div>
                     </div>
                 </div>

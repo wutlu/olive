@@ -20,7 +20,11 @@
                     }),
                     $('<li />', {
                         'class': 'collection-item',
-                        'html': 'Twitter için, <code class="red white-text">user.screen_name:olivedotzone</code> veya <code class="red white-text">user.id:606582774</code> operatörlerini kullanabilirsiniz.'
+                        'html': 'Twitter için, <code class="red white-text">@olivedotzone</code> veya <code class="red white-text">user.id:606582774</code> operatörlerini kullanabilirsiniz.'
+                    }),
+                    $('<li />', {
+                        'class': 'collection-item',
+                        'html': 'Sadece doğrulanmış hesapları almak için, <code class="red white-text">user.verified:true</code> operatörünü kullanabilirsiniz.'
                     }),
                     $('<li />', {
                         'class': 'collection-item',

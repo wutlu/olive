@@ -393,8 +393,9 @@ class RealTimeController extends Controller
             'teknoloji',
             'türkiye',
             'internet',
-            'veri',
-            'data'
+            'spor',
+            'futbol',
+            'basketbol'
         ];
 
         $query = Document::search([ 'media', '*' ], 'article', [
@@ -405,7 +406,7 @@ class RealTimeController extends Controller
                             'range' => [
                                 'called_at' => [
                                     'format' => 'YYYY-MM-dd HH:mm',
-                                    'gte' => Carbon::now()->subMinutes(2)->format('Y-m-d H:i')
+                                    'gte' => Carbon::now()->subMinutes(5)->format('Y-m-d H:i')
                                 ]
                             ]
                         ]
