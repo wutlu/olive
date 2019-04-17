@@ -17,37 +17,47 @@
         background-repeat: no-repeat;
         background-position: center center;
         background-size: cover;
-    }
-
-    .head-section {
-        background-image: url({{ asset('img/obg.svg') }});
-        padding: 4rem 0 0;
-        background-size: contain;
-    }
-    .head-section h1 {
-        font-size: 48px;
+        background-attachment: fixed;
     }
 
     .demo-section {
-        background-image: url({{ asset('img/photo/contact.jpg') }});
-        background-attachment: fixed;
+        padding: 100px 0;
+    }
+
+    .y-section {
+        background-image: url({{ asset('img/obg.svg') }});
+        background-size: contain;
+        background-attachment: scroll;
+        background-position: center bottom;
+    }
+
+    .x-section {
+        background-image: url({{ asset('img/photo/xolive.jpg') }});
     }
 
     .rt-section {
         background-image: url({{ asset('img/photo/live.jpg') }});
-        background-attachment: fixed;
-        margin: 2rem 0 0;
+        background-position: center bottom;
+    }
+
+    .x-section > .section-overlay,
+    .rt-section > .section-overlay {
+        min-height: 100vh;
     }
 
     .section-overlay {
-        background-color: rgba(40, 200, 200, .6);
+        background-color: rgba(26, 28, 32, .6);
         padding: 4rem 0;
     }
 
-    .section-overlay h2 {
+    section h1 {
+        margin: 0 0 1rem;
+        font-size: 48px;
+    }
+
+    section h2 {
         margin: 0 0 1rem;
         font-size: 32px;
-        color: #fff;
     }
 
     .browser-mockup {
@@ -63,13 +73,24 @@
     .time-line > .collection {
         height: 200px;
         overflow: hidden;
-
-        border-width: .4rem;
-        border-style: solid;
-        border-color: #fff;
     }
     .time-line > .collection.active {
-        border-color: #f44336;
+        background-color: #f0f0f0;
+    }
+
+    .logo {
+        width: 128px;
+        margin: 0 0 2rem;
+    }
+
+    .more-down {
+        text-align: center;
+        position: absolute;
+        right: 0;
+        left: 0;
+
+                transform: translateY(calc(-100% + -2rem));
+        -webkit-transform: translateY(calc(-100% + -2rem));
     }
 @endpush
 
@@ -94,19 +115,6 @@
         autoplay: true,
         autoplayTimeout: 4000,
         autoplayHoverPause: true
-    })
-
-    $(window).on( 'scroll', function(e) {
-        var nav = $('nav.scrolled');
-
-        if (e.pageY < 48)
-        {
-            nav.removeClass('active')
-        }
-        else
-        {
-            nav.addClass('active')
-        }
     })
 
     $('#dword').children('.text').typewrite({
@@ -277,29 +285,70 @@
 @endpush
 
 @section('content')
-    <div class="navbar-fixed">
-        <nav class="white scrolled">
+    <section class="x-section">
+        <div class="section-overlay">
             <div class="container">
-                <div class="nav-wrapper">
-                    <a href="#" class="brand-logo left">
-                        <img alt="Olive" src="{{ asset('img/olive_logo.svg') }}" />
-                    </a>
-                    <ul class="right">
-                        <li>
-                            <a href="{{ route('dashboard') }}" class="grey-text text-darken-2 waves-effect">GİRİŞ</a>
-                        </li>
+                <img align="Olive" src="{{ asset('img/olive_logo-white.svg') }}" class="logo" />
+                <h1 class="white-text">Medya & Sosyal Medya Takip Platformu</h1>
+                <p id="dword" class="mb-2">
+                    <span class="text white-text"></span>
+                    &nbsp;
+                </p>
+                <a href="{{ route('dashboard') }}" class="btn-flat btn-large white waves-effect">Giriş Yapın</a>
+            </div>
+        </div>
+    </section>
+    <div class="more-down">
+        <a href="#" class="btn-floating btn-large pulse white" data-scroll-to=".main-slider">
+            <i class="material-icons grey-text text-darken-2">keyboard_arrow_down</i>
+        </a>
+    </div>
+
+    <div class="owl-carousel main-slider">
+        <div class="item">Online itibarınızı takip edin</div>
+        <div class="item">Gündemi anlık trendlerle veya anlık akışlarla takip edin</div>
+        <div class="item">Gerçek zamanlı alarmlar kurun</div>
+        <div class="item">Arama sonuçlarınızı görselleştirin</div>
+        <div class="item">Rakiplerinizin ve sektörünüzün yeniliklerinden haberdar olun</div>
+    </div>
+
+    <section class="y-section">
+        <div class="container">
+            <div class="item-group pt-2" id="features">
+                <div class="item">
+                    <i class="large material-icons analytics">poll</i>
+                    <h5>Analiz</h5>
+                    <ul>
+                        <li>- Ürün veya markanızı rakiplerinizle kıyaslayın.</li>
+                        <li>- İlgilendiğiniz konuları daha anlamlı bir şekilde inceleyin.</li>
+                    </ul>
+                </div>
+                <div class="item">
+                    <i class="large material-icons realtime">subject</i>
+                    <h5>Gerçek Zamanlı Veri</h5>
+                    <ul>
+                        <li>- Herhangi bir konu trend olmadan gündemine hakim olun.</li>
+                        <li>- Ürün veya markanızı anlık ve duygusal olarak takip edin.</li>
+                        <li>- Anlık gündemi yakalayın ve daha sonra inceleyin.</li>
+                    </ul>
+                </div>
+                <div class="item">
+                    <i class="large material-icons rotate">toys</i>
+                    <h5>Araçlar</h5>
+                    <ul>
+                        <li>- Orjinal kaynaktaki veriden fazlasını inceleyin.</li>
+                        <li>- Gerçek zamanlı veya geçmişe dönük API'ler edinin.</li>
+                    </ul>
+                </div>
+                <div class="item">
+                    <i class="large material-icons cloud">cloud</i>
+                    <h5>Arşiv</h5>
+                    <ul>
+                        <li>- Kriter belirtin sizin için erişelim.</li>
+                        <li>- Konu odaklı veri arşivi.</li>
                     </ul>
                 </div>
             </div>
-        </nav>
-    </div>
-
-    <section class="head-section">
-        <div class="container center-align">
-            <h1>Medya & Sosyal Medya Takip Platformu</h1>
-            <p id="dword" class="mb-2">
-                ( <span class="text"></span> )
-            </p>
 
             <div class="browser-mockup with-tab">
                 <img src="{{ asset('img/search.jpg') }}" alt="Olive Mockup" />
@@ -308,9 +357,9 @@
     </section>
 
     <section class="rt-section">
-        <div class="section-overlay">
-            <div class="container">
-                <h2>Tam Anlamıyla Gerçek Zamanlı!</h2>
+        <div class="section-overlay d-flex">
+            <div class="container align-self-center">
+                <h2 class="white-text">Tam Anlamıyla Gerçek Zamanlı!</h2>
                 <div class="row">
                     <div class="col s12 m6">
                         <div
@@ -340,54 +389,6 @@
         </div>
     </section>
 
-    <div class="owl-carousel main-slider z-depth-1 grey lighten-5">
-        <div class="item grey-text text-darken-2">Online itibarınızı takip edin</div>
-        <div class="item grey-text text-darken-2">Gündemi anlık trendlerle veya anlık akışlarla takip edin</div>
-        <div class="item grey-text text-darken-2">Gerçek zamanlı alarmlar kurun</div>
-        <div class="item grey-text text-darken-2">Arama sonuçlarınızı görselleştirin</div>
-        <div class="item grey-text text-darken-2">Rakiplerinizin ve sektörünüzün yeniliklerinden haberdar olun</div>
-    </div>
-
-    <div class="pt-2 pb-2">
-        <div class="container">
-            <div class="item-group pt-2 pb-2" id="features">
-                <div class="item grey-text text-darken-2">
-                    <i class="large material-icons analytics">poll</i>
-                    <h5>Analiz</h5>
-                    <ul>
-                        <li>- Ürün veya markanızı rakiplerinizle kıyaslayın.</li>
-                        <li>- İlgilendiğiniz konuları daha anlamlı bir şekilde inceleyin.</li>
-                    </ul>
-                </div>
-                <div class="item grey-text text-darken-2">
-                    <i class="large material-icons realtime">subject</i>
-                    <h5>Gerçek Zamanlı Veri</h5>
-                    <ul>
-                        <li>- Herhangi bir konu trend olmadan gündemine hakim olun.</li>
-                        <li>- Ürün veya markanızı anlık ve duygusal olarak takip edin.</li>
-                        <li>- Anlık gündemi yakalayın ve daha sonra inceleyin.</li>
-                    </ul>
-                </div>
-                <div class="item grey-text text-darken-2">
-                    <i class="large material-icons rotate">toys</i>
-                    <h5>Araçlar</h5>
-                    <ul>
-                        <li>- Orjinal kaynaktaki veriden fazlasını inceleyin.</li>
-                        <li>- Gerçek zamanlı veya geçmişe dönük API'ler edinin.</li>
-                    </ul>
-                </div>
-                <div class="item grey-text text-darken-2">
-                    <i class="large material-icons cloud">cloud</i>
-                    <h5>Arşiv</h5>
-                    <ul>
-                        <li>- Kriter belirtin sizin için erişelim.</li>
-                        <li>- Konu odaklı veri arşivi.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
     @push('local.scripts')
         function __demo_request(__, obj)
         {
@@ -402,34 +403,32 @@
     @endpush
 
     <section class="demo-section">
-        <div class="section-overlay">
-            <div class="container">
-                <h2>Demo İsteyin</h2>
-                <form id="demo-form" method="post" action="{{ route('demo.request') }}" class="json" data-callback="__demo_request">
-                    <div class="row">
-                        <div class="col m12 l5">
-                            <div class="input-field white-text">
-                                <i class="material-icons prefix">account_circle</i>
-                                <input id="icon_prefix" name="name" type="text" class="validate" />
-                                <label for="icon_prefix">Firma / Kurum</label>
-                            </div>
-                        </div>
-                        <div class="col m12 l5">
-                            <div class="input-field white-text">
-                                <i class="material-icons prefix">phone</i>
-                                <input id="icon_telephone" name="phone" type="text" class="validate" />
-                                <label for="icon_telephone">Telefon</label>
-                            </div>
-                        </div>
-                        <div class="col m12 l2">
-                            <div class="input-field">
-                                <div class="captcha" data-id="demo-captcha"></div>
-                            </div>
-                            <button type="submit" class="btn-flat waves-effect white-text">Gönder</button>
+        <div class="container">
+            <h2>Demo İsteyin</h2>
+            <form id="demo-form" method="post" action="{{ route('demo.request') }}" class="json" data-callback="__demo_request">
+                <div class="row">
+                    <div class="col m12 l5">
+                        <div class="input-field">
+                            <i class="material-icons prefix">account_circle</i>
+                            <input id="icon_prefix" name="name" type="text" class="validate" />
+                            <label for="icon_prefix">Firma / Kurum</label>
                         </div>
                     </div>
-                </form>
-            </div>
+                    <div class="col m12 l5">
+                        <div class="input-field">
+                            <i class="material-icons prefix">phone</i>
+                            <input id="icon_telephone" name="phone" type="text" class="validate" />
+                            <label for="icon_telephone">Telefon</label>
+                        </div>
+                    </div>
+                    <div class="col m12 l2">
+                        <div class="input-field">
+                            <div class="captcha" data-id="demo-captcha"></div>
+                        </div>
+                        <button type="submit" class="btn-flat waves-effect">Gönder</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </section>
 @endsection

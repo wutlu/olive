@@ -239,7 +239,7 @@ class Update extends Command
                             ]
                         ]
                     ],
-                    '_source' => [ 'title' ]
+                    '_source' => [ 'title', 'url' ]
                 ]);
 
                 $title = @$document->data['hits']['hits'][0]['_source']['title'];
@@ -259,7 +259,7 @@ class Update extends Command
                     {
                         $i++;
                         $key = md5($row['key']);
-                        $id = 'news_'.$key.'_'.date('Y.m.d-H:i');
+                        $id = 'sozluk_'.$key.'_'.date('Y.m.d-H:i');
 
                         $items[$i] = [
                             'key' => $key,
