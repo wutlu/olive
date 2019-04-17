@@ -2638,7 +2638,7 @@ nav.scrolled.active,
 .input-field.white-text label {
   color: #fff !important;
 }
-.input-field input[type=text]:focus + label {
+.input-field.white-text input[type=text]:focus + label {
   color: #fff !important;
 }
 .input-field.white-text input[type=text] {
