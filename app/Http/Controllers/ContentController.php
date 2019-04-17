@@ -344,7 +344,7 @@ class ContentController extends Controller
                 break;
 
                 case 'comment':
-                    $title = implode(' / ', [ 'YouTube', 'Yorum', '#'.$es_id ]);
+                    $title = implode(' / ', [ 'YouTube', 'Yorum', '@"'.$document['_source']['channel']['title'].'"' ]);
                 break;
 
                 case 'article':
@@ -643,6 +643,30 @@ class ContentController extends Controller
                     case 'comment-by-video':
                         $es_index = [ 'youtube', 'comments', '*' ];
                         $es_type = 'comment';
+                    break;
+                }
+
+                $document = Document::search($es_index, $es_type, $arr);
+            break;
+            case 'comment-by-comment':
+            case 'video-by-comment':
+                $doc = Document::get($es_index_key, 'comment', $es_id);
+
+                $arr['query']['bool']['must'][] = [
+                    'match' => [
+                        'channel.id' => $doc->data['_source']['channel']['id']
+                    ]
+                ];
+
+                switch ($type)
+                {
+                    case 'comment-by-comment':
+                        $es_index = [ 'youtube', 'comments', '*' ];
+                        $es_type = 'comment';
+                    break;
+                    case 'video-by-comment':
+                        $es_index = [ 'youtube', 'videos' ];
+                        $es_type = 'video';
                     break;
                 }
 

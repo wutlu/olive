@@ -46,7 +46,7 @@
                 data-callback="__{{ $chart['period'] }}_chart"
                 data-canvas-id="{{ $chart['unique_id'] }}-chart">
             @isset ($chart['info'])
-                <p class="p-1 grey-text text-darken-2 d-flex">
+                <p class="p-1 white-text d-flex">
                     <i class="material-icons align-self-center mr-1">info</i>
                     {{ $chart['info'] }}
                 </p>

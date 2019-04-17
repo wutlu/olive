@@ -84,7 +84,7 @@ Route::prefix('db')->group(function () {
         'histogram/{type}/{period}/{es_id}/{es_index_key?}',
         'ContentController@histogram')->name('content.histogram')->where([
             'period' => '(daily|hourly)',
-            'es_index_key' => '[a-z0-9-\.]+'
+            'es_index_key' => '[a-z0-9-_\.]+'
         ]
     );
     Route::post('benzer/{es_index}/{es_type}/{es_id}/{type?}', 'ContentController@smilar')->name('content.smilar')->where('type', '(tweet|retweet|quote|reply|deleted|comment-video|comment-channel)');
