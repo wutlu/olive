@@ -16,62 +16,6 @@ function __joints(o)
                 'class': 'd-table mb-1'
             }),
 
-            $('<div />', {
-                'class': 'card-sentiment d-flex justify-content-between mb-1',
-                'html': [
-                    $('<div />', {
-                        'css': {
-                            'width': (o.sentiment.pos*100) + '%'
-                        },
-                        'class': 'sentiment-item light-green-text accent-4 d-flex flex-fill',
-                        'html': [
-                            $('<i />', {
-                                'class': 'material-icons light-green-text align-self-center',
-                                'html': 'sentiment_very_satisfied'
-                            }),
-                            $('<span />', {
-                                'class': 'badge light-green-text align-self-center',
-                                'html': (o.sentiment.pos*100)
-                            }).addClass(o.sentiment.pos < 0.2 ? 'hide' : '')
-                        ]
-                    }),
-
-                    $('<div />', {
-                        'css': {
-                            'width': (o.sentiment.neu*100) + '%'
-                        },
-                        'class': 'sentiment-item grey-text d-flex flex-fill',
-                        'html': [
-                            $('<i />', {
-                                'class': 'material-icons grey-text align-self-center',
-                                'html': 'sentiment_neutral'
-                            }),
-                            $('<span />', {
-                                'class': 'badge grey-textelf-center',
-                                'html': (o.sentiment.neu*100)
-                            }).addClass(o.sentiment.neu < 0.2 ? 'hide' : '')
-                        ]
-                    }),
-
-                    $('<div />', {
-                        'css': {
-                            'width': (o.sentiment.neg*100) + '%'
-                        },
-                        'class': 'sentiment-item red-text accent-4 d-flex flex-fill',
-                        'html': [
-                            $('<i />', {
-                                'class': 'material-icons red-text align-self-center',
-                                'html': 'sentiment_very_dissatisfied'
-                            }),
-                            $('<span />', {
-                                'class': 'badge red-text align-self-center',
-                                'html': (o.sentiment.neg*100)
-                            }).addClass(o.sentiment.neg < 0.2 ? 'hide' : '')
-                        ]
-                    })
-                ]
-            }),
-
             $('<a />', {
                 'class': 'btn-floating btn-small waves-effect white',
                 'href': '/db/' + o._index + '/' + o._type + '/' + o._id,
@@ -101,6 +45,65 @@ function __joints(o)
             })
         ]
     })
+
+    if (o.sentiment)
+    {
+        card.find('time').after($('<div />', {
+            'class': 'card-sentiment d-flex justify-content-between mb-1',
+            'html': [
+                $('<div />', {
+                    'css': {
+                        'width': (o.sentiment.pos*100) + '%'
+                    },
+                    'class': 'sentiment-item light-green-text accent-4 d-flex flex-fill',
+                    'html': [
+                        $('<i />', {
+                            'class': 'material-icons light-green-text align-self-center',
+                            'html': 'sentiment_very_satisfied'
+                        }),
+                        $('<span />', {
+                            'class': 'badge light-green-text align-self-center',
+                            'html': (o.sentiment.pos*100)
+                        }).addClass(o.sentiment.pos < 0.2 ? 'hide' : '')
+                    ]
+                }),
+
+                $('<div />', {
+                    'css': {
+                        'width': (o.sentiment.neu*100) + '%'
+                    },
+                    'class': 'sentiment-item grey-text d-flex flex-fill',
+                    'html': [
+                        $('<i />', {
+                            'class': 'material-icons grey-text align-self-center',
+                            'html': 'sentiment_neutral'
+                        }),
+                        $('<span />', {
+                            'class': 'badge grey-textelf-center',
+                            'html': (o.sentiment.neu*100)
+                        }).addClass(o.sentiment.neu < 0.2 ? 'hide' : '')
+                    ]
+                }),
+
+                $('<div />', {
+                    'css': {
+                        'width': (o.sentiment.neg*100) + '%'
+                    },
+                    'class': 'sentiment-item red-text accent-4 d-flex flex-fill',
+                    'html': [
+                        $('<i />', {
+                            'class': 'material-icons red-text align-self-center',
+                            'html': 'sentiment_very_dissatisfied'
+                        }),
+                        $('<span />', {
+                            'class': 'badge red-text align-self-center',
+                            'html': (o.sentiment.neg*100)
+                        }).addClass(o.sentiment.neg < 0.2 ? 'hide' : '')
+                    ]
+                })
+            ]
+        }))
+    }
 
     if (o.deleted_at)
     {
