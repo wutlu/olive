@@ -19,7 +19,8 @@
         'neu' => $data['total']->data['aggregations']['neutral']['value'],
         'pos' => $data['total']->data['aggregations']['positive']['value'],
         'neg' => $data['total']->data['aggregations']['negative']['value'],
-        'alert' => 'İlgili siteden toplam '.$data['total']->data['hits']['total'].' içerik alındı. Sayfadaki istatistik verileri, alınan haberler üzerinden gerçekleştirilmiştir.'
+
+        'alert' => 'İlgili siteden toplam '.$data['total']->data['hits']['total'].' içerik alındı.'
     ])
     <div class="card mb-1">
         <div class="card-content">

@@ -40,7 +40,7 @@
             'title' => '<i class="material-icons align-self-center mr-1">play_arrow</i> Kanal: Yükleme Grafiği',
             'id' => $document['_id'],
             'unique_id' => 'tab_3',
-            'info' => 'İlgili videoyu yükleyen kullanıcının yüklemelerinin günlere dağılımı.'
+            'info' => 'İlgili videoyu yükleyen kanalın yüklemelerinin günlere dağılımı.'
         ],
         [
             'type' => 'video-by-video',
@@ -48,7 +48,7 @@
             'title' => '<i class="material-icons align-self-center mr-1">play_arrow</i> Kanal: Yükleme Grafiği',
             'id' => $document['_id'],
             'unique_id' => 'tab_4',
-            'info' => 'İlgili videoyu yükleyen kullanıcının yüklemelerinin saatlere dağılımı.'
+            'info' => 'İlgili videoyu yükleyen kanalın yüklemelerinin saatlere dağılımı.'
         ],
 
         [
@@ -57,7 +57,7 @@
             'title' => '<i class="material-icons align-self-center mr-1">person</i> Kanal: Yorum Grafiği',
             'id' => $document['_id'],
             'unique_id' => 'tab_5',
-            'info' => 'İlgili videoyu yükleyen kullanıcının yaptığı yorumların günlere dağılımı.'
+            'info' => 'İlgili videoyu yükleyen kanalın yaptığı yorumların günlere dağılımı.'
         ],
         [
             'type' => 'comment-by-video',
@@ -65,7 +65,7 @@
             'title' => '<i class="material-icons align-self-center mr-1">person</i> Kanal: Yorum Grafiği',
             'id' => $document['_id'],
             'unique_id' => 'tab_6',
-            'info' => 'İlgili videoyu yükleyen kullanıcının yaptığı yorumların saatlere dağılımı.'
+            'info' => 'İlgili videoyu yükleyen kanalın yaptığı yorumların saatlere dağılımı.'
         ],
     ]
 ])
@@ -82,60 +82,17 @@
     </div>
 @endpush
 
-@section('content')
-    <div class="card mb-1">
+@section('subcard')
+    <div class="card">
         <div class="card-content">
-            <span class="card-title">{{ $document['_source']['title'] }}</span>
-        </div>
-        <div class="card-tabs">
-            <ul class="tabs tabs-fixed-width sub-tabs">
-                <li class="tab">
-                    <a href="#tab-0" class="active">Video</a>
-                </li>
-                <li class="tab">
-                    <a href="#commentsVideo">Videoya Yapılan Yorumlar</a>
-                </li>
-                <li class="tab">
-                    <a href="#commentsUser">Kullanıcının Yaptığı Yorumlar</a>
-                </li>
-            </ul>
-        </div>
-
-        <div class="card card-unstyled" id="tab-0">
-            <iframe
-                id="ytplayer"
-                type="text/html"
-                width="100%"
-                height="360"
-                src="http://www.youtube.com/embed/{{ $document['_source']['id'] }}?origin={{ url('/') }}"
-                frameborder="0">
-            </iframe>
-            @isset ($document['_source']['description'])
-                <div class="card-content">
-                    <div class="markdown">
-                        {!! Term::linked($document['_source']['description']) !!}
-                    </div>
-                </div>
-            @endisset
-
-            @include('content._inc.sentiment_bar', [
-                'pos' => $document['_source']['sentiment']['pos'],
-                'neg' => $document['_source']['sentiment']['neg'],
-                'neu' => $document['_source']['sentiment']['neu']
-            ])
-        </div>
-        <div class="card card-unstyled halfload" id="commentsVideo">
-            <div class="card-content grey-text">
-                Video için <span data-name="count">0</span> yorum bulundu.
-            </div>
-            <nav class="nav-half">
+            <nav class="nav-half mb-0">
                 <div class="nav-wrapper">
                     <div class="input-field">
                         <input id="string"
                                name="string"
                                type="search"
                                class="validate json json-search"
-                               data-json-target="#ajax-commentsVideo"
+                               data-json-target=".searcher.active->children(.collection)"
                                placeholder="Ara" />
                         <label class="label-icon" for="string">
                             <i class="material-icons">search</i>
@@ -143,6 +100,28 @@
                     </div>
                 </div>
             </nav>
+        </div>
+        <div class="card-tabs">
+            <ul class="tabs tabs-fixed-width sub-tabs">
+                <li class="tab">
+                    <a href="#commentsVideo" class="active">Videoya Yapılan Yorumlar</a>
+                </li>
+                <li class="tab">
+                    <a href="#commentsUser">Kanalın Yaptığı Yorumlar</a>
+                </li>
+                <li class="tab">
+                    <a href="#videosUser">Kanalın Diğer Videoları</a>
+                </li>
+                <li class="tab">
+                    <a href="#videosSmilar">Benzer Videolar</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card card-unstyled halfload searcher" id="commentsVideo">
+            <div class="card-content grey-text">
+                Video için <span data-name="count">0</span> yorum bulundu.
+            </div>
             <ul class="collection json-clear" 
                  id="ajax-commentsVideo"
                  data-href="{{ route('youtube.comments', $document['_source']['id']) }}"
@@ -150,7 +129,7 @@
                  data-take="10"
                  data-include="string"
                  data-more-button="#ajax-commentsVideo-more_button"
-                 data-callback="__comments"
+                 data-callback="__commentsOrVideos"
                  data-method="post"
                  data-loader="#home-loader-2"
                  data-nothing>
@@ -158,58 +137,40 @@
                     @component('components.nothing')@endcomponent
                 </li>
                 <li class="collection-item model hide">
-                    <a href="#" data-name="title" class="red-text"></a>
+                    <span data-name="title" class="red-text"></span>
                     <p data-name="text"></p>
-                    <time data-name="created-at" class="timeago grey-text"></time>
+                    <a href="#" data-name="created-at" class="timeago grey-text"></a>
                     <ul class="collection sub-collection hide" data-name="replies">
                         <li class="collection-item sub-model hide">
-                            <a href="#" data-name="title" class="red-text"></a>
+                            <span data-name="title" class="red-text"></span>
                             <p data-name="text"></p>
-                            <time data-name="created-at" class="timeago grey-text"></time>
+                            <a href="#" data-name="created-at" class="timeago grey-text"></a>
                         </li>
                     </ul>
                 </li>
             </ul>
 
-            @component('components.loader')
-                @slot('color', 'teal')
-                @slot('id', 'home-loader-2')
-                @slot('class', 'card-loader-unstyled')
-            @endcomponent
+            <div id="home-loader-2" class="p-1 center-align">
+                <a href="#" class="btn-flat waves-effect json" data-json-target="#ajax-commentsVideo">Yükle</a>
+            </div>
 
             <a href="#"
                class="btn-small white grey-text more more-unstyled hide json"
                id="ajax-commentsVideo-more_button"
                data-json-target="#ajax-commentsVideo">Daha Fazla</a>
         </div>
-        <div class="card card-unstyled halfload" id="commentsUser">
+        <div class="card card-unstyled halfload searcher" id="commentsUser">
             <div class="card-content grey-text">
-                Kullanıcı için <span data-name="count">0</span> yorum bulundu.
+                Kanal için <span data-name="count">0</span> yorum bulundu.
             </div>
-            <nav class="nav-half">
-                <div class="nav-wrapper">
-                    <div class="input-field">
-                        <input id="user_string"
-                               name="user_string"
-                               data-alias="string"
-                               type="search"
-                               class="validate json json-search"
-                               data-json-target="#ajax-commentsUser"
-                               placeholder="Ara" />
-                        <label class="label-icon" for="user_string">
-                            <i class="material-icons">search</i>
-                        </label>
-                    </div>
-                </div>
-            </nav>
             <ul class="collection json-clear" 
                  id="ajax-commentsUser"
                  data-href="{{ route('youtube.comments', $document['_source']['channel']['id']) }}"
                  data-skip="0"
                  data-take="10"
-                 data-include="user_string"
+                 data-include="string"
                  data-more-button="#ajax-commentsUser-more_button"
-                 data-callback="__comments"
+                 data-callback="__commentsOrVideos"
                  data-method="post"
                  data-loader="#home-loader-1"
                  data-nothing>
@@ -217,14 +178,14 @@
                     @component('components.nothing')@endcomponent
                 </li>
                 <li class="collection-item model hide">
-                    <a href="#" data-name="title" class="red-text"></a>
+                    <span data-name="title" class="red-text"></span>
                     <p data-name="text"></p>
-                    <time data-name="created-at" class="timeago grey-text"></time>
+                    <a href="#" data-name="created-at" class="timeago grey-text"></a>
                     <ul class="collection sub-collection hide" data-name="replies">
                         <li class="collection-item sub-model hide">
-                            <a href="#" data-name="title" class="red-text"></a>
+                            <span data-name="title" class="red-text"></span>
                             <p data-name="text"></p>
-                            <time data-name="created-at" class="timeago grey-text"></time>
+                            <a href="#" data-name="created-at" class="timeago grey-text"></a>
                         </li>
                     </ul>
                 </li>
@@ -241,11 +202,105 @@
                id="ajax-commentsUser-more_button"
                data-json-target="#ajax-commentsUser">Daha Fazla</a>
         </div>
+        <div class="card card-unstyled halfload searcher" id="videosUser">
+            <div class="card-content grey-text">
+                Kanal için <span data-name="count">0</span> video bulundu.
+            </div>
+            <ul class="collection json-clear" 
+                 id="ajax-videosUser"
+                 data-href="{{ route('youtube.videos', $document['_source']['channel']['id']) }}"
+                 data-skip="0"
+                 data-take="10"
+                 data-include="string"
+                 data-more-button="#ajax-videosUser-more_button"
+                 data-callback="__commentsOrVideos"
+                 data-method="post"
+                 data-loader="#home-loader-3"
+                 data-nothing>
+                <li class="collection-item nothing hide">
+                    @component('components.nothing')@endcomponent
+                </li>
+                <li class="collection-item model model-video hide"></li>
+            </ul>
+
+            @component('components.loader')
+                @slot('color', 'teal')
+                @slot('id', 'home-loader-3')
+                @slot('class', 'card-loader-unstyled')
+            @endcomponent
+
+            <a href="#"
+               class="btn-small white grey-text more more-unstyled hide json"
+               id="ajax-videosUser-more_button"
+               data-json-target="#ajax-videosUser">Daha Fazla</a>
+        </div>
+        <div class="card card-unstyled halfload searcher" id="videosSmilar">
+            <div class="card-content grey-text">
+                Benzer <span data-name="count">0</span> video bulundu.
+            </div>
+            <ul class="collection json-clear" 
+                 id="ajax-videosSmilar"
+                 data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id ]) }}"
+                 data-skip="0"
+                 data-take="10"
+                 data-include="string"
+                 data-more-button="#ajax-videosSmilar-more_button"
+                 data-callback="__commentsOrVideos"
+                 data-method="post"
+                 data-loader="#home-loader-4"
+                 data-nothing>
+                <li class="collection-item nothing hide">
+                    @component('components.nothing')@endcomponent
+                </li>
+                <li class="collection-item model model-video hide"></li>
+            </ul>
+
+            @component('components.loader')
+                @slot('color', 'teal')
+                @slot('id', 'home-loader-4')
+                @slot('class', 'card-loader-unstyled')
+            @endcomponent
+
+            <a href="#"
+               class="btn-small white grey-text more more-unstyled hide json"
+               id="ajax-videosSmilar-more_button"
+               data-json-target="#ajax-videosSmilar">Daha Fazla</a>
+        </div>
+    </div>
+@endsection
+
+@section('content')
+    <div class="card mb-1">
+        <div class="card-content">
+            <span class="card-title">{{ $document['_source']['title'] }}</span>
+        </div>
+
+        <iframe
+            id="ytplayer"
+            type="text/html"
+            width="100%"
+            height="360"
+            src="http://www.youtube.com/embed/{{ $document['_source']['id'] }}?origin={{ url('/') }}"
+            frameborder="0">
+        </iframe>
+        @isset ($document['_source']['description'])
+            <div class="card-content">
+                <div class="markdown">
+                    {!! Term::linked($document['_source']['description']) !!}
+                </div>
+            </div>
+        @endisset
+
+        @include('content._inc.sentiment_bar', [
+            'pos' => $document['_source']['sentiment']['pos'],
+            'neg' => $document['_source']['sentiment']['neg'],
+            'neu' => $document['_source']['sentiment']['neu']
+        ])
     </div>
 @endsection
 
 @push('local.scripts')
-    function __comments(__, obj)
+    function __commentsOrVideos(__, obj)
     {
         var ul = __;
         var item_model = ul.children('.model');
@@ -260,9 +315,17 @@
                     var item = item_model.clone();
                         item.removeClass('model hide').addClass('_tmp')
 
-                        item.find('[data-name=title]').html(o.channel.title).attr('href', '{{ url('/') }}/db/' + o._index + '/' + o._type + '/' + o._id)
+                    if (item.hasClass('model-video'))
+                    {
+                        item.html(_video_(o))
+                    }
+                    else
+                    {
+                        item.find('[data-name=title]').html(o.channel.title)
                         item.find('[data-name=text]').html(o.text)
-                        item.find('[data-name=created-at]').attr('data-time', o.created_at).html(o.created_at)
+                        item.find('[data-name=created-at]')
+                            .attr('data-time', o.created_at).html(o.created_at)
+                            .attr('href', '{{ url('/') }}/db/' + o._index + '/' + o._type + '/' + o._id)
 
                         if (o.replies.length)
                         {
@@ -273,23 +336,25 @@
                                 var sub_item = sub_collection.find('.sub-model').clone();
                                     sub_item.removeClass('sub-model hide').addClass('_tmp')
 
-                                    sub_item.find('[data-name=title]').html(so.channel.title).attr('href', '{{ url('/') }}/db/' + o._index + '/' + o._type + '/' + o._id)
+                                    sub_item.find('[data-name=title]').html(so.channel.title)
                                     sub_item.find('[data-name=text]').html(so.text)
-                                    sub_item.find('[data-name=created-at]').attr('data-time', so.created_at).html(so.created_at)
+                                    sub_item.find('[data-name=created-at]')
+                                            .attr('data-time', so.created_at)
+                                            .html(so.created_at)
+                                            .attr('href', '{{ url('/') }}/db/' + o._index + '/' + o._type + '/' + o._id)
 
                                     sub_item.appendTo(sub_collection)
                             })
                         }
+                    }
 
-                        item.appendTo(ul)
+                    item.mark(obj.words, {
+                        'element': 'span',
+                        'className': 'marked yellow black-text',
+                        'accuracy': 'complementary'
+                    }).appendTo(ul)
                 })
             }
-
-            ul.mark(obj.words, {
-                'element': 'span',
-                'className': 'marked yellow black-text',
-                'accuracy': 'complementary'
-            })
 
             __.closest('.card').find('[data-name=count]').html(obj.total)
         }
@@ -347,6 +412,14 @@
             <a href="https://www.youtube.com/channel/{{ $document['_source']['channel']['id'] }}" target="_blank" class="grey-text">{{ '@'.$document['_source']['channel']['id'] }}</a>
         </div>
     </div>
+
+    @include('content._inc.sentiment', [
+        'neu' => $data['total']->data['aggregations']['neutral']['value'],
+        'pos' => $data['total']->data['aggregations']['positive']['value'],
+        'neg' => $data['total']->data['aggregations']['negative']['value'],
+
+        'alert' => 'İlgili kullanıcıdan toplam '.$data['total']->data['hits']['total'].' yorum alındı.'
+    ])
 
     @foreach (
         [

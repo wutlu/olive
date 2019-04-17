@@ -321,6 +321,26 @@ class ContentController extends Controller
 
                 case 'video':
                     $title = implode(' / ', [ 'YouTube', 'Video', '#'.$es_id ]);
+
+                    $channel = [
+                        [ 'match' => [ 'channel.id' => $document['_source']['channel']['id'] ] ]
+                    ];
+
+                    $data = [
+                        'total' => Document::search([ 'youtube', 'comments', '*' ], 'comment', [
+                            'query' => [
+                                'bool' => [
+                                    'must' => $channel
+                                ]
+                            ],
+                            'aggs' => [
+                                'positive' => [ 'avg' => [ 'field' => 'sentiment.pos' ] ],
+                                'neutral' => [ 'avg' => [ 'field' => 'sentiment.neu' ] ],
+                                'negative' => [ 'avg' => [ 'field' => 'sentiment.neg' ] ]
+                            ],
+                            'size' => 0
+                        ])
+                    ];
                 break;
 
                 case 'comment':
@@ -704,6 +724,8 @@ class ContentController extends Controller
     {
         $document = Document::get($es_index, $es_type, $es_id);
 
+        $clean = Term::cleanSearchQuery($request->string);
+
         if ($document->status == 'ok')
         {
             switch ($es_type)
@@ -791,6 +813,54 @@ class ContentController extends Controller
                                     ]
                                 ]);
                             break;
+                            case 'video':
+                                $q = [
+                                    'query' => [
+                                        'bool' => [
+                                            'must' => [
+                                                [
+                                                    'more_like_this' => [
+                                                        'fields' => [ 'title' ],
+                                                        'like' => array_keys($smilar),
+                                                        'min_term_freq' => 1,
+                                                        'min_doc_freq' => 1
+                                                    ]
+                                                ]
+                                            ]
+                                        ]
+                                    ],
+                                    'min_score' => 10,
+                                    'from' => $request->skip,
+                                    'size' => $request->take,
+                                    '_source' => [
+                                        'title',
+                                        'channel.id',
+                                        'channel.title',
+                                        'description',
+                                        'created_at',
+                                        'deleted_at',
+                                        'sentiment'
+                                    ]
+                                ];
+
+                                if ($request->string)
+                                {
+                                    $q['query']['bool']['must'][] = [
+                                        'query_string' => [
+                                            'fields' => [
+                                                'title',
+                                                'description',
+                                                'entry',
+                                                'text'
+                                            ],
+                                            'query' => $clean->line,
+                                            'default_operator' => 'AND'
+                                        ]
+                                    ];
+                                }
+
+                                $documents = Document::search([ 'youtube', 'videos' ], $es_type, $q);
+                            break;
                             case 'entry':
                                 $documents = Document::search([ 'sozluk', '*' ], $es_type, [
                                     'query' => [
@@ -861,18 +931,13 @@ class ContentController extends Controller
                             break;
                         }
                     }
-                    else
-                    {
-                        return [
-                            'status' => 'ok',
-                            'hits' => []
-                        ];
-                    }
                 break;
             }
 
             if (@$documents->data['hits']['hits'])
             {
+                $total = number_format($documents->data['hits']['total']);
+
                 $hits = array_map(function($arr) {
                     $array = $arr['_source'];
 
@@ -905,11 +970,14 @@ class ContentController extends Controller
             else
             {
                 $hits = [];
+                $total = 0;
             }
 
             return [
                 'status' => 'ok',
-                'hits' => $hits
+                'hits' => $hits,
+                'total' => $total,
+                'words' => @$clean->words ? $clean->words : []
             ];
         }
         else
@@ -1019,5 +1087,102 @@ class ContentController extends Controller
                 'reason' => 'Veritabanı bağlantısı kurulamadı.'
             ];
         }
+    }
+
+    /**
+     * Kanal Videoları
+     *
+     * @return array
+     */
+    public static function channelVideos(string $id, SearchRequest $request)
+    {
+        $clean = Term::cleanSearchQuery($request->string);
+
+        $data = [];
+
+        $q = [
+            'from' => $request->skip,
+            'size' => $request->take,
+            'sort' => [ 'created_at' => 'desc' ],
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [ 'match' => [ 'channel.id' => $id ] ]
+                    ]
+                ]
+            ],
+            '_source' => [
+                'created_at',
+                'deleted_at',
+
+                'title',
+                'description',
+
+                'channel.title',
+                'channel.id',
+
+                'sentiment'
+            ]
+        ];
+
+        if ($request->string)
+        {
+            $q['query']['bool']['must'][] = [
+                'query_string' => [
+                    'fields' => [
+                        'title',
+                        'description',
+                        'entry',
+                        'text'
+                    ],
+                    'query' => $clean->line,
+                    'default_operator' => 'AND'
+                ]
+            ];
+        }
+
+        $query = Document::search([ 'youtube', 'videos' ], 'video', $q);
+
+        $hits = 0;
+
+        if (@$query->data['hits']['hits'])
+        {
+            $hits = number_format($query->data['hits']['total']);
+
+            foreach ($query->data['hits']['hits'] as $object)
+            {
+                $arr = [
+                    'uuid' => md5($object['_id'].'.'.$object['_index']),
+                    '_id' => $object['_id'],
+                    '_type' => $object['_type'],
+                    '_index' => $object['_index'],
+
+                    'created_at' => date('d.m.Y H:i:s', strtotime($object['_source']['created_at'])),
+
+                    'sentiment' => $object['_source']['sentiment']
+                ];
+
+                if (@$object['_source']['deleted_at'])
+                {
+                    $arr['deleted_at'] = date('d.m.Y H:i:s', strtotime($object['_source']['deleted_at']));
+                }
+
+                $data[] = array_merge($arr, [
+                    'title' => $object['_source']['title'],
+                    'text' => @$object['_source']['description'],
+                    'channel' => [
+                        'id' => $object['_source']['channel']['id'],
+                        'title' => $object['_source']['channel']['title']
+                    ],
+                ]);
+            }
+        }
+
+        return [
+            'status' => 'ok',
+            'hits' => $data,
+            'total' => $hits,
+            'words' => $clean->words
+        ];
     }
 }

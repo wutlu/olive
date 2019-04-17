@@ -1,6 +1,7 @@
 <div class="card mb-1 pb-1 teal">
     <div class="card-content">
         <span class="card-title white-text">Duygu Grafiği</span>
+        <span class="white-text">{{ $alert }}</span>
     </div>
     <canvas id="sentiment-chart"></canvas>
 </div>

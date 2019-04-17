@@ -19,7 +19,8 @@
         'neu' => $data['total']->data['aggregations']['neutral']['value'],
         'pos' => $data['total']->data['aggregations']['positive']['value'],
         'neg' => $data['total']->data['aggregations']['negative']['value'],
-        'alert' => 'İlgili başlıktan toplam '.$data['total']->data['hits']['total'].' girdi alındı. Sayfadaki istatistik verileri, alınan girdiler üzerinden gerçekleştirilmiştir.'
+
+        'alert' => 'İlgili başlıktan toplam '.$data['total']->data['hits']['total'].' girdi alındı.'
     ])
     <div class="card">
         <div class="card-content">

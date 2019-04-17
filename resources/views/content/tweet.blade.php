@@ -344,7 +344,8 @@
         'neu' => $data['total']->data['aggregations']['neutral']['value'],
         'pos' => $data['total']->data['aggregations']['positive']['value'],
         'neg' => $data['total']->data['aggregations']['negative']['value'],
-        'alert' => 'İlgili kullanıcıdan toplam '.$data['total']->data['hits']['total'].' tweet alındı. Sayfadaki istatistik verileri, alınan tweetler üzerinden gerçekleştirilmiştir.'
+
+        'alert' => 'İlgili kanaldan toplam '.$data['total']->data['hits']['total'].' yorum alındı.'
     ])
 
     @foreach (
