@@ -65,6 +65,10 @@
         max-width: 1024px;
     }
 
+    .browser-mockup.mockup-news {
+        margin: 0;
+    }
+
     .marked {
         padding: .4rem;
         border-radius: .2rem;
@@ -350,7 +354,7 @@
                 </div>
             </div>
 
-            <div class="browser-mockup with-tab">
+            <div class="browser-mockup">
                 <img src="{{ asset('img/search.jpg') }}" alt="Olive Mockup" />
             </div>
         </div>
@@ -362,19 +366,20 @@
                 <h2 class="white-text">Tam Anlamıyla Gerçek Zamanlı!</h2>
                 <div class="row">
                     <div class="col s12 m6">
-                        <div
-                            class="card time-line load"
-                            data-href="{{ route('realtime.query.sample') }}"
-                            data-callback="__realtime"
-                            data-method="post">
-                            <ul class="collection">
-                                <li class="collection-item model hide"></li>
-                            </ul>
+                        <div class="browser-mockup mockup-news">
+                            <div
+                                class="card time-line load"
+                                data-href="{{ route('realtime.query.sample') }}"
+                                data-callback="__realtime"
+                                data-method="post">
+                                <ul class="collection">
+                                    <li class="collection-item model hide"></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                     <div class="col s12 m6">
                         <div class="p-1">
-                            <span class="chip red d-table white-text">haber</span>
                             <span class="chip white">+bilgi</span>
                             <span class="chip white">+teknoloji</span>
                             <span class="chip white">+türkiye</span>
