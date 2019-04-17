@@ -40,8 +40,7 @@
         background-position: center bottom;
     }
 
-    .x-section > .section-overlay,
-    .rt-section > .section-overlay {
+    .x-section > .section-overlay {
         min-height: 100vh;
     }
 
@@ -308,14 +307,6 @@
         </a>
     </div>
 
-    <div class="owl-carousel main-slider">
-        <div class="item">Online itibarınızı takip edin</div>
-        <div class="item">Gündemi anlık trendlerle veya anlık akışlarla takip edin</div>
-        <div class="item">Gerçek zamanlı alarmlar kurun</div>
-        <div class="item">Arama sonuçlarınızı görselleştirin</div>
-        <div class="item">Rakiplerinizin ve sektörünüzün yeniliklerinden haberdar olun</div>
-    </div>
-
     <section class="y-section">
         <div class="container">
             <div class="item-group pt-2" id="features">
@@ -353,16 +344,24 @@
                     </ul>
                 </div>
             </div>
+        </div>
 
-            <div class="browser-mockup">
-                <img src="{{ asset('img/search.jpg') }}" alt="Olive Mockup" />
-            </div>
+        <div class="owl-carousel main-slider">
+            <div class="item">Online itibarınızı takip edin</div>
+            <div class="item">Gündemi anlık trendlerle veya anlık akışlarla inceleyin</div>
+            <div class="item">Gerçek zamanlı alarmlar kurun</div>
+            <div class="item">Arama sonuçlarınızı görselleştirin</div>
+            <div class="item">Rakiplerinizin ve sektörünüzün yeniliklerinden haberdar olun</div>
+        </div>
+
+        <div class="browser-mockup">
+            <img src="{{ asset('img/search.jpg') }}" alt="Olive Mockup" />
         </div>
     </section>
 
     <section class="rt-section">
-        <div class="section-overlay d-flex">
-            <div class="container align-self-center">
+        <div class="section-overlay">
+            <div class="container">
                 <h2 class="white-text">Tam Anlamıyla Gerçek Zamanlı!</h2>
                 <div class="row">
                     <div class="col s12 m6">
