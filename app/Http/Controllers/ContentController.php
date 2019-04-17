@@ -845,7 +845,7 @@ class ContentController extends Controller
 
                                 if ($request->string)
                                 {
-                                    $q['query']['bool']['must'][] = [
+                                    $q['query']['bool']['should'][] = [
                                         'query_string' => [
                                             'fields' => [
                                                 'title',

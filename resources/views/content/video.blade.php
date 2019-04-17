@@ -159,7 +159,7 @@
                id="ajax-commentsVideo-more_button"
                data-json-target="#ajax-commentsVideo">Daha Fazla</a>
         </div>
-        <div class="card card-unstyled halfload searcher" id="commentsUser">
+        <div class="card card-unstyled halfload searcher" id="commentsUser" style="display: none;">
             <div class="card-content grey-text">
                 Kanal için <span data-name="count">0</span> yorum bulundu.
             </div>
@@ -202,7 +202,7 @@
                id="ajax-commentsUser-more_button"
                data-json-target="#ajax-commentsUser">Daha Fazla</a>
         </div>
-        <div class="card card-unstyled halfload searcher" id="videosUser">
+        <div class="card card-unstyled halfload searcher" id="videosUser" style="display: none;">
             <div class="card-content grey-text">
                 Kanal için <span data-name="count">0</span> video bulundu.
             </div>
@@ -234,7 +234,7 @@
                id="ajax-videosUser-more_button"
                data-json-target="#ajax-videosUser">Daha Fazla</a>
         </div>
-        <div class="card card-unstyled halfload searcher" id="videosSmilar">
+        <div class="card card-unstyled halfload searcher" id="videosSmilar" style="display: none;">
             <div class="card-content grey-text">
                 Benzer <span data-name="count">0</span> video bulundu.
             </div>
