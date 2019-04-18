@@ -799,7 +799,7 @@ class Update extends Command
                             $key = md5(strtolower($item['key']));
                             $id = 'twitter_'.$key.'_'.date('Y.m.d-H:i');
 
-                            $items[$key] = [
+                            $items[$i] = [
                                 'key' => $key,
                                 'title' => $item['key']
                             ];
