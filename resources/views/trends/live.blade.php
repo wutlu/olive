@@ -331,7 +331,7 @@
         <div class="container">
             <p class="d-flex mb-0">
                 <i class="material-icons mr-1 white-text align-self-center">help_outline</i>
-                <span class="white-text align-self-center">Web trendlerini, Olive trend algoritması oluşturur.<br />Kaynak sitelerin trend algoritmalarıyla eşleşmesi beklenmemelidir.</span>
+                <span class="white-text align-self-center">Tüm trendler, Olive trend algoritmasıyla oluşturulur ve kaynak sitelerden bağımsız belirlenir.</span>
             </p>
         </div>
     </div>
