@@ -12,7 +12,7 @@
                     }),
                     $('<li />', {
                         'class': 'collection-item',
-                        'html': '<code class="red white-text">(millet meclisi) || (büyük patlama)</code> operatörü ile, içerisinde "millet meclisi" veya "büyük patlama" geçen içerikler aranır.'
+                        'html': '<code class="red white-text">"millet meclisi" || "büyük patlama"</code> operatörü ile, içerisinde "millet meclisi" veya "büyük patlama" geçen içerikler aranır.'
                     }),
                     $('<li />', {
                         'class': 'collection-item',
