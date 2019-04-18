@@ -199,6 +199,12 @@ class Kernel extends ConsoleKernel
                      ->skip(function() {
                         return SystemUtility::option('trend.status.google') != 'on';
                      });
+            /**
+             * Her gece 03:00'da takip edilecek aktif Twitter kullanıcılarını güncelle.
+             */
+            $schedule->command('nohup "twitter:follow_active_users" --type=restart')
+                     ->dailyAt('03:00')
+                     ->timezone(config('app.timezone'));
 
             /**
              * Medya siteleri dns adreslerinin toplanması.

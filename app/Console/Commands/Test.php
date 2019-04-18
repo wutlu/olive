@@ -4,8 +4,11 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
-use App\Models\Crawlers\SozlukCrawler;
-use App\Utilities\Crawler;
+use App\Models\Twitter\StreamingUsers;
+
+use App\Elasticsearch\Document;
+
+use System;
 
 class Test extends Command
 {
@@ -40,6 +43,6 @@ class Test extends Command
      */
     public function handle()
     {
-
+        //
     }
 }
