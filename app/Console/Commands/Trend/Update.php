@@ -791,16 +791,15 @@ class Update extends Command
 
                 if ($query->status == 'ok')
                 {
-                    print_r($query->data['aggregations']['tweets']);
                     if ($query->data['aggregations']['tweets']['doc_count'])
                     {
                         foreach ($query->data['aggregations']['tweets']['results']['buckets'] as $item)
                         {
                             $i++;
-                            $key = md5($item['key']);
+                            $key = md5(strtolower($item['key']));
                             $id = 'twitter_'.$key.'_'.date('Y.m.d-H:i');
 
-                            $items[$i] = [
+                            $items[$key] = [
                                 'key' => $key,
                                 'title' => $item['key']
                             ];
