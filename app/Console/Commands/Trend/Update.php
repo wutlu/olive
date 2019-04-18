@@ -751,7 +751,7 @@ class Update extends Command
                                     'terms' => [
                                         'field' => 'entities.hashtags.hashtag',
                                         'size' => 50,
-                                        'min_doc_count' => 100
+                                        'min_doc_count' => 1
                                     ]
                                 ]
                             ]
@@ -770,16 +770,18 @@ class Update extends Command
                                 ]
                             ],
                             'must' => [
-                                [ 'match' => [ 'lang' => 'tr' ] ],
-                                [ 'exists' => [ 'field' => 'external.id' ] ]
+                                [ 'match' => [ 'lang' => 'tr' ] ]
                             ],
                             'must_not' => [
-                                'query_string' => [
-                                    'fields' => [
-                                        'text'
-                                    ],
-                                    'query' => implode(' OR ', config('services.twitter.blocked_words')),
-                                    'default_operator' => 'AND'
+                                [ 'exists' => [ 'field' => 'external.id' ] ],
+                                [
+                                    'query_string' => [
+                                        'fields' => [
+                                            'text'
+                                        ],
+                                        'query' => implode(' OR ', config('services.twitter.blocked_words')),
+                                        'default_operator' => 'AND'
+                                    ]
                                 ]
                             ]
                         ]
@@ -789,6 +791,7 @@ class Update extends Command
 
                 if ($query->status == 'ok')
                 {
+                    print_r($query->data['aggregations']['tweets']);
                     if ($query->data['aggregations']['tweets']['doc_count'])
                     {
                         foreach ($query->data['aggregations']['tweets']['results']['buckets'] as $item)
