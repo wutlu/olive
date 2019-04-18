@@ -740,59 +740,84 @@ class Update extends Command
                 }
             break;
             case 'local':
-
-
-
-        $query = Document::search([ 'twitter', 'tweets', '*' ], 'tweet', [
-            'aggs' => [
-                'results' => [
-                    'terms' => [
-                        'field' => 'entities.hashtags.hashtag',
-                        'size' => 1000,
-                        'min_doc_count' => 100
-                    ]
-                ]
-            ],
-            'query' => [
-                'bool' => [
-                    'filter' => [
-                        [
-                            'range' => [
-                                'created_at' => [
-                                    'format' => 'YYYY-MM-dd HH:mm',
-                                    'gte' => Carbon::now()->subMinutes(2)->format('Y-m-d H:i')
+                $query = Document::search([ 'twitter', 'tweets', '*' ], 'tweet', [
+                    'aggs' => [
+                        'tweets' => [
+                            'nested' => [
+                                'path' => 'entities.hashtags'
+                            ],
+                            'aggs' => [
+                                'results' => [
+                                    'terms' => [
+                                        'field' => 'entities.hashtags.hashtag',
+                                        'size' => 50,
+                                        'min_doc_count' => 10
+                                    ]
                                 ]
                             ]
                         ]
                     ],
-                    'must' => [
-                        [ 'match' => [ 'lang' => 'tr' ] ]
-                    ]
-                ]
-            ],
-            'size' => 0
-        ]);
+                    'query' => [
+                        'bool' => [
+                            'filter' => [
+                                [
+                                    'range' => [
+                                        'created_at' => [
+                                            'format' => 'YYYY-MM-dd HH:mm',
+                                            'gte' => Carbon::now()->subMinutes(10)->format('Y-m-d H:i')
+                                        ]
+                                    ]
+                                ]
+                            ],
+                            'must' => [
+                                [ 'match' => [ 'lang' => 'tr' ] ]
+                            ]
+                        ]
+                    ],
+                    'size' => 0
+                ]);
 
-        print_r($query);
+                if ($query->status == 'ok')
+                {
+                    if ($query->data['aggregations']['tweets']['doc_count'])
+                    {
+                        foreach ($query->data['aggregations']['tweets']['results']['buckets'] as $item)
+                        {
+                            $i++;
+                            $key = md5($item['key']);
+                            $id = 'twitter_'.$key.'_'.date('Y.m.d-H:i');
 
+                            $items[$i] = [
+                                'key' => $key,
+                                'title' => $item['key']
+                            ];
 
+                            ################
 
+                            $chunk['body'][] = [
+                                'create' => [
+                                    '_index' => Indices::name([ 'trend', 'titles' ]),
+                                    '_type' => 'title',
+                                    '_id' => $id
+                                ]
+                            ];
 
+                            $chunk['body'][] = [
+                                'id' => $id,
+                                'key' => $key,
+                                'group' => $group,
+                                'module' => 'twitter',
+                                'rank' => $i,
+                                'title' => $item['key'],
+                                'created_at' => date('Y-m-d H:i:s')
+                            ];
 
+                            ################
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+                            echo Term::line($i.' - '.$item['key']);
+                        }
+                    }
+                }
             break;
         }
 

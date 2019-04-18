@@ -188,7 +188,13 @@ class Kernel extends ConsoleKernel
 
             # [ gerçek trend ] #
             $schedule->command('nohup "trend:update --module=twitter --type=live" --type=restart')
-                     ->everyTenMinutes()
+                     ->hourly()
+                     ->timezone(config('app.timezone'))
+                     ->skip(function() {
+                        return SystemUtility::option('trend.status.twitter') != 'on';
+                     });
+            $schedule->command('nohup "trend:update --module=twitter --type=local" --type=restart')
+                     ->everyMinute()
                      ->timezone(config('app.timezone'))
                      ->skip(function() {
                         return SystemUtility::option('trend.status.twitter') != 'on';
