@@ -751,7 +751,7 @@ class Update extends Command
                                     'terms' => [
                                         'field' => 'entities.hashtags.hashtag',
                                         'size' => 50,
-                                        'min_doc_count' => 100
+                                        'min_doc_count' => 10
                                     ]
                                 ]
                             ]
@@ -770,7 +770,8 @@ class Update extends Command
                                 ]
                             ],
                             'must' => [
-                                [ 'match' => [ 'lang' => 'tr' ] ]
+                                [ 'match' => [ 'lang' => 'tr' ] ],
+                                [ 'exists' => [ 'field' => 'external.id' ] ]
                             ]
                         ]
                     ],
