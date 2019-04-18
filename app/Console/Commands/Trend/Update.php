@@ -759,7 +759,8 @@ class Update extends Command
                         [
                             'range' => [
                                 'created_at' => [
-                                    'gte' => 'now-1m'
+                                    'format' => 'YYYY-MM-dd HH:mm',
+                                    'gte' => Carbon::now()->subMinutes(2)->format('Y-m-d H:i')
                                 ]
                             ]
                         ]

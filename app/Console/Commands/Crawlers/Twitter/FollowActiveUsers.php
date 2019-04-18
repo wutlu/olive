@@ -10,6 +10,8 @@ use App\Elasticsearch\Document;
 
 use System;
 
+use Carbon\Carbon;
+
 class FollowActiveUsers extends Command
 {
     /**
@@ -59,7 +61,8 @@ class FollowActiveUsers extends Command
                         [
                             'range' => [
                                 'created_at' => [
-                                    'gte' => 'now-1d'
+                                    'format' => 'YYYY-MM-dd HH:mm',
+                                    'gte' => Carbon::now()->subDay()->format('Y-m-d H:i')
                                 ]
                             ]
                         ]
@@ -121,7 +124,7 @@ class FollowActiveUsers extends Command
                             {
                                 System::log(
                                     $e->getMessage(),
-                                    'App\Console\Commands\Crawlers\Twitter\FollowActiveUsers::handle(UPSERT, '.$hit['_source']['user']['id'].')',
+                                    'App\Console\Commands\Crawlers\Twitter\FollowActiveUsers::handle(UPSERT)',
                                     10
                                 );
 
@@ -155,7 +158,7 @@ class FollowActiveUsers extends Command
 
             System::log(
                 $message,
-                'App\Console\Commands\Crawlers\Twitter\FollowActiveUsers::handle(UPSERT, '.$hit['_source']['user']['id'].')',
+                'App\Console\Commands\Crawlers\Twitter\FollowActiveUsers::handle()',
                 7
             );
         }
