@@ -72,7 +72,8 @@ return [
          * belirtilen kelimeler kabul edilmeyecek.
          * sadece alfa nümerik karakterler ve boşluk geçerli olacaktır.
          */
-        'unaccepted_keywords' => explode(PHP_EOL, file_get_contents(database_path('analysis/unaccepted.txt')))
+        'unaccepted_keywords' => explode(PHP_EOL, file_get_contents(database_path('analysis/unaccepted.txt'))),
+        'blocked_words' => explode(PHP_EOL, file_get_contents(database_path('analysis/blocked.txt'))),
     ],
 
     'medium' => [

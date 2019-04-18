@@ -772,6 +772,15 @@ class Update extends Command
                             'must' => [
                                 [ 'match' => [ 'lang' => 'tr' ] ],
                                 [ 'exists' => [ 'field' => 'external.id' ] ]
+                            ],
+                            'must_not' => [
+                                'query_string' => [
+                                    'fields' => [
+                                        'text'
+                                    ],
+                                    'query' => implode(' OR ', config('services.twitter.blocked_words')),
+                                    'default_operator' => 'AND'
+                                ]
                             ]
                         ]
                     ],
