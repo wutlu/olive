@@ -187,7 +187,7 @@ class Kernel extends ConsoleKernel
                      });
 
             # [ gerçek trend ] #
-            $schedule->command('nohup "trend:update --module=twitter" --type=restart')
+            $schedule->command('nohup "trend:update --module=twitter --type=live" --type=restart')
                      ->everyTenMinutes()
                      ->timezone(config('app.timezone'))
                      ->skip(function() {

@@ -69,6 +69,8 @@ class ContentController extends Controller
      */
     public static function module(string $es_index, string $es_type, string $es_id)
     {
+        $organisation = auth()->user()->organisation;
+
         $document = Document::get($es_index, $es_type, $es_id);
 
         if ($document->status == 'ok')
@@ -79,6 +81,11 @@ class ContentController extends Controller
             switch ($es_type)
             {
                 case 'entry':
+                    if (!$organisation->data_sozluk)
+                    {
+                        return abort(403);
+                    }
+
                     $crawler = SozlukCrawler::where('id', $document['_source']['site_id'])->firstOrFail();
 
                     $site = [
@@ -139,6 +146,11 @@ class ContentController extends Controller
                 break;
 
                 case 'product':
+                    if (!$organisation->data_shopping)
+                    {
+                        return abort(403);
+                    }
+
                     $crawler = ShoppingCrawler::where('id', $document['_source']['site_id'])->firstOrFail();
 
                     $site = [
@@ -150,6 +162,11 @@ class ContentController extends Controller
                 break;
 
                 case 'tweet':
+                    if (!$organisation->data_twitter)
+                    {
+                        return abort(403);
+                    }
+
                     $title = implode(' / ', [ 'Twitter', $document['_source']['user']['name'], '#'.$es_id ]);
 
                     $user = [
@@ -320,6 +337,11 @@ class ContentController extends Controller
                 break;
 
                 case 'video':
+                    if (!$organisation->data_youtube_video)
+                    {
+                        return abort(403);
+                    }
+
                     $title = implode(' / ', [ 'YouTube', 'Video', '#'.$es_id ]);
 
                     $channel = [
@@ -344,10 +366,20 @@ class ContentController extends Controller
                 break;
 
                 case 'comment':
+                    if (!$organisation->data_youtube_comment)
+                    {
+                        return abort(403);
+                    }
+
                     $title = implode(' / ', [ 'YouTube', 'Yorum', '@"'.$document['_source']['channel']['title'].'"' ]);
                 break;
 
                 case 'article':
+                    if (!$organisation->data_news)
+                    {
+                        return abort(403);
+                    }
+
                     $crawler = MediaCrawler::where('id', $document['_source']['site_id'])->firstOrFail();
 
                     $site = [

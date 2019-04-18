@@ -36,7 +36,7 @@ class Update extends Command
      *
      * @var string
      */
-    protected $signature = 'trend:update {--module=} {--period=}';
+    protected $signature = 'trend:update {--module=} {--period=} {--type=}';
 
     /**
      * The console command description.
@@ -137,6 +137,24 @@ class Update extends Command
                     {
                         $this->error('Geçersiz periyot!');
                     }
+                }
+                else if ($module == 'twitter')
+                {
+                    $type = $this->option('type');
+
+                    if (!$type)
+                    {
+                        $type = $this->choice(
+                            'Tür seçin:',
+                            [
+                                'live' => 'Canlı',
+                                'local' => 'Local'
+                            ],
+                            'live'
+                        );
+                    }
+
+                    return $class->{$module}($type);
                 }
                 else
                 {
@@ -610,7 +628,7 @@ class Update extends Command
      *
      * @return mixed
      */
-    public static function twitter()
+    public static function twitter(string $type)
     {
         $group = implode(':', [ 'twitter', 'live', date('Y.m.d-H') ]);
 
@@ -618,104 +636,163 @@ class Update extends Command
         $chunk = [];
         $i = 0;
 
-        try
+        switch ($type)
         {
-            $each = true;
-
-            while ($each == true)
-            {
-                $stack = HandlerStack::create();
-
-                $oauth = new Oauth1([
-                    'consumer_key' => config('services.twitter.client_id'),
-                    'consumer_secret' => config('services.twitter.client_secret'),
-                    'token' => config('services.twitter.access_token'),
-                    'token_secret' => config('services.twitter.access_token_secret')
-                ]);
-
-                $stack->push($oauth);
-
-                $client = new Client(
-                    [
-                        'base_uri' => 'https://api.twitter.com/1.1/',
-                        'handler' => $stack,
-                        'auth' => 'oauth'
-                    ]
-                );
-
-                $response = $client->get('trends/place.json', [
-                    'query' => [
-                        'id' => config('services.twitter.api.trend.id')
-                    ],
-                    'timeout' => 10,
-                    'connect_timeout' => 5,
-                    'headers' => [
-                        'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))],
-                        'Accept' => 'application/json'
-                    ]
-                ]);
-                $response = json_decode($response->getBody());
-
-                if (count(@$response[0]->trends))
+            case 'live':
+                try
                 {
-                    foreach ($response[0]->trends as $trend)
+                    $each = true;
+
+                    while ($each == true)
                     {
-                        $i++;
-                        $key = md5($trend->name);
-                        $id = 'twitter_'.$key.'_'.date('Y.m.d-H:i');
+                        $stack = HandlerStack::create();
 
-                        $items[$i] = [
-                            'key' => $key,
-                            'title' => $trend->name
-                        ];
+                        $oauth = new Oauth1([
+                            'consumer_key' => config('services.twitter.client_id'),
+                            'consumer_secret' => config('services.twitter.client_secret'),
+                            'token' => config('services.twitter.access_token'),
+                            'token_secret' => config('services.twitter.access_token_secret')
+                        ]);
 
-                        ################
+                        $stack->push($oauth);
 
-                        $chunk['body'][] = [
-                            'create' => [
-                                '_index' => Indices::name([ 'trend', 'titles' ]),
-                                '_type' => 'title',
-                                '_id' => $id
+                        $client = new Client(
+                            [
+                                'base_uri' => 'https://api.twitter.com/1.1/',
+                                'handler' => $stack,
+                                'auth' => 'oauth'
                             ]
-                        ];
+                        );
 
-                        $chunk['body'][] = [
-                            'id' => $id,
-                            'key' => $key,
-                            'group' => $group,
-                            'module' => 'twitter',
-                            'rank' => $i,
-                            'title' => $trend->name,
-                            'created_at' => date('Y-m-d H:i:s')
-                        ];
+                        $response = $client->get('trends/place.json', [
+                            'query' => [
+                                'id' => config('services.twitter.api.trend.id')
+                            ],
+                            'timeout' => 10,
+                            'connect_timeout' => 5,
+                            'headers' => [
+                                'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))],
+                                'Accept' => 'application/json'
+                            ]
+                        ]);
+                        $response = json_decode($response->getBody());
 
-                        ################
+                        if (count(@$response[0]->trends))
+                        {
+                            foreach ($response[0]->trends as $trend)
+                            {
+                                $i++;
+                                $key = md5($trend->name);
+                                $id = 'twitter_'.$key.'_'.date('Y.m.d-H:i');
 
-                        echo Term::line($i.' - '.$trend->name);
+                                $items[$i] = [
+                                    'key' => $key,
+                                    'title' => $trend->name
+                                ];
+
+                                ################
+
+                                $chunk['body'][] = [
+                                    'create' => [
+                                        '_index' => Indices::name([ 'trend', 'titles' ]),
+                                        '_type' => 'title',
+                                        '_id' => $id
+                                    ]
+                                ];
+
+                                $chunk['body'][] = [
+                                    'id' => $id,
+                                    'key' => $key,
+                                    'group' => $group,
+                                    'module' => 'twitter',
+                                    'rank' => $i,
+                                    'title' => $trend->name,
+                                    'created_at' => date('Y-m-d H:i:s')
+                                ];
+
+                                ################
+
+                                echo Term::line($i.' - '.$trend->name);
+                            }
+                        }
+
+                        if ($i > 0)
+                        {
+                            $each = false;
+                        }
+                        else
+                        {
+                            $message = 'İçerik tespit edilemedi. 10 saniye sonra tekrar denenecek.';
+
+                            echo Term::line($message);
+
+                            System::log($message, 'App\Console\Commands\Trend\Update::twitter::handle()', 5);
+
+                            sleep(10);
+                        }
                     }
                 }
-
-                if ($i > 0)
+                catch (\Exception $e)
                 {
-                    $each = false;
+                    echo Term::line($e->getMessage());
+
+                    System::log($e->getMessage(), 'App\Console\Commands\Trend\Update::twitter()', $e->getCode() == 401 ? 10 : 6);
                 }
-                else
-                {
-                    $message = 'İçerik tespit edilemedi. 10 saniye sonra tekrar denenecek.';
+            break;
+            case 'local':
 
-                    echo Term::line($message);
 
-                    System::log($message, 'App\Console\Commands\Trend\Update::twitter::handle()', 5);
 
-                    sleep(10);
-                }
-            }
-        }
-        catch (\Exception $e)
-        {
-            echo Term::line($e->getMessage());
+        $query = Document::search([ 'twitter', 'tweets', '*' ], 'tweet', [
+            'aggs' => [
+                'results' => [
+                    'terms' => [
+                        'field' => 'entities.hashtags.hashtag',
+                        'size' => 1000,
+                        'min_doc_count' => 100
+                    ]
+                ]
+            ],
+            'query' => [
+                'bool' => [
+                    'filter' => [
+                        [
+                            'range' => [
+                                'created_at' => [
+                                    'gte' => 'now-1m'
+                                ]
+                            ]
+                        ]
+                    ],
+                    'must' => [
+                        [ 'match' => [ 'lang' => 'tr' ] ]
+                    ]
+                ]
+            ],
+            'size' => 0
+        ]);
 
-            System::log($e->getMessage(), 'App\Console\Commands\Trend\Update::twitter()', $e->getCode() == 401 ? 10 : 6);
+        print_r($query);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            break;
         }
 
         if ($i)
