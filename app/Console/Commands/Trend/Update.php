@@ -751,7 +751,7 @@ class Update extends Command
                                     'terms' => [
                                         'field' => 'entities.hashtags.hashtag',
                                         'size' => 50,
-                                        'min_doc_count' => 10
+                                        'min_doc_count' => 100
                                     ]
                                 ]
                             ]
@@ -764,7 +764,7 @@ class Update extends Command
                                     'range' => [
                                         'created_at' => [
                                             'format' => 'YYYY-MM-dd HH:mm',
-                                            'gte' => Carbon::now()->subMinutes(10)->format('Y-m-d H:i')
+                                            'gte' => Carbon::now()->subHour()->format('Y-m-d H:i')
                                         ]
                                     ]
                                 ]
