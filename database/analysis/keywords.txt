@@ -196,7 +196,6 @@ hala
 sonunda
 gece
 avrupa
-hep
 konuştu
 rağmen
 kısa
@@ -290,7 +289,6 @@ bilgi
 bulunduğu
 kendisini
 size
-hareket
 ibn
 bağlı
 onlara
