@@ -751,7 +751,7 @@ class Update extends Command
                                     'terms' => [
                                         'field' => 'entities.hashtags.hashtag',
                                         'size' => 50,
-                                        'min_doc_count' => 10
+                                        'min_doc_count' => 100
                                     ]
                                 ]
                             ]
