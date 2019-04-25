@@ -316,7 +316,7 @@ class Kernel extends ConsoleKernel
              * Proxy Durum Testleri
              */
             $schedule->command('nohup "proxy:check" --type=restart')
-                     ->hourly()
+                     ->everyTenMinutes()
                      ->timezone(config('app.timezone'))
                      ->withoutOverlapping(1);
 

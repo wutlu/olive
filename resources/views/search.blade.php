@@ -893,14 +893,6 @@
                     <input data-update type="checkbox" name="sort" value="asc" />
                     <span class="grey-text text-darken-2">İlk İçerikler</span>
                 </label>
-                <label class="align-self-center mr-1">
-                    <input data-update type="checkbox" name="retweet" value="on" />
-                    <span class="grey-text text-darken-2">RT Dahil</span>
-                </label>
-                <label class="align-self-center mr-1">
-                    <input data-update type="checkbox" name="verified" value="on" />
-                    <span class="grey-text text-darken-2">Mavi Tik</span>
-                </label>
             </span>
         </div>
         <ul class="wild-menu">
@@ -968,6 +960,29 @@
                         <input data-update name="modules" checked value="{{ $key }}" data-multiple="true" type="checkbox" />
                         <span>{{ $module }}</span>
                     </label>
+                    @if ($key == 'twitter')
+                        <label class="collection-item waves-effect d-flex pt-0 pb-0" style="padding-left: 2rem;">
+                            <input data-update type="radio" name="retweet" value="all" checked />
+                            <span class="grey-text text-darken-2 align-self-center">RT Dahil</span>
+                        </label>
+                        <label class="collection-item waves-effect d-flex pt-0 pb-0" style="padding-left: 2rem;">
+                            <input data-update type="radio" name="retweet" value="tweet" />
+                            <span class="grey-text text-darken-2 align-self-center">Sadece Tweet</span>
+                        </label>
+                        <label class="collection-item waves-effect d-flex pt-0 pb-0" style="padding-left: 2rem;">
+                            <input data-update type="radio" name="retweet" value="quote" />
+                            <span class="grey-text text-darken-2 align-self-center">Sadece Alıntı</span>
+                        </label>
+                        <label class="collection-item waves-effect d-flex pt-0 pb-0" style="padding-left: 2rem;">
+                            <input data-update type="radio" name="retweet" value="reply" />
+                            <span class="grey-text text-darken-2 align-self-center">Sadece Cevap</span>
+                        </label>
+
+                        <label class="collection-item waves-effect d-flex" style="padding-left: 2rem;">
+                            <input data-update type="checkbox" name="verified" value="on" />
+                            <span class="grey-text text-darken-2 align-self-center">Doğrulanmış</span>
+                        </label>
+                    @endif
                 @endif
             @endforeach
         </div>

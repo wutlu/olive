@@ -65,7 +65,7 @@ class ArchiveAggregationRequest extends FormRequest
             'sentiment' => 'required|string|in:pos,neu,neg,all',
             'modules' => 'required|array|min:1',
             'modules.*' => 'required|string|in:'.implode(',',array_keys(config('system.modules'))),
-            'retweet' => 'nullable|string|in:on',
+            'retweet' => 'nullable|string|in:all,tweet,quote,reply',
             'verified' => 'nullable|string|in:on',
         ];
     }

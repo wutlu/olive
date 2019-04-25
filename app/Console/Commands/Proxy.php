@@ -53,7 +53,7 @@ class Proxy extends Command
                 $starttime = microtime(true);
 
                 $client = new Client([
-                    'base_uri' => 'https://www.google.com',
+                    'base_uri' => config('app.url'),
                     'handler' => HandlerStack::create()
                 ]);
 

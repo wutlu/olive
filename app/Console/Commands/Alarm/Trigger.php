@@ -115,7 +115,7 @@ class Trigger extends Command
         $mquery = [
             'size' => 1,
             'sort' => [
-                'created_at' => 'DESC'
+                'called_at' => 'DESC'
             ],
             'query' => [
                 'bool' => [

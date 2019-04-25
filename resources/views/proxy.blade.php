@@ -231,20 +231,17 @@
     }
 @endpush
 
-@section('action-bar')
-    <a href="#" class="btn-floating btn-large halfway-fab waves-effect white" data-trigger="create">
-        <i class="material-icons grey-text text-darken-2">add</i>
-    </a>
-@endsection
-
 @section('content')
     <div class="card with-bg">
-        <div class="card-content">
-            <span class="card-title">Vekil Sunucu Yönetimi</span>
-        </div>
-        <div class="card-content">
-            <p class="grey-text text-darken-2">- Veri toplamada daha yüksek erişim sağlamak için birden fazla vekil sunucu kullanın.</p>
-            <p class="grey-text text-darken-2">- Vekil sunucu yaşam değerleri otomatize bir şekilde sürekli olarak kontrol edilir. Yaşam değeri düşük sunucular, yaşam değeri normal duruma gelene kadar kullanılmayacaktır.</p>
+        <div class="card-image">
+            <img src="{{ asset('img/md-s/21.jpg') }}" alt="Image" />
+            <span class="card-title white-text d-flex">
+                <i class="material-icons align-self-center mr-1">date_range</i>
+                Vekil Sunucu Yönetimi
+            </span>
+            <a href="#" class="btn-floating btn-large halfway-fab waves-effect white" data-trigger="create">
+                <i class="material-icons grey-text text-darken-2">add</i>
+            </a>
         </div>
         <div class="collection load"
              id="collections"

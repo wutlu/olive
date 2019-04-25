@@ -60,7 +60,7 @@ class ArchiveRequest extends FormRequest
             'modules' => 'required|array|min:1',
             'modules.*' => 'required|string|in:'.implode(',',array_keys(config('system.modules'))),
             'sort' => 'nullable|string|in:asc,desc',
-            'retweet' => 'nullable|string|in:on',
+            'retweet' => 'nullable|string|in:all,tweet,quote,reply',
             'verified' => 'nullable|string|in:on',
         ];
     }

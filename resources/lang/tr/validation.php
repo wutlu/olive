@@ -311,6 +311,9 @@ $arr = [
         'module_forum'                    => 'Forum Modülü',
 
         'phone'                           => 'Telefon',
+
+        'retweet.*'                       => 'ReTweet',
+        'retweet'                         => 'ReTweet',
     ],
 ];
 

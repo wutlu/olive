@@ -628,9 +628,17 @@ class SearchController extends Controller
             ]
         ];
 
-        if (!$request->retweet)
+        switch ($request->retweet)
         {
-            $q['query']['bool']['must_not'][] = [ 'match' => [ 'external.type' => 'retweet' ] ];
+            case 'tweet':
+                $q['query']['bool']['must_not'][] = [ 'exists' => [ 'field' => 'external.type' ] ];
+            break;
+            case 'quote':
+                $q['query']['bool']['must'][] = [ 'match' => [ 'external.type' => 'quote' ] ];
+            break;
+            case 'reply':
+                $q['query']['bool']['must'][] = [ 'match' => [ 'external.type' => 'reply' ] ];
+            break;
         }
 
         if ($request->verified)

@@ -43,7 +43,10 @@ class Crawler
                 'curl' => [
                     CURLOPT_REFERER => $site
                 ],
-                'verify' => false
+                'verify' => false,
+                'allow_redirects' => [
+                    'max' => 6
+                ]
             ];
 
             if ($standard)
@@ -129,7 +132,10 @@ class Crawler
                     'curl' => [
                         CURLOPT_REFERER => $site
                     ],
-                    'verify' => false
+                    'verify' => false,
+                    'allow_redirects' => [
+                        'max' => 6,
+                    ]
                 ];
 
                 $proxy = Proxy::where('health', '>', 7)->inRandomOrder()->first();
