@@ -67,6 +67,7 @@ class ArchiveAggregationRequest extends FormRequest
             'modules.*' => 'required|string|in:'.implode(',',array_keys(config('system.modules'))),
             'retweet' => 'nullable|string|in:all,tweet,quote,reply',
             'verified' => 'nullable|string|in:on',
+            'media' => 'nullable|string|in:on'
         ];
     }
 }

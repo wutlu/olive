@@ -24,7 +24,7 @@
                     }),
                     $('<li />', {
                         'class': 'collection-item',
-                        'html': 'Twitter\'da sadece Tweet için (cevap, alıntı ve retweet hariç), <code class="red white-text">!_exists_:external.type</code> operatörünü kullanabilirsiniz.'
+                        'html': 'Twitter\'da sadece Tweet için (cevap, alıntı ve retweet hariç), <code class="red white-text">!_exists_:external.type</code>, <code class="red white-text">external.type:quote</code>, <code class="red white-text">external.type:reply</code> operatörlerini kullanabilirsiniz.'
                     }),
                     $('<li />', {
                         'class': 'collection-item',

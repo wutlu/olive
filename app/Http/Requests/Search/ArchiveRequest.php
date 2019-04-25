@@ -62,6 +62,7 @@ class ArchiveRequest extends FormRequest
             'sort' => 'nullable|string|in:asc,desc',
             'retweet' => 'nullable|string|in:all,tweet,quote,reply',
             'verified' => 'nullable|string|in:on',
+            'media' => 'nullable|string|in:on'
         ];
     }
 }

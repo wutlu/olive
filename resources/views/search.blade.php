@@ -700,7 +700,7 @@
                 data-more-button="#search-more_button"
                 data-callback="__search_archive"
                 data-method="post"
-                data-include="start_date,end_date,sentiment,modules,string,sort,retweet,verified,take"
+                data-include="start_date,end_date,sentiment,modules,string,sort,retweet,verified,take,media"
                 data-nothing>
                 <li class="collection-item nothing hide">
                     @component('components.nothing')
@@ -861,9 +861,9 @@
                 <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center" data-class=".wild-content" data-class-remove="active" style="margin: 0 .4rem 0 0;">
                     <i class="material-icons">close</i>
                 </a>
-                <button type="button" data-type="mention" data-tooltip="Kimler Bahsetti?" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules,verified,retweet" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center loading" style="margin: 0 .2rem 0 0;">@</button>
-                <button type="button" data-type="hashtag" data-tooltip="Hangi Hashtagler Kullanıldı?" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules,verified,retweet" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center loading" style="margin: 0 .2rem 0 0;">#</button>
-                <button type="button" data-type="source" data-tooltip="Kaynak Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules,verified,retweet" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center loading" style="margin: 0 .2rem 0 0;">Kaynaklar</button>
+                <button type="button" data-type="mention" data-tooltip="Kimler Bahsetti?" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules,verified,retweet,media" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center loading" style="margin: 0 .2rem 0 0;">@</button>
+                <button type="button" data-type="hashtag" data-tooltip="Hangi Hashtagler Kullanıldı?" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules,verified,retweet,media" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center loading" style="margin: 0 .2rem 0 0;">#</button>
+                <button type="button" data-type="source" data-tooltip="Kaynak Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules,verified,retweet,media" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center loading" style="margin: 0 .2rem 0 0;">Kaynaklar</button>
             </span>
         </div>
         <div class="wild-content d-flex" data-wild="graph">
@@ -871,15 +871,15 @@
                 <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center" data-class=".wild-content" data-class-remove="active" style="margin: 0 .4rem 0 0;">
                     <i class="material-icons">close</i>
                 </a>
-                <button type="button" data-type="hourly" data-tooltip="Saatlik İçerik Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules,verified,retweet" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center loading" style="margin: 0 .2rem 0 0;">S</button>
-                <button type="button" data-type="daily" data-tooltip="Günlük İçerik Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules,verified,retweet" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center loading" style="margin: 0 .2rem 0 0;">G</button>
-                <button type="button" data-type="location" data-tooltip="Konum Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules,verified,retweet" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center loading" style="margin: 0 .2rem 0 0;">
+                <button type="button" data-type="hourly" data-tooltip="Saatlik İçerik Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules,verified,retweet,media" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center loading" style="margin: 0 .2rem 0 0;">S</button>
+                <button type="button" data-type="daily" data-tooltip="Günlük İçerik Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules,verified,retweet,media" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center loading" style="margin: 0 .2rem 0 0;">G</button>
+                <button type="button" data-type="location" data-tooltip="Konum Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules,verified,retweet,media" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center loading" style="margin: 0 .2rem 0 0;">
                     <i class="material-icons">location_on</i>
                 </button>
-                <button type="button" data-type="platform" data-tooltip="Platform Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules,verified,retweet" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center loading" style="margin: 0 .2rem 0 0;">
+                <button type="button" data-type="platform" data-tooltip="Platform Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules,verified,retweet,media" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center loading" style="margin: 0 .2rem 0 0;">
                     <i class="material-icons">devices</i>
                 </button>
-                <button type="button" data-type="sentiment" data-tooltip="Duygu Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules,verified,retweet" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center loading" style="margin: 0 .2rem 0 0;">
+                <button type="button" data-type="sentiment" data-tooltip="Duygu Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules,verified,retweet,media" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center loading" style="margin: 0 .2rem 0 0;">
                     <i class="material-icons">sentiment_satisfied</i>
                 </button>
             </span>
@@ -956,31 +956,47 @@
         <div class="collection collection-bordered">
             @foreach (config('system.modules') as $key => $module)
                 @if ($organisation->{'data_'.$key})
-                    <label class="collection-item waves-effect d-block">
-                        <input data-update name="modules" checked value="{{ $key }}" data-multiple="true" type="checkbox" />
-                        <span>{{ $module }}</span>
-                    </label>
                     @if ($key == 'twitter')
-                        <label class="collection-item waves-effect d-flex pt-0 pb-0" style="padding-left: 2rem;">
-                            <input data-update type="radio" name="retweet" value="all" />
-                            <span class="grey-text text-darken-2 align-self-center">RT Dahil</span>
+                        <label class="collection-item waves-effect d-block">
+                            <input data-update name="modules" checked value="{{ $key }}" data-multiple="true" type="checkbox" />
+                            <span>{{ $module }}</span>
                         </label>
-                        <label class="collection-item waves-effect d-flex pt-0 pb-0" style="padding-left: 2rem;">
-                            <input data-update type="radio" name="retweet" value="tweet" checked />
-                            <span class="grey-text text-darken-2 align-self-center">Sadece Tweet</span>
-                        </label>
-                        <label class="collection-item waves-effect d-flex pt-0 pb-0" style="padding-left: 2rem;">
-                            <input data-update type="radio" name="retweet" value="quote" />
-                            <span class="grey-text text-darken-2 align-self-center">Sadece Alıntı</span>
-                        </label>
-                        <label class="collection-item waves-effect d-flex pt-0 pb-0" style="padding-left: 2rem;">
-                            <input data-update type="radio" name="retweet" value="reply" />
-                            <span class="grey-text text-darken-2 align-self-center">Sadece Cevap</span>
-                        </label>
+                        <div class="collection-item teal lighten-5">
+                            <label>
+                                <input data-update type="radio" name="retweet" value="all" />
+                                <span class="grey-text text-darken-2 align-self-center">Tümü <sup>RT Dahil</sup></span>
+                            </label>
+                            <label>
+                                <input data-update type="radio" name="retweet" value="tweet" checked />
+                                <span class="grey-text text-darken-2 align-self-center">Sadece Tweet</span>
+                            </label>
+                            <label>
+                                <input data-update type="radio" name="retweet" value="quote" />
+                                <span class="grey-text text-darken-2 align-self-center">Sadece Alıntılar</span>
+                            </label>
+                            <label>
+                                <input data-update type="radio" name="retweet" value="reply" />
+                                <span class="grey-text text-darken-2 align-self-center">Sadece Cevaplar</span>
+                            </label>
 
-                        <label class="collection-item waves-effect d-flex" style="padding-left: 2rem;">
-                            <input data-update type="checkbox" name="verified" value="on" />
-                            <span class="grey-text text-darken-2 align-self-center">Doğrulanmış</span>
+                            <hr class="teal lighten-4 mt-1 mb-1" />
+
+                            <label>
+                                <input data-update type="checkbox" name="verified" value="on" />
+                                <span class="grey-text text-darken-2 align-self-center">Doğrulanmış Hesaplar</span>
+                            </label>
+
+                            <hr class="teal lighten-4 mt-1 mb-1" />
+
+                            <label>
+                                <input data-update type="checkbox" name="media" value="on" />
+                                <span class="grey-text text-darken-2 align-self-center">Medya İçerikleri</span>
+                            </label>
+                        </div>
+                    @else
+                        <label class="collection-item waves-effect d-block">
+                            <input data-update name="modules" checked value="{{ $key }}" data-multiple="true" type="checkbox" />
+                            <span>{{ $module }}</span>
                         </label>
                     @endif
                 @endif

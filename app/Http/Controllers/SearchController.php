@@ -74,6 +74,12 @@ class SearchController extends Controller
                         [ 'exists' => [ 'field' => 'created_at' ] ],
                         [
                             'query_string' => [
+                                'fields' => [
+                                    'title',
+                                    'description',
+                                    'entry',
+                                    'text'
+                                ],
                                 'query' => $clean->line,
                                 'default_operator' => 'AND'
                             ]
@@ -83,16 +89,36 @@ class SearchController extends Controller
             ]
         ];
 
+        if ($request->media)
+        {
+            $mquery['query']['bool']['must'][] = [
+                'nested' => [
+                    'path' => 'entities.medias',
+                    'query' => [
+                        'bool' => [
+                            'must' => [
+                                [
+                                    'exists' => [
+                                        'field' => 'entities.medias.media.type'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ];
+        }
+
         switch ($request->retweet)
         {
             case 'tweet':
-                $q['query']['bool']['must_not'][] = [ 'exists' => [ 'field' => 'external.type' ] ];
+                $mquery['query']['bool']['must_not'][] = [ 'exists' => [ 'field' => 'external.type' ] ];
             break;
             case 'quote':
-                $q['query']['bool']['must'][] = [ 'match' => [ 'external.type' => 'quote' ] ];
+                $mquery['query']['bool']['must'][] = [ 'match' => [ 'external.type' => 'quote' ] ];
             break;
             case 'reply':
-                $q['query']['bool']['must'][] = [ 'match' => [ 'external.type' => 'reply' ] ];
+                $mquery['query']['bool']['must'][] = [ 'match' => [ 'external.type' => 'reply' ] ];
             break;
         }
 
@@ -591,6 +617,7 @@ class SearchController extends Controller
                         ]
                     ],
                     'must' => [
+                        [ 'exists' => [ 'field' => 'created_at' ] ],
                         [
                             'query_string' => [
                                 'fields' => [
@@ -602,8 +629,7 @@ class SearchController extends Controller
                                 'query' => $clean->line,
                                 'default_operator' => 'AND'
                             ]
-                        ],
-                        [ 'exists' => [ 'field' => 'created_at' ] ],
+                        ]
                     ],
                     'should' => [
                         [ 'match' => [ 'status' => 'ok' ] ]
@@ -635,6 +661,26 @@ class SearchController extends Controller
                 'sentiment'
             ]
         ];
+
+        if ($request->media)
+        {
+            $q['query']['bool']['must'][] = [
+                'nested' => [
+                    'path' => 'entities.medias',
+                    'query' => [
+                        'bool' => [
+                            'must' => [
+                                [
+                                    'exists' => [
+                                        'field' => 'entities.medias.media.type'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ];
+        }
 
         switch ($request->retweet)
         {

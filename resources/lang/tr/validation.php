@@ -312,8 +312,8 @@ $arr = [
 
         'phone'                           => 'Telefon',
 
-        'retweet.*'                       => 'ReTweet',
         'retweet'                         => 'ReTweet',
+        'media'                           => 'Medya',
     ],
 ];
 
