@@ -962,11 +962,11 @@
                     </label>
                     @if ($key == 'twitter')
                         <label class="collection-item waves-effect d-flex pt-0 pb-0" style="padding-left: 2rem;">
-                            <input data-update type="radio" name="retweet" value="all" checked />
+                            <input data-update type="radio" name="retweet" value="all" />
                             <span class="grey-text text-darken-2 align-self-center">RT Dahil</span>
                         </label>
                         <label class="collection-item waves-effect d-flex pt-0 pb-0" style="padding-left: 2rem;">
-                            <input data-update type="radio" name="retweet" value="tweet" />
+                            <input data-update type="radio" name="retweet" value="tweet" checked />
                             <span class="grey-text text-darken-2 align-self-center">Sadece Tweet</span>
                         </label>
                         <label class="collection-item waves-effect d-flex pt-0 pb-0" style="padding-left: 2rem;">
