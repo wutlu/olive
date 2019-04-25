@@ -990,7 +990,7 @@
 
                             <label>
                                 <input data-update type="checkbox" name="media" value="on" />
-                                <span class="grey-text text-darken-2 align-self-center">Medya İçerikleri</span>
+                                <span class="grey-text text-darken-2 align-self-center">Medyalı Tweetler</span>
                             </label>
                         </div>
                     @else

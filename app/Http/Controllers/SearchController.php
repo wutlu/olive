@@ -642,6 +642,7 @@ class SearchController extends Controller
                 'user.image',
                 'user.verified',
                 'text',
+                'entities.medias.media',
 
                 'created_at',
                 'deleted_at',
@@ -792,6 +793,11 @@ class SearchController extends Controller
                             'screen_name' => $object['_source']['user']['screen_name'],
                             'image' => $object['_source']['user']['image']
                         ];
+
+                        if (@$object['_source']['entities']['medias'])
+                        {
+                            $arr['medias'] = $object['_source']['entities']['medias'];
+                        }
 
                         if (@$object['_source']['user']['verified'])
                         {

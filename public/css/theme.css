@@ -54,6 +54,20 @@
 }
 
 /*!
+ * media area
+ */
+.media-area {
+  width: 256px;
+  height: 128px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+.media-area:empty {
+  display: none;
+}
+
+/*!
  * top dropdown
  */
 #user-top-dropdown {

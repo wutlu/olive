@@ -131,6 +131,7 @@ class RealTimeController extends Controller
                                 'created_at',
                                 'deleted_at',
                                 'sentiment',
+                                'entities.medias.media'
                             ]
                         ];
 
@@ -160,6 +161,11 @@ class RealTimeController extends Controller
                                     'text' => Term::tweet($object['_source']['text']),
                                     'created_at' => date('d.m.Y H:i:s', strtotime($object['_source']['created_at']))
                                 ];
+
+                                if (@$object['_source']['entities']['medias'])
+                                {
+                                    $arr['medias'] = $object['_source']['entities']['medias'];
+                                }
 
                                 if (@$object['_source']['deleted_at'])
                                 {

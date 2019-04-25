@@ -127,7 +127,7 @@ function __joints(o)
 
 function _tweet_(o)
 {
-    return $('<div />', {
+    var tweet = $('<div />', {
         'class': 'data',
         'html': [
             $('<div />', {
@@ -163,6 +163,9 @@ function _tweet_(o)
                     }).removeClass(o.user.verified ? 'hide' : '')
                 ]
             }),
+            $('<div />', {
+                'class': 'media-area mb-1'
+            }),
             $('<span />', {
                 'class': 'text-area',
                 'html': o.text
@@ -178,6 +181,37 @@ function _tweet_(o)
             })
         ]
     })
+
+    if (o.medias)
+    {
+        $.each (o.medias, function (key, item) {
+            if (item.media.type == 'photo')
+            {
+                tweet.find('.media-area')
+                     .css({
+                        'background-image': 'url(' + item.media.media_url + ')'
+                     })
+                     .html('&nbsp;')
+            }
+            else if (item.media.type == 'video' || item.media.type == 'animated_gif')
+            {
+                tweet.find('.media-area').html($('<video />', {
+                    'width': '100%',
+                    'height': '100%',
+                    'controls': 'true',
+                    'html': [
+                        $('<source />', {
+                            'src': item.media.source_url,
+                            'type': 'video/mp4'
+                        }),
+                        'Your browser does not support the video tag.'
+                    ]
+                }))
+            }
+        })
+    }
+
+    return tweet;
 }
 
 function _entry_(o)
