@@ -45,7 +45,7 @@ class FollowActiveUsers extends Command
      */
     public function handle()
     {
-        $size = 10000;
+        $size = 1000;
         $min = 50;
 
         $query = Document::search([ 'twitter', 'tweets', '*' ], 'tweet', [
@@ -65,7 +65,7 @@ class FollowActiveUsers extends Command
                             'range' => [
                                 'created_at' => [
                                     'format' => 'YYYY-MM-dd HH:mm',
-                                    'gte' => Carbon::now()->subDay()->format('Y-m-d H:i')
+                                    'gte' => Carbon::now()->subYear()->format('Y-m-d H:i')
                                 ]
                             ]
                         ]
@@ -86,12 +86,19 @@ class FollowActiveUsers extends Command
 
             if (count($ids))
             {
+                $users = StreamingUsers::select('user_id')->where('organisation_id', config('app.organisation_id_root'))->pluck('user_id')->toArray();
+
                 $search = Document::search([ 'twitter', 'tweets', '*' ], 'tweet', [
                     'query' => [
                         'bool' => [
                             'should' => $ids,
                             'must_not' => [
-                                [ 'match' => [ 'user.verified' => true ] ]
+                                [ 'match' => [ 'user.verified' => true ] ],
+                                [
+                                    'terms' => [
+                                        'user.id' => $users
+                                    ]
+                                ]
                             ]
                         ]
                     ],
@@ -121,7 +128,7 @@ class FollowActiveUsers extends Command
                                     ]
                                 );
 
-                                $this->line($hit['_source']['user']['name']);
+                                $this->line($hit['_source']['user']['screen_name']);
                             }
                             catch (\Exception $e)
                             {
