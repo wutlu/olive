@@ -65,7 +65,7 @@ class FollowActiveUsers extends Command
                             'range' => [
                                 'created_at' => [
                                     'format' => 'YYYY-MM-dd HH:mm',
-                                    'gte' => Carbon::now()->subYear()->format('Y-m-d H:i')
+                                    'gte' => Carbon::now()->subDay()->format('Y-m-d H:i')
                                 ]
                             ]
                         ]
