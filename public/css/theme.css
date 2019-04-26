@@ -901,10 +901,6 @@ code {
 
   color: #fff;
 }
-
-.search-wrapper .input-field > .material-icons {
-  color: #fff;
-}
 .search-wrapper .input-field > input {
   color: #fff !important;
   font-size: 48px;
@@ -913,9 +909,6 @@ code {
 
           box-shadow: none !important;
   -webkit-box-shadow: none !important;
-}
-.search-wrapper .input-field > label {
-  color: #fff !important;
 }
 
 @media (max-width: 1024px) {

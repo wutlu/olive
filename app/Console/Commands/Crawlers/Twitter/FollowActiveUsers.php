@@ -50,8 +50,8 @@ class FollowActiveUsers extends Command
                 'results' => [
                     'terms' => [
                         'field' => 'external.id',
-                        'size' => 1000,
-                        'min_doc_count' => 100
+                        'size' => 10000,
+                        'min_doc_count' => 50
                     ]
                 ]
             ],

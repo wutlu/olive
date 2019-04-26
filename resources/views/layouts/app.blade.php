@@ -623,7 +623,6 @@
                     </a>
                 </div>
                 <div class="input-field">
-                    <i class="material-icons prefix">search</i>
                     <input
                         name="search_input"
                         id="search_input"
@@ -634,7 +633,6 @@
                         data-method="post"
                         data-delay="1"
                         data-callback="__module_search" />
-                    <label for="search_input">Arayın</label>
                 </div>
                 <div id="ms-results"></div>
             </div>

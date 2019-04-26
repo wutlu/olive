@@ -106,7 +106,7 @@ class StreamUpdate extends Command
                                  ->get();
             break;
             case 'trend':
-                $klimit = 200;
+                $klimit = 80;
             break;
         }
 
@@ -132,7 +132,7 @@ class StreamUpdate extends Command
                                 'range' => [
                                     'created_at' => [
                                         'format' => 'YYYY-MM-dd HH',
-                                        'gte' => Carbon::now()->subHours(6)->format('Y-m-d H')
+                                        'gte' => Carbon::now()->subHours(3)->format('Y-m-d H')
                                     ]
                                 ]
                             ]
