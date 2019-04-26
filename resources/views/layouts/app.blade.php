@@ -18,7 +18,7 @@
     <title>@yield('title', @$title ? $title['text'] : config('app.name'))</title>
 
     <!-- master styles -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons" />
 
     <link rel="stylesheet" href="{{ asset('css/materialize.min.css?v='.config('system.version')) }}" />
     <link rel="stylesheet" href="{{ asset('css/theme.css?v='.config('system.version')) }}" />

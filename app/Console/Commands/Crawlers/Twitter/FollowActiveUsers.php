@@ -94,6 +94,7 @@ class FollowActiveUsers extends Command
                             'should' => $ids,
                             'must_not' => [
                                 [ 'match' => [ 'user.verified' => true ] ],
+                                [ 'exists' => [ 'field' => 'external.type' ] ],
                                 [
                                     'terms' => [
                                         'user.id' => $users
