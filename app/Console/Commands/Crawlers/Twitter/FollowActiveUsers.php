@@ -45,13 +45,16 @@ class FollowActiveUsers extends Command
      */
     public function handle()
     {
+        $size = 10000;
+        $min = 50;
+
         $query = Document::search([ 'twitter', 'tweets', '*' ], 'tweet', [
             'aggs' => [
                 'results' => [
                     'terms' => [
                         'field' => 'external.id',
-                        'size' => 10000,
-                        'min_doc_count' => 50
+                        'size' => $size,
+                        'min_doc_count' => $min
                     ]
                 ]
             ],
@@ -92,7 +95,7 @@ class FollowActiveUsers extends Command
                             ]
                         ]
                     ],
-                    'size' => 1000,
+                    'size' => $size,
                     '_source' => [
                         'user.name',
                         'user.screen_name',
