@@ -235,7 +235,8 @@
         @include('content._inc.sentiment_bar', [
             'pos' => $document['_source']['sentiment']['pos'],
             'neg' => $document['_source']['sentiment']['neg'],
-            'neu' => $document['_source']['sentiment']['neu']
+            'neu' => $document['_source']['sentiment']['neu'],
+            'document' => $document
         ])
     </div>
 

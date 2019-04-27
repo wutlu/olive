@@ -1458,6 +1458,9 @@ footer.page-footer > .container > .row > .col > img#vz-logo {
   background-color: transparent;
 }
 
+.card > .card-sentiment {
+  margin: 1rem 0 0;
+}
 .card > .card-sentiment > .sentiment-item {
   padding: 0 .6rem .6rem;
   border-width: 0 0 .2rem;

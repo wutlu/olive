@@ -46,7 +46,7 @@ class FollowActiveUsers extends Command
     public function handle()
     {
         $size = 1000;
-        $min = 50;
+        $min = 10;
 
         $query = Document::search([ 'twitter', 'tweets', '*' ], 'tweet', [
             'aggs' => [
@@ -65,7 +65,7 @@ class FollowActiveUsers extends Command
                             'range' => [
                                 'created_at' => [
                                     'format' => 'YYYY-MM-dd HH:mm',
-                                    'gte' => Carbon::now()->subDay()->format('Y-m-d H:i')
+                                    'gte' => Carbon::now()->subDays(2)->format('Y-m-d H:i')
                                 ]
                             ]
                         ]
@@ -94,7 +94,6 @@ class FollowActiveUsers extends Command
                             'should' => $ids,
                             'must_not' => [
                                 [ 'match' => [ 'user.verified' => true ] ],
-                                [ 'exists' => [ 'field' => 'external.type' ] ],
                                 [
                                     'terms' => [
                                         'user.id' => $users
@@ -129,7 +128,7 @@ class FollowActiveUsers extends Command
                                     ]
                                 );
 
-                                $this->line($hit['_source']['user']['screen_name']);
+                                $this->line($hit['_source']['user']['screen_name'].' - '.$hit['_id']);
                             }
                             catch (\Exception $e)
                             {

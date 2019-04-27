@@ -89,44 +89,6 @@ class SearchController extends Controller
             ]
         ];
 
-        if ($request->media)
-        {
-            $mquery['query']['bool']['must'][] = [
-                'nested' => [
-                    'path' => 'entities.medias',
-                    'query' => [
-                        'bool' => [
-                            'must' => [
-                                [
-                                    'exists' => [
-                                        'field' => 'entities.medias.media.type'
-                                    ]
-                                ]
-                            ]
-                        ]
-                    ]
-                ]
-            ];
-        }
-
-        switch ($request->retweet)
-        {
-            case 'tweet':
-                $mquery['query']['bool']['must_not'][] = [ 'exists' => [ 'field' => 'external.type' ] ];
-            break;
-            case 'quote':
-                $mquery['query']['bool']['must'][] = [ 'match' => [ 'external.type' => 'quote' ] ];
-            break;
-            case 'reply':
-                $mquery['query']['bool']['must'][] = [ 'match' => [ 'external.type' => 'reply' ] ];
-            break;
-        }
-
-        if ($request->verified)
-        {
-            $mquery['query']['bool']['must'][] = [ 'exists' => [ 'field' => 'user.verified' ] ];
-        }
-
         if ($request->sentiment != 'all')
         {
             $mquery['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.34 ] ] ];
@@ -143,6 +105,44 @@ class SearchController extends Controller
                 case 'twitter':
                     if ($organisation->data_twitter)
                     {
+                        if ($request->media)
+                        {
+                            $mquery['query']['bool']['must'][] = [
+                                'nested' => [
+                                    'path' => 'entities.medias',
+                                    'query' => [
+                                        'bool' => [
+                                            'must' => [
+                                                [
+                                                    'exists' => [
+                                                        'field' => 'entities.medias.media.type'
+                                                    ]
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ];
+                        }
+
+                        switch ($request->retweet)
+                        {
+                            case 'tweet':
+                                $mquery['query']['bool']['must_not'][] = [ 'exists' => [ 'field' => 'external.type' ] ];
+                            break;
+                            case 'quote':
+                                $mquery['query']['bool']['must'][] = [ 'match' => [ 'external.type' => 'quote' ] ];
+                            break;
+                            case 'reply':
+                                $mquery['query']['bool']['must'][] = [ 'match' => [ 'external.type' => 'reply' ] ];
+                            break;
+                        }
+
+                        if ($request->verified)
+                        {
+                            $mquery['query']['bool']['must'][] = [ 'exists' => [ 'field' => 'user.verified' ] ];
+                        }
+
                         $modules[] = 'tweet';
                     }
                 break;
@@ -663,44 +663,6 @@ class SearchController extends Controller
             ]
         ];
 
-        if ($request->media)
-        {
-            $q['query']['bool']['must'][] = [
-                'nested' => [
-                    'path' => 'entities.medias',
-                    'query' => [
-                        'bool' => [
-                            'must' => [
-                                [
-                                    'exists' => [
-                                        'field' => 'entities.medias.media.type'
-                                    ]
-                                ]
-                            ]
-                        ]
-                    ]
-                ]
-            ];
-        }
-
-        switch ($request->retweet)
-        {
-            case 'tweet':
-                $q['query']['bool']['must_not'][] = [ 'exists' => [ 'field' => 'external.type' ] ];
-            break;
-            case 'quote':
-                $q['query']['bool']['must'][] = [ 'match' => [ 'external.type' => 'quote' ] ];
-            break;
-            case 'reply':
-                $q['query']['bool']['must'][] = [ 'match' => [ 'external.type' => 'reply' ] ];
-            break;
-        }
-
-        if ($request->verified)
-        {
-            $q['query']['bool']['must'][] = [ 'exists' => [ 'field' => 'user.verified' ] ];
-        }
-
         if ($request->sentiment != 'all')
         {
             $q['query']['bool']['filter'][] = [
@@ -719,6 +681,44 @@ class SearchController extends Controller
                 case 'twitter':
                     if ($organisation->data_twitter)
                     {
+                        if ($request->media)
+                        {
+                            $q['query']['bool']['must'][] = [
+                                'nested' => [
+                                    'path' => 'entities.medias',
+                                    'query' => [
+                                        'bool' => [
+                                            'must' => [
+                                                [
+                                                    'exists' => [
+                                                        'field' => 'entities.medias.media.type'
+                                                    ]
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ];
+                        }
+
+                        switch ($request->retweet)
+                        {
+                            case 'tweet':
+                                $q['query']['bool']['must_not'][] = [ 'exists' => [ 'field' => 'external.type' ] ];
+                            break;
+                            case 'quote':
+                                $q['query']['bool']['must'][] = [ 'match' => [ 'external.type' => 'quote' ] ];
+                            break;
+                            case 'reply':
+                                $q['query']['bool']['must'][] = [ 'match' => [ 'external.type' => 'reply' ] ];
+                            break;
+                        }
+
+                        if ($request->verified)
+                        {
+                            $q['query']['bool']['must'][] = [ 'exists' => [ 'field' => 'user.verified' ] ];
+                        }
+
                         $modules[] = 'tweet';
                     }
                 break;

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Elasticsearch\Document;
+use App\Elasticsearch\Indices;
 
 use App\Models\Crawlers\SozlukCrawler;
 use App\Models\Crawlers\MediaCrawler;
@@ -371,7 +372,28 @@ class ContentController extends Controller
                         return abort(403);
                     }
 
-                    $title = implode(' / ', [ 'YouTube', 'Yorum', '@"'.$document['_source']['channel']['title'].'"' ]);
+                    $channel = [
+                        [ 'match' => [ 'channel.id' => $document['_source']['channel']['id'] ] ]
+                    ];
+
+                    $data = [
+                        'total' => Document::search([ 'youtube', 'comments', '*' ], 'comment', [
+                            'query' => [
+                                'bool' => [
+                                    'must' => $channel
+                                ]
+                            ],
+                            'aggs' => [
+                                'positive' => [ 'avg' => [ 'field' => 'sentiment.pos' ] ],
+                                'neutral' => [ 'avg' => [ 'field' => 'sentiment.neu' ] ],
+                                'negative' => [ 'avg' => [ 'field' => 'sentiment.neg' ] ]
+                            ],
+                            'size' => 0
+                        ]),
+                        'video_index' => Indices::name([ 'youtube', 'videos' ])
+                    ];
+
+                    $title = implode(' / ', [ 'YouTube', 'Yorum', $document['_source']['channel']['title'] ]);
                 break;
 
                 case 'article':
