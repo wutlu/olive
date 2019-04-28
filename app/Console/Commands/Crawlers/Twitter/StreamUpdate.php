@@ -160,7 +160,7 @@ class StreamUpdate extends Command
 
                 if (count($filtered))
                 {
-                    foreach (array_chunk($filtered, 40) as $query)
+                    foreach (array_chunk($filtered, 20) as $query)
                     {
                         foreach ($query as $row)
                         {

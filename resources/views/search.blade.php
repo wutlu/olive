@@ -741,7 +741,7 @@
             </span>
         </div>
         <div class="card-content">
-            <input data-update type="date" class="d-block" name="start_date" value="{{ $s ? $s : date('Y-m-d') }}" placeholder="Başlangıç" />
+            <input data-update type="date" class="d-block" name="start_date" value="{{ $s ? $s : date('Y-m-d', strtotime('-1 day')) }}" placeholder="Başlangıç" />
             <input data-update type="date" class="d-block" name="end_date" value="{{ $e ? $e : date('Y-m-d') }}" placeholder="Bitiş" />
         </div>
         <div class="collection">

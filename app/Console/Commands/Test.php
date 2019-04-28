@@ -10,6 +10,8 @@ use App\Elasticsearch\Document;
 
 use System;
 
+use Term;
+
 class Test extends Command
 {
     /**
@@ -43,6 +45,18 @@ class Test extends Command
      */
     public function handle()
     {
-        //
+        $items = [
+            'RtEbruAsenaa',
+            'cemgonc',
+            'canberkky',
+            'gokhanov',
+        ];
+
+        foreach ($items as $name)
+        {
+            $gender = Term::gender([ $name ]);
+
+            $this->{$gender == 'm' ? 'info' : ($gender == 'f' ? 'line' : 'error')}($name.' - ['.$gender.']');
+        }
     }
 }

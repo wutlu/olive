@@ -55,6 +55,7 @@ class Elasticsearch extends Command
                 'index_update' => 'Update Index',
                 'index_delete' => 'Delete Index',
                 'doc_delete' => 'Delete Document',
+                'mapping_add' => 'Add Mapping',
             ],
             'index_list'
         );
@@ -284,6 +285,122 @@ class Elasticsearch extends Command
                             catch (\Exception $e)
                             {
                                 $this->error(json_encode(json_decode($e->getMessage()), JSON_PRETTY_PRINT));
+                            }
+                        }
+                    }
+                    else
+                    {
+                        $this->error('Please specify an index!');
+                    }
+                }
+                else if ($option == 'mapping_add')
+                {
+                    $index = $this->choice('Select index', $autocomlete);
+
+                    if ($index)
+                    {
+                        $index = $alias.'__'.$index;
+
+                        try
+                        {
+                            $response = $client->indices()->getMapping([ 'index' => $index ]);
+                        }
+                        catch (\Exception $e)
+                        {
+                            $this->error('Index not found!');
+
+                            die();
+                        }
+
+                        [$keys] = array_divide($response[$index]['mappings']);
+
+                        foreach ($keys as $no => $key)
+                        {
+                            unset($keys[$no]);
+
+                            $keys[$key] = [
+                                'key' => $key
+                            ];
+                        }
+
+                        foreach ($response as $key => $item)
+                        {
+                            $this->line(json_encode($item['mappings'], JSON_PRETTY_PRINT));
+                        }
+
+                        $this->table(['Key'], $keys);
+
+                        $type = $this->choice('Type', array_keys($keys));
+
+                        if ($type)
+                        {
+                            $name = $this->ask('Type Name (new)');
+
+                            if ($name)
+                            {
+                                try
+                                {
+                                    $params = [
+                                        'index' => $index,
+                                        'type' => $type,
+                                        'body' => [
+                                            $type => [
+                                                'properties' => [
+                                                    $name => []
+                                                ]
+                                            ]
+                                        ]
+                                    ];
+
+                                    $type_new = $this->choice('Type (new)', [
+                                        'text',
+                                        'keyword',
+                                        'long',
+                                        'integer',
+                                        'short',
+                                        'double',
+                                        'float',
+                                        'date',
+                                        'boolean',
+                                        'nested',
+                                        'geo_point',
+                                        'ip',
+                                    ]);
+
+                                    $params['body'][$type]['properties'][$name]['type'] = $type_new;
+
+                                    if ($type_new == 'date')
+                                    {
+                                        $params['body'][$type]['properties'][$name]['format'] = 'YYYY-MM-dd HH:mm:ss';
+                                    }
+
+                                    if ($this->confirm('Want to add Fielddata?', 0))
+                                    {
+                                        $params['body'][$type]['properties'][$name]['fielddata'] = true;
+                                    }
+
+                                    if ($this->confirm('Disable index?', 0))
+                                    {
+                                        $params['body'][$type]['properties'][$name]['index'] = false;
+                                    }
+
+                                    $this->info(json_encode($params, JSON_PRETTY_PRINT));
+
+                                    if ($this->confirm('Is everything right?', 0))
+                                    {
+                                        $response = $client->indices()->putMapping($params);
+
+                                        $this->info(json_encode($response, JSON_PRETTY_PRINT));
+                                    }
+                                    else
+                                    {
+                                        $this->error('Operation cancelled.');
+                                    }
+                                }
+                                catch (\Exception $e)
+                                {
+                                    $this->error($e->getMessage());
+                                }
                             }
                         }
                     }

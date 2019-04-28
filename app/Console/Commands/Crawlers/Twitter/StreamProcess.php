@@ -15,6 +15,7 @@ use App\Jobs\Crawlers\Social\Twitter\DeletedTweetJob;
 use System;
 use Sentiment;
 
+use Term;
 use Mail;
 use App\Mail\ServerAlertMail;
 use App\Models\Crawlers\TwitterCrawler;
@@ -261,6 +262,10 @@ class StreamProcess extends Command
                             $bulk = $crawler->chunk($tweet, $bulk);
 
                             //$this->info('tweetledi [tw] ['.$tweet->user->screen_name.']');
+
+                            $gender = Term::gender([ $tweet->user->screen_name, $tweet->user->name ]);
+
+                            $this->{$gender == 'm' ? 'info' : ($gender == 'f' ? 'line' : 'error')}($tweet->user->screen_name.' / '.$tweet->user->name.' - ['.$gender.']');
                         }
                         else
                         {
