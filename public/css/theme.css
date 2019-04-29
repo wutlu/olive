@@ -61,6 +61,16 @@
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+
+          filter: blur(10px);
+  -webkit-filter: blur(10px);
+
+          transition: all 400ms cubic-bezier(.25, .46, .45, .94);
+  -webkit-transition: all 400ms cubic-bezier(.25, .46, .45, .94);
+}
+.media-area:hover {
+          filter: blur(0);
+  -webkit-filter: blur(0);
 }
 .media-area:empty {
   display: none;
