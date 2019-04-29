@@ -191,13 +191,8 @@ class StreamProcess extends Command
             $bulk = [];
             $tracked_users = [];
 
-            $i=0;
-
             while (!$stream->eof())
             {
-                $i++;
-                if ($i==100)
-                    break;
                 $obj = json_decode($this->read_line($stream), true);
 
                 if (@$obj['delete'])
