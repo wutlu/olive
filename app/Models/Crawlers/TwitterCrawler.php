@@ -59,6 +59,12 @@ class TwitterCrawler
                     'friends' => intval($object['user']['friends_count']),
                     'followers' => intval($object['user']['followers_count'])
                 ]
+            ],
+            'counts' => [
+                'hashtag' => intval(count(@$object['entities']['hashtags'])),
+                'url' => intval(count(@$object['entities']['urls'])),
+                'mention' => intval(count(@$object['entities']['user_mentions'])),
+                'media' => intval(count(@$object['extended_entities']['media'])),
             ]
         ];
 
@@ -117,6 +123,18 @@ class TwitterCrawler
                 'full_name' => $object['place']['full_name'],
                 'country_code' => $object['place']['country_code']
             ];
+        }
+        else if (@$object['user']['location'])
+        {
+            $place = explode(',', $object['user']['location']);
+
+            if (@$place[1])
+            {
+                $arr['place'] = (object) [
+                    'name' => $place[0],
+                    'full_name' => $object['user']['location']
+                ];
+            }
         }
 
         # 
@@ -267,6 +285,14 @@ class TwitterCrawler
                                         'followers' => [ 'type' => 'integer' ]
                                     ]
                                 ]
+                            ]
+                        ],
+                        'counts' => [
+                            'properties' => [
+                                'hashtag' => [ 'type' => 'integer' ],
+                                'url' => [ 'type' => 'integer' ],
+                                'mention' => [ 'type' => 'integer' ],
+                                'media' => [ 'type' => 'integer' ],
                             ]
                         ],
                         'entities' => [
