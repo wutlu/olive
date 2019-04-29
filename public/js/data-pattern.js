@@ -197,11 +197,6 @@ function _tweet_(o)
                    'id': 'img-' + rid
                 }).on('load', function() {
                     var __ = $(this);
-
-                    nude.load(__.attr('id'));
-                    nude.scan(function(result) {
-                        console.log(result)
-                    })
                 })
 
                 tweet.find('.media-area')

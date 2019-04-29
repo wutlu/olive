@@ -908,7 +908,6 @@
     <script src="{{ asset('js/materialize.min.js?v='.config('system.version')) }}"></script>
     <script src="{{ asset('js/jquery.timeago.min.js?v='.config('system.version')) }}"></script>
     <script src="{{ asset('js/core.js?v='.config('system.version')) }}"></script>
-    <script src="{{ asset('js/nude.min.js?v='.config('system.version')) }}"></script>
     <script src="{{ asset('js/data-pattern.js?v='.config('system.version')) }}"></script>
 
     <!-- external include -->
