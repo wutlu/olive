@@ -20,6 +20,8 @@ use App\Models\YouTube\FollowingKeywords;
 
 use App\Utilities\DateUtility;
 
+use App\Olive\Gender;
+
 class VideoDetect extends Command
 {
     /**
@@ -220,6 +222,9 @@ class VideoDetect extends Command
         $term      = new Term;
         $sentiment = new Sentiment;
 
+        $gender = new Gender;
+        $gender->loadNames();
+
         $arr = [
             'id'         => @$item->id->videoId ? $item->id->videoId : $item->id,
             'title'      => $item->snippet->title,
@@ -227,7 +232,8 @@ class VideoDetect extends Command
             'called_at'  => date('Y-m-d H:i:s'),
             'channel' => [
                 'id'    => $item->snippet->channelId,
-                'title' => $item->snippet->channelTitle
+                'title' => $item->snippet->channelTitle,
+                'gender' => $gender->detector([ $item->snippet->channelTitle ])
             ]
         ];
 

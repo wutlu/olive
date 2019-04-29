@@ -24,6 +24,8 @@ use App\Mail\ServerAlertMail;
 
 use App\Jobs\Crawlers\Sozluk\SingleJob;
 
+use App\Olive\Gender;
+
 class Crawler extends Command
 {
     /**
@@ -62,6 +64,9 @@ class Crawler extends Command
         $id = $id ? $id : $this->ask('Enter a sözlük id');
 
         $sozluk = SozlukCrawler::where('id', $id)->where('status', true)->first();
+
+        $gender = new Gender;
+        $gender->loadNames();
 
         if (@$sozluk)
         {
@@ -135,6 +140,7 @@ class Crawler extends Command
                             'title'      => $item->data['title'],
                             'entry'      => $item->data['entry'],
                             'author'     => $item->data['author'],
+                            'gender'     => $gender->detector([ $item->data['author'] ]),
 
                             'created_at' => $item->data['created_at'],
                             'called_at'  => date('Y-m-d H:i:s'),

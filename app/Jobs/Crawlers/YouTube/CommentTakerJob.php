@@ -20,6 +20,8 @@ use App\Models\YouTube\FollowingVideos;
 
 use App\Utilities\DateUtility;
 
+use App\Olive\Gender;
+
 class CommentTakerJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -108,6 +110,9 @@ class CommentTakerJob implements ShouldQueue
         $term = new Term;
         $sentiment = new Sentiment;
 
+        $gender = new Gender;
+        $gender->loadNames();
+
         $arr = [];
 
         if ($comment_id)
@@ -127,7 +132,8 @@ class CommentTakerJob implements ShouldQueue
             'video_id' => $snippet->videoId,
             'channel' => [
                 'id' => $snippet->authorChannelId->value,
-                'title' => $snippet->authorDisplayName
+                'title' => $snippet->authorDisplayName,
+                'gender' => $gender->detector([ $snippet->authorDisplayName ])
             ],
             'created_at' => date('Y-m-d H:i:s', strtotime($snippet->publishedAt)),
             'called_at' => date('Y-m-d H:i:s'),

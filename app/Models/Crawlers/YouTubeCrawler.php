@@ -47,7 +47,8 @@ class YouTubeCrawler
                                 'channel' => [
                                     'properties' => [
                                         'id' => [ 'type' => 'keyword' ],
-                                        'title' => [ 'type' => 'keyword' ]
+                                        'title' => [ 'type' => 'keyword' ],
+                                        'gender' => [ 'type' => 'keyword' ]
                                     ]
                                 ],
                                 'sentiment' => [
@@ -96,7 +97,8 @@ class YouTubeCrawler
                                 'channel' => [
                                     'properties' => [
                                         'id' => [ 'type' => 'keyword' ],
-                                        'title' => [ 'type' => 'keyword' ]
+                                        'title' => [ 'type' => 'keyword' ],
+                                        'gender' => [ 'type' => 'keyword' ]
                                     ]
                                 ],
                                 'sentiment' => [

@@ -69,7 +69,8 @@ class ShoppingCrawler extends Model
                         ],
                         'seller' => [
                         	'properties' => [
-                        		'name' => [ 'type' => 'keyword' ],
+                        		'gender' => [ 'type' => 'keyword' ],
+                                'name' => [ 'type' => 'keyword' ],
                         		'phones' => [
                         			'type' => 'nested',
                                     'properties' => [

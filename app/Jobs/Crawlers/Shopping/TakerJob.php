@@ -20,6 +20,8 @@ use App\Mail\ServerAlertMail;
 use System;
 use Sentiment;
 
+use App\Olive\Gender;
+
 class TakerJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -47,6 +49,9 @@ class TakerJob implements ShouldQueue
 
         if (@$crawler)
         {
+            $gender = new Gender;
+            $gender->loadNames();
+
             $sentiment = new Sentiment;
 
             $item = Crawler::productDetection($crawler->site, $this->data['url'], [
@@ -56,7 +61,7 @@ class TakerJob implements ShouldQueue
 				'breadcrumb' => $crawler->selector_breadcrumb,
 				'seller_name' => $crawler->selector_seller_name,
                 'seller_phones' => $crawler->selector_seller_phones,
-				'price' => $crawler->selector_price
+				'price' => $crawler->selector_price,
             ], $crawler->proxy);
 
             if ($item->status == 'ok')
@@ -71,7 +76,8 @@ class TakerJob implements ShouldQueue
 				        return [ 'segment' => $value ];
 				    }, $item->data['address']),
                     'seller' => [
-                    	'name' => $item->data['seller_name']
+                    	'name' => $item->data['seller_name'],
+                        'gender' => $gender->detector([ $item->data['seller_name'] ]),
                     ],
                     'price' => $item->data['price'],
                     'called_at' => date('Y-m-d H:i:s'),

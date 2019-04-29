@@ -19,6 +19,8 @@ use App\Elasticsearch\Indices;
 use Sentiment;
 use Term;
 
+use App\Olive\Gender;
+
 class SingleJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -50,6 +52,9 @@ class SingleJob implements ShouldQueue
 
         if (@$sozluk)
         {
+            $gender = new Gender;
+            $gender->loadNames();
+
             $item = CrawlerUtility::entryDetection(
                 [
                     'site' => $sozluk->site,
@@ -84,6 +89,7 @@ class SingleJob implements ShouldQueue
                     'title' => $item->data['title'],
                     'entry' => $item->data['entry'],
                     'author' => $item->data['author'],
+                    'gender' => $gender->detector([ $item->data['author'] ]),
 
                     'created_at' => $item->data['created_at'],
                     'called_at' => date('Y-m-d H:i:s'),

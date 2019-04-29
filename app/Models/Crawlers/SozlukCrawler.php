@@ -69,6 +69,7 @@ class SozlukCrawler extends Model
                             'fielddata' => true
                         ],
                         'author' => [ 'type' => 'keyword' ],
+                        'gender' => [ 'type' => 'keyword' ],
                         'created_at' => [
                             'type' => 'date',
                             'format' => 'YYYY-MM-dd HH:mm:ss'

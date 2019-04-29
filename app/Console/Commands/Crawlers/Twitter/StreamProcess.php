@@ -15,7 +15,6 @@ use App\Jobs\Crawlers\Social\Twitter\DeletedTweetJob;
 use System;
 use Sentiment;
 
-use Term;
 use Mail;
 use App\Mail\ServerAlertMail;
 use App\Models\Crawlers\TwitterCrawler;
@@ -23,6 +22,8 @@ use App\Models\Crawlers\TwitterCrawler;
 use App\Models\Twitter\StreamingUsers;
 
 use App\Utilities\DateUtility;
+
+use App\Olive\Gender;
 
 class StreamProcess extends Command
 {
@@ -69,6 +70,9 @@ class StreamProcess extends Command
         $token_id = $token_id ? $token_id : $this->ask('Enter a token id');
 
         $token = Token::where('id', $token_id)->first();
+
+        $gender = new Gender;
+        $gender->loadNames();
 
         if (@$token)
         {
@@ -187,8 +191,13 @@ class StreamProcess extends Command
             $bulk = [];
             $tracked_users = [];
 
+            $i=0;
+
             while (!$stream->eof())
             {
+                $i++;
+                if ($i==100)
+                    break;
                 $obj = json_decode($this->read_line($stream), true);
 
                 if (@$obj['delete'])
@@ -209,6 +218,7 @@ class StreamProcess extends Command
                         {
                             if ($dateUtility->checkDate($obj['retweeted_status']['created_at']))
                             {
+                                $obj['retweeted_status']['user']['gender'] = $gender->detector([ $obj['retweeted_status']['user']['screen_name'], $obj['retweeted_status']['user']['name'] ]);
                                 $tweet = $crawler->pattern($obj['retweeted_status']);
                                 $tweet['sentiment'] = $sentiment->score($tweet['text']);
                                 $tweet = (object) $tweet;
@@ -229,6 +239,7 @@ class StreamProcess extends Command
                         {
                             if ($dateUtility->checkDate($obj['quoted_status']['created_at']))
                             {
+                                $obj['quoted_status']['user']['gender'] = $gender->detector([ $obj['quoted_status']['user']['screen_name'], $obj['quoted_status']['user']['name'] ]);
                                 $tweet = $crawler->pattern($obj['quoted_status']);
                                 $tweet['sentiment'] = $sentiment->score($tweet['text']);
                                 $tweet = (object) $tweet;
@@ -247,6 +258,7 @@ class StreamProcess extends Command
 
                         if ($store === null || $store === true)
                         {
+                            $obj['user']['gender'] = $gender->detector([ $obj['user']['screen_name'], $obj['user']['name'] ]);
                             $tweet = $crawler->pattern($obj);
                             $tweet['sentiment'] = $sentiment->score($tweet['text']);
                             $tweet = (object) $tweet;
@@ -263,9 +275,7 @@ class StreamProcess extends Command
 
                             //$this->info('tweetledi [tw] ['.$tweet->user->screen_name.']');
 
-                            $gender = Term::gender([ $tweet->user->screen_name, $tweet->user->name ]);
-
-                            $this->{$gender == 'm' ? 'info' : ($gender == 'f' ? 'line' : 'error')}($tweet->user->screen_name.' / '.$tweet->user->name.' - ['.$gender.']');
+                            $g = $gender->detector([ $tweet->user->screen_name, $tweet->user->name ]);
                         }
                         else
                         {
