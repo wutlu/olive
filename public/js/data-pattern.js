@@ -182,16 +182,30 @@ function _tweet_(o)
         ]
     })
 
+
     if (o.medias)
     {
         $.each (o.medias, function (key, item) {
             if (item.media.type == 'photo')
             {
+                var rid = Math.random();
+
+                var img = $('<img />', {
+                   'alt': 'Media',
+                   'src': item.media.media_url,
+                   'class': 'responsive-img z-depth-1 nude',
+                   'id': 'img-' + rid
+                }).on('load', function() {
+                    var __ = $(this);
+
+                    nude.load(__.attr('id'));
+                    nude.scan(function(result) {
+                        console.log(result)
+                    })
+                })
+
                 tweet.find('.media-area')
-                     .css({
-                        'background-image': 'url(' + item.media.media_url + ')'
-                     })
-                     .html('&nbsp;')
+                     .html(img)
             }
             else if (item.media.type == 'video' || item.media.type == 'animated_gif')
             {
