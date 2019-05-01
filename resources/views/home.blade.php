@@ -344,7 +344,7 @@
                     <ul>
                         <li>- Duygusal analizler gerçekleştirin.</li>
                         <li>- Kitlenizi cinsiyet ve konumlarına göre ölçümleyin.</li>
-                        <li>- Nefret söylemlerini ve soru içeriklerine anında erişin.</li>
+                        <li>- Nefret söylemlerine ve soru içeriklerine anında erişin.</li>
                     </ul>
                 </div>
                 <div class="item">

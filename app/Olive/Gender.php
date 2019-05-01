@@ -16,6 +16,7 @@ class Gender
     {
         $this->males = [
             'django',
+            'burhan',
             'joseph',
             'gabriel',
             'suayip',
@@ -106,6 +107,7 @@ class Gender
             'arat',
             'alem',
             'alan',
+            'korhan',
             'over',
             'ozan',
             'aker',
