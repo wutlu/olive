@@ -507,11 +507,11 @@
                     ]
                 ] as $key => $item)
                     <li class="flex-fill {{ $key }} right-align">
-                        <h4>{{ $item['title'] }}</h4>
+                        <h4 class="cyan-text">{{ $item['title'] }}</h4>
                         @foreach ($item['details'] as $k => $v)
-                            <p class="white-text">{{ $k }} <span class="black-text">{{ $v }}</span></p>
+                            <p class="white-text">{{ $k }} <span class="cyan-text text-lighten-4">{{ $v }}</span></p>
                         @endforeach
-                        <span class="price">{{ $item['price'] }}</span>
+                        <span class="price cyan-text text-lighten-4">{{ $item['price'] }}</span>
                     </li>
                 @endforeach
             </ul>
