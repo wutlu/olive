@@ -1,0 +1,45 @@
+<?php
+
+$hat = [
+  'bunlar sorulacak',
+  'hesap vereceksiniz',
+  'hesabını soracak',
+  'istifa',
+  'hain',
+  'nefret',
+  'istemiyoruz',
+  'terorist',
+  'faşist',
+  'ırkçı',
+  'tecavüzcü',
+  'tacizci',
+  'narsist',
+  'sadist',
+  'şeytan',
+  'cehennem',
+  'yanacaksınız',
+  'yanacaklar',
+  'belasını versin',
+  'belanızı versin',
+  'belasını buldu',
+  'belasını bulsun',
+  'şerefsiz',
+  'şerefsizler',
+  'şerefsizsiniz',
+  'adisiniz',
+  'adiler',
+  'adi',
+  'pislik',
+  'pislikler',
+  'pisliksiniz',
+  'nankör',
+  'nankörler',
+  'diktator',
+  'lanet',
+  'lanet',
+  'orospu',
+];
+
+$hat = array_map(function($word) {
+  return str_slug($word, ' ');
+}, $hat);

@@ -23,7 +23,6 @@
         "orangehill/iseed": "^2.5",
         "patrickschur/language-detection": "^3.4",
         "predis/predis": "^1.1",
-        "qhudabaksh/phpsentiment": "^1.0",
         "torann/geoip": "^1.0"
     },
     "require-dev": {

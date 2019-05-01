@@ -22,6 +22,17 @@
 
     .demo-section {
         padding: 100px 0;
+        background-color: #333;
+        background-image: url('{{ asset('img/bg-small.svg') }}');
+        background-repeat: no-repeat;
+        background-position: top right;
+        background-size: contain;
+        background-attachment: scroll;
+        color: #fff;
+    }
+
+    .pricing-section {
+        padding: 100px 0;
     }
 
     .y-section {
@@ -329,10 +340,11 @@
                 </div>
                 <div class="item">
                     <i class="large material-icons rotate">toys</i>
-                    <h5>Araçlar</h5>
+                    <h5>Analiz</h5>
                     <ul>
-                        <li>- Orjinal kaynaktaki veriden fazlasını inceleyin.</li>
-                        <li>- Gerçek zamanlı veya geçmişe dönük API'ler edinin.</li>
+                        <li>- Duygusal analizler gerçekleştirin.</li>
+                        <li>- Kitlenizi cinsiyet ve konumlarına göre ölçümleyin.</li>
+                        <li>- Nefret söylemlerini ve soru içeriklerine anında erişin.</li>
                     </ul>
                 </div>
                 <div class="item">
@@ -340,7 +352,7 @@
                     <h5>Arşiv</h5>
                     <ul>
                         <li>- Kriter belirtin sizin için erişelim.</li>
-                        <li>- Konu odaklı veri arşivi.</li>
+                        <li>- Ortak veritabanı ile çok daha fazla veriye ulaşın.</li>
                     </ul>
                 </div>
             </div>
@@ -409,6 +421,95 @@
         }
     @endpush
 
+    @push('local.styles')
+        .packages {
+            width: 100%;
+        }
+        .packages > li {
+            background-repeat: no-repeat;
+            background-position: top right;
+            background-size: 128px 128px;
+
+            padding: 4rem;
+        }
+        .packages > li.starter {
+            background-image: url('{{ asset('img/icons/pack/starter.svg') }}');
+        }
+        .packages > li.pro {
+            background-image: url('{{ asset('img/icons/pack/pro.svg') }}');
+        }
+        .packages > li.enterprise {
+            background-image: url('{{ asset('img/icons/pack/enterprise.svg') }}');
+        }
+        .packages > li h4 {
+            font-size: 20px;
+            color: #2488d5;
+            margin: 0 64px 24px;
+        }
+        .packages > li span.price {
+            font-size: 16px;
+            color: #2488d5;
+        }
+    @endpush
+
+    <section class="pricing-section">
+        <div class="container">
+            <h2>Planlar</h2>
+
+            <ul class="d-flex flex-wrap justify-content-center packages">
+                @foreach([
+                    'starter' => [
+                        'title' => 'Başlangıç',
+                        'details' => [
+                            'Kullanıcı' => 1,
+                            'Gerçek Zamanlı Akış' => '1 grup',
+                            'Alarm' => 1,
+                            'Pin Grubu' => 1,
+                            'Arşiv' => '7 Gün',
+                        ],
+                        'price' => config('formal.currency').' 196 +kdv / ay'
+                    ],
+                    'pro' => [
+                        'title' => 'Profesyonel',
+                        'details' => [
+                            'Kullanıcı' => 2,
+                            'Gerçek Zamanlı Akış' => '2 grup',
+                            'Alarm' => 2,
+                            'Pin Grubu' => 2,
+                            'Arşiv' => '30 Gün',
+                            'Canlı Trend' => '7/24',
+                            'Analiz' => '+',
+                            'Destek' => '+',
+                        ],
+                        'price' => config('formal.currency').' 424 +kdv / ay'
+                    ],
+                    'enterprise' => [
+                        'title' => 'Kurumsal',
+                        'details' => [
+                            'Kullanıcı' => '+',
+                            'Gerçek Zamanlı Akış' => '+',
+                            'Alarm' => '+',
+                            'Pin Grubu' => '+',
+                            'Arşiv' => '+',
+                            'Canlı Trend' => '7/24',
+                            'Analiz' => '+',
+                            'Destek' => '+',
+                        ],
+                        'price' => 'Teklif Alın'
+                    ]
+                ] as $key => $item)
+                    <li class="flex-fill {{ $key }} right-align">
+                        <h4>{{ $item['title'] }}</h4>
+                        @foreach ($item['details'] as $k => $v)
+                            <p class="grey-text">{{ $k }} <span class="black-text">{{ $v }}</span></p>
+                        @endforeach
+                        <span class="price">{{ $item['price'] }}</span>
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+    </section>
+
     <section class="demo-section">
         <div class="container">
             <h2>Demo İsteyin</h2>
@@ -432,7 +533,7 @@
                         <div class="input-field">
                             <div class="captcha" data-id="demo-captcha"></div>
                         </div>
-                        <button type="submit" class="btn-flat waves-effect">Gönder</button>
+                        <button type="submit" class="btn-flat waves-effect white-text">Gönder</button>
                     </div>
                 </div>
             </form>

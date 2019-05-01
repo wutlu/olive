@@ -233,7 +233,6 @@ return [
     */
 
     'aliases' => [
-
         'App' => Illuminate\Support\Facades\App::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
         'Auth' => Illuminate\Support\Facades\Auth::class,
@@ -273,6 +272,8 @@ return [
          */
         'Term' => App\Utilities\Term::class,
         'System' => App\Utilities\SystemUtility::class,
+        'Sentiment' => App\Olive\Sentiment::class,
+        'Sense' => App\Olive\Sense::class,
 
         /*
          * Package Service Providers...
@@ -282,7 +283,6 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         'YouTube' => Alaouy\Youtube\Facades\Youtube::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
-        'Sentiment' => PHPSentiment\Sentiment::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
     ],
 

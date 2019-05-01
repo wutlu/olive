@@ -184,9 +184,9 @@ class StreamProcess extends Command
 
             $this->info($token->value);
 
-            $crawler     = new TwitterCrawler;
+            $crawler = new TwitterCrawler;
             $dateUtility = new DateUtility;
-            $sentiment   = new Sentiment;
+            $sentiment = new Sentiment;
 
             $bulk = [];
             $tracked_users = [];

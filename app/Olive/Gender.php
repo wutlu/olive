@@ -10,7 +10,7 @@ class Gender
     /**
      * Load Names
      *
-     * @return string
+     * @return mixed
      */
     public function loadNames()
     {
@@ -69,6 +69,7 @@ class Gender
             'isa',
             'ulu',
             'alp',
+            'alper',
             'tor',
             'thor',
             'say',
@@ -4111,6 +4112,7 @@ class Gender
             'belmen',
             'sayran',
             'nurgun',
+            'nurgul',
             'bennur',
             'lalgun',
             'berrin',

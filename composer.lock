@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "606656928e8ffe9b5db2bd0631ac4021",
+    "content-hash": "d5e670168ee32e567452c6978539bebf",
     "packages": [
         {
             "name": "alaouy/youtube",
@@ -3434,48 +3434,6 @@
             "time": "2018-10-13T15:16:03+00:00"
         },
         {
-            "name": "qhudabaksh/phpsentiment",
-            "version": "1.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/qhudabaksh/phpSentiment.git",
-                "reference": "bdb55e6904e606af7b1447a03301a1c363d45194"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/qhudabaksh/phpSentiment/zipball/bdb55e6904e606af7b1447a03301a1c363d45194",
-                "reference": "bdb55e6904e606af7b1447a03301a1c363d45194",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "PHPSentiment": "lib/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "authors": [
-                {
-                    "name": "James Hennessey"
-                },
-                {
-                    "name": "4lper",
-                    "email": "alper@veri.zone"
-                }
-            ],
-            "description": "Turkish sentiment analysis tool for PHP",
-            "homepage": "https://github.com/4lper/phpsentiment",
-            "keywords": [
-                "insight",
-                "phpinsight",
-                "sentiment"
-            ],
-            "time": "2018-11-26T20:29:00+00:00"
-        },
-        {
             "name": "ralouphie/getallheaders",
             "version": "2.0.5",
             "source": {
@@ -4299,7 +4257,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "backendtea@gmail.com"
+                    "email": "BackEndTea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",

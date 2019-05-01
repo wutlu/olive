@@ -15,7 +15,7 @@ class Sentiment extends Command
      *
      * @var array
      */
-    public $classes = [ 'pos', 'neg', 'neu' ];
+    public $classes = [ 'pos', 'neg', 'neu', 'hat', 'bet', 'nud', 'que' ]; //, 'ign', 'prefix'
 
     /**
      * The name and signature of the console command.
@@ -48,36 +48,7 @@ class Sentiment extends Command
      */
     public function handle()
     {
-        $keys = [
-            'neg' => 'Negatif',
-            'pos' => 'Pozitif',
-            'neu' => 'Nötr'
-        ];
 
-        $strings = [
-            'Atatürk ölmedi kalbimizde yaşıyor.'
-        ];
-
-        $sentiment = new SentimentLib;
-
-        foreach ($strings as $string)
-        {
-            $scores = $sentiment->score($string);
-            $class = $sentiment->categorise($string);
-
-            $this->line('');
-
-            $this->info($string);
-
-            switch ($class)
-            {
-                case 'neg': $this->error($keys[$class]); break;
-                case 'neu': $this->line($keys[$class]); break;
-                case 'pos': $this->info($keys[$class]); break;
-            }
-
-            print_r($scores);
-        }
     }
 
     /**

@@ -1,18 +1,6 @@
 <?php
 
 $neu = [
-  '(o;',
-  '*)',
-  '8-)',
-  ':-',
-  ':-\\',
-  ':-o',
-  ':0->-<|:',
-  ':l',
-  ':|',
-  ';)',
-  ';o)',
-  '<:}',
   'açı',
   'açık',
   'açıkça',
@@ -299,7 +287,6 @@ $neu = [
   'neredeyse',
   'gerek',
   'ihtiyaçlar',
-  'ne',
   'asla',
   'yinede',
   'yeni',
@@ -376,7 +363,6 @@ $neu = [
   'bazı',
   'birisi',
   'bir şekilde',
-  'bir şey',
   'bazen',
   'ara sıra',
   'biraz',
@@ -491,7 +477,6 @@ $neu = [
   'merak etmek',
   'olur',
   'olmaz',
-  'www',
   'evet',
   'henüz',
   'sen',
@@ -503,3 +488,7 @@ $neu = [
   'kendiniz',
   'sıfır',
 ];
+
+$neu = array_map(function($word) {
+  return str_slug($word, ' ');
+}, $neu);

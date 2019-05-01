@@ -173,9 +173,6 @@ class MonitorController extends Controller
 
         Log::truncate();
 
-        Artisan::call('cache:clear');
-        Artisan::call('view:clear');
-
         return [
             'status' => 'ok'
         ];

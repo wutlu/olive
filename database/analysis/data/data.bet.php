@@ -1,0 +1,1 @@
+a:5:{i:0;s:3:"bet";i:1;s:5:"bahis";i:2;s:4:"bets";i:3;s:5:"rulet";i:4;s:5:"bonus";}

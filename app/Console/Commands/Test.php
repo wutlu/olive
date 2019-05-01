@@ -12,7 +12,10 @@ use System;
 
 use Term;
 
-use App\Olive\Analysis;
+use App\Olive\Gender;
+
+use Sentiment;
+use Sense;
 
 class Test extends Command
 {
@@ -47,8 +50,7 @@ class Test extends Command
      */
     public function handle()
     {
-        $analysis = new Analysis;
-        $analysis->loadKeywords();
+        $sentiment = new Sense;
 
         $items = [
             'RT @DemiralpUguz: 69209 https://t.co/8Opx83LCc5 #izmir??ſčòrț SEKSİ SİNEM Sabah 6\'da yataktan fırlayan, giyinip zorla bir şeyler atıştır…',
@@ -58,11 +60,12 @@ class Test extends Command
             'Bu ürün hakkında daha çok bilgiye sahip olabilir miyiz?',
             'Bu araç ne yakıyor',
             'Fiyatı ne',
+            'Ne lanet',
         ];
 
         foreach ($items as $text)
         {
-            $g = $analysis->detector($text);
+            $g = $sentiment->score($text);
 
             $this->line($text);
             $this->info(json_encode($g));
