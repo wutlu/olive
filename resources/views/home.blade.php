@@ -22,7 +22,7 @@
 
     .demo-section {
         padding: 100px 0;
-        background-color: #333;
+        background-color: #222;
         background-image: url('{{ asset('img/bg-small.svg') }}');
         background-repeat: no-repeat;
         background-position: top right;
@@ -431,7 +431,7 @@
             background: linear-gradient(to bottom, #7efff7 0%,#2488d5 100%);
 
             filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7efff7', endColorstr='#2488d5',GradientType=0 );
-        
+
             border-radius: 1rem;
             padding: 2rem;
         }
@@ -524,21 +524,21 @@
             <form id="demo-form" method="post" action="{{ route('demo.request') }}" class="json" data-callback="__demo_request">
                 <div class="row">
                     <div class="col m12 l5">
-                        <div class="input-field">
+                        <div class="input-field white-text">
                             <i class="material-icons prefix">account_circle</i>
                             <input id="icon_prefix" name="name" type="text" class="validate" />
                             <label for="icon_prefix">Firma / Kurum</label>
                         </div>
                     </div>
                     <div class="col m12 l5">
-                        <div class="input-field">
+                        <div class="input-field white-text">
                             <i class="material-icons prefix">phone</i>
                             <input id="icon_telephone" name="phone" type="text" class="validate" />
                             <label for="icon_telephone">Telefon</label>
                         </div>
                     </div>
                     <div class="col m12 l2">
-                        <div class="input-field">
+                        <div class="input-field white-text">
                             <div class="captcha" data-id="demo-captcha"></div>
                         </div>
                         <button type="submit" class="btn-flat waves-effect white-text">Gönder</button>

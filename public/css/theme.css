@@ -2663,6 +2663,8 @@ nav.scrolled.active,
 .input-field.white-text input[type=text] {
   border-bottom: 1px solid #fff !important;
   box-shadow: 0 1px 0 0 #fff !important;
+
+  color: #fff;
 }
 .input-field.white-text .prefix.active {
   color: #fff !important;
