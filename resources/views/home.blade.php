@@ -487,7 +487,7 @@
                             'Arşiv' => '30 Gün',
                             'Canlı Trend' => '7/24',
                             'Analiz' => '+',
-                            'Destek' => '+',
+                            'Destek' => '7/24',
                         ],
                         'price' => config('formal.currency').' 424 +kdv / ay'
                     ],
@@ -501,7 +501,7 @@
                             'Arşiv' => '+',
                             'Canlı Trend' => '7/24',
                             'Analiz' => '+',
-                            'Destek' => '+',
+                            'Destek' => '7/24',
                         ],
                         'price' => 'Teklif Alın'
                     ]
