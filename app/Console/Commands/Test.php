@@ -50,6 +50,12 @@ class Test extends Command
      */
     public function handle()
     {
+        $gender = new Gender;
+        $gender->loadNames();
+
+        echo $gender->detector([ 'munevver' ]).PHP_EOL;
+
+        exit();
         $sentiment = new Sense;
 
         $items = [
