@@ -424,6 +424,16 @@
     @push('local.styles')
         .packages {
             width: 100%;
+
+            background: #7efff7;
+            background: -moz-linear-gradient(top, #7efff7 0%, #2488d5 100%);
+            background: -webkit-linear-gradient(top, #7efff7 0%,#2488d5 100%);
+            background: linear-gradient(to bottom, #7efff7 0%,#2488d5 100%);
+
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7efff7', endColorstr='#2488d5',GradientType=0 );
+        
+            border-radius: 1rem;
+            padding: 2rem;
         }
         .packages > li {
             background-repeat: no-repeat;
@@ -442,13 +452,11 @@
             background-image: url('{{ asset('img/icons/pack/enterprise.svg') }}');
         }
         .packages > li h4 {
-            font-size: 20px;
-            color: #2488d5;
+            font-size: 24px;
             margin: 0 64px 24px;
         }
         .packages > li span.price {
-            font-size: 16px;
-            color: #2488d5;
+            font-size: 20px;
         }
     @endpush
 
@@ -501,7 +509,7 @@
                     <li class="flex-fill {{ $key }} right-align">
                         <h4>{{ $item['title'] }}</h4>
                         @foreach ($item['details'] as $k => $v)
-                            <p class="grey-text">{{ $k }} <span class="black-text">{{ $v }}</span></p>
+                            <p class="white-text">{{ $k }} <span class="black-text">{{ $v }}</span></p>
                         @endforeach
                         <span class="price">{{ $item['price'] }}</span>
                     </li>
