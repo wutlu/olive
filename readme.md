@@ -157,3 +157,10 @@ $ crontab -e
 
 @reboot nohup su - elasticsearch /data/elasticsearch-n1/bin/elasticsearch >> /data/elasticsearch-n1/logs/start.out 2>&1 &
 ~~~~
+
+### PayTR Entegrasyon Bilgileri
+
+~~~~
+** Callback Adresi **
+- https://olive.veri.zone/api/payment/callback
+~~~~

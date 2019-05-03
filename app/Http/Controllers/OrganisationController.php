@@ -656,7 +656,7 @@ class OrganisationController extends Controller
 
             $ip = $request->ip();
 
-            $user_ip = '212.2.212.122';
+            $user_ip = $ip;
 
             $merchant_oid = $invoice->invoice_id;
 
