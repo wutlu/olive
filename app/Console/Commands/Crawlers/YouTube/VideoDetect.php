@@ -219,8 +219,10 @@ class VideoDetect extends Command
      */
     public static function video($item)
     {   
-        $term      = new Term;
+        $term = new Term;
+
         $sentiment = new Sentiment;
+        $sentiment->engine('sentiment');
 
         $gender = new Gender;
         $gender->loadNames();

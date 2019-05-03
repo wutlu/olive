@@ -263,6 +263,8 @@
                             <li>{{ $invoice->info->merchant_name }}</li>
                         @endif
 
+                        <li>{{ $invoice->info->phone }}</li>
+
                         @if ($invoice->info->type == 'corporate')
                             <li>{{ $invoice->info->tax_number }}</li>
                         @endif
@@ -313,37 +315,31 @@
                 </td>
                 <td class="quantity">{{ $invoice->month }} Ay</td>
                 <td class="unit-price">
-                    <p>{{ config('formal.currency').' '.number_format($invoice->unit_price) }}</p>
+                    <p>{{ config('formal.currency').' '.$invoice->unit_price }}</p>
                 </td>
-                <td class="total">{{ config('formal.currency').' '.number_format($invoice->total_price) }}</td>
+                <td class="total">{{ config('formal.currency').' '.$invoice->total_price }}</td>
             </tr>
         </tbody>
     </table>
     <footer class="row row-end">
-        @php
-            $total_price = $invoice->total_price;
-            $discount = ($total_price / 100) * $invoice->discount_rate;
-            $discounted_price = $total_price - $discount;
-            $total_tax = ($discounted_price / 100) * $invoice->tax;
-        @endphp
         <div class="total static-width">
             <ul class="row mb-0">
                 <li class="row-col p-1 title">ARA TOPLAM</li>
-                <li class="row-col p-1">{{ config('formal.currency').' '.number_format($total_price) }}</li>
+                <li class="row-col p-1">{{ config('formal.currency').' '.$invoice->fee()->total }}</li>
             </ul>
             @if ($invoice->discount_rate)
                 <ul class="row mb-0">
                     <li class="row-col title">İndirim</li>
-                    <li class="row-col">({{ $invoice->discount_rate }}%) {{ number_format($discount) }}</li>
+                    <li class="row-col">({{ $invoice->discount_rate }}%) {{ config('formal.currency').' '.$invoice->fee()->discount }}</li>
                 </ul>
             @endif
             <ul class="row mb-0">
                 <li class="row-col title">{{ config('formal.tax_name') }}</li>
-                <li class="row-col">({{ $invoice->tax }}%) {{ number_format($total_tax) }}</li>
+                <li class="row-col">({{ $invoice->tax }}%) {{ config('formal.currency').' '.$invoice->fee()->tax }}</li>
             </ul>
             <ul class="row mb-0">
                 <li class="row-col p-1 title">GENEL TOPLAM</li>
-                <li class="row-col p-1">{{ config('formal.currency') }} {{ number_format($total_tax + $discounted_price) }}</li>
+                <li class="row-col p-1">{{ config('formal.currency') }} {{ $invoice->fee()->amount }}</li>
             </ul>
         </div>
     </footer>

@@ -18,8 +18,12 @@ Artisan::command('alarm:control', function () {
 })->describe('Alarmların kontrolü.');
 
 Artisan::command('sentiment:update', function () {
-    Sentiment::update();
-})->describe('Duygu analizi listesini günceller.');
+    Sentiment::sentimentUpdate();
+})->describe('Sentiment listesini günceller.');
+
+Artisan::command('sense:update', function () {
+    Sentiment::senseUpdate();
+})->describe('Sense listesini günceller.');
 
 Artisan::command('trigger:pdf:pin_groups', function () {
 	PinController::pdfTrigger();

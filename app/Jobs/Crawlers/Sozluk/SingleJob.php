@@ -79,6 +79,7 @@ class SingleJob implements ShouldQueue
                 ];
 
                 $sentiment = new Sentiment;
+                $sentiment->engine('sentiment');
 
                 $chunk['body'][] = [
                     'id' => $entry_id,

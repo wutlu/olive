@@ -23,20 +23,7 @@ function hashCode(s)
 
 function number_format(number)
 {
-    var thousand_separator = '.';
-
-    var number_string = number.toString(),
-        rest          = number_string.length % 3,
-        result        = number_string.substr(0, rest),
-        thousands     = number_string.substr(rest).match(/\d{3}/gi);
-
-    if (thousands)
-    {
-        separator = rest ? thousand_separator : '';
-        result += separator + thousands.join(thousand_separator);
-    }
-
-    return result;
+    return parseFloat(Math.round(number * 100) / 100).toFixed(2);
 }
 
 /* --- str limit --- */

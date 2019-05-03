@@ -58,7 +58,7 @@ class UpdateRequest extends FormRequest
             'data_pool_twitter_keyword_limit' => 'required|integer|max:400|min:10',
             'data_pool_twitter_user_limit' => 'required|integer|max:5000|min:10',
 
-            'unit_price' => 'required|numeric',
+            'unit_price' => 'required|numeric|min:1',
 
             'module_real_time' => 'nullable|string|in:on',
             'module_search' => 'nullable|string|in:on',

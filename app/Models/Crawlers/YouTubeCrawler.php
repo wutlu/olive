@@ -55,7 +55,8 @@ class YouTubeCrawler
                                     'properties' => [
                                         'neg' => [ 'type' => 'float' ],
                                         'pos' => [ 'type' => 'float' ],
-                                        'neu' => [ 'type' => 'float' ]
+                                        'neu' => [ 'type' => 'float' ],
+                                        'hte' => [ 'type' => 'float' ],
                                     ]
                                 ]
                             ]
@@ -105,7 +106,8 @@ class YouTubeCrawler
                                     'properties' => [
                                         'neg' => [ 'type' => 'float' ],
                                         'pos' => [ 'type' => 'float' ],
-                                        'neu' => [ 'type' => 'float' ]
+                                        'neu' => [ 'type' => 'float' ],
+                                        'hte' => [ 'type' => 'float' ],
                                     ]
                                 ]
                             ]

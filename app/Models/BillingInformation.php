@@ -19,6 +19,7 @@ class BillingInformation extends Model
 		'state_id',
 		'city',
 		'address',
+        'phone',
 		'postal_code'
     ];
 

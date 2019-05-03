@@ -108,7 +108,9 @@ class CommentTakerJob implements ShouldQueue
     public static function comment($data, string $comment_id = '')
     {
         $term = new Term;
+
         $sentiment = new Sentiment;
+        $sentiment->engine('sentiment');
 
         $gender = new Gender;
         $gender->loadNames();

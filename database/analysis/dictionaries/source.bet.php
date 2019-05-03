@@ -1,13 +1,41 @@
 <?php
 
-$bet = [
+$data = [
   'bet',
   'bahis',
+  'freebet',
+  'casino',
+  'kasino',
   'bets',
-  'rulet',
+  'yüksek',
+  'oranlar',
   'bonus',
+  'bonusu',
+  'yatırım',
+  'maçımız',
+  'kazanç',
+  'bol',
+  'maç',
+  'maçlar',
+  'üst',
+  'alt',
+  'derbi',
+  'derby',
+  'basketbol',
+  'olası',
+  'futbol',
+  'şans',
+  'kazandırma',
+  'bolşans',
+  'Kasa',
+  'bol',
+  'live',
+  'livebet',
+  'canlıbahis',
+  'canlı',
+  'inplay',
+  'rolling',
+  'iddaa',
+  'betting',
+  'tips',
 ];
-
-$bet = array_map(function($word) {
-  return str_slug($word, ' ');
-}, $bet);

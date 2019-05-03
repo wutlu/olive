@@ -2,6 +2,7 @@
 
 return [
     'currency' => '₺',
+    'currency_text' => 'TL',
     'tax_name' => 'K.D.V.',
     'company' => [
         'logo' => 'img/veri.zone_logo.svg',
@@ -38,9 +39,9 @@ return [
     'discount_with_year' => env('DISCOUNT_WITH_YEAR', 10),
 
     'banks' => [
-        [
-            'name' => 'Veri Zone Bilişim Teknolojileri ve Danışmanlık Ltd. Şti.',
-            'iban' => 'TR 04 0006 2000 8490 0006 2979 12'
+        'Enpara' => [
+            'name' => 'VERİ ZONE BİL. TEK. VE DAN. LTD. ŞTİ.',
+            'iban' => 'TR70 0011 1000 0000 0085 1234 41'
         ]
     ]
 ];

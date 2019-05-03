@@ -53,6 +53,7 @@ class TakerJob implements ShouldQueue
             $gender->loadNames();
 
             $sentiment = new Sentiment;
+            $sentiment->engine('sentiment');
 
             $item = Crawler::productDetection($crawler->site, $this->data['url'], [
 				'title' => $crawler->selector_title,

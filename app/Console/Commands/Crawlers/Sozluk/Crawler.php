@@ -83,6 +83,7 @@ class Crawler extends Command
             $last_entry_id = $entry_id;
 
             $sentiment = new Sentiment;
+            $sentiment->engine('sentiment');
 
             while ($stream)
             {

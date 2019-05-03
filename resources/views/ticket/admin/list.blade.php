@@ -46,16 +46,16 @@
             <a href="{{ route('admin.ticket', $ticket->id) }}" class="collection-item d-flex waves-effect {{ $ticket->status == 'open' ? 'black' : 'grey' }}-text">
                 <i class="material-icons align-self-center">{{ $ticket->status == 'open' ? 'lock_open' : 'lock' }}</i>
                 <span class="align-self-center">
-                    <p>
+                    <p class="mb-0">
                         {{ $ticket->subject }} / {{ config('system.ticket.types')[$ticket->type] }}
                         @if (count($ticket->replies))
-                        <span class="badge green {{ $ticket->status == 'closed' ? 'lighten-2' : '' }} white-text">{{ $ticket->replies()->count() }} cevap</span>
+                        <span class="green {{ $ticket->status == 'closed' ? 'lighten-2' : '' }} white-text">{{ $ticket->replies()->count() }} cevap</span>
                         @endif
                     </p>
-                    <p>{{ $ticket->user->name }}</p>
-                    <p class="grey-text text-darken-2">{{ date('d.m.Y H:i', strtotime($ticket->created_at)) }}</p>
+                    <p class="mb-0">{{ $ticket->user->name }}</p>
+                    <p class="grey-text text-darken-2 mb-0">{{ date('d.m.Y H:i', strtotime($ticket->created_at)) }}</p>
                 </span>
-                <small class="badge ml-auto">{{ $ticket->status == 'open' ? 'AÇIK' : 'KAPALI' }}</small>
+                <span class="ml-auto">{{ $ticket->status == 'open' ? 'AÇIK' : 'KAPALI' }}</span>
             </a>
             @endforeach
         </div>

@@ -43,17 +43,20 @@ class Sense {
      * Classification of opinions
      * @var array
      */
-    private $classes = [ 'bet', 'nud', 'hat', 'que' ];
+    private $classes = [ 'neu', 'bet', 'nud', 'hat', 'que', 'req', 'nws' ];
 
     /**
      * Token score per class
      * @var array 
      */
     private $classTokCounts = [
+        'neu' => 0,
         'bet' => 0,
         'nud' => 0,
         'hat' => 0,
         'que' => 0,
+        'req' => 0,
+        'nws' => 0,
     ];
 
     /**
@@ -61,10 +64,13 @@ class Sense {
      * @var array
      */
     private $classDocCounts = [
+        'neu' => 0,
         'bet' => 0,
         'nud' => 0,
         'hat' => 0,
         'que' => 0,
+        'req' => 0,
+        'nws' => 0,
     ];
 
     /**
@@ -84,10 +90,13 @@ class Sense {
      * @var array
      */
     private $prior = [
-        'bet' => 25,
-        'nud' => 25,
-        'hat' => 25,
-        'que' => 25,
+        'neu' => 16,
+        'bet' => 14,
+        'nud' => 14,
+        'hat' => 14,
+        'que' => 14,
+        'req' => 14,
+        'nws' => 14,
     ];
 
     /**

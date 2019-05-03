@@ -14,6 +14,8 @@ class OrganisationWasUpdatedNotification extends Notification implements ShouldQ
     protected $name;
     protected $organisation_id;
 
+    private $data;
+
     /**
      * Create a new notification instance.
      *
@@ -21,8 +23,13 @@ class OrganisationWasUpdatedNotification extends Notification implements ShouldQ
      */
     public function __construct(string $name, int $id)
     {
-        $this->name            = $name;
+        $this->name = $name;
         $this->organisation_id = $id;
+
+        foreach (config('formal.banks') as $key => $bank)
+        {
+            $this->data[] = '('.$key.') '.$bank['iban'];
+        }
     }
 
     /**
@@ -45,11 +52,16 @@ class OrganisationWasUpdatedNotification extends Notification implements ShouldQ
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject('Olive: Ödeme bekliyor.')
+                    ->subject('Olive: Ödeme Bekliyor')
                     ->greeting('Merhaba, '.$this->name)
-                    ->line('Ödemenizi gerçekleştirdikten sonra e-faturanız e-posta adresinize gönderilecektir.')
+                    ->line('Organizasyonunuz başarılı bir şekilde oluşturuldu. Şimdi ödeme yapmanız gerekiyor.')
+                    ->line('Havale/EFT yapmak için aşağıdaki IBAN numaralarını kullanabilirsiniz.')
+                    ->line('Havale/EFT durumunda açıklama kısmına "'.$this->organisation_id.'" numarasını belirtmelisiniz.')
+                    ->line('Size daha hızlı yanıt verebilmemiz adına "Destek" sayfamızdan ödeme bildirimi yapabilirsiniz.')
+                    ->line('Online ödeme yapmak için lütfen aşağıdaki bağlantıya tıklayın.')
+                    ->line(implode(PHP_EOL, $this->data))
                     ->level('success')
-                    ->action('Fatura', route('organisation.invoice', $this->organisation_id))
+                    ->action('Online Ödeme', route('organisation.invoice.payment'))
                     ->line('Teşekkürler.');
     }
 
