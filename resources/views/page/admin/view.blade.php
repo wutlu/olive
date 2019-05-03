@@ -150,10 +150,10 @@
                 </div>
             </div>
 
-            <div class="card-tabs cyan darken-2">
-                <ul class="tabs tabs-transparent">
+            <div class="card-tabs">
+                <ul class="tabs">
                     <li class="tab">
-                        <a href="#textarea" class="waves-effect active">Cevapla</a>
+                        <a href="#textarea" class="waves-effect active">Sayfa</a>
                     </li>
                     <li class="tab">
                         <a href="#preview" class="waves-effect">Ön İzle</a>
