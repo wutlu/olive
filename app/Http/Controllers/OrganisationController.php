@@ -586,8 +586,9 @@ class OrganisationController extends Controller
                 $organisation->save();
 
                 $title = 'Olive: Fatura Onayı';
-                $greeting = 'Faturanız Onaylandı!';
-                $message = 'Organizasyonunuz aktif edildi. İyi araştırmalar dileriz...';
+                $greeting = 'Tebrikler! Faturanız Onaylandı.';
+                $message = 'Ödemeniz başarılı bir şekilde gerçekleştirildi ve organizasyonunuz aktif edildi.';
+                $message = 'Olive kullandığınız için teşekkür eder, iyi araştırmalar dileriz.';
 
                 if ($organisation->author->notification('important'))
                 {
@@ -645,7 +646,7 @@ class OrganisationController extends Controller
 
         if ($invoice->paid_at)
         {
-            $reason = 'Ödenmemiş faturanız bulunmamaktadır.';
+            $reason = 'ÖDENECEK FATURANIZ BULUNMAMAKTADIR';
         }
         else
         {

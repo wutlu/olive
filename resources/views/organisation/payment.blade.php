@@ -19,15 +19,15 @@
         <div class="center-align p-2">
             @if (session('success') == 'ok')
                 <i class="material-icons large green-text">check</i>
-                <p class="green-text">ÖDEME BAŞARILI BİR ŞEKİLDE GERÇEKLEŞTİRİLDİ</p>
+                <p class="green-text">ÖDEME İŞLEMİ BAŞARILI BİR ŞEKİLDE GERÇEKLEŞTİRİLDİ</p>
             @elseif (session('success') == 'fail')
                 <i class="material-icons large red-text">close</i>
-                <p class="red-text">ÖDEME BAŞARISIZ OLDU</p>
+                <p class="red-text">ÖDEME İŞLEMİ BAŞARISIZ OLDU</p>
             @endif
         </div>
     @else
         @isset($reason)
-            <div class="center-alignp-2">
+            <div class="center-align p-2">
                 <i class="material-icons large red-text">close</i>
                 <p class="red-text">{{ $reason }}</p>
             </div>

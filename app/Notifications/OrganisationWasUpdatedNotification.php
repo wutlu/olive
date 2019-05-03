@@ -56,7 +56,7 @@ class OrganisationWasUpdatedNotification extends Notification implements ShouldQ
                     ->greeting('Merhaba, '.$this->name)
                     ->line('Organizasyonunuz başarılı bir şekilde oluşturuldu. Şimdi ödeme yapmanız gerekiyor.')
                     ->line('Havale/EFT yapmak için aşağıdaki IBAN numaralarını kullanabilirsiniz.')
-                    ->line('Havale/EFT durumunda açıklama kısmına "'.$this->organisation_id.'" numarasını belirtmelisiniz.')
+                    ->line('Havale/EFT durumunda lütfen açıklama kısmına organizasyon numaranızı ('.$this->organisation_id.') belirtin.')
                     ->line('Size daha hızlı yanıt verebilmemiz adına "Destek" sayfamızdan ödeme bildirimi yapabilirsiniz.')
                     ->line('Online ödeme yapmak için lütfen aşağıdaki bağlantıya tıklayın.')
                     ->line(implode(PHP_EOL, $this->data))

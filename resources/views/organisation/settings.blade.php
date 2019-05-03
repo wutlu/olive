@@ -421,6 +421,18 @@
                     </div>
 
                     @push('local.scripts')
+                        @isset($user->organisation->invoices[0]->reason_msg)
+                            M.toast({
+                                html: 'Son ödeme işlemizde bir şeyler ters gitti.',
+                                classes: 'teal darken-2'
+                            })
+
+                            M.toast({
+                                html: '{{ $user->organisation->invoices[0]->reason_msg }}',
+                                classes: 'orange darken-2'
+                            })
+                        @endisset
+
                         $(document).on('click', '#cancel-button', function() {
                             return modal({
                                 'id': 'alert',

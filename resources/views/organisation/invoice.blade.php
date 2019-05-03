@@ -200,10 +200,14 @@
             <h1>FATURA</h1>
 
             @if (auth()->check() && auth()->user()->root())
+                @if ($invoice->reason_msg)
+                    <div class="self-area" style="background-color: #e00; padding: 1rem;">
+                        {{ $invoice->reason_msg }}
+                    </div>
+                @endif
                 <div class="self-area" style="background-color: #f0f0f0; padding: 1rem;">
                     <div class="body">
                         <h3>Faturayı Onayla</h3>
-
                         <form method="post" action="{{ route('admin.organisation.invoice.approve', $invoice->invoice_id) }}">
                             @csrf
                             <div style="margin: 0 0 1rem;">
@@ -346,12 +350,13 @@
     @if (!$invoice->paid_at)
         <div class="self-area">
             <div class="title">Hesap Bilgisi</div>
-            <div class="body">Ödemenizi; fatura numarası açıklamada olacak şekilde aşağıdaki hesap numaralarından herhangi birine yapabilirsiniz.</div>
-            <div class="body">Daha sonra <a href="{{ route('settings.support', [ 'type' => 'odeme-bildirimi' ]) }}"><strong>Destek</strong></a> sayfasından ödeme yaptığınızı bildirmeniz gerekiyor.</div>
+            <div class="body">Havale/EFT durumunda lütfen transfer açıklama kısmında organizasyon numaranızı ({{ $invoice->organisation_id }}) belirtin.</div>
+            <div class="body">İşleminizin daha hızlı sonuçlanması için lütfen <a href="{{ route('settings.support', [ 'type' => 'odeme-bildirimi' ]) }}"><strong>Ödeme Bildirimi</strong></a> yapın.</div>
         </div>
         <div class="self-area">
             @foreach(config('formal.banks') as $key => $bank)
                 <div class="body">
+                    <p>{{ $key }}</p>
                     <p>{{ $bank['iban'] }}</p>
                     <p>{{ $bank['name'] }}</p>
                 </div>
