@@ -47,6 +47,6 @@ return [
 
     'installment' => [
         'status' => true,
-        'max' => 3
+        'max' => 12
     ]
 ];

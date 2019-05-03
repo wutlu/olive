@@ -20,6 +20,7 @@
             @if (session('success') == 'ok')
                 <i class="material-icons large green-text">check</i>
                 <p class="green-text">ÖDEME İŞLEMİ BAŞARILI BİR ŞEKİLDE GERÇEKLEŞTİRİLDİ</p>
+                <p class="orange-text">FATURANIZIN ONAYLANMASI BİRKAÇ DAKİKAYI BULABİLİR</p>
             @elseif (session('success') == 'fail')
                 <i class="material-icons large red-text">close</i>
                 <p class="red-text">ÖDEME İŞLEMİ BAŞARISIZ OLDU</p>
@@ -27,16 +28,20 @@
         </div>
     @else
         @isset($reason)
-            @if ($reason == 'clean')
-                @component('components.nothing')
-                    @slot('text', 'ÖDENECEK FATURANIZ BULUNMAMAKTADIR, TEŞEKKÜR EDERİZ')
-                @endcomponent
-            @else
-                <div class="center-align p-2">
+            <div class="center-align p-2">
+                @if ($reason == 'clean')
+                    @component('components.nothing')
+                        @slot('text', 'ÖDENECEK FATURANIZ BULUNMAMAKTADIR, TEŞEKKÜR EDERİZ')
+                    @endcomponent
+                @elseif ($reason == 'done')
+                    <i class="material-icons large orange-text">history</i>
+                    <p class="orange-text">ÖDEMENİZ GERÇEKLEŞTİ</p>
+                    <p class="orange-text">FATURANIZ BİRKAÇ DAKİKA İÇERİSİNDE ONAYLANACAKTIR</p>
+                @else
                     <i class="material-icons large red-text">close</i>
                     <p class="red-text">{{ $reason }}</p>
-                </div>
-            @endif
+                @endif
+            </div>
         @else
             @push('external.include.footer')
                 <script src="https://www.paytr.com/js/iframeResizer.min.js"></script>

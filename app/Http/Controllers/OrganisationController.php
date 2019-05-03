@@ -747,15 +747,22 @@ class OrganisationController extends Controller
 
             curl_close($ch);
 
-            $result = json_decode($result);
+            $result = json_decode($result, true);
 
-            if ($result->status == 'success')
+            if ($result['status'] == 'success')
             {
-                $token = $result->token;
+                $token = $result['token'];
             }
             else
             {
-                $reason = $result->reason;
+                if ($result['reason'])
+                {
+                    $reason = $result['reason'];
+                }
+                else
+                {
+                    $reason = 'done';
+                }
             }
         }
 
