@@ -43,7 +43,7 @@ class Sentiment extends Command
     public function handle()
     {
         $sentiment = new SentimentLib;
-        $sentiment->engine('illegal');
+        $sentiment->engine('sentiment');
 
         $strings = [
             'çok güzel bir haber hemen not etmeliyim',
