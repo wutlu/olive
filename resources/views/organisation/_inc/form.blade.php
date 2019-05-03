@@ -79,7 +79,7 @@
                             total_price = total_price - discount;
 
                         $('[data-name=discount-rate]').html('{{ config('formal.discount_with_year') }}')
-                        $('[data-name=total-discount]').html('-' + number_format(discount))
+                        $('[data-name=total-discount]').html('-' + price_format(discount))
 
                         if (discount_area.hasClass('hide'))
                         {
@@ -99,11 +99,11 @@
 
                     var tax = total_price/100*{{ config('formal.tax') }};
 
-                    $('[data-name=total-tax]').html(number_format(tax))
+                    $('[data-name=total-tax]').html(price_format(tax))
 
                     total_price = total_price + tax;
 
-                    $('[data-name=total-price]').html(number_format(total_price))
+                    $('[data-name=total-price]').html(price_format(total_price))
                 }
 
                 $(document).on('change', 'input[name=month]', __calculate)
