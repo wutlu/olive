@@ -646,7 +646,7 @@ class OrganisationController extends Controller
 
         if ($invoice->paid_at)
         {
-            $reason = 'ÖDENECEK FATURANIZ BULUNMAMAKTADIR';
+            $reason = 'clean';
         }
         else
         {

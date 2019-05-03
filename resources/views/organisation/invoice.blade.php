@@ -363,6 +363,8 @@
             @endforeach
         </div>
     @endif
+
+    <p style="color: #e00;">Uyarı: Bu fatura bilgilendirme amaçlı/temsilidir. Resmi bir geçerliliği yoktur. Resmi faturanız vermiş olduğunuz adrese gönderilecektir.</p>
 </div>
 
 </body>

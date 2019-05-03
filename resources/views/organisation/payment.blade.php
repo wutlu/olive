@@ -15,7 +15,7 @@
 ])
 
 @section('content')
-    @if (session('success') || session('failed'))
+    @if (session('success'))
         <div class="center-align p-2">
             @if (session('success') == 'ok')
                 <i class="material-icons large green-text">check</i>
@@ -27,10 +27,16 @@
         </div>
     @else
         @isset($reason)
-            <div class="center-align p-2">
-                <i class="material-icons large red-text">close</i>
-                <p class="red-text">{{ $reason }}</p>
-            </div>
+            @if ($reason == 'clean')
+                @component('components.nothing')
+                    @slot('text', 'ÖDENECEK FATURANIZ BULUNMAMAKTADIR, TEŞEKKÜR EDERİZ')
+                @endcomponent
+            @else
+                <div class="center-align p-2">
+                    <i class="material-icons large red-text">close</i>
+                    <p class="red-text">{{ $reason }}</p>
+                </div>
+            @endif
         @else
             @push('external.include.footer')
                 <script src="https://www.paytr.com/js/iframeResizer.min.js"></script>
