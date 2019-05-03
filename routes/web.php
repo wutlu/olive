@@ -165,7 +165,6 @@ Route::prefix('ayarlar')->group(function () {
 
         Route::prefix('fatura')->group(function () {
             Route::get('odeme', 'OrganisationController@payment')->name('organisation.invoice.payment');
-            Route::post('odeme/durum', 'OrganisationController@paymentCallback')->name('organisation.invoice.payment.callback');
             Route::get('odeme/{status}', 'OrganisationController@paymentStatus')->name('organisation.invoice.payment.status')->where('status', '(ok|fail)');
             Route::delete('iptal', 'OrganisationController@invoiceCancel')->name('settings.organisation.invoice.cancel');
             Route::get('{id}/{key?}', 'OrganisationController@invoice')->name('organisation.invoice');
