@@ -15,30 +15,29 @@
 ])
 
 @section('content')
-    @isset($reason)
-        <div class="center-align red-text p-2">
-            <i class="material-icons large">close</i>
-            <p>{{ $reason }}</p>
+    @if (session('success') || session('failed'))
+        <div class="center-align p-2">
+            @if (session('success') == 'ok')
+                <i class="material-icons large green-text">check</i>
+                <p class="green-text">ÖDEME BAŞARILI BİR ŞEKİLDE GERÇEKLEŞTİRİLDİ</p>
+            @elseif (session('success') == 'fail')
+                <i class="material-icons large red-text">close</i>
+                <p class="red-text">ÖDEME BAŞARISIZ OLDU</p>
+            @endif
         </div>
     @else
-        <iframe src="https://www.paytr.com/odeme/guvenli/{{ $token }}" id="paytriframe" frameborder="0" scrolling="no" style="width: 100%;"></iframe>
-    @endisset
+        @isset($reason)
+            <div class="center-alignp-2">
+                <i class="material-icons large red-text">close</i>
+                <p class="red-text">{{ $reason }}</p>
+            </div>
+        @else
+            @push('external.include.footer')
+                <script src="https://www.paytr.com/js/iframeResizer.min.js"></script>
+                <script>iFrameResize({}, '#paytriframe');</script>
+            @endpush
+
+            <iframe src="https://www.paytr.com/odeme/guvenli/{{ $token }}" id="paytriframe" frameborder="0" scrolling="no" style="width: 100%;"></iframe>
+        @endisset
+    @endif
 @endsection
-
-@push('external.include.footer')
-    @isset($reason)
-    @else
-        <script src="https://www.paytr.com/js/iframeResizer.min.js"></script>
-        <script>iFrameResize({}, '#paytriframe');</script>
-    @endisset
-@endpush
-
-@push('local.scripts')
-    @if (session('error'))
-        M.toast({ html: '{{ session('error') }}', classes: 'green darken-2' })
-    @endif
-
-    @if (session('success'))
-        M.toast({ html: '{{ session('success') }}', classes: 'green darken-2' })
-    @endif
-@endpush

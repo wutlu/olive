@@ -526,18 +526,22 @@ class OrganisationController extends Controller
 
     /**
      *
-     * Organizasyon, Ödeme Bildirim Sayfası
+     * Organizasyon, Ödeme Durum Yönlendirme
      *
-     * @return view
+     * @return redirect
      */
-    public static function paymentStatus(string $status, Request $request)
+    public static function paymentStatus(string $status)
     {
-        return $status;
+        session()->flash('success', $status);
+
+        return redirect()->route('organisation.invoice.payment');
     }
 
     /**
      *
-     * Organizasyon, Ödeme Bildirim Sayfası (Service)
+     * Organizasyon, Ödeme Bildirim (Api Service)
+     *
+     * !! API SERVICE !!
      *
      * @return string
      */
@@ -546,88 +550,82 @@ class OrganisationController extends Controller
         $merchant_key = config('services.paytr.merchant.key');
         $merchant_salt = config('services.paytr.merchant.salt');
 
-        $invoice = Invoice::where('invoice_id', $request->merchant_oid)->firstOrFail();
-        $organisation = $invoice->organisation;
+        $invoice = Invoice::where('invoice_id', $request->merchant_oid)->first();
 
-        file_put_contents('payment.txt', implode(PHP_EOL, [
-            $request->merchant_oid,
-            $request->status,
-            $request->total_amount,
-            $request->hash,
-            $request->failed_reason_code,
-            $request->failed_reason_msg
-        ]), FILE_APPEND | LOCK_EX);
-
-        $hash = base64_encode(
-            hash_hmac(
-                'sha256',
-                $request->merchant_oid.$merchant_salt.$request->status.$request->total_amount,
-                $merchant_key,
-                true
-            )
-        );
-
-        if ($hash != $request->hash)
+        if (@$invoice)
         {
-            $invoice->reason_code = 0;
-            $invoice->reason_msg = 'Bağlantı zaman aşımına uğradı.';
-            $invoice->save();
-        }
+            $organisation = $invoice->organisation;
 
-        if ($request->status == 'success')
-        {
-            // $request->total_amount // taksitli durumlarda farklı değer gelebilir.
-
-            $organisation->status = true;
-            $organisation->start_date = $organisation->invoices()->count() == 1 ? date('Y-m-d H:i:s') : $organisation->start_date;
-
-            $add_month = new Carbon($organisation->invoices()->count() == 1 ? $organisation->start_date : $organisation->end_date);
-            $add_month = $add_month->addMonths($invoice->month);
-
-            $organisation->end_date = $add_month;
-            $organisation->save();
-
-            $title = 'Olive: Fatura Onayı';
-            $greeting = 'Faturanız Onaylandı!';
-            $message = 'Organizasyonunuz aktif edildi. İyi araştırmalar dileriz...';
-
-            if ($organisation->author->notification('important'))
-            {
-                $organisation->author->notify(
-                    (
-                        new MessageNotification(
-                            $title,
-                            $greeting,
-                            $message
-                        )
-                    )->onQueue('email')
-                );
-            }
-
-            Activity::push(
-                $greeting,
-                [
-                    'user_id' => $organisation->author->id,
-                    'icon' => 'check',
-                    'markdown' => $message
-                ]
+            $hash = base64_encode(
+                hash_hmac(
+                    'sha256',
+                    $request->merchant_oid.$merchant_salt.$request->status.$request->total_amount,
+                    $merchant_key,
+                    true
+                )
             );
 
-            if (!$organisation->author->badge(999))
+            if ($hash != $request->hash)
             {
-                $organisation->author->addBadge(999); // destekçi
+                $invoice->reason_code = 0;
+                $invoice->reason_msg = 'Bağlantı zaman aşımına uğradı.';
+                $invoice->save();
+
+                return 'OK';
             }
 
-            $invoice->paid_at = date('Y-m-d H:i:s');
-            $invoice->save();
+            if ($request->status == 'success' && $invoice->paid_at === null)
+            {
+                $organisation->status = true;
+                $organisation->start_date = $organisation->invoices()->count() == 1 ? date('Y-m-d H:i:s') : $organisation->start_date;
 
-            session()->flash('success', 'Ödemeniz başarılı bir şekilde gerçekleştirildi.');
-        }
-        else
-        {
-            $invoice->reason_code = $request->failed_reason_code;
-            $invoice->reason_msg = $request->failed_reason_msg;
-            $invoice->save();
+                $add_month = new Carbon($organisation->invoices()->count() == 1 ? $organisation->start_date : $organisation->end_date);
+                $add_month = $add_month->addMonths($invoice->month);
+
+                $organisation->end_date = $add_month;
+                $organisation->save();
+
+                $title = 'Olive: Fatura Onayı';
+                $greeting = 'Faturanız Onaylandı!';
+                $message = 'Organizasyonunuz aktif edildi. İyi araştırmalar dileriz...';
+
+                if ($organisation->author->notification('important'))
+                {
+                    $organisation->author->notify(
+                        (
+                            new MessageNotification(
+                                $title,
+                                $greeting,
+                                $message
+                            )
+                        )->onQueue('email')
+                    );
+                }
+
+                Activity::push(
+                    $greeting,
+                    [
+                        'user_id' => $organisation->author->id,
+                        'icon' => 'check',
+                        'markdown' => $message
+                    ]
+                );
+
+                if (!$organisation->author->badge(999))
+                {
+                    $organisation->author->addBadge(999); // destekçi
+                }
+
+                $invoice->total_amount = $request->total_amount;
+                $invoice->paid_at = date('Y-m-d H:i:s');
+                $invoice->save();
+            }
+            else
+            {
+                $invoice->reason_code = $request->failed_reason_code;
+                $invoice->reason_msg = $request->failed_reason_msg;
+                $invoice->save();
+            }
         }
 
         return 'OK';
@@ -661,7 +659,18 @@ class OrganisationController extends Controller
 
             $merchant_oid = $invoice->invoice_id;
 
-            $user_name = $invoice->info->merchant_name ? $invoice->info->merchant_name : ($invoice->info->person_name.' '.$invoice->info->person_lastname);
+            $name = [];
+
+            $name[] = $invoice->info->person_name;
+            $name[] = $invoice->info->person_lastname;
+
+            if ($invoice->info->merchant_name)
+            {
+                $name[] = '('.$invoice->info->merchant_name.')';
+            }
+
+            $user_name = implode(' ', $name);
+
             $user_address = implode(
                 ' ',
                 [
@@ -676,7 +685,7 @@ class OrganisationController extends Controller
                 json_encode(
                     [
                         [
-                            'Organizasyon #'.$organisation->id,
+                            'Aylık Organizasyon Aboneliği #'.$organisation->id,
                             $invoice->unit_price,
                             $invoice->month,
                         ]

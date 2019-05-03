@@ -27,7 +27,7 @@ class PaymentCallbackRequest extends FormRequest
             'merchant_oid' => 'required|integer',
             'status' => 'required|string|max:100',
             'total_amount' => 'nullable',
-            'hash' => 'required|string|max:1000',
+            'hash' => 'required|string|max:255',
 
             'failed_reason_msg' => 'nullable|string|max:255',
             'failed_reason_code' => 'nullable|integer|max:100',

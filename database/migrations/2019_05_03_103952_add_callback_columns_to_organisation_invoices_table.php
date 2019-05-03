@@ -16,7 +16,7 @@ class AddCallbackColumnsToOrganisationInvoicesTable extends Migration
         Schema::table('organisation_invoices', function (Blueprint $table) {
             $table->string('reason_msg')->nullable()->default(null);
             $table->integer('reason_code')->nullable()->default(null);
-            $table->decimal('total_amount', 9, 2)->default(0);
+            $table->integer('total_amount')->nullable()->default(null);
         });
     }
 
