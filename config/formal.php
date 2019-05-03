@@ -43,5 +43,10 @@ return [
             'name' => 'VERİ ZONE BİL. TEK. VE DAN. LTD. ŞTİ.',
             'iban' => 'TR70 0011 1000 0000 0085 1234 41'
         ]
+    ],
+
+    'installment' => [
+        'status' => true,
+        'max' => 3
     ]
 ];

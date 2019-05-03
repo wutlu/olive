@@ -26,7 +26,8 @@
 @endsection
 
 @push('external.include.footer')
-    @isset($token)
+    @isset($reason)
+    @else
         <script src="https://www.paytr.com/js/iframeResizer.min.js"></script>
         <script>iFrameResize({}, '#paytriframe');</script>
     @endisset

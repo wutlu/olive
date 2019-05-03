@@ -680,7 +680,7 @@ class OrganisationController extends Controller
                 json_encode(
                     [
                         [
-                            'Örnek Ürün 1',
+                            'Organizasyon #'.$organisation->id,
                             $invoice->unit_price,
                             $invoice->month,
                         ]
@@ -690,11 +690,11 @@ class OrganisationController extends Controller
 
             $email = $user->email;
             $payment_amount = $invoice->fee()->amount_int;
-            $test_mode = 1;
-            $debug_on = 1;
+            $test_mode = intval(config('app.env') == 'local');
+            $debug_on = intval(config('app.debug'));
             $timeout_limit = 10;
-            $no_installment = 0;
-            $max_installment = 3;
+            $no_installment = config('formal.installment.status') == true ? 0 : 1;
+            $max_installment = config('formal.installment.max');
             $currency = config('formal.currency_text');
 
             $hash_str = $merchant_id.$user_ip.$merchant_oid.$email.$payment_amount.$user_basket.$no_installment.$max_installment.$currency.$test_mode;
@@ -742,14 +742,6 @@ class OrganisationController extends Controller
             curl_close($ch);
 
             $result = json_decode($result);
-
-        /*
-            Başarılı yanıt örneği: (token içerir)
-            {"status":"success","token":"28cc613c3d7633cfa4ed0956fdf901e05cf9d9cc0c2ef8db54fa"}
-
-            Başarısız yanıt örneği:
-            {"status":"failed","reason":"Zorunlu alan degeri gecersiz: merchant_id"}
-        */
 
             if ($result->status == 'success')
             {
