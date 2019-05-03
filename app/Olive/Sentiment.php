@@ -5,100 +5,159 @@ namespace App\Olive;
 class Sentiment {
     /**
      * Location of the dictionary files
+     * 
      * @var str 
      */
-    private $dataFolder = '';
+    private $dataFolder;
+    private $sourceFolder;
 
     /**
      * List of tokens to ignore
+     * 
      * @var array 
      */
     private $ignoreList = [];
 
     /**
-     * List of words with negative prefixes, e.g. isn't, arent't
-     * @var array
-     */
-    private $negPrefixList = [];
-
-    /**
      * Storage of cached dictionaries
+     * 
      * @var array 
      */
     private $dictionary = [];
 
     /**
      * Min length of a token for it to be taken into consideration
+     * 
      * @var int
      */
-    private $minTokenLength = 1;
+    private $minTokenLength = 2;
 
     /**
      * Max length of a taken for it be taken into consideration
+     * 
      * @var int
      */
-    private $maxTokenLength = 15;
+    private $maxTokenLength = 16;
 
     /**
      * Classification of opinions
+     * 
      * @var array
      */
-    private $classes = [ 'pos', 'neg', 'neu' ];
+    public $classes = [];
 
     /**
      * Token score per class
+     * 
      * @var array 
      */
-    private $classTokCounts = [
-        'pos' => 0,
-        'neg' => 0,
-        'neu' => 0,
-    ];
+    private $classTokCounts = [];
 
     /**
      * Analyzed text score per class
+     * 
      * @var array
      */
-    private $classDocCounts = [
-        'pos' => 0,
-        'neg' => 0,
-        'neu' => 0,
-    ];
+    private $classDocCounts = [];
 
     /**
      * Number of tokens in a text
+     * 
      * @var int 
      */
     private $tokCount = 0;
 
     /**
      * Number of analyzed texts
+     * 
      * @var int
      */
     private $docCount = 0;
 
     /**
-     * Implication that the analyzed text has 1/7 chance of being in either of the 7 categories
+     * Implication that the analyzed text has 1/x chance of being in either of the x categories
+     * 
      * @var array
      */
-    private $prior = [
-        'pos' => 33,
-        'neg' => 33,
-        'neu' => 34,
-    ];
+    public $prior = [];
+
+    public function __construct()
+    {
+        $this->dataFolder = database_path('analysis/data');
+        $this->sourceFolder = database_path('analysis/dictionaries');
+    }
 
     /**
-     * Class constructor
-     * @param str $dataFolder base folder
-     * Sets defaults and loads/caches dictionaries
+     * Motor seçimi.
+     * 
+     * @return mixed
      */
-    public function __construct($dataFolder = false)
+    public function engine(string $engine)
     {
-        # Set the base folder for the data models
-        $this->setDataFolder($dataFolder);
+        switch ($engine)
+        {
+            case 'sentiment':
+                $this->classes = [ 'pos', 'neg', 'neu', 'hte' ];
+                $this->classTokCounts = [
+                    'pos' => 0,
+                    'neg' => 0,
+                    'neu' => 0,
+                    'hte' => 0,
+                ];
+                $this->classDocCounts = [
+                    'pos' => 0,
+                    'neg' => 0,
+                    'neu' => 0,
+                    'hte' => 0,
+                ];
+                $this->prior = [
+                    'pos' => 25,
+                    'neg' => 25,
+                    'neu' => 25,
+                    'hte' => 25,
+                ];
+                $this->ignoreList = $this->getList('ign');
+            break;
+            case 'illegal':
+                $this->classes = [ 'bet', 'nud' ];
+                $this->classTokCounts = [
+                    'bet' => 0,
+                    'nud' => 0,
+                ];
+                $this->classDocCounts = [
+                    'bet' => 0,
+                    'nud' => 0,
+                ];
+                $this->prior = [
+                    'bet' => 50,
+                    'nud' => 50,
+                ];
+                $this->ignoreList = $this->getList('ign.illegal');
+            break;
+            case 'consumer':
+                $this->classes = [ 'que', 'req', 'cmp', 'nws' ];
+                $this->classTokCounts = [
+                    'que' => 0,
+                    'req' => 0,
+                    'cmp' => 0,
+                    'nws' => 0,
+                ];
+                $this->classDocCounts = [
+                    'que' => 0,
+                    'req' => 0,
+                    'cmp' => 0,
+                    'nws' => 0,
+                ];
+                $this->prior = [
+                    'que' => 25,
+                    'req' => 25,
+                    'cmp' => 25,
+                    'nws' => 25,
+                ];
+            break;
+        }
 
-        # Load and cache directories, get ignore and prefix lists
-        $this->loadDefaults();
+        $this->load();
     }
 
     /**
@@ -109,60 +168,29 @@ class Sentiment {
      */
     public function score($sentence)
     {
-        # For each negative prefix in the list
-        foreach ($this->negPrefixList as $negPrefix)
-        {
-
-            # Search if that prefix is in the document
-            if (strpos($sentence, $negPrefix) !== false)
-            {
-                # Reove the white space after the negative prefix
-                $sentence = str_replace($negPrefix . ' ', $negPrefix, $sentence);
-            }
-        }
-
-        # Tokenise Document
         $tokens = $this->_getTokens($sentence);
-        # Calculate the score in each category
 
         $total_score = 0;
 
-        # Empty array for the scores for each of the possible categories
         $scores = [];
 
-        # Loop through all of the different classes set in the $classes variable
         foreach ($this->classes as $class)
         {
-            # In the scores array add another dimention for the class and set it's value to 1. EG $scores->neg->1
             $scores[$class] = 1;
 
-            # For each of the individual words used loop through to see if they match anything in the $dictionary
             foreach ($tokens as $token)
             {
-                # If statement so to ignore tokens which are either too long or too short or in the $ignoreList
                 if (strlen($token) > $this->minTokenLength && strlen($token) < $this->maxTokenLength && !in_array($token, $this->ignoreList))
                 {
-                    # If dictionary[token][class] is set
-                    if (isset($this->dictionary[$token][$class]))
-                    {
-                        # Set count equal to it
-                        $count = $this->dictionary[$token][$class];
-                    }
-                    else
-                    {
-                        $count = 0;
-                    }
+                    $count = isset($this->dictionary[$token][$class]) ? $this->dictionary[$token][$class] : 0;
 
-                    # Score[class] is calcumeted by $scores[class] x $count +1 divided by the $classTokCounts[class] + $tokCount
                     $scores[$class] *= ($count + 1);
                 }
             }
 
-            # Score for this class is the prior probability multiplyied by the score for this class
             $scores[$class] = $this->prior[$class] * $scores[$class];
         }
 
-        # Makes the scores relative percents
         foreach ($this->classes as $class)
         {
             $total_score += $scores[$class];
@@ -173,24 +201,19 @@ class Sentiment {
             $scores[$class] = round($scores[$class] / $total_score, 3);
         }
 
-        # Sort array in reverse order
         arsort($scores);
 
         return $scores;
     }
 
     /**
-     * Load and cache dictionary
+     * İlgili duygunun tanımlanması.
      *
-     * @param str $class
      * @return boolean
      */
-    public function setDictionary($class)
+    public function setDictionary(string $class)
     {
-        /**
-         *  For some people this file extention causes some problems!
-         */
-        $fn = "{$this->dataFolder}data.{$class}.php";
+        $fn = $this->dataFolder.'/data.'.$class.'.php';
 
         if (file_exists($fn))
         {
@@ -199,22 +222,18 @@ class Sentiment {
         }
         else
         {
-            echo 'File does not exist: ' . $fn;
+            echo 'File does not exist: '.$fn;
         }
 
-        # Loop through all of the entries
         foreach ($words as $word)
         {
             $this->docCount++;
             $this->classDocCounts[$class]++;
 
-            # Trim word
             $word = trim($word);
 
-            # If this word isn't already in the dictionary with this class
             if (!isset($this->dictionary[$word][$class]))
             {
-                # Add to this word to the dictionary and set counter value as one. This function ensures that if a word is in the text file more than once it still is only accounted for one in the array
                 $this->dictionary[$word][$class] = 1;
             }
 
@@ -226,44 +245,38 @@ class Sentiment {
     }
 
     /**
-     * Set the base folder for loading data models
-     * @param str  $dataFolder base folder
-     * @param bool $loadDefaults true - load everything by default | false - just change the directory
+     * Ham değerlerin işlenmesi.
+     * 
+     * @return mixed
      */
-    public function setDataFolder($dataFolder = false, $loadDefaults = false)
+    public function update()
     {
-        if ($dataFolder == false)
+        foreach($this->classes as $class)
         {
-            $this->dataFolder = database_path('analysis/data/');
-        }
-        else
-        {
-            if (file_exists($dataFolder))
-            {
-                $this->dataFolder = $dataFolder;
-            }
-            else
-            {
-                echo 'Error: could not find the directory - '.$dataFolder;
-            }
-        }
+            require_once $this->sourceFolder.'/source.'.$class.'.php';
 
-        if ($loadDefaults !== false)
-        {
-            $this->loadDefaults();
+            $data = array_map(function($word) {
+              return str_slug($word, ' ');
+            }, $data);
+
+            file_put_contents($this->dataFolder.'/data.'.$class.'.php', serialize($data));
+
+            unset($data);
         }
     }
 
     /**
-     * Load and cache directories, get ignore and prefix lists
+     * Kullanılacak duyguların yüklenmesi..
+     * 
+     * @return mixed
      */
-    private function loadDefaults()
+    private function load()
     {
         foreach ($this->classes as $class)
         {
             if (!$this->setDictionary($class))
             {
-                echo "Error: Dictionary for class '$class' could not be loaded";
+                echo 'Error: Dictionary for class '.$class.' could not be loaded';
             }
         }
 
@@ -271,53 +284,35 @@ class Sentiment {
         {
             echo 'Error: Dictionaries not set';
         }
-
-        # Run function to get ignore list
-        $this->ignoreList = $this->getList('ign');
-
-        # If ingnoreList not get give error message
-        if (!isset($this->ignoreList))
-        {
-            echo 'Error: Ignore List not set';
-        }
-
-        # Get the list of negative prefixes
-        $this->negPrefixList = $this->getList('prefix');
-
-        # If neg prefix list not set give error
-        if (!isset($this->negPrefixList))
-        {
-            echo 'Error: Ignore List not set';
-        }
     }
 
     /**
-     * Break text into tokens
+     * Gelen metindeki tüm değerlerin işlenebilir hale getirilmesi.
      *
-     * @param str $string   String being broken up
-     * @return array An array of tokens
+     * bkz;
+     * AhmetSeviyor "ahmet-seviyor" olup, dize haline getirilir.
+     *
+     * @return array
      */
-    private function _getTokens($string)
+    private function _getTokens(string $string)
     {
-        $string = str_slug(kebab_case($string));
+        $string = str_replace('#', ' ', $string);
+        $string = str_slug(kebab_case($string), '-');
         $string = preg_replace('/(.)\\1+/', '$1', $string);
 
-        $matches = explode('-', $string);
-
-        return $matches;
+        return explode('-', $string);
     }
 
     /**
      * Load and cache additional word lists
      *
-     * @param str $type
      * @return array
      */
-    public function getList($type)
+    public function getList(string $type)
     {
         $wordList = [];
 
-        $fn = "{$this->dataFolder}data.{$type}.php";
+        $fn = $this->dataFolder.'/data.'.$type.'.php';
 
         if (file_exists($fn))
         {
@@ -326,56 +321,14 @@ class Sentiment {
         }
         else
         {
-            return 'File does not exist: ' . $fn;
+            return 'File does not exist: '.$fn;
         }
 
         foreach ($words as $word)
         {
-            # Remove any slashes
-            $word = stripcslashes($word);
-
-            # Trim word
-            $trimmed = trim($word);
-
-            # Push results into $wordList array
-            array_push($wordList, $trimmed);
+            array_push($wordList, $word);
         }
 
         return $wordList;
-    }
-
-    /**
-     * Deletes old data/data.* files
-     * Creates new files from updated source fi
-     */
-    public function reloadDictionaries($dictionaries = '')
-    {
-        $this->classes[] = 'ign';
-        $this->classes[] = 'prefix';
-
-        foreach($this->classes as $class)
-        {
-            $fn = "{$this->dataFolder}data.{$class}.php";
-
-            if (file_exists($fn))
-            {
-                unlink($fn);
-            } 
-        }
-
-        $dictionaries = $dictionaries ? $dictionaries : database_path('analysis/dictionaries/');
-
-        foreach($this->classes as $class)
-        {
-            $dict = "{$dictionaries}source.{$class}.php";
-
-            require_once($dict);
-
-            $data = $class;
-
-            $fn = "{$this->dataFolder}data.{$class}.php";
-
-            file_put_contents($fn, serialize($$data));
-        }
     }
 }

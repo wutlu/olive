@@ -79,7 +79,7 @@
                             total_price = total_price - discount;
 
                         $('[data-name=discount-rate]').html('{{ config('formal.discount_with_year') }}')
-                        $('[data-name=total-discount]').html('-' + discount)
+                        $('[data-name=total-discount]').html('-' + number_format(discount))
 
                         if (discount_area.hasClass('hide'))
                         {
@@ -99,11 +99,11 @@
 
                     var tax = total_price/100*{{ config('formal.tax') }};
 
-                    $('[data-name=total-tax]').html(tax.toFixed(2))
+                    $('[data-name=total-tax]').html(number_format(tax))
 
                     total_price = total_price + tax;
 
-                    $('[data-name=total-price]').html(total_price.toFixed(2))
+                    $('[data-name=total-price]').html(number_format(total_price))
                 }
 
                 $(document).on('change', 'input[name=month]', __calculate)
@@ -190,6 +190,11 @@
                         <div class="input-field dynamic-field hide corporate person">
                             <input name="merchant_name" id="merchant_name" type="text" class="validate" />
                             <label for="merchant_name">Ticari Ünvan</label>
+                            <span class="helper-text"></span>
+                        </div>
+                        <div class="input-field dynamic-field corporate individual person">
+                            <input name="phone" id="phone" type="text" class="validate" />
+                            <label for="phone">Telefon</label>
                             <span class="helper-text"></span>
                         </div>
                         <div class="input-field dynamic-field hide corporate">
@@ -331,6 +336,7 @@
             $('input#postal_code').mask('99999')
             $('input#person_tckn').mask('99999999999')
             $('input#tax_number').mask('9999999999')
+            $('input#phone').mask('(999) 999 99 99')
         </script>
     @endpush
 </div>

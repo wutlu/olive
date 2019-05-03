@@ -1,6 +1,6 @@
 <?php
 
-$pos = [
+$data = [
   'uysal',
   'uymak',
   'uyum',
@@ -1793,7 +1793,3 @@ $pos = [
   'genç',
   'başucu',
 ];
-
-$pos = array_map(function($word) {
-  return str_slug($word, ' ');
-}, $pos);

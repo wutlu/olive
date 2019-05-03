@@ -1,6 +1,6 @@
 <?php
 
-$neg = [
+$data = [
   'yapamam',
   'yapamaz',
   'yapamazsın',
@@ -1158,6 +1158,9 @@ $neg = [
   'etmem',
   'bilmem',
   'kaybetti',
+  'kaybetmek',
+  'kaybedenler',
+  'kaybeden',
   'kaçırma',
   'baştan savma',
   'tahliye',
@@ -2737,7 +2740,3 @@ $neg = [
   'havladı',
   'gayretli',
 ];
-
-$neg = array_map(function($word) {
-  return str_slug($word, ' ');
-}, $neg);

@@ -1,6 +1,6 @@
 <?php
 
-$ign = [
+$data = [
   'yetenek',
   'hakkında',
   'ilgili',
@@ -435,7 +435,3 @@ $ign = [
   'gerekecek',
   'benim',
 ];
-
-$ign = array_map(function($word) {
-  return str_slug($word, ' ');
-}, $ign);

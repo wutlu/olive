@@ -73,7 +73,8 @@ class MediaCrawler extends Model
                             'properties' => [
                                 'neg' => [ 'type' => 'float' ],
                                 'pos' => [ 'type' => 'float' ],
-                                'neu' => [ 'type' => 'float' ]
+                                'neu' => [ 'type' => 'float' ],
+                                'hte' => [ 'type' => 'float' ],
                             ]
                         ]
                     ]

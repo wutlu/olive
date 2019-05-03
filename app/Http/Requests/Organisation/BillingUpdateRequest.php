@@ -52,9 +52,11 @@ class BillingUpdateRequest extends FormRequest
 
             'protected'          => 'nullable|in:on',
 
-            'person_name'        => 'nullable|string|max:55|required_unless:type,corporate',
-            'person_lastname'    => 'nullable|string|max:55|required_unless:type,corporate',
+            'person_name'        => 'nullable|string|max:30|required_unless:type,corporate',
+            'person_lastname'    => 'nullable|string|max:30|required_unless:type,corporate',
             'person_tckn'        => 'nullable|integer|tckn|required_if:type,person',
+
+            'phone'              => 'required|string|regex:/(^\(\d{3}\) \d{3} \d{2} \d{2}$)/u',
 
             'tckn_without'       => 'nullable|in:on',
 

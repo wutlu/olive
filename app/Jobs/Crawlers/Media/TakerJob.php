@@ -59,6 +59,7 @@ class TakerJob implements ShouldQueue
             if ($item->status == 'ok')
             {
                 $sentiment = new Sentiment;
+                $sentiment->engine('sentiment');
 
                 $params = [
                     'title' => $item->data['title'],

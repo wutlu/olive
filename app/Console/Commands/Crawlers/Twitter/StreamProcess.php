@@ -186,7 +186,9 @@ class StreamProcess extends Command
 
             $crawler = new TwitterCrawler;
             $dateUtility = new DateUtility;
+
             $sentiment = new Sentiment;
+            $sentiment->engine('sentiment');
 
             $bulk = [];
             $tracked_users = [];

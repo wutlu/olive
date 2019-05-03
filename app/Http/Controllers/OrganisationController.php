@@ -39,6 +39,8 @@ use Carbon\Carbon;
 
 use App\Jobs\CheckUpcomingPayments;
 
+use App\Http\Requests\PaymentCallbackRequest;
+
 class OrganisationController extends Controller
 {
     public function __construct()
@@ -48,7 +50,7 @@ class OrganisationController extends Controller
          *
          * - Kullanıcı
          */
-        $this->middleware('auth')->except('invoice');
+        $this->middleware('auth')->except([ 'invoice', 'paymentCallback' ]);
 
         /**
          ***** ZORUNLU *****
@@ -62,9 +64,11 @@ class OrganisationController extends Controller
             'transfer',
             'remove',
             'delete',
+            'payment',
             'invite',
             'update',
-            'invoiceCancel'
+            'paymentStatus',
+            'invoiceCancel',
         ]);
 
         /**
@@ -85,9 +89,11 @@ class OrganisationController extends Controller
             'invite',
             'update',
             'delete',
+            'payment',
             'updateName',
             'transfer',
-            'remove'
+            'remove',
+            'paymentStatus',
         ]);
     }
 
@@ -520,6 +526,246 @@ class OrganisationController extends Controller
 
     /**
      *
+     * Organizasyon, Ödeme Bildirim Sayfası
+     *
+     * @return view
+     */
+    public static function paymentStatus(string $status, Request $request)
+    {
+        return $status;
+    }
+
+    /**
+     *
+     * Organizasyon, Ödeme Bildirim Sayfası (Service)
+     *
+     * @return string
+     */
+    public static function paymentCallback(PaymentCallbackRequest $request)
+    {
+        $merchant_key = config('services.paytr.merchant.key');
+        $merchant_salt = config('services.paytr.merchant.salt');
+
+        $invoice = Invoice::where('invoice_id', $request->merchant_oid)->firstOrFail();
+        $organisation = $invoice->organisation;
+
+        file_put_contents('payment.txt', implode(PHP_EOL, [
+            $request->merchant_oid,
+            $request->status,
+            $request->total_amount,
+            $request->hash,
+            $request->failed_reason_code,
+            $request->failed_reason_msg
+        ]), FILE_APPEND | LOCK_EX);
+
+        $hash = base64_encode(
+            hash_hmac(
+                'sha256',
+                $request->merchant_oid.$merchant_salt.$request->status.$request->total_amount,
+                $merchant_key,
+                true
+            )
+        );
+
+        if ($hash != $request->hash)
+        {
+            $invoice->reason_code = 0;
+            $invoice->reason_msg = 'Bağlantı zaman aşımına uğradı.';
+            $invoice->save();
+
+            return 'FAIL';
+        }
+
+        if ($request->status == 'success')
+        {
+            // $request->total_amount // taksitli durumlarda farklı değer gelebilir.
+
+            $organisation->status = true;
+            $organisation->start_date = $organisation->invoices()->count() == 1 ? date('Y-m-d H:i:s') : $organisation->start_date;
+
+            $add_month = new Carbon($organisation->invoices()->count() == 1 ? $organisation->start_date : $organisation->end_date);
+            $add_month = $add_month->addMonths($invoice->month);
+
+            $organisation->end_date = $add_month;
+            $organisation->save();
+
+            $title = 'Olive: Fatura Onayı';
+            $greeting = 'Faturanız Onaylandı!';
+            $message = 'Organizasyonunuz aktif edildi. İyi araştırmalar dileriz...';
+
+            if ($organisation->author->notification('important'))
+            {
+                $organisation->author->notify(
+                    (
+                        new MessageNotification(
+                            $title,
+                            $greeting,
+                            $message
+                        )
+                    )->onQueue('email')
+                );
+            }
+
+            Activity::push(
+                $greeting,
+                [
+                    'user_id' => $organisation->author->id,
+                    'icon' => 'check',
+                    'markdown' => $message
+                ]
+            );
+
+            if (!$organisation->author->badge(999))
+            {
+                $organisation->author->addBadge(999); // destekçi
+            }
+
+            $invoice->paid_at = date('Y-m-d H:i:s');
+            $invoice->save();
+
+            session()->flash('success', 'Ödemeniz başarılı bir şekilde gerçekleştirildi.');
+
+            return 'OK';
+        }
+        else
+        {
+            $invoice->reason_code = $request->failed_reason_code;
+            $invoice->reason_msg = $request->failed_reason_msg;
+            $invoice->save();
+
+            return 'FAIL';
+        }
+    }
+
+    /**
+     *
+     * Organizasyon, Ödeme Sayfası
+     *
+     * @return view
+     */
+    public static function payment(Request $request)
+    {
+        $user = auth()->user();
+        $organisation = $user->organisation;
+        $invoice = $organisation->invoices[0];
+
+        if ($invoice->paid_at)
+        {
+            $reason = 'Ödenmemiş faturanız bulunmamaktadır.';
+        }
+        else
+        {
+            $merchant_id = config('services.paytr.merchant.id');
+            $merchant_key = config('services.paytr.merchant.key');
+            $merchant_salt = config('services.paytr.merchant.salt');
+
+            $ip = $request->ip();
+
+            $user_ip = '212.2.212.122';
+
+            $merchant_oid = $invoice->invoice_id;
+
+            $user_name = $invoice->info->merchant_name ? $invoice->info->merchant_name : ($invoice->info->person_name.' '.$invoice->info->person_lastname);
+            $user_address = implode(
+                ' ',
+                [
+                    $invoice->info->address,
+                    $invoice->info->postal_code,
+                    $invoice->info->city.'/'.$invoice->info->state->name.'/'.$invoice->info->country->name
+                ]
+            );
+            $user_phone = $invoice->info->phone;
+
+            $user_basket = base64_encode(
+                json_encode(
+                    [
+                        [
+                            'Örnek Ürün 1',
+                            $invoice->unit_price,
+                            $invoice->month,
+                        ]
+                    ]
+                )
+            );
+
+            $email = $user->email;
+            $payment_amount = $invoice->fee()->amount_int;
+            $test_mode = 1;
+            $debug_on = 1;
+            $timeout_limit = 10;
+            $no_installment = 0;
+            $max_installment = 3;
+            $currency = config('formal.currency_text');
+
+            $hash_str = $merchant_id.$user_ip.$merchant_oid.$email.$payment_amount.$user_basket.$no_installment.$max_installment.$currency.$test_mode;
+            $paytr_token = base64_encode(hash_hmac('sha256', $hash_str.$merchant_salt, $merchant_key, true));
+
+            $post_vals = [
+                'merchant_id' => $merchant_id,
+                'user_ip' => $user_ip,
+                'merchant_oid' => $merchant_oid,
+                'email' => $email,
+                'payment_amount' => $payment_amount,
+                'paytr_token' => $paytr_token,
+                'user_basket' => $user_basket,
+                'debug_on' => $debug_on,
+                'no_installment' => $no_installment,
+                'max_installment' => $max_installment,
+                'user_name' => $user_name,
+                'user_address' => $user_address,
+                'user_phone' => $user_phone,
+                'merchant_ok_url' => route('organisation.invoice.payment.status', 'ok'),
+                'merchant_fail_url' => route('organisation.invoice.payment.status', 'fail'),
+                'timeout_limit' => $timeout_limit,
+                'currency' => $currency,
+                'test_mode' => $test_mode
+            ];
+
+            $ch = curl_init();
+
+            curl_setopt($ch, CURLOPT_URL, "https://www.paytr.com/odeme/api/get-token");
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_POST, 1) ;
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $post_vals);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+            curl_setopt($ch, CURLOPT_FRESH_CONNECT, 1);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 20);
+
+            $result = @curl_exec($ch);
+
+            if (curl_errno($ch))
+            {
+                $reason = curl_error($ch);
+            }
+
+            curl_close($ch);
+
+            $result = json_decode($result);
+
+        /*
+            Başarılı yanıt örneği: (token içerir)
+            {"status":"success","token":"28cc613c3d7633cfa4ed0956fdf901e05cf9d9cc0c2ef8db54fa"}
+
+            Başarısız yanıt örneği:
+            {"status":"failed","reason":"Zorunlu alan degeri gecersiz: merchant_id"}
+        */
+
+            if ($result->status == 'success')
+            {
+                $token = $result->token;
+            }
+            else
+            {
+                $reason = $result->reason;
+            }
+        }
+
+        return view('organisation.payment', compact('user', 'organisation', 'invoice', 'token', 'reason'));
+    }
+
+    /**
+     *
      * Organizasyon, Süre Uzat
      *
      * @return array
@@ -563,7 +809,7 @@ class OrganisationController extends Controller
                 (
                     new OrganisationWasUpdatedNotification(
                         $user->name,
-                        $invoice_id
+                        $user->organisation_id
                     )
                 )->onQueue('email')
             );
@@ -575,7 +821,7 @@ class OrganisationController extends Controller
                 'icon' => 'flag',
                 'markdown' => implode(PHP_EOL, [
                     'Ödeme bilgileri ve diğer detaylar e-posta adresinize gönderildi.',
-                    'Ödemenizi gerçekleştirdikten sonra e-faturanız e-posta adresinize gönderilecektir.'
+                    'Ödemenizi gerçekleştirdikten sonra, e-posta ile bildilendirileceksiniz.'
                 ]),
                 'button' => [
                     'type' => 'http',
@@ -692,12 +938,13 @@ class OrganisationController extends Controller
         $query = $request->string ? $query->where('name', 'ILIKE', '%'.$request->string.'%') : $query;
         $query = $query->skip($skip)
                        ->take($take)
-                       ->orderBy('id', 'DESC');
+                       ->orderBy('id', 'DESC')
+                       ->get();
 
         return [
             'status' => 'ok',
-            'hits' => $query->get(),
-            'total' => $query->count()
+            'hits' => $query,
+            'total' => count($query)
         ];
     }
 
@@ -897,8 +1144,6 @@ class OrganisationController extends Controller
             $title = 'Olive: Fatura Onayı';
             $greeting = 'Faturanız Onaylandı!';
             $message = 'Organizasyonunuzu aktifleştirdik. İyi araştırmalar dileriz...';
-
-            $fee = $invoice->fee();
 
             if ($organisation->author->notification('important'))
             {

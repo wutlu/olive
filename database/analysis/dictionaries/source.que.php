@@ -1,6 +1,6 @@
 <?php
 
-$que = [
+$data = [
   'kimim',
   'kimin',
   'kimler',
@@ -12,8 +12,6 @@ $que = [
   'nasıl',
   'yardım',
   'eder',
-  'misin',
-  'misiniz',
   'miyim',
   'miyiz',
   'mı',
@@ -25,15 +23,11 @@ $que = [
   'musunuz',
   'ki',
   'ne',
-  'oldun',
-  'oldunuz',
-  'neler',
-  'olabilir',
+  'soru',
+  'soracağım',
+  'olacak',
   'sorum',
   'soruyorum',
   'söyle',
+  'söyleyin',
 ];
-
-$que = array_map(function($word) {
-  return str_slug($word, ' ');
-}, $que);

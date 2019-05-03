@@ -33,6 +33,11 @@
 
     .pricing-section {
         padding: 100px 0;
+        background-image: url('{{ asset('img/bg-2.svg') }}');
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+        background-attachment: scroll;
     }
 
     .y-section {
@@ -325,8 +330,10 @@
                     <i class="large material-icons analytics">poll</i>
                     <h5>Analiz</h5>
                     <ul>
+                        <li>- Duygusal analizler gerçekleştirin.</li>
+                        <li>- Kitlenizi cinsiyet ve konumlarına göre ölçümleyin.</li>
+                        <li>- Nefret söylemlerine ve soru içeriklerine anında erişin.</li>
                         <li>- Ürün veya markanızı rakiplerinizle kıyaslayın.</li>
-                        <li>- İlgilendiğiniz konuları daha anlamlı bir şekilde inceleyin.</li>
                     </ul>
                 </div>
                 <div class="item">
@@ -340,7 +347,7 @@
                 </div>
                 <div class="item">
                     <i class="large material-icons rotate">toys</i>
-                    <h5>Analiz</h5>
+                    <h5>Araçlar</h5>
                     <ul>
                         <li>- Duygusal analizler gerçekleştirin.</li>
                         <li>- Kitlenizi cinsiyet ve konumlarına göre ölçümleyin.</li>
@@ -425,12 +432,12 @@
         .packages {
             width: 100%;
 
-            background: #7efff7;
-            background: -moz-linear-gradient(top, #7efff7 0%, #2488d5 100%);
-            background: -webkit-linear-gradient(top, #7efff7 0%,#2488d5 100%);
-            background: linear-gradient(to bottom, #7efff7 0%,#2488d5 100%);
+            background-color: #7efff7;
+            background:         linear-gradient(to bottom, #7efff7 0%, #2488d5 100%);
+            background:    -moz-linear-gradient(top, #7efff7 0%, #2488d5 100%);
+            background: -webkit-linear-gradient(top, #7efff7 0%, #2488d5 100%);
 
-            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7efff7', endColorstr='#2488d5',GradientType=0 );
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7efff7', endColorstr='#2488d5', GradientType=0 );
 
             border-radius: 1rem;
             padding: 2rem;

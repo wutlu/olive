@@ -416,6 +416,7 @@
                     <div class="center-align">
                         <a href="{{ route('organisation.invoice', [ 'id' => $user->organisation->invoices[0]->invoice_id ]) }}" class="waves-effect btn-flat">Fatura</a>
                         <a href="{{ route('settings.support', [ 'type' => 'odeme-bildirimi' ]) }}" class="waves-effect btn-flat">Ödeme Bildirimi</a>
+                        <a href="{{ route('organisation.invoice.payment') }}" class="waves-effect btn-flat green-text">Ödeme Sayfası</a>
                         <a href="#" class="btn-flat waves-effect red-text" id="cancel-button">İptal</a>
                     </div>
 

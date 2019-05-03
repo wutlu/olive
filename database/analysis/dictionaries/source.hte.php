@@ -1,6 +1,6 @@
 <?php
 
-$hat = [
+$data = [
   'bunlar sorulacak',
   'hesap vereceksiniz',
   'hesabını soracak',
@@ -37,9 +37,6 @@ $hat = [
   'diktator',
   'lanet',
   'lanet',
+  'herif',
   'orospu',
 ];
-
-$hat = array_map(function($word) {
-  return str_slug($word, ' ');
-}, $hat);

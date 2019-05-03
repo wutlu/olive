@@ -163,7 +163,13 @@ Route::prefix('ayarlar')->group(function () {
         Route::delete('cikar', 'OrganisationController@remove')->name('settings.organisation.remove');
         Route::post('davet', 'OrganisationController@invite')->name('settings.organisation.invite');
 
-        Route::delete('fatura-iptal', 'OrganisationController@invoiceCancel')->name('settings.organisation.invoice.cancel');
+        Route::prefix('fatura')->group(function () {
+            Route::get('odeme', 'OrganisationController@payment')->name('organisation.invoice.payment');
+            Route::get('odeme/durum', 'OrganisationController@paymentCallback')->name('organisation.invoice.payment.callback');
+            Route::get('odeme/durum/{status}', 'OrganisationController@paymentStatus')->name('organisation.invoice.payment.status')->where('status', '(ok|fail)');
+            Route::delete('iptal', 'OrganisationController@invoiceCancel')->name('settings.organisation.invoice.cancel');
+            Route::get('{id}/{key?}', 'OrganisationController@invoice')->name('organisation.invoice');
+        });
     });
 
     Route::prefix('destek')->group(function () {
@@ -173,8 +179,6 @@ Route::prefix('ayarlar')->group(function () {
         Route::put('talep/cevap', 'TicketController@reply')->name('settings.support.ticket.reply');
         Route::post('/', 'TicketController@submit')->name('settings.support.submit');
     });
-
-    Route::get('fatura-gecmisi', 'OrganisationController@settings')->name('settings.invoices');
 
     Route::get('hesap-bilgileri', 'UserController@account')->name('settings.account');
     Route::post('hesap-bilgileri', 'UserController@accountUpdate');
@@ -186,10 +190,6 @@ Route::prefix('ayarlar')->group(function () {
     Route::post('hesap-resmi', 'UserController@avatarUpload');
 
     Route::get('api', 'UserController@account')->name('settings.api');
-});
-
-Route::prefix('fatura')->group(function () {
-    Route::get('{id}/{key?}', 'OrganisationController@invoice')->name('organisation.invoice');
 });
 
 Route::prefix('geo')->group(function () {

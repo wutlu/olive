@@ -694,12 +694,13 @@ class UserController extends Controller
                                     }) : $query;
         $query = $query->skip($skip)
                        ->take($take)
-                       ->orderBy('id', 'DESC');
+                       ->orderBy('id', 'DESC')
+                       ->get();
 
         return [
             'status' => 'ok',
-            'hits' => $query->get(),
-            'total' => $query->count()
+            'hits' => $query,
+            'total' => count($query)
         ];
     }
 

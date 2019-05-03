@@ -35,6 +35,14 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
+    'paytr' => [
+        'merchant' => [
+            'id' => env('PAYTR_MERCHANT_ID'),
+            'key' => env('PAYTR_MERCHANT_KEY'),
+            'salt' => env('PAYTR_MERCHANT_SALT')
+        ]
+    ],
+
     'google' => [
         'analytics' => [
             'code' => env('GOOGLE_ANALYTICS_CODE', '')

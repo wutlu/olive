@@ -37,31 +37,21 @@ class OrganisationInvoice extends Model
     # ücret bilgileri
     public function fee()
     {
-    	$arr = [
-    		'discount' => null,
-    		'total_price' => $this->total_price
-    	];
+        $total_price = $this->total_price;
+        $discount = ($total_price / 100) * $this->discount_rate;
+        $discounted_price = $total_price - $discount;
+        $total_tax = ($discounted_price / 100) * $this->tax;
+        $amount = number_format((float) $total_tax + $discounted_price, 2, '.', '');
 
-    	if ($this->discountCoupon)
-    	{
-	    	$arr['discount']['rate'] = $this->discountCoupon->rate_year ? ($this->discountCoupon->rate_year + $this->discountCoupon->rate) : $this->discountCoupon->rate;
-	    	$arr['discount']['amount'] = $this->total_price / 100 * $arr['discount']['rate'];
-
-    		$arr['total_price'] = $arr['total_price'] - $arr['discount']['amount'];
-
-    		if ($this->discountCoupon->price)
-    		{
-	    		$arr['discount']['price'] = $this->discountCoupon->price >= $arr['total_price'] ? $arr['total_price'] : $this->discountCoupon->price;
-
-	    		$arr['total_price'] = $arr['total_price'] - $arr['discount']['price'];
-	    	}
-	    }
-
-    	$arr['amount_of_tax'] = $arr['total_price'] / 100 * $this->tax;
-
-    	$arr['total_price'] = $arr['total_price'] + $arr['amount_of_tax'];
-
-    	return (object) $arr;
+        return (object) [
+            'unit' => $this->unit_price,
+            'total' => $this->total_price,
+            'tax' => number_format((float) $total_tax, 2, '.', ''),
+            'discount' => number_format((float) $discount, 2, '.', ''),
+            'discounted' => number_format((float) $discounted_price, 2, '.', ''),
+            'amount' => $amount,
+            'amount_int' => intval(str_replace([ ',', '.' ], '', $amount)),
+        ];
     }
 
     # organizasyon

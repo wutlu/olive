@@ -53,28 +53,6 @@ class Test extends Command
         $gender = new Gender;
         $gender->loadNames();
 
-        echo $gender->detector([ 'munevver' ]).PHP_EOL;
-
-        exit();
-        $sentiment = new Sense;
-
-        $items = [
-            'RT @DemiralpUguz: 69209 https://t.co/8Opx83LCc5 #izmir??ſčòrț SEKSİ SİNEM Sabah 6\'da yataktan fırlayan, giyinip zorla bir şeyler atıştır…',
-            'RT @DulFatma39: Kökleme böyle olur https://t.co/9N4gxVNG12',
-            'RT @Tulay03414281: Karsiyaka SEÇIL #Karsiyaka🍒💖 💘✔💛 #izmir??ſčòrț💚❤ 💗 🔞🔞🔞#bornova??ſčòrț 🔞🔞 🔞🔞 💋💖 💜💗 💖💗💗 💜💚🍒 🍒🍒 🍒🍒 #karsiyakaeskort 💞 🌡🌡🌡…',
-            'İyi akşamlar Türkiye 🇹🇷 Good evening Earth 🌏 https://t.co/7cYfi3v6lv',
-            'Bu ürün hakkında daha çok bilgiye sahip olabilir miyiz?',
-            'Bu araç ne yakıyor',
-            'Fiyatı ne',
-            'Ne lanet',
-        ];
-
-        foreach ($items as $text)
-        {
-            $g = $sentiment->score($text);
-
-            $this->line($text);
-            $this->info(json_encode($g));
-        }
+        echo $gender->detector([ 'haci' ]).PHP_EOL;
     }
 }
