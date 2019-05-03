@@ -572,8 +572,6 @@ class OrganisationController extends Controller
             $invoice->reason_code = 0;
             $invoice->reason_msg = 'Bağlantı zaman aşımına uğradı.';
             $invoice->save();
-
-            return 'FAIL';
         }
 
         if ($request->status == 'success')
@@ -624,17 +622,15 @@ class OrganisationController extends Controller
             $invoice->save();
 
             session()->flash('success', 'Ödemeniz başarılı bir şekilde gerçekleştirildi.');
-
-            return 'OK';
         }
         else
         {
             $invoice->reason_code = $request->failed_reason_code;
             $invoice->reason_msg = $request->failed_reason_msg;
             $invoice->save();
-
-            return 'FAIL';
         }
+
+        return 'OK';
     }
 
     /**
