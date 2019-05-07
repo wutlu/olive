@@ -15,8 +15,11 @@ use Term;
 use App\Olive\Gender;
 use App\Olive\Sentiment as OliveSentiment;
 
+use Carbon\Carbon;
+
 use Sentiment;
 use Sense;
+
 use App\Models\Analysis;
 
 class Test extends Command
@@ -52,20 +55,24 @@ class Test extends Command
      */
     public function handle()
     {
+        $gender = new Gender;
+        $gender->loadNames();
+
+        print_r($gender->detector([ 'ahmet' ]));
+
+        exit();
         $query = Document::search([ 'twitter', 'tweets', '*' ], 'tweet', [
             'query' => [
                 'bool' => [
                     'filter' => [
-                        /*
                         [
                             'range' => [
                                 'created_at' => [
                                     'format' => 'YYYY-MM-dd',
-                                    'gte' => date('Y-m-d')
+                                    'gte' => Carbon::now()->subDays(1)->format('Y-m-d')
                                 ]
                             ],
                         ],
-                        */
                         [
                             'range' => [ 'sentiment.pos' => [ 'gte' => 0.9 ] ],
                         ]

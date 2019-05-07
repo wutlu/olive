@@ -25,7 +25,7 @@ class Gender
     {
         foreach ([ 'males' => 'male', 'females' => 'female' ] as $key => $gender)
         {
-            $fn = $this->dataFolder.'/data.gender.'.$gender.'.php';
+            $fn = $this->dataFolder.'/data.gender-'.$gender.'.php';
 
             if (file_exists($fn))
             {
