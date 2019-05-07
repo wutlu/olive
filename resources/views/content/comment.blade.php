@@ -320,7 +320,7 @@
             </div>
 
             <a href="#"
-               class="btn-small white grey-text more more-unstyled hide json"
+               class="more hide json"
                id="ajax-commentsVideo-more_button"
                data-json-target="#ajax-commentsVideo">Daha Fazla</a>
         </div>
@@ -363,7 +363,7 @@
             @endcomponent
 
             <a href="#"
-               class="btn-small white grey-text more more-unstyled hide json"
+               class="more hide json"
                id="ajax-commentsUser-more_button"
                data-json-target="#ajax-commentsUser">Daha Fazla</a>
         </div>
@@ -395,7 +395,7 @@
             @endcomponent
 
             <a href="#"
-               class="btn-small white grey-text more more-unstyled hide json"
+               class="more hide json"
                id="ajax-videosUser-more_button"
                data-json-target="#ajax-videosUser">Daha Fazla</a>
         </div>

@@ -196,7 +196,7 @@
     </div>
 
     <a href="#"
-       class="btn-small white grey-text more hide json"
+       class="more hide json"
        id="users-more_button"
        data-json-target="#users">Daha Fazla</a>
 @endsection

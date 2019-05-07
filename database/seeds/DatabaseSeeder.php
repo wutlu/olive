@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
                 OptionTableSeeder::class,
                 ModuleSearchesTableSeeder::class,
             ]);
+            $this->call(AnalysisTableSeeder::class);
         }
     }
 }

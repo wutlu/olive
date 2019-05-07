@@ -314,6 +314,11 @@ $arr = [
 
         'retweet'                         => 'ReTweet',
         'media'                           => 'Medya',
+
+        'analysis'                        => 'Analiz',
+        'group'                           => 'Grup',
+        'testarea'                        => 'Test Alanı',
+        'engine'                          => 'Motor',
     ],
 ];
 

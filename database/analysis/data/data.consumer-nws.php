@@ -1,0 +1,1 @@
+a:12:{i:0;s:7:"secildi";i:1;s:6:"edildi";i:2;s:7:"yakildi";i:3;s:9:"olduruldu";i:4;s:7:"oldurdu";i:5;s:5:"dovdu";i:6;s:8:"detaylar";i:7;s:5:"haber";i:8;s:4:"oldu";i:9;s:5:"yandi";i:10;s:3:"eti";i:11;s:7:"katildi";}

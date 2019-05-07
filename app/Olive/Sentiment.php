@@ -2,6 +2,8 @@
 
 namespace App\Olive;
 
+use App\Models\Analysis;
+
 class Sentiment {
     /**
      * Location of the dictionary files
@@ -9,7 +11,6 @@ class Sentiment {
      * @var str 
      */
     private $dataFolder;
-    private $sourceFolder;
 
     /**
      * List of tokens to ignore
@@ -84,7 +85,6 @@ class Sentiment {
     public function __construct()
     {
         $this->dataFolder = database_path('analysis/data');
-        $this->sourceFolder = database_path('analysis/dictionaries');
     }
 
     /**
@@ -94,67 +94,20 @@ class Sentiment {
      */
     public function engine(string $engine)
     {
-        switch ($engine)
+        $item = config('system.analysis')[$engine];
+
+        $this->classes = array_keys($item['types']);
+
+        foreach ($item['types'] as $k => $v)
         {
-            case 'sentiment':
-                $this->classes = [ 'pos', 'neg', 'neu', 'hte' ];
-                $this->classTokCounts = [
-                    'pos' => 0,
-                    'neg' => 0,
-                    'neu' => 0,
-                    'hte' => 0,
-                ];
-                $this->classDocCounts = [
-                    'pos' => 0,
-                    'neg' => 0,
-                    'neu' => 0,
-                    'hte' => 0,
-                ];
-                $this->prior = [
-                    'pos' => 25,
-                    'neg' => 25,
-                    'neu' => 25,
-                    'hte' => 25,
-                ];
-                $this->ignoreList = $this->getList('ign');
-            break;
-            case 'illegal':
-                $this->classes = [ 'bet', 'nud' ];
-                $this->classTokCounts = [
-                    'bet' => 0,
-                    'nud' => 0,
-                ];
-                $this->classDocCounts = [
-                    'bet' => 0,
-                    'nud' => 0,
-                ];
-                $this->prior = [
-                    'bet' => 50,
-                    'nud' => 50,
-                ];
-                $this->ignoreList = $this->getList('ign.illegal');
-            break;
-            case 'consumer':
-                $this->classes = [ 'que', 'req', 'cmp', 'nws' ];
-                $this->classTokCounts = [
-                    'que' => 0,
-                    'req' => 0,
-                    'cmp' => 0,
-                    'nws' => 0,
-                ];
-                $this->classDocCounts = [
-                    'que' => 0,
-                    'req' => 0,
-                    'cmp' => 0,
-                    'nws' => 0,
-                ];
-                $this->prior = [
-                    'que' => 25,
-                    'req' => 25,
-                    'cmp' => 25,
-                    'nws' => 25,
-                ];
-            break;
+            $this->classTokCounts[$k] = 0;
+            $this->classDocCounts[$k] = 0;
+            $this->prior[$k] = $v['per'];
+        }
+
+        if (@$item['ignore'])
+        {
+            $this->ignoreList = $this->getList($item['ignore']);
         }
 
         $this->load();
@@ -253,15 +206,29 @@ class Sentiment {
     {
         foreach($this->classes as $class)
         {
-            require_once $this->sourceFolder.'/source.'.$class.'.php';
+            $data = [];
 
-            $data = array_map(function($word) {
-              return str_slug($word, ' ');
-            }, $data);
+            $query = Analysis::where('group', $class)->get();
 
-            file_put_contents($this->dataFolder.'/data.'.$class.'.php', serialize($data));
+            if (count($query))
+            {
+                foreach ($query as $q)
+                {
+                    $word = str_slug(kebab_case($q->word));
+                    $word = preg_replace('/(.)\\1+/', '$1', $word);
 
-            unset($data);
+                    $data[] = $word;
+
+                    $q->update(
+                        [
+                            'word' => $word,
+                            'compiled' => true
+                        ]
+                    );
+                }
+
+                file_put_contents($this->dataFolder.'/data.'.$class.'.php', serialize($data));
+            }
         }
     }
 
@@ -294,10 +261,10 @@ class Sentiment {
      *
      * @return array
      */
-    private function _getTokens(string $string)
+    public static function _getTokens(string $string)
     {
         $string = str_replace('#', ' ', $string);
-        $string = str_slug(kebab_case($string), '-');
+        $string = str_slug(kebab_case($string));
         $string = preg_replace('/(.)\\1+/', '$1', $string);
 
         return explode('-', $string);

@@ -135,7 +135,7 @@
                 @endif
 
                 <a href="#"
-                   class="btn-small white grey-text more more-unstyled hide json"
+                   class="more hide json"
                    id="{{ $key }}-more_button"
                    data-json-target="#loader-{{ $key }}">Daha Fazla</a>
             </div>

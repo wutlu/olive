@@ -103,7 +103,7 @@
     </div>
 
     <a href="#"
-       class="btn-small white grey-text more hide json"
+       class="more hide json"
        id="newsletters-more_button"
        data-json-target="#newsletters">Daha Fazla</a>
 @endsection

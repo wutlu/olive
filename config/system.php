@@ -4,7 +4,7 @@ return [
     /**
      * Sistem Versiyonu
      */
-    'version' => '1.6.2-alpha',
+    'version' => '1.7-alpha',
 
     /**
      * db
@@ -23,6 +23,82 @@ return [
      * @var integer
      */
     'term_version' => 3,
+
+    /**
+     * Analiz Katmanları
+     */
+    'analysis' => [
+        'sentiment' => [
+            'types' => [
+                'sentiment-pos' => [
+                    'per' => 25,
+                    'title' => 'Pozitif'
+                ],
+                'sentiment-neg' => [
+                    'per' => 25,
+                    'title' => 'Negatif'
+                ],
+                'sentiment-neu' => [
+                    'per' => 25,
+                    'title' => 'Nötr'
+                ],
+                'sentiment-hte' => [
+                    'per' => 25,
+                    'title' => 'Nefret Söylemi'
+                ]
+            ],
+            'ignore' => 'sentiment-ign',
+            'title' => 'Duygu Analizi'
+        ],
+        'illegal' => [
+            'types' => [
+                'illegal-bet' => [
+                    'per' => 50,
+                    'title' => 'Bahis'
+                ],
+                'illegal-nud' => [
+                    'per' => 50,
+                    'title' => 'Çıplaklık'
+                ]
+            ],
+            'ignore' => 'illegal-ign',
+            'title' => 'İllegal Analiz'
+        ],
+        'consumer' => [
+            'types' => [
+                'consumer-que' => [
+                    'per' => 25,
+                    'title' => 'Soru'
+                ],
+                'consumer-req' => [
+                    'per' => 25,
+                    'title' => 'İstek'
+                ],
+                'consumer-cmp' => [
+                    'per' => 25,
+                    'title' => 'Şikayet'
+                ],
+                'consumer-nws' => [
+                    'per' => 25,
+                    'title' => 'Haber'
+                ],
+            ],
+            'title' => 'Müşteri Analizi'
+        ],
+        'gender' => [
+            'types' => [
+                'gender-male' => [
+                    'per' => 50,
+                    'title' => 'Erkek'
+                ],
+                'gender-female' => [
+                    'per' => 50,
+                    'title' => 'Kadın'
+                ],
+            ],
+            'title' => 'Cinsiyet Tespiti'
+        ]
+    ],
 
     /**
      * Destek Konuları
@@ -99,6 +175,8 @@ return [
 
         'twitter.index.auto' => 'string|in:on,off',
         'twitter.status' => 'string|in:on,off',
+
+        'data.learn' => 'string|in:on,off',
     ],
 
     /**

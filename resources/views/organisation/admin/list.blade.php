@@ -219,7 +219,7 @@
     </div>
 
     <a href="#"
-       class="btn-small white grey-text more hide json"
+       class="more hide json"
        id="organisations-more_button"
        data-json-target="#organisations">Daha Fazla</a>
 @endsection

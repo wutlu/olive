@@ -195,7 +195,7 @@
                 </ul>
             @endauth
 
-            <nav class="teal darken-1">
+            <nav class="cyan darken-2">
                 <div class="{{ auth()->check() ? 'sidenav-fixed-layout' : 'container' }}">
                     <div class="nav-wrapper">
                         <a href="{{ route('dashboard') }}" class="brand-logo center">
@@ -227,7 +227,7 @@
                         @auth
                             <ul class="right hide-on-med-and-down">
                                 <li>
-                                    <a class="dropdown-trigger waves-effect waves-light" href="#" data-target="user-top-dropdown" data-align="right">
+                                    <a class="dropdown-trigger waves-effect" href="#" data-target="user-top-dropdown" data-align="right">
                                         {{ auth()->user()->name }} <i class="material-icons right">arrow_drop_down</i>
                                     </a>
                                 </li>
@@ -278,7 +278,7 @@
                                             }
                                         @endpush
                                         <li>
-                                            <a class="waves-effect waves-light" data-trigger="delete-forever" href="#">
+                                            <a data-trigger="delete-forever" href="#">
                                                 <i class="material-icons">delete_forever</i>
                                             </a>
                                         </li>
@@ -286,7 +286,7 @@
                                 @endisset
                                 @isset($pin_group)
                                     <li>
-                                        <a class="waves-effect waves-light" href="#" data-class="#pin-groups-dock" data-class-toggle="active">
+                                        <a href="#" data-class="#pin-groups-dock" data-class-toggle="active">
                                             <i class="material-icons">fiber_pin</i>
                                         </a>
                                     </li>
@@ -310,179 +310,193 @@
                 </li>
 
                 @if (auth()->user()->root())
-                <!-- sadece yönetici -->
-                <li>
-                    <a href="#" class="subheader">Yönetici Menüsü</a>
-                </li>
-                <li>
-                    <div class="collapsible-header waves-effect">
-                        <i class="material-icons">settings</i>
-                        <span>Bot Yönetimi</span>
-                        <i class="material-icons arrow">keyboard_arrow_down</i>
-                    </div>
-                    <div class="collapsible-body">
-                        <ul>
-                            <li class="tiny">
-                                <a class="waves-effect" href="{{ route('crawlers.media.list') }}">
-                                    <i class="material-icons">widgets</i>
-                                    Medya Botları
-                                </a>
-                            </li>
-                            <li class="tiny">
-                                <a class="waves-effect" href="{{ route('crawlers.sozluk.list') }}">
-                                    <i class="material-icons">widgets</i>
-                                    Sözlük Botları
-                                </a>
-                            </li>
-                            <li class="tiny">
-                                <a class="waves-effect" href="{{ route('crawlers.shopping.list') }}">
-                                    <i class="material-icons">widgets</i>
-                                    E-ticaret Botları
-                                </a>
-                            </li>
-                            <li class="tiny" style="opacity: 0.4;">
-                                <a class="waves-effect" href="#">
-                                    <i class="material-icons">widgets</i>
-                                    Forum Botları
-                                </a>
-                            </li>
-                            <li class="tiny" style="opacity: 0.4;">
-                                <a class="waves-effect" href="#">
-                                    <i class="material-icons">widgets</i>
-                                    Blog Botları
-                                </a>
-                            </li>
-                            <li class="divider"></li>
-                            <li class="tiny">
-                                <a class="waves-effect" href="{{ route('admin.twitter.settings') }}">
-                                    <i class="material-icons">widgets</i>
-                                    Twitter Ayarları
-                                </a>
-                            </li>
-                            <li class="tiny">
-                                <a class="waves-effect" href="{{ route('admin.youtube.settings') }}">
-                                    <i class="material-icons">widgets</i>
-                                    YouTube Ayarları
-                                </a>
-                            </li>
-                            <li class="tiny" style="opacity: 0.4;">
-                                <a class="waves-effect" href="#">
-                                    <i class="material-icons">widgets</i>
-                                    Facebook Ayarları
-                                </a>
-                            </li>
-                            <li class="tiny" style="opacity: 0.4;">
-                                <a class="waves-effect" href="#">
-                                    <i class="material-icons">widgets</i>
-                                    Instagram Ayarları
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="subheader">Genel Ayarlar</a>
-                            </li>
-                            <li class="tiny">
-                                <a class="waves-effect" href="{{ route('admin.trend.settings') }}">
-                                    <i class="material-icons">widgets</i>
-                                    Trend Ayarları
-                                </a>
-                            </li>
-                            <li class="tiny">
-                                <a class="waves-effect" href="{{ route('admin.proxies') }}">
-                                    <i class="material-icons">vpn_key</i>
-                                    Vekil Sunucu Yönetimi
-                                </a>
-                            </li>
-                            <li class="tiny">
-                                <a class="waves-effect" href="{{ route('admin.hosts.file') }}">
-                                    <i class="material-icons">location_searching</i>
-                                    Hosts Dosyası
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="divider"></li>
-                <li>
-                    <div class="collapsible-header waves-effect">
-                        <i class="material-icons">computer</i>
-                        <span>Sistem İzleme</span>
-                        <i class="material-icons arrow">keyboard_arrow_down</i>
-                    </div>
-                    <div class="collapsible-body">
-                        <ul>
-                            <li class="tiny">
-                                <a class="waves-effect" href="{{ route('admin.session.logs') }}">
-                                    <i class="material-icons">accessibility</i>
-                                    Ziyaretçi Logları
-                                </a>
-                            </li>
-                            <li class="tiny">
-                                <a class="waves-effect" href="{{ route('admin.monitoring.server') }}">
-                                    <i class="material-icons">desktop_mac</i>
-                                    Sunucu Bilgisi
-                                </a>
-                            </li>
-                            <li class="tiny">
-                                <a class="waves-effect" href="{{ route('admin.monitoring.background') }}">
-                                    <i class="material-icons">hourglass_empty</i>
-                                    Arkaplan İşleri
-                                </a>
-                            </li>
-                            <li class="tiny">
-                                <a class="waves-effect" href="{{ route('admin.monitoring.log') }}">
-                                    <i class="material-icons">code</i>
-                                    Log Ekranı
-                                </a>
-                            </li>
-                            <li class="tiny">
-                                <a class="waves-effect" href="{{ route('admin.monitoring.queue') }}">
-                                    <i class="material-icons">queue</i>
-                                    Kuyruk Ekranı
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="divider"></li>
-                <li>
-                    <a class="waves-effect" href="{{ route('admin.tickets') }}">
-                        <i class="material-icons">mail</i>
-                        Destek Talepleri
-                        <span class="badge grey white-text" data-id="ticket-count">0</span>
-                    </a>
-                </li>
-                <li class="divider"></li>
-                <li class="tiny">
-                    <a class="waves-effect" href="{{ route('admin.page.list') }}">
-                        <i class="material-icons">pages</i>
-                        Sayfalar
-                    </a>
-                </li>
-                <li class="tiny">
-                    <a class="waves-effect" href="{{ route('admin.carousels') }}">
-                        <i class="material-icons">view_carousel</i>
-                        Carousel Yönetimi
-                    </a>
-                </li>
-                <li class="tiny">
-                    <a class="waves-effect" href="{{ route('admin.organisation.list') }}">
-                        <i class="material-icons">group_work</i>
-                        Organizasyonlar
-                    </a>
-                </li>
-                <li class="tiny">
-                    <a class="waves-effect" href="{{ route('admin.user.list') }}">
-                        <i class="material-icons">people</i>
-                        Kullanıcılar
-                    </a>
-                </li>
-                <li class="tiny">
-                    <a class="waves-effect" href="{{ route('admin.newsletter') }}">
-                        <i class="material-icons">email</i>
-                        E-posta Bülteni
-                    </a>
-                </li>
-                <li class="divider"></li>
+                    <!-- sadece yönetici -->
+                    <li>
+                        <a href="#" class="subheader">Yönetici Menüsü</a>
+                    </li>
+                    <li>
+                        <div class="collapsible-header waves-effect">
+                            <i class="material-icons">settings</i>
+                            <span>Bot Yönetimi</span>
+                            <i class="material-icons arrow">keyboard_arrow_down</i>
+                        </div>
+                        <div class="collapsible-body">
+                            <ul>
+                                <li class="tiny">
+                                    <a class="waves-effect" href="{{ route('crawlers.media.list') }}">
+                                        <i class="material-icons">widgets</i>
+                                        Medya Botları
+                                    </a>
+                                </li>
+                                <li class="tiny">
+                                    <a class="waves-effect" href="{{ route('crawlers.sozluk.list') }}">
+                                        <i class="material-icons">widgets</i>
+                                        Sözlük Botları
+                                    </a>
+                                </li>
+                                <li class="tiny">
+                                    <a class="waves-effect" href="{{ route('crawlers.shopping.list') }}">
+                                        <i class="material-icons">widgets</i>
+                                        E-ticaret Botları
+                                    </a>
+                                </li>
+                                <li class="tiny" style="opacity: 0.4;">
+                                    <a class="waves-effect" href="#">
+                                        <i class="material-icons">widgets</i>
+                                        Forum Botları
+                                    </a>
+                                </li>
+                                <li class="tiny" style="opacity: 0.4;">
+                                    <a class="waves-effect" href="#">
+                                        <i class="material-icons">widgets</i>
+                                        Blog Botları
+                                    </a>
+                                </li>
+                                <li class="divider"></li>
+                                <li class="tiny">
+                                    <a class="waves-effect" href="{{ route('admin.twitter.settings') }}">
+                                        <i class="material-icons">widgets</i>
+                                        Twitter Ayarları
+                                    </a>
+                                </li>
+                                <li class="tiny">
+                                    <a class="waves-effect" href="{{ route('admin.youtube.settings') }}">
+                                        <i class="material-icons">widgets</i>
+                                        YouTube Ayarları
+                                    </a>
+                                </li>
+                                <li class="tiny" style="opacity: 0.4;">
+                                    <a class="waves-effect" href="#">
+                                        <i class="material-icons">widgets</i>
+                                        Facebook Ayarları
+                                    </a>
+                                </li>
+                                <li class="tiny" style="opacity: 0.4;">
+                                    <a class="waves-effect" href="#">
+                                        <i class="material-icons">widgets</i>
+                                        Instagram Ayarları
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="subheader">Genel Ayarlar</a>
+                                </li>
+                                <li class="tiny">
+                                    <a class="waves-effect" href="{{ route('admin.trend.settings') }}">
+                                        <i class="material-icons">widgets</i>
+                                        Trend Ayarları
+                                    </a>
+                                </li>
+                                <li class="tiny">
+                                    <a class="waves-effect" href="{{ route('admin.proxies') }}">
+                                        <i class="material-icons">vpn_key</i>
+                                        Vekil Sunucu Yönetimi
+                                    </a>
+                                </li>
+                                <li class="tiny">
+                                    <a class="waves-effect" href="{{ route('admin.hosts.file') }}">
+                                        <i class="material-icons">location_searching</i>
+                                        Hosts Dosyası
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <div class="collapsible-header waves-effect">
+                            <i class="material-icons">computer</i>
+                            <span>Sistem İzleme</span>
+                            <i class="material-icons arrow">keyboard_arrow_down</i>
+                        </div>
+                        <div class="collapsible-body">
+                            <ul>
+                                <li class="tiny">
+                                    <a class="waves-effect" href="{{ route('admin.session.logs') }}">
+                                        <i class="material-icons">accessibility</i>
+                                        Ziyaretçi Logları
+                                    </a>
+                                </li>
+                                <li class="tiny">
+                                    <a class="waves-effect" href="{{ route('admin.monitoring.server') }}">
+                                        <i class="material-icons">desktop_mac</i>
+                                        Sunucu Bilgisi
+                                    </a>
+                                </li>
+                                <li class="tiny">
+                                    <a class="waves-effect" href="{{ route('admin.monitoring.background') }}">
+                                        <i class="material-icons">hourglass_empty</i>
+                                        Arkaplan İşleri
+                                    </a>
+                                </li>
+                                <li class="tiny">
+                                    <a class="waves-effect" href="{{ route('admin.monitoring.log') }}">
+                                        <i class="material-icons">code</i>
+                                        Log Ekranı
+                                    </a>
+                                </li>
+                                <li class="tiny">
+                                    <a class="waves-effect" href="{{ route('admin.monitoring.queue') }}">
+                                        <i class="material-icons">queue</i>
+                                        Kuyruk Ekranı
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a class="waves-effect" href="{{ route('admin.tickets') }}">
+                            <i class="material-icons">mail</i>
+                            Destek Talepleri
+                            <span class="badge grey white-text" data-id="ticket-count">0</span>
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li class="tiny">
+                        <a class="waves-effect" href="{{ route('admin.page.list') }}">
+                            <i class="material-icons">pages</i>
+                            Sayfalar
+                        </a>
+                    </li>
+                    <li class="tiny">
+                        <a class="waves-effect" href="{{ route('admin.carousels') }}">
+                            <i class="material-icons">view_carousel</i>
+                            Carousel Yönetimi
+                        </a>
+                    </li>
+                    <li class="tiny">
+                        <a class="waves-effect" href="{{ route('admin.organisation.list') }}">
+                            <i class="material-icons">group_work</i>
+                            Organizasyonlar
+                        </a>
+                    </li>
+                    <li class="tiny">
+                        <a class="waves-effect" href="{{ route('admin.user.list') }}">
+                            <i class="material-icons">people</i>
+                            Kullanıcılar
+                        </a>
+                    </li>
+                    <li class="tiny">
+                        <a class="waves-effect" href="{{ route('admin.newsletter') }}">
+                            <i class="material-icons">email</i>
+                            E-posta Bülteni
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                @endif
+
+                @if (auth()->user()->moderator)
+                    <!-- sadece moderatör -->
+                    <li>
+                        <a href="#" class="subheader">Moderatör Menüsü</a>
+                    </li>
+                    <li class="tiny">
+                        <a class="waves-effect" href="{{ route('analysis.dashboard') }}">
+                            <i class="material-icons">grain</i>
+                            Kelime Hafızası
+                        </a>
+                    </li>
+                    <li class="divider"></li>
                 @endif
 
                 <li class="tiny">
@@ -496,13 +510,13 @@
                     <a href="#" class="subheader">Kullanıcı Menüsü</a>
                 </li>
                 @if (auth()->user()->organisation)
-                <li class="tiny">
-                    <a class="waves-effect" href="{{ route('settings.organisation') }}">
-                        <i class="material-icons">group_work</i>
-                        {{ auth()->user()->organisation->name }}
-                    </a>
-                </li>
-                <li class="divider"></li>
+                    <li class="tiny">
+                        <a class="waves-effect" href="{{ route('settings.organisation') }}">
+                            <i class="material-icons">group_work</i>
+                            {{ auth()->user()->organisation->name }}
+                        </a>
+                    </li>
+                    <li class="divider"></li>
                 @endif
                 <li class="tiny">
                     <a class="waves-effect" href="{{ route('settings.account') }}">
@@ -805,13 +819,13 @@
     @endauth
 
     <div class="@auth{{ @$sidenav_fixed_layout ? 'sidenav-fixed-layout' : '' }}@endauth">
-        <footer class="page-footer grey lighten-4">
+        <footer class="page-footer cyan darken-2">
             <div class="{{ isset($wide) ? 'container container-wide' : 'container' }}">
                 <div class="row">
                     <div class="col l6 s12">
-                        <img id="vz-logo" src="{{ asset('img/veri.zone_logo-grey.svg') }}" alt="veri.zone-logo" />
-                        <p class="grey-text mb-0">© {{ date('Y') }} Veri Zone Bilişim Teknolojileri ve Danışmanlık Ltd. Şti.</p>
-                        <p class="grey-text mb-0">İnönü Mahallesi, 1769. Sk. 1D/1, 06370 Yenimahalle/ANKARA</p>
+                        <img id="vz-logo" src="{{ asset('img/veri.zone_logo-white.svg') }}" alt="veri.zone-logo" />
+                        <p class="white-text mb-0">© {{ date('Y') }} Veri Zone Bilişim Teknolojileri ve Danışmanlık Ltd. Şti.</p>
+                        <p class="white-text mb-0">İnönü Mahallesi, 1769. Sk. 1D/1, 06370 Yenimahalle/ANKARA</p>
                         <!--
                         <i class="social-icon icon-tumblr">&#xe800;</i>
                         <i class="social-icon icon-email">&#xe801;</i>
@@ -819,56 +833,56 @@
                         <i class="social-icon icon-skype">&#xe804;</i>
                         <i class="social-icon icon-call">&#xe806;</i>
                         -->
-                        <a href="#" class="btn-flat btn-small btn-floating waves-effect teal mt-1">
-                            <i class="social-icon icon-twitter white-text">&#xe803;</i>
+                        <a href="#" class="btn-flat btn-small btn-floating waves-effect white mt-1">
+                            <i class="social-icon icon-twitter teal-text">&#xe803;</i>
                         </a>
-                        <a href="#" class="btn-flat btn-small btn-floating waves-effect teal mt-1">
-                            <i class="social-icon icon-linkedin white-text">&#xe805;</i>
+                        <a href="#" class="btn-flat btn-small btn-floating waves-effect white mt-1">
+                            <i class="social-icon icon-linkedin teal-text">&#xe805;</i>
                         </a>
-                        <a href="#" class="btn-flat btn-small btn-floating waves-effect teal mt-1">
-                            <i class="social-icon icon-facebook white-text">&#xe807;</i>
+                        <a href="#" class="btn-flat btn-small btn-floating waves-effect white mt-1">
+                            <i class="social-icon icon-facebook teal-text">&#xe807;</i>
                         </a>
-                        <a href="#" class="btn-flat btn-small btn-floating waves-effect teal mt-1">
-                            <i class="social-icon icon-instagram white-text">&#xe808;</i>
+                        <a href="#" class="btn-flat btn-small btn-floating waves-effect white mt-1">
+                            <i class="social-icon icon-instagram teal-text">&#xe808;</i>
                         </a>
                     </div>
                     <div class="col l2 offset-l2 s12">
-                        <ul>
+                        <ul class="mt-0 mb-0">
                             <li>
-                                <a class="grey-text" href="{{ route('page.view', 'hakkimizda') }}">Hakkımızda</a>
+                                <a class="white-text" href="{{ route('page.view', 'hakkimizda') }}">Hakkımızda</a>
                             </li>
                             <li>
-                                <a class="grey-text" href="{{ route('forum.index') }}">Forum</a>
+                                <a class="white-text" href="{{ route('forum.index') }}">Forum</a>
                             </li>
                             <li>
-                                <a class="grey-text" href="{{ route('page.view', 'iletisim') }}">İletişim</a>
+                                <a class="white-text" href="{{ route('page.view', 'iletisim') }}">İletişim</a>
                             </li>
                             <li>
-                                <a class="grey-text" href="{{ route('sources') }}">Kaynaklar</a>
+                                <a class="white-text" href="{{ route('sources') }}">Kaynaklar</a>
                             </li>
                             <li>
-                                <a class="grey-text" data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" href="#">Api</a>
+                                <a class="white-text" data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" href="#">Api</a>
                             </li>
                         </ul>
                     </div>
                     <div class="col l2 s12">
-                        <ul>
+                        <ul class="mt-0 mb-0">
                             <li>
-                                <a class="grey-text" href="{{ route('page.view', 'gizlilik-politikasi') }}">Gizlilik Politikası</a>
+                                <a class="white-text" href="{{ route('page.view', 'gizlilik-politikasi') }}">Gizlilik Politikası</a>
                             </li>
                             <li>
-                                <a class="grey-text" href="{{ route('page.view', 'kullanim-kosullari') }}">Kullanım Koşulları</a>
+                                <a class="white-text" href="{{ route('page.view', 'kullanim-kosullari') }}">Kullanım Koşulları</a>
                             </li>
                             <li>
-                                <a class="grey-text" href="{{ route('page.view', 'cerez-politikasi') }}">Çerez Politikası</a>
+                                <a class="white-text" href="{{ route('page.view', 'cerez-politikasi') }}">Çerez Politikası</a>
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
             <div class="footer-copyright mt-1">
-                <div class="{{ isset($wide) ? 'container container-wide' : 'container' }} grey-text text-darken-2">
-                    {{ date('Y') }} © <a href="https://veri.zone/">Veri Zone</a> | Tüm hakları saklıdır.
+                <div class="{{ isset($wide) ? 'container container-wide' : 'container' }} white-text">
+                    {{ date('Y') }} © <a href="https://veri.zone/" class="white-text">Veri Zone</a> | Tüm hakları saklıdır.
                 </div>
             </div>
         </footer>

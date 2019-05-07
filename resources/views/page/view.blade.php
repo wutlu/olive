@@ -46,10 +46,7 @@
         </div>
     </div>
 
-    <ul id="slide-out" class="sidenav">
-        <li class="p-1">
-            <img alt="{{ config('app.name') }}" src="{{ asset('img/olive_logo.svg') }}" style="width: 96px;" />
-        </li>
+    <ul id="slide-out" class="sidenav pt-1 pb-1">
         @forelse ($pages as $page)
             <li>
                 <a href="{{ route('page.view', $page->slug) }}" class="waves-effect">{{ $page->title }}</a>

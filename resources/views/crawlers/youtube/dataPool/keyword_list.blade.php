@@ -83,7 +83,7 @@
     </div>
 
     <a href="#"
-       class="btn-small white grey-text more hide json"
+       class="more hide json"
        id="keywords-more_button"
        data-json-target="#keywords">Daha Fazla</a>
 @endsection

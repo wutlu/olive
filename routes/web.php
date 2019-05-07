@@ -45,6 +45,21 @@ Route::prefix('kullanici')->group(function () {
     Route::get('{id}', 'UserController@profile')->name('user.profile');
 });
 
+Route::prefix('kelime-hafizasi')->group(function () {
+    Route::get('/', 'AnalysisController@dashboard')->name('analysis.dashboard');
+    Route::get('{module}', 'AnalysisController@module')->name('analysis.module')->where('module', '('.implode('|', array_keys(config('system.analysis'))).')');
+
+    Route::post('modul/test', 'AnalysisController@test')->name('analysis.module.test');
+
+    Route::post('modul/kelimeler', 'AnalysisController@words')->name('analysis.module.words');
+    Route::delete('modul/kelime/sil', 'AnalysisController@delete')->name('analysis.module.word.delete');
+    Route::post('modul/kelime/kayit', 'AnalysisController@create')->name('analysis.module.word.create');
+
+    Route::post('grup/derle', 'AnalysisController@compile')->name('analysis.group.compile');
+
+    Route::patch('ogrenme-ayari', 'AnalysisController@learnSettings')->name('analysis.learn');
+});
+
 Route::get('/', 'HomeController@index')->name('home');
 
 Route::get('test', 'TestController@test');

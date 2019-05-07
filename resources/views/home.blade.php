@@ -22,7 +22,6 @@
 
     .demo-section {
         padding: 100px 0;
-        background-color: #222;
         background-image: url('{{ asset('img/bg-small.svg') }}');
         background-repeat: no-repeat;
         background-position: top right;
@@ -431,15 +430,6 @@
     @push('local.styles')
         .packages {
             width: 100%;
-
-            background-color: #7efff7;
-            background:         linear-gradient(to bottom, #7efff7 0%, #2488d5 100%);
-            background:    -moz-linear-gradient(top, #7efff7 0%, #2488d5 100%);
-            background: -webkit-linear-gradient(top, #7efff7 0%, #2488d5 100%);
-
-            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7efff7', endColorstr='#2488d5', GradientType=0 );
-
-            border-radius: 1rem;
             padding: 2rem;
         }
         .packages > li {
@@ -516,16 +506,16 @@
                     <li class="flex-fill {{ $key }} right-align">
                         <h4 class="cyan-text">{{ $item['title'] }}</h4>
                         @foreach ($item['details'] as $k => $v)
-                            <p class="white-text">{{ $k }} <span class="cyan-text text-lighten-4">{{ $v }}</span></p>
+                            <p class="grey-text text-darken-2">{{ $k }} <span class="cyan-text text-darken-4">{{ $v }}</span></p>
                         @endforeach
-                        <span class="price cyan-text text-lighten-4">{{ $item['price'] }}</span>
+                        <span class="price cyan-text">{{ $item['price'] }}</span>
                     </li>
                 @endforeach
             </ul>
         </div>
     </section>
 
-    <section class="demo-section">
+    <section class="demo-section cyan darken-2">
         <div class="container">
             <h2>Demo İsteyin</h2>
             <form id="demo-form" method="post" action="{{ route('demo.request') }}" class="json" data-callback="__demo_request">

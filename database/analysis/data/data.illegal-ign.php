@@ -1,0 +1,1 @@
+a:13:{i:0;s:8:"aciyorum";i:1;s:10:"kaybedecek";i:2;s:9:"bahisleri";i:3;s:3:"bir";i:4;s:7:"yasamak";i:5;s:7:"yasiyor";i:6;s:4:"gibi";i:7;s:5:"kadin";i:8;s:8:"musluman";i:9;s:7:"girerim";i:10;s:6:"koruma";i:11;s:3:"rus";i:12;s:5:"kaldi";}

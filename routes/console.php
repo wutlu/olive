@@ -17,14 +17,6 @@ Artisan::command('alarm:control', function () {
     MonitorController::alarmControl();
 })->describe('Alarmların kontrolü.');
 
-Artisan::command('sentiment:update', function () {
-    Sentiment::sentimentUpdate();
-})->describe('Sentiment listesini günceller.');
-
-Artisan::command('sense:update', function () {
-    Sentiment::senseUpdate();
-})->describe('Sense listesini günceller.');
-
 Artisan::command('trigger:pdf:pin_groups', function () {
 	PinController::pdfTrigger();
 })->describe('PDF çıktı almak için pin gruplarını tetikler.');

@@ -289,7 +289,7 @@
             }, 200)
 
             M.toast({
-                html: 'Token silindi.',
+                html: 'Token Silindi',
                 classes: 'green darken-2'
             })
         }

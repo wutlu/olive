@@ -8,15 +8,10 @@
 
 @section('content')
     <div class="d-table mx-auto pt-2 mt-2 pb-2 mb-2">
-        <div class="mb-1">
-            <a href="{{ route('home') }}">
-                <img alt="Olive" src="{{ asset('img/olive_logo.svg') }}" style="width: 128px;" />
-            </a>
+        <div class="bb-edge">
+            <div class="bb"></div>
         </div>
         <div class="card" style="max-width: 340px;">
-            <div class="card-content">
-                <p>Hemen bir hesap oluşturun ve bir çok aracı <strong>ücretsiz</strong> olarak kullanmaya başlayın.</p>
-            </div>
             <div class="card-tabs">
                 <ul class="tabs tabs-fixed-width">
                     <li class="tab">

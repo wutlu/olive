@@ -692,6 +692,9 @@ class UserController extends Controller
                                     $query->orWhere('name', 'ILIKE', '%'.$request->string.'%')
                                           ->orWhere('email', 'ILIKE', '%'.$request->string.'%');
                                     }) : $query;
+
+        $total = $query->count();
+
         $query = $query->skip($skip)
                        ->take($take)
                        ->orderBy('id', 'DESC')
@@ -700,7 +703,7 @@ class UserController extends Controller
         return [
             'status' => 'ok',
             'hits' => $query,
-            'total' => count($query)
+            'total' => $total
         ];
     }
 

@@ -13,9 +13,11 @@ use System;
 use Term;
 
 use App\Olive\Gender;
+use App\Olive\Sentiment as OliveSentiment;
 
 use Sentiment;
 use Sense;
+use App\Models\Analysis;
 
 class Test extends Command
 {
@@ -50,9 +52,68 @@ class Test extends Command
      */
     public function handle()
     {
-        $gender = new Gender;
-        $gender->loadNames();
+        $query = Document::search([ 'twitter', 'tweets', '*' ], 'tweet', [
+            'query' => [
+                'bool' => [
+                    'filter' => [
+                        /*
+                        [
+                            'range' => [
+                                'created_at' => [
+                                    'format' => 'YYYY-MM-dd',
+                                    'gte' => date('Y-m-d')
+                                ]
+                            ],
+                        ],
+                        */
+                        [
+                            'range' => [ 'sentiment.pos' => [ 'gte' => 0.9 ] ],
+                        ]
+                    ],
+                    'must_not' => [
+                        [ 'exists' => [ 'field' => 'external.id' ] ],
+                    ]
+                ]
+            ],
+            'aggs' => [
+                'top_hits' => [
+                    'terms' => [
+                        'field' => 'text',
+                        'size' => 20,
+                        'script' => '(
+                            (_value.length() > 3 && _value.length() <= 20) &&
+                            (
+                                _value != \'t.co\' &&
+                                _value != \'http\' &&
+                                _value != \'https\'
+                            )
+                        ) ? _value : \'_null_\''
+                    ]
+                ]
+            ],
+            'size' => 0
+        ]);
 
-        echo $gender->detector([ 'haci' ]).PHP_EOL;
+        if ($query->status == 'ok' && count($query->data['aggregations']['top_hits']['buckets']))
+        {
+            $data = [];
+            
+            foreach ($query->data['aggregations']['top_hits']['buckets'] as $row)
+            {
+                if ($row['key'] != '_null_')
+                {
+                    $slug = OliveSentiment::_getTokens($row['key']);
+
+                    $exists = Analysis::where('group', 'sentiment-neg')->where('word', 'ILIKE', '%'.$slug[0].'%')->exists();
+
+                    if (!$exists)
+                    {
+                        $data[] = $row['key'];
+                    }
+                }
+            }
+
+            print_r($data);
+        }
     }
 }

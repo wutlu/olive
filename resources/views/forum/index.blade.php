@@ -366,7 +366,7 @@
                     vzAjax($('#categories'))
 
                     M.toast({
-                        html: 'Kategori silindi.',
+                        html: 'Kategori Silindi',
                         classes: 'green darken-2'
                     })
                 }

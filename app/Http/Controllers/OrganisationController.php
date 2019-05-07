@@ -941,6 +941,9 @@ class OrganisationController extends Controller
         $query = $query->with('author');
         $query = $request->status ? $query->where('status', $request->status == 'on' ? true : false) : $query;
         $query = $request->string ? $query->where('name', 'ILIKE', '%'.$request->string.'%') : $query;
+
+        $total = $query->count();
+
         $query = $query->skip($skip)
                        ->take($take)
                        ->orderBy('id', 'DESC')
@@ -949,7 +952,7 @@ class OrganisationController extends Controller
         return [
             'status' => 'ok',
             'hits' => $query,
-            'total' => count($query)
+            'total' => $total
         ];
     }
 

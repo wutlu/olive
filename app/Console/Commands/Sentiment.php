@@ -7,7 +7,6 @@ use Illuminate\Console\Command;
 use Sentiment as SentimentLib;
 
 use App\Utilities\Term;
-use Sense;
 
 class Sentiment extends Command
 {
@@ -43,7 +42,7 @@ class Sentiment extends Command
     public function handle()
     {
         $sentiment = new SentimentLib;
-        $sentiment->engine('sentiment');
+        $sentiment->engine('illegal');
 
         $strings = [
             'çok güzel bir haber hemen not etmeliyim',
@@ -63,24 +62,5 @@ class Sentiment extends Command
             $this->line($string);
             $this->info(json_encode($sentiment->score($string)));
         }
-    }
-
-    /**
-     * Duygu Analizi veritabanı güncelle.
-     *
-     * @return mixed
-     */
-    public static function sentimentUpdate()
-    {
-        $sentiment = new SentimentLib;
-        $sentiment->classes = [
-            'pos', 'neg', 'neu', 'ign',
-            'bet', 'nud', 'ign.illegal',
-            'que', 'req',
-            'gender.male', 'gender.female'
-        ];
-        $sentiment->update();
-
-        echo Term::line('Sentiment belleği güncellendi.');
     }
 }

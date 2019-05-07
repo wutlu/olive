@@ -86,16 +86,7 @@
                             @slot('text', 'Üzgünüz, hiç benzer içerik yok.')
                         @endcomponent
                     </div>
-                    <div class="collection-item model hide">
-                        <a href="#" class="d-table blue-text" data-name="title"></a>
-                        <time class="d-table grey-text" data-name="created-at"></time>
-                        <ul class="d-flex" data-name="breadcrumb"></ul>
-                        <span class="d-table red-text">
-                            <span data-name="price-amount"></span>
-                            <span data-name="price-currency"></span>
-                        </span>
-                        <a href="#" class="d-table green-text" data-name="url" target="_blank"></a>
-                    </div>
+                    <div class="collection-item model hide"></div>
                 </div>
                 @component('components.loader')
                     @slot('color', 'teal')

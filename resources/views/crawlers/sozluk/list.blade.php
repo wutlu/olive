@@ -189,7 +189,7 @@
     </div>
 
     <a href="#"
-       class="btn-small white grey-text more hide json"
+       class="more hide json"
        id="crawlers-more_button"
        data-json-target="#crawlers">Daha Fazla</a>
 @endsection

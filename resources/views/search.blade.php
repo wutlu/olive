@@ -714,7 +714,7 @@
     </div>
 
     <a href="#"
-       class="btn-small white grey-text more hide json"
+       class="more hide json"
        id="search-more_button"
        data-json-target="#search">Daha Fazla</a>
 @endsection

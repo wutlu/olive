@@ -39,9 +39,9 @@ class BillingUpdateRequest extends FormRequest
      */
     public function rules()
     {
-        $user = auth()->user();
+        Validator::extend('flood', function() {
+            $user = auth()->user();
 
-        Validator::extend('flood', function() use ($user) {
             return !OrganisationInvoice::where('organisation_id', $user->organisation_id)->whereNull('paid_at')->exists();
         });
 

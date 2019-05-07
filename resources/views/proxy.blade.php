@@ -179,7 +179,7 @@
             }, 200)
 
             M.toast({
-                html: 'Vekil Sunucu silindi.',
+                html: 'Vekil Sunucu Silindi',
                 classes: 'green darken-2'
             })
         }

@@ -158,7 +158,7 @@ class YouTubeController extends Controller
     public static function set(SetRequest $request)
     {
         $option = Option::where('key', $request->key)->first();
-        
+
         $error = true;
 
         if (@$option)
