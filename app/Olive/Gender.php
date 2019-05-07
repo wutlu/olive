@@ -8,12 +8,10 @@ class Gender
     private $females;
 
     private $dataFolder;
-    private $sourceFolder;
 
     public function __construct()
     {
-        $this->dataFolder = database_path('analysis/data');
-        $this->sourceFolder = database_path('analysis/dictionaries');
+        $this->dataFolder = storage_path('app/analysis');
     }
 
     /**

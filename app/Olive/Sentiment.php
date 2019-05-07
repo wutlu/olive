@@ -84,7 +84,7 @@ class Sentiment {
 
     public function __construct()
     {
-        $this->dataFolder = database_path('analysis/data');
+        $this->dataFolder = storage_path('app/analysis');
     }
 
     /**
