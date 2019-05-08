@@ -156,7 +156,16 @@ class Sentiment {
 
         arsort($scores);
 
-        return $scores;
+        $data = [];
+
+        foreach ($scores as $key => $score)
+        {
+            $ext = explode('-', $key);
+
+            $data[$ext[1]] = $score;
+        }
+
+        return $data;
     }
 
     /**
