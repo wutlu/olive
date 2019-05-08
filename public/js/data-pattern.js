@@ -100,6 +100,23 @@ function __joints(o)
                             'html': (o.sentiment.neg*100)
                         }).addClass(o.sentiment.neg < 0.2 ? 'hide' : '')
                     ]
+                }),
+
+                $('<div />', {
+                    'css': {
+                        'width': (o.sentiment.hte*100) + '%'
+                    },
+                    'class': 'sentiment-item red-text accent-4 d-flex flex-fill',
+                    'html': [
+                        $('<i />', {
+                            'class': 'material-icons red-text align-self-center',
+                            'html': 'sentiment_very_dissatisfied'
+                        }),
+                        $('<span />', {
+                            'class': 'badge red-text align-self-center',
+                            'html': (o.sentiment.hte*100)
+                        }).addClass(o.sentiment.hte < 0.2 ? 'hide' : '')
+                    ]
                 })
             ]
         }))
