@@ -38,6 +38,8 @@ class AnalysisController extends Controller
      */
     public function dashboard()
     {
+        $learn = System::option('data.learn');
+
         $data = [];
         $modules = array_map(function($arr) {
             if (@$arr['ignore'])
@@ -62,7 +64,7 @@ class AnalysisController extends Controller
             }
         }
 
-        return view('analysis.dashboard', compact('data', 'modules'));
+        return view('analysis.dashboard', compact('data', 'modules', 'learn'));
     }
 
     /**
@@ -83,9 +85,7 @@ class AnalysisController extends Controller
             ];
         }
 
-        $learn = Option::where('key', 'data.learn')->pluck('value')[0];
-
-        return view('analysis.module', compact('module_name', 'module', 'learn'));
+        return view('analysis.module', compact('module_name', 'module'));
     }
 
     /**
@@ -109,6 +109,7 @@ class AnalysisController extends Controller
 
         $query = $query->skip($skip)
                        ->take($take)
+                       ->orderBy('learned', 'DESC')
                        ->orderBy('word', 'ASC')
                        ->get();
 

@@ -29,25 +29,7 @@
 
             <label class="collection-item waves-effect d-block">
                 <input name="saver" type="checkbox" value="on" />
-                <span>CTRL + Enter tuşu ile aramadaki kelimeyi kaydet.</span>
-            </label>
-
-            <label class="collection-item waves-effect d-block">
-                <input
-                    name="value"
-                    id="value"
-                    value="on"
-                    class="json"
-                    data-href="{{ route('analysis.learn') }}"
-                    data-method="patch"
-                    data-delay="1"
-                    data-key="data.learn"
-                    data-checked-value="on"
-                    data-unchecked-value="off"
-                    type="checkbox"
-                    data-callback="__status_set"
-                    @if ($learn == 'on'){{ 'checked' }}@endif />
-                <span>Makine öğrenmesini aktif et.</span>
+                <span>Enter tuşu ile aramadaki kelimeyi kaydet.</span>
             </label>
 
             <div class="divider"></div>
@@ -73,16 +55,6 @@
 @endsection
 
 @push('local.scripts')
-    function __status_set(__, obj)
-    {
-        if (obj.status == 'err')
-        {
-            M.toast({ html: 'İlgili değer option tablosunda bulunamadı.', classes: 'red' })
-
-            __.prop('checked', false)
-        }
-    }
-
     function __compile_before(__)
     {
         $('#compiler-loader').removeClass('hide')
@@ -290,7 +262,7 @@
 
                         item.html(o.word)
                             .data('id', o.id)
-                            .addClass(o.compiled ? 'green' : 'red')
+                            .addClass(o.compiled ? 'green' : (o.learned ? 'cyan' : 'red'))
 
                         item.appendTo(ul)
                 })
@@ -328,7 +300,7 @@
             'options': {}
         })
     }).on('keyup', '#string', function(e) {
-        if (e.ctrlKey && e.keyCode == 13 && $('input[name=saver]').is(':checked'))
+        if (e.keyCode == 13 && $('input[name=saver]').is(':checked'))
         {
             vzAjax($('<div />', {
                 'data-include': 'string,group',

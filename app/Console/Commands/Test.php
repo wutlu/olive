@@ -18,7 +18,6 @@ use App\Olive\Sentiment as OliveSentiment;
 use Carbon\Carbon;
 
 use Sentiment;
-use Sense;
 
 use App\Models\Analysis;
 
@@ -55,72 +54,93 @@ class Test extends Command
      */
     public function handle()
     {
-        $gender = new Gender;
-        $gender->loadNames();
-
-        print_r($gender->detector([ 'ahmet' ]));
-
-        exit();
-        $query = Document::search([ 'twitter', 'tweets', '*' ], 'tweet', [
-            'query' => [
-                'bool' => [
-                    'filter' => [
-                        [
-                            'range' => [
-                                'created_at' => [
-                                    'format' => 'YYYY-MM-dd',
-                                    'gte' => Carbon::now()->subDays(1)->format('Y-m-d')
-                                ]
-                            ],
-                        ],
-                        [
-                            'range' => [ 'sentiment.pos' => [ 'gte' => 0.9 ] ],
-                        ]
-                    ],
-                    'must_not' => [
-                        [ 'exists' => [ 'field' => 'external.id' ] ],
-                    ]
-                ]
-            ],
-            'aggs' => [
-                'top_hits' => [
-                    'terms' => [
-                        'field' => 'text',
-                        'size' => 20,
-                        'script' => '(
-                            (_value.length() > 3 && _value.length() <= 20) &&
-                            (
-                                _value != \'t.co\' &&
-                                _value != \'http\' &&
-                                _value != \'https\'
-                            )
-                        ) ? _value : \'_null_\''
-                    ]
-                ]
-            ],
-            'size' => 0
-        ]);
-
-        if ($query->status == 'ok' && count($query->data['aggregations']['top_hits']['buckets']))
+        if (System::option('data.learn') == 'on')
         {
-            $data = [];
-            
-            foreach ($query->data['aggregations']['top_hits']['buckets'] as $row)
+            $array = config('system.analysis');
+
+            unset($array['gender']);
+
+            foreach ($array as $key => $analysis)
             {
-                if ($row['key'] != '_null_')
+                $this->info('----------['.$key.']----------');
+
+                foreach ($analysis['types'] as $k => $a)
                 {
-                    $slug = OliveSentiment::_getTokens($row['key']);
+                    $this->line($k);
 
-                    $exists = Analysis::where('group', 'sentiment-neg')->where('word', 'ILIKE', '%'.$slug[0].'%')->exists();
+                    $query = Document::search([ 'sozluk', '*' ], 'entry', [
+                        'query' => [
+                            'bool' => [
+                                'filter' => [
+                                    [
+                                        'range' => [
+                                            'created_at' => [
+                                                'format' => 'YYYY-MM-dd HH:mm',
+                                                'gte' => Carbon::now()->subDays(1)->format('Y-m-d H:i')
+                                            ]
+                                        ],
+                                    ],
+                                    [
+                                        'range' => [ str_replace('-', '.', $k) => [ 'gte' => 0.9 ] ],
+                                    ]
+                                ]
+                            ]
+                        ],
+                        'aggs' => [
+                            'top_hits' => [
+                                'terms' => [
+                                    'field' => 'entry',
+                                    'size' => 100,
+                                    'script' => '(
+                                        (_value.length() >= 3 && _value.length() <= 20) &&
+                                        (
+                                            _value != \'t.co\' &&
+                                            _value != \'http\' &&
+                                            _value != \'https\'
+                                        )
+                                    ) ? _value : \'_null_\''
+                                ]
+                            ]
+                        ],
+                        'size' => 0
+                    ]);
 
-                    if (!$exists)
+                    if ($query->status == 'ok')
                     {
-                        $data[] = $row['key'];
+                        $this->info('[ok]');
+
+                        if (count($query->data['aggregations']['top_hits']['buckets']))
+                        {
+                            $data = [];
+
+                            foreach ($query->data['aggregations']['top_hits']['buckets'] as $row)
+                            {
+                                if ($row['key'] != '_null_')
+                                {
+                                    $slug = OliveSentiment::_getTokens($row['key']);
+
+                                    $exists = Analysis::where('module', $key)->where('word', 'ILIKE', '%'.$slug[0].'%')->exists();
+
+                                    if (!$exists)
+                                    {
+                                        $data[] = $slug[0];
+                                    }
+                                }
+                            }
+
+                            print_r($data);
+                        }
+                        else
+                        {
+                            $this->error('word not found.');
+                        }
                     }
                 }
             }
-
-            print_r($data);
+        }
+        else
+        {
+            $this->error('Makine öğrenmesi aktif değil.');
         }
     }
 }

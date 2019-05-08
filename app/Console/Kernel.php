@@ -262,6 +262,17 @@ class Kernel extends ConsoleKernel
                      });
 
             /**
+             * Duygu Öğrenimi
+             */
+            $schedule->command('nohup "sentiment:learn" --type=restart')
+                     ->dailyAt('23:00')
+                     ->timezone(config('app.timezone'))
+                     ->withoutOverlapping(1)
+                     ->skip(function() {
+                        return SystemUtility::option('data.learn') != 'on';
+                     });
+
+            /**
              * Otomatik index modülü.
              */
             $schedule->command('elasticsearch:auto_index --type=twitter.tweets')
