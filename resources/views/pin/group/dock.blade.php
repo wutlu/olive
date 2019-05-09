@@ -5,13 +5,14 @@
     }
 @endpush
 
-<div class="card with-bg" id="pin-groups-dock">
-    <div class="card-image">
-        <img src="{{ asset('img/md-s/25.jpg') }}" alt="Image" />
-        <span class="card-title white-text d-flex">
+<div id="pin-groups-dock" class="card card-nb with-bg">
+    <div class="card-content">
+        <span class="card-title d-flex">
             <i class="material-icons align-self-center mr-1">speaker_notes</i>
             Pin Grupları
         </span>
+    </div>
+    <div class="card-image">
         <a href="#" class="btn-floating halfway-fab waves-effect white" data-trigger="create-pin-group">
             <i class="material-icons grey-text text-darken-2">add</i>
         </a>
