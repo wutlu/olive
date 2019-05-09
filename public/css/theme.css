@@ -1026,11 +1026,6 @@ body.module-search-active > .search-wrapper {
 
           transition: all 200ms cubic-bezier(.25, .46, .45, .94);
   -webkit-transition: all 200ms cubic-bezier(.25, .46, .45, .94);
-
-  color: teal;
-}
-.fast-menu > a:hover {
-  color: crimson;
 }
 
 /*!

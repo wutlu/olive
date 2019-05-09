@@ -23,14 +23,14 @@
             @endphp
                 @foreach ($carousels as $carousel)
                 <div class="{{ implode(' ', [ 'carousel-item', $i == 0 ? 'active' : '', '' ]) }}">
-                    <h2 class="cyan-text text-darken-2">{{ $carousel->title }}</h2>
+                    <h2 class="teal-text text-darken-2">{{ $carousel->title }}</h2>
                     <div class="markdown">
                         {!! $carousel->markdown() !!}
                     </div>
                     <div class="{{ implode(' ', [ 'anim', $carousel->pattern ]) }}"></div>
 
                     @if ($carousel->button_text)
-                        <a href="{{ $carousel->button_action }}" class="btn-flat waves-effect mt-1 cyan-text text-darken-2">
+                        <a href="{{ $carousel->button_action }}" class="btn-flat waves-effect mt-1 teal-text text-darken-2">
                             {{ $carousel->button_text }}
                         </a>
                     @endif

@@ -1,8 +1,6 @@
 @extends('layouts.app')
 
 @push('local.styles')
-    .main-slider {
-    }
     .main-slider .item {
         display: block;
         width: 100%;
@@ -109,6 +107,39 @@
 
                 transform: translateY(calc(-100% + -2rem));
         -webkit-transform: translateY(calc(-100% + -2rem));
+    }
+
+    .cookie-alert {
+        position: fixed;
+
+        top: auto;
+        right: auto;
+        bottom: 1rem;
+        left: 1rem;
+
+        z-index: 1000;
+
+        background-color: #fff;
+
+        border-radius: 3px;
+
+        padding: 1rem 1.5rem;
+
+        max-width: 300px;
+    }
+
+    @media (max-width: 576px) {
+        .cookie-alert {
+            max-width: 100%;
+            right: 1rem;
+        }
+    }
+
+    .cookie-alert > .close {
+        position: absolute;
+
+        top: .5rem;
+        right: .5rem;
     }
 @endpush
 
@@ -303,6 +334,13 @@
 @endpush
 
 @section('content')
+    <div class="cookie-alert z-depth-1 grey lighten-4 hide">
+        <a href="{{ route('page.view', 'cerez-politikasi') }}" class="teal-text" style="font-weight: bold;">Çerez Politikamızı</a> inceleyebilir ve kullanımından memnun kalırsanız web sitemize göz atmaya devam edebilirsiniz.
+        <a href="#" class="close">
+            <i class="material-icons">close</i>
+        </a>
+    </div>
+
     <section class="x-section">
         <div class="section-overlay">
             <div class="container">
@@ -316,6 +354,7 @@
             </div>
         </div>
     </section>
+
     <div class="more-down">
         <a href="#" class="btn-floating btn-large pulse white" data-scroll-to=".main-slider">
             <i class="material-icons grey-text text-darken-2">keyboard_arrow_down</i>

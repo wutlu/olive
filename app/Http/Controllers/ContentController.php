@@ -101,9 +101,6 @@ class ContentController extends Controller
                                 ]
                             ],
                             'aggs' => [
-                                'positive' => [ 'avg' => [ 'field' => 'sentiment.pos' ] ],
-                                'neutral' => [ 'avg' => [ 'field' => 'sentiment.neu' ] ],
-                                'negative' => [ 'avg' => [ 'field' => 'sentiment.neg' ] ],
                                 'popular_keywords' => [
                                     'terms' => [
                                         'field' => 'entry',
@@ -355,11 +352,6 @@ class ContentController extends Controller
                                 'bool' => [
                                     'must' => $channel
                                 ]
-                            ],
-                            'aggs' => [
-                                'positive' => [ 'avg' => [ 'field' => 'sentiment.pos' ] ],
-                                'neutral' => [ 'avg' => [ 'field' => 'sentiment.neu' ] ],
-                                'negative' => [ 'avg' => [ 'field' => 'sentiment.neg' ] ]
                             ],
                             'size' => 0
                         ])

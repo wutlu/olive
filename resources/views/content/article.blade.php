@@ -14,26 +14,34 @@
     ]
 ])
 
-@section('dock')
-    @include('content._inc.sentiment', [
-        'neu' => $data['total']->data['aggregations']['neutral']['value'],
-        'pos' => $data['total']->data['aggregations']['positive']['value'],
-        'neg' => $data['total']->data['aggregations']['negative']['value'],
+@if (@$data['keywords'])
+    @push('local.scripts')
+        var words = [
+            @foreach ($data['keywords'] as $key => $count)
+                {
+                    text: '{{ $key }}',
+                    weight: {{ $count }},
+                    link: '{{ route('search.dashboard', [ 'q' => $key ]) }}'
+                },
+            @endforeach
+        ];
 
-        'alert' => 'İlgili siteden toplam '.$data['total']->data['hits']['total'].' içerik alındı.'
-    ])
+        $('#words').jQCloud(words)
+    @endpush
+
+    @push('local.styles')
+        #words {
+            height: 400px;
+        }
+    @endpush
+@endif
+
+@section('dock')
     <div class="card mb-1">
-        <div class="card-content">
-            <span class="card-title">Sık Kullanılan Kelimeler</span>
-        </div>
-        <div class="card-content teal">
-            <p class="white-text">Bu kelimeler ilgili siteye girilen haberlerden elde edilmiştir.</p>
-        </div> 
+        <div class="card-content cyan darken-2 white-text">Haber sitesinin sık kullandığı kelimeler.</div>
         <div class="card-content"> 
             @if (@$data['keywords'])
-                @foreach ($data['keywords'] as $key => $word)
-                    <a href="{{ route('search.dashboard', [ 'q' => $key ]) }}" target="_blank" class="chip waves-effect">{{ $key }}</a>
-                @endforeach
+                <div id="words"></div> 
             @else
                 <span class="chip red white-text">Tespit Edilemedi</span>
             @endif
@@ -88,10 +96,7 @@
             <div class="markdown">{!! Term::markdown($document['_source']['description']) !!}</div>
             <a class="green-text" href="{{ $document['_source']['url'] }}" target="_blank">{{ $document['_source']['url'] }}</a>
         </div>
-        @include('content._inc.sentiment_bar', [
-            'pos' => $document['_source']['sentiment']['pos'],
-            'neg' => $document['_source']['sentiment']['neg'],
-            'neu' => $document['_source']['sentiment']['neu'],
+        @include('content._inc.pin_bar', [
             'document' => $document
         ])
     </div>
@@ -137,8 +142,12 @@
        data-json-target="#smilars">Daha Fazla</a>
 @endsection
 
+@push('external.include.header')
+    <link rel="stylesheet" href="{{ asset('css/jquery.cloud.min.css?v='.config('system.version')) }}" />
+@endpush
 @push('external.include.footer')
     <script src="{{ asset('js/chart.min.js?v='.config('system.version')) }}"></script>
+    <script src="{{ asset('js/jquery.cloud.min.js?v='.config('system.version')) }}"></script>
 @endpush
 
 @push('local.scripts')

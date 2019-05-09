@@ -30,7 +30,7 @@ class DeleteRequest extends FormRequest
     public function messages()
     {
         return [
-            'private_exists' => 'Bu botu durdurun ve silmeyi 6 saat sonra tekrar deneyin.',
+            'private_exists' => 'Bu botu durdurun ve silmeyi 2 saat sonra tekrar deneyin.',
         ];
     }
 
@@ -53,7 +53,7 @@ class DeleteRequest extends FormRequest
                                     });
                                     $query->orWhere(function ($query) {
                                         $query->where('elasticsearch_index', true);
-                                        $query->where('updated_at', '<=', Carbon::now()->subHours(6)->format('Y-m-d H:i:s'));
+                                        $query->where('updated_at', '<=', Carbon::now()->subHours(2)->format('Y-m-d H:i:s'));
                                     });
                                 })
                                ->exists();

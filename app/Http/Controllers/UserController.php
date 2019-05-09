@@ -110,6 +110,16 @@ class UserController extends Controller
 
         $key = filter_var($value, FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
 
+        if (filter_var($value, FILTER_VALIDATE_EMAIL))
+        {
+            $key = 'email';
+            $value = strtolower($value);
+        }
+        else
+        {
+            $key = 'name';
+        }
+
         if (Auth::attempt([ $key => $value, 'password' => $password ]))
         {
             $user = User::where($key, $value)->first();
@@ -322,7 +332,7 @@ class UserController extends Controller
             'session_id' => $sid
         ])->firstOrFail();
 
-        if ($request->email != $user->email)
+        if (strtolower($request->email) != $user->email)
         {
             return response(
                 [
@@ -424,7 +434,7 @@ class UserController extends Controller
             $user = new User;
             $user->name = $request->name;
             $user->password = bcrypt($request->password);
-            $user->email = $request->email;
+            $user->email = strtolower($request->email);
             $user->session_id = Session::getId();
             $user->term_version = config('system.term_version');
 
@@ -543,9 +553,9 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->password = $request->password ? bcrypt($request->password) : $user->password;
 
-        if ($request->email != $user->email)
+        if (strtolower($request->email) != $user->email)
         {
-            $user->email = $request->email;
+            $user->email = strtolower($request->email);
         }
 
         $user->verified = $request->verified ? true : false;
@@ -739,7 +749,7 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->about = $request->about ? $request->about : null;
 
-        if ($user->email != $request->email)
+        if ($user->email != strtolower($request->email))
         {
             $user->notify(
                 (
@@ -751,7 +761,7 @@ class UserController extends Controller
                 )->onQueue('email')
             );
 
-            $user->email = $request->email;
+            $user->email = strtolower($request->email);
             $user->verified = false;
         }
 

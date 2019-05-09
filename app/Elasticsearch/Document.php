@@ -306,6 +306,20 @@ class Document
     /**
      * Döküman Sil
      *
+     *   curl -X POST "localhost:9201/ * /_delete_by_query?pretty" -H 'Content-Type: application/json' -d'
+     *   {
+     *       "query": { 
+     *           "bool": {
+     *               "filter": {
+     *                   "range": {
+     *                       "called_at": { "format": "YYYY-MM-dd", "gte": "2019-05-07" }
+     *                   }
+     *               }
+     *           }
+     *       }
+     *   }
+     *   '
+     *
      *   curl -X POST "192.168.44.1:9200/ * /_delete_by_query?pretty" -H 'Content-Type: application/json' -d'
      *   {
      *       "query": { 
@@ -326,8 +340,8 @@ class Document
      *         "bool": {
      *             "must": [
      *                 {
-     *                     "match": {
-     *                         "title": "HABERLER"
+     *                     "exists": {
+     *                         "field: "sentiment.sentiment-pos"
      *                     }
      *                 }
      *             ]

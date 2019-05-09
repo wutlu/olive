@@ -502,14 +502,12 @@ function getCookie(cookie_name)
             return c.substring(name.length, c.length);
         }
     }
-
-    return '';
 }
 
 $(document).ready(function() {
     if (!getCookie('cookie-alert'))
     {
-        $('.cookie-alert').addClass('active')
+        $('.cookie-alert').removeClass('hide')
     }
 
     M.updateTextFields()
@@ -537,7 +535,7 @@ $(document).ready(function() {
 })
 
 $('.cookie-alert').on('click', '.close', function() {
-    $(this).closest('.cookie-alert').hide()
+    $(this).closest('.cookie-alert').addClass('hide')
 
     setCookie('cookie-alert', true, 7)
 

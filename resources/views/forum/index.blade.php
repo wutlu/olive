@@ -467,12 +467,12 @@
 @endpush
 
 @section('dock')
-    <div class="card teal with-bg">
+    <div class="card with-bg">
         @auth
             @if (auth()->user()->root())
                 <div class="card-image">
                     <img src="{{ asset('img/md-s/21.jpg') }}" alt="Image" />
-                    <span class="card-title white-text d-flex">
+                    <span class="card-title d-flex">
                         <i class="material-icons align-self-center mr-1">date_range</i>
                         Kategoriler
                     </span>
@@ -488,7 +488,7 @@
         @endauth
 
         <div class="card-tabs">
-            <ul class="tabs teal tabs-transparent tabs-fixed-width">
+            <ul class="tabs tabs-fixed-width">
                 <li class="tab">
                     <a href="#categories" class="active">Kategori</a>
                 </li>

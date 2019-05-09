@@ -41,7 +41,8 @@ class Crawler
                     'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))]
                 ],
                 'curl' => [
-                    CURLOPT_REFERER => $site
+                    CURLOPT_REFERER => $site,
+                    CURLOPT_COOKIE => 'AspxAutoDetectCookieSupport=1'
                 ],
                 'verify' => false,
                 'allow_redirects' => [
@@ -130,7 +131,8 @@ class Crawler
                         'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))]
                     ],
                     'curl' => [
-                        CURLOPT_REFERER => $site
+                        CURLOPT_REFERER => $site,
+                        CURLOPT_COOKIE => 'AspxAutoDetectCookieSupport=1'
                     ],
                     'verify' => false,
                     'allow_redirects' => [
@@ -198,7 +200,8 @@ class Crawler
                     'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))]
                 ],
                 'curl' => [
-                    CURLOPT_REFERER => $data['page']
+                    CURLOPT_REFERER => $data['page'],
+                    CURLOPT_COOKIE => 'AspxAutoDetectCookieSupport=1'
                 ],
                 'verify' => false
             ];
@@ -404,7 +407,8 @@ class Crawler
                     'track_redirects' => true
                 ],
                 'curl' => [
-                    CURLOPT_REFERER => $data['page']
+                    CURLOPT_REFERER => $data['page'],
+                    CURLOPT_COOKIE => 'AspxAutoDetectCookieSupport=1'
                 ],
                 'verify' => false
             ];
@@ -585,7 +589,8 @@ class Crawler
                     'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))]
                 ],
                 'curl' => [
-                    CURLOPT_REFERER => $data['page']
+                    CURLOPT_REFERER => $data['page'],
+                    CURLOPT_COOKIE => 'AspxAutoDetectCookieSupport=1'
                 ],
                 'verify' => false
             ];

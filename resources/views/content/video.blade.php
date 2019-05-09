@@ -291,10 +291,7 @@
             </div>
         @endisset
 
-        @include('content._inc.sentiment_bar', [
-            'pos' => $document['_source']['sentiment']['pos'],
-            'neg' => $document['_source']['sentiment']['neg'],
-            'neu' => $document['_source']['sentiment']['neu'],
+        @include('content._inc.pin_bar', [
             'document' => $document
         ])
     </div>
@@ -413,14 +410,6 @@
             <a href="https://www.youtube.com/channel/{{ $document['_source']['channel']['id'] }}" target="_blank" class="grey-text">{{ '@'.$document['_source']['channel']['id'] }}</a>
         </div>
     </div>
-
-    @include('content._inc.sentiment', [
-        'neu' => $data['total']->data['aggregations']['neutral']['value'],
-        'pos' => $data['total']->data['aggregations']['positive']['value'],
-        'neg' => $data['total']->data['aggregations']['negative']['value'],
-
-        'alert' => 'İlgili kullanıcıdan toplam '.$data['total']->data['hits']['total'].' yorum alındı.'
-    ])
 
     @foreach (
         [
