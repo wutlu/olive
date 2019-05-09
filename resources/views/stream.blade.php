@@ -644,21 +644,21 @@
              data-nothing>
             <li class="collection-item nothing hide grey-text">Henüz kelime grubu oluşturmadınız.</li>
             <li class="collection-item model hide justify-content-between">
-                <div class="switch align-self-center">
-                    <label>
-                        <input type="checkbox" name="keyword_group" data-multiple="true" />
-                        <span class="lever"></span>
-                    </label>
-                </div>
-                <span data-name="name" class="align-self-center mr-auto"></span>
                 <a
-                    class="json align-self-center"
+                    class="json align-self-center mr-1"
                     data-href="{{ route('realtime.keyword.group') }}"
                     data-method="post"
                     data-callback="__get_keyword_group"
                     href="#">
                     <i class="material-icons grey-text text-darken-2">create</i>
                 </a>
+                <span data-name="name" class="align-self-center mr-auto"></span>
+                <div class="switch align-self-center">
+                    <label>
+                        <input type="checkbox" name="keyword_group" data-multiple="true" />
+                        <span class="lever"></span>
+                    </label>
+                </div>
             </li>
         </ul>
         @component('components.loader')
