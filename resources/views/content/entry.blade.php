@@ -38,7 +38,6 @@
 
 @section('dock')
     <div class="card mb-1">
-        <div class="card-content cyan darken-2 white-text">Haber sitesinin sık kullandığı kelimeler.</div>
         <div class="card-content"> 
             @if (@$data['keywords'])
                 <div id="words"></div> 

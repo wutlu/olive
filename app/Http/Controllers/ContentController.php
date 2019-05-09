@@ -104,7 +104,7 @@ class ContentController extends Controller
                                 'popular_keywords' => [
                                     'terms' => [
                                         'field' => 'entry',
-                                        'size' => 100
+                                        'size' => 50
                                     ]
                                 ]
                             ],
@@ -133,11 +133,17 @@ class ContentController extends Controller
 
                     if ($bucket)
                     {
-                        $bucket = implode(' ', array_map(function($a) {
-                            return $a['key'];
-                        }, $bucket));
+                        $_temp_data = [];
 
-                        $data['keywords'] = Term::commonWords($bucket, 100);
+                        foreach ($bucket as $item)
+                        {
+                            if (strlen($item['key']) > 2)
+                            {
+                                $_temp_data[$item['key']] = $item['doc_count'];
+                            }
+                        }
+
+                        $data['keywords'] = $_temp_data;
                     }
 
                     $title = implode(' ', [ $crawler->name, '/', $document['_source']['title'] ]);
@@ -403,7 +409,7 @@ class ContentController extends Controller
                                 'popular_keywords' => [
                                     'terms' => [
                                         'field' => 'description',
-                                        'size' => 100
+                                        'size' => 50
                                     ]
                                 ]
                             ],
@@ -415,11 +421,17 @@ class ContentController extends Controller
 
                     if ($bucket)
                     {
-                        $bucket = implode(' ', array_map(function($a) {
-                            return $a['key'];
-                        }, $bucket));
+                        $_temp_data = [];
 
-                        $data['keywords'] = Term::commonWords($bucket, 100);
+                        foreach ($bucket as $item)
+                        {
+                            if (strlen($item['key']) > 2)
+                            {
+                                $_temp_data[$item['key']] = $item['doc_count'];
+                            }
+                        }
+
+                        $data['keywords'] = $_temp_data;
                     }
 
                     $title = $crawler->name . ' / ' . '#'.$document['_source']['id'];
