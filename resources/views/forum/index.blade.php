@@ -483,7 +483,7 @@
                 </div>
 
                 <div class="card-content">
-                    <p class="teal-text">Bu alan sadece root yetkisine sahip kullanıcılarda görünür.</p>
+                    <p class="red-text">Bu alan sadece root yetkisine sahip kullanıcılarda görünür.</p>
                 </div>
             @endif
         @endauth

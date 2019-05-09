@@ -4,12 +4,6 @@
     'dock' => true
 ])
 
-@push('local.styles')
-    body {
-        background-color: #f0f0f0;
-    }
-@endpush
-
 @section('title', $page->title)
 
 @push('external.include.header')

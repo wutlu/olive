@@ -1438,6 +1438,13 @@ footer.page-footer > .container > .row > .col > img#vz-logo {
   background-color: transparent;
 }
 
+.card.card-nb {
+  border-radius: 0;
+}
+.card.card-nb > .collection {
+  border-radius: 0;
+}
+
 .card.card-unstyled > .card-tabs > ul.tabs {
   background-color: transparent;
 }

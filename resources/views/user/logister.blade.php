@@ -1,11 +1,5 @@
 @extends('layouts.app', [ 'header' => 'hide' ])
 
-@push('local.styles')
-    body {
-        background-color: #f0f0f0;
-    }
-@endpush
-
 @section('content')
     <div class="d-table mx-auto pt-2 mt-2 pb-2 mb-2">
         <div class="bb-edge">

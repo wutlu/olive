@@ -424,7 +424,7 @@
                     <div class="col s12 m6">
                         <div class="browser-mockup mockup-news">
                             <div
-                                class="card time-line load"
+                                class="card card-nb time-line load"
                                 data-href="{{ route('realtime.query.sample') }}"
                                 data-callback="__realtime"
                                 data-method="post">

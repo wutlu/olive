@@ -766,10 +766,10 @@
                         <div class="markdown"></div>
                     </blockquote>
                 </div>
-                <div class="card-content teal darken-2">
+                <div class="card-content cyan darken-2">
                     <span class="card-title white-text mb-0">Cevapla</span>
                 </div>
-                <div class="card-tabs teal darken-2">
+                <div class="card-tabs cyan darken-2">
                     <ul class="tabs tabs-transparent">
                         <li class="tab">
                             <a href="#textarea" class="waves-effect active">Cevapla</a>
