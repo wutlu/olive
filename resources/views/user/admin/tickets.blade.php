@@ -16,7 +16,8 @@
             'text' => '🐞 Destek Talepleri'
         ]
     ],
-    'dock' => true
+    'dock' => true,
+    'footer_hide' => true
 ])
 
 @section('content')

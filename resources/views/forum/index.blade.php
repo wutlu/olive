@@ -87,85 +87,85 @@
 @section('content')
     {!! $data->links('vendor.pagination.materializecss_simple') !!}
 
-    <ul class="card">
-        <li class="card-content grey lighten-5">
-            @isset ($category)
-                <div class="chip">{{ $category->name }}</div>
-            @else
-                <div class="chip">{{ @$title ? $title : 'Tüm Konular' }}</div>
-            @endisset
-        </li>
-        @forelse ($data as $thread)
-            @php
-                $color_light = '';
-                $color_dark = '';
+        <ul class="card">
+            <li class="card-content">
+                @isset ($category)
+                    <div class="chip">{{ $category->name }}</div>
+                @else
+                    <div class="chip">{{ @$title ? $title : 'Tüm Konular' }}</div>
+                @endisset
+            </li>
+            @forelse ($data as $thread)
+                @php
+                    $color_light = '';
+                    $color_dark = '';
 
-                if ($thread->static)
-                {
-                    $color_light = 'white lighten-2 grey-text';
-                    $color_dark = 'grey lighten-2';
-                }
-            @endphp
-        <li class="card-content z-depth-1 hoverable {{ $color_dark }}">
-            <div class="d-flex">
-                <span class="align-self-center center-align" style="margin: 0 1rem 0 0;">
-                    <a class="d-block" data-tooltip="{{ $thread->user->name }}" data-position="right" href="{{ route('user.profile', $thread->user_id) }}">
-                        <img alt="Avatar" src="{{ $thread->user->avatar() }}" class="circle" style="width: 64px; height: 64px;" />
-                    </a>
-                </span>
-                <div class="align-self-center">
-                    <div class="d-flex">
-                        @if ($thread->closed)
-                            <i class="material-icons grey-text text-darken-2 tiny" data-tooltip="Kapalı">lock</i>
-                        @endif
+                    if ($thread->static)
+                    {
+                        $color_light = 'white lighten-2 grey-text';
+                        $color_dark = 'grey lighten-2';
+                    }
+                @endphp
+            <li class="card-content {{ $color_dark }}">
+                <div class="d-flex">
+                    <span class="align-self-center center-align" style="margin: 0 1rem 0 0;">
+                        <a class="d-block" data-tooltip="{{ $thread->user->name }}" data-position="right" href="{{ route('user.profile', $thread->user_id) }}">
+                            <img alt="Avatar" src="{{ $thread->user->avatar() }}" class="circle" style="width: 64px; height: 64px;" />
+                        </a>
+                    </span>
+                    <div class="align-self-center">
+                        <div class="d-flex">
+                            @if ($thread->closed)
+                                <i class="material-icons grey-text text-darken-2 tiny" data-tooltip="Kapalı">lock</i>
+                            @endif
 
-                        @if ($thread->static)
-                            <i class="material-icons grey-text text-darken-2 tiny" data-tooltip="Sabit">terrain</i>
-                        @endif
+                            @if ($thread->static)
+                                <i class="material-icons grey-text text-darken-2 tiny" data-tooltip="Sabit">terrain</i>
+                            @endif
 
-                        @if ($thread->question == 'solved')
-                            <i class="material-icons grey-text text-darken-2 tiny" data-tooltip="Çözüldü">check</i>
-                        @elseif ($thread->question == 'unsolved')
-                            <i class="material-icons grey-text text-darken-2 tiny" data-tooltip="Soru">help</i>
+                            @if ($thread->question == 'solved')
+                                <i class="material-icons grey-text text-darken-2 tiny" data-tooltip="Çözüldü">check</i>
+                            @elseif ($thread->question == 'unsolved')
+                                <i class="material-icons grey-text text-darken-2 tiny" data-tooltip="Soru">help</i>
+                            @endif
+                        </div>
+                        <a href="{{ $thread->route() }}" class="d-flex">
+                            <span class="card-title card-title-small align-self-center mb-0">{{ $thread->subject }}</span>
+                        </a>
+                        <p class="grey-text">
+                            @if (count($thread->replies))
+                                <time class="timeago grey-text text-darken-2" data-time="{{ $thread->updated_at }}">{{ date('d.m.Y H:i', strtotime($thread->updated_at)) }}</time>
+                                <span>yanıtladı</span>
+                                <a href="{{ route('user.profile', $thread->replies->last()->user->id) }}">{{ '@'.$thread->replies->last()->user->name }}</a>
+                            @else
+                                <time class="timeago grey-text text-darken-2" data-time="{{ $thread->created_at }}">{{ date('d.m.Y H:i', strtotime($thread->created_at)) }}</time>
+                                <span>yazdı</span>
+                                <a href="{{ route('user.profile', $thread->user_id) }}">{{ '@'.$thread->user->name }}</a>
+                            @endif
+                        </p>
+                        @if (count($thread->replies))
+                            {!! $thread->replies()->paginate(10)->onEachSide(1)->setPath($thread->route())->links('vendor.pagination.materializecss_in') !!}
                         @endif
                     </div>
-                    <a href="{{ $thread->route() }}" class="d-flex">
-                        <span class="card-title card-title-small align-self-center mb-0">{{ $thread->subject }}</span>
-                    </a>
-                    <p class="grey-text">
-                        @if (count($thread->replies))
-                            <time class="timeago grey-text text-darken-2" data-time="{{ $thread->updated_at }}">{{ date('d.m.Y H:i', strtotime($thread->updated_at)) }}</time>
-                            <span>yanıtladı</span>
-                            <a href="{{ route('user.profile', $thread->replies->last()->user->id) }}">{{ '@'.$thread->replies->last()->user->name }}</a>
-                        @else
-                            <time class="timeago grey-text text-darken-2" data-time="{{ $thread->created_at }}">{{ date('d.m.Y H:i', strtotime($thread->created_at)) }}</time>
-                            <span>yazdı</span>
-                            <a href="{{ route('user.profile', $thread->user_id) }}">{{ '@'.$thread->user->name }}</a>
-                        @endif
-                    </p>
-                    @if (count($thread->replies))
-                        {!! $thread->replies()->paginate(10)->onEachSide(1)->setPath($thread->route())->links('vendor.pagination.materializecss_in') !!}
-                    @endif
+                    <div class="align-self-center ml-auto d-flex flex-column">
+                        <a href="{{ route('forum.category', $thread->category->slug) }}" class="chip waves-effect center-align {{ $color_light }}">{{ $thread->category->name }}</a>
+                        <span class="badge d-flex grey-text justify-content-end">
+                            <span class="align-self-center">{{ count($thread->replies) }}</span>
+                            <i class="material-icons align-self-center" style="margin: 0 0 0 .4rem;">reply</i>
+                        </span>
+                        <span class="badge d-flex grey-text justify-content-end">
+                            <span class="align-self-center">{{ $thread->hit }}</span>
+                            <i class="material-icons align-self-center" style="margin: 0 0 0 .4rem;">remove_red_eye</i>
+                        </span>
+                    </div>
                 </div>
-                <div class="align-self-center ml-auto d-flex flex-column">
-                    <a href="{{ route('forum.category', $thread->category->slug) }}" class="chip waves-effect center-align {{ $color_light }}">{{ $thread->category->name }}</a>
-                    <span class="badge d-flex grey-text justify-content-end">
-                        <span class="align-self-center">{{ count($thread->replies) }}</span>
-                        <i class="material-icons align-self-center" style="margin: 0 0 0 .4rem;">reply</i>
-                    </span>
-                    <span class="badge d-flex grey-text justify-content-end">
-                        <span class="align-self-center">{{ $thread->hit }}</span>
-                        <i class="material-icons align-self-center" style="margin: 0 0 0 .4rem;">remove_red_eye</i>
-                    </span>
-                </div>
-            </div>
-        </li>
-        @empty
-        <li class="card-content grey-text">
-            Üzgünüm, daha fazla içerik yok.
-        </li>
-        @endforelse
-    </ul>
+            </li>
+            @empty
+            <li class="card-content grey-text">
+                Üzgünüm, daha fazla içerik yok.
+            </li>
+            @endforelse
+        </ul>
 
     {!! $data->links('vendor.pagination.materializecss_simple') !!}
 @endsection
@@ -470,26 +470,27 @@
     <div class="card with-bg">
         @auth
             @if (auth()->user()->root())
-                <div class="card-image">
-                    <img src="{{ asset('img/md-s/21.jpg') }}" alt="Image" />
-                    <span class="card-title d-flex">
-                        <i class="material-icons align-self-center mr-1">date_range</i>
+                <div class="card-content cyan darken-2">
+                    <span class="card-title white-text">
                         Kategoriler
                     </span>
-                    <a href="#" class="btn-floating halfway-fab waves-effect white" data-trigger="create-cat">
+                </div>
+
+                <div class="card-image">
+                    <a href="#" class="btn-floating btn-small halfway-fab waves-effect white" data-trigger="create-cat">
                         <i class="material-icons grey-text text-darken-2">add</i>
                     </a>
                 </div>
 
-                <div class="card-content teal">
-                    <p class="white-text">Bu alan sadece root yetkisine sahip kullanıcılarda görünür.</p>
+                <div class="card-content">
+                    <p class="teal-text">Bu alan sadece root yetkisine sahip kullanıcılarda görünür.</p>
                 </div>
             @endif
         @endauth
 
         <div class="card-tabs">
-            <ul class="tabs tabs-fixed-width">
-                <li class="tab">
+            <ul class="tabs tabs-transparent tabs-fixed-width cyan darken-2">
+                <li class="tab ">
                     <a href="#categories" class="active">Kategori</a>
                 </li>
                 <li class="tab">
@@ -532,7 +533,7 @@
         @component('components.loader')
             @slot('color', 'teal')
             @slot('id', 'cat-loader')
-            @slot('class', 'm-0')
+            @slot('class', 'card-loader-unstyled')
         @endcomponent
 
         <div class="collection white" id="criterion" style="display: none;">

@@ -7,7 +7,8 @@
         [
             'text' => '🐞 Bot Yönetimi'
         ]
-    ]
+    ],
+    'footer_hide' => true
 ])
 
 @section('content')

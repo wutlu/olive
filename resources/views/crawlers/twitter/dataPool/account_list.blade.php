@@ -16,7 +16,8 @@
             'text' => '🐞 Takip Edilen Kullanıcılar'
         ]
     ],
-    'dock' => true
+    'dock' => true,
+    'footer_hide' => true
 ])
 
 @section('content')

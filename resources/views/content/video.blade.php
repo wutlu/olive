@@ -11,7 +11,8 @@
         'id' => $document['_id'],
         'type' => $document['_type'],
         'index' => $document['_index']
-    ]
+    ],
+    'footer_hide' => true
 ])
 
 @include('content._inc.histogram', [

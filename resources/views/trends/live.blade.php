@@ -8,7 +8,8 @@
             'text' => 'Canlı Trend'
         ]
     ],
-    'dock' => true
+    'dock' => true,
+    'footer_hide' => true
 ])
 
 @section('dock')
@@ -331,7 +332,7 @@
         <div class="container">
             <p class="d-flex mb-0">
                 <i class="material-icons mr-1 white-text align-self-center">help_outline</i>
-                <span class="white-text align-self-center">Tüm trendler, Olive trend algoritmasıyla oluşturulur ve kaynak sitelerden bağımsız belirlenir.</span>
+                <span class="white-text align-self-center">Tüm trendler, Olive trend algoritmasıyla anlık oluşturulur ve kaynak sitelerden bağımsız belirlenir.</span>
             </p>
         </div>
     </div>
@@ -368,7 +369,7 @@
                 ]
                 as $key => $name
             )
-                <div class="card">
+                <div class="card mb-1">
                     <div class="card-content d-flex">
                         <a href="#" class="handle align-self-center btn-floating btn-flat mr-1">
                             <i class="material-icons">drag_handle</i>

@@ -279,10 +279,11 @@
             @endcomponent
 
             <div class="center-align">
-                <button class="btn-flat waves-effect hide json"
-                        id="activities-more_button"
-                        type="button"
-                        data-json-target="ul#activities">Daha Fazla</button>
+                <a
+                    class="more hide json"
+                    id="activities-more_button"
+                    href="#"
+                    data-json-target="ul#activities">Daha Fazla</a>
             </div>
         </div>
     </div>

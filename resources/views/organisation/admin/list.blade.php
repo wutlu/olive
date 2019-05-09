@@ -7,7 +7,8 @@
         [
             'text' => '🐞 Organizasyonlar'
         ]
-    ]
+    ],
+    'footer_hide' => true
 ])
 
 @push('local.scripts')

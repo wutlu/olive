@@ -34,15 +34,16 @@
 
 @section('wildcard')
     <div class="card wild-background">
-        <div class="card-image">
-            <a href="{{ $thread ? $thread->route() : route('forum.index') }}" class="btn-floating btn-large halfway-fab waves-effect white" data-tooltip="Vazgeç" data-position="left">
-                <i class="material-icons grey-text text-darken-2">close</i>
-            </a>
-        </div>
         <div class="container">
             <span class="wildcard-title white-text">{{ $thread ? 'Konu Güncelle' : 'Konu Başlat' }}</span>
         </div>
     </div>
+@endsection
+
+@section('action-bar')
+    <a href="{{ $thread ? $thread->route() : route('forum.index') }}" class="btn-floating btn-large halfway-fab waves-effect white" data-tooltip="Vazgeç" data-position="left">
+        <i class="material-icons grey-text text-darken-2">close</i>
+    </a>
 @endsection
 
 @section('content')
@@ -80,7 +81,7 @@
                 @endif
             </div>
             <div class="card-tabs">
-                <ul class="tabs tabs-transparent cyan darken-2 tabs-fixed-width">
+                <ul class="tabs tabs-fixed-width">
                     <li class="tab">
                         <a href="#textarea" class="active">Konu İçeriği</a>
                     </li>
@@ -117,9 +118,6 @@
 @if (!$thread)
     @section('dock')
         <div class="card with-bg">
-            <div class="card-content">
-                <span class="card-title">Kategori</span>
-            </div>
             <div class="collection">
                 @forelse ($categories as $category)
                     <label class="collection-item waves-effect d-block">

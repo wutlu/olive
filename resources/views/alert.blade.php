@@ -4,7 +4,8 @@
         [
             'text' => 'Uyarı'
         ]
-    ]
+    ],
+    'footer_hide' => true
 ])
 
 @section('content')

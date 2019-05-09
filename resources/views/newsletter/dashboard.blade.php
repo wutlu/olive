@@ -7,7 +7,8 @@
         [
             'text' => '🐞 E-posta Bülteni'
         ]
-    ]
+    ],
+    'footer_hide' => true
 ])
 
 @push('local.scripts')
@@ -39,6 +40,14 @@
     }
 @endpush
 
+@section('wildcard')
+    <div class="card wild-background">
+        <div class="container">
+            <span class="wildcard-title white-text">E-posta Bülteni</span>
+        </div>
+    </div>
+@endsection
+
 @section('action-bar')
     <a href="{{ route('admin.newsletter.form') }}" class="btn-floating btn-large halfway-fab waves-effect white">
         <i class="material-icons grey-text text-darken-2">add</i>
@@ -47,10 +56,6 @@
 
 @section('content')
     <div class="card with-bg">
-        <div class="card-content">
-            <span class="card-title">E-posta Bülteni</span>
-            <p class="grey-text text-darken-2">E-posta bültenleri işleme alındıktan sonra tamamlanmadan sonlandırılamaz/güncellenemez/silinemez.</p>
-        </div>
         <nav class="nav-half">
             <div class="nav-wrapper">
                 <div class="input-field">

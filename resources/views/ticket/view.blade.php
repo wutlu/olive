@@ -40,7 +40,7 @@
 
     function close()
     {
-        var mdl = modal({
+        return modal({
             'id': 'close',
             'body': 'Destek talebini kapatmak üzeresiniz?',
             'size': 'modal-small',
@@ -69,7 +69,7 @@
 @endpush
 
 @section('content')
-    <div class="card ticket-card">
+    <div class="card ticket-card mb-1">
         <div class="card-image">
             <img src="{{ asset('img/md/'.($ticket->status == 'open' ? '32' : '34').'.jpg') }}" alt="Destek Talebi" />
             <a href="javascript:close()" class="btn-floating btn-large halfway-fab waves-effect waves-light {{ $ticket->status == 'open' ? 'cyan' : 'disabled' }}">
@@ -104,13 +104,14 @@
             <div class="md-area">{!! Term::markdown($ticket->message) !!}</div>
         </div>
     </div>
+
     @forelse ($ticket->replies as $row)
-    <div class="card {{ $row->user_id == auth()->user()->id ? '' : 'cyan lighten-4' }}" id="message-{{ $row->id }}">
-        <div class="card-content">
-            <span class="mb-4 grey-text">{{ date('d.m.Y H:i', strtotime($ticket->created_at)) }}</span>
-            <div class="md-area">{!! Term::markdown($row->message) !!}</div>
+        <div class="card {{ $row->user_id == auth()->user()->id ? '' : 'cyan lighten-4' }}" id="message-{{ $row->id }}">
+            <div class="card-content">
+                <span class="mb-4 grey-text">{{ date('d.m.Y H:i', strtotime($ticket->created_at)) }}</span>
+                <div class="md-area">{!! Term::markdown($row->message) !!}</div>
+            </div>
         </div>
-    </div>
     @empty
         @component('components.nothing')
             @slot('cloud_class', 'white-text')

@@ -7,7 +7,8 @@
     ],
     'dock' => true,
     'wide' => true,
-    'pin_group' => true
+    'pin_group' => true,
+    'footer_hide' => true
 ])
 
 @push('local.styles')

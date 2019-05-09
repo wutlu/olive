@@ -7,7 +7,8 @@
         [
             'text' => '🐞 Sayfalar'
         ]
-    ]
+    ],
+    'footer_hide' => true
 ])
 
 @push('local.scripts')

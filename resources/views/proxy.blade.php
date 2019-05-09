@@ -7,7 +7,8 @@
         [
         	'text' => '🐞 Vekil Sunucu Yönetimi'
         ]
-    ]
+    ],
+    'footer_hide' => true
 ])
 
 @push('local.scripts')
@@ -254,7 +255,7 @@
                 @component('components.nothing')@endcomponent
             </div>
             <a
-                class="collection-item model hide waves-effect json"
+                class="collection-item model hide json"
                 data-href="{{ route('admin.proxy') }}"
                 data-method="post"
                 data-callback="__get"

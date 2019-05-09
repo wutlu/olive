@@ -12,7 +12,8 @@
             'text' => 'Kelime Havuzu'
         ]
     ],
-    'dock' => true
+    'dock' => true,
+    'footer_hide' => true
 ])
 
 @section('content')

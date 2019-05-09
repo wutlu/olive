@@ -9,7 +9,8 @@
             'text' => $module['title'],
         ]
     ],
-    'dock' => true
+    'dock' => true,
+    'footer_hide' => true
 ])
 
 @section('dock')

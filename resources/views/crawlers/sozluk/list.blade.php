@@ -12,7 +12,8 @@
             'text' => '🐞 Sözlük Botları'
         ]
     ],
-    'wide' => true
+    'wide' => true,
+    'footer_hide' => true
 ])
 
 @push('local.scripts')
@@ -55,13 +56,14 @@
     }
 @endpush
 
+@section('action-bar')
+    <a class="btn-floating btn-large halfway-fab waves-effect white dropdown-trigger" data-target="more">
+        <i class="material-icons grey-text text-darken-2">more_vert</i>
+    </a>
+@endsection
+
 @section('wildcard')
     <div class="card">
-        <div class="card-image">
-            <a class="btn-floating btn-large halfway-fab waves-effect white dropdown-trigger" data-target="more">
-                <i class="material-icons grey-text text-darken-2">more_vert</i>
-            </a>
-        </div>
         <div class="container container-wide">
             <div
                 id="stats"

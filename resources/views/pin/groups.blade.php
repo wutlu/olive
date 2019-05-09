@@ -4,7 +4,8 @@
         [
             'text' => 'Pin Grupları'
         ]
-    ]
+    ],
+    'footer_hide' => true
 ])
 
 @push('local.scripts')

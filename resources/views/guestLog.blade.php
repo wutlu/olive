@@ -10,7 +10,8 @@
         [
             'text' => '🐞 Ziyaretçi Logları'
         ]
-    ]
+    ],
+    'footer_hide' => true
 ])
 
 @push('local.scripts')

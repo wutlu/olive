@@ -8,7 +8,8 @@
             'text' => 'Trend Arşivi'
         ]
     ],
-    'dock' => true
+    'dock' => true,
+    'footer_hide' => true
 ])
 
 @push('local.scripts')

@@ -11,7 +11,8 @@
         [
             'text' => @$page ? '🐞 '.$page->title : '🐞 Sayfa Oluştur'
         ]
-    ]
+    ],
+    'footer_hide' => true
 ])
 
 @push('local.scripts')

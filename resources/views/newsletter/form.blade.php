@@ -11,20 +11,22 @@
         [
             'text' => $newsletter ? '🐞 '.$newsletter->subject : '🐞 Bülten Oluştur'
         ]
-    ]
+    ],
+    'footer_hide' => true
 ])
 
 @section('wildcard')
     <div class="card wild-background">
-        <div class="card-image">
-            <a href="{{ route('admin.newsletter') }}" class="btn-floating btn-large halfway-fab waves-effect teal" data-tooltip="Vazgeç" data-position="left">
-                <i class="material-icons">close</i>
-            </a>
-        </div>
         <div class="container">
             <span class="wildcard-title white-text">{{ $newsletter ? $newsletter->subject : 'Bülten Oluştur' }}</span>
         </div>
     </div>
+@endsection
+
+@section('action-bar')
+    <a href="{{ route('admin.newsletter') }}" class="btn-floating btn-large halfway-fab waves-effect white" data-tooltip="Vazgeç" data-position="left">
+        <i class="material-icons grey-text text-darken-2">close</i>
+    </a>
 @endsection
 
 @section('content')
@@ -61,8 +63,8 @@
                     <span class="helper-text"></span>
                 </div>
             </div>
-            <div class="card-tabs teal">
-                <ul class="tabs tabs-transparent">
+            <div class="card-tabs">
+                <ul class="tabs">
                     <li class="tab">
                         <a href="#textarea" class="active">Konu İçeriği</a>
                     </li>

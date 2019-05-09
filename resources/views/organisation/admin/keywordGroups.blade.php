@@ -16,7 +16,8 @@
             'text' => '🐞 Gerçek Zamanlı Kelime Grupları'
         ]
     ],
-    'dock' => true
+    'dock' => true,
+    'footer_hide' => true
 ])
 
 @section('content')

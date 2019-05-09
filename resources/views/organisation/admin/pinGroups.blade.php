@@ -16,7 +16,8 @@
             'text' => '🐞 Pin Grupları'
         ]
     ],
-    'dock' => true
+    'dock' => true,
+    'footer_hide' => true
 ])
 
 @section('content')

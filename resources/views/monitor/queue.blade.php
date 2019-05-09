@@ -10,7 +10,8 @@
         [
             'text' => '🐞 Kuyruk Ekranı (Laravel Horizon)'
         ]
-    ]
+    ],
+    'footer_hide' => true
 ])
 
 @push('local.styles')

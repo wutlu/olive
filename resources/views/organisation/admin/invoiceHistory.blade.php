@@ -16,7 +16,8 @@
             'text' => '🐞 Fatura Geçmişi'
         ]
     ],
-    'dock' => true
+    'dock' => true,
+    'footer_hide' => true
 ])
 
 @section('content')

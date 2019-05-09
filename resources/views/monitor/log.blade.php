@@ -10,7 +10,8 @@
         [
             'text' => '🐞 Log Ekranı'
         ]
-    ]
+    ],
+    'footer_hide' => true
 ])
 
 @push('local.scripts')
@@ -127,17 +128,11 @@
     })
 @endpush
 
-@section('action-bar')
-@endsection
-
 @section('content')
     <div class="card with-bg">
         <div class="card-image">
             <img src="{{ asset('img/md-s/21.jpg') }}" alt="Image" />
-            <span class="card-title white-text d-flex">
-                🐞
-                Loglar
-            </span>
+            <span class="card-title white-text">Loglar</span>
             <a href="#" class="btn-floating btn-large halfway-fab waves-effect white" data-trigger="clear">
                 <i class="material-icons grey-text text-darken-2">clear_all</i>
             </a>

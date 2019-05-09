@@ -4,7 +4,8 @@
         [
             'text' => 'Kelime Hafızası'
         ]
-    ]
+    ],
+    'footer_hide' => true
 ])
 
 @section('wildcard')

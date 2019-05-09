@@ -89,6 +89,8 @@ Route::prefix('arama-motoru')->group(function () {
     Route::get('/', 'SearchController@dashboard')->name('search.dashboard');
     Route::post('analiz', 'SearchController@aggregation')->name('search.aggregation');
     Route::post('/', 'SearchController@search');
+
+    Route::get('/v2', 'SearchController@dashboard2')->name('search.dashboard2');
 });
 
 Route::get('uyari', 'HomeController@alert')->name('alert');

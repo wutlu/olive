@@ -16,7 +16,8 @@
             'text' => '🐞 Takip Edilen Kanallar'
         ]
     ],
-    'dock' => true
+    'dock' => true,
+    'footer_hide' => true
 ])
 
 @section('content')

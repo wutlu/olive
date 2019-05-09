@@ -8,7 +8,8 @@
         [
             'text' => $pg->name
         ]
-    ]
+    ],
+    'footer_hide' => true
 ])
 
 @push('local.scripts')

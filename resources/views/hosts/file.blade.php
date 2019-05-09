@@ -7,7 +7,8 @@
         [
             'text' => '🐞 Hosts Dosyası'
         ]
-    ]
+    ],
+    'footer_hide' => true
 ])
 
 @push('local.styles')

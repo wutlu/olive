@@ -7,7 +7,8 @@
     ],
     'dock' => true,
     'wide' => true,
-    'pin_group' => true
+    'pin_group' => true,
+    'footer_hide' => true
 ])
 
 @push('local.styles')
@@ -27,7 +28,7 @@
     }
 
     .time-line > .collection {
-        max-height: 4000px;
+        max-height: 8000px;
         overflow: hidden;
 
         border-width: 0 0 0 1rem;
@@ -621,18 +622,17 @@
 
 @section('dock')
     <div class="card with-bg mb-1">
-        <div class="card-image">
-            <img src="{{ asset('img/md/21.jpg') }}" alt="Image" />
-            <span class="card-title white-text d-flex">
+        <div class="card-content">
+            <span class="card-title d-flex">
                 <i class="material-icons align-self-center mr-1">speaker_notes</i>
                 Kelime Grupları
             </span>
-            <a href="#" class="btn-floating halfway-fab waves-effect white" data-trigger="create-keyword-group">
+            <span data-name="keyword-group-count">0</span> / <span data-name="keyword-group-limit">0</span>
+        </div>
+        <div class="card-image">
+            <a href="#" class="btn-floating btn-small halfway-fab waves-effect white" data-trigger="create-keyword-group">
                 <i class="material-icons grey-text text-darken-2">add</i>
             </a>
-        </div>
-        <div class="card-content">
-            <span data-name="keyword-group-count">0</span> / <span data-name="keyword-group-limit">0</span>
         </div>
         <ul class="collection load" 
              id="keyword-groups"

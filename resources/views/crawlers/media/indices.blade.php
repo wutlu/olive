@@ -16,7 +16,8 @@
             'text' => '🐞 Index Yönetimi'
         ]
     ],
-    'dock' => true
+    'dock' => true,
+    'footer_hide' => true
 ])
 
 @push('local.scripts')

@@ -555,7 +555,7 @@
     @endphp
 
     <div data-section="messages">
-        <div class="card">
+        <div class="card mb-1">
             @forelse ($messages as $message)
                 @auth
                     <ul id="thread-menu-{{ $message->id }}" class="dropdown-content">
@@ -620,7 +620,7 @@
 
                 @if ($last_user_id && $last_user_id != $message->user_id)
                     </div>
-                    <div class="card">
+                    <div class="card mb-1">
                 @endif
                 <div
                     id="message-{{ $message->id }}"

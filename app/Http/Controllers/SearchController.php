@@ -589,6 +589,24 @@ class SearchController extends Controller
     }
 
     /**
+     * Arama Ana Sayfa
+     *
+     * @return view
+     */
+    public static function dashboard2(QRequest $request)
+    {
+        $q = $request->q;
+        $s = $request->s;
+        $e = $request->e;
+
+        $organisation = auth()->user()->organisation;
+
+        $trends = json_decode(RedisCache::get(implode(':', [ config('system.db.alias'), 'trends', 'twitter' ])));
+
+        return view('search2', compact('q', 's', 'e', 'trends', 'organisation'));
+    }
+
+    /**
      * Arama Sonuçları
      *
      * @return array

@@ -11,7 +11,8 @@
         [
             'text' => '🐞 #'.$ticket->id
         ]
-    ]
+    ],
+    'footer_hide' => true
 ])
 
 @section('content')
@@ -67,7 +68,8 @@
             });
         }
     @endpush
-    <div class="card ticket-card">
+
+    <div class="card ticket-card mb-1">
         <div class="card-image">
             <img src="{{ asset('img/md-s/'.($ticket->status == 'open' ? '32' : '34').'.jpg') }}" alt="Destek Talebi" />
 
@@ -110,13 +112,14 @@
             <div class="md-area">{!! Term::markdown($ticket->message) !!}</div>
         </div>
     </div>
+
     @forelse ($ticket->replies as $row)
-    <div class="card {{ $row->user_id == auth()->user()->id ? '' : 'cyan lighten-4' }}" id="message-{{ $row->id }}">
-        <div class="card-content">
-            <span class="grey-text text-darken-2">{{ date('d.m.Y H:i', strtotime($ticket->created_at)) }}</span>
-            <div class="md-area">{!! Term::markdown($row->message) !!}</div>
+        <div class="card {{ $row->user_id == auth()->user()->id ? '' : 'cyan lighten-4' }}" id="message-{{ $row->id }}">
+            <div class="card-content">
+                <span class="grey-text text-darken-2">{{ date('d.m.Y H:i', strtotime($ticket->created_at)) }}</span>
+                <div class="md-area">{!! Term::markdown($row->message) !!}</div>
+            </div>
         </div>
-    </div>
     @empty
         @component('components.nothing')
             @slot('cloud_class', 'white-text')

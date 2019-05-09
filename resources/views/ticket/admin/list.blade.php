@@ -7,7 +7,8 @@
         [
             'text' => '🐞 Destek Talepleri'
         ]
-    ]
+    ],
+    'footer_hide' => true
 ])
 
 @section('content')

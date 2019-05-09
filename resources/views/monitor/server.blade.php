@@ -10,7 +10,8 @@
         [
             'text' => '🐞 Sunucu Bilgisi'
         ]
-    ]
+    ],
+    'footer_hide' => true
 ])
 
 @push('local.styles')

@@ -15,7 +15,8 @@
         [
             'text' => '🐞 '.$crawler->name
         ]
-    ]
+    ],
+    'footer_hide' => true
 ])
 
 @push('local.scripts')

@@ -7,7 +7,8 @@
         [
         	'text' => '🐞 Carousel Yönetimi'
         ]
-    ]
+    ],
+    'footer_hide' => true
 ])
 
 @push('local.scripts')
@@ -167,37 +168,36 @@
                     }),
                     $('<div />', {
                         'class': 'collection',
-                        'html': $('<label />', {
-                            'class': 'collection-item waves-effect d-block',
-                            'html': [
-                                $('<input />', {
-                                    'name': 'carousel',
-                                    'id': 'carousel',
-                                    'value': '1',
-                                    'type': 'checkbox'
-                                }),
-                                $('<span />', {
-                                    'html': 'Carousel'
-                                })
-                            ]
-                        })
-                    }),
-                    $('<div />', {
-                        'class': 'collection',
-                        'html': $('<label />', {
-                            'class': 'collection-item waves-effect d-block',
-                            'html': [
-                                $('<input />', {
-                                    'name': 'modal',
-                                    'id': 'modal',
-                                    'value': '1',
-                                    'type': 'checkbox'
-                                }),
-                                $('<span />', {
-                                    'html': 'Modal'
-                                })
-                            ]
-                        })
+                        'html': [
+                            $('<label />', {
+                                'class': 'collection-item waves-effect d-block',
+                                'html': [
+                                    $('<input />', {
+                                        'name': 'carousel',
+                                        'id': 'carousel',
+                                        'value': '1',
+                                        'type': 'checkbox'
+                                    }),
+                                    $('<span />', {
+                                        'html': 'Carousel'
+                                    })
+                                ]
+                            }),
+                            $('<label />', {
+                                'class': 'collection-item waves-effect d-block',
+                                'html': [
+                                    $('<input />', {
+                                        'name': 'modal',
+                                        'id': 'modal',
+                                        'value': '1',
+                                        'type': 'checkbox'
+                                    }),
+                                    $('<span />', {
+                                        'html': 'Modal'
+                                    })
+                                ]
+                            })
+                        ]
                     })
                 ]
             }),

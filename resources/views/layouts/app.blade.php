@@ -15,7 +15,7 @@
     @endisset
 
     <!-- title -->
-    <title>@yield('title', @$title ? $title['text'] : config('app.name'))</title>
+    <title>@yield('title', isset($title) ? $title['text'] : config('app.name'))</title>
 
     <!-- master styles -->
     <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons" />
@@ -46,7 +46,7 @@
 </head>
 <body>
     @auth
-        @if (@$email != 'hide')
+        @if (isset($email) != 'hide')
             @push('local.scripts')
                 @if (auth()->user()->email == 'anonymous@veri.zone')
                     modal({
@@ -72,7 +72,7 @@
             @endpush
         @endif
 
-        @if (@$term != 'hide')
+        @if (isset($term) != 'hide')
             @if (auth()->user()->term_version != config('system.term_version'))
                 @push('local.scripts')
                     modal({
@@ -102,7 +102,7 @@
         @endisset
     @endauth
 
-    @if (@$sidenav_fixed_layout)
+    @if (isset($sidenav_fixed_layout) || isset($sidenav_layout))
         @auth
             @if (!auth()->user()->verified)
                 <div id="modal-confirmation" class="modal bottom-sheet">
@@ -196,14 +196,14 @@
             @endauth
 
             <nav class="cyan darken-2">
-                <div class="{{ auth()->check() ? 'sidenav-fixed-layout' : 'container' }}">
+                <div class="{{ isset($sidenav_layout) ? '' : (auth()->check() ? 'sidenav-fixed-layout' : 'container') }}">
                     <div class="nav-wrapper">
                         <a href="{{ route('dashboard') }}" class="brand-logo center">
                             <img alt="{{ config('app.name') }}" src="{{ asset('img/olive_logo-white.svg') }}" />
                         </a>
 
                         @auth
-                            <a href="#" data-target="slide-out" class="sidenav-trigger">
+                            <a href="#" data-target="slide-out" class="sidenav-trigger {{ isset($sidenav_layout) ? 'show-on-medium-and-up' : '' }}">
                                 <i class="material-icons">menu</i>
                             </a>
 
@@ -299,7 +299,7 @@
         </div>
 
         @auth
-            <ul id="slide-out" class="sidenav sidenav-fixed collapsible">
+            <ul id="slide-out" class="sidenav {{ isset($sidenav_layout) ? '' : 'sidenav-fixed' }} collapsible">
                 <li>
                     <div class="user-view">
                         <small class="right">{{ config('system.version') }}</small>
@@ -308,6 +308,8 @@
                         <span class="email grey-text">{{ auth()->user()->email }}</span>
                     </div>
                 </li>
+
+                <li class="divider"></li>
 
                 @if (auth()->user()->root())
                     <!-- sadece yönetici -->
@@ -401,7 +403,6 @@
                             </ul>
                         </div>
                     </li>
-                    <li class="divider"></li>
                     <li>
                         <div class="collapsible-header waves-effect">
                             <i class="material-icons">computer</i>
@@ -443,7 +444,6 @@
                             </ul>
                         </div>
                     </li>
-                    <li class="divider"></li>
                     <li>
                         <a class="waves-effect" href="{{ route('admin.tickets') }}">
                             <i class="material-icons">mail</i>
@@ -451,7 +451,6 @@
                             <span class="badge grey white-text" data-id="ticket-count">0</span>
                         </a>
                     </li>
-                    <li class="divider"></li>
                     <li class="tiny">
                         <a class="waves-effect" href="{{ route('admin.page.list') }}">
                             <i class="material-icons">pages</i>
@@ -536,6 +535,12 @@
                         Çıkış
                     </a>
                 </li>
+                @isset($footer_hide)
+                    <li class="divider"></li>
+                    <li class="copyright">
+                        <p class="grey-text">{{ date('Y') }} © <a href="https://veri.zone/" class="grey-text">Veri Zone</a> Bilişim Teknolojileri ve Danışmanlık Ltd. Şti.</p>
+                    </li>
+                @endisset
             </ul>
         @endauth
 
@@ -543,12 +548,12 @@
             @php
                 $br_count = count($breadcrumb)-1;
             @endphp
-            <nav id="breadcrumb" class="grey lighten-4">
-                <div class="{{ auth()->check() ? 'sidenav-fixed-layout' : '' }}">
+            <nav id="breadcrumb">
+                <div class="{{ isset($sidenav_layout) ? '' : (auth()->check() ? 'sidenav-fixed-layout' : '') }}">
                     <div class="{{ isset($wide) ? 'container container-wide' : 'container' }}">
                         <a href="{{ route('dashboard') }}" class="breadcrumb">Olive</a>
                         @foreach ($breadcrumb as $key => $row)
-                            @if (@$row['link'])
+                            @if (isset($row['link']))
                                 <a href="{{ $row['link'] }}" class="breadcrumb">{{ $row['text'] }}</a>
                             @else
                                 @if ($key == $br_count)
@@ -564,7 +569,7 @@
         @endisset
 
         <main>
-            <div class="{{ auth()->check() ? 'content sidenav-fixed-layout' : 'content' }}">
+            <div class="{{ isset($sidenav_layout) ? 'content' : (auth()->check() ? 'content sidenav-fixed-layout' : 'content') }}">
                 @if (trim($__env->yieldContent('action-bar')))
                     <div class="{{ isset($wide) ? 'container container-wide' : 'container' }}">
                         <div class="action-bar">
@@ -818,75 +823,78 @@
         @endpush
     @endauth
 
-    <div class="@auth{{ @$sidenav_fixed_layout ? 'sidenav-fixed-layout' : '' }}@endauth">
-        <footer class="page-footer cyan darken-2">
-            <div class="{{ isset($wide) ? 'container container-wide' : 'container' }}">
-                <div class="row">
-                    <div class="col l6 s12">
-                        <img id="vz-logo" src="{{ asset('img/veri.zone_logo-white.svg') }}" alt="veri.zone-logo" />
-                        <p class="white-text mb-0">© {{ date('Y') }} Veri Zone Bilişim Teknolojileri ve Danışmanlık Ltd. Şti.</p>
-                        <p class="white-text mb-0">İnönü Mahallesi, 1769. Sk. 1D/1, 06370 Yenimahalle/ANKARA</p>
-                        <!--
-                        <i class="social-icon icon-tumblr">&#xe800;</i>
-                        <i class="social-icon icon-email">&#xe801;</i>
-                        <i class="social-icon icon-youtube">&#xe802;</i>
-                        <i class="social-icon icon-skype">&#xe804;</i>
-                        <i class="social-icon icon-call">&#xe806;</i>
-                        -->
-                        <a href="#" class="btn-flat btn-small btn-floating waves-effect white mt-1">
-                            <i class="social-icon icon-twitter teal-text">&#xe803;</i>
-                        </a>
-                        <a href="#" class="btn-flat btn-small btn-floating waves-effect white mt-1">
-                            <i class="social-icon icon-linkedin teal-text">&#xe805;</i>
-                        </a>
-                        <a href="#" class="btn-flat btn-small btn-floating waves-effect white mt-1">
-                            <i class="social-icon icon-facebook teal-text">&#xe807;</i>
-                        </a>
-                        <a href="#" class="btn-flat btn-small btn-floating waves-effect white mt-1">
-                            <i class="social-icon icon-instagram teal-text">&#xe808;</i>
-                        </a>
-                    </div>
-                    <div class="col l2 offset-l2 s12">
-                        <ul class="mt-0 mb-0">
-                            <li>
-                                <a class="white-text" href="{{ route('page.view', 'hakkimizda') }}">Hakkımızda</a>
-                            </li>
-                            <li>
-                                <a class="white-text" href="{{ route('forum.index') }}">Forum</a>
-                            </li>
-                            <li>
-                                <a class="white-text" href="{{ route('page.view', 'iletisim') }}">İletişim</a>
-                            </li>
-                            <li>
-                                <a class="white-text" href="{{ route('sources') }}">Kaynaklar</a>
-                            </li>
-                            <li>
-                                <a class="white-text" data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" href="#">Api</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col l2 s12">
-                        <ul class="mt-0 mb-0">
-                            <li>
-                                <a class="white-text" href="{{ route('page.view', 'gizlilik-politikasi') }}">Gizlilik Politikası</a>
-                            </li>
-                            <li>
-                                <a class="white-text" href="{{ route('page.view', 'kullanim-kosullari') }}">Kullanım Koşulları</a>
-                            </li>
-                            <li>
-                                <a class="white-text" href="{{ route('page.view', 'cerez-politikasi') }}">Çerez Politikası</a>
-                            </li>
-                        </ul>
+    @isset($footer_hide)
+    @else
+        <div class="{{ isset($sidenav_layout) ? '' : (auth()->check() ? isset($sidenav_fixed_layout) ? 'sidenav-fixed-layout' : '' : '') }}">
+            <footer class="page-footer">
+                <div class="{{ isset($wide) ? 'container container-wide' : 'container' }}">
+                    <div class="row">
+                        <div class="col l6 s12">
+                            <img id="vz-logo" src="{{ asset('img/veri.zone_logo-grey.svg') }}" alt="veri.zone-logo" />
+                            <p class="grey-text mb-0">© {{ date('Y') }} Veri Zone Bilişim Teknolojileri ve Danışmanlık Ltd. Şti.</p>
+                            <p class="grey-text mb-0">İnönü Mahallesi, 1769. Sk. 1D/1, 06370 Yenimahalle/ANKARA</p>
+                            <!--
+                            <i class="social-icon icon-tumblr">&#xe800;</i>
+                            <i class="social-icon icon-email">&#xe801;</i>
+                            <i class="social-icon icon-youtube">&#xe802;</i>
+                            <i class="social-icon icon-skype">&#xe804;</i>
+                            <i class="social-icon icon-call">&#xe806;</i>
+                            -->
+                            <a href="#" class="btn-flat btn-small btn-floating waves-effect cyan darken-2 mt-1">
+                                <i class="social-icon icon-twitter white-text">&#xe803;</i>
+                            </a>
+                            <a href="#" class="btn-flat btn-small btn-floating waves-effect cyan darken-2 mt-1">
+                                <i class="social-icon icon-linkedin white-text">&#xe805;</i>
+                            </a>
+                            <a href="#" class="btn-flat btn-small btn-floating waves-effect cyan darken-2 mt-1">
+                                <i class="social-icon icon-facebook white-text">&#xe807;</i>
+                            </a>
+                            <a href="#" class="btn-flat btn-small btn-floating waves-effect cyan darken-2 mt-1">
+                                <i class="social-icon icon-instagram white-text">&#xe808;</i>
+                            </a>
+                        </div>
+                        <div class="col l2 offset-l2 s12">
+                            <ul class="mt-0 mb-0">
+                                <li>
+                                    <a class="grey-text" href="{{ route('page.view', 'hakkimizda') }}">Hakkımızda</a>
+                                </li>
+                                <li>
+                                    <a class="grey-text" href="{{ route('forum.index') }}">Forum</a>
+                                </li>
+                                <li>
+                                    <a class="grey-text" href="{{ route('page.view', 'iletisim') }}">İletişim</a>
+                                </li>
+                                <li>
+                                    <a class="grey-text" href="{{ route('sources') }}">Kaynaklar</a>
+                                </li>
+                                <li>
+                                    <a class="grey-text" data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" href="#">Api</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col l2 s12">
+                            <ul class="mt-0 mb-0">
+                                <li>
+                                    <a class="grey-text" href="{{ route('page.view', 'gizlilik-politikasi') }}">Gizlilik Politikası</a>
+                                </li>
+                                <li>
+                                    <a class="grey-text" href="{{ route('page.view', 'kullanim-kosullari') }}">Kullanım Koşulları</a>
+                                </li>
+                                <li>
+                                    <a class="grey-text" href="{{ route('page.view', 'cerez-politikasi') }}">Çerez Politikası</a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="footer-copyright mt-1">
-                <div class="{{ isset($wide) ? 'container container-wide' : 'container' }} white-text">
-                    {{ date('Y') }} © <a href="https://veri.zone/" class="white-text">Veri Zone</a> | Tüm hakları saklıdır.
+                <div class="footer-copyright mt-1">
+                    <div class="{{ isset($wide) ? 'container container-wide' : 'container' }} grey-text">
+                        {{ date('Y') }} © <a href="https://veri.zone/" class="grey-text">Veri Zone</a> | Tüm hakları saklıdır.
+                    </div>
                 </div>
-            </div>
-        </footer>
-    </div>
+            </footer>
+        </div>
+    @endisset
 
     <div id="loading">
         <div class="preloader-wrapper big active">

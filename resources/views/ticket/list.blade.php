@@ -179,7 +179,7 @@
                     </p>
                     <p class="grey-text text-darken-2">{{ date('d.m.Y H:i', strtotime($ticket->created_at)) }}</p>
                 </span>
-                <small class="badge ml-auto">{{ $ticket->status == 'open' ? 'AÇIK' : 'KAPALI' }}</small>
+                <span class="ml-auto">{{ $ticket->status == 'open' ? 'AÇIK' : 'KAPALI' }}</span>
             </a>
             @endforeach
         </div>

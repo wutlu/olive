@@ -12,7 +12,8 @@
             'text' => 'Kanal Havuzu'
         ]
     ],
-    'dock' => true
+    'dock' => true,
+    'footer_hide' => true
 ])
 
 @section('content')
