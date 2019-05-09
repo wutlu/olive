@@ -1,4 +1,4 @@
-<div class="collection white z-depth-1">
+<div class="collection">
     <a href="{{ route('admin.youtube.settings') }}" class="collection-item waves-effect {{ $active == 'youtube.settings' ? 'active' : '' }}">YouTube Ayarları</a>
     <a href="{{ route('admin.youtube.indices') }}" class="collection-item waves-effect {{ $active == 'indices' ? 'active' : '' }}">Index Yönetimi</a>
 

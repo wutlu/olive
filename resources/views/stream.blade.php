@@ -620,19 +620,20 @@
     }
 @endpush
 
+@section('action-bar')
+    <a href="#" class="btn-floating halfway-fab waves-effect white" data-trigger="create-keyword-group">
+        <i class="material-icons grey-text text-darken-2">add</i>
+    </a>
+@endsection
+
 @section('dock')
-    <div class="card with-bg mb-1">
+    <div class="card card-unstyled mb-1">
         <div class="card-content">
             <span class="card-title d-flex">
                 <i class="material-icons align-self-center mr-1">speaker_notes</i>
                 Kelime Grupları
             </span>
             <span data-name="keyword-group-count">0</span> / <span data-name="keyword-group-limit">0</span>
-        </div>
-        <div class="card-image">
-            <a href="#" class="btn-floating btn-small halfway-fab waves-effect white" data-trigger="create-keyword-group">
-                <i class="material-icons grey-text text-darken-2">add</i>
-            </a>
         </div>
         <ul class="collection load" 
              id="keyword-groups"
@@ -643,15 +644,15 @@
              data-nothing>
             <li class="collection-item nothing hide grey-text">Henüz kelime grubu oluşturmadınız.</li>
             <li class="collection-item model hide justify-content-between">
-                <span data-name="name" class="align-self-center mr-auto"></span>
                 <div class="switch align-self-center">
                     <label>
                         <input type="checkbox" name="keyword_group" data-multiple="true" />
                         <span class="lever"></span>
                     </label>
                 </div>
+                <span data-name="name" class="align-self-center mr-auto"></span>
                 <a
-                    class="btn-floating btn-small waves-effect json align-self-center white"
+                    class="json align-self-center"
                     data-href="{{ route('realtime.keyword.group') }}"
                     data-method="post"
                     data-callback="__get_keyword_group"
