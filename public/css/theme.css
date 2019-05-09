@@ -1126,12 +1126,6 @@ body.fs-active .fullscreen > .fs-container > .card {
   -webkit-transition: all 200ms cubic-bezier(.25, .46, .45, .94);
           transition: all 200ms cubic-bezier(.25, .46, .45, .94);
 }
-body.fs-active .fullscreen > .fs-container > .card:hover {
-  min-width: 40%;
-
-  -webkit-transition-delay: .4s; 
-          transition-delay: .4s; 
-}
 
 @media only screen and (max-width: 992px) {
   body.fs-active .fullscreen > .fs-container > .card {
