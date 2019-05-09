@@ -178,11 +178,6 @@ class ContentController extends Controller
                                     'must' => $user
                                 ]
                             ],
-                            'aggs' => [
-                                'positive' => [ 'avg' => [ 'field' => 'sentiment.pos' ] ],
-                                'neutral' => [ 'avg' => [ 'field' => 'sentiment.neu' ] ],
-                                'negative' => [ 'avg' => [ 'field' => 'sentiment.neg' ] ]
-                            ],
                             'size' => 0
                         ]),
                         'retweet' => Document::count([ 'twitter', 'tweets', '*' ], 'tweet', [
@@ -375,11 +370,6 @@ class ContentController extends Controller
                                     'must' => $channel
                                 ]
                             ],
-                            'aggs' => [
-                                'positive' => [ 'avg' => [ 'field' => 'sentiment.pos' ] ],
-                                'neutral' => [ 'avg' => [ 'field' => 'sentiment.neu' ] ],
-                                'negative' => [ 'avg' => [ 'field' => 'sentiment.neg' ] ]
-                            ],
                             'size' => 0
                         ]),
                         'video_index' => Indices::name([ 'youtube', 'videos' ])
@@ -410,9 +400,6 @@ class ContentController extends Controller
                                 ]
                             ],
                             'aggs' => [
-                                'positive' => [ 'avg' => [ 'field' => 'sentiment.pos' ] ],
-                                'neutral' => [ 'avg' => [ 'field' => 'sentiment.neu' ] ],
-                                'negative' => [ 'avg' => [ 'field' => 'sentiment.neg' ] ],
                                 'popular_keywords' => [
                                     'terms' => [
                                         'field' => 'description',
