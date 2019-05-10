@@ -53,7 +53,6 @@
     </div>
 
     @forelse ($pins as $pin)
-
         @php
         $document = $pin->document();
         @endphp
@@ -87,7 +86,7 @@
                 @endif
             </ul>
 
-            <div class="card card-data {{ $type }} hoverable" data-id="card-{{ $id }}">
+            <div class="card card-data {{ $type }} hoverable mb-1" data-id="card-{{ $id }}">
                 <div class="card-content">
                     <span class="card-title">
                         {{ $type }}
