@@ -59,9 +59,9 @@ class User extends Authenticatable
     # online
     public function online()
     {
-        $session = Session::where('id', $this->session_id)->first();
+        $session = Session::where('user_id', $this->id)->first();
 
-        return @$session ? (date('Y-m-d H:i:s', strtotime($session->last_activity)) >= date('Y-m-d H:i:s', strtotime('-2 minutes'))) : false;
+        return @$session ? (date('Y-m-d H:i:s', strtotime($session->last_activity)) >= date('Y-m-d H:i:s', strtotime('-1 minutes'))) : false;
     }
 
     # rozet ekle
