@@ -8,6 +8,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta http-equiv="content-language" content="tr" />
 
+    <meta name="robots" content="noindex" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, shring-to-fit=no, user-scalable=no" />
 
     @isset($breadcrumb)
