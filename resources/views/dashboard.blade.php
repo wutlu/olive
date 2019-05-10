@@ -136,29 +136,87 @@
                 <div class="card">
                     <a class="card-content card-content-image d-flex justify-content-between waves-effect" href="{{ route('settings.organisation') }}">
                         <span>
-                            <span class="card-title">{{ $user->organisation->name }}</span>
-                            <p class="grey-text">{{ count($user->organisation->users) }} / {{ $user->organisation->user_capacity }} kullanıcı</p>
-                            @if ($user->id == $user->organisation->user_id)
-                                @if ($user->organisation->status)
-                                    <p class="grey-text">{{ $user->organisation->days() }} gün kaldı</p>
-                                @else
-                                    <p class="red-text">Pasif</p>
-                                @endif
-                            @endif
+                            <span class="card-title" data-name="organisation-name">-</span>
+                            <p class="grey-text mb-0" data-name="organisation-capacity">0 / 0</p>
+                            <p class="grey-text mb-0" data-name="organisation-status">-</p>
                         </span>
                         <i class="material-icons">settings</i>
                     </a>
-                    <ul class="collection">
-                        @foreach ($user->organisation->users as $u)
-                        <li class="collection-item avatar">
-                            <img src="{{ $u->avatar() }}" alt="" class="circle">
-                            <span class="title">{{ $u->name }}</span>
-                            <p class="grey-text">{{ $u->email }}</p>
-                            <p class="grey-text">{{ $u->id == $user->organisation->user_id ? 'Organizasyon Sahibi' : 'Kullanıcı' }}</p>
+                    <ul class="collection load hide"
+                         id="collections"
+                         data-href="{{ route('dashboard.organisation') }}"
+                         data-callback="__organisation"
+                         data-method="post"
+                         data-loader="#organisation-loader">
+                        <li class="collection-item avatar hide model user-status">
+                            <img alt="" class="circle" data-name="avatar" />
+                            <span class="title" data-name="name"></span>
+                            <p class="grey-text" data-name="e-mail"></p>
+                            <p class="grey-text" data-name="title"></p>
                         </li>
-                        @endforeach
                     </ul>
+                    @component('components.loader')
+                        @slot('color', 'cyan')
+                        @slot('id', 'organisation-loader')
+                        @slot('class', 'card-loader-unstyled')
+                    @endcomponent
                 </div>
+
+                @push('local.styles')
+                    .user-status.online {
+                        -webkit-box-shadow: inset -.4rem 0 0 0 #64dd17;
+                                box-shadow: inset -.4rem 0 0 0 #64dd17;
+                    }
+                    .user-status.offline {
+                        -webkit-box-shadow: inset -.4rem 0 0 0 #f44336;
+                                box-shadow: inset -.4rem 0 0 0 #f44336;
+                    }
+                @endpush
+
+                @push('local.scripts')
+                    var usersTimer;
+
+                    function __organisation(__, obj)
+                    {
+                        var item_model = __.children('.model');
+
+                        if (obj.status == 'ok')
+                        {
+                            __.removeClass('hide')
+
+                            $('[data-name=organisation-name]').html(obj.organisation.name)
+                            $('[data-name=organisation-capacity]').html(obj.users.length + ' / ' + obj.organisation.user_capacity)
+                            $('[data-name=organisation-status]').html(obj.organisation.status ? obj.organisation.days + ' gün kaldı' : 'Pasif').addClass(obj.organisation.status ? '' : 'red-text')
+
+                            if (obj.users.length)
+                            {
+                                $.each(obj.users, function(key, o) {
+                                    var selector = $('[data-id=' + o.id + '].collection-item'),
+
+                                        item = selector.length ? selector : item_model.clone();
+
+                                        item.removeClass('model hide online offline')
+                                            .addClass('_tmp')
+                                            .addClass(o.online ? 'online' : 'offline')
+                                            .attr('data-id', o.id)
+
+                                        item.find('[data-name=avatar]').attr('src', o.avatar)
+                                        item.find('[data-name=name]').html(o.name)
+                                        item.find('[data-name=e-mail]').html(o.email)
+                                        item.find('[data-name=title]').html(obj.organisation.author == o.id ? 'Organizasyon Yöneticisi' : 'Kullanıcı')
+
+                                        item.appendTo(__)
+                                })
+                            }
+                        }
+
+                        window.clearTimeout(usersTimer)
+
+                        usersTimer = window.setTimeout(function() {
+                            vzAjax(__)
+                        }, 1000)
+                    }
+                @endpush
             @else
                 <div class="card mb-1">
                     <div class="card-image">

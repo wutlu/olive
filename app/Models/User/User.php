@@ -7,7 +7,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 use App\Utilities\UserActivityUtility;
 use App\Notifications\MessageNotification;
+
 use System;
+use App\Models\Session;
 
 class User extends Authenticatable
 {
@@ -52,6 +54,14 @@ class User extends Authenticatable
     public function avatar()
     {
         return asset($this->avatar ? $this->avatar : 'img/icons/people.png');
+    }
+
+    # online
+    public function online()
+    {
+        $session = Session::where('id', $this->session_id)->first();
+
+        return @$session ? (date('Y-m-d H:i:s', strtotime($session->last_activity)) >= date('Y-m-d H:i:s', strtotime('-2 minutes'))) : false;
     }
 
     # rozet ekle
@@ -113,6 +123,12 @@ class User extends Authenticatable
     public function badges()
     {
         return $this->hasMany('App\Models\User\Badge', 'user_id', 'id');
+    }
+
+    # oturum
+    public function session()
+    {
+        return $this->hasOne('App\Models\Session', 'id', 'session_id');
     }
 
     # forum mesajları

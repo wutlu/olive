@@ -37,6 +37,7 @@ class HomeController extends Controller
          */
         $this->middleware('auth')->only([
             'dashboard',
+            'organisation',
             'activity',
             'intro',
             'alert',
@@ -197,17 +198,49 @@ class HomeController extends Controller
     /**
      * Portal Ana Sayfası
      *
-     * @return json
+     * @return view
      */
     public static function dashboard()
     {
-        $user = auth()->user();
-        $organisation = $user->organisation;
-
         $carousels = Carousel::where('carousel', true)->orderBy('updated_at', 'DESC')->get();
         $modals = Carousel::where('modal', true)->orderBy('updated_at', 'DESC')->get();
 
-        return view('dashboard', compact('user', 'carousels', 'modals'));
+        return view('dashboard', compact('carousels', 'modals'));
+    }
+
+    /**
+     * Portal, Organizasyon Bilgileri
+     *
+     * @return json
+     */
+    public static function organisation()
+    {
+        $organisation = auth()->user()->organisation;
+
+        $users = [];
+
+        foreach ($organisation->users as $user)
+        {
+            $users[] = [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'avatar' => $user->avatar(),
+                'online' => $user->online()
+            ];
+        }
+
+        return [
+            'status' => 'ok',
+            'users' => $users,
+            'organisation' => [
+                'name' => $organisation->name,
+                'user_capacity' => $organisation->user_capacity,
+                'days' => $organisation->days(),
+                'status' => $organisation->status,
+                'author' => $organisation->user_id,
+            ]
+        ];
     }
 
     /**
