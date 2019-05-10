@@ -470,26 +470,20 @@
     <div class="card with-bg">
         @auth
             @if (auth()->user()->root())
-                <div class="card-content cyan darken-2">
-                    <span class="card-title white-text">
-                        Kategoriler
-                    </span>
+                <div class="card-content">
+                    <span class="card-title">Kategoriler</span>
                 </div>
 
                 <div class="card-image">
-                    <a href="#" class="btn-floating btn-small halfway-fab waves-effect white" data-trigger="create-cat">
+                    <a href="#" class="btn-floating halfway-fab waves-effect white" data-trigger="create-cat">
                         <i class="material-icons grey-text text-darken-2">add</i>
                     </a>
-                </div>
-
-                <div class="card-content">
-                    <p class="red-text">Bu alan sadece root yetkisine sahip kullanıcılarda görünür.</p>
                 </div>
             @endif
         @endauth
 
         <div class="card-tabs">
-            <ul class="tabs tabs-transparent tabs-fixed-width cyan darken-2">
+            <ul class="tabs tabs-fixed-width">
                 <li class="tab ">
                     <a href="#categories" class="active">Kategori</a>
                 </li>

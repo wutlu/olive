@@ -29,7 +29,7 @@
                     var selector = $('[data-id=' + o.id + '].collection-item');
                     var item = selector.length ? selector : item_model.clone();
 
-                        item.removeClass('model hide').addClass('_tmp d-flex').attr('data-id', o.id)
+                        item.removeClass('model hide').addClass('_tmp').attr('data-id', o.id)
 
                         item.find('[data-name=trigger]').attr('data-id', o.id)
                         item.find('[data-name=title]').html(o.title)
@@ -376,9 +376,6 @@
                 <i class="material-icons grey-text text-darken-2">add</i>
             </a>
         </div>
-        <div class="card-content">
-            <span data-name="count" class="grey-text text-darken-2">0</span>
-        </div>
         <ul class="collection load" 
              id="collections"
              data-href="{{ route('admin.carousels.json') }}"
@@ -387,22 +384,26 @@
              data-loader="#home-loader"
              data-nothing>
             <li class="collection-item nothing hide">
-                @component('components.nothing')@endcomponent
+                @component('components.nothing')
+                    @slot('size', 'small')
+                @endcomponent
             </li>
-            <li class="collection-item model hide justify-content-between">
-                <div>
-                    <p data-name="title" class="mb-0"></p>
-                    <time data-name="created-at" class="timeago grey-text"></time>
+            <li class="collection-item model hide">
+                <div class="d-flex justify-content-between">
+                    <span class="align-self-center">
+                        <p data-name="title" class="mb-0"></p>
+                        <time data-name="created-at" class="timeago grey-text"></time>
+                    </span>
+                    <a
+                        href="#"
+                        class="btn-flat waves-effect json align-self-center"
+                        data-href="{{ route('admin.carousel') }}"
+                        data-method="post"
+                        data-callback="__get"
+                        data-name="trigger">
+                        <i class="material-icons">create</i>
+                    </a>
                 </div>
-                <a
-                    href="#"
-                    class="btn-flat waves-effect ml-auto json"
-                    data-href="{{ route('admin.carousel') }}"
-                    data-method="post"
-                    data-callback="__get"
-                    data-name="trigger">
-                    <i class="material-icons">create</i>
-                </a>
             </li>
         </ul>
 

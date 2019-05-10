@@ -25,16 +25,6 @@
         background-position: top right;
         background-size: contain;
         background-attachment: scroll;
-        color: #fff;
-    }
-
-    .pricing-section {
-        padding: 100px 0;
-        background-image: url('{{ asset('img/bg-2.svg') }}');
-        background-repeat: no-repeat;
-        background-position: center center;
-        background-size: cover;
-        background-attachment: scroll;
     }
 
     .y-section {
@@ -466,118 +456,30 @@
         }
     @endpush
 
-    @push('local.styles')
-        .packages {
-            width: 100%;
-            padding: 2rem;
-        }
-        .packages > li {
-            background-repeat: no-repeat;
-            background-position: top right;
-            background-size: 128px 128px;
-
-            padding: 4rem;
-        }
-        .packages > li.starter {
-            background-image: url('{{ asset('img/icons/pack/starter.svg') }}');
-        }
-        .packages > li.pro {
-            background-image: url('{{ asset('img/icons/pack/pro.svg') }}');
-        }
-        .packages > li.enterprise {
-            background-image: url('{{ asset('img/icons/pack/enterprise.svg') }}');
-        }
-        .packages > li h4 {
-            font-size: 24px;
-            margin: 0 64px 24px;
-        }
-        .packages > li span.price {
-            font-size: 20px;
-        }
-    @endpush
-
-    <section class="pricing-section">
-        <div class="container">
-            <h2>Planlar</h2>
-
-            <ul class="d-flex flex-wrap justify-content-center packages">
-                @foreach([
-                    'starter' => [
-                        'title' => 'Başlangıç',
-                        'details' => [
-                            'Kullanıcı' => 1,
-                            'Gerçek Zamanlı Akış' => '1 grup',
-                            'Alarm' => 1,
-                            'Pin Grubu' => 1,
-                            'Arşiv' => '7 Gün',
-                        ],
-                        'price' => config('formal.currency').' 196 +kdv / ay'
-                    ],
-                    'pro' => [
-                        'title' => 'Profesyonel',
-                        'details' => [
-                            'Kullanıcı' => 2,
-                            'Gerçek Zamanlı Akış' => '2 grup',
-                            'Alarm' => 2,
-                            'Pin Grubu' => 2,
-                            'Arşiv' => '30 Gün',
-                            'Canlı Trend' => '7/24',
-                            'Analiz' => '+',
-                            'Destek' => '7/24',
-                        ],
-                        'price' => config('formal.currency').' 424 +kdv / ay'
-                    ],
-                    'enterprise' => [
-                        'title' => 'Kurumsal',
-                        'details' => [
-                            'Kullanıcı' => '+',
-                            'Gerçek Zamanlı Akış' => '+',
-                            'Alarm' => '+',
-                            'Pin Grubu' => '+',
-                            'Arşiv' => '+',
-                            'Canlı Trend' => '7/24',
-                            'Analiz' => '+',
-                            'Destek' => '7/24',
-                        ],
-                        'price' => 'Teklif Alın'
-                    ]
-                ] as $key => $item)
-                    <li class="flex-fill {{ $key }} right-align">
-                        <h4 class="cyan-text">{{ $item['title'] }}</h4>
-                        @foreach ($item['details'] as $k => $v)
-                            <p class="grey-text text-darken-2">{{ $k }} <span class="cyan-text text-darken-4">{{ $v }}</span></p>
-                        @endforeach
-                        <span class="price cyan-text">{{ $item['price'] }}</span>
-                    </li>
-                @endforeach
-            </ul>
-        </div>
-    </section>
-
-    <section class="demo-section cyan darken-2">
+    <section class="demo-section">
         <div class="container">
             <h2>Demo İsteyin</h2>
             <form id="demo-form" method="post" action="{{ route('demo.request') }}" class="json" data-callback="__demo_request">
                 <div class="row">
                     <div class="col m12 l5">
-                        <div class="input-field white-text">
+                        <div class="input-field">
                             <i class="material-icons prefix">account_circle</i>
                             <input id="icon_prefix" name="name" type="text" class="validate" />
                             <label for="icon_prefix">Firma / Kurum</label>
                         </div>
                     </div>
                     <div class="col m12 l5">
-                        <div class="input-field white-text">
+                        <div class="input-field">
                             <i class="material-icons prefix">phone</i>
                             <input id="icon_telephone" name="phone" type="text" class="validate" />
                             <label for="icon_telephone">Telefon</label>
                         </div>
                     </div>
                     <div class="col m12 l2">
-                        <div class="input-field white-text">
+                        <div class="input-field">
                             <div class="captcha" data-id="demo-captcha"></div>
                         </div>
-                        <button type="submit" class="btn-flat waves-effect white-text">Gönder</button>
+                        <button type="submit" class="btn-flat waves-effect">Gönder</button>
                     </div>
                 </div>
             </form>
