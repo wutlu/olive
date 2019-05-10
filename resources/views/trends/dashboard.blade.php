@@ -106,7 +106,7 @@
 @endpush
 
 @section('dock')
-    <div class="card mb-1">
+    <div class="card card-unstyled mb-1">
         <div
             class="collection load"
             data-method="post"
@@ -144,7 +144,7 @@
             @endif
         </div>
     </div>
-    <div class="card">
+    <div class="card card-unstyled">
         <ul class="collection">
             <li class="collection-item">
                 <small class="d-block grey-text">Toplam Trend Sayısı</small>

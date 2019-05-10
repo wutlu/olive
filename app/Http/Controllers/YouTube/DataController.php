@@ -56,14 +56,24 @@ class DataController extends Controller
      *
      * @return array
      */
-    public function keywordListJson(int $skip = 0, int $take = 100)
+    public function keywordListJson(SearchRequest $request)
     {
-        $query = FollowingKeywords::where('organisation_id', auth()->user()->organisation_id)->skip($skip)->take($take)->orderBy('updated_at', 'ASC');
+        $query = new FollowingKeywords;
+        $query = $query->where('organisation_id', auth()->user()->organisation_id);
+        $query = $request->string ? $query->where(function($query) use ($request) {
+            $query->orWhere('keyword', 'ILIKE', '%'.$request->string.'%');
+        }) : $query;
+
+        $total = $query->count();
+
+        $query = $query->skip($request->skip)
+                       ->take($request->take)
+                       ->orderBy('id', 'DESC');
 
         return [
             'status' => 'ok',
             'hits' => $query->get(),
-            'total' => $query->count()
+            'total' => $total
         ];
     }
 
@@ -75,7 +85,7 @@ class DataController extends Controller
     public function keywordCreate(CreateKeywordRequest $request)
     {
         $query = new FollowingKeywords;
-        $query->keyword = $request->keyword;
+        $query->keyword = $request->string;
         $query->organisation_id = auth()->user()->organisation_id;
         $query->save();
 
@@ -122,14 +132,25 @@ class DataController extends Controller
      *
      * @return array
      */
-    public function channelListJson(int $skip = 0, int $take = 100)
+    public function channelListJson(SearchRequest $request)
     {
-        $query = FollowingChannels::where('organisation_id', auth()->user()->organisation_id)->skip($skip)->take($take)->orderBy('updated_at', 'ASC');
+        $query = new FollowingChannels;
+        $query = $query->where('organisation_id', auth()->user()->organisation_id);
+        $query = $request->string ? $query->where(function($query)  use ($request) {
+            $query->orWhere('channel_title', 'ILIKE', '%'.$request->string.'%');
+            $query->orWhere('channel_id', 'ILIKE', '%'.$request->string.'%');
+        }) : $query;
+
+        $total = $query->count();
+
+        $query = $query->skip($request->skip)
+                       ->take($request->take)
+                       ->orderBy('id', 'DESC');
 
         return [
             'status' => 'ok',
             'hits' => $query->get(),
-            'total' => $query->count()
+            'total' => $total
         ];
     }
 
@@ -150,7 +171,10 @@ class DataController extends Controller
         $query->save();
 
         return [
-            'status' => 'ok'
+            'status' => 'ok',
+            'data' => [
+                'channel_id' => $query->channel_id
+            ]
         ];
     }
 
@@ -188,14 +212,25 @@ class DataController extends Controller
      *
      * @return array
      */
-    public function videoListJson(int $skip = 0, int $take = 100)
+    public function videoListJson(SearchRequest $request)
     {
-        $query = FollowingVideos::where('organisation_id', auth()->user()->organisation_id)->skip($skip)->take($take)->orderBy('updated_at', 'ASC');
+        $query = new FollowingVideos;
+        $query = $query->where('organisation_id', auth()->user()->organisation_id);
+        $query = $request->string ? $query->where(function($query) use ($request) {
+            $query->orWhere('video_title', 'ILIKE', '%'.$request->string.'%');
+            $query->orWhere('video_id', 'ILIKE', '%'.$request->string.'%');
+        }) : $query;
+
+        $total = $query->count();
+
+        $query = $query->skip($request->skip)
+                       ->take($request->take)
+                       ->orderBy('id', 'DESC');
 
         return [
             'status' => 'ok',
             'hits' => $query->get(),
-            'total' => $query->count()
+            'total' => $total
         ];
     }
 
@@ -215,7 +250,10 @@ class DataController extends Controller
         $query->save();
 
         return [
-            'status' => 'ok'
+            'status' => 'ok',
+            'data' => [
+                'channel_id' => $query->video_id
+            ]
         ];
     }
 

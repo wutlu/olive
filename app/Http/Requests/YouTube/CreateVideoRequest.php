@@ -79,7 +79,7 @@ class CreateVideoRequest extends FormRequest
         });
 
         return [
-            'video_url' => 'required|bail|active_url|limit|youtube_video'
+            'string' => 'required|bail|active_url|limit|youtube_video'
         ];
     }
 }

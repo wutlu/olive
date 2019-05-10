@@ -17,7 +17,7 @@
         border-radius: .2rem;
     }
 
-    #string {
+    input[name=string] {
         margin: 0;
         padding: 1rem;
 

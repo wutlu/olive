@@ -48,8 +48,6 @@
 
                         item.appendTo(ul)
                 })
-
-                $('[data-tooltip]').tooltip()
             }
         }
     }
@@ -133,7 +131,7 @@
 @section('dock')
     @include('crawlers.media._menu', [ 'active' => 'list' ])
 
-    <div class="card mb-1">
+    <div class="card card-unstyled mb-1">
         <div class="card-content">
             <span class="card-title d-flex">
                 <i class="material-icons mr-1">filter_list</i>
@@ -156,7 +154,7 @@
         </div>
     </div>
 
-    <div class="card">
+    <div class="card card-unstyled">
         <div class="card-content">
             <span class="card-title d-flex">
                 <i class="material-icons mr-1">sort_by_alpha</i>

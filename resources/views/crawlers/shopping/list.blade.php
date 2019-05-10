@@ -46,8 +46,6 @@
 
                         item.appendTo(ul)
                 })
-
-                $('[data-tooltip]').tooltip()
             }
         }
     }

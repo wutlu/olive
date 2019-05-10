@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 
-use App\Http\Requests\SearchRequest;
 use App\Http\Requests\SetRequest;
 
 use Carbon\Carbon;

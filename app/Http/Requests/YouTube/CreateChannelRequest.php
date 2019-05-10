@@ -91,7 +91,7 @@ class CreateChannelRequest extends FormRequest
         });
 
         return [
-            'channel_url' => 'required|bail|active_url|limit|youtube_channel'
+            'string' => 'required|bail|active_url|limit|youtube_channel'
         ];
     }
 }

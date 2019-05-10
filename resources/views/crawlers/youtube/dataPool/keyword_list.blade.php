@@ -29,15 +29,16 @@
         @endif
         <div class="card-content">
             <span class="card-title">Takip Edilen Kelimeler</span>
+            <span data-name="count" class="grey-text text-darken-2">0</span>
         </div>
-        <nav class="nav-half">
+        <nav class="nav-half mb-0">
             <div class="nav-wrapper">
                 <div class="input-field">
                     <input id="string"
                            name="string"
                            type="search"
                            class="validate json json-search"
-                           data-json-target="#keywords"
+                           data-json-target="#collections"
                            placeholder="Ara"
                            value="{{ $organisation ? '@'.@$organisation->name : '' }}" />
                     <label class="label-icon" for="string">
@@ -47,31 +48,32 @@
             </div>
         </nav>
         <div class="collection load json-clear" 
-             id="keywords"
+             id="collections"
              data-href="{{ route('admin.youtube.followed_keywords') }}"
              data-skip="0"
              data-take="5"
              data-include="string"
-             data-more-button="#keywords-more_button"
-             data-callback="__keywords"
+             data-more-button="#more_button"
+             data-callback="__collection"
              data-method="post"
              data-loader="#home-loader"
              data-nothing>
             <div class="collection-item nothing hide">
-                @component('components.nothing')@endcomponent
+                @component('components.nothing')
+                    @slot('size', 'small')
+                @endcomponent
             </div>
             <a
                 href="#"
                 class="collection-item model hide waves-effect justify-content-between"
                 data-trigger="textarea">
                 <span class="align-self-center">
-                    <p data-name="keyword"></p>
-                    <p data-name="reason"></p>
+                    <p class="mb-0" data-name="keyword"></p>
+                    <p class="mb-0" data-name="reason"></p>
                 </span>
                 <span class="d-flex flex-column align-items-end">
-                    <span data-name="follower" class="grey-text"></span>
-                    <small data-name="hit" class="grey-text"></small>
                     <time data-name="created-at" class="timeago grey-text"></time>
+                    <span data-name="follower" class="grey-text"></span>
                 </span>
             </a>
         </div>
@@ -85,8 +87,8 @@
 
     <a href="#"
        class="more hide json"
-       id="keywords-more_button"
-       data-json-target="#keywords">Daha Fazla</a>
+       id="more_button"
+       data-json-target="#collections">Daha Fazla</a>
 @endsection
 
 @section('dock')
@@ -94,10 +96,9 @@
 @endsection
 
 @push('local.scripts')
-    function __keywords(__, obj)
+    function __collection(__, obj)
     {
-        var ul = $('#keywords');
-        var item_model = ul.children('.model');
+        var item_model = __.children('.model');
 
         if (obj.status == 'ok')
         {
@@ -113,15 +114,16 @@
                             .attr('data-name', o.keyword)
 
                         item.find('[data-name=created-at]').attr('data-time', o.created_at)
-                        item.find('[data-name=hit]').html(o.hit + ' kontrol')
 
                         item.find('[data-name=keyword]').html(o.keyword)
                         item.find('[data-name=follower]').html(o.organisation.name)
-                        item.find('[data-name=reason]').html(o.reason ? o.reason : '-').removeClass('green-text red-text').addClass(o.reason ? 'red-text' : 'green-text')
+                        item.find('[data-name=reason]').html(o.reason ? o.reason : '').removeClass('hide red-text').addClass(o.reason ? 'red-text' : 'hide')
 
-                        item.appendTo(ul)
+                        item.appendTo(__)
                 })
             }
+
+            $('[data-name=count]').html(obj.total)
         }
     }
 
@@ -133,9 +135,9 @@
 
             var el = $('[data-name=' + obj.data.keyword + ']');
                 el.find('[data-name=reason]')
-                  .html(obj.data.reason ? obj.data.reason : '-')
-                  .removeClass('green-text red-text')
-                  .addClass(obj.data.reason ? 'red-text' : 'green-text')
+                  .html(obj.data.reason ? obj.data.reason : '')
+                  .removeClass('hide red-text')
+                  .addClass(obj.data.reason ? 'red-text' : 'hide')
         }
     }
 

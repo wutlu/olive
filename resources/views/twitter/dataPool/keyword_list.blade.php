@@ -20,39 +20,50 @@
     <div class="card with-bg">
         <div class="card-content">
             <span class="card-title">Kelime Havuzu</span>
-            <p class="grey-text text-darken-2" data-name="count"></p>
+            <span data-name="count" class="grey-text text-darken-2">0 / 0</span>
         </div>
-        <div class="collection mb-0 load"
+
+        <nav class="nav-half mb-0">
+            <div class="nav-wrapper">
+                <div class="input-field">
+                    <input id="string"
+                           name="string"
+                           type="search"
+                           class="validate json json-search"
+                           data-json-target="#collections"
+                           placeholder="Ara" />
+                    <label class="label-icon" for="string">
+                        <i class="material-icons">search</i>
+                    </label>
+                </div>
+            </div>
+        </nav>
+
+        <div class="collection load json-clear" 
              id="collections"
              data-href="{{ route('twitter.keyword.list') }}"
+             data-skip="0"
+             data-take="15"
+             data-include="string"
+             data-more-button="#more_button"
              data-callback="__collections"
              data-method="post"
              data-loader="#home-loader"
              data-nothing>
             <div class="collection-item nothing hide">
-                @component('components.nothing')@endcomponent
+                @component('components.nothing')
+                    @slot('size', 'small')
+                @endcomponent
             </div>
-            <a href="#" class="collection-item model hide waves-effect justify-content-between" data-trigger="delete">
-                <span class="align-self-center">
-                    <p data-name="title"></p>
-                    <p data-name="reason"></p>
-                </span>
-                <time class="timeago grey-text right-align" data-name="created-at"></time>
-            </a>
-        </div>
-        <div class="card-content">
-            <form
-                id="collection-form"
-                method="put"
-                action="{{ route('twitter.keyword.create') }}"
-                data-callback="__create"
-                class="json">
-                <div class="input-field">
-                    <input id="keyword" name="keyword" type="text" class="validate" />
-                    <label for="keyword">Kelime Ekleyin</label>
-                    <span class="helper-text">Örnek: "veri.zone, bankacalıkta kampanya"</span>
+            <a href="#" class="collection-item model hide" data-trigger="delete">
+                <div class="d-flex justify-content-between">
+                    <span>
+                        <p data-name="title" class="mb-0"></p>
+                        <p data-name="reason" class="mb-0"></p>
+                    </span>
+                    <time class="timeago grey-text" data-name="created-at"></time>
                 </div>
-            </form>
+            </a>
         </div>
 
         @component('components.loader')
@@ -61,10 +72,22 @@
             @slot('class', 'card-loader-unstyled')
         @endcomponent
     </div>
+
+    <a href="#"
+       class="more hide json"
+       id="more_button"
+       data-json-target="#collections">Daha Fazla</a>
 @endsection
 
 @section('dock')
 	@include('dataPool._menu', [ 'active' => 'twitter.keywords' ])
+
+    <div class="p-1">
+        <label>
+            <input name="saver" type="checkbox" value="on" />
+            <span>Enter tuşu ile aramadaki kelimeyi kaydet.</span>
+        </label>
+    </div>
 @endsection
 
 @push('local.scripts')
@@ -97,6 +120,15 @@
                     })
                 ]
             })
+    }).on('keyup', 'input[name=string]', function(e) {
+        if (e.keyCode == 13 && $('input[name=saver]').is(':checked'))
+        {
+            vzAjax($('<div />', {
+                'data-include': 'string',
+                'data-method': 'put',
+                'data-href': '{{ route('twitter.keyword.create') }}'
+            }))
+        }
     })
 
     function __delete(__, obj)
@@ -104,70 +136,42 @@
         if (obj.status == 'ok')
         {
             $('#modal-delete').modal('close')
-            $('[data-id=' + obj.data.id + ']').remove()
-        }
-    }
 
-    var collection_timer;
+            var search = $('#collections');
+                search.data('skip', 0).addClass('json-clear');
 
-    function __create(__, obj)
-    {
-        if (obj.status == 'ok')
-        {
-            __.find('#keyword').val('')
-
-            window.clearTimeout(collection_timer)
-
-            vzAjax($('#collections'))
-
-            collection_timer = window.setTimeout(function() {
-                vzAjax($('#collections'))
-            }, 10000)
+            vzAjax(search)
         }
     }
 
     function __collections(__, obj)
     {
-        var ul = $('#collections');
-        var item_model = ul.children('.model');
+        var item_model = __.children('.model');
 
         if (obj.status == 'ok')
         {
+            item_model.addClass('hide')
+
             if (obj.hits.length)
             {
                 $.each(obj.hits, function(key, o) {
-                    var selector = $('[data-id=' + o.id + '].collection-item'),
-
-                        item = selector.length ? selector : item_model.clone();
+                    var item = item_model.clone();
 
                         item.removeClass('model hide')
-                            .addClass('_tmp d-flex')
+                            .addClass('_tmp')
                             .attr('data-id', o.id)
+                            .attr('data-name', o.keyword)
 
                         item.find('[data-name=created-at]').attr('data-time', o.created_at)
 
                         item.find('[data-name=title]').html(o.keyword)
-                        item.find('[data-name=reason]')
-                        	.html(o.reason ? o.reason : '-')
-                        	.removeClass('green-text red-text')
-                        	.addClass(o.reason ? 'red-text' : 'green-text')
+                        item.find('[data-name=reason]').html(o.reason ? o.reason : '').addClass(o.reason ? 'red-text' : 'hide')
 
-                        if (!selector.length)
-                        {
-                            item.appendTo(ul)
-                        }
+                        item.appendTo(__)
                 })
-
-                $('[data-tooltip]').tooltip()
             }
 
             $('[data-name=count]').html(obj.total + ' / {{ auth()->user()->organisation->data_pool_twitter_keyword_limit }}')
         }
-
-        window.clearTimeout(collection_timer)
-
-        collection_timer = window.setTimeout(function() {
-            vzAjax($('#collections'))
-        }, 10000)
     }
 @endpush

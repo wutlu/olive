@@ -300,7 +300,7 @@
             ],
             'options': {}
         })
-    }).on('keyup', '#string', function(e) {
+    }).on('keyup', 'input[name=string]', function(e) {
         if (e.keyCode == 13 && $('input[name=saver]').is(':checked'))
         {
             vzAjax($('<div />', {

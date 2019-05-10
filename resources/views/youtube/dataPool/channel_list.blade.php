@@ -22,82 +22,112 @@
             <span class="card-title">Kanal Havuzu</span>
             <p class="grey-text text-darken-2" data-name="count"></p>
         </div>
+
+        <nav class="nav-half mb-0">
+            <div class="nav-wrapper">
+                <div class="input-field">
+                    <input id="string"
+                           name="string"
+                           type="search"
+                           class="validate json json-search"
+                           data-json-target="#collections"
+                           placeholder="Ara" />
+                    <label class="label-icon" for="string">
+                        <i class="material-icons">search</i>
+                    </label>
+                </div>
+            </div>
+        </nav>
+
         <div class="collection mb-0 load"
              id="collections"
              data-href="{{ route('youtube.channel.list') }}"
+             data-skip="0"
+             data-take="15"
+             data-include="string"
+             data-more-button="#more_button"
              data-callback="__collections"
              data-method="post"
              data-loader="#home-loader"
              data-nothing>
             <div class="collection-item nothing hide">
-                @component('components.nothing')@endcomponent
+                @component('components.nothing')
+                    @slot('size', 'small')
+                @endcomponent
             </div>
             <a href="#" class="collection-item avatar model hide waves-effect justify-content-between" data-trigger="delete">
-            	<img class="circle align-self-center" alt="Kanal Resmi" data-name="image" />
+                <img class="circle align-self-center" alt="Kanal Resmi" data-name="image" />
                 <span class="align-self-center">
-                    <p data-name="channel-title"></p>
-                    <p data-name="channel-id" class="grey-text"></p>
-                    <p data-name="reason"></p>
+                    <p class="mb-0" data-name="channel-title"></p>
+                    <p class="mb-0 grey-text" data-name="channel-id"></p>
+                    <p class="mb-0" data-name="reason"></p>
                 </span>
-                <time data-name="created-at" class="timeago grey-text right-align"></time>
+                <time data-name="created-at" class="timeago grey-text"></time>
             </a>
         </div>
-        <div class="card-content">
-            <form
-                id="collection-form"
-                method="put"
-                action="{{ route('youtube.channel.create') }}"
-                data-callback="__create"
-                class="json">
-                <div class="input-field">
-                    <input id="channel_url" name="channel_url" type="text" class="validate" />
-                    <label for="channel_url">YouTube Kanal Adresi</label>
-                    <span class="helper-text">Örnek: "https://www.youtube.com/channel/UCwzySbzUWiKqG84jOnbeB1w"</span>
-                </div>
-            </form>
-        </div>
+
         @component('components.loader')
             @slot('color', 'cyan')
             @slot('id', 'home-loader')
             @slot('class', 'card-loader-unstyled')
         @endcomponent
     </div>
+
+    <a href="#"
+       class="more hide json"
+       id="more_button"
+       data-json-target="#collections">Daha Fazla</a>
 @endsection
 
 @section('dock')
 	@include('dataPool._menu', [ 'active' => 'youtube.channels' ])
+
+    <div class="p-1">
+        <label>
+            <input name="saver" type="checkbox" value="on" />
+            <span>Enter tuşu ile aramadaki kelimeyi (kelime kanal adresi ise) kaydet.</span>
+        </label>
+    </div>
 @endsection
 
 @push('local.scripts')
     $(document).on('click', '[data-trigger=delete]', function() {
-        var __ = $(this);
-
-        var mdl = modal({
-                'id': 'delete',
-                'body': 'Bu kaydı silmek istiyor musunuz?',
-                'size': 'modal-small',
-                'title': 'Sil',
-                'options': {},
-                'footer': [
-                    $('<a />', {
-                        'href': '#',
-                        'class': 'modal-close waves-effect btn-flat grey-text',
-                        'html': buttons.cancel
-                    }),
-                    $('<span />', {
-                        'html': ' '
-                    }),
-                    $('<a />', {
-                        'href': '#',
-                        'class': 'waves-effect btn-flat red-text json',
-                        'html': buttons.ok,
-                        'data-href': '{{ route('youtube.channel.delete') }}',
-                        'data-id': __.data('id'),
-                        'data-method': 'delete',
-                        'data-callback': '__delete'
-                    })
-                ]
-            })
+        return modal({
+            'id': 'delete',
+            'body': 'Bu kaydı silmek istiyor musunuz?',
+            'size': 'modal-small',
+            'title': 'Sil',
+            'options': {},
+            'footer': [
+                $('<a />', {
+                    'href': '#',
+                    'class': 'modal-close waves-effect btn-flat grey-text',
+                    'html': buttons.cancel
+                }),
+                $('<span />', {
+                    'html': ' '
+                }),
+                $('<a />', {
+                    'href': '#',
+                    'class': 'waves-effect btn-flat red-text json',
+                    'html': buttons.ok,
+                    'data-href': '{{ route('youtube.channel.delete') }}',
+                    'data-id': $(this).data('id'),
+                    'data-method': 'delete',
+                    'data-callback': '__delete'
+                })
+            ]
+        })
+    }).on('keyup', 'input[name=string]', function(e) {
+        if (e.keyCode == 13 && $('input[name=saver]').is(':checked'))
+        {
+            vzAjax($('<div />', {
+                'data-include': 'string',
+                'data-method': 'put',
+                'data-callback': '__create',
+                'data-href': '{{ route('youtube.channel.create') }}'
+            }))
+        }
     })
 
     function __delete(__, obj)
@@ -105,32 +135,30 @@
         if (obj.status == 'ok')
         {
             $('#modal-delete').modal('close')
-            $('[data-id=' + obj.data.id + ']').remove()
+
+            var search = $('#collections');
+                search.data('skip', 0).addClass('json-clear');
+
+            vzAjax(search)
         }
     }
-
-    var collection_timer;
 
     function __create(__, obj)
     {
         if (obj.status == 'ok')
         {
-            __.find('#channel_url').val('')
+            $('input[name=string]').val(obj.data.channel_id)
 
-            window.clearTimeout(collection_timer)
+            var search = $('#collections');
+                search.data('skip', 0).addClass('json-clear');
 
-            vzAjax($('#collections'))
-
-            collection_timer = window.setTimeout(function() {
-                vzAjax($('#collections'))
-            }, 10000)
+            vzAjax(search)
         }
     }
 
     function __collections(__, obj)
     {
-        var ul = $('#collections');
-        var item_model = ul.children('.model');
+        var item_model = __.children('.model');
 
         if (obj.status == 'ok')
         {
@@ -152,26 +180,15 @@
                         item.find('[data-name=channel-id]').html(o.channel_id)
 
                         item.find('[data-name=reason]')
-                        	.html(o.reason ? o.reason : '-')
-                        	.removeClass('green-text red-text')
-                        	.addClass(o.reason ? 'red-text' : 'green-text')
+                        	.html(o.reason ? o.reason : '')
+                        	.removeClass('hide red-text')
+                        	.addClass(o.reason ? 'red-text' : 'hide')
 
-                        if (!selector.length)
-                        {
-                            item.appendTo(ul)
-                        }
+                        item.appendTo(__)
                 })
-
-                $('[data-tooltip]').tooltip()
             }
 
             $('[data-name=count]').html(obj.hits.length + ' / {{ auth()->user()->organisation->data_pool_youtube_channel_limit }}')
         }
-
-        window.clearTimeout(collection_timer)
-
-        collection_timer = window.setTimeout(function() {
-            vzAjax($('#collections'))
-        }, 10000)
     }
 @endpush

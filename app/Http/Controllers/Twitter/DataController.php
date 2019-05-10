@@ -54,14 +54,22 @@ class DataController extends Controller
      *
      * @return array
      */
-    public function keywordListJson(int $skip = 0, int $take = 40)
+    public function keywordListJson(SearchRequest $request)
     {
-        $query = StreamingKeywords::where('organisation_id', auth()->user()->organisation_id)->skip($skip)->take($take)->orderBy('updated_at', 'DESC');
+        $query = new StreamingKeywords;
+        $query = $query->where('organisation_id', auth()->user()->organisation_id);
+        $query = $request->string ? $query->where('keyword', 'ILIKE', '%'.$request->string.'%') : $query;
+
+        $total = $query->count();
+
+        $query = $query->skip($request->skip)
+                       ->take($request->take)
+                       ->orderBy('id', 'DESC');
 
         return [
             'status' => 'ok',
             'hits' => $query->get(),
-            'total' => $query->count()
+            'total' => $total
         ];
     }
 
@@ -73,7 +81,7 @@ class DataController extends Controller
     public function keywordCreate(CreateKeywordRequest $request)
     {
         $query = new StreamingKeywords;
-        $query->keyword = $request->keyword;
+        $query->keyword = $request->string;
         $query->organisation_id = auth()->user()->organisation_id;
         $query->save();
 
@@ -118,14 +126,26 @@ class DataController extends Controller
      *
      * @return array
      */
-    public function accountListJson(int $skip = 0, int $take = 50)
+    public function accountListJson(SearchRequest $request)
     {
-        $query = StreamingUsers::where('organisation_id', auth()->user()->organisation_id)->skip($skip)->take($take)->orderBy('updated_at', 'DESC');
+        $query = new StreamingUsers;
+
+        $query = $query->where('organisation_id', auth()->user()->organisation_id);
+        $query = $request->string ? $query->where(function($query) use($request) {
+                                        $query->orWhere('screen_name', 'ILIKE', '%'.$request->string.'%');
+                                        $query->orWhere('user_id', 'ILIKE', '%'.$request->string.'%');
+                                    }) : $query;
+
+        $total = $query->count();
+
+        $query = $query->skip($request->skip)
+                       ->take($request->take)
+                       ->orderBy('id', 'DESC');
 
         return [
             'status' => 'ok',
             'hits' => $query->get(),
-            'total' => $query->count()
+            'total' => $total
         ];
     }
 

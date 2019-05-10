@@ -51,7 +51,7 @@ class CreateKeywordRequest extends FormRequest
         });
 
         return [
-            'keyword' => 'required|bail|string|min:3|max:32|except_list|limit|unique_keyword'
+            'string' => 'required|bail|string|min:3|max:32|except_list|limit|unique_keyword'
         ];
     }
 }

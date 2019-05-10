@@ -68,6 +68,8 @@ class DataController extends Controller
             });
         }
 
+        $total = $query->count();
+
         $query = $query->skip($skip)
                        ->take($take)
                        ->orderBy('id', 'DESC');
@@ -75,7 +77,7 @@ class DataController extends Controller
         return [
             'status' => 'ok',
             'hits' => $query->get(),
-            'total' => $query->count()
+            'total' => $total
         ];
     }
 
@@ -154,6 +156,8 @@ class DataController extends Controller
             });
         }
 
+        $total = $query->count();
+
         $query = $query->skip($skip)
                        ->take($take)
                        ->orderBy('id', 'DESC');
@@ -161,7 +165,7 @@ class DataController extends Controller
         return [
             'status' => 'ok',
             'hits' => $query->get(),
-            'total' => $query->count()
+            'total' => $total
         ];
     }
 
