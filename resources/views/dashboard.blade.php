@@ -214,7 +214,7 @@
 
                         usersTimer = window.setTimeout(function() {
                             vzAjax(__)
-                        }, 1000)
+                        }, 60000)
                     }
                 @endpush
             @else
