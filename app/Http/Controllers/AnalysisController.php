@@ -109,8 +109,9 @@ class AnalysisController extends Controller
 
         $query = $query->skip($skip)
                        ->take($take)
+                       ->orderBy('id', 'DESC')
+                       ->orderBy('compiled', 'ASC')
                        ->orderBy('learned', 'DESC')
-                       ->orderBy('word', 'ASC')
                        ->get();
 
         return [

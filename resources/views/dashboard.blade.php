@@ -133,7 +133,7 @@
                         $('[data-target=search-trigger]').tapTarget('open');
                     @endpush
                 @endif
-                <div class="card">
+                <div class="card mb-1">
                     <a class="card-content card-content-image d-flex justify-content-between waves-effect" href="{{ route('settings.organisation') }}">
                         <span>
                             <span class="card-title" data-name="organisation-name">-</span>

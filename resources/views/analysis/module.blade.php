@@ -97,12 +97,10 @@
                     item.find('[data-name=text]').html(o.text)
 
                     $.each(o.data, function(k, x) {
-                        var k = k.split('-');
-
                         var li = $('<li />', {
                             'class': 'collection-item',
                             'html': [
-                                $('<span />', { 'html': k[1] }),
+                                $('<span />', { 'html': k }),
                                 $('<span />', {
                                     'class': 'badge grey',
                                     'html': x
@@ -110,7 +108,7 @@
                             ]
                         })
 
-                        item.append(li)
+                        item.find('[data-name=per]').append(li)
                     })
 
                     item.appendTo(progress_collection)
