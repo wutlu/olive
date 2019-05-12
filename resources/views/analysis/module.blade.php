@@ -343,10 +343,6 @@
                 html: 'Kelime Oluşturuldu',
                 classes: 'green darken-2'
             })
-
-            vzAjax($('#collections'))
-
-            $('#modal-form').modal('close')
         }
     }
 @endpush

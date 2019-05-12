@@ -47,6 +47,14 @@ class CommentTakerJob implements ShouldQueue
     {
         if (count($this->ids))
         {
+            $term = new Term;
+
+            $sentiment = new Sentiment;
+            $sentiment->engine('sentiment');
+
+            $gender = new Gender;
+            $gender->loadNames();
+
             foreach ($this->ids as $id)
             {
                 $chunk = [];
@@ -59,7 +67,14 @@ class CommentTakerJob implements ShouldQueue
                     {
                         foreach ($commentThreads as $comment)
                         {
-                            $item = self::comment($comment);
+                            $item = self::comment(
+                                $comment,
+                                [
+                                    'term' => $term,
+                                    'sentiment' => $sentiment,
+                                    'gender' => $gender
+                                ]
+                            );
 
                             if (DateUtility::checkDate($item->data['created_at']))
                             {
@@ -73,7 +88,15 @@ class CommentTakerJob implements ShouldQueue
                             {
                                 foreach ($item->replies as $reply)
                                 {
-                                    $item = self::comment($reply, $item->data['id']);
+                                    $item = self::comment(
+                                        $reply,
+                                        [
+                                            'term' => $term,
+                                            'sentiment' => $sentiment,
+                                            'gender' => $gender
+                                        ],
+                                        $item->data['id']
+                                    );
 
                                     if (DateUtility::checkDate($item->data['created_at']))
                                     {
@@ -105,16 +128,8 @@ class CommentTakerJob implements ShouldQueue
      *
      * @return object
      */
-    public static function comment($data, string $comment_id = '')
+    public static function comment($data, $function, string $comment_id = '')
     {
-        $term = new Term;
-
-        $sentiment = new Sentiment;
-        $sentiment->engine('sentiment');
-
-        $gender = new Gender;
-        $gender->loadNames();
-
         $arr = [];
 
         if ($comment_id)
@@ -130,16 +145,16 @@ class CommentTakerJob implements ShouldQueue
 
         $arr = array_merge($arr, [
             'id' => $data->id,
-            'text' => $term->convertAscii($snippet->textOriginal),
+            'text' => $function['term']->convertAscii($snippet->textOriginal),
             'video_id' => $snippet->videoId,
             'channel' => [
                 'id' => $snippet->authorChannelId->value,
                 'title' => $snippet->authorDisplayName,
-                'gender' => $gender->detector([ $snippet->authorDisplayName ])
+                'gender' => $function['gender']->detector([ $snippet->authorDisplayName ])
             ],
             'created_at' => date('Y-m-d H:i:s', strtotime($snippet->publishedAt)),
             'called_at' => date('Y-m-d H:i:s'),
-            'sentiment' => $sentiment->score($snippet->textOriginal)
+            'sentiment' => $function['sentiment']->score($snippet->textOriginal)
         ]);
 
         return (object) [

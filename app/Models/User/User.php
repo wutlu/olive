@@ -9,7 +9,10 @@ use App\Utilities\UserActivityUtility;
 use App\Notifications\MessageNotification;
 
 use System;
+
 use App\Models\Session;
+
+use Carbon\Carbon;
 
 class User extends Authenticatable
 {
@@ -61,7 +64,9 @@ class User extends Authenticatable
     {
         $session = Session::where('user_id', $this->id)->first();
 
-        return @$session ? (date('Y-m-d H:i:s', strtotime($session->last_activity)) >= date('Y-m-d H:i:s', strtotime('-1 minutes'))) : false;
+        $date = Carbon::now()->subMinutes(1)->timestamp;
+
+        return @$session ? ($session->last_activity >= $date) : false;
     }
 
     # rozet ekle

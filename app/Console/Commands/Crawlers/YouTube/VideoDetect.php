@@ -124,6 +124,14 @@ class VideoDetect extends Command
 
         if (count($item_chunk))
         {
+            $term = new Term;
+
+            $sentiment = new Sentiment;
+            $sentiment->engine('sentiment');
+
+            $gender = new Gender;
+            $gender->loadNames();
+
             foreach ($item_chunk as $items)
             {
                 $ids = [];
@@ -131,7 +139,14 @@ class VideoDetect extends Command
 
                 foreach ($items as $item)
                 {
-                    $video = self::video($item);
+                    $video = self::video(
+                        $item,
+                        [
+                            'term' => $term,
+                            'sentiment' => $sentiment,
+                            'gender' => $gender
+                        ]
+                    );
 
                     if ($video->status == 'ok')
                     {
@@ -156,7 +171,14 @@ class VideoDetect extends Command
 
                                     foreach ($relatedChunk as $relatedItem)
                                     {
-                                        $relatedVideo = self::video($relatedItem);
+                                        $relatedVideo = self::video(
+                                            $relatedItem,
+                                            [
+                                                'term' => $term,
+                                                'sentiment' => $sentiment,
+                                                'gender' => $gender
+                                            ]
+                                        );
 
                                         if ($relatedVideo->status == 'ok' && DateUtility::checkDate($relatedVideo->data['created_at']))
                                         {
@@ -217,16 +239,8 @@ class VideoDetect extends Command
      *
      * @return object;
      */
-    public static function video($item)
-    {   
-        $term = new Term;
-
-        $sentiment = new Sentiment;
-        $sentiment->engine('sentiment');
-
-        $gender = new Gender;
-        $gender->loadNames();
-
+    public static function video($item, $function)
+    {
         $arr = [
             'id'         => @$item->id->videoId ? $item->id->videoId : $item->id,
             'title'      => $item->snippet->title,
@@ -235,7 +249,7 @@ class VideoDetect extends Command
             'channel' => [
                 'id'    => $item->snippet->channelId,
                 'title' => $item->snippet->channelTitle,
-                'gender' => $gender->detector([ $item->snippet->channelTitle ])
+                'gender' => $function['gender']->detector([ $item->snippet->channelTitle ])
             ]
         ];
 
@@ -248,11 +262,11 @@ class VideoDetect extends Command
 
         if (@$item->snippet->description)
         {
-            $arr['description'] = $term->convertAscii($item->snippet->description);
-            $arr['sentiment']   = $sentiment->score($arr['description']);
+            $arr['description'] = $function['term']->convertAscii($item->snippet->description);
+            $arr['sentiment']   = $function['sentiment']->score($arr['description']);
         }
 
-        if ($term->languageDetector([ $arr['title'], @$arr['description'] ], 'tr'))
+        if ($function['term']->languageDetector([ $arr['title'], @$arr['description'] ], 'tr'))
         {
             return (object) [
                 'status' => 'ok',
