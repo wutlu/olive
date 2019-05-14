@@ -812,7 +812,7 @@ code {
   z-index: 10;
 }
 .action-bar > .btn-floating {
-  right: 1rem;
+  right: .4rem;
 }
 
 /*!

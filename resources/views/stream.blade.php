@@ -150,9 +150,9 @@
 @endsection
 
 @section('content')
-    <div class="status-bar d-flex">
+    <div class="status-bar d-flex mt-1">
         <div class="p-1 align-self-center">
-            <button class="btn-floating cyan darken-2 btn-large disabled" type="button" data-name="trigger" data-tooltip="Kısayol (Space)" data-position="left">
+            <button class="btn-floating cyan darken-2 btn-large disabled" type="button" data-name="trigger" data-tooltip="Kısayol (Space)" data-position="right">
                 <i class="material-icons">play_arrow</i>
             </button>
         </div>

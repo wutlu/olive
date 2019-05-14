@@ -189,6 +189,21 @@ $(document).on('click', 'a[href="#"], .disabled', function() {
     return false;
 })
 
+/* --- dock status --- */
+
+$(document).on('click', '[data-dock]', function() {
+    var __ = $(this);
+
+    if (__.data('dock') == 'close')
+    {
+        $('body').removeClass('dock-active')
+    }
+    else if (__.data('dock') == 'open')
+    {
+        $('body').addClass('dock-active')
+    }
+})
+
 /* --- remove function --- */
 
 $(document).on('click', '[data-remove]', function() {

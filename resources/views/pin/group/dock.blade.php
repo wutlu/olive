@@ -78,8 +78,7 @@
 @push('local.scripts')
     function __pin_groups(__, obj)
     {
-        var ul = $('#pin-groups');
-        var item_model = ul.children('.model');
+        var item_model = __.children('.model');
 
         if (obj.status == 'ok')
         {
@@ -96,11 +95,11 @@
                         item.find('[data-name=count]').html(o.pins_count + ' pin')
                         item.find('[name=group_id]').val(o.id)
 
-                        item.appendTo(ul)
+                        item.appendTo(__)
                 })
             }
 
-            $('[data-name=display-pin-group]').html(ul.children('.collection-item._tmp').length)
+            $('[data-name=display-pin-group]').html(__.children('.collection-item._tmp').length)
             $('[data-name=total-pin-group]').html(obj.total)
         }
     }
