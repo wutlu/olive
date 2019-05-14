@@ -712,13 +712,17 @@ code {
   position: relative;
   overflow: hidden;
 }
-.wild-area > .wild-content {
+.wild-area .container {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+.wild-area .wild-content {
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: #fff;
 
   display: flex;
   display: -ms-flexbox;
@@ -729,15 +733,15 @@ code {
   -webkit-transition: all 200ms cubic-bezier(.25, .46, .45, .94);
           transition: all 200ms cubic-bezier(.25, .46, .45, .94);
 }
-.wild-area > .wild-content.active {
+.wild-area .wild-content.active {
   -webkit-transform: translateY(0);
           transform: translateY(0);
 }
 
-.wild-area > .wild-content > span.wild-body {
+.wild-area .wild-content > span.wild-body {
   padding: 0 1rem;
 }
-.wild-area > .wild-content > span.wild-body > input[type=text] {
+.wild-area .wild-content > span.wild-body > input[type=text] {
   padding: 0;
   margin: 0;
   height: auto;
@@ -753,9 +757,6 @@ code {
 
   display: flex;
   display: -ms-flexbox;
-
-      flex-wrap: wrap;
-  -ms-flex-wrap: wrap;
 }
 .wild-area ul.wild-menu > li {
   border-style: solid;
@@ -1189,7 +1190,6 @@ body.fs-active .fullscreen > .fs-element {
  */
 main {
   padding: 1rem 0;
-  background-color: #f9f9f9;
 }
 
 @media only screen and (max-width: 992px) {
@@ -1443,6 +1443,10 @@ footer.page-footer > .container > .row > .col > img#vz-logo {
           box-shadow: none;
 
   background-color: transparent;
+
+  border-radius: 0;
+
+  padding: 0;
 }
 
 .card.card-nb {
@@ -1450,6 +1454,7 @@ footer.page-footer > .container > .row > .col > img#vz-logo {
 }
 .card.card-nb > .collection {
   border-radius: 0;
+  padding: 0;
 }
 
 .card.card-unstyled > .card-tabs > ul.tabs {
@@ -1734,6 +1739,11 @@ nav .nav-wrapper > ul > li > a > i {
   background-color: transparent;
   overflow: visible;
 }
+.collection.collection-unstyled {
+  padding: 0;
+  border-radius: 0;
+  background-color: transparent;
+}
 
 .collection.collection-hoverable > .collection-item:hover {
   background-color: rgba(200, 200, 200, .2);
@@ -1898,7 +1908,7 @@ table tr {
   overflow-y: hidden;
   max-height: 100% !important;
   background-color: #fff;
-  padding: 1rem 0;
+  padding: .4rem 0;
   border-radius: .6rem;
 }
 .modal.with-bg {
@@ -2515,11 +2525,16 @@ nav.nav-half {
 
   -webkit-transition: all 200ms cubic-bezier(.25, .46, .45, .94);
           transition: all 200ms cubic-bezier(.25, .46, .45, .94);
+
+  background-color: #f9f9f9;
 }
 
 #pin-groups-dock.active {
   -webkit-transform: translateX(0);
           transform: translateX(0);
+
+  -webkit-box-shadow: 1px 1px 6px rgba(0, 0, 0, .1), 1px 1px 0 rgba(0, 0, 0, .1);
+          box-shadow: 1px 1px 6px rgba(0, 0, 0, .1), 1px 1px 0 rgba(0, 0, 0, .1);
 }
 
 @media only screen and (max-width: 992px) {

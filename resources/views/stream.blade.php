@@ -1,12 +1,11 @@
 @extends('layouts.app', [
-    'sidenav_fixed_layout' => true,
+    'sidenav_layout' => true,
     'breadcrumb' => [
         [
             'text' => 'Gerçek Zamanlı'
         ]
     ],
     'dock' => true,
-    'wide' => true,
     'pin_group' => true,
     'footer_hide' => true
 ])
@@ -17,27 +16,35 @@
         padding-left: 24px;
     }
 
-    .list-alert {
-        border-radius: .4rem !important;
-        margin: 1rem !important;
-    }
-
     .marked {
         padding: .4rem;
         border-radius: .2rem;
+    }
+
+    @-webkit-keyframes blink { 
+       50% { border-color: #ffcdd2; } 
+    }
+
+    @keyframes blink { 
+       50% { border-color: #ffcdd2; } 
     }
 
     .time-line > .collection {
         max-height: 8000px;
         overflow: hidden;
 
-        border-width: 0 0 0 1rem;
-        border-style: solid;
-        border-color: #009688;
+        padding: 0;
+
+        border-width: 2px;
+        border-style: dashed;
+        border-color: transparent;
     }
 
     .time-line > .collection.active {
         border-color: #f44336;
+
+        -webkit-animation: blink .6s step-end infinite alternate;
+                animation: blink .6s step-end infinite alternate;
     }
 @endpush
 
@@ -52,95 +59,114 @@
 @endpush
 
 @section('wildcard')
-    <div class="wild-area z-depth-1">
-        <div class="wild-content d-flex grey lighten-4" data-wild="settings">
-            <span class="wild-body d-flex">
-                <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center" style="margin: 0 .4rem 0 0;" data-class=".wild-content" data-class-remove="active">
-                    <i class="material-icons">close</i>
-                </a>
-                <label class="align-self-center">
-                    <input name="sound_alert" value="on" type="checkbox" />
-                    <span>Uyarı Sesleri</span>
-                </label>
-            </span>
-        </div>
-        <div class="wild-content d-flex grey lighten-4" data-wild="speed">
-            <span class="wild-body d-flex">
-                <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center" style="margin: 0 .4rem 0 0;" data-class=".wild-content" data-class-remove="active">
-                    <i class="material-icons">close</i>
-                </a>
-                <label class="align-self-center mr-1">
-                    <input name="speed" type="radio" value="1000" />
-                    <span>1</span>
-                </label>
-                <label class="align-self-center mr-1">
-                    <input name="speed" type="radio" value="800" />
-                    <span>2</span>
-                </label>
-                <label class="align-self-center mr-1">
-                    <input name="speed" type="radio" value="600" checked />
-                    <span>3</span>
-                </label>
-                <label class="align-self-center mr-1">
-                    <input name="speed" type="radio" value="400" />
-                    <span>4</span>
-                </label>
-                <label class="align-self-center mr-1">
-                    <input name="speed" type="radio" value="100" />
-                    <span>5</span>
-                </label>
-            </span>
-        </div>
-        <div class="wild-content d-flex grey lighten-4" data-wild="sentiment">
-            <span class="wild-body d-flex">
-                <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center" style="margin: 0 .4rem 0 0;" data-class=".wild-content" data-class-remove="active">
-                    <i class="material-icons">close</i>
-                </a>
-            </span>
+    <div class="grey lighten-4 z-depth-1">
+        <div class="container">
+            <div class="wild-area">
+                <div class="wild-content d-flex grey lighten-4" data-wild="settings">
+                    <span class="wild-body d-flex">
+                        <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center" style="margin: 0 .4rem 0 0;" data-class=".wild-content" data-class-remove="active">
+                            <i class="material-icons">close</i>
+                        </a>
+                        <label class="align-self-center">
+                            <input name="sound_alert" value="on" type="checkbox" />
+                            <span>Uyarı Sesleri</span>
+                        </label>
+                    </span>
+                </div>
+                <div class="wild-content d-flex grey lighten-4" data-wild="speed">
+                    <span class="wild-body d-flex">
+                        <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center" style="margin: 0 .4rem 0 0;" data-class=".wild-content" data-class-remove="active">
+                            <i class="material-icons">close</i>
+                        </a>
+                        <label class="align-self-center mr-1">
+                            <input name="speed" type="radio" value="1000" />
+                            <span>1</span>
+                        </label>
+                        <label class="align-self-center mr-1">
+                            <input name="speed" type="radio" value="800" />
+                            <span>2</span>
+                        </label>
+                        <label class="align-self-center mr-1">
+                            <input name="speed" type="radio" value="600" checked />
+                            <span>3</span>
+                        </label>
+                        <label class="align-self-center mr-1">
+                            <input name="speed" type="radio" value="400" />
+                            <span>4</span>
+                        </label>
+                        <label class="align-self-center mr-1">
+                            <input name="speed" type="radio" value="100" />
+                            <span>5</span>
+                        </label>
+                    </span>
+                </div>
+                <div class="wild-content d-flex grey lighten-4" data-wild="sentiment">
+                    <span class="wild-body d-flex">
+                        <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center" style="margin: 0 .4rem 0 0;" data-class=".wild-content" data-class-remove="active">
+                            <i class="material-icons">close</i>
+                        </a>
+                    </span>
 
-            <label class="align-self-center mr-1" data-tooltip="Pozitif">
-                <input data-update type="radio" name="sentiment" value="pos" />
-                <span class="material-icons green-text">sentiment_very_satisfied</span>
-            </label>
-            <label class="align-self-center mr-1" data-tooltip="Nötr">
-                <input data-update type="radio" name="sentiment" value="neu" />
-                <span class="material-icons grey-text text-darken-2">sentiment_neutral</span>
-            </label>
-            <label class="align-self-center mr-1" data-tooltip="Negatif">
-                <input data-update type="radio" name="sentiment" value="neg" />
-                <span class="material-icons red-text">sentiment_very_dissatisfied</span>
-            </label>
-            <label class="align-self-center mr-1" data-tooltip="Tümü">
-                <input data-update type="radio" name="sentiment" value="all" checked="" />
-                <span class="material-icons grey-text text-darken-2">fullscreen</span>
-            </label>
+                    <label class="align-self-center mr-1" data-tooltip="Pozitif">
+                        <input data-update type="radio" name="sentiment" value="pos" />
+                        <span class="material-icons green-text">sentiment_very_satisfied</span>
+                    </label>
+                    <label class="align-self-center mr-1" data-tooltip="Nötr">
+                        <input data-update type="radio" name="sentiment" value="neu" />
+                        <span class="material-icons grey-text text-darken-2">sentiment_neutral</span>
+                    </label>
+                    <label class="align-self-center mr-1" data-tooltip="Negatif">
+                        <input data-update type="radio" name="sentiment" value="neg" />
+                        <span class="material-icons red-text">sentiment_very_dissatisfied</span>
+                    </label>
+                    <label class="align-self-center mr-1" data-tooltip="Tümü">
+                        <input data-update type="radio" name="sentiment" value="all" checked="" />
+                        <span class="material-icons grey-text text-darken-2">fullscreen</span>
+                    </label>
+                </div>
+                <ul class="wild-menu">
+                    <li>
+                        <a class="d-flex" href="#" data-class="[data-wild=settings]" data-class-add="active">
+                            <i class="material-icons mr-1">settings</i>
+                            <span class="align-self-center">Ayarlar</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="d-flex" href="#" data-class="[data-wild=speed]" data-class-add="active">
+                            <i class="material-icons mr-1">fast_forward</i>
+                            <span class="align-self-center">Hız</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="d-flex" href="#" data-class="[data-wild=sentiment]" data-class-add="active">
+                            <i class="material-icons mr-1">face</i>
+                            <span class="align-self-center">Duygu</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <ul class="wild-menu">
-            <li>
-                <a class="d-flex" href="#" data-class="[data-wild=settings]" data-class-add="active">
-                    <i class="material-icons mr-1">settings</i>
-                    <span class="align-self-center">Ayarlar</span>
-                </a>
-            </li>
-            <li>
-                <a class="d-flex" href="#" data-class="[data-wild=speed]" data-class-add="active">
-                    <i class="material-icons mr-1">fast_forward</i>
-                    <span class="align-self-center">Hız</span>
-                </a>
-            </li>
-            <li>
-                <a class="d-flex" href="#" data-class="[data-wild=sentiment]" data-class-add="active">
-                    <i class="material-icons mr-1">face</i>
-                    <span class="align-self-center">Duygu</span>
-                </a>
-            </li>
-        </ul>
     </div>
 @endsection
 
 @section('content')
+    <div class="status-bar d-flex">
+        <div class="p-1 align-self-center">
+            <button class="btn-floating cyan darken-2 btn-large disabled" type="button" data-name="trigger" data-tooltip="Kısayol (Space)" data-position="left">
+                <i class="material-icons">play_arrow</i>
+            </button>
+        </div>
+        <div class="p-1 align-self-center">
+            <small class="grey-text d-block">Ön Bellek</small>
+            <span data-name="buffer">0</span>
+        </div>
+        <div class="p-1 align-self-center">
+            <small class="grey-text d-block">Alınan</small>
+            <span data-name="received">0</span>
+        </div>
+    </div>
     <div
-        class="card time-line"
+        class="card card-unstyled time-line"
         data-href="{{ route('realtime.query') }}"
         data-callback="__realtime"
         data-method="post"
@@ -151,7 +177,7 @@
         <ul class="collection">
             <li class="collection-item model hide"></li>
             <li class="collection-item">
-                <p class="d-flex">
+                <p class="d-flex mb-0">
                     <i class="material-icons realtime">navigate_next</i>
                     <span class="align-self-center">Herhangi bir kelime grubu oluşturun, bir kelime grubunuz varsa; yanında bulunan anahtarı aktif edin.</span>
                 </p>
@@ -195,6 +221,9 @@
     var bucket = $('.time-line > .collection');
     var model = bucket.children('.model');
 
+    var _ui_received = $('[data-name=received]');
+    var _ui_buffer = $('[data-name=buffer]');
+
     function livePush()
     {
         if (buffer.length)
@@ -203,6 +232,9 @@
 
             if (!$('#' + obj.uuid).length)
             {
+                _ui_received.html(parseInt(_ui_received.html()) + 1)
+                _ui_buffer.html(parseInt(_ui_buffer.html()) - 1).addClass(_ui_buffer.html() <= 25 ? 'green-text' : 'red-text').removeClass(_ui_buffer.html() <= 25 ? 'red-text' : 'green-text')
+
                 var pattern,
                     url = obj.url;
 
@@ -269,11 +301,34 @@
         }, time)
     }
 
-    $(document).on('mouseenter', '.time-line > .collection', function() {
-        time = 60000;
+    $(document).on('click', '[data-name=trigger]', function() {
+        _ui_toggle()
+    }).keydown(function(e) {
+        if (e.which == 32)
+        {
+            _ui_toggle()
 
-        $('.time-line > .collection').addClass('active')
-    }).on('mouseleave', '.time-line', speed_change)
+            return e.preventDefault()
+        }
+    })
+
+    function _ui_toggle()
+    {
+        var _collection_status = $('.time-line > .collection');
+
+        if (_collection_status.hasClass('active'))
+        {
+            speed_change()
+
+            _ui_change('play', true)
+        }
+        else
+        {
+            time = 60000;
+
+            _ui_change('stop', true)
+        }
+    }
 
     $('input[name=speed]').change(speed_change)
 
@@ -287,7 +342,45 @@
             livePush()
         }, time)
 
-        $('.time-line > .collection').removeClass('active')
+        _ui_change('play', true)
+    }
+
+    function _ui_change(status, pause)
+    {
+        var _collection_status = $('.time-line > .collection');
+
+        var trigger = $('[data-name=trigger]');
+        var trigger_icon = trigger.children('i.material-icons');
+
+        if (status == 'play')
+        {
+            trigger_icon.html('pause')
+
+            if (pause)
+            {
+                _collection_status.removeClass('active')
+            }
+            else
+            {
+                trigger.removeClass('disabled').addClass('pulse')
+            }
+        }
+        else if (status == 'stop')
+        {
+            trigger_icon.html('play_arrow')
+
+            if (pause)
+            {
+                _collection_status.addClass('active')
+            }
+            else
+            {
+                trigger.addClass('disabled').removeClass('pulse')
+
+                _ui_buffer.html(0)
+                _ui_received.html(0)
+            }
+        }
     }
 
     var streamTimer;
@@ -311,6 +404,8 @@
     
                     if (!item)
                     {
+                        _ui_buffer.html(parseInt(_ui_buffer.html()) + 1)
+
                         buffer.push(o)
                     }
                 }
@@ -336,6 +431,10 @@
             if (__.is(':checked'))
             {
                 stream = true;
+
+                _ui_change('play', false)
+
+                __.blur()
             }
         })
 
@@ -352,20 +451,23 @@
             buffer = [];
 
             window.clearTimeout(streamTimer)
+
+            _ui_change('stop', false)
         }
     })
 
     function __keyword_groups(__, obj)
     {
-        var ul = $('#keyword-groups');
-        var item_model = ul.children('.model');
+        var item_model = __.children('.model');
 
         if (obj.status == 'ok')
         {
             if (obj.hits.length)
             {
+                __.removeClass('hide')
+
                 $.each(obj.hits, function(key, o) {
-                    var selector = ul.children('[data-id=' + o.id + ']'),
+                    var selector = __.children('[data-id=' + o.id + ']'),
 
                         item = selector.length ? selector : item_model.clone();
                         item.removeClass('model hide').addClass('_tmp d-flex').attr('data-id', o.id)
@@ -376,7 +478,7 @@
 
                     if (!selector.length)
                     {
-                        item.appendTo(ul)
+                        item.appendTo(__)
                     }
                 })
             }
@@ -455,7 +557,7 @@
                         ]
                     }),
                     $('<div />', {
-                        'class': 'collection',
+                        'class': 'collection collection-unstyled',
                         'html': [
                         @foreach (config('system.modules') as $key => $module)
                             @if ($organisation->{'data_'.$key})
@@ -622,7 +724,7 @@
 
 @section('action-bar')
     <a href="#" class="btn-floating halfway-fab waves-effect white" data-trigger="create-keyword-group">
-        <i class="material-icons grey-text text-darken-2">add</i>
+        <i class="material-icons grey-text">add</i>
     </a>
 @endsection
 
@@ -635,7 +737,7 @@
             </span>
             <span data-name="keyword-group-count">0</span> / <span data-name="keyword-group-limit">0</span>
         </div>
-        <ul class="collection load" 
+        <ul class="collection load hide" 
              id="keyword-groups"
              data-href="{{ route('realtime.keyword.groups') }}"
              data-callback="__keyword_groups"

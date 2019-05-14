@@ -5,71 +5,73 @@
     }
 @endpush
 
-<div id="pin-groups-dock" class="card card-nb with-bg">
-    <div class="card-content">
-        <span class="card-title d-flex">
-            <i class="material-icons align-self-center mr-1">speaker_notes</i>
-            Pin Grupları
-        </span>
-    </div>
-    <div class="card-image">
-        <a href="#" class="btn-floating halfway-fab waves-effect white" data-trigger="create-pin-group">
-            <i class="material-icons grey-text text-darken-2">add</i>
-        </a>
-    </div>
-    <div class="card-content grey-text">
-        <span data-name="display-pin-group">0</span> / <span data-name="total-pin-group">0</span>
-    </div>
-
-    <ul id="pin-groups"
-        class="collection load json-clear mb-0" 
-        data-href="{{ route('pin.groups') }}"
-        data-skip="0"
-        data-take="5"
-        data-more-button="#pin-groups-more_button"
-        data-callback="__pin_groups"
-        data-method="post"
-        data-loader="#pin-groups-loader"
-        data-nothing>
-        <li class="collection-item nothing hide">
-            @component('components.nothing')
-                @slot('size', 'small')
-            @endcomponent
-        </li>
-        <li data-name="item" class="collection-item model hide">
-            <a
-                class="btn-floating btn-small waves-effect json align-self-center white mr-1"
-                data-name="edit"
-                data-href="{{ route('pin.group') }}"
-                data-method="post"
-                data-callback="__get_pin_group"
-                href="#">
-                <i class="material-icons grey-text text-darken-2">create</i>        
+<div id="pin-groups-dock">
+    <div class="card card-unstyled">
+        <div class="card-content">
+            <span class="card-title d-flex">
+                <i class="material-icons align-self-center mr-1">speaker_notes</i>
+                Pin Grupları
+            </span>
+        </div>
+        <div class="card-image">
+            <a href="#" class="btn-floating halfway-fab waves-effect white" data-trigger="create-pin-group">
+                <i class="material-icons grey-text">add</i>
             </a>
-            <label class="align-self-center">
-                <input name="group_id" type="radio" />
-                <span class="d-flex">
-                    <a
-                        data-trigger="pin-go"
-                        data-name="pin.pins"
-                        data-href="{{ route('route.generate.id') }}"
-                        data-method="post"
-                        data-callback="__go"
-                        class="json d-table"
-                        href="#"></a>
-                </span>
-            </label>
-        </li>
-    </ul>
+        </div>
+        <div class="card-content grey-text">
+            <span data-name="display-pin-group">0</span> / <span data-name="total-pin-group">0</span>
+        </div>
 
-    @component('components.loader')
-        @slot('color', 'cyan')
-        @slot('id', 'pin-groups-loader')
-        @slot('class', 'card-loader-unstyled')
-    @endcomponent
+        <ul id="pin-groups"
+            class="collection load json-clear mb-0" 
+            data-href="{{ route('pin.groups') }}"
+            data-skip="0"
+            data-take="5"
+            data-more-button="#pin-groups-more_button"
+            data-callback="__pin_groups"
+            data-method="post"
+            data-loader="#pin-groups-loader"
+            data-nothing>
+            <li class="collection-item nothing hide">
+                @component('components.nothing')
+                    @slot('size', 'small')
+                @endcomponent
+            </li>
+            <li data-name="item" class="collection-item model hide">
+                <a
+                    class="btn-floating btn-small waves-effect json align-self-center white mr-1"
+                    data-name="edit"
+                    data-href="{{ route('pin.group') }}"
+                    data-method="post"
+                    data-callback="__get_pin_group"
+                    href="#">
+                    <i class="material-icons grey-text">create</i>        
+                </a>
+                <label class="align-self-center">
+                    <input name="group_id" type="radio" />
+                    <span class="d-flex">
+                        <a
+                            data-trigger="pin-go"
+                            data-name="pin.pins"
+                            data-href="{{ route('route.generate.id') }}"
+                            data-method="post"
+                            data-callback="__go"
+                            class="json d-table"
+                            href="#"></a>
+                    </span>
+                </label>
+            </li>
+        </ul>
 
-    <div class="card-content center-align">
-        <a href="{{ route('pin.groups') }}" class="btn-flat waves-effect">Tüm Gruplar</a>
+        @component('components.loader')
+            @slot('color', 'cyan')
+            @slot('id', 'pin-groups-loader')
+            @slot('class', 'card-loader-unstyled')
+        @endcomponent
+
+        <div class="card-content center-align">
+            <a href="{{ route('pin.groups') }}" class="btn-flat waves-effect">Tüm Gruplar</a>
+        </div>
     </div>
 </div>
 

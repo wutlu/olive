@@ -834,7 +834,7 @@
 
 @section('wildcard')
     <div class="wild-area z-depth-1">
-        <div class="wild-content d-flex" data-wild="sentiment">
+        <div class="wild-content grey lighten-4 d-flex" data-wild="sentiment">
             <span class="wild-body d-flex">
                 <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center" data-class=".wild-content" data-class-remove="active" style="margin: 0 .4rem 0 0;">
                     <i class="material-icons">close</i>
@@ -857,7 +857,7 @@
                 </label>
             </span>
         </div>
-        <div class="wild-content d-flex" data-wild="lists">
+        <div class="wild-content grey lighten-4 d-flex" data-wild="lists">
             <span class="wild-body d-flex">
                 <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center" data-class=".wild-content" data-class-remove="active" style="margin: 0 .4rem 0 0;">
                     <i class="material-icons">close</i>
@@ -867,7 +867,7 @@
                 <button type="button" data-type="source" data-tooltip="Kaynak Grafiği" data-callback="__aggregation" data-include="start_date,end_date,sentiment,string,modules,verified,retweet,media" data-href="{{ route('search.aggregation') }}" data-method="post" class="btn-flat btn-small json waves-effect align-self-center loading" style="margin: 0 .2rem 0 0;">Kaynaklar</button>
             </span>
         </div>
-        <div class="wild-content d-flex" data-wild="graph">
+        <div class="wild-content grey lighten-4 d-flex" data-wild="graph">
             <span class="wild-body d-flex">
                 <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center" data-class=".wild-content" data-class-remove="active" style="margin: 0 .4rem 0 0;">
                     <i class="material-icons">close</i>
@@ -885,7 +885,7 @@
                 </button>
             </span>
         </div>
-        <div class="wild-content d-flex" data-wild="settings">
+        <div class="wild-content grey lighten-4 d-flex" data-wild="settings">
             <span class="wild-body d-flex">
                 <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center" data-class=".wild-content" data-class-remove="active" style="margin: 0 .4rem 0 0;">
                     <i class="material-icons">close</i>

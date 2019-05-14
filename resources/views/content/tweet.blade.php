@@ -71,9 +71,9 @@
 @endpush
 
 @push('wildcard-bottom')
-    <div class="card teal">
+    <div class="card">
         <div class="card-tabs">
-            <ul class="tabs tabs-transparent sub-tabs">
+            <ul class="tabs sub-tabs">
                 <li class="tab">
                     <a href="#all_replies" class="active">Yanıtlar ({{ $data['reply']->data['count'] }})</a>
                 </li>
@@ -352,9 +352,9 @@
             'urls' => 'Bağlantı Geçmişi',
         ] as $key => $model
     )
-        <div class="card mb-1">
-            <div class="card-content d-flex justify-content-between teal">
-                <span class="card-title card-title-small white-text align-self-center">{{ $model }}</span>
+        <div class="card mb-1 p-0">
+            <div class="card-content d-flex justify-content-between">
+                <span class="card-title card-title-small align-self-center">{{ $model }}</span>
                 <a
                     href="#"
                     class="btn-floating waves-effect btn-flat json loading"
@@ -362,10 +362,10 @@
                     data-callback="__aggregation"
                     data-type="{{ $key }}"
                     data-href="{{ route('tweet.aggregation', [ 'type' => $key, 'id' => $document['_source']['user']['id'] ]) }}">
-                    <i class="material-icons white-text">keyboard_arrow_down</i>
+                    <i class="material-icons">keyboard_arrow_down</i>
                 </a>
             </div>
-            <ul class="collection aggregation-collection">
+            <ul class="collection collection-unstyled aggregation-collection hide">
                 <li class="collection-item hide" data-model>
                     <div class="d-flex justify-content-between">
                         <span class="align-self-center" data-name="name"></span>
@@ -396,6 +396,8 @@
 
             if (obj.data.length)
             {
+                collection.removeClass('hide')
+
                 $.each(obj.data, function(key, o) {
                     var item = model.clone();
                         item.removeAttr('data-model').removeClass('hide')
