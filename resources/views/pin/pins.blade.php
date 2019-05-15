@@ -25,24 +25,23 @@
     }
 @endpush
 
-@section('action-bar')
-    <a
-        href="#"
-        class="btn-floating btn-large halfway-fab waves-effect white json btn-image"
-        data-tooltip="Pdf Dökümü Al"
-        data-position="left"
-        data-href="{{ route('pin.pdf') }}"
-        data-id="{{ $pg->id }}"
-        data-method="post"
-        data-callback="__pdf"
-        style="background-image: url('{{ asset('img/icons/pdf.png') }}');"></a>
-@endsection
-
 @section('content')
-    <div class="card with-bg mb-1">
-        <div class="card-content">
-            <span class="card-title">Pinlemeler</span>
-            <p class="grey-text text-darken-2">Ekleyeceğiniz yorumlar, PDF raporlarınızda analiz sonucu olarak yer alacaktır.</p>
+    <div class="card with-bg mb-2">
+        <div class="card-image">
+            <img src="{{ asset('img/md-s/21.jpg') }}" alt="Image" />
+            <span class="card-title white-text">
+                Pinlemeler
+            </span>
+            <a
+                href="#"
+                class="btn-floating btn-large halfway-fab waves-effect white json btn-image"
+                data-tooltip="Pdf Dökümü Al"
+                data-position="left"
+                data-href="{{ route('pin.pdf') }}"
+                data-id="{{ $pg->id }}"
+                data-method="post"
+                data-callback="__pdf"
+                style="background-image: url('{{ asset('img/icons/pdf.png') }}');"></a>
         </div>
         @if ($pg->html_to_pdf == 'success')
             <div class="card-action d-flex justify-content-between">

@@ -10,6 +10,7 @@ use App\Http\Requests\Analysis\SearchRequest;
 use App\Http\Requests\Analysis\CreateRequest;
 use App\Http\Requests\Analysis\CompileRequest;
 use App\Http\Requests\Analysis\TestRequest;
+use App\Http\Requests\Analysis\MoveRequest;
 
 use App\Http\Requests\IdRequest;
 use App\Http\Requests\SetRequest;
@@ -109,7 +110,7 @@ class AnalysisController extends Controller
 
         $query = $query->skip($skip)
                        ->take($take)
-                       ->orderBy('id', 'DESC')
+                       ->orderBy('updated_at', 'ASC')
                        ->orderBy('compiled', 'ASC')
                        ->orderBy('learned', 'DESC')
                        ->get();
@@ -118,6 +119,34 @@ class AnalysisController extends Controller
             'status' => 'ok',
             'hits' => $query,
             'total' => $total
+        ];
+    }
+
+    /**
+     * Analiz, Kelime Taşı
+     *
+     * @return array
+     */
+    public function move(MoveRequest $request)
+    {
+        $word = Analysis::where('id', $request->id)->first();
+
+        if (@$word)
+        {
+            $word->group = $request->group;
+            $word->compiled = 0;
+            $word->save();
+        }
+        else
+        {
+            return [
+                'status' => 'err',
+                'reason' => 'Kelimeye ulaşılamıyor, silinmiş olabilir.'
+            ];
+        }
+
+        return [
+            'status' => 'ok'
         ];
     }
 

@@ -1,4 +1,4 @@
-<div class="collection white z-depth-1">
+<div class="collection">
     <a href="{{ route('admin.user', $id) }}" class="collection-item waves-effect {{ $active == 'account' ? 'active' : '' }}">
         Hesap Bilgileri
     </a>

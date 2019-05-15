@@ -54,6 +54,7 @@ Route::prefix('kelime-hafizasi')->group(function () {
     Route::post('modul/kelimeler', 'AnalysisController@words')->name('analysis.module.words');
     Route::delete('modul/kelime/sil', 'AnalysisController@delete')->name('analysis.module.word.delete');
     Route::post('modul/kelime/kayit', 'AnalysisController@create')->name('analysis.module.word.create');
+    Route::post('modul/kelime/tasi', 'AnalysisController@move')->name('analysis.module.word.move');
 
     Route::post('grup/derle', 'AnalysisController@compile')->name('analysis.group.compile');
 

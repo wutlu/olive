@@ -20,7 +20,7 @@
         </div>
         <div class="collection">
             @foreach ($module['types'] as $key => $type)
-                <label class="collection-item waves-effect d-block">
+                <label class="collection-item waves-effect d-block droppable" data-id="{{ $key }}">
                     <input name="group" type="radio" value="{{ $key }}" data-update="true" />
                     <span>{{ $type['title'] }}</span>
                 </label>
@@ -73,10 +73,7 @@
 
             __.removeClass('disabled')
 
-            var search = $('#collections');
-                search.data('skip', 0).addClass('json-clear');
-
-            vzAjax(search)
+            _search()
         }
     }
 
@@ -182,7 +179,7 @@
                         @slot('size', 'small')
                     @endcomponent
                 </div>
-                <a href="#" class="model hide chip waves-effect" data-trigger="delete"></a>
+                <a href="#" class="model hide chip draggable waves-effect" data-trigger="delete"></a>
             </div>
         </div>
 
@@ -215,6 +212,7 @@
 @endsection
 
 @push('external.include.footer')
+    <script src="{{ asset('js/jquery.ui.min.js?v='.config('system.version')) }}"></script>
     <script src="{{ asset('js/shapeChaos.min.js?v='.config('system.version')) }}"></script>
 @endpush
 @push('external.include.header')
@@ -226,12 +224,43 @@
 @endsection
 
 @push('local.scripts')
-    $(document).on('change', '[data-update]', function() {
+    $('.droppable').droppable(
+        {
+            drop: function(event, ui)
+            {
+                var __ = $(this);
+
+                __.find('input[type=radio]').prop('checked', true)
+
+                vzAjax($('<div />', {
+                    'data-href': '{{ route('analysis.module.word.move') }}',
+                    'data-method': 'post',
+                    'data-callback': '__move',
+                    'data-module': '{{ $module_name }}',
+                    'data-group': __.data('id'),
+                    'data-id': ui.helper.attr('data-id')
+                }))
+            }
+        }
+    )
+
+    function __move(__, obj)
+    {
+        if (obj.status == 'ok')
+        {
+            _search()
+        }
+    }
+
+    function _search()
+    {
         var search = $('#collections');
             search.data('skip', 0).addClass('json-clear');
 
         vzAjax(search)
-    })
+    }
+
+    $(document).on('change', '[data-update]', _search)
 
     $('.shapeChaos').shapeChaos({
         'num_shapes': 200,
@@ -246,8 +275,7 @@
 
     function __collection(__, obj)
     {
-        var ul = __;
-        var item_model = ul.children('.model');
+        var item_model = __.children('.model');
 
         if (obj.status == 'ok')
         {
@@ -258,13 +286,16 @@
                 $.each(obj.hits, function(key, o) {
                     var item = item_model.clone();
                         item.removeClass('model hide').addClass('_tmp d-flex')
+                        item.attr('data-id', o.id)
 
                         item.html(o.word)
                             .data('id', o.id)
                             .addClass(o.compiled ? 'green' : (o.learned ? 'cyan' : 'red'))
 
-                        item.appendTo(ul)
+                        item.appendTo(__)
                 })
+
+                $('.draggable').draggable({ revert: 'invalid' })
             }
 
             $('[data-indicator=total]').html(obj.total)
