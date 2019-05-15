@@ -67,9 +67,13 @@
                         <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center" style="margin: 0 .4rem 0 0;" data-class=".wild-content" data-class-remove="active">
                             <i class="material-icons">close</i>
                         </a>
-                        <label class="align-self-center">
+                        <label class="align-self-center mr-1">
                             <input name="sound_alert" value="on" type="checkbox" />
                             <span>Uyarı Sesleri</span>
+                        </label>
+                        <label class="align-self-center mr-1">
+                            <input name="mouse" value="on" type="checkbox" />
+                            <span>Fare Modu</span>
                         </label>
                     </span>
                 </div>
@@ -153,7 +157,7 @@
     <div class="status-bar d-flex mt-1">
         <div class="p-1 align-self-center">
             <button class="btn-floating cyan darken-2 btn-large disabled" type="button" data-name="trigger" data-tooltip="Kısayol (Space)" data-position="right">
-                <i class="material-icons">play_arrow</i>
+                <i class="material-icons">pause</i>
             </button>
         </div>
         <div class="p-1 align-self-center">
@@ -277,7 +281,7 @@
 
                 item.prependTo(bucket)
 
-                if ($('input[name=sound_alert]').prop("checked") == true)
+                if ($('input[name=sound_alert]').prop('checked') == true)
                 {
                     $.playSound('{{ asset('alert-message.mp3') }}')
                 }
@@ -309,6 +313,20 @@
             _ui_toggle()
 
             return e.preventDefault()
+        }
+    }).on('mouseleave', '.time-line', function() {
+        if ($('input[name=mouse]').is(':checked'))
+        {
+            speed_change()
+
+            _ui_change('play', true)
+        }
+    }).on('mouseenter', '.time-line > .collection', function() {
+        if ($('input[name=mouse]').is(':checked'))
+        {
+            time = 60000;
+
+            _ui_change('stop', true)
         }
     })
 
