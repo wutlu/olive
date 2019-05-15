@@ -110,8 +110,8 @@ class AnalysisController extends Controller
 
         $query = $query->skip($skip)
                        ->take($take)
-                       ->orderBy('updated_at', 'ASC')
                        ->orderBy('compiled', 'ASC')
+                       ->orderBy('updated_at', 'DESC')
                        ->orderBy('learned', 'DESC')
                        ->get();
 

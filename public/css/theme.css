@@ -53,7 +53,7 @@
   font-style: italic
 }
 
-/*!
+ /*!
  * media area
  */
 .media-area {
@@ -2961,4 +2961,15 @@ nav.scrolled.active,
   25% { clip: rect(0px, 2px, 110px, 0px); }
   50% { clip: rect(108px, 110px, 110px, 0px); }
   75% { clip: rect(0px, 110px, 110px, 108px); }
+}
+
+/*!
+ * drop area
+ */
+.da-active {
+  background-color: rgba(255, 155, 0, .1) !important;
+  z-index: -1;
+}
+.da-hover {
+  background-color: rgba(255, 155, 0, .2) !important;
 }

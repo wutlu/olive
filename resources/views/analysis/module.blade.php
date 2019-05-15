@@ -14,7 +14,7 @@
 ])
 
 @section('dock')
-    <div class="card">
+    <div class="card card-unstyled">
         <div class="card-content">
             <span class="card-title">Grup</span>
         </div>
@@ -146,7 +146,7 @@
             <span class="card-title">{{ $module['title'] }}</span>
             <span class="grey-text text-darken-2" data-indicator="total">0</span>
         </div>
-        <nav class="nav-half">
+        <nav class="nav-half mb-0">
             <div class="nav-wrapper">
                 <div class="input-field">
                     <input id="string"
@@ -161,26 +161,24 @@
                 </div>
             </div>
         </nav>
-        <div class="card-content">
-            <div class="json-clear load d-flex flex-wrap" 
-                 id="collections"
-                 data-href="{{ route('analysis.module.words') }}"
-                 data-skip="0"
-                 data-take="100"
-                 data-module="{{ $module_name }}"
-                 data-include="string,group"
-                 data-more-button="#collections-more_button"
-                 data-callback="__collection"
-                 data-method="post"
-                 data-loader="#home-loader"
-                 data-nothing>
-                <div class="nothing hide" style="width: 100%;">
-                    @component('components.nothing')
-                        @slot('size', 'small')
-                    @endcomponent
-                </div>
-                <a href="#" class="model hide chip draggable waves-effect" data-trigger="delete"></a>
+        <div class="json-clear load flex-wrap p-1 hide" 
+             id="collections"
+             data-href="{{ route('analysis.module.words') }}"
+             data-skip="0"
+             data-take="100"
+             data-module="{{ $module_name }}"
+             data-include="string,group"
+             data-more-button="#collections-more_button"
+             data-callback="__collection"
+             data-method="post"
+             data-loader="#home-loader"
+             data-nothing>
+            <div class="nothing hide" style="width: 100%;">
+                @component('components.nothing')
+                    @slot('size', 'small')
+                @endcomponent
             </div>
+            <a href="#" class="model hide chip draggable" data-trigger="delete"></a>
         </div>
 
         @component('components.loader')
@@ -226,11 +224,13 @@
 @push('local.scripts')
     $('.droppable').droppable(
         {
+            classes: {
+                'ui-droppable-active': 'da-active',
+                'ui-droppable-hover': 'da-hover'
+            },
             drop: function(event, ui)
             {
                 var __ = $(this);
-
-                __.find('input[type=radio]').prop('checked', true)
 
                 vzAjax($('<div />', {
                     'data-href': '{{ route('analysis.module.word.move') }}',
@@ -277,6 +277,8 @@
     {
         var item_model = __.children('.model');
 
+        __.removeClass('hide').addClass('d-flex')
+
         if (obj.status == 'ok')
         {
             item_model.addClass('hide')
@@ -295,7 +297,12 @@
                         item.appendTo(__)
                 })
 
-                $('.draggable').draggable({ revert: 'invalid' })
+                $('.draggable').draggable({
+                    containment: 'document',
+                    helper: 'clone',
+                    cursor: 'move',
+                    revert: 'invalid'
+                })
             }
 
             $('[data-indicator=total]').html(obj.total)
