@@ -583,7 +583,7 @@ class SearchController extends Controller
 
         $organisation = auth()->user()->organisation;
 
-        $trends = json_decode(RedisCache::get(implode(':', [ config('system.db.alias'), 'trends', 'twitter' ])));
+        $trends = json_decode(RedisCache::get(implode(':', [ config('system.db.alias'), 'trends', 'twitter_hashtag' ])));
 
         return view('search', compact('q', 's', 'e', 'trends', 'organisation'));
     }

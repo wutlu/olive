@@ -936,7 +936,7 @@
     <div class="chip-s owl-chips owl-carousel grey lighten-4 z-depth-1">
         @if (@$trends)
             @foreach ($trends as $trend)
-                <a class="chip cyan darken-2 white-text waves-effect mb-0" data-search="{{ $trend->title }}" href="#">{{ $trend->title }}</a>
+                <a class="chip cyan darken-2 white-text waves-effect mb-0" data-search="{{ $trend->data->key }}" href="#">{{ $trend->data->key }}</a>
             @endforeach
         @endif
     </div>
