@@ -141,7 +141,6 @@ Route::prefix('trend')->namespace('Trend')->group(function () {
     Route::prefix('arsiv')->group(function () {
         Route::get('/', 'TrendController@archive')->name('trend.archive');
         Route::post('/', 'TrendController@archiveListJson');
-        Route::post('kayit', 'TrendController@archiveSave')->name('trend.archive.save');
     });
 });
 

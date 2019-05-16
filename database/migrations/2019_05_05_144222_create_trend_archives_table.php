@@ -16,18 +16,10 @@ class CreateTrendArchivesTable extends Migration
         Schema::create('trend_archives', function (Blueprint $table) {
             $table->increments('id')->unsigned();
 
-            $table->string('title');
+            $table->string('module')->index();
             $table->string('group')->index();
 
-            $table->json('data');
-
-            $table->unsignedInteger('organisation_id')->index()->nullable()->default(null);
-            $table->foreign('organisation_id')->references('id')->on('organisations')->onDelete('cascade')->onUpdate('cascade');
-
-            $table->unique([
-                'group',
-                'organisation_id'
-            ]);
+            $table->unique([ 'module', 'group' ]);
 
             $table->timestamps();
         });

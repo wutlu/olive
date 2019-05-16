@@ -54,19 +54,6 @@ class Test extends Command
      */
     public function handle()
     {
-        $sentiment = new Sentiment;
-        $sentiment->engine('sentiment');
 
-        $data = [];
-
-        foreach (explode(PHP_EOL, 'Merhaba nasıl gidiyor iyiyim vs.') as $string)
-        {
-            $data[] = [
-                'text' => $string,
-                'data' => $sentiment->score($string)
-            ];
-        }
-
-        print_r($data);
     }
 }

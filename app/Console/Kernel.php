@@ -118,87 +118,69 @@ class Kernel extends ConsoleKernel
             /**
              * Trendlerin hazırlanması.
              */
-            # [ gerçek zamanlı trend ] #
-            $schedule->command('nohup "trend:update --module=sozluk --period=live" --type=restart')
-                     ->everyTenMinutes()
-                     ->timezone(config('app.timezone'))
-                     ->skip(function() {
-                        return SystemUtility::option('trend.status.sozluk') != 'on';
-                     });
-            $schedule->command('nohup "trend:update --module=news --period=live" --type=restart')
-                     ->everyMinute()
-                     ->timezone(config('app.timezone'))
-                     ->skip(function() {
-                        return SystemUtility::option('trend.status.news') != 'on';
-                     });
-            $schedule->command('nohup "trend:update --module=youtube --period=live" --type=restart')
-                     ->everyMinute()
-                     ->timezone(config('app.timezone'))
-                     ->skip(function() {
-                        return SystemUtility::option('trend.status.youtube') != 'on';
-                     });
 
-            # [ arşiv trend ] #
-            $schedule->command('nohup "trend:update --module=sozluk --period=daily" --type=restart')
-                     ->dailyAt('23:45')
-                     ->timezone(config('app.timezone'))
-                     ->skip(function() {
-                        return SystemUtility::option('trend.status.sozluk') != 'on';
-                     });
-            $schedule->command('nohup "trend:update --module=sozluk --period=weekly" --type=restart')
-                     ->weekly()
-                     ->sundays()
-                     ->at('23:45')
-                     ->timezone(config('app.timezone'))
-                     ->skip(function() {
-                        return SystemUtility::option('trend.status.sozluk') != 'on';
-                     });
+            foreach ([
+                'trend.status.twitter_tweet' => 'twitter_tweet',
+                'trend.status.twitter_hashtag' => 'twitter_hashtag',
+                'trend.status.news' => 'news',
+                'trend.status.sozluk' => 'entry',
+                'trend.status.youtube_video' => 'youtube_video' ] as $key => $module)
+            {
+                if ($module == 'youtube_video')
+                {
+                    $schedule->command('nohup "trend:detect --module=youtube_video --time=\"-1 hours\" --insert=1 --redis=1" --type=restart')
+                             ->everyThirtyMinutes()
+                             ->timezone(config('app.timezone'))
+                             ->skip(function() use($key) {
+                                return SystemUtility::option('trend.status.youtube_video') != 'on';
+                             });
+                }
+                else
+                {
+                    $schedule->command('nohup "trend:detect --module='.$module.' --time=\"-10 minutes\" --insert=1 --redis=1" --type=restart')
+                             ->everyMinute()
+                             ->timezone(config('app.timezone'))
+                             ->skip(function() use($key) {
+                                return SystemUtility::option($key) != 'on';
+                             });
+                }
 
-            # [ arşiv trend ] #
-            $schedule->command('nohup "trend:update --module=news --period=daily" --type=restart')
-                     ->dailyAt('23:45')
-                     ->timezone(config('app.timezone'))
-                     ->skip(function() {
-                        return SystemUtility::option('trend.status.news') != 'on';
-                     });
-            $schedule->command('nohup "trend:update --module=news --period=weekly" --type=restart')
-                     ->weekly()
-                     ->sundays()
-                     ->at('23:45')
-                     ->timezone(config('app.timezone'))
-                     ->skip(function() {
-                        return SystemUtility::option('trend.status.news') != 'on';
-                     });
+                $schedule->command('nohup "trend:detect --module='.$module.' --time=\"-1 hours\" --insert=1" --type=restart')
+                         ->hourlyAt('59')
+                         ->timezone(config('app.timezone'))
+                         ->skip(function() use($key) {
+                            return SystemUtility::option($key) != 'on';
+                         });
 
-            # [ arşiv trend ] #
-            $schedule->command('nohup "trend:update --module=youtube --period=daily" --type=restart')
-                     ->dailyAt('23:45')
-                     ->timezone(config('app.timezone'))
-                     ->skip(function() {
-                        return SystemUtility::option('trend.status.youtube') != 'on';
-                     });
-            $schedule->command('nohup "trend:update --module=youtube --period=weekly" --type=restart')
-                     ->weekly()
-                     ->sundays()
-                     ->at('23:45')
-                     ->timezone(config('app.timezone'))
-                     ->skip(function() {
-                        return SystemUtility::option('trend.status.youtube') != 'on';
-                     });
+                $schedule->command('nohup "trend:detect --module='.$module.' --time=\"-1 days\" --insert=1" --type=restart')
+                         ->dailyAt('23:55')
+                         ->timezone(config('app.timezone'))
+                         ->skip(function() use($key) {
+                            return SystemUtility::option($key) != 'on';
+                         });
 
-            # [ gerçek trend ] #
-            $schedule->command('nohup "trend:update --module=twitter --type=live" --type=restart')
-                     ->everyTenMinutes()
-                     ->timezone(config('app.timezone'))
-                     ->skip(function() {
-                        return SystemUtility::option('trend.status.twitter') != 'on';
-                     });
-            $schedule->command('nohup "trend:update --module=google" --type=restart')
+                $schedule->command('nohup "trend:detect --module='.$module.' --time=\"-7 days\" --insert=1" --type=restart')
+                         ->weeklyOn(7, '23:45')
+                         ->timezone(config('app.timezone'))
+                         ->skip(function() use($key) {
+                            return SystemUtility::option($key) != 'on';
+                         });
+
+                $schedule->command('nohup "trend:detect --module='.$module.' --time=\"-1 months\" --insert=1" --type=restart')
+                         ->monthlyOn(30, '22:45')
+                         ->timezone(config('app.timezone'))
+                         ->skip(function() use($key) {
+                            return SystemUtility::option($key) != 'on';
+                         });
+            }
+
+            $schedule->command('nohup "trend:detect --module=google --time=\"-1 hours\" --insert=1 --redis=1" --type=restart')
                      ->hourly()
                      ->timezone(config('app.timezone'))
                      ->skip(function() {
                         return SystemUtility::option('trend.status.google') != 'on';
                      });
+
             /**
              * Her gece 03:00'da takip edilecek aktif Twitter kullanıcılarını güncelle.
              */

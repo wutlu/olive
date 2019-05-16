@@ -31,14 +31,10 @@ class TrendController extends Controller
         $this->middleware([ 'auth', 'organisation:have' ]);
         $this->middleware([ 'can:organisation-status' ])->except([ 'live' ]);
 
-        ### [ 10 işlemden sonra 1 dakika ile sınırla ] ###
-        $this->middleware('throttle:10,1')->only('archiveSave');
-
         $this->middleware('organisation:have,module_trend')->only([
             'liveRedis',
             'archive',
-            'archiveListJson',
-            'archiveSave',
+            'archiveListJson'
         ]);
     }
 
@@ -49,11 +45,38 @@ class TrendController extends Controller
      */
     public function live()
     {
-        return view('trends.live');
+        $trends = [
+            [
+                'title' => 'Twitter Tweet',
+                'module' => 'twitter_tweet',
+            ],
+            [
+                'title' => 'Twitter Hashtag',
+                'module' => 'twitter_hashtag',
+            ],
+            [
+                'title' => 'Medya, Haber',
+                'module' => 'news',
+            ],
+            [
+                'title' => 'Sözlük, Entry',
+                'module' => 'entry',
+            ],
+            [
+                'title' => 'YouTube, Video',
+                'module' => 'youtube_video',
+            ],
+            [
+                'title' => 'Google, Arama',
+                'module' => 'google',
+            ]
+        ];
+
+        return view('trends.live', compact('trends'));
     }
 
     /**
-     * Trend Analizi Redis Haber
+     * Trend Analizi Redis
      *
      * @return array
      */
@@ -110,45 +133,5 @@ class TrendController extends Controller
             'hits' => $query->get(),
             'total' => $query->count()
         ];
-    }
-
-    /**
-     * Trend Arşiv Kayıt
-     *
-     * @return array
-     */
-    public function archiveSave(SaveRequest $request)
-    {
-        $user = auth()->user();
-
-        $alias = config('system.db.alias');
-
-        $redis_data = RedisCache::get(implode(':', [ $alias, 'trends', $request->key ]));
-
-        if ($redis_data)
-        {
-            $name = config('system.trends')[implode('.', [ 'trend', 'status', $request->key ])];
-
-            TrendArchive::updateOrCreate(
-                [
-                    'group' => implode(':', [ 'olive', 'trends', $request->key, date('Y:m:d:H.i') ]),
-                    'organisation_id' => $user->organisation_id
-                ],
-                [
-                    'title' => 'Anlık Trend, '.$name.': '.date('Y.m.d H:i'),
-                    'data' => json_decode($redis_data)
-                ]
-            );
-
-            return [
-                'status' => 'ok'
-            ];
-        }
-        else
-        {
-            return [
-                'status' => 'err'
-            ];
-        }
     }
 }

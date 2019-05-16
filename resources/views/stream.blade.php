@@ -46,6 +46,15 @@
         -webkit-animation: blink .6s step-end infinite alternate;
                 animation: blink .6s step-end infinite alternate;
     }
+
+    #fake {
+        position: fixed;
+        top: 0;
+        z-index: 99999;
+
+        -webkit-transform: translateY(-100%);
+                transform: translateY(-100%);
+    }
 @endpush
 
 @push('external.include.header')
@@ -154,6 +163,7 @@
 @endsection
 
 @section('content')
+    <input type="text" id="fake" />
     <div class="status-bar d-flex mt-1">
         <div class="p-1 align-self-center">
             <button class="btn-floating cyan darken-2 btn-large disabled" type="button" data-name="trigger" data-tooltip="Kısayol (Space)" data-position="right">
@@ -399,6 +409,8 @@
                 _ui_received.html(0)
             }
         }
+
+        $('input#fake').focus()
     }
 
     var streamTimer;
@@ -451,8 +463,6 @@
                 stream = true;
 
                 _ui_change('play', false)
-
-                __.blur()
             }
         })
 

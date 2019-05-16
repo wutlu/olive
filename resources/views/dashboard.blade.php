@@ -21,7 +21,7 @@
             @php
             $i = 0;
             @endphp
-                @foreach ($carousels as $carousel)
+            @foreach ($carousels as $carousel)
                 <div class="{{ implode(' ', [ 'carousel-item', $i == 0 ? 'active' : '', '' ]) }}">
                     <h2 class="teal-text text-darken-2">{{ $carousel->title }}</h2>
                     <div class="markdown">
@@ -320,7 +320,7 @@
                     <div class="collapsible-header">
                         <i class="material-icons" data-name="icon"></i>
                         <span>
-                            <p></p>
+                            <p class="mb-0"></p>
                             <time class="timeago grey-text"></time>
                         </span>
                         <i class="material-icons arrow">keyboard_arrow_down</i>

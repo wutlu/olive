@@ -21,63 +21,63 @@
 ])
 
 @section('content')
-    <div class="card with-bg">
+    <div class="card with-bg mb-1">
         <div class="card-content">
             <span class="card-title">Alarmlar</span>
             <span class="d-block grey-text text-darken-2" data-name="count"></span>
         </div>
-        <div class="card-group load"
-             id="alarms"
-             data-href="{{ route('admin.organisation.alarms', $organisation->id) }}"
-             data-callback="__collections"
-             data-method="post"
-             data-loader="#home-loader"
-             data-nothing>
-            <div class="nothing hide pb-1">
-                @component('components.nothing')
-                    @slot('text_class', 'grey-text text-darken-2')
-                    @slot('size', 'small')
-                @endcomponent
-            </div>
-            <div data-name="item" class="card card-alarm hoverable model hide">
-                <div class="group d-flex">
-                    <div class="card-content grey lighten-5">
-                        <small class="grey-text">Kalan Bildirim</small>
-                        <span class="d-block" data-name="hit"></span>
-                        <small class="grey-text">Bildirim Aralığı</small>
-                        <span class="d-block">
-                            <span data-name="interval"></span> dakika
-                        </span>
-                    </div>
-                    <div class="card-content">
-                        <span class="card-title card-title-small" data-name="name"></span>
-                        <small class="grey-text">Sorgu</small>
-                        <span class="d-block" data-name="query"></span>
-                        <span class="d-block" data-name="receivers"></span>
-                        <span class="d-block" data-name="modules"></span>
-                    </div>
-                </div>
-
-                <ul class="days d-flex">
-                    <li class="day lighten-2 white-text" data-name="day-1">Pt</li>
-                    <li class="day lighten-2 white-text" data-name="day-2">Sa</li>
-                    <li class="day lighten-2 white-text" data-name="day-3">Ça</li>
-                    <li class="day lighten-2 white-text" data-name="day-4">Pe</li>
-                    <li class="day lighten-2 white-text" data-name="day-5">Cu</li>
-                    <li class="day lighten-3 white-text" data-name="day-6">Ct</li>
-                    <li class="day lighten-3 white-text" data-name="day-7">Pa</li>
-                    <li class="hour grey lighten-2 grey-text" data-name="start-time"></li>
-                    <li class="hour grey lighten-2 grey-text" data-name="end-time"></li>
-                </ul>
-            </div>
-        </div>
-
-        @component('components.loader')
-            @slot('color', 'cyan')
-            @slot('id', 'home-loader')
-            @slot('class', 'card-loader-unstyled')
-        @endcomponent
     </div>
+
+    <div class="card-group load"
+         id="alarms"
+         data-href="{{ route('admin.organisation.alarms', $organisation->id) }}"
+         data-callback="__collections"
+         data-method="post"
+         data-loader="#home-loader"
+         data-nothing>
+        <div class="nothing hide pb-1">
+            @component('components.nothing')
+                @slot('text_class', 'grey-text text-darken-2')
+                @slot('size', 'small')
+            @endcomponent
+        </div>
+        <div data-name="item" class="card mb-1 card-alarm hoverable model hide">
+            <div class="group d-flex">
+                <div class="card-content grey lighten-5">
+                    <small class="grey-text">Kalan Bildirim</small>
+                    <span class="d-block" data-name="hit"></span>
+                    <small class="grey-text">Bildirim Aralığı</small>
+                    <span class="d-block">
+                        <span data-name="interval"></span> dakika
+                    </span>
+                </div>
+                <div class="card-content">
+                    <span class="card-title card-title-small" data-name="name"></span>
+                    <small class="grey-text">Sorgu</small>
+                    <span class="d-block" data-name="query"></span>
+                    <span class="d-block" data-name="receivers"></span>
+                    <span class="d-block" data-name="modules"></span>
+                </div>
+            </div>
+
+            <ul class="days d-flex">
+                <li class="day lighten-2 white-text" data-name="day-1">Pt</li>
+                <li class="day lighten-2 white-text" data-name="day-2">Sa</li>
+                <li class="day lighten-2 white-text" data-name="day-3">Ça</li>
+                <li class="day lighten-2 white-text" data-name="day-4">Pe</li>
+                <li class="day lighten-2 white-text" data-name="day-5">Cu</li>
+                <li class="day lighten-3 white-text" data-name="day-6">Ct</li>
+                <li class="day lighten-3 white-text" data-name="day-7">Pa</li>
+                <li class="hour grey lighten-2 grey-text" data-name="start-time"></li>
+                <li class="hour grey lighten-2 grey-text" data-name="end-time"></li>
+            </ul>
+        </div>
+    </div>
+
+    @component('components.loader')
+        @slot('color', 'cyan')
+        @slot('id', 'home-loader')
+    @endcomponent
 @endsection
 
 @section('dock')

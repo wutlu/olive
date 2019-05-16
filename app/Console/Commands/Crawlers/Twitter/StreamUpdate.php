@@ -3,6 +3,7 @@
 namespace App\Console\Commands\Crawlers\Twitter;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Redis as RedisCache;
 
 use App\Models\Twitter\Token;
 use App\Models\Twitter\StreamingKeywords;
@@ -115,63 +116,56 @@ class StreamUpdate extends Command
 
         if ($type == 'trend')
         {
-            $query = Document::search(
-                [
-                    'trend',
-                    'titles'
-                ],
-                'title',
-                [
-                    'size' => 0,
-                    'query' => [
-                        'bool' => [
-                            'must' => [
-                                [ 'match' => [ 'module' => 'twitter' ] ]
-                            ],
-                            'filter' => [
-                                'range' => [
-                                    'created_at' => [
-                                        'format' => 'YYYY-MM-dd HH',
-                                        'gte' => Carbon::now()->subHours(3)->format('Y-m-d H')
-                                    ]
-                                ]
-                            ]
-                        ]
-                    ],
-                    'aggs' => [
-                        'unique' => [
-                            'terms' => [
-                                'field' => 'title',
-                                'size' => $klimit,
-                                'order' => [
-                                    '_count' => 'DESC'
-                                ]
-                            ]
-                        ]
-                    ]
-                ]
-            );
+            $alias = config('system.db.alias');
 
-            if (@$query->data['aggregations']['unique']['buckets'])
+            $last_key = RedisCache::get(implode(':', [ $alias, 'trends', 'keys', 'twitter_hashtag' ]));
+
+            if ($last_key)
             {
-                $filtered = array_map(function ($q) {
-                    return Term::convertAscii($q['key']);
-                }, $query->data['aggregations']['unique']['buckets']);
+                $query = Document::search(
+                    [
+                        'trend',
+                        'titles'
+                    ],
+                    'title',
+                    [
+                        'size' => 50,
+                        'query' => [
+                            'bool' => [
+                                'must' => [
+                                    [ 'match' => [ 'module' => 'twitter_hashtag' ] ],
+                                    [ 'match' => [ 'group' => $last_key ] ]
+                                ]
+                            ]
+                        ],
+                        '_source' => [ 'data.key' ]
+                    ]
+                );
 
-                if (count($filtered))
+                if ($query->status == 'ok')
                 {
-                    foreach (array_chunk($filtered, 20) as $query)
+                    if ($query->data['hits']['hits'])
                     {
-                        foreach ($query as $row)
+                        $filtered = array_map(function ($q) {
+                            return Term::convertAscii($q['_source']['data']['key']);
+                        }, $query->data['hits']['hits']);
+
+                        if (count($filtered))
                         {
-                            $chunk[$row] = $row;
+                            foreach (array_chunk($filtered, 25) as $query)
+                            {
+                                foreach ($query as $row)
+                                {
+                                    $chunk[$row] = $row;
+                                }
+
+                                self::token($type, $chunk_id, $chunk);
+
+                                $chunk = [];
+
+                                $chunk_id++;
+                            }
                         }
-
-                        self::token($type, $chunk_id, $chunk);
-
-                        $chunk = [];
-
-                        $chunk_id++;
                     }
                 }
             }

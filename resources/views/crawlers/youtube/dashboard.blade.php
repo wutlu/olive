@@ -184,7 +184,7 @@
 @endpush
 
 @section('dock')
-    <div class="card mb-1">
+    <div class="card card-unstyled">
         <div class="collection">
             @if ($options['youtube.index.videos'] == 'off' || $options['youtube.index.comments'] != date('Y.m', strtotime('+ 1 month')))
                 <div class="collection-item d-block">

@@ -115,24 +115,25 @@
             data-timeout="4000"
             data-error-callback="__connection_failed">
             @foreach (config('system.trends') as $key => $name)
-            <label class="collection-item waves-effect d-block">
-                <input
-                    name="value"
-                    id="value"
-                    value="on"
-                    class="json"
-                    data-href="{{ route('admin.trend.status.set') }}"
-                    data-method="patch"
-                    data-delay="1"
-                    data-key="{{ $key }}"
-                    data-checked-value="on"
-                    data-unchecked-value="off"
-                    type="checkbox"
-                    data-callback="__status_set"
-                    @if ($options[$key] == 'on'){{ 'checked' }}@endif />
-                <span>{{ $name }} Trend Botu</span>
-            </label>
+                <label class="collection-item waves-effect d-block">
+                    <input
+                        name="value"
+                        id="value"
+                        value="on"
+                        class="json"
+                        data-href="{{ route('admin.trend.status.set') }}"
+                        data-method="patch"
+                        data-delay="1"
+                        data-key="{{ $key }}"
+                        data-checked-value="on"
+                        data-unchecked-value="off"
+                        type="checkbox"
+                        data-callback="__status_set"
+                        @if ($options[$key] == 'on'){{ 'checked' }}@endif />
+                    <span>{{ $name }} Trend Botu</span>
+                </label>
             @endforeach
+
             @if ($options['trend.index'] == 'off')
                 <a
                     href="#"
@@ -153,10 +154,10 @@
                 <p data-elasticsearch data-name="trend-size">-</p>
             </li>
             @foreach (config('system.trends') as $key => $name)
-            <li class="collection-item">
-                <small class="d-block grey-text">{{ $name }} Trend Sayısı</small>
-                <p data-elasticsearch data-name="{{ explode('.', $key)[2] }}-trend-count">-</p>
-            </li>
+                <li class="collection-item">
+                    <small class="d-block grey-text">{{ $name }} Trend Sayısı</small>
+                    <p data-elasticsearch data-name="{{ explode('.', $key)[2] }}-trend-count">-</p>
+                </li>
             @endforeach
         </ul>
     </div>

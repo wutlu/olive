@@ -10,19 +10,8 @@ class TrendArchive extends Model
 {
     protected $table = 'trend_archives';
     protected $fillable = [
-        'title',
+        'module',
         'group',
-        'data',
-        'organisation_id'
-    ];
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'data' => 'array'
     ];
 
     # index crate
@@ -34,24 +23,54 @@ class TrendArchive extends Model
                 'title' => [
                     'properties' => [
                         'id' => [
-                            'type' => 'keyword' // {module}_{key}_2018.12.31.23.00
+                            'type' => 'keyword' // {module}-2018.12.31-23:59-{key}
                         ],
                         'group' => [
-                            'type' => 'keyword' // yearly_2018 | monthly_2018.12 | weekly_2018.52 | daily_2018.12.31 | hourly_2018.12.31.23 | minutely_2018.12.31.23.59
+                            'type' => 'keyword' // 2018-52 | 2018.12 | 2018.12.31 | 2018.12.31-23 | 2018.12.31-23:59
                         ],
                         'module' => [
-                            'type' => 'keyword' // youtube_video, youtube_comment, twitter, sozluk, news, shopping
+                            'type' => 'keyword' // twitter_tweet, twitter_hashtag, news, entry, youtube_video, google
                         ],
-                        'key' => [
-                            'type' => 'keyword'
-                        ],
-                        'rank' => [
+                        'hit' => [
                             'type' => 'integer'
                         ],
-                        'title' => [
-                            'type' => 'text',
-                            'analyzer' => 'keyword',
-                            'fielddata' => true
+                        'data' => [
+                            'properties' => [
+                                'id' => [ 'type' => 'keyword' ],
+                                'title' => [
+                                    'type' => 'text',
+                                    'analyzer' => 'turkish'
+                                ],
+                                'text' => [
+                                    'type' => 'text',
+                                    'analyzer' => 'turkish'
+                                ],
+                                'key' => [ 'type' => 'keyword' ],
+                                'image' => [
+                                    'type' => 'keyword',
+                                    'index' => false
+                                ],
+                                'user' => [
+                                    'properties' => [
+                                        'image' => [
+                                            'type' => 'keyword',
+                                            'index' => false
+                                        ],
+                                        'screen_name' => [ 'type' => 'keyword' ],
+                                        'name' => [ 'type' => 'keyword' ],
+                                        'id' => [ 'type' => 'long' ],
+                                        'verified' => [ 'type' => 'boolean' ]
+                                    ]
+                                ],
+                                'url' => [
+                                    'type' => 'keyword',
+                                    'index' => false
+                                ],
+                                'created_at' => [
+                                    'type' => 'date',
+                                    'format' => 'YYYY-MM-dd HH:mm:ss'
+                                ]
+                            ]
                         ],
                         'created_at' => [
                             'type' => 'date',

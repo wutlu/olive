@@ -353,14 +353,14 @@
 
     <section class="y-section">
         <div class="container">
-            <div class="item-group pt-2" id="features">
+            <div class="item-group p-2">
                 <div class="item">
                     <i class="large material-icons analytics">poll</i>
                     <h5>Analiz</h5>
                     <ul>
                         <li>- Duygusal analizler gerçekleştirin.</li>
                         <li>- Kitlenizi cinsiyet ve konumlarına göre ölçümleyin.</li>
-                        <li>- Nefret söylemlerine ve soru içeriklerine anında erişin.</li>
+                        <li>- Nefret söylemlerine ve soru içeriklerini gerçek zamanlı süzün.</li>
                         <li>- Ürün veya markanızı rakiplerinizle kıyaslayın.</li>
                     </ul>
                 </div>
@@ -368,26 +368,27 @@
                     <i class="large material-icons realtime">subject</i>
                     <h5>Gerçek Zamanlı Veri</h5>
                     <ul>
-                        <li>- Herhangi bir konu trend olmadan gündemine hakim olun.</li>
-                        <li>- Ürün veya markanızı anlık ve duygusal olarak takip edin.</li>
-                        <li>- Anlık gündemi yakalayın ve daha sonra inceleyin.</li>
+                        <li>- Olive'in anlık trendleriyle, herhangi bir konu trend olmadan gündemine hakim olun.</li>
+                        <li>- Ürün veya markanızı anlık takip edin.</li>
+                        <li>- İlgilendiğiniz içerikleri pinleyin ve daha sonra inceleyin.</li>
                     </ul>
                 </div>
                 <div class="item">
                     <i class="large material-icons rotate">toys</i>
                     <h5>Araçlar</h5>
                     <ul>
-                        <li>- Duygusal analizler gerçekleştirin.</li>
-                        <li>- Kitlenizi cinsiyet ve konumlarına göre ölçümleyin.</li>
-                        <li>- Nefret söylemlerine ve soru içeriklerine anında erişin.</li>
+                        <li>- Tüm müşteriler için ortak bir veri tabanı.</li>
+                        <li>- Belirlenen kriterler sizin için incelenir ve raporlanır.</li>
+                        <li>- Bahis ve Çıplaklık içeren veriler karantinada gösterilir.</li>
+                        <li>- Yapay zekanın yanılgılarını toparlayarak Olive'in öğrenmesine katkıda bulunun.</li>
                     </ul>
                 </div>
                 <div class="item">
                     <i class="large material-icons cloud">cloud</i>
                     <h5>Arşiv</h5>
                     <ul>
-                        <li>- Kriter belirtin sizin için erişelim.</li>
-                        <li>- Ortak veritabanı ile çok daha fazla veriye ulaşın.</li>
+                        <li>- Belirlediğiniz kriterlere göre analiz edilmiş veri sağlıyoruz.</li>
+                        <li>- Ortak veritabanı sayesinde çok daha fazla veriye ulaşabilirsiniz.</li>
                     </ul>
                 </div>
             </div>

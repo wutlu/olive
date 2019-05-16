@@ -4,7 +4,7 @@ return [
     /**
      * Sistem Versiyonu
      */
-    'version' => '1.8.11-alpha',
+    'version' => '1.8.12-alpha',
 
     /**
      * db
@@ -141,14 +141,15 @@ return [
      */
     'trends' => [
         'trend.status.google' => 'Google',
-        'trend.status.youtube' => 'YouTube',
+        'trend.status.youtube_video' => 'YouTube',
         'trend.status.sozluk' => 'Sözlük',
         'trend.status.news' => 'Haber',
         'trend.status.forum' => 'Forum',
         'trend.status.blog' => 'Blog',
         'trend.status.instagram' => 'Instagram',
         'trend.status.facebook' => 'Facebook',
-        'trend.status.twitter' => 'Twitter',
+        'trend.status.twitter_tweet' => 'Twitter Tweet',
+        'trend.status.twitter_hashtag' => 'Twitter Hashtag',
     ],
 
     /**
@@ -165,11 +166,12 @@ return [
         'trend.index' => 'string|in:on,off',
         'trend.status.google' => 'string|in:on,off',
         'trend.status.news' => 'string|in:on,off',
-        'trend.status.twitter' => 'string|in:on,off',
+        'trend.status.twitter_tweet' => 'string|in:on,off',
+        'trend.status.twitter_hashtag' => 'string|in:on,off',
         'trend.status.sozluk' => 'string|in:on,off',
         'trend.status.forum' => 'string|in:on,off',
         'trend.status.blog' => 'string|in:on,off',
-        'trend.status.youtube' => 'string|in:on,off',
+        'trend.status.youtube_video' => 'string|in:on,off',
         'trend.status.instagram' => 'string|in:on,off',
         'trend.status.facebook' => 'string|in:on,off',
 

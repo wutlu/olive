@@ -58,6 +58,16 @@ class Term
     }
 
     /**
+     * Hit Sırala
+     *
+     * @return array
+     */
+    public static function hitSort($a, $b)
+    {
+        return $b['hit'] - $a['hit'];
+    }
+
+    /**
      * Dil Tespiti
      *
      * @return boolean
