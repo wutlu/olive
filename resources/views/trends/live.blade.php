@@ -124,6 +124,7 @@
 
                             item.find('[data-name=title-1]').removeClass('hide').html(o.data.user.name)
                             item.find('[data-name=title-2]').removeClass('hide').html('@' + o.data.user.screen_name)
+                            item.find('[data-name=created_at]').removeClass('hide').html(o.data.created_at)
 
                             links.olive = '{{ route('search.dashboard') }}?q=@' + o.data.user.screen_name;
                             links.twitter = 'https://twitter.com/' + o.data.user.screen_name + '/status/' + o.data.id;
@@ -320,6 +321,7 @@
                             <div class="card card-unstyled mb-1">
                                 <div class="card-content hide" data-name="text"></div>
                                 <div class="collection collection-unstyled">
+                                    <div class="collection-item grey-text hide" data-name="created_at"></div>
                                     <a href="#" target="_blank" class="collection-item" data-name="link-olive">
                                         <span class="d-flex">
                                             <i class="material-icons align-self-center mr-1">link</i>
