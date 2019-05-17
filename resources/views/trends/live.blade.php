@@ -373,7 +373,7 @@
         <div class="card-content grey-text text-darken-2">
             @component('components.alert')
                 @slot('icon', 'info')
-                @slot('text', 'İzlemek istediğini trend modülünün yanında bulunan play tuşuna basarak izleme işlemini başlatabilirsiniz.')
+                @slot('text', 'İzlemek istediğiniz trend modülünün yanında bulunan "Oynat" tuşuna basarak izleme işlemini başlatabilirsiniz.')
             @endcomponent
             @component('components.alert')
                 @slot('icon', 'info')
