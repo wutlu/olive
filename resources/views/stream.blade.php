@@ -30,7 +30,7 @@
     }
 
     .time-line > .collection {
-        max-height: 8000px;
+        max-height: 16000px;
         overflow: hidden;
 
         padding: 0;
@@ -417,7 +417,10 @@
             {
                 trigger.removeClass('disabled').addClass('red pulse')
 
-                start_timer_f()
+                if (start_time == 0)
+                {
+                    start_timer_f()
+                }
             }
         }
         else if (status == 'stop')
