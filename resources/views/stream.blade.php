@@ -440,7 +440,7 @@
                 _ui_received.html(0)
                 _ui_1_minute.html(0)
 
-                stop_timer_f()
+                console.log('bitti')
             }
         }
 
