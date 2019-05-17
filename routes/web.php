@@ -137,11 +137,6 @@ Route::prefix('trend')->namespace('Trend')->group(function () {
         Route::get('/', 'TrendController@live')->name('trend.live');
         Route::post('redis', 'TrendController@liveRedis')->name('trend.live.redis');
     });
-
-    Route::prefix('arsiv')->group(function () {
-        Route::get('/', 'TrendController@archive')->name('trend.archive');
-        Route::post('/', 'TrendController@archiveListJson');
-    });
 });
 
 Route::prefix('alarm')->group(function () {
