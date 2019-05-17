@@ -126,7 +126,9 @@
                             item.find('[data-name=title-2]').removeClass('hide').html('@' + o.data.user.screen_name)
                             item.find('[data-name=created_at]').removeClass('hide').html(o.data.created_at)
 
-                            links.olive = '{{ route('search.dashboard') }}?q=@' + o.data.user.screen_name;
+                            var date = o.data.created_at.split('-');
+
+                            links.olive = '/db/{{ config('system.db.alias') }}__twitter-tweets-' + date[0] + '.' + date[1] + '/tweet/' + o.data.id;
                             links.twitter = 'https://twitter.com/' + o.data.user.screen_name + '/status/' + o.data.id;
                         }
                         else if (__.data('module') == 'twitter_hashtag')
@@ -213,10 +215,14 @@
     $(document).on('click', '[data-trigger=screenshot]', function() {
         var __ = $(this);
 
+        $('#loading').fadeIn()
+
         html2canvas(document.querySelector('#trend_list-' + __.data('id')), {
             'logging': false,
             'max-width': '100%'
         }).then(canvas => {
+            $('#loading').fadeOut()
+
             return modal({
                 'id': 'save',
                 'body': [
@@ -225,7 +231,7 @@
                         'html': 'Aşağıdaki resmin üzerine sağ tıklayın ve bilgisayarınıza kaydedin.'
                     }),
                     $('<a />', {
-                        'class': 'image-area',
+                        'class': 'image-area d-table mx-auto',
                         'target': '_blank',
                         'href': canvas.toDataURL(),
                         'html': $('<img />', {
@@ -233,7 +239,7 @@
                         })
                     })
                 ],
-                'title': 'Görüntü Kaydet',
+                'title': __.data('tooltip'),
                 'size': 'modal-large',
                 'options': {},
                 'footer': [
@@ -279,13 +285,13 @@
                         <div class="d-flex ml-auto">
                             <a
                                 href="#"
-                                class="btn-floating btn-flat d-flex disabled mr-1"
+                                class="btn-floating btn-flat d-flex disabled mr-1 waves-effect"
                                 data-name="{{ $trend['module'] }}"
-                                data-tooltip="Resim Olarak Kaydet"
+                                data-tooltip="Görüneni Kaydet"
                                 data-position="left"
                                 data-trigger="screenshot"
                                 data-id="{{ $trend['module'] }}">
-                                <i class="material-icons align-self-center">image</i>
+                                <i class="material-icons align-self-center">save</i>
                             </a>
                             <a
                                 href="#"
@@ -325,13 +331,13 @@
                                     <a href="#" target="_blank" class="collection-item" data-name="link-olive">
                                         <span class="d-flex">
                                             <i class="material-icons align-self-center mr-1">link</i>
-                                            <span class="align-self-center">Olive Sonuçları</span>
+                                            <span class="align-self-center">Olive'de göster</span>
                                         </span>
                                     </a>
                                     <a href="#" target="_blank" class="collection-item hide" data-name="link-google">
                                         <span class="d-flex">
                                             <i class="material-icons align-self-center mr-1">link</i>
-                                            <span class="align-self-center">Google Sonuçları</span>
+                                            <span class="align-self-center">Google'da göster</span>
                                         </span>
                                     </a>
                                     <a href="#" target="_blank" class="collection-item hide" data-name="link-twitter">
@@ -375,7 +381,7 @@
             @endcomponent
             @component('components.alert')
                 @slot('icon', 'info')
-                @slot('text', 'Trend modülü, tamamen canlı bir altyapıya sahiptir ve tüm trendler anlıktır. Başlıklar ve içerikler, algoritmamızın olağanüstü durum tespitiyle belirlenmektedir.')
+                @slot('text', 'Trend modülü, tamamen canli bir altyapiya sahip olup dakikalik göstergelere sahiptir ve tum trendler anlıktır. Başlıklar ve içerikler, algoritmamızın olağanüstü durum tespitiyle belirlenmektedir.')
             @endcomponent
             <br />
             <span class="red-text">
