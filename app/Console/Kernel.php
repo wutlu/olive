@@ -128,7 +128,7 @@ class Kernel extends ConsoleKernel
             {
                 if ($module == 'youtube_video')
                 {
-                    $schedule->command('nohup "trend:detect --module=youtube_video --time=\"-1 hours\" --insert=1 --redis=1" --type=restart')
+                    $schedule->command('nohup "trend:detect --module=youtube_video --time=\"-1 hours\" --redis=1" --type=restart')
                              ->everyThirtyMinutes()
                              ->timezone(config('app.timezone'))
                              ->skip(function() use($key) {
@@ -137,7 +137,7 @@ class Kernel extends ConsoleKernel
                 }
                 else
                 {
-                    $schedule->command('nohup "trend:detect --module='.$module.' --time=\"-10 minutes\" --insert=1 --redis=1" --type=restart')
+                    $schedule->command('nohup "trend:detect --module='.$module.' --time=\"-10 minutes\" --redis=1" --type=restart')
                              ->everyMinute()
                              ->timezone(config('app.timezone'))
                              ->skip(function() use($key) {
