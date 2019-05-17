@@ -293,7 +293,7 @@ class Kernel extends ConsoleKernel
                      });
 
             $schedule->command('nohup "twitter:stream:update --type=trend" --type=restart')
-                     ->hourly()
+                     ->hourlyAt('10')
                      ->timezone(config('app.timezone'))
                      ->withoutOverlapping(1)
                      ->skip(function() {

@@ -11,6 +11,8 @@ use App\Models\Twitter\StreamingUsers;
 
 use App\Elasticsearch\Document;
 
+use App\Models\TrendArchive;
+
 use System;
 
 use Carbon\Carbon;
@@ -118,9 +120,9 @@ class StreamUpdate extends Command
         {
             $alias = config('system.db.alias');
 
-            $last_key = RedisCache::get(implode(':', [ $alias, 'trends', 'keys', 'twitter_hashtag' ]));
+            $last_key = TrendArchive::where('module', 'twitter_hashtag')->orderBy('created_at', 'DESC')->first();
 
-            if ($last_key)
+            if (@$last_key)
             {
                 $query = Document::search(
                     [
@@ -134,7 +136,7 @@ class StreamUpdate extends Command
                             'bool' => [
                                 'must' => [
                                     [ 'match' => [ 'module' => 'twitter_hashtag' ] ],
-                                    [ 'match' => [ 'group' => $last_key ] ]
+                                    [ 'match' => [ 'group' => $last_key->group ] ]
                                 ]
                             ]
                         ],

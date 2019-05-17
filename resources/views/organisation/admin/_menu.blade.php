@@ -13,12 +13,12 @@
     @forelse($organisation->users as $user)
         <a href="{{ route('admin.user', $user->id) }}" class="collection-item waves-effect">
             {{ $user->name }}
-            <p class="grey-text">{{ $user->id == $organisation->user_id ? 'Organizasyon Sahibi' : 'Kullanıcı' }}</p>
+            <p class="grey-text mb-0">{{ $user->id == $organisation->user_id ? 'Organizasyon Sahibi' : 'Kullanıcı' }}</p>
         </a>
     @empty
         <a href="{{ route('admin.user', $organisation->author->id) }}" class="collection-item waves-effect">
             {{ $organisation->author->name }}
-            <p class="grey-text">Eski Organizasyon Sahibi</p>
+            <p class="grey-text mb-0">Eski Organizasyon Sahibi</p>
         </a>
     @endforelse
 
