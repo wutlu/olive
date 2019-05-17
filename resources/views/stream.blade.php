@@ -82,7 +82,7 @@
                         </label>
                         <label class="align-self-center mr-1">
                             <input name="mouse" value="on" type="checkbox" />
-                            <span>Fare Modu</span>
+                            <span>Fare ile Durdur</span>
                         </label>
                     </span>
                 </div>
@@ -166,8 +166,8 @@
     <input type="text" id="fake" />
     <div class="status-bar d-flex mt-1">
         <div class="p-1 align-self-center">
-            <button class="btn-floating cyan darken-2 btn-large disabled" type="button" data-name="trigger" data-tooltip="Kısayol (Space)" data-position="right">
-                <i class="material-icons">pause</i>
+            <button class="btn-floating red darken-2 btn-large disabled" type="button" data-name="trigger" data-tooltip="Kısayol (Space)" data-position="right">
+                <i class="material-icons">play_arrow</i>
             </button>
         </div>
         <div class="p-1 align-self-center">
@@ -177,6 +177,10 @@
         <div class="p-1 align-self-center">
             <small class="grey-text d-block">Alınan</small>
             <span data-name="received">0</span>
+        </div>
+        <div class="p-1 align-self-center">
+            <small class="grey-text d-block">Ortalama</small>
+            <span data-name="1-minute">0</span>
         </div>
     </div>
     <div
@@ -237,6 +241,26 @@
 
     var _ui_received = $('[data-name=received]');
     var _ui_buffer = $('[data-name=buffer]');
+    var _ui_1_minute = $('[data-name=1-minute]');
+
+    var start_time = 0;
+    var start_timer;
+
+    function start_timer_f()
+    {
+        start_time++;
+
+        _ui_1_minute.html(parseInt((_ui_received.html() / start_time) * 60) + ' veri / dakika')
+
+        window.clearTimeout(start_timer)
+        start_timer = window.setTimeout(start_timer_f, 1000)
+    }
+
+    function stop_timer_f()
+    {
+        window.clearTimeout(start_timer)
+        start_time = 0;
+    }
 
     function livePush()
     {
@@ -386,11 +410,14 @@
 
             if (pause)
             {
+                trigger.removeClass('cyan').addClass('red')
                 _collection_status.removeClass('active')
             }
             else
             {
-                trigger.removeClass('disabled').addClass('pulse')
+                trigger.removeClass('disabled').addClass('red pulse')
+
+                start_timer_f()
             }
         }
         else if (status == 'stop')
@@ -399,14 +426,18 @@
 
             if (pause)
             {
+                trigger.removeClass('red').addClass('cyan')
                 _collection_status.addClass('active')
             }
             else
             {
-                trigger.addClass('disabled').removeClass('pulse')
+                trigger.addClass('disabled').removeClass('red pulse')
 
-                _ui_buffer.html(0)
+                _ui_buffer.html(0).removeClass('green-text red-text')
                 _ui_received.html(0)
+                _ui_1_minute.html(0)
+
+                stop_timer_f()
             }
         }
 
