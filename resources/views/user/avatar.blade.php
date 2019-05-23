@@ -25,7 +25,7 @@
 				    </div>
 				    <div class="collection-item">
 						<div class="file-field input-field">
-							<div class="btn">
+							<div class="btn btn-flat waves-effect">
 								<span>Dosya Seçin</span>
 								<input type="file" name="file" id="file" accept="image/*" />
 							</div>

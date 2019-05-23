@@ -433,12 +433,11 @@ class Detect extends Command
                             ]
                         ],
                         [ 'match' => [ 'lang' => 'tr' ] ],
-                        [ 'match' => [ 'user.lang' => 'tr' ] ],
                         [
-                            'range' => [ 'user.counts.favourites' => [ 'gte' => 40 ] ],
-                            'range' => [ 'user.counts.statuses'   => [ 'gte' => 40 ] ],
-                            'range' => [ 'user.counts.friends'    => [ 'gte' => 40 ] ],
-                            'range' => [ 'user.counts.followers'  => [ 'gte' => 40 ] ]
+                            'range' => [ 'user.counts.favourites' => [ 'gte' => 10 ] ],
+                            'range' => [ 'user.counts.statuses'   => [ 'gte' => 10 ] ],
+                            'range' => [ 'user.counts.friends'    => [ 'gte' => 10 ] ],
+                            'range' => [ 'user.counts.followers'  => [ 'gte' => 10 ] ]
                         ]
                     ],
                     'must_not' => [

@@ -92,6 +92,9 @@ class FollowActiveUsers extends Command
                     'query' => [
                         'bool' => [
                             'should' => $ids,
+                            'must' => [
+                                [ 'match' => [ 'lang' => 'tr' ] ]
+                            ],
                             'must_not' => [
                                 [ 'match' => [ 'user.verified' => true ] ],
                                 [

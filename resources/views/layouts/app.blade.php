@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons" />
 
     <link rel="stylesheet" href="{{ asset('css/materialize.min.css?v='.config('system.version')) }}" />
-    <link rel="stylesheet" href="{{ asset('css/theme.css?v='.config('system.version')) }}" />
+    <link rel="stylesheet" href="{{ asset('css/app.css?v='.config('system.version')) }}" />
 
     <!-- manifest -->
     <link rel="manifest" href="{{ asset(route('olive.manifest').'?v='.config('system.version')) }}" />
@@ -197,7 +197,7 @@
                 </ul>
             @endauth
 
-            <nav class="cyan darken-2">
+            <nav id="main-nav">
                 <div class="{{ isset($sidenav_layout) ? '' : (auth()->check() ? 'sidenav-fixed-layout' : 'container') }}">
                     <div class="nav-wrapper">
                         <a href="{{ route('dashboard') }}" class="brand-logo center">
@@ -210,9 +210,13 @@
                             </a>
 
                             @if (trim($__env->yieldContent('panel')))
-                                <a href="#" data-class="#panel" data-class-toggle="active" class="sidenav-trigger">
-                                    <i class="material-icons">view_compact</i>
-                                </a>
+                            <ul class="hide-on-med-and-up">
+                                <li>
+                                    <a href="#" data-class="#panel" data-class-toggle="active">
+                                        <i class="material-icons">@yield('panel-icon', 'view_compact')</i>
+                                    </a>
+                                </li>
+                            </ul>
                             @endif
                         @endauth
 
@@ -310,8 +314,6 @@
                         <span class="email grey-text">{{ auth()->user()->email }}</span>
                     </div>
                 </li>
-
-                <li class="divider"></li>
 
                 @if (auth()->user()->root())
                     <!-- sadece yönetici -->
@@ -842,16 +844,16 @@
                             <i class="social-icon icon-skype">&#xe804;</i>
                             <i class="social-icon icon-call">&#xe806;</i>
                             -->
-                            <a href="#" class="btn-flat btn-small btn-floating waves-effect cyan darken-2 mt-1">
+                            <a href="#" class="btn-flat btn-small btn-floating social-icon mt-1">
                                 <i class="social-icon icon-twitter white-text">&#xe803;</i>
                             </a>
-                            <a href="#" class="btn-flat btn-small btn-floating waves-effect cyan darken-2 mt-1">
+                            <a href="#" class="btn-flat btn-small btn-floating social-icon mt-1">
                                 <i class="social-icon icon-linkedin white-text">&#xe805;</i>
                             </a>
-                            <a href="#" class="btn-flat btn-small btn-floating waves-effect cyan darken-2 mt-1">
+                            <a href="#" class="btn-flat btn-small btn-floating social-icon mt-1">
                                 <i class="social-icon icon-facebook white-text">&#xe807;</i>
                             </a>
-                            <a href="#" class="btn-flat btn-small btn-floating waves-effect cyan darken-2 mt-1">
+                            <a href="#" class="btn-flat btn-small btn-floating social-icon mt-1">
                                 <i class="social-icon icon-instagram white-text">&#xe808;</i>
                             </a>
                         </div>
@@ -868,6 +870,9 @@
                                 </li>
                                 <li>
                                     <a class="grey-text" href="{{ route('sources') }}">Kaynaklar</a>
+                                </li>
+                                <li>
+                                    <a class="grey-text" href="{{ '#' }}">Yardım</a>
                                 </li>
                                 <li>
                                     <a class="grey-text" data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" href="#">Api</a>

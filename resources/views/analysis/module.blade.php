@@ -211,15 +211,7 @@
 
 @push('external.include.footer')
     <script src="{{ asset('js/jquery.ui.min.js?v='.config('system.version')) }}"></script>
-    <script src="{{ asset('js/shapeChaos.min.js?v='.config('system.version')) }}"></script>
 @endpush
-@push('external.include.header')
-    <link rel="stylesheet" href="{{ asset('css/shapeChaos.css?v='.config('system.version')) }}" />
-@endpush
-
-@section('wildcard')
-    <div class="shapeChaos teal" style="height: 48px;"></div>
-@endsection
 
 @push('local.scripts')
     $('.droppable').droppable(
@@ -259,19 +251,6 @@
 
         vzAjax(search)
     }
-
-    $(document).on('change', '[data-update]', _search)
-
-    $('.shapeChaos').shapeChaos({
-        'num_shapes': 200,
-        'classes': [ 'sc_square' ],
-        'colors': [
-            '#00695c',
-            '#00796b',
-            '#00897b',
-            '#009688'
-        ]
-    })
 
     function __collection(__, obj)
     {

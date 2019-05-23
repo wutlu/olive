@@ -10,15 +10,14 @@
 ])
 
 @section('content')
-    <div class="card">
-        <div class="card-image">
-            <img src="{{ asset('img/md-s/21.jpg') }}" alt="Image" />
-            <span class="card-title white-text d-flex">
+    <div class="card card-unstyled">
+        <div class="card-content">
+            <span class="card-title d-flex">
                 <i class="material-icons mr-1">filter_list</i>
                 Veri Havuzu
             </span>
         </div>
-        <ul class="collection">
+        <ul class="collection collection-unstyled">
             <li class="collection-item">Sizi yakından ilgilendiren kriterleri belirterek veri toplama sonrasında yüksek analiz sonuçları elde edebilirsiniz.</li>
             <li class="collection-item">Veri toplayıcı örümceklerimiz; ilgilendiğiniz alanlara yoğunlaşarak, kaynak odağıyla çalışırlar.</li>
             <li class="collection-item">Bu ayarlar bulunduğunuz organizasyon için geçerlidir.</li>

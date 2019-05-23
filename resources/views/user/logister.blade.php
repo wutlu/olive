@@ -1,11 +1,13 @@
-@extends('layouts.app', [ 'header' => 'hide' ])
+@extends('layouts.app', [
+    'footer_hide' => true
+])
 
 @section('content')
     <div class="d-table mx-auto pt-2 mt-2 pb-2 mb-2">
-        <div class="bb-edge">
-            <div class="bb"></div>
+        <div class="bb-edge mb-2">
+            <a class="bb" href="{{ route('home') }}"></a>
         </div>
-        <div class="card" style="max-width: 340px;">
+        <div class="card mx-auto mb-2" style="max-width: 300px;">
             <div class="card-tabs">
                 <ul class="tabs tabs-fixed-width">
                     <li class="tab">
@@ -89,6 +91,8 @@
                 </form>
             </div>
         </div>
+
+        <p class="grey-text pl-1 pr-1">{{ date('Y') }} © <a href="https://veri.zone/">Veri Zone</a> Bilişim Teknolojileri ve Danışmanlık Ltd. Şti.</p>
     </div>
 @endsection
 
