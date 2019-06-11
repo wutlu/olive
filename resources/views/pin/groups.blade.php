@@ -221,7 +221,7 @@
             <span class="d-block grey-text text-darken-2" data-name="group-count"></span>
             <p class="grey-text text-darken-2">İlgilendiğiniz içerikleri pinleyerek daha sonra kullanmak üzere saklayabilirsiniz.</p>
         </div>
-        <nav class="nav-half">
+        <nav class="nav-half mb-0">
             <div class="nav-wrapper">
                 <div class="input-field">
                     <input id="string"
@@ -276,12 +276,12 @@
                         href="#"></a>
                     <time data-name="created-at" class="timeago grey-text"></time>
                 </span>
-                <small data-name="count" class="ml-auto"></small>
+                <span data-name="count" class="ml-auto"></span>
             </li>
         </ul>
 
         @component('components.loader')
-            @slot('color', 'cyan')
+            @slot('color', 'blue-grey')
             @slot('id', 'home-loader')
             @slot('class', 'card-loader-unstyled')
         @endcomponent

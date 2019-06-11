@@ -21,7 +21,7 @@ class Elasticsearch extends Command
      *
      * @var string
      */
-    protected $signature = 'elasticsearch';
+    protected $signature = 'elasticsearch {--option=} {--index=} {--type=} {--name=} {--column_type=} {--execute=}';
 
     /**
      * The console command description.
@@ -47,15 +47,15 @@ class Elasticsearch extends Command
      */
     public function handle()
     {
-        $option = $this->choice(
+        $option = $this->option('option') ? $this->option('option') : $this->choice(
             'What do you want to do?',
             [
-                'index_list' => 'List Index',
-                'index_create' => 'Create Index',
-                'index_update' => 'Update Index',
-                'index_delete' => 'Delete Index',
-                'doc_delete' => 'Delete Document',
-                'mapping_add' => 'Add Mapping',
+                'index_list',
+                'index_create',
+                'index_update',
+                'index_delete',
+                'doc_delete',
+                'mapping_add'
             ],
             'index_list'
         );
@@ -295,7 +295,7 @@ class Elasticsearch extends Command
                 }
                 else if ($option == 'mapping_add')
                 {
-                    $index = $this->choice('Select index', $autocomlete);
+                    $index = $this->option('index') ? $this->option('index') : $this->choice('Select index', $autocomlete);
 
                     if ($index)
                     {
@@ -330,11 +330,11 @@ class Elasticsearch extends Command
 
                         $this->table(['Key'], $keys);
 
-                        $type = $this->choice('Type', array_keys($keys));
+                        $type = $this->option('type') ? $this->option('type') : $this->choice('Type', array_keys($keys));
 
                         if ($type)
                         {
-                            $name = $this->ask('Type Name (new)');
+                            $name = $this->option('name') ? $this->option('name') : $this->ask('Type Name (new)');
 
                             if ($name)
                             {
@@ -352,7 +352,7 @@ class Elasticsearch extends Command
                                         ]
                                     ];
 
-                                    $type_new = $this->choice('Type (new)', [
+                                    $type_new = $this->option('column_type') ? $this->option('column_type') : $this->choice('Type (new)', [
                                         'text',
                                         'keyword',
                                         'long',
@@ -386,7 +386,7 @@ class Elasticsearch extends Command
 
                                     $this->info(json_encode($params, JSON_PRETTY_PRINT));
 
-                                    if ($this->confirm('Is everything right?', 0))
+                                    if ($this->option('execute') || $this->confirm('Is everything right?', 0))
                                     {
                                         $response = $client->indices()->putMapping($params);
 

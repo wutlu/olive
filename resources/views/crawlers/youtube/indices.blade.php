@@ -73,7 +73,7 @@
         <div class="card-content">
             <span class="card-title">YouTube Index Yönetimi</span>
         </div>
-        <ul class="collection load" 
+        <ul class="collection collection-unstyled load" 
              id="indices"
              data-href="{{ route('admin.youtube.indices.json') }}"
              data-callback="__indices"
@@ -98,7 +98,7 @@
         </ul>
 
         @component('components.loader')
-            @slot('color', 'cyan')
+            @slot('color', 'blue-grey')
             @slot('id', 'home-loader')
             @slot('class', 'card-loader-unstyled')
         @endcomponent

@@ -429,7 +429,7 @@
                 </div>
             </div>
             <div class="card-content red hide" data-name="alert"></div>
-            <div class="collection load" 
+            <div class="collection collection-unstyled load" 
                  id="collections"
                  data-href="{{ route('admin.twitter.tokens.json') }}"
                  data-callback="__collections"
@@ -476,7 +476,7 @@
             </ul>
         </div>
         @component('components.loader')
-            @slot('color', 'cyan')
+            @slot('color', 'blue-grey')
             @slot('id', 'home-loader')
             @slot('class', 'card-loader-unstyled')
         @endcomponent

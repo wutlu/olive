@@ -179,17 +179,6 @@ class MonitorController extends Controller
     }
 
     /**
-     * Kuyrul Monitörü
-     * - Laravel Horizon
-     *
-     * @return view
-     */
-    public static function queue()
-    {
-        return view('monitor.queue');
-    }
-
-    /**
      * Arkaplan Monitörü
      *
      * @return view

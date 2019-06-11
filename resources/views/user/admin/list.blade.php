@@ -29,7 +29,7 @@
 
                         item.find('[data-name=name]').html(o.name)
                         item.find('[data-name=email]').html(o.email)
-                        item.find('[data-name=avatar]').attr('src', o.avatar ? '{{ asset('/') }}' + o.avatar : '{{ asset('img/icons/people.png') }}')
+                        item.find('[data-name=avatar]').attr('src', o.avatar ? '{{ asset('/') }}' + o.avatar : '{{ asset('img/icons/people.svg') }}')
                         item.find('[data-name=verified]').html(o.verified ? 'Doğrulandı!' : 'Doğrulanmadı!').addClass(o.verified ? 'green-text' : 'red-text')
 
                         item.appendTo(ul)
@@ -143,7 +143,6 @@
                 <i class="material-icons grey-text text-darken-2">add</i>
             </a>
         </div>
-
         <nav class="nav-half">
             <div class="nav-wrapper">
                 <div class="input-field">
@@ -159,7 +158,7 @@
                 </div>
             </div>
         </nav>
-        <div class="collection load json-clear" 
+        <div class="collection collection-unstyled load json-clear" 
              id="users"
              data-href="{{ route('admin.user.list.json') }}"
              data-method="post"
@@ -175,7 +174,7 @@
             </div>
             <a
                 href="#"
-                class="collection-item avatar model hide waves-effect json"
+                class="collection-item avatar model hide json"
                 data-href="{{ route('route.generate.id') }}"
                 data-method="post"
                 data-name="admin.user"
@@ -190,7 +189,7 @@
         </div>
 
         @component('components.loader')
-            @slot('color', 'cyan')
+            @slot('color', 'blue-grey')
             @slot('id', 'home-loader')
             @slot('class', 'card-loader-unstyled')
         @endcomponent

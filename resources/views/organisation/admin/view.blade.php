@@ -142,6 +142,10 @@
                                 <input name="historical_days" id="historical_days" max="90" min="1" value="{{ $organisation->historical_days }}" type="number" class="validate" />
                                 <small class="helper-text">Geriye Dönük Arama (Gün)</small>
                             </div>
+                            <div class="collection-item input-field">
+                                <input name="saved_searches_limit" id="saved_searches_limit" max="12" min="1" value="{{ $organisation->saved_searches_limit }}" type="number" class="validate" />
+                                <small class="helper-text">Arama Kaydetme Limiti</small>
+                            </div>
                         </div>
                     </li>
                     <li class="item">

@@ -51,6 +51,7 @@ class UpdateRequest extends FormRequest
             'real_time_group_limit' => 'required|integer|max:12|min:1',
             'alarm_limit' => 'required|integer|max:12|min:1',
             'pin_group_limit' => 'required|integer|max:12|min:1',
+            'saved_searches_limit' => 'required|integer|max:12|min:1',
 
             'data_pool_youtube_channel_limit' => 'required|integer|max:100|min:10',
             'data_pool_youtube_video_limit' => 'required|integer|max:100|min:10',

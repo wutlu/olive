@@ -81,6 +81,12 @@ class SingleJob implements ShouldQueue
                 $sentiment = new Sentiment;
                 $sentiment->engine('sentiment');
 
+                $consumer = new Sentiment;
+                $consumer->engine('consumer');
+
+                $illegal = new Sentiment;
+                $illegal->engine('illegal');
+
                 $chunk['body'][] = [
                     'id' => $entry_id,
 
@@ -97,7 +103,9 @@ class SingleJob implements ShouldQueue
 
                     'site_id' => $sozluk->id,
 
-                    'sentiment' => $sentiment->score($item->data['entry'])
+                    'sentiment' => $sentiment->score($item->data['entry']),
+                    'consumer' => $consumer->score($item->data['entry'])
+                    'illegal' => $illegal->score($item->data['entry'])
                 ];
 
                 BulkInsertJob::dispatch($chunk)->onQueue('elasticsearch');

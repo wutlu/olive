@@ -35,7 +35,7 @@
 @section('wildcard')
     <div class="card wild-background">
         <div class="container">
-            <span class="wildcard-title white-text">{{ $thread ? 'Konu Güncelle' : 'Konu Başlat' }}</span>
+            <span class="wildcard-title">{{ $thread ? 'Konu Güncelle' : 'Konu Başlat' }}</span>
         </div>
     </div>
 @endsection

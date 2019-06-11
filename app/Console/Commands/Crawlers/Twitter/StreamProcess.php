@@ -137,9 +137,9 @@ class StreamProcess extends Command
             $this->client = new Client(
                 [
                     'base_uri' => $this->endpoint,
-                    'handler'  => $stack,
-                    'auth'     => 'oauth',
-                    'stream'   => true
+                    'handler' => $stack,
+                    'auth' => 'oauth',
+                    'stream' => true
                 ]
             );
 
@@ -167,8 +167,8 @@ class StreamProcess extends Command
                     Mail::queue(new ServerAlertMail('Twitter [Token Durdu]', $message));
 
                     $token->off_reason = $message;
-                    $token->pid        = null;
-                    $token->status     = 'disabled';
+                    $token->pid = null;
+                    $token->status = 'disabled';
                 }
 
                 $token->save();
@@ -189,6 +189,12 @@ class StreamProcess extends Command
 
             $sentiment = new Sentiment;
             $sentiment->engine('sentiment');
+
+            $consumer = new Sentiment;
+            $consumer->engine('consumer');
+
+            $illegal = new Sentiment;
+            $illegal->engine('illegal');
 
             $bulk = [];
             $tracked_users = [];
@@ -216,8 +222,12 @@ class StreamProcess extends Command
                             if ($dateUtility->checkDate($obj['retweeted_status']['created_at']))
                             {
                                 $obj['retweeted_status']['user']['gender'] = $gender->detector([ $obj['retweeted_status']['user']['screen_name'], $obj['retweeted_status']['user']['name'] ]);
+
                                 $tweet = $crawler->pattern($obj['retweeted_status']);
+
                                 $tweet['sentiment'] = $sentiment->score($tweet['text']);
+                                $tweet['consumer'] = $consumer->score($tweet['text']);
+                                $tweet['illegal'] = $illegal->score($tweet['text']);
                                 $tweet = (object) $tweet;
 
                                 $store = true;
@@ -237,8 +247,12 @@ class StreamProcess extends Command
                             if ($dateUtility->checkDate($obj['quoted_status']['created_at']))
                             {
                                 $obj['quoted_status']['user']['gender'] = $gender->detector([ $obj['quoted_status']['user']['screen_name'], $obj['quoted_status']['user']['name'] ]);
+
                                 $tweet = $crawler->pattern($obj['quoted_status']);
+
                                 $tweet['sentiment'] = $sentiment->score($tweet['text']);
+                                $tweet['consumer'] = $consumer->score($tweet['text']);
+                                $tweet['illegal'] = $illegal->score($tweet['text']);
                                 $tweet = (object) $tweet;
 
                                 $store = true;
@@ -256,8 +270,12 @@ class StreamProcess extends Command
                         if ($store === null || $store === true)
                         {
                             $obj['user']['gender'] = $gender->detector([ $obj['user']['screen_name'], $obj['user']['name'] ]);
+
                             $tweet = $crawler->pattern($obj);
+
                             $tweet['sentiment'] = $sentiment->score($tweet['text']);
+                            $tweet['consumer'] = $consumer->score($tweet['text']);
+                            $tweet['illegal'] = $illegal->score($tweet['text']);
                             $tweet = (object) $tweet;
 
                             if (@$tweet->user->verified && $tweet->user->lang == 'tr')

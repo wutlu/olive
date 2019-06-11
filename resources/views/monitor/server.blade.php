@@ -122,8 +122,8 @@
                                         type: 'doughnut',
                                         data: {
                                             labels: [
-                                                'Kullanılan {{ Term::humanFileSize($disk['used']->size)->readable }}',
-                                                'Boş {{ Term::humanFileSize($disk['free']->size)->readable }}'
+                                                'Kullanılan {{ $disk['used']->readable }}',
+                                                'Boş {{ $disk['free']->readable }}'
                                             ],
                                             datasets: [{
                                                 backgroundColor: [ '#c00', '#8bc34a' ],

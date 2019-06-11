@@ -410,7 +410,7 @@
 
             if (pause)
             {
-                trigger.removeClass('cyan').addClass('red')
+                trigger.removeClass('blue-grey').addClass('red')
                 _collection_status.removeClass('active')
             }
             else
@@ -429,7 +429,7 @@
 
             if (pause)
             {
-                trigger.removeClass('red').addClass('cyan')
+                trigger.removeClass('red').addClass('blue-grey')
                 _collection_status.addClass('active')
             }
             else
@@ -826,7 +826,7 @@
             </li>
         </ul>
         @component('components.loader')
-            @slot('color', 'cyan')
+            @slot('color', 'blue-grey')
             @slot('id', 'keyword-group-loader')
             @slot('class', 'card-loader-unstyled')
         @endcomponent

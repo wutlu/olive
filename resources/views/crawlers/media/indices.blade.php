@@ -73,7 +73,7 @@
         <div class="card-content">
             <span class="card-title">Medya Index Yönetimi</span>
         </div>
-        <ul class="collection load" 
+        <ul class="collection collection-unstyled load" 
              id="indices"
              data-href="{{ route('crawlers.media.indices.json') }}"
              data-callback="__indices"
@@ -98,7 +98,7 @@
         </ul>
 
         @component('components.loader')
-            @slot('color', 'cyan')
+            @slot('color', 'blue-grey')
             @slot('id', 'home-loader')
             @slot('class', 'card-loader-unstyled')
         @endcomponent
@@ -120,7 +120,7 @@
                     data-callbefore="__index_create_before">Eksik Indexleri Oluştur</a>
             </div>
             @component('components.loader')
-                @slot('color', 'cyan')
+                @slot('color', 'blue-grey')
                 @slot('class', 'hide card-loader-unstyled')
                 @slot('id', 'index-trigger-loader')
             @endcomponent

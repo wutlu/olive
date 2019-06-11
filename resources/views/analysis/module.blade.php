@@ -48,9 +48,9 @@
         </div>
 
         @component('components.loader')
-            @slot('color', 'cyan')
-            @slot('class', 'hide card-loader-unstyled')
+            @slot('color', 'blue-grey')
             @slot('id', 'compiler-loader')
+            @slot('class', 'hide card-loader-unstyled')
         @endcomponent
     </div>
 @endsection
@@ -182,7 +182,7 @@
         </div>
 
         @component('components.loader')
-            @slot('color', 'cyan')
+            @slot('color', 'blue-grey')
             @slot('id', 'home-loader')
             @slot('class', 'card-loader-unstyled')
         @endcomponent
@@ -251,6 +251,8 @@
 
         vzAjax(search)
     }
+
+    $(document).on('change', '[data-update]', _search)
 
     function __collection(__, obj)
     {

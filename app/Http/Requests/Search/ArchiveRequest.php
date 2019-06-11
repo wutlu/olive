@@ -56,13 +56,20 @@ class ArchiveRequest extends FormRequest
             'take' => 'required|integer|max:100',
             'start_date' => 'required|date|date_limit',
             'end_date' => 'required|date|after_or_equal:start_date',
-            'sentiment' => 'required|string|in:pos,neu,neg,all',
             'modules' => 'required|array|min:1',
             'modules.*' => 'required|string|in:'.implode(',',array_keys(config('system.modules'))),
             'sort' => 'nullable|string|in:asc,desc',
-            'retweet' => 'nullable|string|in:all,tweet,quote,reply',
-            'verified' => 'nullable|string|in:on',
-            'media' => 'nullable|string|in:on'
+            'illegal' => 'nullable|string|in:on',
+            'reverse' => 'nullable|string|in:on',
+            'gender' => 'nullable|string|in:male,female,unknown',
+            'sentiment_pos' => 'required|integer|between:0,9',
+            'sentiment_neg' => 'required|integer|between:0,9',
+            'sentiment_neu' => 'required|integer|between:0,9',
+            'sentiment_hte' => 'required|integer|between:0,9',
+            'consumer_que' => 'required|integer|between:0,9',
+            'consumer_req' => 'required|integer|between:0,9',
+            'consumer_cmp' => 'required|integer|between:0,9',
+            'consumer_nws' => 'required|integer|between:0,9',
         ];
     }
 }

@@ -43,7 +43,7 @@
 @section('wildcard')
     <div class="card wild-background">
         <div class="container">
-            <span class="wildcard-title white-text">E-posta Bülteni</span>
+            <span class="wildcard-title">E-posta Bülteni</span>
         </div>
     </div>
 @endsection
@@ -55,8 +55,11 @@
 @endsection
 
 @section('content')
-    <div class="card with-bg">
-        <nav class="nav-half">
+    <div class="card">
+        <div class="card-content">
+            <span class="card-title">Mevcut Bültenler</span>
+        </div>
+        <nav class="nav-half mb-0">
             <div class="nav-wrapper">
                 <div class="input-field">
                     <input id="string"
@@ -87,7 +90,7 @@
             </div>
             <a
                 href="#"
-                class="collection-item model hide waves-effect json justify-content-between"
+                class="collection-item model hide json justify-content-between"
                 data-href="{{ route('route.generate.id') }}"
                 data-method="post"
                 data-name="admin.newsletter.form"
@@ -101,7 +104,7 @@
         </div>
 
         @component('components.loader')
-            @slot('color', 'cyan')
+            @slot('color', 'blue-grey')
             @slot('id', 'home-loader')
             @slot('class', 'card-loader-unstyled')
         @endcomponent

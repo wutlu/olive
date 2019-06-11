@@ -37,11 +37,11 @@ class TrendController extends Controller
     {
         $trends = [
             [
-                'title' => 'Twitter Tweet',
+                'title' => 'Twitter, Tweet',
                 'module' => 'twitter_tweet',
             ],
             [
-                'title' => 'Twitter Hashtag',
+                'title' => 'Twitter, Hashtag',
                 'module' => 'twitter_hashtag',
             ],
             [

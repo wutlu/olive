@@ -620,7 +620,7 @@ class SearchController extends Controller
         $q = [
             'from' => $request->skip,
             'size' => $request->take,
-            'sort' => [ 'created_at' => $request->sort ? $request->sort : 'desc' ],
+            'sort' => [ 'created_at' => $request->reverse ? 'asc' : 'desc' ],
             'query' => [
                 'bool' => [
                     'filter' => [
@@ -681,16 +681,33 @@ class SearchController extends Controller
             ]
         ];
 
-        if ($request->sentiment != 'all')
-        {
-            $q['query']['bool']['filter'][] = [
-                'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.34 ] ]
-            ];
-        }
-
         $modules = [];
 
         $organisation = auth()->user()->organisation;
+
+        foreach (
+            [
+                [ 'consumer' => [ 'nws', 'que', 'req', 'cmp' ] ],
+                [ 'sentiment' => [ 'pos', 'neg', 'neu', 'hte' ] ]
+            ] as $key => $bucket)
+        {
+            foreach ($bucket as $key => $b)
+            {
+                foreach ($b as $o)
+                {
+                    if ($request->{$key.'_'.$o})
+                    {
+                        $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ $key, $o ]) => [ 'gte' => implode('.', [ 0, $request->{$key.'_'.$o} ]) ] ] ];
+                    }
+                }
+            }
+        }
+
+        if (!$request->illegal)
+        {
+            $q['query']['bool']['filter'][] = [ 'range' => [ 'illegal.bet' => [ 'lte' => 0.8 ] ] ];
+            $q['query']['bool']['filter'][] = [ 'range' => [ 'illegal.nud' => [ 'lte' => 0.8 ] ] ];
+        }
 
         foreach ($request->modules as $module)
         {
@@ -699,42 +716,10 @@ class SearchController extends Controller
                 case 'twitter':
                     if ($organisation->data_twitter)
                     {
-                        if ($request->media)
+                        if ($request->gender)
                         {
-                            $q['query']['bool']['must'][] = [
-                                'nested' => [
-                                    'path' => 'entities.medias',
-                                    'query' => [
-                                        'bool' => [
-                                            'must' => [
-                                                [
-                                                    'exists' => [
-                                                        'field' => 'entities.medias.media.type'
-                                                    ]
-                                                ]
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                            ];
-                        }
-
-                        switch ($request->retweet)
-                        {
-                            case 'tweet':
-                                $q['query']['bool']['must_not'][] = [ 'exists' => [ 'field' => 'external.type' ] ];
-                            break;
-                            case 'quote':
-                                $q['query']['bool']['must'][] = [ 'match' => [ 'external.type' => 'quote' ] ];
-                            break;
-                            case 'reply':
-                                $q['query']['bool']['must'][] = [ 'match' => [ 'external.type' => 'reply' ] ];
-                            break;
-                        }
-
-                        if ($request->verified)
-                        {
-                            $q['query']['bool']['must'][] = [ 'exists' => [ 'field' => 'user.verified' ] ];
+                            $q['query']['bool']['should'][] = [ 'match' => [ 'user.gender' => $request->gender ] ];
+                            $q['query']['bool']['minimum_should_match'] = 1;
                         }
 
                         $modules[] = 'tweet';
@@ -743,6 +728,12 @@ class SearchController extends Controller
                 case 'sozluk':
                     if ($organisation->data_sozluk)
                     {
+                        if ($request->gender)
+                        {
+                            $q['query']['bool']['should'][] = [ 'match' => [ 'gender' => $request->gender ] ];
+                            $q['query']['bool']['minimum_should_match'] = 1;
+                        }
+
                         $modules[] = 'entry';
                     }
                 break;
@@ -778,6 +769,14 @@ class SearchController extends Controller
         $stats = [
             'took' => 0,
             'hits' => 0,
+            'counts' => [
+                'twitter_tweet' => intval(@Document::search([ 'twitter', 'tweets', '*' ], 'tweet', array_merge($q, [ 'size' => 0 ]))->data['hits']['total']),
+                'sozluk_entry' => intval(@Document::search([ 'sozluk', '*' ], 'entry', array_merge($q, [ 'size' => 0 ]))->data['hits']['total']),
+                'youtube_video' => intval(@Document::search([ 'youtube', 'videos' ], 'video', array_merge($q, [ 'size' => 0 ]))->data['hits']['total']),
+                'youtube_comment' => intval(@Document::search([ 'youtube', 'comments', '*' ], 'comment', array_merge($q, [ 'size' => 0 ]))->data['hits']['total']),
+                'media_article' => intval(@Document::search([ 'twitter', 'media', 's*' ], 'article', array_merge($q, [ 'size' => 0 ]))->data['hits']['total']),
+                'shopping_product' => intval(@Document::search([ 'shopping', '*' ], 'product', array_merge($q, [ 'size' => 0 ]))->data['hits']['total']),
+            ]
         ];
 
         if (@$query->data['hits']['hits'])

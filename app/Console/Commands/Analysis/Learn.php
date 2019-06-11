@@ -79,7 +79,7 @@ class Learn extends Command
                         'top_hits' => [
                             'terms' => [
                                 'field' => 'entry',
-                                'size' => 100,
+                                'size' => 10,
                                 'script' => '(
                                     (_value.length() >= 3 && _value.length() <= 20) &&
                                     (

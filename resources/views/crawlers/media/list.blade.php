@@ -201,7 +201,7 @@
             <span class="d-block grey-text text-darken-2" data-name="bots-count"></span>
         </div>
 
-        <nav class="nav-half">
+        <nav class="nav-half mb-0">
             <div class="nav-wrapper">
                 <div class="input-field">
                     <input id="string"
@@ -269,7 +269,7 @@
         </div>
 
         @component('components.loader')
-            @slot('color', 'cyan')
+            @slot('color', 'blue-grey')
             @slot('id', 'home-loader')
             @slot('class', 'card-loader-unstyled')
         @endcomponent

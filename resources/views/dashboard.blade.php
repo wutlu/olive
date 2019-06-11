@@ -1,5 +1,6 @@
 @extends('layouts.app', [
-    'sidenav_fixed_layout' => true
+    'sidenav_fixed_layout' => true,
+    'help' => 'driver.start()'
 ])
 
 @push('local.scripts')
@@ -7,6 +8,65 @@
         fullWidth: true,
         indicators: true
     })
+
+
+    const driver = new Driver({
+        allowClose: false,
+        opacity: .4,
+        padding: 6,
+        onReset: function() {
+            vzAjax($('<div />', {
+                'class': 'json',
+                'data-method': 'post',
+                'data-href': '{{ route('intro', 'driver.trend') }}'
+            }))
+        }
+    })
+
+    driver.defineSteps([
+        {
+            element: '#fast_menu-module-stream',
+            popover: {
+                title: 'Gerçek Zamanlı',
+                description: 'Türkiye gündemini anlık olarak takip edebilmeniz için tam anlamıyla gerçek zamanlı bir akış hazırladık.'
+            }
+        },
+        {
+            element: '#fast_menu-module-search',
+            popover: {
+                title: 'Arama Motoru',
+                description: 'Kitle ve kriterlere göre detaylı aramalar yapabilmeniz için gelişmiş bir arama motoru yaptık.'
+            }
+        },
+        {
+            element: '#fast_menu-module-trend',
+            popover: {
+                title: 'Trend Analizi',
+                description: 'Gündemi herkesten önce inceleyip, anlık trendler oluşturan akıllı robotlar geliştirdik. Bu robotların elde ettiği sonuçları Trend Analizi bölümünde, gerçek zamanlı olarak sizlere sunuyoruz.'
+            }
+        },
+        {
+            element: '#fast_menu-module-alarm',
+            popover: {
+                title: 'Alarmlar',
+                description: 'Bilgisayar başında kalacak vaktinizin olmadığı zamanlar için sizlere anlık e-posta bildirimleri göndermesi için Alarm bölümünü geliştirdik.'
+            }
+        },
+        {
+            element: '#fast_menu-module-pool',
+            popover: {
+                title: 'Veri Havuzu',
+                description: 'Tüm bu işlemlerin besleyen veri örümceklerinin daha çok veriye ulaşması için sizlere ihtiyacı var. Örümceklerimizi veri havuzundan yönetebilirsiniz.'
+            }
+        },
+        {
+            element: '#fast_menu-module-forum',
+            popover: {
+                title: 'Son Olarak!',
+                description: 'Veri teknolojileri veya diğer konular hakkında tartışma ve yardımlaşma yapabileceğiniz bir Forum bölümü oluşturduk.'
+            }
+        }
+    ])
 @endpush
 
 @push('local.styles')
@@ -74,35 +134,41 @@
                     [
                         'route' => route('forum.index'),
                         'icon' => 'forum',
-                        'name' => 'Forum'
+                        'name' => 'Forum',
+                        'key' => 'forum'
                     ],
                     [
                         'route' => route('data_pool.dashboard'),
                         'icon' => 'hearing',
-                        'name' => 'Veri Havuzu'
+                        'name' => 'Veri Havuzu',
+                        'key' => 'pool'
                     ],
                     [
                         'route' => route('realtime.stream'),
                         'icon' => 'watch_later',
-                        'name' => 'Gerçek Zamanlı'
+                        'name' => 'Gerçek Zamanlı',
+                        'key' => 'stream'
                     ],
                     [
                         'route' => route('search.dashboard'),
                         'icon' => 'youtube_searched_for',
-                        'name' => 'Arama Motoru'
+                        'name' => 'Arama Motoru',
+                        'key' => 'search'
                     ],
                     [
                         'route' => route('trend.live'),
                         'icon' => 'trending_up',
-                        'name' => 'Trend Analizi'
+                        'name' => 'Trend Analizi',
+                        'key' => 'trend'
                     ],
                     [
                         'route' => route('alarm.dashboard'),
                         'icon' => 'access_alarm',
-                        'name' => 'Alarmlar'
+                        'name' => 'Alarmlar',
+                        'key' => 'alarm'
                     ]
                 ] as $key => $item)
-                    <a href="{{ $item['route'] }}">
+                    <a href="{{ $item['route'] }}" id="fast_menu-module-{{ $item['key'] }}">
                         <i class="material-icons">{{ $item['icon'] }}</i>
                         <span class="d-block">{{ $item['name'] }}</span>
                     </a>
@@ -134,15 +200,15 @@
                     @endpush
                 @endif
                 <div class="card mb-1">
-                    <a class="card-content card-content-image d-flex justify-content-between waves-effect" href="{{ route('settings.organisation') }}">
-                        <span>
-                            <span class="card-title" data-name="organisation-name">-</span>
-                            <p class="grey-text mb-0" data-name="organisation-capacity">0 / 0</p>
-                            <p class="grey-text mb-0" data-name="organisation-status">-</p>
-                        </span>
-                        <i class="material-icons">settings</i>
-                    </a>
-                    <ul class="collection load hide"
+                    <div class="card-image">
+                        <img src="{{ asset('img/mountain.jpg') }}" alt="Image" />
+                        <span class="card-title" data-name="organisation-name">-</span>
+                    </div>
+                    <div class="card-content">
+                        <p class="grey-text mb-0" data-name="organisation-capacity">0 / 0</p>
+                        <p class="grey-text mb-0" data-name="organisation-status">-</p>
+                    </div>
+                    <ul class="collection collection-unstyled load hide"
                          id="collections"
                          data-href="{{ route('dashboard.organisation') }}"
                          data-callback="__organisation"
@@ -156,7 +222,7 @@
                         </li>
                     </ul>
                     @component('components.loader')
-                        @slot('color', 'cyan')
+                        @slot('color', 'blue-grey')
                         @slot('id', 'organisation-loader')
                         @slot('class', 'card-loader-unstyled')
                     @endcomponent
@@ -219,17 +285,14 @@
                 @endpush
             @else
                 <div class="card mb-1">
-                    <div class="card-image">
-                        <img src="{{ asset('img/md-s/21.jpg') }}" alt="Image" />
-                        <span class="card-title white-text d-flex">
+                    <div class="card-content">
+                        <span class="card-title">
                             Teklif Alın
                         </span>
-                    </div>
-                    <div class="card-content">
                         <p class="grey-text">Size uygun en iyi teklifler için hemen bizimle iletişime geçin..</p>
                     </div>
-                    <div class="card-action">
-                        <a href="{{ route('organisation.create.offer') }}" id="start">Başlayın</a>
+                    <div class="card-content right-align">
+                        <a href="{{ route('organisation.create.offer') }}" class="btn-flat waves-effect" id="start">Başlayın</a>
                     </div>
                 </div>
 
@@ -332,7 +395,7 @@
             </ul>
 
             @component('components.loader')
-                @slot('color', 'cyan')
+                @slot('color', 'blue-grey')
                 @slot('id', 'home-loader')
             @endcomponent
 

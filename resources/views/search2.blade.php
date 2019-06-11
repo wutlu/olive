@@ -12,35 +12,17 @@
 ])
 
 @push('local.styles')
-    .qb-card select {
-        width: auto;
-    }
-    .qb-card {
-        margin: 1rem 0 !important;
-        background-color: rgba(0, 0, 0, .02) !important;
-    }
-    .qb-card:hover {
-        background-color: rgba(0, 0, 0, .04) !important;
-    }
-    .qb-card > .card-content {
-    }
-    .qb-card .qb-card {
-        margin: -1px 0 0 0;
-    }
-    .qb-layout > .qb-rule .input-field {
-        margin: 0;
-    }
-    .qb-layout:not(:empty) {
-        padding: 1rem 0 0 0;
+    #search-operators {
+        display: none;
+
+        padding: 1rem;
     }
 
-    #search_builder {
-        border-width: 1px 0 0;
+    #search-area {
+        border-width: 0 0 1px;
         border-style: solid;
         border-color: #e1e1e1;
     }
-
-    #search-area {}
     #search-area [data-trigger] {
         padding: 0 1rem;
 
@@ -89,6 +71,11 @@
             width: 100%;
         }
     }
+
+    .marked {
+        padding: .4rem;
+        border-radius: .2rem;
+    }
 @endpush
 
 @push('local.scripts')
@@ -110,10 +97,66 @@
         var input = $('input[name=string]');
         var array = [];
 
-            array.push(input.val())
-            array.push(__.data('search'))
+        var string = __.data('search');
 
-            input.val(input.val() ? array.join(' && ') : __.data('search')).focus()
+        if (__.data('validate'))
+        {
+            var promt_message = 'Değer girin:';
+
+            if (__.data('validate') == 'number')
+            {
+                promt_message = promt_message + ' "< küçüktür" veya "> büyüktür" kullanabilirsiniz. ';
+            }
+
+            var prompt_value = prompt(promt_message);
+
+            if (!prompt_value)
+            {
+                M.toast({
+                    html: 'Değer girmediniz!',
+                    classes: 'red darken-2'
+                }, 200)
+
+                $('input[name=string]').focus()
+
+                return false;
+            }
+
+            if (__.data('validate') == 'number')
+            {
+                var _int = prompt_value ? prompt_value.replace('<', '').replace('>', '') : '';
+
+                if (!Number.isInteger(+_int))
+                {
+                    M.toast({
+                        html: 'Değer, nümerik olmalıdır!',
+                        classes: 'red darken-2'
+                    }, 200)
+
+                    $('input[name=string]').focus()
+
+                    return false;
+                }
+
+                string = string + ':' + prompt_value;
+            }
+            else if (__.data('validate') == 'string')
+            {
+                if (string == '+' || string == '-')
+                {
+                    string = string + '"' + prompt_value + '"';
+                }
+                else
+                {
+                    string = string + ':"' + prompt_value + '"';
+                }
+            }
+        }
+
+        array.push(input.val())
+        array.push(string)
+
+        input.val(input.val() ? array.join(' && ') : string).focus()
 
         setTimeout(function() {
             // trigger
@@ -124,9 +167,49 @@
 
         if (keycode == '13')
         {
-            chip(__)
+            //
         }
+
+        operator('clear')
+    }).on('focus click', 'input[name=string]', function() {
+        operator('open')
+    }).on('blur', 'input[name=string]', function() {
+        operator('close')
+    }).on('change', '[data-update]', function() {
+        var search = $('ul#search');
+            search.data('skip', 0).addClass('json-clear');
+
+        vzAjax(search)
+    }).on('click', '[data-update-click]', function() {
+        var search = $('ul#search');
+            search.data('skip', 0).addClass('json-clear');
+
+        vzAjax(search)
     })
+
+    var operatorTimer;
+
+    function operator(status)
+    {
+        var selector = $('#search-operators');
+
+        window.clearTimeout(operatorTimer);
+
+        if (status == 'open')
+        {
+            selector.slideDown(200);
+        }
+        else if (status == 'close')
+        {
+            operatorTimer = window.setTimeout(function() {
+                selector.slideUp(200);
+            }, 1000)
+        }
+        else if (status == 'fast-close')
+        {
+            selector.slideUp(200);
+        }
+    }
 
     function chip(__)
     {
@@ -144,263 +227,15 @@
         }
     }
 
-    _qb_group_create('#olive-query', { 'close': false })
+    $(window).on('load', function() {
+        var input = $('input[name=string]');
 
-    function _qb_group_create(layout, options)
-    {
-        var id = Math.floor(Math.random() * (99999 - 10000)) + 10000;
-        var group = _qb_item('div', {
-            'class': 'card card-unstyled qb-card',
-            'id': 'group-' + id,
-            'html': _qb_item('div', {
-                'class': 'card-content',
-                'html': [
-                    _qb_item('div', {
-                        'class': 'toolbar d-flex',
-                        'html': [
-                            _qb_item('span', {
-                                'class': 'align-self-center mr-1',
-                                'html': [
-                                    _qb_item('radio', {
-                                        'name': 'group-' + id,
-                                        'value': 'and',
-                                        'checked': true,
-                                        'html': 'VE',
-                                        'class': 'align-self-center mr-1'
-                                    }),
-                                    _qb_item('radio', {
-                                        'name': 'group-' + id,
-                                        'value': 'or',
-                                        'html': 'VEYA',
-                                        'class': 'align-self-center mr-1'
-                                    })
-                                ]
-                            }),
-                            _qb_item('span', {
-                                'class': 'align-self-center d-flex ml-auto',
-                                'html': [
-                                    _qb_item('button', {
-                                        'class': 'align-self-center btn-floating btn-flat btn-small waves-effect mr-1',
-                                        'data-trigger': 'qb_group-create',
-                                        'data-tooltip': 'Grup Oluştur',
-                                        'data-position': 'left',
-                                        'data-id': id,
-                                        'data-layout': '#layout-' + id,
-                                        'html': _qb_icon('group_work')
-                                    }),
-                                    _qb_item('button', {
-                                        'class': 'align-self-center btn-floating btn-flat btn-small waves-effect mr-1',
-                                        'data-trigger': 'qb_rule-create',
-                                        'data-tooltip': 'Kural Oluştur',
-                                        'data-position': 'left',
-                                        'data-id': id,
-                                        'html': _qb_icon('linear_scale')
-                                    }),
-                                    _qb_item('button', {
-                                        'class': 'align-self-center btn-floating btn-flat btn-small waves-effect red-text hide',
-                                        'data-trigger': 'qb_group-delete',
-                                        'data-id': id,
-                                        'html': _qb_icon('close')
-                                    })
-                                ]
-                            })
-                        ]
-                    }),
-                    _qb_item('div', {
-                        'id': 'layout-' + id,
-                        'class': 'qb-layout'
-                    })
-                ]
-            })
-        })
-
-        if (options.close)
+        if (input.val().length)
         {
-            group.find('[data-trigger=qb_group-delete]').removeClass('hide')
+            vzAjax($('ul#search'))
+            chip(input)
         }
-
-        $(layout).prepend(group)
-    }
-
-    $(document).on('click', '[data-trigger=qb_group-create]', function() {
-        _qb_group_create($(this).data('layout'), { 'close': true })
-    }).on('click', '[data-trigger=qb_group-delete]', function() {
-        $('#group-' + $(this).data('id')).remove()
-    }).on('click', '[data-trigger=qb_rule-create]', function() {
-        var id = Math.floor(Math.random() * (99999 - 10000)) + 10000;
-
-        var rule = _qb_item('div', {
-            'id': 'rule-' + id,
-            'class': 'qb-rule d-flex',
-            'html': [
-                _qb_item('select', {
-                    'class': 'align-self-center browser-default mr-1',
-                    'html': [
-                        _qb_item('option', { 'html': 'Seçin', 'value': 'select', 'selected': true }),
-                        _qb_item('option', { 'html': 'Kelime', 'value': 'keyword' }),
-                        _qb_item('option', { 'html': 'Cümle', 'value': 'sentence' }),
-                        _qb_item('option', { 'html': 'Sözlük', 'value': 'sozluk' }),
-                        _qb_item('option', { 'html': 'Twitter', 'value': 'twitter' }),
-                        _qb_item('option', { 'html': 'YouTube', 'value': 'youtube' }),
-                        _qb_item('option', { 'html': 'E-ticaret', 'value': 'shopping' })
-                    ]
-                }),
-                _qb_item('select', {
-                    'name': 'keyword',
-                    'class': 'align-self-center browser-default mr-1 hide',
-                    'html': [
-                        _qb_item('option', { 'html': 'Seçin', 'value': 'select', 'selected': true }),
-                        _qb_item('option', { 'html': 'İçersin', 'value': true }),
-                        _qb_item('option', { 'html': 'İçermesin', 'value': false })
-                    ]
-                }),
-                _qb_item('select', {
-                    'name': 'youtube',
-                    'class': 'align-self-center browser-default mr-1 hide',
-                    'html': [
-                        _qb_item('option', { 'html': 'Seçin', 'value': 'select', 'selected': true }),
-                        _qb_item('option', { 'html': 'Kanal Adı', 'value': 'channel.name' }),
-                        _qb_item('option', { 'html': 'Kanal Id', 'value': 'channel.id' }),
-                        _qb_item('option', { 'html': 'Video Id', 'value': 'video_id' })
-                    ]
-                }),
-                _qb_item('select', {
-                    'name': 'shopping',
-                    'class': 'align-self-center browser-default mr-1 hide',
-                    'html': [
-                        _qb_item('option', { 'html': 'Seçin', 'value': 'select', 'selected': true }),
-                        _qb_item('option', { 'html': 'Fiyat', 'value': 'price.amount' }),
-                        _qb_item('option', { 'html': 'Para Birimi', 'value': 'price.currency' }),
-                        _qb_item('option', { 'html': 'Site Id', 'value': 'site_id' }),
-                    ]
-                }),
-                _qb_item('select', {
-                    'name': 'sozluk',
-                    'class': 'align-self-center browser-default mr-1 hide',
-                    'html': [
-                        _qb_item('option', { 'html': 'Seçin', 'value': 'select', 'selected': true }),
-                        _qb_item('option', { 'html': 'Sözlük Id', 'value': 'site_id' }),
-                        _qb_item('option', { 'html': 'Yazar Adı', 'value': 'author' }),
-                        _qb_item('option', { 'html': 'Konu Başlığı', 'value': 'subject' })
-                    ]
-                }),
-                _qb_item('select', {
-                    'name': 'twitter',
-                    'class': 'align-self-center browser-default mr-1 hide',
-                    'html': [
-                        _qb_item('option', { 'html': 'Seçin', 'value': 'select', 'selected': true }),
-                        _qb_item('option', { 'html': 'Kullanıcı Adı', 'value': 'user.screen_name' }),
-                        _qb_item('option', { 'html': 'Kullanıcı Id', 'value': 'user.id' }),
-                        _qb_item('option', { 'html': 'Doğrulanmış Hesap', 'value': 'user.verified' }),
-                        _qb_item('option', { 'html': '---', 'disabled': true }),
-                        _qb_item('option', { 'html': 'ReTweet', 'value': 'external.retweet' }),
-                        _qb_item('option', { 'html': 'Alıntı', 'value': 'external.quote' }),
-                        _qb_item('option', { 'html': 'Cevap', 'value': 'external.reply' }),
-                        _qb_item('option', { 'html': '---', 'disabled': true }),
-                        _qb_item('option', { 'html': 'Tweet Hashtag Sayısı', 'value': 'counts.hashtag' }),
-                        _qb_item('option', { 'html': 'Tweet Mention Sayısı', 'value': 'counts.mention' }),
-                        _qb_item('option', { 'html': 'Tweet Bağlantı Sayısı', 'value': 'counts.link' }),
-                        _qb_item('option', { 'html': 'Tweet Medya Sayısı', 'value': 'counts.media' }),
-                        _qb_item('option', { 'html': '---', 'disabled': true }),
-                        _qb_item('option', { 'html': 'Kullanıcı Tweet Sayısı', 'value': 'user.counts.statuses' }),
-                        _qb_item('option', { 'html': 'Kullanıcı Favori Sayısı', 'value': 'user.counts.favourites' }),
-                        _qb_item('option', { 'html': 'Kullanıcı Liste Sayısı', 'value': 'user.counts.listed' }),
-                        _qb_item('option', { 'html': 'Kullanıcı Takipçi Sayısı', 'value': 'user.counts.friends' }),
-                        _qb_item('option', { 'html': 'Kullanıcı Takip Sayısı', 'value': 'user.counts.followers' }),
-                    ]
-                }),
-                _qb_item('text', {
-                    'name': 'text',
-                    'class': 'align-self-center mr-1 hide',
-                }),
-                _qb_item('number', {
-                    'name': 'number',
-                    'class': 'align-self-center mr-1 hide',
-                    'max': 9,
-                    'min': 1
-                }),
-                _qb_item('button', {
-                    'class': 'align-self-center btn-floating btn-flat btn-small waves-effect red-text ml-auto',
-                    'data-id': id,
-                    'data-trigger': 'qb_rule-delete',
-                    'html': _qb_icon('close')
-                })
-            ]
-        })
-
-        $('#layout-' + $(this).data('id')).prepend(rule)
-    }).on('click', '[data-trigger=qb_rule-delete]', function() {
-        $('#rule-' + $(this).data('id')).remove()
     })
-
-    function _qb_item(type, options)
-    {
-        switch (type)
-        {
-            case 'button':
-                options.type = 'button';
-            break;
-            case 'radio':
-                type = 'label';
-
-                options.html = [
-                    _qb_item('input', {
-                        'type': 'radio',
-                        'name': options.name,
-                        'value': options.value
-                    }).prop('checked', options.checked ? true : false),
-                    _qb_item('span', {
-                        'html': options.html
-                    }),
-                ];
-
-                delete options.name;
-                delete options.value;
-                delete options.checked;
-            break;
-            case 'text':
-                type = 'div';
-
-                options.class = options.class + ' input-field';
-
-                options.html = [
-                    _qb_item('input', {
-                        'type': 'text',
-                        'name': options.name
-                    })
-                ];
-
-                delete options.name;
-            break;
-            case 'number':
-                type = 'div';
-
-                options.class = options.class + ' input-field';
-
-                options.html = [
-                    _qb_item('input', {
-                        'type': 'number',
-                        'name': options.name,
-                        'max': options.max,
-                        'min': options.min,
-                        'value': 0
-                    })
-                ];
-
-                delete options.name;
-            break;
-        }
-
-        return $('<' + type + ' />', options);
-    }
-
-    function _qb_icon(icon)
-    {
-        return _qb_item('i', {
-            'class': 'material-icons',
-            'html': icon
-        })
-    }
 @endpush
 
 @section('wildcard')
@@ -408,27 +243,73 @@
         <a href="#" class="flex-fill d-flex" data-trigger="clear">
             <i class="material-icons align-self-center">clear</i>
         </a>
-        <a href="#" class="flex-fill d-flex" data-trigger="search_builder" data-class="#search_builder" data-class-remove="hide">
-            <i class="material-icons align-self-center">filter_list</i>
-        </a>
-        <a href="#" class="flex-fill d-flex" data-trigger="save">
+        <a
+            href="#"
+            class="flex-fill d-flex json"
+            data-trigger="save"
+            data-href="{{ route('search.save') }}">
             <i class="material-icons align-self-center">save</i>
         </a>
-        <input type="text" name="string" id="string" placeholder="Arayın" />
+        <input
+            type="text"
+            name="string"
+            id="string"
+            placeholder="Arayın"
+            class="json json-search"
+            data-json-target="ul#search" />
     </div>
+    <div id="search-operators">
+        <div class="d-flex flex-wrap">
+            <div class="p-1">
+                Genel
+                <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="string" data-search="+">+Olsun</button>
+                <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="string" data-search="-">-Olmasın</button>
+                <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="number" data-search="site.id">Site / Sözlük Id</button>
+            </div>
 
-    <div id="search_builder" class="">
-        <div id="olive-query"></div>
-        <div class="right-align mb-1 pr-1">
-            <button type="button" class="btn-flat waves-effect red-text" data-class="#search_builder" data-class-add="hide">Vazgeç</button>
-            <button type="button" class="btn-flat waves-effect" data-trigger="search_builder-apply">Uygula</button>
+            <div class="p-1">
+                Sözlük Filtreleri
+                <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="string" data-search="author">Yazar Adı</button>
+            </div>
+
+            <div class="p-1">
+                Twitter Filtreleri (Kullanıcı)
+                <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="string" data-search="user.screen_name">Kullanıcı Adı</button>
+                <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="number" data-search="user.id">Kullanıcı Id</button>
+                <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-search="user.verified:true">Doğrulanmış Hesaplar</button>
+
+                <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="number" data-search="user.counts.statuses">Tweet Sayısı</button>
+                <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="number" data-search="user.counts.favourites">Favori Sayısı</button>
+                <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="number" data-search="user.counts.listed">Liste Sayısı</button>
+                <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="number" data-search="user.counts.friends">Takip Sayısı</button>
+                <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="number" data-search="user.counts.followers">Takipçi Sayısı</button>
+            </div>
+
+            <div class="p-1">
+                Twitter Filtreleri (Tweet)
+                <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="number" data-search="counts.hashtag">Hashtag Sayısı</button>
+                <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="number" data-search="counts.mention">Mention Sayısı</button>
+                <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="number" data-search="counts.url">Bağlantı Sayısı</button>
+                <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="number" data-search="counts.media">Medya Sayısı</button>
+
+                <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-search="!_exists_:external.type">Sadece Tweetler</button>
+                <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-search="external.type:quote">Sadece Alıntılar</button>
+                <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-search="external.type:reply">Sadece Cevaplar</button>
+            </div>
+
+            <div class="p-1">
+                YouTube Filtreleri
+                <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="string" data-search="channel.title">Kanal Başlığı</button>
+                <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="string" data-search="channel.id">Kanal Id</button>
+                <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="string" data-search="video_id">Video Id</button>
+            </div>
         </div>
     </div>
 
     @if (@$trends)
         <div class="owl-chips owl-carousel grey lighten-4 z-depth-1">
             @foreach ($trends as $trend)
-                <a class="chip grey lighten-2 waves-effect mb-0" data-search="{{ $trend->data->key }}" href="#">{{ $trend->data->key }}</a>
+                <a data-update-click class="chip grey lighten-2 waves-effect mb-0" data-search="{{ $trend->data->key }}" href="#">{{ $trend->data->key }}</a>
             @endforeach
         </div>
     @endif
@@ -452,9 +333,10 @@
 
 @push('wildcard-bottom')
     <div id="date-area" class="d-flex justify-content-end grey lighten-4">
-        <div class="d-flex">
-            <input type="date" class="align-self-center" name="start_date" value="{{ $s ? $s : date('Y-m-d', strtotime('-1 day')) }}" placeholder="Başlangıç" />
-            <input type="date" class="align-self-center" name="end_date" value="{{ $e ? $e : date('Y-m-d') }}" placeholder="Bitiş" />
+        <div class="lighten-4 grey-text mr-auto pl-1 align-self-center  hide-on-med-and-down" data-name="stats"></div>
+        <div class="d-flex align-self-center">
+            <input data-update type="date" class="align-self-center" name="start_date" value="{{ $s ? $s : date('Y-m-d', strtotime('-1 day')) }}" placeholder="Başlangıç" />
+            <input data-update type="date" class="align-self-center" name="end_date" value="{{ $e ? $e : date('Y-m-d') }}" placeholder="Bitiş" />
 
             <a href="#" class="btn-flat waves-effect dropdown-trigger align-self-center" data-target="date-menu" data-align="right">
                 <i class="material-icons">date_range</i>
@@ -467,17 +349,18 @@
             <a
                 href="#"
                 class="collection-item waves-effect"
+                data-update-click
                 data-input="input[name=end_date]"
                 data-focus="input[name=start_date]"
                 data-input-value="{{ date('Y-m-d') }}"
                 data-value="{{ date('Y-m-d') }}">Bugün</a>
         </li>
-        <li class="divider" tabindex="-1"></li>
         @if ($organisation->historical_days >= 1)
             <li>
                 <a
                     href="#"
                     class="collection-item waves-effect"
+                    data-update-click
                     data-input="input[name=end_date]"
                     data-focus="input[name=start_date]"
                     data-input-value="{{ date('Y-m-d', strtotime('-1 day')) }}"
@@ -488,8 +371,8 @@
             <li>
                 <a
                     href="#"
-                   -click
                     class="collection-item waves-effect"
+                    data-update-click
                     data-input="input[name=end_date]"
                     data-focus="input[name=start_date]"
                     data-input-value="{{ date('Y-m-d') }}"
@@ -501,6 +384,7 @@
                 <a
                     href="#"
                     class="collection-item waves-effect"
+                    data-update-click
                     data-input="input[name=end_date]"
                     data-focus="input[name=start_date]"
                     data-input-value="{{ date('Y-m-d') }}"
@@ -512,6 +396,7 @@
                 <a
                     href="#"
                     class="collection-item waves-effect"
+                    data-update-click
                     data-input="input[name=end_date]"
                     data-focus="input[name=start_date]"
                     data-input-value="{{ date('Y-m-d') }}"
@@ -523,6 +408,7 @@
                 <a
                     href="#"
                     class="collection-item waves-effect"
+                    data-update-click
                     data-input="input[name=end_date]"
                     data-focus="input[name=start_date]"
                     data-input-value="{{ date('Y-m-d') }}"
@@ -530,6 +416,61 @@
             </li>
         @endif
     </ul>
+@endpush
+
+@push('local.scripts')
+    function __search_archive(__, obj)
+    {
+        var ul = $('ul#search');
+
+        var item_model = ul.children('.model');
+
+        if (obj.status == 'ok')
+        {
+            item_model.addClass('hide')
+
+            $('[data-name=stats]').html('Yaklaşık ' + obj.stats.hits + ' sonuç bulundu (' + obj.stats.took + ' saniye)').removeClass('hide');
+
+            $('[data-name=twitter-tweet]').html(obj.stats.counts.twitter_tweet);
+            $('[data-name=sozluk-entry]').html(obj.stats.counts.sozluk_entry);
+            $('[data-name=youtube-video]').html(obj.stats.counts.youtube_video);
+            $('[data-name=youtube-comment]').html(obj.stats.counts.youtube_comment);
+            $('[data-name=media-article]').html(obj.stats.counts.media_article);
+            $('[data-name=shopping-product]').html(obj.stats.counts.shopping_product);
+
+            if (obj.hits.length)
+            {
+                $.each(obj.hits, function(key, o) {
+                    var item = item_model.clone();
+                        item.removeClass('model hide').addClass('_tmp').attr('data-id', 'list-item-' + o.id)
+
+                    var model;
+
+                        switch(o._type)
+                        {
+                            case 'tweet'  : model = _tweet_  (o); break;
+                            case 'entry'  : model = _entry_  (o); break;
+                            case 'article': model = _article_(o); break;
+                            case 'product': model = _product_(o); break;
+                            case 'comment': model = _comment_(o); break;
+                            case 'video'  : model = _video_  (o); break;
+                        }
+
+                        model.find('.text-area').mark(obj.words, {
+                            'element': 'span',
+                            'className': 'marked yellow black-text',
+                            'accuracy': 'complementary'
+                        })
+
+                        item.html(model).appendTo(ul)
+                })
+            }
+
+            operator('fast-close')
+
+            $('.tabs').tabs('select', 'search-tab');
+        }
+    }
 @endpush
 
 @section('content')
@@ -548,15 +489,33 @@
                 </div>
                 <div class="card-content">
                     <div id="search-tab">
-                        @component('components.alert')
-                            @slot('icon', 'info')
-                            @slot('text', 'Hiç sonuç bulunamadı.')
-                        @endcomponent
+                        <ul class="collection json-clear loading" 
+                            id="search"
+                            data-href="{{ route('search.dashboard') }}"
+                            data-skip="0"
+                            data-more-button="#search-more_button"
+                            data-callback="__search_archive"
+                            data-method="post"
+                            data-include="start_date,end_date,modules,string,reverse,take,gender,sentiment_pos,sentiment_neu,sentiment_neg,sentiment_hte,consumer_que,consumer_req,consumer_cmp,consumer_nws,illegal"
+                            data-nothing>
+                            <li class="collection-item nothing">
+                                @component('components.alert')
+                                    @slot('icon', 'info')
+                                    @slot('text', 'Hiç sonuç bulunamadı.')
+                                @endcomponent
+                            </li>
+                            <li class="collection-item model hide"></li>
+                        </ul>
+
+                        <a href="#"
+                           class="more hide json"
+                           id="search-more_button"
+                           data-json-target="ul#search">Daha Fazla</a>
                     </div>
                     <div id="chart-tab">
                         @component('components.alert')
                             @slot('icon', 'info')
-                            @slot('text', 'Hiç grafik sorgusu gerçekleştirmediniz.')
+                            @slot('text', 'Grafik oluşturmak için bir analiz sorgusu çalıştırın.')
                         @endcomponent
                     </div>
                 </div>
@@ -567,7 +526,7 @@
                 <p class="white-text">Bu konu genellikle <span class="white cyan-text text-darken-2">Ankara</span> bölgesinden konuşuldu.</p>
                 <div class="banner-overlay cyan"></div>
             </div>
-            <div class="banner mb-1 lighten-4 z-depth-1" style="background-image: url('{{ asset('img/photo/women.jpg') }}');">
+            <div class="banner mb-1 lighten-4 z-depth-1 hide" style="background-image: url('{{ asset('img/photo/women.jpg') }}');">
                 <p class="white-text">Görünen o ki, ilgilendiğiniz konu <span class="white pink-text">56%</span> oranla kadın kullanıcıları ilgilendiriyor.</p>
                 <div class="banner-overlay pink"></div>
             </div>
@@ -578,21 +537,22 @@
 
             <div class="banner-4 mb-1">
                 <div class="banner-item tweet">
-                    <strong>0</strong> tweet
+                    <strong data-name="twitter-tweet">0</strong> tweet
                 </div>
                 <div class="banner-item entry">
-                    <strong>0</strong> entry
+                    <strong data-name="sozluk-entry">0</strong> entry
                 </div>
                 <div class="banner-item article">
-                    <strong>0</strong> haber
+                    <strong data-name="media-article">0</strong> haber
                 </div>
                 <div class="banner-item video">
-                    <strong>0</strong> video
+                    <strong data-name="youtube-video">0</strong> video
                 </div>
                 <div class="banner-item video-comment">
-                    <strong>0</strong> video yorumu</div>
+                    <strong data-name="youtube-comment">0</strong> video yorumu
+                </div>
                 <div class="banner-item product">
-                    <strong>0</strong> ilan
+                    <strong data-name="shopping-product">0</strong> ilan
                 </div>
             </div>
 
@@ -606,56 +566,56 @@
             <div class="d-flex">
                 <p class="range-field">
                     Pozitif
-                    <input type="range" min="0" max="9" value="0" />
+                    <input data-update name="sentiment_pos" type="range" min="0" max="9" value="0" />
                 </p>
                 <p class="range-field">
                     Nötr
-                    <input type="range" min="0" max="9" value="0" />
+                    <input data-update name="sentiment_neu" type="range" min="0" max="9" value="0" />
                 </p>
                 <p class="range-field">
                     Negatif
-                    <input type="range" min="0" max="9" value="0" />
+                    <input data-update name="sentiment_neg" type="range" min="0" max="9" value="0" />
                 </p>
                 <p class="range-field">
                     Nefret Söylemi
-                    <input type="range" min="0" max="9" value="0" />
+                    <input data-update name="sentiment_hte" type="range" min="0" max="9" value="0" />
                 </p>
             </div>
 
             <div class="d-flex">
                 <p class="range-field">
                     Soru
-                    <input type="range" min="0" max="9" value="0" />
+                    <input data-update name="consumer_que" type="range" min="0" max="9" value="0" />
                 </p>
                 <p class="range-field">
                     İstek
-                    <input type="range" min="0" max="9" value="0" />
+                    <input data-update name="consumer_req" type="range" min="0" max="9" value="0" />
                 </p>
                 <p class="range-field">
                     Şikayet
-                    <input type="range" min="0" max="9" value="0" />
+                    <input data-update name="consumer_cmp" type="range" min="0" max="9" value="0" />
                 </p>
                 <p class="range-field">
                     Haber
-                    <input type="range" min="0" max="9" value="0" />
+                    <input data-update name="consumer_nws" type="range" min="0" max="9" value="0" />
                 </p>
             </div>
 
             <div class="d-flex">
                 <label class="flex-fill">
-                    <input name="gender" type="radio" />
+                    <input name="gender" type="radio" data-update-click value="" checked />
                     <span>Hepsi</span>
                 </label>
                 <label class="flex-fill">
-                    <input name="gender" type="radio" />
+                    <input name="gender" type="radio" data-update-click value="female" />
                     <span>Kadın</span>
                 </label>
                 <label class="flex-fill">
-                    <input name="gender" type="radio" />
+                    <input name="gender" type="radio" data-update-click value="male" />
                     <span>Erkek</span>
                 </label>
                 <label class="flex-fill">
-                    <input name="gender" type="radio" />
+                    <input name="gender" type="radio" data-update-click value="unknown" />
                     <span>Bilinmeyen</span>
                 </label>
             </div>
@@ -667,11 +627,11 @@
     <div class="card card-unstyled mb-1">
         <div class="collection collection-unstyled">
             <label class="collection-item d-block">
-                <input name="illegal" value="illegal" type="checkbox" />
+                <input data-update name="illegal" value="on" type="checkbox" />
                 <span>İllegal İçerikler Dahil</span>
             </label>
             <label class="collection-item d-block">
-                <input name="sort" value="asc" type="checkbox" />
+                <input data-update name="reverse" value="on" type="checkbox" />
                 <span>İlk İçerikler</span>
             </label>
         </div>
@@ -685,7 +645,7 @@
             @foreach (config('system.modules') as $key => $module)
                 <li class="collection-item">
                     <label>
-                        <input name="modules" checked value="{{ $key }}" data-multiple="true" type="checkbox" />
+                        <input data-update name="modules" checked value="{{ $key }}" data-multiple="true" type="checkbox" />
                         <span>{{ $module }}</span>
                     </label>
                 </li>
@@ -700,11 +660,11 @@
             </span>
         </div>
         <ul class="collection collection-unstyled">
-            <li class="collection-item d-flex">
-                <a class="btn-floating btn-small waves-effect align-self-center white mr-1">
-                    <i class="material-icons grey-text">create</i>        
-                </a>
+            <li class="collection-item d-flex justify-content-between">
                 <a href="#" class="align-self-center">Örnek Arama</a>
+                <a class="btn-floating btn-small waves-effect align-self-center white">
+                    <i class="material-icons grey-text text-darken-2">delete_forever</i>        
+                </a>
             </li>
         </ul>
     </div>
@@ -735,4 +695,5 @@
 @push('external.include.footer')
     <script src="{{ asset('js/owl.carousel.min.js?v='.config('system.version')) }}"></script>
     <script src="{{ asset('js/jquery.ui.min.js?v='.config('system.version')) }}"></script>
+    <script src="{{ asset('js/jquery.mark.min.js?v='.config('system.version')) }}" charset="UTF-8"></script>
 @endpush

@@ -325,7 +325,7 @@
 
 @section('content')
     <div class="cookie-alert z-depth-1 grey lighten-4 hide">
-        <a href="{{ route('page.view', 'cerez-politikasi') }}" class="teal-text" style="font-weight: bold;">Çerez Politikamızı</a> inceleyebilir ve kullanımından memnun kalırsanız web sitemize göz atmaya devam edebilirsiniz.
+        Web sitemizi incelemeden önce <a href="{{ route('page.view', 'cerez-politikasi') }}" class="teal-text" style="font-weight: bold;">Çerezler</a> özel bir deneyim sunarak ziyaretçilerimize daha iyi hizmet vermemizi ve daha faydalı bilgiler sunmak üzere kendi dahili amaçlarımız için kullanılacaktır.
         <a href="#" class="close">
             <i class="material-icons">close</i>
         </a>

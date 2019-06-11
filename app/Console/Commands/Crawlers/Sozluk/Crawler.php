@@ -85,6 +85,12 @@ class Crawler extends Command
             $sentiment = new Sentiment;
             $sentiment->engine('sentiment');
 
+            $consumer = new Sentiment;
+            $consumer->engine('consumer');
+
+            $illegal = new Sentiment;
+            $illegal->engine('illegal');
+
             while ($stream)
             {
                 $save          = false;
@@ -148,7 +154,9 @@ class Crawler extends Command
 
                             'site_id'    => $sozluk->id,
 
-                            'sentiment'  => $sentiment->score($item->data['entry'])
+                            'sentiment'  => $sentiment->score($item->data['entry']),
+                            'consumer'  => $consumer->score($item->data['entry']),
+                            'illegal'  => $illegal->score($item->data['entry'])
                         ];
 
                         $errors = [];

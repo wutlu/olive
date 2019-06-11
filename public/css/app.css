@@ -110,6 +110,9 @@
  /*!
  * range
  */
+input[type=range] {
+  border-width: 0;
+}
 input[type=range] + .thumb {
   background-color: #4b636e;
 }
@@ -149,13 +152,14 @@ input[type=range]::-ms-thumb {
   background-position: center;
   background-size: cover;
 
-  -webkit-filter: blur(10px);
-          filter: blur(10px);
-
   -webkit-transition: all 400ms cubic-bezier(.25, .46, .45, .94);
           transition: all 400ms cubic-bezier(.25, .46, .45, .94);
 }
-.media-area:hover {
+.media-area.nude {
+  -webkit-filter: blur(10px);
+          filter: blur(10px);
+}
+.media-area.nude:hover {
   -webkit-filter: blur(0);
           filter: blur(0);
 }
@@ -202,12 +206,12 @@ blockquote {
  * moz-selection
  */
 ::-moz-selection {
-  background-color: rgb(255, 255, 255);
-  color: rgba(0, 0, 0, .2);
+  background-color: rgba(0, 0, 0, .6);
+  color: rgb(255, 255, 255);
 }
 ::selection {
-  background-color: rgb(255, 255, 255);
-  color: rgba(0, 0, 0, .2);
+  background-color: rgba(0, 0, 0, .6);
+  color: rgb(255, 255, 255);
 }
 
 /*!
@@ -504,6 +508,7 @@ time {
 
 body {
   overflow-x: hidden;
+  overflow-y: scroll;
   background-color: #f9f9f9;
 }
 body * {
@@ -726,7 +731,6 @@ code {
 .wildcard {
   position: relative;
   margin: -1rem 0 1rem;
-  background-color: #f0f0f0;
 }
 .wildcard .wildcard-title {
   margin: 0;
@@ -735,7 +739,6 @@ code {
   font-size: 32px;
 }
 .wildcard .wild-background {
-  background-color: #333;
   background-image: url('../img/low.png');
   background-repeat: no-repeat;
   background-position: right center;
@@ -795,7 +798,6 @@ code {
 }
 
 .wild-area .wild-content > span.wild-body {
-  padding: 0 1rem;
 }
 .wild-area .wild-content > span.wild-body > input[type=text] {
   padding: 0;
@@ -978,7 +980,6 @@ code {
   color: #fff !important;
   font-size: 48px;
   height: 64px;
-  border-width: 0 !important;
 
   -webkit-box-shadow: none !important;
           box-shadow: none !important;
@@ -1097,16 +1098,15 @@ body.module-search-active > .search-wrapper {
   -webkit-transition: all 200ms cubic-bezier(.25, .46, .45, .94);
 
   border-radius: 1rem;
+
+  border-width: 4px;
+  border-style: dashed;
+  border-color: #ccc;
 }
 .fast-menu > a:hover {
   border-radius: 2rem;
-
-  -webkit-box-shadow: inset 0 0 4px rgba(0, 0, 0, .1), inset 0 0 1px rgba(0, 0, 0, .1);
-          box-shadow: inset 0 0 4px rgba(0, 0, 0, .1), inset 0 0 1px rgba(0, 0, 0, .1);
 }
 .fast-menu > a:active {
-  -webkit-box-shadow: inset 0 0 1rem rgba(0, 0, 0, .1);
-          box-shadow: inset 0 0 1rem rgba(0, 0, 0, .1);
 }
 
 @media only screen and (max-width: 992px) {
@@ -1364,24 +1364,33 @@ footer.page-footer > .container > .row > .col > img#vz-logo {
 .sphere-4 {
     background-image: url(../img/sphere-4.png);
 }
+.sphere-5 {
+    background-image: url(../img/sphere-5.png);
+}
+.sphere-6 {
+    background-image: url(../img/sphere-6.png);
+}
 
 /*!
  * card
  */
 .card {
   margin: 0;
-  padding: .4rem 0;
   border-radius: .2rem;
   word-break: break-word;
 }
 .card > .card-image,
 .card > .card-image > img {
-  border-radius: 0;
+  border-radius: .2rem .2rem 0 0;
 
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
+}
+.card > .card-content + .card-image,
+.card > .card-content + .card-image > img {
+  border-radius: 0;
 }
 .card > .card-content {
   padding: 1rem;
@@ -1736,8 +1745,9 @@ nav .nav-wrapper > ul > li > a > i {
 .collection > .collection-item {
   padding: 12px 24px;
   margin: 0;
-  border-width: 0;
-  border-radius: 0;
+  border-width: 0 !important;
+  border-radius: 0 !important;
+  border-color: transparent !important;
   background-color: transparent;
   color: #666 !important;
 }
@@ -1903,8 +1913,6 @@ table tr {
   overflow-y: hidden;
   max-height: 100% !important;
   background-color: #fff;
-  padding: .4rem 0;
-  border-radius: .6rem;
 }
 .modal.with-bg {
   background-color: #fff;
@@ -1957,11 +1965,6 @@ table tr {
   max-width: 660px;
 }
 
-.timepicker-modal,
-.datepicker-modal {
-  width: auto !important;
-}
-
 #main-nav {
   background-color: #4b636e;
 }
@@ -1974,6 +1977,11 @@ ul#slide-out {
 
   -webkit-box-shadow: 3px 0px 16px 1px rgba(0, 0, 0, .1), 1px 0px 6px 1px rgba(0, 0, 0, .1);
           box-shadow: 3px 0px 16px 1px rgba(0, 0, 0, .1), 1px 0px 6px 1px rgba(0, 0, 0, .1);
+
+  overflow: hidden;
+}
+ul#slide-out:hover {
+  overflow: auto;
 }
 ul#slide-out li.tiny {
 
@@ -2138,6 +2146,10 @@ ul#slide-out li > .collapsible-header > .material-icons {
  */
 .chip {
   background-color: rgba(200, 200, 200, .4);
+}
+
+.chip:focus {
+  background-color: #78909c;
 }
 
 /*!
@@ -3007,9 +3019,73 @@ nav.scrolled.active,
  * drop area
  */
 .da-active {
-  background-color: rgba(255, 155, 0, .1) !important;
+  background-color: #f9fbe7 !important;
   z-index: -1;
 }
 .da-hover {
-  background-color: rgba(255, 155, 0, .2) !important;
+  background-color: #f0f4c3 !important;
+}
+
+/*!
+ * input colors
+ */
+.input-field .materialize-textarea:focus + label,
+.input-field input[type=password]:focus + label,
+.input-field input[type=email]:focus + label,
+.input-field input[type=text]:focus + label {
+  color: #37474f !important;
+}
+.materialize-textarea:focus,
+.input-field input[type=text]:focus {
+  border-bottom: 1px solid #37474f !important;
+  box-shadow: 0 1px 0 0 #37474f !important;
+}
+.input-field .prefix.active {
+  color: #37474f !important;
+}
+
+/*!
+ * switch colors
+ */
+.switch label input[type=checkbox]:checked + .lever {
+  background-color: #90a4ae;
+}
+.switch label input[type=checkbox]:checked + .lever:after {
+  background-color: #37474f;
+}
+.switch label .lever:before {
+  background-color: rgba(55, 71, 79, 0.15);
+}
+
+/*!
+ * date-picker
+ */
+.month-prev,
+.month-next {
+  background-color: transparent !important;
+}
+
+.datepicker-table td {
+  border-radius: 0;
+}
+
+.datepicker-day-button {
+  border-radius: 0;
+}
+
+@media only screen and (min-width: 601px) {
+  .datepicker-controls,
+  .datepicker-table,
+  .datepicker-footer {
+    width: calc(100% - 1rem);
+  }
+}
+
+.datepicker-footer {
+  padding: .5rem 0;
+}
+
+.timepicker-modal,
+.datepicker-modal {
+  width: auto !important;
 }

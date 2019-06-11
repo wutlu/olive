@@ -56,7 +56,7 @@
 @section('wildcard')
     <div class="card wild-background">
         <div class="container">
-            <span class="wildcard-title white-text">{{ $thread->subject }}</span>
+            <span class="wildcard-title">{{ $thread->subject }}</span>
         </div>
     </div>
 @endsection
@@ -202,7 +202,7 @@
                             'data-id': __.data('id'),
                             'html': [
                                 $('<div />', {
-                                    'class': 'collection',
+                                    'class': 'collection collection-unstyled',
                                     'data-name': 'categories'
                                 })
                             ]
@@ -340,7 +340,7 @@
         $('[data-button=reply]').click(function() {
             var __ = $(this);
 
-            scrollTo({
+            _scrollTo({
                 'target': '[data-section=reply]',
                 'tolerance': '-96px'
             })
@@ -535,7 +535,7 @@
     if (hash)
     {
         $(window).on('load', function() {
-            scrollTo({
+            _scrollTo({
                 'target': '#' + hash,
                 'tolerance': '-72px'
             })
@@ -766,11 +766,11 @@
                         <div class="markdown"></div>
                     </blockquote>
                 </div>
-                <div class="card-content cyan darken-2">
-                    <span class="card-title white-text mb-0">Cevapla</span>
+                <div class="card-content">
+                    <span class="card-title">Cevapla</span>
                 </div>
-                <div class="card-tabs cyan darken-2">
-                    <ul class="tabs tabs-transparent">
+                <div class="card-tabs">
+                    <ul class="tabs">
                         <li class="tab">
                             <a href="#textarea" class="waves-effect active">Cevapla</a>
                         </li>

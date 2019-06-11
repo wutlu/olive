@@ -71,8 +71,9 @@ class ModuleSearchController extends Controller
                 $data[] = [
                     'module_id' => $q->module_id,
                     'name' => $module['name'],
+                    'route' => route($module['route']),
                     'root' => @$module['root'] ? true : false,
-                    'icon' => @$module['icon'],
+                    'icon' => @$module['icon']
                 ];
             }
         }

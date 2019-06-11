@@ -108,6 +108,20 @@ class ShoppingCrawler extends Model
                         'message' => [
                             'type' => 'text',
                             'index' => false
+                        ],
+                        'consumer' => [
+                            'properties' => [
+                                'que' => [ 'type' => 'float' ],
+                                'req' => [ 'type' => 'float' ],
+                                'cmp' => [ 'type' => 'float' ],
+                                'nws' => [ 'type' => 'float' ],
+                            ]
+                        ],
+                        'illegal' => [
+                            'properties' => [
+                                'bet' => [ 'type' => 'float' ],
+                                'nud' => [ 'type' => 'float' ],
+                            ]
                         ]
                     ]
                 ]

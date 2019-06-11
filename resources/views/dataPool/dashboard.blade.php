@@ -18,11 +18,10 @@
             </span>
         </div>
         <ul class="collection collection-unstyled">
-            <li class="collection-item">Sizi yakından ilgilendiren kriterleri belirterek veri toplama sonrasında yüksek analiz sonuçları elde edebilirsiniz.</li>
-            <li class="collection-item">Veri toplayıcı örümceklerimiz; ilgilendiğiniz alanlara yoğunlaşarak, kaynak odağıyla çalışırlar.</li>
-            <li class="collection-item">Bu ayarlar bulunduğunuz organizasyon için geçerlidir.</li>
-            <li class="collection-item">Organizasyonunuza dahil tüm kullanıcıların takip havuzları ortaktır.</li>
-            <li class="collection-item">Elde edilen veriler tüm Olive kullanıcıları tarafından ortak veritabanından analize açık hale getirilir.</li>
+            <li class="collection-item">Olive ekosistemi, ortak veri havuzu prensibiyle çalışır.</li>
+            <li class="collection-item">Olive organizasyonlarının ve Olive ekibinin belirlediği kriterlere göre, sosyal medya verileri analiz edilmek üzere toplanır.</li>
+            <li class="collection-item">Elde edilen veriler; anlık veri sorgulama motorları ile, kullanıcı ekranlarına sunulur.</li>
+            <li class="collection-item">Havuz kriterlerini, organizasyonunuza ait limitler doğrultusunda kullanabilirsiniz.</li>
         </ul>
     </div>
 @endsection

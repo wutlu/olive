@@ -13,7 +13,7 @@
 @section('wildcard')
     <div class="card wild-background mb-0">
         <div class="container">
-            <span class="wildcard-title white-text d-flex flex-wrap">
+            <span class="wildcard-title d-flex flex-wrap">
                 <img alt="Avatar" src="{{ $user->avatar() }}" class="mr-1 circle align-self-center" style="width: 96px; height: 96px;" />
                 <span class="align-self-center">{{ $user->name }}</span>
             </span>

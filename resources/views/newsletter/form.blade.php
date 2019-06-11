@@ -18,7 +18,7 @@
 @section('wildcard')
     <div class="card wild-background">
         <div class="container">
-            <span class="wildcard-title white-text">{{ $newsletter ? $newsletter->subject : 'Bülten Oluştur' }}</span>
+            <span class="wildcard-title">{{ $newsletter ? $newsletter->subject : 'Bülten Oluştur' }}</span>
         </div>
     </div>
 @endsection

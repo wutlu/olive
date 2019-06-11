@@ -26,7 +26,7 @@
             <span class="card-title">Pin Grupları</span>
         </div>
         <ul id="pin-groups"
-             class="collection load json-clear" 
+             class="collection collection-unstyled load json-clear" 
              data-href="{{ route('admin.organisation.pin_groups', $organisation->id) }}"
              data-skip="0"
              data-take="5"
@@ -47,7 +47,7 @@
             </li>
         </ul>
         @component('components.loader')
-            @slot('color', 'cyan')
+            @slot('color', 'blue-grey')
             @slot('id', 'home-loader')
             @slot('class', 'card-loader-unstyled')
         @endcomponent

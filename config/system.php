@@ -4,7 +4,7 @@ return [
     /**
      * Sistem Versiyonu
      */
-    'version' => '1.8.12-alpha',
+    'version' => '2.0.0-alpha',
 
     /**
      * db
@@ -121,7 +121,8 @@ return [
     'intro' => [
         'keys' => [
             'welcome.create.organisation',
-            'search.module'
+            'search.module',
+            'driver.trend'
         ]
     ],
 
@@ -198,10 +199,12 @@ return [
      */
     'carousel' => [
         'patterns' => [
-            'sphere-1' => 'AI 1',
-            'sphere-2' => 'AI 2',
-            'sphere-3' => 'AI 3',
-            'sphere-4' => 'AI 4',
+            'sphere-1' => 'Sphere 1',
+            'sphere-2' => 'Sphere 2',
+            'sphere-3' => 'Sphere 3',
+            'sphere-4' => 'Sphere 4',
+            'sphere-5' => 'Sphere 5',
+            'sphere-6' => 'Sphere 6',
         ]
     ],
 

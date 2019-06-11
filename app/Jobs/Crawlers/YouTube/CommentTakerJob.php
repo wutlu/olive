@@ -52,6 +52,12 @@ class CommentTakerJob implements ShouldQueue
             $sentiment = new Sentiment;
             $sentiment->engine('sentiment');
 
+            $consumer = new Sentiment;
+            $consumer->engine('consumer');
+
+            $illegal = new Sentiment;
+            $illegal->engine('illegal');
+
             $gender = new Gender;
             $gender->loadNames();
 
@@ -72,6 +78,8 @@ class CommentTakerJob implements ShouldQueue
                                 [
                                     'term' => $term,
                                     'sentiment' => $sentiment,
+                                    'consumer' => $consumer,
+                                    'illegal' => $illegal,
                                     'gender' => $gender
                                 ]
                             );
@@ -93,6 +101,8 @@ class CommentTakerJob implements ShouldQueue
                                         [
                                             'term' => $term,
                                             'sentiment' => $sentiment,
+                                            'consumer' => $consumer,
+                                            'illegal' => $illegal,
                                             'gender' => $gender
                                         ],
                                         $item->data['id']
@@ -154,7 +164,9 @@ class CommentTakerJob implements ShouldQueue
             ],
             'created_at' => date('Y-m-d H:i:s', strtotime($snippet->publishedAt)),
             'called_at' => date('Y-m-d H:i:s'),
-            'sentiment' => $function['sentiment']->score($snippet->textOriginal)
+            'sentiment' => $function['sentiment']->score($snippet->textOriginal),
+            'consumer' => $function['consumer']->score($snippet->textOriginal),
+            'illegal' => $function['illegal']->score($snippet->textOriginal)
         ]);
 
         return (object) [

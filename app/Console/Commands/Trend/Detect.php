@@ -619,33 +619,36 @@ class Detect extends Command
                                 {
                                     if ($search->data['hits']['total'])
                                     {
-                                        for ($i = 0; $i <= ($search->data['hits']['total']-1); $i++)
+                                        for ($i = 0; $i <= ($search->data['hits']['total']); $i++)
                                         {
-                                            $source = $search->data['hits']['hits'][$i]['_source'];
+                                            $source = @$search->data['hits']['hits'][$i]['_source'];
 
-                                            $sper = 0;
-
-                                            foreach ($data as $k => $item)
+                                            if ($source)
                                             {
-                                                if (@$item['title'])
+                                                $sper = 0;
+
+                                                foreach ($data as $k => $item)
                                                 {
-                                                    similar_text($item['title'], $source['title'], $percent);
+                                                    if (@$item['title'])
+                                                    {
+                                                        similar_text($item['title'], $source['title'], $percent);
 
-                                                    $sper = ($percent > $sper) ? $percent : $sper;
-                                                }
-                                            }
-
-                                            if ($sper <= 50)
-                                            {
-                                                $data[$key]['title'] = $source['title'];
-                                                $data[$key]['text'] = $source['description'];
-
-                                                if (@$source['image_url'])
-                                                {
-                                                    $data[$key]['image'] = $source['image_url'];
+                                                        $sper = ($percent > $sper) ? $percent : $sper;
+                                                    }
                                                 }
 
-                                                break;
+                                                if ($sper <= 50)
+                                                {
+                                                    $data[$key]['title'] = $source['title'];
+                                                    $data[$key]['text'] = $source['description'];
+
+                                                    if (@$source['image_url'])
+                                                    {
+                                                        $data[$key]['image'] = $source['image_url'];
+                                                    }
+
+                                                    break;
+                                                }
                                             }
                                         }
                                     }

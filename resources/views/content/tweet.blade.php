@@ -130,8 +130,8 @@
                 @else
                     @component('components.loader')
                         @slot('color', 'teal')
-                        @slot('class', 'card-loader-unstyled')
                         @slot('id', $key.'-loader')
+                        @slot('class', 'card-loader-unstyled')
                     @endcomponent
                 @endif
 

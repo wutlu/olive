@@ -64,7 +64,7 @@
         </ul>
 
         @component('components.loader')
-            @slot('color', 'cyan')
+            @slot('color', 'blue-grey')
             @slot('id', 'pin-groups-loader')
             @slot('class', 'card-loader-unstyled')
         @endcomponent

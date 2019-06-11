@@ -41,7 +41,7 @@
                     <a href="#forum">Forum</a>
                 </li>
             </ul>
-            <div id="media" class="collection max-height white">
+            <div id="media" class="collection collection-unstyled max-height white">
                 @forelse ($media as $key => $m)
                     <a href="{{ $m->site }}" target="_blank" class="collection-item d-flex justify-content-end">
                         <span class="mr-auto">{{ ($key+1).' - '.$m->name }}</span>
@@ -57,7 +57,7 @@
                     <div class="collection-item grey-text">Şu an için aktif kaynak bulunmuyor.</div>
                 @endforelse
             </div>
-            <div id="shopping" class="collection max-height white" style="display: none;">
+            <div id="shopping" class="collection collection-unstyled max-height white" style="display: none;">
                 @forelse ($shopping as $key => $s)
                     <a href="{{ $s->site }}" target="_blank" class="collection-item d-flex justify-content-end">
                         <span class="mr-auto">{{ ($key+1).' - '.$s->name }}</span>
@@ -73,7 +73,7 @@
                     <div class="collection-item grey-text">Şu an için aktif kaynak bulunmuyor.</div>
                 @endforelse
             </div>
-            <div id="social" class="collection max-height white" style="display: none;">
+            <div id="social" class="collection collection-unstyled max-height white" style="display: none;">
                 <a href="https://www.facebook.com" target="_blank" class="collection-item">
                     Facebook
                     <span class="badge red white-text">Pasif</span>
@@ -125,10 +125,10 @@
                     <div class="collection-item grey-text">Şu an için aktif kaynak bulunmuyor.</div>
                 @endforelse
             </div>
-            <div id="blog" class="collection max-height white" style="display: none;">
+            <div id="blog" class="collection collection-unstyled max-height white" style="display: none;">
                 <div class="collection-item grey-text">Şu an için aktif kaynak bulunmuyor.</div>
             </div>
-            <div id="forum" class="collection max-height white" style="display: none;">
+            <div id="forum" class="collection collection-unstyled max-height white" style="display: none;">
                 <div class="collection-item grey-text">Şu an için aktif kaynak bulunmuyor.</div>
             </div>
         </div>

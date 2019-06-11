@@ -257,6 +257,16 @@ $arr = [
         'sources.*'                       => 'Kaynak',
 
         'sentiment'                       => 'Duygu',
+        'sentiment_pos'                   => 'Pozitif Duygu',
+        'sentiment_neg'                   => 'Negatif Duygu',
+        'sentiment_neu'                   => 'Nötr Duygu',
+        'sentiment_hte'                   => 'Nefret Söylemi Duygusu',
+
+        'consumer_que'                    => 'Soru Analizi',
+        'consumer_req'                    => 'İstek Analizi',
+        'consumer_cmp'                    => 'Şikayet Analizi',
+        'consumer_nws'                    => 'Haber Analizi',
+
         'full_match'                      => 'Kelimesi Kelimesine',
 
         'weekdays'                        => 'Günler',
@@ -293,6 +303,7 @@ $arr = [
         'alarm_limit'                     => 'Alarm Limiti',
         'pin_group_limit'                 => 'Pin Grubu Limiti',
         'historical_days'                 => 'Geriye Dönük Arama Limiti',
+        'saved_searches_limit'            => 'Arama Kaydetme Limiti',
 
         'data_pool_youtube_channel_limit' => 'YouTube Kanal Limiti',
         'data_pool_youtube_video_limit'   => 'YouTube Video Limiti',

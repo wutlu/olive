@@ -198,9 +198,15 @@ class SystemUtility
                         continue;
                     }
 
-                    $result[$key]['free'] = explode('=', $lines[$index - 1])[1];
-                    $result[$key]['total'] = explode('=', $lines[$index + 1])[1];
-                    $result[$key]['used'] = $result[$key]['total'] - $result[$key]['free'];
+                    $total = explode('=', $lines[$index + 1])[1];
+                    $free = explode('=', $lines[$index - 1])[1];
+                    $used = $total - $free;
+
+                    $result[$key] = [
+                        'total' => Term::humanFileSize($total),
+                        'free' => Term::humanFileSize($free),
+                        'used' => Term::humanFileSize($used)
+                    ];
 
                     break;
                 }

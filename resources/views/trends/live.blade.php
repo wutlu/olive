@@ -9,7 +9,8 @@
         ]
     ],
     'footer_hide' => true,
-    'wide' => true
+    'wide' => true,
+    'help' => 'driver.start()'
 ])
 
 @push('local.scripts')
@@ -24,12 +25,9 @@
             __.data('status', 'off')
             __.find('i.material-icons').html('play_arrow')
             __.removeClass('pulse red')
-            __.addClass('cyan')
+            __.addClass('blue-grey')
 
             $('[data-module=' + __.data('name') + ']').css({ 'opacity': .2 })
-                                                      .closest('.card')
-                                                      .find('[data-trigger=screenshot]')
-                                                      .addClass('disabled')
 
             M.toast({ html: 'Canlı Trend Durduruldu', 'classes': 'red' })
 
@@ -39,15 +37,14 @@
         }
         else
         {
+            helpStart.reset()
+
             __.data('status', 'on')
             __.find('i.material-icons').html('pause')
             __.addClass('pulse red')
-            __.removeClass('cyan')
+            __.removeClass('blue-grey')
 
             $('[data-module=' + __.data('name') + ']').css({ 'opacity': 1 })
-                                                      .closest('.card')
-                                                      .find('[data-trigger=screenshot]')
-                                                      .removeClass('disabled')
 
             M.toast({ html: 'Canlı Trend Başlatıldı', 'classes': 'green' })
 
@@ -63,7 +60,6 @@
 
             if (obj.data)
             {
-                __.removeClass('hide')
                 __.find('.item:not(.model)').addClass('old')
 
                 $.each(obj.data, function(key, o) {
@@ -211,53 +207,16 @@
             }, 60000)
         }
     }
-
-    $(document).on('click', '[data-trigger=screenshot]', function() {
-        var __ = $(this);
-
-        $('#loading').fadeIn()
-
-        html2canvas(document.querySelector('#trend_list-' + __.data('id')), {
-            'logging': false,
-            'max-width': '100%'
-        }).then(canvas => {
-            $('#loading').fadeOut()
-
-            return modal({
-                'id': 'save',
-                'body': [
-                    $('<div />', {
-                        'class': 'teal lighten-2 white-text p-1 mb-1',
-                        'html': 'Aşağıdaki resmin üzerine sağ tıklayın ve bilgisayarınıza kaydedin.'
-                    }),
-                    $('<a />', {
-                        'class': 'image-area d-table mx-auto',
-                        'target': '_blank',
-                        'href': canvas.toDataURL(),
-                        'html': $('<img />', {
-                            'src': canvas.toDataURL()
-                        })
-                    })
-                ],
-                'title': __.data('tooltip'),
-                'size': 'modal-large',
-                'options': {},
-                'footer': [
-                   $('<a />', {
-                       'href': '#',
-                       'class': 'modal-close waves-effect btn-flat',
-                       'html': buttons.ok
-                   })
-                ]
-            })
-        })
-    })
 @endpush
 
 @push('local.styles')
     [data-id=trend_list] {
-        max-height: 800px;
+        height: calc(100vh - 400px);
         overflow: auto;
+        background-image: url(../img/olive_logo-opacity.svg);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 50%;
     }
 
     .image {
@@ -278,24 +237,14 @@
             <div class="card card-unstyled">
                 <div class="card-content">
                     <span class="card-title d-flex">
-                        <a href="#" class="btn-floating btn-flat align-self-center d-flex handle mr-1">
+                        <a href="#" class="btn-floating btn-flat align-self-center d-flex handle mr-1 drag-btn">
                             <i class="material-icons align-self-center grey-text text-darken-2">drag_handle</i>
                         </a>
-                        <span class="align-self-center">{{ $trend['title'] }}</span>
+                        <span class="align-self-center" id="card-{{ $trend['module'] }}">{{ $trend['title'] }}</span>
                         <div class="d-flex ml-auto">
                             <a
                                 href="#"
-                                class="btn-floating btn-flat d-flex disabled mr-1 waves-effect"
-                                data-name="{{ $trend['module'] }}"
-                                data-tooltip="Görüneni Kaydet"
-                                data-position="left"
-                                data-trigger="screenshot"
-                                data-id="{{ $trend['module'] }}">
-                                <i class="material-icons align-self-center">save</i>
-                            </a>
-                            <a
-                                href="#"
-                                class="btn-floating cyan darken-2 d-flex"
+                                class="btn-floating blue-grey darken-2 d-flex play-btn"
                                 data-trigger="run"
                                 data-status="off"
                                 data-name="{{ $trend['module'] }}">
@@ -307,7 +256,7 @@
                 <ul
                     id="trend_list-{{ $trend['module'] }}"
                     data-id="trend_list"
-                    class="collapsible hide"
+                    class="collapsible"
                     data-href="{{ route('trend.live.redis') }}"
                     data-module="{{ $trend['module'] }}"
                     data-method="post"
@@ -370,57 +319,49 @@
     <br />
 
     <div class="card card-unstyled">
-        <div class="card-content grey-text text-darken-2">
-            @component('components.alert')
-                @slot('icon', 'info')
-                @slot('text', 'İzlemek istediğiniz trend modülünün yanında bulunan "Oynat" tuşuna basarak izleme işlemini başlatabilirsiniz.')
-            @endcomponent
-            @component('components.alert')
-                @slot('icon', 'info')
-                @slot('text', 'Trend modülü, tamamen Olive algoritmalarıyla çalışmaktadır. Algoritmamız; web siteler için Alexa, sosyal medya için troll hesap durumlarını göz önünde bulundurarak işlem yapmaktadır. Kaynak sitelerin trendleriyle eş tutulması beklenmemelidir.')
-            @endcomponent
-            @component('components.alert')
-                @slot('icon', 'info')
-                @slot('text', 'Trend modülü, tamamen canli bir altyapiya sahip olup dakikalik göstergelere sahiptir ve tum trendler anlıktır. Başlıklar ve içerikler, algoritmamızın olağanüstü durum tespitiyle belirlenmektedir.')
-            @endcomponent
-            <br />
-            <span class="red-text">
-                @component('components.alert')
-                    @slot('icon', 'info_outline')
-                    @slot('text', 'Kırmızı, trendin düşüşte olduğunu gösterir.')
-                @endcomponent
-            </span>
-            <span class="green-text">
-                @component('components.alert')
-                    @slot('icon', 'info_outline')
-                    @slot('text', 'Yeşil, trendin yükselişte olduğunu gösterir.')
-                @endcomponent
-            </span>
-            <span class="blue-text">
-                @component('components.alert')
-                    @slot('icon', 'info_outline')
-                    @slot('text', 'Mavi, trendin yeni olduğunu gösterir.')
-                @endcomponent
-            </span>
-            <span class="grey-text">
-                @component('components.alert')
-                    @slot('icon', 'info_outline')
-                    @slot('text', 'Gri, trendin yerini koruduğunu gösterir.')
-                @endcomponent
-            </span>
-            <br />
-            <span class="grey-text">
-                @component('components.alert')
-                    @slot('icon', 'multiline_chart')
-                    @slot('text', 'Ekrana düşen toplam trend sayısı, <span data-name="incoming-trends">0</span>')
-                @endcomponent
-            </span>
-            <span class="grey-text">
-                @component('components.alert')
-                    @slot('icon', 'multiline_chart')
-                    @slot('text', 'Ekrandan çıkan toplam trend sayısı, <span data-name="outbound-trends">0</span>')
-                @endcomponent
-            </span>
+        <div class="card-content">
+            <div class="d-flex flex-wrap">
+                <div  class="p-1">
+                    <span class="red-text">
+                        @component('components.alert')
+                            @slot('icon', 'info_outline')
+                            @slot('text', 'Kırmızı, trendin düşüşte olduğunu gösterir.')
+                        @endcomponent
+                    </span>
+                    <span class="green-text">
+                        @component('components.alert')
+                            @slot('icon', 'info_outline')
+                            @slot('text', 'Yeşil, trendin yükselişte olduğunu gösterir.')
+                        @endcomponent
+                    </span>
+                    <span class="blue-text">
+                        @component('components.alert')
+                            @slot('icon', 'info_outline')
+                            @slot('text', 'Mavi, trendin yeni olduğunu gösterir.')
+                        @endcomponent
+                    </span>
+                    <span class="grey-text">
+                        @component('components.alert')
+                            @slot('icon', 'info_outline')
+                            @slot('text', 'Gri, trendin yerini koruduğunu gösterir.')
+                        @endcomponent
+                    </span>
+                </div>
+                <div  class="p-1">
+                    <span class="grey-text">
+                        @component('components.alert')
+                            @slot('icon', 'multiline_chart')
+                            @slot('text', 'Ekrana düşen toplam trend sayısı, <span data-name="incoming-trends">0</span>')
+                        @endcomponent
+                    </span>
+                    <span class="grey-text">
+                        @component('components.alert')
+                            @slot('icon', 'multiline_chart')
+                            @slot('text', 'Ekrandan çıkan toplam trend sayısı, <span data-name="outbound-trends">0</span>')
+                        @endcomponent
+                    </span>
+                </div>
+            </div>
         </div>
     </div>
 @endsection
@@ -464,11 +405,109 @@
 
 @push('local.scripts')
     $('.sortable').sortable({
-        handle: '.handle'
+        handle: '.handle',
+        start: function( event, ui ) { 
+            $(ui.item).addClass('blue-grey lighten-4');
+        },
+        stop:function( event, ui ) { 
+            $(ui.item).removeClass('blue-grey lighten-4');
+        }
     })
+
+    const helpStart = new Driver({
+        allowClose: false,
+        showButtons: false,
+        keyboardControl: false,
+        padding: 16,
+        onReset: function() {
+            @if (!auth()->user()->intro('driver.trend'))
+                vzAjax($('<div />', {
+                    'class': 'json',
+                    'data-method': 'post',
+                    'data-href': '{{ route('intro', 'driver.trend') }}'
+                }))
+            @endif
+        }
+    })
+
+    helpStart.defineSteps([
+        {
+            element: '.play-btn',
+            popover: {
+                title: 'Başlayın',
+                description: 'İstediğiniz kaynağı başlatarak kaynağın trendlerini canlı olarak izleyebilirsiniz.',
+                position: 'left'
+            }
+        }
+    ])
+
+    const driver = new Driver({
+        allowClose: false,
+        padding: 6,
+        onReset: function() {
+            setTimeout(function() {
+                helpStart.start()
+            }, 400)
+        }
+    })
+
+    driver.defineSteps([
+        {
+            element: '.drag-btn',
+            popover: {
+                title: 'Önceliklerinizi Belirleyin',
+                description: 'Bölümleri sürükleyerek istediğiniz sıralamayı elde edebilirsiniz.'
+            }
+        },
+        {
+            element: '#card-twitter_tweet',
+            popover: {
+                title: 'Twitter, Tweet',
+                description: 'Son 1 dakika içerisinde paylaşılan Türkçe Tweetler arasında en çok etkileşim alan Tweetler.'
+            }
+        },
+        {
+            element: '#card-twitter_hashtag',
+            popover: {
+                title: 'Twitter, Hashtag',
+                description: 'Son 1 dakika içerisinde paylaşılan ve hashtag içeren Türkçe Tweetler arasında en çok kullanılan hashtagler.'
+            }
+        },
+        {
+            element: '#card-news',
+            popover: {
+                title: 'Medya, Haber',
+                description: 'Haberler, sitelerin Alexa değerleri baz alınarak yapılan puanlamalara göre belirlenir.'
+            }
+        },
+        {
+            element: '#card-entry',
+            popover: {
+                title: 'Sözlük, Entry',
+                description: 'Başlıklar, tüm sözlüklerde açılan başlıkların aldığı cevaplara göre belirlenir.'
+            }
+        },
+        {
+            element: '#card-youtube_video',
+            popover: {
+                title: 'YouTube, Video',
+                description: 'Türkçe videolara yapılan yorum yoğunluğuna göre belirlenen videolar.'
+            }
+        },
+        {
+            element: '#card-google',
+            popover: {
+                title: 'Google',
+                description: 'Türkiye genelinde, Google üzerinde yapılan arama sıralaması.'
+            }
+        }
+    ])
+
+    @if (!auth()->user()->intro('driver.trend'))
+        driver.start()
+    @endif
 @endpush
 
 @push('external.include.footer')
     <script src="{{ asset('js/jquery.ui.min.js?v='.config('system.version')) }}"></script>
-    <script src="{{ asset('js/html2canvas.min.js?v='.config('system.version')) }}"></script>
 @endpush

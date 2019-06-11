@@ -12,7 +12,6 @@ return [
     | you may use many connections at once using the Database library.
     |
     */
-
     'default' => env('DB_CONNECTION', 'mysql'),
 
     /*
@@ -30,15 +29,12 @@ return [
     | choice installed on your machine before you begin development.
     |
     */
-
     'connections' => [
-
         'sqlite' => [
             'driver' => 'sqlite',
             'database' => env('DB_DATABASE', database_path('database.sqlite')),
             'prefix' => '',
         ],
-
         'mysql' => [
             'driver' => 'mysql',
             'host' => env('DB_HOST', '127.0.0.1'),
@@ -53,7 +49,6 @@ return [
             'strict' => true,
             'engine' => null,
         ],
-
         'pgsql' => [
             'driver' => 'pgsql',
             'host' => env('DB_HOST', '127.0.0.1'),
@@ -66,7 +61,6 @@ return [
             'schema' => env('DB_SCHEMA', 'public'),
             'sslmode' => 'prefer',
         ],
-
         'sqlsrv' => [
             'driver' => 'sqlsrv',
             'host' => env('DB_HOST', 'localhost'),
@@ -77,14 +71,12 @@ return [
             'charset' => 'utf8',
             'prefix' => '',
         ],
-
         'elasticsearch' => [
             'node' => [
-                'ips' => explode('|', env('ELASTICSEARCH_NODE_IPS', '127.0.0.1:9200')),
+                'ips' => explode('|', env('ELASTICSEARCH_NODE_IPS', '127.0.0.1:9201')),
                 'names' => explode('|', env('ELASTICSEARCH_NODE_NAMES', 'node-1'))
             ]
         ]
-
     ],
 
     'elasticsearch' => [
@@ -178,7 +170,6 @@ return [
                 ]
             ]
         ],
-
         'trend' => [
             'title' => [
                 'settings' => [
@@ -201,7 +192,6 @@ return [
     | the migrations on disk haven't actually been run in the database.
     |
     */
-
     'migrations' => 'migrations',
 
     /*
@@ -214,9 +204,7 @@ return [
     | such as APC or Memcached. Laravel makes it easy to dig right in.
     |
     */
-
     'redis' => [
-
         'client' => 'predis',
 
         'default' => [
@@ -225,7 +213,5 @@ return [
             'port' => env('REDIS_PORT', 6379),
             'database' => 0,
         ],
-
     ],
-
 ];

@@ -89,6 +89,7 @@ Route::prefix('organizasyon')->group(function () {
 
 Route::prefix('arama-motoru')->group(function () {
     Route::get('/', 'SearchController@dashboard')->name('search.dashboard');
+    Route::post('kaydet', 'SearchController@save')->name('search.save');
     Route::post('analiz', 'SearchController@aggregation')->name('search.aggregation');
     Route::post('/', 'SearchController@search');
 

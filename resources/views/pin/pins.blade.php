@@ -25,31 +25,38 @@
     }
 @endpush
 
-@section('content')
-    <div class="card with-bg mb-2">
-        <div class="card-image">
-            <img src="{{ asset('img/md-s/21.jpg') }}" alt="Image" />
-            <span class="card-title white-text">
-                Pinlemeler
-            </span>
-            <a
-                href="#"
-                class="btn-floating btn-large halfway-fab waves-effect white json btn-image"
-                data-tooltip="Pdf Dökümü Al"
-                data-position="left"
-                data-href="{{ route('pin.pdf') }}"
-                data-id="{{ $pg->id }}"
-                data-method="post"
-                data-callback="__pdf"
-                style="background-image: url('{{ asset('img/icons/pdf.png') }}');"></a>
+@section('action-bar')
+    <a
+        href="#"
+        class="btn-floating btn-large halfway-fab waves-effect white json btn-image"
+        data-tooltip="Pdf Dökümü Al"
+        data-position="left"
+        data-href="{{ route('pin.pdf') }}"
+        data-id="{{ $pg->id }}"
+        data-method="post"
+        data-callback="__pdf"
+        style="background-image: url('{{ asset('img/icons/pdf.png') }}');"></a>
+@endsection
+
+@section('wildcard')
+    <div class="card wild-background">
+        <div class="container">
+            <span class="wildcard-title">Pinlemeler</span>
         </div>
-        @if ($pg->html_to_pdf == 'success')
-            <div class="card-action d-flex justify-content-between">
-                <span class="align-self-center">{{ date('d.m.Y H:i', strtotime($pg->completed_at)) }}</span>
-                <a href="{{ url($pg->pdf_path).'?v='.date('dmyHi', strtotime($pg->completed_at)) }}" class="btn-flat waves-effect align-self-center">Pdf İndir</a>
-            </div>
-        @endif
     </div>
+@endsection
+
+@section('content')
+    @if ($pg->html_to_pdf == 'success')
+        <div class="card card-unstyled mb-1">
+            <div class="card-contenet">
+                <div class="d-flex justify-content-end">
+                    <span class="align-self-center grey-text">{{ date('d.m.Y H:i', strtotime($pg->completed_at)) }}</span>
+                    <a href="{{ url($pg->pdf_path).'?v='.date('dmyHi', strtotime($pg->completed_at)) }}" class="btn-flat waves-effect align-self-center ml-1">Pdf İndir</a>
+                </div>
+            </div>
+        </div>
+    @endif
 
     @forelse ($pins as $pin)
         @php
@@ -85,7 +92,7 @@
                 @endif
             </ul>
 
-            <div class="card card-data {{ $type }} hoverable mb-1" data-id="card-{{ $id }}">
+            <div class="card card-data {{ $type }} mb-1" data-id="card-{{ $id }}">
                 <div class="card-content">
                     <span class="card-title">
                         {{ $type }}

@@ -25,6 +25,10 @@
     <link rel="stylesheet" href="{{ asset('css/materialize.min.css?v='.config('system.version')) }}" />
     <link rel="stylesheet" href="{{ asset('css/app.css?v='.config('system.version')) }}" />
 
+    @isset($help)
+        <link rel="stylesheet" href="{{ asset('css/driver.min.css?v='.config('system.version')) }}" />
+    @endisset
+
     <!-- manifest -->
     <link rel="manifest" href="{{ asset(route('olive.manifest').'?v='.config('system.version')) }}" />
 
@@ -297,6 +301,13 @@
                                         </a>
                                     </li>
                                 @endisset
+                                @isset($help)
+                                    <li id="help-button">
+                                        <a href="#" onclick="{{ $help }}">
+                                            <i class="material-icons">help</i>
+                                        </a>
+                                    </li>
+                                @endisset
                             </ul>
                         @endauth
                     </div>
@@ -308,7 +319,7 @@
             <ul id="slide-out" class="sidenav {{ isset($sidenav_layout) ? '' : 'sidenav-fixed' }} collapsible">
                 <li>
                     <div class="user-view">
-                        <small class="right">{{ config('system.version') }}</small>
+                        <small class="right {{ config('app.env') == 'local' ? 'red-text' : '' }}">{{ config('system.version') }}</small>
                         <img alt="{{ auth()->user()->name }}" class="circle" src="{{ asset(auth()->user()->avatar()) }}" />
                         <span class="name">{{ auth()->user()->name }}</span>
                         <span class="email grey-text">{{ auth()->user()->email }}</span>
@@ -437,12 +448,6 @@
                                     <a class="waves-effect" href="{{ route('admin.monitoring.log') }}">
                                         <i class="material-icons">code</i>
                                         Log Ekranı
-                                    </a>
-                                </li>
-                                <li class="tiny">
-                                    <a class="waves-effect" href="{{ route('admin.monitoring.queue') }}">
-                                        <i class="material-icons">queue</i>
-                                        Kuyruk Ekranı
                                     </a>
                                 </li>
                             </ul>
@@ -730,7 +735,7 @@
                         $.each (obj.data, function(key, o) {
                             var item = $('<a />', {
                                 'class': 'ms-item waves-effect json',
-                                'href': '#',
+                                'href': o.route,
                                 'data-href': '{{ route('module.go') }}',
                                 'data-method': 'post',
                                 'data-callback': '__go',
@@ -941,6 +946,10 @@
 
     <!-- external include -->
     @stack('external.include.footer')
+
+    @isset($help)
+        <script src="{{ asset('js/driver.min.js?v='.config('system.version')) }}"></script>
+    @endisset
 
     <!-- local scripts -->
     <script>

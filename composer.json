@@ -17,7 +17,6 @@
         "intervention/image": "^2.4",
         "jenssegers/agent": "^2.6",
         "laravel/framework": "5.7.*",
-        "laravel/horizon": "^1.4",
         "laravel/socialite": "^3.1",
         "laravel/tinker": "^1.0",
         "orangehill/iseed": "^2.5",

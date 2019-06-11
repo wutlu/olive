@@ -122,9 +122,9 @@ function slug(str)
 
 /* --- scroll function --- */
 
-function scrollTo(scrollTo)
+function _scrollTo(scrollTo)
 {
-    var target = eval(element(scrollTo.target));
+    var target = eval(_element(scrollTo.target));
 
     if (target.length)
     {
@@ -210,7 +210,7 @@ $(document).on('click', '[data-remove]', function() {
     var __ = $(this);
 
     var target = __.data('focus'),
-        target = element(target);
+        target = _element(target);
 
     target.remove()
 
@@ -236,7 +236,7 @@ $(document).on('click', '[data-focus]', function() {
     var __ = $(this);
 
     var target = __.data('focus'),
-        target = element(target);
+        target = _element(target);
 
     window.clearTimeout(focusDelay)
 
@@ -258,7 +258,7 @@ $(document).on('click', '[data-input]', function() {
     var __ = $(this);
 
     var target = __.data('input'),
-        target = element(target);
+        target = _element(target);
 
         target.val(__.data('input-value'))
 
@@ -271,7 +271,7 @@ $(document).on('click', '[data-submit]', function() {
     var __ = $(this);
 
     var target = __.data('submit'),
-        target = element(target);
+        target = _element(target);
 
         target.submit()
 
@@ -284,7 +284,7 @@ $(document).on('keydown keyup change click', '[data-image-to]', function() {
     var __ = $(this);
 
     var target = __.data('image-to'),
-        target = element(target);
+        target = _element(target);
 
     target.attr('src', __.val())
 })
@@ -294,7 +294,7 @@ $(document).on('keydown keyup change click', '[data-image-to]', function() {
 $(document).on('click', '[data-scroll-to]', function() {
     var __ = $(this);
 
-    scrollTo({
+    _scrollTo({
         'target': __.data('scroll-to'),
         'tolerance': __.data('scroll-to-tolerance')
     })
@@ -306,7 +306,7 @@ $(document).on('keydown keyup change click', '[data-slug]', function() {
     var __ = $(this);
 
     var target = __.data('slug'),
-        target = element(target);
+        target = _element(target);
 
     target.val(slug(__.val()))
 
@@ -323,7 +323,7 @@ $(document).on('keyup', '[data-submit]', function(e) {
     if (e.which == __.data('key'))
     {
         var target = __.data('submit'),
-            target = element(target);
+            target = _element(target);
 
         window.clearTimeout(submitDelay)
 
@@ -341,7 +341,7 @@ $(document).on('click', '[data-class]', function() {
     var __ = $(this);
 
     var target = __.data('class'),
-        target = element(target);
+        target = _element(target);
 
     window.clearTimeout(classDelay)
 
@@ -390,7 +390,7 @@ $(document).on('focus', '[data-focus-class]', function() {
     var __ = $(this);
 
     var target = __.data('focus-class'),
-        target = element(target);
+        target = _element(target);
 
     window.clearTimeout(focusClassDelay)
 
@@ -422,7 +422,7 @@ $(document).on('blur', '[data-blur-class]', function() {
     var __ = $(this);
 
     var target = __.data('blur-class'),
-        target = element(target);
+        target = _element(target);
 
     window.clearTimeout(blurClassDelay)
 
@@ -448,7 +448,7 @@ $(document).on('blur', '[data-blur-class]', function() {
 
 /* --- selector function --- */
 
-function element(m) {
+function _element(m) {
     var sp = m.split('->'),
         elem,
         selector = '';
@@ -567,7 +567,7 @@ $(document).on('change', 'select.json, input[type=radio].json, input[type=checkb
     window.clearTimeout(jsonTimer);
 
     jsonTimer = window.setTimeout(function() {
-        var target = __.data('json-target') ? eval(element(__.data('json-target'))) : __;
+        var target = __.data('json-target') ? eval(_element(__.data('json-target'))) : __;
 
         if (__.data('clear'))
         {
@@ -584,7 +584,7 @@ $(document).on('change', 'select.json, input[type=radio].json, input[type=checkb
     window.clearTimeout(jsonTimer);
 
     jsonTimer = window.setTimeout(function() {
-        var target = __.data('json-target') ? eval(element(__.data('json-target'))) : __;
+        var target = __.data('json-target') ? eval(_element(__.data('json-target'))) : __;
 
         if (__.data('clear'))
         {
@@ -597,7 +597,7 @@ $(document).on('change', 'select.json, input[type=radio].json, input[type=checkb
     return false;
 }).on('click', '.json:not(form):not(select):not(input):not(textarea)', function() {
     var __ = $(this);
-    var target = __.data('json-target') ? eval(element(__.data('json-target'))) : __;
+    var target = __.data('json-target') ? eval(_element(__.data('json-target'))) : __;
 
     if (__.data('clear'))
     {
@@ -609,7 +609,7 @@ $(document).on('change', 'select.json, input[type=radio].json, input[type=checkb
     return false;
 }).on('submit', 'form.json', function() {
     var __ = $(this);
-    var target = __.data('json-target') ? eval(element(__.data('json-target'))) : __;
+    var target = __.data('json-target') ? eval(_element(__.data('json-target'))) : __;
 
     if (__.data('clear'))
     {
@@ -621,12 +621,12 @@ $(document).on('change', 'select.json, input[type=radio].json, input[type=checkb
     return false;
 }).on('keydown', 'input.json-search', function() {
     var __ = $(this),
-        target = eval(element(__.data('json-target')));
+        target = eval(_element(__.data('json-target')));
 
         target.data('skip', 0).addClass('json-clear')
 }).on('change', 'select.json-search', function() {
     var __ = $(this),
-        target = eval(element(__.data('json-target')));
+        target = eval(_element(__.data('json-target')));
 
         target.data('skip', 0).addClass('json-clear')
 })
@@ -825,8 +825,8 @@ function vzAjax(__)
                     $.each(jqXHR.responseJSON.errors, function(key, text) {
                         key = key.replace(/([0-9.]+)/i, '');
 
-                        var element = __.is('form') ? __.find('[name=' + key + ']') :  $('[name=' + key + ']');
-                        var feedback = element.closest('.input-field').find('.helper-text');
+                        var _element = __.is('form') ? __.find('[name=' + key + ']') :  $('[name=' + key + ']');
+                        var feedback = _element.closest('.input-field').find('.helper-text');
 
                         if (feedback.length)
                         {
@@ -838,14 +838,14 @@ function vzAjax(__)
                                 }
                                 else
                                 {
-                                    scrollTo({
+                                    _scrollTo({
                                         'target': '#' + __.attr('id'),
                                         'tolerance': '-72px'
                                     })
                                 }
                             }
 
-                            element.addClass('invalid')
+                            _element.addClass('invalid')
                             feedback.attr('data-error', text.join(' '))
                         }
                         else
@@ -969,7 +969,7 @@ function vzAjax(__)
                         }
                     }
 
-                    var more_button = eval(element(__.data('more-button')));
+                    var more_button = eval(_element(__.data('more-button')));
 
                     if (__.data('take') > obj.hits.length || obj.hits.length == 0)
                     {
@@ -1048,7 +1048,7 @@ function __result(__)
 {
     if (__.data('loader') != undefined)
     {
-        eval(element(__.data('loader'))).addClass('hide')
+        eval(_element(__.data('loader'))).addClass('hide')
     }
 
     setTimeout(function() {
@@ -1088,7 +1088,7 @@ function getElementData(items, target) {
     var array = $('<div />');
 
     $.each(items, function(key, name) {
-        var item = target ? eval(element(target + '->find([name=' + name + '])')) : $('[name=' + name + ']');
+        var item = target ? eval(_element(target + '->find([name=' + name + '])')) : $('[name=' + name + ']');
 
         if (
             item.attr('type') &&
@@ -1117,7 +1117,7 @@ function getElementData(items, target) {
             )
         )
         {
-            var __ = target ? eval(element(target + '->find(input[name="' + name + '"])')) : $('input[name="' + name + '"]'),
+            var __ = target ? eval(_element(target + '->find(input[name="' + name + '"])')) : $('input[name="' + name + '"]'),
                 arr = [];
 
             if (item.attr('multiple'))
@@ -1135,7 +1135,7 @@ function getElementData(items, target) {
         }
         else if (item.is('select'))
         {
-            var options = target ? eval(element(target + '->find(select[name="' + name + '"])->children(option:checked)')) : $('select[name="' + name + '"] > option:checked'),
+            var options = target ? eval(_element(target + '->find(select[name="' + name + '"])->children(option:checked)')) : $('select[name="' + name + '"] > option:checked'),
                 arr = [];
 
             if (item.attr('multiple'))
@@ -1154,11 +1154,11 @@ function getElementData(items, target) {
         }
         else if (item.attr('type') == 'radio')
         {
-            array.data(item.data('alias') ? item.data('alias') : name, target ? eval(element(target + '->find(input[name="' + name + '"]:checked)')).val() : $('input[name="' + name + '"]:checked').val());
+            array.data(item.data('alias') ? item.data('alias') : name, target ? eval(_element(target + '->find(input[name="' + name + '"]:checked)')).val() : $('input[name="' + name + '"]:checked').val());
         }
         else if (item.attr('type') == 'checkbox')
         {
-            var checkboxes = target ? eval(element(target + '->find(input[name="' + name + '"]:checked)')) : $('input[name="' + name + '"]:checked'),
+            var checkboxes = target ? eval(_element(target + '->find(input[name="' + name + '"]:checked)')) : $('input[name="' + name + '"]:checked'),
                 arr = [];
 
             if (item.data('multiple') == true)
@@ -1173,7 +1173,7 @@ function getElementData(items, target) {
             {
                 if (checkboxes.length == 1)
                 {
-                    array.data(item.data('alias') ? item.data('alias') : name, target ? eval(element(target + '->find(input[name="' + name + '"]:checked)')).val() : $('input[name="' + name + '"]:checked').val());
+                    array.data(item.data('alias') ? item.data('alias') : name, target ? eval(_element(target + '->find(input[name="' + name + '"]:checked)')).val() : $('input[name="' + name + '"]:checked').val());
                 }
                 else
                 {

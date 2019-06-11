@@ -129,6 +129,12 @@ class VideoDetect extends Command
             $sentiment = new Sentiment;
             $sentiment->engine('sentiment');
 
+            $consumer = new Sentiment;
+            $consumer->engine('consumer');
+
+            $illegal = new Sentiment;
+            $illegal->engine('illegal');
+
             $gender = new Gender;
             $gender->loadNames();
 
@@ -144,6 +150,8 @@ class VideoDetect extends Command
                         [
                             'term' => $term,
                             'sentiment' => $sentiment,
+                            'consumer' => $consumer,
+                            'illegal' => $illegal,
                             'gender' => $gender
                         ]
                     );
@@ -176,6 +184,8 @@ class VideoDetect extends Command
                                             [
                                                 'term' => $term,
                                                 'sentiment' => $sentiment,
+                                                'consumer' => $consumer,
+                                                'illegal' => $illegal,
                                                 'gender' => $gender
                                             ]
                                         );
@@ -264,6 +274,8 @@ class VideoDetect extends Command
         {
             $arr['description'] = $function['term']->convertAscii($item->snippet->description);
             $arr['sentiment']   = $function['sentiment']->score($arr['description']);
+            $arr['consumer']   = $function['consumer']->score($arr['description']);
+            $arr['illegal']   = $function['illegal']->score($arr['description']);
         }
 
         if ($function['term']->languageDetector([ $arr['title'], @$arr['description'] ], 'tr'))

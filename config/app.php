@@ -144,14 +144,13 @@ return [
         base_path('supervisor/logs/elasticsearch.log'),
         base_path('supervisor/logs/email.log'),
         base_path('supervisor/logs/trigger.log'),
-        base_path('supervisor/logs/horizon.log'),
         base_path('supervisor/logs/user_control.log'),
 
         storage_path('logs/laravel.log')
     ],
 
     'storages' => [
-        '/'
+        'C:'
     ],
 
     /*
@@ -203,7 +202,6 @@ return [
         Alaouy\Youtube\YoutubeServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
-        App\Providers\HorizonServiceProvider::class,
 
         /*
          * Local Service Providers...

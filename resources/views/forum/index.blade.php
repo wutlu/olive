@@ -51,7 +51,7 @@
 @section('wildcard')
     <div class="card wild-background">
         <div class="container">
-            <span class="wildcard-title white-text">
+            <span class="wildcard-title">
                 @isset ($title)
                     {{ $title }}
                 @else
@@ -87,25 +87,25 @@
 @section('content')
     {!! $data->links('vendor.pagination.materializecss_simple') !!}
 
-        <ul class="card">
-            <li class="card-content">
-                @isset ($category)
-                    <div class="chip">{{ $category->name }}</div>
-                @else
-                    <div class="chip">{{ @$title ? $title : 'Tüm Konular' }}</div>
-                @endisset
-            </li>
-            @forelse ($data as $thread)
-                @php
-                    $color_light = '';
-                    $color_dark = '';
+    <ul class="card">
+        <li class="card-content">
+            @isset ($category)
+                <div class="chip">{{ $category->name }}</div>
+            @else
+                <div class="chip">{{ @$title ? $title : 'Tüm Konular' }}</div>
+            @endisset
+        </li>
+        @forelse ($data as $thread)
+            @php
+                $color_light = '';
+                $color_dark = '';
 
-                    if ($thread->static)
-                    {
-                        $color_light = 'white lighten-2 grey-text';
-                        $color_dark = 'grey lighten-2';
-                    }
-                @endphp
+                if ($thread->static)
+                {
+                    $color_light = 'white lighten-2 grey-text';
+                    $color_dark = 'grey lighten-2';
+                }
+            @endphp
             <li class="card-content {{ $color_dark }}">
                 <div class="d-flex">
                     <span class="align-self-center center-align" style="margin: 0 1rem 0 0;">
@@ -160,12 +160,12 @@
                     </div>
                 </div>
             </li>
-            @empty
+        @empty
             <li class="card-content grey-text">
                 Üzgünüm, daha fazla içerik yok.
             </li>
-            @endforelse
-        </ul>
+        @endforelse
+    </ul>
 
     {!! $data->links('vendor.pagination.materializecss_simple') !!}
 @endsection
@@ -468,19 +468,21 @@
 
 @section('dock')
     <div class="card with-bg">
-        @auth
-            @if (auth()->user()->root())
-                <div class="card-content">
-                    <span class="card-title">Kategoriler</span>
-                </div>
-
-                <div class="card-image">
-                    <a href="#" class="btn-floating halfway-fab waves-effect white" data-trigger="create-cat">
-                        <i class="material-icons grey-text text-darken-2">add</i>
-                    </a>
-                </div>
+        <div class="card-image">
+            <img src="{{ asset('img/md-s/21.jpg') }}" alt="Image" />
+            <span class="card-title">Kategoriler</span>
+            @if (auth()->check() && auth()->user()->root())
+                <a href="#" class="btn-floating halfway-fab waves-effect white" data-trigger="create-cat">
+                    <i class="material-icons grey-text text-darken-2">add</i>
+                </a>
             @endif
-        @endauth
+        </div>
+
+        @if (auth()->check() && auth()->user()->root())
+            <div class="card-content">
+                <span class="teal-text">Bu alan sadece yetkili kullanıcılar tarafından görüntülenebilir.</span>
+            </div>
+        @endif
 
         <div class="card-tabs">
             <ul class="tabs tabs-fixed-width">

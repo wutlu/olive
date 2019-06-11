@@ -19,7 +19,7 @@
 @endpush
 
 @section('wildcard')
-    <div class="z-depth-1 teal">
+    <div class="z-depth-1" style="background-color: #4b636e;">
         <ul class="tabs tabs-fixed-width tabs-transparent histogram-tabs">
             @foreach ($charts as $chart)
                 <li class="tab">
@@ -122,7 +122,7 @@
                     ],
                     datasets: [
                         {
-                            backgroundColor: '#006064',
+                            backgroundColor: '#455a64',
                             data: data
                         }
                     ]
@@ -177,7 +177,7 @@
                     ],
                     datasets: [
                         {
-                            backgroundColor: '#006064',
+                            backgroundColor: '#455a64',
                             data: data
                         }
                     ]

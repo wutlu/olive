@@ -8,7 +8,8 @@
             'text' => '🐞 Organizasyonlar'
         ]
     ],
-    'footer_hide' => true
+    'footer_hide' => true,
+    'dock' => true
 ])
 
 @push('local.scripts')
@@ -30,7 +31,7 @@
                         item.find('[data-name=name]').html(o.name)
                         item.find('[data-name=status]').html(o.status ? 'Aktif' : 'Pasif').addClass(o.status ? 'green-text' : 'red-text')
                         item.find('[data-name=author]').html(o.author.name)
-                        item.find('[data-name=avatar]').attr('src', o.author.avatar ? '{{ asset('/') }}' + o.author.avatar : '{{ asset('img/icons/people.png') }}')
+                        item.find('[data-name=avatar]').attr('src', o.author.avatar ? '{{ asset('/') }}' + o.author.avatar : '{{ asset('img/icons/people.svg') }}')
 
                         item.appendTo(ul)
                 })
@@ -136,20 +137,42 @@
             window.location = obj.data.route
         }
     }
+
+    $(document).on('change', '[data-update]', function() {
+        var search = $('#organisations');
+            search.data('skip', 0).addClass('json-clear');
+
+        vzAjax(search)
+    })
 @endpush
 
-@section('content')
-    <div class="card with-bg">
-        <div class="card-content d-flex justify-content-end">
-            <div class="input-field">
-                <select name="status" id="status" class="json json-search" data-json-target="#organisations">
-                    <option value="" selected>Tümü</option>
-                    <option value="on">Aktif</option>
-                    <option value="off">Pasif</option>
-                </select>
-            </div>
+@section('dock')
+    <div class="card card-unstyled mb-1">
+        <div class="card-content">
+            <span class="card-title d-flex">
+                <i class="material-icons mr-1">filter_list</i>
+                Filtrele
+            </span>
         </div>
+        <div class="collection">
+            <label class="collection-item waves-effect d-block" data-update="true">
+                <input name="status" id="status-all" type="radio" value="" />
+                <span>Tümü</span>
+            </label>
+            <label class="collection-item waves-effect d-block" data-update="true">
+                <input name="status" id="status-on" type="radio" value="on" checked />
+                <span>Aktif</span>
+            </label>
+            <label class="collection-item waves-effect d-block" data-update="true">
+                <input name="status" id="status-off" type="radio" value="off" />
+                <span>Pasif</span>
+            </label>
+        </div>
+    </div>
+@endsection
 
+@section('content')
+    <div class="card">
         <div class="card-image mb-1">
             <img src="{{ asset('img/md-s/21.jpg') }}" alt="Image" />
             <span class="card-title white-text d-flex">
@@ -166,7 +189,6 @@
                 <i class="material-icons grey-text text-darken-2">add</i>
             </a>
         </div>
-
         <nav class="nav-half">
             <div class="nav-wrapper">
                 <div class="input-field">
@@ -182,7 +204,7 @@
                 </div>
             </div>
         </nav>
-        <div class="collection load json-clear" 
+        <div class="collection collection-unstyled load json-clear" 
              id="organisations"
              data-href="{{ route('admin.organisation.list.json') }}"
              data-method="post"
@@ -198,7 +220,7 @@
             </div>
             <a
                 href="#"
-                class="collection-item avatar model hide waves-effect json"
+                class="collection-item avatar model hide json"
                 data-href="{{ route('route.generate.id') }}"
                 data-method="post"
                 data-name="admin.organisation"
@@ -213,7 +235,7 @@
         </div>
 
         @component('components.loader')
-            @slot('color', 'cyan')
+            @slot('color', 'blue-grey')
             @slot('id', 'home-loader')
             @slot('class', 'card-loader-unstyled')
         @endcomponent

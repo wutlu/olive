@@ -8,8 +8,6 @@ Route::prefix('sistem-izleme')->group(function () {
     Route::post('log-ekrani', 'MonitorController@logJson');
     Route::delete('log-ekrani/temizle', 'MonitorController@logClear')->name('admin.monitoring.log.clear');
 
-    Route::get('kuyruk-ekrani', 'MonitorController@queue')->name('admin.monitoring.queue');
-
     Route::prefix('arkaplan')->group(function () {
         Route::get('/', 'MonitorController@background')->name('admin.monitoring.background');
         Route::post('islemler', 'MonitorController@backgroundProcesses')->name('admin.monitoring.background.processes');
