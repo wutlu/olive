@@ -333,7 +333,10 @@
 
 @push('wildcard-bottom')
     <div id="date-area" class="d-flex justify-content-end grey lighten-4">
-        <div class="lighten-4 grey-text mr-auto pl-1 align-self-center  hide-on-med-and-down" data-name="stats"></div>
+        <div class="grey-text mr-auto align-self-center ml-1 d-flex hide-on-med-and-down" data-name="stats">
+            <i class="material-icons align-self-center mr-1">info</i>
+            <span class="align-self-center">Aramak istediğiniz metni arama alanına girin.</span>
+        </div>
         <div class="d-flex align-self-center">
             <input data-update type="date" class="align-self-center" name="start_date" value="{{ $s ? $s : date('Y-m-d', strtotime('-1 day')) }}" placeholder="Başlangıç" />
             <input data-update type="date" class="align-self-center" name="end_date" value="{{ $e ? $e : date('Y-m-d') }}" placeholder="Bitiş" />
@@ -526,7 +529,7 @@
                 <p class="white-text">Bu konu genellikle <span class="white cyan-text text-darken-2">Ankara</span> bölgesinden konuşuldu.</p>
                 <div class="banner-overlay cyan"></div>
             </div>
-            <div class="banner mb-1 lighten-4 z-depth-1 hide" style="background-image: url('{{ asset('img/photo/women.jpg') }}');">
+            <div class="banner mb-1 lighten-4 z-depth-1 " style="background-image: url('{{ asset('img/photo/women.jpg') }}');">
                 <p class="white-text">Görünen o ki, ilgilendiğiniz konu <span class="white pink-text">56%</span> oranla kadın kullanıcıları ilgilendiriyor.</p>
                 <div class="banner-overlay pink"></div>
             </div>

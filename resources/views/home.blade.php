@@ -38,17 +38,17 @@
         background-image: url({{ asset('img/photo/xolive.jpg') }});
     }
 
+    .x-section > .section-overlay {
+        min-height: 100vh;
+    }
+
     .rt-section {
         background-image: url({{ asset('img/photo/live.jpg') }});
         background-position: center bottom;
     }
 
-    .x-section > .section-overlay {
-        min-height: 100vh;
-    }
-
     .section-overlay {
-        background-color: rgba(26, 28, 32, .6);
+        background-color: rgba(26, 28, 32, .4);
         padding: 4rem 0;
     }
 
@@ -325,7 +325,7 @@
 
 @section('content')
     <div class="cookie-alert z-depth-1 grey lighten-4 hide">
-        Web sitemizi incelemeden önce <a href="{{ route('page.view', 'cerez-politikasi') }}" class="teal-text" style="font-weight: bold;">Çerezler</a> özel bir deneyim sunarak ziyaretçilerimize daha iyi hizmet vermemizi ve daha faydalı bilgiler sunmak üzere kendi dahili amaçlarımız için kullanılacaktır.
+        <a href="{{ route('page.view', 'cerez-politikasi') }}" class="blue-grey-text" style="font-weight: bold;">Çerezler</a> özel bir deneyim sunarak ziyaretçilerimize daha iyi hizmet vermemizi ve daha faydalı bilgiler sunmak üzere kendi dahili amaçlarımız için kullanılacaktır.
         <a href="#" class="close">
             <i class="material-icons">close</i>
         </a>
@@ -354,41 +354,40 @@
     <section class="y-section">
         <div class="container">
             <div class="item-group p-2">
-                <div class="item">
+                <div class="item p-2">
                     <i class="large material-icons analytics">poll</i>
                     <h5>Analiz</h5>
-                    <ul>
+                    <ul class="p-1">
                         <li>- Duygusal analizler gerçekleştirin.</li>
                         <li>- Kitlenizi cinsiyet ve konumlarına göre ölçümleyin.</li>
                         <li>- Nefret söylemlerine ve soru içeriklerini gerçek zamanlı süzün.</li>
                         <li>- Ürün veya markanızı rakiplerinizle kıyaslayın.</li>
                     </ul>
                 </div>
-                <div class="item">
+                <div class="item p-2">
                     <i class="large material-icons realtime">subject</i>
                     <h5>Gerçek Zamanlı Veri</h5>
-                    <ul>
-                        <li>- Olive'in anlık trendleriyle, herhangi bir konu trend olmadan gündemine hakim olun.</li>
-                        <li>- Ürün veya markanızı anlık takip edin.</li>
-                        <li>- İlgilendiğiniz içerikleri pinleyin ve daha sonra inceleyin.</li>
+                    <ul class="p-1">
+                        <li>- Olive'in anlık trendleriyle, herhangi bir konu gündemde trend olmadan konuya hakim olun.</li>
+                        <li>- Ürün veya markanızı anlık olarak takip edin.</li>
+                        <li>- İlgilendiğiniz içerikleri daha sonra incelemek üzere pinleyin.</li>
                     </ul>
                 </div>
-                <div class="item">
+                <div class="item p-2">
                     <i class="large material-icons rotate">toys</i>
                     <h5>Araçlar</h5>
-                    <ul>
-                        <li>- Tüm müşteriler için ortak bir veri tabanı.</li>
+                    <ul class="p-1">
                         <li>- Belirlenen kriterler sizin için incelenir ve raporlanır.</li>
                         <li>- Bahis ve Çıplaklık içeren veriler karantinada gösterilir.</li>
-                        <li>- Yapay zekanın yanılgılarını toparlayarak Olive'in öğrenmesine katkıda bulunun.</li>
+                        <li>- Yapay zekanın yanılgılarını düzelterek Olive'in öğrenmesine katkıda bulunabilirsiniz.</li>
                     </ul>
                 </div>
-                <div class="item">
+                <div class="item p-2">
                     <i class="large material-icons cloud">cloud</i>
                     <h5>Arşiv</h5>
-                    <ul>
-                        <li>- Belirlediğiniz kriterlere göre analiz edilmiş veri sağlıyoruz.</li>
-                        <li>- Ortak veritabanı sayesinde çok daha fazla veriye ulaşabilirsiniz.</li>
+                    <ul class="p-1">
+                        <li>- Yapay zeka ile akıllı veri filtrelemesi sağlayın.</li>
+                        <li>- Ortak veri kütüphanesi sayesinde çok daha fazla veriye ulaşabilirsiniz.</li>
                     </ul>
                 </div>
             </div>
@@ -427,7 +426,7 @@
                     </div>
                     <div class="col s12 m6">
                         <div class="p-1">
-                            <span class="chip teal white-text">haber</span>
+                            <span class="chip blue-grey white-text">haber</span>
                             <br />
                             <span class="chip white">+bilgi</span>
                             <span class="chip white">+teknoloji</span>
@@ -450,7 +449,7 @@
             if (obj.status == 'ok')
             {
                 M.toast({ html: 'Formunuzu Aldık!', classes: 'green darken-2' })
-                M.toast({ html: 'Ekibimiz en kısa sürede sizinle iletişime geçecektir.', classes: 'teal' })
+                M.toast({ html: 'Ekibimiz en kısa sürede sizinle iletişime geçecektir.', classes: 'blue-grey' })
 
                 __.find('input[type=text]').html('')
             }
