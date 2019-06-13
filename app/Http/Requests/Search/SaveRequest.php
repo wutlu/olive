@@ -4,14 +4,12 @@ namespace App\Http\Requests\Search;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+use App\Models\SavedSearch;
+
 use Validator;
 
-use Carbon\Carbon;
-
-class ArchiveRequest extends FormRequest
+class SaveRequest extends FormRequest
 {
-    public $historical_days;
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -24,7 +22,7 @@ class ArchiveRequest extends FormRequest
 
     public function __construct()
     {
-        $this->historical_days = auth()->user()->organisation->historical_days;
+        //
     }
 
     /**
@@ -35,7 +33,7 @@ class ArchiveRequest extends FormRequest
     public function messages()
     {
         return [
-            'date_limit' => 'Başlangıç tarihi '.$this->historical_days.' günden önce olamaz.'
+            'limit' => 'Arama kaydetme üst limitine ulaştınız. Mevcut aramalardan silin ve tekrar deneyin.'
         ];
     }
 
@@ -46,30 +44,31 @@ class ArchiveRequest extends FormRequest
      */
     public function rules()
     {
-        Validator::extend('date_limit', function($attribute, $value) {
-            return Carbon::now()->diffInDays($value) <= $this->historical_days;
+        Validator::extend('limit', function($attribute) {
+            $user = auth()->user();
+
+            $count = SavedSearch::where('organisation_id', $user->organisation_id)->count();
+
+            return $count < $user->organisation->saved_searches_limit;
         });
 
         return [
-            'string' => 'nullable|string|max:255',
-            'skip' => 'required|integer',
-            'take' => 'required|integer|max:100',
-            'start_date' => 'required|date|date_limit',
-            'end_date' => 'required|date|after_or_equal:start_date',
+            'name' => 'required|string|max:16|limit',
+            'string' => 'required|string|max:500|min:2',
             'modules' => 'required|array|min:1',
-            'modules.*' => 'required|string|in:'.implode(',',array_keys(config('system.modules'))),
-            'sort' => 'nullable|string|in:asc,desc',
-            'illegal' => 'nullable|string|in:on',
+            'modules.*' => 'required|string|in:'.implode(',', array_keys(config('system.modules'))),
             'reverse' => 'nullable|string|in:on',
+            'take' => 'required|integer|min:10|max:100',
             'gender' => 'required|string|in:all,male,female,unknown',
             'sentiment_pos' => 'required|integer|between:0,9',
-            'sentiment_neg' => 'required|integer|between:0,9',
             'sentiment_neu' => 'required|integer|between:0,9',
+            'sentiment_neg' => 'required|integer|between:0,9',
             'sentiment_hte' => 'required|integer|between:0,9',
             'consumer_que' => 'required|integer|between:0,9',
             'consumer_req' => 'required|integer|between:0,9',
             'consumer_cmp' => 'required|integer|between:0,9',
             'consumer_nws' => 'required|integer|between:0,9',
+            'illegal' => 'nullable|string|in:on'
         ];
     }
 }

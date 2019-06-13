@@ -43,8 +43,7 @@
                                 'id': 'organisation_name',
                                 'name': 'organisation_name',
                                 'type': 'text',
-                                'class': 'validate',
-                                'data-length': 16
+                                'class': 'validate'
                             }),
                             $('<label />', {
                                 'for': 'organisation_name',
@@ -82,9 +81,7 @@
             var name = $('input#organisation_name');
                 name.val($('#organisation-card').find('span.card-title').children('span').html())
 
-            M.updateTextFields()
-
-            $('input[name=organisation_name]').characterCounter().focus()
+            $('input[name=organisation_name]').focus()
         })
 
         function __update__organisation_name(__, obj)

@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Search\ArchiveRequest;
 use App\Http\Requests\Search\ArchiveAggregationRequest;
+use App\Http\Requests\Search\SaveRequest;
 use App\Http\Requests\QRequest;
+use App\Http\Requests\IdRequest;
 
 use App\Elasticsearch\Document;
 
@@ -15,6 +17,8 @@ use App\Models\Crawlers\MediaCrawler;
 use App\Models\Crawlers\ShoppingCrawler;
 
 use Illuminate\Support\Facades\Redis as RedisCache;
+
+use App\Models\SavedSearch;
 
 class SearchController extends Controller
 {
@@ -36,7 +40,8 @@ class SearchController extends Controller
             'organisation:have,module_search'
         ])->only([
             'search',
-            'aggregation'
+            'aggregation',
+            'save'
         ]);
 
         ### [ 500 işlemden sonra 5 dakika ile sınırla ] ###
@@ -44,6 +49,77 @@ class SearchController extends Controller
             'search',
             'aggregation'
         ]);
+    }
+
+    /**
+     * Arama Kaydetme
+     *
+     * @return array
+     */
+    public static function save(SaveRequest $request)
+    {
+        $request['modules'] = json_encode($request->modules);
+
+        $query = new SavedSearch;
+        $query->organisation_id = auth()->user()->organisation_id;
+        $query->fill($request->all());
+        $query->save();
+
+        return [
+            'status' => 'ok'
+        ];
+    }
+
+    /**
+     * Arama Silme
+     *
+     * @return array
+     */
+    public static function delete(IdRequest $request)
+    {
+        SavedSearch::where([
+            'id' => $request->id,
+            'organisation_id' => auth()->user()->organisation_id
+        ])->delete();
+
+        return [
+            'status' => 'ok',
+            'data' => [
+                'id' => $request->id
+            ]
+        ];
+    }
+
+    /**
+     * Kayıtlı Aramalar
+     *
+     * @return array
+     */
+    public static function searches()
+    {
+        $query = SavedSearch::select([
+            'id',
+            'name',
+            'string',
+            'illegal',
+            'reverse',
+            'sentiment_pos',
+            'sentiment_neu',
+            'sentiment_neg',
+            'sentiment_hte',
+            'consumer_que',
+            'consumer_req',
+            'consumer_cmp',
+            'consumer_nws',
+            'gender',
+            'take',
+            'modules'
+        ])->where('organisation_id', auth()->user()->organisation_id)->orderBy('id', 'desc')->get();
+
+        return [
+            'status' => 'ok',
+            'hits' => $query
+        ];
     }
 
     /**
@@ -716,7 +792,7 @@ class SearchController extends Controller
                 case 'twitter':
                     if ($organisation->data_twitter)
                     {
-                        if ($request->gender)
+                        if ($request->gender != 'all')
                         {
                             $q['query']['bool']['should'][] = [ 'match' => [ 'user.gender' => $request->gender ] ];
                             $q['query']['bool']['minimum_should_match'] = 1;
@@ -728,7 +804,7 @@ class SearchController extends Controller
                 case 'sozluk':
                     if ($organisation->data_sozluk)
                     {
-                        if ($request->gender)
+                        if ($request->gender != 'all')
                         {
                             $q['query']['bool']['should'][] = [ 'match' => [ 'gender' => $request->gender ] ];
                             $q['query']['bool']['minimum_should_match'] = 1;

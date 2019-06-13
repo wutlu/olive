@@ -11,7 +11,7 @@
 ])
 
 @push('local.styles')
-    #keyword-groups > .collection-item {
+    #keywordGroups > .collection-item {
         padding-right: 24px;
         padding-left: 24px;
     }
@@ -524,10 +524,10 @@
 
         if (obj.status == 'ok')
         {
+            __.removeClass('hide')
+
             if (obj.hits.length)
             {
-                __.removeClass('hide')
-
                 $.each(obj.hits, function(key, o) {
                     var selector = __.children('[data-id=' + o.id + ']'),
 
@@ -538,10 +538,7 @@
                         item.find('[data-callback=__get_keyword_group]').attr('data-id', o.id)
                         item.find('[name=keyword_group]').val(o.id)
 
-                    if (!selector.length)
-                    {
                         item.appendTo(__)
-                    }
                 })
             }
 
@@ -724,7 +721,7 @@
         {
             $('#modal-keyword-group').modal('close')
 
-            vzAjax($('#keyword-groups'))
+            vzAjax($('#keywordGroups'))
 
             M.toast({
                 html: obj.type == 'created' ? 'Grup Oluşturuldu' : obj.type == 'updated' ? 'Grup Güncellendi' : 'İşlem Gerçekleşti',
@@ -766,7 +763,7 @@
     {
         if (obj.status == 'ok')
         {
-            $('#keyword-groups').children('[data-id=' + obj.data.id + ']').remove()
+            $('#keywordGroups').children('[data-id=' + obj.data.id + ']').remove()
 
             $('#modal-keyword-group-alert').modal('close')
 
@@ -779,7 +776,7 @@
                 classes: 'red darken-2'
             })
 
-            vzAjax($('#keyword-groups'))
+            vzAjax($('#keywordGroups'))
         }
     }
 @endpush
@@ -799,13 +796,13 @@
             </span>
             <span data-name="keyword-group-count">0</span> / <span data-name="keyword-group-limit">0</span>
         </div>
-        <ul class="collection load hide" 
-             id="keyword-groups"
-             data-href="{{ route('realtime.keyword.groups') }}"
-             data-callback="__keyword_groups"
-             data-method="post"
-             data-loader="#keyword-group-loader"
-             data-nothing>
+        <ul class="collection collection-unstyled load hide" 
+            id="keywordGroups"
+            data-href="{{ route('realtime.keyword.groups') }}"
+            data-callback="__keyword_groups"
+            data-method="post"
+            data-loader="#keyword-group-loader"
+            data-nothing>
             <li class="collection-item nothing hide grey-text">Henüz kelime grubu oluşturmadınız.</li>
             <li class="collection-item model hide justify-content-between">
                 <a

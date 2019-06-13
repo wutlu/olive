@@ -18,7 +18,7 @@ class CreateSavedSearchesTable extends Migration
 
             $table->string('name');
 
-            $table->text('query');
+            $table->text('string');
 
             $table->boolean('illegal')->default(0);
             $table->boolean('reverse')->default(0);
@@ -35,7 +35,7 @@ class CreateSavedSearchesTable extends Migration
 
             $table->enum('gender', [ 'all', 'male', 'female', 'unknown' ])->default('all');
 
-            $table->unsignedSmallInteger('pagination')->default(10);
+            $table->unsignedSmallInteger('take')->default(10);
 
             $table->json('modules');
 

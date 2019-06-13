@@ -67,7 +67,7 @@ $arr = [
     'numeric' => ':attribute sayı olmalıdır.',
     'present' => ':attribute alanı mevcut olmalıdır.',
     'regex' => ':attribute biçimi geçersiz.',
-    'required' => ':attribute alanını doldurun.',
+    'required' => ':attribute değeri boş kalamaz!',
     'required_if' => ':attribute alanını boş bırakamazsınız.', // :attribute alanı, :other :value değerine sahip olduğunda zorunludur.
     'required_unless' => ':attribute alanını boş bırakamazsınız.', // :attribute alanı, :other alanı :value değerlerinden birine sahip olmadığında zorunludur.
     'required_with' => ':attribute alanı :values varken zorunludur.',
@@ -164,7 +164,7 @@ $arr = [
         'ticket_id'                       => 'Destek',
         'avatar'                          => 'Avatar',
         'notification'                    => 'Bildirim',
-        'string'                          => 'Kelime',
+        'string'                          => 'Sorgu',
         'id'                              => 'Kimlik',
         'start_date'                      => 'Başlangıç Tarihi',
         'start_time'                      => 'Başlangıç Saati',
@@ -330,6 +330,10 @@ $arr = [
         'group'                           => 'Grup',
         'testarea'                        => 'Test Alanı',
         'engine'                          => 'Motor',
+
+        'gender'                          => 'Cinsiyet',
+        'search_name'                     => 'Arama Adı',
+        'reverse'                         => 'İlk İçerikler'
     ],
 ];
 

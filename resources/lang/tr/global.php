@@ -6,6 +6,7 @@ return [
         'alert' => 'Uyarı',
         'ok' => 'Tamam',
         'create' => 'Oluştur',
+        'save' => 'Kaydet',
         'cancel' => 'Vazgeç',
         'update' => 'Güncelle',
         'clear' => 'Temizle',

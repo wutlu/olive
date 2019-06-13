@@ -236,6 +236,122 @@
             chip(input)
         }
     })
+
+    $(document).on('click', '[data-trigger=save]', function() {
+        var mdl = modal({
+            'id': 'save',
+            'body': $('<form />', {
+                'method': 'post',
+                'action': '{{ route('search.save') }}',
+                'id': 'form',
+                'class': 'json',
+                'data-callback': '__search_save',
+                'data-include': 'string,modules,reverse,take,gender,sentiment_pos,sentiment_neu,sentiment_neg,sentiment_hte,consumer_que,consumer_req,consumer_cmp,consumer_nws,illegal',
+                'html': $('<div />', {
+                    'class': 'input-field',
+                    'html': [
+                        $('<input />', {
+                            'id': 'name',
+                            'name': 'name',
+                            'type': 'text',
+                            'class': 'validate'
+                        }),
+                        $('<label />', {
+                            'for': 'name',
+                            'html': 'Arama Adı'
+                        }),
+                        $('<span />', {
+                            'class': 'helper-text'
+                        })
+                    ]
+                })
+            }),
+            'size': 'modal-small',
+            'title': 'Aramayı Kaydet',
+            'options': {
+                dismissible: false
+            },
+            'footer': [
+                $('<a />', {
+                    'href': '#',
+                    'class': 'modal-close waves-effect btn-flat grey-text',
+                    'html': buttons.cancel
+                }),
+                $('<span />', {
+                    'html': ' '
+                }),
+                $('<button />', {
+                    'type': 'submit',
+                    'class': 'waves-effect btn-flat',
+                    'data-submit': 'form#form',
+                    'html': buttons.save
+                })
+            ]
+        })
+
+        M.updateTextFields()
+
+        $('input[name=name]').focus()
+    }).on('click', '[data-trigger=delete]', function() {
+        return modal({
+            'id': 'alert',
+            'body': 'Silmek istediğinizden emin misiniz?',
+            'size': 'modal-small',
+            'title': 'Sil',
+            'footer': [
+                $('<a />', {
+                    'href': '#',
+                    'class': 'modal-close waves-effect grey-text btn-flat',
+                    'html': buttons.cancel
+                }),
+                $('<span />', {
+                    'html': ' '
+                }),
+                $('<a />', {
+                    'href': '#',
+                    'class': 'waves-effect btn-flat red-text json',
+                    'html': buttons.ok,
+                    'data-href': '{{ route('search.delete') }}',
+                    'data-method': 'delete',
+                    'data-id': $(this).data('id'),
+                    'data-callback': '__search_delete'
+                })
+            ],
+            'options': {}
+        })
+    })
+
+    function __search_save(__, obj)
+    {
+        if (obj.status == 'ok')
+        {
+            vzAjax($('#savedSearches'))
+
+            $('#modal-save').modal('close')
+
+            M.toast({
+                html: 'Arama Kaydedildi',
+                classes: 'green darken-2'
+            }, 200)
+        }
+    }
+
+    function __search_delete(__, obj)
+    {
+        if (obj.status == 'ok')
+        {
+            $('#savedSearches').children('[data-id=' + obj.data.id + ']').remove()
+
+            $('#modal-alert').modal('close')
+
+            vzAjax($('#savedSearches'))
+
+            M.toast({
+                html: 'Arama Silindi',
+                classes: 'green darken-2'
+            }, 200)
+        }
+    }
 @endpush
 
 @section('wildcard')
@@ -245,9 +361,8 @@
         </a>
         <a
             href="#"
-            class="flex-fill d-flex json"
-            data-trigger="save"
-            data-href="{{ route('search.save') }}">
+            class="flex-fill d-flex"
+            data-trigger="save">
             <i class="material-icons align-self-center">save</i>
         </a>
         <input
@@ -606,7 +721,7 @@
 
             <div class="d-flex">
                 <label class="flex-fill">
-                    <input name="gender" type="radio" data-update-click value="" checked />
+                    <input name="gender" type="radio" data-update-click value="all" checked />
                     <span>Hepsi</span>
                 </label>
                 <label class="flex-fill">
@@ -662,19 +777,37 @@
                 Kayıtlı Aramalar
             </span>
         </div>
-        <ul class="collection collection-unstyled">
-            <li class="collection-item d-flex justify-content-between">
-                <a href="#" class="align-self-center">Örnek Arama</a>
-                <a class="btn-floating btn-small waves-effect align-self-center white">
+        <ul class="collection collection-unstyled load hide"
+            id="savedSearches"
+            data-href="{{ route('search.list') }}"
+            data-callback="__saved_searches"
+            data-method="post"
+            data-loader="#ss-loader"
+            data-nothing>
+            <li class="collection-item model hide justify-content-between">
+                <a href="#" class="align-self-center" data-name="name" data-trigger="loadSearch"></a>
+                <a
+                    class="btn-floating btn-small waves-effect align-self-center white"
+                    data-trigger="delete">
                     <i class="material-icons grey-text text-darken-2">delete_forever</i>        
                 </a>
             </li>
+            <li class="nothing hide">
+                @component('components.nothing')
+                    @slot('size', 'small')
+                @endcomponent
+            </li>
         </ul>
+        @component('components.loader')
+            @slot('color', 'blue-grey')
+            @slot('id', 'ss-loader')
+            @slot('class', 'card-loader-unstyled')
+        @endcomponent
     </div>
     <div class="card card-unstyled mb-1">
         <div class="card-content">
             <div class="input-field">
-                <select name="take" id="take">
+                <select data-update name="take" id="take">
                     <option value="10" selected>10</option>
                     <option value="25">25</option>
                     <option value="50">50</option>
@@ -687,6 +820,71 @@
 @endsection
 
 @push('local.scripts')
+    $(document).on('click', '[data-trigger=loadSearch]', function() {
+        var __ = $(this),
+            option = __.data('options');
+
+        $('input[name=string]').val(option.string)
+        $('input[name=illegal]').prop('checked', option.illegal ? true : false)
+        $('input[name=reverse]').prop('checked', option.reverse ? true : false)
+
+        $('input[name=sentiment_pos]').val(option.sentiment_pos)
+        $('input[name=sentiment_neu]').val(option.sentiment_neu)
+        $('input[name=sentiment_neg]').val(option.sentiment_neg)
+        $('input[name=sentiment_hte]').val(option.sentiment_hte)
+
+        $('input[name=consumer_que]').val(option.sentiment_hte)
+        $('input[name=consumer_req]').val(option.consumer_req)
+        $('input[name=consumer_cmp]').val(option.consumer_cmp)
+        $('input[name=consumer_nws]').val(option.consumer_nws)
+
+        $('input[name=gender][value=' + option.gender + ']').prop('checked', true)
+
+        $('select[name=take]').find('option[value=' + option.take + ']').prop('selected', true);
+        $('select[name=take]').formSelect();
+
+        $('input[name=modules]').prop('checked', false)
+
+        $.each(JSON.parse(option.modules), function(key, module) {
+            $('input[name=modules][value=' + module + ']').prop('checked', true)
+        })
+
+        _scrollTo({
+            'target': 'input#string',
+            'tolerance': '-64px'
+        })
+
+        var search = $('ul#search');
+            search.data('skip', 0).addClass('json-clear');
+
+        vzAjax(search)
+    })
+
+    function __saved_searches(__, obj)
+    {
+        var item_model = __.children('.model');
+
+        if (obj.status == 'ok')
+        {
+            __.removeClass('hide')
+
+            if (obj.hits.length)
+            {
+                $.each(obj.hits, function(key, o) {
+                    var selector = __.children('[data-id=' + o.id + ']'),
+
+                        item = selector.length ? selector : item_model.clone();
+                        item.removeClass('model hide').addClass('_tmp d-flex').attr('data-id', o.id)
+
+                        item.find('[data-name=name]').html(o.name).attr('data-options', JSON.stringify(o))
+                        item.find('[data-trigger=delete]').data('id', o.id)
+
+                        item.appendTo(__)
+                })
+            }
+        }
+    }
+
     $('select').formSelect()
     $('.tabs').tabs()
 @endpush
