@@ -151,15 +151,15 @@ input[type=range]::-ms-thumb {
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-
-  -webkit-transition: all 400ms cubic-bezier(.25, .46, .45, .94);
-          transition: all 400ms cubic-bezier(.25, .46, .45, .94);
 }
 .media-area:empty {
   display: none;
 }
 
 .nude {
+  -webkit-transition: all 400ms cubic-bezier(.25, .46, .45, .94);
+          transition: all 400ms cubic-bezier(.25, .46, .45, .94);
+
   -webkit-filter: blur(10px);
           filter: blur(10px);
 }

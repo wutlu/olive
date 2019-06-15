@@ -158,18 +158,16 @@ function _tweet_(o)
                     ]
                 }))
             }
-
-            console.log(item.illegal)
-            if (item.illegal)
-            {
-                console.log(item.illegal)
-                if (item.illegal.nude > 0.3)
-                {
-                    tweet.find('.media-area').addClass('nude')
-                    tweet.find('.tweet-avatar').addClass('nude')
-                }
-            }
         })
+    }
+
+    if (o.illegal)
+    {
+        if (o.illegal.nude > 0.3)
+        {
+            tweet.find('.media-area').addClass('nude')
+            tweet.find('.tweet-avatar').addClass('nude')
+        }
     }
 
     return tweet;
