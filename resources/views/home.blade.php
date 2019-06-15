@@ -35,7 +35,7 @@
     }
 
     .x-section {
-        background-image: url({{ asset('img/photo/xolive.jpg') }});
+        background-image: url({{ asset('img/photo/xolive.jpg?v2') }});
     }
 
     .x-section > .section-overlay {
