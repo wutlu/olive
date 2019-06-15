@@ -101,7 +101,6 @@ class SearchController extends Controller
             'id',
             'name',
             'string',
-            'illegal',
             'reverse',
             'sentiment_pos',
             'sentiment_neu',
@@ -253,12 +252,6 @@ class SearchController extends Controller
                     }
                 }
             }
-        }
-
-        if (!$request->illegal)
-        {
-            $q['query']['bool']['filter'][] = [ 'range' => [ 'illegal.bet' => [ 'lte' => 0.8 ] ] ];
-            $q['query']['bool']['filter'][] = [ 'range' => [ 'illegal.nud' => [ 'lte' => 0.8 ] ] ];
         }
 
         foreach ($request->modules as $module)
@@ -562,12 +555,6 @@ class SearchController extends Controller
             }
         }
 
-        if (!$request->illegal)
-        {
-            $q['query']['bool']['filter'][] = [ 'range' => [ 'illegal.bet' => [ 'lte' => 0.8 ] ] ];
-            $q['query']['bool']['filter'][] = [ 'range' => [ 'illegal.nud' => [ 'lte' => 0.8 ] ] ];
-        }
-
         foreach ($request->modules as $module)
         {
             switch ($module)
@@ -817,28 +804,29 @@ class SearchController extends Controller
 
                         if ($clean_hits)
                         {
-                            $total_hits = @$clean_hits[0]['doc_count'] + @$clean_hits[1]['doc_count'] + @$clean_hits[2]['doc_count'];
-
                             foreach ($clean_hits as $bucket)
                             {
                                 switch ($bucket['key'])
                                 {
                                     case 'male':
-                                        $male = round($bucket['doc_count'] ? $bucket['doc_count']*100/$total_hits : 0, 2);
-                                        $data['data']['male'] = $data['data']['male'] + $male;
+                                        $data['data']['male'] = $data['data']['male'] + $bucket['doc_count'];
                                     break;
                                     case 'female':
-                                        $female = round($bucket['doc_count'] ? $bucket['doc_count']*100/$total_hits : 0, 2);
-                                        $data['data']['female'] = $data['data']['female'] + $female;
+                                        $data['data']['female'] = $data['data']['female'] + $bucket['doc_count'];
                                     break;
                                     case 'unknown':
-                                        $unknown = round($bucket['doc_count'] ? $bucket['doc_count']*100/$total_hits : 0, 2);
-                                        $data['data']['unknown'] = $data['data']['unknown'] + $unknown;
+                                        $data['data']['unknown'] = $data['data']['unknown'] + $bucket['doc_count'];
                                     break;
                                 }
                             }
                         }
                     }
+
+                    $total_hits = $data['data']['male'] + $data['data']['female'] + $data['data']['unknown'];
+
+                    $data['data']['male'] = round(($data['data']['male'] ? $data['data']['male']*100/$total_hits : 0), 2);
+                    $data['data']['female'] = round(($data['data']['female'] ? $data['data']['female']*100/$total_hits : 0), 2);
+                    $data['data']['unknown'] = round(($data['data']['unknown'] ? $data['data']['unknown']*100/$total_hits : 0), 2);
                 }
             break;
             case 'hashtag':

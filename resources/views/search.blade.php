@@ -258,7 +258,7 @@
                 'id': 'form',
                 'class': 'json',
                 'data-callback': '__search_save',
-                'data-include': 'string,modules,reverse,take,gender,sentiment_pos,sentiment_neu,sentiment_neg,sentiment_hte,consumer_que,consumer_req,consumer_cmp,consumer_nws,illegal',
+                'data-include': 'string,modules,reverse,take,gender,sentiment_pos,sentiment_neu,sentiment_neg,sentiment_hte,consumer_que,consumer_req,consumer_cmp,consumer_nws',
                 'html': $('<div />', {
                     'class': 'input-field',
                     'html': [
@@ -367,7 +367,7 @@
 @endpush
 
 @php
-    $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_pos,sentiment_neu,sentiment_neg,sentiment_hte,consumer_que,consumer_req,consumer_cmp,consumer_nws,illegal';
+    $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_pos,sentiment_neu,sentiment_neg,sentiment_hte,consumer_que,consumer_req,consumer_cmp,consumer_nws';
 @endphp
 
 @section('wildcard')
@@ -719,7 +719,7 @@
 
             $('.banner').addClass('hide')
 
-            if (obj.stats.hits >= 100)
+            if (obj.stats.hits)
             {
                 const date1 = new Date($('input[name=start_date]').val());
                 const date2 = new Date($('input[name=end_date]').val());
@@ -1436,10 +1436,6 @@
     <div class="card card-unstyled mb-1">
         <div class="collection collection-unstyled">
             <label class="collection-item d-block">
-                <input data-update name="illegal" value="on" type="checkbox" />
-                <span>İllegal İçerikler Dahil</span>
-            </label>
-            <label class="collection-item d-block">
                 <input data-update name="reverse" value="on" type="checkbox" />
                 <span>İlk İçerikler</span>
             </label>
@@ -1516,7 +1512,6 @@
             option = __.data('options');
 
         $('input[name=string]').val(option.string)
-        $('input[name=illegal]').prop('checked', option.illegal ? true : false)
         $('input[name=reverse]').prop('checked', option.reverse ? true : false)
 
         $('input[name=sentiment_pos]').val(option.sentiment_pos)

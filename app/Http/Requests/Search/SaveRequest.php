@@ -67,8 +67,7 @@ class SaveRequest extends FormRequest
             'consumer_que' => 'required|integer|between:0,9',
             'consumer_req' => 'required|integer|between:0,9',
             'consumer_cmp' => 'required|integer|between:0,9',
-            'consumer_nws' => 'required|integer|between:0,9',
-            'illegal' => 'nullable|string|in:on'
+            'consumer_nws' => 'required|integer|between:0,9'
         ];
     }
 }

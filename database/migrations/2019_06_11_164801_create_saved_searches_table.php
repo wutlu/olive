@@ -20,7 +20,6 @@ class CreateSavedSearchesTable extends Migration
 
             $table->text('string');
 
-            $table->boolean('illegal')->default(0);
             $table->boolean('reverse')->default(0);
 
             $table->unsignedSmallInteger('sentiment_pos')->default(0);
