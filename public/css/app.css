@@ -155,16 +155,17 @@ input[type=range]::-ms-thumb {
   -webkit-transition: all 400ms cubic-bezier(.25, .46, .45, .94);
           transition: all 400ms cubic-bezier(.25, .46, .45, .94);
 }
-.media-area.nude {
+.media-area:empty {
+  display: none;
+}
+
+.nude {
   -webkit-filter: blur(10px);
           filter: blur(10px);
 }
-.media-area.nude:hover {
+.nude:hover {
   -webkit-filter: blur(0);
           filter: blur(0);
-}
-.media-area:empty {
-  display: none;
 }
 
 /*!

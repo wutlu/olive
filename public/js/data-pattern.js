@@ -82,7 +82,7 @@ function _tweet_(o)
                             'width': '48px',
                             'height': '48px'
                         },
-                        'class': 'mr-1 align-self-center'
+                        'class': 'mr-1 align-self-center tweet-avatar'
                     }),
                     $('<div />', {
                         'class': 'align-self-center',
@@ -161,7 +161,11 @@ function _tweet_(o)
 
             if (item.illegal)
             {
-                tweet.find('.media-area').addClass(item.illegal.nude > 0.3 ? 'nude' : '')
+                if (item.illegal.nude > 0.3)
+                {
+                    tweet.find('.media-area').addClass('nude')
+                    tweet.find('.tweet-avatar').addClass('nude')
+                }
             }
         })
     }
