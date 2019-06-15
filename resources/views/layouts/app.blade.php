@@ -876,12 +876,6 @@
                                 <li>
                                     <a class="grey-text" href="{{ route('sources') }}">Kaynaklar</a>
                                 </li>
-                                <li>
-                                    <a class="grey-text" href="{{ '#' }}">Yardım</a>
-                                </li>
-                                <li>
-                                    <a class="grey-text" data-modal-alert="Bu bölümü yapıyoruz. Takipte kalın!" href="#">Api</a>
-                                </li>
                             </ul>
                         </div>
                         <div class="col l2 s12">
