@@ -7,7 +7,8 @@
     ],
     'dock' => true,
     'pin_group' => true,
-    'footer_hide' => true
+    'footer_hide' => true,
+    'help' => 'driver.start()'
 ])
 
 @push('local.styles')
@@ -55,6 +56,37 @@
         -webkit-transform: translateY(-100%);
                 transform: translateY(-100%);
     }
+@endpush
+
+@push('local.scripts')
+    const driver = new Driver({
+        allowClose: false,
+        padding: 12,
+        onReset: function() {
+            @if (!auth()->user()->intro('driver.stream'))
+                vzAjax($('<div />', {
+                    'class': 'json',
+                    'data-method': 'post',
+                    'data-href': '{{ route('intro', 'driver.stream') }}'
+                }))
+            @endif
+        }
+    })
+
+    driver.defineSteps([
+        {
+            element: '[data-trigger=create-keyword-group]',
+            popover: {
+                title: 'Grup Oluşturun',
+                description: 'Anlık veri takibi yapabilmek için, veri kriterlerinizi içeren bir kelime grubu oluşturun.',
+                position: 'left'
+            }
+        }
+    ])
+
+    @if (!auth()->user()->intro('driver.stream'))
+        driver.start()
+    @endif
 @endpush
 
 @push('external.include.header')
@@ -113,30 +145,6 @@
                         </label>
                     </span>
                 </div>
-                <div class="wild-content d-flex grey lighten-4" data-wild="sentiment">
-                    <span class="wild-body d-flex">
-                        <a href="#" class="btn-floating btn-flat btn-small waves-effect align-self-center" style="margin: 0 .4rem 0 0;" data-class=".wild-content" data-class-remove="active">
-                            <i class="material-icons">close</i>
-                        </a>
-                    </span>
-
-                    <label class="align-self-center mr-1" data-tooltip="Pozitif">
-                        <input data-update type="radio" name="sentiment" value="pos" />
-                        <span class="material-icons green-text">sentiment_very_satisfied</span>
-                    </label>
-                    <label class="align-self-center mr-1" data-tooltip="Nötr">
-                        <input data-update type="radio" name="sentiment" value="neu" />
-                        <span class="material-icons grey-text text-darken-2">sentiment_neutral</span>
-                    </label>
-                    <label class="align-self-center mr-1" data-tooltip="Negatif">
-                        <input data-update type="radio" name="sentiment" value="neg" />
-                        <span class="material-icons red-text">sentiment_very_dissatisfied</span>
-                    </label>
-                    <label class="align-self-center mr-1" data-tooltip="Tümü">
-                        <input data-update type="radio" name="sentiment" value="all" checked="" />
-                        <span class="material-icons grey-text text-darken-2">fullscreen</span>
-                    </label>
-                </div>
                 <ul class="wild-menu">
                     <li>
                         <a class="d-flex" href="#" data-class="[data-wild=settings]" data-class-add="active">
@@ -148,12 +156,6 @@
                         <a class="d-flex" href="#" data-class="[data-wild=speed]" data-class-add="active">
                             <i class="material-icons mr-1">fast_forward</i>
                             <span class="align-self-center">Hız</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="d-flex" href="#" data-class="[data-wild=sentiment]" data-class-add="active">
-                            <i class="material-icons mr-1">face</i>
-                            <span class="align-self-center">Duygu</span>
                         </a>
                     </li>
                 </ul>
@@ -188,7 +190,7 @@
         data-href="{{ route('realtime.query') }}"
         data-callback="__realtime"
         data-method="post"
-        data-include="keyword_group,sentiment">
+        data-include="keyword_group">
         <div class="card-content">
             <span class="card-title">Gerçek Zamanlı</span>
         </div>
@@ -689,6 +691,8 @@
             mdl.find('[name=keywords]').val('')
 
         $('[data-trigger=delete-keyword-group]').removeAttr('data-id').addClass('hide')
+
+        driver.reset()
     })
 
     function __get_keyword_group(__, obj)

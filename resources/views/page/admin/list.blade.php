@@ -37,7 +37,7 @@
             @endif
         </div>
         @if (count($pages))
-        <div class="collection">
+        <div class="collection collection-unstyled">
             @foreach ($pages as $page)
             <a href="{{ route('admin.page', $page->id) }}" class="collection-item d-flex waves-effect">
                 <span>

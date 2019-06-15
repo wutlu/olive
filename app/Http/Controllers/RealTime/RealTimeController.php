@@ -137,11 +137,6 @@ class RealTimeController extends Controller
                             ]
                         ];
 
-                        if ($request->sentiment != 'all')
-                        {
-                            $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.34 ] ] ];
-                        }
-
                         $query = Document::search([ 'twitter', 'tweets', date('Y.m') ], 'tweet', $q);
 
                         if (@$query->data['hits']['hits'])
@@ -163,6 +158,16 @@ class RealTimeController extends Controller
                                     'text' => Term::tweet($object['_source']['text']),
                                     'created_at' => date('d.m.Y H:i:s', strtotime($object['_source']['created_at']))
                                 ];
+
+                                if (@$object['_source']['illegal'])
+                                {
+                                    $arr['illegal'] = $object['_source']['illegal'];
+                                }
+
+                                if (@$object['_source']['consumer'])
+                                {
+                                    $arr['consumer'] = $object['_source']['consumer'];
+                                }
 
                                 if (@$object['_source']['entities']['medias'])
                                 {
@@ -221,6 +226,8 @@ class RealTimeController extends Controller
                             'image_url',
 
                             'sentiment',
+                            'consumer',
+                            'illegal',
 
                             'entry',
                             'author',
@@ -235,11 +242,6 @@ class RealTimeController extends Controller
                             'deleted_at'
                         ]
                     ];
-
-                    if ($request->sentiment != 'all')
-                    {
-                        $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ 'sentiment', $request->sentiment ]) => [ 'gte' => 0.4 ] ] ];
-                    }
 
                     if (count($keywords))
                     {
@@ -312,6 +314,16 @@ class RealTimeController extends Controller
                                 'created_at' => date('d.m.Y H:i:s', strtotime($object['_source']['created_at'])),
                                 'sentiment' => Crawler::emptySentiment(@$object['_source']['sentiment'])
                             ];
+
+                            if (@$object['_source']['illegal'])
+                            {
+                                $arr['illegal'] = $object['_source']['illegal'];
+                            }
+
+                            if (@$object['_source']['consumer'])
+                            {
+                                $arr['consumer'] = $object['_source']['consumer'];
+                            }
 
                             if (@$object['_source']['deleted_at'])
                             {

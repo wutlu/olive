@@ -126,7 +126,8 @@ return [
         'keys' => [
             'welcome.create.organisation',
             'search.module',
-            'driver.trend'
+            'driver.trend',
+            'driver.stream',
         ]
     ],
 

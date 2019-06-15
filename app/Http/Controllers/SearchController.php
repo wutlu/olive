@@ -583,10 +583,10 @@ class SearchController extends Controller
                 $aggs['sentiment_hte'] = [ 'sum' => [ 'field' => 'sentiment.hte' ] ];
             break;
             case 'consumer':
-                $aggs['consumer_que'] = [ 'sum' => [ 'field' => 'consumer.pos' ] ];
-                $aggs['consumer_req'] = [ 'sum' => [ 'field' => 'consumer.neg' ] ];
-                $aggs['consumer_cmp'] = [ 'sum' => [ 'field' => 'consumer.neu' ] ];
-                $aggs['consumer_nws'] = [ 'sum' => [ 'field' => 'consumer.hte' ] ];
+                $aggs['consumer_que'] = [ 'sum' => [ 'field' => 'consumer.req' ] ];
+                $aggs['consumer_req'] = [ 'sum' => [ 'field' => 'consumer.que' ] ];
+                $aggs['consumer_cmp'] = [ 'sum' => [ 'field' => 'consumer.nws' ] ];
+                $aggs['consumer_nws'] = [ 'sum' => [ 'field' => 'consumer.cmp' ] ];
             break;
             case 'gender':
                 $aggs['twitter'] = [ 'terms' => [ 'field' => 'user.gender' ] ];
