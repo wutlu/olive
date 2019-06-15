@@ -324,55 +324,7 @@ class SearchController extends Controller
                 'media_article' => intval(@Document::search([ 'twitter', 'media', 's*' ], 'article', array_merge($q, [ 'size' => 0 ]))->data['hits']['total']),
                 'shopping_product' => intval(@Document::search([ 'shopping', '*' ], 'product', array_merge($q, [ 'size' => 0 ]))->data['hits']['total'])
             ],
-            'aggs' => Document::search(
-                [ '*' ],
-                'tweet,entry,video,comment,article,product',
-                array_merge(
-                    $q,
-                    [
-                        'size' => 0,
-                        'aggs' => [
-                            'twitter_gender' => [
-                                'terms' => [
-                                    'field' => 'user.gender'
-                                ]
-                            ],
-                            'sozluk_gender' => [
-                                'terms' => [
-                                    'field' => 'gender'
-                                ]
-                            ],
-                            'youtube_gender' => [
-                                'terms' => [
-                                    'field' => 'channel.gender'
-                                ]
-                            ],
-                            'shopping_gender' => [
-                                'terms' => [
-                                    'field' => 'seller.gender'
-                                ]
-                            ],
-
-                            'twitter_place' => [
-                                'terms' => [
-                                    'field' => 'place.name',
-                                    'size' => 4
-                                ]
-                            ],
-
-                            'sentiment_pos' => [ 'sum' => [ 'field' => 'sentiment.pos' ] ],
-                            'sentiment_neg' => [ 'sum' => [ 'field' => 'sentiment.neg' ] ],
-                            'sentiment_neu' => [ 'sum' => [ 'field' => 'sentiment.neu' ] ],
-                            'sentiment_hte' => [ 'sum' => [ 'field' => 'sentiment.hte' ] ],
-
-                            'consumer_pos' => [ 'sum' => [ 'field' => 'consumer.pos' ] ],
-                            'consumer_neg' => [ 'sum' => [ 'field' => 'consumer.neg' ] ],
-                            'consumer_neu' => [ 'sum' => [ 'field' => 'consumer.neu' ] ],
-                            'consumer_hte' => [ 'sum' => [ 'field' => 'consumer.hte' ] ]
-                        ]
-                    ]
-                )
-            )
+            'aggs' => Document::search([ '*' ], 'tweet,entry,video,comment,article,product', $q)
         ];
 
         if (@$query->data['hits']['hits'])
@@ -392,6 +344,16 @@ class SearchController extends Controller
 
                     'sentiment' => $object['_source']['sentiment']
                 ];
+
+                if (@$object['_source']['illegal'])
+                {
+                    $arr['illegal'] = $object['_source']['illegal'];
+                }
+
+                if (@$object['_source']['consumer'])
+                {
+                    $arr['consumer'] = $object['_source']['consumer'];
+                }
 
                 if (@$object['_source']['deleted_at'])
                 {
