@@ -114,11 +114,6 @@
                                 <canvas id="hdd-chart-{{ $key }}"></canvas>
                             </div>
 
-                            @php
-                            print_r($disk);
-                            exit;
-                            @endphp
-
                             @push('local.scripts')
                                 var hddChart_{{ $key }} = $("#hdd-chart-{{ $key }}");
 
