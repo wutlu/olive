@@ -53,12 +53,16 @@ return [
         'illegal' => [
             'types' => [
                 'illegal-bet' => [
-                    'per' => 50,
+                    'per' => 30,
                     'title' => 'Bahis'
                 ],
                 'illegal-nud' => [
-                    'per' => 50,
+                    'per' => 30,
                     'title' => 'Çıplaklık'
+                ],
+                'illegal-nor' => [
+                    'per' => 40,
+                    'title' => 'Normal'
                 ]
             ],
             'ignore' => 'illegal-ign',

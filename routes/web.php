@@ -94,11 +94,9 @@ Route::prefix('arama-motoru')->group(function () {
     Route::delete('sil', 'SearchController@delete')->name('search.delete');
     Route::post('aramalar', 'SearchController@searches')->name('search.list');
 
-    Route::post('analiz', 'SearchController@aggregation')->name('search.aggregation');
-
     Route::post('/', 'SearchController@search');
 
-    Route::get('/v2', 'SearchController@dashboard2')->name('search.dashboard2');
+    Route::post('analiz', 'SearchController@aggregation')->name('search.aggregation');
 });
 
 Route::get('uyari', 'HomeController@alert')->name('alert');

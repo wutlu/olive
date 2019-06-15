@@ -89,6 +89,7 @@ class MediaCrawler extends Model
                             'properties' => [
                                 'bet' => [ 'type' => 'float' ],
                                 'nud' => [ 'type' => 'float' ],
+                                'nor' => [ 'type' => 'float' ],
                             ]
                         ]
                     ]

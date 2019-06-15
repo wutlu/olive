@@ -106,7 +106,8 @@ class CoreExecute extends Command
                                 'consumer.que' => [ 'type' => 'float' ],
                                 'consumer.req' => [ 'type' => 'float' ],
                                 'illegal.bet' => [ 'type' => 'float' ],
-                                'illegal.nud' => [ 'type' => 'float' ]
+                                'illegal.nud' => [ 'type' => 'float' ],
+                                'illegal.nor' => [ 'type' => 'float' ],
                             ]
                         ]
                     ]

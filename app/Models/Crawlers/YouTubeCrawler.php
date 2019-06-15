@@ -71,6 +71,7 @@ class YouTubeCrawler
                                     'properties' => [
                                         'bet' => [ 'type' => 'float' ],
                                         'nud' => [ 'type' => 'float' ],
+                                        'nor' => [ 'type' => 'float' ],
                                     ]
                                 ]
                             ]
@@ -136,6 +137,7 @@ class YouTubeCrawler
                                     'properties' => [
                                         'bet' => [ 'type' => 'float' ],
                                         'nud' => [ 'type' => 'float' ],
+                                        'nor' => [ 'type' => 'float' ],
                                     ]
                                 ]
                             ]

@@ -239,6 +239,7 @@ class TwitterCrawler
                             'properties' => [
                                 'bet' => [ 'type' => 'float' ],
                                 'nud' => [ 'type' => 'float' ],
+                                'nor' => [ 'type' => 'float' ],
                             ]
                         ],
                         'lang' => [ 'type' => 'keyword' ],
