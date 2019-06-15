@@ -163,7 +163,7 @@ function _tweet_(o)
 
     if (o.illegal)
     {
-        if (o.illegal.nude > 0.3)
+        if (o.illegal.nud > 0.3)
         {
             tweet.find('.media-area').addClass('nude')
             tweet.find('.tweet-avatar').addClass('nude')
