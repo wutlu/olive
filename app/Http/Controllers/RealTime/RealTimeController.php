@@ -131,6 +131,8 @@ class RealTimeController extends Controller
                                 'created_at',
                                 'deleted_at',
                                 'sentiment',
+                                'consumer',
+                                'illegal',
                                 'entities.medias.media'
                             ]
                         ];

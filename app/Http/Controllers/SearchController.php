@@ -228,7 +228,9 @@ class SearchController extends Controller
                 'channel.id',
 
                 'video_id',
-                'sentiment'
+                'sentiment',
+                'consumer',
+                'illegal'
             ]
         ];
 

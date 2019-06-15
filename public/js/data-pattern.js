@@ -134,7 +134,7 @@ function _tweet_(o)
                 var img = $('<img />', {
                    'alt': 'Media',
                    'src': item.media.media_url,
-                   'class': 'responsive-img z-depth-1 nude',
+                   'class': 'responsive-img z-depth-1',
                    'id': 'img-' + rid
                 }).on('load', function() {
                     var __ = $(this);
@@ -157,6 +157,11 @@ function _tweet_(o)
                         'Your browser does not support the video tag.'
                     ]
                 }))
+            }
+
+            if (item.illegal)
+            {
+                tweet.find('.media-area').addClass(item.illegal.nude > 0.3 ? 'nude' : '')
             }
         })
     }
