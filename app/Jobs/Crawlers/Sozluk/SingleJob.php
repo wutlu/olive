@@ -104,7 +104,7 @@ class SingleJob implements ShouldQueue
                     'site_id' => $sozluk->id,
 
                     'sentiment' => $sentiment->score($item->data['entry']),
-                    'consumer' => $consumer->score($item->data['entry'])
+                    'consumer' => $consumer->score($item->data['entry']),
                     'illegal' => $illegal->score($item->data['entry'])
                 ];
 
