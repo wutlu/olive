@@ -17,9 +17,10 @@
         </nav>
     </div>
     <div class="container pt-2 pb-2">
-        <div class="card teal darken-2">
+        <div class="card blue-grey">
             <div class="card-content">
                 <span class="card-title white-text">Kaynaklar</span>
+
                 <p class="white-text">- Tüm kaynaklar açık kaynak olup, yasal olarak kaynak belirtilerek kullanılmaktadır.</p>
                 <p class="white-text">- Diğer hukuksal bilgilere <a href="{{ route('page.view', 'gizlilik-politikasi') }}">Gizlilik Politikası</a> ve <a href="{{ route('page.view', 'kullanim-kosullari') }}">Kullanım Koşulları</a> sayfalarından ulaşabilirsiniz.</p>
                 <p class="white-text">- Yerel veya farklı kaynak istekleriniz, <a href="{{ route('settings.support', 'kaynak-istegi') }}">DESTEK</a> bölümünden bize bildirebilirsiniz.</p>
