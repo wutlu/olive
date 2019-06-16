@@ -23,7 +23,7 @@
         </div>
 
         <ul id="pin-groups"
-            class="collection load json-clear mb-0" 
+            class="collection collection-unstyled load json-clear mb-0" 
             data-href="{{ route('pin.groups') }}"
             data-skip="0"
             data-take="5"

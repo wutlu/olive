@@ -182,7 +182,7 @@
                             <label for="person_lastname">Soyad</label>
                             <span class="helper-text"></span>
                         </div>
-                        <div class="input-field dynamic-field hide person">
+                        <div class="input-field dynamic-field hide individual person">
                             <input name="person_tckn" id="person_tckn" type="text" class="validate" />
                             <label for="person_tckn">T.C. Kimlik No</label>
                             <span class="helper-text"></span>

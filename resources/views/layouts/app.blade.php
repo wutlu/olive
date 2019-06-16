@@ -774,6 +774,7 @@
                 </div>
             </div>
         </div> 
+
         @push('local.scripts')
             function __monitor(__, obj)
             {

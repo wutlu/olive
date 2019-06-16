@@ -24,7 +24,7 @@ class MarkdownPreviewRequest extends FormRequest
     public function rules()
     {
         return [
-            'body' => 'nullable|string|max:5000'
+            'body' => 'nullable|string|max:500000'
         ];
     }
 }

@@ -58,6 +58,7 @@ class DataController extends Controller
     {
         $query = new StreamingKeywords;
         $query = $query->where('organisation_id', auth()->user()->organisation_id);
+
         $query = $request->string ? $query->where('keyword', 'ILIKE', '%'.$request->string.'%') : $query;
 
         $total = $query->count();

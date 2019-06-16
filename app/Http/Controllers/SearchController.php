@@ -726,31 +726,39 @@ class SearchController extends Controller
             case 'sentiment':
                 if ($query['aggs']->status == 'ok')
                 {
-                    $clean_hits = $query['aggs']->data['aggregations'];
-                    $total_hits = $clean_hits['sentiment_hte']['value'] + $clean_hits['sentiment_neg']['value'] + $clean_hits['sentiment_neu']['value'] + $clean_hits['sentiment_hte']['value'];
-
                     $data['status'] = 'ok';
-                    $data['data'] = [
-                        'pos' => round($clean_hits['sentiment_hte']['value'] ? $clean_hits['sentiment_hte']['value']*100/$total_hits : 0, 2),
-                        'neg' => round($clean_hits['sentiment_neg']['value'] ? $clean_hits['sentiment_neg']['value']*100/$total_hits : 0, 2),
-                        'neu' => round($clean_hits['sentiment_neu']['value'] ? $clean_hits['sentiment_neu']['value']*100/$total_hits : 0, 2),
-                        'hte' => round($clean_hits['sentiment_hte']['value'] ? $clean_hits['sentiment_hte']['value']*100/$total_hits : 0, 2)
-                    ];
+
+                    if (@$query['aggs']->data['aggregations'])
+                    {
+                        $clean_hits = $query['aggs']->data['aggregations'];
+                        $total_hits = $clean_hits['sentiment_hte']['value'] + $clean_hits['sentiment_neg']['value'] + $clean_hits['sentiment_neu']['value'] + $clean_hits['sentiment_hte']['value'];
+
+                        $data['data'] = [
+                            'pos' => round($clean_hits['sentiment_hte']['value'] ? $clean_hits['sentiment_hte']['value']*100/$total_hits : 0, 2),
+                            'neg' => round($clean_hits['sentiment_neg']['value'] ? $clean_hits['sentiment_neg']['value']*100/$total_hits : 0, 2),
+                            'neu' => round($clean_hits['sentiment_neu']['value'] ? $clean_hits['sentiment_neu']['value']*100/$total_hits : 0, 2),
+                            'hte' => round($clean_hits['sentiment_hte']['value'] ? $clean_hits['sentiment_hte']['value']*100/$total_hits : 0, 2)
+                        ];
+                    }
                 }
             break;
             case 'consumer':
                 if ($query['aggs']->status == 'ok')
                 {
-                    $clean_hits = $query['aggs']->data['aggregations'];
-                    $total_hits = $clean_hits['consumer_req']['value'] + $clean_hits['consumer_que']['value'] + $clean_hits['consumer_cmp']['value'] + $clean_hits['consumer_nws']['value'];
-
                     $data['status'] = 'ok';
-                    $data['data'] = [
-                        'que' => round($clean_hits['consumer_que']['value'] ? $clean_hits['consumer_que']['value']*100/$total_hits : 0, 2),
-                        'req' => round($clean_hits['consumer_req']['value'] ? $clean_hits['consumer_req']['value']*100/$total_hits : 0, 2),
-                        'cmp' => round($clean_hits['consumer_cmp']['value'] ? $clean_hits['consumer_cmp']['value']*100/$total_hits : 0, 2),
-                        'nws' => round($clean_hits['consumer_nws']['value'] ? $clean_hits['consumer_nws']['value']*100/$total_hits : 0, 2)
-                    ];
+
+                    if (@$query['aggs']->data['aggregations'])
+                    {
+                        $clean_hits = $query['aggs']->data['aggregations'];
+                        $total_hits = $clean_hits['consumer_req']['value'] + $clean_hits['consumer_que']['value'] + $clean_hits['consumer_cmp']['value'] + $clean_hits['consumer_nws']['value'];
+
+                        $data['data'] = [
+                            'que' => round($clean_hits['consumer_que']['value'] ? $clean_hits['consumer_que']['value']*100/$total_hits : 0, 2),
+                            'req' => round($clean_hits['consumer_req']['value'] ? $clean_hits['consumer_req']['value']*100/$total_hits : 0, 2),
+                            'cmp' => round($clean_hits['consumer_cmp']['value'] ? $clean_hits['consumer_cmp']['value']*100/$total_hits : 0, 2),
+                            'nws' => round($clean_hits['consumer_nws']['value'] ? $clean_hits['consumer_nws']['value']*100/$total_hits : 0, 2)
+                        ];
+                    }
                 }
             break;
             case 'gender':
@@ -758,39 +766,42 @@ class SearchController extends Controller
                 {
                     $data['status'] = 'ok';
 
-                    $data['data']['male'] = 0;
-                    $data['data']['female'] = 0;
-                    $data['data']['unknown'] = 0;
-
-                    foreach ([ 'twitter', 'sozluk', 'youtube', 'shopping' ] as $item)
+                    if (@$query['aggs']->data['aggregations'])
                     {
-                        $clean_hits = $query['aggs']->data['aggregations'][$item]['buckets'];
+                        $data['data']['male'] = 0;
+                        $data['data']['female'] = 0;
+                        $data['data']['unknown'] = 0;
 
-                        if ($clean_hits)
+                        foreach ([ 'twitter', 'sozluk', 'youtube', 'shopping' ] as $item)
                         {
-                            foreach ($clean_hits as $bucket)
+                            $clean_hits = $query['aggs']->data['aggregations'][$item]['buckets'];
+
+                            if ($clean_hits)
                             {
-                                switch ($bucket['key'])
+                                foreach ($clean_hits as $bucket)
                                 {
-                                    case 'male':
-                                        $data['data']['male'] = $data['data']['male'] + $bucket['doc_count'];
-                                    break;
-                                    case 'female':
-                                        $data['data']['female'] = $data['data']['female'] + $bucket['doc_count'];
-                                    break;
-                                    case 'unknown':
-                                        $data['data']['unknown'] = $data['data']['unknown'] + $bucket['doc_count'];
-                                    break;
+                                    switch ($bucket['key'])
+                                    {
+                                        case 'male':
+                                            $data['data']['male'] = $data['data']['male'] + $bucket['doc_count'];
+                                        break;
+                                        case 'female':
+                                            $data['data']['female'] = $data['data']['female'] + $bucket['doc_count'];
+                                        break;
+                                        case 'unknown':
+                                            $data['data']['unknown'] = $data['data']['unknown'] + $bucket['doc_count'];
+                                        break;
+                                    }
                                 }
                             }
                         }
+
+                        $total_hits = $data['data']['male'] + $data['data']['female'] + $data['data']['unknown'];
+
+                        $data['data']['male'] = round(($data['data']['male'] ? $data['data']['male']*100/$total_hits : 0), 2);
+                        $data['data']['female'] = round(($data['data']['female'] ? $data['data']['female']*100/$total_hits : 0), 2);
+                        $data['data']['unknown'] = round(($data['data']['unknown'] ? $data['data']['unknown']*100/$total_hits : 0), 2);
                     }
-
-                    $total_hits = $data['data']['male'] + $data['data']['female'] + $data['data']['unknown'];
-
-                    $data['data']['male'] = round(($data['data']['male'] ? $data['data']['male']*100/$total_hits : 0), 2);
-                    $data['data']['female'] = round(($data['data']['female'] ? $data['data']['female']*100/$total_hits : 0), 2);
-                    $data['data']['unknown'] = round(($data['data']['unknown'] ? $data['data']['unknown']*100/$total_hits : 0), 2);
                 }
             break;
             case 'hashtag':
@@ -798,11 +809,14 @@ class SearchController extends Controller
                 {
                     $data['status'] = 'ok';
 
-                    if ($query['aggs']->data['aggregations']['hashtag']['doc_count'])
+                    if (@$query['aggs']->data['aggregations'])
                     {
-                        foreach ($query['aggs']->data['aggregations']['hashtag']['hits']['buckets'] as $key => $row)
+                        if ($query['aggs']->data['aggregations']['hashtag']['doc_count'])
                         {
-                            $data['data'][$row['key']] = $row['doc_count'];
+                            foreach ($query['aggs']->data['aggregations']['hashtag']['hits']['buckets'] as $key => $row)
+                            {
+                                $data['data'][$row['key']] = $row['doc_count'];
+                            }
                         }
                     }
                 }
@@ -812,58 +826,61 @@ class SearchController extends Controller
                 {
                     $data['status'] = 'ok';
 
-                    if (count($query['aggs']->data['aggregations']['twitter_users']['buckets']))
+                    if (@$query['aggs']->data['aggregations'])
                     {
-                        foreach ($query['aggs']->data['aggregations']['twitter_users']['buckets'] as $key => $row)
+                        if (count($query['aggs']->data['aggregations']['twitter_users']['buckets']))
                         {
-                            $data['data']['twitter_users'][$row['key']] = array_merge(
-                                $row['properties']['hits']['hits'][0]['_source']['user'],
-                                [ 'hit' => $row['doc_count'] ]
-                            );
+                            foreach ($query['aggs']->data['aggregations']['twitter_users']['buckets'] as $key => $row)
+                            {
+                                $data['data']['twitter_users'][$row['key']] = array_merge(
+                                    $row['properties']['hits']['hits'][0]['_source']['user'],
+                                    [ 'hit' => $row['doc_count'] ]
+                                );
+                            }
                         }
-                    }
 
-                    if ($query['aggs']->data['aggregations']['twitter_mentions']['doc_count'])
-                    {
-                        foreach ($query['aggs']->data['aggregations']['twitter_mentions']['hits']['buckets'] as $key => $row)
+                        if ($query['aggs']->data['aggregations']['twitter_mentions']['doc_count'])
                         {
-                            $data['data']['twitter_mentions'][$row['key']] = array_merge(
-                                $row['properties']['hits']['hits'][0]['_source']['mention'],
-                                [ 'hit' => $row['doc_count'] ]
-                            );
+                            foreach ($query['aggs']->data['aggregations']['twitter_mentions']['hits']['buckets'] as $key => $row)
+                            {
+                                $data['data']['twitter_mentions'][$row['key']] = array_merge(
+                                    $row['properties']['hits']['hits'][0]['_source']['mention'],
+                                    [ 'hit' => $row['doc_count'] ]
+                                );
+                            }
                         }
-                    }
 
-                    if (count($query['aggs']->data['aggregations']['youtube_users']['buckets']))
-                    {
-                        foreach ($query['aggs']->data['aggregations']['youtube_users']['buckets'] as $key => $row)
+                        if (count($query['aggs']->data['aggregations']['youtube_users']['buckets']))
                         {
-                            $data['data']['youtube_users'][$row['key']] = array_merge(
-                                $row['properties']['hits']['hits'][0]['_source']['channel'],
-                                [ 'hit' => $row['doc_count'] ]
-                            );
+                            foreach ($query['aggs']->data['aggregations']['youtube_users']['buckets'] as $key => $row)
+                            {
+                                $data['data']['youtube_users'][$row['key']] = array_merge(
+                                    $row['properties']['hits']['hits'][0]['_source']['channel'],
+                                    [ 'hit' => $row['doc_count'] ]
+                                );
+                            }
                         }
-                    }
 
-                    if (count($query['aggs']->data['aggregations']['sozluk_users']['buckets']))
-                    {
-                        foreach ($query['aggs']->data['aggregations']['sozluk_users']['buckets'] as $key => $row)
+                        if (count($query['aggs']->data['aggregations']['sozluk_users']['buckets']))
                         {
-                            $data['data']['sozluk_users'][] = [
-                                'name' => $row['key'],
-                                'hit' => $row['doc_count']
-                            ];
+                            foreach ($query['aggs']->data['aggregations']['sozluk_users']['buckets'] as $key => $row)
+                            {
+                                $data['data']['sozluk_users'][] = [
+                                    'name' => $row['key'],
+                                    'hit' => $row['doc_count']
+                                ];
+                            }
                         }
-                    }
 
-                    if (count($query['aggs']->data['aggregations']['shopping_users']['buckets']))
-                    {
-                        foreach ($query['aggs']->data['aggregations']['shopping_users']['buckets'] as $key => $row)
+                        if (count($query['aggs']->data['aggregations']['shopping_users']['buckets']))
                         {
-                            $data['data']['shopping_users'][] = [
-                                'name' => $row['key'],
-                                'hit' => $row['doc_count']
-                            ];
+                            foreach ($query['aggs']->data['aggregations']['shopping_users']['buckets'] as $key => $row)
+                            {
+                                $data['data']['shopping_users'][] = [
+                                    'name' => $row['key'],
+                                    'hit' => $row['doc_count']
+                                ];
+                            }
                         }
                     }
                 }
@@ -873,7 +890,7 @@ class SearchController extends Controller
                 {
                     $data['status'] = 'ok';
 
-                    if (count($query['aggs']->data['aggregations']['platform']['buckets']))
+                    if (@$query['aggs']->data['aggregations']['platform']['buckets'])
                     {
                         foreach ($query['aggs']->data['aggregations']['platform']['buckets'] as $key => $row)
                         {
@@ -890,7 +907,7 @@ class SearchController extends Controller
                 {
                     $data['status'] = 'ok';
 
-                    if (count($query['aggs']->data['aggregations']['place']['buckets']))
+                    if (@$query['aggs']->data['aggregations']['place']['buckets'])
                     {
                         foreach ($query['aggs']->data['aggregations']['place']['buckets'] as $key => $row)
                         {
@@ -907,8 +924,11 @@ class SearchController extends Controller
                 {
                     $data['status'] = 'ok';
 
-                    $data['data']['daily'] = $query['aggs']->data['aggregations']['daily']['buckets'];
-                    $data['data']['hourly'] = $query['aggs']->data['aggregations']['hourly']['buckets'];
+                    if (@$query['aggs']->data['aggregations']['daily']['buckets'])
+                    {
+                        $data['data']['daily'] = $query['aggs']->data['aggregations']['daily']['buckets'];
+                        $data['data']['hourly'] = $query['aggs']->data['aggregations']['hourly']['buckets'];
+                    }
                 }
             break;
         }
