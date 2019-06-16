@@ -77,7 +77,7 @@
                     type="checkbox"
                     data-callback="__status_set"
                     @if ($learn == 'on'){{ 'checked' }}@endif />
-                <span class="teal-text">Makine öğrenmesini aktif et.</span>
+                <span class="teal-text">Öğrenmeyi Aktif Et</span>
             </label>
             <p class="teal-text mt-1">Bu alan aktif edilirse, sistem zaman zaman her kategori için yeni kelimeler tahmin edecektir. Edilen tahminler derlenmek üzere modaratör onayında bekletilecektir.</p>
         </div>
