@@ -795,7 +795,9 @@
             data-method="post"
             data-loader="#keyword-group-loader"
             data-nothing>
-            <li class="collection-item nothing hide grey-text">Henüz kelime grubu oluşturmadınız.</li>
+            <li class="collection-item nothing hide grey-text">
+                @component('components.nothing')@endcomponent
+            </li>
             <li class="collection-item model hide justify-content-between">
                 <a
                     class="json align-self-center mr-1"
