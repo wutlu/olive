@@ -47,15 +47,6 @@
         -webkit-animation: blink .6s step-end infinite alternate;
                 animation: blink .6s step-end infinite alternate;
     }
-
-    #fake {
-        position: fixed;
-        top: 0;
-        z-index: 99999;
-
-        -webkit-transform: translateY(-100%);
-                transform: translateY(-100%);
-    }
 @endpush
 
 @push('local.scripts')
@@ -165,8 +156,7 @@
 @endsection
 
 @section('content')
-    <input type="text" id="fake" />
-    <div class="status-bar d-flex mt-1">
+    <div class="status-bar d-flex">
         <div class="p-1 align-self-center">
             <button class="btn-floating red darken-2 btn-large disabled" type="button" data-name="trigger" data-tooltip="Kısayol (Space)" data-position="right">
                 <i class="material-icons">play_arrow</i>
@@ -344,7 +334,7 @@
     $(document).on('click', '[data-name=trigger]', function() {
         _ui_toggle()
     }).keydown(function(e) {
-        if (e.which == 32)
+        if (e.which == 17)
         {
             _ui_toggle()
 
@@ -445,8 +435,6 @@
                 stop_timer_f()
             }
         }
-
-        $('input#fake').focus()
     }
 
     var streamTimer;
@@ -830,6 +818,22 @@
             @slot('color', 'blue-grey')
             @slot('id', 'keyword-group-loader')
             @slot('class', 'card-loader-unstyled')
+        @endcomponent
+    </div>
+
+    @php
+        $hints = [
+            'CTRL tuşuna basarak akışı durdurabilirsiniz.',
+            '<span class="yellow darken-2 white-text">#tarihibuluşmaFOXta && !external.type:retweet</span> gibi bir sorgu ile retweetleri akış dışında tutabilirsiniz.',
+        ];
+
+        shuffle($hints);
+    @endphp
+
+    <div class="yellow-text text-darken-2 mt-1">
+        @component('components.alert')
+            @slot('icon', 'lightbulb_outline')
+            @slot('text', $hints[0])
         @endcomponent
     </div>
 @endsection
