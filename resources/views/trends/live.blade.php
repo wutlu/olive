@@ -173,6 +173,30 @@
                             if (u)
                             {
                                 item.find('[data-name=link-' + ku + ']').attr('href', u).removeClass('hide')
+
+                                if (ku == 'sozluk')
+                                {
+                                    var site = 'Sözlük';
+
+                                    if (u.indexOf('eksisozluk.com') != -1)
+                                    {
+                                        site = 'Ekşi Sözlük';
+                                    }
+                                    else if (u.indexOf('incisozluk.com.tr') != -1)
+                                    {
+                                        site = 'İnci Sözlük';
+                                    }
+                                    else if (u.indexOf('instela.com') != -1)
+                                    {
+                                        site = 'Instela';
+                                    }
+                                    else if (u.indexOf('uludagsozluk.com') != -1)
+                                    {
+                                        site = 'Uludağ Sözlük';
+                                    }
+
+                                    item.find('[data-name=link-' + ku + ']').find('[data-name=alias]').html(site)
+                                }
                             }
                         })
 
@@ -305,6 +329,7 @@
                                         <span class="d-flex">
                                             <i class="material-icons align-self-center mr-1">link</i>
                                             <span class="align-self-center">Sözlük'de göster</span>
+                                            <span class="align-self-center ml-auto" data-name="alias"></span>
                                         </span>
                                     </a>
                                 </div>

@@ -1142,7 +1142,8 @@
                         'que': 'Soru',
                         'req': 'İstek',
                         'nws': 'Haber',
-                        'cmp': 'Şikayet'
+                        'cmp': 'Şikayet',
+                        'nor': 'Normal'
                     };
 
                     $.each(obj.data, function(key, count) {
@@ -1152,7 +1153,39 @@
 
                     __chart_generate('consumer')
 
-                    new Chart(document.getElementById('consumer' + 'Canvas'), sentiment_chart('MÜŞTERİ GRAFİĞİ (' + query + ')', labels, counts))
+                    new Chart(document.getElementById('consumer' + 'Canvas'), {
+                        type: 'line',
+                        data: {
+                            datasets: [
+                                {
+                                    data: counts,
+                                    borderColor: '#3e95cd',
+                                    fill: false
+                                }
+                            ],
+                            labels: labels
+                        },
+                        options: {
+                            title: {
+                                display: true,
+                                text: 'MÜŞTERİ GRAFİĞİ (' + query + ')'
+                            },
+                            legend: {
+                                display: false
+                            },
+                            scales: {
+                                yAxes: [
+                                    {
+                                        display: true,
+                                        ticks: {
+                                            beginAtZero: true,
+                                            max: 100
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    })
                 }
                 else if (__.data('type') == 'gender')
                 {
@@ -1237,7 +1270,8 @@
                            '#0097a7',
                            '#e53935',
                            '#bdbdbd',
-                           '#e53935'
+                           '#f44336',
+                           '#444444'
                        ],
                        data: counts
                    }
