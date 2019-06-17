@@ -3,7 +3,12 @@
 namespace App\Http\Requests\Organisation\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
+
+use Illuminate\Http\Request;
+
 use Validator;
+
+use App\Models\Option;
 
 class UpdateRequest extends FormRequest
 {
@@ -34,8 +39,10 @@ class UpdateRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(Request $request)
     {
+        $prices = Option::select('key', 'value')->where('key', 'LIKE', 'unit_price.%')->get()->keyBy('key')->toArray();
+
         Validator::extend('name', function($attribute, $value) {
             return !preg_match('/[^a-zA-Z0-9\.]/', $value);
         });
@@ -78,6 +85,53 @@ class UpdateRequest extends FormRequest
             $arr['data_'.$key] = 'nullable|string|in:on';
         }
 
-        return $arr;
+        $request->validate($arr);
+
+        $arr = [
+            'historical_days'                  => '*',
+            'real_time_group_limit'            => '*',
+            'alarm_limit'                      => '*',
+            'pin_group_limit'                  => '*',
+            'saved_searches_limit'             => '*',
+
+            'module_real_time'                 => '+',
+            'module_search'                    => '+',
+            'module_trend'                     => '+',
+            'module_alarm'                     => '+',
+            'module_pin'                       => '+',
+            'module_model'                     => '+',
+            'module_forum'                     => '+',
+
+            'data_pool_youtube_channel_limit'  => '*',
+            'data_pool_youtube_video_limit'    => '*',
+            'data_pool_youtube_keyword_limit'  => '*',
+            'data_pool_twitter_keyword_limit'  => '*',
+            'data_pool_twitter_user_limit'     => '*',
+        ];
+
+        foreach (config('system.modules') as $key => $module)
+        {
+            $arr['data_'.$key] = '+';
+        }
+
+        $math_prices = 0;
+
+        foreach ($arr as $key => $group)
+        {
+            if ($group == '+' && $request->{$key} == 'on')
+            {
+                $math_prices = $math_prices + $prices['unit_price.'.$key]['value'];
+            }
+            else if ($group == '*')
+            {
+                $math_prices = $math_prices + ($request->{$key} * $prices['unit_price.'.$key]['value']);
+            }
+        }
+
+        $math_prices = $math_prices * $request->user_capacity;
+
+        return [
+            'unit_price' => 'required|numeric|min:'.$math_prices
+        ];
     }
 }

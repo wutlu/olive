@@ -75,10 +75,10 @@
 
                     if (month >= 12)
                     {
-                        var discount = (total_price / 100) * {{ config('formal.discount_with_year') }};
+                        var discount = (total_price / 100) * {{ $discount_with_year }};
                             total_price = total_price - discount;
 
-                        $('[data-name=discount-rate]').html('{{ config('formal.discount_with_year') }}')
+                        $('[data-name=discount-rate]').html('{{ $discount_with_year }}')
                         $('[data-name=total-discount]').html('-' + price_format(discount))
 
                         if (discount_area.hasClass('hide'))

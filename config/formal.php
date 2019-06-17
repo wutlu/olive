@@ -28,15 +28,7 @@ return [
      *
      * @var integer
      */
-
     'tax' => env('TAX', 18),
-
-    /**
-     * yıllık alımlarda indirim oranı
-     *
-     * @var integer
-     */
-    'discount_with_year' => env('DISCOUNT_WITH_YEAR', 10),
 
     'banks' => [
         'Enpara' => [

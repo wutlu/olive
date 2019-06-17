@@ -247,6 +247,9 @@ Route::prefix('organizasyon-yonetimi')->group(function () {
     Route::get('/', 'OrganisationController@adminListView')->name('admin.organisation.list');
     Route::post('json', 'OrganisationController@adminListViewJson')->name('admin.organisation.list.json');
 
+    Route::get('fiyat-ayarlari', 'OrganisationController@adminPriceSettings')->name('admin.organisation.price.settings');
+    Route::post('fiyat-ayarlari', 'OrganisationController@adminPriceSettingsSave');
+
     Route::prefix('organizasyon')->group(function () {
         Route::get('{id}', 'OrganisationController@adminView')->name('admin.organisation');
         Route::post('{id}', 'OrganisationController@adminUpdate');

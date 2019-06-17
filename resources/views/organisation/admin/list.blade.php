@@ -144,6 +144,7 @@
 @endpush
 
 @section('dock')
+    @include('organisation._inc._menu', [ 'active' => 'list' ])
     <div class="card card-unstyled mb-1">
         <div class="card-content">
             <span class="card-title d-flex">

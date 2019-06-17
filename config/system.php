@@ -200,6 +200,18 @@ return [
     ],
 
     /**
+     * Aktif Modüller
+     */
+    'static_modules' => [
+        'module_real_time' => 'Gerçek Zamanlı',
+        'module_search' => 'Arama',
+        'module_trend' => 'Trend',
+        'module_alarm' => 'Alarm',
+        'module_pin' => 'Pin',
+        'module_forum' => 'Forum',
+    ],
+
+    /**
      * Slider Parametreleri
      */
     'carousel' => [

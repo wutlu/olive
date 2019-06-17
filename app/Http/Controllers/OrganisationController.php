@@ -14,6 +14,7 @@ use App\Models\RealTime\KeywordGroup;
 use App\Models\Pin\Group as PinGroup;
 use App\Models\BillingInformation;
 use App\Models\Alarm;
+use App\Models\Option;
 
 use App\Http\Requests\Organisation\BillingUpdateRequest;
 use App\Http\Requests\Organisation\NameRequest;
@@ -24,6 +25,7 @@ use App\Http\Requests\Organisation\DeleteRequest;
 use App\Http\Requests\Organisation\Admin\UpdateRequest as AdminUpdateRequest;
 use App\Http\Requests\Organisation\Admin\CreateRequest as AdminCreateRequest;
 use App\Http\Requests\Organisation\Admin\InvoiceApproveRequest;
+use App\Http\Requests\Organisation\Admin\PriceSettingsSaveRequest;
 
 use App\Http\Requests\RealTime\KeywordGroup\AdminUpdateRequest as KeywordGroupAdminUpdateRequest;
 
@@ -40,6 +42,8 @@ use Carbon\Carbon;
 use App\Jobs\CheckUpcomingPayments;
 
 use App\Http\Requests\PaymentCallbackRequest;
+
+use System;
 
 class OrganisationController extends Controller
 {
@@ -197,8 +201,9 @@ class OrganisationController extends Controller
     public static function settings()
     {
         $user = auth()->user();
+        $discount_with_year = System::option('formal.discount_with_year');
 
-        return view('organisation.settings', compact('user'));
+        return view('organisation.settings', compact('user', 'discount_with_year'));
     }
 
     /**
@@ -779,7 +784,7 @@ class OrganisationController extends Controller
     {
         $user = auth()->user();
 
-        $discount_rate = $request->month >= config('formal.discount_with_year') ? config('formal.discount_with_year') : 0;
+        $discount_rate = $request->month >= System::option('formal.discount_with_year');
 
         $billing_information = new BillingInformation;
         $billing_information->user_id = $user->id;
@@ -910,6 +915,69 @@ class OrganisationController extends Controller
      ******* ROOT *******
      ********************
      *
+     * Organizasyon Fiyatlandırma Ayarları
+     *
+     * @return view
+     */
+    public static function adminPriceSettings()
+    {
+        $settings = Option::select('key', 'value')
+                          ->where(function($query) {
+                              $query->orWhere('key', 'LIKE', 'unit_price.%');
+                              $query->orWhere('key', 'formal.discount_with_year');
+                          })
+                          ->get()
+                          ->keyBy('key')
+                          ->toArray();
+
+        return view('organisation.admin.priceSettings', compact('settings'));
+    }
+
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Organizasyon Fiyatlandırma Ayarları Kaydet
+     *
+     * @return array
+     */
+    public static function adminPriceSettingsSave(PriceSettingsSaveRequest $request)
+    {
+        Option::updateOrCreate([ 'key' => 'unit_price.data_twitter'                    ], [ 'value' => $request->data_twitter                    ]);
+        Option::updateOrCreate([ 'key' => 'unit_price.data_sozluk'                     ], [ 'value' => $request->data_sozluk                     ]);
+        Option::updateOrCreate([ 'key' => 'unit_price.data_news'                       ], [ 'value' => $request->data_news                       ]);
+        Option::updateOrCreate([ 'key' => 'unit_price.data_youtube_video'              ], [ 'value' => $request->data_youtube_video              ]);
+        Option::updateOrCreate([ 'key' => 'unit_price.data_youtube_comment'            ], [ 'value' => $request->data_youtube_comment            ]);
+        Option::updateOrCreate([ 'key' => 'unit_price.data_shopping'                   ], [ 'value' => $request->data_shopping                   ]);
+        Option::updateOrCreate([ 'key' => 'unit_price.real_time_group_limit'           ], [ 'value' => $request->real_time_group_limit           ]);
+        Option::updateOrCreate([ 'key' => 'unit_price.alarm_limit'                     ], [ 'value' => $request->alarm_limit                     ]);
+        Option::updateOrCreate([ 'key' => 'unit_price.pin_group_limit'                 ], [ 'value' => $request->pin_group_limit                 ]);
+        Option::updateOrCreate([ 'key' => 'unit_price.saved_searches_limit'            ], [ 'value' => $request->saved_searches_limit            ]);
+        Option::updateOrCreate([ 'key' => 'unit_price.historical_days'                 ], [ 'value' => $request->historical_days                 ]);
+        Option::updateOrCreate([ 'key' => 'unit_price.data_pool_youtube_channel_limit' ], [ 'value' => $request->data_pool_youtube_channel_limit ]);
+        Option::updateOrCreate([ 'key' => 'unit_price.data_pool_youtube_video_limit'   ], [ 'value' => $request->data_pool_youtube_video_limit   ]);
+        Option::updateOrCreate([ 'key' => 'unit_price.data_pool_youtube_keyword_limit' ], [ 'value' => $request->data_pool_youtube_keyword_limit ]);
+        Option::updateOrCreate([ 'key' => 'unit_price.data_pool_twitter_keyword_limit' ], [ 'value' => $request->data_pool_twitter_keyword_limit ]);
+        Option::updateOrCreate([ 'key' => 'unit_price.data_pool_twitter_user_limit'    ], [ 'value' => $request->data_pool_twitter_user_limit    ]);
+        Option::updateOrCreate([ 'key' => 'unit_price.module_real_time'                ], [ 'value' => $request->module_real_time                ]);
+        Option::updateOrCreate([ 'key' => 'unit_price.module_search'                   ], [ 'value' => $request->module_search                   ]);
+        Option::updateOrCreate([ 'key' => 'unit_price.module_trend'                    ], [ 'value' => $request->module_trend                    ]);
+        Option::updateOrCreate([ 'key' => 'unit_price.module_alarm'                    ], [ 'value' => $request->module_alarm                    ]);
+        Option::updateOrCreate([ 'key' => 'unit_price.module_pin'                      ], [ 'value' => $request->module_pin                      ]);
+        Option::updateOrCreate([ 'key' => 'unit_price.module_forum'                    ], [ 'value' => $request->module_forum                    ]);
+        Option::updateOrCreate([ 'key' => 'formal.discount_with_year'                  ], [ 'value' => $request->discount_with_year              ]);
+
+        return [
+            'status' => 'ok'
+        ];
+    }
+
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
      * Organizasyon Listesi
      *
      * @return view
@@ -969,7 +1037,9 @@ class OrganisationController extends Controller
     {
         $organisation = Organisation::where('id', $id)->firstOrFail();
 
-        return view('organisation.admin.view', compact('organisation'));
+        $prices = Option::select('key', 'value')->where('key', 'LIKE', 'unit_price.%')->get()->keyBy('key')->toArray();
+
+        return view('organisation.admin.view', compact('organisation', 'prices'));
     }
 
     /**

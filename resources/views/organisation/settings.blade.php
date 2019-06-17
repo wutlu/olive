@@ -408,7 +408,7 @@
         <div id="tab-2" class="card-content grey lighten-4">
             @if ($user->organisation->invoices()->count())
                 @if ($user->organisation->invoices[0]->paid_at)
-                    @include('organisation._inc.form')
+                    @include('organisation._inc.form', [ 'discount_with_year' => $discount_with_year ])
                 @else
                     <div class="center-align">
                         <a href="{{ route('organisation.invoice', [ 'id' => $user->organisation->invoices[0]->invoice_id ]) }}" class="waves-effect btn-flat">Fatura</a>
@@ -478,7 +478,7 @@
                     @endpush
                 @endif
             @else
-                @include('organisation._inc.form')
+                @include('organisation._inc.form', [ 'discount_with_year' => $discount_with_year ])
             @endif
         </div>
     @endif
