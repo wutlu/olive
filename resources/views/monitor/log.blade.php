@@ -1,5 +1,4 @@
 @extends('layouts.app', [
-    'dock' => true,
     'sidenav_fixed_layout' => true,
     'breadcrumb' => [
         [
@@ -14,101 +13,6 @@
     ],
     'footer_hide' => true
 ])
-
-@section('dock')
-    @push('local.scripts')
-        function __activities(__, obj)
-        {
-            var item_model = __.children('.model');
-
-            if (obj.status == 'ok')
-            {
-                if (obj.hits.length)
-                {
-                    $.each(obj.hits, function(key, o) {
-                        var item = item_model.clone();
-                            item.removeClass('model hide').addClass('_tmp').attr('data-id', o.id)
-
-                            item.find('.collapsible-header > span > p').html(o.title)
-                            item.find('.collapsible-header > span > time').attr('data-time', o.updated_at).html(o.updated_at)
-                            item.find('.collapsible-header > [data-name=icon]').html(o.icon)
-                            item.find('.collapsible-body > span').html(o.markdown)
-                            item.find('[data-name=name]').html(o.user.email)
-
-                            if (o.markdown_color)
-                            {
-                                item.find('.collapsible-body').css({ 'background-color': o.markdown_color })
-                            }
-
-                            if (o.button_text)
-                            {
-                                var button = $('<a />', {
-                                    'class': o.button_class,
-                                    'html': o.button_text,
-                                    'href': o.button_action
-                                });
-
-                                item.find('.collapsible-body').children('span').append(button)
-                            }
-
-                            item.appendTo(__)
-                    })
-                }
-
-                $('[data-name=count]').html(obj.total)
-            }
-        }
-    @endpush
-
-    <div class="input-field">
-        <input name="string" id="string" type="text" class="validat json json-search" data-json-target="#activities" />
-        <label for="string">Filtreleyin</label>
-    </div>
-    <ul class="collapsible load json-clear" 
-        id="activities"
-        data-href="{{ route('admin.monitoring.activities') }}"
-        data-include="string"
-        data-skip="0"
-        data-take="5"
-        data-more-button="#activities-more_button"
-        data-callback="__activities"
-        data-method="post"
-        data-loader="#home-loader"
-        data-nothing>
-        <li class="nothing hide">
-            @component('components.nothing')
-                @slot('cloud_class', 'white-text')
-            @endcomponent
-        </li>
-        <li class="model hide">
-            <div class="collapsible-header">
-                <i class="material-icons" data-name="icon"></i>
-                <span>
-                    <p data-name="name" class="mb-0 grey-text"></p>
-                    <p class="mb-0"></p>
-                    <time class="timeago grey-text"></time>
-                </span>
-                <i class="material-icons arrow">keyboard_arrow_down</i>
-            </div>
-            <div class="collapsible-body">
-                <span></span>
-            </div>
-        </li>
-    </ul>
-
-    @component('components.loader')
-        @slot('color', 'blue-grey')
-        @slot('id', 'home-loader')
-    @endcomponent
-
-    <div class="center-align">
-        <a
-            class="more hide json"
-            id="activities-more_button"
-            href="#"
-            data-json-target="ul#activities">Daha Fazla</a>
-    </div>
-@endsection
 
 @push('local.scripts')
     var logTimer;
