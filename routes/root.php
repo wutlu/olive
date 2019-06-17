@@ -6,6 +6,7 @@ Route::prefix('sistem-izleme')->group(function () {
 
     Route::get('log-ekrani', 'MonitorController@log')->name('admin.monitoring.log');
     Route::post('log-ekrani', 'MonitorController@logJson');
+    Route::post('aktiviteler', 'MonitorController@activity')->name('admin.monitoring.activities');
     Route::delete('log-ekrani/temizle', 'MonitorController@logClear')->name('admin.monitoring.log.clear');
 
     Route::prefix('arkaplan')->group(function () {

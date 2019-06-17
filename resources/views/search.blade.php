@@ -1142,8 +1142,7 @@
                         'que': 'Soru',
                         'req': 'İstek',
                         'nws': 'Haber',
-                        'cmp': 'Şikayet',
-                        'nor': 'Normal'
+                        'cmp': 'Şikayet'
                     };
 
                     $.each(obj.data, function(key, count) {

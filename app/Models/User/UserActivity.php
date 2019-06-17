@@ -21,6 +21,12 @@ class UserActivity extends Model
 		'push_notification'
     ];
 
+    # user
+    public function user()
+    {
+        return $this->hasOne('App\Models\User\User', 'id', 'user_id');
+    }
+
     public function getMarkdownAttribute($value)
     {
     	return Term::markdown($value);

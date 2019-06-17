@@ -323,13 +323,10 @@
             @push('local.scripts')
                 function __activities(__, obj)
                 {
-                    var ul = $('#activities');
-                    var item_model = ul.children('li.model');
+                    var item_model = __.children('li.model');
 
                     if (obj.status == 'ok')
                     {
-                        item_model.addClass('hide')
-
                         if (obj.hits.length)
                         {
                             $.each(obj.hits, function(key, o) {
@@ -357,7 +354,7 @@
                                         item.find('.collapsible-body').children('span').append(button)
                                     }
 
-                                    item.appendTo(ul)
+                                    item.appendTo(__)
                             })
                         }
                     }

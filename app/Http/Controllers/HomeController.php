@@ -254,7 +254,6 @@ class HomeController extends Controller
         $skip = $request->skip;
 
         $query = new UserActivity;
-        $query = $request->string ? $query->where('title', 'ILIKE', '%'.$request->string.'%') : $query;
         $query = $query->where('user_id', auth()->user()->id);
         $query = $query->skip($skip)
                        ->take($take)

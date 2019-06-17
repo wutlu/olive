@@ -17,8 +17,10 @@ use Carbon\Carbon;
 
 use App\Models\Option;
 use App\Models\Log;
+use App\Models\User\UserActivity;
 
 use App\Http\Requests\ShellRequest;
+use App\Http\Requests\SearchRequest;
 
 use App\Jobs\KillProcessJob;
 
@@ -34,6 +36,34 @@ class MonitorController extends Controller
         $disks = System::getDiskSize();
 
         return view('monitor.server', compact('disks'));
+    }
+
+    /**
+     * Aktiviteler
+     *
+     * @return array
+     */
+    public static function activity(SearchRequest $request)
+    {
+        $take = $request->take;
+        $skip = $request->skip;
+
+        $query = new UserActivity;
+        $query = $query->with('user');
+        $query = $request->string ? $query->where(function($query) use ($request) {
+            $query->orWhere('title', 'ILIKE', '%'.$request->string.'%');
+            $query->orWhere('markdown', 'ILIKE', '%'.$request->string.'%');
+        }) : $query;
+
+        $query = $query->skip($skip)
+                       ->take($take)
+                       ->orderBy('updated_at', 'DESC');
+
+        return [
+            'status' => 'ok',
+            'hits' => $query->get(),
+            'total' => $query->count()
+        ];
     }
 
     /**

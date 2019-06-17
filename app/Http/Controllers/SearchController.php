@@ -759,23 +759,17 @@ class SearchController extends Controller
                             'nws' => round($clean_hits['consumer_nws']['value'] ? $clean_hits['consumer_nws']['value']*100/$total_hits : 0, 2)
                         ];
 
-                        $normal = 0;
-
                         foreach ([ 'que', 'req', 'cmp', 'nws' ] as $key => $item)
                         {
                             if ($data['data'][$item] >= 25)
                             {
-                                $normal = $normal + 25;
                                 $data['data'][$item] = $data['data'][$item]-25;
                             }
                             else
                             {
-                                $normal = $normal + (25 - $data['data'][$item]);
                                 $data['data'][$item] = 0;
                             }
                         }
-
-                        $data['data']['nor'] = $normal;
                     }
                 }
             break;

@@ -15,8 +15,7 @@
 @push('local.scripts')
     function __organisations(__, obj)
     {
-        var ul = $('#organisations');
-        var item_model = ul.children('.model');
+        var item_model = __.children('.model');
 
         if (obj.status == 'ok')
         {
@@ -31,7 +30,7 @@
                         item.find('[data-name=author]').html(o.author.name)
                         item.find('[data-name=avatar]').attr('src', o.author.avatar ? '{{ asset('/') }}' + o.author.avatar : '{{ asset('img/icons/people.svg') }}')
 
-                        item.appendTo(ul)
+                        item.appendTo(__)
                 })
             }
 
