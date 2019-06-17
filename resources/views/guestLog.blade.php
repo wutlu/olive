@@ -66,7 +66,7 @@
     </div>
     <ul class="collapsible load json-clear" 
         id="activities"
-        data-href="{{ route('admin.monitoring.activities') }}"
+        data-href="{{ route('admin.session.activities') }}"
         data-include="string"
         data-skip="0"
         data-take="5"
