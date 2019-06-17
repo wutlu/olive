@@ -269,7 +269,7 @@
                                     data-update
                                     name="data_pool_twitter_user_limit"
                                     id="data_pool_twitter_user_limit"
-                                    max="5000"
+                                    max="1000000"
                                     min="10"
                                     value="{{ $organisation->data_pool_twitter_user_limit }}"
                                     type="number"
