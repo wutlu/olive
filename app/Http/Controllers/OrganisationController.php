@@ -885,17 +885,24 @@ class OrganisationController extends Controller
             abort(404);
         }
 
-        $invoice = Invoice::where('invoice_id', $id)
-                          ->where(function ($query) use ($key) {
+        $invoice = Invoice::join('users', 'organisation_invoices.user_id', '=', 'users.id')
+                          ->where('invoice_id', $id)
+                          ->where(function($q) {
+                                $q->orWhere(function ($query) {
+                                    if (auth()->check())
+                                    {
+                                        $user = auth()->user();
+
+                                        if (!$user->root())
+                                        {
+                                            $query->orWhere('organisation_invoices.organisation_id', $user->organisation_id)
+                                                  ->orWhere('organisation_invoices.user_id', $user->id);
+                                        }
+                                    }
+                                });
                                 if (auth()->check())
                                 {
-                                    $user = auth()->user();
-
-                                    if (!$user->root())
-                                    {
-                                        $query->orWhere('organisation_id', $user->organisation_id)
-                                              ->orWhere('user_id', $user->id);
-                                    }
+                                    $q->orWhere('users.partner_user_id', auth()->user()->id);
                                 }
                           })
                           ->firstOrFail();
@@ -1097,6 +1104,16 @@ class OrganisationController extends Controller
     public static function adminUpdate(int $id, AdminUpdateRequest $request)
     {
         $organisation = Organisation::where('id', $id)->firstOrFail();
+
+        if ($organisation->status == false && $request->status)
+        {
+            if (@$organisation->author->partner()->partner && @$organisation->author->partner()->partner_for_once_percent)
+            {
+                $partner = $organisation->author->partner();
+                $partner->partner_for_once_percent = 0;
+                $partner->save();
+            }
+        }
 
         $organisation->name = $request->name;
         $organisation->user_capacity = $request->user_capacity;

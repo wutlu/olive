@@ -15,15 +15,47 @@
     'footer_hide' => true
 ])
 
+@push('local.styles')
+    [data-trigger=prices] {
+        -webkit-filter: grayscale(100%);
+                filter: grayscale(100%);
+    }
+    [data-trigger=prices].active {
+        -webkit-filter: grayscale(0);
+                filter: grayscale(0);
+    }
+@endpush
+
 @section('wildcard')
     <div class="card wild-background">
         <div class="container">
-            <span class="wildcard-title">{{ $user ? $user->name : 'Kullanıcı Oluştur' }}</span>
+            <div class="d-flex">
+                <a href="#" data-trigger="prices">
+                    <img class="wildcard-icon" alt="{{ $auth->partner }}" src="{{ asset('img/partner-'.$auth->partner.'.png') }}" />
+                </a>
+                <span class="wildcard-title">{{ $user ? $user->name : 'Kullanıcı Oluştur' }}</span>
+            </div>
         </div>
     </div>
 @endsection
 
 @push('local.scripts')
+    $(document).on('click', '[data-trigger=prices]', function() {
+        var __ = $(this);
+        var table = $('[data-name=prices]');
+
+        if (__.hasClass('active'))
+        {
+            __.removeClass('active')
+            table.addClass('hide')
+        }
+        else
+        {
+            __.addClass('active')
+            table.removeClass('hide')
+        }
+    })
+
     function __action(__, obj)
     {
         if (obj.status == 'ok')
@@ -370,7 +402,7 @@
                         </li>
                     </ul>
                 </div>
-                <table class="highlight grey lighten-2">
+                <table class="highlight grey lighten-2 hide" data-name="prices">
                     <tbody>
                         <tr>
                             <th class="p-1">Organizasyon maliyeti</th>
@@ -393,6 +425,27 @@
                         <label for="unit_price">Birim Fiyat</label>
                         <small class="helper-text">{{ config('formal.tax_name') }} hariç aylık organizasyon fiyatı.</small>
                     </div>
+                </div>
+            </div>
+        @endif
+
+        @if (count(@$user->invoices))
+            <div class="card mb-1">
+                <div class="card-content">
+                    <span class="card-title">Son 3 Fatura</span>
+                </div>
+
+                <div class="collection">
+                    @foreach ($user->invoices->take(3) as $invoice)
+                        <a href="{{ route('organisation.invoice', [ $invoice->invoice_id, md5(config('app.key')) ]) }}" class="collection-item d-flex justify-content-between waves-effect {{ $invoice->paid_at ? 'green-text' : 'red-text' }}">
+                            <i class="material-icons align-self-center">history</i>
+                            <span class="align-self-center">
+                                <p class="mb-0">#{{ $invoice->invoice_id }}</p>
+                                <p class="mb-0 grey-text">{{ date('d.m.Y H:i', strtotime($invoice->created_at)) }}</p>
+                            </span>
+                            <span class="ml-auto {{ $invoice->paid_at ? 'green-text' : 'red-text' }}">{{ $invoice->paid_at ? date('d.m.Y H:i', strtotime($invoice->paid_at)) : 'ÖDENMEDİ' }}</span>
+                        </a>
+                    @endforeach
                 </div>
             </div>
         @endif

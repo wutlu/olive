@@ -48,9 +48,12 @@
 @endpush
 
 @section('wildcard')
-    <div class="card wild-background">
+    <div class="card wild-background yellow lighten-4">
         <div class="container">
-            <span class="wildcard-title">Kullanıcılar</span>
+            <div class="d-flex">
+                <img class="wildcard-icon" alt="{{ $user->partner }}" src="{{ asset('img/partner-'.$user->partner.'.png') }}" />
+                <span class="wildcard-title">Partner Kullanıcıları</span>
+            </div>
         </div>
     </div>
 @endsection
@@ -62,9 +65,11 @@
 @endsection
 
 @section('content')
+    <input type="hidden" value="{{ $user->id }}" name="id" />
+
     <div class="card">
-        <div class="card-content">
-            <span class="card-title">Partner Kullanıcıları (<span data-name="count">0</span>)</span>
+        <div class="card-content grey-text">
+            <span data-name="count">0</span> Kullanıcı
         </div>
         <nav class="nav-half">
             <div class="nav-wrapper">
@@ -87,7 +92,7 @@
              data-method="post"
              data-skip="0"
              data-take="5"
-             data-include="string"
+             data-include="string,id"
              data-more-button="#users-more_button"
              data-callback="__users"
              data-loader="#home-loader"

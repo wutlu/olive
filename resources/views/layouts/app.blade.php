@@ -333,6 +333,7 @@
                             <span class="align-self-center">{{ strtoupper(auth()->user()->partner) }} PARTNER</span>
                         </a>
                     </li>
+                    <li class="divider"></li> 
                 @endif
 
                 @if (auth()->user()->root())

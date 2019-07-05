@@ -160,7 +160,8 @@
                            type="search"
                            class="validate json json-search"
                            data-json-target="#users"
-                           placeholder="Ara" />
+                           placeholder="Ara"
+                           value="{{ $request->q }}" />
                     <label class="label-icon" for="string">
                         <i class="material-icons">search</i>
                     </label>
@@ -214,6 +215,17 @@
 @endsection
 
 @section('dock')
+    @if ($user)
+        <div class="card yellow lighten-4">
+            <div class="card-content">
+                <a href="{{ route('admin.user', $user->id) }}" class="d-flex justify-content-start">
+                    <img style="width: 64px; height: 64px;" class="mr-1 align-self-center" alt="{{ $user->partner }}" src="{{ asset('img/partner-'.$user->partner.'.png') }}" />
+                    <span class="card-title align-self-center">{{ $user->name }}</span>
+                </a>
+            </div>
+        </div>
+    @endif
+
     <div class="card card-unstyled mb-1">
         <div class="card-content">
             <span class="card-title d-flex">

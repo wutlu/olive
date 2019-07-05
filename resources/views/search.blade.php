@@ -597,7 +597,7 @@
                     {
                         $('.banner').removeClass('hide').css({ 'background-image': 'url(' + option[def.key].image + ')' })
                         $('.banner').find('[data-name=overlay]').css({ 'background-color': option[def.key].color })
-                        $('.banner').find('[data-name=text]').html('Görünen o ki ilgilendiğiniz konu ' + def.val + '% oranla ' + option[def.key].text + ' mesajlar içeriyor.')
+                        $('.banner').find('[data-name=text]').html('Görünen o ki ilgilendiğiniz konu ' + def.val + '% oranla ' + option[def.key].text + ' mesajı içeriyor.')
                     }
                 break;
                 case 'consumer':

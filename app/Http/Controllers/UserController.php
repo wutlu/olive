@@ -17,6 +17,7 @@ use App\Http\Requests\User\Partner\CreateRequest as PartnerCreateRequest;
 
 use App\Http\Requests\SearchRequest;
 use App\Http\Requests\AutocompleteRequest;
+use App\Http\Requests\QRequest;
 
 use App\Notifications\PasswordValidationNotification;
 use App\Notifications\EmailValidationNotification;
@@ -701,9 +702,11 @@ class UserController extends Controller
      *
      * @return view
      */
-    public static function partnerListView()
+    public static function partnerListView(int $id = null)
     {
-        return view('user.partner.list');
+        $user = auth()->user();
+
+        return view('user.partner.list', compact('user'));
     }
 
     /**
@@ -720,9 +723,11 @@ class UserController extends Controller
         $take = $request->take;
         $skip = $request->skip;
 
+        $user = auth()->user();
+
         $query = new User;
         $query = $query->with('organisation:id,status,end_date');
-        $query = $query->where('partner_user_id', auth()->user()->id);
+        $query = $query->where('partner_user_id', $user->id);
         $query = $request->string ? $query->where(function ($query) use ($request) {
                                     $query->orWhere('name', 'ILIKE', '%'.$request->string.'%')
                                           ->orWhere('email', 'ILIKE', '%'.$request->string.'%');
@@ -764,9 +769,9 @@ class UserController extends Controller
             return abort(403);
         }
 
-        $partner_percent = System::option('formal.partner.'.$auth->partner.'.percent');
+        $partner_percent = $auth->partner_for_once_percent ? $auth->partner_for_once_percent : System::option('formal.partner.'.$auth->partner.'.percent');
 
-        return view('user.partner.view', compact('user', 'prices', 'partner_percent'));
+        return view('user.partner.view', compact('auth', 'user', 'prices', 'partner_percent'));
     }
 
     /**
@@ -920,7 +925,7 @@ class UserController extends Controller
      *
      * @return view
      */
-    public static function adminListView()
+    public static function adminListView(QRequest $request)
     {
         $partners = [
             'eagle' => 'Eagle',
@@ -929,7 +934,19 @@ class UserController extends Controller
             'dragon' => 'Dragon'
         ];
 
-        return view('user.admin.list', compact('partners'));
+        $user = [];
+
+        if ($request->q)
+        {
+            preg_match('/(?<=partner:)[([0-9]+(?=)/', $request->q, $matches);
+
+            if (@$matches[0])
+            {
+                $user = User::where('id', $matches[0])->firstOrFail();
+            }
+        }
+
+        return view('user.admin.list', compact('user', 'partners', 'request'));
     }
 
     /**
@@ -955,9 +972,18 @@ class UserController extends Controller
 
         if ($request->string)
         {
-            $query = $query->where(function ($query) use ($request) {
-                $query->orWhere('name', 'ILIKE', '%'.$request->string.'%')->orWhere('email', 'ILIKE', '%'.$request->string.'%');
-            });
+            preg_match('/(?<=partner:)[([0-9]+(?=)/', $request->string, $matches);
+
+            if (@$matches[0])
+            {
+                $query = $query->where('partner_user_id', intval($matches[0]));
+            }
+            else
+            {
+                $query = $query->where(function ($query) use ($request) {
+                    $query->orWhere('name', 'ILIKE', '%'.$request->string.'%')->orWhere('email', 'ILIKE', '%'.$request->string.'%');
+                });
+            }
         }
 
         $total = $query->count();

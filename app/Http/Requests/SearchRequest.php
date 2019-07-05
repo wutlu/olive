@@ -28,6 +28,7 @@ class SearchRequest extends FormRequest
             'skip' => 'required|integer',
             'take' => 'required|integer|max:100',
             'status' => 'nullable|string|in:on,off',
+            'id' => 'nullable|integer',
 
             'partner' => 'nullable|string|in:eagle,phoenix,gryphon,dragon',
             'sort' => 'nullable|string|in:asc,desc'

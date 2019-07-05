@@ -739,6 +739,11 @@ code {
   display: table;
   font-size: 32px;
 }
+.wildcard .wildcard-icon {
+  width: 64px;
+  height: 64px;
+  margin: 54px 16px 32px 0;
+}
 .wildcard .wild-background {
   background-image: url('../img/low.png');
   background-repeat: no-repeat;

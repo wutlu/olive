@@ -59,4 +59,10 @@ class OrganisationInvoice extends Model
     {
         return $this->hasOne('App\Models\Organisation\Organisation', 'id', 'organisation_id');
     }
+
+    # user
+    public function user()
+    {
+        return $this->hasOne('App\Models\User\User', 'id', 'user_id');
+    }
 }

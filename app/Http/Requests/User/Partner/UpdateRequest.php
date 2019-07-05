@@ -140,7 +140,9 @@ class UpdateRequest extends FormRequest
                 }
             }
 
-            $partner_percent = System::option('formal.partner.'.auth()->user()->partner.'.percent');
+            $auth = auth()->user();
+
+            $partner_percent = $auth->partner_for_once_percent ? $auth->partner_for_once_percent : System::option('formal.partner.'.$auth->partner.'.percent');
 
             $math_prices = $math_prices * $request->user_capacity;
             $math_prices = ($math_prices / 100 * $partner_percent) + $math_prices;

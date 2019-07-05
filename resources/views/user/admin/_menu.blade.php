@@ -16,8 +16,10 @@
     </a>
     @if ($user->organisation_id)
         <div class="divider"></div>
-        <a href="{{ route('admin.organisation', $user->organisation->id) }}" class="collection-item waves-effect">
-            {{ $user->organisation->name }}
-        </a>
+        <a href="{{ route('admin.organisation', $user->organisation->id) }}" class="collection-item waves-effect">{{ $user->organisation->name }}</a>
+    @endif
+    @if ($user->partner)
+        <div class="divider"></div>
+        <a href="{{ route('admin.user.list', [ 'q' => 'partner:'.$user->id ]) }}" class="collection-item waves-effect">Üye Yaptığı Kullanıcılar</a>
     @endif
 </div>
