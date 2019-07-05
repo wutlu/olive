@@ -152,7 +152,7 @@
                 Filtrele
             </span>
         </div>
-        <div class="collection">
+        <div class="collection collection-unstyled">
             <label class="collection-item waves-effect d-block" data-update="true">
                 <input name="status" id="status-all" type="radio" value="" />
                 <span>Tümü</span>
@@ -224,7 +224,7 @@
                 data-name="admin.organisation"
                 data-callback="__go">
                 <img alt="Avatar" data-name="avatar" class="circle" />
-                <span class="align-self-center">
+                <span>
                     <p data-name="name"></p>
                     <p data-name="author" class="grey-text"></p>
                 </span>

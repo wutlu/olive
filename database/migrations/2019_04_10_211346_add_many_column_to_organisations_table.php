@@ -32,17 +32,17 @@ class AddManyColumnToOrganisationsTable extends Migration
             $table->unsignedSmallInteger('alarm_limit')->default(0);
             $table->unsignedSmallInteger('pin_group_limit')->default(0);
 
-            $table->unsignedInteger('data_pool_youtube_channel_limit')->default(10);
-            $table->unsignedInteger('data_pool_youtube_video_limit')->default(10);
-            $table->unsignedInteger('data_pool_youtube_keyword_limit')->default(10);
-            $table->unsignedInteger('data_pool_twitter_keyword_limit')->default(10);
-            $table->unsignedInteger('data_pool_twitter_user_limit')->default(10);
-            $table->unsignedInteger('data_pool_facebook_keyword_limit')->default(10);
-            $table->unsignedInteger('data_pool_facebook_user_limit')->default(10);
-            $table->unsignedInteger('data_pool_instagram_keyword_limit')->default(10);
-            $table->unsignedInteger('data_pool_instagram_user_limit')->default(10);
+            $table->unsignedInteger('data_pool_youtube_channel_limit')->default(0);
+            $table->unsignedInteger('data_pool_youtube_video_limit')->default(0);
+            $table->unsignedInteger('data_pool_youtube_keyword_limit')->default(0);
+            $table->unsignedInteger('data_pool_twitter_keyword_limit')->default(0);
+            $table->unsignedInteger('data_pool_twitter_user_limit')->default(0);
+            $table->unsignedInteger('data_pool_facebook_keyword_limit')->default(0);
+            $table->unsignedInteger('data_pool_facebook_user_limit')->default(0);
+            $table->unsignedInteger('data_pool_instagram_keyword_limit')->default(0);
+            $table->unsignedInteger('data_pool_instagram_user_limit')->default(0);
 
-            $table->unsignedSmallInteger('historical_days')->default(7);
+            $table->unsignedSmallInteger('historical_days')->default(1);
         });
     }
 

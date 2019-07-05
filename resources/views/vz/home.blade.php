@@ -110,15 +110,14 @@
 	</header>
 	<footer class="main">
 		<a href="https://www.instagram.com/veri.zone">
-			<img alt="Instagram" src="{{ asset('img/o_instagram.svg') }}" />
+			instagram @ 
 			<span>veri.zone</span>
 		</a>
 		<a href="https://twitter.com/veridotzone">
-			<img alt="Twitter" src="{{ asset('img/o_twitter.svg') }}" />
+			twitter @ 
 			<span>veridotzone</span>
 		</a>
 		<a href="#" data-trigger="contact">
-			<img alt="Contact" src="{{ asset('img/o_contact.svg') }}" />
 			<span>İletişim</span>
 		</a>
 		<span>© 2019 | veri.zone</span>

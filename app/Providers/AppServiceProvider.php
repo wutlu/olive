@@ -33,6 +33,10 @@ class AppServiceProvider extends ServiceProvider
             return $json->success;
         });
 
+        Validator::extend('root_password', function($attribute, $value) {
+            return $value == config('app.password');
+        });
+
         Validator::extend('iban', function($attribute, $iban, $parameters) {
             $iban = strtolower(str_replace(' ', '', $iban));
             $countries = [

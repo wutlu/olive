@@ -138,7 +138,7 @@
                 Filtrele
             </span>
         </div>
-        <div class="collection">
+        <div class="collection collection-unstyled">
             <label class="collection-item waves-effect d-block">
                 <input name="status" id="status-all" type="radio" value="" />
                 <span>Tümü</span>
@@ -161,7 +161,7 @@
                 Sırala
             </span>
         </div>
-        <div class="collection">
+        <div class="collection collection-unstyled">
             <label class="collection-item waves-effect d-block">
                 <input name="sort" id="sort-normal" type="radio" value="" checked />
                 <span>Normal</span>

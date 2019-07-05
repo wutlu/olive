@@ -148,12 +148,10 @@
 @endpush
 
 @section('content')
-    <div class="card with-bg">
+    <div class="card">
         <div class="card-image">
             <img src="{{ asset('img/md-s/21.jpg') }}" alt="Image" />
-            <span class="card-title white-text d-flex">
-                Destek Taleplerim
-            </span>
+            <span class="card-title white-text">Destek Taleplerim</span>
             <a href="javascript:form()" class="btn-floating btn-large halfway-fab waves-effect white">
                 <i class="material-icons grey-text text-darken-2">add</i>
             </a>

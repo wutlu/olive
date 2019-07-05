@@ -35,6 +35,7 @@ class UpdateRequest extends FormRequest
             'moderator'    => 'nullable|string|in:on',
             'ban_reason'   => 'nullable|string|max:255',
             'about'        => 'nullable|string|max:10000',
+            'partner_for_once_percent' => 'required|integer|max:100',
         ];
     }
 }

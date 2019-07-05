@@ -63,14 +63,14 @@ class DataController extends Controller
             $query->where('keyword', 'ILIKE', '%'.$string.'%');
         }
 
-        $total = $query->count();
-
         if ($org_name)
         {
             $query->whereHas('organisation', function($q) use($org_name) {
                 $q->where('name', $org_name);
             });
         }
+
+        $total = $query->count();
 
         $query = $query->skip($skip)
                        ->take($take)
@@ -153,14 +153,14 @@ class DataController extends Controller
             $query->where('channel_title', 'ILIKE', '%'.$string.'%');
         }
 
-        $total = $query->count();
-
         if ($org_name)
         {
             $query->whereHas('organisation', function($q) use($org_name) {
                 $q->where('name', $org_name);
             });
         }
+
+        $total = $query->count();
 
         $query = $query->skip($skip)
                        ->take($take)
@@ -241,14 +241,14 @@ class DataController extends Controller
             $query->where('video_title', 'ILIKE', '%'.$string.'%');
         }
 
-        $total = $query->count();
-
         if ($org_name)
         {
             $query->whereHas('organisation', function($q) use($org_name) {
                 $q->where('name', $org_name);
             });
         }
+
+        $total = $query->count();
 
         $query = $query->skip($skip)
                        ->take($take)

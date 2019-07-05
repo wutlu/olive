@@ -108,7 +108,7 @@ class MonitorController extends Controller
         $message[] = '| Bileşen                    | Tüketim                                          |';
         $message[] = '| -------------------------: | :----------------------------------------------- |';
 
-        if ($ram_percent > 96)
+        if ($ram_percent > 100)
         {
             $message[] = '| RAM tüketimi           | '.$ram_percent.'%                                |';
         }

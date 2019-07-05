@@ -8,7 +8,8 @@
             'text' => '🐞 Kullanıcılar'
         ]
     ],
-    'footer_hide' => true
+    'footer_hide' => true,
+    'dock' => true
 ])
 
 @push('local.scripts')
@@ -28,7 +29,10 @@
                         item.find('[data-name=name]').html(o.name)
                         item.find('[data-name=email]').html(o.email)
                         item.find('[data-name=avatar]').attr('src', o.avatar ? '{{ asset('/') }}' + o.avatar : '{{ asset('img/icons/people.svg') }}')
-                        item.find('[data-name=verified]').html(o.verified ? 'Doğrulandı!' : 'Doğrulanmadı!').addClass(o.verified ? 'green-text' : 'red-text')
+                        item.find('[data-name=verified]')
+                            .html(o.partner ? o.partner : (o.verified ? 'Doğrulandı!' : 'Doğrulanmadı!'))
+                            .addClass(o.partner ? 'yellow-text text-darken-2' : (o.verified ? 'green-text' : 'red-text'))
+                        item.find('[data-name=sum]').removeClass(o.partner ? 'hide' : '').children('span').html(o.partner_paymet_history_sum)
 
                         item.appendTo(ul)
                 })
@@ -126,6 +130,13 @@
             $('#modal-user').modal('close')
         }
     }
+
+    $(document).on('change', '[data-update]', function() {
+        var search = $('#users');
+            search.data('skip', 0).addClass('json-clear');
+
+        vzAjax(search)
+    })
 @endpush
 
 @section('content')
@@ -162,7 +173,7 @@
              data-method="post"
              data-skip="0"
              data-take="5"
-             data-include="string"
+             data-include="string,partner,sort"
              data-more-button="#users-more_button"
              data-callback="__users"
              data-loader="#home-loader"
@@ -178,11 +189,14 @@
                 data-name="admin.user"
                 data-callback="__go">
                 <img alt="Avatar" data-name="avatar" class="circle" />
-                <span class="align-self-center">
+                <span>
                     <p data-name="name"></p>
                     <p data-name="email" class="grey-text"></p>
                 </span>
-                <span data-name="verified" class="ml-auto"></span>
+                <span class="ml-auto">
+                    <p class="right-align" data-name="verified"></p>
+                    <p class="right-align hide" data-name="sum">{{ config('formal.currency') }} <span></span> ciro</p>
+                </span>
             </a>
         </div>
 
@@ -197,4 +211,49 @@
        class="more hide json"
        id="users-more_button"
        data-json-target="#users">Daha Fazla</a>
+@endsection
+
+@section('dock')
+    <div class="card card-unstyled mb-1">
+        <div class="card-content">
+            <span class="card-title d-flex">
+                <i class="material-icons mr-1">filter_list</i>
+                Partner
+            </span>
+        </div>
+        <div class="collection collection-unstyled">
+            <label class="collection-item waves-effect d-block" data-update="true">
+                <input name="partner" id="partner" type="radio" checked value="" />
+                <span>Tümü</span>
+            </label>
+            @foreach ($partners as $key => $partner)
+                <label class="collection-item waves-effect d-block" data-update="true">
+                    <input name="partner" id="partner-{{ $key }}" type="radio" value="{{ $key }}" />
+                    <span>{{ $partner }}</span>
+                </label>
+            @endforeach
+        </div>
+    </div>
+    <div class="card card-unstyled mb-1">
+        <div class="card-content">
+            <span class="card-title d-flex">
+                <i class="material-icons mr-1">filter_list</i>
+                Ciro Sıralaması
+            </span>
+        </div>
+        <div class="collection collection-unstyled">
+            <label class="collection-item waves-effect d-block" data-update="true">
+                <input name="sort" id="sort" type="radio" checked value="" />
+                <span>Normal</span>
+            </label>
+            <label class="collection-item waves-effect d-block" data-update="true">
+                <input name="sort" id="sort" type="radio" value="asc" />
+                <span>Artan</span>
+            </label>
+            <label class="collection-item waves-effect d-block" data-update="true">
+                <input name="sort" id="sort" type="radio" value="desc" />
+                <span>Azalan</span>
+            </label>
+        </div>
+    </div>
 @endsection

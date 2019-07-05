@@ -33,37 +33,35 @@
             <div class="card-content">
                 <span class="card-title">Hesap Bilgileri</span>
             </div>
-            <div class="card-content">
-                <div class="collection">
-                    <div class="collection-item">
-                        <div class="input-field" style="max-width: 240px;">
-                            <input name="name" id="name" value="{{ $user->name }}" type="text" class="validate" />
-                            <label for="name">Ad</label>
-                            <small class="helper-text">Sistem üzerinde görünen kullanıcı adınız.</small>
-                        </div>
+            <div class="collection collection-unstyled">
+                <div class="collection-item">
+                    <div class="input-field" style="max-width: 240px;">
+                        <input name="name" id="name" value="{{ $user->name }}" type="text" class="validate" />
+                        <label for="name">Ad</label>
+                        <small class="helper-text">Sistem üzerinde görünen kullanıcı adınız.</small>
                     </div>
-                    <div class="collection-item">
-                        <div class="input-field" style="max-width: 240px;">
-                            <input name="email" id="email" value="{{ $user->email }}" type="email" class="validate" />
-                            <label for="email">E-posta</label>
-                            <small class="helper-text">Sistemdeki e-posta adresiniz.</small>
-                        </div>
+                </div>
+                <div class="collection-item">
+                    <div class="input-field" style="max-width: 240px;">
+                        <input name="email" id="email" value="{{ $user->email }}" type="email" class="validate" />
+                        <label for="email">E-posta</label>
+                        <small class="helper-text">Sistemdeki e-posta adresiniz.</small>
                     </div>
-                    <div class="collection-item">
-                        <div class="input-field">
-                            <textarea name="about" id="about" data-length="10000" class="materialize-textarea validate">{{ $user->about }}</textarea>
-                            <label for="about">Siz</label>
-                            <small class="grey-text">Bu alanda <a href="https://guides.github.com/features/mastering-markdown/" target="_blank">Markdown</a> kullanabilirsiniz.</small>
-                            <span class="helper-text">Kendinizi tanıtmak isterseniz bu alanı doldurabilirsiniz.</span>
-                        </div>
+                </div>
+                <div class="collection-item">
+                    <div class="input-field">
+                        <textarea name="about" id="about" data-length="10000" class="materialize-textarea validate">{{ $user->about }}</textarea>
+                        <label for="about">Siz</label>
+                        <small class="grey-text">Bu alanda <a href="https://guides.github.com/features/mastering-markdown/" target="_blank">Markdown</a> kullanabilirsiniz.</small>
+                        <span class="helper-text">Kendinizi tanıtmak isterseniz bu alanı doldurabilirsiniz.</span>
                     </div>
-                    <hr />
-                    <div class="collection-item">
-                        <div class="input-field" style="max-width: 240px;">
-                            <input name="password" id="password" type="password" class="validate" />
-                            <label for="password">Şifre</label>
-                            <small class="helper-text">Değiştirmek istemiyorsanız boş bırakın.</small>
-                        </div>
+                </div>
+                <hr />
+                <div class="collection-item">
+                    <div class="input-field" style="max-width: 240px;">
+                        <input name="password" id="password" type="password" class="validate" />
+                        <label for="password">Şifre</label>
+                        <small class="helper-text">Değiştirmek istemiyorsanız boş bırakın.</small>
                     </div>
                 </div>
             </div>

@@ -643,7 +643,7 @@
                     {
                         $('.banner').removeClass('hide').css({ 'background-image': 'url(' + option[def.key].image + ')' })
                         $('.banner').find('[data-name=overlay]').css({ 'background-color': option[def.key].color })
-                        $('.banner').find('[data-name=text]').html('Bu konu çok fazla (' + def.val + '%) ' + option[def.key].text + ' mesajları içeriyor.')
+                        $('.banner').find('[data-name=text]').html('Bu konu çok fazla (' + def.val + '%) ' + option[def.key].text + ' mesajı içeriyor.')
                     }
                 break;
                 case 'gender':

@@ -6,7 +6,6 @@
 
     <!-- viewport -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta http-equiv="content-language" content="tr" />
 
     <meta name="robots" content="noindex" />
 
@@ -302,7 +301,7 @@
                                     </li>
                                 @endisset
                                 @isset($help)
-                                    <li id="help-button">
+                                    <li class="hide-on-small-only" id="help-button">
                                         <a href="#" onclick="{{ $help }}">
                                             <i class="material-icons">help</i>
                                         </a>
@@ -326,10 +325,20 @@
                     </div>
                 </li>
 
+                @if (auth()->user()->partner)
+                    <!-- sadece partner -->
+                    <li>
+                        <a href="{{ route('partner.user.list') }}" class="d-flex waves-effect">
+                            <img class="align-self-center mr-1" alt="{{ auth()->user()->partner }}" src="{{ asset('img/partner-'.auth()->user()->partner) }}.png" style="width: 32px; height: 32px;" />
+                            <span class="align-self-center">{{ strtoupper(auth()->user()->partner) }} PARTNER</span>
+                        </a>
+                    </li>
+                @endif
+
                 @if (auth()->user()->root())
                     <!-- sadece yönetici -->
                     <li>
-                        <a href="#" class="subheader">Yönetici Menüsü</a>
+                        <a href="#" class="subheader red-text">Yönetici Menüsü</a>
                     </li>
                     <li>
                         <div class="collapsible-header waves-effect">
@@ -476,6 +485,7 @@
                         <a class="waves-effect" href="{{ route('admin.organisation.list') }}">
                             <i class="material-icons">group_work</i>
                             Organizasyonlar
+                            <span class="badge grey white-text" data-id="organisation-count" data-tooltip="İşlem Bekleyen Pasif Organizasyonlar" data-position="right">0</span>
                         </a>
                     </li>
                     <li class="tiny">
@@ -496,7 +506,7 @@
                 @if (auth()->user()->moderator)
                     <!-- sadece moderatör -->
                     <li>
-                        <a href="#" class="subheader">Moderatör Menüsü</a>
+                        <a href="#" class="subheader red-text">Moderatör Menüsü</a>
                     </li>
                     <li class="tiny">
                         <a class="waves-effect" href="{{ route('analysis.dashboard') }}">
@@ -783,9 +793,8 @@
                 if (obj.status == 'ok')
                 {
                     @if (auth()->user()->root())
-                        $('[data-id=ticket-count]').html(obj.data.ticket.count)
-                                                   .addClass(obj.data.ticket.count > 0 ? 'red' : 'grey')
-                                                   .removeClass(obj.data.ticket.count > 0 ? 'grey' : 'red')
+                        $('[data-id=ticket-count]').html(obj.data.ticket.count).addClass(obj.data.ticket.count > 0 ? 'red' : 'grey').removeClass(obj.data.ticket.count > 0 ? 'grey' : 'red')
+                        $('[data-id=organisation-count]').html(obj.data.organisation.pending_count).addClass(obj.data.organisation.pending_count > 0 ? 'red' : 'grey').removeClass(obj.data.organisation.pending_count > 0 ? 'grey' : 'red')
                     @endif
 
                     if (obj.data.push_notifications.length)

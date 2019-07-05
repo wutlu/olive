@@ -16,7 +16,7 @@
         <div class="card-content">
             <span class="card-title">E-posta Bildirimleri</span>
         </div>
-        <div class="collection">
+        <div class="collection collection-unstyled">
             @foreach(config('system.notifications') as $key => $name)
             <label class="collection-item waves-effect d-block">
                 <input

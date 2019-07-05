@@ -25,13 +25,15 @@
                 html: 'Organizasyon Güncellendi',
                 classes: 'green darken-2'
             })
+
+            $('#modal-alert').modal('close')
         }
     }
 @endpush
 
 @section('content')
-    <form method="post" action="{{ route('admin.organisation', $organisation->id) }}" class="json" id="details-form" data-callback="__account">
-        <div class="card with-bg">
+    <form method="post" action="{{ route('admin.organisation', $organisation->id) }}" id="details-form" data-callback="__account">
+        <div class="card">
             <div class="card-content">
                 <span class="card-title">Organizasyon Bilgileri</span>
             </div>
@@ -146,7 +148,7 @@
                                     name="real_time_group_limit"
                                     id="real_time_group_limit"
                                     max="12"
-                                    min="1"
+                                    min="0"
                                     value="{{ $organisation->real_time_group_limit }}"
                                     type="number"
                                     data-unit-price="{{ $prices['unit_price.real_time_group_limit']['value'] }}"
@@ -159,7 +161,7 @@
                                      name="alarm_limit"
                                      id="alarm_limit"
                                      max="12"
-                                     min="1"
+                                     min="0"
                                      value="{{ $organisation->alarm_limit }}"
                                      type="number"
                                      data-unit-price="{{ $prices['unit_price.alarm_limit']['value'] }}"
@@ -172,7 +174,7 @@
                                     name="pin_group_limit"
                                     id="pin_group_limit"
                                     max="12"
-                                    min="1"
+                                    min="0"
                                     value="{{ $organisation->pin_group_limit }}"
                                     type="number"
                                     data-unit-price="{{ $prices['unit_price.pin_group_limit']['value'] }}"
@@ -185,7 +187,7 @@
                                     name="historical_days"
                                     id="historical_days"
                                     max="90"
-                                    min="1"
+                                    min="0"
                                     value="{{ $organisation->historical_days }}"
                                     type="number"
                                     data-unit-price="{{ $prices['unit_price.historical_days']['value'] }}"
@@ -198,7 +200,7 @@
                                     name="saved_searches_limit"
                                     id="saved_searches_limit"
                                     max="12"
-                                    min="1"
+                                    min="0"
                                     value="{{ $organisation->saved_searches_limit }}"
                                     type="number"
                                     data-unit-price="{{ $prices['unit_price.saved_searches_limit']['value'] }}"
@@ -218,7 +220,7 @@
                                     name="data_pool_youtube_channel_limit"
                                     id="data_pool_youtube_channel_limit"
                                     max="100"
-                                    min="10"
+                                    min="0"
                                     value="{{ $organisation->data_pool_youtube_channel_limit }}"
                                     type="number"
                                     data-unit-price="{{ $prices['unit_price.data_pool_youtube_channel_limit']['value'] }}"
@@ -231,7 +233,7 @@
                                     name="data_pool_youtube_video_limit"
                                     id="data_pool_youtube_video_limit"
                                     max="100"
-                                    min="10"
+                                    min="0"
                                     value="{{ $organisation->data_pool_youtube_video_limit }}"
                                     type="number"
                                     data-unit-price="{{ $prices['unit_price.data_pool_youtube_video_limit']['value'] }}"
@@ -244,7 +246,7 @@
                                     name="data_pool_youtube_keyword_limit"
                                     id="data_pool_youtube_keyword_limit"
                                     max="100"
-                                    min="10"
+                                    min="0"
                                     value="{{ $organisation->data_pool_youtube_keyword_limit }}"
                                     type="number"
                                     data-unit-price="{{ $prices['unit_price.data_pool_youtube_keyword_limit']['value'] }}"
@@ -257,7 +259,7 @@
                                     name="data_pool_twitter_keyword_limit"
                                     id="data_pool_twitter_keyword_limit"
                                     max="400"
-                                    min="10"
+                                    min="0"
                                     value="{{ $organisation->data_pool_twitter_keyword_limit }}"
                                     type="number"
                                     data-unit-price="{{ $prices['unit_price.data_pool_twitter_keyword_limit']['value'] }}"
@@ -270,7 +272,7 @@
                                     name="data_pool_twitter_user_limit"
                                     id="data_pool_twitter_user_limit"
                                     max="1000000"
-                                    min="10"
+                                    min="0"
                                     value="{{ $organisation->data_pool_twitter_user_limit }}"
                                     type="number"
                                     data-unit-price="{{ $prices['unit_price.data_pool_twitter_user_limit']['value'] }}"
@@ -281,7 +283,10 @@
                     </li>
                 </ul>
             </div>
-            <div class="card-content grey lighten-2">
+            <div class="card-content cyan lighten-4">
+                <p class="cyan-text mb-0">Tavsiye edilen fiyat, {{ config('formal.currency') }} <span data-name="price">0</span></p>
+            </div>
+            <div class="card-content lighten-2">
                 <div class="input-field">
                     <span class="prefix">{{ config('formal.currency') }}</span>
                     <input name="unit_price" id="unit_price" value="{{ $organisation->unit_price }}" type="number" class="validate" />
@@ -290,7 +295,7 @@
                 </div>
             </div>
             <div class="card-action right-align">
-                <button type="submit" class="btn-flat waves-effect">Güncelle</button>
+                <button type="button" data-trigger="save" class="btn-flat waves-effect">Güncelle</button>
             </div>
         </div>
     </form>
@@ -301,11 +306,51 @@
 @endsection
 
 @push('local.scripts')
-    $(document).on('change keydown keyup', 'input[data-update]', function() {
+    $(document).on('click', '[data-trigger=save]', function() {
+        var advice_price = parseInt($('[data-name=price]').html());
+        var price = parseInt($('input[name=unit_price]').val());
+
+        if (price < advice_price)
+        {
+            var x = advice_price - price;
+
+            modal({
+                'id': 'alert',
+                'body': 'Girdiğiniz birim fiyat, tavsiye edilen fiyatın <span class="red-text">{{ config('formal.currency') }} ' + x + '</span> altında. Yinede devam etmek istiyor musunuz?',
+                'title': 'Uyarı',
+                'size': 'modal-small',
+                'options': {},
+                'footer': [
+                    $('<a />', {
+                        'href': '#',
+                        'class': 'modal-close waves-effect btn-flat',
+                        'html': buttons.cancel
+                    }),
+                    $('<a />', {
+                        'href': '#',
+                        'class': 'waves-effect btn-flat red-text json',
+                        'data-json-target': '#details-form',
+                        'html': buttons.ok
+                    })
+                ]
+            })
+        }
+        else
+        {
+            vzAjax($('#details-form'))
+        }
+    })
+
+    calculate()
+
+    $(document).on('change keydown keyup', 'input[data-update]', calculate)
+
+    function calculate()
+    {
         var unit_price = (math_prices() + single_prices()) * $('input[name=user_capacity]').val();
 
-        $('input[name=unit_price]').attr('min', unit_price).val(unit_price)
-    })
+        $('[data-name=price]').html(unit_price)
+    }
 
     function math_prices()
     {

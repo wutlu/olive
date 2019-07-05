@@ -1074,7 +1074,7 @@ body.module-search-active > .search-wrapper {
   display: flex;
 
   -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
+      flex-wrap: wrap;
 
   -ms-flex-pack: justify;
   justify-content: space-between;
@@ -1095,19 +1095,14 @@ body.module-search-active > .search-wrapper {
 
   text-align: center;
 
-          transition: all 200ms cubic-bezier(.25, .46, .45, .94);
   -webkit-transition: all 200ms cubic-bezier(.25, .46, .45, .94);
-
-  border-radius: 1rem;
-
-  border-width: 4px;
-  border-style: dashed;
-  border-color: #ccc;
+          transition: all 200ms cubic-bezier(.25, .46, .45, .94);
 }
 .fast-menu > a:hover {
-  border-radius: 2rem;
+  padding: 2rem 1rem;
 }
 .fast-menu > a:active {
+  padding: 3rem 1rem;
 }
 
 @media only screen and (max-width: 992px) {
@@ -1596,7 +1591,7 @@ footer.page-footer > .container > .row > .col > img#vz-logo {
   background-position: center;
   background-size: 70% auto;
   word-break: break-word;
-  height: 400px;
+  height: 600px;
 }
 
 #console > li textarea {

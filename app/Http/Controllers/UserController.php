@@ -12,6 +12,8 @@ use App\Http\Requests\User\UpdateRequest as AccountUpdateRequest;
 use App\Http\Requests\User\AvatarRequest;
 use App\Http\Requests\User\Admin\UpdateRequest as AdminUpdateRequest;
 use App\Http\Requests\User\Admin\CreateRequest as AdminCreateRequest;
+use App\Http\Requests\User\Partner\UpdateRequest as PartnerUpdateRequest;
+use App\Http\Requests\User\Partner\CreateRequest as PartnerCreateRequest;
 
 use App\Http\Requests\SearchRequest;
 use App\Http\Requests\AutocompleteRequest;
@@ -22,12 +24,14 @@ use App\Notifications\WelcomeNotification;
 use App\Notifications\NewPasswordNotification;
 use App\Notifications\LoginNotification;
 use App\Notifications\MessageNotification;
+use App\Notifications\SendPasswordNotification;
 
 use App\Utilities\UserActivityUtility;
 
 use App\Models\User\User;
 use App\Models\User\UserNotification;
 use App\Models\Option;
+use App\Models\Organisation\Organisation;
 
 use Auth;
 use Session;
@@ -35,6 +39,9 @@ use Jenssegers\Agent\Agent;
 use Image;
 use System;
 use Carbon\Carbon;
+
+use Mail;
+use App\Mail\ServerAlertMail;
 
 class UserController extends Controller
 {
@@ -64,6 +71,19 @@ class UserController extends Controller
             'notificationUpdate',
             'avatar',
             'avatarUpload',
+        ]);
+
+        /**
+         ***** ZORUNLU *****
+         *
+         * - Partner
+         */
+        $this->middleware('partner')->only([
+            'partnerListView',
+            'partnerListViewJson',
+            'partnerUserView',
+            'partnerUserCreate',
+            'partnerUserUpdate',
         ]);
 
         ### [ 5 işlemden sonra 5 dakika ile sınırla ] ###
@@ -564,6 +584,9 @@ class UserController extends Controller
         $user->moderator = $request->moderator ? true : false;
         $user->about = $request->about ? $request->about : null;
 
+        $user->partner = $request->partner ? $request->partner : null;
+        $user->partner_for_once_percent = $request->partner_for_once_percent;
+
         if ($request->ban_reason)
         {
             $user->ban_reason = $request->ban_reason;
@@ -670,34 +693,36 @@ class UserController extends Controller
     }
 
     /**
-     ********************
-     ******* ROOT *******
-     ********************
+     ***********************
+     ******* PARTNER *******
+     ***********************
      *
      * Kullanıcı Listesi
      *
      * @return view
      */
-    public static function adminListView()
+    public static function partnerListView()
     {
-        return view('user.admin.list');
+        return view('user.partner.list');
     }
 
     /**
-     ********************
-     ******* ROOT *******
-     ********************
+     ***********************
+     ******* PARTNER *******
+     ***********************
      *
      * Kullanıcı Listesi
      *
      * @return array
      */
-    public static function adminListViewJson(SearchRequest $request)
+    public static function partnerListViewJson(SearchRequest $request)
     {
         $take = $request->take;
         $skip = $request->skip;
 
         $query = new User;
+        $query = $query->with('organisation:id,status,end_date');
+        $query = $query->where('partner_user_id', auth()->user()->id);
         $query = $request->string ? $query->where(function ($query) use ($request) {
                                     $query->orWhere('name', 'ILIKE', '%'.$request->string.'%')
                                           ->orWhere('email', 'ILIKE', '%'.$request->string.'%');
@@ -718,10 +743,247 @@ class UserController extends Controller
     }
 
     /**
+     ***********************
+     ******* PARTNER *******
+     ***********************
+     *
+     * Kullanıcı Formu
+     *
+     * @return view
+     */
+    public static function partnerUserView(int $id = null)
+    {
+        $prices = Option::select('key', 'value')->where('key', 'LIKE', 'unit_price.%')->get()->keyBy('key')->toArray();
+
+        $auth = auth()->user();
+
+        $user = $id ? User::findOrFail($id) : [];
+
+        if ($user && $user->partner_user_id != $auth->id)
+        {
+            return abort(403);
+        }
+
+        $partner_percent = System::option('formal.partner.'.$auth->partner.'.percent');
+
+        return view('user.partner.view', compact('user', 'prices', 'partner_percent'));
+    }
+
+    /**
+     ***********************
+     ******* PARTNER *******
+     ***********************
+     *
+     * Kullanıcı Oluşturma
+     *
+     * @return array
+     */
+    public static function partnerUserCreate(PartnerCreateRequest $request)
+    {
+
+        $password = str_random(6);
+
+        $user = new User;
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = bcrypt($password);
+        $user->session_id = base64_encode(time());
+        $user->partner_user_id = auth()->user()->id;
+        $user->save();
+
+        if ($request->organisation)
+        {
+            $organisation = new Organisation;
+            $organisation->name = $request->name;
+            $organisation->user_id = $user->id;
+            $organisation->start_date = date('Y-m-d H:i:s');
+            $organisation->end_date = date('Y-m-d H:i:s');
+            $organisation->save();
+
+            $user->organisation_id = $organisation->id;
+            $user->save();
+        }
+
+        $user->notify((new SendPasswordNotification($user->name, $password))->onQueue('email'));
+
+        return [
+            'status' => 'ok',
+            'data' => [
+                'status' => 'created',
+                'id' => $user->id
+            ]
+        ];
+    }
+
+    /**
+     ***********************
+     ******* PARTNER *******
+     ***********************
+     *
+     * Kullanıcı Güncelleme
+     *
+     * @return array
+     */
+    public static function partnerUserUpdate(PartnerUpdateRequest $request)
+    {
+        $auth = auth()->user();
+        $user = User::where('id', $request->user_id)->first();
+
+        if ($user->organisation_id)
+        {
+            $organisation = $user->organisation;
+            $organisation->status = false;
+            $organisation->user_capacity = $request->user_capacity;
+            $organisation->end_date = $request->end_date.' '.$request->end_time;
+            $organisation->historical_days = $request->historical_days;
+            $organisation->real_time_group_limit = $request->real_time_group_limit;
+            $organisation->alarm_limit = $request->alarm_limit;
+            $organisation->pin_group_limit = $request->pin_group_limit;
+            $organisation->saved_searches_limit = $request->saved_searches_limit;
+
+            $organisation->data_pool_youtube_channel_limit = $request->data_pool_youtube_channel_limit;
+            $organisation->data_pool_youtube_video_limit = $request->data_pool_youtube_video_limit;
+            $organisation->data_pool_youtube_keyword_limit = $request->data_pool_youtube_keyword_limit;
+            $organisation->data_pool_twitter_keyword_limit = $request->data_pool_twitter_keyword_limit;
+            $organisation->data_pool_twitter_user_limit = $request->data_pool_twitter_user_limit;
+            $organisation->unit_price = $request->unit_price;
+
+            $organisation->module_real_time = $request->module_real_time ? true : false;
+            $organisation->module_search = $request->module_search ? true : false;
+            $organisation->module_trend = $request->module_trend ? true : false;
+            $organisation->module_alarm = $request->module_alarm ? true : false;
+            $organisation->module_pin = $request->module_pin ? true : false;
+            $organisation->module_model = $request->module_model ? true : false;
+            $organisation->module_forum = $request->module_forum ? true : false;
+
+            /**
+             * modules
+             */
+            foreach (config('system.modules') as $key => $module)
+            {
+                $organisation->{'data_'.$key} = $request->{'data_'.$key} ? true : false;
+            }
+
+            $organisation->save();
+
+            $status = 'updated';
+
+            $subject = $auth->name.' Organizasyon Güncelledi';
+            $message = 'İşlem yapmak için tıklayın:';
+        }
+        else
+        {
+            $organisation = new Organisation;
+            $organisation->name = $user->name;
+            $organisation->user_id = $user->id;
+            $organisation->start_date = date('Y-m-d H:i:s');
+            $organisation->end_date = date('Y-m-d H:i:s');
+            $organisation->save();
+
+            $user->organisation_id = $organisation->id;
+            $user->save();
+
+            $status = 'created';
+
+            $subject = $auth->name.' Organizasyon Oluşturdu';
+            $message = 'Yeni bir organizasyon oluşturuldu. İşlem yapmak için tıklayın:';
+        }
+
+        Mail::queue(
+            new ServerAlertMail(
+                $subject,
+                implode(
+                    PHP_EOL.PHP_EOL,
+                    [
+                        $message,
+                        '['.$user->name.'@'.$user->organisation->name.']('.route('admin.organisation', $user->organisation_id).')'
+                    ]
+                )
+            )
+        );
+
+        return [
+            'status' => 'ok',
+            'data' => [
+                'id' => $user->id,
+                'status' => $status
+            ]
+        ];
+    }
+
+    /**
      ********************
      ******* ROOT *******
      ********************
      *
+     * Kullanıcı Listesi
+     *
+     * @return view
+     */
+    public static function adminListView()
+    {
+        $partners = [
+            'eagle' => 'Eagle',
+            'phoenix' => 'Phoenix',
+            'gryphon' => 'Gryphon',
+            'dragon' => 'Dragon'
+        ];
+
+        return view('user.admin.list', compact('partners'));
+    }
+
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Kullanıcı Listesi
+     *
+     * @return array
+     */
+    public static function adminListViewJson(SearchRequest $request)
+    {
+        $take = $request->take;
+        $skip = $request->skip;
+
+        $query = new User;
+
+        if ($request->partner)
+        {
+            $query = $query->where('partner', $request->partner);
+        }
+
+        if ($request->string)
+        {
+            $query = $query->where(function ($query) use ($request) {
+                $query->orWhere('name', 'ILIKE', '%'.$request->string.'%')->orWhere('email', 'ILIKE', '%'.$request->string.'%');
+            });
+        }
+
+        $total = $query->count();
+
+        $query = $query->skip($skip)
+                       ->take($take);
+
+        if ($request->sort)
+        {
+            $query = $query->orderBy('partner_paymet_history_sum', $request->sort);
+        }
+        else
+        {
+            $query = $query->orderBy('id', 'DESC');
+        }
+
+        $query = $query->get();
+
+        return [
+            'status' => 'ok',
+            'hits' => $query,
+            'total' => $total
+        ];
+    }
+
+    /**
      * Kullanıcı Bilgileri
      *
      * @return view
@@ -734,10 +996,6 @@ class UserController extends Controller
     }
 
     /**
-     ********************
-     ******* ROOT *******
-     ********************
-     *
      * Kullanıcı Bilgileri, Güncelle
      *
      * @return array
@@ -791,10 +1049,6 @@ class UserController extends Controller
     }
 
     /**
-     ********************
-     ******* ROOT *******
-     ********************
-     *
      * Kullanıcı, Bildirim Tercihleri
      *
      * @return view
@@ -805,10 +1059,6 @@ class UserController extends Controller
     }
 
     /**
-     ********************
-     ******* ROOT *******
-     ********************
-     *
      * Kullanıcı, Bildirim Tercihi, Güncelle
      *
      * @return array
@@ -842,10 +1092,6 @@ class UserController extends Controller
     }
 
     /**
-     ********************
-     ******* ROOT *******
-     ********************
-     *
      * Avatar Sayfası
      *
      * @return view
@@ -856,10 +1102,6 @@ class UserController extends Controller
     }
 
     /**
-     ********************
-     ******* ROOT *******
-     ********************
-     *
      * Avatar Yükle
      *
      * @return redirect

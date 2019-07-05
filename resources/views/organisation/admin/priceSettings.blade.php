@@ -29,12 +29,14 @@
                 html: 'Değerler Güncellendi',
                 classes: 'green darken-2'
             }, 200)
+
+            $('input[name=root_password]').val('')
         }
     }
 @endpush
 
 @section('content')
-    <form method="post" action="{{ route('admin.organisation.price.settings') }}" class="json" id="details-form" data-callback="__save">
+    <form method="post" action="{{ route('admin.organisation.price.settings') }}" class="json" id="details-form" data-callback="__save" autocomplete="off">
         <div class="card with-bg">
             <div class="card-content">
                 <span class="card-title">Fiyatlandırma Ayarları</span>
@@ -125,8 +127,6 @@
                     </li>
                 </ul>
 
-                <hr />
-
                 <div class="collection">
                     <div class="collection-item input-field">
                         <input required name="discount_with_year" id="discount_with_year" min="0" value="{{ $settings['formal.discount_with_year']['value'] }}" type="number" class="validate" />
@@ -134,20 +134,43 @@
                     </div>
                 </div>
 
-                <span class="yellow-text text-darken-2">
+                <div class="yellow-text text-darken-2">
                     @component('components.alert')
                         @slot('icon', 'info')
                         @slot('text', 'Tüm alanlar '.config('formal.currency_text').' değerinde, 1 kullanıcı için geçerli özellik birim fiyatı olarak girilmelidir.')
                     @endcomponent
                     @component('components.alert')
                         @slot('icon', 'info')
-                        @slot('text', 'Bu değerler, fiyatlandırma alt limitidir. Bu değerlerin altında ürün oluşturulmasına sistem müsade etmeyecektir.')
+                        @slot('text', 'Bu değerler özelliklerin maliyet değerleridir. Bu değerlerin altında ürün oluşturulmasına sistem müsade etmeyecektir.')
                     @endcomponent
-                    @component('components.alert')
-                        @slot('icon', 'info')
-                        @slot('text', 'Üst limitler, partnerlik yüzdelerine göre belirlenir.')
-                    @endcomponent
-                </span>
+                </div>
+
+                <ul class="item-group">
+                    @foreach ([
+                        'eagle' => 'Eagle',
+                        'phoenix' => 'Phoenix',
+                        'gryphon' => 'Gryphon',
+                        'dragon' => 'Dragon'
+                    ] as $key => $name)
+                        <li class="item">
+                            <h5 class="orange-text center-align">{{ $name }} Partner</h5>
+                            <div class="p-1">
+                                <img alt="Emblem" src="{{ asset('img/partner-'.$key.'.png') }}" class="responsive-img" />
+                            </div>
+                            <div class="collection">
+                                <div class="collection-item input-field">
+                                    <input required name="{{ $key }}_percent" id="{{ $key }}_percent" min="0" value="{{ $settings['formal.partner.'.$key.'.percent']['value'] }}" type="number" class="validate" />
+                                    <small class="helper-text">{{ $name }} partnerden edilecek kâr yüzdesi</small>
+                                </div>
+                            </div>
+                        </li>
+                    @endforeach
+                </ul>
+                <div class="input-field">
+                    <input name="root_password" id="root_password" type="password" class="validate" />
+                    <label for="root_password">Root Şifresi</label>
+                    <span class="helper-text">Güvenlik için root şifresi girmeniz gerekiyor.</span>
+                </div>
             </div>
             <div class="card-action right-align">
                 <button type="submit" class="btn-flat waves-effect">Güncelle</button>

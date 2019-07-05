@@ -54,7 +54,9 @@ class SendPasswordNotification extends Notification implements ShouldQueue
                 ->line('Olive giriş bilgileriniz aşağıdadır. Güvenliğiniz için, oturum açtıktan sonra şifrenizi güncelleyin.')
                 ->with([
                     'table' => implode(PHP_EOL, $message)
-                ]);
+                ])
+                ->line('Giriş yapmak için aşağıdaki bağlantıyı kullanın:')
+                ->line('['.route('user.login').']('.route('user.login').')');
     }
 
     /**

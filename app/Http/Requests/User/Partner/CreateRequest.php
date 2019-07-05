@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\User\Partner;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SearchRequest extends FormRequest
+class CreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,13 +24,9 @@ class SearchRequest extends FormRequest
     public function rules()
     {
         return [
-            'string' => 'nullable|string|min:2|max:255',
-            'skip' => 'required|integer',
-            'take' => 'required|integer|max:100',
-            'status' => 'nullable|string|in:on,off',
-
-            'partner' => 'nullable|string|in:eagle,phoenix,gryphon,dragon',
-            'sort' => 'nullable|string|in:asc,desc'
+            'name' => 'required|string|max:16|unique:users,name',
+            'email' => 'required|string|unique:users,email|confirmed',
+            'organisation' => 'nullable|string|in:on'
         ];
     }
 }

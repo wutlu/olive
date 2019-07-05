@@ -14,7 +14,7 @@ $arr = [
 
     'accepted' => ':attribute kabul edilmelidir.',
     'active_url' => ':attribute geçerli bir URL olmalıdır.',
-    'after' => ':attribute, :date alaından daha eski bir tarih olmalıdır.',
+    'after' => ':attribute, :date alanından daha eski bir tarih olmalıdır.',
     'after_or_equal' => ':attribute alanı :date alanından sonra veya eşit olmalıdır.',
     'alpha' => ':attribute sadece harflerden oluşmalıdır.',
     'alpha_dash' => ':attribute sadece harfler, rakamlar ve tirelerden oluşmalıdır.',
@@ -115,6 +115,7 @@ $arr = [
     'slug' => 'Slug alanı sadece a-z0-9 ve - karakterlerinden oluşabilir.',
     'except_list' => 'Bu kelimeyi kullanamazsınız.',
     'iban' => 'Iban numarası geçerli değil.',
+    'root_password' => 'Root şifresi geçerli değil.',
 
     /*
     |--------------------------------------------------------------------------
@@ -333,7 +334,21 @@ $arr = [
 
         'gender'                          => 'Cinsiyet',
         'search_name'                     => 'Arama Adı',
-        'reverse'                         => 'İlk İçerikler'
+        'reverse'                         => 'İlk İçerikler',
+
+        'root_password'                   => 'Root Şifresi',
+
+        'partner_for_once_percent'        => 'Tek Seferlik Partner Oranı',
+        'status'                          => 'Durum',
+
+        'eagle_percent'                   => 'Eagle Yüzdesi',
+        'phoenix_percent'                 => 'Phoenix Yüzdesi',
+        'gryphon_percent'                 => 'Gryphon Yüzdesi',
+        'dragon_percent'                  => 'Dragon Yüzdesi',
+
+        'root_password'                   => 'required|string|root_password',
+
+        'discount_with_year'              => 'Yıllık Ödeme İndirimi',
     ],
 ];
 

@@ -23,7 +23,7 @@ return [
         'calm' => 'Çok fazla işlem yaptınız. Lütfen bir kaç dakika sonra tekrar deneyin.',
         'notfound' => 'Kaynağa erişilemiyor.',
         'exited' => 'Oturumunuz sona erdi. Lütfen tekrar giriş yapın.',
-        'permission' => 'Bu işlemi yapmak için gerekli organizasyon yetkiniz yok.'
+        'permission' => 'Bu işlem için gerekli yetkiniz yok.'
     ],
     'verifications' => [
         'email' => 'E-posta adresinizi doğrulamadan bu işlemi gerçekleştiremezsiniz.'

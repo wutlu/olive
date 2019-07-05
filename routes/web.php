@@ -45,6 +45,20 @@ Route::prefix('kullanici')->group(function () {
     Route::get('{id}', 'UserController@profile')->name('user.profile');
 });
 
+Route::prefix('partner')->group(function () {
+    Route::prefix('kullanici-yonetimi')->group(function () {
+        Route::get('/', 'UserController@partnerListView')->name('partner.user.list');
+
+        Route::get('kullanici/{id?}', 'UserController@partnerUserView')->name('partner.user');
+
+        Route::post('kullanici/olustur', 'UserController@partnerUserCreate')->name('partner.user.create');
+        Route::post('kullanici/guncelle', 'UserController@partnerUserUpdate')->name('partner.user.update');
+
+        Route::post('json', 'UserController@partnerListViewJson')->name('partner.user.list.json');
+        Route::post('json/autocomplete', 'UserController@partnerAutocomplete')->name('partner.user.autocomplete');
+    });
+});
+
 Route::prefix('kelime-hafizasi')->group(function () {
     Route::get('/', 'AnalysisController@dashboard')->name('analysis.dashboard');
     Route::get('{module}', 'AnalysisController@module')->name('analysis.module')->where('module', '('.implode('|', array_keys(config('system.analysis'))).')');

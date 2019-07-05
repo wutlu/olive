@@ -148,6 +148,12 @@ class User extends Authenticatable
         return $this->hasOne('App\Models\Organisation\Organisation', 'id', 'organisation_id');
     }
 
+    # partner
+    public function partner()
+    {
+        return User::where('id', $this->partner_user_id)->first();
+    }
+
     # ödeme bilgileri
     public function billingInformations()
     {

@@ -13,29 +13,48 @@
     @if (session('timeout'))
         M.toast({ html: 'İşlem zaman aşımına uğradı! Lütfen tekrar deneyin.', classes: 'red' })
     @endif
+
+    function __demo_request(__, obj)
+    {
+        if (obj.status == 'ok')
+        {
+            M.toast({ html: 'Formunuzu Aldık!', classes: 'green darken-2' })
+            M.toast({ html: 'Ekibimiz en kısa sürede sizinle iletişime geçecektir.', classes: 'blue-grey' })
+
+            __.find('input[type=text]').html('')
+        }
+    }
 @endpush
 
 @section('content')
-    <div class="card">
-        <div class="card-image">
-            <img src="{{ asset('img/md-s/21.jpg') }}" alt="Image" />
-            <span class="card-title white-text d-flex">
-                <i class="material-icons align-self-center mr-1">record_voice_over</i>
-                Başlayın
-            </span>
+    <div class="card card-unstyled">
+        <div class="card-content teal-text">
+            @component('components.alert')
+                @slot('icon', 'info')
+                @slot('text', 'Bilgilerinizi bırakın, ekibimiz en uygun tekliflerle sizlere dönüş sağlasın.')
+            @endcomponent
         </div>
         <div class="card-content">
-            <div class="p-1 center">
-                <p class="teal-text">Yeni bir organizasyon oluşturabilmek için lütfen paket teklifi isteyin.</p>
-                <p class="grey-text">Destek sistemimize mesaj bırakın. Uzman ekibimizle en kısa sürede en iyi tekliflerle size dönüş yapalım..</p>
-
-                <div class="d-table mx-auto mt-1">
-                    <a href="{{ route('settings.support', 'organisayon-teklifi') }}" class="btn-flat waves-effect d-flex">
-                        <i class="material-icons mr-1">record_voice_over</i>
-                        Teklif İsteyin
-                    </a>
+            <form id="demo-form" method="post" action="{{ route('demo.request') }}" class="json d-table" data-callback="__demo_request">
+                <div class="input-field">
+                    <i class="material-icons prefix">account_circle</i>
+                    <input id="icon_prefix" name="name" type="text" class="validate" />
+                    <label for="icon_prefix">Firma / Kurum</label>
                 </div>
-            </div>
+                <div class="input-field">
+                    <i class="material-icons prefix">phone</i>
+                    <input id="icon_telephone" name="phone" type="text" class="validate" />
+                    <label for="icon_telephone">Telefon</label>
+                </div>
+                <div class="input-field">
+                    <div class="captcha" data-id="demo-captcha"></div>
+                </div>
+                <button type="submit" class="btn-flat waves-effect">Gönder</button>
+            </form>
         </div>
     </div>
 @endsection
+
+@push('external.include.footer')
+    <script src='//www.google.com/recaptcha/api.js'></script>
+@endpush

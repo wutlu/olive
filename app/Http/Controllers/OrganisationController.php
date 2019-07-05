@@ -32,7 +32,6 @@ use App\Http\Requests\RealTime\KeywordGroup\AdminUpdateRequest as KeywordGroupAd
 use App\Http\Requests\IdRequest;
 use App\Http\Requests\SearchRequest;
 
-use App\Notifications\OrganisationWasCreatedNotification;
 use App\Notifications\OrganisationWasUpdatedNotification;
 use App\Notifications\MessageNotification;
 use App\Notifications\SendPasswordNotification;
@@ -44,6 +43,9 @@ use App\Jobs\CheckUpcomingPayments;
 use App\Http\Requests\PaymentCallbackRequest;
 
 use System;
+
+use Mail;
+use App\Mail\ServerAlertMail;
 
 class OrganisationController extends Controller
 {
@@ -136,8 +138,12 @@ class OrganisationController extends Controller
                             'title' => 'Üzgünüm :(',
                             'info' => 'Organizasyon Süreniz Doldu',
                             'body' => implode(PHP_EOL, [
-                                'Araçlardan tekrar faydalanabilmek için organizasyon sürenizi uzatmanız gerekiyor.'
+                                'Araçlardan tekrar faydalanabilmek için aboneliğinizi uzatmanız gerekiyor.'
                             ])
+                        ];
+                        $message_root = [
+                            'title' => 'Hizmet Sonlandırıldı',
+                            'message' => 'Aşağıdaki organizasyonun ödemesi sağlanmadığından hizmeti sonlandırıldı.'
                         ];
 
                         $organisation->status = false;
@@ -150,14 +156,18 @@ class OrganisationController extends Controller
                             'title' => 'Yenileyin',
                             'info' => $day_message,
                             'body' => implode(PHP_EOL, [
-                                'Kesinti yaşamamak için organizasyon sürenizi uzatmanız gerekiyor.'
+                                'Kesinti yaşamamak için aboneliğinizi uzatmanız gerekiyor.'
                             ])
                         ];
+                        $message_root = [
+                            'title' => 'Hizmet Ödemesi Bekleniyor',
+                            'message' => 'Aşağıdaki organizasyondan ödeme bekleniyor.'
+                        ];
                     }
-                }
 
-                if (@$message)
-                {
+                    /*!
+                     * email
+                     */
                     $author = $organisation->author;
 
                     if ($author->notification('important'))
@@ -182,7 +192,21 @@ class OrganisationController extends Controller
                         ]
                     );
 
-                    unset($message);
+                    /*!
+                     * root alert
+                     */
+                    Mail::queue(
+                        new ServerAlertMail(
+                            $message_root['title'],
+                            implode(
+                                PHP_EOL.PHP_EOL,
+                                [
+                                    $message_root['message'],
+                                    '['.$author->name.'@'.$organisation->name.']('.route('admin.organisation', $organisation->id).')'
+                                ]
+                            )
+                        )
+                    );
                 }
             }
         }
@@ -925,6 +949,7 @@ class OrganisationController extends Controller
                           ->where(function($query) {
                               $query->orWhere('key', 'LIKE', 'unit_price.%');
                               $query->orWhere('key', 'formal.discount_with_year');
+                              $query->orWhere('key', 'LIKE', 'formal.partner.%');
                           })
                           ->get()
                           ->keyBy('key')
@@ -944,29 +969,47 @@ class OrganisationController extends Controller
      */
     public static function adminPriceSettingsSave(PriceSettingsSaveRequest $request)
     {
+        System::log(
+            json_encode([
+                'Fiyat ayarlarını güncelledi.',
+                auth()->user()->email,
+                json_encode($request->all())
+            ]),
+            'App\Http\Controllers\OrganisationController::adminPriceSettingsSave('.auth()->user()->email.')', 10
+        );
+
         Option::updateOrCreate([ 'key' => 'unit_price.data_twitter'                    ], [ 'value' => $request->data_twitter                    ]);
         Option::updateOrCreate([ 'key' => 'unit_price.data_sozluk'                     ], [ 'value' => $request->data_sozluk                     ]);
         Option::updateOrCreate([ 'key' => 'unit_price.data_news'                       ], [ 'value' => $request->data_news                       ]);
         Option::updateOrCreate([ 'key' => 'unit_price.data_youtube_video'              ], [ 'value' => $request->data_youtube_video              ]);
         Option::updateOrCreate([ 'key' => 'unit_price.data_youtube_comment'            ], [ 'value' => $request->data_youtube_comment            ]);
         Option::updateOrCreate([ 'key' => 'unit_price.data_shopping'                   ], [ 'value' => $request->data_shopping                   ]);
+
         Option::updateOrCreate([ 'key' => 'unit_price.real_time_group_limit'           ], [ 'value' => $request->real_time_group_limit           ]);
         Option::updateOrCreate([ 'key' => 'unit_price.alarm_limit'                     ], [ 'value' => $request->alarm_limit                     ]);
         Option::updateOrCreate([ 'key' => 'unit_price.pin_group_limit'                 ], [ 'value' => $request->pin_group_limit                 ]);
         Option::updateOrCreate([ 'key' => 'unit_price.saved_searches_limit'            ], [ 'value' => $request->saved_searches_limit            ]);
         Option::updateOrCreate([ 'key' => 'unit_price.historical_days'                 ], [ 'value' => $request->historical_days                 ]);
+
         Option::updateOrCreate([ 'key' => 'unit_price.data_pool_youtube_channel_limit' ], [ 'value' => $request->data_pool_youtube_channel_limit ]);
         Option::updateOrCreate([ 'key' => 'unit_price.data_pool_youtube_video_limit'   ], [ 'value' => $request->data_pool_youtube_video_limit   ]);
         Option::updateOrCreate([ 'key' => 'unit_price.data_pool_youtube_keyword_limit' ], [ 'value' => $request->data_pool_youtube_keyword_limit ]);
         Option::updateOrCreate([ 'key' => 'unit_price.data_pool_twitter_keyword_limit' ], [ 'value' => $request->data_pool_twitter_keyword_limit ]);
         Option::updateOrCreate([ 'key' => 'unit_price.data_pool_twitter_user_limit'    ], [ 'value' => $request->data_pool_twitter_user_limit    ]);
+
         Option::updateOrCreate([ 'key' => 'unit_price.module_real_time'                ], [ 'value' => $request->module_real_time                ]);
         Option::updateOrCreate([ 'key' => 'unit_price.module_search'                   ], [ 'value' => $request->module_search                   ]);
         Option::updateOrCreate([ 'key' => 'unit_price.module_trend'                    ], [ 'value' => $request->module_trend                    ]);
         Option::updateOrCreate([ 'key' => 'unit_price.module_alarm'                    ], [ 'value' => $request->module_alarm                    ]);
         Option::updateOrCreate([ 'key' => 'unit_price.module_pin'                      ], [ 'value' => $request->module_pin                      ]);
         Option::updateOrCreate([ 'key' => 'unit_price.module_forum'                    ], [ 'value' => $request->module_forum                    ]);
+
         Option::updateOrCreate([ 'key' => 'formal.discount_with_year'                  ], [ 'value' => $request->discount_with_year              ]);
+
+        Option::updateOrCreate([ 'key' => 'formal.partner.eagle.percent'               ], [ 'value' => $request->eagle_percent                   ]);
+        Option::updateOrCreate([ 'key' => 'formal.partner.phoenix.percent'             ], [ 'value' => $request->phoenix_percent                 ]);
+        Option::updateOrCreate([ 'key' => 'formal.partner.gryphon.percent'             ], [ 'value' => $request->gryphon_percent                 ]);
+        Option::updateOrCreate([ 'key' => 'formal.partner.dragon.percent'              ], [ 'value' => $request->dragon_percent                  ]);
 
         return [
             'status' => 'ok'
@@ -1111,50 +1154,10 @@ class OrganisationController extends Controller
         if (@$user)
         {
             $organisation = new Organisation;
-
             $organisation->name = $request->organisation_name;
             $organisation->user_id = $user->id;
             $organisation->start_date = date('Y-m-d H:i:s');
-            $organisation->end_date = date('Y-m-d H:i:s', strtotime('+7 day'));
-            $organisation->status = false;
-            $organisation->user_capacity = 1;
-            $organisation->unit_price = 0;
-
-            $organisation->data_twitter = true;
-            $organisation->data_sozluk = true;
-            $organisation->data_news = true;
-            $organisation->data_youtube_video = true;
-            $organisation->data_youtube_comment = true;
-            $organisation->data_shopping = true;
-            $organisation->data_forum = false;
-            $organisation->data_facebook = false;
-            $organisation->data_instagram = false;
-            $organisation->data_blog = false;
-
-            $organisation->real_time_group_limit = 1;
-            $organisation->alarm_limit = 1;
-            $organisation->pin_group_limit = 1;
-
-            $organisation->data_pool_youtube_channel_limit = 10;
-            $organisation->data_pool_youtube_video_limit = 10;
-            $organisation->data_pool_youtube_keyword_limit = 10;
-            $organisation->data_pool_twitter_keyword_limit = 10;
-            $organisation->data_pool_twitter_user_limit = 10;
-            $organisation->data_pool_facebook_keyword_limit = 10;
-            $organisation->data_pool_facebook_user_limit = 10;
-            $organisation->data_pool_instagram_keyword_limit = 10;
-            $organisation->data_pool_instagram_user_limit = 10;
-
-            $organisation->module_real_time = true;
-            $organisation->module_search = true;
-            $organisation->module_trend = true;
-            $organisation->module_alarm = true;
-            $organisation->module_pin = true;
-            $organisation->module_model = true;
-            $organisation->module_forum = true;
-
-            $organisation->historical_days = 1;
-
+            $organisation->end_date = date('Y-m-d H:i:s', strtotime('+1 day'));
             $organisation->save();
 
             $user->organisation_id = $organisation->id;

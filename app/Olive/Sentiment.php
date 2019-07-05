@@ -133,7 +133,7 @@ class Sentiment {
 
             foreach ($tokens as $token)
             {
-                if (strlen($token) > $this->minTokenLength && strlen($token) < $this->maxTokenLength && !in_array($token, $this->ignoreList))
+                if (strlen($token) >= $this->minTokenLength && strlen($token) < $this->maxTokenLength && !in_array($token, $this->ignoreList))
                 {
                     $count = isset($this->dictionary[$token][$class]) ? $this->dictionary[$token][$class] : 0;
 

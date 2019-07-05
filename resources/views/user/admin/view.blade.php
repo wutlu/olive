@@ -42,78 +42,113 @@
         id="details-form"
         data-id="{{ $user->id }}"
         data-callback="__account">
-        <div class="card with-bg">
+        <div class="card">
             <div class="card-content">
                 <span class="card-title">Kullanıcı Bilgileri</span>
             </div>
-            <div class="card-content">
-                <ul class="item-group">
-                    <li class="item">
-                        <small class="grey-text">Oluşturuldu</small>
-                        <p class="d-block">{{ date('d.m.Y H:i', strtotime($user->created_at)) }}</p>
+            <ul class="item-group mt-0 mb-0">
+                @if (@$user->partner())
+                    <li class="item p-1">
+                        <small class="cyan-text text-darken-2">Referans</small>
+                        <a class="d-block" href="{{ route('admin.user', $user->partner()->id) }}">{{ $user->partner()->name }}</a>
                     </li>
-                    <li class="item">
-                        <small class="grey-text">Güncellendi</small>
-                        <p class="d-block">{{ date('d.m.Y H:i', strtotime($user->created_at)) }}</p>
-                    </li>
-                </ul>
-                <div class="collection">
-                    <div class="collection-item">
-                        <div class="input-field">
-                            <input name="name" id="name" value="{{ $user->name }}" type="text" class="validate" />
-                            <label for="name">Ad</label>
-                            <small class="helper-text">Kullanıcının sistemdeki tam adı.</small>
-                        </div>
-                    </div>
-                    <div class="collection-item">
-                        <div class="input-field">
-                            <textarea name="about" id="about" data-length="10000" class="materialize-textarea validate">{{ $user->about }}</textarea>
-                            <label for="about">Hakkında</label>
-                            <small class="grey-text">Bu alanda <a href="https://guides.github.com/features/mastering-markdown/" target="_blank">Markdown</a> kullanabilirsiniz.</small>
-                            <span class="helper-text"></span>
-                        </div>
-                    </div>
-                    <div class="collection-item">
-                        <div class="input-field">
-                            <input name="password" id="password" type="password" class="validate" />
-                            <label for="password">Şifre</label>
-                            <small class="helper-text">Değiştirmek istemiyorsanız boş bırakın.</small>
-                        </div>
-                    </div>
-                    <div class="collection-item d-flex">
-                        <div class="input-field teal-text align-self-center">
-                            <input name="email" id="email" value="{{ $user->email }}" type="email" class="validate" />
-                            <label for="email">E-posta</label>
-                            <small class="helper-text">Kullanıcının sistemdeki e-posta adresi.</small>
-                        </div>
-                        <label class="align-self-center" style="padding: 0 0 0 1rem;">
-                            <input name="verified" id="verified" value="on" type="checkbox" {{ $user->verified ? 'checked' : '' }} />
-                            <span>Doğrulanmış</span>
+                @endif
+                <li class="item p-1">
+                    <small class="grey-text">Oluşturuldu</small>
+                    <p class="d-block">{{ date('d.m.Y H:i', strtotime($user->created_at)) }}</p>
+                </li>
+                <li class="item p-1">
+                    <small class="grey-text">Güncellendi</small>
+                    <p class="d-block">{{ date('d.m.Y H:i', strtotime($user->created_at)) }}</p>
+                </li>
+            </ul>
+            <div class="collection collection-unstyled grey lighten-4">
+                <div class="collection-item">
+                    <div class="d-flex flex-wrap">
+                        <label class="item flex-fill">
+                            <input name="partner" type="radio" {{ $user->partner == '' ? '' : 'checked' }} value="" />
+                            <span>Partner Değil</span>
+                        </label>
+                        <label class="item flex-fill">
+                            <input name="partner" type="radio" {{ $user->partner == 'eagle' ? 'checked' : '' }} value="eagle" />
+                            <span>Eagle Partner</span>
+                        </label>
+                        <label class="item flex-fill">
+                            <input name="partner" type="radio" {{ $user->partner == 'phoenix' ? 'checked' : '' }} value="phoenix" />
+                            <span>Phoenix Partner</span>
+                        </label>
+                        <label class="item flex-fill">
+                            <input name="partner" type="radio" {{ $user->partner == 'gryphon' ? 'checked' : '' }} value="gryphon" />
+                            <span>Gryphon Partner</span>
+                        </label>
+                        <label class="item flex-fill">
+                            <input name="partner" type="radio" {{ $user->partner == 'dragon' ? 'checked' : '' }} value="dragon" />
+                            <span>Dragon Partner</span>
                         </label>
                     </div>
-                    <label class="collection-item waves-effect d-flex">
-                        <span class="align-self-center" style="margin: 0 2rem 0 0;">
-                            <input name="avatar" id="avatar" value="on" type="checkbox" />
-                            <span>Avatarı Sil</span>
-                        </span>
-                        <img alt="Avatar" src="{{ $user->avatar() }}" class="user-avatar" style="width: 64px; height: 64px;" />
+                </div>
+                <div class="collection-item">
+                    <div class="input-field">
+                        <input name="partner_for_once_percent" id="partner_for_once_percent" value="{{ $user->partner_for_once_percent }}" min="0" type="number" class="validate" />
+                        <label for="partner_for_once_percent">Tek Seferlik Partner Oranı</label>
+                        <small class="helper-text">Eğer kişi partner ise ve bu alan doldurulursa, partnerin satışı tek seferlik girilen orandan olacak ve bu alan tekrar sıfırlanacaktır.</small>
+                    </div>
+                </div>
+            </div>
+            <div class="collection collection-unstyled">
+                <div class="collection-item">
+                    <div class="input-field">
+                        <input name="name" id="name" value="{{ $user->name }}" type="text" class="validate" />
+                        <label for="name">Ad</label>
+                        <small class="helper-text">Kullanıcının sistemdeki kullanıcı adı.</small>
+                    </div>
+                </div>
+                <div class="collection-item">
+                    <div class="input-field">
+                        <textarea name="about" id="about" data-length="10000" class="materialize-textarea validate">{{ $user->about }}</textarea>
+                        <label for="about">Hakkında</label>
+                        <small class="grey-text">Bu alanda <a href="https://guides.github.com/features/mastering-markdown/" target="_blank">Markdown</a> kullanabilirsiniz.</small>
+                        <span class="helper-text"></span>
+                    </div>
+                </div>
+                <div class="collection-item">
+                    <div class="input-field">
+                        <input name="password" id="password" type="password" class="validate" />
+                        <label for="password">Şifre</label>
+                        <small class="helper-text">Değiştirmek istemiyorsanız boş bırakın.</small>
+                    </div>
+                </div>
+                <div class="collection-item d-flex">
+                    <div class="input-field teal-text align-self-center">
+                        <input name="email" id="email" value="{{ $user->email }}" type="email" class="validate" />
+                        <label for="email">E-posta</label>
+                        <small class="helper-text">Kullanıcının sistemdeki e-posta adresi.</small>
+                    </div>
+                    <label class="align-self-center" style="padding: 0 0 0 1rem;">
+                        <input name="verified" id="verified" value="on" type="checkbox" {{ $user->verified ? 'checked' : '' }} />
+                        <span>Doğrulanmış</span>
                     </label>
                 </div>
-                <div class="collection">
-                    <label class="collection-item waves-effect d-block">
-                        <input name="root" id="root" value="on" type="checkbox" {{ $user->root() ? 'checked' : '' }} />
-                        <span>Yönetici</span>
-                    </label>
-                    <label class="collection-item waves-effect d-block">
-                        <input name="moderator" id="moderator" value="on" type="checkbox" {{ $user->moderator() ? 'checked' : '' }} />
-                        <span>Moderatör</span>
-                    </label>
-                    <div class="collection-item">
-                        <div class="input-field">
-                            <input name="ban_reason" id="ban_reason" value="{{ $user->ban_reason }}" type="text" class="validate" />
-                            <label for="ban_reason">Ban Nedeni</label>
-                            <small class="helper-text">Bu alanı doldurursanız kullanıcının sisteme erişimi engellenecektir.</small>
-                        </div>
+                <label class="collection-item waves-effect d-flex">
+                    <span class="align-self-center" style="margin: 0 2rem 0 0;">
+                        <input name="avatar" id="avatar" value="on" type="checkbox" />
+                        <span>Avatarı Sil</span>
+                    </span>
+                    <img alt="Avatar" src="{{ $user->avatar() }}" class="user-avatar" style="width: 64px; height: 64px;" />
+                </label>
+                <label class="collection-item waves-effect d-block">
+                    <input name="root" id="root" value="on" type="checkbox" {{ $user->root() ? 'checked' : '' }} />
+                    <span>Yönetici</span>
+                </label>
+                <label class="collection-item waves-effect d-block">
+                    <input name="moderator" id="moderator" value="on" type="checkbox" {{ $user->moderator() ? 'checked' : '' }} />
+                    <span>Moderatör</span>
+                </label>
+                <div class="collection-item">
+                    <div class="input-field">
+                        <input name="ban_reason" id="ban_reason" value="{{ $user->ban_reason }}" type="text" class="validate" />
+                        <label for="ban_reason">Ban Nedeni</label>
+                        <small class="helper-text">Bu alanı doldurursanız kullanıcının sisteme erişimi engellenecektir.</small>
                     </div>
                 </div>
             </div>

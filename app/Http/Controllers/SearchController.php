@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Redis as RedisCache;
+
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Search\ArchiveRequest;
 use App\Http\Requests\Search\ArchiveAggregationRequest;
@@ -16,9 +18,9 @@ use Term;
 use App\Models\Crawlers\MediaCrawler;
 use App\Models\Crawlers\ShoppingCrawler;
 
-use Illuminate\Support\Facades\Redis as RedisCache;
-
 use App\Models\SavedSearch;
+
+use App\Utilities\Crawler;
 
 class SearchController extends Controller
 {
@@ -256,6 +258,19 @@ class SearchController extends Controller
             }
         }
 
+        $stats = [
+            'took' => 0,
+            'hits' => 0,
+            'counts' => [
+                'twitter_tweet' => 0,
+                'sozluk_entry' => 0,
+                'youtube_video' => 0,
+                'youtube_comment' => 0,
+                'media_article' => 0,
+                'shopping_product' => 0
+            ]
+        ];
+
         foreach ($request->modules as $module)
         {
             switch ($module)
@@ -271,6 +286,8 @@ class SearchController extends Controller
 
                         $modules[] = 'tweet';
                     }
+
+                    $stats['counts']['twitter_tweet'] = intval(@Document::search([ 'twitter', 'tweets', '*' ], 'tweet', array_merge($q, [ 'size' => 0 ]))->data['hits']['total']);
                 break;
                 case 'sozluk':
                     if ($organisation->data_sozluk)
@@ -283,49 +300,45 @@ class SearchController extends Controller
 
                         $modules[] = 'entry';
                     }
+
+                    $stats['counts']['sozluk_entry'] = intval(@Document::search([ 'sozluk', '*' ], 'entry', array_merge($q, [ 'size' => 0 ]))->data['hits']['total']);
                 break;
                 case 'news':
                     if ($organisation->data_news)
                     {
                         $modules[] = 'article';
                     }
+
+                    $stats['counts']['media_article'] = intval(@Document::search([ 'media', 's*' ], 'article', array_merge($q, [ 'size' => 0 ]))->data['hits']['total']);
                 break;
                 case 'youtube_video':
                     if ($organisation->data_youtube_video)
                     {
                         $modules[] = 'video';
                     }
+
+                    $stats['counts']['youtube_video'] = intval(@Document::search([ 'youtube', 'videos' ], 'video', array_merge($q, [ 'size' => 0 ]))->data['hits']['total']);
                 break;
                 case 'youtube_comment':
                     if ($organisation->data_youtube_comment)
                     {
                         $modules[] = 'comment';
                     }
+
+                    $stats['counts']['youtube_comment'] = intval(@Document::search([ 'youtube', 'comments', '*' ], 'comment', array_merge($q, [ 'size' => 0 ]))->data['hits']['total']);
                 break;
                 case 'shopping':
                     if ($organisation->data_shopping)
                     {
                         $modules[] = 'product';
                     }
+
+                    $stats['counts']['shopping_product'] = intval(@Document::search([ 'shopping', '*' ], 'product', array_merge($q, [ 'size' => 0 ]))->data['hits']['total']);
                 break;
             }
         }
 
         $query = Document::search([ '*' ], implode(',', $modules), $q);
-
-        $stats = [
-            'took' => 0,
-            'hits' => 0,
-            'counts' => [
-                'twitter_tweet' => intval(@Document::search([ 'twitter', 'tweets', '*' ], 'tweet', array_merge($q, [ 'size' => 0 ]))->data['hits']['total']),
-                'sozluk_entry' => intval(@Document::search([ 'sozluk', '*' ], 'entry', array_merge($q, [ 'size' => 0 ]))->data['hits']['total']),
-                'youtube_video' => intval(@Document::search([ 'youtube', 'videos' ], 'video', array_merge($q, [ 'size' => 0 ]))->data['hits']['total']),
-                'youtube_comment' => intval(@Document::search([ 'youtube', 'comments', '*' ], 'comment', array_merge($q, [ 'size' => 0 ]))->data['hits']['total']),
-                'media_article' => intval(@Document::search([ 'twitter', 'media', 's*' ], 'article', array_merge($q, [ 'size' => 0 ]))->data['hits']['total']),
-                'shopping_product' => intval(@Document::search([ 'shopping', '*' ], 'product', array_merge($q, [ 'size' => 0 ]))->data['hits']['total'])
-            ],
-            'aggs' => Document::search([ '*' ], 'tweet,entry,video,comment,article,product', $q)
-        ];
 
         if (@$query->data['hits']['hits'])
         {
@@ -342,7 +355,7 @@ class SearchController extends Controller
 
                     'created_at' => date('d.m.Y H:i:s', strtotime($object['_source']['created_at'])),
 
-                    'sentiment' => $object['_source']['sentiment']
+                    'sentiment' => Crawler::emptySentiment(@$object['_source']['sentiment'])
                 ];
 
                 if (@$object['_source']['illegal'])

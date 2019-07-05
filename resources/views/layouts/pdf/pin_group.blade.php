@@ -63,24 +63,6 @@
                 padding: 24px;
             }
 
-            .sentiment > .sentiment-item.green {
-                color: #64dd17;
-                border-color: #64dd17;
-            }
-            .sentiment > .sentiment-item.red {
-                color: #D50000;
-                border-color: #D50000;
-            }
-            .sentiment > .sentiment-item.grey {
-                color: #9e9e9e;
-                border-color: #9e9e9e;
-            }
-
-            .sentiment > .sentiment-item {
-                border-width: 0 0 4px;
-                border-style: solid;
-            }
-
             .page-break {
                 page-break-after: always;
             }
@@ -105,7 +87,6 @@
     @if ($pin->document()->status == 'ok')
         @php
             $source = $pin->document()->data['_source'];
-            $sentiment = @$source['sentiment'];
         @endphp
 
         <div class="data {{ $pin->document()->data['_type'] }}">
@@ -204,31 +185,6 @@
                     <div class="text">{!! nl2br($source['description']) !!}</div>
                 @endisset
             @endif
-
-            @isset ($sentiment)
-                <div class="sentiment clearfix">
-                    <div style="width: {{ intval($sentiment['pos']*100) }}%;" class="sentiment-item green left">
-                        @if ($sentiment['pos'] > 0.2)
-                            <span>Pozitif</span>
-                            <span>{{ $sentiment['pos']*100 }}%</span>
-                        @endif
-                    </div>
-
-                    <div style="width: {{ intval($sentiment['neu']*100) }}%;" class="sentiment-item grey left">
-                        @if ($sentiment['neu'] > 0.2)
-                            <span>Nötr</span>
-                            <span>{{ $sentiment['neu']*100 }}%</span>
-                        @endif
-                    </div>
-
-                    <div style="width: {{ intval($sentiment['neg']*100) }}%;" class="sentiment-item red left">
-                        @if ($sentiment['neg'] > 0.2)
-                            <span>Negatif</span>
-                            <span>{{ $sentiment['neg']*100 }}%</span>
-                        @endif
-                    </div>
-                </div>
-            @endisset
 
             @if ($pin->comment)
                 <div class="pin-comment">{!! nl2br($pin->comment) !!}</div>

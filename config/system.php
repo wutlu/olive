@@ -115,7 +115,7 @@ return [
             'diger' => 'Diğer Konular',
             'odeme-bildirimi' => 'Ödeme Bildirimi',
             'hak-sahipligi' => 'Hak Sahipliği',
-            'organisayon-teklifi' => 'Organizasyon Teklifi (Demo İsteği)',
+            'organisayon-teklifi' => 'Demo İsteği',
         ]
     ],
 

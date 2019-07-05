@@ -26,7 +26,7 @@ class DemoRequest extends FormRequest
         return [
             'name' => 'required|string|max:100',
             'phone' => 'required|string|max:50',
-            //'gRecaptchaResponse' => 'required|recaptcha'
+            'gRecaptchaResponse' => 'required|recaptcha'
         ];
     }
 }

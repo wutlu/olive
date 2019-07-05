@@ -1,5 +1,4 @@
 @extends('layouts.app', [
-    'dock' => true,
     'sidenav_fixed_layout' => true,
     'breadcrumb' => [
         [
@@ -12,103 +11,9 @@
             'text' => '🐞 Ziyaretçi Logları'
         ]
     ],
-    'footer_hide' => true
+    'footer_hide' => true,
+    'wide' => true
 ])
-
-@section('dock')
-    @push('local.scripts')
-        function __activities(__, obj)
-        {
-            var item_model = __.children('.model');
-
-            if (obj.status == 'ok')
-            {
-                if (obj.hits.length)
-                {
-                    $.each(obj.hits, function(key, o) {
-                        var item = item_model.clone();
-                            item.removeClass('model hide').addClass('_tmp').attr('data-id', o.id)
-
-                            item.find('.collapsible-header > span > p').html(o.title)
-                            item.find('.collapsible-header > span > time').attr('data-time', o.updated_at).html(o.updated_at)
-                            item.find('.collapsible-header > [data-name=icon]').html(o.icon)
-                            item.find('.collapsible-body > span').html(o.markdown)
-                            item.find('[data-name=name]').html(o.user.email)
-
-                            if (o.markdown_color)
-                            {
-                                item.find('.collapsible-body').css({ 'background-color': o.markdown_color })
-                            }
-
-                            if (o.button_text)
-                            {
-                                var button = $('<a />', {
-                                    'class': o.button_class,
-                                    'html': o.button_text,
-                                    'href': o.button_action
-                                });
-
-                                item.find('.collapsible-body').children('span').append(button)
-                            }
-
-                            item.appendTo(__)
-                    })
-                }
-
-                $('[data-name=count]').html(obj.total)
-            }
-        }
-    @endpush
-
-    <div class="input-field">
-        <input name="string" id="string" type="text" class="validat json json-search" data-json-target="#activities" />
-        <label for="string">Arayın</label>
-    </div>
-    <ul class="collapsible load json-clear" 
-        id="activities"
-        data-href="{{ route('admin.session.activities') }}"
-        data-include="string"
-        data-skip="0"
-        data-take="5"
-        data-more-button="#activities-more_button"
-        data-callback="__activities"
-        data-method="post"
-        data-loader="#activity-loader"
-        data-nothing>
-        <li class="nothing hide">
-            @component('components.nothing')
-                @slot('cloud_class', 'white-text')
-            @endcomponent
-        </li>
-        <li class="model hide">
-            <div class="collapsible-header">
-                <i class="material-icons" data-name="icon"></i>
-                <span>
-                    <p data-name="name" class="mb-0 grey-text"></p>
-                    <p class="mb-0"></p>
-                    <time class="timeago grey-text"></time>
-                </span>
-                <i class="material-icons arrow">keyboard_arrow_down</i>
-            </div>
-            <div class="collapsible-body">
-                <span></span>
-            </div>
-        </li>
-    </ul>
-
-    @component('components.loader')
-        @slot('color', 'blue-grey')
-        @slot('id', 'activity-loader')
-    @endcomponent
-
-    <div class="center-align">
-        <a
-            class="more hide json"
-            id="activities-more_button"
-            href="#"
-            data-json-target="ul#activities">Daha Fazla</a>
-    </div>
-@endsection
 
 @push('local.scripts')
     var logTimer;
@@ -211,7 +116,7 @@
 @endpush
 
 @section('content')
-    <div class="card with-bg">
+    <div class="card mb-1">
         <div class="card-content">
             <span class="card-title">Ziyaretçi Logları</span>
             <span class="grey-text" data-name="total">0</span>
@@ -227,18 +132,18 @@
                 <div class="d-flex justify-content-between flex-wrap">
                 	<span>
                         <span class="d-block">
+                            <a
+                                href="#"
+                                data-id="user-name"
+                                class="teal-text hide json"
+                                style="padding: .1rem;"
+                                data-href="{{ route('route.generate.id') }}"
+                                data-method="post"
+                                data-name="admin.user"
+                                data-callback="__go"></a>
                             <span data-name="ip" style="padding: .1rem;"></span>
                             <span data-name="location" style="padding: .1rem;"></span>
                         </span>
-                        <a
-                            href="#"
-                            data-id="user-name"
-                            class="teal-text hide json"
-                            style="padding: .1rem;"
-                            data-href="{{ route('route.generate.id') }}"
-                            data-method="post"
-                            data-name="admin.user"
-                            data-callback="__go"></a>
                         <span class="d-block">
                             <a href="#" class="d-table grey-text" style="padding: .1rem;" target="_blank" data-name="page"></a>
                             <a href="#" class="d-table grey-text hide" style="padding: .1rem;" target="_blank" data-name="referer"></a>
@@ -253,14 +158,127 @@
                         <span data-name="browser" style="padding: .1rem;"></span>
                         <span class="hide" data-name="device" style="padding: .1rem;"></span>
                         <span data-name="ping" style="padding: .1rem;"></span>
-	                </span>
+                    </span>
                 </div>
             </li>
         </ul>
+
         @component('components.loader')
             @slot('color', 'blue-grey')
             @slot('id', 'home-loader')
             @slot('class', 'card-loader-unstyled')
         @endcomponent
     </div>
+
+    <div class="card">
+        <div class="card-content">
+            <span class="card-title">Kullanıcı Logları</span>
+        </div>
+        <nav class="nav-half mb-0">
+            <div class="nav-wrapper">
+                <div class="input-field">
+                    <input id="string"
+                           name="string"
+                           type="search"
+                           class="validate json json-search"
+                           data-json-target="#activities"
+                           placeholder="Ara" />
+                    <label class="label-icon" for="string">
+                        <i class="material-icons">search</i>
+                    </label>
+                </div>
+            </div>
+        </nav>
+        <div class="card-content">
+            <ul class="collapsible load json-clear" 
+                id="activities"
+                data-href="{{ route('admin.session.activities') }}"
+                data-include="string"
+                data-skip="0"
+                data-take="5"
+                data-more-button="#activities-more_button"
+                data-callback="__activities"
+                data-method="post"
+                data-loader="#activity-loader"
+                data-nothing>
+                <li class="nothing hide">
+                    @component('components.nothing')
+                        @slot('cloud_class', 'white-text')
+                    @endcomponent
+                </li>
+                <li class="model hide">
+                    <div class="collapsible-header">
+                        <i class="material-icons" data-name="icon"></i>
+                        <span>
+                            <p data-name="name" class="mb-0 grey-text"></p>
+                            <p class="mb-0"></p>
+                            <time class="timeago grey-text"></time>
+                        </span>
+                        <i class="material-icons arrow">keyboard_arrow_down</i>
+                    </div>
+                    <div class="collapsible-body">
+                        <span></span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        @component('components.loader')
+            @slot('color', 'blue-grey')
+            @slot('class', 'card-loader-unstyled')
+            @slot('id', 'activity-loader')
+        @endcomponent
+    </div>
+
+    <div class="center-align">
+        <a
+            class="more hide json"
+            id="activities-more_button"
+            href="#"
+            data-json-target="ul#activities">Daha Fazla</a>
+    </div>
 @endsection
+
+@push('local.scripts')
+    function __activities(__, obj)
+    {
+        var item_model = __.children('.model');
+
+        if (obj.status == 'ok')
+        {
+            if (obj.hits.length)
+            {
+                $.each(obj.hits, function(key, o) {
+                    var item = item_model.clone();
+                        item.removeClass('model hide').addClass('_tmp').attr('data-id', o.id)
+
+                        item.find('.collapsible-header > span > p').html(o.title)
+                        item.find('.collapsible-header > span > time').attr('data-time', o.updated_at).html(o.updated_at)
+                        item.find('.collapsible-header > [data-name=icon]').html(o.icon)
+                        item.find('.collapsible-body > span').html(o.markdown)
+                        item.find('[data-name=name]').html(o.user.email)
+
+                        if (o.markdown_color)
+                        {
+                            item.find('.collapsible-body').css({ 'background-color': o.markdown_color })
+                        }
+
+                        if (o.button_text)
+                        {
+                            var button = $('<a />', {
+                                'class': o.button_class,
+                                'html': o.button_text,
+                                'href': o.button_action
+                            });
+
+                            item.find('.collapsible-body').children('span').append(button)
+                        }
+
+                        item.appendTo(__)
+                })
+            }
+
+            $('[data-name=count]').html(obj.total)
+        }
+    }
+@endpush

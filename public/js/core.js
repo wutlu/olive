@@ -800,20 +800,20 @@ function vzAjax(__)
                     window.clearTimeout(error_timer);
 
                     error_timer = setTimeout(function() {
-                        var mdl = modal({
-                                'id': 'err',
-                                'body': title,
-                                'size': 'modal-small',
-                                'title': keywords.info,
-                                'options': {},
-                                'footer': [
-                                   $('<a />', {
-                                       'href': '#',
-                                       'class': 'modal-close waves-effect btn-flat',
-                                       'html': buttons.ok
-                                   })
-                                ]
-                            })
+                        return modal({
+                            'id': 'err',
+                            'body': title,
+                            'size': 'modal-small',
+                            'title': keywords.info,
+                            'options': {},
+                            'footer': [
+                               $('<a />', {
+                                   'href': '#',
+                                   'class': 'modal-close waves-effect btn-flat',
+                                   'html': buttons.ok
+                               })
+                            ]
+                        })
                     }, jqXHR.status == 0 ? 2000 : 500)
                 }
                 else if (jqXHR.status == 401)
@@ -915,7 +915,7 @@ function vzAjax(__)
                     }
                     else
                     {
-                        var mdl = modal({
+                        return modal({
                             'id': 'err',
                             'body': title,
                             'title': keywords.info,
@@ -926,7 +926,7 @@ function vzAjax(__)
                 }
                 else if (jqXHR.status == 419)
                 {
-                    var mdl = modal({
+                    return modal({
                         'id': 'err',
                         'body': errors.time_out,
                         'title': keywords.info,
