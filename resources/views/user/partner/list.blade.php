@@ -48,7 +48,7 @@
 @endpush
 
 @section('wildcard')
-    <div class="card wild-background yellow lighten-4">
+    <div class="card wild-background">
         <div class="container">
             <div class="d-flex">
                 <img class="wildcard-icon" alt="{{ $user->partner }}" src="{{ asset('img/partner-'.$user->partner.'.png') }}" />

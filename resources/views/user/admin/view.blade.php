@@ -47,10 +47,10 @@
                 <span class="card-title">Kullanıcı Bilgileri</span>
             </div>
             <ul class="item-group mt-0 mb-0">
-                @if (@$user->partner())
+                @if ($user->reference)
                     <li class="item p-1">
                         <small class="cyan-text text-darken-2">Referans</small>
-                        <a class="d-block" href="{{ route('admin.user', $user->partner()->id) }}">{{ $user->partner()->name }}</a>
+                        <a class="d-block" href="{{ route('admin.user', $user->reference->id) }}">{{ $user->reference->name }}</a>
                     </li>
                 @endif
                 <li class="item p-1">
@@ -66,7 +66,7 @@
                 <div class="collection-item">
                     <div class="d-flex flex-wrap">
                         <label class="item flex-fill">
-                            <input name="partner" type="radio" {{ $user->partner == '' ? '' : 'checked' }} value="" />
+                            <input name="partner" type="radio" {{ $user->partner ? '' : 'checked' }} value="" />
                             <span>Partner Değil</span>
                         </label>
                         <label class="item flex-fill">
@@ -85,13 +85,6 @@
                             <input name="partner" type="radio" {{ $user->partner == 'dragon' ? 'checked' : '' }} value="dragon" />
                             <span>Dragon Partner</span>
                         </label>
-                    </div>
-                </div>
-                <div class="collection-item">
-                    <div class="input-field">
-                        <input name="partner_for_once_percent" id="partner_for_once_percent" value="{{ $user->partner_for_once_percent }}" min="0" type="number" class="validate" />
-                        <label for="partner_for_once_percent">Tek Seferlik Partner Oranı</label>
-                        <small class="helper-text">Eğer kişi partner ise ve bu alan doldurulursa, partnerin satışı tek seferlik girilen orandan olacak ve bu alan tekrar sıfırlanacaktır.</small>
                     </div>
                 </div>
             </div>

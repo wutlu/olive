@@ -149,9 +149,9 @@ class User extends Authenticatable
     }
 
     # partner
-    public function partner()
+    public function reference()
     {
-        return User::where('id', $this->partner_user_id)->first();
+        return $this->hasOne('App\Models\User\User', 'id', 'partner_user_id');
     }
 
     # ödeme bilgileri

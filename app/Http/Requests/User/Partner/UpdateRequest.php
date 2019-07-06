@@ -61,8 +61,6 @@ class UpdateRequest extends FormRequest
         {
             $validations = [
                 'user_capacity' => 'required|integer|max:12|min:1',
-                'end_date' => 'required|date_format:Y-m-d|before:'.date('Y-m-d', strtotime('+30 days', strtotime($user->organisation->created_at))),
-                'end_time' => 'required|date_format:H:i',
                 'historical_days' => 'required|integer|max:90|min:0',
 
                 'real_time_group_limit' => 'required|integer|max:12|min:0',
@@ -76,7 +74,7 @@ class UpdateRequest extends FormRequest
                 'data_pool_twitter_keyword_limit' => 'required|integer|max:400|min:0',
                 'data_pool_twitter_user_limit' => 'required|integer|max:1000000|min:0',
 
-                'unit_price' => 'required|numeric|min:10|max:500000',
+                'unit_price' => 'required|numeric|min:0|max:500000',
 
                 'module_real_time' => 'nullable|string|in:on',
                 'module_search' => 'nullable|string|in:on',
@@ -87,6 +85,12 @@ class UpdateRequest extends FormRequest
                 'module_forum' => 'nullable|string|in:on'
             ];
 
+            if (ceil(abs(strtotime($user->organisation->created_at) - time()) / 86400) <= 30)
+            {
+                $validations['end_date'] = 'required|date_format:Y-m-d|before:'.date('Y-m-d', strtotime('+30 days', strtotime($user->organisation->created_at)));
+                $validations['end_time'] = 'required|date_format:H:i';
+            }
+
             /**
              * modules
              */
@@ -96,62 +100,6 @@ class UpdateRequest extends FormRequest
             }
 
             $request->validate($validations);
-
-            $arr = [
-                'historical_days'                  => '*',
-                'real_time_group_limit'            => '*',
-                'alarm_limit'                      => '*',
-                'pin_group_limit'                  => '*',
-                'saved_searches_limit'             => '*',
-
-                'module_real_time'                 => '+',
-                'module_search'                    => '+',
-                'module_trend'                     => '+',
-                'module_alarm'                     => '+',
-                'module_pin'                       => '+',
-                'module_model'                     => '+',
-                'module_forum'                     => '+',
-
-                'data_pool_youtube_channel_limit'  => '*',
-                'data_pool_youtube_video_limit'    => '*',
-                'data_pool_youtube_keyword_limit'  => '*',
-                'data_pool_twitter_keyword_limit'  => '*',
-                'data_pool_twitter_user_limit'     => '*',
-            ];
-
-            foreach (config('system.modules') as $key => $module)
-            {
-                $arr['data_'.$key] = '+';
-            }
-
-            $math_prices = 0;
-
-            $prices = Option::select('key', 'value')->where('key', 'LIKE', 'unit_price.%')->get()->keyBy('key')->toArray();
-
-            foreach ($arr as $key => $group)
-            {
-                if ($group == '+' && $request->{$key} == 'on')
-                {
-                    $math_prices = $math_prices + $prices['unit_price.'.$key]['value'];
-                }
-                else if ($group == '*')
-                {
-                    $math_prices = $math_prices + ($request->{$key} * $prices['unit_price.'.$key]['value']);
-                }
-            }
-
-            $auth = auth()->user();
-
-            $partner_percent = $auth->partner_for_once_percent ? $auth->partner_for_once_percent : System::option('formal.partner.'.$auth->partner.'.percent');
-
-            $math_prices = $math_prices * $request->user_capacity;
-            $math_prices = ($math_prices / 100 * $partner_percent) + $math_prices;
-            $math_prices = ($math_prices / 100 * $partner_percent) + $math_prices;
-            $math_prices = intval($math_prices);
-
-            return [
-                'unit_price' => 'required|numeric|min:'.$math_prices
-            ];
         }
 
         return $base_validations;

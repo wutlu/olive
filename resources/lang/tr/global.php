@@ -15,7 +15,8 @@ return [
         'remove' => 'Sil',
         'verification' => 'Doğrulama',
         'iagree' => 'Kabul Ediyorum',
-        'go' => 'Git'
+        'go' => 'Git',
+        'success' => 'Başarılı'
     ],
     'errors' => [
         'disconnected' => 'Sunucu bağlantısı sağlanamadı.',

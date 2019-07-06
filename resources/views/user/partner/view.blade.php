@@ -66,10 +66,12 @@
                     location.href = '{{ route('partner.user') }}/' + obj.data.id;
                 break;
                 case 'updated':
+                    $('[data-name=status]').removeClass('green-text').addClass('red-text').html('Pasif');
+
                     return modal({
                         'id': 'info',
                         'body': 'Bilgiler güncellendi. Organizasyon devre dışı kaldı. Yönetim onayından sonra organizasyon tekrar aktif edilecektir.',
-                        'title': keywords.info,
+                        'title': keywords.success,
                         'size': 'modal-small',
                         'options': {},
                         'footer': [
@@ -95,55 +97,50 @@
         data-callback="__action">
         @if (@$user)
             <input type="hidden" value="{{ $user->id }}" name="user_id" />
-        @endif
+        @else
+            <div class="card card-unstyled">
+                <div class="card-content">
+                    <div class="p-1">
+                        <div class="input-field" style="max-width: 240px;">
+                            <input name="name" id="name" type="text" class="validate" />
+                            <label for="name">Ad</label>
+                            <small class="helper-text">Kullanıcının sistemdeki eşsiz kullanıcı adı.</small>
+                        </div>
+                    </div>
 
-        <div class="card">
-            <div class="collection collection-unstyled">
-                <div class="collection-item">
-                    @if (@$user)
-                        <small class="teal-text">Kullanıcı Adı</small>
-                        <p class="mb-0">{{ $user->name }}</p>
-                    @else
-                        <div class="p-1">
-                            <div class="input-field" style="max-width: 240px;">
-                                <input name="name" id="name" type="text" class="validate" />
-                                <label for="name">Ad</label>
-                                <small class="helper-text">Kullanıcının sistemdeki kullanıcı adı.</small>
+                    <div class="d-flex flex-wrap">
+                        <div class="p-1" style="max-width: 240px;">
+                            <div class="input-field">
+                                <input name="email" id="email" type="email" class="validate" />
+                                <label for="email">E-posta</label>
+                                <small class="helper-text">Kullanıcının sistemdeki e-posta adresi.</small>
                             </div>
                         </div>
-                    @endif
-                </div>
-                <div class="collection-item">
-                    @if (@$user)
-                        <small class="teal-text">E-posta</small>
-                        <p class="mb-0">{{ $user->email }}</p>
-                    @else
-                        <div class="d-flex flex-wrap">
-                            <div class="p-1" style="max-width: 240px;">
-                                <div class="input-field">
-                                    <input name="email" id="email" type="email" class="validate" />
-                                    <label for="email">E-posta</label>
-                                    <small class="helper-text">Kullanıcının sistemdeki e-posta adresi.</small>
-                                </div>
-                            </div>
-                            <div class="p-1" style="max-width: 240px;">
-                                <div class="input-field">
-                                    <input name="email_confirmation" id="email_confirmation" type="email" class="validate" />
-                                    <label for="email_confirmation">E-posta (Tekrar)</label>
-                                    <small class="helper-text">E-posta adresini doğrulayın.</small>
-                                </div>
+                        <div class="p-1" style="max-width: 240px;">
+                            <div class="input-field">
+                                <input name="email_confirmation" id="email_confirmation" type="email" class="validate" />
+                                <label for="email_confirmation">E-posta (Tekrar)</label>
+                                <small class="helper-text">E-posta adresini doğrulayın.</small>
                             </div>
                         </div>
-                    @endif
+                    </div>
                 </div>
             </div>
-        </div>
+        @endif
 
-        <ul class="collection">
+        <ul class="collection collection-unstyled mb-1">
             @if ($user)
                 <li class="collection-item">
                     <small class="grey-text">Oluşturuldu</small>
-                    <p class="d-block">{{ date('d.m.Y H:i', strtotime($user->created_at)) }}</p>
+                    <p class="mb-0 d-block">{{ date('d.m.Y H:i', strtotime($user->created_at)) }}</p>
+                </li>
+                <li class="collection-item">
+                    <small class="grey-text">Kullanıcı Adı</small>
+                    <p class="mb-0 d-block">{{ $user->name }}</p>
+                </li>
+                <li class="collection-item">
+                    <small class="grey-text">E-posta</small>
+                    <p class="mb-0 d-block">{{ $user->email }}</p>
                 </li>
             @else
                 <li class="collection-item">
@@ -179,27 +176,49 @@
                     @endcomponent
                 </span>
             </li>
+            @if (@$user->organisation)
+                <li class="collection-item">
+                    <span class="red-text">
+                        @component('components.alert')
+                            @slot('icon', 'warning')
+                            @slot('text', 'Organizasyon bitiş tarihi, oluşturulma tarihinden itibaren en fazla 30 gün sonrası olabilir. 30 gün sonunda sürede değişiklik yapılamaz.')
+                        @endcomponent
+                    </span>
+                </li>
+                <li class="collection-item">
+                    <small class="grey-text">Durum</small>
+                    <p data-name="status" class="mb-0 d-block {{ $user->organisation->status ? 'green-text' : 'red-text' }}">{{ $user->organisation->status ? 'Aktif' : 'Pasif' }}</p>
+                </li>
+                @if (ceil(abs(strtotime($user->organisation->created_at) - time()) / 86400) > 30)
+                    <li class="collection-item">
+                        <small class="grey-text">Bitiş Tarihi</small>
+                        <p class="mb-0 d-block">{{ $user->organisation->end_date.' '.$user->organisation->end_time }}</p>
+                    </li>
+                @endif
+            @endif
         </ul>
 
         @if (@$user->organisation)
             <div class="card mb-1">
                 <div class="card-content">
-                    <div class="collection">
-                        <div class="collection-item">
-                            <div class="d-flex">
-                                <div class="input-field">
-                                    <input name="end_date" id="end_date" value="{{ date('Y-m-d', strtotime($user->organisation->end_date)) }}" type="text" class="validate datepicker" />
-                                    <label for="end_date">Bitiş Tarihi</label>
-                                    <small class="helper-text">Organizasyonun bitiş tarihi.</small>
-                                </div>
-                                <div class="input-field">
-                                    <input name="end_time" id="end_time" value="{{ date('H:i', strtotime($user->organisation->end_date)) }}" type="text" class="validate timepicker" />
-                                    <label for="end_time">Bitiş Saati</label>
-                                    <small class="helper-text">Organizasyonun bitiş saati.</small>
+                    @if (ceil(abs(strtotime($user->organisation->created_at) - time()) / 86400) <= 30)
+                        <div class="collection">
+                            <div class="collection-item">
+                                <div class="d-flex">
+                                    <div class="input-field">
+                                        <input name="end_date" id="end_date" value="{{ date('Y-m-d', strtotime($user->organisation->end_date)) }}" type="text" class="validate datepicker" />
+                                        <label for="end_date">Bitiş Tarihi</label>
+                                        <small class="helper-text">Organizasyonun bitiş tarihi.</small>
+                                    </div>
+                                    <div class="input-field">
+                                        <input name="end_time" id="end_time" value="{{ date('H:i', strtotime($user->organisation->end_date)) }}" type="text" class="validate timepicker" />
+                                        <label for="end_time">Bitiş Saati</label>
+                                        <small class="helper-text">Organizasyonun bitiş saati.</small>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    @endif
 
                     <ul class="item-group">
                         <li class="item">
@@ -488,17 +507,12 @@
     function calculate()
     {
         var unit_price = parseInt((math_prices() + single_prices()) * $('input[name=user_capacity]').val());
-            unit_price = parseInt(unit_price / 100 * {{ $partner_percent }}) + unit_price;
-
         var advice_price = parseInt(unit_price / 100 * {{ $partner_percent }}) + unit_price;
-
         var price_profit = parseInt($('input[name=unit_price]').val() - unit_price);
 
         $('[data-name=price_advice]').html(advice_price)
         $('[data-name=price_cost]').html(unit_price)
         $('[data-name=price_profit]').html(price_profit)
-
-        $('[name=unit_price]').attr('min', advice_price)
     }
 
     $(document).on('change keydown keyup', 'input[name=unit_price]', function() {

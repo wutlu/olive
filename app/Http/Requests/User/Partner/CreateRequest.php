@@ -43,8 +43,7 @@ class CreateRequest extends FormRequest
 
         return [
             'name' => 'required|string|max:16|unique:users,name|organisation_name',
-            'email' => 'required|string|unique:users,email|confirmed',
-            'organisation' => 'nullable|string|in:on'
+            'email' => 'required|string|unique:users,email|confirmed'
         ];
     }
 }

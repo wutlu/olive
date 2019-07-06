@@ -280,13 +280,11 @@ return [
                 'image_src' => 'img/icons/badges/nostalgie_5.png',
                 'description' => '5 yılınızı doldurun.'
             ],
-            /*
             11 => [
                 'name' => 'Partner',
                 'image_src' => 'img/icons/badges/partner.png',
                 'description' => 'Partner sistemine dahil olun.'
             ],
-            */
 
             /* ... */
 

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Payment Test</title>
+	<meta charset="utf-8" />
+</head>
+<body>
+	<form method="post" action="http://127.0.0.1/api/payment/callback">
+		<input type="text" name="merchant_oid" placeholder="merchant_oid" />
+		<br />
+		<input type="text" name="status" placeholder="status" />
+		<br />
+		<input type="text" name="total_amount" placeholder="total_amount" />
+		<br />
+		<input type="text" name="hash" placeholder="hash" />
+		<br />
+		<input type="text" name="failed_reason_msg" placeholder="failed_reason_msg" />
+		<br />
+		<input type="text" name="failed_reason_code" placeholder="failed_reason_code" />
+		<br />
+		<button type="submit">Send</button>
+	</form>
+</body>
+</html>

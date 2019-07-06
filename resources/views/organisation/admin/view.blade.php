@@ -32,7 +32,7 @@
 @endpush
 
 @section('content')
-    <form method="post" action="{{ route('admin.organisation', $organisation->id) }}" id="details-form" data-callback="__account">
+    <form method="post" action="{{ route('admin.organisation', $organisation->id) }}" id="details-form" class="json" data-callback="__account">
         <div class="card">
             <div class="card-content">
                 <span class="card-title">Organizasyon Bilgileri</span>
@@ -283,8 +283,14 @@
                     </li>
                 </ul>
             </div>
-            <div class="card-content cyan lighten-4">
-                <p class="cyan-text mb-0">Tavsiye edilen fiyat, {{ config('formal.currency') }} <span data-name="price">0</span></p>
+
+            <div class="card-content red">
+                @if ($partner_percent)
+                    <p class="white-text mb-0">Bu organizasyon, bir partner tarafından yönetiliyor.</p>
+                    <p class="white-text mb-0">Bu nedenle paket fiyatı en az {{ config('formal.currency') }} <span data-name="price_advice">0</span> olabilir.</p>
+                @else
+                    <p class="white-text mb-0">Tavsiye edilen fiyat {{ config('formal.currency') }} <span data-name="price_advice">0</span></p>
+                @endif
             </div>
             <div class="card-content lighten-2">
                 <div class="input-field">
@@ -295,7 +301,7 @@
                 </div>
             </div>
             <div class="card-action right-align">
-                <button type="button" data-trigger="save" class="btn-flat waves-effect">Güncelle</button>
+                <button type="submit" data-trigger="save" class="btn-flat waves-effect">Güncelle</button>
             </div>
         </div>
     </form>
@@ -306,50 +312,16 @@
 @endsection
 
 @push('local.scripts')
-    $(document).on('click', '[data-trigger=save]', function() {
-        var advice_price = parseInt($('[data-name=price]').html());
-        var price = parseInt($('input[name=unit_price]').val());
-
-        if (price < advice_price)
-        {
-            var x = advice_price - price;
-
-            modal({
-                'id': 'alert',
-                'body': 'Girdiğiniz birim fiyat, tavsiye edilen fiyatın <span class="red-text">{{ config('formal.currency') }} ' + x + '</span> altında. Yinede devam etmek istiyor musunuz?',
-                'title': 'Uyarı',
-                'size': 'modal-small',
-                'options': {},
-                'footer': [
-                    $('<a />', {
-                        'href': '#',
-                        'class': 'modal-close waves-effect btn-flat',
-                        'html': buttons.cancel
-                    }),
-                    $('<a />', {
-                        'href': '#',
-                        'class': 'waves-effect btn-flat red-text json',
-                        'data-json-target': '#details-form',
-                        'html': buttons.ok
-                    })
-                ]
-            })
-        }
-        else
-        {
-            vzAjax($('#details-form'))
-        }
-    })
-
     calculate()
 
     $(document).on('change keydown keyup', 'input[data-update]', calculate)
 
     function calculate()
     {
-        var unit_price = (math_prices() + single_prices()) * $('input[name=user_capacity]').val();
+        var unit_price = parseInt((math_prices() + single_prices()) * $('input[name=user_capacity]').val());
+        var advice_price = (unit_price / 100 * {{ $partner_percent }}) + unit_price;
 
-        $('[data-name=price]').html(unit_price)
+        $('[data-name=price_advice]').html(advice_price)
     }
 
     function math_prices()

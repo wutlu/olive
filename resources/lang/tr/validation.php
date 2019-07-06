@@ -20,7 +20,7 @@ $arr = [
     'alpha_dash' => ':attribute sadece harfler, rakamlar ve tirelerden oluşmalıdır.',
     'alpha_num' => ':attribute sadece harfler ve rakamlar içermelidir.',
     'array' => ':attribute dizi olmalıdır.',
-    'before' => ':attribute şundan daha önceki bir tarih olmalıdır :date.',
+    'before' => ':attribute :date tarihinden daha eski bir tarih olmalıdır.',
     'before_or_equal' => ':attribute tarihi :date tarihinden önce veya tarihine eşit olmalıdır.',
     'between' => [
         'numeric' => ':attribute :min - :max arasında olmalıdır.',
@@ -338,7 +338,6 @@ $arr = [
 
         'root_password'                   => 'Root Şifresi',
 
-        'partner_for_once_percent'        => 'Tek Seferlik Partner Oranı',
         'status'                          => 'Durum',
 
         'eagle_percent'                   => 'Eagle Yüzdesi',

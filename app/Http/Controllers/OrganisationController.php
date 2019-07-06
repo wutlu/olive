@@ -10,6 +10,7 @@ use App\Utilities\Term;
 use App\Models\Organisation\Organisation;
 use App\Models\Organisation\OrganisationInvoice as Invoice;
 use App\Models\User\User;
+use App\Models\User\PartnerPayment;
 use App\Models\RealTime\KeywordGroup;
 use App\Models\Pin\Group as PinGroup;
 use App\Models\BillingInformation;
@@ -619,18 +620,15 @@ class OrganisationController extends Controller
                 $message = 'Ödemeniz başarılı bir şekilde gerçekleştirildi ve organizasyonunuz aktif edildi.';
                 $message = 'Olive kullandığınız için teşekkür eder, iyi araştırmalar dileriz.';
 
-                if ($organisation->author->notification('important'))
-                {
-                    $organisation->author->notify(
-                        (
-                            new MessageNotification(
-                                $title,
-                                $greeting,
-                                $message
-                            )
-                        )->onQueue('email')
-                    );
-                }
+                $organisation->author->notify(
+                    (
+                        new MessageNotification(
+                            $title,
+                            $greeting,
+                            $message
+                        )
+                    )->onQueue('email')
+                );
 
                 Activity::push(
                     $greeting,
@@ -645,6 +643,23 @@ class OrganisationController extends Controller
                 {
                     $organisation->author->addBadge(999); // destekçi
                 }
+
+                /*
+                 */
+                if ($organisation->author->reference)
+                {
+                    $partner_percent = System::option('formal.partner.'.$organisation->author->reference->partner.'.percent');
+
+                    $pay = new PartnerPayment;
+                    $pay->currency = config('formal.currency_text');
+                    $pay->amount = $invoice->total_price - ($organisation->system_price * $invoice->month);
+                    $pay->status = 'success';
+                    $pay->message = $organisation->author->email.' tarafından bir ödeme alındı.';
+                    $pay->user_id = $organisation->author->reference->id;
+                    $pay->save();
+                }
+                /*
+                 */
 
                 $invoice->total_amount = $request->total_amount;
                 $invoice->paid_at = date('Y-m-d H:i:s');
@@ -1078,6 +1093,72 @@ class OrganisationController extends Controller
      ********************
      ******* ROOT *******
      ********************
+     * @return array
+     */
+    public static function calculate($partner, $request)
+    {
+        $arr = [
+            'historical_days'                  => '*',
+            'real_time_group_limit'            => '*',
+            'alarm_limit'                      => '*',
+            'pin_group_limit'                  => '*',
+            'saved_searches_limit'             => '*',
+
+            'module_real_time'                 => '+',
+            'module_search'                    => '+',
+            'module_trend'                     => '+',
+            'module_alarm'                     => '+',
+            'module_pin'                       => '+',
+            'module_model'                     => '+',
+            'module_forum'                     => '+',
+
+            'data_pool_youtube_channel_limit'  => '*',
+            'data_pool_youtube_video_limit'    => '*',
+            'data_pool_youtube_keyword_limit'  => '*',
+            'data_pool_twitter_keyword_limit'  => '*',
+            'data_pool_twitter_user_limit'     => '*',
+        ];
+
+        foreach (config('system.modules') as $key => $module)
+        {
+            $arr['data_'.$key] = '+';
+        }
+
+        $math_prices = 0;
+
+        $prices = Option::select('key', 'value')->where('key', 'LIKE', 'unit_price.%')->get()->keyBy('key')->toArray();
+
+        foreach ($arr as $key => $group)
+        {
+            if ($group == '+' && $request->{$key} == 'on')
+            {
+                $math_prices = $math_prices + $prices['unit_price.'.$key]['value'];
+            }
+            else if ($group == '*')
+            {
+                $math_prices = $math_prices + ($request->{$key} * $prices['unit_price.'.$key]['value']);
+            }
+        }
+
+        $math_prices = $math_prices * $request->user_capacity;
+
+        $system_price = $math_prices;
+
+        $partner_percent = System::option('formal.partner.'.$partner.'.percent');
+
+        $math_prices = ($math_prices / 100 * $partner_percent) + $math_prices;
+        $math_prices = intval($math_prices);
+
+        return [
+            'total_price' => $math_prices,
+            'system_price' => $system_price
+        ];
+    }
+
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
      *
      * Organizasyon Sayfası
      *
@@ -1085,11 +1166,14 @@ class OrganisationController extends Controller
      */
     public static function adminView(int $id)
     {
-        $organisation = Organisation::where('id', $id)->firstOrFail();
-
         $prices = Option::select('key', 'value')->where('key', 'LIKE', 'unit_price.%')->get()->keyBy('key')->toArray();
 
-        return view('organisation.admin.view', compact('organisation', 'prices'));
+        $organisation = Organisation::where('id', $id)->firstOrFail();
+        $reference = $organisation->author->reference;
+
+        $partner_percent = $reference ? System::option('formal.partner.'.$reference->partner.'.percent') : 0;
+
+        return view('organisation.admin.view', compact('organisation', 'prices', 'partner_percent'));
     }
 
     /**
@@ -1105,14 +1189,24 @@ class OrganisationController extends Controller
     {
         $organisation = Organisation::where('id', $id)->firstOrFail();
 
-        if ($organisation->status == false && $request->status)
+        $reference = $organisation->author->reference;
+
+        if ($reference)
         {
-            if (@$organisation->author->partner()->partner && @$organisation->author->partner()->partner_for_once_percent)
-            {
-                $partner = $organisation->author->partner();
-                $partner->partner_for_once_percent = 0;
-                $partner->save();
-            }
+            $calculate = self::calculate($reference->partner, $request);
+
+            $min_price = $calculate['total_price'];
+            $organisation->system_price = $calculate['system_price'];
+
+            $validations = [
+                'unit_price' => 'required|numeric|min:'.$min_price
+            ];
+
+            $request->validate($validations);
+        }
+        else
+        {
+            $organisation->system_price = 0;
         }
 
         $organisation->name = $request->name;
@@ -1130,6 +1224,7 @@ class OrganisationController extends Controller
         $organisation->data_pool_youtube_keyword_limit = $request->data_pool_youtube_keyword_limit;
         $organisation->data_pool_twitter_keyword_limit = $request->data_pool_twitter_keyword_limit;
         $organisation->data_pool_twitter_user_limit = $request->data_pool_twitter_user_limit;
+
         $organisation->unit_price = $request->unit_price;
 
         $organisation->module_real_time = $request->module_real_time ? true : false;
@@ -1231,6 +1326,20 @@ class OrganisationController extends Controller
         if ($request->approve && $invoice->paid_at == null)
         {
             $organisation = $invoice->organisation;
+
+            if ($organisation->author->reference)
+            {
+                $partner_percent = System::option('formal.partner.'.$organisation->author->reference->partner.'.percent');
+
+                $pay = new PartnerPayment;
+                $pay->currency = config('formal.currency_text');
+                $pay->amount = $invoice->total_price - ($organisation->system_price * $invoice->month);
+                $pay->status = 'success';
+                $pay->message = $organisation->author->email.' tarafından bir ödeme alındı.';
+                $pay->user_id = $organisation->author->reference->id;
+                $pay->save();
+            }
+
             $organisation->status = true;
             $organisation->start_date = $organisation->invoices()->count() == 1 ? date('Y-m-d H:i:s') : $organisation->start_date;
 

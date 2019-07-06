@@ -44,6 +44,8 @@ use Carbon\Carbon;
 use Mail;
 use App\Mail\ServerAlertMail;
 
+use App\Http\Controllers\OrganisationController;
+
 class UserController extends Controller
 {
 	public function __construct()
@@ -585,8 +587,12 @@ class UserController extends Controller
         $user->moderator = $request->moderator ? true : false;
         $user->about = $request->about ? $request->about : null;
 
+        if (!$user->badge(11))
+        {
+            $user->addBadge(11); // partner
+        }
+
         $user->partner = $request->partner ? $request->partner : null;
-        $user->partner_for_once_percent = $request->partner_for_once_percent;
 
         if ($request->ban_reason)
         {
@@ -769,7 +775,7 @@ class UserController extends Controller
             return abort(403);
         }
 
-        $partner_percent = $auth->partner_for_once_percent ? $auth->partner_for_once_percent : System::option('formal.partner.'.$auth->partner.'.percent');
+        $partner_percent = System::option('formal.partner.'.$auth->partner.'.percent');
 
         return view('user.partner.view', compact('auth', 'user', 'prices', 'partner_percent'));
     }
@@ -785,7 +791,6 @@ class UserController extends Controller
      */
     public static function partnerUserCreate(PartnerCreateRequest $request)
     {
-
         $password = str_random(6);
 
         $user = new User;
@@ -795,19 +800,6 @@ class UserController extends Controller
         $user->session_id = base64_encode(time());
         $user->partner_user_id = auth()->user()->id;
         $user->save();
-
-        if ($request->organisation)
-        {
-            $organisation = new Organisation;
-            $organisation->name = $request->name;
-            $organisation->user_id = $user->id;
-            $organisation->start_date = date('Y-m-d H:i:s');
-            $organisation->end_date = date('Y-m-d H:i:s');
-            $organisation->save();
-
-            $user->organisation_id = $organisation->id;
-            $user->save();
-        }
 
         $user->notify((new SendPasswordNotification($user->name, $password))->onQueue('email'));
 
@@ -836,10 +828,21 @@ class UserController extends Controller
 
         if ($user->organisation_id)
         {
+            $calculate = OrganisationController::calculate($auth->partner, $request);
+
+            $request->validate([
+                'unit_price' => 'required|numeric|min:'.$calculate['total_price']
+            ]);
+
             $organisation = $user->organisation;
             $organisation->status = false;
             $organisation->user_capacity = $request->user_capacity;
-            $organisation->end_date = $request->end_date.' '.$request->end_time;
+
+            if (ceil(abs(strtotime($organisation->created_at) - time()) / 86400) <= 30)
+            {
+                $organisation->end_date = $request->end_date.' '.$request->end_time;
+            }
+
             $organisation->historical_days = $request->historical_days;
             $organisation->real_time_group_limit = $request->real_time_group_limit;
             $organisation->alarm_limit = $request->alarm_limit;
@@ -851,7 +854,9 @@ class UserController extends Controller
             $organisation->data_pool_youtube_keyword_limit = $request->data_pool_youtube_keyword_limit;
             $organisation->data_pool_twitter_keyword_limit = $request->data_pool_twitter_keyword_limit;
             $organisation->data_pool_twitter_user_limit = $request->data_pool_twitter_user_limit;
+
             $organisation->unit_price = $request->unit_price;
+            $organisation->system_price = $calculate['system_price'];
 
             $organisation->module_real_time = $request->module_real_time ? true : false;
             $organisation->module_search = $request->module_search ? true : false;

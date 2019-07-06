@@ -10,6 +10,8 @@ use Validator;
 
 use App\Models\Option;
 
+use System;
+
 class UpdateRequest extends FormRequest
 {
     /**
@@ -47,7 +49,7 @@ class UpdateRequest extends FormRequest
             return !preg_match('/[^a-zA-Z0-9\.]/', $value);
         });
 
-        $arr = [
+        $validations = [
             'name' => 'required|string|max:100|name',
             'status' => 'nullable|string|in:on',
             'user_capacity' => 'required|integer|max:12|min:1',
@@ -66,7 +68,7 @@ class UpdateRequest extends FormRequest
             'data_pool_twitter_keyword_limit' => 'required|integer|max:400|min:0',
             'data_pool_twitter_user_limit' => 'required|integer|max:1000000|min:0',
 
-            'unit_price' => 'required|numeric|min:1|max:9999999',
+            'unit_price' => 'required|numeric|min:0|max:500000',
 
             'module_real_time' => 'nullable|string|in:on',
             'module_search' => 'nullable|string|in:on',
@@ -74,9 +76,7 @@ class UpdateRequest extends FormRequest
             'module_alarm' => 'nullable|string|in:on',
             'module_pin' => 'nullable|string|in:on',
             'module_model' => 'nullable|string|in:on',
-            'module_forum' => 'nullable|string|in:on',
-
-            'partner' => 'nullable|string|in:eagle,phoenix,gryphon,dragon',
+            'module_forum' => 'nullable|string|in:on'
         ];
 
         /**
@@ -84,60 +84,9 @@ class UpdateRequest extends FormRequest
          */
         foreach (config('system.modules') as $key => $module)
         {
-            $arr['data_'.$key] = 'nullable|string|in:on';
+            $validations['data_'.$key] = 'nullable|string|in:on';
         }
 
-        return $arr;
-
-        /*
-        $request->validate($arr);
-
-        $arr = [
-            'historical_days'                  => '*',
-            'real_time_group_limit'            => '*',
-            'alarm_limit'                      => '*',
-            'pin_group_limit'                  => '*',
-            'saved_searches_limit'             => '*',
-
-            'module_real_time'                 => '+',
-            'module_search'                    => '+',
-            'module_trend'                     => '+',
-            'module_alarm'                     => '+',
-            'module_pin'                       => '+',
-            'module_model'                     => '+',
-            'module_forum'                     => '+',
-
-            'data_pool_youtube_channel_limit'  => '*',
-            'data_pool_youtube_video_limit'    => '*',
-            'data_pool_youtube_keyword_limit'  => '*',
-            'data_pool_twitter_keyword_limit'  => '*',
-            'data_pool_twitter_user_limit'     => '*',
-        ];
-
-        foreach (config('system.modules') as $key => $module)
-        {
-            $arr['data_'.$key] = '+';
-        }
-
-        $math_prices = 0;
-
-        foreach ($arr as $key => $group)
-        {
-            if ($group == '+' && $request->{$key} == 'on')
-            {
-                $math_prices = $math_prices + $prices['unit_price.'.$key]['value'];
-            }
-            else if ($group == '*')
-            {
-                $math_prices = $math_prices + ($request->{$key} * $prices['unit_price.'.$key]['value']);
-            }
-        }
-
-        $math_prices = $math_prices * $request->user_capacity;
-
-        return [
-            'unit_price' => 'required|numeric|min:'.$math_prices
-        ];
-        */
+        return $validations;
     }
 }

@@ -43,12 +43,11 @@
     }
 
     $(document).on('click', '[data-trigger=create]', function() {
-        return modal({
+        var mdl = modal({
             'id': 'user',
             'title': 'Kullanıcı Oluştur',
             'body': $('<form />', {
                 'data-callback': '__create',
-
                 'action': '{{ route('admin.user.register') }}',
                 'method': 'post',
                 'id': 'user-form',
@@ -61,7 +60,8 @@
                                 'id': 'name',
                                 'name': 'name',
                                 'type': 'text',
-                                'class': 'validate'
+                                'class': 'validate',
+                                'value': 'test'
                             }),
                             $('<label />', {
                                 'for': 'name',
@@ -81,7 +81,8 @@
                                 'name': 'password',
                                 'type': 'password',
                                 'class': 'validate',
-                                'data-length': 32
+                                'data-length': 32,
+                                'value': '1234'
                             }),
                             $('<label />', {
                                 'for': 'password',
@@ -116,6 +117,10 @@
                })
             ]
         })
+
+        M.updateTextFields()
+
+        return mdl;
     })
 
     function __create(__, obj)
