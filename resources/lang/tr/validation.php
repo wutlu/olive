@@ -348,6 +348,7 @@ $arr = [
         'root_password'                   => 'required|string|root_password',
 
         'discount_with_year'              => 'Yıllık Ödeme İndirimi',
+        'amount'                          => 'Miktar',
     ],
 ];
 

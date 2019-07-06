@@ -130,6 +130,18 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\User\Badge', 'user_id', 'id');
     }
 
+    # partner ödemeler
+    public function partnerPayments()
+    {
+        return $this->hasMany('App\Models\User\PartnerPayment', 'user_id', 'id')->orderBy('created_at', 'DESC');
+    }
+
+    # partner cüzdanı
+    public function partnerWallet($status = [ 'success', 'pending' ])
+    {
+        return PartnerPayment::where('user_id', $this->id)->whereIn('status', $status)->sum('amount');
+    }
+
     # oturum
     public function session()
     {

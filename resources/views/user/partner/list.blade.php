@@ -68,8 +68,11 @@
     <input type="hidden" value="{{ $user->id }}" name="id" />
 
     <div class="card">
-        <div class="card-content grey-text">
-            <span data-name="count">0</span> Kullanıcı
+        <div class="card-content">
+            <span>
+                <span class="grey-text d-block">Kullanıcı Sayısı</span>
+                <span class="card-title" data-name="count">0</span>
+            </span>
         </div>
         <nav class="nav-half">
             <div class="nav-wrapper">
@@ -102,7 +105,7 @@
             </div>
             <a href="#" class="collection-item justify-content-between avatar model hide">
                 <img alt="Avatar" data-name="avatar" class="circle" />
-                <span class="align-self-center">
+                <span>
                     <p data-name="name"></p>
                     <p data-name="email" class="grey-text"></p>
                 </span>

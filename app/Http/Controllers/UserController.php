@@ -14,6 +14,7 @@ use App\Http\Requests\User\Admin\UpdateRequest as AdminUpdateRequest;
 use App\Http\Requests\User\Admin\CreateRequest as AdminCreateRequest;
 use App\Http\Requests\User\Partner\UpdateRequest as PartnerUpdateRequest;
 use App\Http\Requests\User\Partner\CreateRequest as PartnerCreateRequest;
+use App\Http\Requests\User\Partner\PaymentRequest;
 
 use App\Http\Requests\SearchRequest;
 use App\Http\Requests\AutocompleteRequest;
@@ -30,6 +31,7 @@ use App\Notifications\SendPasswordNotification;
 use App\Utilities\UserActivityUtility;
 
 use App\Models\User\User;
+use App\Models\User\PartnerPayment;
 use App\Models\User\UserNotification;
 use App\Models\Option;
 use App\Models\Organisation\Organisation;
@@ -83,10 +85,11 @@ class UserController extends Controller
          */
         $this->middleware('partner')->only([
             'partnerListView',
-            'partnerListViewJson',
+            'partnerListJson',
             'partnerUserView',
             'partnerUserCreate',
             'partnerUserUpdate',
+            'partnerHistory'
         ]);
 
         ### [ 5 işlemden sonra 5 dakika ile sınırla ] ###
@@ -724,7 +727,7 @@ class UserController extends Controller
      *
      * @return array
      */
-    public static function partnerListViewJson(SearchRequest $request)
+    public static function partnerListJson(SearchRequest $request)
     {
         $take = $request->take;
         $skip = $request->skip;
@@ -918,6 +921,47 @@ class UserController extends Controller
                 'id' => $user->id,
                 'status' => $status
             ]
+        ];
+    }
+
+    /**
+     ***********************
+     ******* PARTNER *******
+     ***********************
+     *
+     * Hesap Geçmişi
+     *
+     * @return view
+     */
+    public static function partnerHistory()
+    {
+        $user = auth()->user();
+        $partner_wallet = $user->partnerWallet();
+
+        return view('user.partner.history', compact('user', 'partner_wallet'));
+    }
+
+    /**
+     ***********************
+     ******* PARTNER *******
+     ***********************
+     *
+     * Ödeme İsteği
+     *
+     * @return array
+     */
+    public static function partnerPaymentRequest(PaymentRequest $request)
+    {
+        $q = new PartnerPayment;
+        $q->currency = config('formal.currency_text');
+        $q->amount = '-'.$request->amount;
+        $q->message = $request->name.' - '.$request->iban;
+        $q->status = 'pending';
+        $q->user_id = auth()->user()->id;
+        $q->save();
+
+        return [
+            'status' => 'ok'
         ];
     }
 

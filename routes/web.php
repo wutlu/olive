@@ -46,6 +46,9 @@ Route::prefix('kullanici')->group(function () {
 });
 
 Route::prefix('partner')->group(function () {
+    Route::get('hesap-gecmisi', 'UserController@partnerHistory')->name('partner.history');
+    Route::post('odeme-istegi', 'UserController@partnerPaymentRequest')->name('partner.payment.request');
+
     Route::prefix('kullanici-yonetimi')->group(function () {
         Route::get('/', 'UserController@partnerListView')->name('partner.user.list');
 
@@ -54,8 +57,7 @@ Route::prefix('partner')->group(function () {
         Route::post('kullanici/olustur', 'UserController@partnerUserCreate')->name('partner.user.create');
         Route::post('kullanici/guncelle', 'UserController@partnerUserUpdate')->name('partner.user.update');
 
-        Route::post('json', 'UserController@partnerListViewJson')->name('partner.user.list.json');
-        Route::post('json/autocomplete', 'UserController@partnerAutocomplete')->name('partner.user.autocomplete');
+        Route::post('json', 'UserController@partnerListJson')->name('partner.user.list.json');
     });
 });
 

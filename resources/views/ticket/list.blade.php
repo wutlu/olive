@@ -163,24 +163,26 @@
                 @component('components.nothing')@endcomponent
             @endif
         </div>
+
         @if (count($tickets))
-        <div class="collection">
-            @foreach ($tickets as $ticket)
-            <a href="{{ route('settings.support.ticket', $ticket->id) }}" class="collection-item d-flex waves-effect {{ $ticket->status == 'open' ? 'black' : 'grey' }}-text">
-                <i class="material-icons align-self-center">{{ $ticket->status == 'open' ? 'lock_open' : 'lock' }}</i>
-                <span class="align-self-center">
-                    <p>
-                        {{ $ticket->subject }} / {{ config('system.ticket.types')[$ticket->type] }}
-                        @if (count($ticket->replies))
-                        <span class="badge green {{ $ticket->status == 'closed' ? 'lighten-2' : '' }} white-text">{{ $ticket->replies()->count() }} cevap</span>
-                        @endif
-                    </p>
-                    <p class="grey-text text-darken-2">{{ date('d.m.Y H:i', strtotime($ticket->created_at)) }}</p>
-                </span>
-                <span class="ml-auto">{{ $ticket->status == 'open' ? 'AÇIK' : 'KAPALI' }}</span>
-            </a>
-            @endforeach
-        </div>
+            <div class="collection">
+                @foreach ($tickets as $ticket)
+                <a href="{{ route('settings.support.ticket', $ticket->id) }}" class="collection-item d-flex waves-effect {{ $ticket->status == 'open' ? 'black' : 'grey' }}-text">
+                    <i class="material-icons align-self-center">{{ $ticket->status == 'open' ? 'lock_open' : 'lock' }}</i>
+                    <span class="align-self-center">
+                        <p>
+                            {{ $ticket->subject }} / {{ config('system.ticket.types')[$ticket->type] }}
+
+                            @if (count($ticket->replies))
+                            <span class="badge green {{ $ticket->status == 'closed' ? 'lighten-2' : '' }} white-text">{{ $ticket->replies()->count() }} cevap</span>
+                            @endif
+                        </p>
+                        <p class="grey-text text-darken-2">{{ date('d.m.Y H:i', strtotime($ticket->created_at)) }}</p>
+                    </span>
+                    <span class="ml-auto">{{ $ticket->status == 'open' ? 'AÇIK' : 'KAPALI' }}</span>
+                </a>
+                @endforeach
+            </div>
         @endif
     </div>
 

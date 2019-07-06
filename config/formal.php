@@ -30,6 +30,13 @@ return [
      */
     'tax' => env('TAX', 18),
 
+    /**
+     * stopaj oranı
+     *
+     * @var integer
+     */
+    'stoppage' => env('STOPPAGE', 20),
+
     'banks' => [
         'Enpara' => [
             'name' => 'VERİ ZONE BİL. TEK. VE DAN. LTD. ŞTİ.',

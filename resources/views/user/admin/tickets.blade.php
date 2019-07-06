@@ -33,6 +33,7 @@
                     <span class="align-self-center">
                         <p>
                             {{ $ticket->subject }} / {{ config('system.ticket.types')[$ticket->type] }}
+
                             @if (count($ticket->replies))
                             <span class="badge green {{ $ticket->status == 'closed' ? 'lighten-2' : '' }} white-text">{{ $ticket->replies()->count() }} cevap</span>
                             @endif
