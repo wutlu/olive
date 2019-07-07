@@ -158,11 +158,11 @@
                 <span>Tümü</span>
             </label>
             <label class="collection-item waves-effect d-block" data-update="true">
-                <input name="status" id="status-on" type="radio" value="on" checked />
+                <input name="status" id="status-on" type="radio" value="on" {{ $status == '' ? 'checked' : '' }} />
                 <span>Aktif</span>
             </label>
             <label class="collection-item waves-effect d-block" data-update="true">
-                <input name="status" id="status-off" type="radio" value="off" />
+                <input name="status" id="status-off" type="radio" value="off" {{ $status == 'off' ? 'checked' : '' }} />
                 <span>Pasif</span>
             </label>
         </div>

@@ -244,7 +244,7 @@
 
                             <ul class="right">
                                 @isset($delete)
-                                    @if (auth()->user()->root())
+                                    @if (auth()->user()->admin())
                                         @push('local.scripts')
                                             $(document).on('click', '[data-trigger=delete-forever]', function() {
                                                 return modal({
@@ -339,7 +339,7 @@
                 @if (auth()->user()->root())
                     <!-- sadece yönetici -->
                     <li>
-                        <a href="#" class="subheader red-text">Yönetici Menüsü</a>
+                        <a href="#" class="subheader red-text">Sistem Sorumlusu Menüsü</a>
                     </li>
                     <li>
                         <div class="collapsible-header waves-effect">
@@ -463,11 +463,32 @@
                             </ul>
                         </div>
                     </li>
+                    <li class="divider"></li>
+                @endif
+
+                @if (auth()->user()->admin)
+                    <!-- sadece moderatör -->
+                    <li>
+                        <a href="#" class="subheader red-text">Yönetici Menüsü</a>
+                    </li>
+                    <li class="tiny">
+                        <a class="waves-effect" href="{{ route('analysis.dashboard') }}">
+                            <i class="material-icons">grain</i>
+                            Kelime Hafızası
+                        </a>
+                    </li>
                     <li>
                         <a class="waves-effect" href="{{ route('admin.tickets') }}">
                             <i class="material-icons">mail</i>
                             Destek Talepleri
                             <span class="badge grey white-text" data-id="ticket-count">0</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="waves-effect" href="{{ route('admin.partner.history') }}">
+                            <i class="material-icons">account_balance_wallet</i>
+                            Partner Ödemeleri
+                            <span class="badge grey white-text" data-id="partner_payments-count" data-tooltip="İşlem Bekleyen" data-position="right">0</span>
                         </a>
                     </li>
                     <li class="tiny">
@@ -483,7 +504,7 @@
                         </a>
                     </li>
                     <li class="tiny">
-                        <a class="waves-effect" href="{{ route('admin.organisation.list') }}">
+                        <a class="waves-effect" href="#" data-name="organisation-route">
                             <i class="material-icons">group_work</i>
                             Organizasyonlar
                             <span class="badge grey white-text" data-id="organisation-count" data-tooltip="İşlem Bekleyen Pasif Organizasyonlar" data-position="right">0</span>
@@ -493,26 +514,6 @@
                         <a class="waves-effect" href="{{ route('admin.user.list') }}">
                             <i class="material-icons">people</i>
                             Kullanıcılar
-                        </a>
-                    </li>
-                    <li class="tiny">
-                        <a class="waves-effect" href="{{ route('admin.newsletter') }}">
-                            <i class="material-icons">email</i>
-                            E-posta Bülteni
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                @endif
-
-                @if (auth()->user()->moderator)
-                    <!-- sadece moderatör -->
-                    <li>
-                        <a href="#" class="subheader red-text">Moderatör Menüsü</a>
-                    </li>
-                    <li class="tiny">
-                        <a class="waves-effect" href="{{ route('analysis.dashboard') }}">
-                            <i class="material-icons">grain</i>
-                            Kelime Hafızası
                         </a>
                     </li>
                     <li class="divider"></li>
@@ -793,9 +794,12 @@
 
                 if (obj.status == 'ok')
                 {
-                    @if (auth()->user()->root())
+                    @if (auth()->user()->admin())
                         $('[data-id=ticket-count]').html(obj.data.ticket.count).addClass(obj.data.ticket.count > 0 ? 'red' : 'grey').removeClass(obj.data.ticket.count > 0 ? 'grey' : 'red')
                         $('[data-id=organisation-count]').html(obj.data.organisation.pending_count).addClass(obj.data.organisation.pending_count > 0 ? 'red' : 'grey').removeClass(obj.data.organisation.pending_count > 0 ? 'grey' : 'red')
+                        $('[data-id=partner_payments-count]').html(obj.data.partner.payments.count).addClass(obj.data.partner.payments.count > 0 ? 'red' : 'grey').removeClass(obj.data.partner.payments.count > 0 ? 'grey' : 'red')
+
+                        $('[data-name=organisation-route]').attr('href', obj.data.organisation.pending_count ? '{{ route('admin.organisation.list', [ 'status' => 'off' ]) }}' : '{{ route('admin.organisation.list', [ 'status' => '' ]) }}')
                     @endif
 
                     if (obj.data.push_notifications.length)

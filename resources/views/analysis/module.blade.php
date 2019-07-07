@@ -6,7 +6,7 @@
             'link' => route('analysis.dashboard')
         ],
         [
-            'text' => $module['title'],
+            'text' => '🐞 '.$module['title'],
         ]
     ],
     'dock' => true,

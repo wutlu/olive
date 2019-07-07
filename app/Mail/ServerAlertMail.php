@@ -16,17 +16,19 @@ class ServerAlertMail extends Mailable implements ShouldQueue
 
     public $subject;
     public $body;
+    public $authority;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(string $subject, string $body, string $queue = 'email')
+    public function __construct(string $subject, string $body, string $authority = 'root', string $queue = 'email')
     {
         $this->subject = config('app.env') == 'local' ? implode(' ', [ '[LOCAL]', $subject ]) : $subject;
         $this->body = $body;
         $this->queue = $queue;
+        $this->authority = $authority;
     }
 
     /**
@@ -36,30 +38,43 @@ class ServerAlertMail extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        $roots = User::where('root', true)->get();
+        $query = User::where($this->authority, true)->get();
 
-        if (count($roots))
+        if (count($query))
         {
-            foreach ($roots as $root)
+            foreach ($query as $row)
             {
                 UserActivityUtility::push(
                     $this->subject,
                     [
-                        'key'            => implode('.', [ 'warning', $root->id ]),
+                        'key'            => implode('.', [ 'warning', $row->id ]),
                         'icon'           => 'warning',
                         'markdown'       => $this->body,
-                        'user_id'        => $root->id,
-                        'markdown_color' => '#d32f2f'
+                        'user_id'        => $row->id,
+                        'markdown_color' => '#ffebee'
                     ]
                 );
             }
         }
 
-        return $this->subject('Olive Uyarı: '.$this->subject)
+        switch ($this->authority)
+        {
+            case 'root':
+                $email = config('mail.root_email');
+            break;
+            case 'admin':
+                $email = config('mail.admin_email');
+            break;
+            default:
+                $email = config('mail.root_email');
+            break;
+        }
+
+        return $this->subject('Olive: '.$this->subject)
                     ->markdown('emails.server.alert', [
                         'subject' => $this->subject,
                         'body' => $this->body
                     ])
-                    ->to(config('mail.email_group'));
+                    ->to($email);
     }
 }

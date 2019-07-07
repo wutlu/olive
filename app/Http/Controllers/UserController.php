@@ -576,6 +576,12 @@ class UserController extends Controller
             $user->addBadge(998);
         }
 
+        if ($user->admin == false && $request->admin == true)
+        {
+            ### [ admin rozeti ] ###
+            $user->addBadge(996);
+        }
+
         $user->name = $request->name;
         $user->password = $request->password ? bcrypt($request->password) : $user->password;
 
@@ -587,6 +593,7 @@ class UserController extends Controller
         $user->verified = $request->verified ? true : false;
         $user->avatar = $request->avatar ? null : $user->avatar;
         $user->root = $request->root ? true : false;
+        $user->admin = $request->admin ? true : false;
         $user->moderator = $request->moderator ? true : false;
         $user->about = $request->about ? $request->about : null;
 
@@ -911,7 +918,8 @@ class UserController extends Controller
                         $message,
                         '['.$user->name.'@'.$user->organisation->name.']('.route('admin.organisation', $user->organisation_id).')'
                     ]
-                )
+                ),
+                'admin'
             )
         );
 

@@ -21,7 +21,19 @@ return [
 
     'sendmail' => '/usr/sbin/sendmail -bs',
 
-    'email_group' => env('GROUP_EMAIL'),
+    /**
+     * Admin E-posta Adresi
+     *
+     * - Yönetimsel sorunlar bu e-posta adresine gönderilir.
+     */
+    'admin_email' => env('ADMIN_EMAIL', 'admin@veri.zone'),
+
+    /**
+     * Root E-posta Adresi
+     *
+     * - Sistemsel sorunlar bu e-posta adresine gönderilir.
+     */
+    'root_email' => env('ROOT_EMAIL', 'alper@veri.zone'),
 
     /*
     |--------------------------------------------------------------------------

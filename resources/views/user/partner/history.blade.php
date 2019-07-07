@@ -37,6 +37,13 @@
     <script src="{{ asset('js/jquery.maskedinput.min.js?v='.config('system.version')) }}"></script>
 @endpush
 
+@push('local.styles')
+    th {
+        font-weight: 400;
+        padding: 1rem;
+    }
+@endpush
+
 @push('local.scripts')
     function __withdraw(__, obj)
     {
@@ -121,7 +128,7 @@
                         'html': [
                             $('<span />', {
                                 'class': 'grey-text d-block',
-                                'html': 'Vergiler düşüldükten sonra hesabınıza geçecek net rakam:'
+                                'html': 'Vergiler düşüldükten sonra hesabınıza geçecek net miktar:'
                             }),
                             $('<span />', {
                                 'class': 'green-text m-0',
@@ -167,41 +174,46 @@
 @endpush
 
 @section('content')
-    <div class="card">
-        <div class="card-content">
-            <span>
-                <span class="grey-text d-block">Partner Bakiyesi</span>
+    @if ($user->partnerPayments->count())
+        <div class="card">
+            <div class="card-content">
+                <span class="grey-text">Partner Bakiyesi</span>
                 <span class="card-title green-text">{{ config('formal.currency') }} {{ $partner_wallet }}</span>
-            </span>
+            </div>
 
-            @if ($user->partnerPayments->count())
-                <table class="highlight">
-                    <tbody>
-                        @foreach($user->partnerPayments()->paginate(10) as $invoice)
-                            <tr>
-                                <th>
-                                    <p class="mb-0 grey-text">{{ $invoice->created_at }}</p>
-                                    <p class="mb-0">{{ $invoice->message ? $invoice->message : '-' }}</p>
-                                </th>
+            <table class="highlight">
+                <tbody>
+                    @foreach($user->partnerPayments()->paginate(5) as $transaction)
+                        <tr>
+                            <th>
+                                <p class="mb-0">{{ $transaction->message ? $transaction->message : '-' }}</p>
+                                <i>
+                                    <small class="grey-text">{{ date('d.m.Y H:i', strtotime($transaction->created_at)) }}</small>
+                                </i>
+                            </th>
 
-                                <th style="white-space: nowrap; vertical-align: top;" class="right-align {{ $invoice->process['color'] }}-text">
-                                    <p class="mb-0">
-                                        @if ($invoice->amount > 0){{ '+' }}@endif{{ $invoice->amount }}
-                                        {{ $invoice->currency }}
-                                    </p>
-                                    <p class="mb-0">{{ $invoice->process['title'] }}</p>
-                                </th>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-
-                {!! $user->partnerPayments()->paginate(10)->links('vendor.pagination.materializecss') !!}
-            @else
-                <div class="card-content">
+                            <th style="white-space: nowrap; vertical-align: top;" class="right-align {{ $transaction->process['color'] }}-text">
+                                <p class="mb-0">
+                                    @if ($transaction->amount > 0){{ '+' }}@endif{{ $transaction->amount }}
+                                    {{ $transaction->currency }}
+                                </p>
+                                <i>
+                                    <small>{{ $transaction->process['title'] }}</small>
+                                </i>
+                            </th>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        {!! $user->partnerPayments()->paginate(5)->links('vendor.pagination.materializecss') !!}
+    @else
+        <div class="card card-unstyled">
+            <div class="card-content">
+                <div class="p-2">
                     @component('components.nothing')@endcomponent
                 </div>
-            @endif
+            </div>
         </div>
-    </div>
+    @endif
 @endsection

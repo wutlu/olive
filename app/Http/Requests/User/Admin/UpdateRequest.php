@@ -3,7 +3,10 @@
 namespace App\Http\Requests\User\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
+
 use App\Http\Requests\IdRequest;
+
+use Validator;
 
 class UpdateRequest extends FormRequest
 {
@@ -18,16 +21,33 @@ class UpdateRequest extends FormRequest
     }
 
     /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'only_root' => 'Sistem sorumlusu yetkisi sadece sistem sorumluları tarafından değiştirilebilir.'
+        ];
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
     public function rules(IdRequest $request)
     {
+        Validator::extend('only_root', function($attribute) {
+            return auth()->user()->root ? true : false;
+        });
+
         return [
             'id' => 'required|integer|exists:users,id',
             'name' => 'required|string|max:100|unique:users,name,'.$request->id,
-            'root' => 'nullable|string|in:on',
+            'root' => 'nullable|string|in:on|only_root',
+            'admin' => 'nullable|string|in:on',
             'password' => 'nullable|string|max:32',
             'email' => 'required|email|unique:users,email,'.$request->id,
             'verified' => 'nullable|string|in:on',

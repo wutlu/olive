@@ -130,8 +130,12 @@
                     <img alt="Avatar" src="{{ $user->avatar() }}" class="user-avatar" style="width: 64px; height: 64px;" />
                 </label>
                 <label class="collection-item waves-effect d-block">
-                    <input name="root" id="root" value="on" type="checkbox" {{ $user->root() ? 'checked' : '' }} />
+                    <input name="admin" id="admin" value="on" type="checkbox" {{ $user->admin() ? 'checked' : '' }} />
                     <span>Yönetici</span>
+                </label>
+                <label class="collection-item waves-effect d-block">
+                    <input name="root" id="root" value="on" type="checkbox" {{ $user->root() ? 'checked' : '' }} />
+                    <span>Sistem Sorumlusu</span>
                 </label>
                 <label class="collection-item waves-effect d-block">
                     <input name="moderator" id="moderator" value="on" type="checkbox" {{ $user->moderator() ? 'checked' : '' }} />

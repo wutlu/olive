@@ -21,17 +21,6 @@ use App\Models\Option;
 
 class AnalysisController extends Controller
 {
-    public function __construct()
-    {
-        /**
-         ***** ZORUNLU *****
-         *
-         * - Kullanıcı
-         * - Organizasyon
-         */
-        $this->middleware([ 'auth', 'moderator' ]);
-    }
-
     /**
      * Analiz, Ana Sayfa
      *

@@ -288,13 +288,18 @@ return [
 
             /* ... */
 
+            996 => [
+                'name' => 'Yönetici',
+                'image_src' => 'img/icons/badges/admin.png',
+                'description' => 'veri.zone yönetimine katılın.'
+            ],
             997 => [
                 'name' => 'Moderatör',
                 'image_src' => 'img/icons/badges/moderator.png',
                 'description' => 'Olive ekibiyle çalışın.'
             ],
             998 => [
-                'name' => 'Yönetici',
+                'name' => 'Sistem Sorumlusu',
                 'image_src' => 'img/icons/badges/root.png',
                 'description' => 'veri.zone ofisinde çalışın.'
             ],

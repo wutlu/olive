@@ -39,4 +39,10 @@ class PartnerPayment extends Model
             'title' => $title
         ];
     }
+
+    # user
+    public function user()
+    {
+        return $this->hasOne('App\Models\User\User', 'id', 'user_id');
+    }
 }

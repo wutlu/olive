@@ -40,6 +40,7 @@ class User extends Authenticatable
         'session_id',
         'organisation_id',
         'root',
+        'admin',
         'moderator'
     ];
 
@@ -50,6 +51,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'root' => 'boolean',
+        'admin' => 'boolean',
         'moderator' => 'boolean'
     ];
 
@@ -213,6 +215,11 @@ class User extends Authenticatable
     public function root()
     {
         return $this->root;
+    }
+
+    public function admin()
+    {
+        return $this->admin;
     }
 
     public function moderator()

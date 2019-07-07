@@ -2,7 +2,7 @@
     'sidenav_fixed_layout' => true,
     'breadcrumb' => [
         [
-            'text' => 'Kelime Hafızası'
+            'text' => '🐞 Kelime Hafızası'
         ]
     ],
     'footer_hide' => true

@@ -8,6 +8,7 @@ use App\Http\Requests\SearchRequest;
 
 use App\Models\User\UserActivity;
 use App\Models\User\UserIntro;
+use App\Models\User\PartnerPayment;
 use App\Models\Option;
 use App\Models\Carousel;
 use App\Models\Ticket;
@@ -298,10 +299,11 @@ class HomeController extends Controller
 
         $user = auth()->user();
 
-        if ($user->root())
+        if ($user->admin())
         {
             $data['ticket']['count'] = Option::where('key', 'root_alert.support')->value('value');
             $data['organisation']['pending_count'] = Organisation::where('updated_at', '>=', date('Y-m-d').' 00:00:00')->where('status', false)->count();
+            $data['partner']['payments']['count'] = PartnerPayment::where('status', 'pending')->count();
         }
 
         $activities = UserActivity::where('user_id', $user->id)->where('push_notification', 'on')->limit(3)->get();

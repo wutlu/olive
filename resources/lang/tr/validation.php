@@ -337,6 +337,8 @@ $arr = [
         'reverse'                         => 'İlk İçerikler',
 
         'root_password'                   => 'Root Şifresi',
+        'root'                            => 'Sistem Sorumlusu',
+        'admin'                           => 'Yönetici',
 
         'status'                          => 'Durum',
 
@@ -344,8 +346,6 @@ $arr = [
         'phoenix_percent'                 => 'Phoenix Yüzdesi',
         'gryphon_percent'                 => 'Gryphon Yüzdesi',
         'dragon_percent'                  => 'Dragon Yüzdesi',
-
-        'root_password'                   => 'required|string|root_password',
 
         'discount_with_year'              => 'Yıllık Ödeme İndirimi',
         'amount'                          => 'Miktar',

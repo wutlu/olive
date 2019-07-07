@@ -5,9 +5,18 @@
             'text' => 'Veri Havuzu'
         ]
     ],
-    'dock' => true,
     'footer_hide' => true
 ])
+
+@push('local.styles')
+    [data-name=menu] > .item > a {
+        display: table;
+        margin: 0 auto;
+    }
+    [data-name=menu] > .item > a > img {
+        width: 64px;
+    }
+@endpush
 
 @section('content')
     <div class="card card-unstyled">
@@ -17,6 +26,27 @@
                 Veri Havuzu
             </span>
         </div>
+        <div data-name="menu" class="d-flex flex-wrap justify-content-start">
+            <div class="item flex-fill">
+                <a href="#">
+                    <img alt="YouTube" src="{{ asset('img/logos/youtube.svg') }}" />
+                </a>
+                <div class="collection center-align">
+                    <a class="collection-item waves-effect" href="{{ route('youtube.channel.list') }}">YouTube Kanal Havuzu</a>
+                    <a class="collection-item waves-effect" href="{{ route('youtube.video.list') }}">YouTube Video Havuzu</a>
+                    <a class="collection-item waves-effect" href="{{ route('youtube.keyword.list') }}">YouTube Kelime Havuzu</a>
+                </div>
+            </div>
+            <div class="item flex-fill">
+                <a href="#">
+                    <img alt="Twitter" src="{{ asset('img/logos/twitter.svg') }}" />
+                </a>
+                <div class="collection center-align">
+                    <a class="collection-item waves-effect" href="{{ route('twitter.keyword.list') }}">Twitter Kelime Havuzu</a>
+                    <a class="collection-item waves-effect" href="{{ route('twitter.account.list') }}">Twitter Kullanıcı Havuzu</a>
+                </div>
+            </div>
+        </div>
         <ul class="collection collection-unstyled">
             <li class="collection-item">Olive ekosistemi, ortak veri havuzu prensibiyle çalışır.</li>
             <li class="collection-item">Olive organizasyonlarının ve Olive ekibinin belirlediği kriterlere göre, sosyal medya verileri analiz edilmek üzere toplanır.</li>
@@ -24,8 +54,4 @@
             <li class="collection-item">Havuz kriterlerini, organizasyonunuza ait limitler doğrultusunda kullanabilirsiniz.</li>
         </ul>
     </div>
-@endsection
-
-@section('dock')
-	@include('dataPool._menu', [ 'active' => 'dashboard' ])
 @endsection

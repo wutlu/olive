@@ -194,7 +194,7 @@ class OrganisationController extends Controller
                     );
 
                     /*!
-                     * root alert
+                     * admin alert
                      */
                     Mail::queue(
                         new ServerAlertMail(
@@ -205,7 +205,8 @@ class OrganisationController extends Controller
                                     $message_root['message'],
                                     '['.$author->name.'@'.$organisation->name.']('.route('admin.organisation', $organisation->id).')'
                                 ]
-                            )
+                            ),
+                            'admin'
                         )
                     );
                 }
@@ -1047,9 +1048,9 @@ class OrganisationController extends Controller
      *
      * @return view
      */
-    public static function adminListView()
+    public static function adminListView(string $status = '')
     {
-        return view('organisation.admin.list');
+        return view('organisation.admin.list', compact('status'));
     }
 
     /**

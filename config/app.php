@@ -103,13 +103,6 @@ return [
     'cipher' => 'AES-256-CBC',
 
     /**
-     * Admin Grup E-posta Adresi
-     *
-     * - Sistemsel sorunlar bu e-posta grubuna gönderilir.
-     */
-    'group_email' => env('GROUP_EMAIL', 'admin@veri.zone'),
-
-    /**
      * Admin Organizasyon ID
      *
      * - Herhangi bir ROOT yetkisine sahip organizasyon ID'si.
