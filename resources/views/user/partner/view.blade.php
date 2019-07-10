@@ -421,14 +421,14 @@
                         </li>
                     </ul>
                 </div>
-                <table class="highlight grey lighten-2 hide" data-name="prices">
+                <table class="highlight grey lighten-2 hidex" data-name="prices">
                     <tbody>
                         <tr>
-                            <th class="p-1">Organizasyon maliyeti</th>
+                            <th class="p-1">Partnerin {{ config('formal.tax_name') }} hariç organizasyon maliyeti</th>
                             <th class="p-1 right-align">{{ config('formal.currency') }} <span data-name="price_cost">0</span></th>
                         </tr>
                         <tr>
-                            <th class="p-1">Tavsiye edilen {{ config('formal.tax_name') }} hariç organizasyon fiyatı</th>
+                            <th class="p-1">Tavsiye edilen {{ config('formal.tax_name') }} hariç organizasyon satış fiyatı</th>
                             <th class="p-1 right-align">{{ config('formal.currency') }} <span data-name="price_advice">0</span></th>
                         </tr>
                         <tr>
@@ -507,7 +507,9 @@
     function calculate()
     {
         var unit_price = parseInt((math_prices() + single_prices()) * $('input[name=user_capacity]').val());
-        var advice_price = parseInt(unit_price / 100 * {{ $partner_percent }}) + unit_price;
+        var first_unit_price = unit_price;
+        var unit_price = parseInt(unit_price / 100 * {{ $partner_percent }}) + unit_price;
+        var advice_price = parseInt(first_unit_price / 100 * 100) + first_unit_price;
         var price_profit = parseInt($('input[name=unit_price]').val() - unit_price);
 
         $('[data-name=price_cost]').html(unit_price) // maliyet
