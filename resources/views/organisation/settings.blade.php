@@ -707,8 +707,8 @@
                     <a target="_blank" href="{{ route('organisation.invoice', $invoice->invoice_id) }}" class="collection-item d-flex waves-effect {{ $invoice->paid_at ? 'grey-text' : 'red-text' }}">
                         <i class="material-icons align-self-center">history</i>
                         <span class="align-self-center">
-                            <p>#{{ $invoice->invoice_id }}</p>
-                            <p class="grey-text">{{ date('d.m.Y H:i', strtotime($invoice->created_at)) }}</p>
+                            <span>#{{ $invoice->invoice_id }}</span>
+                            <span class="d-block grey-text">{{ date('d.m.Y H:i', strtotime($invoice->created_at)) }}</span>
                         </span>
                         <span class="ml-auto {{ $invoice->paid_at ? 'grey-text' : 'red-text' }}">{{ $invoice->paid_at ? date('d.m.Y H:i', strtotime($invoice->paid_at)) : 'ÖDENMEDİ' }}</span>
                     </a>

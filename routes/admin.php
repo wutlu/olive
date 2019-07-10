@@ -36,7 +36,15 @@ Route::prefix('destek-talepleri')->group(function () {
 });
 
 Route::prefix('muhasebe')->group(function () {
-    Route::get('partner-odemeleri/{id?}', 'AccountingController@partnerHistory')->name('admin.partner.history');
+    Route::prefix('partner-odemeleri')->group(function () {
+        Route::get('/', 'AccountingController@partnerPaymentsHistory')->name('admin.partner.history');
+        Route::post('/', 'AccountingController@partnerPaymentsHistoryData');
+        Route::post('duzenle', 'AccountingController@partnerPaymentsEdit')->name('admin.partner.payments.edit');
+        Route::post('islem', 'AccountingController@partnerPaymentsAction')->name('admin.partner.payments.action');
+    });
+
+    Route::get('faturalar', 'AccountingController@invoices')->name('admin.invoices');
+    Route::post('faturalar', 'AccountingController@invoicesData');
 });
 
 Route::prefix('kullanici-yonetimi')->group(function () {

@@ -894,7 +894,7 @@ class UserController extends Controller
         else
         {
             $organisation = new Organisation;
-            $organisation->name = $user->name;
+            $organisation->name = $user->name.' org';
             $organisation->user_id = $user->id;
             $organisation->start_date = date('Y-m-d H:i:s');
             $organisation->end_date = date('Y-m-d H:i:s');
@@ -1027,6 +1027,11 @@ class UserController extends Controller
             $query = $query->where('partner', $request->partner);
         }
 
+        if ($request->auth)
+        {
+            $query = $query->where($request->auth, true);
+        }
+
         if ($request->string)
         {
             preg_match('/(?<=partner:)[([0-9]+(?=)/', $request->string, $matches);
@@ -1046,18 +1051,9 @@ class UserController extends Controller
         $total = $query->count();
 
         $query = $query->skip($skip)
-                       ->take($take);
-
-        if ($request->sort)
-        {
-            $query = $query->orderBy('partner_paymet_history_sum', $request->sort);
-        }
-        else
-        {
-            $query = $query->orderBy('id', 'DESC');
-        }
-
-        $query = $query->get();
+                       ->take($take)
+                       ->orderBy('id', 'DESC')
+                       ->get();
 
         return [
             'status' => 'ok',

@@ -17,7 +17,7 @@
 @endsection
 
 @push('local.scripts')
-    function __users(__, obj)
+    function __collection(__, obj)
     {
         var item_model = __.children('.model');
 
@@ -97,7 +97,7 @@
              data-take="5"
              data-include="string,id"
              data-more-button="#users-more_button"
-             data-callback="__users"
+             data-callback="__collection"
              data-loader="#home-loader"
              data-nothing>
             <div class="collection-item nothing hide">
@@ -106,12 +106,14 @@
             <a href="#" class="collection-item justify-content-between avatar model hide">
                 <img alt="Avatar" data-name="avatar" class="circle" />
                 <span>
-                    <p data-name="name"></p>
-                    <p data-name="email" class="grey-text"></p>
+                    <span data-name="name" class="d-block"></span>
+                    <span data-name="email" class="grey-text"></span>
                 </span>
                 <span class="right-align">
                     <span class="d-block" data-name="verified"></span>
-                    <span class="d-block" data-name="organisation-time"></span>
+                    <i>
+                        <small data-name="organisation-time"></small>
+                    </i>
                 </span>
             </a>
         </div>

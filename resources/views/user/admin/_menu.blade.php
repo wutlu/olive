@@ -20,6 +20,7 @@
     @endif
     @if ($user->partner)
         <div class="divider"></div>
-        <a href="{{ route('admin.user.list', [ 'q' => 'partner:'.$user->id ]) }}" class="collection-item waves-effect">Üye Yaptığı Kullanıcılar</a>
+        <a href="{{ route('admin.user.list', [ 'q' => 'partner:'.$user->id ]) }}" class="collection-item waves-effect">Referans Geçmişi</a>
+        <a href="{{ route('admin.partner.history', [ 'q' => $user->email ]) }}" class="collection-item waves-effect">Ödeme Geçmişi</a>
     @endif
 </div>

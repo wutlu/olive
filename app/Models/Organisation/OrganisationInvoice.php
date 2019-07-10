@@ -28,6 +28,25 @@ class OrganisationInvoice extends Model
 
     protected $dates = [ 'paid_at' ];
 
+    public function getInvoiceIdAttribute($value)
+    {
+        return ''.$value.'';
+    }
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'plan',
+        'billing_information_id'
+    ];
+
+    protected $casts = [
+        'invoice_id' => 'bigint'
+    ];
+
     # fatura bilgileri
     public function info()
     {

@@ -15,7 +15,6 @@ class AddPartnerColumnToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->enum('partner', [ 'eagle', 'phoenix', 'gryphon', 'dragon' ])->nullable()->default(null);
-            $table->unsignedBigInteger('partner_paymet_history_sum')->default(0);
 
             $table->unsignedInteger('partner_user_id')->nullable()->default(null)->index();
             $table->foreign('partner_user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
@@ -31,7 +30,6 @@ class AddPartnerColumnToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('partner');
-            $table->dropColumn('partner_paymet_history_sum');
             $table->dropColumn('partner_user_id');
         });
     }

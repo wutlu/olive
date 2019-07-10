@@ -301,10 +301,6 @@ class Detect extends Command
      */
     private function twitterTweet(string $time)
     {
-        $sentiment = new Sentiment;
-
-        $except = array_merge($sentiment->getList('illegal-bet'), $sentiment->getList('illegal-nud'));
-
         $query = Document::search([ 'twitter', 'tweets', date('Y.m') ], 'tweet', [
             'query' => [
                 'bool' => [
@@ -318,11 +314,12 @@ class Detect extends Command
                             ]
                         ]
                     ],
-                    'must_not' => [
-                        [ 'query_string' => [ 'query' => implode(' || ', $except) ] ]
-                    ],
                     'must' => [
-                        [ 'match' => [ 'lang' => 'tr' ] ]
+                        [ 'match' => [ 'lang' => 'tr' ] ],
+                        [
+                            'range' => [ 'illegal.bet' => [ 'lte' => 0.3 ] ],
+                            'range' => [ 'illegal.nud' => [ 'lte' => 0.3 ] ],
+                        ]
                     ]
                 ]
             ],
@@ -405,10 +402,43 @@ class Detect extends Command
      */
     private function twitterHashtag(string $time)
     {
-        $term = new Term;
-        $sentiment = new Sentiment;
-
-        $except = array_merge($sentiment->getList('illegal-bet'), $sentiment->getList('illegal-nud'));
+        $except = [
+            'dolar',
+            'bist',
+            'eyt',
+            'dolartl',
+            'bts',
+            'bist100',
+            'usdtry',
+            'CanEm',
+            'CanYaman',
+            'AzCen',
+            'ReyMir',
+            'AyKer',
+            'ZeyMir',
+            'ZeyKad',
+            'KuzDil',
+            'CemKer',
+            'FAA',
+            'bet',
+            'matbet',
+            'mgmavote',
+            'exo',
+            'ncti27',
+            'teenchoice',
+            'choice',
+            'warpsiwax',
+            'jav',
+            'ARMYMeansFamily',
+            'acil',
+            'canlı',
+            'acele',
+            'odtue',
+            'escort',
+            'eskort',
+            'IRENE',
+            'mersinescort',
+        ];
 
         $query = Document::search([ 'twitter', 'tweets', date('Y.m') ], 'tweet', [
             'query' => [
@@ -432,12 +462,17 @@ class Detect extends Command
                                 ]
                             ]
                         ],
-                        [ 'match' => [ 'lang' => 'tr' ] ],
                         [
-                            'range' => [ 'user.counts.favourites' => [ 'gte' => 10 ] ],
-                            'range' => [ 'user.counts.statuses'   => [ 'gte' => 10 ] ],
-                            'range' => [ 'user.counts.friends'    => [ 'gte' => 10 ] ],
-                            'range' => [ 'user.counts.followers'  => [ 'gte' => 10 ] ]
+                            'match' => [ 'lang' => 'tr' ]
+                        ],
+                        [
+                            'range' => [ 'user.counts.favourites' => [ 'gte' => 40 ] ],
+                            'range' => [ 'user.counts.statuses'   => [ 'gte' => 40 ] ],
+                            'range' => [ 'user.counts.friends'    => [ 'gte' => 40 ] ],
+                            'range' => [ 'user.counts.followers'  => [ 'gte' => 40 ] ],
+
+                            'range' => [ 'illegal.bet' => [ 'lte' => 0.3 ] ],
+                            'range' => [ 'illegal.nud' => [ 'lte' => 0.3 ] ],
                         ]
                     ],
                     'must_not' => [

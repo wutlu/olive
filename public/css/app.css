@@ -1944,7 +1944,6 @@ table tr {
 }
 .modal > .modal-content > .modal-body {
   overflow-y: auto;
-  overflow-x: hidden;
   max-height: 300px;
 
   padding: 0 2rem;

@@ -472,9 +472,10 @@
                         <a href="#" class="subheader red-text">Yönetici Menüsü</a>
                     </li>
                     <li class="tiny">
-                        <a class="waves-effect" href="{{ route('analysis.dashboard') }}">
-                            <i class="material-icons">grain</i>
-                            Kelime Hafızası
+                        <a class="waves-effect" href="#" data-name="organisation-route">
+                            <i class="material-icons">group_work</i>
+                            Organizasyonlar
+                            <span class="badge grey white-text" data-id="organisation-count" data-tooltip="İşlem Bekleyen Pasif Organizasyonlar" data-position="right">0</span>
                         </a>
                     </li>
                     <li>
@@ -491,6 +492,20 @@
                             <span class="badge grey white-text" data-id="partner_payments-count" data-tooltip="İşlem Bekleyen" data-position="right">0</span>
                         </a>
                     </li>
+                    <li>
+                        <a class="waves-effect" href="{{ route('admin.invoices') }}">
+                            <i class="material-icons">credit_card</i>
+                            Faturalar
+                            <span class="badge grey white-text" data-id="organisation-invoices-count" data-tooltip="İşlem Bekleyen" data-position="right">0</span>
+                        </a>
+                    </li>
+                    <li class="tiny">
+                        <a class="waves-effect" href="{{ route('admin.user.list') }}">
+                            <i class="material-icons">people</i>
+                            Kullanıcılar
+                        </a>
+                    </li>
+                    <li class="divider"></li>
                     <li class="tiny">
                         <a class="waves-effect" href="{{ route('admin.page.list') }}">
                             <i class="material-icons">pages</i>
@@ -498,22 +513,15 @@
                         </a>
                     </li>
                     <li class="tiny">
+                        <a class="waves-effect" href="{{ route('analysis.dashboard') }}">
+                            <i class="material-icons">grain</i>
+                            Kelime Hafızası
+                        </a>
+                    </li>
+                    <li class="tiny">
                         <a class="waves-effect" href="{{ route('admin.carousels') }}">
                             <i class="material-icons">view_carousel</i>
                             Carousel Yönetimi
-                        </a>
-                    </li>
-                    <li class="tiny">
-                        <a class="waves-effect" href="#" data-name="organisation-route">
-                            <i class="material-icons">group_work</i>
-                            Organizasyonlar
-                            <span class="badge grey white-text" data-id="organisation-count" data-tooltip="İşlem Bekleyen Pasif Organizasyonlar" data-position="right">0</span>
-                        </a>
-                    </li>
-                    <li class="tiny">
-                        <a class="waves-effect" href="{{ route('admin.user.list') }}">
-                            <i class="material-icons">people</i>
-                            Kullanıcılar
                         </a>
                     </li>
                     <li class="divider"></li>
@@ -796,10 +804,11 @@
                 {
                     @if (auth()->user()->admin())
                         $('[data-id=ticket-count]').html(obj.data.ticket.count).addClass(obj.data.ticket.count > 0 ? 'red' : 'grey').removeClass(obj.data.ticket.count > 0 ? 'grey' : 'red')
-                        $('[data-id=organisation-count]').html(obj.data.organisation.pending_count).addClass(obj.data.organisation.pending_count > 0 ? 'red' : 'grey').removeClass(obj.data.organisation.pending_count > 0 ? 'grey' : 'red')
+                        $('[data-id=organisation-count]').html(obj.data.organisation.pending.count).addClass(obj.data.organisation.pending.count > 0 ? 'red' : 'grey').removeClass(obj.data.organisation.pending.count > 0 ? 'grey' : 'red')
+                        $('[data-id=organisation-invoices-count]').html(obj.data.organisation.invoices.count).addClass(obj.data.organisation.invoices.count > 0 ? 'red' : 'grey').removeClass(obj.data.organisation.invoices.count > 0 ? 'grey' : 'red')
                         $('[data-id=partner_payments-count]').html(obj.data.partner.payments.count).addClass(obj.data.partner.payments.count > 0 ? 'red' : 'grey').removeClass(obj.data.partner.payments.count > 0 ? 'grey' : 'red')
 
-                        $('[data-name=organisation-route]').attr('href', obj.data.organisation.pending_count ? '{{ route('admin.organisation.list', [ 'status' => 'off' ]) }}' : '{{ route('admin.organisation.list', [ 'status' => '' ]) }}')
+                        $('[data-name=organisation-route]').attr('href', obj.data.organisation.pending.count ? '{{ route('admin.organisation.list', [ 'status' => 'off' ]) }}' : '{{ route('admin.organisation.list', [ 'status' => '' ]) }}')
                     @endif
 
                     if (obj.data.push_notifications.length)

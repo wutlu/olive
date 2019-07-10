@@ -27,11 +27,17 @@ class SearchRequest extends FormRequest
             'string' => 'nullable|string|min:2|max:255',
             'skip' => 'required|integer',
             'take' => 'required|integer|max:100',
-            'status' => 'nullable|string|in:on,off',
+            'status' => 'nullable|string|in:on,off,success,pending,cancelled',
+
             'id' => 'nullable|integer',
 
             'partner' => 'nullable|string|in:eagle,phoenix,gryphon,dragon',
-            'sort' => 'nullable|string|in:asc,desc'
+            'sort' => 'nullable|string|in:asc,desc',
+            'auth' => 'nullable|string|in:root,admin,moderator',
+            'direction' => 'nullable|string|in:in,out',
+
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
         ];
     }
 }

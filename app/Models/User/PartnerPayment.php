@@ -26,7 +26,7 @@ class PartnerPayment extends Model
         else if ($this->status == 'pending')
         {
             $color = 'blue';
-            $title = 'Bekliyor';
+            $title = 'Bekliyor...';
         }
         else if ($this->status == 'cancelled')
         {

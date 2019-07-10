@@ -106,7 +106,7 @@
                         'html': [
                             $('<span />', {
                                 'class': 'prefix',
-                                'html': '₺'
+                                'html': '{{ config('formal.currency') }}'
                             }),
                             $('<input />', {
                                 'id': 'amount',
@@ -186,17 +186,16 @@
                     @foreach($user->partnerPayments()->paginate(5) as $transaction)
                         <tr>
                             <th>
-                                <p class="mb-0">{{ $transaction->message ? $transaction->message : '-' }}</p>
+                                <span class="d-block">{{ $transaction->message ? $transaction->message : '-' }}</span>
                                 <i>
                                     <small class="grey-text">{{ date('d.m.Y H:i', strtotime($transaction->created_at)) }}</small>
                                 </i>
                             </th>
 
                             <th style="white-space: nowrap; vertical-align: top;" class="right-align {{ $transaction->process['color'] }}-text">
-                                <p class="mb-0">
-                                    @if ($transaction->amount > 0){{ '+' }}@endif{{ $transaction->amount }}
-                                    {{ $transaction->currency }}
-                                </p>
+                                <span class="d-block">
+                                    @if ($transaction->amount > 0){{ '+' }}@endif{{ $transaction->amount }} {{ $transaction->currency }}
+                                </span>
                                 <i>
                                     <small>{{ $transaction->process['title'] }}</small>
                                 </i>

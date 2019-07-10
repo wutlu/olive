@@ -13,10 +13,9 @@
 ])
 
 @push('local.scripts')
-    function __users(__, obj)
+    function __collection(__, obj)
     {
-        var ul = $('#users');
-        var item_model = ul.children('.model');
+        var item_model = __.children('.model');
 
         if (obj.status == 'ok')
         {
@@ -32,9 +31,8 @@
                         item.find('[data-name=verified]')
                             .html(o.partner ? o.partner : (o.verified ? 'Doğrulandı!' : 'Doğrulanmadı!'))
                             .addClass(o.partner ? 'yellow-text text-darken-2' : (o.verified ? 'green-text' : 'red-text'))
-                        item.find('[data-name=sum]').removeClass(o.partner ? 'hide' : '').children('span').html(o.partner_paymet_history_sum)
 
-                        item.appendTo(ul)
+                        item.appendTo(__)
                 })
             }
 
@@ -127,7 +125,7 @@
     {
         if (obj.status == 'ok')
         {
-            var collection = $('#users');
+            var collection = $('#collection');
                 collection.data('skip', 0).addClass('json-clear')
 
             vzAjax(collection)
@@ -137,7 +135,7 @@
     }
 
     $(document).on('change', '[data-update]', function() {
-        var search = $('#users');
+        var search = $('#collection');
             search.data('skip', 0).addClass('json-clear');
 
         vzAjax(search)
@@ -145,7 +143,7 @@
 @endpush
 
 @section('content')
-    <div class="card with-bg">
+    <div class="card">
         <div class="card-image mb-1">
             <img src="{{ asset('img/md-s/21.jpg') }}" alt="Image" />
             <span class="card-title white-text d-flex">
@@ -164,7 +162,7 @@
                            name="string"
                            type="search"
                            class="validate json json-search"
-                           data-json-target="#users"
+                           data-json-target="#collection"
                            placeholder="Ara"
                            value="{{ $request->q }}" />
                     <label class="label-icon" for="string">
@@ -174,14 +172,14 @@
             </div>
         </nav>
         <div class="collection collection-unstyled load json-clear" 
-             id="users"
+             id="collection"
              data-href="{{ route('admin.user.list.json') }}"
              data-method="post"
              data-skip="0"
-             data-take="5"
-             data-include="string,partner,sort"
-             data-more-button="#users-more_button"
-             data-callback="__users"
+             data-take="10"
+             data-include="string,partner,auth"
+             data-more-button="#collection-more_button"
+             data-callback="__collection"
              data-loader="#home-loader"
              data-nothing>
             <div class="collection-item nothing hide">
@@ -196,12 +194,11 @@
                 data-callback="__go">
                 <img alt="Avatar" data-name="avatar" class="circle" />
                 <span>
-                    <p data-name="name"></p>
-                    <p data-name="email" class="grey-text"></p>
+                    <span data-name="name" class="d-block"></span>
+                    <span data-name="email" class="grey-text"></span>
                 </span>
-                <span class="ml-auto">
-                    <p class="right-align" data-name="verified"></p>
-                    <p class="right-align hide" data-name="sum">{{ config('formal.currency') }} <span></span> ciro</p>
+                <span class="ml-auto right-align">
+                    <span data-name="verified" class="d-block"></span>
                 </span>
             </a>
         </div>
@@ -215,8 +212,8 @@
 
     <a href="#"
        class="more hide json"
-       id="users-more_button"
-       data-json-target="#users">Daha Fazla</a>
+       id="collection-more_button"
+       data-json-target="#collection">Daha Fazla</a>
 @endsection
 
 @section('dock')
@@ -255,21 +252,25 @@
         <div class="card-content">
             <span class="card-title d-flex">
                 <i class="material-icons mr-1">filter_list</i>
-                Ciro Sıralaması
+                Yetkili
             </span>
         </div>
         <div class="collection collection-unstyled">
             <label class="collection-item waves-effect d-block" data-update="true">
-                <input name="sort" id="sort" type="radio" checked value="" />
-                <span>Normal</span>
+                <input name="auth" id="auth" type="radio" checked value="" />
+                <span>Tümü</span>
             </label>
             <label class="collection-item waves-effect d-block" data-update="true">
-                <input name="sort" id="sort" type="radio" value="asc" />
-                <span>Artan</span>
+                <input name="auth" id="auth-root" type="radio" value="root" />
+                <span>Sistem Sorumlusu</span>
             </label>
             <label class="collection-item waves-effect d-block" data-update="true">
-                <input name="sort" id="sort" type="radio" value="desc" />
-                <span>Azalan</span>
+                <input name="auth" id="auth-admin" type="radio" value="admin" />
+                <span>Yönetici</span>
+            </label>
+            <label class="collection-item waves-effect d-block" data-update="true">
+                <input name="auth" id="auth-moderator" type="radio" value="moderator" />
+                <span>Moderatör</span>
             </label>
         </div>
     </div>

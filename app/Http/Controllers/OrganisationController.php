@@ -171,10 +171,7 @@ class OrganisationController extends Controller
                      */
                     $author = $organisation->author;
 
-                    if ($author->notification('important'))
-                    {
-                        $author->notify((new MessageNotification('Olive: '.$message['title'], $message['info'], $message['body']))->onQueue('email'));
-                    }
+                    $author->notify((new MessageNotification('Olive: '.$message['title'], $message['info'], $message['body']))->onQueue('email'));
 
                     Activity::push(
                         $message['title'],
@@ -621,7 +618,9 @@ class OrganisationController extends Controller
                 $message = 'Ödemeniz başarılı bir şekilde gerçekleştirildi ve organizasyonunuz aktif edildi.';
                 $message = 'Olive kullandığınız için teşekkür eder, iyi araştırmalar dileriz.';
 
-                $organisation->author->notify(
+                $author = $organisation->author;
+
+                $author->notify(
                     (
                         new MessageNotification(
                             $title,
@@ -634,29 +633,31 @@ class OrganisationController extends Controller
                 Activity::push(
                     $greeting,
                     [
-                        'user_id' => $organisation->author->id,
+                        'user_id' => $author->id,
                         'icon' => 'check',
                         'markdown' => $message
                     ]
                 );
 
-                if (!$organisation->author->badge(999))
+                if (!$author->badge(999))
                 {
-                    $organisation->author->addBadge(999); // destekçi
+                    $author->addBadge(999); // destekçi
                 }
+
+                $reference = $author->reference;
 
                 /*
                  */
-                if ($organisation->author->reference)
+                if ($reference)
                 {
-                    $partner_percent = System::option('formal.partner.'.$organisation->author->reference->partner.'.percent');
+                    $partner_percent = System::option('formal.partner.'.$reference->partner.'.percent');
 
                     $pay = new PartnerPayment;
                     $pay->currency = config('formal.currency_text');
                     $pay->amount = $invoice->total_price - ($organisation->system_price * $invoice->month);
                     $pay->status = 'success';
-                    $pay->message = $organisation->author->email.' tarafından bir ödeme alındı.';
-                    $pay->user_id = $organisation->author->reference->id;
+                    $pay->message = $author->email.' tarafından bir ödeme alındı.';
+                    $pay->user_id = $reference->id;
                     $pay->save();
                 }
                 /*
@@ -664,6 +665,7 @@ class OrganisationController extends Controller
 
                 $invoice->total_amount = $request->total_amount;
                 $invoice->paid_at = date('Y-m-d H:i:s');
+                $invoice->method = 'PAYTR';
                 $invoice->save();
             }
             else
@@ -1328,16 +1330,20 @@ class OrganisationController extends Controller
         {
             $organisation = $invoice->organisation;
 
-            if ($organisation->author->reference)
+            $author = $organisation->author;
+
+            if ($author->reference)
             {
-                $partner_percent = System::option('formal.partner.'.$organisation->author->reference->partner.'.percent');
+                $reference = $author->reference;
+
+                $partner_percent = System::option('formal.partner.'.$reference->partner.'.percent');
 
                 $pay = new PartnerPayment;
                 $pay->currency = config('formal.currency_text');
                 $pay->amount = $invoice->total_price - ($organisation->system_price * $invoice->month);
                 $pay->status = 'success';
-                $pay->message = $organisation->author->email.' tarafından bir ödeme alındı.';
-                $pay->user_id = $organisation->author->reference->id;
+                $pay->message = $author->email.' tarafından bir ödeme alındı.';
+                $pay->user_id = $reference->id;
                 $pay->save();
             }
 
@@ -1354,9 +1360,9 @@ class OrganisationController extends Controller
             $greeting = 'Faturanız Onaylandı!';
             $message = 'Organizasyonunuzu aktifleştirdik. İyi araştırmalar dileriz...';
 
-            if ($organisation->author->notification('important'))
+            if ($author->notification('important'))
             {
-                $organisation->author->notify(
+                $author->notify(
                     (
                         new MessageNotification(
                             $title,
@@ -1370,18 +1376,19 @@ class OrganisationController extends Controller
             Activity::push(
                 $greeting,
                 [
-                    'user_id' => $organisation->author->id,
+                    'user_id' => $author->id,
                     'icon' => 'check',
                     'markdown' => $message
                 ]
             );
 
-            if (!$organisation->author->badge(999))
+            if (!$author->badge(999))
             {
-                $organisation->author->addBadge(999); // destekçi
+                $author->addBadge(999); // destekçi
             }
 
             $invoice->paid_at = date('Y-m-d H:i:s');
+            $invoice->method = 'HAVALE/EFT';
         }
 
         $invoice->save();

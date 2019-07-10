@@ -28,6 +28,7 @@ use Illuminate\Support\Facades\Redis as RedisCache;
 use App\Http\Requests\DemoRequest;
 
 use App\Models\Organisation\Organisation;
+use App\Models\Organisation\OrganisationInvoice;
 
 class HomeController extends Controller
 {
@@ -302,7 +303,8 @@ class HomeController extends Controller
         if ($user->admin())
         {
             $data['ticket']['count'] = Option::where('key', 'root_alert.support')->value('value');
-            $data['organisation']['pending_count'] = Organisation::where('updated_at', '>=', date('Y-m-d').' 00:00:00')->where('status', false)->count();
+            $data['organisation']['pending']['count'] = Organisation::where('updated_at', '>=', date('Y-m-d').' 00:00:00')->where('status', false)->count();
+            $data['organisation']['invoices']['count'] = OrganisationInvoice::whereNull('paid_at')->count();
             $data['partner']['payments']['count'] = PartnerPayment::where('status', 'pending')->count();
         }
 
