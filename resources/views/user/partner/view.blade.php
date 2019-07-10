@@ -421,7 +421,7 @@
                         </li>
                     </ul>
                 </div>
-                <table class="highlight grey lighten-2 hidex" data-name="prices">
+                <table class="highlight grey lighten-2 hide" data-name="prices">
                     <tbody>
                         <tr>
                             <th class="p-1">Partnerin {{ config('formal.tax_name') }} hariç organizasyon maliyeti</th>
