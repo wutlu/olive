@@ -169,7 +169,7 @@
     }).on('keydown keyup click change', 'input[name=amount]', function() {
         var __ = $(this);
 
-        $('[data-name=real_amount]').html(__.val() - (__.val() / 100 * {{ config('formal.stoppage') }}))
+        $('[data-name=real_amount]').html('{{ config('formal.currency') }} ' + (__.val() - (__.val() / 100 * {{ config('formal.stoppage') }})))
     })
 @endpush
 
