@@ -894,7 +894,7 @@ class UserController extends Controller
         else
         {
             $organisation = new Organisation;
-            $organisation->name = $user->name.' org';
+            $organisation->name = $user->name.'.org';
             $organisation->user_id = $user->id;
             $organisation->start_date = date('Y-m-d H:i:s');
             $organisation->end_date = date('Y-m-d H:i:s');
