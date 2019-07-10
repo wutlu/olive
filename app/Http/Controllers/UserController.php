@@ -564,22 +564,30 @@ class UserController extends Controller
     {
         $user = User::where('id', $id)->firstOrFail();
 
-        if ($user->moderator == false && $request->moderator == true)
+        if ($user->moderator == false && $request->moderator)
         {
             ### [ moderatör rozeti ] ###
             $user->addBadge(997);
         }
 
-        if ($user->root == false && $request->root == true)
+        if ($user->root == false && $request->root)
         {
             ### [ root rozeti ] ###
             $user->addBadge(998);
         }
 
-        if ($user->admin == false && $request->admin == true)
+        if ($user->admin == false && $request->admin)
         {
             ### [ admin rozeti ] ###
             $user->addBadge(996);
+        }
+
+        if (!$user->partner && $request->partner)
+        {
+            if (!$user->badge(11))
+            {
+                $user->addBadge(11); // partner
+            }
         }
 
         $user->name = $request->name;
@@ -596,11 +604,6 @@ class UserController extends Controller
         $user->admin = $request->admin ? true : false;
         $user->moderator = $request->moderator ? true : false;
         $user->about = $request->about ? $request->about : null;
-
-        if (!$user->badge(11))
-        {
-            $user->addBadge(11); // partner
-        }
 
         $user->partner = $request->partner ? $request->partner : null;
 

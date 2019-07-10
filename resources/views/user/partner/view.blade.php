@@ -510,8 +510,8 @@
         var advice_price = parseInt(unit_price / 100 * {{ $partner_percent }}) + unit_price;
         var price_profit = parseInt($('input[name=unit_price]').val() - unit_price);
 
-        $('[data-name=price_advice]').html(advice_price)
-        $('[data-name=price_cost]').html(unit_price)
+        $('[data-name=price_cost]').html(unit_price) // maliyet
+        $('[data-name=price_advice]').html(advice_price) // tavsiye
         $('[data-name=price_profit]').html(price_profit)
     }
 
