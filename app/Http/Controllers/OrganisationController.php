@@ -911,7 +911,7 @@ class OrganisationController extends Controller
                                     {
                                         $user = auth()->user();
 
-                                        if (!$user->root() || $user->admin())
+                                        if (!$user->root() || !$user->admin())
                                         {
                                             $query->orWhere('organisation_invoices.organisation_id', $user->organisation_id)
                                                   ->orWhere('organisation_invoices.user_id', $user->id);
