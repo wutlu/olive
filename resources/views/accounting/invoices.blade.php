@@ -61,10 +61,7 @@
 @section('wildcard')
     <div class="card wild-background">
         <div class="container">
-            <span class="wildcard-title">
-                Faturalar
-                (<span data-name="count">0</span>)
-            </span>
+            <span class="wildcard-title">Faturalar</span>
         </div>
     </div>
 @endsection
@@ -96,6 +93,7 @@
                         item.find('[data-name=name]').html('#' + o.invoice_id).attr('href', '{{ url('ayarlar/organizasyon/fatura') }}/' + o.invoice_id)
                         item.find('[data-name=price]').html('{{ config('formal.currency') }} ' + o.total_price)
                         item.find('[data-name=message]').removeClass(o.reason_msg ? 'hide' : '').html('" ' + o.reason_msg + ' "')
+                        item.find('[data-name=method]').removeClass(o.method ? 'hide' : '').html(o.method)
                         item.find('[data-name=status]')
                             .removeClass('red-text green-text')
                             .addClass(o.paid_at ? 'green-text' : 'red-text')
@@ -105,7 +103,6 @@
                 })
             }
 
-            $('[data-name=total-amount]').html(obj.sum)
             $('[data-name=count]').html(obj.total)
         }
     }
@@ -114,8 +111,8 @@
 @section('content')
     <div class="card">
         <div class="card-content">
-            <span class="grey-text">Kasaya Giren Toplam Miktar ({{ config('formal.tax_name') }} hariç)</span>
-            <span class="card-title">{{ config('formal.currency') }} <span data-name="total-amount">0</span></span>
+            <span class="grey-text">Fatura Sayısı</span>
+            <span class="card-title" data-name="count">0</span>
         </div>
         <nav class="nav-half">
             <div class="nav-wrapper">
@@ -157,13 +154,14 @@
                         data-name-alias="name"
                         data-callback="__go"></a>
                     <a href="#" class="d-block grey-text" data-name="name"></a>
-                    <small class="hide red-text mb-0" data-name="message"></small>
+                    <small class="hide red-text" data-name="message"></small>
                 </span>
                 <span class="right-align">
-                    <span class="green-text" data-name="price"></span>
+                    <small class="hide" data-name="method"></small>
+                    <span class="d-block green-text" data-name="price"></span>
                     <i>
-                        <small class="d-block grey-text" data-name="created_at"></small>
-                        <small class="d-block" data-name="status"></small>
+                        <small class="grey-text" data-name="created_at"></small>
+                        <small data-name="status"></small>
                     </i>
                 </span>
             </li>

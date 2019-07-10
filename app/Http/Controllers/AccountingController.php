@@ -236,7 +236,6 @@ class AccountingController extends Controller
         }
 
         $total = $query->count();
-        $sum = $query->sum('total_price');
 
         $query = $query->skip($skip)
                        ->take($take)
@@ -246,8 +245,7 @@ class AccountingController extends Controller
         return [
             'status' => 'ok',
             'hits' => $query,
-            'total' => $total,
-            'sum' => $sum
+            'total' => $total
         ];
     }
 }
