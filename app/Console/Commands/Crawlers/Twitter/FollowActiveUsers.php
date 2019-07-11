@@ -45,8 +45,8 @@ class FollowActiveUsers extends Command
      */
     public function handle()
     {
-        $size = 1000;
         $min = 10;
+        $size = 1000;
 
         $query = Document::search([ 'twitter', 'tweets', '*' ], 'tweet', [
             'aggs' => [

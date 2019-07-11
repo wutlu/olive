@@ -122,6 +122,23 @@ return [
                 ]
             ]
         ],
+        'blog' => [
+            'groups' => [
+                's01',
+                's02',
+                's03',
+                's04',
+                's05'
+            ],
+            'document' => [
+                'settings' => [
+                    'total_fields_limit' => 30,
+                    'number_of_shards' => 4,
+                    'number_of_replicas' => 0,
+                    'refresh_interval' => '10s'
+                ]
+            ]
+        ],
         'shopping' => [
             'product' => [
                 'settings' => [

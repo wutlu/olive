@@ -279,6 +279,9 @@
                     case 'article':
                         pattern = _article_(obj);
                     break;
+                    case 'document':
+                        pattern = _document_(obj);
+                    break;
                     case 'product':
                         pattern = _product_(obj);
                     break;

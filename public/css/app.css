@@ -1477,6 +1477,9 @@ footer.page-footer > .container > .row > .col > img#vz-logo {
 .card.card-data.article {
   background-image: url('../img/icons/globe-earth.png');
 }
+.card.card-data.document {
+  background-image: url('../img/icons/globe-earth.png');
+}
 .card.card-data.video {
   background-image: url('../img/icons/youtube.png');
 }

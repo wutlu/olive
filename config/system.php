@@ -194,6 +194,7 @@ return [
         'twitter' => 'Twitter',
         'sozluk' => 'Sözlük',
         'news' => 'Haber',
+        'blog' => 'Blog',
         'youtube_video' => 'YouTube Video',
         'youtube_comment' => 'YouTube Yorum',
         'shopping' => 'E-ticaret'
@@ -534,6 +535,12 @@ return [
                 'name' => 'Arama Motoru',
                 'route' => 'search.dashboard',
                 'icon' => 'search'
+            ],
+            34 => [
+                'name' => 'Blog Botları',
+                'route' => 'crawlers.blog.list',
+                'root' => true,
+                'icon' => 'widgets'
             ],
         ]
     ],

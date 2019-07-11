@@ -45,7 +45,7 @@ class SozlukCrawler extends Model
         return $pid ? ($pid_term ? $pid : false) : null;
     }
 
-    # index crate
+    # index create
     public function indexCreate()
     {
         return Indices::create(

@@ -15,9 +15,6 @@ use App\Elasticsearch\Document;
 
 use Term;
 
-use App\Models\Crawlers\MediaCrawler;
-use App\Models\Crawlers\ShoppingCrawler;
-
 use App\Models\SavedSearch;
 
 use App\Utilities\Crawler;
@@ -267,6 +264,7 @@ class SearchController extends Controller
                 'youtube_video' => 0,
                 'youtube_comment' => 0,
                 'media_article' => 0,
+                'blog_document' => 0,
                 'shopping_product' => 0
             ]
         ];
@@ -310,6 +308,14 @@ class SearchController extends Controller
                     }
 
                     $stats['counts']['media_article'] = intval(@Document::search([ 'media', 's*' ], 'article', array_merge($q, [ 'size' => 0 ]))->data['hits']['total']);
+                break;
+                case 'blog':
+                    if ($organisation->data_blog)
+                    {
+                        $modules[] = 'document';
+                    }
+
+                    $stats['counts']['blog_document'] = intval(@Document::search([ 'blog', 's*' ], 'document', array_merge($q, [ 'size' => 0 ]))->data['hits']['total']);
                 break;
                 case 'youtube_video':
                     if ($organisation->data_youtube_video)
@@ -410,6 +416,20 @@ class SearchController extends Controller
                         }
 
                         $data[] = array_merge($arr, $article);
+                    break;
+                    case 'document':
+                        $document = [
+                            'url' => $object['_source']['url'],
+                            'title' => $object['_source']['title'],
+                            'text' => $object['_source']['description'],
+                        ];
+
+                        if (@$object['_source']['image_url'])
+                        {
+                            $document['image'] = $object['_source']['image_url'];
+                        }
+
+                        $data[] = array_merge($arr, $document);
                     break;
                     case 'entry':
                         $data[] = array_merge($arr, [
@@ -564,6 +584,12 @@ class SearchController extends Controller
                     if ($organisation->data_news)
                     {
                         $modules[] = 'article';
+                    }
+                break;
+                case 'blog':
+                    if ($organisation->data_blog)
+                    {
+                        $modules[] = 'document';
                     }
                 break;
                 case 'youtube_video':

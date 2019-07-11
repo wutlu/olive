@@ -15,6 +15,7 @@ use Sentiment;
 use Term;
 
 use App\Models\Crawlers\MediaCrawler;
+use App\Models\Crawlers\BlogCrawler;
 use App\Models\Crawlers\SozlukCrawler;
 use App\Models\TrendArchive;
 
@@ -67,6 +68,7 @@ class Detect extends Command
             'twitter_tweet',
             'twitter_hashtag',
             'news',
+            'blog',
             'entry',
             'youtube_video',
             'google',
@@ -139,6 +141,9 @@ class Detect extends Command
             case 'news':
                 $data = $this->news($time);
             break;
+            case 'blog':
+                $data = $this->blog($time);
+            break;
             case 'entry':
                 $data = $this->entry($time);
             break;
@@ -197,6 +202,19 @@ class Detect extends Command
                         ];
                     break;
                     case 'news':
+                        $arr['id'] = implode('-', [ $module, $group, md5($item['title']) ]);
+                        $arr['data'] = [
+                            'id' => md5($item['title']),
+                            'title' => $item['title'],
+                            'text' => $item['text']
+                        ];
+
+                        if (@$item['image'])
+                        {
+                            $arr['data']['image'] = $item['image'];
+                        }
+                    break;
+                    case 'blog':
                         $arr['id'] = implode('-', [ $module, $group, md5($item['title']) ]);
                         $arr['data'] = [
                             'id' => md5($item['title']),
@@ -619,6 +637,178 @@ class Detect extends Command
                                             [
                                                 'terms' => [
                                                     'site_id' => $ids
+                                                ]
+                                            ]
+                                        ],
+                                        'must' => [
+                                            [
+                                                'more_like_this' => [
+                                                    'fields' => [ 'title' ],
+                                                    'like' => $bucket['key'],
+                                                    'min_term_freq' => 1,
+                                                    'min_doc_freq' => 1,
+                                                    'max_query_terms' => 10
+                                                ]
+                                            ],
+                                            [ 'match' => [ 'status' => 'ok' ] ]
+                                        ]
+                                    ]
+                                ],
+                                '_source' => [
+                                    'title',
+                                    'description',
+                                    'image_url',
+                                ],
+                                'size' => 4
+                            ]);
+
+                            if ($key != 'null')
+                            {
+                                $data[$key] = [
+                                    'hit' => $bucket['doc_count'],
+                                ];
+
+                                if ($search->status == 'ok')
+                                {
+                                    if ($search->data['hits']['total'])
+                                    {
+                                        for ($i = 0; $i <= ($search->data['hits']['total']); $i++)
+                                        {
+                                            $source = @$search->data['hits']['hits'][$i]['_source'];
+
+                                            if ($source)
+                                            {
+                                                $sper = 0;
+
+                                                foreach ($data as $k => $item)
+                                                {
+                                                    if (@$item['title'])
+                                                    {
+                                                        similar_text($item['title'], $source['title'], $percent);
+
+                                                        $sper = ($percent > $sper) ? $percent : $sper;
+                                                    }
+                                                }
+
+                                                if ($sper <= 50)
+                                                {
+                                                    $data[$key]['title'] = $source['title'];
+                                                    $data[$key]['text'] = $source['description'];
+
+                                                    if (@$source['image_url'])
+                                                    {
+                                                        $data[$key]['image'] = $source['image_url'];
+                                                    }
+
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                if (@$data[$key]['title'])
+                                {
+                                    //
+                                }
+                                else
+                                {
+                                    unset($data[$key]);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * Blog, Document
+     *
+     * @return array
+     */
+    private function blog(string $time)
+    {
+        $query = Document::search([ 'blog', '*' ], 'document', [
+            'query' => [
+                'bool' => [
+                    'filter' => [
+                        [
+                            'range' => [
+                                'called_at' => [
+                                    'format' => 'YYYY-MM-dd HH:mm',
+                                    'gte' => date('Y-m-d H:i', strtotime($time))
+                                ]
+                            ]
+                        ]
+                    ],
+                    'must' => [
+                        [ 'match' => [ 'status' => 'ok' ] ]
+                    ]
+                ]
+            ],
+            'aggs' => [
+                'title' => [
+                    'terms' => [
+                        'field' => 'title',
+                        'size' => 50,
+                        'min_doc_count' => 1,
+                        'script' => '(
+                            (_value.length() >= 3) &&
+                            (
+                                _value != \'başarı\' &&
+                                _value != \'başarılı\' &&
+                                _value != \'belediye\' &&
+                                _value != \'belediyesi\' &&
+                                _value != \'başkan\' &&
+                                _value != \'başkanı\' &&
+                                _value != \'parti\' &&
+                                _value != \'video\' &&
+                                _value != \'görüntülü\' &&
+                                _value != \'görüntü\' &&
+                                _value != \'görüntül\' &&
+                                _value != \'haberi\' &&
+                                _value != \'haber\' &&
+                                _value != \'haberleri\'
+                            )
+                        ) ? _value : \'_null_\''
+                    ]
+                ]
+            ],
+            'size' => 0
+        ]);
+
+        $data = [];
+
+        if ($query->status == 'ok')
+        {
+            if (count($query->data['aggregations']['title']['buckets']))
+            {
+                foreach ($query->data['aggregations']['title']['buckets'] as $bucket)
+                {
+                    if (mb_detect_encoding($bucket['key'], 'ASCII', true))
+                    {
+                        $key = str_slug($bucket['key']);
+
+                        if (isset($data[$key]) && $data[$key]['hit'] > $bucket['doc_count'])
+                        {
+                            $data[$key]['hit'] = $bucket['doc_count'] + $data[$key]['hit'];
+                        }
+                        else
+                        {
+                            $search = Document::search([ 'blog', '*' ], 'document', [
+                                'query' => [
+                                    'bool' => [
+                                        'filter' => [
+                                            [
+                                                'range' => [
+                                                    'called_at' => [
+                                                        'format' => 'YYYY-MM-dd HH:mm',
+                                                        'gte' => date('Y-m-d H:i', strtotime($time))
+                                                    ]
                                                 ]
                                             ]
                                         ],

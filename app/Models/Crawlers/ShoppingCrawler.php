@@ -32,7 +32,7 @@ class ShoppingCrawler extends Model
         'proxy',
     ];
 
-    # index crate
+    # index create
     public function indexCreate()
     {
         return Indices::create(

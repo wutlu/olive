@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Jobs\Crawlers\Media;
+namespace App\Jobs\Crawlers\Blog;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -8,7 +8,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
-use App\Models\Crawlers\MediaCrawler;
+use App\Models\Crawlers\BlogCrawler;
 
 use App\Utilities\Crawler;
 
@@ -33,7 +33,7 @@ class DetectorJob implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(MediaCrawler $crawler)
+    public function __construct(BlogCrawler $crawler)
     {
         $this->crawler = $crawler;
     }
@@ -61,8 +61,8 @@ class DetectorJob implements ShouldQueue
             {
                 $chunk['body'][] = [
                     'create' => [
-                        '_index' => Indices::name([ 'media', $this->crawler->elasticsearch_index_name ]),
-                        '_type' => 'article',
+                        '_index' => Indices::name([ 'blog', $this->crawler->elasticsearch_index_name ]),
+                        '_type' => 'document',
                         '_id' => md5($link)
                     ]
                 ];
@@ -95,7 +95,7 @@ class DetectorJob implements ShouldQueue
         {
             System::log(
                 json_encode($program->message),
-                'App\Jobs\Crawlers\Media\DetectorJob::handle(int '.$this->crawler->id.')',
+                'App\Jobs\Crawlers\Blog\DetectorJob::handle(int '.$this->crawler->id.')',
                 10
             );
 
@@ -103,11 +103,11 @@ class DetectorJob implements ShouldQueue
 
             if ($this->crawler->error_count >= $this->crawler->off_limit && $this->crawler->status == true)
             {
-                $recr = MediaCrawler::where('id', $this->crawler->id)->where('status', true)->exists();
+                $recr = BlogCrawler::where('id', $this->crawler->id)->where('status', true)->exists();
 
                 if ($recr)
                 {
-                    Mail::queue(new ServerAlertMail($this->crawler->name.' Medya Botu [DURDU]', json_encode($program->message)));
+                    Mail::queue(new ServerAlertMail($this->crawler->name.' Blog Botu [DURDU]', json_encode($program->message)));
 
                     $this->crawler->test       = false;
                     $this->crawler->status     = false;

@@ -6,7 +6,7 @@ use App\Elasticsearch\Indices;
 
 class YouTubeCrawler
 {
-    # index crate
+    # index create
     public function indexCreate(string $type)
     {
         switch ($type)

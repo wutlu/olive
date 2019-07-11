@@ -162,6 +162,30 @@ Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {
     });
 
     # 
+    # BLOG
+    # 
+    Route::prefix('blog-botlari')->group(function () {
+        Route::get('/', 'BlogController@listView')->name('crawlers.blog.list');
+        Route::post('json', 'BlogController@listViewJson')->name('crawlers.blog.list.json');
+
+        Route::get('bot/{id?}', 'BlogController@view')->name('crawlers.blog.bot');
+        Route::post('bot/{id}/istatistik', 'BlogController@statistics')->name('crawlers.blog.bot.statistics');
+        Route::post('bot/{id}/temizle', 'BlogController@clear')->name('crawlers.blog.bot.clear');
+        Route::post('bot/durum', 'BlogController@status')->name('crawlers.blog.bot.status');
+        Route::patch('bot', 'BlogController@update');
+        Route::delete('bot', 'BlogController@delete');
+
+        Route::post('genel/istatistik', 'BlogController@allStatistics')->name('crawlers.blog.bot.statistics.all');
+        Route::post('genel/baslat', 'BlogController@allStart')->name('crawlers.blog.bot.start.all');
+        Route::post('genel/durdur', 'BlogController@allStop')->name('crawlers.blog.bot.stop.all');
+        Route::post('genel/temizle', 'BlogController@allClear')->name('crawlers.blog.bot.clear.all');
+
+        Route::get('index-yonetimi', 'BlogController@indices')->name('crawlers.blog.indices');
+        Route::post('index-yonetimi/json', 'BlogController@indicesJson')->name('crawlers.blog.indices.json');
+        Route::post('index-olustur', 'BlogController@indexCreate')->name('crawlers.blog.index.create');
+    });
+
+    # 
     # SÖZLÜK
     # 
     Route::prefix('sozluk-botlari')->group(function () {

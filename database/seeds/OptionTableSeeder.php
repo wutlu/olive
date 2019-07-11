@@ -28,6 +28,7 @@ class OptionTableSeeder extends Seeder
         Option::firstOrCreate( [ 'key' => 'twitter.status'                      ], [ 'value' => 'off'                                 ] );
 
         Option::firstOrCreate( [ 'key' => 'media.index.status'                  ], [ 'value' => 'off'                                 ] );
+        Option::firstOrCreate( [ 'key' => 'blog.index.status'                   ], [ 'value' => 'off'                                 ] );
 
         Option::firstOrCreate( [ 'key' => 'trend.status.news'                   ], [ 'value' => 'off'                                 ] );
         Option::firstOrCreate( [ 'key' => 'trend.status.google'                 ], [ 'value' => 'off'                                 ] );

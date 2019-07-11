@@ -208,6 +208,41 @@ class Trigger extends Command
                         }
                     }
                 break;
+                case 'blog':
+                    $q = $mquery;
+
+                    $q['query']['bool']['must'][] = [ 'match' => [ 'status' => 'ok' ] ];
+                    $q['query']['bool']['must'][] = [
+                        'query_string' => [
+                            'fields' => [
+                                'description',
+                                'title'
+                            ],
+                            'query' => $alarm->query,
+                            'default_operator' => 'AND'
+                        ]
+                    ];
+                    $q['_source'] = [
+                        'title'
+                    ];
+
+                    $query = Document::search([ 'blog', '*' ], 'document', $q);
+
+                    if (@$query->data['hits']['hits'])
+                    {
+                        foreach ($query->data['hits']['hits'] as $object)
+                        {
+                            $data['blog'] = [
+                                '_id' => $object['_id'],
+                                '_type' => $object['_type'],
+                                '_index' => $object['_index'],
+
+                                'text' => $object['_source']['title'],
+                                'count' => $query->data['hits']['total']
+                            ];
+                        }
+                    }
+                break;
                 case 'sozluk':
                     $q = $mquery;
 

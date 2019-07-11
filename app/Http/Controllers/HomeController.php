@@ -18,6 +18,7 @@ use YouTube;
 use App\Models\Crawlers\MediaCrawler;
 use App\Models\Crawlers\ShoppingCrawler;
 use App\Models\Crawlers\SozlukCrawler;
+use App\Models\Crawlers\BlogCrawler;
 
 use App\Elasticsearch\Document;
 
@@ -111,6 +112,7 @@ class HomeController extends Controller
         $media = MediaCrawler::select('id', 'name', 'status', 'site')->where('test', true)->orderBy('id', 'DESC')->get();
         $shopping = ShoppingCrawler::select('id', 'name', 'status', 'site')->where('test', true)->orderBy('id', 'DESC')->get();
         $sozluk = SozlukCrawler::select('id', 'name', 'status', 'site')->where('test', true)->orderBy('id', 'DESC')->get();
+        $blog = BlogCrawler::select('id', 'name', 'status', 'site')->where('test', true)->orderBy('id', 'DESC')->get();
 
         $options_query = Option::whereIn('key', [
             'youtube.status',
@@ -129,6 +131,7 @@ class HomeController extends Controller
             'media',
             'shopping',
             'sozluk',
+            'blog',
             'options'
         ));
     }

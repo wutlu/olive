@@ -127,7 +127,20 @@
                 @endforelse
             </div>
             <div id="blog" class="collection collection-unstyled max-height white" style="display: none;">
-                <div class="collection-item grey-text">Şu an için aktif kaynak bulunmuyor.</div>
+                @forelse ($blog as $key => $m)
+                    <a href="{{ $m->site }}" target="_blank" class="collection-item d-flex justify-content-end">
+                        <span class="mr-auto">{{ ($key+1).' - '.$m->name }}</span>
+                        <span class="badge teal white-text">{{ $m->id }}</span> 
+
+                        @if ($m->status)
+                            <span class="badge green white-text">Aktif</span>
+                        @else
+                            <span class="badge red white-text">Pasif</span>
+                        @endif
+                    </a>
+                @empty
+                    <div class="collection-item grey-text">Şu an için aktif kaynak bulunmuyor.</div>
+                @endforelse
             </div>
             <div id="forum" class="collection collection-unstyled max-height white" style="display: none;">
                 <div class="collection-item grey-text">Şu an için aktif kaynak bulunmuyor.</div>

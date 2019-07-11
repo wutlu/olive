@@ -22,7 +22,7 @@
                 {
                     text: '{{ $key }}',
                     weight: {{ $count }},
-                    link: '{{ route('search.dashboard', [ 'q' => $key ]) }}'
+                    link: '{{ route('search.dashboard') }}?q="{{ $key }}"'
                 },
             @endforeach
         ];

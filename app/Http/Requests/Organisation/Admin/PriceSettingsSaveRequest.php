@@ -27,6 +27,7 @@ class PriceSettingsSaveRequest extends FormRequest
             'data_twitter'                    => 'required|integer|min:0',
             'data_sozluk'                     => 'required|integer|min:0',
             'data_news'                       => 'required|integer|min:0',
+            'data_blog'                       => 'required|integer|min:0',
             'data_youtube_video'              => 'required|integer|min:0',
             'data_youtube_comment'            => 'required|integer|min:0',
             'data_shopping'                   => 'required|integer|min:0',

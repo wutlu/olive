@@ -6,6 +6,7 @@ use App\Http\Controllers\Forum\ForumController;
 use App\Http\Controllers\PinController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\Crawlers\MediaController;
+use App\Http\Controllers\Crawlers\BlogController;
 
 use App\Console\Commands\Sentiment;
 
@@ -31,4 +32,5 @@ Artisan::command('newsletter:process_trigger', function () {
 
 Artisan::command('update:crawler_counts', function () {
 	MediaController::counter();
+	BlogController::counter();
 })->describe('Veritabanındaki döküman sayılarını SQL\'e alır.');

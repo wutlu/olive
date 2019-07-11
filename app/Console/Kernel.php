@@ -68,6 +68,9 @@ class Kernel extends ConsoleKernel
             $schedule->command('nohup "shopping:detector" --type=restart')
                       ->everyMinute()
                       ->timezone(config('app.timezone'));
+            $schedule->command('nohup "blog:detector" --type=restart')
+                      ->everyMinute()
+                      ->timezone(config('app.timezone'));
 
             /**
              * Kaynak Toplama
@@ -78,11 +81,19 @@ class Kernel extends ConsoleKernel
             $schedule->command('nohup "shopping:taker" --type=restart')
                       ->everyMinute()
                       ->timezone(config('app.timezone'));
+            $schedule->command('nohup "blog:taker" --type=restart')
+                      ->everyMinute()
+                      ->timezone(config('app.timezone'));
 
             /**
              * Medya botları için kontrol aralığı belirle.
              */
             $schedule->command('nohup "media:minuter" --type=start')->hourly()->timezone(config('app.timezone'))->withoutOverlapping(1);
+
+            /**
+             * Blog botları için kontrol aralığı belirle.
+             */
+            $schedule->command('nohup "blog:minuter" --type=start')->hourly()->timezone(config('app.timezone'))->withoutOverlapping(1);
 
             /**
              * Veritabanındaki döküman sayılarını SQL\'e alır.
@@ -123,6 +134,7 @@ class Kernel extends ConsoleKernel
                 'trend.status.twitter_tweet' => 'twitter_tweet',
                 'trend.status.twitter_hashtag' => 'twitter_hashtag',
                 'trend.status.news' => 'news',
+                'trend.status.blog' => 'blog',
                 'trend.status.sozluk' => 'entry',
                 'trend.status.youtube_video' => 'youtube_video' ] as $key => $module)
             {
@@ -194,12 +206,25 @@ class Kernel extends ConsoleKernel
             $schedule->command('nohup "media:host" --type=restart')
                      ->dailyAt('03:00')
                      ->timezone(config('app.timezone'));
+            /**
+             * Blog siteleri dns adreslerinin toplanması.
+             */
+            $schedule->command('nohup "blog:host" --type=restart')
+                     ->dailyAt('04:00')
+                     ->timezone(config('app.timezone'));
 
             /**
              * Medya siteleri alexa durumlarının belirlenmesi.
              */
             $schedule->command('nohup "media:alexa_ranker" --type=restart')
                      ->dailyAt('04:00')
+                     ->timezone(config('app.timezone'));
+
+            /**
+             * Blog siteleri alexa durumlarının belirlenmesi.
+             */
+            $schedule->command('nohup "blog:alexa_ranker" --type=restart')
+                     ->dailyAt('05:00')
                      ->timezone(config('app.timezone'));
 
             /**

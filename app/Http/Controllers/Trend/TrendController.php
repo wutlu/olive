@@ -59,6 +59,10 @@ class TrendController extends Controller
             [
                 'title' => 'Google, Arama',
                 'module' => 'google',
+            ],
+            [
+                'title' => 'Blog, Makale',
+                'module' => 'blog',
             ]
         ];
 

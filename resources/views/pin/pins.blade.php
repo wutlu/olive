@@ -118,6 +118,9 @@
                     @elseif ($type == 'article')
                         <a href="{{ $source['url'] }}" target="_blank">{{ str_limit($source['url'], 96) }}</a>
                         <div class="text grey-text text-darken-2">{!! nl2br($source['description']) !!}</div>
+                    @elseif ($type == 'document')
+                        <a href="{{ $source['url'] }}" target="_blank">{{ str_limit($source['url'], 96) }}</a>
+                        <div class="text grey-text text-darken-2">{!! nl2br($source['description']) !!}</div>
                     @elseif ($type == 'entry')
                         <a href="{{ $source['url'] }}" target="_blank">{{ str_limit($source['url'], 96) }}</a>
                         <div class="text grey-text text-darken-2">{!! nl2br($source['entry']) !!}</div>

@@ -373,8 +373,8 @@
                                         Forum Botları
                                     </a>
                                 </li>
-                                <li class="tiny" style="opacity: 0.4;">
-                                    <a class="waves-effect" href="#">
+                                <li class="tiny">
+                                    <a class="waves-effect" href="{{ route('crawlers.blog.list') }}">
                                         <i class="material-icons">widgets</i>
                                         Blog Botları
                                     </a>

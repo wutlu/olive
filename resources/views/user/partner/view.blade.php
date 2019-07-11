@@ -509,7 +509,7 @@
         var unit_price = parseInt((math_prices() + single_prices()) * $('input[name=user_capacity]').val());
         var first_unit_price = unit_price;
         var unit_price = parseInt(unit_price / 100 * {{ $partner_percent }}) + unit_price;
-        var advice_price = parseInt(first_unit_price / 100 * 100) + first_unit_price;
+        var advice_price = first_unit_price + first_unit_price;
         var price_profit = parseInt($('input[name=unit_price]').val() - unit_price);
 
         $('[data-name=price_cost]').html(unit_price) // maliyet

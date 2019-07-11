@@ -260,6 +260,63 @@ function _article_(o)
     return article;
 }
 
+function _document_(o)
+{
+    var article_blog = $('<div />', {
+        'class': 'data',
+        'html': [
+            $('<div />', {
+                'class': 'd-flex',
+                'html': [
+                    $('<span />', {
+                        'data-name': 'avatar',
+                        'class': 'align-self-center'
+                    }),
+                    $('<div />', {
+                        'html': [
+                            $('<span />', {
+                                'html': o.title,
+                                'class': 'd-table blue-text title text-area'
+                            }),
+                            $('<span />', {
+                                'html': o.text,
+                                'class': 'grey-text text-darken-2 text-area'
+                            })
+                        ]
+                    })
+                ]
+            }),
+            $('<a />', {
+                'data-name': 'url',
+                'html': str_limit(o.url, 96),
+                'href': o.url,
+                'class': 'd-table green-text'
+            }).attr('target', '_blank'),
+            $('<div />', {
+                'html': __joints(o)
+            })
+        ]
+    })
+
+    if (o.image)
+    {
+        article_blog.find('[data-name=avatar]').html($('<img />', {
+            'src': o.image,
+            'alt': 'Image',
+            'css': {
+                'width': '96px',
+                'min-width': '96px',
+                'max-width': '96px',
+                'max-height': '128px'
+            },
+            'class': 'mr-1',
+            'onerror': "this.onerror=null;this.src='/img/no_image-article.svg';"
+        }))
+    }
+
+    return article_blog;
+}
+
 function _product_(o)
 {
     return $('<div />', {

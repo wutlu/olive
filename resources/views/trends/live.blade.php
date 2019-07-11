@@ -131,7 +131,7 @@
                         {
                             item.find('[data-name=title]').html(o.data.key)
 
-                            links.olive = '{{ route('search.dashboard') }}?q=' + o.data.key;
+                            links.olive = '{{ route('search.dashboard') }}?q="' + o.data.key + '"';
                             links.twitter = 'https://twitter.com/search?q=' + encodeURI(o.data.key);
                             links.google = 'https://www.google.com/search?q=' + encodeURI(o.data.key);
                         }
@@ -139,14 +139,21 @@
                         {
                             item.find('[data-name=title]').html(o.data.title)
 
-                            links.olive = '{{ route('search.dashboard') }}?q=' + o.data.title;
+                            links.olive = '{{ route('search.dashboard') }}?q="' + o.data.title + '"';
+                            links.google = 'https://www.google.com/search?q=' + encodeURI(o.data.title);
+                        }
+                        else if (__.data('module') == 'blog')
+                        {
+                            item.find('[data-name=title]').html(o.data.title)
+
+                            links.olive = '{{ route('search.dashboard') }}?q="' + o.data.title + '"';
                             links.google = 'https://www.google.com/search?q=' + encodeURI(o.data.title);
                         }
                         else if (__.data('module') == 'entry')
                         {
                             item.find('[data-name=title]').html(o.data.title)
 
-                            links.olive = '{{ route('search.dashboard') }}?q=' + o.data.title;
+                            links.olive = '{{ route('search.dashboard') }}?q="' + o.data.title + '"';
                             links.google = 'https://www.google.com/search?q=' + encodeURI(o.data.title);
                             links.sozluk = o.data.url;
                         }
@@ -154,7 +161,7 @@
                         {
                             item.find('[data-name=title]').html(o.data.title)
 
-                            links.olive = '{{ route('search.dashboard') }}?q=' + o.data.title;
+                            links.olive = '{{ route('search.dashboard') }}?q="' + o.data.title + '"';
                             links.google = 'https://www.google.com/search?q=' + encodeURI(o.data.title);
                             links.sozluk = o.data.url;
                         }
@@ -162,7 +169,7 @@
                         {
                             item.find('[data-name=title]').html(o.data.title)
 
-                            links.olive = '{{ route('search.dashboard') }}?q=' + o.data.title;
+                            links.olive = '{{ route('search.dashboard') }}?q="' + o.data.title + '"';
                             links.google = 'https://www.google.com/search?q=' + encodeURI(o.data.title);
                             links.youtube = 'https://www.youtube.com/watch?v=' + o.data.id;
 
@@ -524,6 +531,13 @@
             popover: {
                 title: 'Google',
                 description: 'Türkiye genelinde, Google üzerinde yapılan arama sıralaması.'
+            }
+        },
+        {
+            element: '#card-blog',
+            popover: {
+                title: 'Blog, Makale',
+                description: 'Bloglar, sitelerin Alexa değerleri baz alınarak yapılan puanlamalara göre belirlenir.'
             }
         }
     ])

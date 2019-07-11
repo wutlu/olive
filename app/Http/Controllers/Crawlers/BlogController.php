@@ -6,12 +6,12 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 
-use App\Http\Requests\Crawlers\Media\ListRequest;
-use App\Http\Requests\Crawlers\Media\StatusRequest;
-use App\Http\Requests\Crawlers\Media\UpdateRequest;
-use App\Http\Requests\Crawlers\Media\DeleteRequest;
+use App\Http\Requests\Crawlers\Blog\ListRequest;
+use App\Http\Requests\Crawlers\Blog\StatusRequest;
+use App\Http\Requests\Crawlers\Blog\UpdateRequest;
+use App\Http\Requests\Crawlers\Blog\DeleteRequest;
 
-use App\Models\Crawlers\MediaCrawler;
+use App\Models\Crawlers\BlogCrawler;
 
 use App\Utilities\Crawler;
 use App\Utilities\Term;
@@ -26,20 +26,20 @@ use GuzzleHttp\HandlerStack;
 
 use App\Jobs\Elasticsearch\DeleteDocumentJob;
 
-class MediaController extends Controller
+class BlogController extends Controller
 {
     /**
      ********************
      ******* ROOT *******
      ********************
      *
-     * Medya Botları, durum yönetimi ana sayfası.
+     * Blog Botları, durum yönetimi ana sayfası.
      *
      * @return view
      */
     public static function listView()
     {
-        return view('crawlers.media.list');
+        return view('crawlers.blog.list');
     }
 
     /**
@@ -47,7 +47,7 @@ class MediaController extends Controller
      ******* ROOT *******
      ********************
      *
-     * Medya Modülü, bot listesi.
+     * Blog Modülü, bot listesi.
      *
      * @return array
      */
@@ -56,7 +56,7 @@ class MediaController extends Controller
         $take = $request->take;
         $skip = $request->skip;
 
-        $query = new MediaCrawler;
+        $query = new BlogCrawler;
         $query = $request->string ? $query->where(function($query) use ($request) {
             $query->orWhere('name', 'ILIKE', '%'.$request->string.'%');
             $query->orWhere('site', 'ILIKE', '%'.$request->string.'%');
@@ -112,36 +112,36 @@ class MediaController extends Controller
      ******* ROOT *******
      ********************
      *
-     * Medya Modülü, Elasticsearch index istatistikleri.
+     * Blog Modülü, Elasticsearch index istatistikleri.
      *
      * @return array
      */
     public static function allStatistics()
     {
-        $media_crawler = new MediaCrawler;
+        $blog_crawler = new BlogCrawler;
         $document = new Document;
 
         return [
             'status' => 'ok',
             'data' => [
                 'count' => [
-                    'active' => $media_crawler->where('status', true)->count(),
-                    'disabled' => $media_crawler->where('status', false)->count(),
-                    'buffer' => $document->count([ 'media', '*' ], 'article', [
+                    'active' => $blog_crawler->where('status', true)->count(),
+                    'disabled' => $blog_crawler->where('status', false)->count(),
+                    'buffer' => $document->count([ 'blog', '*' ], 'document', [
                         'query' => [
                             'match' => [
                                 'status' => 'buffer'
                             ]
                         ]
                     ]),
-                    'success' => $document->count([ 'media', '*' ], 'article', [
+                    'success' => $document->count([ 'blog', '*' ], 'document', [
                         'query' => [
                             'match' => [
                                 'status' => 'ok'
                             ]
                         ]
                     ]),
-                    'failed' => $document->count([ 'media', '*' ], 'article', [
+                    'failed' => $document->count([ 'blog', '*' ], 'document', [
                         'query' => [
                             'match' => [
                                 'status' => 'failed'
@@ -149,7 +149,7 @@ class MediaController extends Controller
                         ]
                     ])
                 ],
-                'elasticsearch' => Indices::stats([ 'media', '*' ])
+                'elasticsearch' => Indices::stats([ 'blog', '*' ])
             ]
         ];
     }
@@ -159,17 +159,17 @@ class MediaController extends Controller
      ******* ROOT *******
      ********************
      *
-     * Medya Modülü, çalışmayan botları başlatma tetikleyicisi.
+     * Blog Modülü, çalışmayan botları başlatma tetikleyicisi.
      *
      * @return array
      */
     public static function allStart()
     {
-        $status = Option::where('key', 'media.index.status')->value('value');
+        $status = Option::where('key', 'blog.index.status')->value('value');
 
-        if (count(config('database.elasticsearch.media.groups')) == $status)
+        if (count(config('database.elasticsearch.blog.groups')) == $status)
         {
-            $crawlers = MediaCrawler::where(
+            $crawlers = BlogCrawler::where(
                 [
                     'status' => false,
                     'test' => true
@@ -191,13 +191,13 @@ class MediaController extends Controller
      ******* ROOT *******
      ********************
      *
-     * Medya Modülü, çalışan botları durdurma tetikleyicisi.
+     * Blog Modülü, çalışan botları durdurma tetikleyicisi.
      *
      * @return array
      */
     public static function allStop()
     {
-        $crawlers = MediaCrawler::where('status', true)->update([ 'status' => false ]);
+        $crawlers = BlogCrawler::where('status', true)->update([ 'status' => false ]);
 
         return [
             'status' => 'ok'
@@ -209,13 +209,13 @@ class MediaController extends Controller
      ******* ROOT *******
      ********************
      *
-     * Medya Modülü, başarısız içerikleri silme tetikleyicisi.
+     * Blog Modülü, başarısız içerikleri silme tetikleyicisi.
      *
      * @return array
      */
     public static function allClear()
     {
-        DeleteDocumentJob::dispatch([ 'media', 's*' ], 'article', [
+        DeleteDocumentJob::dispatch([ 'blog', 's*' ], 'document', [
             'query' => [
                 'bool' => [
                     'must' => [
@@ -235,15 +235,15 @@ class MediaController extends Controller
      ******* ROOT *******
      ********************
      *
-     * Medya Modülü, başarısız içerikleri silme tetikleyicisi.
+     * Blog Modülü, başarısız içerikleri silme tetikleyicisi.
      *
      * @return array
      */
     public static function clear(int $id)
     {
-        $bot = MediaCrawler::where('id', $id)->firstOrFail();
+        $bot = BlogCrawler::where('id', $id)->firstOrFail();
 
-        DeleteDocumentJob::dispatch([ 'media', $bot->elasticsearch_index_name ], 'article', [
+        DeleteDocumentJob::dispatch([ 'blog', $bot->elasticsearch_index_name ], 'document', [
             'query' => [
                 'bool' => [
                     'must' => [
@@ -264,20 +264,20 @@ class MediaController extends Controller
      ******* ROOT *******
      ********************
      *
-     * Medya Modülü, bot silme tetikleyicisi.
+     * Blog Modülü, bot silme tetikleyicisi.
      *
      * @return array
      */
     public static function delete(DeleteRequest $request)
     {
-        $crawler = MediaCrawler::where('id', $request->id)->firstOrFail();
+        $crawler = BlogCrawler::where('id', $request->id)->firstOrFail();
 
         Document::deleteByQuery(
             [
-                'media',
+                'blog',
                 $crawler->elasticsearch_index_name
             ],
-            'article',
+            'document',
             [
                 'query' => [
                     'bool' => [
@@ -301,13 +301,13 @@ class MediaController extends Controller
      ******* ROOT *******
      ********************
      *
-     * Medya Modülü, Elasticsearch index istatistikleri.
+     * Blog Modülü, Elasticsearch index istatistikleri.
      *
      * @return array
      */
     public static function statistics(int $id)
     {
-        $crawler = MediaCrawler::where('id', $id)->firstOrFail();
+        $crawler = BlogCrawler::where('id', $id)->firstOrFail();
 
         $document = new Document;
 
@@ -316,7 +316,7 @@ class MediaController extends Controller
             'data' => [
                 'crawler' => $crawler,
                 'count' => [
-                    'buffer' => $document->count([ 'media', $crawler->elasticsearch_index_name ], 'article', [
+                    'buffer' => $document->count([ 'blog', $crawler->elasticsearch_index_name ], 'document', [
                         'query' => [
                             'bool' => [
                                 'must' => [
@@ -326,7 +326,7 @@ class MediaController extends Controller
                             ]
                         ],
                     ]),
-                    'success' => $document->count([ 'media', $crawler->elasticsearch_index_name ], 'article', [
+                    'success' => $document->count([ 'blog', $crawler->elasticsearch_index_name ], 'document', [
                         'query' => [
                             'bool' => [
                                 'must' => [
@@ -336,7 +336,7 @@ class MediaController extends Controller
                             ]
                         ]
                     ]),
-                    'failed' => $document->count([ 'media', $crawler->elasticsearch_index_name ], 'article', [
+                    'failed' => $document->count([ 'blog', $crawler->elasticsearch_index_name ], 'document', [
                         'query' => [
                             'bool' => [
                                 'must' => [
@@ -356,7 +356,7 @@ class MediaController extends Controller
      ******* ROOT *******
      ********************
      *
-     * Medya Modülü, bot detayları sayfası.
+     * Blog Modülü, bot detayları sayfası.
      *
      * @return view
      */
@@ -364,11 +364,11 @@ class MediaController extends Controller
     {
         if ($id)
         {
-            $crawler = MediaCrawler::where('id', $id)->firstOrFail();
+            $crawler = BlogCrawler::where('id', $id)->firstOrFail();
         }
         else
         {
-            $crawler = new MediaCrawler;
+            $crawler = new BlogCrawler;
             $crawler->name = 'Yeni Bot '.rand(99999, 999999);
             $crawler->site = 'http://';
             $crawler->url_pattern = '([a-z0-9-]{4,128})';
@@ -379,10 +379,10 @@ class MediaController extends Controller
             $crawler->proxy = true;
             $crawler->save();
 
-            return redirect()->route('crawlers.media.bot', $crawler->id);
+            return redirect()->route('crawlers.blog.bot', $crawler->id);
         }
 
-        return view('crawlers.media.view', compact('crawler'));
+        return view('crawlers.blog.view', compact('crawler'));
     }
 
     /**
@@ -398,9 +398,9 @@ class MediaController extends Controller
     {
         $counts = [];
 
-        foreach (config('database.elasticsearch.media.groups') as $group)
+        foreach (config('database.elasticsearch.blog.groups') as $group)
         {
-            $counts[$group] = MediaCrawler::where('elasticsearch_index_name', $group)->count();
+            $counts[$group] = BlogCrawler::where('elasticsearch_index_name', $group)->count();
         }
 
         $sorted = array_sort($counts);
@@ -413,13 +413,13 @@ class MediaController extends Controller
      ******* ROOT *******
      ********************
      *
-     * Medya Modülü, bot oluştur veya bot güncelle.
+     * Blog Modülü, bot oluştur veya bot güncelle.
      *
      * @return array
      */
     public static function update(UpdateRequest $request)
     {
-        $crawler = MediaCrawler::where('id', $request->id)->first();
+        $crawler = BlogCrawler::where('id', $request->id)->first();
 
         $data['status'] = 'err';
 
@@ -487,7 +487,7 @@ class MediaController extends Controller
      ******* ROOT *******
      ********************
      *
-     * Medya Modülü, bot durumu değiştirme.
+     * Blog Modülü, bot durumu değiştirme.
      * - Çalışan botu durdur.
      * - Durmuş botu çalıştır.
      *
@@ -495,7 +495,7 @@ class MediaController extends Controller
      */
     public static function status(StatusRequest $request)
     {
-        $crawler = MediaCrawler::where('id', $request->id)->first();
+        $crawler = BlogCrawler::where('id', $request->id)->first();
 
         $crawler->status = $crawler->status ? 0 : 1;
         $crawler->save();
@@ -513,14 +513,14 @@ class MediaController extends Controller
      ******* ROOT *******
      ********************
      *
-     * Medya, index listesi.
+     * Blog, index listesi.
      *
      * @return view
      */
     public static function indices()
     {
         $rows = Option::whereIn('key', [
-            'media.index.status'
+            'blog.index.status'
         ])->get();
 
         $options = [];
@@ -530,9 +530,9 @@ class MediaController extends Controller
             $options[$row->key] = $row->value;
         }
 
-        $index_groups = config('database.elasticsearch.media.groups');
+        $index_groups = config('database.elasticsearch.blog.groups');
 
-        return view('crawlers.media.indices', compact('options', 'index_groups'));
+        return view('crawlers.blog.indices', compact('options', 'index_groups'));
     }
 
     /**
@@ -540,7 +540,7 @@ class MediaController extends Controller
      ******* ROOT *******
      ********************
      *
-     * Medya, index listesi.
+     * Blog, index listesi.
      *
      * @return array
      */
@@ -551,7 +551,7 @@ class MediaController extends Controller
             'handler' => HandlerStack::create()
         ]);
 
-        $source = $client->get('/_cat/indices/'.config('system.db.alias').'__media*?format=json&s=index:desc')->getBody();
+        $source = $client->get('/_cat/indices/'.config('system.db.alias').'__blog*?format=json&s=index:desc')->getBody();
         $source = json_decode($source);
 
         return [
@@ -565,16 +565,16 @@ class MediaController extends Controller
      ******* ROOT *******
      ********************
      *
-     * Medya, Elasticsearch index oluşturucu.
+     * Blog, Elasticsearch index oluşturucu.
      *
      * @return array
      */
     public static function indexCreate()
     {
         $count = 0;
-        $groups = config('database.elasticsearch.media.groups');
+        $groups = config('database.elasticsearch.blog.groups');
 
-        $es = new MediaCrawler;
+        $es = new BlogCrawler;
 
         foreach ($groups as $group)
         {
@@ -588,7 +588,7 @@ class MediaController extends Controller
 
         Option::updateOrCreate(
             [
-                'key' => 'media.index.status'
+                'key' => 'blog.index.status'
             ],
             [
                 'value' => $count
@@ -606,13 +606,13 @@ class MediaController extends Controller
      ****** SYSTEM ******
      ********************
      *
-     * Media Counter
+     * Blog Counter
      *
      * @return mixed
      */
     public static function counter()
     {
-        $crawlers = MediaCrawler::get();
+        $crawlers = BlogCrawler::get();
 
         if (count($crawlers))
         {
@@ -623,10 +623,10 @@ class MediaController extends Controller
 
                 $document = Document::count(
                     [
-                        'media',
+                        'blog',
                         $crawler->elasticsearch_index_name
                     ],
-                    'article',
+                    'document',
                     [
                         'query' => [
                             'bool' => [

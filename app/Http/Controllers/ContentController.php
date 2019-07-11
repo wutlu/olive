@@ -9,6 +9,7 @@ use App\Elasticsearch\Indices;
 use App\Models\Crawlers\SozlukCrawler;
 use App\Models\Crawlers\MediaCrawler;
 use App\Models\Crawlers\ShoppingCrawler;
+use App\Models\Crawlers\BlogCrawler;
 
 use Carbon\Carbon;
 
@@ -437,6 +438,59 @@ class ContentController extends Controller
                     $title = $crawler->name . ' / ' . '#'.$document['_source']['id'];
                 break;
 
+                case 'document':
+                    if (!$organisation->data_news)
+                    {
+                        return abort(403);
+                    }
+
+                    $crawler = BlogCrawler::where('id', $document['_source']['site_id'])->firstOrFail();
+
+                    $site = [
+                        [ 'match' => [ 'site_id' => $crawler->id ] ],
+                        [ 'match' => [ 'status' => 'ok' ] ]
+                    ];
+
+                    $data = [
+                        'crawler' => $crawler,
+                        'total' => Document::search($es_index, 'document', [
+                            'query' => [
+                                'bool' => [
+                                    'must' => $site
+                                ]
+                            ],
+                            'aggs' => [
+                                'popular_keywords' => [
+                                    'terms' => [
+                                        'field' => 'description',
+                                        'size' => 50
+                                    ]
+                                ]
+                            ],
+                            'size' => 0
+                        ])
+                    ];
+
+                    $bucket = @$data['total']->data['aggregations']['popular_keywords']['buckets'];
+
+                    if ($bucket)
+                    {
+                        $_temp_data = [];
+
+                        foreach ($bucket as $item)
+                        {
+                            if (strlen($item['key']) > 2)
+                            {
+                                $_temp_data[$item['key']] = $item['doc_count'];
+                            }
+                        }
+
+                        $data['keywords'] = $_temp_data;
+                    }
+
+                    $title = $crawler->name . ' / ' . '#'.$document['_source']['id'];
+                break;
+
                 default: abort(404); break;
             }
 
@@ -736,6 +790,13 @@ class ContentController extends Controller
 
                 $document = Document::search([ 'media', $es_index_key ], 'article', $arr);
             break;
+            case 'document':
+                $arr['query']['bool']['must'][] = [
+                    'match' => [ 'site_id' => $es_id ]
+                ];
+
+                $document = Document::search([ 'blog', $es_index_key ], 'document', $arr);
+            break;
             case 'product':
                 $doc = Document::get([ 'shopping', $es_index_key ], 'product', $es_id);
 
@@ -852,6 +913,38 @@ class ContentController extends Controller
                         {
                             case 'article':
                                 $documents = Document::search([ 'media', '*' ], $es_type, [
+                                    'query' => [
+                                        'bool' => [
+                                            'must' => [
+                                                [
+                                                    'match' => [ 'status' => 'ok' ]
+                                                ],
+                                                [
+                                                    'more_like_this' => [
+                                                        'fields' => [ 'title' ],
+                                                        'like' => array_keys($smilar),
+                                                        'min_term_freq' => 1,
+                                                        'min_doc_freq' => 1
+                                                    ]
+                                                ]
+                                            ]
+                                        ]
+                                    ],
+                                    'min_score' => 10,
+                                    'from' => $request->skip,
+                                    'size' => $request->take,
+                                    '_source' => [
+                                        'url',
+                                        'title',
+                                        'description',
+                                        'created_at',
+                                        'deleted_at',
+                                        'sentiment'
+                                    ]
+                                ]);
+                            break;
+                            case 'document':
+                                $documents = Document::search([ 'blog', '*' ], $es_type, [
                                     'query' => [
                                         'bool' => [
                                             'must' => [
@@ -1020,6 +1113,7 @@ class ContentController extends Controller
                             unset($array['entry']);
                         break;
                         case 'article':
+                        case 'document':
                         case 'product':
                             $array['text'] = $array['description'];
                             unset($array['description']);

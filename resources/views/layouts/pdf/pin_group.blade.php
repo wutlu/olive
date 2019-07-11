@@ -128,6 +128,9 @@
             @elseif ($pin->document()->data['_type'] == 'article')
                  <a class="url" href="{{ $source['url'] }}" target="_blank">{{ $source['url'] }}</a>
                  <div class="text">{!! nl2br($source['description']) !!}</div>
+            @elseif ($pin->document()->data['_type'] == 'document')
+                 <a class="url" href="{{ $source['url'] }}" target="_blank">{{ $source['url'] }}</a>
+                 <div class="text">{!! nl2br($source['description']) !!}</div>
             @elseif ($pin->document()->data['_type'] == 'entry')
                 <a class="url" href="{{ $source['url'] }}" target="_blank">{{ $source['url'] }}</a>
                 <div class="text">{!! nl2br($source['entry']) !!}</div>

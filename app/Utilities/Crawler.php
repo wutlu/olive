@@ -19,11 +19,11 @@ use App\Utilities\ImageUtility;
 class Crawler
 {
     /**
-     * Medya, Bağlantı Tespiti
+     * Makale, Bağlantı Tespiti
      *
      * @return array
      */
-    public static function mediaLinkDetection(string $site, string $url_pattern = null, string $base, bool $standard, bool $proxy)
+    public static function articleLinkDetection(string $site, string $url_pattern = null, string $base, bool $standard, bool $proxy)
     {
         $data = [];
 

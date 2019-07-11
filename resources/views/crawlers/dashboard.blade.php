@@ -28,7 +28,7 @@
         <i class="material-icons">widgets</i>
         <span class="d-block">Forum Botları</span>
     </a>
-    <a href="#" class="d-block card-panel hoverable" style="opacity: .4;" data-tooltip="Blog Botları" data-position="right">
+    <a href="{{ route('crawlers.blog.list') }}" class="d-block card-panel hoverable" data-tooltip="Blog Botları" data-position="right">
         <i class="material-icons">widgets</i>
         <span class="d-block">Blog Botları</span>
     </a>

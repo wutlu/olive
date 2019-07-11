@@ -192,7 +192,7 @@ class RealTimeController extends Controller
 
                 $haystack = $selected_modules;
 
-                $target = [ 'youtube_video', 'youtube_comment', 'shopping', 'news', 'sozluk' ];
+                $target = [ 'youtube_video', 'youtube_comment', 'shopping', 'news', 'blog', 'sozluk' ];
 
                 if (count(array_intersect($haystack, $target)) > 0)
                 {
@@ -277,6 +277,12 @@ class RealTimeController extends Controller
                                     $modules[] = 'article';
                                 }
                             break;
+                            case 'blog':
+                                if ($organisation->data_blog)
+                                {
+                                    $modules[] = 'document';
+                                }
+                            break;
                             case 'youtube_video':
                                 if ($organisation->data_youtube_video)
                                 {
@@ -345,6 +351,20 @@ class RealTimeController extends Controller
                                     }
 
                                     $data[] = array_merge($arr, $article);
+                                break;
+                                case 'document':
+                                    $document = [
+                                        'url' => $object['_source']['url'],
+                                        'title' => $object['_source']['title'],
+                                        'text' => $object['_source']['description']
+                                    ];
+
+                                    if (@$object['_source']['image_url'])
+                                    {
+                                        $document['image'] = $object['_source']['image_url'];
+                                    }
+
+                                    $data[] = array_merge($arr, $document);
                                 break;
                                 case 'entry':
                                     $data[] = array_merge($arr, [

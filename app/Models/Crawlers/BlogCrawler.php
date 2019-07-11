@@ -5,9 +5,9 @@ namespace App\Models\Crawlers;
 use Illuminate\Database\Eloquent\Model;
 use App\Elasticsearch\Indices;
 
-class MediaCrawler extends Model
+class BlogCrawler extends Model
 {
-    protected $table = 'media_crawlers';
+    protected $table = 'blog_crawlers';
     protected $fillable = [
         'name',
         'site',
@@ -31,10 +31,10 @@ class MediaCrawler extends Model
     {
         return Indices::create(
             [
-                'media', $group
+                'blog', $group
             ],
             [
-                'article' => [
+                'document' => [
                     'properties' => [
                         'id' => [ 'type' => 'keyword' ],
                         'site_id' => [ 'type' => 'integer' ],
@@ -96,10 +96,10 @@ class MediaCrawler extends Model
                 ]
             ],
             [
-                'total_fields_limit' => config('database.elasticsearch.media.article.settings.total_fields_limit'),
-                'number_of_shards' => config('database.elasticsearch.media.article.settings.number_of_shards'),
-                'number_of_replicas' => config('database.elasticsearch.media.article.settings.number_of_replicas'),
-                'refresh_interval' => config('database.elasticsearch.media.article.settings.refresh_interval')
+                'total_fields_limit' => config('database.elasticsearch.blog.document.settings.total_fields_limit'),
+                'number_of_shards' => config('database.elasticsearch.blog.document.settings.number_of_shards'),
+                'number_of_replicas' => config('database.elasticsearch.blog.document.settings.number_of_replicas'),
+                'refresh_interval' => config('database.elasticsearch.blog.document.settings.refresh_interval')
             ]
         );
     }

@@ -110,7 +110,7 @@
                     <span data-name="email" class="grey-text"></span>
                 </span>
                 <span class="right-align">
-                    <span class="d-block" data-name="verified"></span>
+                    <small class="d-block" data-name="verified"></small>
                     <i>
                         <small data-name="organisation-time"></small>
                     </i>

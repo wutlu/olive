@@ -1010,6 +1010,7 @@ class OrganisationController extends Controller
         Option::updateOrCreate([ 'key' => 'unit_price.data_twitter'                    ], [ 'value' => $request->data_twitter                    ]);
         Option::updateOrCreate([ 'key' => 'unit_price.data_sozluk'                     ], [ 'value' => $request->data_sozluk                     ]);
         Option::updateOrCreate([ 'key' => 'unit_price.data_news'                       ], [ 'value' => $request->data_news                       ]);
+        Option::updateOrCreate([ 'key' => 'unit_price.data_blog'                       ], [ 'value' => $request->data_news                       ]);
         Option::updateOrCreate([ 'key' => 'unit_price.data_youtube_video'              ], [ 'value' => $request->data_youtube_video              ]);
         Option::updateOrCreate([ 'key' => 'unit_price.data_youtube_comment'            ], [ 'value' => $request->data_youtube_comment            ]);
         Option::updateOrCreate([ 'key' => 'unit_price.data_shopping'                   ], [ 'value' => $request->data_shopping                   ]);

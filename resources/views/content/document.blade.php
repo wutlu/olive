@@ -54,7 +54,7 @@
         [
             'type' => 'article',
             'period' => 'daily',
-            'title' => 'Günlük Haber Paylaşımı',
+            'title' => 'Günlük Makale Paylaşımı',
             'id' => $data['crawler']->id,
             'unique_id' => 'tab_1',
             'es_index_key' => $data['crawler']->elasticsearch_index_name,
@@ -63,7 +63,7 @@
         [
             'type' => 'article',
             'period' => 'hourly',
-            'title' => 'Saatlik Haber Paylaşımı',
+            'title' => 'Saatlik Makale Paylaşımı',
             'id' => $data['crawler']->id,
             'unique_id' => 'tab_2',
             'es_index_key' => $data['crawler']->elasticsearch_index_name
@@ -102,8 +102,8 @@
     </div>
     <div class="card">
         <div class="card-content">
-            <span class="card-title">Benzer Haberler</span>
-            <small class="grey-text text-darken-2">Diğer haber siteleri dahildir.</small>
+            <span class="card-title">Benzer Makaleler</span>
+            <small class="grey-text text-darken-2">Diğer blog siteleri dahildir.</small>
         </div>
         <div class="collection load json-clear"
              id="smilars"
