@@ -102,7 +102,7 @@ class Alexa extends Command
 
                         $crawler->status = ($rank < config('app.alexa.rank_min')) ? true : false;
                         $crawler->alexa_rank = $rank;
-                        $crawler->off_reason = $crawler->off_reason ? $crawler->off_reason : 'Alexa sıralaması çok düşük olduğundan görev sonlandırıldı.';
+                        $crawler->off_reason = $crawler->off_reason ? $crawler->off_reason : 'Sistem manuel olarak bu botu durdurdu. Gerektiğinde tekrar aktif edecektir.';
                         $crawler->update();
                     }
                     else
