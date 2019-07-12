@@ -9,7 +9,8 @@ use IteratorAggregate;
 use ArrayIterator;
 use Exception;
 
-class Wrawler implements IteratorAggregate {
+class Wrawler implements IteratorAggregate
+{
 	const regexp = "/(?P<tag>[a-z0-9]+)?(\[(?P<attr>\S+)(=(?P<value>[^\]]+))?\])?(#(?P<id>[^\s:>#\.]+))?(\.(?P<class>[^\s:>#\.]+))?(:(?P<pseudo>(first|last|nth)-child)(\((?P<expr>[^\)]+)\))?)?\s*(?P<rel>>)?/isS";
 
 	protected $_source = '';

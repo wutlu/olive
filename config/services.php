@@ -83,6 +83,14 @@ return [
         'unaccepted_keywords' => explode(PHP_EOL, file_get_contents(database_path('analysis/unaccepted.txt')))
     ],
 
+    'instagram' => [
+        'api' => [
+            'key' => env('INSTAGRAM_KEY'),
+            'secret' => env('INSTAGRAM_SECRET'),
+            'callback' => env('INSTAGRAM_CALLBACK')
+        ]
+    ],
+
     'medium' => [
         'url' => 'http://'
     ],
