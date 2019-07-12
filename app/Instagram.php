@@ -2,11 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-use App\Instagram;
-
-class TestController extends Controller
+class Instagram
 {
     public static function test()
     {
