@@ -515,27 +515,55 @@ class ContentController extends Controller
      */
     public static function tweetAggregation(string $type, int $user_id)
     {
-        $data = [
-            'query' => ($type == 'mention_in') ? [
-                'nested' => [
-                    'path' => 'entities.mentions',
-                    'query' => [
-                        'bool' => [
-                            'must' => [
-                                [ 'match' => [ 'entities.mentions.mention.id' => $user_id ] ]
+        $days = auth()->user()->organisation->historical_days;
+
+        if ($type == 'mention_in')
+        {
+            $data = [
+                'query' => [
+                    'nested' => [
+                        'path' => 'entities.mentions',
+                        'query' => [
+                            'bool' => [
+                                'filter' => [
+                                    [
+                                        'range' => [
+                                            'created_at' => [
+                                                'format' => 'YYYY-MM-dd',
+                                                'gte' => date('Y-m-d', strtotime('-'.$days.' days'))
+                                            ]
+                                        ]
+                                    ],
+                                    [ 'match' => [ 'entities.mentions.mention.id' => $user_id ] ]
+                                ]
                             ]
                         ]
                     ]
-                ]
-            ] : [
-                'bool' => [
-                    'must' => [
-                        [ 'match' => [ 'user.id' => $user_id ] ]
+                ],
+                'size' => 0
+            ];
+        }
+        else
+        {
+            $data = [
+                'query' => [
+                    'bool' => [
+                        'filter' => [
+                            [
+                                'range' => [
+                                    'created_at' => [
+                                        'format' => 'YYYY-MM-dd',
+                                        'gte' => date('Y-m-d', strtotime('-'.$days.' days'))
+                                    ]
+                                ]
+                            ],
+                            [ 'match' => [ 'user.id' => $user_id ] ]
+                        ]
                     ]
-                ]
-            ],
-            'size' => 0
-        ];
+                ],
+                'size' => 0
+            ];
+        }
 
         switch ($type)
         {
