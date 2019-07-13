@@ -29,4 +29,9 @@ class StreamingUsers extends Model
     protected $hidden = [
         'organisation_id',
     ];
+
+    public function getUserIdAttribute($value)
+    {
+        return ''.$value.'';
+    }
 }
