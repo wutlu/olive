@@ -45,7 +45,7 @@ class FollowActiveUsers extends Command
      */
     public function handle()
     {
-        $min = 10;
+        $min = 50;
         $size = 1000;
 
         $query = Document::search([ 'twitter', 'tweets', '*' ], 'tweet', [
@@ -71,7 +71,8 @@ class FollowActiveUsers extends Command
                         ]
                     ],
                     'must' => [
-                        [ 'match' => [ 'lang' => 'tr' ] ]
+                        [ 'match' => [ 'lang' => 'tr' ] ],
+                        [ 'match' => [ 'user.lang' => 'tr' ] ]
                     ]
                 ]
             ],
