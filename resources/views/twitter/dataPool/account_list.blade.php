@@ -39,33 +39,38 @@
             </div>
         </nav>
 
-        <div class="collection load json-clear" 
+        <ul class="collection collection-hoverable load json-clear" 
              id="collections"
              data-href="{{ route('twitter.account.list') }}"
              data-skip="0"
-             data-take="15"
+             data-take="10"
              data-include="string"
              data-more-button="#more_button"
              data-callback="__collections"
              data-method="post"
              data-loader="#home-loader"
              data-nothing>
-            <div class="collection-item nothing hide">
+            <li class="collection-item nothing hide">
                 @component('components.nothing')
                     @slot('size', 'small')
                 @endcomponent
-            </div>
-            <a href="#" class="collection-item model hide" data-trigger="delete">
+            </li>
+            <li class="collection-item model hide">
                 <div class="d-flex justify-content-between">
                     <span>
-                        <p class="mb-0" data-name="screen-name"></p>
-                        <p class="mb-0 grey-text" data-name="id"></p>
+                        <span class="d-table" data-name="screen-name"></span>
+                        <a href="#" class="blue-text text-darken-2" data-name="id" target="_blank"></a>
                         <p class="mb-0" data-name="reason"></p>
                     </span>
-                    <time class="timeago grey-text" data-name="created-at"></time>
+                    <span class="right-align">
+                        <time class="timeago grey-text d-block" data-name="created-at">-</time>
+                        <a href="#" data-trigger="delete">
+                            <i class="material-icons">delete</i>
+                        </a>
+                    </span>
                 </div>
-            </a>
-        </div>
+            </li>
+        </ul>
 
         @component('components.loader')
             @slot('color', 'blue-grey')
@@ -113,7 +118,7 @@
                     'class': 'waves-effect btn-flat red-text json',
                     'html': buttons.ok,
                     'data-href': '{{ route('twitter.account.delete') }}',
-                    'data-id': $(this).data('id'),
+                    'data-id': $(this).closest('li').data('id'),
                     'data-method': 'delete',
                     'data-callback': '__delete'
                 })
@@ -136,10 +141,7 @@
         {
             $('#modal-delete').modal('close')
 
-            var search = $('#collections');
-                search.data('skip', 0).addClass('json-clear');
-
-            vzAjax(search)
+            $('li[data-id=' + __.data('id') + ']').slideUp()
         }
     }
 
@@ -163,7 +165,9 @@
 
                         item.find('[data-name=created-at]').attr('data-time', o.created_at)
 
-                        item.find('[data-name=id]').html(o.user_id)
+                        var link = 'https://twitter.com/intent/user?user_id=' + o.user_id;
+
+                        item.find('[data-name=id]').attr('href', link).html(link)
                         item.find('[data-name=screen-name]').html(o.screen_name ? o.screen_name : '').addClass(o.screen_name ? '' : 'hide')
                         item.find('[data-name=reason]').html(o.reason ? o.reason : '').addClass(o.reason ? 'red-text' : 'hide')
 
