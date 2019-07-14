@@ -1988,22 +1988,34 @@ ul#slide-out {
 
   overflow: hidden;
 }
+
 ul#slide-out:hover {
   overflow: auto;
 }
+
+@media only screen and (max-width: 992px) {
+  ul#slide-out {
+    overflow: auto;
+  }
+}
+
 ul#slide-out li.tiny {
 
 }
+
 ul#slide-out li.tiny > a {
 
 }
+
 ul#slide-out li.copyright {
   line-height: 24px;
   padding: 2rem;
 }
+
 ul#slide-out li > a > span.badge {
   min-width: 1rem;
 }
+
 ul#slide-out li > a,
 ul#slide-out li > a > .material-icons,
 ul#slide-out li > .collapsible-header > span,

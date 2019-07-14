@@ -115,24 +115,28 @@
                             <i class="material-icons">close</i>
                         </a>
                         <label class="align-self-center mr-1">
-                            <input name="speed" type="radio" value="1000" />
+                            <input name="speed" type="radio" value="2048" checked />
                             <span>1</span>
                         </label>
                         <label class="align-self-center mr-1">
-                            <input name="speed" type="radio" value="800" />
+                            <input name="speed" type="radio" value="1024" />
                             <span>2</span>
                         </label>
                         <label class="align-self-center mr-1">
-                            <input name="speed" type="radio" value="600" checked />
+                            <input name="speed" type="radio" value="512" />
                             <span>3</span>
                         </label>
                         <label class="align-self-center mr-1">
-                            <input name="speed" type="radio" value="400" />
+                            <input name="speed" type="radio" value="256" />
                             <span>4</span>
                         </label>
                         <label class="align-self-center mr-1">
-                            <input name="speed" type="radio" value="100" />
+                            <input name="speed" type="radio" value="128" />
                             <span>5</span>
+                        </label>
+                        <label class="align-self-center mr-1">
+                            <input name="speed" type="radio" value="64" />
+                            <span>6</span>
                         </label>
                     </span>
                 </div>
