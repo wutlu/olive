@@ -46,7 +46,7 @@
                         item.find('[data-name=count]').html(number_format(o['docs.count'] ? o['docs.count'] : 0))
                         item.find('[data-name=size]').html(o['store.size'])
                         item.find('[data-name=status]')
-                            .attr('data-status', o.status == 'open' ? 'close' : 'open')
+                            .data('status', o.status == 'open' ? 'close' : 'open')
                             .attr('data-index_name', o.index)
                             .html(o.status == 'open' ? 'Kapat' : 'Aç')
                             .removeClass('disabled')
