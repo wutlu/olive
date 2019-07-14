@@ -22,6 +22,8 @@ Route::prefix('sistem-izleme')->group(function () {
     });
 });
 
+Route::post('elasticsearch/index/durum', 'DataController@elasticsearchIndexStatus')->name('elasticsearch.index.status');
+
 Route::prefix('vekil-sunucu-yonetimi')->group(function () {
     Route::get('/', 'ProxyController@proxies')->name('admin.proxies');
     Route::post('json', 'ProxyController@proxiesJson')->name('admin.proxies.json');

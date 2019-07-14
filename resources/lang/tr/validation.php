@@ -349,6 +349,7 @@ $arr = [
 
         'discount_with_year'              => 'Yıllık Ödeme İndirimi',
         'amount'                          => 'Miktar',
+        'index_name'                      => 'Index Adı',
     ],
 ];
 
