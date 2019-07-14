@@ -50,7 +50,7 @@ class ContentController extends Controller
      ******* ROOT *******
      ********************
      *
-     * Organizasyon Listesi
+     * İçerik Sil
      *
      * @return array
      */
