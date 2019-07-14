@@ -234,7 +234,7 @@ class Kernel extends ConsoleKernel
              */
             $schedule->command('nohup "youtube:video_detect --type=trends" --type=restart')
                      ->unlessBetween('1:00', '9:00')
-                     ->everyThirtyMinutes()
+                     ->hourly()
                      ->timezone(config('app.timezone'))
                      ->withoutOverlapping(1)
                      ->skip(function() {
@@ -243,7 +243,7 @@ class Kernel extends ConsoleKernel
 
             $schedule->command('nohup "youtube:video_detect --type=followed_videos" --type=restart')
                      ->unlessBetween('1:00', '9:00')
-                     ->hourly()
+                     ->daily()
                      ->timezone(config('app.timezone'))
                      ->withoutOverlapping(1)
                      ->skip(function() {
@@ -252,7 +252,7 @@ class Kernel extends ConsoleKernel
 
             $schedule->command('nohup "youtube:video_detect --type=followed_keywords" --type=restart')
                      ->unlessBetween('1:00', '9:00')
-                     ->hourly()
+                     ->daily()
                      ->timezone(config('app.timezone'))
                      ->withoutOverlapping(1)
                      ->skip(function() {
@@ -261,7 +261,7 @@ class Kernel extends ConsoleKernel
 
             $schedule->command('nohup "youtube:video_detect --type=followed_channels" --type=restart')
                      ->unlessBetween('1:00', '9:00')
-                     ->hourly()
+                     ->daily()
                      ->timezone(config('app.timezone'))
                      ->withoutOverlapping(1)
                      ->skip(function() {
