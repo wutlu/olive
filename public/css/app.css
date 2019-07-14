@@ -1458,6 +1458,11 @@ footer.page-footer > .container > .row > .col > img#vz-logo {
 }
 
 @media only screen and (max-width: 992px) {
+  .card,
+  .card > .card-image,
+  .card > .card-image > img {
+    border-radius: 0;
+  }
   .card > .card-sentiment {
     display: none !important;
   }

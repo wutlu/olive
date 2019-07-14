@@ -242,7 +242,7 @@
 
 @push('local.styles')
     [data-id=trend_list] {
-        height: calc(100vh - 400px);
+        max-height: calc(100vh);
         overflow: auto;
         background-image: url(../img/olive_logo-opacity.svg);
         background-repeat: no-repeat;
