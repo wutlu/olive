@@ -242,6 +242,7 @@
 
 @push('local.styles')
     [data-id=trend_list] {
+        min-height: 200px;
         max-height: calc(100vh);
         overflow: auto;
         background-image: url(../img/olive_logo-opacity.svg);
