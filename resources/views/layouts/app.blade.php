@@ -178,7 +178,7 @@
                     @if (auth()->user()->organisation)
                     <li>
                         <a class="waves-effect" href="{{ route('settings.organisation') }}">
-                            <i class="material-icons">group_work</i> {{ auth()->user()->organisation->name }}
+                            <i class="material-icons">group_work</i> Organizasyon
                         </a>
                     </li>
                     @endif
@@ -541,7 +541,7 @@
                     <li class="tiny">
                         <a class="waves-effect" href="{{ route('settings.organisation') }}">
                             <i class="material-icons">group_work</i>
-                            {{ auth()->user()->organisation->name }}
+                            Organizasyon
                         </a>
                     </li>
                     <li class="divider"></li>

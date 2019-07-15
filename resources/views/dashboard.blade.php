@@ -228,6 +228,25 @@
                     @endcomponent
                 </div>
 
+                @php
+                    $hints = [
+                        '<span class="grey darken-2 white-text">#tarihibuluşmaFOXta && !external.type:retweet</span> gibi bir sorgu ile retweetleri arama dışında tutabilirsiniz.',
+                        'Veri havuzuna ekleyeceğiniz kullanıcıların silindi bilgilerini de alabilirsiniz.',
+                        'Trend algoritması her dakika güncellenir. Son 10 dakikalık verilere göre yenilenir.',
+                    ];
+
+                    shuffle($hints);
+                @endphp
+
+                <div class="pt-1 pb-1">
+                    <div class="grey-text text-darken-2 mt-1">
+                        @component('components.alert')
+                            @slot('icon', 'lightbulb_outline')
+                            @slot('text', $hints[0])
+                        @endcomponent
+                    </div>
+                </div>
+
                 @push('local.styles')
                     .user-status.online {
                         -webkit-box-shadow: inset -1rem 0 1rem -.4rem #64dd17;
