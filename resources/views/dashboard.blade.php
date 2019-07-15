@@ -9,7 +9,6 @@
         indicators: true
     })
 
-
     const driver = new Driver({
         allowClose: false,
         opacity: .4,
@@ -215,10 +214,11 @@
                          data-method="post"
                          data-loader="#organisation-loader">
                         <li class="collection-item avatar hide model user-status">
-                            <img alt="" class="circle" data-name="avatar" />
-                            <span class="title" data-name="name"></span>
-                            <p class="grey-text" data-name="e-mail"></p>
-                            <p class="grey-text" data-name="title"></p>
+                            <img alt="" class="circle align-self-center" data-name="avatar" />
+                            <span class="d-block align-self-center">
+                                <span class="title" data-name="name"></span> - <span class="grey-text" data-name="e-mail"></span>
+                                <p class="grey-text d-block" data-name="title"></p>
+                            </span>
                         </li>
                     </ul>
                     @component('components.loader')
@@ -230,12 +230,12 @@
 
                 @push('local.styles')
                     .user-status.online {
-                        -webkit-box-shadow: inset -.4rem 0 0 0 #64dd17;
-                                box-shadow: inset -.4rem 0 0 0 #64dd17;
+                        -webkit-box-shadow: inset -1rem 0 1rem -.4rem #64dd17;
+                                box-shadow: inset -1rem 0 1rem -.4rem #64dd17;
                     }
                     .user-status.offline {
-                        -webkit-box-shadow: inset -.4rem 0 0 0 #f44336;
-                                box-shadow: inset -.4rem 0 0 0 #f44336;
+                        -webkit-box-shadow: inset -1rem 0 1rem -.4rem #f44336;
+                                box-shadow: inset -1rem 0 1rem -.4rem #f44336;
                     }
                 @endpush
 
@@ -262,7 +262,7 @@
                                         item = selector.length ? selector : item_model.clone();
 
                                         item.removeClass('model hide online offline')
-                                            .addClass('_tmp')
+                                            .addClass('_tmp d-flex')
                                             .addClass(o.online ? 'online' : 'offline')
                                             .attr('data-id', o.id)
 
@@ -286,9 +286,7 @@
             @else
                 <div class="card mb-1">
                     <div class="card-content">
-                        <span class="card-title">
-                            Teklif Alın
-                        </span>
+                        <span class="card-title">Teklif Alın</span>
                         <p class="grey-text">Size uygun en iyi teklifler için hemen bizimle iletişime geçin..</p>
                     </div>
                     <div class="card-content right-align">

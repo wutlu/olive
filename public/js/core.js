@@ -12,6 +12,26 @@ $(function() {
     $('#loading').fadeOut()
 })
 
+$(window).scroll(function() {
+    var scrollTop = $(window).scrollTop();
+    var nav = $('#main-nav');
+
+    if (scrollTop >= 10)
+    {
+        if (!nav.hasClass('active'))
+        {
+            $('#main-nav').addClass('active')
+        }
+    }
+    else
+    {
+        if (nav.hasClass('active'))
+        {
+            $('#main-nav').removeClass('active')
+        }
+    }
+})
+
 /* --- hash --- */
 
 function hashCode(s)

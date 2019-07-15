@@ -1975,6 +1975,12 @@ table tr {
 
 #main-nav {
   background-color: #4b636e;
+
+  -webkit-transition: all 400ms cubic-bezier(.25, .46, .45, .94);
+          transition: all 400ms cubic-bezier(.25, .46, .45, .94);
+}
+
+#main-nav.active {
 }
 
 /*!
@@ -1987,6 +1993,10 @@ ul#slide-out {
           box-shadow: 3px 0px 16px 1px rgba(0, 0, 0, .1), 1px 0px 6px 1px rgba(0, 0, 0, .1);
 
   overflow: hidden;
+
+  background-image: url('../img/slideout.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 ul#slide-out:hover {
@@ -1999,12 +2009,8 @@ ul#slide-out:hover {
   }
 }
 
-ul#slide-out li.tiny {
-
-}
-
-ul#slide-out li.tiny > a {
-
+ul#slide-out .collapsible-body {
+  background-color: transparent;
 }
 
 ul#slide-out li.copyright {
@@ -2020,7 +2026,7 @@ ul#slide-out li > a,
 ul#slide-out li > a > .material-icons,
 ul#slide-out li > .collapsible-header > span,
 ul#slide-out li > .collapsible-header > .material-icons {
-  color: #666;
+  color: rgba(255, 255, 255, .8);
 }
 
 .sidenav-overlay {
@@ -2675,7 +2681,7 @@ nav.nav-half {
  * user-view
  */
 .user-view {
-  background-image: url(../img/user-bg.svg);
+  //background-image: url(../img/user-bg.svg);
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
