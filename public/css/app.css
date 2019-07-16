@@ -1994,7 +1994,7 @@ ul#slide-out {
 
   overflow: hidden;
 
-  background-image: url('../img/slideout.jpg');
+  background-image: url(../img/slideout.jpg?v=2);
   background-repeat: no-repeat;
   background-size: cover;
 }
