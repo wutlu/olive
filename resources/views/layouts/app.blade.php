@@ -469,7 +469,7 @@
                 @if (auth()->user()->admin)
                     <!-- sadece moderatör -->
                     <li>
-                        <a href="#" class="subheader">Yönetici</a>
+                        <a href="#" class="subheader grey-text text-darken-2">Yönetici</a>
                     </li>
                     <li class="tiny">
                         <a class="waves-effect" href="#" data-name="organisation-route">

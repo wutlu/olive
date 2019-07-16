@@ -90,30 +90,31 @@
                     <div class="collection-item model hide"></div>
                 </div>
                 @component('components.loader')
-                    @slot('color', 'teal')
+                    @slot('color', 'blue-grey')
                     @slot('id', 'home-loader')
                     @slot('class', 'card-loader-unstyled')
                 @endcomponent
             </div>
 
             <div class="center-align">
-                <button class="btn-flat waves-effect hide json"
-                        id="smilars-more_button"
-                        type="button"
-                        data-json-target="#smilars">Daha Fazla</button>
+                <a
+                    class="more hide json"
+                    id="smilars-more_button"
+                    href="#"
+                    data-json-target="#smilars">Daha Fazla</a>
             </div>
         </div>
     </div>
 @endsection
 
 @section('dock')
-    <div class="card teal">
-        <div class="card-content teal darken-2">
+    <div class="card blue-grey">
+        <div class="card-content blue-grey darken-2">
             <span class="white-text text-darken-4">{{ number_format($document['_source']['price']['amount']) }}</span>
             <span class="white-text">{{ $document['_source']['price']['currency'] }}</span>
         </div>
         <div class="card-content">
-            <span class="teal-text text-lighten-4">{{ title_case($document['_source']['seller']['name']) }}</span>
+            <span class="blue-grey-text text-lighten-4">{{ title_case($document['_source']['seller']['name']) }}</span>
             @isset ($document['_source']['seller']['phones'])
                 @foreach ($document['_source']['seller']['phones'] as $key => $phone)
                     <p class="white-text">{{ $phone['phone'] }}</p>
