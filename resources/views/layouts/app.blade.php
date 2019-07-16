@@ -339,7 +339,7 @@
                 @if (auth()->user()->root())
                     <!-- sadece yönetici -->
                     <li>
-                        <a href="#" class="subheader grey-text text-darken-2">Sistem Sorumlusu</a>
+                        <a href="#" class="subheader">Sistem Sorumlusu</a>
                     </li>
                     <li>
                         <div class="collapsible-header waves-effect">
@@ -469,7 +469,7 @@
                 @if (auth()->user()->admin)
                     <!-- sadece moderatör -->
                     <li>
-                        <a href="#" class="subheader grey-text text-darken-2">Yönetici</a>
+                        <a href="#" class="subheader">Yönetici</a>
                     </li>
                     <li class="tiny">
                         <a class="waves-effect" href="#" data-name="organisation-route">
