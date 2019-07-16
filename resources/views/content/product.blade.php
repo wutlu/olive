@@ -133,7 +133,7 @@
         </div>
 
         @isset ($document['_source']['breadcrumb'])
-            <ul class="collection white" id="category">
+            <ul class="collection collection-unstyled white" id="category">
                 @foreach ($document['_source']['breadcrumb'] as $key => $segment)
                     <li class="collection-item" data-icon="»">{{ $segment['segment'] }}</li>
                 @endforeach
@@ -141,7 +141,7 @@
         @endisset
 
         @isset ($document['_source']['address'])
-            <ul class="collection white" id="address" style="display: none;">
+            <ul class="collection collection-unstyled white" id="address" style="display: none;">
                 @foreach ($document['_source']['address'] as $key => $segment)
                     <li class="collection-item" data-icon="»">{{ $segment['segment'] }}</li>
                 @endforeach

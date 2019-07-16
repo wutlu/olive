@@ -23,6 +23,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 
 use App\Models\Proxy;
+use App\Models\Twitter\BlockedTrendKeywords as TwitterBlockedTrendKeywords;
 
 use App\Wrawler;
 
@@ -420,43 +421,7 @@ class Detect extends Command
      */
     private function twitterHashtag(string $time)
     {
-        $except = [
-            'dolar',
-            'bist',
-            'eyt',
-            'dolartl',
-            'bts',
-            'bist100',
-            'usdtry',
-            'CanEm',
-            'CanYaman',
-            'AzCen',
-            'ReyMir',
-            'AyKer',
-            'ZeyMir',
-            'ZeyKad',
-            'KuzDil',
-            'CemKer',
-            'FAA',
-            'bet',
-            'matbet',
-            'mgmavote',
-            'exo',
-            'ncti27',
-            'teenchoice',
-            'choice',
-            'warpsiwax',
-            'jav',
-            'ARMYMeansFamily',
-            'acil',
-            'canlı',
-            'acele',
-            'odtue',
-            'escort',
-            'eskort',
-            'IRENE',
-            'mersinescort',
-        ];
+        $except = TwitterBlockedTrendKeywords::pluck('keyword')->toArray();
 
         $query = Document::search([ 'twitter', 'tweets', date('Y.m') ], 'tweet', [
             'query' => [

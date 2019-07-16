@@ -136,6 +136,13 @@ Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {
             Route::get('kullanici-havuzu/{id?}', 'DataController@accountList')->name('admin.twitter.stream.accounts');
             Route::post('kullanici-havuzu', 'DataController@accountListJson');
             Route::patch('kullanici-havuzu', 'DataController@accountReason')->name('admin.twitter.stream.accounts.reason');
+
+            Route::prefix('trend/engelli-kelimeler')->group(function () {
+                Route::get('/{id?}', 'DataController@blockedTrendKeywordList')->name('admin.twitter.trend.blocked_keywords');
+                Route::post('/', 'DataController@blockedTrendKeywordListJson');
+                Route::delete('/', 'DataController@blockedTrendKeywordDelete');
+                Route::put('/', 'DataController@blockedTrendKeywordCreate');
+            });
         });
     });
 

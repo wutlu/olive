@@ -9,6 +9,7 @@ use GuzzleHttp\HandlerStack;
 
 use App\Models\Proxy;
 use App\Models\Twitter\StreamingUsers;
+use App\Models\Twitter\BlockedTrendKeywords as TwitterBlockedTrendKeywords;
 
 use App\Wrawler;
 
@@ -45,84 +46,8 @@ class Test extends Command
      */
     public function handle()
     {
-        $tusers = StreamingUsers::orderBy('updated_at', 'ASC')->limit(10)->get();
+        $except = TwitterBlockedTrendKeywords::pluck('keyword')->toArray();
 
-        if (count($tusers))
-        {
-            foreach ($tusers as $tuser)
-            {
-                $this->info($tuser->screen_name);
-
-                $client = new Client([
-                    'base_uri' => 'https://twitter.com',
-                    'handler' => HandlerStack::create()
-                ]);
-
-                try
-                {
-                    $tuser->reason = null;
-
-                    $arr = [
-                        'timeout' => 10,
-                        'connect_timeout' => 5,
-                        'headers' => [
-                            'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))],
-                            'Accept-Language' => 'tr-TR;q=0.6,tr;q=0.4'
-                        ],
-                        'verify' => false,
-                        'query' => [
-                            'user_id' => $tuser->user_id
-                        ]
-                    ];
-
-                    $p = Proxy::where('health', '>', 7)->inRandomOrder()->first();
-
-                    if (@$p)
-                    {
-                        $arr['proxy'] = $p->proxy;
-                    }
-
-                    $dom = $client->get('intent/user', $arr)->getBody();
-
-                    $saw = new Wrawler($dom);
-
-                    $title = $saw->get('title')->toText();
-                    $verified = $saw->get('.verified')->toText();
-
-                    if (strpos($title, 'Hesap Askıya Alındı'))
-                    {
-                        $tuser->reason = 'Hesap Askıya Alınmış';
-                    }
-
-                    if ($verified)
-                    {
-                        $tuser->verified = true;
-                    }
-                }
-                catch (\Exception $e)
-                {
-                    $tuser->reason = 'Hesap Silinmiş';
-                }
-
-                $tuser->status = false;
-                $tuser->updated_at = date('Y-m-d H:i:s');
-                $tuser->update();
-
-                if ($tuser->reason)
-                {
-                    $this->error($tuser->reason);
-                }
-                else
-                {
-                    $this->info('ok');
-                }
-
-                sleep(rand(1, 5));
-            }
-        }
-        else
-        {
-            $this->error('İncelenecek kullanıcı bulunamadı!');
-        }
+        echo implode(' || ', $except);
     }
 }

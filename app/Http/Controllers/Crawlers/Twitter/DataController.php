@@ -13,8 +13,10 @@ use App\Http\Requests\IdRequest;
 
 use App\Http\Requests\Twitter\Reason\KeywordRequest as KeywordReasonRequest;
 use App\Http\Requests\Twitter\Reason\AccountRequest as AccountReasonRequest;
+use App\Http\Requests\Twitter\CreateBlockedTrendKeywordRequest;
 
 use App\Models\Organisation\Organisation;
+use App\Models\Twitter\BlockedTrendKeywords;
 
 class DataController extends Controller
 {
@@ -58,7 +60,7 @@ class DataController extends Controller
 
         if ($string)
         {
-            $query->where('keyword', 'ILIKE', '%'.$string.'%');
+            $query = $query->where('keyword', 'ILIKE', '%'.$string.'%');
         }
 
         if ($org_name)
@@ -190,5 +192,90 @@ class DataController extends Controller
                 'reason' => $request->reason
             ]
         ];
+    }
+
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Twitter veri havuzu, engelli kelime listesi.
+     *
+     * @return view
+     */
+    public function blockedTrendKeywordList(int $id = 0)
+    {
+        return view('crawlers.twitter.dataPool.blocked_keyword_list');
+    }
+
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Twitter veri havuzu, engelli kelime listesi.
+     *
+     * @return array
+     */
+    public function blockedTrendKeywordListJson(SearchRequest $request)
+    {
+        $take = $request->take;
+        $skip = $request->skip;
+
+        $query = new BlockedTrendKeywords;
+
+        if ($request->string)
+        {
+            $query = $query->where('keyword', 'ILIKE', '%'.$request->string.'%');
+        }
+
+        $total = $query->count();
+
+        $query = $query->skip($skip)
+                       ->take($take)
+                       ->orderBy('id', 'DESC');
+
+        return [
+            'status' => 'ok',
+            'hits' => $query->get(),
+            'total' => $total
+        ];
+    }
+
+    /**
+     * Twitter veri havuzu, engelli kelime oluşturma.
+     *
+     * @return array
+     */
+    public function blockedTrendKeywordCreate(CreateBlockedTrendKeywordRequest $request)
+    {
+        $query = new BlockedTrendKeywords;
+        $query->keyword = $request->string;
+        $query->save();
+
+        return [
+            'status' => 'ok'
+        ];
+    }
+
+    /**
+     * Twitter veri havuzu, engelli kelime silme.
+     *
+     * @return array
+     */
+    public static function blockedTrendKeywordDelete(IdRequest $request)
+    {
+        $query = BlockedTrendKeywords::where('id', $request->id)->firstOrFail();
+
+        $arr = [
+            'status' => 'ok',
+            'data' => [
+                'id' => $query->id
+            ]
+        ];
+
+        $query->delete();
+
+        return $arr;
     }
 }

@@ -1,4 +1,8 @@
 <div class="collection">
+    <a href="{{ route('admin.twitter.trend.blocked_keywords') }}" class="collection-item waves-effect {{ $active == 'trend.blocked_keywords' ? 'active' : '' }}">Engelli Trend Kelimeleri</a>
+
+    <div class="divider grey"></div>
+
     <a href="{{ route('admin.twitter.settings') }}" class="collection-item waves-effect {{ $active == 'dashboard' ? 'active' : '' }}">Twitter Ayarları</a>
     <a href="{{ route('admin.twitter.indices') }}" class="collection-item waves-effect {{ $active == 'indices' ? 'active' : '' }}">Index Yönetimi</a>
 
