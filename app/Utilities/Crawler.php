@@ -21,7 +21,7 @@ class Crawler
     /**
      * Makale, Bağlantı Tespiti
      *
-     * @return array
+     * @return object
      */
     public static function articleLinkDetection(string $site, string $url_pattern = null, string $base, bool $standard, bool $proxy)
     {
@@ -108,7 +108,7 @@ class Crawler
     /**
      * Google Arama Sonucu, Bağlantı Tespiti
      *
-     * @return array
+     * @return object
      */
     public static function googleSearchResultLinkDetection(string $site, string $url_pattern, string $query, string $google_time, int $max_page = 1)
     {
@@ -178,7 +178,7 @@ class Crawler
     /**
      * Makale Tespiti
      *
-     * @return array
+     * @return object
      */
     public static function articleDetection(string $site, string $page, string $title_selector = null, string $description_selector = null, bool $standard, bool $proxy)
     {
@@ -377,7 +377,7 @@ class Crawler
     /**
      * Ürün Tespiti
      *
-     * @return array
+     * @return object
      */
     public static function productDetection(string $site, string $page, array $selector, bool $proxy = false)
     {
@@ -571,7 +571,7 @@ class Crawler
     /**
      * Sözlük, Girdi Tespiti
      *
-     * @return array
+     * @return object
      */
     public static function entryDetection(array $options, int $id, bool $proxy = false)
     {
