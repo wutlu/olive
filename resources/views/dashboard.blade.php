@@ -200,7 +200,7 @@
                 @endif
                 <div class="card mb-1">
                     <div class="card-image">
-                        <img src="{{ asset('img/mountain.jpg') }}" alt="Image" />
+                        <img src="{{ asset('img/mountain.jpg?v=2') }}" alt="Image" />
                         <span class="card-title" data-name="organisation-name">-</span>
                     </div>
                     <div class="card-content">
