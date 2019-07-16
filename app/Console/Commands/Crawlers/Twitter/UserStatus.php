@@ -100,7 +100,7 @@ class UserStatus extends Command
                         $tuser->screen_name = str_replace('@', '', $screen_name);
                     }
 
-                    $tuser->verified = $tuser->verified ? true : false;
+                    $tuser->verified = $verified ? true : false;
                 }
                 catch (\Exception $e)
                 {
