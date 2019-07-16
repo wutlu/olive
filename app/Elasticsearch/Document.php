@@ -349,6 +349,23 @@ class Document
      *     }
      * }
      * '
+
+     * curl -X POST "localhost:9201/oliveone__media-s14/_delete_by_query?pretty" -H 'Content-Type: application/json' -d'
+     * {
+     *     "query": { 
+     *         "bool": {
+     *             "must": [
+     *                 { "match": { "site_id": 273 } },
+     *                 {
+     *                     "query_string": {
+     *                         "query": "Benzer haberler"
+     *                     }
+     *                 }
+     *             ]
+     *         }
+     *     }
+     * }
+     * '
      *
      * @return object
      */

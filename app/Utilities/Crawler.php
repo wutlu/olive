@@ -328,8 +328,8 @@ class Crawler
             # date
             if (!$created_at)
             {
-                $data['error_reasons'][] = 'Tarih tespit edilemedi.';
-                $data['status'] = 'err';
+                $data['error_reasons'][] = 'Tarih tespit edilemedi. Alternatif denendi.';
+                $data['data']['created_at'] = date('Y-m-d H:i:00');
             }
 
             # title
