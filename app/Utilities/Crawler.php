@@ -132,22 +132,21 @@ class Crawler
                         'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))],
                         'Accept-Language' => 'tr-TR;q=0.6,tr;q=0.4'
                     ],
-                    'curl' => [
-                        CURLOPT_REFERER => $site,
-                        CURLOPT_COOKIE => 'AspxAutoDetectCookieSupport=1'
-                    ],
                     'verify' => false,
                     'allow_redirects' => [
-                        'max' => 6,
+                        'max' => 6
                     ]
                 ];
 
-                $proxy = Proxy::where('health', '>', 7)->inRandomOrder()->first();
-
-                if (@$proxy)
-                {
-                    $arr['proxy'] = $proxy->proxy;
-                }
+                /*
+                 *  $proxy = Proxy::where('health', '>', 7)->inRandomOrder()->first();
+                 *
+                 *  if (@$proxy)
+                 *  {
+                 *      $arr['proxy'] = $proxy->proxy;
+                 *  }
+                 *
+                 */
 
                 $dom = $client->get('https://www.google.com/search?q='.$query.'&tbs=qdr:'.$google_time.',sbd:1&start='.$page, $arr)->getBody();
 
