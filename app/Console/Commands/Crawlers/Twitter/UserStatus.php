@@ -60,6 +60,7 @@ class UserStatus extends Command
 
                 try
                 {
+                    $tuser->status = true;
                     $tuser->reason = null;
 
                     $arr = [
@@ -93,6 +94,7 @@ class UserStatus extends Command
                     if (strpos($title, 'Hesap Askıya Alındı'))
                     {
                         $tuser->reason = 'Hesap Askıya Alınmış';
+                        $tuser->status = false;
                     }
 
                     if ($screen_name)
@@ -105,9 +107,9 @@ class UserStatus extends Command
                 catch (\Exception $e)
                 {
                     $tuser->reason = 'Hesap Silinmiş';
+                    $tuser->status = false;
                 }
 
-                $tuser->status = false;
                 $tuser->updated_at = date('Y-m-d H:i:s');
                 $tuser->update();
 
