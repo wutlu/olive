@@ -940,7 +940,14 @@ function vzAjax(__)
                             'body': title,
                             'title': keywords.info,
                             'size': 'modal-small',
-                            'options': {}
+                            'options': {},
+                            'footer': [
+                                $('<a />', {
+                                    'href': '#',
+                                    'class': 'modal-close waves-effect btn-flat',
+                                    'html': buttons.ok
+                                })
+                            ]
                         })
                     }
                 }
