@@ -321,7 +321,7 @@
                         <small class="right {{ config('app.env') == 'local' ? 'red-text' : '' }}">{{ config('system.version') }}</small>
                         <img alt="{{ auth()->user()->name }}" class="circle" src="{{ asset(auth()->user()->avatar()) }}" />
                         <span class="name">{{ auth()->user()->name }}</span>
-                        <span class="email grey-text">{{ auth()->user()->email }}</span>
+                        <span class="email white-text">{{ auth()->user()->email }}</span>
                     </div>
                 </li>
 
@@ -339,7 +339,7 @@
                 @if (auth()->user()->root())
                     <!-- sadece yönetici -->
                     <li>
-                        <a href="#" class="subheader red-text">Sistem Sorumlusu</a>
+                        <a href="#" class="subheader grey-text text-darken-2">Sistem Sorumlusu</a>
                     </li>
                     <li>
                         <div class="collapsible-header waves-effect">
@@ -469,7 +469,7 @@
                 @if (auth()->user()->admin)
                     <!-- sadece moderatör -->
                     <li>
-                        <a href="#" class="subheader red-text">Yönetici</a>
+                        <a href="#" class="subheader grey-text text-darken-2">Yönetici</a>
                     </li>
                     <li class="tiny">
                         <a class="waves-effect" href="#" data-name="organisation-route">
