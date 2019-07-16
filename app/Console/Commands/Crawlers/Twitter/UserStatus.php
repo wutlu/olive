@@ -51,7 +51,7 @@ class UserStatus extends Command
         {
             foreach ($tusers as $tuser)
             {
-                $this->info($tuser->screen_name);
+                $this->info($tuser->user_id);
 
                 $client = new Client([
                     'base_uri' => 'https://twitter.com',
@@ -88,10 +88,16 @@ class UserStatus extends Command
 
                     $title = $saw->get('title')->toText();
                     $verified = $saw->get('.verified')->toText();
+                    $screen_name = $saw->get('.nickname')->toText();
 
                     if (strpos($title, 'Hesap Askıya Alındı'))
                     {
                         $tuser->reason = 'Hesap Askıya Alınmış';
+                    }
+
+                    if ($screen_name)
+                    {
+                        $tuser->screen_name = str_replace('@', '', $screen_name);
                     }
 
                     $tuser->verified = $tuser->verified ? true : false;
