@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Crawlers\Twitter;
 
 use Illuminate\Console\Command;
 
@@ -12,21 +12,21 @@ use App\Models\Twitter\StreamingUsers;
 
 use App\Wrawler;
 
-class Test extends Command
+class UserStatus extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'test';
+    protected $signature = 'twitter:user_status';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Test komutu.';
+    protected $description = 'Twitter için takip edilen kullanıcıların hesap durumlarını kontrol et.';
 
     /**
      * Create a new command instance.
@@ -94,10 +94,7 @@ class Test extends Command
                         $tuser->reason = 'Hesap Askıya Alınmış';
                     }
 
-                    if ($verified)
-                    {
-                        $tuser->verified = true;
-                    }
+                    $tuser->verified = $tuser->verified ? true : false;
                 }
                 catch (\Exception $e)
                 {

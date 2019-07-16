@@ -60,6 +60,14 @@ class Kernel extends ConsoleKernel
                       ->withoutOverlapping(1);
 
             /**
+             * Twitter için takip edilen kullanıcıların hesap durumlarını kontrol et.
+             */
+            $schedule->command('nohup "twitter:user_status" --type=start')
+                      ->everyMinute()
+                      ->timezone(config('app.timezone'))
+                      ->withoutOverlapping(1);
+
+            /**
              * Kaynak Tespiti
              */
             $schedule->command('nohup "media:detector" --type=restart')

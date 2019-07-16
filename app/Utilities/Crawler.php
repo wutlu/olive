@@ -38,7 +38,8 @@ class Crawler
                 'timeout' => 10,
                 'connect_timeout' => 5,
                 'headers' => [
-                    'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))]
+                    'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))],
+                    'Accept-Language' => 'tr-TR;q=0.6,tr;q=0.4'
                 ],
                 'curl' => [
                     CURLOPT_REFERER => $site,
@@ -128,7 +129,8 @@ class Crawler
                     'timeout' => 10,
                     'connect_timeout' => 5,
                     'headers' => [
-                        'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))]
+                        'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))],
+                        'Accept-Language' => 'tr-TR;q=0.6,tr;q=0.4'
                     ],
                     'curl' => [
                         CURLOPT_REFERER => $site,
@@ -197,7 +199,8 @@ class Crawler
                 'timeout' => 10,
                 'connect_timeout' => 5,
                 'headers' => [
-                    'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))]
+                    'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))],
+                    'Accept-Language' => 'tr-TR;q=0.6,tr;q=0.4'
                 ],
                 'curl' => [
                     CURLOPT_REFERER => $data['page'],
@@ -397,7 +400,8 @@ class Crawler
                 'timeout' => 10,
                 'connect_timeout' => 5,
                 'headers' => [
-                    'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))]
+                    'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))],
+                    'Accept-Language' => 'tr-TR;q=0.6,tr;q=0.4'
                 ],
                 'allow_redirects' => [
                     'max' => 4,
@@ -586,7 +590,8 @@ class Crawler
                 'timeout' => 10,
                 'connect_timeout' => 5,
                 'headers' => [
-                    'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))]
+                    'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))],
+                    'Accept-Language' => 'tr-TR;q=0.6,tr;q=0.4'
                 ],
                 'curl' => [
                     CURLOPT_REFERER => $data['page'],
