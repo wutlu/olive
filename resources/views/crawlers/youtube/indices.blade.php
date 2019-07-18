@@ -13,7 +13,7 @@
             'link' => route('admin.youtube.settings')
         ],
         [
-        	'text' => '🐞 Index Yönetimi'
+            'text' => '🐞 Index Yönetimi'
         ]
     ],
     'dock' => true,
@@ -87,12 +87,12 @@
             </li>
             <li class="collection-item model hide justify-content-between">
                 <span class="align-self-center">
-                	<p data-name="name" class="mb-0"></p>
-                	<p data-name="health" class="mb-0"></p>
+                    <p data-name="name" class="mb-0"></p>
+                    <p data-name="health" class="mb-0"></p>
                 </span>
                 <small class="grey-text d-flex flex-column align-items-end">
-                	<p data-name="count" class="mb-0"></p>
-                	<p data-name="size" class="mb-0"></p>
+                    <p data-name="count" class="mb-0"></p>
+                    <p data-name="size" class="mb-0"></p>
                 </small>
             </li>
         </ul>
@@ -163,7 +163,7 @@
             @endif
         </div>
     </div>
-	@include('crawlers.youtube._menu', [ 'active' => 'indices' ])
+    @include('crawlers.youtube._menu', [ 'active' => 'indices' ])
 @endsection
 
 @push('local.scripts')

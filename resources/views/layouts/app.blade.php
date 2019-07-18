@@ -321,7 +321,7 @@
                         <small class="right {{ config('app.env') == 'local' ? 'red-text' : '' }}">{{ config('system.version') }}</small>
                         <img alt="{{ auth()->user()->name }}" class="circle" src="{{ asset(auth()->user()->avatar()) }}" />
                         <span class="name">{{ auth()->user()->name }}</span>
-                        <span class="email white-text">{{ auth()->user()->email }}</span>
+                        <span class="email grey-text">{{ auth()->user()->email }}</span>
                     </div>
                 </li>
 
@@ -367,16 +367,16 @@
                                         E-ticaret Botları
                                     </a>
                                 </li>
-                                <li class="tiny" style="opacity: 0.4;">
-                                    <a class="waves-effect" href="#">
-                                        <i class="material-icons">widgets</i>
-                                        Forum Botları
-                                    </a>
-                                </li>
                                 <li class="tiny">
                                     <a class="waves-effect" href="{{ route('crawlers.blog.list') }}">
                                         <i class="material-icons">widgets</i>
                                         Blog Botları
+                                    </a>
+                                </li>
+                                <li class="tiny" style="opacity: 0.4;">
+                                    <a class="waves-effect" href="#">
+                                        <i class="material-icons">widgets</i>
+                                        Forum Botları
                                     </a>
                                 </li>
                                 <li class="divider"></li>
@@ -392,16 +392,16 @@
                                         YouTube Ayarları
                                     </a>
                                 </li>
-                                <li class="tiny" style="opacity: 0.4;">
-                                    <a class="waves-effect" href="#">
+                                <li class="tiny">
+                                    <a class="waves-effect" href="{{ route('admin.instagram.settings') }}">
                                         <i class="material-icons">widgets</i>
-                                        Facebook Ayarları
+                                        Instagram Ayarları
                                     </a>
                                 </li>
                                 <li class="tiny" style="opacity: 0.4;">
                                     <a class="waves-effect" href="#">
                                         <i class="material-icons">widgets</i>
-                                        Instagram Ayarları
+                                        Facebook Ayarları
                                     </a>
                                 </li>
                                 <li>

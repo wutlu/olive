@@ -68,7 +68,7 @@
                 class="collection-item model hide waves-effect justify-content-between"
                 data-trigger="textarea">
                 <span class="align-self-center">
-                    <p class="mb-0" data-name="keyword"></p>
+                    <span class="d-block" data-name="keyword"></span>
                     <p class="mb-0" data-name="reason"></p>
                 </span>
                 <span class="d-flex flex-column align-items-end">

@@ -46,10 +46,16 @@ class Organisation extends Model
         return $this->hasMany('App\Models\Twitter\StreamingKeywords', 'organisation_id', 'id');
     }
 
-    # takip edilecek twitter kullanıcılar
+    # takip edilecek twitter kullanıcıları
     public function streamingUsers()
     {
         return $this->hasMany('App\Models\Twitter\StreamingUsers', 'organisation_id', 'id');
+    }
+
+    # takip edilecek instagram bağlantıları
+    public function instagramSelves()
+    {
+        return $this->hasMany('App\Models\Crawlers\Instagram\Selves', 'organisation_id', 'id');
     }
 
     /**

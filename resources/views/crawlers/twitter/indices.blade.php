@@ -78,7 +78,7 @@
         <div class="card-content">
             <span class="card-title">Twitter Index Yönetimi</span>
         </div>
-        <ul class="collection collection-unstyled collection-hoverable load" 
+        <ul class="collection collection-unstyled load" 
              id="indices"
              data-href="{{ route('admin.twitter.indices.json') }}"
              data-callback="__indices"

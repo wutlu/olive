@@ -68,6 +68,16 @@ class Kernel extends ConsoleKernel
                       ->withoutOverlapping(1);
 
             /**
+             * Instagram için Self bağlantılarının vakitlice tetiklenmesi.
+             */
+            $schedule->command('nohup "instagram:self_trigger" --type=restart')
+                      ->everyMinute()
+                      ->timezone(config('app.timezone'))
+                      ->skip(function() use($key) {
+                            return SystemUtility::option('instagram.status') != 'on';
+                      });
+
+            /**
              * Kaynak Tespiti
              */
             $schedule->command('nohup "media:detector" --type=restart')
@@ -290,21 +300,20 @@ class Kernel extends ConsoleKernel
             /**
              * Otomatik index modülü.
              */
-            $schedule->command('elasticsearch:auto_index --type=twitter.tweets')
-                     ->hourly()
-                     ->timezone(config('app.timezone'))
-                     ->withoutOverlapping(1)
-                     ->skip(function() {
-                        return SystemUtility::option('twitter.index.auto') != 'on';
-                     });
-
-            $schedule->command('elasticsearch:auto_index --type=youtube.comments')
-                     ->hourly()
-                     ->timezone(config('app.timezone'))
-                     ->withoutOverlapping(1)
-                     ->skip(function() {
-                        return SystemUtility::option('youtube.index.auto') != 'on';
-                     });
+            foreach ([
+                'instagram' => 'medias',
+                'twitter' => 'tweets',
+                'youtube' => 'comments'
+            ] as $key => $option)
+            {
+                $schedule->command('elasticsearch:auto_index --type='.$key.'.'.$option)
+                         ->daily()
+                         ->timezone(config('app.timezone'))
+                         ->withoutOverlapping(1)
+                         ->skip(function() {
+                            return SystemUtility::option($key.'.index.auto') != 'on';
+                         });
+            }
 
             /**
              * Twitter Tweet Modülü

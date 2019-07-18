@@ -32,9 +32,9 @@
                     <img alt="YouTube" src="{{ asset('img/logos/youtube.svg') }}" />
                 </a>
                 <div class="collection center-align">
-                    <a class="collection-item waves-effect" href="{{ route('youtube.channel.list') }}">YouTube Kanal Havuzu</a>
-                    <a class="collection-item waves-effect" href="{{ route('youtube.video.list') }}">YouTube Video Havuzu</a>
-                    <a class="collection-item waves-effect" href="{{ route('youtube.keyword.list') }}">YouTube Kelime Havuzu</a>
+                    <a class="collection-item waves-effect" href="{{ route('youtube.channel.list') }}">Kanal Havuzu</a>
+                    <a class="collection-item waves-effect" href="{{ route('youtube.video.list') }}">Video Havuzu</a>
+                    <a class="collection-item waves-effect" href="{{ route('youtube.keyword.list') }}">Kelime Havuzu</a>
                 </div>
             </div>
             <div class="item flex-fill">
@@ -42,8 +42,16 @@
                     <img alt="Twitter" src="{{ asset('img/logos/twitter.svg') }}" />
                 </a>
                 <div class="collection center-align">
-                    <a class="collection-item waves-effect" href="{{ route('twitter.keyword.list') }}">Twitter Kelime Havuzu</a>
-                    <a class="collection-item waves-effect" href="{{ route('twitter.account.list') }}">Twitter Kullanıcı Havuzu</a>
+                    <a class="collection-item waves-effect" href="{{ route('twitter.keyword.list') }}">Kelime Havuzu</a>
+                    <a class="collection-item waves-effect" href="{{ route('twitter.account.list') }}">Kullanıcı Havuzu</a>
+                </div>
+            </div>
+            <div class="item flex-fill">
+                <a href="#">
+                    <img alt="Instagram" src="{{ asset('img/logos/instagram.svg') }}" />
+                </a>
+                <div class="collection center-align">
+                    <a class="collection-item waves-effect" href="{{ route('instagram.url.list') }}">Bağlantı Havuzu</a>
                 </div>
             </div>
         </div>

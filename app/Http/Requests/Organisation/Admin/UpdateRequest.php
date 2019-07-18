@@ -67,6 +67,7 @@ class UpdateRequest extends FormRequest
             'data_pool_youtube_keyword_limit' => 'required|integer|max:100|min:0',
             'data_pool_twitter_keyword_limit' => 'required|integer|max:400|min:0',
             'data_pool_twitter_user_limit' => 'required|integer|max:1000000|min:0',
+            'data_pool_instagram_follow_limit' => 'required|integer|max:1000000|min:0',
 
             'unit_price' => 'required|numeric|min:0|max:500000',
 

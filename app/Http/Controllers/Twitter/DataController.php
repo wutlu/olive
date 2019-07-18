@@ -65,7 +65,8 @@ class DataController extends Controller
 
         $query = $query->skip($request->skip)
                        ->take($request->take)
-                       ->orderBy('id', 'DESC');
+                       ->orderBy('reason', 'DESC')
+                       ->orderBy('updated_at', 'DESC');
 
         return [
             'status' => 'ok',

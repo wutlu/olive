@@ -69,8 +69,8 @@
                 data-trigger="textarea">
                 <img class="circle align-self-center" alt="Kanal Resmi" data-name="image" />
                 <span class="align-self-center">
-                    <p class="mb-0" data-name="channel-title"></p>
-                    <p class="mb-0 grey-text" data-name="channel-id"></p>
+                    <span class="d-block" data-name="channel-title"></span>
+                    <span class="d-block grey-text" data-name="channel-id"></span>
                     <p class="mb-0" data-name="reason"></p>
                 </span>
                 <span class="d-flex flex-column align-items-end align-self-center">

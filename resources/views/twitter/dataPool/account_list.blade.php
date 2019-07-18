@@ -17,7 +17,7 @@
 ])
 
 @section('content')
-    <div class="card with-bg">
+    <div class="card">
         <div class="card-content">
             <span class="card-title">Kullanıcı Havuzu</span>
             <span data-name="count" class="grey-text text-darken-2">0 / 0</span>
@@ -39,7 +39,7 @@
             </div>
         </nav>
 
-        <ul class="collection collection-hoverable load json-clear" 
+        <ul class="collection load json-clear loading" 
              id="collections"
              data-href="{{ route('twitter.account.list') }}"
              data-skip="0"

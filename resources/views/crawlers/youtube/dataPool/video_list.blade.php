@@ -69,8 +69,8 @@
                 data-trigger="textarea">
                 <img class="circle rounded-0 align-self-center" alt="Video Resmi" data-name="image" />
                 <span class="align-self-center">
-                    <p class="mb-0" data-name="video-title"></p>
-                    <p class="mb-0 grey-text" data-name="video-id"></p>
+                    <span class="d-block" data-name="video-title"></span>
+                    <span class="d-block grey-text" data-name="video-id"></span>
                     <p class="mb-0" data-name="reason"></p>
                 </span>
                 <span class="d-flex flex-column align-items-end align-self-center">

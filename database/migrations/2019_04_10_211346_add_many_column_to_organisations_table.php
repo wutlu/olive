@@ -39,8 +39,6 @@ class AddManyColumnToOrganisationsTable extends Migration
             $table->unsignedInteger('data_pool_twitter_user_limit')->default(0);
             $table->unsignedInteger('data_pool_facebook_keyword_limit')->default(0);
             $table->unsignedInteger('data_pool_facebook_user_limit')->default(0);
-            $table->unsignedInteger('data_pool_instagram_keyword_limit')->default(0);
-            $table->unsignedInteger('data_pool_instagram_user_limit')->default(0);
 
             $table->unsignedSmallInteger('historical_days')->default(0);
         });
@@ -79,8 +77,6 @@ class AddManyColumnToOrganisationsTable extends Migration
             $table->dropColumn('data_pool_twitter_user_limit');
             $table->dropColumn('data_pool_facebook_keyword_limit');
             $table->dropColumn('data_pool_facebook_user_limit');
-            $table->dropColumn('data_pool_instagram_keyword_limit');
-            $table->dropColumn('data_pool_instagram_user_limit');
 
             $table->dropColumn('historical_days');
         });

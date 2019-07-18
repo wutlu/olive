@@ -1404,22 +1404,25 @@
                     <strong data-name="twitter-tweet">0</strong> tweet
                 </div>
                 <div class="banner-item entry">
-                    <strong data-name="sozluk-entry">0</strong> entry
+                    <strong data-name="sozluk-entry">0</strong> sözlük
                 </div>
                 <div class="banner-item article">
                     <strong data-name="media-article">0</strong> haber
                 </div>
                 <div class="banner-item video">
-                    <strong data-name="youtube-video">0</strong> video
+                    <strong data-name="youtube-video">0</strong> youtube
                 </div>
                 <div class="banner-item video-comment">
-                    <strong data-name="youtube-comment">0</strong> video yorumu
+                    <strong data-name="youtube-comment">0</strong> youtube yorum
                 </div>
                 <div class="banner-item product">
                     <strong data-name="shopping-product">0</strong> ilan
                 </div>
                 <div class="banner-item document">
                     <strong data-name="blog-document">0</strong> blog
+                </div>
+                <div class="banner-item media">
+                    <strong data-name="instagram-media">0</strong> Instagram
                 </div>
             </div>
 

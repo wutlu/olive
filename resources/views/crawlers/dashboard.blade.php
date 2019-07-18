@@ -45,7 +45,7 @@
         <i class="material-icons">widgets</i>
         <span class="d-block">Facebook Ayarları</span>
     </a>
-    <a href="#" class="d-block card-panel hoverable" style="opacity: .4;" data-tooltip="Instagram Ayarları" data-position="right">
+    <a href="{{ route('admin.instagram.settings') }}" class="d-block card-panel hoverable" data-tooltip="Instagram Ayarları" data-position="right">
         <i class="material-icons">widgets</i>
         <span class="d-block">Instagram Ayarları</span>
     </a>

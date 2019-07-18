@@ -12,12 +12,6 @@ class StreamingKeywords extends Model
 		'reason'
     ];
 
-    # organizasyon
-    public function organisation()
-    {
-        return $this->hasOne('App\Models\Organisation\Organisation', 'id', 'organisation_id');
-    }
-
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -26,4 +20,10 @@ class StreamingKeywords extends Model
     protected $hidden = [
         'organisation_id',
     ];
+
+    # organizasyon
+    public function organisation()
+    {
+        return $this->hasOne('App\Models\Organisation\Organisation', 'id', 'organisation_id');
+    }
 }

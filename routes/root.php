@@ -147,6 +147,30 @@ Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {
     });
 
     # 
+    # INSTAGRAM
+    # 
+    Route::prefix('instagram')->namespace('Instagram')->group(function () {
+        Route::get('/', 'InstagramController@dashboard')->name('admin.instagram.settings');
+
+        Route::post('istatistik', 'InstagramController@statistics')->name('admin.instagram.statistics');
+        Route::post('log-ekrani', 'InstagramController@logJson')->name('admin.instagram.monitoring.log');
+
+        Route::post('index-durumu', 'InstagramController@indexStatus')->name('admin.instagram.index.status');
+        Route::post('index-olustur', 'InstagramController@indexCreate')->name('admin.instagram.index.create');
+
+        Route::patch('ayar', 'InstagramController@set')->name('admin.instagram.option.set');
+
+        Route::get('index-yonetimi', 'InstagramController@indices')->name('admin.instagram.indices');
+        Route::post('index-yonetimi/json', 'InstagramController@indicesJson')->name('admin.instagram.indices.json');
+
+        Route::prefix('veri-havuzu')->group(function () {
+            Route::get('baglanti-havuzu/{id?}', 'DataController@urlList')->name('admin.instagram.urls');
+            Route::post('baglanti-havuzu', 'DataController@urlListJson');
+            Route::patch('baglanti-havuzu', 'DataController@urlReason')->name('admin.instagram.urls.reason');
+        });
+    });
+
+    # 
     # MEDYA
     # 
     Route::prefix('medya-botlari')->group(function () {

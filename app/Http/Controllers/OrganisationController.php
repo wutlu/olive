@@ -1014,6 +1014,7 @@ class OrganisationController extends Controller
         Option::updateOrCreate([ 'key' => 'unit_price.data_youtube_video'              ], [ 'value' => $request->data_youtube_video              ]);
         Option::updateOrCreate([ 'key' => 'unit_price.data_youtube_comment'            ], [ 'value' => $request->data_youtube_comment            ]);
         Option::updateOrCreate([ 'key' => 'unit_price.data_shopping'                   ], [ 'value' => $request->data_shopping                   ]);
+        Option::updateOrCreate([ 'key' => 'unit_price.data_instagram'                  ], [ 'value' => $request->data_instagram                  ]);
 
         Option::updateOrCreate([ 'key' => 'unit_price.real_time_group_limit'           ], [ 'value' => $request->real_time_group_limit           ]);
         Option::updateOrCreate([ 'key' => 'unit_price.alarm_limit'                     ], [ 'value' => $request->alarm_limit                     ]);
@@ -1021,11 +1022,12 @@ class OrganisationController extends Controller
         Option::updateOrCreate([ 'key' => 'unit_price.saved_searches_limit'            ], [ 'value' => $request->saved_searches_limit            ]);
         Option::updateOrCreate([ 'key' => 'unit_price.historical_days'                 ], [ 'value' => $request->historical_days                 ]);
 
-        Option::updateOrCreate([ 'key' => 'unit_price.data_pool_youtube_channel_limit' ], [ 'value' => $request->data_pool_youtube_channel_limit ]);
-        Option::updateOrCreate([ 'key' => 'unit_price.data_pool_youtube_video_limit'   ], [ 'value' => $request->data_pool_youtube_video_limit   ]);
-        Option::updateOrCreate([ 'key' => 'unit_price.data_pool_youtube_keyword_limit' ], [ 'value' => $request->data_pool_youtube_keyword_limit ]);
-        Option::updateOrCreate([ 'key' => 'unit_price.data_pool_twitter_keyword_limit' ], [ 'value' => $request->data_pool_twitter_keyword_limit ]);
-        Option::updateOrCreate([ 'key' => 'unit_price.data_pool_twitter_user_limit'    ], [ 'value' => $request->data_pool_twitter_user_limit    ]);
+        Option::updateOrCreate([ 'key' => 'unit_price.data_pool_youtube_channel_limit'  ], [ 'value' => $request->data_pool_youtube_channel_limit  ]);
+        Option::updateOrCreate([ 'key' => 'unit_price.data_pool_youtube_video_limit'    ], [ 'value' => $request->data_pool_youtube_video_limit    ]);
+        Option::updateOrCreate([ 'key' => 'unit_price.data_pool_youtube_keyword_limit'  ], [ 'value' => $request->data_pool_youtube_keyword_limit  ]);
+        Option::updateOrCreate([ 'key' => 'unit_price.data_pool_twitter_keyword_limit'  ], [ 'value' => $request->data_pool_twitter_keyword_limit  ]);
+        Option::updateOrCreate([ 'key' => 'unit_price.data_pool_twitter_user_limit'     ], [ 'value' => $request->data_pool_twitter_user_limit     ]);
+        Option::updateOrCreate([ 'key' => 'unit_price.data_pool_instagram_follow_limit' ], [ 'value' => $request->data_pool_instagram_follow_limit ]);
 
         Option::updateOrCreate([ 'key' => 'unit_price.module_real_time'                ], [ 'value' => $request->module_real_time                ]);
         Option::updateOrCreate([ 'key' => 'unit_price.module_search'                   ], [ 'value' => $request->module_search                   ]);
@@ -1125,6 +1127,7 @@ class OrganisationController extends Controller
             'data_pool_youtube_keyword_limit'  => '*',
             'data_pool_twitter_keyword_limit'  => '*',
             'data_pool_twitter_user_limit'     => '*',
+            'data_pool_instagram_follow_limit' => '*',
         ];
 
         foreach (config('system.modules') as $key => $module)
@@ -1232,6 +1235,7 @@ class OrganisationController extends Controller
         $organisation->data_pool_youtube_keyword_limit = $request->data_pool_youtube_keyword_limit;
         $organisation->data_pool_twitter_keyword_limit = $request->data_pool_twitter_keyword_limit;
         $organisation->data_pool_twitter_user_limit = $request->data_pool_twitter_user_limit;
+        $organisation->data_pool_instagram_follow_limit = $request->data_pool_instagram_follow_limit;
 
         $organisation->unit_price = $request->unit_price;
 

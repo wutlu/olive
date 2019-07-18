@@ -306,11 +306,12 @@ $arr = [
         'historical_days'                 => 'Geriye Dönük Arama Limiti',
         'saved_searches_limit'            => 'Arama Kaydetme Limiti',
 
-        'data_pool_youtube_channel_limit' => 'YouTube Kanal Limiti',
-        'data_pool_youtube_video_limit'   => 'YouTube Video Limiti',
-        'data_pool_youtube_keyword_limit' => 'YouTube Kelime Limiti',
-        'data_pool_twitter_keyword_limit' => 'Twitter Kelime Limiti',
-        'data_pool_twitter_user_limit'    => 'Twitter Kullanıcı Limiti',
+        'data_pool_youtube_channel_limit'  => 'YouTube Kanal Limiti',
+        'data_pool_youtube_video_limit'    => 'YouTube Video Limiti',
+        'data_pool_youtube_keyword_limit'  => 'YouTube Kelime Limiti',
+        'data_pool_twitter_keyword_limit'  => 'Twitter Kelime Limiti',
+        'data_pool_twitter_user_limit'     => 'Twitter Kullanıcı Limiti',
+        'data_pool_instagram_follow_limit' => 'Instagram Takip Limiti',
 
         'unit_price'                      => 'Birim Fiyat',
 

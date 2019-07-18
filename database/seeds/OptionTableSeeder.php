@@ -27,6 +27,11 @@ class OptionTableSeeder extends Seeder
         Option::firstOrCreate( [ 'key' => 'twitter.index.tweets'                ], [ 'value' => date('Y.m', strtotime('-1 month'))    ] );
         Option::firstOrCreate( [ 'key' => 'twitter.status'                      ], [ 'value' => 'off'                                 ] );
 
+        Option::firstOrCreate( [ 'key' => 'instagram.status'                    ], [ 'value' => 'off'                                 ] );
+        Option::firstOrCreate( [ 'key' => 'instagram.index.users'               ], [ 'value' => 'off'                                 ] );
+        Option::firstOrCreate( [ 'key' => 'instagram.index.auto'                ], [ 'value' => 'off'                                 ] );
+        Option::firstOrCreate( [ 'key' => 'instagram.index.medias'              ], [ 'value' => date('Y.m', strtotime('-1 month'))    ] );
+
         Option::firstOrCreate( [ 'key' => 'media.index.status'                  ], [ 'value' => 'off'                                 ] );
         Option::firstOrCreate( [ 'key' => 'blog.index.status'                   ], [ 'value' => 'off'                                 ] );
 
@@ -66,8 +71,7 @@ class OptionTableSeeder extends Seeder
         Option::firstOrCreate( [ 'key' => 'unit_price.data_pool_twitter_user_limit'      ], [ 'value' => 0                                     ] );
         Option::firstOrCreate( [ 'key' => 'unit_price.data_pool_facebook_keyword_limit'  ], [ 'value' => 0                                     ] );
         Option::firstOrCreate( [ 'key' => 'unit_price.data_pool_facebook_user_limit'     ], [ 'value' => 0                                     ] );
-        Option::firstOrCreate( [ 'key' => 'unit_price.data_pool_instagram_keyword_limit' ], [ 'value' => 0                                     ] );
-        Option::firstOrCreate( [ 'key' => 'unit_price.data_pool_instagram_user_limit'    ], [ 'value' => 0                                     ] );
+        Option::firstOrCreate( [ 'key' => 'unit_price.data_pool_instagram_follow_limit'  ], [ 'value' => 0                                     ] );
         Option::firstOrCreate( [ 'key' => 'unit_price.module_real_time'                  ], [ 'value' => 0                                     ] );
         Option::firstOrCreate( [ 'key' => 'unit_price.module_search'                     ], [ 'value' => 0                                     ] );
         Option::firstOrCreate( [ 'key' => 'unit_price.module_trend'                      ], [ 'value' => 0                                     ] );

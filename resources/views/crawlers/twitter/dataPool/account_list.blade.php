@@ -68,12 +68,12 @@
                 class="collection-item model hide waves-effect justify-content-between"
                 data-trigger="textarea">
                 <span class="align-self-center">
-                    <p class="mb-0" data-name="screen-name"></p>
-                    <p class="mb-0 grey-text" data-name="id"></p>
+                    <span class="d-block" data-name="screen-name"></span>
+                    <span class="d-block grey-text" data-name="id"></span>
                     <p class="mb-0" data-name="reason"></p>
                 </span>
                 <span class="d-flex flex-column align-items-end">
-                    <span data-name="follower" class="badge"></span>
+                    <span data-name="follower"></span>
                     <time data-name="created-at" class="timeago grey-text"></time>
                 </span>
             </a>

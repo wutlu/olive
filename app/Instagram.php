@@ -88,25 +88,38 @@ class Instagram
                     break;
                     case 'location':
                         $edges = $json->entry_data->LocationsPage[0]->graphql->location->edge_location_to_media->edges;
-                        $arr['location'] = $json->entry_data->LocationsPage[0]->graphql->location->name;
+                        $arr['place'] = [
+                            'name' => $json->entry_data->LocationsPage[0]->graphql->location->name
+                        ];
                     break;
                     case 'user':
                         $graphql = $json->entry_data->ProfilePage[0]->graphql;
                         $edges = $graphql->user->edge_owner_to_timeline_media->edges;
 
-                        $return['user'] = [
+                        $user = [
                             'id' => $graphql->user->id,
                             'name' => $graphql->user->full_name,
                             'screen_name' => $graphql->user->username,
-                            'profile_pic_url' => $graphql->user->profile_pic_url,
+                            'image' => $graphql->user->profile_pic_url,
                             'external_url' => $graphql->user->external_url,
-                            'biography' => $graphql->user->biography,
                             'counts' => [
                                 'follow' => $graphql->user->edge_follow->count,
                                 'followed_by' => $graphql->user->edge_followed_by->count,
                                 'media' => $graphql->user->edge_owner_to_timeline_media->count
                             ]
                         ];
+
+                        if ($graphql->user->biography)
+                        {
+                            $user['description'] = $graphql->user->biography;
+                        }
+
+                        if ($graphql->user->is_verified)
+                        {
+                            $user['verified'] = true;
+                        }
+
+                        $return['user'] = $user;
                     break;
                     default:
                         return (object) [
@@ -167,7 +180,7 @@ class Instagram
                     {
                         if ($hashtag)
                         {
-                            $arr['hashtags'][] = $hashtag;
+                            $arr['hashtags'][] = [ 'hashtag' => $hashtag ];
                         }
                     }
                 }
@@ -180,7 +193,7 @@ class Instagram
                     {
                         if ($mention)
                         {
-                            $arr['mentions'][] = $mention;
+                            $arr['mentions'][] = [ 'mention' => $mention ];
                         }
                     }
                 }
@@ -188,7 +201,9 @@ class Instagram
 
             if (@$item->node->location->name)
             {
-                $arr['location'] = $item->node->location->name;
+                $arr['place'] = [
+                    'name' => $item->node->location->name
+                ];
             }
             else if ($method == 'location')
             {

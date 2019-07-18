@@ -10,32 +10,29 @@ class TestController extends Controller
 {
     public static function test()
     {
-        $url = 'explore/tags/ankara/';
-        $url = 'explore/locations/215088589/ankara-turkey/';
-        $url = 'veri8zone';
-        $url = 'wutlu.php';
+                $instagram = new Instagram;
+                $connect = $instagram->connect('https://www.instagram.com/ekremimamoglu/');
 
-        $instagram = new Instagram;
-        $connect = $instagram->connect($url);
+                if ($connect->status == 'ok')
+                {
+                    $data = $instagram->data('user');
 
-        if ($connect->status == 'ok')
-        {
-            $data = $instagram->data('user');
-
-            if ($data->status == 'ok')
-            {
-                echo "<pre>";
-                print_r($data->user);
-                print_r($data->data);
-            }
-            else
-            {
-                echo $data->message;
-            }
-        }
-        else
-        {
-            echo $connect->code;
-        }
+                    if ($data->status == 'ok')
+                    {
+                        print_r($data->user);
+                    }
+                    else
+                    {
+                    	echo 'hata 1:';
+                        // log girilecek echo $data->message;
+                        echo $data->message;
+                    }
+                }
+                else
+                {
+                    echo 'hata 2:';
+                    // log girilecek echo $connect->code;
+                    echo $connect->code;
+                }
     }
 }

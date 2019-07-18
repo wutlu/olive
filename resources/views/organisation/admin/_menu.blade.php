@@ -44,4 +44,9 @@
     </div>
     <a href="{{ route('admin.twitter.stream.keywords', $organisation->id) }}" class="collection-item waves-effect">Takip Ettiği Kelimeler</a>
     <a href="{{ route('admin.twitter.stream.accounts', $organisation->id) }}" class="collection-item waves-effect">Takip Ettiği Kullanıcılar</a>
+
+    <div class="collection-item">
+        <span class="grey-text">Instagram</span>
+    </div>
+    <a href="{{ route('admin.instagram.urls', $organisation->id) }}" class="collection-item waves-effect">Takip Ettiği Bağlantılar</a>
 </div>

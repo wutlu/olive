@@ -169,6 +169,10 @@ return [
         'youtube.index.auto' => 'string|in:on,off',
         'youtube.index.status' => 'string|in:on,off',
 
+        'instagram.status' => 'string|in:on,off',
+        'instagram.index.auto' => 'string|in:on,off',
+        'instagram.index.status' => 'string|in:on,off',
+
         'trend.index' => 'string|in:on,off',
         'trend.status.google' => 'string|in:on,off',
         'trend.status.news' => 'string|in:on,off',
@@ -195,6 +199,7 @@ return [
         'sozluk' => 'Sözlük',
         'news' => 'Haber',
         'blog' => 'Blog',
+        'instagram' => 'Instagram',
         'youtube_video' => 'YouTube Video',
         'youtube_comment' => 'YouTube Yorum',
         'shopping' => 'E-ticaret'

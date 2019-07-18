@@ -219,13 +219,13 @@ Route::prefix('veri-havuzu')->group(function () {
     Route::prefix('twitter')->namespace('Twitter')->group(function () {
         Route::get('kelime-havuzu', 'DataController@keywordList')->name('twitter.keyword.list');
         Route::post('kelime-havuzu', 'DataController@keywordListJson');
-    
+
         Route::put('kelime', 'DataController@keywordCreate')->name('twitter.keyword.create');
         Route::delete('kelime', 'DataController@keywordDelete')->name('twitter.keyword.delete');
-    
+
         Route::get('kullanici-havuzu', 'DataController@accountList')->name('twitter.account.list');
         Route::post('kullanici-havuzu', 'DataController@accountListJson');
-    
+
         Route::put('kullanici', 'DataController@accountCreate')->name('twitter.account.create');
         Route::delete('kullanici', 'DataController@accountDelete')->name('twitter.account.delete');
     });
@@ -248,6 +248,14 @@ Route::prefix('veri-havuzu')->group(function () {
 
         Route::put('video', 'DataController@videoCreate')->name('youtube.video.create');
         Route::delete('video', 'DataController@videoDelete')->name('youtube.video.delete');
+    });
+
+    Route::prefix('instagram')->namespace('Instagram')->group(function () {
+        Route::get('baglanti-havuzu', 'DataController@urlList')->name('instagram.url.list');
+        Route::post('baglanti-havuzu', 'DataController@urlListJson');
+
+        Route::put('baglanti', 'DataController@urlCreate')->name('instagram.url.create');
+        Route::delete('baglanti', 'DataController@urlDelete')->name('instagram.url.delete');
     });
 });
 

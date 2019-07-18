@@ -123,6 +123,10 @@
                                 <input required name="data_pool_twitter_user_limit" id="data_pool_twitter_user_limit" min="0" value="{{ $settings['unit_price.data_pool_twitter_user_limit']['value'] }}" type="number" class="validate" />
                                 <small class="helper-text">Twitter Kullanıcı Takibi</small>
                             </div>
+                            <div class="collection-item input-field">
+                                <input required name="data_pool_instagram_follow_limit" id="data_pool_instagram_follow_limit" min="0" value="{{ $settings['unit_price.data_pool_instagram_follow_limit']['value'] }}" type="number" class="validate" />
+                                <small class="helper-text">Instagram Bağlantı Takibi</small>
+                            </div>
                         </div>
                     </li>
                 </ul>

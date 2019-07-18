@@ -1993,10 +1993,6 @@ ul#slide-out {
           box-shadow: 3px 0px 16px 1px rgba(0, 0, 0, .1), 1px 0px 6px 1px rgba(0, 0, 0, .1);
 
   overflow: hidden;
-
-  background-image: url(../img/slideout.jpg?v=2);
-  background-repeat: no-repeat;
-  background-size: cover;
 }
 
 ul#slide-out:hover {
@@ -2026,8 +2022,8 @@ ul#slide-out li > a,
 ul#slide-out li > a > .material-icons,
 ul#slide-out li > .collapsible-header > span,
 ul#slide-out li > .collapsible-header > .material-icons {
-  color: #fff;
-  text-shadow: 1px 1px 4px rgba(0, 0, 0, .6);
+  color: #333;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, .1);
 }
 
 .sidenav-overlay {

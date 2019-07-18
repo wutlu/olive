@@ -31,6 +31,7 @@ class PriceSettingsSaveRequest extends FormRequest
             'data_youtube_video'              => 'required|integer|min:0',
             'data_youtube_comment'            => 'required|integer|min:0',
             'data_shopping'                   => 'required|integer|min:0',
+            'data_instagram'                  => 'required|integer|min:0',
 
             'real_time_group_limit'           => 'required|integer|min:0',
             'alarm_limit'                     => 'required|integer|min:0',
@@ -38,11 +39,12 @@ class PriceSettingsSaveRequest extends FormRequest
             'saved_searches_limit'            => 'required|integer|min:0',
             'historical_days'                 => 'required|integer|min:0',
 
-            'data_pool_youtube_channel_limit' => 'required|integer|min:0',
-            'data_pool_youtube_video_limit'   => 'required|integer|min:0',
-            'data_pool_youtube_keyword_limit' => 'required|integer|min:0',
-            'data_pool_twitter_keyword_limit' => 'required|integer|min:0',
-            'data_pool_twitter_user_limit'    => 'required|integer|min:0',
+            'data_pool_youtube_channel_limit'  => 'required|integer|min:0',
+            'data_pool_youtube_video_limit'    => 'required|integer|min:0',
+            'data_pool_youtube_keyword_limit'  => 'required|integer|min:0',
+            'data_pool_twitter_keyword_limit'  => 'required|integer|min:0',
+            'data_pool_twitter_user_limit'     => 'required|integer|min:0',
+            'data_pool_instagram_follow_limit' => 'required|integer|min:0',
 
             'module_real_time'                => 'required|integer|min:0',
             'module_search'                   => 'required|integer|min:0',

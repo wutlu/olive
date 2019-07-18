@@ -46,6 +46,7 @@ class AutoIndex extends Command
         $types = [
             'twitter.tweets' => 'Twitter -> Tweet',
             'youtube.comments' => 'YouTube -> Comment',
+            'instagram.medias' => 'Instagram -> Media',
         ];
 
         if (!$type)
@@ -60,11 +61,16 @@ class AutoIndex extends Command
     			$model = 'App\Jobs\Elasticsearch\CreateTwitterIndexJob';
     			$index = 'tweets';
     		break;
-    		case 'youtube.comments':
-    			$key = 'youtube.index.comments';
-    			$model = 'App\Jobs\Elasticsearch\CreateYouTubeIndexJob';
-    			$index = 'comments';
-    		break;
+            case 'youtube.comments':
+                $key = 'youtube.index.comments';
+                $model = 'App\Jobs\Elasticsearch\CreateYouTubeIndexJob';
+                $index = 'comments';
+            break;
+            case 'instagram.medias':
+                $key = 'instagram.index.medias';
+                $model = 'App\Jobs\Elasticsearch\CreateInstagramIndexJob';
+                $index = 'medias';
+            break;
     	}
 
         $last_month = Option::where('key', $key)->first();

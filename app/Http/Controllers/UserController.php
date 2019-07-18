@@ -867,6 +867,7 @@ class UserController extends Controller
             $organisation->data_pool_youtube_keyword_limit = $request->data_pool_youtube_keyword_limit;
             $organisation->data_pool_twitter_keyword_limit = $request->data_pool_twitter_keyword_limit;
             $organisation->data_pool_twitter_user_limit = $request->data_pool_twitter_user_limit;
+            $organisation->data_pool_instagram_follow_limit = $request->data_pool_instagram_follow_limit;
 
             $organisation->unit_price = $request->unit_price;
             $organisation->system_price = $calculate['system_price'];

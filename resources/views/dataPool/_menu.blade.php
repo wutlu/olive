@@ -7,4 +7,6 @@
     <div class="divider"></div>
     <a href="{{ route('twitter.keyword.list') }}" class="collection-item waves-effect {{ $active == 'twitter.keywords' ? 'active' : '' }}">Twitter Kelime Havuzu</a>
     <a href="{{ route('twitter.account.list') }}" class="collection-item waves-effect {{ $active == 'twitter.accounts' ? 'active' : '' }}">Twitter Kullanıcı Havuzu</a>
+    <div class="divider"></div>
+    <a href="{{ route('instagram.url.list') }}" class="collection-item waves-effect {{ $active == 'instagram.urls' ? 'active' : '' }}">Instagram Bağlantı Havuzu</a>
 </div>
