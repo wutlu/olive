@@ -58,7 +58,7 @@ class Crawler
 
             if ($proxy)
             {
-                $p = Proxy::where('health', '>', 7)->inRandomOrder()->first();
+                $p = Proxy::where('ipv', 4)->where('health', '>', 7)->inRandomOrder()->first();
 
                 if (@$p)
                 {
@@ -138,16 +138,6 @@ class Crawler
                     ]
                 ];
 
-                /*
-                 *  $proxy = Proxy::where('health', '>', 7)->inRandomOrder()->first();
-                 *
-                 *  if (@$proxy)
-                 *  {
-                 *      $arr['proxy'] = $proxy->proxy;
-                 *  }
-                 *
-                 */
-
                 $dom = $client->get('https://www.google.com/search?q='.$query.'&tbs=qdr:'.$google_time.',sbd:1&start='.$page, $arr)->getBody();
 
                 preg_match_all('/'.$url_pattern.'/', $dom, $match);
@@ -210,7 +200,7 @@ class Crawler
 
             if ($proxy)
             {
-                $p = Proxy::where('health', '>', 7)->inRandomOrder()->first();
+                $p = Proxy::where('ipv', 4)->where('health', '>', 7)->inRandomOrder()->first();
 
                 if (@$p)
                 {
@@ -418,7 +408,7 @@ class Crawler
 
             if ($proxy)
             {
-                $p = Proxy::where('health', '>', 7)->inRandomOrder()->first();
+                $p = Proxy::where('ipv', 4)->where('health', '>', 7)->inRandomOrder()->first();
 
                 if (@$p)
                 {
@@ -611,7 +601,7 @@ class Crawler
 
             if ($proxy)
             {
-                $p = Proxy::where('health', '>', 7)->inRandomOrder()->first();
+                $p = Proxy::where('ipv', 4)->where('health', '>', 7)->inRandomOrder()->first();
 
                 if (@$p)
                 {

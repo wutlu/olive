@@ -24,6 +24,7 @@ use GuzzleHttp\HandlerStack;
 
 use App\Models\Proxy;
 use App\Models\Twitter\BlockedTrendKeywords as TwitterBlockedTrendKeywords;
+use App\Models\Instagram\BlockedTrendKeywords as InstagramBlockedTrendKeywords;
 
 use App\Wrawler;
 
@@ -68,6 +69,7 @@ class Detect extends Command
         $modules = [
             'twitter_tweet',
             'twitter_hashtag',
+            'instagram_hashtag',
             'news',
             'blog',
             'entry',
@@ -139,6 +141,9 @@ class Detect extends Command
             case 'twitter_hashtag':
                 $data = $this->twitterHashtag($time);
             break;
+            case 'instagram_hashtag':
+                $data = $this->instagramHashtag($time);
+            break;
             case 'news':
                 $data = $this->news($time);
             break;
@@ -196,6 +201,13 @@ class Detect extends Command
                         $arr['data'] = $raw;
                     break;
                     case 'twitter_hashtag':
+                        $arr['id'] = implode('-', [ $module, $group, md5($item['key']) ]);
+                        $arr['data'] = [
+                            'id' => md5($item['key']),
+                            'key' => $item['key']
+                        ];
+                    break;
+                    case 'instagram_hashtag':
                         $arr['id'] = implode('-', [ $module, $group, md5($item['key']) ]);
                         $arr['data'] = [
                             'id' => md5($item['key']),
@@ -458,9 +470,29 @@ class Detect extends Command
                             'range' => [ 'illegal.nud' => [ 'lte' => 0.3 ] ],
                         ]
                     ],
+                    /*
                     'must_not' => [
                         [ 'query_string' => [ 'query' => implode(' || ', $except) ] ]
+                    ],
+                    'must_not' => [
+                        [
+                            'nested' => [
+                                'path' => 'entities.hashtags',
+                                'query' => [
+                                    'bool' => [
+                                        'filter' => [
+                                            [
+                                                'terms' => [
+                                                    'entities.hashtags.hashtag' => $except
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
                     ]
+                    */
                 ]
             ],
             'aggs' => [
@@ -471,7 +503,91 @@ class Detect extends Command
                             'terms' => [
                                 'field' => 'entities.hashtags.hashtag',
                                 'size' => 50,
-                                'min_doc_count' => 4
+                                'min_doc_count' => 4,
+                                'exclude' => $except
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'size' => 0
+        ]);
+
+        $data = [];
+
+        if ($query->status == 'ok')
+        {
+            if (count($query->data['aggregations']['hashtags']['hit_items']['buckets']))
+            {
+                foreach ($query->data['aggregations']['hashtags']['hit_items']['buckets'] as $bucket)
+                {
+                    if (mb_detect_encoding($bucket['key'], 'ASCII', true))
+                    {
+                        $key = str_slug($bucket['key']);
+
+                        if (isset($data[$key]) && $data[$key]['hit'] > $bucket['doc_count'])
+                        {
+                            $data[$key]['hit'] = $bucket['doc_count'] + $data[$key]['hit'];
+                        }
+                        else
+                        {
+                            $data[$key] = [
+                                'hit' => $bucket['doc_count'],
+                                'key' => $bucket['key'],
+                            ];
+                        }
+                    }
+                }
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * Instagram Hashtags
+     *
+     * @return array
+     */
+    private function instagramHashtag(string $time)
+    {
+        $except = InstagramBlockedTrendKeywords::pluck('keyword')->toArray();
+
+        $query = Document::search([ 'instagram', 'medias', date('Y.m') ], 'media', [
+            'query' => [
+                'bool' => [
+                    'filter' => [
+                        [
+                            'range' => [
+                                'called_at' => [
+                                    'format' => 'YYYY-MM-dd HH:mm',
+                                    'gte' => date('Y-m-d H:i', strtotime($time))
+                                ]
+                            ]
+                        ]
+                    ],
+                    'must' => [
+                        [
+                            'nested' => [
+                                'path' => 'hashtags',
+                                'query' => [
+                                    'bool' => [ 'must' => [ [ 'exists' => [ 'field' => 'hashtags.hashtag' ] ] ] ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'aggs' => [
+                'hashtags' => [
+                    'nested' => [ 'path' => 'hashtags' ],
+                    'aggs' => [
+                        'hit_items' => [
+                            'terms' => [
+                                'field' => 'hashtags.hashtag',
+                                'size' => 50,
+                                'min_doc_count' => 4,
+                                'exclude' => $except
                             ]
                         ]
                     ]
@@ -542,6 +658,23 @@ class Detect extends Command
                         'field' => 'title',
                         'size' => 50,
                         'min_doc_count' => 4,
+                        'exclude' => [
+                            'başarı',
+                            'başarılı',
+                            'belediye',
+                            'belediyesi',
+                            'başkan',
+                            'başkanı',
+                            'parti',
+                            'video',
+                            'görüntülü',
+                            'görüntü',
+                            'görüntül',
+                            'haberi',
+                            'haber',
+                            'haberleri'
+                        ]
+                        /*
                         'script' => '(
                             (_value.length() >= 3) &&
                             (
@@ -561,6 +694,7 @@ class Detect extends Command
                                 _value != \'haberleri\'
                             )
                         ) ? _value : \'_null_\''
+                        */
                     ]
                 ]
             ],
@@ -721,6 +855,23 @@ class Detect extends Command
                         'field' => 'title',
                         'size' => 50,
                         'min_doc_count' => 1,
+                        'exclude' => [
+                            'başarı',
+                            'başarılı',
+                            'belediye',
+                            'belediyesi',
+                            'başkan',
+                            'başkanı',
+                            'parti',
+                            'video',
+                            'görüntülü',
+                            'görüntü',
+                            'görüntül',
+                            'haberi',
+                            'haber',
+                            'haberleri'
+                        ]
+                        /*
                         'script' => '(
                             (_value.length() >= 3) &&
                             (
@@ -740,6 +891,7 @@ class Detect extends Command
                                 _value != \'haberleri\'
                             )
                         ) ? _value : \'_null_\''
+                        */
                     ]
                 ]
             ],

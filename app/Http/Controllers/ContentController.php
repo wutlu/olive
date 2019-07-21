@@ -149,7 +149,6 @@ class ContentController extends Controller
 
                     $title = implode(' ', [ $crawler->name, '/', $document['_source']['title'] ]);
                 break;
-
                 case 'product':
                     if (!$organisation->data_shopping)
                     {
@@ -165,7 +164,6 @@ class ContentController extends Controller
 
                     $title = implode(' ', [ $crawler->name, '/', '#'.$document['_source']['id'] ]);
                 break;
-
                 case 'tweet':
                     if (!$organisation->data_twitter)
                     {
@@ -335,7 +333,6 @@ class ContentController extends Controller
                         $data['statistics']['diff']['_favourites'] = $_favourites;
                     }
                 break;
-
                 case 'video':
                     if (!$organisation->data_youtube_video)
                     {
@@ -359,7 +356,6 @@ class ContentController extends Controller
                         ])
                     ];
                 break;
-
                 case 'comment':
                     if (!$organisation->data_youtube_comment)
                     {
@@ -384,7 +380,6 @@ class ContentController extends Controller
 
                     $title = implode(' / ', [ 'YouTube', 'Yorum', $document['_source']['channel']['title'] ]);
                 break;
-
                 case 'article':
                     if (!$organisation->data_news)
                     {
@@ -437,7 +432,6 @@ class ContentController extends Controller
 
                     $title = $crawler->name . ' / ' . '#'.$document['_source']['id'];
                 break;
-
                 case 'document':
                     if (!$organisation->data_news)
                     {
@@ -489,6 +483,23 @@ class ContentController extends Controller
                     }
 
                     $title = $crawler->name . ' / ' . '#'.$document['_source']['id'];
+                break;
+                case 'media':
+                    if (!$organisation->data_instagram)
+                    {
+                        return abort(403);
+                    }
+
+                    $user = Document::get([ 'instagram', 'users' ], 'user', $document['_source']['user']['id']);
+
+                    if ($user->status != 'ok')
+                    {
+                        return view('content.media_loading', compact('document'));
+                    }
+
+                    $data['user'] = $user;
+
+                    $title = implode(' / ', [ 'Instagram', 'Medya', '#'.$es_id ]);
                 break;
 
                 default: abort(404); break;
@@ -862,6 +873,20 @@ class ContentController extends Controller
                     ];
 
                     $document = Document::search([ 'twitter', 'tweets', '*' ], 'tweet', $arr);
+                }
+            break;
+            case 'media':
+                $doc = Document::get([ 'instagram', 'medias', $es_index_key ], 'media', $es_id);
+
+                if ($doc->status = 'ok')
+                {
+                    $arr['query']['bool']['must'][] = [
+                        'match' => [
+                            'user.id' => $doc->data['_source']['user']['id']
+                        ]
+                    ];
+
+                    $document = Document::search([ 'instagram', 'medias', '*' ], 'media', $arr);
                 }
             break;
             default: return abort(404); break;

@@ -70,12 +70,22 @@ class Kernel extends ConsoleKernel
             /**
              * Instagram için Self bağlantılarının vakitlice tetiklenmesi.
              */
-            $schedule->command('nohup "instagram:self_trigger" --type=restart')
+            $schedule->command('nohup "instagram:self:trigger" --type=restart')
                       ->everyMinute()
                       ->timezone(config('app.timezone'))
                       ->skip(function() use($key) {
                             return SystemUtility::option('instagram.status') != 'on';
                       });
+
+            /**
+             * Instagram için kontrol aralığı belirle.
+             */
+            $schedule->command('nohup "instagram:self:minuter" --type=start')->hourly()->timezone(config('app.timezone'))->withoutOverlapping(1);
+
+            /**
+             * Instagram bağlantılarının ne kadar veri topladığını sayar.
+             */
+            $schedule->command('nohup "instagram:self:counter" --type=start')->daily()->timezone(config('app.timezone'))->withoutOverlapping(1);
 
             /**
              * Kaynak Tespiti
@@ -151,6 +161,7 @@ class Kernel extends ConsoleKernel
             foreach ([
                 'trend.status.twitter_tweet' => 'twitter_tweet',
                 'trend.status.twitter_hashtag' => 'twitter_hashtag',
+                'trend.status.instagram_hashtag' => 'instagram_hashtag',
                 'trend.status.news' => 'news',
                 'trend.status.blog' => 'blog',
                 'trend.status.sozluk' => 'entry',

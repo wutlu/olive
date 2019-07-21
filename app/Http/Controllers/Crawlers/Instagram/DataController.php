@@ -10,9 +10,12 @@ use App\Http\Requests\SearchRequest;
 use App\Http\Requests\IdRequest;
 
 use App\Http\Requests\Instagram\UrlReasonRequest;
+use App\Http\Requests\Instagram\CreateBlockedTrendKeywordRequest;
 
 use App\Models\Organisation\Organisation;
 use App\Models\Crawlers\Instagram\Selves;
+
+use App\Models\Instagram\BlockedTrendKeywords;
 
 class DataController extends Controller
 {
@@ -102,5 +105,90 @@ class DataController extends Controller
                 'reason' => $request->reason
             ]
         ];
+    }
+
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Instagram veri havuzu, engelli kelime listesi.
+     *
+     * @return view
+     */
+    public function blockedTrendKeywordList(int $id = 0)
+    {
+        return view('crawlers.instagram.dataPool.blocked_keyword_list');
+    }
+
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Instagram veri havuzu, engelli kelime listesi.
+     *
+     * @return array
+     */
+    public function blockedTrendKeywordListJson(SearchRequest $request)
+    {
+        $take = $request->take;
+        $skip = $request->skip;
+
+        $query = new BlockedTrendKeywords;
+
+        if ($request->string)
+        {
+            $query = $query->where('keyword', 'ILIKE', '%'.$request->string.'%');
+        }
+
+        $total = $query->count();
+
+        $query = $query->skip($skip)
+                       ->take($take)
+                       ->orderBy('id', 'DESC');
+
+        return [
+            'status' => 'ok',
+            'hits' => $query->get(),
+            'total' => $total
+        ];
+    }
+
+    /**
+     * Instagram veri havuzu, engelli kelime oluşturma.
+     *
+     * @return array
+     */
+    public function blockedTrendKeywordCreate(CreateBlockedTrendKeywordRequest $request)
+    {
+        $query = new BlockedTrendKeywords;
+        $query->keyword = $request->string;
+        $query->save();
+
+        return [
+            'status' => 'ok'
+        ];
+    }
+
+    /**
+     * Instagram veri havuzu, engelli kelime silme.
+     *
+     * @return array
+     */
+    public static function blockedTrendKeywordDelete(IdRequest $request)
+    {
+        $query = BlockedTrendKeywords::where('id', $request->id)->firstOrFail();
+
+        $arr = [
+            'status' => 'ok',
+            'data' => [
+                'id' => $query->id
+            ]
+        ];
+
+        $query->delete();
+
+        return $arr;
     }
 }

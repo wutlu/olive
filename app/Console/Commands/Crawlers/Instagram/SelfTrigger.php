@@ -18,7 +18,7 @@ class SelfTrigger extends Command
      *
      * @var string
      */
-    protected $signature = 'instagram:self_trigger';
+    protected $signature = 'instagram:self:trigger';
 
     /**
      * The console command description.

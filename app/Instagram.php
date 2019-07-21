@@ -9,6 +9,10 @@ use GuzzleHttp\HandlerStack;
 
 use App\Models\Proxy;
 
+use App\Olive\Gender;
+
+use Sentiment;
+
 class Instagram
 {
     private $base_uri = 'https://www.instagram.com';
@@ -53,7 +57,8 @@ class Instagram
         {
             return (object) [
                 'status' => 'err',
-                'code' => $e->getCode()
+                'code' => $e->getCode(),
+                'message' => $e->getMessage()
             ];
         }
     }
@@ -96,18 +101,26 @@ class Instagram
                         $graphql = $json->entry_data->ProfilePage[0]->graphql;
                         $edges = $graphql->user->edge_owner_to_timeline_media->edges;
 
+                        $gender = new Gender;
+                        $gender->loadNames();
+
                         $user = [
                             'id' => $graphql->user->id,
                             'name' => $graphql->user->full_name,
                             'screen_name' => $graphql->user->username,
+                            'gender' => $gender->detector([ $graphql->user->full_name, $graphql->user->username ]),
                             'image' => $graphql->user->profile_pic_url,
-                            'external_url' => $graphql->user->external_url,
                             'counts' => [
                                 'follow' => $graphql->user->edge_follow->count,
                                 'followed_by' => $graphql->user->edge_followed_by->count,
                                 'media' => $graphql->user->edge_owner_to_timeline_media->count
                             ]
                         ];
+
+                        if ($graphql->user->external_url)
+                        {
+                            $user['external_url'] = $graphql->user->external_url;
+                        }
 
                         if ($graphql->user->biography)
                         {
@@ -146,14 +159,26 @@ class Instagram
 
     private static function map(array $data, string $method = '', array $_arr = [])
     {
-        return array_map(function($item) use ($method, $_arr) {
+        $sentiment = new Sentiment;
+        $sentiment->engine('sentiment');
+
+        $consumer = new Sentiment;
+        $consumer->engine('consumer');
+
+        $illegal = new Sentiment;
+        $illegal->engine('illegal');
+
+        return array_map(function($item) use ($method, $_arr, $sentiment, $consumer, $illegal) {
             $arr = [
                 'id' => $item->node->id,
                 'shortcode' => $item->node->shortcode,
                 'display_url' => $item->node->display_url,
-                'owner_id' => $item->node->owner->id,
+                'user' => [
+                    'id' => $item->node->owner->id
+                ],
                 'type' => $item->node->is_video ? 'video' : 'photo',
-                'created_at' => date('Y-m-d H:i:s', $item->node->taken_at_timestamp)
+                'created_at' => date('Y-m-d H:i:s', $item->node->taken_at_timestamp),
+                'called_at' => date('Y-m-d H:i:s')
             ];
 
             if (@$item->node->accessibility_caption)
@@ -168,6 +193,10 @@ class Instagram
 
             $text = @$item->node->edge_media_to_caption->edges[0]->node->text;
 
+            $arr['sentiment'] = $sentiment->score($text ? $text : '');
+            $arr['consumer'] = $consumer->score($text ? $text : '');
+            $arr['illegal'] = $illegal->score($text ? $text : '');
+
             if ($text)
             {
                 $arr['text'] = $text;
@@ -180,7 +209,7 @@ class Instagram
                     {
                         if ($hashtag)
                         {
-                            $arr['hashtags'][] = [ 'hashtag' => $hashtag ];
+                            $arr['entities']['hashtags'][] = [ 'hashtag' => $hashtag ];
                         }
                     }
                 }
@@ -193,7 +222,7 @@ class Instagram
                     {
                         if ($mention)
                         {
-                            $arr['mentions'][] = [ 'mention' => $mention ];
+                            $arr['entities']['mentions'][] = [ 'mention' => $mention ];
                         }
                     }
                 }

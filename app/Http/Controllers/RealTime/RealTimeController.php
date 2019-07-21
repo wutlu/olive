@@ -133,7 +133,8 @@ class RealTimeController extends Controller
                                 'sentiment',
                                 'consumer',
                                 'illegal',
-                                'entities.medias.media'
+                                'entities.medias.media',
+                                'place'
                             ]
                         ];
 
@@ -184,6 +185,11 @@ class RealTimeController extends Controller
                                     $arr['user']['verified'] = true;
                                 }
 
+                                if (@$object['_source']['place'])
+                                {
+                                    $arr['place'] = $object['_source']['place'];
+                                }
+
                                 $data[] = $arr;
                             }
                         }
@@ -192,7 +198,7 @@ class RealTimeController extends Controller
 
                 $haystack = $selected_modules;
 
-                $target = [ 'youtube_video', 'youtube_comment', 'shopping', 'news', 'blog', 'sozluk' ];
+                $target = [ 'youtube_video', 'youtube_comment', 'shopping', 'news', 'blog', 'sozluk', 'instagram' ];
 
                 if (count(array_intersect($haystack, $target)) > 0)
                 {
@@ -239,7 +245,12 @@ class RealTimeController extends Controller
                             'text',
 
                             'created_at',
-                            'deleted_at'
+                            'deleted_at',
+
+                            'display_url',
+                            'shortcode',
+
+                            'place'
                         ]
                     ];
 
@@ -299,6 +310,12 @@ class RealTimeController extends Controller
                                 if ($organisation->data_shopping)
                                 {
                                     $modules[] = 'product';
+                                }
+                            break;
+                            case 'instagram':
+                                if ($organisation->data_instagram)
+                                {
+                                    $modules[] = 'media';
                                 }
                             break;
                         }
@@ -403,6 +420,24 @@ class RealTimeController extends Controller
                                         ],
                                         'text' => $object['_source']['text']
                                     ]);
+                                break;
+                                case 'media':
+                                    $media = [
+                                        'display_url' => $object['_source']['display_url'],
+                                        'url' => 'https://www.instagram.com/p/'.$object['_source']['shortcode'].'/'
+                                    ];
+
+                                    if (@$object['_source']['text'])
+                                    {
+                                        $arr['text'] = Term::instagramMedia($object['_source']['text']);
+                                    }
+
+                                    if (@$object['_source']['place'])
+                                    {
+                                        $arr['place'] = $object['_source']['place'];
+                                    }
+
+                                    $data[] = array_merge($arr, $media);
                                 break;
                             }
                         }

@@ -9,29 +9,29 @@
 function __joints(o)
 {
     var card = $('<div />', {
-        'class': 'card card-unstyled',
         'html': [
             $('<time>', {
                 'html': o.created_at,
                 'class': 'd-table mb-1'
             }),
-
             $('<a />', {
-                'class': 'btn-floating btn-small waves-effect white',
+                'class': 'btn-flat waves-effect',
                 'href': '/db/' + o._index + '/' + o._type + '/' + o._id,
                 'html': $('<i />', {
-                    'class': 'material-icons grey-text text-darken-2',
-                    'html': 'info'
+                    'class': 'material-icons',
+                    'html': 'info',
+                    'css': { 'font-size': '24px' }
                 })
             }),
             $('<span />', { 'html': ' ' }),
             $('<a />', {
                 'href': '#',
                 'html': $('<i />', {
-                    'class': 'material-icons grey-text text-darken-2',
-                    'html': 'add'
+                    'class': 'material-icons',
+                    'html': 'add',
+                    'css': { 'font-size': '24px' }
                 }),
-                'class': 'btn-floating btn-small waves-effect white json',
+                'class': 'btn-flat waves-effect json',
                 'data-href': '/pinleme/add',
                 'data-method': 'post',
                 'data-include': 'group_id',
@@ -45,6 +45,14 @@ function __joints(o)
             })
         ]
     })
+
+    if (o.place)
+    {
+        card.prepend($('<a />', {
+            'html': o.place.name,
+            'href': '/arama-motoru?q=place.name:"' + o.place.name + '"'
+        }))
+    }
 
     if (o.deleted_at)
     {
@@ -105,7 +113,7 @@ function _tweet_(o)
                 ]
             }),
             $('<div />', {
-                'class': 'media-area mb-1'
+                'class': 'media-area d-flex flex-wrap mb-1'
             }),
             $('<span />', {
                 'class': 'text-area',
@@ -123,7 +131,6 @@ function _tweet_(o)
         ]
     })
 
-
     if (o.medias)
     {
         $.each (o.medias, function (key, item) {
@@ -134,18 +141,17 @@ function _tweet_(o)
                 var img = $('<img />', {
                    'alt': 'Media',
                    'src': item.media.media_url,
-                   'class': 'responsive-img z-depth-1',
+                   'class': 'align-self-start z-depth-1',
                    'id': 'img-' + rid
                 }).on('load', function() {
                     var __ = $(this);
                 })
 
-                tweet.find('.media-area')
-                     .html(img)
+                tweet.find('.media-area').append(img)
             }
             else if (item.media.type == 'video' || item.media.type == 'animated_gif')
             {
-                tweet.find('.media-area').html($('<video />', {
+                tweet.find('.media-area').append($('<video />', {
                     'width': '100%',
                     'height': '100%',
                     'controls': 'true',
@@ -173,6 +179,52 @@ function _tweet_(o)
     return tweet;
 }
 
+function _media_(o)
+{
+    var media = $('<div />', {
+        'class': 'data',
+        'html': [
+            $('<div />', {
+                'class': 'media-area mb-1',
+                'html': $('<img />', {
+                   'alt': 'Media',
+                   'src': o.display_url,
+                   'class': 'responsive-img z-depth-1'
+                })
+            })
+        ]
+    })
+
+    if (o.text)
+    {
+        media.append($('<span />', {
+            'html': o.text,
+            'class': 'text-area'
+        }))
+    }
+
+    if (o.illegal)
+    {
+        if (o.illegal.nud > 0.3)
+        {
+            media.find('.media-area').addClass('nude')
+        }
+    }
+
+    media.append( $('<a />', {
+        'data-name': 'url',
+        'html': o.url,
+        'href': o.url,
+        'class': 'd-table green-text'
+    }).attr('target', '_blank'))
+
+    media.append($('<div />', {
+        'html': __joints(o)
+    }))
+
+    return media;
+}
+
 function _entry_(o)
 {
     return $('<div />', {
@@ -188,7 +240,7 @@ function _entry_(o)
             }),
             $('<span />', {
                 'html': o.text,
-                'class': 'grey-text text-darken-2 text-area'
+                'class': 'text-area'
             }),
             $('<a />', {
                 'data-name': 'url',
@@ -223,7 +275,7 @@ function _article_(o)
                             }),
                             $('<span />', {
                                 'html': o.text,
-                                'class': 'grey-text text-darken-2 text-area'
+                                'class': 'text-area'
                             })
                         ]
                     })
@@ -280,7 +332,7 @@ function _document_(o)
                             }),
                             $('<span />', {
                                 'html': o.text,
-                                'class': 'grey-text text-darken-2 text-area'
+                                'class': 'text-area'
                             })
                         ]
                     })
@@ -328,7 +380,7 @@ function _product_(o)
             }),
             $('<span />', {
                 'html': o.text ? o.text : 'Açıklama Yok',
-                'class': 'grey-text text-darken-2 text-area'
+                'class': 'text-area'
             }),
             $('<a />', {
                 'data-name': 'url',
@@ -355,7 +407,7 @@ function _comment_(o)
             }).attr('target', '_blank'),
             $('<span />', {
                 'html': o.text,
-                'class': 'grey-text text-darken-2 text-area'
+                'class': 'text-area'
             }),
             $('<a />', {
                 'data-name': 'url',

@@ -14,10 +14,9 @@
 @push('local.scripts')
     var collection_timer;
 
-    function __collections(__, obj)
+    function __collection(__, obj)
     {
-        var ul = $('#collections');
-        var item_model = ul.children('.model');
+        var item_model = __.children('.model');
 
         if (obj.status == 'ok')
         {
@@ -30,15 +29,15 @@
                     var selector = $('[data-id=' + o.id + '].collection-item');
                     var item = selector.length ? selector : item_model.clone();
 
-                        item.find('[data-name=proxy]').html(o.proxy)
+                        item.find('[data-name=proxy]').html('ipv' + o.ipv + ' ' + o.proxy)
                         item.find('[data-name=health]').css({
-                            'width': per + '%'
-                        })
-                        .removeClass('red orange green')
-                        .addClass(o.health <= 5 ? 'red' : o.health <= 7 ? 'orange' : 'green')
-                        .parent('.progress')
-                        .removeClass('red orange green')
-                        .addClass(o.health <= 5 ? 'red' : o.health <= 7 ? 'orange' : 'green')
+                                'width': per + '%'
+                            })
+                            .removeClass('red orange green')
+                            .addClass(o.health <= 5 ? 'red' : o.health <= 7 ? 'orange' : 'green')
+                            .parent('.progress')
+                            .removeClass('red orange green')
+                            .addClass(o.health <= 5 ? 'red' : o.health <= 7 ? 'orange' : 'green')
 
                         item.removeClass('model hide')
                             .addClass('_tmp')
@@ -46,7 +45,7 @@
 
                         if (!selector.length)
                         {
-                            item.appendTo(ul)
+                            item.appendTo(__)
                         }
                 })
             }
@@ -55,7 +54,7 @@
         window.clearTimeout(collection_timer)
 
         collection_timer = window.setTimeout(function() {
-            vzAjax($('#collections'))
+            vzAjax($('#collection'))
         }, 5000)
     }
 
@@ -84,6 +83,39 @@
                             }),
                             $('<span />', {
                                 'class': 'helper-text'
+                            })
+                        ]
+                    }),
+                    $('<div />', {
+                        'class': 'd-flex mb-2',
+                        'html': [
+                            $('<label />', {
+                                'class': 'flex-fill align-self-center',
+                                'html': [
+                                    $('<input />', {
+                                        'type': 'radio',
+                                        'name': 'ipv',
+                                        'id': 'ipv-4',
+                                        'value': '4'
+                                    }),
+                                    $('<span />', {
+                                        'html': 'ipv4'
+                                    })
+                                ]
+                            }),
+                            $('<label />', {
+                                'class': 'flex-fill align-self-center',
+                                'html': [
+                                    $('<input />', {
+                                        'type': 'radio',
+                                        'name': 'ipv',
+                                        'id': 'ipv-6',
+                                        'value': '6'
+                                    }),
+                                    $('<span />', {
+                                        'html': 'ipv6'
+                                    })
+                                ]
                             })
                         ]
                     })
@@ -157,6 +189,7 @@
         var form = _modal.find('form#form')
 
         $('input[name=proxy]').val('').characterCounter()
+        $('input[name=ipv]').prop('checked', false)
 
         $('[data-trigger=delete]').removeAttr('data-id').addClass('hide')
 
@@ -222,6 +255,7 @@
             var form = _modal.find('form#form')
 
             $('input[name=proxy]').val(obj.data.proxy).characterCounter()
+            $('input#ipv-' + obj.data.ipv).prop('checked', true)
 
             $('[data-trigger=delete]').data('id', obj.data.id).removeClass('hide')
 
@@ -245,9 +279,9 @@
             </a>
         </div>
         <div class="collection load"
-             id="collections"
+             id="collection"
              data-href="{{ route('admin.proxies.json') }}"
-             data-callback="__collections"
+             data-callback="__collection"
              data-method="post"
              data-loader="#home-loader"
              data-nothing>

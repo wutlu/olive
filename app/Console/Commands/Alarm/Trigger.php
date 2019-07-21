@@ -379,6 +379,37 @@ class Trigger extends Command
                         }
                     }
                 break;
+                case 'instagram':
+                    $q = $mquery;
+
+                    $q['query']['bool']['must'][] = [
+                        'query_string' => [
+                            'default_field' => 'text',
+                            'query' => $alarm->query,
+                            'default_operator' => 'AND'
+                        ]
+                    ];
+                    $q['_source'] = [
+                        'text'
+                    ];
+
+                    $query = Document::search([ 'instagram', 'medias', '*' ], 'media', $q);
+
+                    if (@$query->data['hits']['hits'])
+                    {
+                        foreach ($query->data['hits']['hits'] as $object)
+                        {
+                            $data['instagram'] = [
+                                '_id' => $object['_id'],
+                                '_type' => $object['_type'],
+                                '_index' => $object['_index'],
+
+                                'text' => $object['_source']['text'],
+                                'count' => $query->data['hits']['total']
+                            ];
+                        }
+                    }
+                break;
             }
         }
 

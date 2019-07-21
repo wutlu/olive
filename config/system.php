@@ -152,7 +152,7 @@ return [
         'trend.status.news' => 'Haber',
         'trend.status.forum' => 'Forum',
         'trend.status.blog' => 'Blog',
-        'trend.status.instagram' => 'Instagram',
+        'trend.status.instagram_hashtag' => 'Instagram Hashtag',
         'trend.status.facebook' => 'Facebook',
         'trend.status.twitter_tweet' => 'Twitter Tweet',
         'trend.status.twitter_hashtag' => 'Twitter Hashtag',
@@ -182,7 +182,7 @@ return [
         'trend.status.forum' => 'string|in:on,off',
         'trend.status.blog' => 'string|in:on,off',
         'trend.status.youtube_video' => 'string|in:on,off',
-        'trend.status.instagram' => 'string|in:on,off',
+        'trend.status.instagram_hashtag' => 'string|in:on,off',
         'trend.status.facebook' => 'string|in:on,off',
 
         'twitter.index.auto' => 'string|in:on,off',
@@ -310,7 +310,7 @@ return [
                 'description' => 'veri.zone ofisinde çalışın.'
             ],
             999 => [
-                'name' => 'Destekçi',
+                'name' => 'Kurumsal',
                 'image_src' => 'img/icons/badges/supporter.png',
                 'description' => 'En az 1 ödeme yapın.'
             ],

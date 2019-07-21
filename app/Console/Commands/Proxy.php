@@ -77,14 +77,7 @@ class Proxy extends Command
                 $load_time = intval($endtime - $starttime);
                 $load_time = 10 - ($load_time > 10 ? 10 : $load_time);
 
-                if ($response->getStatusCode() == 200)
-                {
-                    $proxy->health = $load_time;
-                }
-                else
-                {
-                    $proxy->health = 0;
-                }
+                $proxy->health = $load_time;
 
                 $this->info('Health: ['.$proxy->health.']');
 

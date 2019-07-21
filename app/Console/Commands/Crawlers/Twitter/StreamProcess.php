@@ -228,6 +228,7 @@ class StreamProcess extends Command
                                 $tweet['sentiment'] = $sentiment->score($tweet['text']);
                                 $tweet['consumer'] = $consumer->score($tweet['text']);
                                 $tweet['illegal'] = $illegal->score($tweet['text']);
+
                                 $tweet = (object) $tweet;
 
                                 $store = true;
@@ -253,6 +254,7 @@ class StreamProcess extends Command
                                 $tweet['sentiment'] = $sentiment->score($tweet['text']);
                                 $tweet['consumer'] = $consumer->score($tweet['text']);
                                 $tweet['illegal'] = $illegal->score($tweet['text']);
+
                                 $tweet = (object) $tweet;
 
                                 $store = true;
@@ -276,6 +278,7 @@ class StreamProcess extends Command
                             $tweet['sentiment'] = $sentiment->score($tweet['text']);
                             $tweet['consumer'] = $consumer->score($tweet['text']);
                             $tweet['illegal'] = $illegal->score($tweet['text']);
+
                             $tweet = (object) $tweet;
 
                             if (@$tweet->user->verified && $tweet->user->lang == 'tr')

@@ -63,6 +63,10 @@ class TrendController extends Controller
             [
                 'title' => 'Blog, Makale',
                 'module' => 'blog',
+            ],
+            [
+                'title' => 'Instagram, Hashtag',
+                'module' => 'instagram_hashtag',
             ]
         ];
 

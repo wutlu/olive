@@ -274,27 +274,14 @@
 
                 switch(obj._type)
                 {
-                    case 'tweet':
-                        pattern = _tweet_(obj);
-                    break;
-                    case 'entry':
-                        pattern = _entry_(obj);
-                    break;
-                    case 'article':
-                        pattern = _article_(obj);
-                    break;
-                    case 'document':
-                        pattern = _document_(obj);
-                    break;
-                    case 'product':
-                        pattern = _product_(obj);
-                    break;
-                    case 'comment':
-                        pattern = _comment_(obj);
-                    break;
-                    case 'video':
-                        pattern = _video_(obj);
-                    break;
+                    case 'tweet'   : pattern = _tweet_   (obj); break;
+                    case 'entry'   : pattern = _entry_   (obj); break;
+                    case 'article' : pattern = _article_ (obj); break;
+                    case 'document': pattern = _document_(obj); break;
+                    case 'product' : pattern = _product_ (obj); break;
+                    case 'comment' : pattern = _comment_ (obj); break;
+                    case 'video'   : pattern = _video_   (obj); break;
+                    case 'media'   : pattern = _media_   (obj); break;
                 }
 
                 var item = model.clone().html(pattern);

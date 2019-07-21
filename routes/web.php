@@ -251,6 +251,8 @@ Route::prefix('veri-havuzu')->group(function () {
     });
 
     Route::prefix('instagram')->namespace('Instagram')->group(function () {
+        Route::post('kullanici/senkronizasyon', 'DataController@userSync')->name('instagram.user.sync');
+
         Route::get('baglanti-havuzu', 'DataController@urlList')->name('instagram.url.list');
         Route::post('baglanti-havuzu', 'DataController@urlListJson');
 

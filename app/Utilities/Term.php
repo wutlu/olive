@@ -274,6 +274,24 @@ class Term
     /**
      * Auto Link
      *
+     * - Twitter Tweet gövdelerindeki hashtag, mention ve linkleri html formatında çıktı verir.
+     *
+     * @return string
+     */
+    public static function instagramMedia(string $media)
+    {
+        //Convert urls to <a> links
+        $media = preg_replace('/([\w]+\:\/\/[\w-?&;#~=\.\/\@]+[\w\/])/', '<a target="_blank" href="$1">$1</a>', $media);
+
+        //Convert hashtags to twitter searches in <a> links
+        $media = preg_replace('/#([A-ZğüşıöçĞÜŞİÖÇa-z0-9\/\.]*)/', '<a target="_blank" href="'.route('search.dashboard').'?q=$1">#$1</a>', $media);
+
+        return mb_convert_encoding($media, 'UTF-8', 'UTF-8');
+    }
+
+    /**
+     * Auto Link
+     *
      * - Genel kullanım için linklerin Olive için çevrilmesini sağlar.
      *
      * @return string

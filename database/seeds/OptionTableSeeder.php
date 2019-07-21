@@ -43,7 +43,7 @@ class OptionTableSeeder extends Seeder
         Option::firstOrCreate( [ 'key' => 'trend.status.sozluk'                 ], [ 'value' => 'off'                                 ] );
         Option::firstOrCreate( [ 'key' => 'trend.status.forum'                  ], [ 'value' => 'off'                                 ] );
         Option::firstOrCreate( [ 'key' => 'trend.status.blog'                   ], [ 'value' => 'off'                                 ] );
-        Option::firstOrCreate( [ 'key' => 'trend.status.instagram'              ], [ 'value' => 'off'                                 ] );
+        Option::firstOrCreate( [ 'key' => 'trend.status.instagram_hashtag'      ], [ 'value' => 'off'                                 ] );
         Option::firstOrCreate( [ 'key' => 'trend.status.facebook'               ], [ 'value' => 'off'                                 ] );
         Option::firstOrCreate( [ 'key' => 'trend.index'                         ], [ 'value' => 'off'                                 ] );
 

@@ -1,4 +1,8 @@
 <div class="collection">
+    <a href="{{ route('admin.instagram.trend.blocked_keywords') }}" class="collection-item waves-effect {{ $active == 'trend.blocked_keywords' ? 'active' : '' }}">Engelli Trend Kelimeleri</a>
+
+    <div class="divider grey"></div>
+
     <a href="{{ route('admin.instagram.settings') }}" class="collection-item waves-effect {{ $active == 'dashboard' ? 'active' : '' }}">Instagram Ayarları</a>
     <a href="{{ route('admin.instagram.indices') }}" class="collection-item waves-effect {{ $active == 'indices' ? 'active' : '' }}">Index Yönetimi</a>
 

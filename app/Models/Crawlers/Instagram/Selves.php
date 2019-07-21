@@ -10,6 +10,11 @@ class Selves extends Model
 {
     protected $table = 'instagram_selves';
 
+    protected $fillable = [
+        'hit',
+        'control_interval'
+    ];
+
     # organizasyon
     public function organisation()
     {
@@ -59,6 +64,10 @@ class Selves extends Model
                                     'format' => 'YYYY-MM-dd HH:mm:ss'
                                 ],
                                 'called_at' => [
+                                    'type' => 'date',
+                                    'format' => 'YYYY-MM-dd HH:mm:ss'
+                                ],
+                                'deleted_at' => [
                                     'type' => 'date',
                                     'format' => 'YYYY-MM-dd HH:mm:ss'
                                 ],
@@ -112,7 +121,11 @@ class Selves extends Model
                                     'type' => 'keyword',
                                     'index' => false
                                 ],
-                                'owner_id' => [ 'type' => 'long' ],
+                                'user' => [
+                                    'properties' => [
+                                        'id' => [ 'type' => 'long' ]
+                                    ]
+                                ],
                                 'type' => [ 'type' => 'keyword' ],
                                 'place' => [
                                 	'properties' => [
@@ -129,16 +142,20 @@ class Selves extends Model
                                     'analyzer' => 'turkish',
                                     'fielddata' => true
                                 ],
-                                'mentions' => [
-                                    'type' => 'nested',
+                                'entities' => [
                                     'properties' => [
-                                        'mention' => [ 'type' => 'keyword' ]
-                                    ]
-                                ],
-                                'hashtags' => [
-                                    'type' => 'nested',
-                                    'properties' => [
-                                        'hashtag' => [ 'type' => 'keyword' ]
+                                        'mentions' => [
+                                            'type' => 'nested',
+                                            'properties' => [
+                                                'mention' => [ 'type' => 'keyword' ]
+                                            ]
+                                        ],
+                                        'hashtags' => [
+                                            'type' => 'nested',
+                                            'properties' => [
+                                                'hashtag' => [ 'type' => 'keyword' ]
+                                            ]
+                                        ]
                                     ]
                                 ],
                                 'created_at' => [

@@ -125,24 +125,6 @@ class SearchController extends Controller
      *
      * @return view
      */
-    public static function dashboardold(QRequest $request)
-    {
-        $q = $request->q;
-        $s = $request->s;
-        $e = $request->e;
-
-        $organisation = auth()->user()->organisation;
-
-        $trends = json_decode(RedisCache::get(implode(':', [ config('system.db.alias'), 'trends', 'twitter_hashtag' ])));
-
-        return view('search', compact('q', 's', 'e', 'trends', 'organisation'));
-    }
-
-    /**
-     * Arama Ana Sayfa
-     *
-     * @return view
-     */
     public static function dashboard(QRequest $request)
     {
         $q = $request->q;
@@ -229,7 +211,12 @@ class SearchController extends Controller
                 'video_id',
                 'sentiment',
                 'consumer',
-                'illegal'
+                'illegal',
+
+                'display_url',
+                'shortcode',
+
+                'place'
             ]
         ];
 
@@ -265,7 +252,8 @@ class SearchController extends Controller
                 'youtube_comment' => 0,
                 'media_article' => 0,
                 'blog_document' => 0,
-                'shopping_product' => 0
+                'shopping_product' => 0,
+                'instagram_media' => 0
             ]
         ];
 
@@ -286,6 +274,14 @@ class SearchController extends Controller
                     }
 
                     $stats['counts']['twitter_tweet'] = intval(@Document::search([ 'twitter', 'tweets', '*' ], 'tweet', array_merge($q, [ 'size' => 0 ]))->data['hits']['total']);
+                break;
+                case 'instagram':
+                    if ($organisation->data_instagram)
+                    {
+                        $modules[] = 'media';
+                    }
+
+                    $stats['counts']['instagram_media'] = intval(@Document::search([ 'instagram', 'medias', '*' ], 'media', array_merge($q, [ 'size' => 0 ]))->data['hits']['total']);
                 break;
                 case 'sozluk':
                     if ($organisation->data_sozluk)
@@ -388,14 +384,19 @@ class SearchController extends Controller
                             'image' => $object['_source']['user']['image']
                         ];
 
+                        if (@$object['_source']['user']['verified'])
+                        {
+                            $user['verified'] = true;
+                        }
+
                         if (@$object['_source']['entities']['medias'])
                         {
                             $arr['medias'] = $object['_source']['entities']['medias'];
                         }
 
-                        if (@$object['_source']['user']['verified'])
+                        if (@$object['_source']['place'])
                         {
-                            $user['verified'] = true;
+                            $arr['place'] = $object['_source']['place'];
                         }
 
                         $data[] = array_merge($arr, [
@@ -403,33 +404,45 @@ class SearchController extends Controller
                             'text' => Term::tweet($object['_source']['text']),
                         ]);
                     break;
+                    case 'media':
+                        $arr['display_url'] = $object['_source']['display_url'];
+                        $arr['url'] = 'https://www.instagram.com/p/'.$object['_source']['shortcode'].'/';
+
+                        if (@$object['_source']['text'])
+                        {
+                            $arr['text'] = Term::instagramMedia($object['_source']['text']);
+                        }
+
+                        if (@$object['_source']['place'])
+                        {
+                            $arr['place'] = $object['_source']['place'];
+                        }
+
+                        $data[] = $arr;
+                    break;
                     case 'article':
-                        $article = [
-                            'url' => $object['_source']['url'],
-                            'title' => $object['_source']['title'],
-                            'text' => $object['_source']['description'],
-                        ];
+                        $arr['url'] = $object['_source']['url'];
+                        $arr['title'] = $object['_source']['title'];
+                        $arr['text'] = $object['_source']['description'];
 
                         if (@$object['_source']['image_url'])
                         {
-                            $article['image'] = $object['_source']['image_url'];
+                            $arr['image'] = $object['_source']['image_url'];
                         }
 
-                        $data[] = array_merge($arr, $article);
+                        $data[] = $arr;
                     break;
                     case 'document':
-                        $document = [
-                            'url' => $object['_source']['url'],
-                            'title' => $object['_source']['title'],
-                            'text' => $object['_source']['description'],
-                        ];
+                        $arr['url'] = $object['_source']['url'];
+                        $arr['title'] = $object['_source']['title'];
+                        $arr['text'] = $object['_source']['description'];
 
                         if (@$object['_source']['image_url'])
                         {
-                            $document['image'] = $object['_source']['image_url'];
+                            $arr['image'] = $object['_source']['image_url'];
                         }
 
-                        $data[] = array_merge($arr, $document);
+                        $data[] = $arr;
                     break;
                     case 'entry':
                         $data[] = array_merge($arr, [
@@ -566,6 +579,12 @@ class SearchController extends Controller
                         }
 
                         $modules[] = 'tweet';
+                    }
+                break;
+                case 'instagram':
+                    if ($organisation->data_twitter)
+                    {
+                        $modules[] = 'media';
                     }
                 break;
                 case 'sozluk':

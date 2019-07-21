@@ -103,7 +103,7 @@
     })
 
     $(document).on('click', '[data-trigger=clear]', function() {
-        $('input[name=string]').val('').hide().show( 'highlight', { 'color': '#f0f4c3' }, 400 ).focus();
+        $('input[name=string]').val('').hide().show( 'highlight', { 'color': '#f0f4c3' }, 400 ).focus()
     }).on('click', '[data-search]', function() {
         var __ = $(this);
         var input = $('input[name=string]');
@@ -394,8 +394,8 @@
         <div class="d-flex flex-wrap">
             <div class="p-1">
                 Genel
-                <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="string" data-search="+">+Olsun</button>
-                <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="string" data-search="-">-Olmasın</button>
+                <button data-update-click type="button" class="btn-flat waves-effect waves-green btn-small d-table" data-validate="string" data-search="+">+Olsun</button>
+                <button data-update-click type="button" class="btn-flat waves-effect waves-red btn-small d-table" data-validate="string" data-search="-">-Olmasın</button>
                 <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="number" data-search="site.id">Site / Sözlük Id</button>
             </div>
 
@@ -727,6 +727,7 @@
             $('[data-name=media-article]').html(obj.stats.counts.media_article);
             $('[data-name=blog-document]').html(obj.stats.counts.blog_document);
             $('[data-name=shopping-product]').html(obj.stats.counts.shopping_product);
+            $('[data-name=instagram-media]').html(obj.stats.counts.instagram_media);
 
             $('.banner').addClass('hide')
 
@@ -764,24 +765,25 @@
 
                     var model;
 
-                        switch(o._type)
-                        {
-                            case 'tweet'  : model = _tweet_  (o); break;
-                            case 'entry'  : model = _entry_  (o); break;
-                            case 'article': model = _article_(o); break;
-                            case 'document': model = _document_(o); break;
-                            case 'product': model = _product_(o); break;
-                            case 'comment': model = _comment_(o); break;
-                            case 'video'  : model = _video_  (o); break;
-                        }
+                    switch(o._type)
+                    {
+                        case 'tweet'   : model = _tweet_   (o); break;
+                        case 'entry'   : model = _entry_   (o); break;
+                        case 'article' : model = _article_ (o); break;
+                        case 'document': model = _document_(o); break;
+                        case 'product' : model = _product_ (o); break;
+                        case 'comment' : model = _comment_ (o); break;
+                        case 'video'   : model = _video_   (o); break;
+                        case 'media'   : model = _media_   (o); break;
+                    }
 
-                        model.find('.text-area').mark(obj.words, {
-                            'element': 'span',
-                            'className': 'marked yellow black-text',
-                            'accuracy': 'complementary'
-                        })
+                    model.find('.text-area').mark(obj.words, {
+                        'element': 'span',
+                        'className': 'marked yellow black-text',
+                        'accuracy': 'complementary'
+                    })
 
-                        item.html(model).appendTo(__)
+                    item.html(model).appendTo(__)
                 })
             }
 

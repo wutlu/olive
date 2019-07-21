@@ -135,6 +135,14 @@
                             links.twitter = 'https://twitter.com/search?q=' + encodeURI(o.data.key);
                             links.google = 'https://www.google.com/search?q=' + encodeURI(o.data.key);
                         }
+                        else if (__.data('module') == 'instagram_hashtag')
+                        {
+                            item.find('[data-name=title]').html(o.data.key)
+
+                            links.olive = '{{ route('search.dashboard') }}?q="' + o.data.key + '"';
+                            links.instagram = 'https://www.instagram.com/explore/tags/' + encodeURI(o.data.key) + '/';
+                            links.google = 'https://www.google.com/search?q=' + encodeURI(o.data.key);
+                        }
                         else if (__.data('module') == 'news')
                         {
                             item.find('[data-name=title]').html(o.data.title)
@@ -340,6 +348,13 @@
                                             <span class="align-self-center ml-auto" data-name="alias"></span>
                                         </span>
                                     </a>
+                                    <a href="#" target="_blank" class="collection-item hide" data-name="link-instagram">
+                                        <span class="d-flex">
+                                            <i class="material-icons align-self-center mr-1">link</i>
+                                            <span class="align-self-center">Instagram'da göster</span>
+                                            <span class="align-self-center ml-auto" data-name="alias"></span>
+                                        </span>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -539,6 +554,13 @@
             popover: {
                 title: 'Blog, Makale',
                 description: 'Bloglar, sitelerin Alexa değerleri baz alınarak yapılan puanlamalara göre belirlenir.'
+            }
+        },
+        {
+            element: '#card-instagram_hashtag',
+            popover: {
+                title: 'Instagram, Hashtag',
+                description: 'Son 1 dakika içerisinde paylaşılan ve hashtag içeren Türkçe Instagram medyaları arasında en çok kullanılan hashtagler.'
             }
         }
     ])

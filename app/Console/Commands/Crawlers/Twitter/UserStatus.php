@@ -76,7 +76,7 @@ class UserStatus extends Command
                         ]
                     ];
 
-                    $p = Proxy::where('health', '>', 7)->inRandomOrder()->first();
+                    $p = Proxy::where('ipv', 4)->where('health', '>', 7)->inRandomOrder()->first();
 
                     if (@$p)
                     {

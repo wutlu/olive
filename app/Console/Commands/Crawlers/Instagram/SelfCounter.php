@@ -10,23 +10,21 @@ use Carbon\Carbon;
 
 use App\Models\Crawlers\Instagram\Selves;
 
-class SelfMinuter extends Command
+class SelfCounter extends Command
 {
-    protected $time;
-
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'instagram:self:minuter';
+    protected $signature = 'instagram:self:counter';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Instagram bağlantılarına gidilecek zaman aralığını belirler.';
+    protected $description = 'Instagram bağlantılarının ne kadar veri topladığını sayar.';
 
     /**
      * Create a new command instance.
@@ -36,8 +34,6 @@ class SelfMinuter extends Command
     public function __construct()
     {
         parent::__construct();
-
-        $this->time = Carbon::now()->subHours(12)->format('Y-m-d H');
     }
 
     /**
@@ -47,7 +43,7 @@ class SelfMinuter extends Command
      */
     public function handle()
     {
-        $crawlers = Selves::where('status', true)->get();
+        $crawlers = Selves::get();
 
         if (count($crawlers))
         {
@@ -74,14 +70,7 @@ class SelfMinuter extends Command
                 $this->line($crawler->url);
                 $this->info('data: ['.$count->data['count'].']');
 
-                $division = $count->data['count'] ? $count->data['count'] : 1;
-                $division = $division/1440;
-                $division = intval(1/$division);
-                $division = $division > 1440 ? 1440 : ($division == 0 ? 1 : $division);
-
-                $this->info('minute: ['.$division.']');
-
-                $crawler->update([ 'control_interval' => $division ]);
+                $crawler->update([ 'hit' => $count->data['count'] ]);
             }
         }
     }

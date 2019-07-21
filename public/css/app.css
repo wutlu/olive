@@ -147,10 +147,13 @@ input[type=range]::-ms-thumb {
  * media area
  */
 .media-area {
-  width: 256px;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+  max-width: 512px;
+}
+.media-area > img {
+  max-width: 256px;
 }
 .media-area:empty {
   display: none;

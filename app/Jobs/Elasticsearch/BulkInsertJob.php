@@ -9,7 +9,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
 use App\Elasticsearch\Document;
-use System;
 
 class BulkInsertJob implements ShouldQueue
 {

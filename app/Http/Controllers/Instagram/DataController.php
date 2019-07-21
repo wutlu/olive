@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Instagram;
 
 use Illuminate\Http\Request;
+
 use App\Http\Requests\SearchRequest;
 use App\Http\Requests\IdRequest;
 use App\Http\Requests\Instagram\CreateUrlRequest;
@@ -10,6 +11,17 @@ use App\Http\Requests\Instagram\CreateUrlRequest;
 use App\Http\Controllers\Controller;
 
 use App\Models\Crawlers\Instagram\Selves;
+use App\Models\Proxy;
+
+use GuzzleHttp\Client;
+use GuzzleHttp\HandlerStack;
+
+use App\Utilities\DateUtility;
+
+use App\Instagram;
+
+use App\Elasticsearch\Indices;
+use App\Jobs\Elasticsearch\BulkInsertJob;
 
 class DataController extends Controller
 {
@@ -31,6 +43,112 @@ class DataController extends Controller
          */
         $this->middleware([ 'can:organisation-status' ])->only([
         ]);
+    }
+
+    /**
+     * Instagram, kullanıcı bilgileri güncelleme.
+     *
+     * @return array
+     */
+    public function userSync(IdRequest $request)
+    {
+        $client = new Client([
+            'base_uri' => 'https://i.instagram.com',
+            'handler' => HandlerStack::create()
+        ]);
+
+        try
+        {
+            $arr = [
+                'timeout' => 10,
+                'connect_timeout' => 5,
+                'headers' => [
+                    'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))],
+                    'Accept-Language' => 'tr-TR;q=0.6,tr;q=0.4'
+                ],
+                'verify' => false
+            ];
+
+            $proxy = Proxy::where('health', '>', 7)->inRandomOrder();
+
+            if ($proxy->exists())
+            {
+                $arr['proxy'] = $proxy->first()->proxy;
+            }
+
+            $client = $client->get('api/v1/users/'.$request->id.'/info', $arr);
+            $array = json_decode($client->getBody(), true);
+
+            $dateUtility = new DateUtility;
+
+            $instagram = new Instagram;
+            $connect = $instagram->connect('https://www.instagram.com/'.$array['user']['username'].'/');
+
+            if ($connect->status == 'ok')
+            {
+                $data = $instagram->data('user');
+
+                if ($data->status == 'ok')
+                {
+                    $bulk = [];
+
+                        $bulk['body'][] = [
+                            'create' => [
+                                '_index' => Indices::name([ 'instagram', 'users' ]),
+                                '_type' => 'user',
+                                '_id' => $data->user['id']
+                            ]
+                        ];
+                        $bulk['body'][] = $data->user;
+
+                    if (count($data->data))
+                    {
+                        foreach ($data->data as $item)
+                        {
+                            if ($dateUtility->checkDate($item['created_at']))
+                            {
+                                $bulk['body'][] = [
+                                    'create' => [
+                                        '_index' => Indices::name([ 'instagram', 'medias', date('Y.m', strtotime($item['created_at'])) ]),
+                                        '_type' => 'media',
+                                        '_id' => $item['id']
+                                    ]
+                                ];
+                                $bulk['body'][] = $item;
+                            }
+                        }
+                    }
+
+                    BulkInsertJob::dispatch($bulk)->onQueue('elasticsearch');
+                }
+                else
+                {
+                    return [
+                        'status' => 'err',
+                        'message' => 'Kullanıcı profiline ulaşılamıyor.'
+                    ];
+                }
+            }
+            else
+            {
+                return [
+                    'status' => 'retry',
+                    'message' => 'Bağlantı hatası! Tekrar deneniyor.'
+                ];
+            }
+
+            return [
+                'status' => 'ok',
+                'wait' => (intval(config('database.elasticsearch.instagram.user.settings.refresh_interval')))+5
+            ];
+        }
+        catch (\Exception $e)
+        {
+            return [
+                'status' => 'err',
+                'message' => 'Kullanıcı profiline ulaşılamıyor.'
+            ];
+        }
     }
 
     /**

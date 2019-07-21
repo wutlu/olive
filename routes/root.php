@@ -167,6 +167,13 @@ Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {
             Route::get('baglanti-havuzu/{id?}', 'DataController@urlList')->name('admin.instagram.urls');
             Route::post('baglanti-havuzu', 'DataController@urlListJson');
             Route::patch('baglanti-havuzu', 'DataController@urlReason')->name('admin.instagram.urls.reason');
+
+            Route::prefix('trend/engelli-kelimeler')->group(function () {
+                Route::get('/{id?}', 'DataController@blockedTrendKeywordList')->name('admin.instagram.trend.blocked_keywords');
+                Route::post('/', 'DataController@blockedTrendKeywordListJson');
+                Route::delete('/', 'DataController@blockedTrendKeywordDelete');
+                Route::put('/', 'DataController@blockedTrendKeywordCreate');
+            });
         });
     });
 
