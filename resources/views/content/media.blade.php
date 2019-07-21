@@ -40,7 +40,7 @@
     <div class="card">
         <div class="card-content d-flex justify-content-between">
             <span class="align-self-center">
-                <span class="card-title">{{ $document['_source']['user']['id'] }}</span>
+                <span class="card-title">{{ $data['user']['name'] }} <a href="https://www.instagram.com/{{ $data['user']['screen_name'] }}/" target="_blank" class="green-text">{{ '@'.$data['user']['screen_name'] }}</a></span>
                 <a href="https://www.instagram.com/p/{{ $document['_source']['shortcode'] }}/" target="_blank" class="grey-text">https://www.instagram.com/p/{{ $document['_source']['shortcode'] }}/</a>
             </span>
             <img alt="instagram" src="{{ asset('img/logos/instagram.svg') }}" class="align-self-center" style="width: 64px;" />

@@ -497,7 +497,7 @@ class ContentController extends Controller
                         return view('content.media_loading', compact('document'));
                     }
 
-                    $data['user'] = $user;
+                    $data['user'] = $user->data['_source'];
 
                     $title = implode(' / ', [ 'Instagram', 'Medya', '#'.$es_id ]);
                 break;

@@ -19,15 +19,17 @@
             <div class="d-flex">
                 <img class="align-self-center preloader" alt="Yükleniyor..." src="{{ asset('img/preloader.svg') }}" />
                 <img class="align-self-center instagram" alt="Instagram" src="{{ asset('img/logos/instagram.svg') }}" />
-                <span class="align-self-center timer">~</span>
+                <span class="align-self-center timer">0%</span>
             </div>
         </div>
-        <p class="text-line">Kullanıcı verileri Instagram üzerinden güncelleniyor...</p>
-        <p class="text-line">Lütfen bekleyin...</p>
+        <p class="text-line">Kullanıcı verileri Instagram üzerinden gerçek zamanlı olarak güncellenecek!</p>
+        <p class="text-line wait-text">Lütfen bekleyin...</p>
     </div>
 @endsection
 
 @push('local.scripts')
+    var _retryTimer;
+
     function __sync(__, obj)
     {
         if (obj.status == 'ok')
@@ -36,6 +38,22 @@
             $('.timer').data('wait', obj.wait)
 
             __timer()
+        }
+        else
+        {
+            if (obj.retry)
+            {
+                window.clearTimeout(_retryTimer)
+
+                _retryTimer = window.setTimeout(function() {
+                    vzAjax($('.loader-table'))
+                }, 4000)
+            }
+
+            if (obj.kill)
+            {
+                $('.wait-text').html(obj.message)
+            }
         }
     }
 

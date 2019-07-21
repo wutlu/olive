@@ -125,15 +125,17 @@ class DataController extends Controller
                 {
                     return [
                         'status' => 'err',
-                        'message' => 'Kullanıcı profiline ulaşılamıyor.'
+                        'message' => 'Kullanıcı profiline ulaşılamıyor.',
+                        'kill' => true
                     ];
                 }
             }
             else
             {
                 return [
-                    'status' => 'retry',
-                    'message' => 'Bağlantı hatası! Tekrar deneniyor.'
+                    'status' => 'err',
+                    'message' => 'Bağlantı hatası! Tekrar deneniyor.',
+                    'retry' => true
                 ];
             }
 
@@ -146,7 +148,8 @@ class DataController extends Controller
         {
             return [
                 'status' => 'err',
-                'message' => 'Kullanıcı profiline ulaşılamıyor.'
+                'message' => 'Kullanıcı profiline ulaşılamıyor.',
+                'kill' => true
             ];
         }
     }
