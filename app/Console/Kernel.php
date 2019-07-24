@@ -73,7 +73,7 @@ class Kernel extends ConsoleKernel
             $schedule->command('nohup "instagram:self:trigger" --type=restart')
                       ->everyMinute()
                       ->timezone(config('app.timezone'))
-                      ->skip(function() use($key) {
+                      ->skip(function() {
                             return SystemUtility::option('instagram.status') != 'on';
                       });
 
