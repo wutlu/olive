@@ -569,9 +569,9 @@ class Detect extends Command
                     'must' => [
                         [
                             'nested' => [
-                                'path' => 'hashtags',
+                                'path' => 'entities.hashtags',
                                 'query' => [
-                                    'bool' => [ 'must' => [ [ 'exists' => [ 'field' => 'hashtags.hashtag' ] ] ] ]
+                                    'bool' => [ 'must' => [ [ 'exists' => [ 'field' => 'entities.hashtags.hashtag' ] ] ] ]
                                 ]
                             ]
                         ]
