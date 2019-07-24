@@ -580,11 +580,11 @@ class Detect extends Command
             ],
             'aggs' => [
                 'hashtags' => [
-                    'nested' => [ 'path' => 'hashtags' ],
+                    'nested' => [ 'path' => 'entities.hashtags' ],
                     'aggs' => [
                         'hit_items' => [
                             'terms' => [
-                                'field' => 'hashtags.hashtag',
+                                'field' => 'entities.hashtags.hashtag',
                                 'size' => 50,
                                 'min_doc_count' => 4,
                                 'exclude' => $except
