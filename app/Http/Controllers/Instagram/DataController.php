@@ -77,6 +77,7 @@ class DataController extends Controller
             }
 
             $client = $client->get('api/v1/users/'.$request->id.'/info', $arr);
+
             $array = json_decode($client->getBody(), true);
 
             $dateUtility = new DateUtility;
@@ -90,16 +91,18 @@ class DataController extends Controller
 
                 if ($data->status == 'ok')
                 {
-                    $bulk = [];
+                    $bulk = [
+                        'body' => []
+                    ];
 
-                        $bulk['body'][] = [
-                            'create' => [
-                                '_index' => Indices::name([ 'instagram', 'users' ]),
-                                '_type' => 'user',
-                                '_id' => $data->user['id']
-                            ]
-                        ];
-                        $bulk['body'][] = $data->user;
+                    $bulk['body'][] = [
+                        'create' => [
+                            '_index' => Indices::name([ 'instagram', 'users' ]),
+                            '_type' => 'user',
+                            '_id' => $data->user['id']
+                        ]
+                    ];
+                    $bulk['body'][] = $data->user;
 
                     if (count($data->data))
                     {
@@ -119,13 +122,16 @@ class DataController extends Controller
                         }
                     }
 
-                    BulkInsertJob::dispatch($bulk)->onQueue('elasticsearch');
+                    if (count($bulk['body']))
+                    {
+                        BulkInsertJob::dispatch($bulk)->onQueue('elasticsearch');
+                    }
                 }
                 else
                 {
                     return [
                         'status' => 'err',
-                        'message' => 'Kullanıcı profiline ulaşılamıyor.',
+                        'message' => 'Kullanıcı profiline ulaşılamıyor. (1)',
                         'kill' => true
                     ];
                 }
@@ -148,7 +154,7 @@ class DataController extends Controller
         {
             return [
                 'status' => 'err',
-                'message' => 'Kullanıcı profiline ulaşılamıyor.',
+                'message' => 'Kullanıcı profiline ulaşılamıyor. (2)'.$e->getMessage(),
                 'kill' => true
             ];
         }

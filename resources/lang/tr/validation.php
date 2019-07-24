@@ -288,7 +288,7 @@ $arr = [
         'value_login'                     => 'E-posta veya Kullanıcı Adı',
 
         'user_name'                       => 'Kullanıcı Adı',
-        'screen_name'                     => 'Görünen Ad',
+        'screen_name'                     => 'Kullanıcı Adı',
         'organisation_name'               => 'Organizasyon Adı',
 
         'user_capacity'                   => 'Kullanıcı Kapasitesi',

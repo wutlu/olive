@@ -43,7 +43,7 @@
             @if (@$data['keywords'])
                 <div id="words"></div> 
             @else
-                <span class="chip red white-text">Tespit Edilemedi</span>
+                @component('components.nothing')@endcomponent
             @endif
         </div>
     </div>

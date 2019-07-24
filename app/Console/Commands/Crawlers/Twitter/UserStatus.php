@@ -106,8 +106,11 @@ class UserStatus extends Command
                 }
                 catch (\Exception $e)
                 {
-                    $tuser->reason = 'Hesap Silinmiş';
-                    $tuser->status = false;
+                    if ($e->getCode() == 404)
+                    {
+                        $tuser->reason = 'Hesap Silinmiş';
+                        $tuser->status = false;
+                    }
                 }
 
                 $tuser->updated_at = date('Y-m-d H:i:s');

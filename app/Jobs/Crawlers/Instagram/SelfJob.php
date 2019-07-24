@@ -60,7 +60,9 @@ class SelfJob implements ShouldQueue
                 $self->reason = null;
                 $self->status = true;
 
-                $bulk = [];
+                $bulk = [
+                    'body' => []
+                ];
 
                 if ($self->method == 'user')
                 {
@@ -92,7 +94,10 @@ class SelfJob implements ShouldQueue
                     }
                 }
 
-                BulkInsertJob::dispatch($bulk)->onQueue('elasticsearch');
+                if (count($bulk['body']))
+                {
+                    BulkInsertJob::dispatch($bulk)->onQueue('elasticsearch');
+                }
             }
             else
             {

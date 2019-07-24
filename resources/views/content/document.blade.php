@@ -43,7 +43,7 @@
             @if (@$data['keywords'])
                 <div id="words"></div> 
             @else
-                <span class="chip red white-text">Tespit Edilemedi</span>
+                @component('components.nothing')@endcomponent
             @endif
         </div>
     </div>
@@ -52,7 +52,7 @@
 @include('content._inc.histogram', [
     'charts' => [
         [
-            'type' => 'article',
+            'type' => 'document',
             'period' => 'daily',
             'title' => 'Günlük Makale Paylaşımı',
             'id' => $data['crawler']->id,
@@ -61,7 +61,7 @@
             'active' => true
         ],
         [
-            'type' => 'article',
+            'type' => 'document',
             'period' => 'hourly',
             'title' => 'Saatlik Makale Paylaşımı',
             'id' => $data['crawler']->id,
@@ -163,7 +163,7 @@
             if (obj.hits.length)
             {
                 $.each(obj.hits, function(key, o) {
-                    var item = item_model.clone().html(_article_(o));
+                    var item = item_model.clone().html(_document_(o));
                         item.removeClass('model hide').addClass('_tmp').attr('data-id', o.id)
                         item.appendTo(ul)
                 })

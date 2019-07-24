@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Instagram;
+use App\Utilities\DateUtility;
 
 class TestController extends Controller
 {
     public static function test()
     {
         $instagram = new Instagram;
-        $connect = $instagram->connect('https://www.instagram.com/ekremimamoglu/');
+        $connect = $instagram->connect('https://www.instagram.com/wutlu.php/');
 
         if ($connect->status == 'ok')
         {

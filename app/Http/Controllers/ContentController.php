@@ -72,6 +72,7 @@ class ContentController extends Controller
     public static function module(string $es_index, string $es_type, string $es_id)
     {
         $organisation = auth()->user()->organisation;
+        $days = $organisation->historical_days;
 
         $document = Document::get($es_index, $es_type, $es_id);
 
@@ -492,7 +493,16 @@ class ContentController extends Controller
 
                     $user = Document::get([ 'instagram', 'users' ], 'user', $document['_source']['user']['id']);
 
-                    if ($user->status != 'ok')
+                    if ($user->status == 'ok')
+                    {
+                        $called_at = date('Y-m-d H:i:s', strtotime($user->data['_source']['called_at']));
+
+                        if ($called_at <= date('Y-m-d H:i:s', strtotime('-2 days')))
+                        {
+                            return view('content.media_loading', compact('document'));
+                        }
+                    }
+                    else
                     {
                         return view('content.media_loading', compact('document'));
                     }
@@ -532,20 +542,30 @@ class ContentController extends Controller
         {
             $data = [
                 'query' => [
-                    'nested' => [
-                        'path' => 'entities.mentions',
-                        'query' => [
-                            'bool' => [
-                                'filter' => [
-                                    [
-                                        'range' => [
-                                            'created_at' => [
-                                                'format' => 'YYYY-MM-dd',
-                                                'gte' => date('Y-m-d', strtotime('-'.$days.' days'))
+                    'bool' => [
+                        'filter' => [
+                            [
+                                'range' => [
+                                    'created_at' => [
+                                        'format' => 'YYYY-MM-dd',
+                                        'gte' => date('Y-m-d', strtotime('-'.$days.' days'))
+                                    ]
+                                ]
+                            ],
+                            [
+                                'nested' => [
+                                    'path' => 'entities.mentions',
+                                    'query' => [
+                                        'bool' => [
+                                            'filter' => [
+                                                [
+                                                    'match' => [
+                                                        'entities.mentions.mention.id' => $user_id
+                                                    ]
+                                                ]
                                             ]
                                         ]
-                                    ],
-                                    [ 'match' => [ 'entities.mentions.mention.id' => $user_id ] ]
+                                    ]
                                 ]
                             ]
                         ]
@@ -683,6 +703,140 @@ class ContentController extends Controller
     }
 
     /**
+     * media Aggregations
+     *
+     * @return array
+     */
+    public static function mediaAggregation(string $type, int $user_id)
+    {
+        $days = auth()->user()->organisation->historical_days;
+
+        $user = Document::get([ 'instagram', 'users' ], 'user', $user_id);
+        $user = $user->data['_source'];
+
+        if ($type == 'mention_in')
+        {
+            $data = [
+                'query' => [
+                    'bool' => [
+                        'filter' => [
+                            [
+                                'range' => [
+                                    'created_at' => [
+                                        'format' => 'YYYY-MM-dd',
+                                        'gte' => date('Y-m-d', strtotime('-'.$days.' days'))
+                                    ]
+                                ]
+                            ],
+                            [
+                                'nested' => [
+                                    'path' => 'entities.mentions',
+                                    'query' => [
+                                        'bool' => [
+                                            'filter' => [
+                                                [
+                                                    'match' => [
+                                                        'entities.mentions.mention.screen_name' => $user['screen_name']
+                                                    ]
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+                'size' => 0
+            ];
+        }
+        else
+        {
+            $data = [
+                'query' => [
+                    'bool' => [
+                        'filter' => [
+                            [
+                                'range' => [
+                                    'created_at' => [
+                                        'format' => 'YYYY-MM-dd',
+                                        'gte' => date('Y-m-d', strtotime('-'.$days.' days'))
+                                    ]
+                                ]
+                            ],
+                            [ 'match' => [ 'user.id' => $user['id'] ] ]
+                        ]
+                    ]
+                ],
+                'size' => 0
+            ];
+        }
+
+        switch ($type)
+        {
+            case 'places':
+                $data['aggs']['places'] = [
+                    'terms' => [
+                        'field' => 'place.name'
+                    ]
+                ];
+            break;
+            case 'mention_out':
+                $data['aggs']['mention_out'] = [
+                    'nested' => [ 'path' => 'entities.mentions' ],
+                    'aggs' => [
+                        'hit_items' => [
+                            'terms' => [
+                                'field' => 'entities.mentions.mention.screen_name',
+                                'size' => 15
+                            ]
+                        ]
+                    ]
+                ];
+            break;
+            case 'hashtags':
+                $data['aggs']['hashtags'] = [
+                    'nested' => [ 'path' => 'entities.hashtags' ],
+                    'aggs' => [
+                        'hit_items' => [
+                            'terms' => [
+                                'field' => 'entities.hashtags.hashtag',
+                                'size' => 15
+                            ]
+                        ]
+                    ]
+                ];
+            break;
+            case 'mention_in':
+                $data['aggs']['mention_in'] = [
+                    'terms' => [
+                        'field' => 'user.id',
+                        'size' => 15
+                    ]
+                ];
+            break;
+        }
+
+        $data = Document::search([ 'instagram', 'medias', '*' ], 'media', $data);
+
+        switch ($type)
+        {
+            case 'mention_out':
+            case 'hashtags':
+                $data = $data->data['aggregations'][$type]['hit_items']['buckets'];
+            break;
+            default:
+                $data = $data->data['aggregations'][$type]['buckets'];
+            break;
+        }
+
+        return [
+            'status' => 'ok',
+            'data' => $data
+        ];
+    }
+
+    /**
      * video Aggregations
      *
      * @return array
@@ -722,6 +876,8 @@ class ContentController extends Controller
      */
     public static function histogram(string $type, string $period, string $es_id, string $es_index_key = 'xxx')
     {
+        $days = auth()->user()->organisation->historical_days;
+
         switch ($period)
         {
             case 'hourly':
@@ -736,6 +892,16 @@ class ContentController extends Controller
             'size' => 0,
             'query' => [
                 'bool' => [
+                    'filter' => [
+                        [
+                            'range' => [
+                                'created_at' => [
+                                    'format' => 'YYYY-MM-dd',
+                                    'gte' => date('Y-m-d', strtotime('-'.$days.' days'))
+                                ]
+                            ]
+                        ]
+                    ],
                     'must' => [
                         [ 'exists' => [ 'field' => 'created_at' ] ]
                     ]
@@ -864,7 +1030,7 @@ class ContentController extends Controller
             case 'tweet':
                 $doc = Document::get([ 'twitter', 'tweets', $es_index_key ], 'tweet', $es_id);
 
-                if ($doc->status = 'ok')
+                if ($doc->status == 'ok')
                 {
                     $arr['query']['bool']['must'][] = [
                         'match' => [
@@ -878,7 +1044,7 @@ class ContentController extends Controller
             case 'media':
                 $doc = Document::get([ 'instagram', 'medias', $es_index_key ], 'media', $es_id);
 
-                if ($doc->status = 'ok')
+                if ($doc->status == 'ok')
                 {
                     $arr['query']['bool']['must'][] = [
                         'match' => [

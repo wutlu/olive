@@ -123,7 +123,33 @@ class Selves extends Model
                                 ],
                                 'user' => [
                                     'properties' => [
-                                        'id' => [ 'type' => 'long' ]
+                                        'id' => [ 'type' => 'long' ],
+                                        'name' => [ 'type' => 'keyword' ],
+                                        'screen_name' => [ 'type' => 'keyword' ],
+                                        'gender' => [ 'type' => 'keyword' ],
+                                        'image' => [
+                                            'type' => 'keyword',
+                                            'index' => false
+                                        ],
+                                        'description' => [
+                                            'type' => 'text',
+                                            'analyzer' => 'turkish',
+                                            'fielddata' => true
+                                        ],
+                                        'created_at' => [
+                                            'type' => 'date',
+                                            'format' => 'YYYY-MM-dd HH:mm:ss'
+                                        ],
+                                        'location' => [ 'type' => 'keyword' ],
+                                        'lang' => [ 'type' => 'keyword' ],
+                                        'verified' => [ 'type' => 'boolean' ],
+                                        'protected' => [ 'type' => 'boolean' ]
+                                    ]
+                                ],
+                                'counts' => [
+                                    'properties' => [
+                                        'hashtag' => [ 'type' => 'integer' ],
+                                        'mention' => [ 'type' => 'integer' ]
                                     ]
                                 ],
                                 'type' => [ 'type' => 'keyword' ],
@@ -144,16 +170,22 @@ class Selves extends Model
                                 ],
                                 'entities' => [
                                     'properties' => [
-                                        'mentions' => [
-                                            'type' => 'nested',
-                                            'properties' => [
-                                                'mention' => [ 'type' => 'keyword' ]
-                                            ]
-                                        ],
                                         'hashtags' => [
                                             'type' => 'nested',
                                             'properties' => [
                                                 'hashtag' => [ 'type' => 'keyword' ]
+                                            ]
+                                        ],
+                                        'mentions' => [
+                                            'type' => 'nested',
+                                            'properties' => [
+                                                'mention' => [
+                                                    'properties' => [
+                                                        'id' => [ 'type' => 'long' ],
+                                                        'name' => [ 'type' => 'keyword' ],
+                                                        'screen_name' => [ 'type' => 'keyword' ]
+                                                    ]
+                                                ]
                                             ]
                                         ]
                                     ]

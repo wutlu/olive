@@ -12,6 +12,7 @@ use App\Models\Proxy;
 use App\Olive\Gender;
 
 use Sentiment;
+use Term;
 
 class Instagram
 {
@@ -114,7 +115,8 @@ class Instagram
                                 'follow' => $graphql->user->edge_follow->count,
                                 'followed_by' => $graphql->user->edge_followed_by->count,
                                 'media' => $graphql->user->edge_owner_to_timeline_media->count
-                            ]
+                            ],
+                            'called_at' => date('Y-m-d H:i:s')
                         ];
 
                         if ($graphql->user->external_url)
@@ -205,12 +207,30 @@ class Instagram
 
                 if (count($hashtags[0]))
                 {
+                    $_hashtags = [];
+
                     foreach ($hashtags[0] as $hashtag)
                     {
+                        $hashtag = Term::convertAscii($hashtag);
+
                         if ($hashtag)
                         {
-                            $arr['entities']['hashtags'][] = [ 'hashtag' => $hashtag ];
+                            if (@$_hashtags[$hashtag])
+                            {
+                                //
+                            }
+                            else
+                            {
+                                $_hashtags[$hashtag] = $hashtag;
+
+                                $arr['entities']['hashtags'][] = [ 'hashtag' => $hashtag ];
+                            }
                         }
+                    }
+
+                    if (count($_hashtags))
+                    {
+                        $arr['counts']['hashtag'] = count($_hashtags);
                     }
                 }
 
@@ -218,12 +238,32 @@ class Instagram
 
                 if (count($mentions[0]))
                 {
+                    $_mentions = [];
+
                     foreach ($mentions[0] as $mention)
                     {
                         if ($mention)
                         {
-                            $arr['entities']['mentions'][] = [ 'mention' => $mention ];
+                            if (@$_mentions[$mention])
+                            {
+                                //
+                            }
+                            else
+                            {
+                                $_mentions[$mention] = $mention;
+
+                                $arr['entities']['mentions'][] = [
+                                    'mention' => [
+                                        'screen_name' => $mention
+                                    ]
+                                ];
+                            }
                         }
+                    }
+
+                    if (count($_mentions))
+                    {
+                        $arr['counts']['mention'] = count($_mentions);
                     }
                 }
             }

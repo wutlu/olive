@@ -17,8 +17,8 @@
             data-id="{{ $document['_source']['user']['id'] }}"
             data-callback="__sync">
             <div class="d-flex">
-                <img class="align-self-center preloader" alt="Yükleniyor..." src="{{ asset('img/preloader.svg') }}" />
                 <img class="align-self-center instagram" alt="Instagram" src="{{ asset('img/logos/instagram.svg') }}" />
+                <img class="align-self-center preloader" alt="Yükleniyor..." src="{{ asset('img/preloader.svg') }}" />
                 <span class="align-self-center timer">0%</span>
             </div>
         </div>
@@ -96,7 +96,7 @@
     .preloader {
         width: 160px;
         height: 20px;
-        margin: 0 -32px 0 0;
+        margin: 0 0 0 -32px;
         position: relative;
     }
     p.text-line {
