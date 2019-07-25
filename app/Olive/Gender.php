@@ -2,6 +2,8 @@
 
 namespace App\Olive;
 
+use Term;
+
 class Gender
 {
     private $males;
@@ -50,8 +52,10 @@ class Gender
 
         foreach ($names as $name)
         {
-            $name = str_slug(kebab_case($name));
+            $name = kebab_case($name);
+            $name = Term::convertAscii($name, [ 'delimiter' => '' ]);
             $name = preg_replace('/(.)\\1+/', '$1', $name);
+
             $explode_name = explode('-', $name);
 
             $arr_names = [];
@@ -64,11 +68,11 @@ class Gender
                     $male = $male + count(preg_grep('~'.$nn.'~', $this->males));
                     $female = $female + count(preg_grep('~'.$nn.'~', $this->females));
 
-                    $male = array_search($n, $this->males) !== false ? $male+5 : $male;
-                    $female = array_search($n, $this->females) !== false ? $female+5 : $female;
+                    $male = array_search($n, $this->males) !== false ? $male+4 : $male;
+                    $female = array_search($n, $this->females) !== false ? $female+4 : $female;
 
-                    $male = str_contains($n, $this->males) ? $male+1 : $male;
-                    $female = str_contains($n, $this->females) ? $female+1 : $female;
+                    $male = str_contains($n, $this->males) ? $male+2 : $male;
+                    $female = str_contains($n, $this->females) ? $female+2 : $female;
 
                     $arr_names[] = $n;
                 }

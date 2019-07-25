@@ -53,9 +53,19 @@ class SelfTrigger extends Command
                         ->orderBy('control_date', 'ASC')
                         ->get();
 
+        $links = [];
+
         if (@$selves)
         {
             foreach ($selves as $self)
+            {
+                $links[md5($self->url)] = $self;
+            }
+        }
+
+        if (count($links))
+        {
+            foreach ($links as $self)
             {
                 $this->info($self->url);
 

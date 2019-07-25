@@ -564,6 +564,9 @@ class Detect extends Command
                                     'gte' => date('Y-m-d H:i', strtotime($time))
                                 ]
                             ]
+                        ],
+                        [
+                            [ 'range' => [ 'counts.hashtag' => [ 'lte' => 5 ] ] ]
                         ]
                     ],
                     'must' => [
@@ -571,11 +574,19 @@ class Detect extends Command
                             'nested' => [
                                 'path' => 'entities.hashtags',
                                 'query' => [
-                                    'bool' => [ 'must' => [ [ 'exists' => [ 'field' => 'entities.hashtags.hashtag' ] ] ] ]
+                                    'bool' => [
+                                        'must' => [
+                                            [ 'exists' => [ 'field' => 'entities.hashtags.hashtag' ] ]
+                                        ]
+                                    ]
                                 ]
                             ]
+                        ],
+                        [
+                            'range' => [ 'illegal.bet' => [ 'lte' => 0.3 ] ],
+                            'range' => [ 'illegal.nud' => [ 'lte' => 0.3 ] ],
                         ]
-                    ]
+                    ],
                 ]
             ],
             'aggs' => [

@@ -6,11 +6,21 @@ use Illuminate\Http\Request;
 
 use App\Instagram;
 use App\Utilities\DateUtility;
+use App\Olive\Gender;
 
 class TestController extends Controller
 {
     public static function test()
     {
+        $gender = new Gender;
+        $gender->loadNames();
+
+        $genders = [ 'Crazzzyy___Senn_*n_aaaa' ];
+
+        $gender = $gender->detector($genders);
+
+        return $gender;
+
         $instagram = new Instagram;
         $connect = $instagram->connect('https://www.instagram.com/wutlu.php/');
 

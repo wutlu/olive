@@ -58,8 +58,8 @@
             <li class="collection-item model hide">
                 <div class="d-flex justify-content-between">
                     <span>
-                        <span data-name="method" class="d-block"></span>
-                        <a href="#" class="grey-text" data-name="id" target="_blank"></a>
+                        <a href="#" data-name="id" target="_blank"></a>
+                        <span data-name="method" class="d-block grey-text"></span>
                         <p class="mb-0" data-name="reason"></p>
                     </span>
                     <span class="right-align">

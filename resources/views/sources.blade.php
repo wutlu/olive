@@ -81,7 +81,12 @@
                 </a>
                 <a href="https://www.instagram.com" target="_blank" class="collection-item">
                     Instagram
-                    <span class="badge red white-text">Pasif</span>
+
+                    @if ($options['instagram.status'] == 'on')
+                        <span class="badge green white-text">Aktif</span>
+                    @else
+                        <span class="badge red white-text">Pasif</span>
+                    @endif
                 </a>
                 <a href="https://twitter.com" target="_blank" class="collection-item">
                     Twitter

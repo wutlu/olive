@@ -45,10 +45,10 @@ class FollowActiveUsers extends Command
      */
     public function handle()
     {
-        $min = 50;
+        $min = 100;
         $size = 1000;
 
-        $query = Document::search([ 'twitter', 'tweets', '*' ], 'tweet', [
+        $query = Document::search([ 'twitter', 'tweets', date('Y.m') ], 'tweet', [
             'aggs' => [
                 'results' => [
                     'terms' => [
@@ -64,15 +64,14 @@ class FollowActiveUsers extends Command
                         [
                             'range' => [
                                 'created_at' => [
-                                    'format' => 'YYYY-MM-dd HH:mm',
-                                    'gte' => Carbon::now()->subDays(2)->format('Y-m-d H:i')
+                                    'format' => 'YYYY-MM-dd',
+                                    'gte' => Carbon::now()->subDays(1)->format('Y-m-d')
                                 ]
                             ]
                         ]
                     ],
                     'must' => [
-                        [ 'match' => [ 'lang' => 'tr' ] ],
-                        [ 'match' => [ 'user.lang' => 'tr' ] ]
+                        [ 'match' => [ 'lang' => 'tr' ] ]
                     ]
                 ]
             ],
@@ -93,11 +92,13 @@ class FollowActiveUsers extends Command
                     'query' => [
                         'bool' => [
                             'should' => $ids,
+                            'minimum_should_match' => 1,
                             'must' => [
                                 [ 'match' => [ 'lang' => 'tr' ] ]
                             ],
                             'must_not' => [
                                 [ 'match' => [ 'user.verified' => true ] ],
+                                [ 'exists' => [ 'field' => 'external.id' ] ],
                                 [
                                     'terms' => [
                                         'user.id' => $users
