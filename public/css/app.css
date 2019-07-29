@@ -2585,98 +2585,102 @@ nav.nav-half {
   -webkit-transition: all 200ms cubic-bezier(.25, .46, .45, .94);
           transition: all 200ms cubic-bezier(.25, .46, .45, .94);
 }
-.data:hover {
-  background-color: #fff;
-  background-size: 24px;
-  background-position: top 8px right 8px;
-
-  -webkit-transform: scale(1.1);
-          transform: scale(1.1);
+.data .title {
+  font-size: 20px;
+  margin: 0 0 .4rem;
 }
+
 .data.blog {
   background-image: url(../img/logos/blog.svg);
   border-color: #F47E04;
 
-  -webkit-box-shadow: 3px 0px 16px 1px rgba(0, 0, 0, .1), 0 0 3px 1px rgba(0, 0, 0, .1), .4rem .4rem 0 0 #F47E04;
-          box-shadow: 3px 0px 16px 1px rgba(0, 0, 0, .1), 0 0 3px 1px rgba(0, 0, 0, .1), .4rem .4rem 0 0 #F47E04;
+  -webkit-box-shadow: .4rem 0 0 0 #F47E04;
+          box-shadow: .4rem 0 0 0 #F47E04;
 }
 .data.news {
   background-image: url(../img/logos/news.svg);
   border-color: #f00;
+
+  -webkit-box-shadow: .4rem 0 0 0 #f00;
+          box-shadow: .4rem 0 0 0 #f00;
 }
 .data.tweet {
   background-image: url(../img/logos/twitter.svg);
   border-color: #1da1f2;
 
-  -webkit-box-shadow: 3px 0px 16px 1px rgba(0, 0, 0, .1), 0 0 3px 1px rgba(0, 0, 0, .1), .4rem .4rem 0 0 #1da1f2;
-          box-shadow: 3px 0px 16px 1px rgba(0, 0, 0, .1), 0 0 3px 1px rgba(0, 0, 0, .1), .4rem .4rem 0 0 #1da1f2;
+  -webkit-box-shadow: .4rem 0 0 0 #1da1f2;
+          box-shadow: .4rem 0 0 0 #1da1f2;
 }
 .data.sozluk {
   background-image: url(../img/logos/unknown.svg);
   border-color: #333;
 
-  -webkit-box-shadow: 3px 0px 16px 1px rgba(0, 0, 0, .1), 0 0 3px 1px rgba(0, 0, 0, .1), .4rem .4rem 0 0 #333;
-          box-shadow: 3px 0px 16px 1px rgba(0, 0, 0, .1), 0 0 3px 1px rgba(0, 0, 0, .1), .4rem .4rem 0 0 #333;
+  -webkit-box-shadow: .4rem 0 0 0 #333;
+          box-shadow: .4rem 0 0 0 #333;
 }
 .data.sozluk.uludag {
   background-image: url(../img/logos/uludag.svg);
   border-color: #754393;
 
-  -webkit-box-shadow: 3px 0px 16px 1px rgba(0, 0, 0, .1), 0 0 3px 1px rgba(0, 0, 0, .1), .4rem .4rem 0 0 #754393;
-          box-shadow: 3px 0px 16px 1px rgba(0, 0, 0, .1), 0 0 3px 1px rgba(0, 0, 0, .1), .4rem .4rem 0 0 #754393;
+  -webkit-box-shadow: .4rem 0 0 0 #754393;
+          box-shadow: .4rem 0 0 0 #754393;
 }
 .data.sozluk.eksi {
   background-image: url(../img/logos/eksi.svg);
   border-color: #7ec344;
 
-  -webkit-box-shadow: 3px 0px 16px 1px rgba(0, 0, 0, .1), 0 0 3px 1px rgba(0, 0, 0, .1), .4rem .4rem 0 0 #7ec344;
-          box-shadow: 3px 0px 16px 1px rgba(0, 0, 0, .1), 0 0 3px 1px rgba(0, 0, 0, .1), .4rem .4rem 0 0 #7ec344;
+  -webkit-box-shadow: .4rem 0 0 0 #7ec344;
+          box-shadow: .4rem 0 0 0 #7ec344;
 }
 .data.sozluk.inci {
   background-image: url(../img/logos/inci.svg);
   border-color: #f1c90c;
 
-  -webkit-box-shadow: 3px 0px 16px 1px rgba(0, 0, 0, .1), 0 0 3px 1px rgba(0, 0, 0, .1), .4rem .4rem 0 0 #f1c90c;
-          box-shadow: 3px 0px 16px 1px rgba(0, 0, 0, .1), 0 0 3px 1px rgba(0, 0, 0, .1), .4rem .4rem 0 0 #f1c90c;
+  -webkit-box-shadow: .4rem 0 0 0 #f1c90c;
+          box-shadow: .4rem 0 0 0 #f1c90c;
 }
 .data.sozluk.instela {
   background-image: url(../img/logos/instela.svg);
   border-color: #1da6b7;
 
-  -webkit-box-shadow: 3px 0px 16px 1px rgba(0, 0, 0, .1), 0 0 3px 1px rgba(0, 0, 0, .1), .4rem .4rem 0 0 #1da6b7;
-          box-shadow: 3px 0px 16px 1px rgba(0, 0, 0, .1), 0 0 3px 1px rgba(0, 0, 0, .1), .4rem .4rem 0 0 #1da6b7;
+  -webkit-box-shadow: .4rem 0 0 0 #1da6b7;
+          box-shadow: .4rem 0 0 0 #1da6b7;
 }
 .data.shopping {
   background-image: url(../img/logos/unknown.svg);
   border-color: #333;
 
-  -webkit-box-shadow: 3px 0px 16px 1px rgba(0, 0, 0, .1), 0 0 3px 1px rgba(0, 0, 0, .1), .4rem .4rem 0 0 #333;
-          box-shadow: 3px 0px 16px 1px rgba(0, 0, 0, .1), 0 0 3px 1px rgba(0, 0, 0, .1), .4rem .4rem 0 0 #333;
+  -webkit-box-shadow: .4rem 0 0 0 #333;
+          box-shadow: .4rem 0 0 0 #333;
 }
 .data.shopping.sahibinden {
   background-image: url(../img/logos/sahibinden.svg);
   border-color: #fff000;
 
-  -webkit-box-shadow: 3px 0px 16px 1px rgba(0, 0, 0, .1), 0 0 3px 1px rgba(0, 0, 0, .1), .4rem .4rem 0 0 #fff000;
-          box-shadow: 3px 0px 16px 1px rgba(0, 0, 0, .1), 0 0 3px 1px rgba(0, 0, 0, .1), .4rem .4rem 0 0 #fff000;
+  -webkit-box-shadow: .4rem 0 0 0 #fff000;
+          box-shadow: .4rem 0 0 0 #fff000;
 }
 .data.youtube {
   background-image: url(../img/logos/youtube.svg);
   border-color: #f00;
 
-  -webkit-box-shadow: 3px 0px 16px 1px rgba(0, 0, 0, .1), 0 0 3px 1px rgba(0, 0, 0, .1), .4rem .4rem 0 0 #f00;
-          box-shadow: 3px 0px 16px 1px rgba(0, 0, 0, .1), 0 0 3px 1px rgba(0, 0, 0, .1), .4rem .4rem 0 0 #f00;
+  -webkit-box-shadow: .4rem 0 0 0 #f00;
+          box-shadow: .4rem 0 0 0 #f00;
 }
 .data.instagram {
   background-image: url(../img/logos/instagram.svg);
   border-color: #FC2B82;
 
-  -webkit-box-shadow: 3px 0px 16px 1px rgba(0, 0, 0, .1), 0 0 3px 1px rgba(0, 0, 0, .1), .4rem .4rem 0 0 #FC2B82;
-          box-shadow: 3px 0px 16px 1px rgba(0, 0, 0, .1), 0 0 3px 1px rgba(0, 0, 0, .1), .4rem .4rem 0 0 #FC2B82;
+  -webkit-box-shadow: .4rem 0 0 0 #FC2B82;
+          box-shadow: .4rem 0 0 0 #FC2B82;
 }
-.data .title {
-  font-size: 20px;
-  margin: 0 0 .4rem;
+.data:hover {
+  background-color: #fff;
+  background-size: 24px;
+  background-position: top 8px right 8px;
+
+  -webkit-transform: scale(1.02);
+          transform: scale(1.02);
 }
 
 /*!
