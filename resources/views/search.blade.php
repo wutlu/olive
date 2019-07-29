@@ -1495,6 +1495,13 @@
     </div>
 @endsection
 
+@push('local.scripts')
+    $(document).on('dblclick', '.module-label', function() {
+        $('input[name=modules]').prop('checked', false)
+        $(this).children('input[type=checkbox]').prop('checked', true)
+    })
+@endpush
+
 @section('dock')
     <div class="card card-unstyled mb-1">
         <div class="collection collection-unstyled">
@@ -1512,7 +1519,7 @@
         <ul class="collection collection-unstyled collapsible">
             @foreach (config('system.modules') as $key => $module)
                 <li class="collection-item">
-                    <label>
+                    <label class="module-label">
                         <input data-update name="modules" checked value="{{ $key }}" data-multiple="true" type="checkbox" />
                         <span>{{ $module }}</span>
                     </label>
