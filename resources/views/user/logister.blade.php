@@ -52,9 +52,7 @@
             <canvas class="overlay bg-overlay" id="bubble"></canvas>
         </div>
         <div class="area flex-fill z-depth-1">
-            <div class="bb-edge mb-2">
-                <a class="bb" href="{{ route('home') }}"></a>
-            </div>
+            <a class="bb" href="{{ route('home') }}"></a>
             <div class="card card-unstyled mx-auto mb-2">
                 <div class="card-tabs">
                     <ul class="tabs tabs-fixed-width">
@@ -129,7 +127,7 @@
                         <div class="input-field">
                             <div class="captcha" data-id="password-captcha"></div>
                         </div>
-                        <button type="submit" class="waves-effect waves-light btn blue-grey">Şifre Gönder</button>
+                        <button type="submit" class="waves-effect waves-light btn blue-grey" style="width: 100%;">Şifre Gönder</button>
                     </form>
                 </div>
             </div>

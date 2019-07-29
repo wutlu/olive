@@ -31,9 +31,6 @@
     }
 
     .time-line > .collection {
-        max-height: 16000px;
-        overflow: hidden;
-
         padding: 0;
 
         border-width: 2px;
