@@ -77,7 +77,7 @@ function __joints(o)
 function _tweet_(o)
 {
     var tweet = $('<div />', {
-        'class': 'data',
+        'class': 'data tweet',
         'html': [
             $('<div />', {
                 'class': 'd-flex mb-1',
@@ -182,7 +182,7 @@ function _tweet_(o)
 function _media_(o)
 {
     var media = $('<div />', {
-        'class': 'data',
+        'class': 'data instagram',
         'html': [
             $('<div />', {
                 'class': 'media-area mb-1',
@@ -227,12 +227,12 @@ function _media_(o)
 
 function _entry_(o)
 {
-    return $('<div />', {
-        'class': 'data',
+    var entry = $('<div />', {
+        'class': 'data sozluk',
         'html': [
             $('<span />', {
                 'html': o.title,
-                'class': 'd-table blue-text title text-area'
+                'class': 'd-table title text-area'
             }),
             $('<span />', {
                 'html': o.author,
@@ -253,12 +253,31 @@ function _entry_(o)
             })
         ]
     })
+
+    if (o.url.indexOf('eksisozluk.com') != -1)
+    {
+        entry.addClass('eksi')
+    }
+    else if (o.url.indexOf('incisozluk.com.tr') != -1)
+    {
+        entry.addClass('inci')
+    }
+    else if (o.url.indexOf('instela.com') != -1)
+    {
+        entry.addClass('instela')
+    }
+    else if (o.url.indexOf('uludagsozluk.com') != -1)
+    {
+        entry.addClass('uludag')
+    }
+
+    return entry;
 }
 
 function _article_(o)
 {
     var article = $('<div />', {
-        'class': 'data',
+        'class': 'data news',
         'html': [
             $('<div />', {
                 'class': 'd-flex',
@@ -271,7 +290,7 @@ function _article_(o)
                         'html': [
                             $('<span />', {
                                 'html': o.title,
-                                'class': 'd-table blue-text title text-area'
+                                'class': 'd-table title text-area'
                             }),
                             $('<span />', {
                                 'html': o.text,
@@ -315,7 +334,7 @@ function _article_(o)
 function _document_(o)
 {
     var article_blog = $('<div />', {
-        'class': 'data',
+        'class': 'data blog',
         'html': [
             $('<div />', {
                 'class': 'd-flex',
@@ -328,7 +347,7 @@ function _document_(o)
                         'html': [
                             $('<span />', {
                                 'html': o.title,
-                                'class': 'd-table blue-text title text-area'
+                                'class': 'd-table title text-area'
                             }),
                             $('<span />', {
                                 'html': o.text,
@@ -371,12 +390,12 @@ function _document_(o)
 
 function _product_(o)
 {
-    return $('<div />', {
-        'class': 'data',
+    var product = $('<div />', {
+        'class': 'data shopping',
         'html': [
             $('<span />', {
                 'html': o.title,
-                'class': 'd-table blue-text title text-area'
+                'class': 'd-table title text-area'
             }),
             $('<span />', {
                 'html': o.text ? o.text : 'Açıklama Yok',
@@ -393,12 +412,19 @@ function _product_(o)
             })
         ]
     })
+
+    if (o.url.indexOf('sahibinden.com') != -1)
+    {
+        entry.addClass('sahibinden')
+    }
+
+    return product;
 }
 
 function _comment_(o)
 {
     return $('<div />', {
-        'class': 'data',
+        'class': 'data youtube comment',
         'html': [
             $('<a />', {
                 'html': o.channel.title,
@@ -425,7 +451,7 @@ function _comment_(o)
 function _video_(o)
 {
     return $('<div />', {
-        'class': 'data',
+        'class': 'data youtube video',
         'html': [
             $('<div />', {
                 'class': 'd-flex',
@@ -444,7 +470,7 @@ function _video_(o)
                         'html': [
                             $('<span />', {
                                 'html': o.title,
-                                'class': 'd-table blue-text title text-area'
+                                'class': 'd-table title text-area'
                             }),
                             $('<a />', {
                                 'html': o.channel.title,

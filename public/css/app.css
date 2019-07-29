@@ -2574,7 +2574,73 @@ nav.nav-half {
 .data {
   margin: 0 -1rem;
   padding: 1rem;
+
   word-wrap: anywhere;
+
+  background-repeat: no-repeat;
+  background-position: top .4rem right .4rem;
+  background-size: 32px;
+
+  border-width: 0 .4rem 0 0;
+  border-style: solid;
+  border-color: transparent;
+  border-radius: 0 .4rem .4rem 0;
+
+  -webkit-transition: all 200ms cubic-bezier(.25, .46, .45, .94);
+          transition: all 200ms cubic-bezier(.25, .46, .45, .94);
+}
+.data:hover {
+  background-color: #fff;
+  border-width: 0 1rem 0 0;
+  box-shadow: -.4rem 0 1rem 1px rgba(0, 0, 0, .2);
+}
+.data.blog {
+  background-image: url(../img/logos/blog.svg);
+  border-color: #F47E04;
+}
+.data.news {
+  background-image: url(../img/logos/news.svg);
+  border-color: #f00;
+}
+.data.tweet {
+  background-image: url(../img/logos/twitter.svg);
+  border-color: #1da1f2;
+}
+.data.sozluk {
+  background-image: url(../img/logos/unknown.svg);
+  border-color: #333;
+}
+.data.sozluk.uludag {
+  background-image: url(../img/logos/uludag.svg);
+  border-color: #754393;
+}
+.data.sozluk.eksi {
+  background-image: url(../img/logos/eksi.svg);
+  border-color: #7ec344;
+}
+.data.sozluk.inci {
+  background-image: url(../img/logos/inci.svg);
+  border-color: #f1c90c;
+}
+.data.sozluk.instela {
+  background-image: url(../img/logos/instela.svg);
+  border-color: #1da6b7;
+}
+.data.shopping {
+  background-image: url(../img/logos/unknown.svg);
+  border-color: #333;
+}
+.data.shopping.sahibinden {
+  background-image: url(../img/logos/sahibinden.svg);
+  border-color: #fff000;
+}
+.data.youtube {
+  background-image: url(../img/logos/youtube.svg);
+  border-color: #f00;
+}
+.data.instagram {
+  background-image: url(../img/logos/instagram.svg);
+  border-color: #FC2B82;
 }
 .data .title {
   font-size: 20px;
