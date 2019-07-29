@@ -303,7 +303,7 @@
 
                 if ($('input[name=sound_alert]').prop('checked') == true)
                 {
-                    $.playSound('{{ asset('alert-message.mp3') }}')
+                    $.playSound('{{ asset('alert-message.mp3?v2') }}')
                 }
 
                 item.find('[data-button=view]')
