@@ -2,102 +2,145 @@
     'footer_hide' => true
 ])
 
-@section('content')
-    <div class="d-table mx-auto pt-2 mt-2 pb-2 mb-2">
-        <div class="bb-edge mb-2">
-            <a class="bb" href="{{ route('home') }}"></a>
-        </div>
-        <div class="card mx-auto mb-2" style="max-width: 300px;">
-            <div class="card-tabs">
-                <ul class="tabs tabs-fixed-width">
-                    <li class="tab">
-                        <a href="#tab-giris" class="active waves-effect waves-light">Giriş</a>
-                    </li>
-                    @if (config('system.user.registration'))
-                        <li class="tab">
-                            <a href="#tab-kaydol" class="waves-effect waves-light">Kayıt</a>
-                        </li>
-                    @endif
-                    <li class="tab">
-                        <a href="#tab-sifre" class="waves-effect waves-light">Şifre</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="card-content white" id="tab-giris">
-                <form id="login-form" data-callback="__login" action="{{ route('user.login') }}" method="post" class="json">
-                    <div class="input-field">
-                        <input name="value_login" id="value_login" type="text" class="validate" />
-                        <label for="value_login">E-posta veya Kullanıcı Adı</label>
-                        <span class="helper-text">E-posta adresiniz veya kullanıcı adınız.</span>
-                    </div>
-                    <div class="input-field">
-                        <input name="password_login" id="password_login" type="password" class="validate" />
-                        <label for="password_login">Şifre</label>
-                        <span class="helper-text">Hesap şifreniz.</span>
-                    </div>
-                    <div class="right-align">
-                        <button type="submit" class="waves-effect waves-light btn-flat">Giriş Yap</button>
-                    </div>
-                </form>
-            </div>
+@push('local.styles')
+    body {
+        overflow: hidden;
+    }
+    .main {
+        height: 100vh;
+    }
+    .main > .spot {
+        background-image: url('{{ $photo['img'] }}');
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: relative;
+    }
+    .main > .spot > .text {
+        position: absolute;
+        right: 1rem;
+        bottom: 1rem;
+        color: #fff;
+        font-size: 24px;
+        text-transform: uppercase;
+    }
+    .main > .area {
+        max-width: 400px;
+        padding: 4rem 2rem;
+        background-color: #fff;
+        overflow: auto;
+    }
 
-            @if (config('system.user.registration'))
-                <div class="card-content white" id="tab-kaydol" style="display: none;">
-                    <form id="register-form" data-callback="__register" action="{{ route('user.register') }}" method="put" class="json">
+    @media (max-width: 1024px) {
+        .main > .spot {
+            display: none;
+        }
+        .main > .area {
+            max-width: 100%;
+        }
+    }
+    canvas#bubble {
+        width: 100%;
+        height: 100%;
+        background-color: rgba(70, 70, 120, .4);
+    }
+@endpush
+
+@section('content')
+    <div class="main d-flex">
+        <div class="spot flex-fill">
+            <div class="text">{{ $photo['text'] }}</div>
+            <canvas class="overlay bg-overlay" id="bubble"></canvas>
+        </div>
+        <div class="area flex-fill z-depth-1">
+            <div class="bb-edge mb-2">
+                <a class="bb" href="{{ route('home') }}"></a>
+            </div>
+            <div class="card card-unstyled mx-auto mb-2">
+                <div class="card-tabs">
+                    <ul class="tabs tabs-fixed-width">
+                        <li class="tab">
+                            <a href="#tab-giris" class="active waves-effect waves-light">Giriş</a>
+                        </li>
+                        @if (config('system.user.registration'))
+                            <li class="tab">
+                                <a href="#tab-kaydol" class="waves-effect waves-light">Kayıt</a>
+                            </li>
+                        @endif
+                        <li class="tab">
+                            <a href="#tab-sifre" class="waves-effect waves-light">Şifre</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-content white" id="tab-giris">
+                    <form id="login-form" data-callback="__login" action="{{ route('user.login') }}" method="post" class="json">
                         <div class="input-field">
-                            <input name="email" id="email" type="email" class="validate" />
-                            <label for="email">E-posta</label>
-                            <span class="helper-text">E-posta adresiniz.</span>
+                            <input name="value_login" id="value_login" type="text" class="validate" />
+                            <label for="value_login">E-posta veya Kullanıcı Adı</label>
+                            <span class="helper-text">E-posta adresiniz veya kullanıcı adınız.</span>
                         </div>
                         <div class="input-field">
-                            <input name="password" id="password" type="password" class="validate" />
-                            <label for="password">Şifre</label>
+                            <input name="password_login" id="password_login" type="password" class="validate" />
+                            <label for="password_login">Şifre</label>
                             <span class="helper-text">Hesap şifreniz.</span>
                         </div>
-                        <div class="input-field">
-                            <input name="name" id="name" type="text" class="validate" />
-                            <label for="name">Kullanıcı Adı</label>
-                            <span class="helper-text">Eşsiz kullanıcı adınız.</span>
-                        </div>
-                        <div class="input-field">
-                            <div class="captcha" data-id="register-captcha"></div>
-                        </div>
-                        <label>
-                            <input name="terms" type="checkbox" value="1" />
-                            <span>
-                                <a target="_blank" href="{{ route('page.view', 'kullanim-kosullari') }}">Kullanım Koşulları</a> ve <a target="_blank" href="{{ route('page.view', 'gizlilik-politikasi') }}">Gizlilik Politikası</a> sayfalarındaki maddeleri okudum, kabul ediyorum.
-                            </span>
-                        </label>
-                        <div class="right-align">
-                            <button type="submit" class="waves-effect waves-light btn-flat">Kaydol</button>
-                        </div>
+                        <button type="submit" class="waves-effect waves-light btn blue-grey" style="width: 100%;">Giriş Yap</button>
                     </form>
                 </div>
-            @endif
 
-            <div class="card-content white" id="tab-sifre" style="display: none;">
-                <form id="password-form" data-callback="__password" action="{{ route('user.password') }}" method="post" class="json">
-                    <div class="input-field">
-                        <input name="email_password" id="email_password" type="email" class="validate" />
-                        <label for="email_password">E-posta</label>
-                        <span class="helper-text">Sisteme kayıtlı e-posta adresiniz.</span>
+                @if (config('system.user.registration'))
+                    <div class="card-content white" id="tab-kaydol" style="display: none;">
+                        <form id="register-form" data-callback="__register" action="{{ route('user.register') }}" method="put" class="json">
+                            <div class="input-field">
+                                <input name="email" id="email" type="email" class="validate" />
+                                <label for="email">E-posta</label>
+                                <span class="helper-text">E-posta adresiniz.</span>
+                            </div>
+                            <div class="input-field">
+                                <input name="password" id="password" type="password" class="validate" />
+                                <label for="password">Şifre</label>
+                                <span class="helper-text">Hesap şifreniz.</span>
+                            </div>
+                            <div class="input-field">
+                                <input name="name" id="name" type="text" class="validate" />
+                                <label for="name">Kullanıcı Adı</label>
+                                <span class="helper-text">Eşsiz kullanıcı adınız.</span>
+                            </div>
+                            <div class="input-field">
+                                <div class="captcha" data-id="register-captcha"></div>
+                            </div>
+                            <label>
+                                <input name="terms" type="checkbox" value="1" />
+                                <span>
+                                    <a target="_blank" href="{{ route('page.view', 'kullanim-kosullari') }}">Kullanım Koşulları</a> ve <a target="_blank" href="{{ route('page.view', 'gizlilik-politikasi') }}">Gizlilik Politikası</a> sayfalarındaki maddeleri okudum, kabul ediyorum.
+                                </span>
+                            </label>
+                            <button type="submit" class="waves-effect waves-light btn blue-grey mt-1" style="width: 100%;">Kaydol</button>
+                        </form>
                     </div>
-                    <div class="input-field">
-                        <div class="captcha" data-id="password-captcha"></div>
-                    </div>
-                    <div class="right-align">
-                        <button type="submit" class="waves-effect waves-light btn-flat">Şifre Gönder</button>
-                    </div>
-                </form>
+                @endif
+
+                <div class="card-content white" id="tab-sifre" style="display: none;">
+                    <form id="password-form" data-callback="__password" action="{{ route('user.password') }}" method="post" class="json">
+                        <div class="input-field">
+                            <input name="email_password" id="email_password" type="email" class="validate" />
+                            <label for="email_password">E-posta</label>
+                            <span class="helper-text">Sisteme kayıtlı e-posta adresiniz.</span>
+                        </div>
+                        <div class="input-field">
+                            <div class="captcha" data-id="password-captcha"></div>
+                        </div>
+                        <button type="submit" class="waves-effect waves-light btn blue-grey">Şifre Gönder</button>
+                    </form>
+                </div>
             </div>
+            <p class="blue-grey-text">{{ date('Y') }} © <a href="https://veri.zone/" target="_blank">Veri Zone</a> Bilişim Teknolojileri ve Danışmanlık Ltd. Şti.</p>
         </div>
-
-        <p class="grey-text pl-1 pr-1">{{ date('Y') }} © <a href="https://veri.zone/">Veri Zone</a> Bilişim Teknolojileri ve Danışmanlık Ltd. Şti.</p>
     </div>
 @endsection
 
 @push('external.include.footer')
     <script src='//www.google.com/recaptcha/api.js'></script>
+    <script src="{{ asset('js/bubble.min.js?v='.config('system.version')) }}"></script>
 @endpush
 
 @push('local.scripts')

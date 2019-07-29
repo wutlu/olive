@@ -321,7 +321,7 @@ class Kernel extends ConsoleKernel
                          ->daily()
                          ->timezone(config('app.timezone'))
                          ->withoutOverlapping(1)
-                         ->skip(function() {
+                         ->skip(function() use ($key) {
                             return SystemUtility::option($key.'.index.auto') != 'on';
                          });
             }

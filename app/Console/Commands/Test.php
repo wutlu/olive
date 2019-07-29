@@ -46,8 +46,5 @@ class Test extends Command
      */
     public function handle()
     {
-        $except = TwitterBlockedTrendKeywords::pluck('keyword')->toArray();
-
-        echo implode(' || ', $except);
     }
 }

@@ -121,7 +121,34 @@ class UserController extends Controller
      */
     public static function loginView()
     {
-    	return view('user.logister');
+        $photos = [
+            [
+                'img' => asset('img/photo/galata.jpeg'),
+                'text' => 'Galata Kulesi / İstanbul'
+            ],
+            [
+                'img' => asset('img/photo/akseki.jpeg'),
+                'text' => 'Ahmet Hamdi Akseki Camii / Ankara'
+            ],
+            [
+                'img' => asset('img/photo/gazi.jpeg'),
+                'text' => 'Anıtkabir / Ankara'
+            ],
+            [
+                'img' => asset('img/photo/bogaz.jpeg'),
+                'text' => 'İstanbul Boğazı / İstanbul'
+            ],
+            [
+                'img' => asset('img/photo/cay.jpeg'),
+                'text' => 'Çay'
+            ]
+        ];
+
+        shuffle($photos);
+
+        $photo = $photos[0];
+
+    	return view('user.logister', compact('photo'));
     }
 
     /**
