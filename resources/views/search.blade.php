@@ -1496,9 +1496,14 @@
 @endsection
 
 @push('local.scripts')
-    $(document).on('dblclick', '.module-label', function() {
+    $(document).on('dblclick', '.module-label', function(e) {
         $('input[name=modules]').prop('checked', false)
         $(this).children('input[type=checkbox]').prop('checked', true)
+
+        var search = $('ul#search');
+            search.data('skip', 0).addClass('json-clear');
+
+        vzAjax(search)
     })
 @endpush
 
