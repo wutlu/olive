@@ -415,7 +415,7 @@ function _product_(o)
 
     if (o.url.indexOf('sahibinden.com') != -1)
     {
-        entry.addClass('sahibinden')
+        product.addClass('sahibinden')
     }
 
     return product;
