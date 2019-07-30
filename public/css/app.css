@@ -2026,7 +2026,6 @@ ul#slide-out li > a > .material-icons,
 ul#slide-out li > .collapsible-header > span,
 ul#slide-out li > .collapsible-header > .material-icons {
   color: #333;
-  text-shadow: 1px 1px 4px rgba(0, 0, 0, .1);
 }
 
 .sidenav-overlay {

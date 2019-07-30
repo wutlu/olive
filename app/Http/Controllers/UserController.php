@@ -137,10 +137,6 @@ class UserController extends Controller
             [
                 'img' => asset('img/photo/bogaz.jpeg'),
                 'text' => 'İstanbul Boğazı / İstanbul'
-            ],
-            [
-                'img' => asset('img/photo/cay.jpeg'),
-                'text' => 'Çay'
             ]
         ];
 
