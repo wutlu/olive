@@ -902,10 +902,13 @@ class SearchController extends Controller
                         {
                             foreach ($query['aggs']->data['aggregations']['twitter_users']['buckets'] as $key => $row)
                             {
-                                $data['data']['twitter_users'][$row['key']] = array_merge(
-                                    $row['properties']['hits']['hits'][0]['_source']['user'],
-                                    [ 'hit' => $row['doc_count'] ]
-                                );
+                                if (@$row['properties']['hits']['hits'][0]['_source']['user'])
+                                {
+                                    $data['data']['twitter_users'][$row['key']] = array_merge(
+                                        $row['properties']['hits']['hits'][0]['_source']['user'],
+                                        [ 'hit' => $row['doc_count'] ]
+                                    );
+                                }
                             }
                         }
 
