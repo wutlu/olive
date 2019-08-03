@@ -342,13 +342,21 @@
                         <div class="collapsible-body">
                             <ul>
                                 <li class="tiny">
+<<<<<<< HEAD
                                     <a class="waves-effect" href="{{ asset('pdf/hard-slide.pdf?v='.config('system.version')) }}">
+=======
+                                    <a class="waves-effect" href="{{ asset('slide/hard-slide.pdf?v='.config('system.version')) }}">
+>>>>>>> 88bdfdb1d389c8285452f5e794444537e6fce537
                                         <i class="material-icons">picture_as_pdf</i>
                                         PDF Sunum
                                     </a>
                                 </li>
                                 <li class="tiny">
+<<<<<<< HEAD
                                     <a class="waves-effect" href="{{ asset('pdf/soft-slide.pptx?v='.config('system.version')) }}">
+=======
+                                    <a class="waves-effect" href="{{ asset('slide/soft-slide.pptx?v='.config('system.version')) }}">
+>>>>>>> 88bdfdb1d389c8285452f5e794444537e6fce537
                                         <i class="material-icons">slideshow</i>
                                         PPTX Sunum
                                     </a>
