@@ -333,6 +333,29 @@
                             <span class="align-self-center">{{ strtoupper(auth()->user()->partner) }} PARTNER</span>
                         </a>
                     </li>
+                    <li>
+                        <div class="collapsible-header waves-effect">
+                            <i class="material-icons">slideshow</i>
+                            <span>Sunumlar</span>
+                            <i class="material-icons arrow">keyboard_arrow_down</i>
+                        </div>
+                        <div class="collapsible-body">
+                            <ul>
+                                <li class="tiny">
+                                    <a class="waves-effect" href="{{ asset('slide/hard-slide.pdf?v='.config('system.version')) }}">
+                                        <i class="material-icons">picture_as_pdf</i>
+                                        PDF Sunum
+                                    </a>
+                                </li>
+                                <li class="tiny">
+                                    <a class="waves-effect" href="{{ asset('slide/soft-slide.pptx?v='.config('system.version')) }}">
+                                        <i class="material-icons">slideshow</i>
+                                        PPTX Sunum
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
                     <li class="divider"></li> 
                 @endif
 
