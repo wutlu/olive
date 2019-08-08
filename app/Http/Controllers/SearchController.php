@@ -17,6 +17,7 @@ use Term;
 
 use App\Models\Source;
 use App\Models\SavedSearch;
+use App\Models\Source as SourceModel;
 
 use App\Utilities\Crawler;
 
@@ -133,10 +134,11 @@ class SearchController extends Controller
         $e = $request->e;
 
         $organisation = auth()->user()->organisation;
+        $sources = SourceModel::where('organisation_id', $organisation->id)->get();
 
         $trends = json_decode(RedisCache::get(implode(':', [ config('system.db.alias'), 'trends', 'twitter_hashtag' ])));
 
-        return view('search', compact('q', 's', 'e', 'trends', 'organisation'));
+        return view('search', compact('q', 's', 'e', 'trends', 'organisation', 'sources'));
     }
 
     /**
@@ -633,6 +635,8 @@ class SearchController extends Controller
 
         usort($data, '\App\Utilities\DateUtility::dateSort');
 
+        $data = array_reverse($data);
+
         return [
             'status' => 'ok',
             'hits' => $data,
@@ -649,6 +653,17 @@ class SearchController extends Controller
     public static function aggregation(ArchiveAggregationRequest $request)
     {
         $data = [];
+        $modules = [];
+
+        $organisation = auth()->user()->organisation;
+
+        preg_match_all('/(?<=\[s:)[([0-9]+(?=\])/m', $request->string, $matches);
+
+        if (@$matches[0][0])
+        {
+            $source = Source::whereIn('id', $matches[0])->where('organisation_id', $organisation->id)->first();
+            $request['string'] = preg_replace('/\[s:([0-9]+)\]/m', '', $request->string);
+        }
 
         $clean = Term::cleanSearchQuery($request->string);
 
@@ -681,17 +696,15 @@ class SearchController extends Controller
                             ]
                         ]
                     ],
+                    /*
                     'should' => [
                         [ 'match' => [ 'status' => 'ok' ] ]
                     ]
+                    */
                 ]
             ],
             'size' => 0
         ];
-
-        $modules = [];
-
-        $organisation = auth()->user()->organisation;
 
         foreach (
             [

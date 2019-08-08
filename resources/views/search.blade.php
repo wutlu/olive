@@ -392,19 +392,19 @@
     <div id="search-operators">
         <div class="d-flex flex-wrap">
             <div class="p-1">
-                Genel
+                <span class="grey-text">Genel</span>
                 <button data-update-click type="button" class="btn-flat waves-effect waves-green btn-small d-table" data-validate="string" data-search="+">+Olsun</button>
                 <button data-update-click type="button" class="btn-flat waves-effect waves-red btn-small d-table" data-validate="string" data-search="-">-Olmasın</button>
                 <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="number" data-search="site.id">Site / Sözlük Id</button>
             </div>
 
             <div class="p-1">
-                Sözlük Filtreleri
+                <span class="grey-text">Sözlük Filtreleri</span>
                 <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="string" data-search="author">Yazar Adı</button>
             </div>
 
             <div class="p-1">
-                Twitter Filtreleri (Kullanıcı)
+                <span class="grey-text">Twitter Filtreleri (Kullanıcı)</span>
                 <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="string" data-search="user.screen_name">Kullanıcı Adı</button>
                 <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="number" data-search="user.id">Kullanıcı Id</button>
                 <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-search="user.verified:true">Doğrulanmış Hesaplar</button>
@@ -417,7 +417,7 @@
             </div>
 
             <div class="p-1">
-                Twitter Filtreleri (Tweet)
+                <span class="grey-text">Twitter Filtreleri (Tweet)</span>
                 <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="number" data-search="counts.hashtag">Hashtag Sayısı</button>
                 <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="number" data-search="counts.mention">Mention Sayısı</button>
                 <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="number" data-search="counts.url">Bağlantı Sayısı</button>
@@ -429,10 +429,19 @@
             </div>
 
             <div class="p-1">
-                YouTube Filtreleri
+                <span class="grey-text">YouTube Filtreleri</span>
                 <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="string" data-search="channel.title">Kanal Başlığı</button>
                 <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="string" data-search="channel.id">Kanal Id</button>
                 <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="string" data-search="video_id">Video Id</button>
+            </div>
+
+            <div class="p-1">
+                <span class="grey-text">Kaynak Tercihleri</span> <sup><a href="{{ route('sources.index') }}">Yönet</a></sup>
+                @forelse ($sources as $source)
+                    <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-operator=" " data-search="[s:{{ $source->id }}]">{{ $source->name }}</button>
+                @empty
+                    <span class="d-block red-text">Henüz tercih oluşturulmadı.</span>
+                @endforelse
             </div>
         </div>
     </div>
@@ -1299,7 +1308,7 @@
                            '#0097a7',
                            '#e53935',
                            '#bdbdbd',
-                           '#f44336',
+                           '#333',
                            '#444444'
                        ],
                        data: counts
@@ -1543,50 +1552,6 @@
     <div class="card card-unstyled mb-1">
         <div class="card-content">
             <span class="card-title d-flex">
-                <i class="material-icons align-self-center mr-1">filter_center_focus</i>
-                Kaynak Tercihleri
-            </span>
-        </div>
-        <div class="collection collection-unstyled load hide mb-1"
-            id="sourcePreferences"
-            data-href="{{ route('sources.index') }}"
-            data-callback="__source_preferences"
-            data-method="post"
-            data-loader="#source-loader"
-            data-skip="0"
-            data-take="24"
-            data-more-button="#source_preferences-more_button"
-            data-nothing>
-            <a
-                href="#"
-                data-update-click
-                data-operator=" "
-                class="collection-item model hide"></a>
-            <div class="nothing hide">
-                @component('components.nothing')
-                    @slot('size', 'small')
-                @endcomponent
-            </div>
-        </div>
-        @component('components.loader')
-            @slot('color', 'blue-grey')
-            @slot('id', 'source-loader')
-            @slot('class', 'card-loader-unstyled')
-        @endcomponent
-        <div class="center-align">
-            <a
-                class="more hide json"
-                id="activities-more_button"
-                href="#"
-                data-json-target="ul#activities">Daha Fazla</a>
-        </div>
-        <div class="d-table mx-auto">
-            <a href="{{ route('sources.index') }}" class="btn-flat waves-effect">Tercihleri Yönet</a>
-        </div>
-    </div>
-    <div class="card card-unstyled mb-1">
-        <div class="card-content">
-            <span class="card-title d-flex">
                 <i class="material-icons align-self-center mr-1">save</i>
                 Kayıtlı Aramalar
             </span>
@@ -1622,10 +1587,10 @@
         <div class="card-content">
             <div class="input-field">
                 <select data-update name="take" id="take">
-                    <option value="10" selected>10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
+                    <option value="5" selected>5</option>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="40">40</option>
                 </select>
                 <label>Sayfalama</label>
                 <span class="helper-text">Her kaynak için gösterilecek içerik sayısı.</span>
@@ -1692,32 +1657,6 @@
 
                         item.find('[data-name=name]').html(o.name).attr('data-options', JSON.stringify(o))
                         item.find('[data-trigger=delete]').data('id', o.id)
-
-                        item.appendTo(__)
-                })
-            }
-        }
-    }
-
-    function __source_preferences(__, obj)
-    {
-        var item_model = __.children('.model');
-
-        if (obj.status == 'ok')
-        {
-            __.removeClass('hide')
-
-            if (obj.hits.length)
-            {
-                $.each(obj.hits, function(key, o) {
-                    var selector = __.children('[data-id=' + o.id + ']'),
-
-                        item = selector.length ? selector : item_model.clone();
-                        item.removeClass('model hide')
-                            .addClass('_tmp')
-                            .attr('data-id', o.id)
-                            .attr('data-search', '[s:' + o.id + ']')
-                            .html(o.name)
 
                         item.appendTo(__)
                 })

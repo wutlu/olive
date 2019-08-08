@@ -24,7 +24,7 @@ class SourceController extends Controller
          * - Kullanıcı
          */
         $this->middleware('auth');
-        $this->middleware('organisation:have')->except('miniListJson');
+        $this->middleware('organisation:have');
 
         ### [ zorunlu aktif organizasyon ] ###
         $this->middleware([
@@ -131,29 +131,6 @@ class SourceController extends Controller
                 'route' => route('sources.form', $query->id),
                 'status' => $status
             ]
-        ];
-    }
-
-    /**
-     * Kaynak Tercihleri, mini list source
-     *
-     * @return array
-     */
-    public function miniListJson(SearchRequest $request)
-    {
-        $query = new SourceModel;
-        $query = $query->where('organisation_id', auth()->user()->organisation_id);
-
-        $total = $query->count();
-
-        $query = $query->skip($request->skip)
-                       ->take($request->take)
-                       ->orderBy('id', 'DESC');
-
-        return [
-            'status' => 'ok',
-            'hits' => $query->get(),
-            'total' => $total
         ];
     }
 }

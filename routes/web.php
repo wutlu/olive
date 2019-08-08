@@ -44,7 +44,6 @@ Route::get('kaynaklar', 'HomeController@sources')->name('sources');
 
 Route::prefix('kaynak-tercihleri')->group(function () {
     Route::get('/', 'SourceController@index')->name('sources.index');
-    Route::post('/', 'SourceController@miniListJson');
 
     Route::get('kaynak/{id?}', 'SourceController@form')->name('sources.form');
     Route::post('kaynak/{id?}', 'SourceController@save');

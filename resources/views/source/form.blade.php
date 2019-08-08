@@ -188,11 +188,11 @@
             {
                 $('#modal-alert').modal('close')
 
-                M.toast({ html: 'Kaynak Tercihi Silindi!', 'classes': 'red' })
+                M.toast({ html: 'Kaynak Tercihi Silindi!', 'classes': 'green' })
 
                 setTimeout(function() {
                     window.location = '{{ route('sources.index') }}';
-                }, 400)
+                }, 600)
             }
         }
     @endpush
