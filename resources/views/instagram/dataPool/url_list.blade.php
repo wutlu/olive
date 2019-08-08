@@ -170,7 +170,8 @@
             vzAjax($('<div />', {
                 'data-include': 'string',
                 'data-method': 'put',
-                'data-href': '{{ route('instagram.url.create') }}'
+                'data-href': '{{ route('instagram.url.create') }}',
+                'data-callback': '__create'
             }))
         }
     })
@@ -182,6 +183,14 @@
             $('#modal-delete').modal('close')
 
             $('li[data-id=' + __.data('id') + ']').slideUp()
+        }
+    }
+
+    function __create(__, obj)
+    {
+        if (obj.status == 'ok')
+        {
+            M.toast({ html: 'Bağlantı takibe alındı!', classes: 'green' })
         }
     }
 @endpush

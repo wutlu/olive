@@ -96,6 +96,10 @@
                                 <input required name="saved_searches_limit" id="saved_searches_limit" min="0" value="{{ $settings['unit_price.saved_searches_limit']['value'] }}" type="number" class="validate" />
                                 <small class="helper-text">Arama Kaydetme Limiti</small>
                             </div>
+                            <div class="collection-item input-field">
+                                <input required name="source_limit" id="source_limit" min="0" value="{{ $settings['unit_price.source_limit']['value'] }}" type="number" class="validate" />
+                                <small class="helper-text">Kaynak Tercih Limiti</small>
+                            </div>
                         </div>
                     </li>
                     <li class="item">

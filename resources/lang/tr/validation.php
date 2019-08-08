@@ -305,6 +305,7 @@ $arr = [
         'pin_group_limit'                 => 'Pin Grubu Limiti',
         'historical_days'                 => 'Geriye Dönük Arama Limiti',
         'saved_searches_limit'            => 'Arama Kaydetme Limiti',
+        'source_limit'                    => 'Kaynak Tercih Limiti',
 
         'data_pool_youtube_channel_limit'  => 'YouTube Kanal Limiti',
         'data_pool_youtube_video_limit'    => 'YouTube Video Limiti',

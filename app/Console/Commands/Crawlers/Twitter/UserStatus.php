@@ -45,7 +45,7 @@ class UserStatus extends Command
      */
     public function handle()
     {
-        $tusers = StreamingUsers::orderBy('updated_at', 'ASC')->limit(10)->get();
+        $tusers = StreamingUsers::orderBy('updated_at', 'ASC')->limit(2)->get();
 
         if (count($tusers))
         {

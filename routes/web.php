@@ -9,7 +9,6 @@ Route::domain('www.'.config('app.domain'))->group($vz);
 Route::domain(config('app.domain'))->group($vz);
 
 Route::get('manifest.json', 'HomeController@manifest')->name('olive.manifest');
-Route::get('kaynaklar', 'HomeController@sources')->name('sources');
 
 Route::post('markdown/onizleme', 'MarkdownController@preview')->name('markdown.preview');
 Route::post('veri-sayac', 'HomeController@dataCounter')->name('home.data.counter');
@@ -39,6 +38,17 @@ Route::namespace('Forum')->prefix('forum')->group(function () {
     Route::get('{group}:{section}/{id?}', 'ForumController@group')->name('forum.group')->where([ 'group' => '[a-zA-Z0-9-]+', 'section' => '[a-zA-Z0-9-]+' ]);
     Route::get('{slug}', 'ForumController@category')->name('forum.category');
     Route::get('{slug}/{fake_slug}-{id}', 'ForumController@thread')->name('forum.thread');
+});
+
+Route::get('kaynaklar', 'HomeController@sources')->name('sources');
+
+Route::prefix('kaynak-tercihleri')->group(function () {
+    Route::get('/', 'SourceController@index')->name('sources.index');
+    Route::post('/', 'SourceController@miniListJson');
+
+    Route::get('kaynak/{id?}', 'SourceController@form')->name('sources.form');
+    Route::post('kaynak/{id?}', 'SourceController@save');
+    Route::delete('kaynak', 'SourceController@delete')->name('sources.delete');
 });
 
 Route::prefix('kullanici')->group(function () {

@@ -345,6 +345,19 @@
                                         class="validate" />
                                     <small class="helper-text">Arama Kaydetme Limiti</small>
                                 </div>
+                                <div class="collection-item input-field">
+                                    <input
+                                        data-update
+                                        name="source_limit"
+                                        id="source_limit"
+                                        max="12"
+                                        min="0"
+                                        value="{{ $user->organisation->source_limit }}"
+                                        type="number"
+                                        data-unit-price="{{ $prices['unit_price.source_limit']['value'] }}"
+                                        class="validate" />
+                                    <small class="helper-text">Kaynak Tercih Limiti</small>
+                                </div>
                             </div>
                         </li>
                         <li class="item">

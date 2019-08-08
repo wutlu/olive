@@ -884,6 +884,7 @@ class UserController extends Controller
             $organisation->alarm_limit = $request->alarm_limit;
             $organisation->pin_group_limit = $request->pin_group_limit;
             $organisation->saved_searches_limit = $request->saved_searches_limit;
+            $organisation->source_limit = $request->source_limit;
 
             $organisation->data_pool_youtube_channel_limit = $request->data_pool_youtube_channel_limit;
             $organisation->data_pool_youtube_video_limit = $request->data_pool_youtube_video_limit;

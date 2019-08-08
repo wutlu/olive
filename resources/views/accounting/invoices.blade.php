@@ -92,7 +92,7 @@
                         item.find('[data-name=created_at]').html(o.created_at)
                         item.find('[data-name=name]').html('#' + o.invoice_id).attr('href', '{{ url('ayarlar/organizasyon/fatura') }}/' + o.invoice_id)
                         item.find('[data-name=price]').html('{{ config('formal.currency') }} ' + o.total_price)
-                        item.find('[data-name=message]').removeClass(o.reason_msg ? 'hide' : '').html('" ' + o.reason_msg + ' "')
+                        item.find('[data-name=message]').removeClass(o.reason_msg ? 'hide' : '').html(o.reason_msg)
                         item.find('[data-name=method]').removeClass(o.method ? 'hide' : '').html(o.method)
                         item.find('[data-name=status]')
                             .removeClass('red-text green-text')

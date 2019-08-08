@@ -63,6 +63,7 @@ class OptionTableSeeder extends Seeder
         Option::firstOrCreate( [ 'key' => 'unit_price.alarm_limit'                       ], [ 'value' => 0                                     ] );
         Option::firstOrCreate( [ 'key' => 'unit_price.pin_group_limit'                   ], [ 'value' => 0                                     ] );
         Option::firstOrCreate( [ 'key' => 'unit_price.saved_searches_limit'              ], [ 'value' => 0                                     ] );
+        Option::firstOrCreate( [ 'key' => 'unit_price.source_limit'                      ], [ 'value' => 0                                     ] );
         Option::firstOrCreate( [ 'key' => 'unit_price.historical_days'                   ], [ 'value' => 0                                     ] );
         Option::firstOrCreate( [ 'key' => 'unit_price.data_pool_youtube_channel_limit'   ], [ 'value' => 0                                     ] );
         Option::firstOrCreate( [ 'key' => 'unit_price.data_pool_youtube_video_limit'     ], [ 'value' => 0                                     ] );

@@ -26,7 +26,6 @@
 
     #search-operators {
         display: none;
-
         padding: 1rem;
     }
 
@@ -168,7 +167,7 @@
         array.push(input.val())
         array.push(string)
 
-        input.val(input.val() ? array.join(' && ') : string).focus()
+        input.val(input.val() ? array.join(__.data('operator') ? __.data('operator') : ' && ') : string).focus()
 
         setTimeout(function() {
             // trigger
@@ -581,7 +580,7 @@
                             'hte': {
                                 'text': 'Nefret Söylemi',
                                 'image': '/img/photo/hate.jpg',
-                                'color': '#263238'
+                                'color': '#333'
                             }
                         };
 
@@ -599,7 +598,7 @@
                         {
                             $('.banner').removeClass('hide').css({ 'background-image': 'url(' + option[def.key].image + ')' })
                             $('.banner').find('[data-name=overlay]').css({ 'background-color': option[def.key].color })
-                            $('.banner').find('[data-name=text]').html('Görünen o ki ilgilendiğiniz konu ' + def.val + '% oranla ' + option[def.key].text + ' mesajı içeriyor.')
+                            $('.banner').find('[data-name=text]').html('Görünen o ki ilgilendiğiniz konu ' + (def.val).toFixed(2) + '% oranla ' + option[def.key].text + ' mesajı içeriyor.')
                         }
                     break;
                     case 'consumer':
@@ -718,7 +717,14 @@
         {
             item_model.addClass('hide')
 
-            $('[data-name=stats]').html('Yaklaşık ' + obj.stats.hits + ' sonuç bulundu (' + obj.stats.took + ' saniye)').removeClass('hide');
+            if (obj.stats.hits)
+            {
+                $('[data-name=stats]').html('Yaklaşık ' + obj.stats.hits + ' sonuç bulundu (' + obj.stats.took + ' saniye)').removeClass('hide');
+            }
+            else
+            {
+                $('[data-name=stats]').html('Daha fazla sonuç için arama kriterlerini azaltmanız gerekiyor.')
+            }
 
             $('[data-name=twitter-tweet]').html(obj.stats.counts.twitter_tweet);
             $('[data-name=sozluk-entry]').html(obj.stats.counts.sozluk_entry);
@@ -1537,6 +1543,50 @@
     <div class="card card-unstyled mb-1">
         <div class="card-content">
             <span class="card-title d-flex">
+                <i class="material-icons align-self-center mr-1">filter_center_focus</i>
+                Kaynak Tercihleri
+            </span>
+        </div>
+        <div class="collection collection-unstyled load hide mb-1"
+            id="sourcePreferences"
+            data-href="{{ route('sources.index') }}"
+            data-callback="__source_preferences"
+            data-method="post"
+            data-loader="#source-loader"
+            data-skip="0"
+            data-take="24"
+            data-more-button="#source_preferences-more_button"
+            data-nothing>
+            <a
+                href="#"
+                data-update-click
+                data-operator=" "
+                class="collection-item model hide"></a>
+            <div class="nothing hide">
+                @component('components.nothing')
+                    @slot('size', 'small')
+                @endcomponent
+            </div>
+        </div>
+        @component('components.loader')
+            @slot('color', 'blue-grey')
+            @slot('id', 'source-loader')
+            @slot('class', 'card-loader-unstyled')
+        @endcomponent
+        <div class="center-align">
+            <a
+                class="more hide json"
+                id="activities-more_button"
+                href="#"
+                data-json-target="ul#activities">Daha Fazla</a>
+        </div>
+        <div class="d-table mx-auto">
+            <a href="{{ route('sources.index') }}" class="btn-flat waves-effect">Tercihleri Yönet</a>
+        </div>
+    </div>
+    <div class="card card-unstyled mb-1">
+        <div class="card-content">
+            <span class="card-title d-flex">
                 <i class="material-icons align-self-center mr-1">save</i>
                 Kayıtlı Aramalar
             </span>
@@ -1578,6 +1628,7 @@
                     <option value="100">100</option>
                 </select>
                 <label>Sayfalama</label>
+                <span class="helper-text">Her kaynak için gösterilecek içerik sayısı.</span>
             </div>
         </div>
     </div>
@@ -1641,6 +1692,32 @@
 
                         item.find('[data-name=name]').html(o.name).attr('data-options', JSON.stringify(o))
                         item.find('[data-trigger=delete]').data('id', o.id)
+
+                        item.appendTo(__)
+                })
+            }
+        }
+    }
+
+    function __source_preferences(__, obj)
+    {
+        var item_model = __.children('.model');
+
+        if (obj.status == 'ok')
+        {
+            __.removeClass('hide')
+
+            if (obj.hits.length)
+            {
+                $.each(obj.hits, function(key, o) {
+                    var selector = __.children('[data-id=' + o.id + ']'),
+
+                        item = selector.length ? selector : item_model.clone();
+                        item.removeClass('model hide')
+                            .addClass('_tmp')
+                            .attr('data-id', o.id)
+                            .attr('data-search', '[s:' + o.id + ']')
+                            .html(o.name)
 
                         item.appendTo(__)
                 })

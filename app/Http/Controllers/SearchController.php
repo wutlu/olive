@@ -15,6 +15,7 @@ use App\Elasticsearch\Document;
 
 use Term;
 
+use App\Models\Source;
 use App\Models\SavedSearch;
 
 use App\Utilities\Crawler;
@@ -30,7 +31,7 @@ class SearchController extends Controller
 
     public function __construct()
     {
-        ### [ üyelik ve organizasyon zorunlu ve organizasyonun zorunlu olarak real_time özelliği desteklemesi ] ###
+        ### [ üyelik ve organizasyon zorunlu ve organizasyonun zorunlu ] ###
         $this->middleware([ 'auth', 'organisation:have' ]);
 
         ### [ zorunlu aktif organizasyon ] ###
@@ -139,6 +140,42 @@ class SearchController extends Controller
     }
 
     /**
+     * Modül sorgusu
+     *
+     * @return array
+     */
+    private static function query_build(array $object)
+    {
+        $arr = [
+            'uuid' => md5($object['_id'].'.'.$object['_index']),
+            '_id' => $object['_id'],
+            '_type' => $object['_type'],
+            '_index' => $object['_index'],
+
+            'created_at' => date('d.m.Y H:i:s', strtotime($object['_source']['created_at'])),
+
+            'sentiment' => Crawler::emptySentiment(@$object['_source']['sentiment'])
+        ];
+
+        if (@$object['_source']['illegal'])
+        {
+            $arr['illegal'] = $object['_source']['illegal'];
+        }
+
+        if (@$object['_source']['consumer'])
+        {
+            $arr['consumer'] = $object['_source']['consumer'];
+        }
+
+        if (@$object['_source']['deleted_at'])
+        {
+            $arr['deleted_at'] = date('d.m.Y H:i:s', strtotime($object['_source']['deleted_at']));
+        }
+
+        return $arr;
+    }
+
+    /**
      * Arama Sonuçları
      *
      * @return array
@@ -146,6 +183,17 @@ class SearchController extends Controller
     public static function search(ArchiveRequest $request)
     {
         $data = [];
+        $modules = [];
+
+        $organisation = auth()->user()->organisation;
+
+        preg_match_all('/(?<=\[s:)[([0-9]+(?=\])/m', $request->string, $matches);
+
+        if (@$matches[0][0])
+        {
+            $source = Source::whereIn('id', $matches[0])->where('organisation_id', $organisation->id)->first();
+            $request['string'] = preg_replace('/\[s:([0-9]+)\]/m', '', $request->string);
+        }
 
         $clean = Term::cleanSearchQuery($request->string);
 
@@ -181,9 +229,11 @@ class SearchController extends Controller
                             ]
                         ]
                     ],
+                    /*
                     'should' => [
                         [ 'match' => [ 'status' => 'ok' ] ]
                     ]
+                    */
                 ]
             ],
             '_source' => [
@@ -220,10 +270,6 @@ class SearchController extends Controller
             ]
         ];
 
-        $modules = [];
-
-        $organisation = auth()->user()->organisation;
-
         foreach (
             [
                 [ 'consumer' => [ 'nws', 'que', 'req', 'cmp' ] ],
@@ -236,7 +282,13 @@ class SearchController extends Controller
                 {
                     if ($request->{$key.'_'.$o})
                     {
-                        $q['query']['bool']['filter'][] = [ 'range' => [ implode('.', [ $key, $o ]) => [ 'gte' => implode('.', [ 0, $request->{$key.'_'.$o} ]) ] ] ];
+                        $q['query']['bool']['filter'][] = [
+                            'range' => [
+                                implode('.', [ $key, $o ]) => [
+                                    'gte' => implode('.', [ 0, $request->{$key.'_'.$o} ])
+                                ]
+                            ]
+                        ];
                     }
                 }
             }
@@ -257,6 +309,9 @@ class SearchController extends Controller
             ]
         ];
 
+        $starttime = explode(' ', microtime());
+        $starttime = $starttime[1] + $starttime[0];
+
         foreach ($request->modules as $module)
         {
             switch ($module)
@@ -264,228 +319,319 @@ class SearchController extends Controller
                 case 'twitter':
                     if ($organisation->data_twitter)
                     {
+                        $twitter_q = $q;
+
                         if ($request->gender != 'all')
                         {
-                            $q['query']['bool']['should'][] = [ 'match' => [ 'user.gender' => $request->gender ] ];
-                            $q['query']['bool']['minimum_should_match'] = 1;
+                            $twitter_q['query']['bool']['should'][] = [ 'match' => [ 'user.gender' => $request->gender ] ];
+                            $twitter_q['query']['bool']['minimum_should_match'] = 1;
                         }
 
-                        $modules[] = 'tweet';
-                    }
+                        $twitter_query = Document::search([ 'twitter', 'tweets', '*' ], 'tweet', $twitter_q);
 
-                    $stats['counts']['twitter_tweet'] = intval(@Document::search([ 'twitter', 'tweets', '*' ], 'tweet', array_merge($q, [ 'size' => 0 ]))->data['hits']['total']);
+                        if (@$twitter_query->data['hits']['hits'])
+                        {
+                            $stats['hits'] = $stats['hits'] + $twitter_query->data['hits']['total'];
+
+                            foreach ($twitter_query->data['hits']['hits'] as $object)
+                            {
+                                $arr = self::query_build($object);
+
+                                $user = [
+                                    'name' => $object['_source']['user']['name'],
+                                    'screen_name' => $object['_source']['user']['screen_name'],
+                                    'image' => $object['_source']['user']['image']
+                                ];
+
+                                if (@$object['_source']['user']['verified'])
+                                {
+                                    $user['verified'] = true;
+                                }
+
+                                if (@$object['_source']['entities']['medias'])
+                                {
+                                    $arr['medias'] = $object['_source']['entities']['medias'];
+                                }
+
+                                if (@$object['_source']['place'])
+                                {
+                                    $arr['place'] = $object['_source']['place'];
+                                }
+
+                                $data[] = array_merge($arr, [
+                                    'user' => $user,
+                                    'text' => Term::tweet($object['_source']['text']),
+                                ]);
+                            }
+
+                            $stats['counts']['twitter_tweet'] = $twitter_query->data['hits']['total'];
+                        }
+                    }
                 break;
                 case 'instagram':
                     if ($organisation->data_instagram)
                     {
-                        $modules[] = 'media';
-                    }
+                        $instagram_query = Document::search([ 'instagram', 'medias', '*' ], 'media', $q);
 
-                    $stats['counts']['instagram_media'] = intval(@Document::search([ 'instagram', 'medias', '*' ], 'media', array_merge($q, [ 'size' => 0 ]))->data['hits']['total']);
+                        if (@$instagram_query->data['hits']['hits'])
+                        {
+                            $stats['hits'] = $stats['hits'] + $instagram_query->data['hits']['total'];
+
+                            foreach ($instagram_query->data['hits']['hits'] as $object)
+                            {
+                                $arr = self::query_build($object);
+
+                                $arr['display_url'] = $object['_source']['display_url'];
+                                $arr['url'] = 'https://www.instagram.com/p/'.$object['_source']['shortcode'].'/';
+
+                                if (@$object['_source']['text'])
+                                {
+                                    $arr['text'] = Term::instagramMedia($object['_source']['text']);
+                                }
+
+                                if (@$object['_source']['place'])
+                                {
+                                    $arr['place'] = $object['_source']['place'];
+                                }
+
+                                $data[] = $arr;
+                            }
+
+                            $stats['counts']['instagram_media'] = $instagram_query->data['hits']['total'];
+                        }
+                    }
                 break;
                 case 'sozluk':
                     if ($organisation->data_sozluk)
                     {
-                        if ($request->gender != 'all')
+                        $sozluk_q = $q;
+
+                        if (@$source->source_sozluk)
                         {
-                            $q['query']['bool']['should'][] = [ 'match' => [ 'gender' => $request->gender ] ];
-                            $q['query']['bool']['minimum_should_match'] = 1;
+                            foreach ($source->source_sozluk as $key => $id)
+                            {
+                                $media_q['query']['bool']['should'][] = [ 'match' => [ 'site_id' => $id ] ];
+                            }
+
+                            $media_q['query']['bool']['minimum_should_match'] = 1;
                         }
 
-                        $modules[] = 'entry';
-                    }
+                        if ($request->gender != 'all')
+                        {
+                            $sozluk_q['query']['bool']['should'][] = [ 'match' => [ 'gender' => $request->gender ] ];
+                            $sozluk_q['query']['bool']['minimum_should_match'] = 1;
+                        }
 
-                    $stats['counts']['sozluk_entry'] = intval(@Document::search([ 'sozluk', '*' ], 'entry', array_merge($q, [ 'size' => 0 ]))->data['hits']['total']);
+                        $sozluk_query = Document::search([ 'sozluk', '*' ], 'entry', $sozluk_q);
+
+                        if (@$sozluk_query->data['hits']['hits'])
+                        {
+                            $stats['hits'] = $stats['hits'] + $sozluk_query->data['hits']['total'];
+
+                            foreach ($sozluk_query->data['hits']['hits'] as $object)
+                            {
+                                $arr = self::query_build($object);
+
+                                $data[] = array_merge($arr, [
+                                    'url' => $object['_source']['url'],
+                                    'title' => $object['_source']['title'],
+                                    'text' => $object['_source']['entry'],
+                                    'author' => $object['_source']['author'],
+                                ]);
+                            }
+
+                            $stats['counts']['sozluk_entry'] = $sozluk_query->data['hits']['total'];
+                        }
+                    }
                 break;
                 case 'news':
                     if ($organisation->data_news)
                     {
-                        $modules[] = 'article';
-                    }
+                        $media_q = $q;
 
-                    $stats['counts']['media_article'] = intval(@Document::search([ 'media', 's*' ], 'article', array_merge($q, [ 'size' => 0 ]))->data['hits']['total']);
+                        if (@$source->source_media)
+                        {
+                            foreach ($source->source_media as $key => $id)
+                            {
+                                $media_q['query']['bool']['should'][] = [ 'match' => [ 'site_id' => $id ] ];
+                            }
+
+                            $media_q['query']['bool']['minimum_should_match'] = 1;
+                        }
+
+                        $news_query = Document::search([ 'media', 's*' ], 'article', $media_q);
+
+                        if (@$news_query->data['hits']['hits'])
+                        {
+                            $stats['hits'] = $stats['hits'] + $news_query->data['hits']['total'];
+
+                            foreach ($news_query->data['hits']['hits'] as $object)
+                            {
+                                $arr = self::query_build($object);
+
+                                $arr['url'] = $object['_source']['url'];
+                                $arr['title'] = $object['_source']['title'];
+                                $arr['text'] = $object['_source']['description'];
+
+                                if (@$object['_source']['image_url'])
+                                {
+                                    $arr['image'] = $object['_source']['image_url'];
+                                }
+
+                                $data[] = $arr;
+                            }
+
+                            $stats['counts']['media_article'] = $news_query->data['hits']['total'];
+                        }
+                    }
                 break;
                 case 'blog':
                     if ($organisation->data_blog)
                     {
-                        $modules[] = 'document';
-                    }
+                        $blog_q = $q;
 
-                    $stats['counts']['blog_document'] = intval(@Document::search([ 'blog', 's*' ], 'document', array_merge($q, [ 'size' => 0 ]))->data['hits']['total']);
+                        if (@$source->source_blog)
+                        {
+                            foreach ($source->source_blog as $key => $id)
+                            {
+                                $media_q['query']['bool']['should'][] = [ 'match' => [ 'site_id' => $id ] ];
+                            }
+
+                            $media_q['query']['bool']['minimum_should_match'] = 1;
+                        }
+
+                        $blog_query = Document::search([ 'blog', 's*' ], 'document', $blog_q);
+
+                        if (@$blog_query->data['hits']['hits'])
+                        {
+                            $stats['hits'] = $stats['hits'] + $blog_query->data['hits']['total'];
+
+                            foreach ($blog_query->data['hits']['hits'] as $object)
+                            {
+                                $arr = self::query_build($object);
+
+                                $arr['url'] = $object['_source']['url'];
+                                $arr['title'] = $object['_source']['title'];
+                                $arr['text'] = $object['_source']['description'];
+
+                                if (@$object['_source']['image_url'])
+                                {
+                                    $arr['image'] = $object['_source']['image_url'];
+                                }
+
+                                $data[] = $arr;
+                            }
+
+                            $stats['counts']['blog_document'] = $blog_query->data['hits']['total'];
+                        }
+                    }
                 break;
                 case 'youtube_video':
                     if ($organisation->data_youtube_video)
                     {
-                        $modules[] = 'video';
-                    }
+                        $youtube_video_query = Document::search([ 'youtube', 'videos' ], 'video', $q);
 
-                    $stats['counts']['youtube_video'] = intval(@Document::search([ 'youtube', 'videos' ], 'video', array_merge($q, [ 'size' => 0 ]))->data['hits']['total']);
+                        if (@$youtube_video_query->data['hits']['hits'])
+                        {
+                            $stats['hits'] = $stats['hits'] + $youtube_video_query->data['hits']['total'];
+
+                            foreach ($youtube_video_query->data['hits']['hits'] as $object)
+                            {
+                                $arr = self::query_build($object);
+
+                                $data[] = array_merge($arr, [
+                                    'title' => $object['_source']['title'],
+                                    'text' => @$object['_source']['description'],
+                                    'channel' => [
+                                        'id' => $object['_source']['channel']['id'],
+                                        'title' => $object['_source']['channel']['title']
+                                    ],
+                                ]);
+                            }
+
+                            $stats['counts']['youtube_video'] = $youtube_video_query->data['hits']['total'];
+                        }
+                    }
                 break;
                 case 'youtube_comment':
                     if ($organisation->data_youtube_comment)
                     {
-                        $modules[] = 'comment';
-                    }
+                        $youtube_comment_query = Document::search([ 'youtube', 'comments', '*' ], 'comment', $q);
 
-                    $stats['counts']['youtube_comment'] = intval(@Document::search([ 'youtube', 'comments', '*' ], 'comment', array_merge($q, [ 'size' => 0 ]))->data['hits']['total']);
+                        if (@$youtube_comment_query->data['hits']['hits'])
+                        {
+                            $stats['hits'] = $stats['hits'] + $youtube_comment_query->data['hits']['total'];
+
+                            foreach ($youtube_comment_query->data['hits']['hits'] as $object)
+                            {
+                                $arr = self::query_build($object);
+
+                                $data[] = array_merge($arr, [
+                                    'video_id' => $object['_source']['video_id'],
+                                    'channel' => [
+                                        'id' => $object['_source']['channel']['id'],
+                                        'title' => $object['_source']['channel']['title']
+                                    ],
+                                    'text' => $object['_source']['text'],
+                                ]);
+                            }
+
+                            $stats['counts']['youtube_comment'] = $youtube_comment_query->data['hits']['total'];
+                        }
+                    }
                 break;
                 case 'shopping':
                     if ($organisation->data_shopping)
                     {
-                        $modules[] = 'product';
-                    }
+                        $shopping_q = $q;
 
-                    $stats['counts']['shopping_product'] = intval(@Document::search([ 'shopping', '*' ], 'product', array_merge($q, [ 'size' => 0 ]))->data['hits']['total']);
+                        if (@$source->shopping_q)
+                        {
+                            foreach ($source->shopping_q as $key => $id)
+                            {
+                                $media_q['query']['bool']['should'][] = [ 'match' => [ 'site_id' => $id ] ];
+                            }
+
+                            $media_q['query']['bool']['minimum_should_match'] = 1;
+                        }
+
+                        $shopping_query = Document::search([ 'shopping', '*' ], 'product', $shopping_q);
+
+                        if (@$shopping_query->data['hits']['hits'])
+                        {
+                            $stats['hits'] = $stats['hits'] + $shopping_query->data['hits']['total'];
+
+                            foreach ($shopping_query->data['hits']['hits'] as $object)
+                            {
+                                $arr = self::query_build($object);
+
+                                if (@$object['_source']['description'])
+                                {
+                                    $arr['text'] = $object['_source']['description'];
+                                }
+
+                                $data[] = array_merge($arr, [
+                                    'url' => $object['_source']['url'],
+                                    'title' => $object['_source']['title'],
+                                ]);
+                            }
+
+                            $stats['counts']['shopping'] = $shopping_query->data['hits']['total'];
+                        }
+                    }
                 break;
             }
         }
 
-        $query = Document::search([ '*' ], implode(',', $modules), $q);
+        $mtime = explode(' ', microtime());
+        $totaltime = $mtime[0] + $mtime[1] - $starttime;
 
-        if (@$query->data['hits']['hits'])
+        if (count($data))
         {
-            $stats['took'] = $query->data['took']/1000;
-            $stats['hits'] = number_format($query->data['hits']['total']);
-
-            foreach ($query->data['hits']['hits'] as $object)
-            {
-                $arr = [
-                    'uuid' => md5($object['_id'].'.'.$object['_index']),
-                    '_id' => $object['_id'],
-                    '_type' => $object['_type'],
-                    '_index' => $object['_index'],
-
-                    'created_at' => date('d.m.Y H:i:s', strtotime($object['_source']['created_at'])),
-
-                    'sentiment' => Crawler::emptySentiment(@$object['_source']['sentiment'])
-                ];
-
-                if (@$object['_source']['illegal'])
-                {
-                    $arr['illegal'] = $object['_source']['illegal'];
-                }
-
-                if (@$object['_source']['consumer'])
-                {
-                    $arr['consumer'] = $object['_source']['consumer'];
-                }
-
-                if (@$object['_source']['deleted_at'])
-                {
-                    $arr['deleted_at'] = date('d.m.Y H:i:s', strtotime($object['_source']['deleted_at']));
-                }
-
-                switch ($object['_type'])
-                {
-                    case 'tweet':
-                        $user = [
-                            'name' => $object['_source']['user']['name'],
-                            'screen_name' => $object['_source']['user']['screen_name'],
-                            'image' => $object['_source']['user']['image']
-                        ];
-
-                        if (@$object['_source']['user']['verified'])
-                        {
-                            $user['verified'] = true;
-                        }
-
-                        if (@$object['_source']['entities']['medias'])
-                        {
-                            $arr['medias'] = $object['_source']['entities']['medias'];
-                        }
-
-                        if (@$object['_source']['place'])
-                        {
-                            $arr['place'] = $object['_source']['place'];
-                        }
-
-                        $data[] = array_merge($arr, [
-                            'user' => $user,
-                            'text' => Term::tweet($object['_source']['text']),
-                        ]);
-                    break;
-                    case 'media':
-                        $arr['display_url'] = $object['_source']['display_url'];
-                        $arr['url'] = 'https://www.instagram.com/p/'.$object['_source']['shortcode'].'/';
-
-                        if (@$object['_source']['text'])
-                        {
-                            $arr['text'] = Term::instagramMedia($object['_source']['text']);
-                        }
-
-                        if (@$object['_source']['place'])
-                        {
-                            $arr['place'] = $object['_source']['place'];
-                        }
-
-                        $data[] = $arr;
-                    break;
-                    case 'article':
-                        $arr['url'] = $object['_source']['url'];
-                        $arr['title'] = $object['_source']['title'];
-                        $arr['text'] = $object['_source']['description'];
-
-                        if (@$object['_source']['image_url'])
-                        {
-                            $arr['image'] = $object['_source']['image_url'];
-                        }
-
-                        $data[] = $arr;
-                    break;
-                    case 'document':
-                        $arr['url'] = $object['_source']['url'];
-                        $arr['title'] = $object['_source']['title'];
-                        $arr['text'] = $object['_source']['description'];
-
-                        if (@$object['_source']['image_url'])
-                        {
-                            $arr['image'] = $object['_source']['image_url'];
-                        }
-
-                        $data[] = $arr;
-                    break;
-                    case 'entry':
-                        $data[] = array_merge($arr, [
-                            'url' => $object['_source']['url'],
-                            'title' => $object['_source']['title'],
-                            'text' => $object['_source']['entry'],
-                            'author' => $object['_source']['author'],
-                        ]);
-                    break;
-                    case 'product':
-                        if (@$object['_source']['description'])
-                        {
-                            $arr['text'] = $object['_source']['description'];
-                        }
-
-                        $data[] = array_merge($arr, [
-                            'url' => $object['_source']['url'],
-                            'title' => $object['_source']['title'],
-                        ]);
-                    break;
-                    case 'video':
-                        $data[] = array_merge($arr, [
-                            'title' => $object['_source']['title'],
-                            'text' => @$object['_source']['description'],
-                            'channel' => [
-                                'id' => $object['_source']['channel']['id'],
-                                'title' => $object['_source']['channel']['title']
-                            ],
-                        ]);
-                    break;
-                    case 'comment':
-                        $data[] = array_merge($arr, [
-                            'video_id' => $object['_source']['video_id'],
-                            'channel' => [
-                                'id' => $object['_source']['channel']['id'],
-                                'title' => $object['_source']['channel']['title']
-                            ],
-                            'text' => $object['_source']['text'],
-                        ]);
-                    break;
-                }
-            }
+            $stats['took'] = sprintf('%0.2f', $totaltime);
         }
+
+        usort($data, '\App\Utilities\DateUtility::dateSort');
 
         return [
             'status' => 'ok',

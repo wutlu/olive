@@ -172,6 +172,21 @@ input[type=range]::-ms-thumb {
 }
 
 /*!
+ * greyhover
+ */
+.greyhover {
+  -webkit-filter: grayscale(1);
+          filter: grayscale(1);
+
+  -webkit-transition: all 200ms cubic-bezier(.25, .46, .45, .94);
+          transition: all 200ms cubic-bezier(.25, .46, .45, .94);
+}
+.greyhover:hover {
+  -webkit-filter: grayscale(0);
+          filter: grayscale(0);
+}
+
+/*!
  * top dropdown
  */
 #user-top-dropdown {

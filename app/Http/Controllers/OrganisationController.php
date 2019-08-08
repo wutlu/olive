@@ -1020,6 +1020,7 @@ class OrganisationController extends Controller
         Option::updateOrCreate([ 'key' => 'unit_price.alarm_limit'                     ], [ 'value' => $request->alarm_limit                     ]);
         Option::updateOrCreate([ 'key' => 'unit_price.pin_group_limit'                 ], [ 'value' => $request->pin_group_limit                 ]);
         Option::updateOrCreate([ 'key' => 'unit_price.saved_searches_limit'            ], [ 'value' => $request->saved_searches_limit            ]);
+        Option::updateOrCreate([ 'key' => 'unit_price.source_limit'                    ], [ 'value' => $request->source_limit                    ]);
         Option::updateOrCreate([ 'key' => 'unit_price.historical_days'                 ], [ 'value' => $request->historical_days                 ]);
 
         Option::updateOrCreate([ 'key' => 'unit_price.data_pool_youtube_channel_limit'  ], [ 'value' => $request->data_pool_youtube_channel_limit  ]);
@@ -1113,6 +1114,7 @@ class OrganisationController extends Controller
             'alarm_limit'                      => '*',
             'pin_group_limit'                  => '*',
             'saved_searches_limit'             => '*',
+            'source_limit'                     => '*',
 
             'module_real_time'                 => '+',
             'module_search'                    => '+',
@@ -1229,6 +1231,7 @@ class OrganisationController extends Controller
         $organisation->alarm_limit = $request->alarm_limit;
         $organisation->pin_group_limit = $request->pin_group_limit;
         $organisation->saved_searches_limit = $request->saved_searches_limit;
+        $organisation->source_limit = $request->source_limit;
 
         $organisation->data_pool_youtube_channel_limit = $request->data_pool_youtube_channel_limit;
         $organisation->data_pool_youtube_video_limit = $request->data_pool_youtube_video_limit;

@@ -213,12 +213,19 @@ class DataController extends Controller
 
     	$url = 'https://www.instagram.com/'.$url;
 
-        $query = new Selves;
-        $query->url = $url;
-        $query->method = $method;
-        $query->status = true;
-        $query->organisation_id = auth()->user()->organisation_id;
-        $query->save();
+        try
+        {
+            $query = new Selves;
+            $query->url = $url;
+            $query->method = $method;
+            $query->status = true;
+            $query->organisation_id = auth()->user()->organisation_id;
+            $query->save();
+        }
+        catch (\Exception $e)
+        {
+            //
+        }
 
         return [
             'status' => 'ok'
