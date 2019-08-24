@@ -487,6 +487,8 @@ class AggregationController extends Controller
 
             $_aggs = @$query->data['aggregations'];
 
+            $check = 0;
+
             if (@$_aggs['sites']['buckets'])
             {
                 foreach ($_aggs['sites']['buckets'] as $key => $item)
@@ -497,6 +499,10 @@ class AggregationController extends Controller
                         'id' => $item['key']
                     ];
                 }
+            }
+            else
+            {
+                $check++;
             }
 
             if (@$_aggs['users']['buckets'])
@@ -512,6 +518,15 @@ class AggregationController extends Controller
                         'id' => intval($id)
                     ];
                 }
+            }
+            else
+            {
+                $check++;
+            }
+
+            if ($check == 2)
+            {
+                $aggs['sozluk'] = $_aggs;
             }
         }
 
@@ -553,6 +568,10 @@ class AggregationController extends Controller
                     ];
                 }
             }
+            else
+            {
+                $aggs['news'] = $_aggs;
+            }
         }
 
         /***/
@@ -592,6 +611,10 @@ class AggregationController extends Controller
                         'id' => $item['key']
                     ];
                 }
+            }
+            else
+            {
+                $aggs['blog'] = $_aggs;
             }
         }
 
@@ -654,6 +677,8 @@ class AggregationController extends Controller
 
             $_aggs = @$query->data['aggregations'];
 
+            $check = 0;
+
             if (@$_aggs['sites']['buckets'])
             {
                 foreach ($_aggs['sites']['buckets'] as $key => $item)
@@ -664,6 +689,10 @@ class AggregationController extends Controller
                         'id' => $item['key']
                     ];
                 }
+            }
+            else
+            {
+                $check++;
             }
 
             if (@$_aggs['users']['buckets'])
@@ -679,6 +708,15 @@ class AggregationController extends Controller
                         'id' => intval($id)
                     ];
                 }
+            }
+            else
+            {
+                $check++;
+            }
+
+            if ($check == 2)
+            {
+                $aggs['shopping'] = $_aggs;
             }
         }
 

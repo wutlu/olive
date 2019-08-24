@@ -1882,10 +1882,10 @@
 
                         var total = req + que + cmp + nws;
 
-                        req = 25-(req/total*100);
-                        que = 25-(que/total*100);
-                        cmp = 25-(cmp/total*100);
-                        nws = 25-(nws/total*100);
+                        req = (req*100/total)-25;
+                        que = (que*100/total)-25;
+                        cmp = (cmp*100/total)-25;
+                        nws = (nws*100/total)-25;
 
                         datas.push((req < 0 ? 0 : req).toFixed(2))
                         datas.push((que < 0 ? 0 : que).toFixed(2))
@@ -1936,15 +1936,15 @@
 
                         var total = pos + neu + neg + hte;
 
-                        pos = 25-(pos/total*100);
-                        neu = 25-(neu/total*100);
-                        neg = 25-(neg/total*100);
-                        hte = 25-(hte/total*100);
+                        pos = (pos*100/total);
+                        neu = (neu*100/total);
+                        neg = (neg*100/total);
+                        hte = (hte*100/total);
 
-                        datas.push((pos < 0 ? 0 : pos).toFixed(2))
-                        datas.push((neu < 0 ? 0 : neu).toFixed(2))
-                        datas.push((neg < 0 ? 0 : neg).toFixed(2))
-                        datas.push((hte < 0 ? 0 : hte).toFixed(2))
+                        datas.push((pos > 0 ? pos : 0).toFixed(2))
+                        datas.push((neu > 0 ? neu : 0).toFixed(2))
+                        datas.push((neg > 0 ? neg : 0).toFixed(2))
+                        datas.push((hte > 0 ? hte : 0).toFixed(2))
 
                         sentimentChartOption['series'].push({
                             name: label,
