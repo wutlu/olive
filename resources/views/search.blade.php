@@ -1537,7 +1537,7 @@
                             case 'news':
                                 if ((module.sites).length)
                                 {
-                                    var table = __table_generate('sozlukSites')
+                                    var table = __table_generate('newsSites')
 
                                     var i = 0;
 
@@ -1588,7 +1588,7 @@
                             case 'blog':
                                 if ((module.sites).length)
                                 {
-                                    var table = __table_generate('sozlukSites')
+                                    var table = __table_generate('blogSites')
 
                                     var i = 0;
 
@@ -1639,7 +1639,7 @@
                             case 'shopping':
                                 if ((module.sites).length)
                                 {
-                                    var table = __table_generate('sozlukSites')
+                                    var table = __table_generate('shoppingSites')
 
                                     var i = 0;
 
@@ -1689,7 +1689,7 @@
 
                                 if ((module.users).length)
                                 {
-                                    var table = __table_generate('sozlukUsers')
+                                    var table = __table_generate('shoppingUsers')
 
                                     var i = 0;
 
