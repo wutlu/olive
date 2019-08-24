@@ -390,6 +390,14 @@ $(document).on('click', '[data-class]', function() {
         {
             eval(__.data('class-callback'))(event)
         }
+
+        if (__.data('class-hide'))
+        {
+            var _target = __.data('class-hide'),
+                _target = _element(_target);
+
+                _target.addClass('hide')
+        }
     }, __.data('class-delay'))
 
     return false;

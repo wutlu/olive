@@ -770,7 +770,7 @@
                 const diffTime = Math.abs(date2.getTime() - date1.getTime());
                 const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
 
-                if (diffDays <= 7)
+                if (diffDays <= 14)
                 {
                     window.clearTimeout(bannerTimer)
 
@@ -854,7 +854,23 @@
             table.append(
                 [
                     $('<thead />'),
-                    $('<tbody />')
+                    $('<tbody />'),
+                    $('<tfoot />', {
+                        'class': 'hide',
+                        'html': $('<tr />', {
+                            'html': $('<th />', {
+                                'colspan': 2,
+                                'html': $('<a />', {
+                                    'href': '#',
+                                    'class': 'd-table mx-auto',
+                                    'data-class': '#' + id + '->find(tr.hide)',
+                                    'data-class-remove': 'hide',
+                                    'data-class-hide': '#' + id + '->find(tfoot)',
+                                    'html': 'Tümünü Göster'
+                                })
+                            })
+                        })
+                    })
                 ]
             )
 
@@ -1189,9 +1205,12 @@
                                 {
                                     var table = __table_generate('twitterMentions')
 
+                                    var i = 0;
+
                                     $.each(module.mentions.hits.buckets, function(bucket_key, bucket) {
-                                        table.append(
+                                        table.children('tbody').append(
                                             $('<tr />', {
+                                                'class': i >= 5 ? 'hide' : '',
                                                 'html': [
                                                     $('<td />', {
                                                         'html': [
@@ -1209,22 +1228,29 @@
                                                             })
                                                         ]
                                                     }),
-                                                    $('<td />', { 'html': bucket.doc_count })
+                                                    $('<td />', { 'class': 'right-align', 'html': bucket.doc_count })
                                                 ]
                                             })
                                         )
+
+                                        i++;
                                     })
 
-                                    table.prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Kullanıcı' }), $('<th />', { 'html': 'Tweet' }) ] }))
-                                    table.prepend($('<tr />', {
+                                    table.children('thead').prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Kullanıcı' }), $('<th />', { 'class': 'right-align', 'html': 'Tweet' }) ] }))
+                                    table.children('thead').prepend($('<tr />', {
                                         'html': [
                                             $('<th />', {
                                                 'colspan': 2,
-                                                'class': 'white z-depth-1 pl-1 pr-1',
+                                                'class': 'yellow lighten-4 pl-1 pr-1',
                                                 'html': 'Twitter: Bahsedilen Kullanıcılar #100' + '<br />' + query
                                             })
                                         ]
                                     }))
+
+                                    if (i > 5)
+                                    {
+                                        table.children('tfoot').removeClass('hide')
+                                    }
                                 }
                                 else
                                 {
@@ -1235,9 +1261,12 @@
                                 {
                                     var table = __table_generate('twitterUsers')
 
+                                    var i = 0;
+
                                     $.each(module.users.buckets, function(bucket_key, bucket) {
-                                        table.append(
+                                        table.children('tbody').append(
                                             $('<tr />', {
+                                                'class': i >= 5 ? 'hide' : '',
                                                 'html': [
                                                     $('<td />', {
                                                         'html': [
@@ -1255,22 +1284,29 @@
                                                             })
                                                         ]
                                                     }),
-                                                    $('<td />', { 'html': bucket.doc_count })
+                                                    $('<td />', { 'class': 'right-align', 'html': bucket.doc_count })
                                                 ]
                                             })
                                         )
+
+                                        i++;
                                     })
 
-                                    table.prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Kullanıcı' }), $('<th />', { 'html': 'Tweet' }) ] }))
-                                    table.prepend($('<tr />', {
+                                    table.children('thead').prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Kullanıcı' }), $('<th />', { 'class': 'right-align', 'html': 'Tweet' }) ] }))
+                                    table.children('thead').prepend($('<tr />', {
                                         'html': [
                                             $('<th />', {
                                                 'colspan': 2,
-                                                'class': 'white z-depth-1 pl-1 pr-1',
+                                                'class': 'yellow lighten-4 pl-1 pr-1',
                                                 'html': 'Twitter: Paylaşım Yapan Kullanıcılar #100' + '<br />' + query
                                             })
                                         ]
                                     }))
+
+                                    if (i > 5)
+                                    {
+                                        table.children('tfoot').removeClass('hide')
+                                    }
                                 }
                                 else
                                 {
@@ -1282,9 +1318,12 @@
                                 {
                                     var table = __table_generate('youtubeUsers')
 
+                                    var i = 0;
+
                                     $.each(module.users.buckets, function(bucket_key, bucket) {
                                         table.append(
                                             $('<tr />', {
+                                                'class': i >= 5 ? 'hide' : '',
                                                 'html': [
                                                     $('<td />', {
                                                         'html': [
@@ -1302,22 +1341,29 @@
                                                             })
                                                         ]
                                                     }),
-                                                    $('<td />', { 'html': bucket.doc_count })
+                                                    $('<td />', { 'class': 'right-align', 'html': bucket.doc_count })
                                                 ]
                                             })
                                         )
+
+                                        i++;
                                     })
 
-                                    table.prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Kullanıcı' }), $('<th />', { 'html': 'Video' }) ] }))
+                                    table.prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Kullanıcı' }), $('<th />', { 'class': 'right-align', 'html': 'Video' }) ] }))
                                     table.prepend($('<tr />', {
                                         'html': [
                                             $('<th />', {
                                                 'colspan': 2,
-                                                'class': 'white z-depth-1 pl-1 pr-1',
+                                                'class': 'yellow lighten-4 pl-1 pr-1',
                                                 'html': 'YouTube: Yükleme Yapan Kullanıcılar #100' + '<br />' + query
                                             })
                                         ]
                                     }))
+
+                                    if (i > 5)
+                                    {
+                                        table.children('tfoot').removeClass('hide')
+                                    }
                                 }
                                 else
                                 {
@@ -1329,9 +1375,12 @@
                                 {
                                     var table = __table_generate('youtubeComments')
 
+                                    var i = 0;
+
                                     $.each(module.users.buckets, function(bucket_key, bucket) {
                                         table.append(
                                             $('<tr />', {
+                                                'class': i >= 5 ? 'hide' : '',
                                                 'html': [
                                                     $('<td />', {
                                                         'html': [
@@ -1349,22 +1398,29 @@
                                                             })
                                                         ]
                                                     }),
-                                                    $('<td />', { 'html': bucket.doc_count })
+                                                    $('<td />', { 'class': 'right-align', 'html': bucket.doc_count })
                                                 ]
                                             })
                                         )
+
+                                        i++;
                                     })
 
-                                    table.prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Kullanıcı' }), $('<th />', { 'html': 'Yorum' }) ] }))
+                                    table.prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Kullanıcı' }), $('<th />', { 'class': 'right-align', 'html': 'Yorum' }) ] }))
                                     table.prepend($('<tr />', {
                                         'html': [
                                             $('<th />', {
                                                 'colspan': 2,
-                                                'class': 'white z-depth-1 pl-1 pr-1',
+                                                'class': 'yellow lighten-4 pl-1 pr-1',
                                                 'html': 'YouTube: Yorum Yapan Kullanıcılar #100' + '<br />' + query
                                             })
                                         ]
                                     }))
+
+                                    if (i > 5)
+                                    {
+                                        table.children('tfoot').removeClass('hide')
+                                    }
                                 }
                                 else
                                 {
@@ -1376,9 +1432,12 @@
                                 {
                                     var table = __table_generate('sozlukSites')
 
+                                    var i = 0;
+
                                     $.each(module.sites, function(key, o) {
                                         table.append(
                                             $('<tr />', {
+                                                'class': i >= 5 ? 'hide' : '',
                                                 'html': [
                                                     $('<td />', {
                                                         'html': $('<a />', {
@@ -1390,22 +1449,29 @@
                                                             'html': o.name + ' #' + o.id
                                                         })
                                                     }),
-                                                    $('<td />', { 'html': o.hit })
+                                                    $('<td />', { 'class': 'right-align', 'html': o.hit })
                                                 ]
                                             })
                                         )
+
+                                        i++;
                                     })
 
-                                    table.prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Sözlük' }), $('<th />', { 'html': 'Entry' }) ] }))
+                                    table.prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Sözlük' }), $('<th />', { 'class': 'right-align', 'html': 'Entry' }) ] }))
                                     table.prepend($('<tr />', {
                                         'html': [
                                             $('<th />', {
                                                 'colspan': 2,
-                                                'class': 'white z-depth-1 pl-1 pr-1',
+                                                'class': 'yellow lighten-4 pl-1 pr-1',
                                                 'html': 'Paylaşım Yapılan Sözlükler' + '<br />' + query
                                             })
                                         ]
                                     }))
+
+                                    if (i > 5)
+                                    {
+                                        table.children('tfoot').removeClass('hide')
+                                    }
                                 }
                                 else
                                 {
@@ -1416,9 +1482,12 @@
                                 {
                                     var table = __table_generate('sozlukUsers')
 
+                                    var i = 0;
+
                                     $.each(module.users, function(key, o) {
                                         table.append(
                                             $('<tr />', {
+                                                'class': i >= 5 ? 'hide' : '',
                                                 'html': [
                                                     $('<td />', {
                                                         'html': [
@@ -1436,22 +1505,29 @@
                                                             })
                                                         ]
                                                     }),
-                                                    $('<td />', { 'html': o.hit })
+                                                    $('<td />', { 'class': 'right-align', 'html': o.hit })
                                                 ]
                                             })
                                         )
+
+                                        i++;
                                     })
 
-                                    table.prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Sözlük' }), $('<th />', { 'html': 'Entry' }) ] }))
+                                    table.prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Sözlük' }), $('<th />', { 'class': 'right-align', 'html': 'Entry' }) ] }))
                                     table.prepend($('<tr />', {
                                         'html': [
                                             $('<th />', {
                                                 'colspan': 2,
-                                                'class': 'white z-depth-1 pl-1 pr-1',
+                                                'class': 'yellow lighten-4 pl-1 pr-1',
                                                 'html': 'Paylaşım Yapan Sözlük Yazarları' + '<br />' + query
                                             })
                                         ]
                                     }))
+
+                                    if (i > 5)
+                                    {
+                                        table.children('tfoot').removeClass('hide')
+                                    }
                                 }
                                 else
                                 {
@@ -1463,9 +1539,12 @@
                                 {
                                     var table = __table_generate('sozlukSites')
 
+                                    var i = 0;
+
                                     $.each(module.sites, function(key, o) {
                                         table.append(
                                             $('<tr />', {
+                                                'class': i >= 5 ? 'hide' : '',
                                                 'html': [
                                                     $('<td />', {
                                                         'html': $('<a />', {
@@ -1477,22 +1556,29 @@
                                                             'html': o.name + ' #' + o.id
                                                         })
                                                     }),
-                                                    $('<td />', { 'html': o.hit })
+                                                    $('<td />', { 'class': 'right-align', 'html': o.hit })
                                                 ]
                                             })
                                         )
+
+                                        i++;
                                     })
 
-                                    table.prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Site' }), $('<th />', { 'html': 'Haber' }) ] }))
+                                    table.prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Site' }), $('<th />', { 'class': 'right-align', 'html': 'Haber' }) ] }))
                                     table.prepend($('<tr />', {
                                         'html': [
                                             $('<th />', {
                                                 'colspan': 2,
-                                                'class': 'white z-depth-1 pl-1 pr-1',
+                                                'class': 'yellow lighten-4 pl-1 pr-1',
                                                 'html': 'Haber Yapan Siteler #100' + '<br />' + query
                                             })
                                         ]
                                     }))
+
+                                    if (i > 5)
+                                    {
+                                        table.children('tfoot').removeClass('hide')
+                                    }
                                 }
                                 else
                                 {
@@ -1504,9 +1590,12 @@
                                 {
                                     var table = __table_generate('sozlukSites')
 
+                                    var i = 0;
+
                                     $.each(module.sites, function(key, o) {
                                         table.append(
                                             $('<tr />', {
+                                                'class': i >= 5 ? 'hide' : '',
                                                 'html': [
                                                     $('<td />', {
                                                         'html': $('<a />', {
@@ -1518,22 +1607,29 @@
                                                             'html': o.name + ' #' + o.id
                                                         })
                                                     }),
-                                                    $('<td />', { 'html': o.hit })
+                                                    $('<td />', { 'class': 'right-align', 'html': o.hit })
                                                 ]
                                             })
                                         )
+
+                                        i++;
                                     })
 
-                                    table.prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Site' }), $('<th />', { 'html': 'Blog' }) ] }))
+                                    table.prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Site' }), $('<th />', { 'class': 'right-align', 'html': 'Blog' }) ] }))
                                     table.prepend($('<tr />', {
                                         'html': [
                                             $('<th />', {
                                                 'colspan': 2,
-                                                'class': 'white z-depth-1 pl-1 pr-1',
+                                                'class': 'yellow lighten-4 pl-1 pr-1',
                                                 'html': 'Blog Yazan Siteler' + '<br />' + query
                                             })
                                         ]
                                     }))
+
+                                    if (i > 5)
+                                    {
+                                        table.children('tfoot').removeClass('hide')
+                                    }
                                 }
                                 else
                                 {
@@ -1545,9 +1641,12 @@
                                 {
                                     var table = __table_generate('sozlukSites')
 
+                                    var i = 0;
+
                                     $.each(module.sites, function(key, o) {
                                         table.append(
                                             $('<tr />', {
+                                                'class': i >= 5 ? 'hide' : '',
                                                 'html': [
                                                     $('<td />', {
                                                         'html': $('<a />', {
@@ -1559,22 +1658,29 @@
                                                             'html': o.name + ' #' + o.id
                                                         })
                                                     }),
-                                                    $('<td />', { 'html': o.hit })
+                                                    $('<td />', { 'class': 'right-align', 'html': o.hit })
                                                 ]
                                             })
                                         )
+
+                                        i++;
                                     })
 
-                                    table.prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Site' }), $('<th />', { 'html': 'Ürün' }) ] }))
+                                    table.prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Site' }), $('<th />', { 'class': 'right-align', 'html': 'Ürün' }) ] }))
                                     table.prepend($('<tr />', {
                                         'html': [
                                             $('<th />', {
                                                 'colspan': 2,
-                                                'class': 'white z-depth-1 pl-1 pr-1',
+                                                'class': 'yellow lighten-4 pl-1 pr-1',
                                                 'html': 'E-ticaret: Ürün Paylaşılan Siteler' + '<br />' + query
                                             })
                                         ]
                                     }))
+
+                                    if (i > 5)
+                                    {
+                                        table.children('tfoot').removeClass('hide')
+                                    }
                                 }
                                 else
                                 {
@@ -1585,9 +1691,12 @@
                                 {
                                     var table = __table_generate('sozlukUsers')
 
+                                    var i = 0;
+
                                     $.each(module.users, function(key, o) {
                                         table.append(
                                             $('<tr />', {
+                                                'class': i >= 5 ? 'hide' : '',
                                                 'html': [
                                                     $('<td />', {
                                                         'html': [
@@ -1605,46 +1714,29 @@
                                                             })
                                                         ]
                                                     }),
-                                                    $('<td />', { 'html': o.hit })
+                                                    $('<td />', { 'class': 'right-align', 'html': o.hit })
                                                 ]
                                             })
                                         )
+
+                                        i++;
                                     })
 
-                                    table.prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Site' }), $('<th />', { 'html': 'Ürün' }) ] }))
+                                    table.prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Site' }), $('<th />', { 'class': 'right-align', 'html': 'Ürün' }) ] }))
                                     table.prepend($('<tr />', {
                                         'html': [
                                             $('<th />', {
                                                 'colspan': 2,
-                                                'class': 'white z-depth-1 pl-1 pr-1',
+                                                'class': 'yellow lighten-4 pl-1 pr-1',
                                                 'html': 'E-ticaret: Ürün Paylaşan Kullanıcılar' + '<br />' + query
                                             })
                                         ]
                                     }))
-                                }
-                                else
-                                {
-                                    //
-                                }
-                                if (module.sites)
-                                {
-                                    $.each(module.sites, function(key, o) {
-                                        //console.log(o.hit)
-                                        //console.log(o.name)
-                                    })
-                                }
-                                else
-                                {
-                                    //
-                                }
 
-                                if (module.users)
-                                {
-                                    $.each(module.users, function(key, o) {
-                                        //console.log(o.hit)
-                                        //console.log(o.name)
-                                        //console.log(o.site)
-                                    })
+                                    if (i > 5)
+                                    {
+                                        table.children('tfoot').removeClass('hide')
+                                    }
                                 }
                                 else
                                 {
@@ -1837,37 +1929,22 @@
 
                         var datas = [];
 
-                        if (module.pos.value)
-                        {
-                            var val = module.pos.value;
+                        var pos = module.pos.value;
+                        var neu = module.neu.value;
+                        var neg = module.neg.value;
+                        var hte = module.hte.value;
 
-                            datas.push((val/100).toFixed(2))
-                        }
-                        else { datas.push(0) }
+                        var total = pos + neu + neg + hte;
 
-                        if (module.neu.value)
-                        {
-                            var val = module.neu.value;
+                        pos = 25-(pos/total*100);
+                        neu = 25-(neu/total*100);
+                        neg = 25-(neg/total*100);
+                        hte = 25-(hte/total*100);
 
-                            datas.push((val/100).toFixed(2))
-                        }
-                        else { datas.push(0) }
-
-                        if (module.neg.value)
-                        {
-                            var val = module.neg.value;
-
-                            datas.push((val/100).toFixed(2))
-                        }
-                        else { datas.push(0) }
-
-                        if (module.hte.value)
-                        {
-                            var val = module.hte.value;
-
-                            datas.push((val/100).toFixed(2))
-                        }
-                        else { datas.push(0) }
+                        datas.push((pos < 0 ? 0 : pos).toFixed(2))
+                        datas.push((neu < 0 ? 0 : neu).toFixed(2))
+                        datas.push((neg < 0 ? 0 : neg).toFixed(2))
+                        datas.push((hte < 0 ? 0 : hte).toFixed(2))
 
                         sentimentChartOption['series'].push({
                             name: label,
@@ -2115,7 +2192,7 @@
                 search.data('skip', 0).addClass('json-clear');
 
             vzAjax(search)
-        }, 400)
+        }, 600)
     }).on('click', '[data-trigger=select-allSources]', function() {
         $('input[name=modules]').prop('checked', true)
 
