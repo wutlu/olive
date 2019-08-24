@@ -175,6 +175,11 @@
         setTimeout(function() {
             // trigger
         }, 400)
+
+        _scrollTo({
+            'target': 'input#string',
+            'tolerance': '-64px'
+        })
     }).on('keyup', 'input[name=string]', function(e) {
         var __ = $(this),
             keycode = (e.keyCode ? e.keyCode : e.which);
@@ -816,12 +821,7 @@
 
             operator('fast-close')
 
-            $('.tabs').tabs('select', 'search-tab');
-
-            _scrollTo({
-                'target': 'input#string',
-                'tolerance': '-64px'
-            })
+            $('.tabs').tabs('select', 'search-tab')
         }
     }
 
