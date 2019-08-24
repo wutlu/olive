@@ -17,7 +17,6 @@ use Term;
 
 use App\Models\Source;
 use App\Models\SavedSearch;
-use App\Models\Source as SourceModel;
 
 use App\Utilities\Crawler;
 
@@ -134,7 +133,7 @@ class SearchController extends Controller
         $e = $request->e;
 
         $organisation = auth()->user()->organisation;
-        $sources = SourceModel::where('organisation_id', $organisation->id)->get();
+        $sources = Source::where('organisation_id', $organisation->id)->get();
 
         $trends = json_decode(RedisCache::get(implode(':', [ config('system.db.alias'), 'trends', 'twitter_hashtag' ])));
 

@@ -38,7 +38,7 @@ class ArchiveAggregationRequest extends FormRequest
     {
         return [
             'date_limit' => 'Başlangıç tarihi '.$this->historical_days.' günden önce olamaz.',
-            'date_limit_between' => 'Arama raporları için tarih aralığı 7 günden geniş olamaz.',
+            'date_limit_between' => 'Arama raporları için tarih aralığı 14 günden geniş olamaz.',
         ];
     }
 
@@ -54,14 +54,14 @@ class ArchiveAggregationRequest extends FormRequest
         });
 
         Validator::extend('date_limit_between', function($attribute, $value) use($request) {
-            return Carbon::parse($request->start_date)->diffInDays($request->end_date) <= 7;
+            return Carbon::parse($request->start_date)->diffInDays($request->end_date) <= 14;
         });
 
         return [
             'type' => 'required|string|in:histogram,place,platform,author,hashtag,sentiment,consumer,gender',
             'string' => 'required|string|max:255',
             'start_date' => 'required|date|date_limit',
-            //'end_date' => 'required|date|after_or_equal:start_date|date_limit_between',
+            'end_date' => 'required|date|after_or_equal:start_date|date_limit_between',
             'modules' => 'required|array|min:1',
             'modules.*' => 'required|string|in:'.implode(',',array_keys(config('system.modules'))),
             'sharp' => 'nullable|string|in:on',

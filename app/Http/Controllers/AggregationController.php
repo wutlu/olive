@@ -15,7 +15,6 @@ use Term;
 
 use App\Models\Source;
 use App\Models\SavedSearch;
-use App\Models\Source as SourceModel;
 use App\Models\Crawlers\SozlukCrawler;
 use App\Models\Crawlers\MediaCrawler;
 use App\Models\Crawlers\BlogCrawler;
@@ -74,7 +73,7 @@ class AggregationController extends Controller
             $source = Source::whereIn('id', $matches[0])->where('organisation_id', $organisation->id)->first();
             $request['string'] = preg_replace('/\[s:([0-9]+)\]/m', '', $request->string);
 
-            $organisation['source'] = $source;
+            $data['source'] = $source;
         }
 
         $clean = Term::cleanSearchQuery($request->string);
