@@ -485,7 +485,7 @@
                 data-input="input[name=end_date]"
                 data-focus="input[name=start_date]"
                 data-input-value="{{ date('Y-m-d') }}"
-                data-value="{{ date('Y-m-d') }}">Bugün</a>
+                data-value="{{ date('Y-m-d') }}">Bugün (Grafik Alınabilir)</a>
         </li>
         @if ($organisation->historical_days >= 1)
             <li>
@@ -496,7 +496,7 @@
                     data-input="input[name=end_date]"
                     data-focus="input[name=start_date]"
                     data-input-value="{{ date('Y-m-d', strtotime('-1 day')) }}"
-                    data-value="{{ date('Y-m-d', strtotime('-1 day')) }}">Dün</a>
+                    data-value="{{ date('Y-m-d', strtotime('-1 day')) }}">Dün (Grafik Alınabilir)</a>
             </li>
         @endif
         @if ($organisation->historical_days >= 2)
@@ -508,7 +508,7 @@
                     data-input="input[name=end_date]"
                     data-focus="input[name=start_date]"
                     data-input-value="{{ date('Y-m-d') }}"
-                    data-value="{{ date('Y-m-d', strtotime('-1 day')) }}">Son 2 Gün</a>
+                    data-value="{{ date('Y-m-d', strtotime('-1 day')) }}">Son 2 Gün (Grafik Alınabilir)</a>
             </li>
         @endif
         @if ($organisation->historical_days >= 7)
@@ -520,7 +520,19 @@
                     data-input="input[name=end_date]"
                     data-focus="input[name=start_date]"
                     data-input-value="{{ date('Y-m-d') }}"
-                    data-value="{{ date('Y-m-d', strtotime('-7 day')) }}">Son 7 Gün</a>
+                    data-value="{{ date('Y-m-d', strtotime('-7 day')) }}">Son 7 Gün (Grafik Alınabilir)</a>
+            </li>
+        @endif
+        @if ($organisation->historical_days >= 14)
+            <li>
+                <a
+                    href="#"
+                    class="collection-item waves-effect"
+                    data-update-click
+                    data-input="input[name=end_date]"
+                    data-focus="input[name=start_date]"
+                    data-input-value="{{ date('Y-m-d') }}"
+                    data-value="{{ date('Y-m-d', strtotime('-7 day')) }}">Son 14 Gün (Grafik Alınabilir)</a>
             </li>
         @endif
         @if ($organisation->historical_days >= 30)

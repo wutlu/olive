@@ -640,7 +640,10 @@ class SearchController extends Controller
 
         usort($data, '\App\Utilities\DateUtility::dateSort');
 
-        $data = array_reverse($data);
+        if (!$request->reverse)
+        {
+            $data = array_reverse($data);
+        }
 
         return [
             'status' => 'ok',
