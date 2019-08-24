@@ -965,7 +965,7 @@
                             case 'blog'            :label = 'Makale'; break;
                             case 'youtube_video'   :label = 'Video' ; break;
                             case 'youtube_comment' :label = 'Yorum' ; break;
-                            case 'shopping'        :label = 'Ürün'  ; break;
+                            case 'shopping'        :label = 'İlan'  ; break;
                         }
 
                         $.each(module, function(time_key, time) {
@@ -1666,13 +1666,13 @@
                                         i++;
                                     })
 
-                                    table.prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Site' }), $('<th />', { 'class': 'right-align', 'html': 'Ürün' }) ] }))
+                                    table.prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Site' }), $('<th />', { 'class': 'right-align', 'html': 'İlan' }) ] }))
                                     table.prepend($('<tr />', {
                                         'html': [
                                             $('<th />', {
                                                 'colspan': 2,
                                                 'class': 'yellow lighten-4 pl-1 pr-1',
-                                                'html': 'E-ticaret: Ürün Paylaşılan Siteler' + '<br />' + query
+                                                'html': 'E-ticaret: İlan Paylaşılan Siteler' + '<br />' + query
                                             })
                                         ]
                                     }))
@@ -1722,13 +1722,13 @@
                                         i++;
                                     })
 
-                                    table.prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Site' }), $('<th />', { 'class': 'right-align', 'html': 'Ürün' }) ] }))
+                                    table.prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Site' }), $('<th />', { 'class': 'right-align', 'html': 'İlan' }) ] }))
                                     table.prepend($('<tr />', {
                                         'html': [
                                             $('<th />', {
                                                 'colspan': 2,
                                                 'class': 'yellow lighten-4 pl-1 pr-1',
-                                                'html': 'E-ticaret: Ürün Paylaşan Kullanıcılar' + '<br />' + query
+                                                'html': 'E-ticaret: İlan Paylaşan Kullanıcılar' + '<br />' + query
                                             })
                                         ]
                                     }))
