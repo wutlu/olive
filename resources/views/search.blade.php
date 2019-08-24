@@ -805,6 +805,11 @@
             operator('fast-close')
 
             $('.tabs').tabs('select', 'search-tab');
+
+            _scrollTo({
+                'target': 'input#string',
+                'tolerance': '-64px'
+            })
         }
     }
 
@@ -1472,7 +1477,7 @@
                                             $('<th />', {
                                                 'colspan': 2,
                                                 'class': 'white z-depth-1 pl-1 pr-1',
-                                                'html': 'Haber Yapan Siteler' + '<br />' + query
+                                                'html': 'Haber Yapan Siteler #100' + '<br />' + query
                                             })
                                         ]
                                     }))
@@ -2240,11 +2245,6 @@
 
         $.each(JSON.parse(option.modules), function(key, module) {
             $('input[name=modules][value=' + module + ']').prop('checked', true)
-        })
-
-        _scrollTo({
-            'target': 'input#string',
-            'tolerance': '-64px'
         })
 
         var search = $('ul#search');
