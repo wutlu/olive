@@ -532,7 +532,7 @@
                     data-input="input[name=end_date]"
                     data-focus="input[name=start_date]"
                     data-input-value="{{ date('Y-m-d') }}"
-                    data-value="{{ date('Y-m-d', strtotime('-7 day')) }}">Son 14 Gün (Grafik Alınabilir)</a>
+                    data-value="{{ date('Y-m-d', strtotime('-14 day')) }}">Son 14 Gün (Grafik Alınabilir)</a>
             </li>
         @endif
         @if ($organisation->historical_days >= 30)
