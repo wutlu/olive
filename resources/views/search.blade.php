@@ -12,18 +12,6 @@
 ])
 
 @push('local.styles')
-    .chart {
-        margin: 0 0 1rem;
-        position: relative;
-    }
-    .chart > .chart-container {
-        position: relative;
-        max-width: 100vw !important;
-    }
-    .chart > .chart-container > canvas {
-        max-width: 100% !important;
-    }
-
     #search-operators {
         display: none;
         padding: 1rem;
@@ -86,6 +74,14 @@
     .marked {
         padding: .4rem;
         border-radius: .2rem;
+    }
+
+    .chart {
+        margin: 0 0 2rem;
+        position: relative;
+    }
+    .chart svg {
+        height: 360px;
     }
 @endpush
 
@@ -167,7 +163,14 @@
         array.push(input.val())
         array.push(string)
 
-        input.val(input.val() ? array.join(__.data('operator') ? __.data('operator') : ' && ') : string).focus()
+        if (__.data('search-new'))
+        {
+            input.val(string)
+        }
+        else
+        {
+            input.val(input.val() ? array.join(__.data('operator') ? __.data('operator') : ' && ') : string).focus()
+        }
 
         setTimeout(function() {
             // trigger
@@ -366,7 +369,7 @@
 @endpush
 
 @php
-    $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_pos,sentiment_neu,sentiment_neg,sentiment_hte,consumer_que,consumer_req,consumer_cmp,consumer_nws';
+    $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_pos,sentiment_neu,sentiment_neg,sentiment_hte,consumer_que,consumer_req,consumer_cmp,consumer_nws,sharp';
 @endphp
 
 @section('wildcard')
@@ -423,9 +426,9 @@
                 <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="number" data-search="counts.url">Bağlantı Sayısı</button>
                 <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="number" data-search="counts.media">Medya Sayısı</button>
 
-                <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-search="!_exists_:external.type">Sadece Tweetler</button>
-                <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-search="external.type:quote">Sadece Alıntılar</button>
-                <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-search="external.type:reply">Sadece Cevaplar</button>
+                <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-search="!external.type:retweet">ReTweetler Hariç</button>
+                <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-search="!external.type:quote">Alıntılar Hariç</button>
+                <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-search="!external.type:reply">Cevaplar Hariç</button>
             </div>
 
             <div class="p-1">
@@ -449,7 +452,7 @@
     @if (@$trends)
         <div class="owl-chips owl-carousel grey lighten-4 z-depth-1">
             @foreach ($trends as $trend)
-                <a data-update-click class="chip grey lighten-2 waves-effect mb-0" data-search="{{ $trend->data->key }}" href="#">{{ $trend->data->key }}</a>
+                <a data-update-click data-search-new="true" class="chip grey lighten-2 waves-effect mb-0" data-search="{{ $trend->data->key }}" href="#">{{ $trend->data->key }}</a>
             @endforeach
         </div>
     @endif
@@ -607,7 +610,7 @@
                         {
                             $('.banner').removeClass('hide').css({ 'background-image': 'url(' + option[def.key].image + ')' })
                             $('.banner').find('[data-name=overlay]').css({ 'background-color': option[def.key].color })
-                            $('.banner').find('[data-name=text]').html('Görünen o ki ilgilendiğiniz konu ' + (def.val).toFixed(2) + '% oranla ' + option[def.key].text + ' mesajı içeriyor.')
+                            $('.banner').find('[data-name=text]').html('Görünen o ki ilgilendiğiniz konu çoğunlukla ' + option[def.key].text + ' mesaj içeriyor.')
                         }
                     break;
                     case 'consumer':
@@ -653,7 +656,7 @@
                         {
                             $('.banner').removeClass('hide').css({ 'background-image': 'url(' + option[def.key].image + ')' })
                             $('.banner').find('[data-name=overlay]').css({ 'background-color': option[def.key].color })
-                            $('.banner').find('[data-name=text]').html('Bu konu çok fazla (' + def.val + '%) ' + option[def.key].text + ' mesajı içeriyor.')
+                            $('.banner').find('[data-name=text]').html('Bu konu çok fazla ' + option[def.key].text + ' mesajı içeriyor.')
                         }
                     break;
                     case 'gender':
@@ -689,7 +692,7 @@
                         {
                             $('.banner').removeClass('hide').css({ 'background-image': 'url(' + option[def.key].image + ')' })
                             $('.banner').find('[data-name=overlay]').css({ 'background-color': option[def.key].color })
-                            $('.banner').find('[data-name=text]').html('Görünüşe bakılırsa bu konu hakkında en çok ' + def.val + '% oranla ' + option[def.key].text + ' kullanıcılar yazmış.')
+                            $('.banner').find('[data-name=text]').html('Görünüşe bakılırsa bu konu hakkında en çok ' + (def.val).toFixed(2) + '% oranla ' + option[def.key].text + ' kullanıcılar yazmış.')
                         }
                     break;
                     case 'hashtag':
@@ -708,10 +711,7 @@
             }
             catch
             {
-                M.toast({
-                    html: 'Grafik için yeterli sonuç bulunamadı :(',
-                    classes: 'red darken-2'
-                }, 200)
+                //
             }
         }
     }
@@ -728,21 +728,21 @@
 
             if (obj.stats.hits)
             {
-                $('[data-name=stats]').html('Yaklaşık ' + obj.stats.hits + ' sonuç bulundu (' + obj.stats.took + ' saniye)').removeClass('hide');
+                $('[data-name=stats]').html('Yaklaşık ' + number_format(obj.stats.hits) + ' sonuç bulundu (' + obj.stats.took + ' saniye)').removeClass('hide');
             }
             else
             {
                 $('[data-name=stats]').html('Daha fazla sonuç için arama kriterlerini azaltmanız gerekiyor.')
             }
 
-            $('[data-name=twitter-tweet]').html(obj.stats.counts.twitter_tweet);
-            $('[data-name=sozluk-entry]').html(obj.stats.counts.sozluk_entry);
-            $('[data-name=youtube-video]').html(obj.stats.counts.youtube_video);
-            $('[data-name=youtube-comment]').html(obj.stats.counts.youtube_comment);
-            $('[data-name=media-article]').html(obj.stats.counts.media_article);
-            $('[data-name=blog-document]').html(obj.stats.counts.blog_document);
-            $('[data-name=shopping-product]').html(obj.stats.counts.shopping_product);
-            $('[data-name=instagram-media]').html(obj.stats.counts.instagram_media);
+            $('[data-name=twitter-tweet]').html(number_format(obj.stats.counts.twitter_tweet));
+            $('[data-name=sozluk-entry]').html(number_format(obj.stats.counts.sozluk_entry));
+            $('[data-name=youtube-video]').html(number_format(obj.stats.counts.youtube_video));
+            $('[data-name=youtube-comment]').html(number_format(obj.stats.counts.youtube_comment));
+            $('[data-name=media-article]').html(number_format(obj.stats.counts.media_article));
+            $('[data-name=blog-document]').html(number_format(obj.stats.counts.blog_document));
+            $('[data-name=shopping-product]').html(number_format(obj.stats.counts.shopping_product));
+            $('[data-name=instagram-media]').html(number_format(obj.stats.counts.instagram_media));
 
             $('.banner').addClass('hide')
 
@@ -762,7 +762,7 @@
                         var selected_type = bucket[Math.floor(Math.random() * bucket.length)];
 
                         vzAjax($('<div />', {
-                            'data-href': '{{ route('search.aggregation') }}',
+                            'data-href': '{{ route('search.banner') }}',
                             'data-method': 'post',
                             'data-callback': '__banner',
                             'data-type': selected_type,
@@ -817,10 +817,7 @@
             'html': [
                 $('<div />', {
                     'id': id + 'Chart',
-                    'class': 'chart-container',
-                    'html': $('<canvas />', {
-                        'id': id + 'Canvas'
-                    })
+                    'class': 'chart-container hide'
                 })
             ]
         })
@@ -828,534 +825,1115 @@
         chart_element.prependTo('#chart-tab')
     }
 
-    function __chart(__, obj)
+    function __table_generate(id)
     {
-        if (obj.status == 'ok')
-        {
-            try
-            {
-                if (obj.data)
-                {
-                    var query = $('input[name=string]').val() + ' / ' + $('input[name=start_date]').val() + ' - ' + $('input[name=end_date]').val();
+        var table = $('#' + id);
+            table.remove()
 
-                    $('[data-id=chart-alert]').addClass('hide')
+        var table = $('<table />', {
+                'id': id,
+                'class': 'highlight mb-1'
+            })
+            table.append(
+                [
+                    $('<thead />'),
+                    $('<tbody />')
+                ]
+            )
 
-                    $('#panel').removeClass('active')
+            table.prependTo('#chart-tab')
 
-                    $('.tabs').tabs('select', 'chart-tab')
-
-                    if (__.data('type') == 'histogram')
-                    {
-                        var data = [];
-
-                        $.each(obj.data.hourly, function(key, o) {
-                            data[o.key] = o.doc_count;
-                        })
-
-                        __chart_generate('hourly')
-
-                        new Chart(document.getElementById('hourly' + 'Canvas'), {
-                            type: 'bar',
-                            data: {
-                                labels: [ '00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23' ],
-                                datasets: [
-                                    {
-                                        backgroundColor: '#0097a7',
-                                        data: data
-                                    }
-                                ]
-                            },
-                            options: {
-                                title: {
-                                    display: true,
-                                    text: 'SAATLİK İÇERİK GRAFİĞİ (' + query + ')'
-                                },
-                                legend: { display: false },
-                                maintainAspectRatio: false,
-                                responsive: true
-                            }
-                        })
-
-                        // daily
-
-                        var data = [ 0, 0, 0, 0, 0, 0, 0 ];
-
-                        $.each(obj.data.daily, function(key, o) {
-                            data[o.key - 1] = o.doc_count;
-                        })
-
-                        __chart_generate('daily')
-
-                        new Chart(document.getElementById('daily' + 'Canvas'), {
-                            type: 'bar',
-                            data: {
-                                labels: [ 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi', 'Pazar' ],
-                                datasets: [
-                                    {
-                                        backgroundColor: '#0097a7',
-                                        data: data
-                                    }
-                                ]
-                            },
-                            options: {
-                                title: {
-                                    display: true,
-                                    text: 'GÜNLÜK İÇERİK GRAFİĞİ (' + query + ')'
-                                },
-                                legend: { display: false },
-                                maintainAspectRatio: false,
-                                responsive: true
-                            }
-                        })
-                    }
-                    else if (__.data('type') == 'place')
-                    {
-                        var counts = [];
-                        var labels = [];
-
-                        $.each(obj.data.place, function(key, o) {
-                            counts.push(o.hit);
-                            labels.push(o.name);
-                        })
-
-                        __chart_generate('place')
-
-                        new Chart(document.getElementById('place' + 'Canvas'), {
-                            type: 'horizontalBar',
-                            data: {
-                                labels: labels,
-                                datasets: [
-                                    {
-                                        label: 'Paylaşım',
-                                        backgroundColor:  [ '#006064', '#00838f', '#0097a7', '#00acc1', '#00bcd4', '#26c6da', '#4dd0e1', '#80deea', '#b2ebf2', '#e0f7fa', '#006064', '#00838f', '#0097a7', '#00acc1', '#00bcd4', '#26c6da', '#4dd0e1', '#80deea', '#b2ebf2' ],
-                                        data: counts
-                                    }
-                                ]
-                            },
-                            options: {
-                                legend: { display: false },
-                                title: {
-                                    display: true,
-                                    text: 'KONUMLARA GÖRE İÇERİK (' + query + ')'
-                                }
-                            }
-                        })
-                    }
-                    else if (__.data('type') == 'platform')
-                    {
-                        var counts = [];
-                        var labels = [];
-
-                        $.each(obj.data.platform, function(key, o) {
-                            counts.push(o.hit);
-                            labels.push(o.name);
-                        })
-
-                        __chart_generate('platform')
-
-                        new Chart(document.getElementById('platform' + 'Canvas'), {
-                            type: 'horizontalBar',
-                            data: {
-                                labels: labels,
-                                datasets: [
-                                    {
-                                        label: 'Paylaşım',
-                                        backgroundColor:  [ '#006064', '#00838f', '#0097a7', '#00acc1', '#00bcd4', '#26c6da', '#4dd0e1', '#80deea', '#b2ebf2', '#e0f7fa', '#006064', '#00838f', '#0097a7', '#00acc1', '#00bcd4', '#26c6da', '#4dd0e1', '#80deea', '#b2ebf2' ],
-                                        data: counts
-                                    }
-                                ]
-                            },
-                            options: {
-                                legend: { display: false },
-                                title: {
-                                    display: true,
-                                    text: 'PLATFORMLARA GÖRE İÇERİK (' + query + ')'
-                                }
-                            }
-                        })
-                    }
-                    else if (__.data('type') == 'hashtag')
-                    {
-                        var counts = [];
-                        var labels = [];
-
-                        $.each(obj.data, function(key, count) {
-                            counts.push(count);
-                            labels.push(key);
-                        })
-
-                        __chart_generate('hashtag')
-
-                        new Chart(document.getElementById('hashtag' + 'Canvas'), {
-                            type: 'horizontalBar',
-                            data: {
-                                labels: labels,
-                                datasets: [
-                                    {
-                                        label: 'Paylaşım',
-                                        backgroundColor:  [ '#006064', '#00838f', '#0097a7', '#00acc1', '#00bcd4', '#26c6da', '#4dd0e1', '#80deea', '#b2ebf2', '#e0f7fa', '#006064', '#00838f', '#0097a7', '#00acc1', '#00bcd4', '#26c6da', '#4dd0e1', '#80deea', '#b2ebf2' ],
-                                        data: counts
-                                    }
-                                ]
-                            },
-                            options: {
-                                legend: { display: false },
-                                title: {
-                                    display: true,
-                                    text: 'ETKİLEŞEN HASHTAGLER (' + query + ')'
-                                }
-                            }
-                        })
-                    }
-                    else if (__.data('type') == 'mention')
-                    {
-                        $('#shout-chart').remove()
-
-                        var element = $('<div />', {
-                            'class': 'card mb-1',
-                            'id': 'shout-chart',
-                            'html': $('<div />', {
-                                'class': 'card-content blue-grey',
-                                'html': $('<span />', {
-                                    'class': 'card-title white-text',
-                                    'html': query
-                                })
-                            })
-                        });
-
-                        $.each(obj.data, function(key, module) {
-                            var title = '';
-
-                            switch(key)
-                            {
-                                case 'twitter_users':
-                                    title = 'Twitter: Bu Hesaplar Bahsetti';
-                                break;
-                                case 'twitter_mentions':
-                                    title = 'Twitter: Bu Hesaplar Bahsedildi';
-                                break;
-                                case 'youtube_users':
-                                    title = 'YouTube: Bu Kanallar Bahsetti';
-                                break;
-                                case 'sozluk_users':
-                                    title = 'Sözlük: Bu Yazarlar Bahsetti';
-                                break;
-                                case 'shopping_users':
-                                    title = 'E-ticaret: Bu Kullanıcılar Bahsetti';
-                                break;
-                            }
-                            
-                            element.append($('<div />', {
-                                'class': 'card-content',
-                                'html': $('<span />', {
-                                    'class': 'card-title',
-                                    'html': title
-                                })
-                            }))
-
-                            var collection = $('<div />', {
-                                'class': 'collection collection-unstyled'
-                            })
-
-                            $.each(module, function(k, m) {
-                                switch(key)
-                                {
-                                    case 'twitter_users':
-                                        collection.append($('<a />', {
-                                            'href': '#',
-                                            'class': 'collection-item',
-                                            'data-search': '@' + m.screen_name,
-                                            'data-update-click': 'true',
-                                            'html': [
-                                                m.name,
-                                                $('<span />', {
-                                                    'class': 'badge',
-                                                    'html': m.hit
-                                                })
-                                            ]
-                                        }))
-                                    break;
-                                    case 'twitter_mentions':
-                                        collection.append($('<a />', {
-                                            'href': '#',
-                                            'class': 'collection-item',
-                                            'data-search': '@' + m.screen_name,
-                                            'data-update-click': 'true',
-                                            'html': [
-                                                m.name,
-                                                $('<span />', {
-                                                    'class': 'badge',
-                                                    'html': m.hit
-                                                })
-                                            ]
-                                        }))
-                                    break;
-                                    case 'youtube_users':
-                                        collection.append($('<a />', {
-                                            'href': '#',
-                                            'class': 'collection-item',
-                                            'data-search': 'channel.title:"' + m.title + '"',
-                                            'data-update-click': 'true',
-                                            'html': [
-                                                m.title,
-                                                $('<span />', {
-                                                    'class': 'badge',
-                                                    'html': m.hit
-                                                })
-                                            ]
-                                        }))
-                                    break;
-                                    case 'sozluk_users':
-                                        collection.append($('<a />', {
-                                            'href': '#',
-                                            'class': 'collection-item',
-                                            'data-search': 'author:"' + m.name + '"',
-                                            'data-update-click': 'true',
-                                            'html': [
-                                                m.name,
-                                                $('<span />', {
-                                                    'class': 'badge',
-                                                    'html': m.hit
-                                                })
-                                            ]
-                                        }))
-                                    break;
-                                    case 'shopping_users':
-                                        collection.append($('<a />', {
-                                            'href': '#',
-                                            'class': 'collection-item',
-                                            'data-search': 'seller.name:"' + m.name + '"',
-                                            'data-update-click': 'true',
-                                            'html': [
-                                                m.name,
-                                                $('<span />', {
-                                                    'class': 'badge',
-                                                    'html': m.hit
-                                                })
-                                            ]
-                                        }))
-                                    break;
-                                }
-                            })
-
-                            collection.appendTo(element)
-                        })
-
-                        element.prependTo('#chart-tab')
-                    }
-                    else if (__.data('type') == 'sentiment')
-                    {
-                        var counts = [];
-                        var labels = [];
-
-                        var readable_labels = {
-                            'pos': 'Pozitif',
-                            'neg': 'Negatif',
-                            'neu': 'Nötr',
-                            'hte': 'Nefret Söylemi'
-                        };
-
-                        $.each(obj.data, function(key, count) {
-                            counts.push(count);
-                            labels.push(readable_labels[key]);
-                        })
-
-                        __chart_generate('sentiment')
-
-                        new Chart(document.getElementById('sentiment' + 'Canvas'), sentiment_chart('DUYGU GRAFİĞİ (' + query + ')', labels, counts))
-                    }
-                    else if (__.data('type') == 'consumer')
-                    {
-                        var counts = [];
-                        var labels = [];
-
-                        var readable_labels = {
-                            'que': 'Soru',
-                            'req': 'İstek',
-                            'nws': 'Haber',
-                            'cmp': 'Şikayet'
-                        };
-
-                        $.each(obj.data, function(key, count) {
-                            counts.push(count);
-                            labels.push(readable_labels[key]);
-                        })
-
-                        __chart_generate('consumer')
-
-                        new Chart(document.getElementById('consumer' + 'Canvas'), {
-                            type: 'line',
-                            data: {
-                                datasets: [
-                                    {
-                                        data: counts,
-                                        borderColor: '#3e95cd',
-                                        fill: false
-                                    }
-                                ],
-                                labels: labels
-                            },
-                            options: {
-                                title: {
-                                    display: true,
-                                    text: 'MÜŞTERİ GRAFİĞİ (' + query + ')'
-                                },
-                                legend: {
-                                    display: false
-                                },
-                                scales: {
-                                    yAxes: [
-                                        {
-                                            display: true,
-                                            ticks: {
-                                                beginAtZero: true,
-                                                max: 100
-                                            }
-                                        }
-                                    ]
-                                }
-                            }
-                        })
-                    }
-                    else if (__.data('type') == 'gender')
-                    {
-                        var counts = [];
-                        var labels = [];
-
-                        var readable_labels = {
-                            'male': 'Erkek',
-                            'female': 'Kadın',
-                            'unknown': 'Bilinmeyen'
-                        };
-
-                        $.each(obj.data, function(key, count) {
-                            counts.push(count);
-                            labels.push(readable_labels[key]);
-                        })
-
-                        __chart_generate('gender')
-
-                        new Chart(document.getElementById('gender' + 'Canvas'), {
-                            type: 'doughnut',
-                            data: {
-                                datasets: [
-                                    {
-                                        backgroundColor: [
-                                            '#1976d2',
-                                            '#d81b60',
-                                            '#bdbdbd'
-                                        ],
-                                        data: counts
-                                    }
-                                ],
-                                labels: labels
-                            },
-                            options: {
-                                title: {
-                                    display: true,
-                                    text: 'CİNSİYET GRAFİĞİ (' + query + ')'
-                                },
-                                legend: {
-                                    display: true,
-                                    position: 'right'
-                                },
-                                maintainAspectRatio: false,
-                                tooltips: {
-                                    callbacks: {
-                                        label: function(tooltipItem, data) {
-                                            var dataset = data.datasets[tooltipItem.datasetIndex];
-                                            var total = dataset.data.reduce(function(previousValue, currentValue, currentIndex, array) {
-                                                return previousValue + currentValue;
-                                            });
-
-                                            var currentValue = dataset.data[tooltipItem.index];
-                                            var percentage = Math.floor(((currentValue/total) * 100)+0.5);
-
-                                            return percentage + '%';
-                                        }
-                                    }
-                                }
-                            }
-                        })
-                    }
-                }
-                else
-                {
-                    M.toast({
-                        html: 'Rapor için yeterli sonuç bulunamadı :(',
-                        classes: 'red darken-2'
-                    }, 200) 
-                }
-            }
-            catch
-            {
-                M.toast({
-                    html: 'Grafik için yeterli sonuç bulunamadı :(',
-                    classes: 'red darken-2'
-                }, 200)
-            }
-        }
+        return table;
     }
 
-    function sentiment_chart(title, labels, counts)
+    function __chart(__, obj)
     {
-        return {
-           type: 'doughnut',
-           data: {
-               datasets: [
-                   {
-                       backgroundColor: [
-                           '#0097a7',
-                           '#e53935',
-                           '#bdbdbd',
-                           '#333',
-                           '#444444'
-                       ],
-                       data: counts
-                   }
-               ],
-               labels: labels
-           },
-           options: {
-               title: {
-                   display: true,
-                   text: title
-               },
-               legend: {
-                   display: true,
-                   position: 'right'
-               },
-               maintainAspectRatio: false,
-               tooltips: {
-                   callbacks: {
-                       label: function(tooltipItem, data) {
-                           var dataset = data.datasets[tooltipItem.datasetIndex];
-                           var total = dataset.data.reduce(function(previousValue, currentValue, currentIndex, array) {
-                               return previousValue + currentValue;
-                           });
+        const options = {
+            chart: {
+                height: 350,
+                type: 'line',
+                shadow: {
+                    enabled: true,
+                    color: '#000',
+                    top: 18,
+                    left: 7,
+                    blur: 10,
+                    opacity: 1
+                },
+                toolbar: { show: false }
+            },
+            dataLabels: { enabled: true },
+            stroke: {
+                width: 0,
+                curve: 'smooth'
+            },
+            series: [],
+            title: {
+                text: $('input[name=string]').val() + ' / ' + $('input[name=start_date]').val() + ' - ' + $('input[name=end_date]').val(),
+                align: 'left'
+            },
+            grid: {
+                borderColor: '#e7e7e7',
+                row: {
+                    colors: [ '#f3f3f3', 'transparent' ],
+                    opacity: 0.5
+                }
+            },
+            markers: { size: 4 },
+            xaxis: {
+                categories: [],
+                title: { text: '' }
+            },
+            legend: {
+                position: 'top',
+                horizontalAlign: 'right',
+                floating: true,
+                offsetY: -25,
+                offsetX: -5
+            }
+        }
 
-                           var currentValue = dataset.data[tooltipItem.index];
-                           var percentage = Math.floor(((currentValue/total) * 100)+0.5);
+        if (obj.status == 'ok')
+        {
+            var key = __.data('type');
 
-                           return percentage + '%';
-                       }
-                   }
-               }
-           }
-       }
+            switch (__.data('type'))
+            {
+                case 'histogram':
+                    __chart_generate('histogramHourly');
+                    __chart_generate('histogramDaily');
+
+                    const hourlyChartOption = JSON.parse(JSON.stringify(options));
+                    const dailyChartOption = JSON.parse(JSON.stringify(options));
+
+                    hourlyChartOption['stroke']['width'] = 2;
+                    hourlyChartOption['yaxis'] = {
+                        'title': {
+                            'text': 'Saatlik Paylaşım Grafiği'
+                        }
+                    }
+                    hourlyChartOption['xaxis']['categories'] = [ '00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00' ];
+
+                    dailyChartOption['stroke']['width'] = 2;
+                    dailyChartOption['yaxis'] = {
+                        'title': {
+                            'text': 'Günlük Paylaşım Grafiği'
+                        }
+                    }
+                    dailyChartOption['xaxis']['categories'] = [ 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi', 'Pazar' ];
+
+                    $.each(obj.data, function(module_key, module) {
+                        switch (module_key)
+                        {
+                            case 'twitter'         :label = 'Tweet' ; break;
+                            case 'instagram'       :label = 'Medya' ; break;
+                            case 'sozluk'          :label = 'Entry' ; break;
+                            case 'news'            :label = 'Haber' ; break;
+                            case 'blog'            :label = 'Makale'; break;
+                            case 'youtube_video'   :label = 'Video' ; break;
+                            case 'youtube_comment' :label = 'Yorum' ; break;
+                            case 'shopping'        :label = 'Ürün'  ; break;
+                        }
+
+                        $.each(module, function(time_key, time) {
+                            switch (time_key)
+                            {
+                                case 'hourly':
+                                    var hourly_datas = [];
+                                    var _hourly_datas = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0, 13: 0, 14: 0, 15: 0, 16: 0, 17: 0, 18: 0, 19: 0, 20: 0, 21: 0, 22: 0, 23: 0 };
+
+                                    $.each(time, function(bucket_key, bucket) {
+                                        $.each(bucket, function(key, o) {
+                                            _hourly_datas[o.key] = o.doc_count;
+                                        })
+                                    })
+
+                                    $.each(_hourly_datas, function(key, o) { hourly_datas.push(o) })
+
+                                    hourlyChartOption['series'].push({
+                                        name: label,
+                                        data: hourly_datas
+                                    })
+
+                                    $('#histogramHourlyChart').removeClass('hide')
+                                break;
+                                case 'daily':
+                                    var daily_datas = [];
+                                    var _daily_datas = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0 };
+
+                                    $.each(time, function(bucket_key, bucket) {
+                                        $.each(bucket, function(key, o) {
+                                            _daily_datas[o.key] = o.doc_count;
+                                        })
+                                    })
+
+                                    $.each(_daily_datas, function(key, o) { daily_datas.push(o) })
+
+                                    dailyChartOption['series'].push({
+                                        name: label,
+                                        data: daily_datas
+                                    })
+
+                                    if (daily_datas.length)
+                                    {
+                                        $('#histogramDailyChart').removeClass('hide')
+                                    }
+                                break;
+                            }
+                        })
+                    })
+
+                    var hourlyChart = new ApexCharts(document.querySelector('#histogramHourlyChart'), hourlyChartOption);
+                    var dailyChart = new ApexCharts(document.querySelector('#histogramDailyChart'), dailyChartOption);
+                        hourlyChart.render()
+                        dailyChart.render()
+                break;
+                case 'place':
+                    const twitterChartOption = JSON.parse(JSON.stringify(options));
+                    const instagramChartOption = JSON.parse(JSON.stringify(options));
+
+                    twitterChartOption['chart']['type'] = 'bar';
+                    twitterChartOption['plotOptions'] = {
+                        bar: {
+                            distributed: true,
+                            horizontal: true,
+                            barHeight: '100%',
+                            dataLabels: { position: 'bottom' }
+                        }
+                    };
+
+                    twitterChartOption['subtitle'] = { 'text': 'Twitter Konum Grafiği' };
+
+                    instagramChartOption['chart']['type'] = 'bar';
+                    instagramChartOption['plotOptions'] = {
+                        bar: {
+                            distributed: true,
+                            horizontal: true,
+                            barHeight: '100%',
+                            dataLabels: { position: 'bottom' }
+                        }
+                    };
+
+                    instagramChartOption['subtitle'] = { 'text': 'Instagram Konum Grafiği' };
+
+                    var instagram_hits = false;
+                    var twitter_hits = false;
+
+                    $.each(obj.data, function(module_key, module) {
+                        var categories = [];
+                        var datas = [];
+
+                        if (module.place.buckets.length)
+                        {
+                            $.each(module.place.buckets, function(key, bucket) {
+                                categories.push(bucket.key)
+                                datas.push(bucket.doc_count)
+                            })
+
+                            if (module_key == 'twitter')
+                            {
+                                twitter_hits = true;
+                            }
+
+                            if (module_key == 'instagram')
+                            {
+                                instagram_hits = true;
+                            }
+                        }
+
+                        switch (module_key)
+                        {
+                            case 'instagram':
+                                instagramChartOption['series'] = [
+                                    {
+                                        name: 'Medya',
+                                        data: datas
+                                    }
+                                ];
+
+                                instagramChartOption['xaxis'] = {
+                                    categories: categories
+                                };
+                            break;
+                            case 'twitter':
+                                twitterChartOption['series'] = [
+                                    {
+                                        name: 'Tweet',
+                                        data: datas
+                                    }
+                                ];
+
+                                twitterChartOption['xaxis'] = {
+                                    categories: categories
+                                };
+                            break;
+                        }
+                    })
+
+                    if (instagram_hits)
+                    {
+                        __chart_generate('instagramPlace')
+
+                        var instagramChart = new ApexCharts(document.querySelector('#instagramPlaceChart'), instagramChartOption);
+                            instagramChart.render()
+
+                        $('#instagramPlaceChart').removeClass('hide')
+                    }
+                    else
+                    {
+                        M.toast({ html: 'Instagram paylaşımlarında konum bulunamadı!' }, 200)
+                    }
+
+                    if (twitter_hits)
+                    {
+                        __chart_generate('twitterPlace')
+
+                        var twitterChart = new ApexCharts(document.querySelector('#twitterPlaceChart'), twitterChartOption);
+                            twitterChart.render()
+
+                        $('#twitterPlaceChart').removeClass('hide')
+                    }
+                    else
+                    {
+                        M.toast({ html: 'Twitter paylaşımlarında konum bulunamadı!' }, 200)
+                    }
+                break;
+                case 'platform':
+                    const twitterPlatformChartOption = JSON.parse(JSON.stringify(options));
+
+                    twitterPlatformChartOption['chart']['type'] = 'bar';
+                    twitterPlatformChartOption['plotOptions'] = {
+                        bar: {
+                            distributed: true,
+                            horizontal: true,
+                            barHeight: '100%',
+                            dataLabels: { position: 'bottom' }
+                        }
+                    };
+                    twitterPlatformChartOption['subtitle'] = { 'text': 'Twitter Platform Grafiği' };
+
+                    var twitter_hits = false;
+
+                    $.each(obj.data, function(module_key, module) {
+                        var categories = [];
+                        var datas = [];
+
+                        if (module.platform.buckets.length)
+                        {
+                            $.each(module.platform.buckets, function(key, bucket) {
+                                categories.push(bucket.key)
+                                datas.push(bucket.doc_count)
+                            })
+
+                            if (module_key == 'twitter')
+                            {
+                                twitter_hits = true;
+                            }
+                        }
+
+                        switch (module_key)
+                        {
+                            case 'twitter':
+                                twitterPlatformChartOption['series'] = [
+                                    {
+                                        name: 'Tweet',
+                                        data: datas
+                                    }
+                                ];
+                                twitterPlatformChartOption['xaxis'] = {
+                                    categories: categories
+                                };
+                            break;
+                        }
+                    })
+
+                    if (twitter_hits)
+                    {
+                        __chart_generate('twitterPlatform')
+
+                        var twitterPlatformChart = new ApexCharts(document.querySelector('#twitterPlatformChart'), twitterPlatformChartOption);
+                            twitterPlatformChart.render()
+
+                        $('#twitterPlatformChart').removeClass('hide')
+                    }
+                    else
+                    {
+                        M.toast({ html: 'Twitter paylaşımlarında platform bulunamadı!' }, 200)
+                    }
+                break;
+                case 'author':
+                    var query = $('input[name=string]').val() + ' / ' + $('input[name=start_date]').val() + ' - ' + $('input[name=end_date]').val();
+
+                    $.each(obj.data, function(module_key, module) {
+                        switch (module_key)
+                        {
+                            case 'twitter':
+                                if ((module.mentions.hits.buckets).length)
+                                {
+                                    var table = __table_generate('twitterMentions')
+
+                                    $.each(module.mentions.hits.buckets, function(bucket_key, bucket) {
+                                        table.append(
+                                            $('<tr />', {
+                                                'html': [
+                                                    $('<td />', {
+                                                        'html': [
+                                                            $('<span />', {
+                                                                'class': 'd-table',
+                                                                'html': bucket.properties.hits.hits[0]._source.mention.name
+                                                            }),
+                                                            $('<a />', {
+                                                                'href': '#',
+                                                                'class': 'd-table grey-text',
+                                                                'data-search': bucket.properties.hits.hits[0]._source.mention.screen_name,
+                                                                'data-update-click': true,
+                                                                'data-module': 'twitter',
+                                                                'html': '@' + bucket.properties.hits.hits[0]._source.mention.screen_name
+                                                            })
+                                                        ]
+                                                    }),
+                                                    $('<td />', { 'html': bucket.doc_count })
+                                                ]
+                                            })
+                                        )
+                                    })
+
+                                    table.prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Kullanıcı' }), $('<th />', { 'html': 'Tweet' }) ] }))
+                                    table.prepend($('<tr />', {
+                                        'html': [
+                                            $('<th />', {
+                                                'colspan': 2,
+                                                'class': 'white z-depth-1 pl-1 pr-1',
+                                                'html': 'Twitter: Bahsedilen Kullanıcılar #100' + '<br />' + query
+                                            })
+                                        ]
+                                    }))
+                                }
+                                else
+                                {
+                                    //
+                                }
+
+                                if ((module.users.buckets).length)
+                                {
+                                    var table = __table_generate('twitterUsers')
+
+                                    $.each(module.users.buckets, function(bucket_key, bucket) {
+                                        table.append(
+                                            $('<tr />', {
+                                                'html': [
+                                                    $('<td />', {
+                                                        'html': [
+                                                            $('<span />', {
+                                                                'class': 'd-table',
+                                                                'html': bucket.properties.hits.hits[0]._source.user.name
+                                                            }),
+                                                            $('<a />', {
+                                                                'href': '#',
+                                                                'class': 'd-table grey-text',
+                                                                'data-search': '@' + bucket.properties.hits.hits[0]._source.user.screen_name,
+                                                                'data-update-click': true,
+                                                                'data-module': 'twitter',
+                                                                'html': '@' + bucket.properties.hits.hits[0]._source.user.screen_name
+                                                            })
+                                                        ]
+                                                    }),
+                                                    $('<td />', { 'html': bucket.doc_count })
+                                                ]
+                                            })
+                                        )
+                                    })
+
+                                    table.prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Kullanıcı' }), $('<th />', { 'html': 'Tweet' }) ] }))
+                                    table.prepend($('<tr />', {
+                                        'html': [
+                                            $('<th />', {
+                                                'colspan': 2,
+                                                'class': 'white z-depth-1 pl-1 pr-1',
+                                                'html': 'Twitter: Paylaşım Yapan Kullanıcılar #100' + '<br />' + query
+                                            })
+                                        ]
+                                    }))
+                                }
+                                else
+                                {
+                                    //
+                                }
+                            break;
+                            case 'youtube_video':
+                                if ((module.users.buckets).length)
+                                {
+                                    var table = __table_generate('youtubeUsers')
+
+                                    $.each(module.users.buckets, function(bucket_key, bucket) {
+                                        table.append(
+                                            $('<tr />', {
+                                                'html': [
+                                                    $('<td />', {
+                                                        'html': [
+                                                            $('<span />', {
+                                                                'class': 'd-table',
+                                                                'html': bucket.properties.hits.hits[0]._source.channel.title
+                                                            }),
+                                                            $('<a />', {
+                                                                'href': '#',
+                                                                'class': 'd-table grey-text',
+                                                                'data-search': 'channel.id:"' + bucket.key + '"',
+                                                                'data-update-click': true,
+                                                                'data-module': 'youtube_video',
+                                                                'html': bucket.key
+                                                            })
+                                                        ]
+                                                    }),
+                                                    $('<td />', { 'html': bucket.doc_count })
+                                                ]
+                                            })
+                                        )
+                                    })
+
+                                    table.prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Kullanıcı' }), $('<th />', { 'html': 'Video' }) ] }))
+                                    table.prepend($('<tr />', {
+                                        'html': [
+                                            $('<th />', {
+                                                'colspan': 2,
+                                                'class': 'white z-depth-1 pl-1 pr-1',
+                                                'html': 'YouTube: Yükleme Yapan Kullanıcılar #100' + '<br />' + query
+                                            })
+                                        ]
+                                    }))
+                                }
+                                else
+                                {
+                                    //
+                                }
+                            break;
+                            case 'youtube_comment':
+                                if ((module.users.buckets).length)
+                                {
+                                    var table = __table_generate('youtubeComments')
+
+                                    $.each(module.users.buckets, function(bucket_key, bucket) {
+                                        table.append(
+                                            $('<tr />', {
+                                                'html': [
+                                                    $('<td />', {
+                                                        'html': [
+                                                            $('<span />', {
+                                                                'class': 'd-table',
+                                                                'html': bucket.properties.hits.hits[0]._source.channel.title
+                                                            }),
+                                                            $('<a />', {
+                                                                'href': '#',
+                                                                'class': 'd-table grey-text',
+                                                                'data-search': 'channel.id:"' + bucket.key + '"',
+                                                                'data-update-click': true,
+                                                                'data-module': 'youtube_comment',
+                                                                'html': bucket.key
+                                                            })
+                                                        ]
+                                                    }),
+                                                    $('<td />', { 'html': bucket.doc_count })
+                                                ]
+                                            })
+                                        )
+                                    })
+
+                                    table.prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Kullanıcı' }), $('<th />', { 'html': 'Yorum' }) ] }))
+                                    table.prepend($('<tr />', {
+                                        'html': [
+                                            $('<th />', {
+                                                'colspan': 2,
+                                                'class': 'white z-depth-1 pl-1 pr-1',
+                                                'html': 'YouTube: Yorum Yapan Kullanıcılar #100' + '<br />' + query
+                                            })
+                                        ]
+                                    }))
+                                }
+                                else
+                                {
+                                    //
+                                }
+                            break;
+                            case 'sozluk':
+                                if ((module.sites).length)
+                                {
+                                    var table = __table_generate('sozlukSites')
+
+                                    $.each(module.sites, function(key, o) {
+                                        table.append(
+                                            $('<tr />', {
+                                                'html': [
+                                                    $('<td />', {
+                                                        'html': $('<a />', {
+                                                            'href': '#',
+                                                            'class': 'd-table',
+                                                            'data-search': 'site_id:' + o.id,
+                                                            'data-update-click': true,
+                                                            'data-module': 'sozluk',
+                                                            'html': o.name + ' #' + o.id
+                                                        })
+                                                    }),
+                                                    $('<td />', { 'html': o.hit })
+                                                ]
+                                            })
+                                        )
+                                    })
+
+                                    table.prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Sözlük' }), $('<th />', { 'html': 'Entry' }) ] }))
+                                    table.prepend($('<tr />', {
+                                        'html': [
+                                            $('<th />', {
+                                                'colspan': 2,
+                                                'class': 'white z-depth-1 pl-1 pr-1',
+                                                'html': 'Paylaşım Yapılan Sözlükler' + '<br />' + query
+                                            })
+                                        ]
+                                    }))
+                                }
+                                else
+                                {
+                                    //
+                                }
+
+                                if ((module.users).length)
+                                {
+                                    var table = __table_generate('sozlukUsers')
+
+                                    $.each(module.users, function(key, o) {
+                                        table.append(
+                                            $('<tr />', {
+                                                'html': [
+                                                    $('<td />', {
+                                                        'html': [
+                                                            $('<span />', {
+                                                                'class': 'd-table',
+                                                                'html': o.name
+                                                            }),
+                                                            $('<a />', {
+                                                                'href': '#',
+                                                                'class': 'd-table grey-text',
+                                                                'data-search': 'author:"' + o.name + '"',
+                                                                'data-update-click': true,
+                                                                'data-module': 'sozluk',
+                                                                'html': '@' + o.name + ', ' + o.site
+                                                            })
+                                                        ]
+                                                    }),
+                                                    $('<td />', { 'html': o.hit })
+                                                ]
+                                            })
+                                        )
+                                    })
+
+                                    table.prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Sözlük' }), $('<th />', { 'html': 'Entry' }) ] }))
+                                    table.prepend($('<tr />', {
+                                        'html': [
+                                            $('<th />', {
+                                                'colspan': 2,
+                                                'class': 'white z-depth-1 pl-1 pr-1',
+                                                'html': 'Paylaşım Yapan Sözlük Yazarları' + '<br />' + query
+                                            })
+                                        ]
+                                    }))
+                                }
+                                else
+                                {
+                                    //
+                                }
+                            break;
+                            case 'news':
+                                if ((module.sites).length)
+                                {
+                                    var table = __table_generate('sozlukSites')
+
+                                    $.each(module.sites, function(key, o) {
+                                        table.append(
+                                            $('<tr />', {
+                                                'html': [
+                                                    $('<td />', {
+                                                        'html': $('<a />', {
+                                                            'href': '#',
+                                                            'class': 'd-table',
+                                                            'data-search': 'site_id:' + o.id,
+                                                            'data-update-click': true,
+                                                            'data-module': 'news',
+                                                            'html': o.name + ' #' + o.id
+                                                        })
+                                                    }),
+                                                    $('<td />', { 'html': o.hit })
+                                                ]
+                                            })
+                                        )
+                                    })
+
+                                    table.prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Site' }), $('<th />', { 'html': 'Haber' }) ] }))
+                                    table.prepend($('<tr />', {
+                                        'html': [
+                                            $('<th />', {
+                                                'colspan': 2,
+                                                'class': 'white z-depth-1 pl-1 pr-1',
+                                                'html': 'Haber Yapan Siteler' + '<br />' + query
+                                            })
+                                        ]
+                                    }))
+                                }
+                                else
+                                {
+                                    //
+                                }
+                            break;
+                            case 'blog':
+                                if ((module.sites).length)
+                                {
+                                    var table = __table_generate('sozlukSites')
+
+                                    $.each(module.sites, function(key, o) {
+                                        table.append(
+                                            $('<tr />', {
+                                                'html': [
+                                                    $('<td />', {
+                                                        'html': $('<a />', {
+                                                            'href': '#',
+                                                            'class': 'd-table',
+                                                            'data-search': 'site_id:' + o.id,
+                                                            'data-update-click': true,
+                                                            'data-module': 'blog',
+                                                            'html': o.name + ' #' + o.id
+                                                        })
+                                                    }),
+                                                    $('<td />', { 'html': o.hit })
+                                                ]
+                                            })
+                                        )
+                                    })
+
+                                    table.prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Site' }), $('<th />', { 'html': 'Blog' }) ] }))
+                                    table.prepend($('<tr />', {
+                                        'html': [
+                                            $('<th />', {
+                                                'colspan': 2,
+                                                'class': 'white z-depth-1 pl-1 pr-1',
+                                                'html': 'Blog Yazan Siteler' + '<br />' + query
+                                            })
+                                        ]
+                                    }))
+                                }
+                                else
+                                {
+                                    //
+                                }
+                            break;
+                            case 'shopping':
+                                if ((module.sites).length)
+                                {
+                                    var table = __table_generate('sozlukSites')
+
+                                    $.each(module.sites, function(key, o) {
+                                        table.append(
+                                            $('<tr />', {
+                                                'html': [
+                                                    $('<td />', {
+                                                        'html': $('<a />', {
+                                                            'href': '#',
+                                                            'class': 'd-table',
+                                                            'data-search': 'site_id:' + o.id,
+                                                            'data-update-click': true,
+                                                            'data-module': 'shopping',
+                                                            'html': o.name + ' #' + o.id
+                                                        })
+                                                    }),
+                                                    $('<td />', { 'html': o.hit })
+                                                ]
+                                            })
+                                        )
+                                    })
+
+                                    table.prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Site' }), $('<th />', { 'html': 'Ürün' }) ] }))
+                                    table.prepend($('<tr />', {
+                                        'html': [
+                                            $('<th />', {
+                                                'colspan': 2,
+                                                'class': 'white z-depth-1 pl-1 pr-1',
+                                                'html': 'E-ticaret: Ürün Paylaşılan Siteler' + '<br />' + query
+                                            })
+                                        ]
+                                    }))
+                                }
+                                else
+                                {
+                                    //
+                                }
+
+                                if ((module.users).length)
+                                {
+                                    var table = __table_generate('sozlukUsers')
+
+                                    $.each(module.users, function(key, o) {
+                                        table.append(
+                                            $('<tr />', {
+                                                'html': [
+                                                    $('<td />', {
+                                                        'html': [
+                                                            $('<span />', {
+                                                                'class': 'd-table',
+                                                                'html': o.name
+                                                            }),
+                                                            $('<a />', {
+                                                                'href': '#',
+                                                                'class': 'd-table grey-text',
+                                                                'data-search': 'seller.name:"' + o.name + '"',
+                                                                'data-update-click': true,
+                                                                'data-module': 'shopping',
+                                                                'html': '@' + o.name + ', ' + o.site
+                                                            })
+                                                        ]
+                                                    }),
+                                                    $('<td />', { 'html': o.hit })
+                                                ]
+                                            })
+                                        )
+                                    })
+
+                                    table.prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Site' }), $('<th />', { 'html': 'Ürün' }) ] }))
+                                    table.prepend($('<tr />', {
+                                        'html': [
+                                            $('<th />', {
+                                                'colspan': 2,
+                                                'class': 'white z-depth-1 pl-1 pr-1',
+                                                'html': 'E-ticaret: Ürün Paylaşan Kullanıcılar' + '<br />' + query
+                                            })
+                                        ]
+                                    }))
+                                }
+                                else
+                                {
+                                    //
+                                }
+                                if (module.sites)
+                                {
+                                    $.each(module.sites, function(key, o) {
+                                        //console.log(o.hit)
+                                        //console.log(o.name)
+                                    })
+                                }
+                                else
+                                {
+                                    //
+                                }
+
+                                if (module.users)
+                                {
+                                    $.each(module.users, function(key, o) {
+                                        //console.log(o.hit)
+                                        //console.log(o.name)
+                                        //console.log(o.site)
+                                    })
+                                }
+                                else
+                                {
+                                    //
+                                }
+                            break;
+                        }
+                    })
+                break;
+                case 'hashtag':
+                    const twitterHashtagChartOption = JSON.parse(JSON.stringify(options));
+                    const instagramHashtagChartOption = JSON.parse(JSON.stringify(options));
+
+                    twitterHashtagChartOption['chart']['type'] = 'bar';
+                    twitterHashtagChartOption['plotOptions'] = {
+                        bar: {
+                            distributed: true,
+                            horizontal: true,
+                            barHeight: '100%',
+                            dataLabels: { position: 'bottom' }
+                        }
+                    };
+                    twitterHashtagChartOption['subtitle'] = { 'text': 'Twitter Hashtag Grafiği' };
+
+                    instagramHashtagChartOption['chart']['type'] = 'bar';
+                    instagramHashtagChartOption['plotOptions'] = {
+                        bar: {
+                            distributed: true,
+                            horizontal: true,
+                            barHeight: '100%',
+                            dataLabels: { position: 'bottom' }
+                        }
+                    };
+                    instagramHashtagChartOption['subtitle'] = { 'text': 'Instagram Hashtag Grafiği' };
+
+                    var instagram_hits = false;
+                    var twitter_hits = false;
+
+                    $.each(obj.data, function(module_key, module) {
+                        var categories = [];
+                        var datas = [];
+
+                        if (module.hashtag.hits.buckets.length)
+                        {
+                            $.each(module.hashtag.hits.buckets, function(key, bucket) {
+                                categories.push(bucket.key)
+                                datas.push(bucket.doc_count)
+                            })
+
+                            if (module_key == 'twitter')
+                            {
+                                twitter_hits = true;
+                            }
+
+                            if (module_key == 'instagram')
+                            {
+                                instagram_hits = true;
+                            }
+                        }
+
+                        switch (module_key)
+                        {
+                            case 'instagram':
+                                instagramHashtagChartOption['series'] = [
+                                    {
+                                        name: 'Medya',
+                                        data: datas
+                                    }
+                                ];
+
+                                instagramHashtagChartOption['xaxis'] = {
+                                    categories: categories
+                                };
+                            break;
+                            case 'twitter':
+                                twitterHashtagChartOption['series'] = [
+                                    {
+                                        name: 'Tweet',
+                                        data: datas
+                                    }
+                                ];
+
+                                twitterHashtagChartOption['xaxis'] = {
+                                    categories: categories
+                                };
+                            break;
+                        }
+                    })
+
+                    if (twitter_hits)
+                    {
+                        __chart_generate('twitterHashtag')
+
+                        var twitterChart = new ApexCharts(document.querySelector('#twitterHashtagChart'), twitterHashtagChartOption);
+                            twitterChart.render()
+
+                        $('#twitterHashtagChart').removeClass('hide')
+                    }
+                    else
+                    {
+                        M.toast({ html: 'Twitter paylaşımlarında hashtag verisi bulunamadı!' }, 200)
+                    }
+
+                    if (instagram_hits)
+                    {
+                        __chart_generate('instagramHashtag')
+
+                        var instagramChart = new ApexCharts(document.querySelector('#instagramHashtagChart'), instagramHashtagChartOption);
+                            instagramChart.render()
+
+                        $('#instagramHashtagChart').removeClass('hide')
+                    }
+                    else
+                    {
+                        M.toast({ html: 'Instagram paylaşımlarında hashtag verisi bulunamadı!' }, 200)
+                    }
+                break;
+                case 'consumer':
+                    __chart_generate('consumer');
+
+                    const consumerChartOption = JSON.parse(JSON.stringify(options));
+
+                    consumerChartOption['chart']['type'] = 'bar';
+                    consumerChartOption['xaxis']['title']['text'] = 'Müşteri Grafiği';
+                    consumerChartOption['xaxis']['categories'] = [ '% İstek', '% Soru', '% Şikayet', '% Haber' ];
+
+                    $.each(obj.data, function(module_key, module) {
+                        switch (module_key)
+                        {
+                            case 'twitter'         :label = 'Twitter'      ; break;
+                            case 'instagram'       :label = 'Instagram'    ; break;
+                            case 'sozluk'          :label = 'Sözlük'       ; break;
+                            case 'youtube_video'   :label = 'YouTube Video'; break;
+                            case 'youtube_comment' :label = 'YouTube Yorum'; break;
+                        }
+
+                        var datas = [];
+
+                        var req = module.req.value;
+                        var que = module.que.value;
+                        var cmp = module.cmp.value;
+                        var nws = module.nws.value;
+
+                        var total = req + que + cmp + nws;
+
+                        req = 25-(req/total*100);
+                        que = 25-(que/total*100);
+                        cmp = 25-(cmp/total*100);
+                        nws = 25-(nws/total*100);
+
+                        datas.push((req < 0 ? 0 : req).toFixed(2))
+                        datas.push((que < 0 ? 0 : que).toFixed(2))
+                        datas.push((cmp < 0 ? 0 : cmp).toFixed(2))
+                        datas.push((nws < 0 ? 0 : nws).toFixed(2))
+
+                        consumerChartOption['series'].push({
+                            name: label,
+                            data: datas
+                        })
+
+                        if (datas.length)
+                        {
+                            $('#consumerChart').removeClass('hide')
+                        }
+                    })
+
+                    var consumerChart = new ApexCharts(document.querySelector('#consumerChart'), consumerChartOption);
+                        consumerChart.render()
+                break;
+                case 'sentiment':
+                    __chart_generate('sentiment');
+
+                    const sentimentChartOption = JSON.parse(JSON.stringify(options));
+
+                    sentimentChartOption['stroke']['width'] = 4;
+                    sentimentChartOption['xaxis']['title']['text'] = 'Duygu Grafiği';
+                    sentimentChartOption['xaxis']['categories'] = [ '% Pozitif', '% Nötr', '% Negatif', '% Nefret Söylemi' ];
+
+                    $.each(obj.data, function(module_key, module) {
+                        switch (module_key)
+                        {
+                            case 'twitter'         :label = 'Twitter'      ; break;
+                            case 'instagram'       :label = 'Instagram'    ; break;
+                            case 'sozluk'          :label = 'Sözlük'       ; break;
+                            case 'news'            :label = 'Haber'        ; break;
+                            case 'blog'            :label = 'Blog'         ; break;
+                            case 'youtube_video'   :label = 'YouTube Video'; break;
+                            case 'youtube_comment' :label = 'YouTube Yorum'; break;
+                        }
+
+                        var datas = [];
+
+                        if (module.pos.value)
+                        {
+                            var val = module.pos.value;
+
+                            datas.push((val/100).toFixed(2))
+                        }
+                        else { datas.push(0) }
+
+                        if (module.neu.value)
+                        {
+                            var val = module.neu.value;
+
+                            datas.push((val/100).toFixed(2))
+                        }
+                        else { datas.push(0) }
+
+                        if (module.neg.value)
+                        {
+                            var val = module.neg.value;
+
+                            datas.push((val/100).toFixed(2))
+                        }
+                        else { datas.push(0) }
+
+                        if (module.hte.value)
+                        {
+                            var val = module.hte.value;
+
+                            datas.push((val/100).toFixed(2))
+                        }
+                        else { datas.push(0) }
+
+                        sentimentChartOption['series'].push({
+                            name: label,
+                            data: datas
+                        })
+
+                        if (datas.length)
+                        {
+                            $('#sentimentChart').removeClass('hide')
+                        }
+                    })
+
+                    var sentimentChart = new ApexCharts(document.querySelector('#sentimentChart'), sentimentChartOption);
+                        sentimentChart.render()
+                break;
+                case 'gender':
+                    var genders = { 'male': 'Erkek', 'female': 'Kadın', 'unknown': 'Bilinmeyen' };
+
+                    const genderChartOption = JSON.parse(JSON.stringify(options));
+
+                    genderChartOption['xaxis']['title']['text'] = 'Cinsiyet Grafiği';
+                    genderChartOption['markers']['size'] = 10;
+
+                    var gender_hits = false;
+
+                    $.each(obj.data, function(module_key, module) {
+                        switch (module_key)
+                        {
+                            case 'twitter'         :label = 'Twitter'      ; break;
+                            case 'sozluk'          :label = 'Sözlük'       ; break;
+                            case 'youtube_video'   :label = 'YouTube Video'; break;
+                            case 'youtube_comment' :label = 'YouTube Yorum'; break;
+                        }
+
+                        var datas = [];
+
+                        if (module)
+                        {
+                            $.each(module.gender.buckets, function(gender_key, gender) {
+                                genderChartOption['xaxis']['categories'].push(genders[gender.key])
+                                datas.push(gender.doc_count)
+
+                                gender_hits = true;
+                            })
+                        }
+
+                        genderChartOption['series'].push({
+                            name: label,
+                            data: datas
+                        })
+                    })
+
+                    if (gender_hits)
+                    {
+                        __chart_generate('gender');
+
+                        var genderChart = new ApexCharts(document.querySelector('#genderChart'), genderChartOption);
+                            genderChart.render()
+
+                        $('#genderChart').removeClass('hide')
+                    }
+                    else
+                    {
+                        M.toast({ html: 'Paylaşımlarda cinsiyet verisi bulunamadı!' }, 200)
+                    }
+                break;
+            }
+
+            $('.tabs').tabs('select', 'chart-tab')
+        }
     }
 @endpush
 
 @section('panel-icon', 'pie_chart')
 @section('panel')
     <div class="collection collection-unstyled">
-        <a href="#" class="collection-item json loading" data-callback="__chart" data-type="histogram" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}">Zaman Grafikleri</a>
+        <a href="#" class="collection-item json loading" data-callback="__chart" data-type="histogram" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}">Zaman İstatistikleri</a>
         <a href="#" class="collection-item json loading" data-callback="__chart" data-type="place" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}">Lokasyon</a>
         <a href="#" class="collection-item json loading" data-callback="__chart" data-type="platform" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}">Platform</a>
         <a href="#" class="collection-item json loading" data-callback="__chart" data-type="sentiment" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}">Duygu</a>
         <a href="#" class="collection-item json loading" data-callback="__chart" data-type="consumer" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}">Soru, İstek, Şikayet ve Haber</a>
         <a href="#" class="collection-item json loading" data-callback="__chart" data-type="gender" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}">Cinsiyet Grafiği</a>
-        <a href="#" class="collection-item json loading" data-callback="__chart" data-type="mention" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}">@bahsedenler</a>
+        <a href="#" class="collection-item json loading" data-callback="__chart" data-type="author" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}">@bahsedenler</a>
         <a href="#" class="collection-item json loading" data-callback="__chart" data-type="hashtag" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}">#hashtagler</a>
     </div>
 @endsection
@@ -1370,7 +1948,7 @@
                             <a class="active" href="#search-tab">Arama Sonuçları</a>
                         </li>
                         <li class="tab">
-                            <a href="#chart-tab">Grafikler</a>
+                            <a href="#chart-tab">İstatistikler</a>
                         </li>
                     </ul>
                 </div>
@@ -1388,7 +1966,7 @@
                             <li class="collection-item nothing">
                                 @component('components.alert')
                                     @slot('icon', 'info')
-                                    @slot('text', 'Hiç sonuç bulunamadı.')
+                                    @slot('text', 'Hiç sonuç bulunamadı!')
                                 @endcomponent
                             </li>
                             <li class="collection-item model hide"></li>
@@ -1402,8 +1980,8 @@
                     <div id="chart-tab" style="display: none;">
                         <span class="grey-text text-darken-2" data-id="chart-alert">
                             @component('components.alert')
-                                @slot('icon', 'warning')
-                                @slot('text', 'Grafik menüsünden bir analiz isteğinde bulunun!')
+                                @slot('icon', 'info')
+                                @slot('text', 'Öncelikle bir sorgu girin ve soldaki menüden bir istatistik isteği yapın.')
                             @endcomponent
                         </span>
                     </div>
@@ -1521,6 +2099,29 @@
 
             vzAjax(search)
         }, 400)
+    }).on('click', '[data-trigger=select-allSources]', function() {
+        $('input[name=modules]').prop('checked', true)
+
+        setTimeout(function() {
+            var search = $('ul#search');
+                search.data('skip', 0).addClass('json-clear');
+
+            vzAjax(search)
+        }, 400)
+    })
+
+    $(document).on('click', '[data-module]', function() {
+        var __ = $(this);
+
+        $('input[name=modules]').prop('checked', false)
+        $('input[name=modules][value=' + __.data('module') + ']').prop('checked', true)
+
+        setTimeout(function() {
+            var search = $('ul#search');
+                search.data('skip', 0).addClass('json-clear');
+
+            vzAjax(search)
+        }, 600)
     })
 @endpush
 
@@ -1533,18 +2134,32 @@
             </label>
         </div>
         <div class="card-content">
-            <span class="card-title d-flex">
+            <a href="#" class="card-title d-flex" data-trigger="select-allSources">
                 <i class="material-icons align-self-center mr-1">device_hub</i>
                 Kaynak
-            </span>
+            </a>
         </div>
         <ul class="collection collection-unstyled collapsible">
             @foreach (config('system.modules') as $key => $module)
                 <li class="collection-item">
-                    <label class="module-label">
-                        <input data-update name="modules" checked value="{{ $key }}" data-multiple="true" type="checkbox" />
-                        <span>{{ $module }}</span>
-                    </label>
+                    @if ($key == 'twitter')
+                        <div class="d-flex justify-content-between">
+                            <label class="module-label">
+                                <input data-update name="modules" checked value="{{ $key }}" data-multiple="true" type="checkbox" />
+                                <span>{{ $module }}</span>
+                            </label>
+
+                            <label class="module-label" data-tooltip="Olive, Twitter iyi sonuç algoritması." data-position="left">
+                                <input data-update name="sharp" checked value="on" type="checkbox" />
+                                <span>İyi Sonuç</span>
+                            </label>
+                        </div>
+                    @else
+                        <label class="module-label">
+                            <input data-update name="modules" checked value="{{ $key }}" data-multiple="true" type="checkbox" />
+                            <span>{{ $module }}</span>
+                        </label>
+                    @endif
                 </li>
             @endforeach
         </ul>
@@ -1587,8 +2202,7 @@
         <div class="card-content">
             <div class="input-field">
                 <select data-update name="take" id="take">
-                    <option value="5" selected>5</option>
-                    <option value="10">10</option>
+                    <option value="10" selected>10</option>
                     <option value="20">20</option>
                     <option value="40">40</option>
                 </select>
@@ -1673,7 +2287,8 @@
 @endpush
 
 @push('external.include.footer')
-    <script src="{{ asset('js/chart.min.js?v='.config('system.version')) }}"></script>
+    <script src="{{ asset('js/jquery.canvasjs.min.js?v='.config('system.version')) }}"></script>
+    <script src="{{ asset('js/apex.min.js?v='.config('system.version')) }}"></script>
     <script src="{{ asset('js/owl.carousel.min.js?v='.config('system.version')) }}"></script>
     <script src="{{ asset('js/jquery.ui.min.js?v='.config('system.version')) }}"></script>
     <script src="{{ asset('js/jquery.mark.min.js?v='.config('system.version')) }}" charset="UTF-8"></script>

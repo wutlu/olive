@@ -70,19 +70,34 @@
 
 @push('local.styles')
     .carousel-slider {
-        margin-bottom: 1rem;
+        margin: 0;
+        text-align: center;
+    }
+    .carousel-slider h1 {
+        margin: 1rem 0;
+        font-size: 24px;
+    }
+
+    .organisation-card > .card-content-image {
+        padding: 72px 1rem 1rem;
+
+        -webkit-box-shadow: inset 0 0 0 256px rgba(0, 0, 0, .4);
+                box-shadow: inset 0 0 0 256px rgba(0, 0, 0, .4);
+    }
+    .organisation-card > .card-content-image .card-title {
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, .4);
     }
 @endpush
 
 @section('content')
     @if (count($carousels))
-        <div class="carousel carousel-slider center">
+        <div class="carousel carousel-slider">
             @php
             $i = 0;
             @endphp
             @foreach ($carousels as $carousel)
                 <div class="{{ implode(' ', [ 'carousel-item', $i == 0 ? 'active' : '', '' ]) }}">
-                    <h2 class="teal-text text-darken-2">{{ $carousel->title }}</h2>
+                    <h1>{{ $carousel->title }}</h1>
                     <div class="markdown">
                         {!! $carousel->markdown() !!}
                     </div>
@@ -198,10 +213,12 @@
                         $('[data-target=search-trigger]').tapTarget('open');
                     @endpush
                 @endif
-                <div class="card mb-1">
-                    <div class="card-image">
-                        <img src="{{ asset('img/mountain.jpg?v=2') }}" alt="Image" />
-                        <span class="card-title" data-name="organisation-name">-</span>
+                <div class="card organisation-card mb-1">
+                    <div class="card-content card-content-image d-flex justify-content-between" style="background-image: url({{ $photo['img'] }});">
+                        <span class="card-title white-text align-self-center" data-name="organisation-name">-</span>
+                        <a href="{{ route('settings.organisation') }}" class="btn-floating white waves-effect align-self-center">
+                            <i class="material-icons grey-text text-darken-2">settings</i>
+                        </a>
                     </div>
                     <div class="card-content">
                         <p class="grey-text mb-0" data-name="organisation-capacity">0 / 0</p>

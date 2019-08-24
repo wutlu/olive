@@ -5,6 +5,25 @@
  | (c) 2019 - veri.zone
  |-------------------------------
  */
+$(document).on('click', '.read-aloud', function() {
+    var __ = $(this);
+    var text = __.closest('.data').find('.text-area').html();
+        text = text.replace(/<\/?[^>]+(>|$)/g, '')
+        text = text.replace('@', '')
+        text = text.replace('#', '')
+        text = encodeURI(text)
+
+    if (__.hasClass('playing'))
+    {
+        $('.read-aloud').removeClass('playing').children('i.material-icons').html('volume_up')
+        $.stopSound()
+    }
+    else
+    {
+        __.addClass('playing').children('i.material-icons').html('stop')
+        $.playSound('https://tts.voicetech.yandex.net/tts?text=' + text + '&lang=tr_TR&format=mp3&platform=web&application=translate&chunked=0&mock-ranges=1')
+    }
+})
 
 function __joints(o)
 {
@@ -14,6 +33,16 @@ function __joints(o)
                 'html': o.created_at,
                 'class': 'd-table mb-1'
             }),
+            $('<a />', {
+                'class': 'btn-flat waves-effect read-aloud',
+                'href': '#',
+                'html': $('<i />', {
+                    'class': 'material-icons',
+                    'html': 'volume_up',
+                    'css': { 'font-size': '24px' }
+                })
+            }),
+            $('<span />', { 'html': ' ' }),
             $('<a />', {
                 'class': 'btn-flat waves-effect',
                 'href': '/db/' + o._index + '/' + o._type + '/' + o._id,

@@ -146,9 +146,11 @@
     {
         if (obj.status == 'ok')
         {
-            M.toast({ html: 'Giriş Gerçekleştirildi!', classes: 'teal' })
+            M.toast({ html: 'Giriş Gerçekleştirildi! Yönlendiriliyorsunuz...', classes: 'teal' })
 
-            setTimeout(__goDashboard, 1000)
+            $.playSound('https://tts.voicetech.yandex.net/tts?text=Giriş gerçekleştirildi.&lang=tr_TR&format=mp3')
+
+            setTimeout(__goDashboard, 3000)
         }
         else if (obj.status == 'ban')
         {

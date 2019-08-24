@@ -58,7 +58,7 @@ class SaveRequest extends FormRequest
             'modules' => 'required|array|min:1',
             'modules.*' => 'required|string|in:'.implode(',', array_keys(config('system.modules'))),
             'reverse' => 'nullable|string|in:on',
-            'take' => 'required|integer|min:10|max:100',
+            'take' => 'required|integer|min:5|max:100',
             'gender' => 'required|string|in:all,male,female,unknown',
             'sentiment_pos' => 'required|integer|between:0,9',
             'sentiment_neu' => 'required|integer|between:0,9',

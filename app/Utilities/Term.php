@@ -239,7 +239,8 @@ class Term
         $line = str_replace(' AND OR AND ', ' OR ', $line);
         */
 
-        $clean = preg_replace('/@([A-Za-z0-9_\/\.]*)/', 'user.screen_name:$1', $text);
+        $clean = str_replace([ '*' ], '', $text);
+        $clean = preg_replace('/@([A-Za-z0-9_\/\.]*)/', 'user.screen_name:$1', $clean);
 
         $words_raw = str_replace([ ' OR ', ' AND ', ')', '(', '"', '\'', '-', '+', '^', '~', '#' ], ' ', $text);
         $words_raw = explode(' ', $words_raw);

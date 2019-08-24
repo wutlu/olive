@@ -16,7 +16,7 @@ class CreateLogsTable extends Migration
         Schema::create('logs', function (Blueprint $table) {
             $table->string('uuid')->unique();
 
-            $table->string('module');
+            $table->text('module');
             $table->text('message');
             $table->unsignedSmallInteger('level')->default(1);
             $table->unsignedInteger('hit')->default(0);

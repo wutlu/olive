@@ -44,10 +44,6 @@
                     }),
                     $('<li />', {
                         'class': 'collection-item',
-                        'html': '<code class="red white-text">*</code> operatörü ile kelimeleri tamamlayabilirsiniz. Bkz: <code class="red white-text">türkiye cumhuri*</code>'
-                    }),
-                    $('<li />', {
-                        'class': 'collection-item',
                         'html': '<code class="red white-text">~</code> operatörü ile yazım hatalarını düzelterek arama yapabilirsiniz. <code class="red white-text">~1</code> veya <code class="red white-text">~2</code> gibi düzeltme oranını yükseltebilirsiniz. Bkz: <code class="red white-text">ankaar~</code>'
                     }),
                     $('<li />', {

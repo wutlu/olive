@@ -10,6 +10,8 @@ Route::domain(config('app.domain'))->group($vz);
 
 Route::get('manifest.json', 'HomeController@manifest')->name('olive.manifest');
 
+Route::get('p/{r}', 'HomeController@ipLog');
+
 Route::post('markdown/onizleme', 'MarkdownController@preview')->name('markdown.preview');
 Route::post('veri-sayac', 'HomeController@dataCounter')->name('home.data.counter');
 
@@ -105,7 +107,8 @@ Route::prefix('arama-motoru')->group(function () {
 
     Route::post('/', 'SearchController@search');
 
-    Route::post('analiz', 'SearchController@aggregation')->name('search.aggregation');
+    Route::post('analiz', 'AggregationController@search')->name('search.aggregation');
+    Route::post('banner', 'AggregationController@banner')->name('search.banner');
 });
 
 Route::get('uyari', 'HomeController@alert')->name('alert');

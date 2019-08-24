@@ -58,13 +58,13 @@ class ArchiveAggregationRequest extends FormRequest
         });
 
         return [
-            'type' => 'required|string|in:sentiment,consumer,gender,hashtag,mention,platform,place,histogram',
+            'type' => 'required|string|in:histogram,place,platform,author,hashtag,sentiment,consumer,gender',
             'string' => 'required|string|max:255',
             'start_date' => 'required|date|date_limit',
-            'end_date' => 'required|date|after_or_equal:start_date|date_limit_between',
+            //'end_date' => 'required|date|after_or_equal:start_date|date_limit_between',
             'modules' => 'required|array|min:1',
             'modules.*' => 'required|string|in:'.implode(',',array_keys(config('system.modules'))),
-
+            'sharp' => 'nullable|string|in:on',
             'gender' => 'required|string|in:all,male,female,unknown',
             'sentiment_pos' => 'required|integer|between:0,9',
             'sentiment_neg' => 'required|integer|between:0,9',

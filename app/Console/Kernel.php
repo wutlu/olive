@@ -55,29 +55,29 @@ class Kernel extends ConsoleKernel
              * Alarmlar için E-posta gönder.
              */
             $schedule->command('nohup "alarm:trigger" --type=start')
-                      ->everyMinute()
-                      ->timezone(config('app.timezone'))
-                      ->withoutOverlapping(1);
+                     ->everyMinute()
+                     ->timezone(config('app.timezone'))
+                     ->withoutOverlapping(1);
 
             /**
              * Twitter için takip edilen kullanıcıların hesap durumlarını kontrol et.
              */
             /*
             $schedule->command('nohup "twitter:user_status" --type=start')
-                      ->everyMinute()
-                      ->timezone(config('app.timezone'))
-                      ->withoutOverlapping(1);
+                     ->everyMinute()
+                     ->timezone(config('app.timezone'))
+                     ->withoutOverlapping(1);
             */
 
             /**
              * Instagram için Self bağlantılarının vakitlice tetiklenmesi.
              */
             $schedule->command('nohup "instagram:self:trigger" --type=restart')
-                      ->everyMinute()
-                      ->timezone(config('app.timezone'))
-                      ->skip(function() {
-                            return SystemUtility::option('instagram.status') != 'on';
-                      });
+                     ->everyMinute()
+                     ->timezone(config('app.timezone'))
+                     ->skip(function() {
+                           return SystemUtility::option('instagram.status') != 'on';
+                     });
 
             /**
              * Instagram için kontrol aralığı belirle.
@@ -93,27 +93,27 @@ class Kernel extends ConsoleKernel
              * Kaynak Tespiti
              */
             $schedule->command('nohup "media:detector" --type=restart')
-                      ->everyMinute()
-                      ->timezone(config('app.timezone'));
+                     ->everyMinute()
+                     ->timezone(config('app.timezone'));
             $schedule->command('nohup "shopping:detector" --type=restart')
-                      ->everyMinute()
-                      ->timezone(config('app.timezone'));
+                     ->everyMinute()
+                     ->timezone(config('app.timezone'));
             $schedule->command('nohup "blog:detector" --type=restart')
-                      ->everyMinute()
-                      ->timezone(config('app.timezone'));
+                     ->everyMinute()
+                     ->timezone(config('app.timezone'));
 
             /**
              * Kaynak Toplama
              */
             $schedule->command('nohup "media:taker" --type=restart')
-                      ->everyMinute()
-                      ->timezone(config('app.timezone'));
+                     ->everyMinute()
+                     ->timezone(config('app.timezone'));
             $schedule->command('nohup "shopping:taker" --type=restart')
-                      ->everyMinute()
-                      ->timezone(config('app.timezone'));
+                     ->everyMinute()
+                     ->timezone(config('app.timezone'));
             $schedule->command('nohup "blog:taker" --type=restart')
-                      ->everyMinute()
-                      ->timezone(config('app.timezone'));
+                     ->everyMinute()
+                     ->timezone(config('app.timezone'));
 
             /**
              * Medya botları için kontrol aralığı belirle.

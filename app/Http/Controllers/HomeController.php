@@ -63,6 +63,22 @@ class HomeController extends Controller
     }
 
     /**
+     * ip log
+     *
+     * @return mixed
+     */
+    public static function ipLog(string $r, Request $request)
+    {
+        $ip = $request->ip();
+
+        $line = date('Y-m-d H:i:s').' - '.$ip.' - '.$r;
+
+        file_put_contents(public_path('ipLogs.txt'), $line.PHP_EOL , FILE_APPEND | LOCK_EX);
+
+        return '404 not found';
+    }
+
+    /**
      * Kullanım Koşulları ve Gizlilik Politikası kabulu.
      *
      * @return array
@@ -213,7 +229,22 @@ class HomeController extends Controller
         $carousels = Carousel::where('carousel', true)->orderBy('updated_at', 'DESC')->get();
         $modals = Carousel::where('modal', true)->orderBy('updated_at', 'DESC')->get();
 
-        return view('dashboard', compact('carousels', 'modals'));
+        $photos = [
+            [
+                'img' => asset('img/photo/galata.jpeg'),
+                'text' => 'Galata Kulesi / İstanbul'
+            ],
+            [
+                'img' => asset('img/photo/bogaz.jpeg'),
+                'text' => 'İstanbul Boğazı / İstanbul'
+            ]
+        ];
+
+        shuffle($photos);
+
+        $photo = $photos[0];
+
+        return view('dashboard', compact('carousels', 'modals', 'photo'));
     }
 
     /**

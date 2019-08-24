@@ -88,6 +88,9 @@ return [
             'key' => env('INSTAGRAM_KEY'),
             'secret' => env('INSTAGRAM_SECRET'),
             'callback' => env('INSTAGRAM_CALLBACK')
+        ],
+        'session' => [
+            'id' => env('INSTAGRAM_SESSION_ID')
         ]
     ],
 

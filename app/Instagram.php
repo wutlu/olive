@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Cookie\CookieJar;
 
 use App\Models\Proxy;
 
@@ -23,7 +24,8 @@ class Instagram
     {
         $client = new Client([
             'base_uri' => $this->base_uri,
-            'handler' => HandlerStack::create()
+            'handler' => HandlerStack::create(),
+            'cookies' => true
         ]);
 
         try
@@ -35,7 +37,8 @@ class Instagram
                     'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))],
                     'Accept-Language' => 'tr-TR;q=0.6,tr;q=0.4'
                 ],
-                'verify' => false
+                'verify' => false,
+                'cookies' => CookieJar::fromArray([ 'sessionid' => config('services.instagram.session.id') ], '.instagram.com')
             ];
 
             $proxy = Proxy::where('health', '>', 7)->inRandomOrder();

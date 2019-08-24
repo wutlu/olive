@@ -8,44 +8,38 @@ use App\Instagram;
 use App\Utilities\DateUtility;
 use App\Olive\Gender;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Subscriber\Oauth\Oauth1;
+
+use App\Models\Twitter\Token;
+
 class TestController extends Controller
 {
     public static function test()
     {
-        $gender = new Gender;
-        $gender->loadNames();
+            $token = Token::where('id', 12)->first();
+            $stack = HandlerStack::create();
+            $oauth = new Oauth1([
+                'consumer_key' => $token->consumer_key,
+                'consumer_secret' => $token->consumer_secret,
+                'token' => $token->access_token,
+                'token_secret' => $token->access_token_secret
+            ]);
 
-        $genders = [ 'Crazzzyy___Senn_*n_aaaa' ];
+            $stack->push($oauth);
 
-        $gender = $gender->detector($genders);
+            $client = new Client(
+                [
+                    'base_uri' => 'https://api.twitter.com/1.1/',
+                    'handler' => $stack,
+                    'auth' => 'oauth'
+                ]
+            );
 
-        return $gender;
+            $response = $client->get('statuses/user_timeline.json?screen_name=ayembeko');
 
-        $instagram = new Instagram;
-        $connect = $instagram->connect('https://www.instagram.com/wutlu.php/');
 
-        if ($connect->status == 'ok')
-        {
-            $data = $instagram->data('user');
-
-            if ($data->status == 'ok')
-            {
-                echo $connect->dom;
-                exit();
-                print_r($data->data);
-            }
-            else
-            {
-            	echo 'hata 1:';
-                // log girilecek echo $data->message;
-                echo $data->message;
-            }
-        }
-        else
-        {
-            echo 'hata 2:';
-            // log girilecek echo $connect->code;
-            echo $connect->code;
-        }
+            echo json_encode(json_decode($response->getBody()), JSON_PRETTY_PRINT);
     }
 }

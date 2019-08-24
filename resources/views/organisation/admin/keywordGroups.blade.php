@@ -47,12 +47,12 @@
                         </div>
                     </div>
                     <div>
-                        {!! in_array('youtube_video', $group->modules) ? '<span class="chip">YouTube Video</span>' : '' !!}
-                        {!! in_array('youtube_comment', $group->modules) ? '<span class="chip">YouTube Yorum</span>' : '' !!}
-                        {!! in_array('twitter', $group->modules) ? '<span class="chip">Twitter</span>' : '' !!}
-                        {!! in_array('sozluk', $group->modules) ? '<span class="chip">Sözlük</span>' : '' !!}
-                        {!! in_array('news', $group->modules) ? '<span class="chip">Haber</span>' : '' !!}
-                        {!! in_array('shopping', $group->modules) ? '<span class="chip">E-ticaret</span>' : '' !!}
+                        {!! @in_array('youtube_video', $group->modules) ? '<span class="chip">YouTube Video</span>' : '' !!}
+                        {!! @in_array('youtube_comment', $group->modules) ? '<span class="chip">YouTube Yorum</span>' : '' !!}
+                        {!! @in_array('twitter', $group->modules) ? '<span class="chip">Twitter</span>' : '' !!}
+                        {!! @in_array('sozluk', $group->modules) ? '<span class="chip">Sözlük</span>' : '' !!}
+                        {!! @in_array('news', $group->modules) ? '<span class="chip">Haber</span>' : '' !!}
+                        {!! @in_array('shopping', $group->modules) ? '<span class="chip">E-ticaret</span>' : '' !!}
                     </div>
                 </li>
             @empty

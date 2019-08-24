@@ -190,6 +190,11 @@ class UserController extends Controller
                 ];
             }
 
+            if ($user->verified && $user->email_verified_at == null)
+            {
+                $user->email_verified_at = date('Y-m-d H:i:s');
+            }
+
             $diffYears = Carbon::now()->diffInYears($user->created_at);
 
             if ($diffYears >= 5)
@@ -315,7 +320,10 @@ class UserController extends Controller
             $user->save();
 
             return [
-                'status' => 'ok'
+                'status' => 'ok',
+                'data' => [
+                    'name' => $user->name
+                ]
             ];
         }
         else
@@ -835,6 +843,7 @@ class UserController extends Controller
         $user->password = bcrypt($password);
         $user->session_id = base64_encode(time());
         $user->partner_user_id = auth()->user()->id;
+        $user->verified = true;
         $user->save();
 
         $user->notify((new SendPasswordNotification($user->name, $password))->onQueue('email'));

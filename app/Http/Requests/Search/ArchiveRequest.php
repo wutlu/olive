@@ -60,6 +60,7 @@ class ArchiveRequest extends FormRequest
             'modules.*' => 'required|string|in:'.implode(',',array_keys(config('system.modules'))),
             'sort' => 'nullable|string|in:asc,desc',
             'reverse' => 'nullable|string|in:on',
+            'sharp' => 'nullable|string|in:on',
             'gender' => 'required|string|in:all,male,female,unknown',
             'sentiment_pos' => 'required|integer|between:0,9',
             'sentiment_neg' => 'required|integer|between:0,9',

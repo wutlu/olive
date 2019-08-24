@@ -141,10 +141,16 @@
                         @slot('text', 'Listede olmayan yeni bir kaynak isteği için, <a href="'.route('settings.support', 'kaynak-istegi').'">DESTEK</a> sayfamızdan bizimle iletişime geçebilirsiniz.')
                         @slot('icon', 'info')
                     @endcomponent
+                    @component('components.alert')
+                        @slot('text', 'Arama sonuçlarında sadece ilgili modülller filtrelenir. Diğer modüllerin sonuçları normal olarak görüntülenecektir.')
+                        @slot('icon', 'info')
+                    @endcomponent
                 </div>
+
                 @if ($query)
                     <a href="#" class="btn-flat red-text waves-effect waves-red" data-trigger="delete">Sil</a>
                 @endif
+
                 <button type="submit" class="btn-flat waves-effect">{{ $query ? 'Güncelle' : 'Oluştur' }}</button>
             </div>
         </div>
