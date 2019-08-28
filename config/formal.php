@@ -6,10 +6,11 @@ return [
     'tax_name' => 'K.D.V.',
     'company' => [
         'logo' => 'img/veri.zone_logo.svg',
-        'name' => 'Veri Zone Bilişim Tek. ve Dan. Ltd. Şti.',
+        'name' => 'Alper Mutlu TOKSÖZ - Veri Zone',
         'address' => [
-            'İnönü Mahallesi, 1769. Sk. 1D/1, 06370',
-            'Yenimahalle/ANKARA'
+            'Mustafa Kemal Mh. Dumlupınar Blv.',
+            'ODTÜ Teknokent Bilişim İnovasyon Merkezi',
+            '280/G No:1260 Alt Zemin Kat Çankaya, Ankara'
         ],
         'contact' => [
             'www.veri.zone',
@@ -17,10 +18,9 @@ return [
             '+90 850 302 1630'
         ],
         'taxOffice' => [
-            'name' => 'Ostim Vergi Dairesi',
-            'no' => '9240813158'
-        ],
-        //'tradeRegisterNo' => '0957521689'
+            'name' => 'Maltepe Vergi Dairesi',
+            'no' => '10942289746'
+        ]
     ],
 
     /**
@@ -39,8 +39,8 @@ return [
 
     'banks' => [
         'Enpara' => [
-            'name' => 'VERİ ZONE BİL. TEK. VE DAN. LTD. ŞTİ.',
-            'iban' => 'TR70 0011 1000 0000 0085 1234 41'
+            'name' => 'Alper Mutlu TOKSÖZ',
+            'iban' => 'TR43 0001 5001 5800 7307 1577 72'
         ]
     ],
 

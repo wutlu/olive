@@ -881,7 +881,6 @@
                         <div class="col l6 s12">
                             <img id="vz-logo" src="{{ asset('img/veri.zone_logo-grey.svg') }}" alt="veri.zone-logo" />
                             <p class="grey-text mb-0">© {{ date('Y') }} Veri Zone</p>
-                            <p class="grey-text mb-0">İnönü Mahallesi, 1769. Sk. 1D/1, 06370 Yenimahalle/ANKARA</p>
                             <!--
                             <i class="social-icon icon-tumblr">&#xe800;</i>
                             <i class="social-icon icon-email">&#xe801;</i>
