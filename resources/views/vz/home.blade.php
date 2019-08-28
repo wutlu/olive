@@ -124,8 +124,7 @@
 	</footer>
 	<section class="main" data-name="contact">
 		<h4>İletişim Bilgileri</h4>
-		<h4>Veri Zone Bilişim Teknolojileri ve Danışmanlık Ltd. Şti.</h4>
-		<p>İnönü Mahallesi, 1769. Sk. 1D, 06370 Ostim Osb/Yenimahalle/Ankara</p>
+		<h4>Veri Zone</h4>
 		<p>+90 850 302 1630</p>
 		<p>bilgi@veri.zone</p>
 	</section>

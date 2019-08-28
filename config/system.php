@@ -364,11 +364,13 @@ return [
                 'route' => 'alarm.dashboard',
                 'icon' => 'alarm'
             ],
+            /*
             26 => [
                 'name' => 'Trend Arşivi',
                 'route' => 'trend.archive',
                 'icon' => 'archive'
             ],
+            */
             27 => [
                 'name' => 'Forum',
                 'route' => 'forum.index',

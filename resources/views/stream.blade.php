@@ -159,7 +159,7 @@
 @section('content')
     <div class="status-bar d-flex">
         <div class="p-1 align-self-center">
-            <button class="btn-floating red darken-2 btn-large disabled" type="button" data-name="trigger" data-tooltip="Kısayol (Space)" data-position="right">
+            <button class="btn-floating red darken-2 btn-large disabled" type="button" data-name="trigger" data-tooltip="Kısayol (ctrl)" data-position="right">
                 <i class="material-icons">play_arrow</i>
             </button>
         </div>

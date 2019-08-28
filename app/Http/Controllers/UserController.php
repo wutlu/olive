@@ -816,7 +816,14 @@ class UserController extends Controller
 
         if ($user && $user->partner_user_id != $auth->id)
         {
-            return abort(403);
+        	if ($user && $auth->admin)
+	        {
+	        	return redirect()->route('admin.user', $user->id);
+	        }
+	        else
+	        {
+	        	return abort(403);
+	        }
         }
 
         $partner_percent = System::option('formal.partner.'.$auth->partner.'.percent');

@@ -855,9 +855,18 @@ class AggregationController extends Controller
                 ];
             break;
             case 'place':
-                $aggs['place'] = [
-                    'terms' => [
-                        'field' => 'place.name'
+                $aggs['twitter'] = [
+                    'place' => [
+                        'terms' => [
+                            'field' => 'place.name'
+                        ]
+                    ]
+                ];
+                $aggs['instagram'] = [
+                    'place' => [
+                        'terms' => [
+                            'field' => 'place.name'
+                        ]
                     ]
                 ];
             break;

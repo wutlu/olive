@@ -131,7 +131,7 @@
                     </form>
                 </div>
             </div>
-            <p class="blue-grey-text">{{ date('Y') }} © <a href="https://veri.zone/" target="_blank">Veri Zone</a> Bilişim Teknolojileri ve Danışmanlık Ltd. Şti.</p>
+            <p class="blue-grey-text">{{ date('Y') }} © <a href="https://veri.zone/" target="_blank">Veri Zone</a></p>
         </div>
     </div>
 @endsection

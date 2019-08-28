@@ -94,10 +94,17 @@
                             {
                                 rank.addClass('green-text')
                             }
+
+                            rank.removeClass('red white-text btn-flat btn-floating')
                         }
                         else
                         {
                             rank.addClass('blue-text')
+
+                            if (o.hit >= 20)
+                            {
+                                rank.addClass('red white-text btn-flat btn-floating')
+                            }
                         }
 
                         if (o.data.image)
@@ -259,9 +266,6 @@
         background-size: 50%;
     }
 
-    .image {
-
-    }
     .image.verified {
         -webkit-box-shadow: 0 0 0 4px #bbdefb;
                 box-shadow: 0 0 0 4px #bbdefb;
@@ -370,44 +374,50 @@
         <div class="card-content">
             <div class="d-flex flex-wrap">
                 <div  class="p-1">
-                    <span class="red-text">
+                    <div class="red-text">
                         @component('components.alert')
                             @slot('icon', 'info_outline')
                             @slot('text', 'Kırmızı, trendin düşüşte olduğunu gösterir.')
                         @endcomponent
-                    </span>
-                    <span class="green-text">
+                    </div>
+                    <div class="green-text">
                         @component('components.alert')
                             @slot('icon', 'info_outline')
                             @slot('text', 'Yeşil, trendin yükselişte olduğunu gösterir.')
                         @endcomponent
-                    </span>
-                    <span class="blue-text">
+                    </div>
+                    <div class="blue-text">
                         @component('components.alert')
                             @slot('icon', 'info_outline')
                             @slot('text', 'Mavi, trendin yeni olduğunu gösterir.')
                         @endcomponent
-                    </span>
-                    <span class="grey-text">
+                    </div>
+                    <div class="grey-text">
                         @component('components.alert')
                             @slot('icon', 'info_outline')
                             @slot('text', 'Gri, trendin yerini koruduğunu gösterir.')
                         @endcomponent
-                    </span>
+                    </div>
+                    <div class="red">
+                        @component('components.alert')
+                            @slot('icon', 'info_outline')
+                            @slot('text', 'Kırmızı zemin, olağanüstü bir hareketlilik olduğunu gösterir.')
+                        @endcomponent
+                    </div>
                 </div>
                 <div  class="p-1">
-                    <span class="grey-text">
+                    <div class="grey-text">
                         @component('components.alert')
                             @slot('icon', 'multiline_chart')
                             @slot('text', 'Ekrana düşen toplam trend sayısı, <span data-name="incoming-trends">0</span>')
                         @endcomponent
-                    </span>
-                    <span class="grey-text">
+                    </div>
+                    <div class="grey-text">
                         @component('components.alert')
                             @slot('icon', 'multiline_chart')
                             @slot('text', 'Ekrandan çıkan toplam trend sayısı, <span data-name="outbound-trends">0</span>')
                         @endcomponent
-                    </span>
+                    </div>
                 </div>
             </div>
         </div>
