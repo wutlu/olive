@@ -1,21 +1,20 @@
-@extends('layouts.app', [ 'header' => 'hide' ])
+@extends('layouts.app', [
+    'term' => 'hide',
+    'email' => 'hide',
+    'dock' => true
+])
 
 @section('title', 'Yeni Şifreniz')
 
 @section('content')
     <header id="main">
-        <div class="parallax-container">
-            <div class="parallax indigo lighten-5">
-                <img src="{{ asset('img/bg-2.svg') }}" alt="bg-1" />
-            </div>
-
-            <div class="container">
+        <div class="container">
+            <div class="pt-2 pb-2 mt-2 mb-2">
                 <form id="password-form" data-callback="__password" action="{{ route('user.password.new', [ 'id' => $user->id, 'sid' => $user->session_id ]) }}" method="patch" class="json">
                     <div class="card" style="max-width: 460px;">
                         <div class="card-content">
                             <img src="{{ asset('img/olive_logo.svg') }}" alt="olive-logo" class="responsive-img" style="width: 128px;" />
                         </div>
-                        <div class="card-content teal lighten-5 teal-text">Yeni şifrenizi oluşturun.</div>
                         <div class="card-content">
                             <div class="row">
                                 <div class="input-field col s12">
@@ -35,6 +34,7 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="card-content teal lighten-5 teal-text">Yeni şifrenizi oluşturun.</div>
                         <div class="card-action right-align">
                             <button type="submit" class="btn-flat waves-effect">Güncelle</button>
                         </div>
