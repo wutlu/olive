@@ -47,32 +47,27 @@
 @endsection
 
 @section('content')
-    @if ($pg->html_to_pdf == 'success')
-        <div class="card card-unstyled mb-1">
-            <div class="card-contenet">
-                <div class="d-flex justify-content-end">
+    <div class="card card-unstyled mb-1">
+        <div class="card-contenet">
+            <div class="d-flex justify-content-end">
+                @if ($pg->html_to_pdf == 'success')
                     <span class="align-self-center grey-text">{{ date('d.m.Y H:i', strtotime($pg->completed_at)) }}</span>
                     <a href="{{ url($pg->pdf_path).'?v='.date('dmyHi', strtotime($pg->completed_at)) }}" class="btn-flat waves-effect align-self-center ml-1">Pdf İndir</a>
-                </div>
+                @endif
+
+                <a href="{{ route('pin.urls', $pg->id) }}" class="btn-flat waves-effect align-self-center ml-1">URL Listesi (csv)</a>
             </div>
         </div>
-    @endif
+    </div>
 
     @forelse ($pins as $pin)
-        @php
-        $document = $pin->document();
-        @endphp
-
-        @if ($document->status == 'ok')
             @php
-                $id = $document->data['_index'].'_'.$document->data['_type'].'_'.$document->data['_id'];
-                $type = $document->data['_type'];
-                $source = $document->data['_source'];
+            $id = $pin->index.'_'.$pin->type.'_'.$pin->id;
             @endphp
 
             <ul id="dropdown-{{ $id }}" class="dropdown-content">
                 <li>
-                    <a href="{{ route('content', [ 'es_index' => $document->data['_index'], 'es_type' => $document->data['_type'], 'es_id' => $document->data['_id'] ]) }}" class="waves-effect">İncele</a>
+                    <a href="{{ route('content', [ 'es_index' => $pin->index, 'es_type' => $pin->type, 'es_id' => $pin->id ]) }}" class="waves-effect">İncele</a>
                 </li>
 
                 @if ($pin->organisation_id == auth()->user()->organisation_id)
@@ -83,124 +78,30 @@
                             class="waves-effect json"
                             data-href="{{ route('pin', 'remove') }}"
                             data-method="post"
-                            data-id="{{ $document->data['_id'] }}"
-                            data-type="{{ $document->data['_type'] }}"
-                            data-index="{{ $document->data['_index'] }}"
+                            data-id="{{ $pin->id }}"
+                            data-type="{{ $pin->type }}"
+                            data-index="{{ $pin->index }}"
                             data-group_id="{{ $pg->id }}"
                             data-callback="__pin">Pin'i Kaldır</a>
                     </li>
                 @endif
             </ul>
 
-            <div class="card card-data {{ $type }} mb-1" data-id="card-{{ $id }}">
+            <div class="card card-data {{ $pin->type }} mb-1" data-id="card-{{ $id }}">
                 <div class="card-content">
                     <span class="card-title">
-                        {{ $type }}
+                        {{ $pin->type }}
                         <a href="#" class="dropdown-trigger right" data-target="dropdown-{{ $id }}" data-align="right">
                             <i class="material-icons">more_vert</i>
                         </a>
                     </span>
 
-                    <time class="grey-text d-block">{{ date('d.m.Y H:i:s', strtotime($source['created_at'])) }}</time>
+                    <div class="data-area" id="{{ $pin->id }}"></div>
 
-                    @isset ($source['title'])
-                        <h6 class="teal-text">{{ $source['title'] }}</h6>
-                    @endisset
-
-                    @if ($type == 'tweet')
-                        <a href="https://twitter.com/{{ $source['user']['screen_name'] }}/status/{{ $source['id'] }}" target="_blank">https://twitter.com/{{ $source['user']['screen_name'] }}/status/{{ $source['id'] }}</a>
-                        <p>
-                            <a href="https://twitter.com/intent/user?user_id={{ $source['user']['id'] }}" target="_blank" class="red-text">{{ '@'.$source['user']['screen_name'] }}</a>
-                            <span class="grey-text">{{ $source['user']['name'] }}</span>
-                            <span class="grey-text">({{ $source['platform'] }})</span>
-                        </p>
-                        <div class="text grey-text text-darken-2">{!! Term::tweet($source['text']) !!}</div>
-                    @elseif ($type == 'article')
-                        <a href="{{ $source['url'] }}" target="_blank">{{ str_limit($source['url'], 96) }}</a>
-                        <div class="text grey-text text-darken-2">{!! nl2br($source['description']) !!}</div>
-                    @elseif ($type == 'document')
-                        <a href="{{ $source['url'] }}" target="_blank">{{ str_limit($source['url'], 96) }}</a>
-                        <div class="text grey-text text-darken-2">{!! nl2br($source['description']) !!}</div>
-                    @elseif ($type == 'entry')
-                        <a href="{{ $source['url'] }}" target="_blank">{{ str_limit($source['url'], 96) }}</a>
-                        <div class="text grey-text text-darken-2">{!! nl2br($source['entry']) !!}</div>
-                    @elseif ($type == 'product')
-                        @isset ($source['address'])
-                            <ul class="horizontal">
-                                @foreach ($source['address'] as $key => $segment)
-                                    <li class="grey-text" data-icon="»">{{ $segment['segment'] }}</li>
-                                @endforeach
-                            </ul>
-                        @endisset
-                        @isset ($source['breadcrumb'])
-                            <ul class="horizontal">
-                                @foreach ($source['breadcrumb'] as $key => $segment)
-                                    <li class="grey-text" data-icon="»">{{ $segment['segment'] }}</li>
-                                @endforeach
-                            </ul>
-                        @endisset
-                        <a href="{{ $source['url'] }}" target="_blank">{{ str_limit($source['url'], 96) }}</a>
-                        <p>
-                            <span class="red-text">{{ title_case($source['seller']['name']) }}</span>
-                            @isset ($source['seller']['phones'])
-                                <ul class="horizontal"> 
-                                    @foreach ($source['seller']['phones'] as $key => $phone)
-                                        <li class="grey-text" data-icon="|">{{ $phone['phone'] }}</li>
-                                    @endforeach
-                                </ul>
-                            @endisset
-                        </p>
-                        @isset ($source['description'])
-                            <div class="text grey-text text-darken-2">{!! nl2br($source['description']) !!}</div>
-                        @endisset
-                        <p>
-                            <span class="grey-text text-darken-4">{{ number_format($source['price']['amount']) }}</span>
-                            <span class="grey-text">{{ $source['price']['currency'] }}</span>
-                        </p>
-                    @elseif ($type == 'comment')
-                        <a href="https://www.youtube.com/watch?v={{ $source['video_id'] }}" target="_blank">https://www.youtube.com/watch?v={{ $source['video_id'] }}</a>
-                        <p>
-                            <a href="https://www.youtube.com/channel/{{ $source['channel']['id'] }}" target="_blank" class="red-text">{{ '@'.$source['channel']['title'] }}</a>
-                        </p>
-                        <div class="text grey-text text-darken-2">{!! nl2br($source['text']) !!}</div>
-                    @elseif ($type == 'video')
-                        <a href="https://www.youtube.com/watch?v={{ $source['id'] }}" target="_blank">https://www.youtube.com/watch?v={{ $source['id'] }}</a>
-                        <p>
-                            <a href="https://www.youtube.com/channel/{{ $source['channel']['id'] }}" target="_blank" class="red-text">{{ '@'.$source['channel']['title'] }}</a>
-                        </p>
-                        @isset ($source['description'])
-                            <div class="text grey-text text-darken-2">{!! nl2br($source['description']) !!}</div>
-                        @endisset
-                    @endif
+                    @push('local.scripts')
+                    $('#{{ $pin->id }}').html(_{{ $pin->type }}_({!! json_encode(array_merge($pin->content, [ '_id' => $pin->id, '_type' => $pin->type, '_index' => $pin->index ])) !!}))
+                    @endpush
                 </div>
-
-                @isset ($source['external'])
-                    <div class="card-content">
-                        @php
-                        $external_source = $pin->document($source['external']['id']);
-                        @endphp
-
-                        @if ($external_source)
-                            <ul class="collapsible">
-                                <li>
-                                    <div class="collapsible-header">
-                                        <span>
-                                            <span class="red-text">{{ '@'.$external_source['_source']['user']['screen_name'] }}</span>
-                                            <span class="grey-text">{{ $external_source['_source']['user']['name'] }}</span>
-                                            <span class="grey-text">({{ $external_source['_source']['platform'] }})</span>
-                                        </span>
-                                    </div>
-                                    <div class="collapsible-body">
-                                        <div style="padding: 24px;">
-                                            <a href="https://twitter.com/{{ $external_source['_source']['user']['screen_name'] }}/status/{{ $external_source['_source']['id'] }}" target="_blank">https://twitter.com/{{ $external_source['_source']['user']['screen_name'] }}/status/{{ $external_source['_source']['id'] }}</a>
-                                            <div class="text grey-text text-darken-2">{!! nl2br($external_source['_source']['text']) !!}</div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        @endif
-                    </div>
-                @endif
 
                 @if ($pin->organisation_id == auth()->user()->organisation_id)
                     <div class="card-comment">
@@ -211,25 +112,14 @@
                                 class="materialize-textarea json"
                                 data-href="{{ route('pin.comment') }}"
                                 data-method="post"
-                                data-index="{{ $document->data['_index'] }}"
-                                data-type="{{ $document->data['_type'] }}"
-                                data-id="{{ $document->data['_id'] }}">{{ $pin->comment }}</textarea>
+                                data-index="{{ $pin->index }}"
+                                data-type="{{ $pin->type }}"
+                                data-id="{{ $pin->id }}">{{ $pin->comment }}</textarea>
                             <label for="textarea-{{ $id }}">Yorum Girin</label>
                         </div>
                     </div>
                 @endif
             </div>
-        @else
-            <div class="card-panel red">
-                @component('components.nothing')
-                    @slot('cloud_class', 'white-text')
-                    @slot('text_class', 'white-text text-darken-2')
-                    @slot('cloud', 'cloud_off')
-                    @slot('sun', 'sentiment_very_dissatisfied')
-                    @slot('text', 'Kaynak Okunamadı!')
-                @endcomponent
-            </div>
-        @endif
     @empty
         @component('components.nothing')
             @slot('cloud_class', 'white-text')

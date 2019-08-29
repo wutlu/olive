@@ -95,7 +95,7 @@
                                 rank.addClass('green-text')
                             }
 
-                            rank.removeClass('red white-text btn-flat btn-floating')
+                            item.find('.collapsible-header').removeClass('red lighten-4')
                         }
                         else
                         {
@@ -103,7 +103,7 @@
 
                             if (o.hit >= 20)
                             {
-                                rank.addClass('red white-text btn-flat btn-floating')
+                                item.find('.collapsible-header').addClass('red lighten-4')
                             }
                         }
 
@@ -398,7 +398,7 @@
                             @slot('text', 'Gri, trendin yerini koruduğunu gösterir.')
                         @endcomponent
                     </div>
-                    <div class="red">
+                    <div class="red lighten-4">
                         @component('components.alert')
                             @slot('icon', 'info_outline')
                             @slot('text', 'Kırmızı zemin, olağanüstü bir hareketlilik olduğunu gösterir.')

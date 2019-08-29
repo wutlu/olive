@@ -288,7 +288,7 @@
                                 @endisset
                                 @isset($pin_group)
                                     <li>
-                                        <a href="#" data-class="#pin-groups-dock" data-class-toggle="active" data-dock="close">
+                                        <a href="#" data-class="#pin-groups-dock" data-name="pin-dock-trigger" data-class-toggle="active" data-dock="close">
                                             <i class="material-icons">fiber_pin</i>
                                         </a>
                                     </li>

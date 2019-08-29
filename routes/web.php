@@ -181,6 +181,7 @@ Route::prefix('pinleme')->group(function () {
     Route::post('yorum', 'PinController@comment')->name('pin.comment');
     Route::post('pdf', 'PinController@pdf')->name('pin.pdf');
     Route::post('{type}', 'PinController@pin')->name('pin')->where('type', '(add|remove)');
+    Route::get('url/{id}', 'PinController@pinUrls')->name('pin.urls');
 });
 
 Route::prefix('ayarlar')->group(function () {

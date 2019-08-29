@@ -29,19 +29,14 @@ class Pin extends Model
         'group_id'
     ];
 
-    public function document(int $id = 0)
-    {
-        if ($id)
-        {
-            $document = Document::search([ 'twitter', 'tweets', '*' ], 'tweet', [ 'query' => [ 'match' => [ 'id' => $id ] ] ]);
-
-            return @$document->data['hits']['hits'][0];
-        }
-        else
-        {
-            return Document::get($this->index, $this->type, $this->id);
-        }
-    }
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'content' => 'array'
+    ];
 
     /**
      * authority

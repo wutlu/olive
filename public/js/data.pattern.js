@@ -71,7 +71,7 @@ function __joints(o)
                 'data-pin-uuid': o.uuid,
                 'data-index': o._index,
                 'data-type': o._type
-            })
+            }).addClass($('[data-name=pin-dock-trigger]').length ? '' : 'hide')
         ]
     })
 

@@ -84,108 +84,82 @@
 </header>
 
 @foreach ($pins as $pin)
-    @if ($pin->document()->status == 'ok')
-        @php
-            $source = $pin->document()->data['_source'];
-        @endphp
-
-        <div class="data {{ $pin->document()->data['_type'] }}">
-            @isset ($source['title'])
-                <h3>{{ title_case($source['title']) }}</h3>
+        <div class="data {{ $pin->type }}">
+            @isset ($pin->content['title'])
+                <h3>{{ title_case($pin->content['title']) }}</h3>
             @endisset
 
-            <time>{{ date('d.m.Y H:i:s', strtotime($source['created_at'])) }}</time>
+            <time>{{ date('d.m.Y H:i:s', strtotime($pin->content['created_at'])) }}</time>
 
-            @if ($pin->document()->data['_type'] == 'tweet')
-                <a class="url" href="https://twitter.com/{{ $source['user']['screen_name'] }}/status/{{ $source['id'] }}" target="_blank">https://twitter.com/{{ $source['user']['screen_name'] }}/status/{{ $source['id'] }}</a>
+            @if ($pin->type == 'tweet')
+                <a class="url" href="https://twitter.com/{{ $pin->content['user']['screen_name'] }}/status/{{ $pin->content['id'] }}" target="_blank">https://twitter.com/{{ $pin->content['user']['screen_name'] }}/status/{{ $pin->content['id'] }}</a>
                 <p>
-                    <a href="https://twitter.com/intent/user?user_id={{ $source['user']['id'] }}" target="_blank">{{ '@'.$source['user']['screen_name'] }}</a>
-                    <span>{{ $source['user']['name'] }}</span>
-                    <span>({{ $source['platform'] }})</span>
+                    <a href="https://twitter.com/intent/user?user_id={{ $pin->content['user']['id'] }}" target="_blank">{{ '@'.$pin->content['user']['screen_name'] }}</a>
+                    <span>{{ $pin->content['user']['name'] }}</span>
+                    <span>({{ $pin->content['platform'] }})</span>
                 </p>
-                <div class="text">{!! Term::tweet($source['text']) !!}</div>
-                @isset ($source['external'])
-                    @php
-                        $external_source = $pin->document($source['external']['id']);
-                    @endphp
-
-                    @if ($external_source)
-                        <ul>
-                            <li>
-                                <span>Asıl Tweet</span>
-                                <time>{{ date('d.m.Y H:i:s', strtotime($external_source['_source']['created_at'])) }}</time>
-                                <a class="url" href="https://twitter.com/{{ $external_source['_source']['user']['screen_name'] }}/status/{{ $external_source['_source']['id'] }}" target="_blank">https://twitter.com/{{ $external_source['_source']['user']['screen_name'] }}/status/{{ $external_source['_source']['id'] }}</a>
-                                <p>
-                                    <a href="https://twitter.com/intent/user?user_id={{ $external_source['_source']['user']['id'] }}" target="_blank" class="red-text">{{ '@'.$external_source['_source']['user']['screen_name'] }}</a>
-                                    <span>{{ $external_source['_source']['user']['name'] }}</span>
-                                    <span>({{ $external_source['_source']['platform'] }})</span>
-                                </p>
-                                <div class="text">{!! Term::tweet($external_source['_source']['text']) !!}</div>
-                            </li>
-                        </ul>
-                    @endif
-                @endisset
-            @elseif ($pin->document()->data['_type'] == 'article')
-                 <a class="url" href="{{ $source['url'] }}" target="_blank">{{ $source['url'] }}</a>
-                 <div class="text">{!! nl2br($source['description']) !!}</div>
-            @elseif ($pin->document()->data['_type'] == 'document')
-                 <a class="url" href="{{ $source['url'] }}" target="_blank">{{ $source['url'] }}</a>
-                 <div class="text">{!! nl2br($source['description']) !!}</div>
-            @elseif ($pin->document()->data['_type'] == 'entry')
-                <a class="url" href="{{ $source['url'] }}" target="_blank">{{ $source['url'] }}</a>
-                <div class="text">{!! nl2br($source['entry']) !!}</div>
-            @elseif ($pin->document()->data['_type'] == 'product')
-                @isset ($source['address'])
+                <div class="text">{!! Term::tweet($pin->content['text']) !!}</div>
+            @elseif ($pin->type == 'article')
+                 <a class="url" href="{{ $pin->content['url'] }}" target="_blank">{{ $pin->content['url'] }}</a>
+                 <div class="text">{!! nl2br($pin->content['description']) !!}</div>
+            @elseif ($pin->type == 'document')
+                 <a class="url" href="{{ $pin->content['url'] }}" target="_blank">{{ $pin->content['url'] }}</a>
+                 <div class="text">{!! nl2br($pin->content['description']) !!}</div>
+            @elseif ($pin->type == 'entry')
+                <a class="url" href="{{ $pin->content['url'] }}" target="_blank">{{ $pin->content['url'] }}</a>
+                <div class="text">{!! nl2br($pin->content['entry']) !!}</div>
+            @elseif ($pin->type == 'product')
+                @isset ($pin->content['address'])
                     <ul>
-                        @foreach ($source['address'] as $key => $segment)
+                        @foreach ($pin->content['address'] as $key => $segment)
                             <li>{{ $segment['segment'] }}</li>
                         @endforeach
                     </ul>
                 @endisset
 
-                @isset ($source['breadcrumb'])
+                @isset ($pin->content['breadcrumb'])
                     <ul>
-                        @foreach ($source['breadcrumb'] as $key => $segment)
+                        @foreach ($pin->content['breadcrumb'] as $key => $segment)
                             <li>{{ $segment['segment'] }}</li>
                         @endforeach
                     </ul>
                 @endisset
 
-                <a href="{{ $source['url'] }}" target="_blank">{{ $source['url'] }}</a>
+                <a href="{{ $pin->content['url'] }}" target="_blank">{{ $pin->content['url'] }}</a>
                 <div>
-                    <span>{{ title_case($source['seller']['name']) }}</span>
+                    <span>{{ title_case($pin->content['seller']['name']) }}</span>
 
-                    @isset ($source['seller']['phones'])
+                    @isset ($pin->content['seller']['phones'])
                         <ul>
-                            @foreach ($source['seller']['phones'] as $key => $phone)
+                            @foreach ($pin->content['seller']['phones'] as $key => $phone)
                                 <li>{{ $phone['phone'] }}</li>
                             @endforeach
                         </ul>
                     @endisset
                 </div>
 
-                @isset ($source['description'])
-                    <div class="text">{!! nl2br($source['description']) !!}</div>
+                @isset ($pin->content['description'])
+                    <div class="text">{!! nl2br($pin->content['description']) !!}</div>
                 @endisset
 
                 <p>
-                   <span>{{ number_format($source['price']['amount']) }}</span>
-                   <span>{{ $source['price']['currency'] }}</span>
+                   <span>{{ number_format($pin->content['price']['amount']) }}</span>
+                   <span>{{ $pin->content['price']['currency'] }}</span>
                 </p>
-            @elseif ($pin->document()->data['_type'] == 'comment')
-                <a class="url" href="https://www.youtube.com/watch?v={{ $source['video_id'] }}" target="_blank">https://www.youtube.com/watch?v={{ $source['video_id'] }}</a>
+            @elseif ($pin->type == 'comment')
+                <a class="url" href="https://www.youtube.com/watch?v={{ $pin->content['video_id'] }}" target="_blank">https://www.youtube.com/watch?v={{ $pin->content['video_id'] }}</a>
                 <p>
-                    <a href="https://www.youtube.com/channel/{{ $source['channel']['id'] }}" target="_blank">{{ '@'.$source['channel']['title'] }}</a>
+                    <a href="https://www.youtube.com/channel/{{ $pin->content['channel']['id'] }}" target="_blank">{{ '@'.$pin->content['channel']['title'] }}</a>
                 </p>
-                <div class="text">{!! nl2br($source['text']) !!}</div>
-            @elseif ($pin->document()->data['_type'] == 'video')
-                <a class="url" href="https://www.youtube.com/watch?v={{ $source['id'] }}" target="_blank">https://www.youtube.com/watch?v={{ $source['id'] }}</a>
+                <div class="text">{!! nl2br($pin->content['text']) !!}</div>
+            @elseif ($pin->type == 'video')
+                <a class="url" href="https://www.youtube.com/watch?v={{ $pin->content['id'] }}" target="_blank">https://www.youtube.com/watch?v={{ $pin->content['id'] }}</a>
                 <p>
-                    <a href="https://www.youtube.com/channel/{{ $source['channel']['id'] }}" target="_blank">{{ '@'.$source['channel']['title'] }}</a>
+                    <a href="https://www.youtube.com/channel/{{ $pin->content['channel']['id'] }}" target="_blank">{{ '@'.$pin->content['channel']['title'] }}</a>
                 </p>
 
-                @isset ($source['description'])
-                    <div class="text">{!! nl2br($source['description']) !!}</div>
+                @isset ($pin->content['description'])
+                    <div class="text">{!! nl2br($pin->content['description']) !!}</div>
                 @endisset
             @endif
 
@@ -193,11 +167,6 @@
                 <div class="pin-comment">{!! nl2br($pin->comment) !!}</div>
             @endif
         </div>
-    @else
-        <div class="data">
-            <p>Kaynak Okunamadı.</p>
-        </div>
-    @endif
 @endforeach
 
 </body>

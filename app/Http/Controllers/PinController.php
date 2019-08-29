@@ -210,9 +210,25 @@ class PinController extends Controller
                     {
                         $status = 'pinned';
 
+                        switch ($document->data['_type'])
+                        {
+                            case 'tweet'  : $url = 'https://twitter.com/'.$document->data['_source']['user']['screen_name'].'/status/'.$document->data['_id']; break;
+                            case 'media'  : $url = 'https://www.instagram.com/p/'.$document->data['_source']['shortcode'].'/'; break;
+                            case 'video'  : $url = 'https://www.youtube.com/watch?v='.$document->data['_id']; break;
+                            case 'comment': $url = 'https://www.youtube.com/channel/'.$document->data['_source']['channel']['id']; break;
+                            case 'media'  : $url = $document->data['_source']['url']; break;
+                            case 'article'  : $url = $document->data['_source']['url']; break;
+                            case 'product'  : $url = $document->data['_source']['url']; break;
+                            case 'document'  : $url = $document->data['_source']['url']; break;
+                            case 'entry'  : $url = 'https://eksisozluk.com/entry/'.$document->data['_id']; break;
+                            default: $url = ''; break;
+                        }
+
                         $p = new Pin;
                         $p->fill($request->all());
                         $p->user_id = $user->id;
+                        $p->url = $url;
+                        $p->content = $document->data['_source'];
                         $p->organisation_id = $user->organisation_id;
                         $p->save();
                     }
@@ -249,6 +265,40 @@ class PinController extends Controller
         $pins = $pg->pins()->orderBy('created_at', 'DESC')->paginate(10);
 
         return view('pin.pins', compact('pg', 'pins'));
+    }
+
+    /**
+     * Pin Grubu, Url Çıktı
+     *
+     * @return view
+     */
+    public function pinUrls(int $id)
+    {
+        $pg = PinGroup::where('id', $id)->where('organisation_id', auth()->user()->organisation_id)->firstOrFail();
+
+        $pins = $pg->pins()->orderBy('type', 'ASC')->orderBy('created_at', 'DESC')->get();
+
+        if (count($pins))
+        {
+            $content = [];
+
+            foreach ($pins as $pin)
+            {
+                $content[] = implode([ $pin->url ], '  ');
+            }
+        }
+        else
+        {
+            $content = [ 'Hiç içerik pinlenmedi.' ];
+        }
+
+        $headers = [
+          'Content-type' => 'text/csv', 
+          'Content-Disposition' => sprintf('attachment; filename="%s"', 'olive-'.str_slug($pg->name).'.csv'),
+          'Cache-Control' => 'max-age=0'
+        ];
+
+        return \Response::make(implode($content, PHP_EOL), 200, $headers);
     }
 
     /**

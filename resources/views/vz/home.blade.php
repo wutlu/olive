@@ -109,13 +109,13 @@
 		<img alt="veri.zone" src="{{ asset('img/veri.zone_logo.svg') }}" />
 	</header>
 	<footer class="main">
-		<a href="https://www.instagram.com/veri.zone">
+		<a href="https://www.instagram.com/veri8zone">
 			instagram @ 
-			<span>veri.zone</span>
+			<span>veri8zone</span>
 		</a>
-		<a href="https://twitter.com/veridotzone">
+		<a href="https://twitter.com/veri8zone">
 			twitter @ 
-			<span>veridotzone</span>
+			<span>veri8zone</span>
 		</a>
 		<a href="#" data-trigger="contact">
 			<span>İletişim</span>
