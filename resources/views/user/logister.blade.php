@@ -131,7 +131,7 @@
                     </form>
                 </div>
             </div>
-            <p class="blue-grey-text">{{ date('Y') }} © <a href="https://veri.zone/" target="_blank">Veri Zone</a></p>
+            <p class="blue-grey-text">{{ date('Y') }} © <a href="https://veri.zone/" target="_blank">Veri Zone Teknoloji</a></p>
         </div>
     </div>
 @endsection

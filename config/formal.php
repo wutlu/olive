@@ -6,7 +6,7 @@ return [
     'tax_name' => 'K.D.V.',
     'company' => [
         'logo' => 'img/veri.zone_logo.svg',
-        'name' => 'Alper Mutlu TOKSÖZ - Veri Zone',
+        'name' => 'Veri Zone Teknoloji',
         'address' => [
             'Mustafa Kemal Mh. Dumlupınar Blv.',
             'ODTÜ Teknokent Bilişim İnovasyon Merkezi',
@@ -17,6 +17,7 @@ return [
             'bilgi@veri.zone',
             '+90 850 302 1630'
         ],
+        'tradeRegisterNo' => '8490296700',
         'taxOffice' => [
             'name' => 'Maltepe Vergi Dairesi',
             'no' => '10942289746'

@@ -583,7 +583,7 @@
                 @isset($footer_hide)
                     <li class="divider"></li>
                     <li class="copyright">
-                        <p class="grey-text">{{ date('Y') }} © <a href="https://veri.zone/" class="grey-text">Veri Zone</a></p>
+                        <p class="grey-text">{{ date('Y') }} © <a href="https://veri.zone/" class="grey-text">Veri Zone Teknoloji</a></p>
                     </li>
                 @endisset
             </ul>
@@ -880,7 +880,7 @@
                     <div class="row">
                         <div class="col l6 s12">
                             <img id="vz-logo" src="{{ asset('img/veri.zone_logo-grey.svg') }}" alt="veri.zone-logo" />
-                            <p class="grey-text mb-0">© {{ date('Y') }} Veri Zone</p>
+                            <p class="grey-text mb-0">© {{ date('Y') }} Veri Zone Teknoloji</p>
                             <!--
                             <i class="social-icon icon-tumblr">&#xe800;</i>
                             <i class="social-icon icon-email">&#xe801;</i>
@@ -934,7 +934,7 @@
                 </div>
                 <div class="footer-copyright mt-1">
                     <div class="{{ isset($wide) ? 'container container-wide' : 'container' }} grey-text">
-                        {{ date('Y') }} © <a href="https://veri.zone/" class="grey-text">Veri Zone</a> | Tüm hakları saklıdır.
+                        {{ date('Y') }} © <a href="https://veri.zone/" class="grey-text">Veri Zone Teknoloji</a> | Tüm hakları saklıdır.
                     </div>
                 </div>
             </footer>

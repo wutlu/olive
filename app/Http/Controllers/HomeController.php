@@ -53,16 +53,6 @@ class HomeController extends Controller
     }
 
     /**
-     * veri.zone Ana Sayfa
-     *
-     * @return view
-     */
-    public static function vz()
-    {
-        return view('vz.home');
-    }
-
-    /**
      * ip log
      *
      * @return mixed
