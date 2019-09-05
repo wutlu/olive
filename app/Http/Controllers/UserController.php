@@ -127,10 +127,6 @@ class UserController extends Controller
                 'text' => 'Galata Kulesi / İstanbul'
             ],
             [
-                'img' => asset('img/photo/akseki.jpeg'),
-                'text' => 'Ahmet Hamdi Akseki Camii / Ankara'
-            ],
-            [
                 'img' => asset('img/photo/gazi.jpeg'),
                 'text' => 'Anıtkabir / Ankara'
             ],
@@ -883,7 +879,7 @@ class UserController extends Controller
             $calculate = OrganisationController::calculate($auth->partner, $request);
 
             $request->validate([
-                'unit_price' => 'required|numeric|min:'.$calculate['total_price']
+                'unit_price' => 'required|numeric|min:'.$calculate['total_price'].'|max:'.$calculate['advice_price']
             ]);
 
             $organisation = $user->organisation;

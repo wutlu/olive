@@ -1164,7 +1164,8 @@ class OrganisationController extends Controller
 
         return [
             'total_price' => $math_prices,
-            'system_price' => $system_price
+            'system_price' => $system_price,
+            'advice_price' => $math_prices+$system_price
         ];
     }
 
