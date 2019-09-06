@@ -654,7 +654,7 @@ class OrganisationController extends Controller
 
                     $pay = new PartnerPayment;
                     $pay->currency = config('formal.currency_text');
-                    $pay->amount = $invoice->total_price - ($organisation->system_price * $invoice->month);
+                    $pay->amount = $invoice->total_price / 100 * $partner_percent;
                     $pay->status = 'success';
                     $pay->message = $author->email.' tarafından bir ödeme alındı.';
                     $pay->user_id = $reference->id;
@@ -1037,6 +1037,8 @@ class OrganisationController extends Controller
         Option::updateOrCreate([ 'key' => 'unit_price.module_pin'                      ], [ 'value' => $request->module_pin                      ]);
         Option::updateOrCreate([ 'key' => 'unit_price.module_forum'                    ], [ 'value' => $request->module_forum                    ]);
 
+        Option::updateOrCreate([ 'key' => 'unit_price.user'                            ], [ 'value' => $request->user_price                      ]);
+
         Option::updateOrCreate([ 'key' => 'formal.discount_with_year'                  ], [ 'value' => $request->discount_with_year              ]);
 
         Option::updateOrCreate([ 'key' => 'formal.partner.eagle.percent'               ], [ 'value' => $request->eagle_percent                   ]);
@@ -1106,7 +1108,7 @@ class OrganisationController extends Controller
      ********************
      * @return array
      */
-    public static function calculate($partner, $request)
+    public static function calculate($request)
     {
         $arr = [
             'historical_days'                  => '*',
@@ -1153,19 +1155,10 @@ class OrganisationController extends Controller
             }
         }
 
-        $math_prices = $math_prices * $request->user_capacity;
-
-        $system_price = $math_prices;
-
-        $partner_percent = System::option('formal.partner.'.$partner.'.percent');
-
-        $math_prices = ($math_prices / 100 * $partner_percent) + $math_prices;
-        $math_prices = intval($math_prices);
+        $math_prices = $math_prices + ($request->user_capacity * $prices['unit_price.user']['value']);
 
         return [
-            'total_price' => $math_prices,
-            'system_price' => $system_price,
-            'advice_price' => $math_prices+$system_price
+            'total_price' => $math_prices
         ];
     }
 
@@ -1203,25 +1196,7 @@ class OrganisationController extends Controller
     {
         $organisation = Organisation::where('id', $id)->firstOrFail();
 
-        $reference = $organisation->author->reference;
-
-        if ($reference)
-        {
-            $calculate = self::calculate($reference->partner, $request);
-
-            $min_price = $calculate['total_price'];
-            $organisation->system_price = $calculate['system_price'];
-
-            $validations = [
-                'unit_price' => 'required|numeric|min:'.$min_price
-            ];
-
-            $request->validate($validations);
-        }
-        else
-        {
-            $organisation->system_price = 0;
-        }
+        $calculate = self::calculate($request);
 
         $organisation->name = $request->name;
         $organisation->user_capacity = $request->user_capacity;
@@ -1241,7 +1216,7 @@ class OrganisationController extends Controller
         $organisation->data_pool_twitter_user_limit = $request->data_pool_twitter_user_limit;
         $organisation->data_pool_instagram_follow_limit = $request->data_pool_instagram_follow_limit;
 
-        $organisation->unit_price = $request->unit_price;
+        $organisation->unit_price = $calculate['total_price'];
 
         $organisation->module_real_time = $request->module_real_time ? true : false;
         $organisation->module_search = $request->module_search ? true : false;
@@ -1353,7 +1328,7 @@ class OrganisationController extends Controller
 
                 $pay = new PartnerPayment;
                 $pay->currency = config('formal.currency_text');
-                $pay->amount = $invoice->total_price - ($organisation->system_price * $invoice->month);
+                $pay->amount = $invoice->total_price / 100 * $partner_percent;
                 $pay->status = 'success';
                 $pay->message = $author->email.' tarafından bir ödeme alındı.';
                 $pay->user_id = $reference->id;

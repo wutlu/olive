@@ -54,6 +54,8 @@ class PriceSettingsSaveRequest extends FormRequest
             'module_pin'                      => 'required|integer|min:0',
             'module_forum'                    => 'required|integer|min:0',
 
+            'user_price'                      => 'required|integer|min:0',
+
             'eagle_percent'                   => 'required|integer|min:0',
             'phoenix_percent'                 => 'required|integer|min:0',
             'gryphon_percent'                 => 'required|integer|min:0',

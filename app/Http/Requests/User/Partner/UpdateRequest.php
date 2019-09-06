@@ -77,8 +77,6 @@ class UpdateRequest extends FormRequest
                 'data_pool_twitter_user_limit' => 'required|integer|max:1000000|min:0',
                 'data_pool_instagram_follow_limit' => 'required|integer|max:1000000|min:0',
 
-                'unit_price' => 'required|numeric|min:0|max:500000',
-
                 'module_real_time' => 'nullable|string|in:on',
                 'module_search' => 'nullable|string|in:on',
                 'module_trend' => 'nullable|string|in:on',
@@ -91,7 +89,6 @@ class UpdateRequest extends FormRequest
             if (ceil(abs(strtotime($user->organisation->created_at) - time()) / 86400) <= 30)
             {
                 $validations['end_date'] = 'required|date_format:Y-m-d|before:'.date('Y-m-d', strtotime('+30 days', strtotime($user->organisation->created_at)));
-                $validations['end_time'] = 'required|date_format:H:i';
             }
 
             /**

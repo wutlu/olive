@@ -54,7 +54,6 @@ class UpdateRequest extends FormRequest
             'status' => 'nullable|string|in:on',
             'user_capacity' => 'required|integer|max:12|min:1',
             'end_date' => 'required|date_format:Y-m-d',
-            'end_time' => 'required|date_format:H:i',
             'historical_days' => 'required|integer|max:90|min:0',
 
             'real_time_group_limit' => 'required|integer|max:12|min:0',
@@ -69,8 +68,6 @@ class UpdateRequest extends FormRequest
             'data_pool_twitter_keyword_limit' => 'required|integer|max:400|min:0',
             'data_pool_twitter_user_limit' => 'required|integer|max:1000000|min:0',
             'data_pool_instagram_follow_limit' => 'required|integer|max:1000000|min:0',
-
-            'unit_price' => 'required|numeric|min:0|max:500000',
 
             'module_real_time' => 'nullable|string|in:on',
             'module_search' => 'nullable|string|in:on',

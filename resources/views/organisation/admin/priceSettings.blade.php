@@ -135,8 +135,12 @@
                     </li>
                 </ul>
 
-                <div class="collection">
-                    <div class="collection-item input-field">
+                <div class="collection d-flex flex-wrap">
+                    <div class="collection-item input-field flex-fill">
+                        <input required name="user_price" id="user_price" min="0" value="{{ $settings['unit_price.user']['value'] }}" type="number" />
+                        <span class="helper-text">Kullanıcı Fiyatı</span>
+                    </div>
+                    <div class="collection-item input-field flex-fill">
                         <input required name="discount_with_year" id="discount_with_year" min="0" value="{{ $settings['formal.discount_with_year']['value'] }}" type="number" class="validate" />
                         <small class="helper-text">Yıllık Ödemeler için İndirim Oranı</small>
                     </div>
@@ -168,7 +172,7 @@
                             <div class="collection">
                                 <div class="collection-item input-field">
                                     <input required name="{{ $key }}_percent" id="{{ $key }}_percent" min="0" value="{{ $settings['formal.partner.'.$key.'.percent']['value'] }}" type="number" class="validate" />
-                                    <small class="helper-text">{{ $name }} partnerden edilecek kâr yüzdesi</small>
+                                    <small class="helper-text">{{ $name }} partnerin kâr yüzdesi</small>
                                 </div>
                             </div>
                         </li>

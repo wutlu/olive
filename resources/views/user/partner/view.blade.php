@@ -15,24 +15,11 @@
     'footer_hide' => true
 ])
 
-@push('local.styles')
-    [data-trigger=prices] {
-        -webkit-filter: grayscale(100%);
-                filter: grayscale(100%);
-    }
-    [data-trigger=prices].active {
-        -webkit-filter: grayscale(0);
-                filter: grayscale(0);
-    }
-@endpush
-
 @section('wildcard')
     <div class="card wild-background">
         <div class="container">
             <div class="d-flex">
-                <a href="#" data-trigger="prices">
-                    <img class="wildcard-icon" alt="{{ $auth->partner }}" src="{{ asset('img/partner-'.$auth->partner.'.png') }}" />
-                </a>
+                <img class="wildcard-icon" alt="{{ $auth->partner }}" src="{{ asset('img/partner-'.$auth->partner.'.png') }}" />
                 <span class="wildcard-title">{{ $user ? $user->name : 'Kullanıcı Oluştur' }}</span>
             </div>
         </div>
@@ -40,22 +27,6 @@
 @endsection
 
 @push('local.scripts')
-    $(document).on('click', '[data-trigger=prices]', function() {
-        var __ = $(this);
-        var table = $('[data-name=prices]');
-
-        if (__.hasClass('active'))
-        {
-            __.removeClass('active')
-            table.addClass('hide')
-        }
-        else
-        {
-            __.addClass('active')
-            table.removeClass('hide')
-        }
-    })
-
     function __action(__, obj)
     {
         if (obj.status == 'ok')
@@ -206,14 +177,9 @@
                             <div class="collection-item">
                                 <div class="d-flex">
                                     <div class="input-field">
-                                        <input name="end_date" id="end_date" value="{{ date('Y-m-d', strtotime($user->organisation->end_date)) }}" type="text" class="validate datepicker" />
+                                        <input name="end_date" id="end_date" value="{{ date('Y-m-d', strtotime($user->organisation->end_date)) }}" type="date" class="validate" />
                                         <label for="end_date">Bitiş Tarihi</label>
                                         <small class="helper-text">Organizasyonun bitiş tarihi.</small>
-                                    </div>
-                                    <div class="input-field">
-                                        <input name="end_time" id="end_time" value="{{ date('H:i', strtotime($user->organisation->end_date)) }}" type="text" class="validate timepicker" />
-                                        <label for="end_time">Bitiş Saati</label>
-                                        <small class="helper-text">Organizasyonun bitiş saati.</small>
                                     </div>
                                 </div>
                             </div>
@@ -447,29 +413,9 @@
                         </li>
                     </ul>
                 </div>
-                <table class="highlight grey lighten-2 hide" data-name="prices">
-                    <tbody>
-                        <tr>
-                            <th class="p-1">Partnerin {{ config('formal.tax_name') }} hariç organizasyon maliyeti</th>
-                            <th class="p-1 right-align">{{ config('formal.currency') }} <span data-name="price_cost">0</span></th>
-                        </tr>
-                        <tr>
-                            <th class="p-1">Tavsiye edilen {{ config('formal.tax_name') }} hariç organizasyon satış fiyatı</th>
-                            <th class="p-1 right-align">{{ config('formal.currency') }} <span data-name="price_advice">0</span></th>
-                        </tr>
-                        <tr>
-                            <th class="p-1">Partnerin kazancı</th>
-                            <th class="p-1 right-align">{{ config('formal.currency') }} <span data-name="price_profit">0</span></th>
-                        </tr>
-                    </tbody>
-                </table>
                 <div class="card-content lighten-2">
-                    <div class="input-field">
-                        <span class="prefix">{{ config('formal.currency') }}</span>
-                        <input name="unit_price" id="unit_price" value="{{ $user->organisation->unit_price }}" type="number" class="validate" />
-                        <label for="unit_price">Birim Fiyat</label>
-                        <small class="helper-text">{{ config('formal.tax_name') }} hariç aylık organizasyon fiyatı.</small>
-                    </div>
+                    <span class="card-title">{{ config('formal.currency') }} <span data-name="price-total">{{ $user->organisation->unit_price }}</span></span>
+                    <label>{{ config('formal.tax_name') }} hariç fiyat</label>
                 </div>
             </div>
         @endif
@@ -532,20 +478,10 @@
 
     function calculate()
     {
-        var unit_price = parseInt((math_prices() + single_prices()) * $('input[name=user_capacity]').val());
-        var first_unit_price = unit_price;
-        var unit_price = parseInt(unit_price / 100 * {{ $partner_percent }}) + unit_price;
-        var advice_price = first_unit_price + first_unit_price;
-        var price_profit = parseInt($('input[name=unit_price]').val() - unit_price);
+        var total_price = parseInt((math_prices() + single_prices()) + ($('input[name=user_capacity]').val() * {{ $prices['unit_price.user']['value'] }}));
 
-        $('[data-name=price_cost]').html(unit_price) // maliyet
-        $('[data-name=price_advice]').html(advice_price) // tavsiye
-        $('[data-name=price_profit]').html(price_profit)
+        $('[data-name=price-total]').html((total_price).toFixed(2))
     }
-
-    $(document).on('change keydown keyup', 'input[name=unit_price]', function() {
-        calculate()
-    })
 
     function math_prices()
     {
@@ -576,16 +512,4 @@
     }
 
     $('select').formSelect()
-
-    $('.datepicker').datepicker({
-        firstDay: 0,
-        format: 'yyyy-mm-dd',
-        i18n: date.i18n
-    })
-
-    $('.timepicker').timepicker({
-        format: 'hh:MM',
-        twelveHour: false,
-        i18n: date.i18n
-    })
 @endpush

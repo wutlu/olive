@@ -876,11 +876,7 @@ class UserController extends Controller
 
         if ($user->organisation_id)
         {
-            $calculate = OrganisationController::calculate($auth->partner, $request);
-
-            $request->validate([
-                'unit_price' => 'required|numeric|min:'.$calculate['total_price'].'|max:'.$calculate['advice_price']
-            ]);
+            $calculate = OrganisationController::calculate($request);
 
             $organisation = $user->organisation;
             $organisation->status = false;
@@ -888,7 +884,7 @@ class UserController extends Controller
 
             if (ceil(abs(strtotime($organisation->created_at) - time()) / 86400) <= 30)
             {
-                $organisation->end_date = $request->end_date.' '.$request->end_time;
+                $organisation->end_date = $request->end_date;
             }
 
             $organisation->historical_days = $request->historical_days;
@@ -905,8 +901,7 @@ class UserController extends Controller
             $organisation->data_pool_twitter_user_limit = $request->data_pool_twitter_user_limit;
             $organisation->data_pool_instagram_follow_limit = $request->data_pool_instagram_follow_limit;
 
-            $organisation->unit_price = $request->unit_price;
-            $organisation->system_price = $calculate['system_price'];
+            $organisation->unit_price = $calculate['total_price'];
 
             $organisation->module_real_time = $request->module_real_time ? true : false;
             $organisation->module_search = $request->module_search ? true : false;

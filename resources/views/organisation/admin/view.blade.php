@@ -67,17 +67,10 @@
                         </div>
                     </div>
                     <div class="collection-item">
-                        <div class="d-flex">
-                            <div class="input-field">
-                                <input name="end_date" id="end_date" value="{{ date('Y-m-d', strtotime($organisation->end_date)) }}" type="text" class="validate datepicker" />
-                                <label for="end_date">Bitiş Tarihi</label>
-                                <small class="helper-text">Organizasyonun bitiş tarihi.</small>
-                            </div>
-                            <div class="input-field">
-                                <input name="end_time" id="end_time" value="{{ date('H:i', strtotime($organisation->end_date)) }}" type="text" class="validate timepicker" />
-                                <label for="end_time">Bitiş Saati</label>
-                                <small class="helper-text">Organizasyonun bitiş saati.</small>
-                            </div>
+                        <div class="input-field" style="max-width: 240px;">
+                            <input name="end_date" id="end_date" value="{{ date('Y-m-d', strtotime($organisation->end_date)) }}" type="text" class="validate" />
+                            <label for="end_date">Bitiş Tarihi</label>
+                            <small class="helper-text">Organizasyonun bitiş tarihi.</small>
                         </div>
                     </div>
                 </div>
@@ -310,21 +303,9 @@
                 </ul>
             </div>
 
-            <div class="card-content red">
-                @if ($partner_percent)
-                    <p class="white-text mb-0">Bu organizasyon, bir partner tarafından yönetiliyor.</p>
-                    <p class="white-text mb-0">Bu nedenle paket fiyatı en az {{ config('formal.currency') }} <span data-name="price_advice">0</span> olabilir.</p>
-                @else
-                    <p class="white-text mb-0">Tavsiye edilen fiyat {{ config('formal.currency') }} <span data-name="price_advice">0</span></p>
-                @endif
-            </div>
             <div class="card-content lighten-2">
-                <div class="input-field">
-                    <span class="prefix">{{ config('formal.currency') }}</span>
-                    <input name="unit_price" id="unit_price" value="{{ $organisation->unit_price }}" type="number" class="validate" />
-                    <label for="unit_price">Birim Fiyat</label>
-                    <small class="helper-text">KDV hariç aylık organizasyon ücreti.</small>
-                </div>
+                <span class="card-title">{{ config('formal.currency') }} <span data-name="price-total">{{ $organisation->unit_price }}</span></span>
+                <label>{{ config('formal.tax_name') }} hariç fiyat</label>
             </div>
             <div class="card-action right-align">
                 <button type="submit" data-trigger="save" class="btn-flat waves-effect">Güncelle</button>
@@ -344,10 +325,9 @@
 
     function calculate()
     {
-        var unit_price = parseInt((math_prices() + single_prices()) * $('input[name=user_capacity]').val());
-        var advice_price = (unit_price / 100 * {{ $partner_percent }}) + unit_price;
+        var total_price = parseInt((math_prices() + single_prices()) + ($('input[name=user_capacity]').val() * {{ $prices['unit_price.user']['value'] }}));
 
-        $('[data-name=price_advice]').html(advice_price)
+        $('[data-name=price-total]').html((total_price).toFixed(2))
     }
 
     function math_prices()
@@ -379,16 +359,4 @@
     }
 
     $('select').formSelect()
-
-    $('.datepicker').datepicker({
-        firstDay: 0,
-        format: 'yyyy-mm-dd',
-        i18n: date.i18n
-    })
-
-    $('.timepicker').timepicker({
-        format: 'hh:MM',
-        twelveHour: false,
-        i18n: date.i18n
-    })
 @endpush

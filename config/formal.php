@@ -39,7 +39,7 @@ return [
     'stoppage' => env('STOPPAGE', 20),
 
     'banks' => [
-        'Enpara' => [
+        'VakıfBank' => [
             'name' => 'Alper Mutlu TOKSÖZ',
             'iban' => 'TR43 0001 5001 5800 7307 1577 72'
         ]

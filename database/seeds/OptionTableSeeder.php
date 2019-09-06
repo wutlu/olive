@@ -80,6 +80,7 @@ class OptionTableSeeder extends Seeder
         Option::firstOrCreate( [ 'key' => 'unit_price.module_pin'                        ], [ 'value' => 0                                     ] );
         Option::firstOrCreate( [ 'key' => 'unit_price.module_model'                      ], [ 'value' => 0                                     ] );
         Option::firstOrCreate( [ 'key' => 'unit_price.module_forum'                      ], [ 'value' => 0                                     ] );
+        Option::firstOrCreate( [ 'key' => 'unit_price.user'                              ], [ 'value' => 0                                     ] );
 
         Option::firstOrCreate( [ 'key' => 'formal.discount_with_year'                    ], [ 'value' => 0                                     ] );
 
