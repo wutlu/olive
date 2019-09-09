@@ -659,6 +659,19 @@ class OrganisationController extends Controller
                     $pay->message = $author->email.' tarafından bir ödeme alındı.';
                     $pay->user_id = $reference->id;
                     $pay->save();
+
+                    $reference->notify(
+                        (
+                            new MessageNotification(
+                                'Bir Kullanıcı Ödeme Gerçekleştirdi',
+                                'Merhaba, '.$reference->name,
+                                implode(PHP_EOL, [
+                                    'Alt kullanıcınız "'.$author->email.'" hesabından, '.$invoice->month.' ay için '.config('formal.currency').' '.$invoice->total_price.' tutarında bir ödeme gerçekleştirdi.',
+                                    'Size düşen miktar ('.config('formal.currency').' '.($invoice->total_price / 100 * $partner_percent).') hesabınıza yansıtıldı.'
+                                ])
+                            )
+                        )->onQueue('email')
+                    );
                 }
                 /*
                  */
@@ -1333,6 +1346,19 @@ class OrganisationController extends Controller
                 $pay->message = $author->email.' tarafından bir ödeme alındı.';
                 $pay->user_id = $reference->id;
                 $pay->save();
+
+                $reference->notify(
+                    (
+                        new MessageNotification(
+                            'Bir Kullanıcı Ödeme Gerçekleştirdi',
+                            'Merhaba, '.$reference->name,
+                            implode(PHP_EOL, [
+                                'Alt kullanıcınız "'.$author->email.'" hesabından, '.$invoice->month.' ay için '.config('formal.currency').' '.$invoice->total_price.' tutarında bir ödeme gerçekleştirdi.',
+                                'Size düşen miktar ('.config('formal.currency').' '.($invoice->total_price / 100 * $partner_percent).') hesabınıza yansıtıldı.'
+                            ])
+                        )
+                    )->onQueue('email')
+                );
             }
 
             $organisation->status = true;

@@ -22,6 +22,11 @@ class PartnerPayment extends Model
        			$color = 'green';
                 $title = 'Giriş Başarılı';
        		}
+            else
+            {
+                $color = 'grey';
+                $title = 'Sistem Dışı İşlem';
+            }
        	}
         else if ($this->status == 'pending')
         {
