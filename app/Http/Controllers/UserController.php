@@ -440,39 +440,48 @@ class UserController extends Controller
             'id' => $id,
             'session_id' => $sid,
             'verified' => false
-        ])->firstOrFail();
+        ])->first();
 
-        $user->verified = true;
-        $user->save();
+        if (@$user)
+        {
+            $user->verified = true;
+            $user->save();
 
-        session()->flash('validate', 'ok');
+            session()->flash('validate', 'ok');
 
-        $text = 'E-posta adresiniz başarılı bir şekilde doğrulandı. İyi araştırmalar dileriz...';
+            $text = 'E-posta adresiniz başarılı bir şekilde doğrulandı. İyi araştırmalar dileriz...';
 
-        ### [ e-posta doğrulandı ] ###
-        $user->addBadge(1);
+            ### [ e-posta doğrulandı ] ###
+            $user->addBadge(1);
 
-        UserActivityUtility::push(
-            'E-posta Doğrulandı!',
-            [
-                'icon'     => 'check',
-                'markdown' => $text,
-                'user_id'  => $user->id,
-            ]
-        );
+            UserActivityUtility::push(
+                'E-posta Doğrulandı!',
+                [
+                    'icon'     => 'check',
+                    'markdown' => $text,
+                    'user_id'  => $user->id,
+                ]
+            );
 
-        $user->notify(
-            (
-                new WelcomeNotification(
-                    $user->name,
-                    $text
-                )
-            )->onQueue('email')
-        );
+            $user->notify(
+                (
+                    new WelcomeNotification(
+                        $user->name,
+                        $text
+                    )
+                )->onQueue('email')
+            );
 
-        # --- #
+            # --- #
 
-        return redirect()->route('dashboard');
+            return redirect()->route('dashboard');
+        }
+        else
+        {
+            session()->flash('alert', 'Geçersiz veya eski bir bağlantı kullandınız. Lütfen şifre hatırlatma bölümünü en baştan tekrar kullanın.');
+
+            return view('alert');
+        }
     }
 
     /**

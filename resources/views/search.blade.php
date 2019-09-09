@@ -403,7 +403,7 @@
                 <span class="grey-text">Genel</span>
                 <button data-update-click type="button" class="btn-flat waves-effect waves-green btn-small d-table" data-validate="string" data-search="+">+Olsun</button>
                 <button data-update-click type="button" class="btn-flat waves-effect waves-red btn-small d-table" data-validate="string" data-search="-">-Olmasın</button>
-                <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="number" data-search="site.id">Site / Sözlük Id</button>
+                <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="number" data-search="site_id">Site / Sözlük Id</button>
             </div>
 
             <div class="p-1">

@@ -26,6 +26,8 @@ use App\Models\Proxy;
 use App\Models\Twitter\BlockedTrendKeywords as TwitterBlockedTrendKeywords;
 use App\Models\Instagram\BlockedTrendKeywords as InstagramBlockedTrendKeywords;
 
+use App\Utilities\Crawler;
+
 use App\Wrawler;
 
 class Detect extends Command
@@ -75,6 +77,7 @@ class Detect extends Command
             'entry',
             'youtube_video',
             'google',
+            'google_live',
         ];
 
         $module = $this->option('module');
@@ -92,7 +95,7 @@ class Detect extends Command
             $module = $this->choice('Bir modül seçin', $modules, $module);
         }
 
-        if ($module == 'google')
+        if ($module == 'google' || $module == 'google_live')
         {
             $time = '-10 minutes';
         }
@@ -158,6 +161,9 @@ class Detect extends Command
             break;
             case 'google':
                 $data = $this->google();
+            break;
+            case 'google_live':
+                $data = $this->googleLive($alias);
             break;
         }
 
@@ -1233,5 +1239,20 @@ class Detect extends Command
         }
 
         return $data;
+    }
+
+    /**
+     * Google, Live
+     *
+     * @return array
+     */
+    private function googleLive(string $alias)
+    {
+        $redis_data = json_decode(RedisCache::get(implode(':', [ $alias, 'trends', 'google' ])));
+        $redis_data = array_map(function($arr) {
+            $arr->data->count = Crawler::googleSearchCount($arr->data->title);
+
+            return $arr;
+        }, $redis_data);
     }
 }

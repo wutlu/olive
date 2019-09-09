@@ -166,6 +166,57 @@ class Crawler
     }
 
     /**
+     * Google Arama Sonucu, Sonuç Sayısı
+     *
+     * @return object
+     */
+    public static function googleSearchCount(string $title)
+    {
+        $data = [];
+
+        $client = new Client([
+            'base_uri' => 'https://www.google.com',
+            'handler' => HandlerStack::create()
+        ]);
+
+        try
+        {
+            $arr = [
+                'timeout' => 10,
+                'connect_timeout' => 5,
+                'headers' => [
+                    'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))],
+                    'Accept-Language' => 'tr-TR;q=0.6,tr;q=0.4'
+                ],
+                'verify' => false,
+                'allow_redirects' => [
+                    'max' => 6
+                ]
+            ];
+
+            $p = Proxy::where('ipv', 4)->where('health', '>', 7)->inRandomOrder()->first();
+
+            if (@$p)
+            {
+                $arr['proxy'] = $p->proxy;
+            }
+
+            $dom = $client->get('https://www.google.com/search?q="'.$title.'"&tbs=qdr:h,sbd:1', $arr)->getBody();
+
+            $saw = new Wrawler($dom);
+
+            $stats = $saw->get('#resultStats')->toArray();
+            $count = intval(preg_replace('/[^\d]/', '', $stats[0]['#text'][0]));
+
+            return $count;
+        }
+        catch (\Exception $e)
+        {
+            return 0;
+        }
+    }
+
+    /**
      * Makale Tespiti
      *
      * @return object
