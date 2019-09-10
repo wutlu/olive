@@ -1,7 +1,7 @@
 <?php
 
 Route::domain('olive.'.config('app.domain'))->group(function () {
-    Route::get('/', 'HomeController@dashboard');
+    Route::get('/', 'HomeController@dashboard')->name('dashboard');
 
     Route::get('manifest.json', 'HomeController@manifest')->name('olive.manifest');
 
@@ -69,7 +69,6 @@ Route::domain('olive.'.config('app.domain'))->group(function () {
 
     Route::get('test', 'TestController@test');
 
-    Route::get('panel', 'HomeController@dashboard')->name('dashboard');
     Route::post('organizasyon', 'HomeController@organisation')->name('dashboard.organisation');
 
     Route::post('aktiviteler', 'HomeController@activity')->name('dashboard.activities');
