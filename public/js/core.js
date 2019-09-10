@@ -10,7 +10,20 @@ $(function() {
     timeAgo()
 
     $('#loading').fadeOut()
+
+    msie()
 })
+
+function msie()
+{
+    var ua = window.navigator.userAgent;
+    var msie = ua.indexOf('MSIE ');
+
+    if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))
+    {
+        M.toast({ html: 'Internet Explorer ile Olive deneyiminiz sorunlu olacaktır. Lütfen Olive için daha güncel bir tarayıcı kullanın. Bkz: Mozilla Firefox, Google Chrome', classes: 'red' })
+    }
+}
 
 $(window).scroll(function() {
     var scrollTop = $(window).scrollTop();

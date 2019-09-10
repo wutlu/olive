@@ -2115,61 +2115,78 @@
                 @endcomponent
             </div>
 
-            <div class="d-flex">
-                <p class="range-field">
-                    Pozitif
-                    <input data-update name="sentiment_pos" type="range" min="0" max="9" value="0" />
-                </p>
-                <p class="range-field">
-                    Nötr
-                    <input data-update name="sentiment_neu" type="range" min="0" max="9" value="0" />
-                </p>
-                <p class="range-field">
-                    Negatif
-                    <input data-update name="sentiment_neg" type="range" min="0" max="9" value="0" />
-                </p>
-                <p class="range-field">
-                    Nefret Söylemi
-                    <input data-update name="sentiment_hte" type="range" min="0" max="9" value="0" />
-                </p>
-            </div>
+            <div class="d-block">
+                <div class="d-flex">
+                    <div class="flex-fill" style="width: 25%;">
+                        <span class="range-field">
+                            Pozitif
+                            <input data-update name="sentiment_pos" type="range" min="0" max="9" value="0" />
+                        </span>
+                    </div>
+                    <div class="flex-fill" style="width: 25%;">
+                        <span class="range-field">
+                            Nötr
+                            <input data-update name="sentiment_neu" type="range" min="0" max="9" value="0" />
+                        </span>
+                    </div>
+                    <div class="flex-fill" style="width: 25%;">
+                        <span class="range-field">
+                            Negatif
+                            <input data-update name="sentiment_neg" type="range" min="0" max="9" value="0" />
+                        </span>
+                    </div>
+                    <div class="flex-fill" style="width: 25%;">
+                        <span class="range-field">
+                            Nefret Söylemi
+                            <input data-update name="sentiment_hte" type="range" min="0" max="9" value="0" />
+                        </span>
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <div class="flex-fill" style="width: 25%;">
+                        <span class="range-field">
+                            Soru
+                            <input data-update name="consumer_que" type="range" min="0" max="9" value="0" />
+                        </span>
+                    </div>
+                    <div class="flex-fill" style="width: 25%;">
+                        <span class="range-field">
+                            İstek
+                            <input data-update name="consumer_req" type="range" min="0" max="9" value="0" />
+                        </span>
+                    </div>
+                    <div class="flex-fill" style="width: 25%;">
+                        <span class="range-field">
+                            Şikayet
+                            <input data-update name="consumer_cmp" type="range" min="0" max="9" value="0" />
+                        </span>
+                    </div>
+                    <div class="flex-fill" style="width: 25%;">
+                        <span class="range-field">
+                            Haber
+                            <input data-update name="consumer_nws" type="range" min="0" max="9" value="0" />
+                        </span>
+                    </div>
+                </div>
 
-            <div class="d-flex">
-                <p class="range-field">
-                    Soru
-                    <input data-update name="consumer_que" type="range" min="0" max="9" value="0" />
-                </p>
-                <p class="range-field">
-                    İstek
-                    <input data-update name="consumer_req" type="range" min="0" max="9" value="0" />
-                </p>
-                <p class="range-field">
-                    Şikayet
-                    <input data-update name="consumer_cmp" type="range" min="0" max="9" value="0" />
-                </p>
-                <p class="range-field">
-                    Haber
-                    <input data-update name="consumer_nws" type="range" min="0" max="9" value="0" />
-                </p>
-            </div>
-
-            <div class="d-flex">
-                <label class="flex-fill">
-                    <input name="gender" type="radio" data-update-click value="all" checked />
-                    <span>Hepsi</span>
-                </label>
-                <label class="flex-fill">
-                    <input name="gender" type="radio" data-update-click value="female" />
-                    <span>Kadın</span>
-                </label>
-                <label class="flex-fill">
-                    <input name="gender" type="radio" data-update-click value="male" />
-                    <span>Erkek</span>
-                </label>
-                <label class="flex-fill">
-                    <input name="gender" type="radio" data-update-click value="unknown" />
-                    <span>Bilinmeyen</span>
-                </label>
+                <div class="d-flex">
+                    <label class="flex-fill" style="width: 25%;">
+                        <input name="gender" type="radio" data-update-click value="all" checked />
+                        <span>Hepsi</span>
+                    </label>
+                    <label class="flex-fill" style="width: 25%;">
+                        <input name="gender" type="radio" data-update-click value="female" />
+                        <span>Kadın</span>
+                    </label>
+                    <label class="flex-fill" style="width: 25%;">
+                        <input name="gender" type="radio" data-update-click value="male" />
+                        <span>Erkek</span>
+                    </label>
+                    <label class="flex-fill" style="width: 25%;">
+                        <input name="gender" type="radio" data-update-click value="unknown" />
+                        <span>Bilinmeyen</span>
+                    </label>
+                </div>
             </div>
         </div>
     </div>
