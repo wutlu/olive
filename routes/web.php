@@ -69,8 +69,6 @@ Route::domain('olive.'.config('app.domain'))->group(function () {
 
     Route::get('test', 'TestController@test');
 
-    Route::post('demo-istek', 'HomeController@demoRequest')->name('demo.request');
-
     Route::get('panel', 'HomeController@dashboard')->name('dashboard');
     Route::post('organizasyon', 'HomeController@organisation')->name('dashboard.organisation');
 
@@ -128,7 +126,6 @@ Route::domain('olive.'.config('app.domain'))->group(function () {
         Route::get('akis', 'RealTimeController@stream')->name('realtime.stream');
 
         Route::post('sorgu', 'RealTimeController@query')->name('realtime.query');
-        Route::post('sorgu/ornek', 'RealTimeController@querySample')->name('realtime.query.sample');
 
         Route::prefix('kelime')->group(function () {
             Route::prefix('gruplar')->group(function () {
@@ -285,3 +282,8 @@ Route::domain('olive.'.config('app.domain'))->group(function () {
 });
 
 Route::get('/', 'HomeController@index')->name('home');
+Route::post('demo-istek', 'HomeController@demoRequest')->name('demo.request');
+
+Route::prefix('gercek-zamanli')->namespace('RealTime')->group(function () {
+    Route::post('sorgu/ornek', 'RealTimeController@querySample')->name('realtime.query.sample');
+});
