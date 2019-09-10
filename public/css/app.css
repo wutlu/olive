@@ -2590,7 +2590,8 @@ nav.nav-half {
   margin: 0 -1rem;
   padding: 2rem;
 
-  word-wrap: anywhere;
+  word-wrap: break-word;
+  word-break: break-all;
 
   background-repeat: no-repeat;
   background-position: top 16px right 16px;
