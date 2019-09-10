@@ -25,7 +25,7 @@
                 <i class="material-icons grey-text">menu</i>
             </a>
             <a href="{{ route('home') }}" class="brand-logo center">
-                <img alt="{{ config('app.name') }}" src="{{ asset('img/olive_logo.svg') }}" />
+                <img alt="{{ config('app.name') }}" src="{{ asset('img/veri.zone_logo.svg') }}" />
             </a>
         </nav>
     </div>

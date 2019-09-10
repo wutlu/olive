@@ -1,4 +1,6 @@
-@extends('layouts.app')
+@extends('layouts.app', [
+    'footer_extend' => true
+])
 
 @push('local.styles')
     .main-slider .item {
@@ -20,11 +22,8 @@
 
     .demo-section {
         padding: 100px 0;
-        background-image: url('{{ asset('img/bg-small.svg') }}');
-        background-repeat: no-repeat;
-        background-position: top right;
-        background-size: contain;
-        background-attachment: scroll;
+        background-color: #42a5f5;
+        color: #fff;
     }
 
     .y-section {
@@ -35,7 +34,7 @@
     }
 
     .x-section {
-        background-image: url({{ asset('img/photo/xolive.jpg?v2') }});
+        background-image: url({{ asset('img/photo/xolive.jpg?v3') }});
     }
 
     .x-section > .section-overlay {
@@ -85,7 +84,7 @@
     }
 
     .logo {
-        width: 128px;
+        width: 192px;
         margin: 0 0 2rem;
     }
 
@@ -154,49 +153,6 @@
         autoplay: true,
         autoplayTimeout: 4000,
         autoplayHoverPause: true
-    })
-
-    $('#dword').children('.text').typewrite({
-        actions: [
-            { delay: 500 },
-            { type: '1k+ haber kaynağı' },
-            { delay: 2000 },
-            { select: { from: 0, to: 17 } },
-            { delay: 1000 },
-            { remove: { num: 17, type: 'whole' } },
-
-            { type: 'günlük 50k+ haber' },
-            { delay: 2000 },
-            { select: { from: 0, to: 17 } },
-            { delay: 1000 },
-            { remove: { num: 17, type: 'whole' } },
-
-            { type: '4 büyük sözlük' },
-            { delay: 2000 },
-            { select: { from: 0, to: 14 } },
-            { delay: 1000 },
-            { remove: { num: 14, type: 'whole' } },
-
-            { type: 'günlük 40k+ entry' },
-            { delay: 2000 },
-            { select: { from: 0, to: 17 } },
-            { delay: 1000 },
-            { remove: { num: 17, type: 'whole' } },
-
-            { type: 'aylık 200m+ tweet' },
-            { delay: 2000 },
-            { select: { from: 0, to: 17 } },
-            { delay: 1000 },
-            { remove: { num: 17, type: 'whole' } },
-
-            { type: 'aylık 1m+ youtube video yorumu' },
-            { delay: 2000 },
-            { select: { from: 0, to: 30 } },
-            { delay: 1000 },
-            { remove: { num: 30, type: 'whole' } },
-
-            { type: 'sürekli gelişen bir veri ekosistemi' }
-        ]
     })
 
     var buffer = [];
@@ -334,13 +290,16 @@
     <section class="x-section">
         <div class="section-overlay">
             <div class="container">
-                <img align="Olive" src="{{ asset('img/olive_logo-white.svg') }}" class="logo" />
-                <h1 class="white-text">Medya & Sosyal Medya Takip Platformu</h1>
-                <p id="dword" class="mb-2">
-                    <span class="text white-text"></span>
-                    &nbsp;
-                </p>
-                <a href="{{ route('dashboard') }}" class="btn-flat btn-large white waves-effect">Giriş Yapın</a>
+                <div style="max-width: 720px;">
+                    <img align="Veri Zone" src="{{ asset('img/veri.zone_logo-white.svg') }}" class="logo" />
+                    <br />
+                    <br />
+                    <br />
+                    <h1 class="white-text">Sosyal Medya'ya değer katıyoruz!</h1>
+                    <p class="mb-2">
+                        <span class="white-text" style="font-size: 22px;">Veri Zone Teknoloji, sosyal medya ve haber verilerine; üstün filtreleme ve çeşitli analiz özellikleriyle, daha hızlı ve daha anlamlı bir şekilde ulaşmanızı sağlayan yazılımlar geliştirir.</span>
+                    </p>
+                </div>
             </div>
         </div>
     </section>
@@ -353,41 +312,56 @@
 
     <section class="y-section">
         <div class="container">
+            <div class="p-2 m-2">
+                <div class="card card-unstyled">
+                    <div class="card-content">
+                        <span class="card-title">Veri Zone Teknoloji</span>
+                        <br />
+                        <p>Veri Zone Teknoloji ekibi olarak; Ankara, CoZone'da bol kahve eşliğinde, heyecanlı ve hızlı bir şekilde çalışmalarımızı sürdürmekteyiz.</p>
+                        <br />
+                        <p>Genç ve dinamik bir ekiple girmiş olduğumuz bu yolda, teknolojiyi en güncel noktalarından yakalayarak, siz değerli kullanıcılarımıza en iyi deneyimi yaşatmak yegâne hedefimizdir.</p>
+                        <br />
+                        <p>Yenilikçi yazılımların neredeyse tamamı yabancı şirketler tarafından üretilmektedir. Bu nedenle büyük teknolojiler üreten yerli şirket sayısı yok denecek kadar az.</p>
+                        <p>Veri Zone Teknoloji olarak ülkemizi, dünya çapında temsil etmek üzere bu yolda büyük teknolojiler üreterek yürümeye devam ediyoruz.</p>
+                    </div>
+                </div>
+            </div>
             <div class="item-group p-2">
                 <div class="item p-2">
                     <i class="large material-icons analytics">poll</i>
                     <h5>Analiz</h5>
                     <ul class="p-1">
-                        <li>- Duygusal analizler gerçekleştirin.</li>
-                        <li>- Kitlenizi cinsiyet ve konumlarına göre ölçümleyin.</li>
-                        <li>- Nefret söylemlerine ve soru içeriklerini gerçek zamanlı süzün.</li>
-                        <li>- Ürün veya markanızı rakiplerinizle kıyaslayın.</li>
+                        <li>- Türkçe için geliştirilmiş duygu analizleri.</li>
+                        <li>- Cinsiyet ve yaş tespitleri.</li>
+                        <li>- Nefret söylemi, şikayet, istek ve soru içeren verilere en hızlı şekilde ulaşın.</li>
+                        <li>- Ürünlerinizi, markanızı veya rakiplerinizi detaylı bir şekilde inceleyin.</li>
                     </ul>
                 </div>
                 <div class="item p-2">
                     <i class="large material-icons realtime">subject</i>
                     <h5>Gerçek Zamanlı Veri</h5>
                     <ul class="p-1">
-                        <li>- Olive'in anlık trendleriyle, herhangi bir konu gündemde trend olmadan konuya hakim olun.</li>
-                        <li>- Ürün veya markanızı anlık olarak takip edin.</li>
-                        <li>- İlgilendiğiniz içerikleri daha sonra incelemek üzere pinleyin.</li>
+                        <li>- Gerçek zamanlı filtreler ile sadece istediğiniz içerikleri süzün.</li>
+                        <li>- Trend olmaya çalışan konuları anında yakalayın.</li>
+                        <li>- Ürün, marka veya rakipleriniz hakkında yapılan paylaşımları anında görün.</li>
+                        <li>- İlgilendiğiniz içerikleri daha sonra incelemek üzere anında saklayın.</li>
                     </ul>
                 </div>
                 <div class="item p-2">
                     <i class="large material-icons rotate">toys</i>
                     <h5>Araçlar</h5>
                     <ul class="p-1">
-                        <li>- Belirlenen kriterler sizin için incelenir ve raporlanır.</li>
-                        <li>- Bahis ve Çıplaklık içeren veriler karantinada gösterilir.</li>
-                        <li>- Yapay zekanın yanılgılarını düzelterek Olive'in öğrenmesine katkıda bulunabilirsiniz.</li>
+                        <li>- Bir haber, tweet ve dahası hakkında detaylı incelemeler gerçekleştirin.</li>
+                        <li>- Bahis veya çıplaklık içeren verileri karantinaya alın.</li>
+                        <li>- Yapay zekanın yanılgılarını düzelterek Olive'in öğrenmesine katkıda bulunun.</li>
                     </ul>
                 </div>
                 <div class="item p-2">
                     <i class="large material-icons cloud">cloud</i>
                     <h5>Arşiv</h5>
                     <ul class="p-1">
-                        <li>- Yapay zeka ile akıllı veri filtrelemesi sağlayın.</li>
-                        <li>- Ortak veri kütüphanesi sayesinde çok daha fazla veriye ulaşabilirsiniz.</li>
+                        <li>- Üstün arama filtreleri ile arama motoru deneyimini zirvede yaşayın.</li>
+                        <li>- Ortak veri havuzu sayesinde çok daha fazla veriye erişin.</li>
                     </ul>
                 </div>
             </div>
@@ -395,14 +369,14 @@
 
         <div class="owl-carousel main-slider">
             <div class="item">Online itibarınızı takip edin</div>
-            <div class="item">Gündemi anlık trendlerle veya anlık akışlarla inceleyin</div>
-            <div class="item">Gerçek zamanlı alarmlar kurun</div>
+            <div class="item">Gündemi anlık trendlerle ve anlık akışlarla inceleyin</div>
+            <div class="item">Gerçek zamanlı alarmlar oluşturun</div>
             <div class="item">Arama sonuçlarınızı görselleştirin</div>
             <div class="item">Rakiplerinizin ve sektörünüzün yeniliklerinden haberdar olun</div>
         </div>
 
         <div class="browser-mockup">
-            <img src="{{ asset('img/search.jpg?v3') }}" alt="Olive Mockup" />
+            <img src="{{ asset('img/search.jpg?v4') }}" alt="Olive Mockup" />
         </div>
     </section>
 
@@ -426,13 +400,18 @@
                     </div>
                     <div class="col s12 m6">
                         <div class="p-1">
-                            <span class="chip blue-grey white-text">haber</span>
+                            <p class="white-text">Sayfayı yenile, yeni verileri yükle vb. ilkel yöntemlerden kurtulun!</p>
+                            <p class="white-text">Belirlediğiniz kriterlere göre veriler anında önünüze düşsün!</p>
+                            <p class="white-text">Ayrıca filtrelediğiniz verileri kaçırmadan görmenizi sağlayan eşsiz kullanıcı deneyimini Olive ile yaşayın!</p>
+
                             <br />
+
+                            <span class="chip blue-grey white-text">haber</span>
                             <span class="chip white">+bilgi</span>
                             <span class="chip white">+teknoloji</span>
                             <span class="chip white">+internet</span>
-                            <span class="chip white">+türkiye</span>
                             <br />
+                            <span class="chip white">+türkiye</span>
                             <span class="chip white">+spor</span>
                             <span class="chip white">+futbol</span>
                             <span class="chip white">+basketbol</span>
@@ -454,35 +433,88 @@
                 __.find('input[type=text]').html('')
             }
         }
+
+        $('.carousel.carousel-slider').carousel({
+            fullWidth: true,
+            indicators: true
+        })
     @endpush
+    @push('local.styles')
+        #videos .indicators {
+            bottom: 48px;
+            height: 24px;
+        }
+        #videos .indicators > .indicator-item {
+            background-color: #000;
+            margin-top: 0;
+            margin-bottom: 0;
+            width: 16px;
+            height: 16px;
+        }
+        #videos .indicators > .indicator-item.active {
+            background-color: #1ab7ea;
+        }
+    @endpush
+
+    <section>
+        <div class="container">
+            <div class="mt-2 mb-2 pt-2 pb-2 center-align">
+                <h3 class="m-0">Kısa bir bakış?</h3>
+                <p class="grey-text mb-1">Hazırladığımız bu kısa videolar ile Olive'e kısaca bir göz atın!</p>
+                <div class="carousel carousel-slider" id="videos">
+                    <div class="carousel-item" style="height: 240px;">
+                        <iframe src="https://player.vimeo.com/video/359099769" width="100%" height="100%" frameborder="0" allow="fullscreen" allowfullscreen></iframe>
+                    </div>
+                    <div class="carousel-item" style="height: 240px;">
+                        <iframe src="https://player.vimeo.com/video/359099664" width="100%" height="100%" frameborder="0" allow="fullscreen" allowfullscreen></iframe>
+                    </div>
+                    <div class="carousel-item" style="height: 240px;">
+                        <iframe src="https://player.vimeo.com/video/359099748" width="100%" height="100%" frameborder="0" allow="fullscreen" allowfullscreen></iframe>
+                    </div>
+                    <div class="carousel-item" style="height: 240px;">
+                        <iframe src="https://player.vimeo.com/video/359099638" width="100%" height="100%" frameborder="0" allow="fullscreen" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <section class="demo-section">
         <div class="container">
-            <h2>Demo İsteyin</h2>
-            <form id="demo-form" method="post" action="{{ route('demo.request') }}" class="json" data-callback="__demo_request">
-                <div class="row">
-                    <div class="col m12 l5">
-                        <div class="input-field">
-                            <i class="material-icons prefix">account_circle</i>
-                            <input id="icon_prefix" name="name" type="text" class="validate" />
-                            <label for="icon_prefix">Firma / Kurum</label>
+            <div class="row">
+                <div class="col m12 l6">
+                    <div class="card card-unstyled">
+                        <div class="card-content">
+                            <form id="demo-form" method="post" action="{{ route('demo.request') }}" class="json" data-callback="__demo_request">
+                                <span class="card-title">Deneme Sürüşü</span>
+                                <div class="input-field white-text">
+                                    <i class="material-icons prefix">account_circle</i>
+                                    <input id="icon_prefix" name="name" type="text" class="validate" />
+                                    <label for="icon_prefix">Firma / Kurum</label>
+                                </div>
+                                <div class="input-field white-text">
+                                    <i class="material-icons prefix">phone</i>
+                                    <input id="icon_telephone" name="phone" type="text" class="validate" />
+                                    <label for="icon_telephone">Telefon</label>
+                                </div>
+                                <div class="input-field white-text">
+                                    <div class="captcha" data-id="demo-captcha"></div>
+                                </div>
+                                <button type="submit" class="btn-flat white-text waves-effect">Gönder</button>
+                            </form>
                         </div>
-                    </div>
-                    <div class="col m12 l5">
-                        <div class="input-field">
-                            <i class="material-icons prefix">phone</i>
-                            <input id="icon_telephone" name="phone" type="text" class="validate" />
-                            <label for="icon_telephone">Telefon</label>
-                        </div>
-                    </div>
-                    <div class="col m12 l2">
-                        <div class="input-field">
-                            <div class="captcha" data-id="demo-captcha"></div>
-                        </div>
-                        <button type="submit" class="btn-flat waves-effect">Gönder</button>
                     </div>
                 </div>
-            </form>
+                <div class="col m12 l6">
+                    <div class="card card-unstyled">
+                        <div class="card-content">
+                            <h4>Gerek duymuyorsanız ödemeyin!</h4>
+                            <p>Hemen bilgilerinizi bırakın, en kısa sürede size tam özellikli bir Olive ile dönüş sağlayalım.</p>
+                            <p>Olive'i denerken, kullanmadığınız özellikleri tespit edin, paketinizden çıkaralım!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 @endsection

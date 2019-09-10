@@ -876,57 +876,56 @@
     @else
         <div class="{{ isset($sidenav_layout) ? '' : (auth()->check() ? isset($sidenav_fixed_layout) ? 'sidenav-fixed-layout' : '' : '') }}">
             <footer class="page-footer">
-                <div class="{{ isset($wide) ? 'container container-wide' : 'container' }}">
+                <div class="{{ isset($wide) ? 'container container-wide' : 'container' }} pt-2 pb-2">
                     <div class="row">
-                        <div class="col l6 s12">
+                        <div class="col l4 s12">
                             <img id="vz-logo" src="{{ asset('img/veri.zone_logo-grey.svg') }}" alt="veri.zone-logo" />
-                            <p class="grey-text mb-0">© {{ date('Y') }} Veri Zone Teknoloji</p>
+                            <p class="grey-text">© {{ date('Y') }} Veri Zone Teknoloji | Tüm hakları saklıdır.</p>
                             <!--
                             <i class="social-icon icon-tumblr">&#xe800;</i>
                             <i class="social-icon icon-email">&#xe801;</i>
                             <i class="social-icon icon-youtube">&#xe802;</i>
                             <i class="social-icon icon-skype">&#xe804;</i>
                             <i class="social-icon icon-call">&#xe806;</i>
+                            <i class="social-icon icon-facebook">&#xe807;</i>
                             -->
-                            <a href="#" class="btn-flat btn-small btn-floating social-icon mt-1">
+                            <a target="_blank" href="https://twitter.com/veri8zone" class="btn-flat btn-small btn-floating social-icon mt-1">
                                 <i class="social-icon icon-twitter white-text">&#xe803;</i>
                             </a>
-                            <a href="#" class="btn-flat btn-small btn-floating social-icon mt-1">
+                            <a target="_blank" href="https://www.linkedin.com/company/veri-zone" class="btn-flat btn-small btn-floating social-icon mt-1">
                                 <i class="social-icon icon-linkedin white-text">&#xe805;</i>
                             </a>
-                            <a href="#" class="btn-flat btn-small btn-floating social-icon mt-1">
-                                <i class="social-icon icon-facebook white-text">&#xe807;</i>
-                            </a>
-                            <a href="#" class="btn-flat btn-small btn-floating social-icon mt-1">
+                            <a target="_blank" href="https://www.instagram.com/veri8zone/" class="btn-flat btn-small btn-floating social-icon mt-1">
                                 <i class="social-icon icon-instagram white-text">&#xe808;</i>
                             </a>
                         </div>
-                        <div class="col l2 offset-l2 s12">
-                            <ul class="mt-0 mb-0">
+                        <div class="col l4 offset-l2 s12">
+                            <a href="{{ route('page.view', 'iletisim') }}" class="d-table black-text">İLETİŞİM</a>
+                            <p class="grey-text">Mustafa Kemal Mh. Dumlupınar Blv. ODTÜ Teknokent Bilişim İnovasyon Merkezi</p>
+                            <p class="grey-text">280/G No:1260 Alt Zemin Kat Çankaya, Ankara</p>
+                            <a class="grey-text text-darken-2 d-table" href="tel:+908503021630">+90 850 302 16 30</a>
+                            <a class="grey-text text-darken-2 d-table" href="mailto:bilgi@veri.zone">bilgi@veri.zone</a>
+                        </div>
+                        <div class="col l2 s12">
+                            <ul class="mt-0 mb-1">
                                 <li>
                                     <a class="grey-text" href="{{ route('page.view', 'hakkimizda') }}">Hakkımızda</a>
                                 </li>
-                                <li>
-                                    <a class="grey-text" href="{{ route('forum.index') }}">Forum</a>
-                                </li>
-                                <li>
-                                    <a class="grey-text" href="{{ route('page.view', 'iletisim') }}">İletişim</a>
-                                </li>
-                                <li>
-                                    <a class="grey-text" href="{{ route('sources') }}">Kaynaklar</a>
-                                </li>
+                                @auth
+                                    <li>
+                                        <a class="grey-text" href="{{ route('sources') }}">Kaynaklar</a>
+                                    </li>
+                                @endauth
                             </ul>
-                        </div>
-                        <div class="col l2 s12">
                             <ul class="mt-0 mb-0">
                                 <li>
                                     <a class="grey-text" href="{{ route('page.view', 'gizlilik-politikasi') }}">Gizlilik Politikası</a>
                                 </li>
                                 <li>
-                                    <a class="grey-text" href="{{ route('page.view', 'kullanim-kosullari') }}">Kullanım Koşulları</a>
+                                    <a class="grey-text" href="{{ route('page.view', 'cerez-politikasi') }}">Çerez Politikası</a>
                                 </li>
                                 <li>
-                                    <a class="grey-text" href="{{ route('page.view', 'cerez-politikasi') }}">Çerez Politikası</a>
+                                    <a class="grey-text" href="{{ route('page.view', 'kullanim-kosullari') }}">Kullanım Koşulları</a>
                                 </li>
                             </ul>
                         </div>
