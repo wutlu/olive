@@ -572,163 +572,156 @@
     {
         if (obj.status == 'ok')
         {
-            try
+            switch(__.data('type'))
             {
-                switch(__.data('type'))
-                {
-                    case 'place':
-                        if (obj.data.place[0].hit)
-                        {
-                            $('.banner').removeClass('hide').css({ 'background-image': 'url(/img/photo/city.jpg)' })
-                            $('.banner').find('[data-name=overlay]').css({ 'background-color': '#333' })
-                            $('.banner').find('[data-name=text]').html('Bu konu en çok ' + obj.data.place[0].name + ' bölgesinde konuşuldu. Tam olarak ' + obj.data.place[0].hit + ' defa!')
+                case 'place':
+                    if (obj.data.place[0].hit)
+                    {
+                        $('.banner').removeClass('hide').css({ 'background-image': 'url(/img/photo/city.jpg)' })
+                        $('.banner').find('[data-name=overlay]').css({ 'background-color': '#333' })
+                        $('.banner').find('[data-name=text]').html('Bu konu en çok ' + obj.data.place[0].name + ' bölgesinde konuşuldu. Tam olarak ' + obj.data.place[0].hit + ' defa!')
+                    }
+                break;
+                case 'sentiment':
+                    var def = {
+                        'key': null,
+                        'val': 0
+                    };
+
+                    var option = {
+                        'neu': {
+                            'text': 'Nötr',
+                            'image': '/img/photo/neutral.jpg',
+                            'color': '#333'
+                        },
+                        'pos': {
+                            'text': 'Pozitif',
+                            'image': '/img/photo/positive.jpg',
+                            'color': '#4caf50'
+                        },
+                        'neg': {
+                            'text': 'Negatif',
+                            'image': '/img/photo/negative.jpg',
+                            'color': '#f44336'
+                        },
+                        'hte': {
+                            'text': 'Nefret Söylemi',
+                            'image': '/img/photo/hate.jpg',
+                            'color': '#333'
                         }
-                    break;
-                    case 'sentiment':
-                        var def = {
-                            'key': null,
-                            'val': 0
-                        };
+                    };
 
-                        var option = {
-                            'neu': {
-                                'text': 'Nötr',
-                                'image': '/img/photo/neutral.jpg',
-                                'color': '#333'
-                            },
-                            'pos': {
-                                'text': 'Pozitif',
-                                'image': '/img/photo/positive.jpg',
-                                'color': '#4caf50'
-                            },
-                            'neg': {
-                                'text': 'Negatif',
-                                'image': '/img/photo/negative.jpg',
-                                'color': '#f44336'
-                            },
-                            'hte': {
-                                'text': 'Nefret Söylemi',
-                                'image': '/img/photo/hate.jpg',
-                                'color': '#333'
-                            }
-                        };
-
-                        $.each(obj.data, function(k, count) {
-                            if (count > def.val)
-                            {
-                                def = {
-                                    'key': k,
-                                    'val': count
-                                };
-                            }
-                        })
-
-                        if (def.key)
+                    $.each(obj.data, function(k, count) {
+                        if (count > def.val)
                         {
-                            $('.banner').removeClass('hide').css({ 'background-image': 'url(' + option[def.key].image + ')' })
-                            $('.banner').find('[data-name=overlay]').css({ 'background-color': option[def.key].color })
-                            $('.banner').find('[data-name=text]').html('Görünen o ki ilgilendiğiniz konu çoğunlukla ' + option[def.key].text + ' mesaj içeriyor.')
+                            def = {
+                                'key': k,
+                                'val': count
+                            };
                         }
-                    break;
-                    case 'consumer':
-                        var def = {
-                            'key': null,
-                            'val': 0
-                        };
+                    })
 
-                        var option = {
-                            'que': {
-                                'text': 'Soru',
-                                'image': '/img/photo/question.jpg',
-                                'color': '#333'
-                            },
-                            'req': {
-                                'text': 'İstek',
-                                'image': '/img/photo/request.jpg',
-                                'color': '#009688'
-                            },
-                            'nws': {
-                                'text': 'Haber',
-                                'image': '/img/photo/news.jpg',
-                                'color': '#fdd835'
-                            },
-                            'cmp': {
-                                'text': 'Şikayet',
-                                'image': '/img/photo/complaint.jpg',
-                                'color': '#9c27b0'
-                            }
-                        };
+                    if (def.key)
+                    {
+                        $('.banner').removeClass('hide').css({ 'background-image': 'url(' + option[def.key].image + ')' })
+                        $('.banner').find('[data-name=overlay]').css({ 'background-color': option[def.key].color })
+                        $('.banner').find('[data-name=text]').html('Görünen o ki ilgilendiğiniz konu çoğunlukla ' + option[def.key].text + ' mesaj içeriyor.')
+                    }
+                break;
+                case 'consumer':
+                    var def = {
+                        'key': null,
+                        'val': 0
+                    };
 
-                        $.each(obj.data, function(k, count) {
-                            if (count > def.val)
-                            {
-                                def = {
-                                    'key': k,
-                                    'val': count
-                                };
-                            }
-                        })
+                    var option = {
+                        'que': {
+                            'text': 'Soru',
+                            'image': '/img/photo/question.jpg',
+                            'color': '#333'
+                        },
+                        'req': {
+                            'text': 'İstek',
+                            'image': '/img/photo/request.jpg',
+                            'color': '#009688'
+                        },
+                        'nws': {
+                            'text': 'Haber',
+                            'image': '/img/photo/news.jpg',
+                            'color': '#fdd835'
+                        },
+                        'cmp': {
+                            'text': 'Şikayet',
+                            'image': '/img/photo/complaint.jpg',
+                            'color': '#9c27b0'
+                        }
+                    };
 
-                        if (def.key)
+                    $.each(obj.data, function(k, count) {
+                        if (count > def.val)
                         {
-                            $('.banner').removeClass('hide').css({ 'background-image': 'url(' + option[def.key].image + ')' })
-                            $('.banner').find('[data-name=overlay]').css({ 'background-color': option[def.key].color })
-                            $('.banner').find('[data-name=text]').html('Bu konu çok fazla ' + option[def.key].text + ' mesajı içeriyor.')
+                            def = {
+                                'key': k,
+                                'val': count
+                            };
                         }
-                    break;
-                    case 'gender':
-                        var def = {
-                            'key': null,
-                            'val': 0
-                        };
+                    })
 
-                        var option = {
-                            'male': {
-                                'text': 'Erkek',
-                                'image': '/img/photo/male.jpg',
-                                'color': '#1565c0'
-                            },
-                            'female': {
-                                'text': 'Kadın',
-                                'image': '/img/photo/female.jpg',
-                                'color': '#e91e63'
-                            }
-                        };
+                    if (def.key)
+                    {
+                        $('.banner').removeClass('hide').css({ 'background-image': 'url(' + option[def.key].image + ')' })
+                        $('.banner').find('[data-name=overlay]').css({ 'background-color': option[def.key].color })
+                        $('.banner').find('[data-name=text]').html('Bu konu çok fazla ' + option[def.key].text + ' mesajı içeriyor.')
+                    }
+                break;
+                case 'gender':
+                    var def = {
+                        'key': null,
+                        'val': 0
+                    };
 
-                        $.each(obj.data, function(k, count) {
-                            if (count > def.val)
-                            {
-                                def = {
-                                    'key': k,
-                                    'val': count
-                                };
-                            }
-                        })
+                    var option = {
+                        'male': {
+                            'text': 'Erkek',
+                            'image': '/img/photo/male.jpg',
+                            'color': '#1565c0'
+                        },
+                        'female': {
+                            'text': 'Kadın',
+                            'image': '/img/photo/female.jpg',
+                            'color': '#e91e63'
+                        }
+                    };
 
-                        if (def.key && def.key != 'unknown')
+                    $.each(obj.data, function(k, count) {
+                        if (count > def.val)
                         {
-                            $('.banner').removeClass('hide').css({ 'background-image': 'url(' + option[def.key].image + ')' })
-                            $('.banner').find('[data-name=overlay]').css({ 'background-color': option[def.key].color })
-                            $('.banner').find('[data-name=text]').html('Görünüşe bakılırsa bu konu hakkında en çok ' + (def.val).toFixed(2) + '% oranla ' + option[def.key].text + ' kullanıcılar yazmış.')
+                            def = {
+                                'key': k,
+                                'val': count
+                            };
                         }
-                    break;
-                    case 'hashtag':
-                        $.each(obj.data, function(word, count) {
-                            if (count)
-                            {
-                                $('.banner').removeClass('hide').css({ 'background-image': 'url(/img/photo/hashtag.jpg)' })
-                                $('.banner').find('[data-name=overlay]').css({ 'background-color': '#ff9800' })
-                                $('.banner').find('[data-name=text]').html('Bu konuda en çok bahsedilen kelime, <strong class="bold yellow black-text">' + word + '</strong> oldu. Tam olarak ' + count + ' paylaşımda bahsi geçti.')
-                            }
+                    })
 
-                            return false;
-                        })
-                    break;
-                }
-            }
-            catch
-            {
-                //
+                    if (def.key && def.key != 'unknown')
+                    {
+                        $('.banner').removeClass('hide').css({ 'background-image': 'url(' + option[def.key].image + ')' })
+                        $('.banner').find('[data-name=overlay]').css({ 'background-color': option[def.key].color })
+                        $('.banner').find('[data-name=text]').html('Görünüşe bakılırsa bu konu hakkında en çok ' + (def.val).toFixed(2) + '% oranla ' + option[def.key].text + ' kullanıcılar yazmış.')
+                    }
+                break;
+                case 'hashtag':
+                    $.each(obj.data, function(word, count) {
+                        if (count)
+                        {
+                            $('.banner').removeClass('hide').css({ 'background-image': 'url(/img/photo/hashtag.jpg)' })
+                            $('.banner').find('[data-name=overlay]').css({ 'background-color': '#ff9800' })
+                            $('.banner').find('[data-name=text]').html('Bu konuda en çok bahsedilen kelime, <strong class="bold yellow black-text">' + word + '</strong> oldu. Tam olarak ' + count + ' paylaşımda bahsi geçti.')
+                        }
+
+                        return false;
+                    })
+                break;
             }
         }
     }
