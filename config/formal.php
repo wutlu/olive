@@ -17,10 +17,10 @@ return [
             'bilgi@veri.zone',
             '+90 850 302 1630'
         ],
-        'tradeRegisterNo' => '8490296700',
+        'tradeRegisterNo' => '10942289746',
         'taxOffice' => [
             'name' => 'Maltepe Vergi Dairesi',
-            'no' => '10942289746'
+            'no' => '8490296700'
         ]
     ],
 
