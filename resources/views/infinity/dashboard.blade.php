@@ -378,6 +378,12 @@
         <div class="card-content">
             <div class="d-flex flex-wrap">
                 <div  class="p-1">
+                    <div class="grey-text">
+                        @component('components.alert')
+                            @slot('icon', 'info_outline')
+                            @slot('text', 'Tüm trendler son 10 dakikalık veriler üzerinden oluşturulmaktadır.')
+                        @endcomponent
+                    </div>
                     <div class="red-text">
                         @component('components.alert')
                             @slot('icon', 'info_outline')
