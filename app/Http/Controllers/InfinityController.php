@@ -21,6 +21,8 @@ class InfinityController extends Controller
      */
     public static function dashboard()
     {
+        return 'Yapımda...';
+
         $trends = [
             [
                 'title' => 'Twitter, Tweet',
