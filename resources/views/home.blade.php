@@ -380,7 +380,7 @@
         </div>
 
         <div class="browser-mockup">
-            <img src="{{ asset('img/search.jpg?v4') }}" alt="Olive Mockup" />
+            <img src="{{ asset('img/search.jpg?v5') }}" alt="Olive Mockup" />
         </div>
     </section>
 
