@@ -70,7 +70,7 @@ class InfinityController extends Controller
 
         return [
             'status' => 'ok',
-            'data' => count($data) ? array_slice($data, 0, 4) : null,
+            'data' => count($data) ? array_slice($data, 3, 4) : null,
             'more' => count($data)
         ];
     }

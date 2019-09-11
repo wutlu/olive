@@ -171,6 +171,11 @@ input[type=range]::-ms-thumb {
           filter: blur(0);
 }
 
+.blured {
+  -webkit-filter: blur(4px);
+          filter: blur(4px);
+}
+
 /*!
  * greyhover
  */
