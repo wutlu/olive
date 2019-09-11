@@ -13,7 +13,7 @@ use App\Models\Twitter\BlockedTrendKeywords as TwitterBlockedTrendKeywords;
 
 use App\Wrawler;
 
-use App\Instagram;
+use Youtube;
 
 class Test extends Command
 {
@@ -48,9 +48,7 @@ class Test extends Command
      */
     public function handle()
     {
-        $instagram = new Instagram;
-        $connect = $instagram->connect('https://www.instagram.com/explore/locations/494302844/istanbul-province/');
-        $data = $instagram->data('location');
+        $data = Youtube::listChannelVideos('UCFomZfoEfoveaRbIDjAtsZw', 50, 'date');
 
         print_r($data);
     }

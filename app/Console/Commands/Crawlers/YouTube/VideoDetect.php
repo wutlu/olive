@@ -101,7 +101,7 @@ class VideoDetect extends Command
                     $channels = FollowingChannels::select('channel_id')->whereNull('reason')->get()->toArray();
 
                     $item_chunk = array_map(function ($item) {
-                        return Youtube::listChannelVideos($item['channel_id'], 50);
+                        return Youtube::listChannelVideos($item['channel_id'], 50, 'date');
                     }, $channels);
 
                     $item_chunk = array_flatten($item_chunk);
