@@ -1,5 +1,6 @@
 @extends('layouts.app', [
     'footer_extend' => true,
+    'title' => 'Veri Zone Teknoloji',
     'description' => 'Veri Zone Teknoloji, sosyal medya ve haber verilerine; üstün filtreleme ve çeşitli analiz özellikleriyle, daha hızlı ve daha anlamlı bir şekilde ulaşmanızı sağlayan yazılımlar geliştirir.'
 ])
 
