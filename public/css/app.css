@@ -1199,6 +1199,7 @@ main {
 footer.page-footer {
   padding-top: 2rem;
   background-color: transparent;
+  border-top: 1px solid #f0f0f0;
 }
 footer.page-footer > .container > .row > .col > img#vz-logo {
   max-width: 128px;

@@ -7,7 +7,7 @@
     <!-- viewport -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-    <meta name="robots" content="noindex" />
+    @isset ($description)<meta name="description" content="{{ $description }}" />@endisset
 
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, shring-to-fit=no, user-scalable=no" />
 
@@ -197,7 +197,7 @@
                 <div class="{{ isset($sidenav_layout) ? '' : (auth()->check() ? 'sidenav-fixed-layout' : 'container') }}">
                     <div class="nav-wrapper">
                         <a href="{{ route('dashboard') }}" class="brand-logo center">
-                            <img alt="{{ config('app.name') }}" src="{{ asset('img/olive_logo-white.svg') }}" />
+                            <img alt="{{ config('app.name') }}" src="{{ @$logo ? $logo : asset('img/olive_logo-white.svg') }}" />
                         </a>
 
                         @auth
@@ -880,7 +880,7 @@
                     <div class="row">
                         <div class="col l4 s12">
                             <img id="vz-logo" src="{{ asset('img/veri.zone_logo-grey.svg') }}" alt="veri.zone-logo" />
-                            <p class="grey-text">© {{ date('Y') }} Veri Zone Teknoloji | Tüm hakları saklıdır.</p>
+                            <p class="grey-text">© {{ date('Y') }} <a href="https://veri.zone/">Veri Zone Teknoloji</a> | Tüm hakları saklıdır.</p>
                             <!--
                             <i class="social-icon icon-tumblr">&#xe800;</i>
                             <i class="social-icon icon-email">&#xe801;</i>
@@ -929,11 +929,6 @@
                                 </li>
                             </ul>
                         </div>
-                    </div>
-                </div>
-                <div class="footer-copyright mt-1">
-                    <div class="{{ isset($wide) ? 'container container-wide' : 'container' }} grey-text">
-                        {{ date('Y') }} © <a href="https://veri.zone/" class="grey-text">Veri Zone Teknoloji</a> | Tüm hakları saklıdır.
                     </div>
                 </div>
             </footer>

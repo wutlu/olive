@@ -1,5 +1,6 @@
 @extends('layouts.app', [
-    'footer_extend' => true
+    'footer_extend' => true,
+    'description' => 'Veri Zone Teknoloji, sosyal medya ve haber verilerine; üstün filtreleme ve çeşitli analiz özellikleriyle, daha hızlı ve daha anlamlı bir şekilde ulaşmanızı sağlayan yazılımlar geliştirir.'
 ])
 
 @push('local.styles')
@@ -427,7 +428,7 @@
         {
             if (obj.status == 'ok')
             {
-                M.toast({ html: 'Formunuzu Aldık!', classes: 'green darken-2' })
+                M.toast({ html: 'Talebinizi Aldık!', classes: 'green darken-2' })
                 M.toast({ html: 'Ekibimiz en kısa sürede sizinle iletişime geçecektir.', classes: 'blue-grey' })
 
                 __.find('input[type=text]').html('')

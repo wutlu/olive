@@ -1,5 +1,13 @@
 <?php
 
+foreach ([ '8vz.net', 'www.8vz.net' ] as $domain)
+{
+    Route::domain($domain)->group(function () {
+        Route::get('/', 'InfinityController@dashboard');
+        Route::post('live', 'InfinityController@live')->name('infinity.live');
+    });
+}
+
 Route::domain('olive.'.config('app.domain'))->group(function () {
     Route::get('/', 'HomeController@dashboard')->name('dashboard');
 
