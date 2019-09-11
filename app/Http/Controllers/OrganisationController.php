@@ -11,6 +11,7 @@ use App\Models\Organisation\Organisation;
 use App\Models\Organisation\OrganisationInvoice as Invoice;
 use App\Models\User\User;
 use App\Models\User\PartnerPayment;
+use App\Models\User\UserNotification;
 use App\Models\RealTime\KeywordGroup;
 use App\Models\Pin\Group as PinGroup;
 use App\Models\BillingInformation;
@@ -273,6 +274,14 @@ class OrganisationController extends Controller
             $user->password = bcrypt($new_password);
             $user->session_id = str_random(100);
             $user->save();
+
+            foreach (config('system.notifications') as $key => $title)
+            {
+                UserNotification::create([
+                    'user_id' => $user->id,
+                    'key' => $key
+                ]);
+            }
 
             $user = User::find($user->id);
 

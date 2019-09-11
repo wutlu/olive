@@ -860,6 +860,14 @@ class UserController extends Controller
 
         $user->notify((new SendPasswordNotification($user->name, $password))->onQueue('email'));
 
+        foreach (config('system.notifications') as $key => $title)
+        {
+            UserNotification::create([
+                'user_id' => $user->id,
+                'key' => $key
+            ]);
+        }
+
         return [
             'status' => 'ok',
             'data' => [
