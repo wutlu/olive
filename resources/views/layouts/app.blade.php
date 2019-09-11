@@ -542,6 +542,12 @@
                             Carousel Yönetimi
                         </a>
                     </li>
+                    <li class="tiny">
+                        <a class="waves-effect" href="{{ route('admin.newsletter') }}">
+                            <i class="material-icons">view_carousel</i>
+                            E-posta Bülteni
+                        </a>
+                    </li>
                     <li class="divider"></li>
                 @endif
 
