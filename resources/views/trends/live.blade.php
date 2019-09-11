@@ -250,7 +250,7 @@
             window.clearTimeout(window[__.data('module') + '_timer'])
             window[__.data('module') + '_timer'] = window.setTimeout(function() {
                 vzAjax(__)
-            }, 60000)
+            }, 30000)
         }
     }
 @endpush
