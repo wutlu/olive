@@ -60,28 +60,13 @@
 
                 for (i=1; i<=3; i++)
                 {
-                    var mitem = model.clone()
-                        mitem.attr('data-id', 'mitem-' + i)
-                        mitem.find('[data-name=hit]').html('******').addClass('blured')
-                        mitem.find('[data-name=title-1]').removeClass('hide').html('Olive ile sınırlarınızı zorlayın!').addClass('blured')
-
-                    var avatar = mitem.find('[data-name=image]');
-                        avatar.attr('src', '{{ asset('img/no_image-twitter.svg') }}')
-                              .removeClass('hide')
-                              .addClass('blured')
-                              .attr('alt', 'Resim')
-
-                    $('[data-name=link-olive]').attr('href', 'https://veri.zone/')
-
-                    var rank = mitem.find('[data-name=rank]');
-                        rank.html(i)
-
-                        mitem.removeClass('hide')
-
-                    if (!__.find('[data-id=mitem-' + i + ']').length)
-                    {
-                        mitem.appendTo(__)
-                    }
+                    $('<li />', {
+                        'class': 'item center-align p-1',
+                        'html': $('<a />', {
+                            'href': 'https://veri.zone/',
+                            'html': i + '. trend\'i Olive ile göster'
+                        })
+                    }).appendTo(__)
                 }
 
                 $.each(obj.data, function(key, o) {
