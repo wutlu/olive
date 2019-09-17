@@ -327,7 +327,6 @@ class Detect extends Command
                         if ($length >= 24)
                         {
                             $pop_trend->trend_hit = $pop_trend->trend_hit+1;
-                            $pop_trend->private_hit = $pop_trend->private_hit + ($rank * $item['hit']);
                             $pop_trend->exp_trend_hit = $item['hit'] >= 50 ? ($pop_trend->exp_trend_hit+1) : $pop_trend->exp_trend_hit;
                         }
                     }
@@ -335,7 +334,6 @@ class Detect extends Command
                     {
                         $pop_trend = new PopTrend;
                         $pop_trend->trend_hit = 1;
-                        $pop_trend->private_hit = $rank * $item['hit'];
                         $pop_trend->exp_trend_hit = $item['hit'] >= 50 ? 1 : 0;
 
                         $pop_trend->module = $module;

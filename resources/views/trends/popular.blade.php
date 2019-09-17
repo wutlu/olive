@@ -26,7 +26,6 @@
                     <select name="sort" id="sort">
                         <option value="trend_hit" {{ $request->sort == 'trend_hit' || $request->sort == '' ? 'selected' : '' }}>Trend'e Giriş</option>
                         <option value="exp_trend_hit" {{ $request->sort == 'exp_trend_hit' ? 'selected' : '' }}>Trend'e Ani Giriş</option>
-                        <option value="private_hit" {{ $request->sort == 'private_hit' ? 'selected' : '' }}>Derece</option>
                     </select>
                     <label for="module">Sıralama</label>
                 </div>
@@ -65,10 +64,6 @@
                         <small class="hide-on-med-and-down center-align align-self-center mr-1" style="min-width: 48px; line-height: 16px;">
                             {{ number_format($item->exp_trend_hit) }}
                             <span class="d-block">hit trend</span>
-                        </small>
-                        <small class="hide-on-med-and-down center-align align-self-center mr-1" style="min-width: 48px; line-height: 16px;">
-                            {{ number_format($item->private_hit) }}
-                            <span class="d-block">derece</span>
                         </small>
                         <span class="align-self-center">
                             @if ($item->module == 'twitter_tweet')
