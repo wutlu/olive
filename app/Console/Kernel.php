@@ -217,7 +217,7 @@ class Kernel extends ConsoleKernel
                          });
             }
 
-            $schedule->command('nohup "trend:detect --module=google --time=\"-1 hours\" --insert=1 --redis=1" --type=restart')
+            $schedule->command('nohup "trend:detect --module=google --time=\"-1 hours\" --redis=1" --type=restart')
                      ->everyFifteenMinutes()
                      ->timezone(config('app.timezone'))
                      ->skip(function() {
