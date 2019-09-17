@@ -209,7 +209,7 @@
                         'key' => 'archive'
                     ],
                     [
-                        'route' => '',
+                        'route' => route('trend.popular'),
                         'icon' => 'people',
                         'name' => 'Popüler Kaynaklar <sup class="red-text">Yeni</sup>',
                         'key' => 'popular_sources'
