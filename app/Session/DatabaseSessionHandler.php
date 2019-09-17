@@ -55,7 +55,7 @@ class DatabaseSessionHandler extends \Illuminate\Session\DatabaseSessionHandler
 
         if (Request::isMethod('get'))
         {
-        	$array['page'] = url()->full();
+        	$array['page'] = str_limit(url()->full(), 255);
         }
 
         if ($this->exists)
@@ -78,7 +78,7 @@ class DatabaseSessionHandler extends \Illuminate\Session\DatabaseSessionHandler
 
             if ($referer)
             {
-            	$array['referer'] = $referer;
+            	$array['referer'] = str_limit($referer, 255);
             }
 
             $this->getQuery()->insert($array);

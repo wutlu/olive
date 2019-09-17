@@ -18,7 +18,7 @@ class CreateSourcesTable extends Migration
 
             $table->string('name');
 
-            $table->unsignedInteger('organisation_id')->nullable()->default(null)->index();
+            $table->unsignedInteger('organisation_id')->index();
             $table->foreign('organisation_id')->references('id')->on('organisations')->onDelete('cascade')->onUpdate('cascade');
 
             $table->json('source_media')->nullable()->default(null);

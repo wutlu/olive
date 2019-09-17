@@ -10,8 +10,13 @@
     ],
     'footer_hide' => true,
     'wide' => true,
-    'help' => 'driver.start()'
+    'help' => 'driver.start()',
+    'dock' => true
 ])
+
+@section('dock')
+    @include('trends._menu', [ 'active' => 'live' ])
+@endsection
 
 @push('local.scripts')
     var incoming_trends = 0;
@@ -301,7 +306,7 @@
                     id="trend_list-{{ $trend['module'] }}"
                     data-id="trend_list"
                     class="collapsible"
-                    data-href="{{ route('trend.live.redis') }}"
+                    data-href="{{ route('trend.live') }}"
                     data-module="{{ $trend['module'] }}"
                     data-method="post"
                     data-callback="__trends">

@@ -218,7 +218,7 @@ class Kernel extends ConsoleKernel
             }
 
             $schedule->command('nohup "trend:detect --module=google --time=\"-1 hours\" --insert=1 --redis=1" --type=restart')
-                     ->hourly()
+                     ->everyFifteenMinutes()
                      ->timezone(config('app.timezone'))
                      ->skip(function() {
                         return SystemUtility::option('trend.status.google') != 'on';

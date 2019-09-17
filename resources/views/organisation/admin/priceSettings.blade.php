@@ -89,6 +89,10 @@
                                 <small class="helper-text">Pin Grubu</small>
                             </div>
                             <div class="collection-item input-field">
+                                <input required name="analysis_tools_limit" id="analysis_tools_limit" min="0" value="{{ $settings['unit_price.analysis_tools_limit']['value'] }}" type="number" class="validate" />
+                                <small class="helper-text">Analiz Araçları Limiti</small>
+                            </div>
+                            <div class="collection-item input-field">
                                 <input required name="historical_days" id="historical_days" min="0" value="{{ $settings['unit_price.historical_days']['value'] }}" type="number" class="validate" />
                                 <small class="helper-text">Geriye Dönük Arama (Gün)</small>
                             </div>

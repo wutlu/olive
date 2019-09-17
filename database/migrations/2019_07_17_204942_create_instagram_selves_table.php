@@ -27,9 +27,9 @@ class CreateInstagramSelvesTable extends Migration
 
             $table->boolean('status')->default(0);
             $table->string('reason')->nullable()->default(null);
-            $table->unsignedSmallInteger('error_count')->default(10);
+            $table->unsignedSmallInteger('error_count')->default(0);
 
-            $table->unsignedInteger('organisation_id')->nullable()->default(null)->index();
+            $table->unsignedInteger('organisation_id')->index();
             $table->foreign('organisation_id')->references('id')->on('organisations')->onDelete('cascade')->onUpdate('cascade');
 
             $table->unique([ 'url', 'organisation_id' ]);

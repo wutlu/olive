@@ -762,6 +762,9 @@ code {
   display: table;
   font-size: 32px;
 }
+.wildcard .wildcard-title > small {
+  font-size: 16px;
+}
 .wildcard .wildcard-icon {
   width: 64px;
   height: 64px;
@@ -779,6 +782,30 @@ code {
 @media only screen and (max-width: 992px) {
   .wildcard {
     margin: 0;
+  }
+  .wildcard .wildcard-title {
+    padding-bottom: 16px;
+  }
+}
+
+.wildcard .sub-search {
+  -webkit-transition: all 200ms cubic-bezier(.25, .46, .45, .94) !important;
+          transition: all 200ms cubic-bezier(.25, .46, .45, .94) !important;
+
+  max-width: 128px;
+}
+.wildcard .sub-search:focus {
+  max-width: 200px;
+}
+
+@media (max-width: 576px) {
+  .wildcard .sub-search {
+    max-width: 100%;
+    margin-bottom: 16px !important;
+  }
+
+  .wildcard .sub-search:focus {
+    max-width: 100%;
   }
 }
 
@@ -1110,10 +1137,6 @@ body.module-search-active > .search-wrapper {
   -webkit-column-count: 3;
      -moz-column-count: 3;
           column-count: 3;
-
-  -webkit-column-gap: 1.25rem;
-     -moz-column-gap: 1.25rem;
-          column-gap: 1.25rem;
 }
 .fast-menu > a {
   -ms-flex: 1 1 auto !important;
@@ -1125,6 +1148,8 @@ body.module-search-active > .search-wrapper {
 
   -webkit-transition: all 200ms cubic-bezier(.25, .46, .45, .94);
           transition: all 200ms cubic-bezier(.25, .46, .45, .94);
+
+  width: 20%;
 }
 .fast-menu > a:hover {
   padding: 2rem 1rem;
@@ -1133,9 +1158,18 @@ body.module-search-active > .search-wrapper {
   padding: 3rem 1rem;
 }
 
+@media only screen and (max-width: 1440px) {
+  .fast-menu > a {
+    width: 25%;
+  }
+}
+
 @media only screen and (max-width: 992px) {
   .fast-menu {
     margin: 1rem 0;
+  }
+  .fast-menu > a {
+    width: 50%;
   }
 }
 
@@ -2265,7 +2299,7 @@ nav.nav-half {
 }
 
 .pagination li.active {
-  background-color: #0097a7;
+  background-color: #455a64;
 }
 
 /*!
@@ -2374,6 +2408,16 @@ nav.nav-half {
 .align-self-start {
   -ms-flex-item-align: start;
   align-self: flex-start;
+}
+
+.align-self-end {
+  -ms-flex-item-align: end !important;
+  align-self: flex-end !important;
+}
+
+.align-self-baseline {
+  -ms-flex-item-align: baseline !important;
+  align-self: baseline !important;
 }
 
 .align-items-end {

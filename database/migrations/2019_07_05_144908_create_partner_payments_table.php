@@ -23,7 +23,7 @@ class CreatePartnerPaymentsTable extends Migration
 
             $table->string('message')->nullable()->default(null);
 
-            $table->unsignedInteger('user_id')->nullable()->default(null)->index();
+            $table->unsignedInteger('user_id')->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
 
             $table->timestamps();

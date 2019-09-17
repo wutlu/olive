@@ -36,6 +36,7 @@ class PriceSettingsSaveRequest extends FormRequest
             'real_time_group_limit'           => 'required|integer|min:0',
             'alarm_limit'                     => 'required|integer|min:0',
             'pin_group_limit'                 => 'required|integer|min:0',
+            'analysis_tools_limit'            => 'required|integer|min:0',
             'saved_searches_limit'            => 'required|integer|min:0',
             'source_limit'                    => 'required|integer|min:0',
             'historical_days'                 => 'required|integer|min:0',

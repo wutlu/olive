@@ -4,7 +4,7 @@ return [
     /**
      * Sistem Versiyonu
      */
-    'version' => '4.0.8',
+    'version' => '5.1',
 
     /**
      * db
@@ -364,13 +364,11 @@ return [
                 'route' => 'alarm.dashboard',
                 'icon' => 'alarm'
             ],
-            /*
             26 => [
                 'name' => 'Trend Arşivi',
                 'route' => 'trend.archive',
                 'icon' => 'archive'
             ],
-            */
             27 => [
                 'name' => 'Forum',
                 'route' => 'forum.index',
@@ -392,6 +390,7 @@ return [
                 'root' => true,
                 'icon' => 'code'
             ],
+            /*
             8 => [
                 'name' => 'Kuyruk Ekranı',
                 'route' => 'admin.monitoring.queue',
@@ -404,6 +403,7 @@ return [
                 'root' => true,
                 'icon' => 'hourglass_empty'
             ],
+            */
             /*
             10 => [
                 'name' => 'Kupon Yönetimi',
@@ -548,6 +548,11 @@ return [
                 'route' => 'crawlers.blog.list',
                 'root' => true,
                 'icon' => 'widgets'
+            ],
+            35 => [
+                'name' => 'Analiz Araçları',
+                'route' => 'analysis_tools.dashboard',
+                'icon' => 'pie_chart'
             ],
         ]
     ],

@@ -180,6 +180,8 @@
     {
         if (obj.status == 'ok')
         {
+            M.toast({ html: 'Bağlantı Silindi!', classes: 'red' })
+
             $('#modal-delete').modal('close')
 
             $('li[data-id=' + __.data('id') + ']').slideUp()
@@ -191,6 +193,10 @@
         if (obj.status == 'ok')
         {
             M.toast({ html: 'Bağlantı takibe alındı!', classes: 'green' })
+
+            setTimeout(function() {
+                vzAjax($('#collections'))
+            }, 200)
         }
     }
 @endpush

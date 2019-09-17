@@ -14,6 +14,41 @@ class TrendArchive extends Model
         'group',
     ];
 
+    public $disabled_mutator = false;
+
+    public function getGroupAttribute($value)
+    {
+        if ($this->disabled_mutator)
+        {
+            return $value;
+        }
+        else
+        {
+            if (preg_match('/\d{4}\.\d{1,2}\.\d{1,2}-\d{1,2}/', $value))
+            {
+                $group = date('d.m.Y H:00', strtotime($this->created_at));
+            }
+            else if (preg_match('/\d{4}\.\d{1,2}\.\d{1,2}/', $value))
+            {
+                $group = date('d.m.Y', strtotime($this->created_at));
+            }
+            else if (preg_match('/\d{4}-\d{1,2}/', $value))
+            {
+                $group = str_replace('-', ', ', $value).'. hafta';
+            }
+            else if (preg_match('/\d{4}\.\d{1,2}/', $value))
+            {
+                $group = str_replace('.', ', ', $value).'. ay';
+            }
+            else
+            {
+                $group = date('d.m.Y H:00', strtotime($this->created_at));
+            }
+
+            return $group;
+        }
+    }
+
     # index crate
     public function indexCreate()
     {
@@ -29,7 +64,7 @@ class TrendArchive extends Model
                             'type' => 'keyword' // 2018-52 | 2018.12 | 2018.12.31 | 2018.12.31-23 | 2018.12.31-23:59
                         ],
                         'module' => [
-                            'type' => 'keyword' // twitter_tweet, twitter_hashtag, news, entry, youtube_video, google
+                            'type' => 'keyword' // twitter_tweet, twitter_hashtag, news, entry, youtube_video, google, blog, instagram
                         ],
                         'hit' => [
                             'type' => 'integer'

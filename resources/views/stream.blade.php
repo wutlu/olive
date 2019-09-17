@@ -2,7 +2,7 @@
     'sidenav_layout' => true,
     'breadcrumb' => [
         [
-            'text' => 'Gerçek Zamanlı'
+            'text' => 'Gerçek Zamanlı Akış'
         ]
     ],
     'dock' => true,
@@ -183,7 +183,7 @@
         data-method="post"
         data-include="keyword_group">
         <div class="card-content">
-            <span class="card-title">Gerçek Zamanlı</span>
+            <span class="card-title">Gerçek Zamanlı Akış</span>
         </div>
         <ul class="collection">
             <li class="collection-item model hide"></li>

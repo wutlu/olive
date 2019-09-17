@@ -288,6 +288,19 @@
                                 <div class="collection-item input-field">
                                     <input
                                         data-update
+                                        name="analysis_tools_limit"
+                                        id="analysis_tools_limit"
+                                        max="100"
+                                        min="0"
+                                        value="{{ $user->organisation->analysis_tools_limit }}"
+                                        type="number"
+                                        data-unit-price="{{ $prices['unit_price.analysis_tools_limit']['value'] }}"
+                                        class="validate" />
+                                    <small class="helper-text">Analiz Araçları Limiti</small>
+                                </div>
+                                <div class="collection-item input-field">
+                                    <input
+                                        data-update
                                         name="historical_days"
                                         id="historical_days"
                                         max="90"

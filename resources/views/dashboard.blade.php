@@ -26,7 +26,7 @@
         {
             element: '#fast_menu-module-stream',
             popover: {
-                title: 'Gerçek Zamanlı',
+                title: 'Gerçek Zamanlı Akış',
                 description: 'Türkiye gündemini anlık olarak takip edebilmeniz için tam anlamıyla gerçek zamanlı bir akış hazırladık.'
             }
         },
@@ -40,8 +40,8 @@
         {
             element: '#fast_menu-module-trend',
             popover: {
-                title: 'Trend Analizi',
-                description: 'Gündemi herkesten önce inceleyip, anlık trendler oluşturan akıllı robotlar geliştirdik. Bu robotların elde ettiği sonuçları Trend Analizi bölümünde, gerçek zamanlı olarak sizlere sunuyoruz.'
+                title: 'Canlı Trend',
+                description: 'Gündemi herkesten önce inceleyip, anlık trendler oluşturan akıllı robotlar geliştirdik. Bu robotların elde ettiği sonuçları Canlı Trend bölümünde, gerçek zamanlı olarak sizlere sunuyoruz.'
             }
         },
         {
@@ -146,22 +146,10 @@
             <div class="fast-menu">
                 @foreach ([
                     [
-                        'route' => route('forum.index'),
-                        'icon' => 'forum',
-                        'name' => 'Forum',
-                        'key' => 'forum'
-                    ],
-                    [
-                        'route' => route('data_pool.dashboard'),
-                        'icon' => 'hearing',
-                        'name' => 'Veri Havuzu',
-                        'key' => 'pool'
-                    ],
-                    [
-                        'route' => route('realtime.stream'),
-                        'icon' => 'watch_later',
-                        'name' => 'Gerçek Zamanlı',
-                        'key' => 'stream'
+                        'route' => route('trend.live'),
+                        'icon' => 'trending_up',
+                        'name' => 'Canlı Trend',
+                        'key' => 'trend'
                     ],
                     [
                         'route' => route('search.dashboard'),
@@ -170,21 +158,66 @@
                         'key' => 'search'
                     ],
                     [
-                        'route' => route('trend.live'),
-                        'icon' => 'trending_up',
-                        'name' => 'Trend Analizi',
-                        'key' => 'trend'
+                        'route' => route('realtime.stream'),
+                        'icon' => 'watch_later',
+                        'name' => 'Gerçek Zamanlı Akış',
+                        'key' => 'stream'
                     ],
                     [
                         'route' => route('alarm.dashboard'),
                         'icon' => 'access_alarm',
                         'name' => 'Alarmlar',
                         'key' => 'alarm'
-                    ]
+                    ],
+                    [
+                        'route' => route('sources.index'),
+                        'icon' => 'call_split',
+                        'name' => 'Kaynak Tercihleri',
+                        'key' => 'sources'
+                    ],
+                    [
+                        'route' => route('pin.groups'),
+                        'icon' => 'fiber_pin',
+                        'name' => 'Pin Grupları',
+                        'key' => 'pin_group'
+                    ],
+                    [
+                        'route' => route('data_pool.dashboard'),
+                        'icon' => 'hearing',
+                        'name' => 'Veri Havuzu',
+                        'key' => 'pool'
+                    ],
+                    /*
+                    [
+                        'route' => route('forum.index'),
+                        'icon' => 'forum',
+                        'name' => 'Forum',
+                        'key' => 'forum'
+                    ],
+                    */
+                    [
+                        //'route' => route('analysis_tools.dashboard'),
+                        'route' => '#',
+                        'icon' => 'pie_chart',
+                        'name' => 'Analiz Araçları <sup class="red-text">Yakında</sup>',
+                        'key' => 'pool'
+                    ],
+                    [
+                        'route' => route('trend.archive'),
+                        'icon' => 'archive',
+                        'name' => 'Trend Arşivi <sup class="red-text">Yeni</sup>',
+                        'key' => 'archive'
+                    ],
+                    [
+                        'route' => '',
+                        'icon' => 'people',
+                        'name' => 'Popüler Kaynaklar <sup class="red-text">Yeni</sup>',
+                        'key' => 'popular_sources'
+                    ],
                 ] as $key => $item)
                     <a href="{{ $item['route'] }}" id="fast_menu-module-{{ $item['key'] }}">
                         <i class="material-icons">{{ $item['icon'] }}</i>
-                        <span class="d-block">{{ $item['name'] }}</span>
+                        <span class="d-block">{!! $item['name'] !!}</span>
                     </a>
                 @endforeach
             </div>

@@ -18,6 +18,7 @@ use App\Models\Crawlers\MediaCrawler;
 use App\Models\Crawlers\BlogCrawler;
 use App\Models\Crawlers\SozlukCrawler;
 use App\Models\TrendArchive;
+use App\Models\PopTrend;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
@@ -29,6 +30,8 @@ use App\Models\Instagram\BlockedTrendKeywords as InstagramBlockedTrendKeywords;
 use App\Utilities\Crawler;
 
 use App\Wrawler;
+
+use Carbon\Carbon;
 
 class Detect extends Command
 {
@@ -186,6 +189,15 @@ class Detect extends Command
                 switch ($module)
                 {
                     case 'twitter_tweet':
+                        $pop_trend_id = $item['user']['id'];
+                        $pop_trend_details = [
+                            'id' => $item['user']['id'],
+                            'screen_name' => $item['user']['screen_name'],
+                            'name' => $item['user']['name'],
+                            'image' => $item['user']['image'],
+                            'verified' => @$item['user']['verified'] ? true : false
+                        ];
+
                         $arr['id'] = implode('-', [ $module, $group, $item['id'] ]);
                         $raw = [
                             'id' => $item['id'],
@@ -207,6 +219,11 @@ class Detect extends Command
                         $arr['data'] = $raw;
                     break;
                     case 'twitter_hashtag':
+                        $pop_trend_id = md5($item['key']);
+                        $pop_trend_details = [
+                            'title' => $item['key']
+                        ];
+
                         $arr['id'] = implode('-', [ $module, $group, md5($item['key']) ]);
                         $arr['data'] = [
                             'id' => md5($item['key']),
@@ -214,6 +231,11 @@ class Detect extends Command
                         ];
                     break;
                     case 'instagram_hashtag':
+                        $pop_trend_id = md5($item['key']);
+                        $pop_trend_details = [
+                            'title' => $item['key']
+                        ];
+
                         $arr['id'] = implode('-', [ $module, $group, md5($item['key']) ]);
                         $arr['data'] = [
                             'id' => md5($item['key']),
@@ -247,6 +269,11 @@ class Detect extends Command
                         }
                     break;
                     case 'entry':
+                        $pop_trend_id = md5($item['title']);
+                        $pop_trend_details = [
+                            'title' => $item['title']
+                        ];
+
                         $arr['id'] = implode('-', [ $module, $group, md5($item['title']) ]);
                         $arr['data'] = [
                             'id' => md5($item['title']),
@@ -255,6 +282,12 @@ class Detect extends Command
                         ];
                     break;
                     case 'youtube_video':
+                        $pop_trend_id = $item['channel']['id'];
+                        $pop_trend_details = [
+                            'id' => $item['channel']['id'],
+                            'title' => $item['channel']['title']
+                        ];
+
                         $arr['id'] = implode('-', [ $module, $group, $item['id'] ]);
                         $arr['data'] = [
                             'id' => $item['id'],
@@ -262,6 +295,11 @@ class Detect extends Command
                         ];
                     break;
                     case 'google':
+                        $pop_trend_id = md5($item['title']);
+                        $pop_trend_details = [
+                            'title' => $item['title']
+                        ];
+
                         $arr['id'] = implode('-', [ $module, $group, md5($item['title']) ]);
                         $arr['data']['id'] = md5($item['title']);
                         $arr['data']['title'] = $item['title'];
@@ -276,6 +314,36 @@ class Detect extends Command
                             $arr['data']['text'] = strip_tags($item['text']);
                         }
                     break;
+                }
+
+                if ($pop_trend_id)
+                {
+                    $pop_trend = PopTrend::where([ 'module' => $module, 'social_id' => $pop_trend_id ])->first();
+
+                    if (@$pop_trend)
+                    {
+                        $length = Carbon::createFromFormat('Y-m-d H:i:s', $pop_trend->updated_at)->diffInHours(Carbon::now());
+
+                        if ($length >= 24)
+                        {
+                            $pop_trend->trend_hit = $pop_trend->trend_hit+1;
+                            $pop_trend->private_hit = $pop_trend->private_hit + ($rank * $item['hit']);
+                            $pop_trend->exp_trend_hit = $item['hit'] >= 50 ? ($pop_trend->exp_trend_hit+1) : $pop_trend->exp_trend_hit;
+                        }
+                    }
+                    else
+                    {
+                        $pop_trend = new PopTrend;
+                        $pop_trend->trend_hit = 1;
+                        $pop_trend->private_hit = $rank * $item['hit'];
+                        $pop_trend->exp_trend_hit = $item['hit'] >= 50 ? 1 : 0;
+
+                        $pop_trend->module = $module;
+                        $pop_trend->social_id = $pop_trend_id;
+                    }
+
+                    $pop_trend->details = $pop_trend_details;
+                    $pop_trend->save();
                 }
 
                 $chunk['body'][] = [
@@ -1148,6 +1216,10 @@ class Detect extends Command
                             'hit' => $bucket['doc_count'],
                             'title' => $video->data['_source']['title'],
                             'id' => $bucket['key'],
+                            'channel' => [
+                                'id' => $video->data['_source']['channel']['id'],
+                                'title' => $video->data['_source']['channel']['title']
+                            ]
                         ];
 
                         $data[] = $arr;

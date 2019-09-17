@@ -291,7 +291,7 @@ class UserController extends Controller
                 UserActivityUtility::push(
                     'Hesabınıza yeni bir ip\'den giriş yapıldı.',
                     [
-                        'key'       => implode('-', [ 'user', 'auth', $info->ip ]),
+                        'key'       => implode('-', [ 'user', 'auth', $info->ip, $user->id ]),
                         'icon'      => 'accessibility',
                         'markdown'  => $data
                     ]
@@ -324,6 +324,11 @@ class UserController extends Controller
         }
         else
         {
+            System::log(
+                'Başarısız bir giriş denemesi yapıldı.',
+                'App\Http\Controllers\UserController::loginPost('.$value.':'.$password.')', 1
+            );
+
             return response
             (
                 [
@@ -908,6 +913,7 @@ class UserController extends Controller
             $organisation->real_time_group_limit = $request->real_time_group_limit;
             $organisation->alarm_limit = $request->alarm_limit;
             $organisation->pin_group_limit = $request->pin_group_limit;
+            $organisation->analysis_tools_limit = $request->analysis_tools_limit;
             $organisation->saved_searches_limit = $request->saved_searches_limit;
             $organisation->source_limit = $request->source_limit;
 

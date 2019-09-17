@@ -303,6 +303,7 @@ $arr = [
         'real_time_group_limit'           => 'Gerçek Zamanlı Kelime Grubu Limiti',
         'alarm_limit'                     => 'Alarm Limiti',
         'pin_group_limit'                 => 'Pin Grubu Limiti',
+        'analysis_tools_limit'            => 'Analiz Araçları Limiti',
         'historical_days'                 => 'Geriye Dönük Arama Limiti',
         'saved_searches_limit'            => 'Arama Kaydetme Limiti',
         'source_limit'                    => 'Kaynak Tercih Limiti',
@@ -314,6 +315,7 @@ $arr = [
         'data_pool_twitter_user_limit'     => 'Twitter Kullanıcı Limiti',
         'data_pool_instagram_follow_limit' => 'Instagram Takip Limiti',
 
+        'data_pool'                       => 'Veri Havuzu',
         'unit_price'                      => 'Birim Fiyat',
 
         'module_real_time'                => 'Gerçek Zamanlı Modülü',
@@ -352,6 +354,9 @@ $arr = [
         'discount_with_year'              => 'Yıllık Ödeme İndirimi',
         'amount'                          => 'Miktar',
         'index_name'                      => 'Index Adı',
+        'platform'                        => 'Platform',
+        'period'                          => 'Periyot',
+        'url'                             => 'URL',
     ],
 ];
 

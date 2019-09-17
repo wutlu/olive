@@ -68,7 +68,7 @@
                     </div>
                     <div class="collection-item">
                         <div class="input-field" style="max-width: 240px;">
-                            <input name="end_date" id="end_date" value="{{ date('Y-m-d', strtotime($organisation->end_date)) }}" type="text" class="validate" />
+                            <input name="end_date" id="end_date" value="{{ date('Y-m-d', strtotime($organisation->end_date)) }}" type="date" class="validate" />
                             <label for="end_date">Bitiş Tarihi</label>
                             <small class="helper-text">Organizasyonun bitiş tarihi.</small>
                         </div>
@@ -173,6 +173,19 @@
                                     data-unit-price="{{ $prices['unit_price.pin_group_limit']['value'] }}"
                                     class="validate" />
                                 <small class="helper-text">Pin Grubu</small>
+                            </div>
+                            <div class="collection-item input-field">
+                                <input
+                                    data-update
+                                    name="analysis_tools_limit"
+                                    id="analysis_tools_limit"
+                                    max="100"
+                                    min="0"
+                                    value="{{ $organisation->analysis_tools_limit }}"
+                                    type="number"
+                                    data-unit-price="{{ $prices['unit_price.analysis_tools_limit']['value'] }}"
+                                    class="validate" />
+                                <small class="helper-text">Analiz Araçları Limiti</small>
                             </div>
                             <div class="collection-item input-field">
                                 <input

@@ -149,7 +149,17 @@ Route::domain('olive.'.config('app.domain'))->group(function () {
     Route::prefix('trend')->namespace('Trend')->group(function () {
         Route::prefix('canli')->group(function () {
             Route::get('/', 'TrendController@live')->name('trend.live');
-            Route::post('redis', 'TrendController@liveRedis')->name('trend.live.redis');
+            Route::post('/', 'TrendController@liveRedis');
+        });
+
+        Route::prefix('arsiv')->group(function () {
+            Route::get('/', 'TrendController@archive')->name('trend.archive');
+            Route::post('/', 'TrendController@archiveData');
+            Route::get('{id}', 'TrendController@archiveView')->name('trend.archive.view');
+        });
+
+        Route::prefix('populer-kaynaklar')->group(function () {
+            Route::get('/', 'TrendController@popular')->name('trend.popular');
         });
     });
 
@@ -270,6 +280,13 @@ Route::domain('olive.'.config('app.domain'))->group(function () {
             Route::put('baglanti', 'DataController@urlCreate')->name('instagram.url.create');
             Route::delete('baglanti', 'DataController@urlDelete')->name('instagram.url.delete');
         });
+    });
+
+    Route::prefix('analiz-araclari')->group(function () {
+        Route::get('/', 'AnalysisToolsController@dashboard')->name('analysis_tools.dashboard');
+        Route::get('analiz/{id}', 'AnalysisToolsController@analysis')->name('analysis_tools.analysis');
+        Route::put('analiz', 'AnalysisToolsController@create');
+        Route::delete('analiz', 'AnalysisToolsController@delete')->name('analysis_tools.analysis.delete');
     });
 
     Route::prefix('oturum')->group(function () {
