@@ -324,7 +324,7 @@ class Detect extends Command
                     {
                         $length = Carbon::createFromFormat('Y-m-d H:i:s', $pop_trend->updated_at)->diffInHours(Carbon::now());
 
-                        if ($length >= 24)
+                        if ($length >= 6)
                         {
                             $pop_trend->trend_hit = $pop_trend->trend_hit+1;
                             $pop_trend->exp_trend_hit = $item['hit'] >= 50 ? ($pop_trend->exp_trend_hit+1) : $pop_trend->exp_trend_hit;
