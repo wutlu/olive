@@ -113,6 +113,15 @@
             </div>
         </div>
     </form>
+
+    <br />
+
+    <div class="yellow-text text-darken-2">
+        @component('components.alert')
+            @slot('icon', 'info')
+            @slot('text', 'Trend Arşivinde bulunan değerler, içeriklerin arşivlendiği andan itibaren kayıt altına alınır. Daha sonra gelecek değerler ilgili tarih için güncellenmez.')
+        @endcomponent
+    </div>
 @endsection
 
 @section('content')
