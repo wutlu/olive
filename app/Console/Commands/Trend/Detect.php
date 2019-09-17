@@ -186,6 +186,8 @@ class Detect extends Command
                     'created_at' => date('Y-m-d H:i:s')
                 ];
 
+                $pop_trend_id = null;
+
                 switch ($module)
                 {
                     case 'twitter_tweet':
