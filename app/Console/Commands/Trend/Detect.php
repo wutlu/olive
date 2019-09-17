@@ -433,7 +433,7 @@ class Detect extends Command
                     'terms' => [
                         'field' => 'external.id',
                         'size' => 50,
-                        'min_doc_count' => 10
+                        'min_doc_count' => 20
                     ]
                 ]
             ],
@@ -831,7 +831,7 @@ class Detect extends Command
                                                     'like' => $bucket['key'],
                                                     'min_term_freq' => 1,
                                                     'min_doc_freq' => 1,
-                                                    'max_query_terms' => 10
+                                                    'max_query_terms' => 20
                                                 ]
                                             ],
                                             [ 'match' => [ 'status' => 'ok' ] ]
@@ -1021,7 +1021,7 @@ class Detect extends Command
                                                     'like' => $bucket['key'],
                                                     'min_term_freq' => 1,
                                                     'min_doc_freq' => 1,
-                                                    'max_query_terms' => 10
+                                                    'max_query_terms' => 20
                                                 ]
                                             ],
                                             [ 'match' => [ 'status' => 'ok' ] ]
