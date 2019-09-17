@@ -266,7 +266,7 @@ class TrendController extends Controller
 
         $request->validate([
             'module' => 'nullable|string|in:'.implode(',', array_keys($modules)),
-            'sort' => 'nullable|string|in:trend_hit,exp_trend_hit,private_hit'
+            'sort' => 'nullable|string|in:trend_hit,exp_trend_hit'
         ]);
 
         $data = new PopTrend;
