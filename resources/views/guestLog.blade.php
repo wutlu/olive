@@ -16,8 +16,6 @@
 ])
 
 @push('local.scripts')
-    var logTimer;
-
     function __log(__, obj)
     {
         if (obj.status == 'ok')
@@ -89,12 +87,6 @@
             }
 
             collection.removeClass('hide')
-
-            window.clearTimeout(logTimer)
-
-            logTimer = window.setTimeout(function() {
-                vzAjax(collection)
-            }, 10000)
         }
     }
 @endpush

@@ -125,8 +125,6 @@
 @endsection
 
 @push('local.scripts')
-    var logTimer;
-
     function __log(__, obj)
     {
         if (obj.status == 'ok')
@@ -169,12 +167,6 @@
                 })
             }
         }
-
-        window.clearTimeout(logTimer)
-
-        logTimer = window.setTimeout(function() {
-            vzAjax($('ul#console'))
-        }, 10000)
     }
 
     function __connection_failed(__)

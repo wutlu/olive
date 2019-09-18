@@ -488,8 +488,6 @@
         $('.tabs').tabs()
     })
 
-    var logTimer;
-
     function __log(__, obj)
     {
         if (obj.status == 'ok')
@@ -530,12 +528,6 @@
                     item.appendTo(collection)
                 })
             }
-
-            window.clearTimeout(logTimer)
-
-            logTimer = window.setTimeout(function() {
-                vzAjax($('ul#console'))
-            }, 10000)
         }
     }
 @endpush
