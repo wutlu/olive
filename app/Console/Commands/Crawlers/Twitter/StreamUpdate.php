@@ -121,6 +121,7 @@ class StreamUpdate extends Command
             $alias = config('system.db.alias');
 
             $last_key = TrendArchive::where('module', 'twitter_hashtag')->orderBy('created_at', 'DESC')->first();
+            $last_key->disabled_mutator = true;
 
             if (@$last_key)
             {

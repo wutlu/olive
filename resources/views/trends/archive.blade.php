@@ -50,6 +50,14 @@
     })
 @endpush
 
+@section('wildcard')
+    <div class="card wild-background">
+        <div class="container">
+            <span class="wildcard-title">Trend Arşivi</span>
+        </div>
+    </div>
+@endsection
+
 @section('dock')
     @include('trends._menu', [ 'active' => 'archive' ])
 
@@ -126,7 +134,6 @@
 
 @section('content')
     <div class="card card-unstyled">
-        <span class="card-title">Trend Arşivi</span>
         @if (count($data))
             <ul class="collection collection-unstyled collection-hoverable">
                 @foreach ($data as $item)

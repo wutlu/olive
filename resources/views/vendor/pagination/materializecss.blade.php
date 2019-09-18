@@ -20,9 +20,7 @@
             {{-- "Three Dots" Separator --}}
             @if (is_string($element))
             <li class="disabled" aria-disabled="true">
-                <a href="#">
-                    {{ $element }}
-                </a>
+                <a href="#"></a>
             </li>
             @endif
 

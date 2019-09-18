@@ -48,9 +48,16 @@
     </form>
 @endsection
 
+@section('wildcard')
+    <div class="card wild-background">
+        <div class="container">
+            <span class="wildcard-title">Popüler Kaynaklar</span>
+        </div>
+    </div>
+@endsection
+
 @section('content')
     <div class="card card-unstyled">
-        <span class="card-title">Popüler Kaynaklar</span>
         @if (count($data))
             <ul class="collection collection-unstyled collection-hoverable">
                 @foreach ($data as $key=> $item)
@@ -70,7 +77,13 @@
                                 <span class="d-flex">
                                     <img align="{{ $item->details['name'] }}" src="{{ $item->details['image'] }}" style="width: 32px; height: 32px;" class="align-self-center circle mr-1" />
                                     <span class="align-self-center">
-                                        <span class="d-table">{{ $item->details['name'] }}</span>
+                                        <span class="d-flex">
+                                            {{ $item->details['name'] }}
+
+                                            @if ($item->details['verified'] == true)
+                                                <i class="material-icons blue-text align-self-center ml-1">check</i>
+                                            @endif
+                                        </span>
                                         <a target="_blank" href="https://twitter.com/intent/user?user_id={{ $item->details['id'] }}">{{ '@'.$item->details['screen_name'] }}</a> 
                                     </span>
                                 </span>

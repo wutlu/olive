@@ -1,4 +1,4 @@
-<div class="collection">
+<div class="collection collection-unstyled">
     <a href="{{ route('trend.live') }}" class="collection-item waves-effect d-flex waves-effect {{ $active == 'live' ? 'active' : '' }}">
         <i class="material-icons align-self-center">trending_up</i>
         <span class="align-self-center">Canlı Trend</span>

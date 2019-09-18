@@ -42,7 +42,7 @@ class TrendArchive extends Model
             }
             else
             {
-                $group = date('d.m.Y H:00', strtotime($this->created_at));
+                $group = date('d.m.Y H:i', strtotime($this->created_at)).' anlık';
             }
 
             return $group;

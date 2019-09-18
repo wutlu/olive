@@ -20,10 +20,16 @@
     @include('trends._menu', [ 'active' => 'archive_view' ])
 @endsection
 
+@section('wildcard')
+    <div class="card wild-background">
+        <div class="container">
+            <span class="wildcard-title">{{ $module['name'].', '.$query->group }}</span>
+        </div>
+    </div>
+@endsection
+
 @section('content')
     <div class="card card-unstyled">
-        <span class="card-title">{{ $module['name'].', '.$query->group }}</span>
-
         <ul class="collection collection-unstyled collection-hoverable"> 
             @if ($documents->status == 'ok')
                 @forelse(@$documents->data['hits']['hits'] as $key => $document)
