@@ -62,12 +62,10 @@ class Kernel extends ConsoleKernel
             /**
              * Twitter için takip edilen kullanıcıların hesap durumlarını kontrol et.
              */
-            /*
             $schedule->command('nohup "twitter:user_status" --type=start')
                      ->everyMinute()
                      ->timezone(config('app.timezone'))
                      ->withoutOverlapping(1);
-            */
 
             /**
              * Instagram için Self bağlantılarının vakitlice tetiklenmesi.

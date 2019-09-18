@@ -433,7 +433,7 @@ class Detect extends Command
                     'terms' => [
                         'field' => 'external.id',
                         'size' => 50,
-                        'min_doc_count' => 20
+                        'min_doc_count' => 10
                     ]
                 ]
             ],
