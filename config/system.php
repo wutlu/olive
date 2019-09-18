@@ -554,6 +554,11 @@ return [
                 'route' => 'analysis_tools.dashboard',
                 'icon' => 'pie_chart'
             ],
+            36 => [
+                'name' => 'Popüler Kaynaklar',
+                'route' => 'trend.popular',
+                'icon' => 'people'
+            ],
         ]
     ],
 ];
