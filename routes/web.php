@@ -285,7 +285,7 @@ Route::domain('olive.'.config('app.domain'))->group(function () {
     Route::prefix('analiz-araclari')->group(function () {
         Route::get('/', 'AnalysisToolsController@dashboard')->name('analysis_tools.dashboard');
         Route::get('analiz/{id}', 'AnalysisToolsController@analysis')->name('analysis_tools.analysis');
-        Route::put('analiz', 'AnalysisToolsController@create');
+        Route::post('analiz', 'AnalysisToolsController@create');
         Route::delete('analiz', 'AnalysisToolsController@delete')->name('analysis_tools.analysis.delete');
     });
 

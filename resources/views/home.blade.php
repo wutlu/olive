@@ -14,7 +14,7 @@
     .main-slider .owl-stage-outer {
         padding: 2rem 0;
         text-align: center;
-        font-size: 32px;
+        font-size: 24px;
     }
 
     section {

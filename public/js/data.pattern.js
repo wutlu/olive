@@ -29,8 +29,8 @@ $(document).on('click', '.read-aloud', function() {
     var mdl = modal({
         'id': 'createAnalysis',
         'body': $('<form />', {
-            'method': 'put',
-            'action': '/analiz-araclari/analiz/',
+            'method': 'post',
+            'action': '/analiz-araclari/analiz',
             'id': 'createAnalysis-form',
             'class': 'json',
             'data-callback': '__analysis_create',
