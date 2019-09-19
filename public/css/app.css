@@ -3182,6 +3182,12 @@ nav.scrolled.active,
   background-color: #f0f4c3 !important;
 }
 
+.ui-draggable {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
 /*!
  * input colors
  */

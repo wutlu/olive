@@ -15,19 +15,15 @@
 
 @section('dock')
     <div class="card card-unstyled">
-        <div class="card-content">
-            <span class="card-title">Grup</span>
-        </div>
-        <div class="collection">
+        <div class="collection collection-unstyled mb-1 z-depth-1">
             @foreach ($module['types'] as $key => $type)
-                <label class="collection-item waves-effect d-block droppable" data-id="{{ $key }}">
+                <label class="collection-item waves-effect d-block droppable white" data-id="{{ $key }}">
                     <input name="group" type="radio" value="{{ $key }}" data-update="true" />
                     <span>{{ $type['title'] }}</span>
                 </label>
             @endforeach
-
-            <div class="divider"></div>
-
+        </div>
+        <div class="collection collection-unstyled">
             <label class="collection-item waves-effect d-block">
                 <input name="saver" type="checkbox" value="on" />
                 <span>Enter tuşu ile aramadaki kelimeyi kaydet.</span>
@@ -178,7 +174,7 @@
                     @slot('size', 'small')
                 @endcomponent
             </div>
-            <a href="#" class="model hide chip draggable" data-trigger="delete"></a>
+            <a href="#" class="collection-item model hide chip draggable" data-trigger="delete" style="min-width: 15%;"></a>
         </div>
 
         @component('components.loader')
@@ -241,6 +237,11 @@
         if (obj.status == 'ok')
         {
             _search()
+
+            M.toast({
+                html: 'Grup Değiştirildi!',
+                classes: 'green darken-2'
+            })
         }
     }
 
@@ -271,7 +272,7 @@
 
                         item.html(o.word)
                             .data('id', o.id)
-                            .addClass(o.compiled ? 'green' : (o.learned ? 'cyan' : 'red'))
+                            .addClass(o.compiled ? 'grey' : (o.learned ? 'cyan' : 'red'))
 
                         item.appendTo(__)
                 })
@@ -344,11 +345,6 @@
                 html: 'Kelime Silindi',
                 classes: 'green darken-2'
             })
-
-            var collection = $('#collections');
-                collection.data('skip', 0).addClass('json-clear');
-
-            vzAjax(collection)
         }
     }
 

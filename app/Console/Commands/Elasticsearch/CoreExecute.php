@@ -101,13 +101,7 @@ class CoreExecute extends Command
                     'body' => [
                         $arr['type'] => [
                             'properties' => [
-                                'consumer.nws' => [ 'type' => 'float' ],
-                                'consumer.cmp' => [ 'type' => 'float' ],
-                                'consumer.que' => [ 'type' => 'float' ],
-                                'consumer.req' => [ 'type' => 'float' ],
-                                'illegal.bet' => [ 'type' => 'float' ],
-                                'illegal.nud' => [ 'type' => 'float' ],
-                                'illegal.nor' => [ 'type' => 'float' ],
+                                'category' => [ 'type' => 'keyword' ],
                             ]
                         ]
                     ]

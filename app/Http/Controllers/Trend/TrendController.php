@@ -243,7 +243,8 @@ class TrendController extends Controller
             ],
             'sort' => [
                 'hit' => 'desc'
-            ]
+            ],
+            'size' => 100
         ]);
 
         return view('trends.archiveView', compact('query', 'module', 'documents'));

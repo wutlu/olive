@@ -755,7 +755,7 @@ class OrganisationController extends Controller
                 json_encode(
                     [
                         [
-                            'Aylık Organizasyon Aboneliği #'.$organisation->id,
+                            '1 Aylık Olive Aboneliği #'.$organisation->id,
                             $invoice->unit_price,
                             $invoice->month,
                         ]

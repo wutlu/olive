@@ -30,7 +30,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Aylık Organizasyon Aboneliği</td>
+                        <td>1 Aylık Olive Aboneliği</td>
                         <td data-name="unit-price">{{ $user->organisation->unit_price }}</td>
                         <td class="right-align">{{ config('formal.currency') }}</td>
                         <td class="right-align">

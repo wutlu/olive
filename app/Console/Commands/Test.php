@@ -4,17 +4,6 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\HandlerStack;
-
-use App\Models\Proxy;
-use App\Models\Twitter\StreamingUsers;
-use App\Models\Twitter\BlockedTrendKeywords as TwitterBlockedTrendKeywords;
-
-use App\Wrawler;
-
-use Youtube;
-
 class Test extends Command
 {
     /**
@@ -48,8 +37,6 @@ class Test extends Command
      */
     public function handle()
     {
-        $data = Youtube::listChannelVideos('UCFomZfoEfoveaRbIDjAtsZw', 50, 'date');
-
-        print_r($data);
+        
     }
 }
