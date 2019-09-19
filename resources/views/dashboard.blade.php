@@ -77,6 +77,11 @@
         margin: 1rem 0;
         font-size: 24px;
     }
+    @media (max-width: 1024px) {
+        .carousel-slider {
+            margin: 1rem 0 0;
+        }
+    }
 
     .organisation-card > .card-content-image {
         padding: 72px 1rem 1rem;

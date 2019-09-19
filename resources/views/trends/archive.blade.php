@@ -9,7 +9,8 @@
         ]
     ],
     'footer_hide' => true,
-    'dock' => true
+    'dock' => true,
+    'wide' => true
 ])
 
 @push('local.scripts')
@@ -52,7 +53,7 @@
 
 @section('wildcard')
     <div class="card wild-background">
-        <div class="container">
+        <div class="pl-1">
             <span class="wildcard-title">Trend Arşivi</span>
         </div>
     </div>

@@ -13,7 +13,8 @@
         ]
     ],
     'footer_hide' => true,
-    'dock' => true
+    'dock' => true,
+    'wide' => true
 ])
 
 @section('dock')
@@ -22,7 +23,7 @@
 
 @section('wildcard')
     <div class="card wild-background">
-        <div class="container">
+        <div class="pl-1">
             <span class="wildcard-title">{{ $module['name'].', '.$query->group }}</span>
         </div>
     </div>
@@ -36,7 +37,7 @@
                     <li class="collection-item">
                         <div class="d-flex">
                             <span class="center-align mr-1" style="max-width: 72px;">
-                                <span class="mx-auto circle white d-table center-align mb-1" style="width: 48px; line-height: 48px;">{{ $key+1 }}</span>
+                                <span class="mx-auto circle blue-grey white-text d-table center-align mb-1" style="width: 48px; line-height: 48px;">{{ $key+1 }}</span>
                                 <span class="mx-auto">{{ number_format($document['_source']['hit']) }}</span>
                             </span>
                             <span class="align-self-center">
