@@ -119,9 +119,8 @@ return [
                 'category-13' => [ 'title' => 'Anne / Bebek',          'per' => 0.1 ],
                 'category-14' => [ 'title' => 'Kadın',                 'per' => 0.1 ],
                 'category-15' => [ 'title' => 'Erkek',                 'per' => 0.1 ],
-                'category-16' => [ 'title' => 'Moda / Stil',           'per' => 0.1 ],
-                'category-17' => [ 'title' => 'Yemek',                 'per' => 0.1 ],
-                'category-18' => [ 'title' => 'Gezi / Seyahat',        'per' => 0.1 ],
+                'category-16' => [ 'title' => 'Yemek',                 'per' => 0.1 ],
+                'category-17' => [ 'title' => 'Gezi / Seyahat',        'per' => 0.1 ],
             ],
             'title' => 'Kategori Analizi'
         ],
