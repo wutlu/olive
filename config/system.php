@@ -101,7 +101,30 @@ return [
                 ],
             ],
             'title' => 'Cinsiyet Tespiti'
-        ]
+        ],
+        'category' => [
+            'types' => [
+                'category-1' =>  [ 'title' => 'Bilim ve Teknoloji', 'per' => 0.1 ],
+                'category-2' =>  [ 'title' => 'Politika',           'per' => 0.1 ],
+                'category-3' =>  [ 'title' => 'Spor',               'per' => 0.1 ],
+                'category-4' =>  [ 'title' => 'Kültür / Sanat',     'per' => 0.1 ],
+                'category-5' =>  [ 'title' => 'Popüler Medya',      'per' => 0.1 ],
+                'category-6' =>  [ 'title' => 'Eğitim / Öğretim',   'per' => 0.1 ],
+                'category-7' =>  [ 'title' => 'Ekonomi / Finans',   'per' => 0.1 ],
+                'category-8' =>  [ 'title' => 'İş',                 'per' => 0.1 ],
+                'category-9' =>  [ 'title' => 'Sosyal Sorumluluk',  'per' => 0.1 ],
+                'category-10' => [ 'title' => 'Güncel',             'per' => 0.1 ],
+                'category-11' => [ 'title' => 'Eğlence',            'per' => 0.1 ],
+                'category-12' => [ 'title' => 'İnanç',              'per' => 0.1 ],
+                'category-13' => [ 'title' => 'Anne / Bebek',       'per' => 0.1 ],
+                'category-14' => [ 'title' => 'Kadın',              'per' => 0.1 ],
+                'category-15' => [ 'title' => 'Erkek',              'per' => 0.1 ],
+                'category-16' => [ 'title' => 'Moda / Stil',        'per' => 0.1 ],
+                'category-17' => [ 'title' => 'Yemek',              'per' => 0.1 ],
+                'category-18' => [ 'title' => 'Gezi / Seyahat',     'per' => 0.1 ],
+            ],
+            'title' => 'Kategori Analizi'
+        ],
     ],
 
     /**

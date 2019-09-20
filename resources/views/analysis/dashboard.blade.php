@@ -5,21 +5,9 @@
             'text' => '🐞 Kelime Hafızası'
         ]
     ],
-    'footer_hide' => true
+    'footer_hide' => true,
+    'wide' => true
 ])
-
-@section('wildcard')
-    <div class="z-depth-1">
-        <div class="container">
-            <div class="pt-1 pb-1 grey-text text-darken-2">
-                @component('components.alert')
-                    @slot('text', 'Bu sayfa sadece yetkili kullanıcılar tarafından görüntülenebilir.')
-                    @slot('icon', 'warning')
-                @endcomponent
-            </div>
-        </div>
-    </div>
-@endsection
 
 @push('local.scripts')
     function __status_set(__, obj)

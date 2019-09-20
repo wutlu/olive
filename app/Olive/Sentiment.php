@@ -3,6 +3,7 @@
 namespace App\Olive;
 
 use App\Models\Analysis;
+use Term;
 
 class Sentiment {
     /**
@@ -111,6 +112,23 @@ class Sentiment {
         }
 
         $this->load();
+    }
+
+    /**
+     * Get net result
+     *
+     * @param str $sentence Text to analyze
+     * @return int Score
+     */
+    public function net($arr)
+    {
+        $scores = $this->score($arr);
+        $max = array_keys($scores, max($scores));
+
+        return count($max) > 2 ? null : [
+            'id' => $max[0],
+            'name' => config('system.analysis.category.types')['category-'.$max[0]]['title']
+        ];
     }
 
     /**
@@ -272,7 +290,10 @@ class Sentiment {
      */
     public static function _getTokens(string $string)
     {
-        $string = str_replace('#', ' ', $string);
+        $string = Term::convertAscii($string, [
+            'replacements' => [ '(\#)' => ' ' ]
+        ]);
+
         $string = str_slug(kebab_case($string));
         $string = preg_replace('/(.)\\1+/', '$1', $string);
 
