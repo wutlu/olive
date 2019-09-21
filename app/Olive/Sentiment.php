@@ -294,8 +294,10 @@ class Sentiment {
             'replacements' => [ '(\#| )' => '-' ]
         ]);
 
-        $string = kebab_case($string);
-        $string = str_slug($string);
+        $title_case = title_case($string);
+        $kebab_case = kebab_case($string);
+
+        $string = str_slug($title_case.'-'.$kebab_case);
         $string = preg_replace('/(.)\\1+/', '$1', $string);
 
         return explode('-', $string);
