@@ -291,10 +291,11 @@ class Sentiment {
     public static function _getTokens(string $string)
     {
         $string = Term::convertAscii($string, [
-            'replacements' => [ '(\#)' => ' ' ]
+            'replacements' => [ '(\#| )' => '-' ]
         ]);
 
-        $string = str_slug(kebab_case($string));
+        $string = kebab_case($string);
+        $string = str_slug($string);
         $string = preg_replace('/(.)\\1+/', '$1', $string);
 
         return explode('-', $string);
