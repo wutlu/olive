@@ -1875,10 +1875,10 @@
 
                         var total = req + que + cmp + nws;
 
-                        req = (req*100/total)-25;
-                        que = (que*100/total)-25;
-                        cmp = (cmp*100/total)-25;
-                        nws = (nws*100/total)-25;
+                        req = (req*100/total);
+                        que = (que*100/total);
+                        cmp = (cmp*100/total);
+                        nws = (nws*100/total);
 
                         datas.push((req < 0 ? 0 : req).toFixed(2))
                         datas.push((que < 0 ? 0 : que).toFixed(2))
