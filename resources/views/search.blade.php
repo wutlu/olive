@@ -1952,6 +1952,10 @@
                                 label = 'YouTube Yorum';
                                 total_html = $('[data-name=youtube-comment]').html();
                             break;
+                            case 'shopping':
+                                label = 'E-ticaret';
+                                total_html = $('[data-name=shopping-product]').html();
+                            break;
                         }
 
                         var datas = [];
