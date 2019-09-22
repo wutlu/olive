@@ -16,11 +16,13 @@
 ])
 
 @push('local.scripts')
+    var logTimer;
+
     function __log(__, obj)
     {
         if (obj.status == 'ok')
         {
-            var collection = $('#console.collection'),
+            var collection = $('ul#console.collection'),
                 model = collection.children('.collection-item.hide');
 
             collection.children('.collection-item:not(.hide)').remove()
@@ -88,6 +90,12 @@
 
             collection.removeClass('hide')
         }
+
+        window.clearTimeout(logTimer)
+
+        logTimer = window.setTimeout(function() {
+            vzAjax(collection)
+        }, 4000)
     }
 @endpush
 

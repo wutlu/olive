@@ -15,8 +15,6 @@
 ])
 
 @push('local.scripts')
-    var logTimer;
-
     function __log(__, obj)
     {
         if (obj.status == 'ok')
@@ -77,12 +75,6 @@
                         file_item.prependTo(files)
                 })
             }
-
-            window.clearTimeout(logTimer)
-
-            logTimer = window.setTimeout(function() {
-                vzAjax(collection)
-            }, 4000)
         }
     }
 
