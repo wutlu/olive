@@ -112,6 +112,26 @@ class AggregationController extends Controller
             ]
         ];
 
+        foreach ([ [ 'consumer' => [ 'nws', 'que', 'req', 'cmp' ] ], [ 'sentiment' => [ 'pos', 'neg', 'neu', 'hte' ] ] ] as $key => $bucket)
+        {
+            foreach ($bucket as $key => $b)
+            {
+                foreach ($b as $o)
+                {
+                    if ($request->{$key.'_'.$o})
+                    {
+                        $q['query']['bool']['filter'][] = [
+                            'range' => [
+                                implode('.', [ $key, $o ]) => [
+                                    'gte' => implode('.', [ 0, $request->{$key.'_'.$o} ])
+                                ]
+                            ]
+                        ];
+                    }
+                }
+            }
+        }
+
         switch ($request->type)
         {
             case 'histogram':
@@ -342,23 +362,77 @@ class AggregationController extends Controller
                 ];
             break;
             case 'sentiment':
-                $aggs['all'] = [
-                    'pos' => [ 'sum' => [ 'field' => 'sentiment.pos' ] ],
-                    'neg' => [ 'sum' => [ 'field' => 'sentiment.neg' ] ],
-                    'neu' => [ 'sum' => [ 'field' => 'sentiment.neu' ] ],
-                    'hte' => [ 'sum' => [ 'field' => 'sentiment.hte' ] ],
+                unset($q['size']);
+
+                $results = [];
+
+                foreach ([
+                    'twitter'         => [ 'index' => [ 'twitter',   'tweets', '*'   ], 'type' => 'tweet'    ],
+                    'sozluk'          => [ 'index' => [ 'sozluk',    '*'             ], 'type' => 'entry'    ],
+                    'news'            => [ 'index' => [ 'media',     '*'             ], 'type' => 'article'  ],
+                    'blog'            => [ 'index' => [ 'blog',      '*'             ], 'type' => 'document' ],
+                    'instagram'       => [ 'index' => [ 'instagram', 'medias', '*'   ], 'type' => 'media'    ],
+                    'shopping'        => [ 'index' => [ 'shopping',  '*'             ], 'type' => 'product'  ],
+                    'youtube_video'   => [ 'index' => [ 'youtube',   'videos'        ], 'type' => 'video'    ],
+                    'youtube_comment' => [ 'index' => [ 'youtube',   'comments', '*' ], 'type' => 'comment'  ]
+                ] as $key => $module)
+                {
+                    if (@in_array($key, $request->modules))
+                    {
+                        foreach ([ 'pos', 'neu', 'neg', 'hte' ] as $cnsmr)
+                        {
+                            $array = $q;
+                            $array['query']['bool']['filter'][] = [
+                                [ 'range' => [ implode('.', [ 'sentiment', $cnsmr ]) => [ 'gte' => 0.5 ] ] ]
+                            ];
+                            $results[$key][$cnsmr] = Document::count(
+                                $module['index'],
+                                $module['type'],
+                                $array
+                            )->data['count'];
+                        }
+                    }
+                }
+
+                return [
+                    'status' => 'ok',
+                    'data' => $results
                 ];
             break;
             case 'consumer':
-                foreach ([ 'twitter', 'sozluk', 'instagram', 'youtube_video', 'youtube_comment' ] as $key)
+                unset($q['size']);
+
+                $results = [];
+
+                foreach ([
+                    'twitter'         => [ 'index' => [ 'twitter',   'tweets', '*'   ], 'type' => 'tweet'   ],
+                    'sozluk'          => [ 'index' => [ 'sozluk',    '*'             ], 'type' => 'entry'   ],
+                    'instagram'       => [ 'index' => [ 'instagram', 'medias', '*'   ], 'type' => 'media'   ],
+                    'youtube_video'   => [ 'index' => [ 'youtube',   'videos'        ], 'type' => 'video'   ],
+                    'youtube_comment' => [ 'index' => [ 'youtube',   'comments', '*' ], 'type' => 'comment' ]
+                ] as $key => $module)
                 {
-                    $aggs[$key] = [
-                        'nws' => [ 'sum' => [ 'field' => 'consumer.nws' ] ],
-                        'req' => [ 'sum' => [ 'field' => 'consumer.req' ] ],
-                        'que' => [ 'sum' => [ 'field' => 'consumer.que' ] ],
-                        'cmp' => [ 'sum' => [ 'field' => 'consumer.cmp' ] ],
-                    ];
+                    if (@in_array($key, $request->modules))
+                    {
+                        foreach ([ 'nws', 'req', 'que', 'cmp' ] as $cnsmr)
+                        {
+                            $array = $q;
+                            $array['query']['bool']['filter'][] = [
+                                [ 'range' => [ implode('.', [ 'consumer', $cnsmr ]) => [ 'gte' => 0.5 ] ] ]
+                            ];
+                            $results[$key][$cnsmr] = Document::count(
+                                $module['index'],
+                                $module['type'],
+                                $array
+                            )->data['count'];
+                        }
+                    }
                 }
+
+                return [
+                    'status' => 'ok',
+                    'data' => $results
+                ];
             break;
             case 'gender':
                 $aggs['twitter'] = [ 'gender' => [ 'terms' => [ 'field' => 'user.gender' ] ] ];
@@ -366,26 +440,6 @@ class AggregationController extends Controller
                 $aggs['youtube_video'] = [ 'gender' => [ 'terms' => [ 'field' => 'channel.gender' ] ] ];
                 $aggs['youtube_comment'] = [ 'gender' => [ 'terms' => [ 'field' => 'channel.gender' ] ] ];
             break;
-        }
-
-        foreach ([ [ 'consumer' => [ 'nws', 'que', 'req', 'cmp' ] ], [ 'sentiment' => [ 'pos', 'neg', 'neu', 'hte' ] ] ] as $key => $bucket)
-        {
-            foreach ($bucket as $key => $b)
-            {
-                foreach ($b as $o)
-                {
-                    if ($request->{$key.'_'.$o})
-                    {
-                        $q['query']['bool']['filter'][] = [
-                            'range' => [
-                                implode('.', [ $key, $o ]) => [
-                                    'gte' => implode('.', [ 0, $request->{$key.'_'.$o} ])
-                                ]
-                            ]
-                        ];
-                    }
-                }
-            }
         }
 
         $data['q'] = $q;

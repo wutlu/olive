@@ -745,14 +745,14 @@
                 $('[data-name=stats]').html('Daha fazla sonuç için arama kriterlerini azaltmanız gerekiyor.')
             }
 
-            $('[data-name=twitter-tweet]').html(number_format(obj.stats.counts.twitter_tweet));
-            $('[data-name=sozluk-entry]').html(number_format(obj.stats.counts.sozluk_entry));
-            $('[data-name=youtube-video]').html(number_format(obj.stats.counts.youtube_video));
-            $('[data-name=youtube-comment]').html(number_format(obj.stats.counts.youtube_comment));
-            $('[data-name=media-article]').html(number_format(obj.stats.counts.media_article));
-            $('[data-name=blog-document]').html(number_format(obj.stats.counts.blog_document));
-            $('[data-name=shopping-product]').html(number_format(obj.stats.counts.shopping_product));
-            $('[data-name=instagram-media]').html(number_format(obj.stats.counts.instagram_media));
+            $('[data-name=twitter-tweet]').html(number_format(obj.stats.counts.twitter_tweet)).attr('data-count', obj.stats.counts.twitter_tweet);
+            $('[data-name=sozluk-entry]').html(number_format(obj.stats.counts.sozluk_entry)).attr('data-count', obj.stats.counts.sozluk_entry);
+            $('[data-name=youtube-video]').html(number_format(obj.stats.counts.youtube_video)).attr('data-count', obj.stats.counts.youtube_video);
+            $('[data-name=youtube-comment]').html(number_format(obj.stats.counts.youtube_comment)).attr('data-count', obj.stats.counts.youtube_comment);
+            $('[data-name=media-article]').html(number_format(obj.stats.counts.media_article)).attr('data-count', obj.stats.counts.media_article);
+            $('[data-name=blog-document]').html(number_format(obj.stats.counts.blog_document)).attr('data-count', obj.stats.counts.blog_document);
+            $('[data-name=shopping-product]').html(number_format(obj.stats.counts.shopping_product)).attr('data-count', obj.stats.counts.shopping_product);
+            $('[data-name=instagram-media]').html(number_format(obj.stats.counts.instagram_media)).attr('data-count', obj.stats.counts.instagram_media);
 
             $('.banner').addClass('hide')
 
@@ -949,6 +949,8 @@
                     dailyChartOption['xaxis']['categories'] = [ 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi', 'Pazar' ];
 
                     $.each(obj.data, function(module_key, module) {
+                        var label = '';
+
                         switch (module_key)
                         {
                             case 'twitter'         :label = 'Tweet' ; break;
@@ -1852,43 +1854,51 @@
 
                     const consumerChartOption = JSON.parse(JSON.stringify(options));
 
-                    consumerChartOption['chart']['type'] = 'bar';
+                    consumerChartOption['stroke']['width'] = 4;
                     consumerChartOption['xaxis']['title']['text'] = 'Müşteri Grafiği';
                     consumerChartOption['xaxis']['categories'] = [ '% İstek', '% Soru', '% Şikayet', '% Haber' ];
 
                     $.each(obj.data, function(module_key, module) {
+                        var label = '';
+                        var total_html = '';
+
                         switch (module_key)
                         {
-                            case 'twitter'         :label = 'Twitter'      ; break;
-                            case 'instagram'       :label = 'Instagram'    ; break;
-                            case 'sozluk'          :label = 'Sözlük'       ; break;
-                            case 'youtube_video'   :label = 'YouTube Video'; break;
-                            case 'youtube_comment' :label = 'YouTube Yorum'; break;
+                            case 'twitter':
+                                label = 'Twitter';
+                                total_html = $('[data-name=twitter-tweet]').html();
+                            break;
+                            case 'instagram':
+                                label = 'Instagram';
+                                total_html = $('[data-name=instagram-media]').html();
+                            break;
+                            case 'sozluk':
+                                label = 'Sözlük';
+                                total_html = $('[data-name=sozluk-entry]').html();
+                            break;
+                            case 'youtube_video':
+                                label = 'YouTube Video';
+                                total_html = $('[data-name=youtube-video]').html();
+                            break;
+                            case 'youtube_comment':
+                                label = 'YouTube Yorum';
+                                total_html = $('[data-name=youtube-comment]').html();
+                            break;
                         }
 
                         var datas = [];
 
-                        var req = module.req.value;
-                        var que = module.que.value;
-                        var cmp = module.cmp.value;
-                        var nws = module.nws.value;
+                        var req = module.req;
+                        var que = module.que;
+                        var cmp = module.cmp;
+                        var nws = module.nws;
 
-                        var total = req + que + cmp + nws;
+                        datas.push((req ? req : 0).toFixed(2))
+                        datas.push((que ? que : 0).toFixed(2))
+                        datas.push((cmp ? cmp : 0).toFixed(2))
+                        datas.push((nws ? nws : 0).toFixed(2))
 
-                        req = (req*100/total);
-                        que = (que*100/total);
-                        cmp = (cmp*100/total);
-                        nws = (nws*100/total);
-
-                        datas.push((req < 0 ? 0 : req).toFixed(2))
-                        datas.push((que < 0 ? 0 : que).toFixed(2))
-                        datas.push((cmp < 0 ? 0 : cmp).toFixed(2))
-                        datas.push((nws < 0 ? 0 : nws).toFixed(2))
-
-                        consumerChartOption['series'].push({
-                            name: label,
-                            data: datas
-                        })
+                        consumerChartOption['series'].push({ name: label, data: datas })
 
                         if (datas.length)
                         {
@@ -1909,40 +1919,54 @@
                     sentimentChartOption['xaxis']['categories'] = [ '% Pozitif', '% Nötr', '% Negatif', '% Nefret Söylemi' ];
 
                     $.each(obj.data, function(module_key, module) {
+                        var label = '';
+                        var total_html = '';
+
                         switch (module_key)
                         {
-                            case 'twitter'         :label = 'Twitter'      ; break;
-                            case 'instagram'       :label = 'Instagram'    ; break;
-                            case 'sozluk'          :label = 'Sözlük'       ; break;
-                            case 'news'            :label = 'Haber'        ; break;
-                            case 'blog'            :label = 'Blog'         ; break;
-                            case 'youtube_video'   :label = 'YouTube Video'; break;
-                            case 'youtube_comment' :label = 'YouTube Yorum'; break;
+                            case 'twitter':
+                                label = 'Twitter';
+                                total_html = $('[data-name=twitter-tweet]').html();
+                            break;
+                            case 'instagram':
+                                label = 'Instagram';
+                                total_html = $('[data-name=instagram-media]').html();
+                            break;
+                            case 'sozluk':
+                                label = 'Sözlük';
+                                total_html = $('[data-name=sozluk-entry]').html();
+                            break;
+                            case 'news':
+                                label = 'Haber';
+                                total_html = $('[data-name=media-article]').html();
+                            break;
+                            case 'blog':
+                                label = 'Blog';
+                                total_html = $('[data-name=blog-document]').html();
+                            break;
+                            case 'youtube_video':
+                                label = 'YouTube Video';
+                                total_html = $('[data-name=youtube-video]').html();
+                            break;
+                            case 'youtube_comment':
+                                label = 'YouTube Yorum';
+                                total_html = $('[data-name=youtube-comment]').html();
+                            break;
                         }
 
                         var datas = [];
 
-                        var pos = module.pos.value;
-                        var neu = module.neu.value;
-                        var neg = module.neg.value;
-                        var hte = module.hte.value;
+                        var pos = module.pos;
+                        var neu = module.neu;
+                        var neg = module.neg;
+                        var hte = module.hte;
 
-                        var total = pos + neu + neg + hte;
+                        datas.push((pos ? pos : 0).toFixed(2))
+                        datas.push((neu ? neu : 0).toFixed(2))
+                        datas.push((neg ? neg : 0).toFixed(2))
+                        datas.push((hte ? hte : 0).toFixed(2))
 
-                        pos = (pos*100/total);
-                        neu = (neu*100/total);
-                        neg = (neg*100/total);
-                        hte = (hte*100/total);
-
-                        datas.push((pos > 0 ? pos : 0).toFixed(2))
-                        datas.push((neu > 0 ? neu : 0).toFixed(2))
-                        datas.push((neg > 0 ? neg : 0).toFixed(2))
-                        datas.push((hte > 0 ? hte : 0).toFixed(2))
-
-                        sentimentChartOption['series'].push({
-                            name: label,
-                            data: datas
-                        })
+                        sentimentChartOption['series'].push({ name: label, data: datas })
 
                         if (datas.length)
                         {
@@ -1964,6 +1988,8 @@
                     var gender_hits = false;
 
                     $.each(obj.data, function(module_key, module) {
+                        var label = '';
+
                         switch (module_key)
                         {
                             case 'twitter'         :label = 'Twitter'      ; break;
