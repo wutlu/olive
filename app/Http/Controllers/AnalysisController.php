@@ -17,6 +17,7 @@ use App\Http\Requests\SetRequest;
 
 use Sentiment;
 use System;
+use Term;
 use App\Models\Option;
 
 class AnalysisController extends Controller
