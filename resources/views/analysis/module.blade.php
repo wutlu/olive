@@ -82,6 +82,7 @@
                 progress_collection.children(':not(.model)').remove();
 
             var model = progress_collection.find('.collection-item.model');
+            var labels = {!! json_encode(config('system.analysis.category.types')) !!}
 
             $.each(obj.data, function(key, o) {
                 var item = model.clone();
@@ -93,7 +94,7 @@
                         var li = $('<li />', {
                             'class': 'collection-item',
                             'html': [
-                                $('<span />', { 'html': k }),
+                                $('<span />', { 'html': labels['category-' + k].title }),
                                 $('<span />', {
                                     'class': 'badge grey',
                                     'html': x
@@ -174,7 +175,7 @@
                     @slot('size', 'small')
                 @endcomponent
             </div>
-            <a href="#" class="collection-item model hide chip draggable" data-trigger="delete" style="min-width: 15%;"></a>
+            <a href="#" class="model hide chip draggable" data-trigger="delete" style="min-width: 15%;"></a>
         </div>
 
         @component('components.loader')
