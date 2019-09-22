@@ -47,27 +47,25 @@
     </div>
 @endsection
 
-@section('subcard')
+@section('wildcard')
     <div class="grey lighten-4 p-1">
-        <div class="container">
-            <label>
-                <input
-                    name="value"
-                    id="value"
-                    value="on"
-                    class="json"
-                    data-href="{{ route('analysis.learn') }}"
-                    data-method="patch"
-                    data-delay="1"
-                    data-key="data.learn"
-                    data-checked-value="on"
-                    data-unchecked-value="off"
-                    type="checkbox"
-                    data-callback="__status_set"
-                    @if ($learn == 'on'){{ 'checked' }}@endif />
-                <span class="teal-text">Öğrenmeyi Aktif Et</span>
-            </label>
-            <p class="teal-text mt-1">Bu alan aktif edilirse, sistem zaman zaman her kategori için yeni kelimeler tahmin edecektir. Edilen tahminler derlenmek üzere modaratör onayında bekletilecektir.</p>
-        </div>
+        <label>
+            <input
+                name="value"
+                id="value"
+                value="on"
+                class="json"
+                data-href="{{ route('analysis.learn') }}"
+                data-method="patch"
+                data-delay="1"
+                data-key="data.learn"
+                data-checked-value="on"
+                data-unchecked-value="off"
+                type="checkbox"
+                data-callback="__status_set"
+                @if ($learn == 'on'){{ 'checked' }}@endif />
+            <span class="teal-text">Öğrenmeyi Aktif Et</span>
+        </label>
+        <p class="teal-text mt-1">Bu alan aktif edilirse, sistem zaman zaman her kategori için yeni kelimeler tahmin edecektir. Edilen tahminler derlenmek üzere yönetici onayında bekletilecektir.</p>
     </div>
 @endsection
