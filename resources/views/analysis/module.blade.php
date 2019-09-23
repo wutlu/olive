@@ -82,7 +82,7 @@
                 progress_collection.children(':not(.model)').remove();
 
             var model = progress_collection.find('.collection-item.model');
-            var labels = {!! json_encode(config('system.analysis.category.types')) !!}
+            var labels = {!! json_encode(config('system.analysis')) !!}
 
             $.each(obj.data, function(key, o) {
                 var item = model.clone();
@@ -94,7 +94,7 @@
                         var li = $('<li />', {
                             'class': 'collection-item',
                             'html': [
-                                $('<span />', { 'html': labels['category-' + k].title }),
+                                $('<span />', { 'html': labels['{{ $module_name }}']['types']['{{ $module_name }}-' + k].title }),
                                 $('<span />', {
                                     'class': 'badge grey',
                                     'html': x
