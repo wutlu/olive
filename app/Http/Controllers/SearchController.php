@@ -59,6 +59,7 @@ class SearchController extends Controller
     public static function save(SaveRequest $request)
     {
         $request['modules'] = json_encode($request->modules);
+        $request['categories'] = json_encode($request->categories);
 
         $query = new SavedSearch;
         $query->organisation_id = auth()->user()->organisation_id;
@@ -102,6 +103,7 @@ class SearchController extends Controller
             'name',
             'string',
             'reverse',
+            'sharp',
             'sentiment_pos',
             'sentiment_neu',
             'sentiment_neg',
@@ -112,7 +114,8 @@ class SearchController extends Controller
             'consumer_nws',
             'gender',
             'take',
-            'modules'
+            'modules',
+            'categories'
         ])->where('organisation_id', auth()->user()->organisation_id)->orderBy('id', 'desc')->get();
 
         return [

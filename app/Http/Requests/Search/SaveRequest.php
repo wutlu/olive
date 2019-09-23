@@ -57,17 +57,20 @@ class SaveRequest extends FormRequest
             'string' => 'required|string|max:500|min:2',
             'modules' => 'required|array|min:1',
             'modules.*' => 'required|string|in:'.implode(',', array_keys(config('system.modules'))),
+            'categories' => 'nullable|array',
+            'categories.*' => 'required|string|in:'.implode(',',array_keys(config('system.analysis.category.types'))),
             'reverse' => 'nullable|string|in:on',
             'take' => 'required|integer|min:5|max:100',
             'gender' => 'required|string|in:all,male,female,unknown',
-            'sentiment_pos' => 'required|integer|between:0,9',
-            'sentiment_neu' => 'required|integer|between:0,9',
-            'sentiment_neg' => 'required|integer|between:0,9',
-            'sentiment_hte' => 'required|integer|between:0,9',
-            'consumer_que' => 'required|integer|between:0,9',
-            'consumer_req' => 'required|integer|between:0,9',
-            'consumer_cmp' => 'required|integer|between:0,9',
-            'consumer_nws' => 'required|integer|between:0,9'
+            'sentiment_pos' => 'nullable|integer|between:0,9',
+            'sentiment_neu' => 'nullable|integer|between:0,9',
+            'sentiment_neg' => 'nullable|integer|between:0,9',
+            'sentiment_hte' => 'nullable|integer|between:0,9',
+            'consumer_que' => 'nullable|integer|between:0,9',
+            'consumer_req' => 'nullable|integer|between:0,9',
+            'consumer_cmp' => 'nullable|integer|between:0,9',
+            'consumer_nws' => 'nullable|integer|between:0,9',
+            'sharp' => 'nullable|string|in:on',
         ];
     }
 }

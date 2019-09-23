@@ -11,6 +11,10 @@
     'dock' => true
 ])
 
+@php
+$elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_pos,sentiment_neu,sentiment_neg,sentiment_hte,consumer_que,consumer_req,consumer_cmp,consumer_nws,sharp,categories';
+@endphp
+
 @push('local.styles')
     #search-operators {
         display: none;
@@ -265,7 +269,7 @@
                 'id': 'form',
                 'class': 'json',
                 'data-callback': '__search_save',
-                'data-include': 'string,modules,reverse,take,gender,sentiment_pos,sentiment_neu,sentiment_neg,sentiment_hte,consumer_que,consumer_req,consumer_cmp,consumer_nws',
+                'data-include': '{{ $elements }}',
                 'html': $('<div />', {
                     'class': 'input-field',
                     'html': [
@@ -372,10 +376,6 @@
         }
     }
 @endpush
-
-@php
-    $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_pos,sentiment_neu,sentiment_neg,sentiment_hte,consumer_que,consumer_req,consumer_cmp,consumer_nws,sharp';
-@endphp
 
 @section('wildcard')
     <div class="d-flex" id="search-area">
@@ -2052,6 +2052,7 @@
         <a href="#" class="collection-item json loading" data-callback="__chart" data-type="gender" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}">Cinsiyet Grafiği</a>
         <a href="#" class="collection-item json loading" data-callback="__chart" data-type="author" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}">@bahsedenler</a>
         <a href="#" class="collection-item json loading" data-callback="__chart" data-type="hashtag" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}">#hashtagler</a>
+        <a href="#" class="collection-item loading" data-callback="__chart" data-type="hashtag" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}">Kategori <sup class="red-text">Yakında</sup></a>
     </div>
 @endsection
 
@@ -2228,7 +2229,7 @@
                 <div class="d-flex flex-wrap"> 
                    @foreach(config('system.analysis.category.types') as $key => $cat)
                         <label class="flex-fill" style="width: 50%;">
-                            <input type="checkbox" name="category" id="category" data-multiple="true" value="{{ $key }}" disabled="" />
+                            <input type="checkbox" name="categories" id="categories" data-multiple="true" value="{{ $key }}" />
                             <span>{{ $cat['title'] }}</span>
                         </label>
                     @endforeach
@@ -2370,16 +2371,17 @@
 
         $('input[name=string]').val(option.string)
         $('input[name=reverse]').prop('checked', option.reverse ? true : false)
+        $('input[name=sharp]').prop('checked', option.sharp ? true : false)
 
-        $('input[name=sentiment_pos]').val(option.sentiment_pos)
-        $('input[name=sentiment_neu]').val(option.sentiment_neu)
-        $('input[name=sentiment_neg]').val(option.sentiment_neg)
-        $('input[name=sentiment_hte]').val(option.sentiment_hte)
+        $('input[name=sentiment_pos]').prop('checked', option.sentiment_pos ? true : false)
+        $('input[name=sentiment_neu]').prop('checked', option.sentiment_neu ? true : false)
+        $('input[name=sentiment_neg]').prop('checked', option.sentiment_neg ? true : false)
+        $('input[name=sentiment_hte]').prop('checked', option.sentiment_hte ? true : false)
 
-        $('input[name=consumer_que]').val(option.sentiment_hte)
-        $('input[name=consumer_req]').val(option.consumer_req)
-        $('input[name=consumer_cmp]').val(option.consumer_cmp)
-        $('input[name=consumer_nws]').val(option.consumer_nws)
+        $('input[name=consumer_que]').prop('checked', option.sentiment_hte ? true : false)
+        $('input[name=consumer_req]').prop('checked', option.consumer_req ? true : false)
+        $('input[name=consumer_cmp]').prop('checked', option.consumer_cmp ? true : false)
+        $('input[name=consumer_nws]').prop('checked', option.consumer_nws ? true : false)
 
         $('input[name=gender][value=' + option.gender + ']').prop('checked', true)
 
@@ -2387,9 +2389,14 @@
         $('select[name=take]').formSelect();
 
         $('input[name=modules]').prop('checked', false)
+        $('input[name=categories]').prop('checked', false)
 
         $.each(JSON.parse(option.modules), function(key, module) {
             $('input[name=modules][value=' + module + ']').prop('checked', true)
+        })
+
+        $.each(JSON.parse(option.categories), function(key, category) {
+            $('input[name=categories][value=' + category + ']').prop('checked', true)
         })
 
         var search = $('ul#search');

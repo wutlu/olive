@@ -23,6 +23,8 @@ class SavedSearch extends Model
 		'consumer_nws',
 		'gender',
 		'take',
-		'modules'
+		'modules',
+		'sharp',
+		'categories'
     ];
 }
