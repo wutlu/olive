@@ -2138,7 +2138,7 @@
                 </div>
             </div>
 
-            <div class="d-flex">
+            <div class="d-flex flex-wrap mb-2">
                 <div class="d-flex flex-column flex-fill">
                     <h6 class="blue-grey-text">Duygu</h6>
                     <div class="switch">
@@ -2201,24 +2201,37 @@
                         </label>
                     </div>
                 </div>
-                <div class="d-flex flex-column flex-fill">
-                    <h6 class="blue-grey-text">Cinsiyet</h6>
-                    <label>
+            </div>
+            <div class="mb-2">
+                <h6 class="blue-grey-text">Cinsiyet</h6>
+                <div class="d-flex">
+                    <label class="flex-fill">
                         <input name="gender" type="radio" data-update-click value="all" checked />
                         <span>Hepsi</span>
                     </label>
-                    <label>
+                    <label class="flex-fill">
                         <input name="gender" type="radio" data-update-click value="female" />
                         <span>Kadın</span>
                     </label>
-                    <label>
+                    <label class="flex-fill">
                         <input name="gender" type="radio" data-update-click value="male" />
                         <span>Erkek</span>
                     </label>
-                    <label>
+                    <label class="flex-fill">
                         <input name="gender" type="radio" data-update-click value="unknown" />
                         <span>Bilinmeyen</span>
                     </label>
+                </div>
+            </div>
+            <div>
+                <h6 class="blue-grey-text">Kategori <sup class="red-text">Yakında</sup></h6>
+                <div class="d-flex flex-wrap"> 
+                   @foreach(config('system.analysis.category.types') as $key => $cat)
+                        <label class="flex-fill" style="width: 50%;">
+                            <input type="checkbox" name="category" id="category" data-multiple="true" value="{{ $key }}" disabled="" />
+                            <span>{{ $cat['title'] }}</span>
+                        </label>
+                    @endforeach
                 </div>
             </div>
         </div>
