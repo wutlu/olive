@@ -1180,6 +1180,7 @@ class OrganisationController extends Controller
         }
 
         $math_prices = $math_prices + ($request->user_capacity * $prices['unit_price.user']['value']);
+        $math_prices = $math_prices - $prices['unit_price.user']['value'];
 
         return [
             'total_price' => $math_prices

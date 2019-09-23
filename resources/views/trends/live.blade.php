@@ -19,6 +19,8 @@
 @endsection
 
 @push('local.scripts')
+    //$('.resizable').resizable()
+
     var incoming_trends = 0;
     var outbound_trends = 0;
 
@@ -305,7 +307,7 @@
                 <ul
                     id="trend_list-{{ $trend['module'] }}"
                     data-id="trend_list"
-                    class="collapsible"
+                    class="collapsible resizable"
                     data-href="{{ route('trend.live') }}"
                     data-module="{{ $trend['module'] }}"
                     data-method="post"

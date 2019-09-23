@@ -339,6 +339,7 @@
     function calculate()
     {
         var total_price = parseInt((math_prices() + single_prices()) + ($('input[name=user_capacity]').val() * {{ $prices['unit_price.user']['value'] }}));
+            total_price = total_price - {{ $prices['unit_price.user']['value'] }};
 
         $('[data-name=price-total]').html((total_price).toFixed(2))
     }

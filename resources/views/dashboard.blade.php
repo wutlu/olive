@@ -1,6 +1,5 @@
 @extends('layouts.app', [
-    'sidenav_fixed_layout' => true,
-    'help' => 'driver.start()'
+    'sidenav_fixed_layout' => true
 ])
 
 @push('local.scripts')
@@ -8,64 +7,6 @@
         fullWidth: true,
         indicators: true
     })
-
-    const driver = new Driver({
-        allowClose: false,
-        opacity: .4,
-        padding: 6,
-        onReset: function() {
-            vzAjax($('<div />', {
-                'class': 'json',
-                'data-method': 'post',
-                'data-href': '{{ route('intro', 'driver.trend') }}'
-            }))
-        }
-    })
-
-    driver.defineSteps([
-        {
-            element: '#fast_menu-module-stream',
-            popover: {
-                title: 'Gerçek Zamanlı Akış',
-                description: 'Türkiye gündemini anlık olarak takip edebilmeniz için tam anlamıyla gerçek zamanlı bir akış hazırladık.'
-            }
-        },
-        {
-            element: '#fast_menu-module-search',
-            popover: {
-                title: 'Arama Motoru',
-                description: 'Kitle ve kriterlere göre detaylı aramalar yapabilmeniz için gelişmiş bir arama motoru yaptık.'
-            }
-        },
-        {
-            element: '#fast_menu-module-trend',
-            popover: {
-                title: 'Canlı Trend',
-                description: 'Gündemi herkesten önce inceleyip, anlık trendler oluşturan akıllı robotlar geliştirdik. Bu robotların elde ettiği sonuçları Canlı Trend bölümünde, gerçek zamanlı olarak sizlere sunuyoruz.'
-            }
-        },
-        {
-            element: '#fast_menu-module-alarm',
-            popover: {
-                title: 'Alarmlar',
-                description: 'Bilgisayar başında kalacak vaktinizin olmadığı zamanlar için sizlere anlık e-posta bildirimleri göndermesi için Alarm bölümünü geliştirdik.'
-            }
-        },
-        {
-            element: '#fast_menu-module-pool',
-            popover: {
-                title: 'Veri Havuzu',
-                description: 'Tüm bu işlemlerin besleyen veri örümceklerinin daha çok veriye ulaşması için sizlere ihtiyacı var. Örümceklerimizi veri havuzundan yönetebilirsiniz.'
-            }
-        },
-        {
-            element: '#fast_menu-module-forum',
-            popover: {
-                title: 'Son Olarak!',
-                description: 'Veri teknolojileri veya diğer konular hakkında tartışma ve yardımlaşma yapabileceğiniz bir Forum bölümü oluşturduk.'
-            }
-        }
-    ])
 @endpush
 
 @push('local.styles')
