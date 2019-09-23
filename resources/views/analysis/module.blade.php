@@ -334,7 +334,7 @@
     {
         if (obj.status == 'ok')
         {
-            $('[data-id=' + obj.data.id + '].collection-item').remove()
+            $('[data-id=' + obj.data.id + ']').remove()
 
             $('#modal-alert').modal('close')
 
