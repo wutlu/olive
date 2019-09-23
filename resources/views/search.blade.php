@@ -2138,81 +2138,84 @@
                 </div>
             </div>
 
-            <div class="grey-text mb-2">
-                @component('components.alert')
-                    @slot('icon', 'info')
-                    @slot('text', 'Yapay zeka motorumuz, belirli oranlarda tahminler gerçekleştirir. Aralık değerleri ile bu tahminleri istediğiniz değerlerde filtreleyebilirsiniz.')
-                @endcomponent
-            </div>
-
-            <div class="d-block">
-                <div class="d-flex">
-                    <div class="flex-fill" style="width: 25%;">
-                        <span class="range-field">
+            <div class="d-flex">
+                <div class="d-flex flex-column flex-fill">
+                    <h6 class="blue-grey-text">Duygu</h6>
+                    <div class="switch">
+                        <label>
+                            <input type="checkbox" data-update name="sentiment_pos" value="5" />
+                            <span class="lever"></span>
                             Pozitif
-                            <input data-update name="sentiment_pos" type="range" min="0" max="9" value="0" />
-                        </span>
+                        </label>
                     </div>
-                    <div class="flex-fill" style="width: 25%;">
-                        <span class="range-field">
+                    <div class="switch">
+                        <label>
+                            <input type="checkbox" data-update name="sentiment_neu" value="5" />
+                            <span class="lever"></span>
                             Nötr
-                            <input data-update name="sentiment_neu" type="range" min="0" max="9" value="0" />
-                        </span>
+                        </label>
                     </div>
-                    <div class="flex-fill" style="width: 25%;">
-                        <span class="range-field">
+                    <div class="switch">
+                        <label>
+                            <input type="checkbox" data-update name="sentiment_neg" value="5" />
+                            <span class="lever"></span>
                             Negatif
-                            <input data-update name="sentiment_neg" type="range" min="0" max="9" value="0" />
-                        </span>
+                        </label>
                     </div>
-                    <div class="flex-fill" style="width: 25%;">
-                        <span class="range-field">
+                    <div class="switch">
+                        <label>
+                            <input type="checkbox" data-update name="sentiment_hte" value="5" />
+                            <span class="lever"></span>
                             Nefret Söylemi
-                            <input data-update name="sentiment_hte" type="range" min="0" max="9" value="0" />
-                        </span>
+                        </label>
                     </div>
                 </div>
-                <div class="d-flex">
-                    <div class="flex-fill" style="width: 25%;">
-                        <span class="range-field">
+                <div class="d-flex flex-column flex-fill">
+                    <h6 class="blue-grey-text">Müşteri</h6>
+                    <div class="switch">
+                        <label>
+                            <input type="checkbox" data-update name="consumer_que" value="5" />
+                            <span class="lever"></span>
                             Soru
-                            <input data-update name="consumer_que" type="range" min="0" max="9" value="0" />
-                        </span>
+                        </label>
                     </div>
-                    <div class="flex-fill" style="width: 25%;">
-                        <span class="range-field">
+                    <div class="switch">
+                        <label>
+                            <input type="checkbox" data-update name="consumer_req" value="5" />
+                            <span class="lever"></span>
                             İstek
-                            <input data-update name="consumer_req" type="range" min="0" max="9" value="0" />
-                        </span>
+                        </label>
                     </div>
-                    <div class="flex-fill" style="width: 25%;">
-                        <span class="range-field">
+                    <div class="switch">
+                        <label>
+                            <input type="checkbox" data-update name="consumer_cmp" value="5" />
+                            <span class="lever"></span>
                             Şikayet
-                            <input data-update name="consumer_cmp" type="range" min="0" max="9" value="0" />
-                        </span>
+                        </label>
                     </div>
-                    <div class="flex-fill" style="width: 25%;">
-                        <span class="range-field">
+                    <div class="switch">
+                        <label>
+                            <input type="checkbox" data-update name="consumer_nws" value="5" />
+                            <span class="lever"></span>
                             Haber
-                            <input data-update name="consumer_nws" type="range" min="0" max="9" value="0" />
-                        </span>
+                        </label>
                     </div>
                 </div>
-
-                <div class="d-flex">
-                    <label class="flex-fill" style="width: 25%;">
+                <div class="d-flex flex-column flex-fill">
+                    <h6 class="blue-grey-text">Cinsiyet</h6>
+                    <label>
                         <input name="gender" type="radio" data-update-click value="all" checked />
                         <span>Hepsi</span>
                     </label>
-                    <label class="flex-fill" style="width: 25%;">
+                    <label>
                         <input name="gender" type="radio" data-update-click value="female" />
                         <span>Kadın</span>
                     </label>
-                    <label class="flex-fill" style="width: 25%;">
+                    <label>
                         <input name="gender" type="radio" data-update-click value="male" />
                         <span>Erkek</span>
                     </label>
-                    <label class="flex-fill" style="width: 25%;">
+                    <label>
                         <input name="gender" type="radio" data-update-click value="unknown" />
                         <span>Bilinmeyen</span>
                     </label>
