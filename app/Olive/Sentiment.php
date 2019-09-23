@@ -291,8 +291,10 @@ class Sentiment {
     public static function _getTokens(string $string)
     {
         $string = Term::convertAscii($string, [
-            'replacements' => [ '(\#| )' => '-' ]
+            'replacements' => [ '(\#| \')' => '-' ]
         ]);
+
+        $string = str_replace('\'', '-', $string);
 
         $title_case = title_case($string);
         $kebab_case = kebab_case($string);
