@@ -2229,7 +2229,7 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                 <div class="d-flex flex-wrap"> 
                    @foreach(config('system.analysis.category.types') as $key => $cat)
                         <label class="flex-fill" style="width: 50%;">
-                            <input type="checkbox" name="categories" id="categories" data-multiple="true" value="{{ $key }}" />
+                            <input type="checkbox" disabled name="categories" id="categories" data-multiple="true" value="{{ $key }}" />
                             <span>{{ $cat['title'] }}</span>
                         </label>
                     @endforeach
