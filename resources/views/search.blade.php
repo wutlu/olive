@@ -768,7 +768,7 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                     window.clearTimeout(bannerTimer)
 
                     bannerTimer = window.setTimeout(function() {
-                        var bucket = [ 'place', 'sentiment', 'consumer', 'gender', 'hashtag' ];
+                        var bucket = [ 'sentiment', 'consumer', 'gender', 'hashtag' ];
                         var selected_type = bucket[Math.floor(Math.random() * bucket.length)];
 
                         vzAjax($('<div />', {

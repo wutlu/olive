@@ -908,22 +908,6 @@ class AggregationController extends Controller
                     ]
                 ];
             break;
-            case 'place':
-                $aggs['twitter'] = [
-                    'place' => [
-                        'terms' => [
-                            'field' => 'place.name'
-                        ]
-                    ]
-                ];
-                $aggs['instagram'] = [
-                    'place' => [
-                        'terms' => [
-                            'field' => 'place.name'
-                        ]
-                    ]
-                ];
-            break;
         }
 
         $query = [
@@ -1042,23 +1026,6 @@ class AggregationController extends Controller
                             {
                                 $data['data'][$row['key']] = $row['doc_count'];
                             }
-                        }
-                    }
-                }
-            break;
-            case 'place':
-                if ($query['aggs']->status == 'ok')
-                {
-                    $data['status'] = 'ok';
-
-                    if (@$query['aggs']->data['aggregations']['place']['buckets'])
-                    {
-                        foreach ($query['aggs']->data['aggregations']['place']['buckets'] as $key => $row)
-                        {
-                            $data['data']['place'][] = [
-                                'name' => $row['key'],
-                                'hit' => $row['doc_count']
-                            ];
                         }
                     }
                 }
