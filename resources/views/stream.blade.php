@@ -286,7 +286,7 @@
 
             buffer.shift()
 
-            if (bucket.children('.collection-item').length > 1000)
+            if (bucket.children('.collection-item').length > 600)
             {
                 bucket.children('.collection-item:last-child').remove()
             }
