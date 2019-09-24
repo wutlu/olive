@@ -70,95 +70,105 @@ class RealTimeController extends Controller
 
         $search = SavedSearch::where([ 'id' => $request->keyword_group, 'organisation_id' => $organisation->id ])->first();
 
-        preg_match_all('/(?<=\[s:)[([0-9]+(?=\])/m', $search->string, $matches);
-
-        if (@$matches[0][0])
+        if (@$search)
         {
-            $source = Source::whereIn('id', $matches[0])->where('organisation_id', $organisation->id)->first();
-            $search->string = preg_replace('/\[s:([0-9]+)\]/m', '', $search->string);
-        }
+            preg_match_all('/(?<=\[s:)[([0-9]+(?=\])/m', $search->string, $matches);
 
-        $clean = Term::cleanSearchQuery($search->string);
-        $searchController = new SearchController;
+            if (@$matches[0][0])
+            {
+                $source = Source::whereIn('id', $matches[0])->where('organisation_id', $organisation->id)->first();
+                $search->string = preg_replace('/\[s:([0-9]+)\]/m', '', $search->string);
+            }
 
-        $q = [
-            'size' => 1000,
-            'sort' => [ 'created_at' => 'desc' ],
-            'query' => [
-                'bool' => [
-                    'filter' => [
-                        [
-                            'range' => [
-                                'called_at' => [
-                                    'format' => 'YYYY-MM-dd HH:mm',
-                                    'gte' => Carbon::now()->subMinutes(2)->format('Y-m-d H:i')
+            $clean = Term::cleanSearchQuery($search->string);
+            $searchController = new SearchController;
+
+            $q = [
+                'size' => 1000,
+                'sort' => [ 'created_at' => 'desc' ],
+                'query' => [
+                    'bool' => [
+                        'filter' => [
+                            [
+                                'range' => [
+                                    'called_at' => [
+                                        'format' => 'YYYY-MM-dd HH:mm',
+                                        'gte' => Carbon::now()->subMinutes(2)->format('Y-m-d H:i')
+                                    ]
                                 ]
                             ]
-                        ]
-                    ],
-                    'must' => [
-                        [ 'exists' => [ 'field' => 'created_at' ] ],
-                        [
-                            'query_string' => [
-                                'fields' => [
-                                    'title',
-                                    'description',
-                                    'entry',
-                                    'text'
-                                ],
-                                'query' => $clean->line,
-                                'default_operator' => 'AND'
+                        ],
+                        'must' => [
+                            [ 'exists' => [ 'field' => 'created_at' ] ],
+                            [
+                                'query_string' => [
+                                    'fields' => [
+                                        'title',
+                                        'description',
+                                        'entry',
+                                        'text'
+                                    ],
+                                    'query' => $clean->line,
+                                    'default_operator' => 'AND'
+                                ]
                             ]
                         ]
                     ]
                 ]
-            ]
-        ];
+            ];
 
-        foreach ([ [ 'consumer' => [ 'nws', 'que', 'req', 'cmp' ] ], [ 'sentiment' => [ 'pos', 'neg', 'neu', 'hte' ] ] ] as $key => $bucket)
-        {
-            foreach ($bucket as $key => $b)
+            foreach ([ [ 'consumer' => [ 'nws', 'que', 'req', 'cmp' ] ], [ 'sentiment' => [ 'pos', 'neg', 'neu', 'hte' ] ] ] as $key => $bucket)
             {
-                foreach ($b as $o)
+                foreach ($bucket as $key => $b)
                 {
-                    if ($search->{$key.'_'.$o})
+                    foreach ($b as $o)
                     {
-                        $q['query']['bool']['filter'][] = [
-                            'range' => [
-                                implode('.', [ $key, $o ]) => [
-                                    'gte' => implode('.', [ 0, $search->{$key.'_'.$o} ])
+                        if ($search->{$key.'_'.$o})
+                        {
+                            $q['query']['bool']['filter'][] = [
+                                'range' => [
+                                    implode('.', [ $key, $o ]) => [
+                                        'gte' => implode('.', [ 0, $search->{$key.'_'.$o} ])
+                                    ]
                                 ]
-                            ]
-                        ];
+                            ];
+                        }
                     }
                 }
             }
-        }
 
-        $data = [];
+            $data = [];
 
-        foreach (json_decode($search->modules) as $module)
-        {
-            switch ($module)
+            foreach (json_decode($search->modules) as $module)
             {
-                case 'twitter'         : if ($organisation->data_twitter)         $data = array_merge($data, $searchController->tweet          ($search, $q)['data']);                            break;
-                case 'instagram'       : if ($organisation->data_instagram)       $data = array_merge($data, $searchController->instagram      ($search, $q)['data']);                            break;
-                case 'sozluk'          : if ($organisation->data_sozluk)          $data = array_merge($data, $searchController->sozluk         ($search, $q, @$source->source_sozluk)['data']);   break;
-                case 'news'            : if ($organisation->data_news)            $data = array_merge($data, $searchController->news           ($search, $q, @$source->source_media)['data']);    break;
-                case 'blog'            : if ($organisation->data_blog)            $data = array_merge($data, $searchController->blog           ($search, $q, @$source->source_blog)['data']);     break;
-                case 'youtube_video'   : if ($organisation->data_youtube_video)   $data = array_merge($data, $searchController->youtube_video  ($search, $q)['data']);                            break;
-                case 'youtube_comment' : if ($organisation->data_youtube_comment) $data = array_merge($data, $searchController->youtube_comment($search, $q)['data']);                            break;
-                case 'shopping'        : if ($organisation->data_shopping)        $data = array_merge($data, $searchController->shopping       ($search, $q, @$source->source_shopping)['data']); break;
+                switch ($module)
+                {
+                    case 'twitter'         : if ($organisation->data_twitter)         $data = array_merge($data, $searchController->tweet          ($search, $q)['data']);                            break;
+                    case 'instagram'       : if ($organisation->data_instagram)       $data = array_merge($data, $searchController->instagram      ($search, $q)['data']);                            break;
+                    case 'sozluk'          : if ($organisation->data_sozluk)          $data = array_merge($data, $searchController->sozluk         ($search, $q, @$source->source_sozluk)['data']);   break;
+                    case 'news'            : if ($organisation->data_news)            $data = array_merge($data, $searchController->news           ($search, $q, @$source->source_media)['data']);    break;
+                    case 'blog'            : if ($organisation->data_blog)            $data = array_merge($data, $searchController->blog           ($search, $q, @$source->source_blog)['data']);     break;
+                    case 'youtube_video'   : if ($organisation->data_youtube_video)   $data = array_merge($data, $searchController->youtube_video  ($search, $q)['data']);                            break;
+                    case 'youtube_comment' : if ($organisation->data_youtube_comment) $data = array_merge($data, $searchController->youtube_comment($search, $q)['data']);                            break;
+                    case 'shopping'        : if ($organisation->data_shopping)        $data = array_merge($data, $searchController->shopping       ($search, $q, @$source->source_shopping)['data']); break;
+                }
             }
+
+            usort($data, '\App\Utilities\DateUtility::dateSort');
+
+            return [
+                'status' => 'ok',
+                'data' => $data,
+                'words' => $clean->words
+            ];
         }
-
-        usort($data, '\App\Utilities\DateUtility::dateSort');
-
-        return [
-            'status' => 'ok',
-            'data' => $data,
-            'words' => $clean->words
-        ];
+        else
+        {
+            return [
+                'status' => 'err',
+                'message' => 'Kayıtlı Aramaya ulaşılamıyor. Lütfen sayfayı yenileyin ve tekrar deneyin.'
+            ];
+        }
     }
 
     /**

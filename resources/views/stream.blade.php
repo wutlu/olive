@@ -446,6 +446,7 @@
     $(document).on('click', '.switch', function() {
         var stream = false;
         var keyword_group_checkboxes = $('input[name=keyword_group]');
+            keyword_group_checkboxes.not($(this).find('input[type=checkbox]')).prop('checked', false);
 
         $.each(keyword_group_checkboxes, function() {
             var __ = $(this);
