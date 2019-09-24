@@ -4,7 +4,7 @@ return [
     /**
      * Sistem Versiyonu
      */
-    'version' => '5.6',
+    'version' => '5.6.1',
 
     /**
      * db
@@ -87,6 +87,7 @@ return [
                     'title' => 'Haber'
                 ],
             ],
+            'ignore' => 'consumer-ign',
             'title' => 'Müşteri Analizi'
         ],
         'gender' => [

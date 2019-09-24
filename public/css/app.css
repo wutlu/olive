@@ -2982,9 +2982,7 @@ nav.scrolled.active,
 
     margin: 0 auto;
 }
-
 .browser-mockup > img { width: 100%; }
-
 .browser-mockup:before {
     display: block;
     position: absolute;
@@ -3004,7 +3002,6 @@ nav.scrolled.active,
     -webkit-box-shadow: 0 0 0 2px #f44, 1.5em 0 0 2px #9b3, 3em 0 0 2px #fb5;
             box-shadow: 0 0 0 2px #f44, 1.5em 0 0 2px #9b3, 3em 0 0 2px #fb5;
 }
-    
 .browser-mockup.with-tab:after {
     display: block;
     position: absolute;
