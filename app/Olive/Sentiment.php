@@ -39,7 +39,7 @@ class Sentiment {
      * 
      * @var int
      */
-    private $maxTokenLength = 16;
+    private $maxTokenLength = 24;
 
     /**
      * Classification of opinions
