@@ -1963,6 +1963,9 @@ table tr {
 .card .card-action a:not(.btn):not(.btn-large):not(.btn-small):not(.btn-large):not(.btn-floating) {
   margin-right: 2px;
 }
+.card .card-action {
+  padding: 8px;
+}
 
 .btn:hover,
 .btn-large:hover,
