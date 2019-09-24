@@ -148,7 +148,7 @@
         {
             M.toast({ html: 'Giriş Gerçekleştirildi! Yönlendiriliyorsunuz...', classes: 'teal' })
 
-            $.playSound('https://tts.voicetech.yandex.net/tts?text=Giriş gerçekleştirildi.&lang=tr_TR&format=mp3')
+            $.playSound('https://tts.voicetech.yandex.net/tts?text=Oturum Açılıyor.&lang=tr_TR&format=mp3')
 
             setTimeout(__goDashboard, 3000)
         }
