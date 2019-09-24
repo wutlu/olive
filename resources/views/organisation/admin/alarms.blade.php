@@ -52,10 +52,9 @@
                     </div>
                     <div class="card-content">
                         <span class="card-title card-title-small" data-name="name"></span>
-                        <small class="grey-text">Sorgu</small>
-                        <span class="d-block" data-name="query"></span>
-                        <span class="d-block" data-name="receivers"></span>
-                        <span class="d-block" data-name="modules"></span>
+                        <small class="blue-grey-text">Sorgu</small>
+                        <span class="d-block mb-1" data-name="string"></span>
+                        <span class="blue-grey-text d-block" data-name="receivers"></span>
                     </div>
                 </div>
 
@@ -104,10 +103,11 @@
                             .addClass('_tmp')
                             .attr('data-id', o.id)
 
-                        item.find('[data-name=name]').html(o.name)
-                        item.find('[data-name=query]').html(o.query)
                         item.find('[data-name=hit]').html(o.hit).addClass(o.hit == 0 ? 'red-text' : '')
                         item.find('[data-name=interval]').html(o.interval)
+                        item.find('[data-name=name]').html(o.search.name)
+                        item.find('[data-name=string]').html(o.search.string)
+                        item.find('[data-name=receivers]').html(o.user_ids.length + ' alıcı')
 
                         $.each({
                             'day_1': 'day-1',
@@ -123,8 +123,6 @@
 
                         item.find('[data-name=start-time]').html(o.start_time)
                         item.find('[data-name=end-time]').html(o.end_time)
-                        item.find('[data-name=receivers]').html(o.user_ids.length + ' alıcı')
-                        item.find('[data-name=modules]').html(o.modules.length + ' modül')
 
                         if (!selector.length)
                         {
@@ -132,8 +130,6 @@
                         }
                 })
             }
-
-            $('[data-name=count]').html(obj.hits.length + ' / {{ auth()->user()->organisation->alarm_limit }}')
         }
     }
 @endpush

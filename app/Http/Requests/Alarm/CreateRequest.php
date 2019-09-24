@@ -8,6 +8,7 @@ use Validator;
 
 use App\Models\User\User;
 use App\Models\Alarm;
+use App\Models\SavedSearch;
 
 class CreateRequest extends FormRequest
 {
@@ -30,8 +31,8 @@ class CreateRequest extends FormRequest
     {
         return [
             'email_validation' => 'E-posta adreslerinin organizasyonunuzda olması gerekir.',
-            'or_params' => 'En fazla 4 adet OR (||) parametresi kullanabilirsiniz.',
-            'limit' => 'Alarm limitiniz doldu.'
+            'private_exists' => 'Seçtiğiniz arama silinmiş olabilir. Lütfen sayfayı yenileyin ve tekrar deneyin!',
+            'private_unique' => 'Seçtiğiniz arama için farklı bir alarm mevcut. Lütfen farklı bir arama seçin!'
         ];
     }
 
@@ -44,28 +45,20 @@ class CreateRequest extends FormRequest
     {
         $user = auth()->user();
 
-        Validator::extend('limit', function($attribute) use ($user) {
-            $total_alarm = Alarm::where('organisation_id', $user->organisation_id)->count();
-
-            return $total_alarm < $user->organisation->alarm_limit;
-        });
-
         Validator::extend('email_validation', function($key, $id) use ($user) {
             return User::where('organisation_id', $user->organisation_id)->where('id', $id)->exists();
         });
 
-        Validator::extend('or_params', function($key, $query) {
-            $or = substr_count($query, ' OR ');
-            $pipe = substr_count($query, '||');
+        Validator::extend('private_exists', function($key, $id) use ($user) {
+            return SavedSearch::where([ 'id' => $id, 'organisation_id' => $user->organisation_id ])->exists();
+        });
 
-            $total = $or + $pipe;
-
-            return $total <= 4;
+        Validator::extend('private_unique', function($key, $id) use ($user) {
+            return !Alarm::where([ 'search_id' => $id, 'organisation_id' => $user->organisation_id ])->exists();
         });
 
         return [
-            'name' => 'required|string|max:100|limit',
-            'text' => 'required|string|max:255|or_params',
+            'search_id' => 'required|integer|private_exists|private_unique',
 
             'hit' => 'required|integer|min:1|max:120',
 
@@ -79,9 +72,6 @@ class CreateRequest extends FormRequest
 
             'user_ids' => 'required|array|min:1',
             'user_ids.*' => 'required|integer|email_validation',
-
-            'sources' => 'required|array|min:1',
-            'sources.*' => 'required|string|in:'.implode(',', array_keys(config('system.modules')))
         ];
     }
 }

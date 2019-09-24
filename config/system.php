@@ -4,7 +4,7 @@ return [
     /**
      * Sistem Versiyonu
      */
-    'version' => '5.6.1',
+    'version' => '5.7.1.2',
 
     /**
      * db
@@ -123,6 +123,8 @@ return [
                 'category-16' => [ 'title' => 'Yemek',                 'per' => 0.1 ],
                 'category-17' => [ 'title' => 'Gezi & Seyahat',        'per' => 0.1 ],
                 'category-18' => [ 'title' => 'Sağlık',                'per' => 0.1 ],
+                'category-19' => [ 'title' => 'Sektörel',              'per' => 0.1 ],
+                'category-20' => [ 'title' => 'Markalar',              'per' => 0.1 ],
             ],
             'title' => 'Kategori Analizi'
         ],

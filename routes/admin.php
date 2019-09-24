@@ -87,9 +87,6 @@ Route::domain('olive.'.config('app.domain'))->group(function () {
             Route::post('{id}', 'OrganisationController@adminUpdate');
             Route::post('/', 'OrganisationController@adminCreate')->name('admin.organisation.create');
 
-            Route::get('{id}/gercek-zamanli/kelime-gruplari', 'OrganisationController@keywordGroups')->name('admin.organisation.keyword_groups');
-            Route::post('gercek-zamanli/kelime-gruplari/guncelle', 'OrganisationController@keywordGroupsUpdate')->name('admin.organisation.keyword_groups.update');
-
             Route::get('{id}/alarmlar', 'OrganisationController@alarms')->name('admin.organisation.alarms');
             Route::post('{id}/alarmlar', 'OrganisationController@alarmListJson');
 

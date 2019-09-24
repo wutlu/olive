@@ -27,10 +27,11 @@
                             .addClass('_tmp')
                             .attr('data-id', o.id)
 
-                        item.find('[data-name=name]').html(o.name)
-                        item.find('[data-name=query]').html(o.query)
                         item.find('[data-name=hit]').html(o.hit).addClass(o.hit == 0 ? 'red-text' : '')
                         item.find('[data-name=interval]').html(o.interval)
+                        item.find('[data-name=name]').html(o.search.name)
+                        item.find('[data-name=string]').html(o.search.string)
+                        item.find('[data-name=receivers]').html(o.user_ids.length + ' alıcı')
 
                         $.each({
                             'day_1': 'day-1',
@@ -64,7 +65,7 @@
                 })
             }
 
-            $('[data-name=count]').html(obj.hits.length + ' / {{ auth()->user()->organisation->alarm_limit }}')
+            $('[data-name=count]').html(obj.hits.length)
         }
     }
 @endpush
@@ -83,7 +84,7 @@
         </div>
 
         <div class="card-content">
-            <span class="d-block grey-text text-darken-2" data-name="count">0 / 0</span>
+            <span class="d-block grey-text text-darken-2" data-name="count">0</span>
         </div>
 
         @component('components.loader')
@@ -118,8 +119,9 @@
                     </div>
                     <div class="card-content">
                         <span class="card-title card-title-small" data-name="name"></span>
-                        <small class="grey-text">Sorgu</small>
-                        <span class="d-block" data-name="query"></span>
+                        <small class="blue-grey-text">Sorgu</small>
+                        <span class="d-block mb-1" data-name="string"></span>
+                        <span class="blue-grey-text d-block" data-name="receivers"></span>
 
                         <a href="#" data-name="dropdown-trigger" class="btn-floating btn-flat btn-small waves-effect">
                             <i class="material-icons">arrow_drop_down</i>
@@ -170,68 +172,45 @@
                 'data-callback': '__alarm_callback',
                 'html': [
                     $('<ul />', {
-                        'class': 'collection mb-0',
+                        'class': 'collection collection-unstyled',
                         'html': [
                             $('<li />', {
                                 'class': 'collection-item',
-                                'html': $('<div />', {
-                                    'class': 'input-field m-0',
-                                    'html': [
-                                        $('<input />', {
-                                            'name': 'name',
-                                            'id': 'name',
-                                            'type': 'text',
-                                            'class': 'validate',
-                                            'data-length': 100
-                                        }),
-                                        $('<label />', {
-                                            'for': 'name',
-                                            'html': 'Alarm Adı'
-                                        }),
-                                        $('<span />', {
-                                            'class': 'helper-text',
-                                            'html': 'Oluşturacağınız alarmın adını girin.'
-                                        })
-                                    ]
-                                })
-                            }),
-                            $('<li />', {
-                                'class': 'collection-item',
-                                'html': $('<div />', {
-                                    'class': 'input-field m-0',
-                                    'html': [
-                                        $('<input />', {
-                                            'name': 'text',
-                                            'id': 'text',
-                                            'type': 'text',
-                                            'class': 'validate',
-                                            'data-length': 255
-                                        }),
-                                        $('<label />', {
-                                            'for': 'text',
-                                            'html': 'Sorgu'
-                                        }),
-                                        $('<a />', {
-                                            'href': '#',
-                                            'class': 'd-flex',
-                                            'data-trigger': 'info',
+                                'html': [
+                                    @if (count($searches))
+                                        $('<div />', {
+                                            'class': 'input-field',
                                             'html': [
-                                                $('<i />', {
-                                                    'class': 'material-icons mr-1 grey-text align-self-center',
-                                                    'html': 'info_outline'
+                                                $('<select />', {
+                                                    'name': 'search_id',
+                                                    'id': 'search_id',
+                                                    'html': [
+                                                        $('<option />', {
+                                                            'value': '',
+                                                            'disabled': true,
+                                                            'selected': true,
+                                                            'html': 'Seçin'
+                                                        }),
+                                                        @foreach($searches as $search)
+                                                            $('<option />', {
+                                                                'value': {{ $search->id }},
+                                                                'html': '{{ $search->name }}'
+                                                            }),
+                                                        @endforeach
+                                                    ]
                                                 }),
-                                                $('<span />', {
-                                                    'class': 'grey-text align-self-center',
-                                                    'html': 'Arama İfadeleri'
+                                                $('<label />', {
+                                                    'html': 'Kayıtlı Aramalar'
                                                 })
                                             ]
-                                        }),
-                                        $('<span />', {
-                                            'class': 'helper-text',
-                                            'html': 'Hassas kelimeler ve dakikalık bildirimler durumunda rahatsız edici bildirim e-postaları alabilirsiniz. Böyle bir durumla karşılaşmamak için, ilgi odaklı çalışmanız gerekmektedir.'
                                         })
-                                    ]
-                                })
+                                    @else
+                                        $('<div />', {
+                                            'class': 'teal-text',
+                                            'html': 'Kayıtlı Arama bulunmuyor. Lütfen ilk önce <a href="{{ route('search.dashboard') }}" class="teal-text text-darken-4">Arama Motoru</a>\'nu kullanarak bir arama kaydedin.'
+                                        })
+                                    @endif
+                                ]
                             }),
                             $('<li />', {
                                 'class': 'collection-item',
@@ -340,20 +319,21 @@
                                             'css': { 'min-width': '50%' },
                                             'html': [
                                                 $('<h6 />', {
-                                                    'html': 'Kaynaklar'
+                                                    'html': 'Bildirim Gönderilecek Kullanıcılar'
                                                 }),
-                                                @foreach (config('system.modules') as $key => $module)
+                                                @foreach ($members as $member)
                                                     $('<label />', {
                                                         'class': 'd-block',
+                                                        'css': { 'width': '100%' },
                                                         'html': [
                                                             $('<input />', {
                                                                 'type': 'checkbox',
-                                                                'name': 'sources',
+                                                                'name': 'user_ids',
                                                                 'data-multiple': 'true',
-                                                                'value': '{{ $key }}'
+                                                                'value': '{{ $member->id }}'
                                                             }),
                                                             $('<span />', {
-                                                                'html': '{{ $module }}'
+                                                                'html': '{{ $member->email }}'
                                                             })
                                                         ]
                                                     }),
@@ -362,31 +342,6 @@
                                         })
                                     ]
                                 })
-                            }),
-                            $('<li />', {
-                                'class': 'collection-item',
-                                'html': [
-                                    $('<h6 />', {
-                                        'html': 'Bildirim Gönderilecek Kullanıcılar'
-                                    }),
-                                    @foreach ($members as $member)
-                                        $('<label />', {
-                                            'class': 'd-block',
-                                            'css': { 'width': '100%' },
-                                            'html': [
-                                                $('<input />', {
-                                                    'type': 'checkbox',
-                                                    'name': 'user_ids',
-                                                    'data-multiple': 'true',
-                                                    'value': '{{ $member->id }}'
-                                                }),
-                                                $('<span />', {
-                                                    'html': '{{ $member->email }}'
-                                                })
-                                            ]
-                                        }),
-                                    @endforeach
-                                ]
                             })
                         ]
                     })
@@ -415,6 +370,7 @@
         })
 
             mdl.find('[data-length]').characterCounter()
+            mdl.find('select').formSelect()
 
         M.updateTextFields()
 
@@ -443,19 +399,14 @@
                 mdl.find('.modal-title').html('Alarm Güncelle')
                 mdl.find('form#alarm-form').data('id', obj.data.id).data('method', 'patch')
 
-                mdl.find('[name=name]').val(obj.data.name)
-                mdl.find('[name=text]').val(obj.data.query)
                 mdl.find('[name=start_time]').val(obj.data.start_time)
                 mdl.find('[name=end_time]').val(obj.data.end_time)
                 mdl.find('[name=interval]').val(obj.data.interval)
                 mdl.find('[name=hit]').val(obj.data.hit)
+                mdl.find('[name=search_id]').val(obj.data.search_id).formSelect()
 
             $.each(obj.data.weekdays, function(key, day) {
                 mdl.find('[name=weekdays][value=' + day + ']').prop('checked', true)
-            })
-
-            $.each(obj.data.modules, function(key, source) {
-                mdl.find('[name=sources][value=' + source + ']').prop('checked', true)
             })
 
             $.each(obj.data.user_ids, function(key, id) {

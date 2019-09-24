@@ -138,32 +138,6 @@
                             <div class="collection-item input-field">
                                 <input
                                     data-update
-                                    name="real_time_group_limit"
-                                    id="real_time_group_limit"
-                                    max="12"
-                                    min="0"
-                                    value="{{ $organisation->real_time_group_limit }}"
-                                    type="number"
-                                    data-unit-price="{{ $prices['unit_price.real_time_group_limit']['value'] }}"
-                                    class="validate" />
-                                <small class="helper-text">Gerçek Zamanlı Kelime Grubu</small>
-                            </div>
-                            <div class="collection-item input-field">
-                                <input
-                                    data-update
-                                     name="alarm_limit"
-                                     id="alarm_limit"
-                                     max="12"
-                                     min="0"
-                                     value="{{ $organisation->alarm_limit }}"
-                                     type="number"
-                                     data-unit-price="{{ $prices['unit_price.alarm_limit']['value'] }}"
-                                     class="validate" />
-                                <small class="helper-text">Alarm</small>
-                            </div>
-                            <div class="collection-item input-field">
-                                <input
-                                    data-update
                                     name="pin_group_limit"
                                     id="pin_group_limit"
                                     max="12"

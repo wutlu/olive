@@ -1038,8 +1038,6 @@ class OrganisationController extends Controller
         Option::updateOrCreate([ 'key' => 'unit_price.data_shopping'                   ], [ 'value' => $request->data_shopping                   ]);
         Option::updateOrCreate([ 'key' => 'unit_price.data_instagram'                  ], [ 'value' => $request->data_instagram                  ]);
 
-        Option::updateOrCreate([ 'key' => 'unit_price.real_time_group_limit'           ], [ 'value' => $request->real_time_group_limit           ]);
-        Option::updateOrCreate([ 'key' => 'unit_price.alarm_limit'                     ], [ 'value' => $request->alarm_limit                     ]);
         Option::updateOrCreate([ 'key' => 'unit_price.pin_group_limit'                 ], [ 'value' => $request->pin_group_limit                 ]);
         Option::updateOrCreate([ 'key' => 'unit_price.analysis_tools_limit'            ], [ 'value' => $request->analysis_tools_limit            ]);
         Option::updateOrCreate([ 'key' => 'unit_price.saved_searches_limit'            ], [ 'value' => $request->saved_searches_limit            ]);
@@ -1135,8 +1133,6 @@ class OrganisationController extends Controller
     {
         $arr = [
             'historical_days'                  => '*',
-            'real_time_group_limit'            => '*',
-            'alarm_limit'                      => '*',
             'pin_group_limit'                  => '*',
             'analysis_tools_limit'             => '*',
             'saved_searches_limit'             => '*',
@@ -1228,8 +1224,6 @@ class OrganisationController extends Controller
         $organisation->status = $request->status ? true : false;
         $organisation->end_date = $request->end_date.' '.$request->end_time;
         $organisation->historical_days = $request->historical_days;
-        $organisation->real_time_group_limit = $request->real_time_group_limit;
-        $organisation->alarm_limit = $request->alarm_limit;
         $organisation->pin_group_limit = $request->pin_group_limit;
         $organisation->analysis_tools_limit = $request->analysis_tools_limit;
         $organisation->saved_searches_limit = $request->saved_searches_limit;
@@ -1423,48 +1417,6 @@ class OrganisationController extends Controller
         return redirect()->route('organisation.invoice', $invoice->invoice_id);
     }
 
-    ### ### ###
-
-    /**
-     ********************
-     ******* ROOT *******
-     ********************
-     *
-     * Organizasyon, Kelime Grupları
-     *
-     * @return view
-     */
-    public static function keywordGroups(int $id)
-    {
-        $organisation = Organisation::where('id', $id)->firstOrFail();
-
-        return view('organisation.admin.keywordGroups', compact('organisation'));
-    }
-
-    /**
-     ********************
-     ******* ROOT *******
-     ********************
-     *
-     * Organizasyon, Kelime Grupları: güncelle.
-     *
-     * @return array
-     */
-    public static function keywordGroupsUpdate(KeywordGroupAdminUpdateRequest $request)
-    {
-        KeywordGroup::where('id', $request->id)->update(
-            [
-                'keywords' => $request->keywords
-            ]
-        );
-
-        return [
-            'status' => 'ok'
-        ];
-    }
-
-    ### ### ###
-
     /**
      ********************
      ******* ROOT *******
@@ -1494,7 +1446,7 @@ class OrganisationController extends Controller
     {
         $organisation = Organisation::where('id', $id)->firstOrFail();
 
-        $query = Alarm::where('organisation_id', $organisation->id)->orderBy('id', 'DESC')->get();
+        $query = Alarm::with('search')->where('organisation_id', $organisation->id)->orderBy('id', 'DESC')->get();
 
         return [
             'status' => 'ok',

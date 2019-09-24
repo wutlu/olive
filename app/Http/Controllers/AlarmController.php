@@ -10,6 +10,7 @@ use App\Http\Requests\Alarm\UpdateRequest;
 
 use App\Models\Alarm;
 use App\Models\User\User;
+use App\Models\SavedSearch;
 
 class AlarmController extends Controller
 {
@@ -36,9 +37,11 @@ class AlarmController extends Controller
      */
     public function dashboard()
     {
-        $members = User::where('organisation_id', auth()->user()->organisation_id)->where('verified', true)->get();
+        $user = auth()->user();
+        $members = User::where('organisation_id', $user->organisation_id)->where('verified', true)->get();
+        $searches = SavedSearch::where('organisation_id', $user->organisation_id)->get();
 
-        return view('alarm', compact('members'));
+        return view('alarm', compact('members', 'searches'));
     }
 
     /**
@@ -48,7 +51,10 @@ class AlarmController extends Controller
      */
     public function data()
     {
-        $query = Alarm::where('organisation_id', auth()->user()->organisation_id)->orderBy('id', 'ASC')->get();
+        $query = Alarm::with('search')
+                      ->where('organisation_id', auth()->user()->organisation_id)
+                      ->orderBy('id', 'ASC')
+                      ->get();
 
         return [
             'status' => 'ok',
@@ -83,8 +89,6 @@ class AlarmController extends Controller
 
         $data->fill($request->all());
 
-        $data->query = $request->text;
-        $data->modules = $request->sources;
         $data->organisation_id = auth()->user()->organisation_id;
         $data->save();
 
@@ -107,8 +111,6 @@ class AlarmController extends Controller
         ])->firstOrFail();
 
         $data->fill($request->all());
-        $data->query = $request->text;
-        $data->modules = $request->sources;
         $data->save();
 
         return [

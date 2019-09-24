@@ -131,19 +131,7 @@ Route::domain('olive.'.config('app.domain'))->group(function () {
 
     Route::prefix('gercek-zamanli')->namespace('RealTime')->group(function () {
         Route::get('akis', 'RealTimeController@stream')->name('realtime.stream');
-
         Route::post('sorgu', 'RealTimeController@query')->name('realtime.query');
-
-        Route::prefix('kelime')->group(function () {
-            Route::prefix('gruplar')->group(function () {
-                Route::post('/', 'KeywordController@groups')->name('realtime.keyword.groups');
-
-                Route::post('grup', 'KeywordController@groupGet')->name('realtime.keyword.group');
-                Route::put('grup', 'KeywordController@groupCreate');
-                Route::patch('grup', 'KeywordController@groupUpdate');
-                Route::delete('grup', 'KeywordController@groupDelete');
-            });
-        });
     });
 
     Route::prefix('trend')->namespace('Trend')->group(function () {

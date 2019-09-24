@@ -47,33 +47,8 @@
 @endpush
 
 @push('local.scripts')
-    const driver = new Driver({
-        allowClose: false,
-        padding: 12,
-        onReset: function() {
-            @if (!auth()->user()->intro('driver.stream'))
-                vzAjax($('<div />', {
-                    'class': 'json',
-                    'data-method': 'post',
-                    'data-href': '{{ route('intro', 'driver.stream') }}'
-                }))
-            @endif
-        }
-    })
-
-    driver.defineSteps([
-        {
-            element: '[data-trigger=create-keyword-group]',
-            popover: {
-                title: 'Grup Oluşturun',
-                description: 'Anlık veri takibi yapabilmek için, veri kriterlerinizi içeren bir kelime grubu oluşturun.',
-                position: 'left'
-            }
-        }
-    ])
-
     @if (!auth()->user()->intro('driver.stream'))
-        driver.start()
+    // driver
     @endif
 @endpush
 
@@ -188,9 +163,11 @@
         <ul class="collection">
             <li class="collection-item model hide"></li>
             <li class="collection-item">
-                <p class="d-flex mb-0">
+                <p class="d-flex mb-0 teal-text">
                     <i class="material-icons realtime">navigate_next</i>
-                    <span class="align-self-center">Herhangi bir kelime grubu oluşturun, bir kelime grubunuz varsa; yanında bulunan anahtarı aktif edin.</span>
+                    <span class="align-self-center">
+                        <a class="teal-text text-darken-4" href="{{ route('search.dashboard') }}">Arama Motoru</a> modülünden bir arama yapın ve kaydedin.<br />Kaydettiğiniz aramaları bulunduğunuz bölümden gerçek zamanlı takip edebilirsiniz.
+                    </span>
                 </p>
             </li>
         </ul>
@@ -309,7 +286,7 @@
 
             buffer.shift()
 
-            if (bucket.children('.collection-item').length > 400)
+            if (bucket.children('.collection-item').length > 1000)
             {
                 bucket.children('.collection-item:last-child').remove()
             }
@@ -499,7 +476,7 @@
         }
     })
 
-    function __keyword_groups(__, obj)
+    function __saved_searches(__, obj)
     {
         var item_model = __.children('.model');
 
@@ -516,308 +493,58 @@
                         item.removeClass('model hide').addClass('_tmp d-flex').attr('data-id', o.id)
 
                         item.find('[data-name=name]').html(o.name)
-                        item.find('[data-callback=__get_keyword_group]').attr('data-id', o.id)
                         item.find('[name=keyword_group]').val(o.id)
 
                         item.appendTo(__)
                 })
             }
-
-            $('[data-name=keyword-group-count]').html(obj.hits.length)
-            $('[data-name=keyword-group-limit]').html(obj.limit)
-        }
-    }
-
-    function keyword_group_modal()
-    {
-        var mdl = modal({
-            'id': 'keyword-group',
-            'body': $('<form />', {
-                'action': '{{ route('realtime.keyword.group') }}',
-                'id': 'keyword-group-form',
-                'class': 'json',
-                'date-method': 'post',
-                'data-callback': '__keyword_group_callback',
-                'html': [
-                    $('<div />', {
-                        'class': 'input-field',
-                        'html': [
-                            $('<input />', {
-                                'id': 'name',
-                                'name': 'name',
-                                'type': 'text',
-                                'class': 'validate',
-                                'data-length': 10
-                            }),
-                            $('<label />', {
-                                'for': 'name',
-                                'html': 'Grup Adı'
-                            }),
-                            $('<span />', {
-                                'class': 'helper-text',
-                                'html': 'Kelime grubu için isim girin.'
-                            })
-                        ]
-                    }),
-                    $('<br />'),
-                    $('<div />', {
-                        'class': 'input-field',
-                        'html': [
-                            $('<textarea />', {
-                                'id': 'keywords',
-                                'name': 'keywords',
-                                'class': 'materialize-textarea validate',
-                                'data-length': 255
-                            }),
-                            $('<label />', {
-                                'for': 'keywords',
-                                'html': 'Kelime Listesi'
-                            }),
-                            $('<span />', {
-                                'html': $('<a />', {
-                                    'href': '#',
-                                    'class': 'd-flex',
-                                    'data-trigger': 'info',
-                                    'css': { 'margin': '0 .4rem 0 0' },
-                                    'html': [
-                                        $('<i />', {
-                                            'class': 'material-icons mr-1 grey-text align-self-center',
-                                            'html': 'info_outline'
-                                        }),
-                                        $('<span />', {
-                                            'class': 'grey-text align-self-center',
-                                            'html': 'Arama İfadeleri'
-                                        })
-                                    ]
-                                })
-                            }),
-                            $('<span />', {
-                                'class': 'helper-text'
-                            })
-                        ]
-                    }),
-                    $('<div />', {
-                        'class': 'collection collection-unstyled',
-                        'html': [
-                        @foreach (config('system.modules') as $key => $module)
-                            @if ($organisation->{'data_'.$key})
-                                $('<label />', {
-                                    'class': 'collection-item waves-effect d-block',
-                                    'html': [
-                                        $('<input />', {
-                                            'name': 'modules',
-                                            'value': '{{ $key }}',
-                                            'type': 'checkbox',
-                                            'data-multiple': 'true',
-                                        }),
-                                        $('<span />', {
-                                            'html': '{{ title_case($module) }} Verilerini Dahil Et'
-                                        })
-                                    ]
-                                }),
-                            @endif
-                        @endforeach
-                        ]
-                    })
-                ]
-            }),
-            'footer': [
-                $('<a />', {
-                    'href': '#',
-                    'class': 'modal-close waves-effect btn-flat grey-text',
-                    'html': buttons.cancel
-                }),
-                $('<span />', {
-                    'html': ' '
-                }),
-                $('<a />', {
-                    'data-trigger': 'delete-keyword-group',
-                    'href': '#',
-                    'class': 'waves-effect btn-flat red-text hide',
-                    'html': buttons.remove
-                }),
-                $('<span />', {
-                    'html': ' '
-                }),
-                $('<button />', {
-                    'type': 'submit',
-                    'class': 'waves-effect btn-flat',
-                    'data-submit': 'form#keyword-group-form',
-                    'html': buttons.ok
-                })
-            ],
-            'size': 'modal-medium',
-            'options': {
-                dismissible: false
-            }
-        })
-
-        M.updateTextFields()
-
-        mdl.find('[data-length]').characterCounter()
-
-        return mdl;
-    }
-
-    $(document).on('click', '[data-trigger=create-keyword-group]', function() {
-        var mdl = keyword_group_modal();
-            mdl.find('.modal-title').html('Grup Oluştur')
-            mdl.find('form#keyword-group-form').data('method', 'put')
-
-            mdl.find('[name=modules]').prop('checked', false)
-
-            mdl.find('[name=name]').val('')
-            mdl.find('[name=keywords]').val('')
-
-        $('[data-trigger=delete-keyword-group]').removeAttr('data-id').addClass('hide')
-
-        driver.reset()
-    })
-
-    function __get_keyword_group(__, obj)
-    {
-        if (obj.status == 'ok')
-        {
-            var mdl = keyword_group_modal();
-                mdl.find('.modal-title').html('Grup Güncelle')
-                mdl.find('form#keyword-group-form').data('id', obj.data.id)
-                                                   .data('method', 'patch')
-                mdl.find('[name=name]').val(obj.data.name)
-                mdl.find('[name=keywords]').val(obj.data.keywords)
-
-                M.textareaAutoResize($('textarea[name=keywords]'))
-
-                if (obj.data.modules)
-                {
-                    $.each(obj.data.modules, function(number, key) {
-                        mdl.find('[name=modules][value=' + key + ']').prop('checked', true)
-                    })
-                }
-
-            $('[data-trigger=delete-keyword-group]').data('id', obj.data.id).removeClass('hide')
-        }
-    }
-
-    function __keyword_group_callback(__, obj)
-    {
-        if (obj.status == 'ok')
-        {
-            $('#modal-keyword-group').modal('close')
-
-            vzAjax($('#keywordGroups'))
-
-            M.toast({
-                html: obj.type == 'created' ? 'Grup Oluşturuldu' : obj.type == 'updated' ? 'Grup Güncellendi' : 'İşlem Gerçekleşti',
-                classes: 'green darken-2'
-            })
-        }
-    }
-
-    $(document).on('click', '[data-trigger=delete-keyword-group]', function() {
-        return modal({
-            'id': 'keyword-group-alert',
-            'body': 'Kelime grubu silinecek?',
-            'size': 'modal-small',
-            'title': 'Sil',
-            'options': {},
-            'footer': [
-                $('<a />', {
-                    'href': '#',
-                    'class': 'modal-close waves-effect btn-flat grey-text',
-                    'html': buttons.cancel
-                }),
-                $('<span />', {
-                    'html': ' '
-                }),
-                $('<a />', {
-                    'href': '#',
-                    'class': 'waves-effect btn-flat red-text json',
-                    'html': buttons.ok,
-                    'data-href': '{{ route('realtime.keyword.group') }}',
-                    'data-method': 'delete',
-                    'data-id': $(this).data('id'),
-                    'data-callback': '__delete_keyword_group'
-                })
-            ]
-        })
-    })
-
-    function __delete_keyword_group(__, obj)
-    {
-        if (obj.status == 'ok')
-        {
-            $('#keywordGroups').children('[data-id=' + obj.data.id + ']').remove()
-
-            $('#modal-keyword-group-alert').modal('close')
-
-            setTimeout(function() {
-                $('#modal-keyword-group').modal('close')
-            }, 200)
-
-            M.toast({
-                html: 'Kelime Grubu Silindi',
-                classes: 'red darken-2'
-            })
-
-            vzAjax($('#keywordGroups'))
         }
     }
 @endpush
-
-@section('action-bar')
-    <a href="#" class="btn-floating halfway-fab waves-effect white" data-trigger="create-keyword-group">
-        <i class="material-icons grey-text">add</i>
-    </a>
-@endsection
 
 @section('dock')
     <div class="card card-unstyled mb-1">
         <div class="card-content">
             <span class="card-title d-flex">
-                <i class="material-icons align-self-center mr-1">speaker_notes</i>
-                Kelime Grupları
+                <i class="material-icons align-self-center mr-1">save</i>
+                Kayıtlı Aramalar
             </span>
-            <span data-name="keyword-group-count">0</span> / <span data-name="keyword-group-limit">0</span>
+            <small class="teal-text">
+                <a class="teal-text text-darken-4" href="{{ route('search.dashboard') }}">Arama Motoru</a> ile oluşturulup kaydedilen sorguları bu alanda, akış halinde kullanabilirsiniz.
+            </small>
         </div>
-        <ul class="collection collection-unstyled load hide" 
-            id="keywordGroups"
-            data-href="{{ route('realtime.keyword.groups') }}"
-            data-callback="__keyword_groups"
+        <ul class="collection collection-unstyled load hide"
+            id="savedSearches"
+            data-href="{{ route('search.list') }}"
+            data-callback="__saved_searches"
             data-method="post"
-            data-loader="#keyword-group-loader"
+            data-loader="#ss-loader"
             data-nothing>
-            <li class="collection-item nothing hide grey-text">
-                @component('components.nothing')@endcomponent
-            </li>
             <li class="collection-item model hide justify-content-between">
-                <a
-                    class="json align-self-center mr-1"
-                    data-href="{{ route('realtime.keyword.group') }}"
-                    data-method="post"
-                    data-callback="__get_keyword_group"
-                    href="#">
-                    <i class="material-icons grey-text text-darken-2">create</i>
-                </a>
                 <span data-name="name" class="align-self-center mr-auto"></span>
                 <div class="switch align-self-center">
                     <label>
-                        <input type="checkbox" name="keyword_group" data-multiple="true" />
+                        <input type="checkbox" name="keyword_group" />
                         <span class="lever"></span>
                     </label>
                 </div>
             </li>
+            <li class="nothing hide">
+                @component('components.nothing')
+                    @slot('size', 'small')
+                @endcomponent
+            </li>
         </ul>
         @component('components.loader')
             @slot('color', 'blue-grey')
-            @slot('id', 'keyword-group-loader')
+            @slot('id', 'ss-loader')
             @slot('class', 'card-loader-unstyled')
         @endcomponent
     </div>
 
     @php
         $hints = [
-            'CTRL tuşuna basarak akışı durdurabilirsiniz.',
-            '<span class="yellow darken-2 white-text">#tarihibuluşmaFOXta && !external.type:retweet</span> gibi bir sorgu ile retweetleri akış dışında tutabilirsiniz.',
+            'CTRL tuşuna basarak akışı durdurabilirsiniz.'
         ];
 
         shuffle($hints);

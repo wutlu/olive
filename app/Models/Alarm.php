@@ -10,14 +10,13 @@ class Alarm extends Model
     protected $table = 'alarms';
 
     protected $fillable = [
-        'name',
         'hit',
         'interval',
         'start_time',
         'end_time',
         'weekdays',
         'user_ids',
-
+        'search_id',
         'sended_at',
     ];
 
@@ -28,7 +27,6 @@ class Alarm extends Model
      */
     protected $casts = [
 		'weekdays' => 'array',
-		'modules' => 'array',
 		'user_ids' => 'array',
     ];
 
@@ -39,5 +37,17 @@ class Alarm extends Model
     public function emails()
     {
         return User::whereIn('id', $this->user_ids)->get()->pluck('email')->toArray();
+    }
+
+    # kayıtlı arama
+    public function search()
+    {
+        return $this->hasOne('App\Models\SavedSearch', 'id', 'search_id');
+    }
+
+    # organizasyon
+    public function organisation()
+    {
+        return $this->hasOne('App\Models\Organisation\Organisation', 'id', 'organisation_id');
     }
 }

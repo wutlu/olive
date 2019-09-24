@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redis as RedisCache;
 
 use App\Http\Requests\SearchRequest;
+use App\Http\Requests\DemoRequest;
 
 use App\Models\User\UserActivity;
 use App\Models\User\UserIntro;
@@ -12,24 +14,18 @@ use App\Models\User\PartnerPayment;
 use App\Models\Option;
 use App\Models\Carousel;
 use App\Models\Ticket;
-
-use YouTube;
+use App\Models\Forum\Message;
+use App\Models\Organisation\Organisation;
+use App\Models\Organisation\OrganisationInvoice;
 
 use App\Models\Crawlers\MediaCrawler;
 use App\Models\Crawlers\ShoppingCrawler;
 use App\Models\Crawlers\SozlukCrawler;
 use App\Models\Crawlers\BlogCrawler;
 
+use YouTube;
 use App\Elasticsearch\Document;
-
 use App\Utilities\Term;
-
-use Illuminate\Support\Facades\Redis as RedisCache;
-
-use App\Http\Requests\DemoRequest;
-
-use App\Models\Organisation\Organisation;
-use App\Models\Organisation\OrganisationInvoice;
 
 class HomeController extends Controller
 {
@@ -214,10 +210,12 @@ class HomeController extends Controller
      *
      * @return view
      */
-    public static function dashboard()
+    public static function dashboard(int $pager = 10)
     {
         $carousels = Carousel::where('carousel', true)->orderBy('updated_at', 'DESC')->get();
         $modals = Carousel::where('modal', true)->orderBy('updated_at', 'DESC')->get();
+
+        $threads = Message::whereNull('message_id')->orderBy('updated_at', 'DESC')->simplePaginate($pager);
 
         $photos = [
             [
@@ -234,7 +232,7 @@ class HomeController extends Controller
 
         $photo = $photos[0];
 
-        return view('dashboard', compact('carousels', 'modals', 'photo'));
+        return view('dashboard', compact('carousels', 'modals', 'photo', 'threads'));
     }
 
     /**

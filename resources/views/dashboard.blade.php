@@ -87,7 +87,7 @@
         @endforeach
     @endif
 
-    <div class="row">
+    <div class="row mb-1">
         <div class="col s12">
             <div class="fast-menu">
                 @foreach ([
@@ -418,6 +418,83 @@
             </div>
         </div>
     </div>
+
+    <ul class="card">
+        <li class="card-content blue-grey">
+            <span class="card-title white-text">Güncel Forum Konuları</span>
+            <small class="blue-grey-text text-lighten-4">İlgili kategorilerde özgürce yardımlaşabilirsiniz.</small>
+        </li> 
+        @forelse ($threads as $thread)
+            @php
+                $color_light = '';
+                $color_dark = '';
+
+                if ($thread->static)
+                {
+                    $color_light = 'white lighten-2 grey-text';
+                    $color_dark = 'grey lighten-2';
+                }
+            @endphp
+            <li class="card-content {{ $color_dark }}">
+                <div class="d-flex">
+                    <span class="align-self-center center-align" style="margin: 0 1rem 0 0;">
+                        <a class="d-block" data-tooltip="{{ $thread->user->name }}" data-position="right" href="{{ route('user.profile', $thread->user_id) }}">
+                            <img alt="Avatar" src="{{ $thread->user->avatar() }}" class="circle" style="width: 64px; height: 64px;" />
+                        </a>
+                    </span>
+                    <div class="align-self-center">
+                        <div class="d-flex">
+                            @if ($thread->closed)
+                                <i class="material-icons grey-text text-darken-2 tiny" data-tooltip="Kapalı">lock</i>
+                            @endif
+
+                            @if ($thread->static)
+                                <i class="material-icons grey-text text-darken-2 tiny" data-tooltip="Sabit">terrain</i>
+                            @endif
+
+                            @if ($thread->question == 'solved')
+                                <i class="material-icons grey-text text-darken-2 tiny" data-tooltip="Çözüldü">check</i>
+                            @elseif ($thread->question == 'unsolved')
+                                <i class="material-icons grey-text text-darken-2 tiny" data-tooltip="Soru">help</i>
+                            @endif
+                        </div>
+                        <a href="{{ $thread->route() }}" class="d-flex">
+                            <span class="card-title card-title-small align-self-center mb-0">{{ $thread->subject }}</span>
+                        </a>
+                        <p class="grey-text">
+                            @if (count($thread->replies))
+                                <time class="timeago grey-text text-darken-2" data-time="{{ $thread->updated_at }}">{{ date('d.m.Y H:i', strtotime($thread->updated_at)) }}</time>
+                                <span>yanıtladı</span>
+                                <a href="{{ route('user.profile', $thread->replies->last()->user->id) }}">{{ '@'.$thread->replies->last()->user->name }}</a>
+                            @else
+                                <time class="timeago grey-text text-darken-2" data-time="{{ $thread->created_at }}">{{ date('d.m.Y H:i', strtotime($thread->created_at)) }}</time>
+                                <span>yazdı</span>
+                                <a href="{{ route('user.profile', $thread->user_id) }}">{{ '@'.$thread->user->name }}</a>
+                            @endif
+                        </p>
+                        @if (count($thread->replies))
+                            {!! $thread->replies()->paginate(10)->onEachSide(1)->setPath($thread->route())->links('vendor.pagination.materializecss_in') !!}
+                        @endif
+                    </div>
+                    <div class="align-self-center ml-auto d-flex flex-column">
+                        <a href="{{ route('forum.category', $thread->category->slug) }}" class="chip waves-effect center-align {{ $color_light }}">{{ $thread->category->name }}</a>
+                        <span class="badge d-flex grey-text justify-content-end">
+                            <span class="align-self-center">{{ count($thread->replies) }}</span>
+                            <i class="material-icons align-self-center" style="margin: 0 0 0 .4rem;">reply</i>
+                        </span>
+                        <span class="badge d-flex grey-text justify-content-end">
+                            <span class="align-self-center">{{ $thread->hit }}</span>
+                            <i class="material-icons align-self-center" style="margin: 0 0 0 .4rem;">remove_red_eye</i>
+                        </span>
+                    </div>
+                </div>
+            </li>
+        @empty
+            <li class="card-content grey-text">
+                Üzgünüm, daha fazla içerik yok.
+            </li>
+        @endforelse
+    </ul>
 @endsection
 
 @push('local.scripts')

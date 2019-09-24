@@ -9,10 +9,16 @@ use App\Models\User\User;
 
 use DB;
 use Mail;
+use Term;
 
 use App\Mail\AlarmMail;
 
 use App\Elasticsearch\Document;
+use App\Models\Source;
+
+use Carbon\Carbon;
+
+use App\Http\Controllers\SearchController;
 
 class Trigger extends Command
 {
@@ -58,13 +64,13 @@ class Trigger extends Command
 
         if (count($alarms))
         {
-            $this->info('...');
+            $this->info('['.count($alarms).'] alarm!');
 
             foreach ($alarms as $alarm)
             {
                 $es_data = self::elasticsearch($alarm);
 
-                $this->info($alarm->name);
+                $this->info($alarm->search->name.' - ['.count($es_data).']');
 
                 if (count($es_data))
                 {
@@ -73,7 +79,7 @@ class Trigger extends Command
                     $sources[] = '| Kaynak  | İçerik |';
                     $sources[] = '|:--------|-------:|';
 
-                    foreach ($alarm->modules as $module)
+                    foreach (json_decode($alarm->search->modules) as $module)
                     {
                         $sources[] = '| '.config('system.modules')[$module].' | '.intval(@$es_data[$module]['count']).' |';
                     }
@@ -112,11 +118,24 @@ class Trigger extends Command
 
     private static function elasticsearch(Alarm $alarm)
     {
-        $mquery = [
+        $organisation = $alarm->organisation;
+
+        $search = $alarm->search;
+
+        preg_match_all('/(?<=\[s:)[([0-9]+(?=\])/m', $search->string, $matches);
+
+        if (@$matches[0][0])
+        {
+            $source = Source::whereIn('id', $matches[0])->where('organisation_id', $organisation->id)->first();
+            $search->string = preg_replace('/\[s:([0-9]+)\]/m', '', $search->string);
+        }
+
+        $clean = Term::cleanSearchQuery($search->string);
+        $searchController = new SearchController;
+
+        $q = [
             'size' => 1,
-            'sort' => [
-                'called_at' => 'DESC'
-            ],
+            'sort' => [ 'created_at' => 'desc' ],
             'query' => [
                 'bool' => [
                     'filter' => [
@@ -128,284 +147,192 @@ class Trigger extends Command
                                 ]
                             ]
                         ]
+                    ],
+                    'must' => [
+                        [ 'exists' => [ 'field' => 'created_at' ] ],
+                        [
+                            'query_string' => [
+                                'fields' => [
+                                    'title',
+                                    'description',
+                                    'entry',
+                                    'text'
+                                ],
+                                'query' => $clean->line,
+                                'default_operator' => 'AND'
+                            ]
+                        ]
                     ]
                 ]
             ]
         ];
 
+        foreach ([ [ 'consumer' => [ 'nws', 'que', 'req', 'cmp' ] ], [ 'sentiment' => [ 'pos', 'neg', 'neu', 'hte' ] ] ] as $key => $bucket)
+        {
+            foreach ($bucket as $key => $b)
+            {
+                foreach ($b as $o)
+                {
+                    if ($search->{$key.'_'.$o})
+                    {
+                        $q['query']['bool']['filter'][] = [
+                            'range' => [
+                                implode('.', [ $key, $o ]) => [
+                                    'gte' => implode('.', [ 0, $search->{$key.'_'.$o} ])
+                                ]
+                            ]
+                        ];
+                    }
+                }
+            }
+        }
+
         $data = [];
 
-        foreach ($alarm->modules as $module)
+        foreach (json_decode($search->modules) as $module)
         {
             switch ($module)
             {
                 case 'twitter':
-                    $q = $mquery;
-
-                    $q['query']['bool']['must'][] = [
-                        'query_string' => [
-                            'default_field' => 'text',
-                            'query' => $alarm->query,
-                            'default_operator' => 'AND'
-                        ]
-                    ];
-                    $q['query']['bool']['must_not'][] = [ 'match' => [ 'external.type' => 'retweet' ] ];
-                    $q['_source'] = [
-                        'user.name',
-                        'user.screen_name',
-                        'text'
-                    ];
-
-                    $query = Document::search([ 'twitter', 'tweets', date('Y.m') ], 'tweet', $q);
-
-                    if (@$query->data['hits']['hits'])
+                    if ($organisation->data_twitter)
                     {
-                        foreach ($query->data['hits']['hits'] as $object)
+                        $item = $searchController->tweet($search, $q);
+
+                        if (@$item['data'][0])
                         {
                             $data['twitter'] = [
-                                '_id' => $object['_id'],
-                                '_type' => $object['_type'],
-                                '_index' => $object['_index'],
+                                '_id' => $item['data'][0]['_id'],
+                                '_type' => $item['data'][0]['_type'],
+                                '_index' => $item['data'][0]['_index'],
 
-                                'text' => $object['_source']['text'],
-                                'count' => $query->data['hits']['total']
-                            ];
-                        }
-                    }
-                break;
-                case 'news':
-                    $q = $mquery;
-
-                    $q['query']['bool']['must'][] = [ 'match' => [ 'status' => 'ok' ] ];
-                    $q['query']['bool']['must'][] = [
-                        'query_string' => [
-                            'fields' => [
-                                'description',
-                                'title'
-                            ],
-                            'query' => $alarm->query,
-                            'default_operator' => 'AND'
-                        ]
-                    ];
-                    $q['_source'] = [
-                        'title'
-                    ];
-
-                    $query = Document::search([ 'media', '*' ], 'article', $q);
-
-                    if (@$query->data['hits']['hits'])
-                    {
-                        foreach ($query->data['hits']['hits'] as $object)
-                        {
-                            $data['news'] = [
-                                '_id' => $object['_id'],
-                                '_type' => $object['_type'],
-                                '_index' => $object['_index'],
-
-                                'text' => $object['_source']['title'],
-                                'count' => $query->data['hits']['total']
-                            ];
-                        }
-                    }
-                break;
-                case 'blog':
-                    $q = $mquery;
-
-                    $q['query']['bool']['must'][] = [ 'match' => [ 'status' => 'ok' ] ];
-                    $q['query']['bool']['must'][] = [
-                        'query_string' => [
-                            'fields' => [
-                                'description',
-                                'title'
-                            ],
-                            'query' => $alarm->query,
-                            'default_operator' => 'AND'
-                        ]
-                    ];
-                    $q['_source'] = [
-                        'title'
-                    ];
-
-                    $query = Document::search([ 'blog', '*' ], 'document', $q);
-
-                    if (@$query->data['hits']['hits'])
-                    {
-                        foreach ($query->data['hits']['hits'] as $object)
-                        {
-                            $data['blog'] = [
-                                '_id' => $object['_id'],
-                                '_type' => $object['_type'],
-                                '_index' => $object['_index'],
-
-                                'text' => $object['_source']['title'],
-                                'count' => $query->data['hits']['total']
-                            ];
-                        }
-                    }
-                break;
-                case 'sozluk':
-                    $q = $mquery;
-
-                    $q['query']['bool']['must'][] = [
-                        'query_string' => [
-                            'fields' => [
-                                'description',
-                                'title'
-                            ],
-                            'query' => $alarm->query,
-                            'default_operator' => 'AND'
-                        ]
-                    ];
-                    $q['_source'] = [
-                        'title'
-                    ];
-
-                    $query = Document::search([ 'sozluk', '*' ], 'entry', $q);
-
-                    if (@$query->data['hits']['hits'])
-                    {
-                        foreach ($query->data['hits']['hits'] as $object)
-                        {
-                            $data['sozluk'] = [
-                                '_id' => $object['_id'],
-                                '_type' => $object['_type'],
-                                '_index' => $object['_index'],
-
-                                'text' => $object['_source']['title'],
-                                'count' => $query->data['hits']['total']
-                            ];
-                        }
-                    }
-                break;
-                case 'shopping':
-                    $q = $mquery;
-
-                    $q['query']['bool']['must'][] = [ 'match' => [ 'status' => 'ok' ] ];
-                    $q['query']['bool']['must'][] = [
-                        'query_string' => [
-                            'fields' => [
-                                'description',
-                                'title'
-                            ],
-                            'query' => $alarm->query,
-                            'default_operator' => 'AND'
-                        ]
-                    ];
-                    $q['_source'] = [
-                        'title'
-                    ];
-
-                    $query = Document::search([ 'shopping', '*' ], 'product', $q);
-
-                    if (@$query->data['hits']['hits'])
-                    {
-                        foreach ($query->data['hits']['hits'] as $object)
-                        {
-                            $data['shopping'] = [
-                                '_id' => $object['_id'],
-                                '_type' => $object['_type'],
-                                '_index' => $object['_index'],
-
-                                'text' => $object['_source']['title'],
-                                'count' => $query->data['hits']['total']
-                            ];
-                        }
-                    }
-                break;
-                case 'youtube_video':
-                    $q = $mquery;
-
-                    $q['query']['bool']['must'][] = [
-                        'query_string' => [
-                            'fields' => [
-                                'description',
-                                'title'
-                            ],
-                            'query' => $alarm->query,
-                            'default_operator' => 'AND'
-                        ]
-                    ];
-                    $q['_source'] = [
-                        'title',
-                        'channel.title'
-                    ];
-
-                    $query = Document::search([ 'youtube', 'videos' ], 'video', $q);
-
-                    if (@$query->data['hits']['hits'])
-                    {
-                        foreach ($query->data['hits']['hits'] as $object)
-                        {
-                            $data['youtube_video'] = [
-                                '_id' => $object['_id'],
-                                '_type' => $object['_type'],
-                                '_index' => $object['_index'],
-
-                                'text' => $object['_source']['title'],
-                                'count' => $query->data['hits']['total']
-                            ];
-                        }
-                    }
-                break;
-                case 'youtube_comment':
-                    $q = $mquery;
-
-                    $q['query']['bool']['must'][] = [
-                        'query_string' => [
-                            'default_field' => 'text',
-                            'query' => $alarm->query,
-                            'default_operator' => 'AND'
-                        ]
-                    ];
-                    $q['_source'] = [
-                        'text',
-                        'channel.title'
-                    ];
-
-                    $query = Document::search([ 'youtube', 'comments', '*' ], 'comment', $q);
-
-                    if (@$query->data['hits']['hits'])
-                    {
-                        foreach ($query->data['hits']['hits'] as $object)
-                        {
-                            $data['youtube_comment'] = [
-                                '_id' => $object['_id'],
-                                '_type' => $object['_type'],
-                                '_index' => $object['_index'],
-
-                                'text' => $object['_source']['text'],
-                                'count' => $query->data['hits']['total']
+                                'text' => $item['data'][0]['text'],
+                                'count' => $item['stats']['total']
                             ];
                         }
                     }
                 break;
                 case 'instagram':
-                    $q = $mquery;
-
-                    $q['query']['bool']['must'][] = [
-                        'query_string' => [
-                            'default_field' => 'text',
-                            'query' => $alarm->query,
-                            'default_operator' => 'AND'
-                        ]
-                    ];
-                    $q['_source'] = [
-                        'text'
-                    ];
-
-                    $query = Document::search([ 'instagram', 'medias', '*' ], 'media', $q);
-
-                    if (@$query->data['hits']['hits'])
+                    if ($organisation->data_instagram)
                     {
-                        foreach ($query->data['hits']['hits'] as $object)
+                        $item = $searchController->instagram($search, $q);
+
+                        if (@$item['data'][0])
                         {
                             $data['instagram'] = [
-                                '_id' => $object['_id'],
-                                '_type' => $object['_type'],
-                                '_index' => $object['_index'],
+                                '_id' => $item['data'][0]['_id'],
+                                '_type' => $item['data'][0]['_type'],
+                                '_index' => $item['data'][0]['_index'],
 
-                                'text' => $object['_source']['text'],
-                                'count' => $query->data['hits']['total']
+                                'text' => $item['data'][0]['text'],
+                                'count' => $item['stats']['total']
+                            ];
+                        }
+                    }
+                break;
+                case 'sozluk':
+                    if ($organisation->data_sozluk)
+                    {
+                        $item = $searchController->sozluk($search, $q, @$source->source_sozluk);
+
+                        if (@$item['data'][0])
+                        {
+                            $data['sozluk'] = [
+                                '_id' => $item['data'][0]['_id'],
+                                '_type' => $item['data'][0]['_type'],
+                                '_index' => $item['data'][0]['_index'],
+
+                                'text' => $item['data'][0]['title'],
+                                'count' => $item['stats']['total']
+                            ];
+                        }
+                    }
+                break;
+                case 'news':
+                    if ($organisation->data_news)
+                    {
+                        $item = $searchController->news($search, $q, @$source->source_media);
+
+                        if (@$item['data'][0])
+                        {
+                            $data['news'] = [
+                                '_id' => $item['data'][0]['_id'],
+                                '_type' => $item['data'][0]['_type'],
+                                '_index' => $item['data'][0]['_index'],
+
+                                'text' => $item['data'][0]['title'],
+                                'count' => $item['stats']['total']
+                            ];
+                        }
+                    }
+                break;
+                case 'blog':
+                    if ($organisation->data_blog)
+                    {
+                        $item = $searchController->blog($search, $q, @$source->source_blog);
+
+                        if (@$item['data'][0])
+                        {
+                            $data['blog'] = [
+                                '_id' => $item['data'][0]['_id'],
+                                '_type' => $item['data'][0]['_type'],
+                                '_index' => $item['data'][0]['_index'],
+
+                                'text' => $item['data'][0]['title'],
+                                'count' => $item['stats']['total']
+                            ];
+                        }
+                    }
+                break;
+                case 'youtube_video':
+                    if ($organisation->data_youtube_video)
+                    {
+                        $item = $searchController->youtube_video($search, $q);
+
+                        if (@$item['data'][0])
+                        {
+                            $data['youtube_video'] = [
+                                '_id' => $item['data'][0]['_id'],
+                                '_type' => $item['data'][0]['_type'],
+                                '_index' => $item['data'][0]['_index'],
+
+                                'text' => $item['data'][0]['title'],
+                                'count' => $item['stats']['total']
+                            ];
+                        }
+                    }
+                break;
+                case 'youtube_comment':
+                    if ($organisation->data_youtube_comment)
+                    {
+                        $item = $searchController->youtube_comment($search, $q);
+
+                        if (@$item['data'][0])
+                        {
+                            $data['youtube_comment'] = [
+                                '_id' => $item['data'][0]['_id'],
+                                '_type' => $item['data'][0]['_type'],
+                                '_index' => $item['data'][0]['_index'],
+
+                                'text' => $item['data'][0]['text'],
+                                'count' => $item['stats']['total']
+                            ];
+                        }
+                    }
+                break;
+                case 'shopping':
+                    if ($organisation->data_shopping)
+                    {
+                        $item = $searchController->shopping($search, $q, @$source->source_shopping);
+
+                        if (@$item['data'][0])
+                        {
+                            $data['shopping'] = [
+                                '_id' => $item['data'][0]['_id'],
+                                '_type' => $item['data'][0]['_type'],
+                                '_index' => $item['data'][0]['_index'],
+
+                                'text' => $item['data'][0]['title'],
+                                'count' => $item['stats']['total']
                             ];
                         }
                     }

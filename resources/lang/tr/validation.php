@@ -300,8 +300,6 @@ $arr = [
         'data_youtube_comment'            => 'YouTube Yorum Verileri',
         'data_shopping'                   => 'E-ticaret Verileri',
 
-        'real_time_group_limit'           => 'Gerçek Zamanlı Kelime Grubu Limiti',
-        'alarm_limit'                     => 'Alarm Limiti',
         'pin_group_limit'                 => 'Pin Grubu Limiti',
         'analysis_tools_limit'            => 'Analiz Araçları Limiti',
         'historical_days'                 => 'Geriye Dönük Arama Limiti',
@@ -357,6 +355,7 @@ $arr = [
         'platform'                        => 'Platform',
         'period'                          => 'Periyot',
         'url'                             => 'URL',
+        'search_id'                       => 'Arama',
     ],
 ];
 

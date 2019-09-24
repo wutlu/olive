@@ -77,14 +77,6 @@
                                 <h6>Limitler</h6>
                             </div>
                             <div class="collection-item input-field">
-                                <input required name="real_time_group_limit" id="real_time_group_limit" min="0" value="{{ $settings['unit_price.real_time_group_limit']['value'] }}" type="number" class="validate" />
-                                <small class="helper-text">Gerçek Zamanlı Kelime Grubu</small>
-                            </div>
-                            <div class="collection-item input-field">
-                                <input required name="alarm_limit" id="alarm_limit" min="0" value="{{ $settings['unit_price.alarm_limit']['value'] }}" type="number" class="validate" />
-                                <small class="helper-text">Alarm</small>
-                            </div>
-                            <div class="collection-item input-field">
                                 <input required name="pin_group_limit" id="pin_group_limit" min="0" value="{{ $settings['unit_price.pin_group_limit']['value'] }}" type="number" class="validate" />
                                 <small class="helper-text">Pin Grubu</small>
                             </div>

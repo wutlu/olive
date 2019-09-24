@@ -27,4 +27,10 @@ class SavedSearch extends Model
 		'sharp',
 		'categories'
     ];
+
+    # alarm
+    public function alarm()
+    {
+        return $this->hasOne('App\Models\Alarm', 'id', 'alarm_id');
+    }
 }

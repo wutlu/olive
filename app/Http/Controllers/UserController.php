@@ -910,8 +910,6 @@ class UserController extends Controller
             }
 
             $organisation->historical_days = $request->historical_days;
-            $organisation->real_time_group_limit = $request->real_time_group_limit;
-            $organisation->alarm_limit = $request->alarm_limit;
             $organisation->pin_group_limit = $request->pin_group_limit;
             $organisation->analysis_tools_limit = $request->analysis_tools_limit;
             $organisation->saved_searches_limit = $request->saved_searches_limit;

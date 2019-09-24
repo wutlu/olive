@@ -6,16 +6,19 @@ use Illuminate\Http\Request;
 
 use App\Http\Controllers\Controller;
 
-use App\Models\Pin\Group as PinGroup;
-use App\Models\RealTime\KeywordGroup;
-
 use App\Http\Requests\RealTime\RealTimeRequest;
 
 use App\Elasticsearch\Document;
-use App\Utilities\Term;
-use App\Utilities\Crawler;
 
 use Carbon\Carbon;
+
+use App\Models\SavedSearch;
+
+use Term;
+
+use App\Utilities\Crawler;
+
+use App\Http\Controllers\SearchController;
 
 class RealTimeController extends Controller
 {
@@ -57,206 +60,45 @@ class RealTimeController extends Controller
      *
      * @return array
      */
-    public function query(RealTimeRequest $request)
+    public function query(Request $request)
     {
-        $user = auth()->user();
-        $organisation = $user->organisation;
+        $request->validate([
+            'keyword_group' => 'required|integer'
+        ]);
 
-        $data = [];
-        $words = [];
+        $organisation = auth()->user()->organisation;
 
-        $groups = KeywordGroup::whereIn('id', $request->keyword_group)->where('organisation_id', $user->organisation_id)->get();
+        $search = SavedSearch::where([ 'id' => $request->keyword_group, 'organisation_id' => $organisation->id ])->first();
 
-        if (count($groups))
+        preg_match_all('/(?<=\[s:)[([0-9]+(?=\])/m', $search->string, $matches);
+
+        if (@$matches[0][0])
         {
-            foreach ($groups as $group)
-            {
-                $keywords = [];
+            $source = Source::whereIn('id', $matches[0])->where('organisation_id', $organisation->id)->first();
+            $search->string = preg_replace('/\[s:([0-9]+)\]/m', '', $search->string);
+        }
 
-                if ($group->keywords)
-                {
-                    foreach (explode(PHP_EOL, $group->keywords) as $k)
-                    {
-                        $clean = Term::cleanSearchQuery($k);
+        $clean = Term::cleanSearchQuery($search->string);
+        $searchController = new SearchController;
 
-                        foreach ($clean->words as $w)
-                        {
-                            if ($w)
-                            {
-                                $words[] = $w;
-                            }
-                        }
-
-                        $keywords[] = '('.$clean->line.')';
-                    }
-                }
-
-                $selected_modules = $group->modules ? $group->modules : [];
-
-                ### [ twitter modülü ] ###
-                if (in_array('twitter', $selected_modules) && $organisation->data_twitter)
-                {
-                    if (count($keywords))
-                    {
-                        $q = [
-                            'query' => [
-                                'bool' => [
-                                    'filter' => [
-                                        [
-                                            'range' => [
-                                                'called_at' => [
-                                                    'format' => 'YYYY-MM-dd HH:mm',
-                                                    'gte' => Carbon::now()->subMinutes(2)->format('Y-m-d H:i')
-                                                ]
-                                            ]
-                                        ]
-                                    ],
-                                    'must' => [
-                                        'query_string' => [
-                                            'default_field' => 'text',
-                                            'query' => implode(' OR ', $keywords),
-                                            'default_operator' => 'AND'
-                                        ]
-                                    ]
-                                ]
-                            ],
-                            'sort' => [ 'created_at' => 'DESC' ],
-                            'size' => 1000,
-                            '_source' => [
-                                'user.name',
-                                'user.screen_name',
-                                'user.image',
-                                'user.verified',
-                                'text',
-                                'created_at',
-                                'deleted_at',
-                                'sentiment',
-                                'consumer',
-                                'illegal',
-                                'entities.medias.media',
-                                'place'
-                            ]
-                        ];
-
-                        $query = Document::search([ 'twitter', 'tweets', date('Y.m') ], 'tweet', $q);
-
-                        if (@$query->data['hits']['hits'])
-                        {
-                            foreach ($query->data['hits']['hits'] as $object)
-                            {
-                                $arr = [
-                                    'uuid' => md5($object['_id'].'.'.$object['_index']),
-                                    '_id' => $object['_id'],
-                                    '_type' => $object['_type'],
-                                    '_index' => $object['_index'],
-                                    'sentiment' => Crawler::emptySentiment(@$object['_source']['sentiment']),
-                                    'module' => 'twitter',
-                                    'user' => [
-                                        'name' => $object['_source']['user']['name'],
-                                        'screen_name' => $object['_source']['user']['screen_name'],
-                                        'image' => $object['_source']['user']['image']
-                                    ],
-                                    'text' => Term::tweet($object['_source']['text']),
-                                    'created_at' => date('d.m.Y H:i:s', strtotime($object['_source']['created_at']))
-                                ];
-
-                                if (@$object['_source']['illegal'])
-                                {
-                                    $arr['illegal'] = $object['_source']['illegal'];
-                                }
-
-                                if (@$object['_source']['consumer'])
-                                {
-                                    $arr['consumer'] = $object['_source']['consumer'];
-                                }
-
-                                if (@$object['_source']['entities']['medias'])
-                                {
-                                    $arr['medias'] = $object['_source']['entities']['medias'];
-                                }
-
-                                if (@$object['_source']['deleted_at'])
-                                {
-                                    $arr['deleted_at'] = $object['_source']['deleted_at'];
-                                }
-
-                                if (@$object['_source']['user']['verified'] == true)
-                                {
-                                    $arr['user']['verified'] = true;
-                                }
-
-                                if (@$object['_source']['place'])
-                                {
-                                    $arr['place'] = $object['_source']['place'];
-                                }
-
-                                $data[] = $arr;
-                            }
-                        }
-                    }
-                }
-
-                $haystack = $selected_modules;
-
-                $target = [ 'youtube_video', 'youtube_comment', 'shopping', 'news', 'blog', 'sozluk', 'instagram' ];
-
-                if (count(array_intersect($haystack, $target)) > 0)
-                {
-                    $q = [
-                        'query' => [
-                            'bool' => [
-                                'filter' => [
-                                    [
-                                        'range' => [
-                                            'called_at' => [
-                                                'format' => 'YYYY-MM-dd HH:mm',
-                                                'gte' => Carbon::now()->subMinutes(2)->format('Y-m-d H:i')
-                                            ]
-                                        ]
-                                    ]
-                                ],
-                                'should' => [
-                                    [ 'match' => [ 'status' => 'ok' ] ]
-                                ],
-                                'must' => [
-                                    [ 'exists' => [ 'field' => 'created_at' ] ]
+        $q = [
+            'size' => 1000,
+            'sort' => [ 'created_at' => 'desc' ],
+            'query' => [
+                'bool' => [
+                    'filter' => [
+                        [
+                            'range' => [
+                                'called_at' => [
+                                    'format' => 'YYYY-MM-dd HH:mm',
+                                    'gte' => Carbon::now()->subMinutes(2)->format('Y-m-d H:i')
                                 ]
                             ]
-                        ],
-                        'sort' => [ 'created_at' => 'DESC' ],
-                        'size' => 1000,
-                        '_source' => [
-                            'url',
-                            'title',
-                            'description',
-                            'image_url',
-
-                            'sentiment',
-                            'consumer',
-                            'illegal',
-
-                            'entry',
-                            'author',
-
-                            'channel.title',
-                            'channel.id',
-
-                            'video_id',
-                            'text',
-
-                            'created_at',
-                            'deleted_at',
-
-                            'display_url',
-                            'shortcode',
-
-                            'place'
                         ]
-                    ];
-
-                    if (count($keywords))
-                    {
-                        $q['query']['bool']['must'][] = [
+                    ],
+                    'must' => [
+                        [ 'exists' => [ 'field' => 'created_at' ] ],
+                        [
                             'query_string' => [
                                 'fields' => [
                                     'title',
@@ -264,185 +106,49 @@ class RealTimeController extends Controller
                                     'entry',
                                     'text'
                                 ],
-                                'query' => implode(' OR ', $keywords),
+                                'query' => $clean->line,
                                 'default_operator' => 'AND'
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        foreach ([ [ 'consumer' => [ 'nws', 'que', 'req', 'cmp' ] ], [ 'sentiment' => [ 'pos', 'neg', 'neu', 'hte' ] ] ] as $key => $bucket)
+        {
+            foreach ($bucket as $key => $b)
+            {
+                foreach ($b as $o)
+                {
+                    if ($search->{$key.'_'.$o})
+                    {
+                        $q['query']['bool']['filter'][] = [
+                            'range' => [
+                                implode('.', [ $key, $o ]) => [
+                                    'gte' => implode('.', [ 0, $search->{$key.'_'.$o} ])
+                                ]
                             ]
                         ];
                     }
-
-                    $modules = [];
-
-                    foreach ($selected_modules as $module)
-                    {
-                        switch ($module)
-                        {
-                            case 'sozluk':
-                                if ($organisation->data_sozluk)
-                                {
-                                    $modules[] = 'entry';
-                                }
-                            break;
-                            case 'news':
-                                if ($organisation->data_news)
-                                {
-                                    $modules[] = 'article';
-                                }
-                            break;
-                            case 'blog':
-                                if ($organisation->data_blog)
-                                {
-                                    $modules[] = 'document';
-                                }
-                            break;
-                            case 'youtube_video':
-                                if ($organisation->data_youtube_video)
-                                {
-                                    $modules[] = 'video';
-                                }
-                            break;
-                            case 'youtube_comment':
-                                if ($organisation->data_youtube_comment)
-                                {
-                                    $modules[] = 'comment';
-                                }
-                            break;
-                            case 'shopping':
-                                if ($organisation->data_shopping)
-                                {
-                                    $modules[] = 'product';
-                                }
-                            break;
-                            case 'instagram':
-                                if ($organisation->data_instagram)
-                                {
-                                    $modules[] = 'media';
-                                }
-                            break;
-                        }
-                    }
-
-                    $query = Document::search([ '*' ], implode(',', $modules), $q);
-
-                    if (@$query->data['hits']['hits'])
-                    {
-                        foreach ($query->data['hits']['hits'] as $object)
-                        {
-                            $arr = [
-                                'uuid' => md5($object['_id'].'.'.$object['_index']),
-
-                                '_id' => $object['_id'],
-                                '_type' => $object['_type'],
-                                '_index' => $object['_index'],
-
-                                'created_at' => date('d.m.Y H:i:s', strtotime($object['_source']['created_at'])),
-                                'sentiment' => Crawler::emptySentiment(@$object['_source']['sentiment'])
-                            ];
-
-                            if (@$object['_source']['illegal'])
-                            {
-                                $arr['illegal'] = $object['_source']['illegal'];
-                            }
-
-                            if (@$object['_source']['consumer'])
-                            {
-                                $arr['consumer'] = $object['_source']['consumer'];
-                            }
-
-                            if (@$object['_source']['deleted_at'])
-                            {
-                                $arr['deleted_at'] = $object['_source']['deleted_at'];
-                            }
-
-                            switch ($object['_type'])
-                            {
-                                case 'article':
-                                    $article = [
-                                        'url' => $object['_source']['url'],
-                                        'title' => $object['_source']['title'],
-                                        'text' => $object['_source']['description']
-                                    ];
-
-                                    if (@$object['_source']['image_url'])
-                                    {
-                                        $article['image'] = $object['_source']['image_url'];
-                                    }
-
-                                    $data[] = array_merge($arr, $article);
-                                break;
-                                case 'document':
-                                    $document = [
-                                        'url' => $object['_source']['url'],
-                                        'title' => $object['_source']['title'],
-                                        'text' => $object['_source']['description']
-                                    ];
-
-                                    if (@$object['_source']['image_url'])
-                                    {
-                                        $document['image'] = $object['_source']['image_url'];
-                                    }
-
-                                    $data[] = array_merge($arr, $document);
-                                break;
-                                case 'entry':
-                                    $data[] = array_merge($arr, [
-                                        'url' => $object['_source']['url'],
-                                        'title' => $object['_source']['title'],
-                                        'text' => $object['_source']['entry'],
-                                        'author' => $object['_source']['author']
-                                    ]);
-                                break;
-                                case 'product':
-                                    if (@$object['_source']['description'])
-                                    {
-                                        $arr['text'] = $object['_source']['description'];
-                                    }
-
-                                    $data[] = array_merge($arr, [
-                                        'url' => $object['_source']['url'],
-                                        'title' => $object['_source']['title']
-                                    ]);
-                                break;
-                                case 'video':
-                                    $data[] = array_merge($arr, [
-                                        'title' => $object['_source']['title'],
-                                        'text' => @$object['_source']['description'],
-                                        'channel' => [
-                                            'title' => $object['_source']['channel']['title']
-                                        ]
-                                    ]);
-                                break;
-                                case 'comment':
-                                    $data[] = array_merge($arr, [
-                                        'video_id' => $object['_source']['video_id'],
-                                        'channel' => [
-                                            'id' => $object['_source']['channel']['id'],
-                                            'title' => $object['_source']['channel']['title']
-                                        ],
-                                        'text' => $object['_source']['text']
-                                    ]);
-                                break;
-                                case 'media':
-                                    $media = [
-                                        'display_url' => $object['_source']['display_url'],
-                                        'url' => 'https://www.instagram.com/p/'.$object['_source']['shortcode'].'/'
-                                    ];
-
-                                    if (@$object['_source']['text'])
-                                    {
-                                        $arr['text'] = Term::instagramMedia($object['_source']['text']);
-                                    }
-
-                                    if (@$object['_source']['place'])
-                                    {
-                                        $arr['place'] = $object['_source']['place'];
-                                    }
-
-                                    $data[] = array_merge($arr, $media);
-                                break;
-                            }
-                        }
-                    }
                 }
+            }
+        }
+
+        $data = [];
+
+        foreach (json_decode($search->modules) as $module)
+        {
+            switch ($module)
+            {
+                case 'twitter'         : if ($organisation->data_twitter)         $data = array_merge($data, $searchController->tweet          ($search, $q)['data']);                            break;
+                case 'instagram'       : if ($organisation->data_instagram)       $data = array_merge($data, $searchController->instagram      ($search, $q)['data']);                            break;
+                case 'sozluk'          : if ($organisation->data_sozluk)          $data = array_merge($data, $searchController->sozluk         ($search, $q, @$source->source_sozluk)['data']);   break;
+                case 'news'            : if ($organisation->data_news)            $data = array_merge($data, $searchController->news           ($search, $q, @$source->source_media)['data']);    break;
+                case 'blog'            : if ($organisation->data_blog)            $data = array_merge($data, $searchController->blog           ($search, $q, @$source->source_blog)['data']);     break;
+                case 'youtube_video'   : if ($organisation->data_youtube_video)   $data = array_merge($data, $searchController->youtube_video  ($search, $q)['data']);                            break;
+                case 'youtube_comment' : if ($organisation->data_youtube_comment) $data = array_merge($data, $searchController->youtube_comment($search, $q)['data']);                            break;
+                case 'shopping'        : if ($organisation->data_shopping)        $data = array_merge($data, $searchController->shopping       ($search, $q, @$source->source_shopping)['data']); break;
             }
         }
 
@@ -451,7 +157,7 @@ class RealTimeController extends Controller
         return [
             'status' => 'ok',
             'data' => $data,
-            'words' => $words
+            'words' => $clean->words
         ];
     }
 
