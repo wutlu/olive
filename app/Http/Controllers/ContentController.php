@@ -244,6 +244,14 @@ class ContentController extends Controller
                                 ]
                             ]
                         ],
+                        '_source' => [
+                            'user.counts.friends',
+                            'user.counts.followers',
+                            'user.counts.statuses',
+                            'user.counts.listed',
+                            'user.counts.favourites',
+                            'created_at'
+                        ],
                         'sort' => [
                              'created_at' => 'DESC'
                         ]
@@ -1075,18 +1083,6 @@ class ContentController extends Controller
                     $arr = [
                         'from' => $request->skip,
                         'size' => $request->take,
-                        '_source' => [
-                            'id',
-                            'user.id',
-                            'user.name',
-                            'user.screen_name',
-                            'user.image',
-                            'user.verified',
-                            'text',
-                            'created_at',
-                            'deleted_at',
-                            'sentiment'
-                        ],
                         'sort' => [
                             'created_at' => 'DESC'
                         ]
