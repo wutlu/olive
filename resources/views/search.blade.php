@@ -404,6 +404,7 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                 <button data-update-click type="button" class="btn-flat waves-effect waves-green btn-small d-table" data-validate="string" data-search="+">+Olsun</button>
                 <button data-update-click type="button" class="btn-flat waves-effect waves-red btn-small d-table" data-validate="string" data-search="-">-Olmasın</button>
                 <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="number" data-search="site_id">Site / Sözlük Id</button>
+                <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="string" data-search="place.name" data-tooltip="(İstanbul, Ankara..vb)" data-position="right">Konum</button>
             </div>
 
             <div class="p-1">
@@ -434,6 +435,8 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                 <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-search="!external.type:retweet">ReTweetler Hariç</button>
                 <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-search="!external.type:quote">Alıntılar Hariç</button>
                 <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-search="!external.type:reply">Cevaplar Hariç</button>
+
+                <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="string" data-search="lang" data-tooltip="(tr,en,fr..vb)" data-position="right">Dil</button>
             </div>
 
             <div class="p-1">
