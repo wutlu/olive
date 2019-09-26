@@ -244,14 +244,6 @@ class ContentController extends Controller
                                 ]
                             ]
                         ],
-                        '_source' => [
-                            'user.counts.friends',
-                            'user.counts.followers',
-                            'user.counts.statuses',
-                            'user.counts.listed',
-                            'user.counts.favourites',
-                            'created_at'
-                        ],
                         'sort' => [
                              'created_at' => 'DESC'
                         ]

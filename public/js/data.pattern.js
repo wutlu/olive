@@ -213,7 +213,7 @@ function __joints(o)
             card.find('.sentimental')
                 .append(
                     $('<ul />', {
-                        'class': 'd-flex',
+                        'class': 'd-flex mt-1',
                         'html': [
                             $('<li />', {
                                 'class': 'flex-fill green',
@@ -472,7 +472,7 @@ function _tweet_(o)
             $('<div />', {
                 'class': 'media-area d-flex flex-wrap mb-1'
             }),
-            $('<span />', {
+            $('<div />', {
                 'class': 'text-area',
                 'html': o.text
             }),
@@ -554,7 +554,7 @@ function _media_(o)
 
     if (o.text)
     {
-        media.append($('<span />', {
+        media.append($('<div />', {
             'html': o.text,
             'class': 'text-area'
         }))
@@ -595,7 +595,7 @@ function _entry_(o)
                 'html': o.author,
                 'class': 'd-table red-text'
             }),
-            $('<span />', {
+            $('<div />', {
                 'html': o.text,
                 'class': 'text-area'
             }),
@@ -649,7 +649,7 @@ function _article_(o)
                                 'html': o.title,
                                 'class': 'd-table title'
                             }),
-                            $('<span />', {
+                            $('<div />', {
                                 'html': o.text,
                                 'class': 'text-area'
                             })
@@ -706,7 +706,7 @@ function _document_(o)
                                 'html': o.title,
                                 'class': 'd-table title'
                             }),
-                            $('<span />', {
+                            $('<div />', {
                                 'html': o.text,
                                 'class': 'text-area'
                             })
@@ -754,7 +754,7 @@ function _product_(o)
                 'html': o.title,
                 'class': 'd-table title'
             }),
-            $('<span />', {
+            $('<div />', {
                 'html': o.text ? o.text : 'Açıklama Yok',
                 'class': 'text-area'
             }),
@@ -788,7 +788,7 @@ function _comment_(o)
                 'href': 'https://www.youtube.com/channel/' + o.channel.id,
                 'class': 'd-table red-text'
             }).attr('target', '_blank'),
-            $('<span />', {
+            $('<div />', {
                 'html': o.text,
                 'class': 'text-area text-area'
             }),
@@ -825,7 +825,7 @@ function _video_(o)
                     $('<div />', {
                         'class': 'align-self-center',
                         'html': [
-                            $('<span />', {
+                            $('<div />', {
                                 'html': o.title,
                                 'class': 'd-table title text-area'
                             }),

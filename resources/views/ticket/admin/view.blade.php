@@ -114,7 +114,7 @@
     </div>
 
     @forelse ($ticket->replies as $row)
-        <div class="card {{ $row->user_id == auth()->user()->id ? '' : 'cyan lighten-4' }}" id="message-{{ $row->id }}">
+        <div class="card mb-1 {{ $row->user_id == auth()->user()->id ? '' : 'cyan lighten-4' }}" id="message-{{ $row->id }}">
             <div class="card-content">
                 <span class="grey-text text-darken-2">{{ date('d.m.Y H:i', strtotime($ticket->created_at)) }}</span>
                 <div class="md-area">{!! Term::markdown($row->message) !!}</div>
