@@ -199,9 +199,154 @@ function __joints(o)
                     'html': 'pie_chart',
                     'css': { 'font-size': '24px' }
                 })
-            }).removeClass((o._type == 'tweet' || o._type == 'media' || o._type == 'video' || o._type == 'comment') ? 'hide' : '')
+            }).removeClass((o._type == 'tweet' || o._type == 'media' || o._type == 'video' || o._type == 'comment') ? 'hide' : ''),
+            $('<div />', {
+                'class': 'd-block d-hide sentimental'
+            })
         ]
     })
+
+    if (o.sentiment)
+    {
+        if (o.sentiment.pos != 0.25 && o.sentiment.neu != 0.25 && o.sentiment.neg != 0.25 && o.sentiment.hte != 0.25)
+        {
+            card.find('.sentimental')
+                .append(
+                    $('<ul />', {
+                        'class': 'd-flex',
+                        'html': [
+                            $('<li />', {
+                                'class': 'flex-fill green',
+                                'css': {
+                                    'width': (o.sentiment.pos*100) + '%',
+                                    'height': '2px'
+                                },
+                                'html': $('<small />', {
+                                    'class': 'grey-text hide-on-med-and-down',
+                                    'css': {
+                                        'white-space': 'nowrap'
+                                    },
+                                    'html': (o.sentiment.pos*100).toFixed(2) + '%'
+                                }).addClass(o.sentiment.pos < 0.25 ? 'hide' : '')
+                            }),
+                            $('<li />', {
+                                'class': 'flex-fill grey',
+                                'css': {
+                                    'width': (o.sentiment.neu*100) + '%',
+                                    'height': '2px'
+                                },
+                                'html': $('<small />', {
+                                    'class': 'grey-text hide-on-med-and-down',
+                                    'css': {
+                                        'white-space': 'nowrap'
+                                    },
+                                    'html': (o.sentiment.neu*100).toFixed(2) + '%'
+                                }).addClass(o.sentiment.neu < 0.25 ? 'hide' : '')
+                            }),
+                            $('<li />', {
+                                'class': 'flex-fill red',
+                                'css': {
+                                    'width': (o.sentiment.neg*100) + '%',
+                                    'height': '2px'
+                                },
+                                'html': $('<small />', {
+                                    'class': 'grey-text hide-on-med-and-down',
+                                    'css': {
+                                        'white-space': 'nowrap'
+                                    },
+                                    'html': (o.sentiment.neg*100).toFixed(2) + '%'
+                                }).addClass(o.sentiment.neg < 0.25 ? 'hide' : '')
+                            }),
+                            $('<li />', {
+                                'class': 'flex-fill grey darken-2',
+                                'css': {
+                                    'width': (o.sentiment.hte*100) + '%',
+                                    'height': '2px'
+                                },
+                                'html': $('<small />', {
+                                    'class': 'grey-text hide-on-med-and-down',
+                                    'css': {
+                                        'white-space': 'nowrap'
+                                    },
+                                    'html': (o.sentiment.hte*100).toFixed(2) + '%'
+                                }).addClass(o.sentiment.hte < 0.25 ? 'hide' : '')
+                            })
+                        ]
+                    })
+                )
+        }
+    }
+
+    if (o.consumer)
+    {
+        if (o.consumer.que != 0.25 && o.consumer.req != 0.25 && o.consumer.cmp != 0.25 && o.consumer.nws != 0.25)
+        {
+        card.find('.sentimental')
+            .append(
+                $('<ul />', {
+                    'class': 'd-flex mt-2',
+                    'html': [
+                        $('<li />', {
+                            'class': 'flex-fill grey',
+                            'css': {
+                                'width': (o.consumer.que*100) + '%',
+                                'height': '2px'
+                            },
+                            'html': $('<small />', {
+                                'class': 'grey-text hide-on-med-and-down',
+                                'css': {
+                                    'white-space': 'nowrap'
+                                },
+                                'html': 'Soru: ' + (o.consumer.que*100).toFixed(2) + '%'
+                            }).addClass(o.consumer.que < 0.25 ? 'hide' : '')
+                        }),
+                        $('<li />', {
+                            'class': 'flex-fill grey darken-1',
+                            'css': {
+                                'width': (o.consumer.req*100) + '%',
+                                'height': '2px'
+                            },
+                            'html': $('<small />', {
+                                'class': 'grey-text hide-on-med-and-down',
+                                'css': {
+                                    'white-space': 'nowrap'
+                                },
+                                'html': 'İstek: ' + (o.consumer.req*100).toFixed(2) + '%'
+                            }).addClass(o.consumer.req < 0.25 ? 'hide' : '')
+                        }),
+                        $('<li />', {
+                            'class': 'flex-fill grey darken-2',
+                            'css': {
+                                'width': (o.consumer.cmp*100) + '%',
+                                'height': '2px'
+                            },
+                            'html': $('<small />', {
+                                'class': 'grey-text hide-on-med-and-down',
+                                'css': {
+                                    'white-space': 'nowrap'
+                                },
+                                'html': 'Şikayet: ' + (o.consumer.cmp*100).toFixed(2) + '%'
+                            }).addClass(o.consumer.cmp < 0.25 ? 'hide' : '')
+                        }),
+                        $('<li />', {
+                            'class': 'flex-fill grey darken-3',
+                            'css': {
+                                'width': (o.consumer.nws*100) + '%',
+                                'height': '2px'
+                            },
+                            'html': $('<small />', {
+                                'class': 'grey-text hide-on-med-and-down',
+                                'css': {
+                                    'white-space': 'nowrap'
+                                },
+                                'html': 'Haber: ' + (o.consumer.nws*100).toFixed(2) + '%'
+                            }).addClass(o.consumer.nws < 0.25 ? 'hide' : '')
+                        })
+                    ]
+                })
+            )
+        }
+    }
 
     if (o.place)
     {
@@ -260,6 +405,61 @@ function _tweet_(o)
                             $('<span />', {
                                 'html': '@' + o.user.screen_name,
                                 'class': 'd-table grey-text'
+                            })
+                        ]
+                    }),
+                    $('<div />', {
+                        'class': 'align-self-center ml-auto hide-on-med-and-down',
+                        'css': {
+                            'max-width': '300px'
+                        },
+                        'html': [
+                            $('<ul />', {
+                                'class': 'd-flex justify-content-end',
+                                'html': [
+                                    $('<li />', {
+                                        'html': [
+                                            $('<small />', {
+                                                'class': 'grey-text d-block right-align',
+                                                'html': 'Tweet'
+                                            }),
+                                            $('<span />', {
+                                                'class': 'blue-grey-text d-block right-align',
+                                                'html': number_format(o.user.counts.statuses)
+                                            })
+                                        ],
+                                        'css': { 'padding': '4px' }
+                                    }),
+                                    $('<li />', {
+                                        'html': [
+                                            $('<small />', {
+                                                'class': 'grey-text d-block right-align',
+                                                'html': 'Takipçi'
+                                            }),
+                                            $('<span />', {
+                                                'class': 'blue-grey-text d-block right-align',
+                                                'html': number_format(o.user.counts.followers)
+                                            })
+                                        ],
+                                        'css': { 'padding': '4px' }
+                                    }),
+                                    $('<li />', {
+                                        'html': [
+                                            $('<small />', {
+                                                'class': 'grey-text d-block right-align',
+                                                'html': 'Takip'
+                                            }),
+                                            $('<span />', {
+                                                'class': 'blue-grey-text d-block right-align',
+                                                'html': number_format(o.user.counts.friends)
+                                            })
+                                        ],
+                                        'css': { 'padding': '4px' }
+                                    })
+                                ]
+                            }),
+                            $('<div />', {
+                                'html': o.user.description
                             })
                         ]
                     }),

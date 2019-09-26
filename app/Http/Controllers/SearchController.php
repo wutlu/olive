@@ -416,8 +416,14 @@ class SearchController extends Controller
                 $user = [
                     'name' => $object['_source']['user']['name'],
                     'screen_name' => $object['_source']['user']['screen_name'],
-                    'image' => $object['_source']['user']['image']
+                    'image' => $object['_source']['user']['image'],
+                    'counts' => $object['_source']['user']['counts']
                 ];
+
+                if (@$object['_source']['user']['description'])
+                {
+                    $user['description'] = $object['_source']['user']['description'];
+                }
 
                 if (@$object['_source']['user']['verified'])
                 {
