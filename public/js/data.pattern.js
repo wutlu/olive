@@ -392,10 +392,9 @@ function _tweet_(o)
                             'width': '48px',
                             'height': '48px'
                         },
-                        'class': 'mr-1 align-self-center tweet-avatar'
+                        'class': 'mr-1 tweet-avatar'
                     }),
                     $('<div />', {
-                        'class': 'align-self-center',
                         'html': [
                             $('<a />', {
                                 'html': o.user.name,
@@ -408,6 +407,10 @@ function _tweet_(o)
                             })
                         ]
                     }),
+                    $('<i />', {
+                        'class': 'material-icons cyan-text hide ml-1',
+                        'html': 'check'
+                    }).removeClass(o.user.verified ? 'hide' : ''),
                     $('<div />', {
                         'class': 'align-self-center ml-auto hide-on-med-and-down',
                         'css': {
@@ -462,11 +465,7 @@ function _tweet_(o)
                                 'html': o.user.description
                             })
                         ]
-                    }),
-                    $('<i />', {
-                        'class': 'material-icons cyan-text hide ml-1',
-                        'html': 'check'
-                    }).removeClass(o.user.verified ? 'hide' : '')
+                    })
                 ]
             }),
             $('<div />', {

@@ -10002,3 +10002,4 @@ kabine
 kabin
 machka
 koton
+borusan
