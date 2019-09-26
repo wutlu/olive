@@ -728,13 +728,13 @@
 
                 $('body').addClass('module-search-active')
 
-                    vzAjax(input)
+                vzAjax(input)
 
                     input.focus()
 
-                    setTimeout(function() {
-                        input.focus()
-                    }, 200)
+                setTimeout(function() {
+                    input.focus()
+                }, 200)
             }).on('click', '[data-trigger=module-search-close]', function() {
                 $('body').removeClass('module-search-active')
             }).on('click', '.search-wrapper', function() {
@@ -762,6 +762,13 @@
                 else if (e.keyCode == 40)
                 {
                     console.log('Down')
+                }
+            }).find('input[name=search_input]').keydown(function(e) {
+                var __ = $(this);
+
+                if (e.keyCode == 13)
+                {
+                    window.location = '{{ route('search.dashboard') }}?q=' + __.val();
                 }
             })
 

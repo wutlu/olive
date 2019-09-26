@@ -233,21 +233,19 @@ class Term
      */
     public static function cleanSearchQuery($text = '')
     {
-        /*
-        $line = str_replace(' ', ' AND ', $text);
-        $line = str_replace(' AND AND AND ', ' AND ', $line);
-        $line = str_replace(' AND OR AND ', ' OR ', $line);
-        */
-
         $clean = str_replace([ '*' ], '', $text);
         $clean = preg_replace('/@([A-Za-z0-9_\/\.]*)/', 'user.screen_name:$1', $clean);
+        $clean = preg_replace('/((.+):( |$)|(?!(.+)))/m', '', $clean);
+        $clean = trim($clean);
+        $clean = ltrim($clean, '&&||');
+        $clean = rtrim($clean, '&&||');
 
-        $words_raw = str_replace([ ' OR ', ' AND ', ')', '(', '"', '\'', '-', '+', '^', '~', '#' ], ' ', $text);
+        $words_raw = str_replace([ ' OR ', ' AND ', ')', '(', '"', '\'', '-', '+', '^', '~', '#', '||', '&&' ], ' ', $text);
         $words_raw = explode(' ', $words_raw);
 
         return (object) [
             'line' => $clean,
-            'words' => $words_raw
+            'words' => array_values(array_filter($words_raw))
         ];
     }
 
