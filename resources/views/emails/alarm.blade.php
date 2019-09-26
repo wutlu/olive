@@ -1,5 +1,5 @@
 @component('mail::message')
-# {{ $data['alarm']->name }}
+# {{ $data['alarm']->search->name }}
 
 Son {{ $data['alarm']->interval }} dakika içerisinde alınan değerler.
 
@@ -14,7 +14,7 @@ Son {{ $data['alarm']->interval }} dakika içerisinde alınan değerler.
 @endif
 
 @component('mail::button', ['url' => route('search.dashboard', [
-    'q' => $data['alarm']->query,
+    'q' => $data['alarm']->search->string,
     's' => date('Y-m-d'),
     'e' => date('Y-m-d')
 ]), 'color' => 'green']){{ 'Tüm İçerikler' }}@endcomponent
