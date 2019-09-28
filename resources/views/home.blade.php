@@ -3,7 +3,7 @@
     'title' => [
         'text' => 'Veri Zone Teknoloji'
     ],
-    'description' => 'Veri Zone Teknoloji, sosyal medya ve haber verilerine; üstün filtreleme ve çeşitli analiz özellikleriyle, daha hızlı ve daha anlamlı bir şekilde ulaşmanızı sağlayan yazılımlar geliştirir.'
+    'description' => 'Veri Zone Teknoloji, web ve sosyal medya verilerine; üstün filtreleme ve çeşitli analiz özellikleriyle, daha hızlı ve daha anlamlı bir şekilde ulaşmanızı sağlayan yazılımlar geliştirir.'
 ])
 
 @push('local.styles')
@@ -98,8 +98,8 @@
         right: 0;
         left: 0;
 
-                transform: translateY(calc(-100% + -2rem));
         -webkit-transform: translateY(calc(-100% + -2rem));
+                transform: translateY(calc(-100% + -2rem));
     }
 
     .cookie-alert {
@@ -301,7 +301,7 @@
                     <br />
                     <h1 class="white-text">Sosyal Medya'ya değer katıyoruz!</h1>
                     <p class="mb-2">
-                        <span class="white-text" style="font-size: 22px;">Veri Zone Teknoloji, sosyal medya ve haber verilerine; üstün filtreleme ve çeşitli analiz özellikleriyle, daha hızlı ve daha anlamlı bir şekilde ulaşmanızı sağlayan yazılımlar geliştirir.</span>
+                        <span class="white-text" style="font-size: 22px;">Veri Zone Teknoloji, web ve sosyal medya verilerine; üstün filtreleme ve çeşitli analiz özellikleriyle, daha hızlı ve daha anlamlı bir şekilde ulaşmanızı sağlayan yazılımlar geliştirir.</span>
                     </p>
                 </div>
             </div>

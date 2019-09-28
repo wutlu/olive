@@ -79,14 +79,6 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
         padding: .4rem;
         border-radius: .2rem;
     }
-
-    .chart {
-        margin: 0 0 2rem;
-        position: relative;
-    }
-    .chart svg {
-        height: 360px;
-    }
 @endpush
 
 @push('local.scripts')
@@ -553,7 +545,7 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                     data-input="input[name=end_date]"
                     data-focus="input[name=start_date]"
                     data-input-value="{{ date('Y-m-d') }}"
-                    data-value="{{ date('Y-m-d', strtotime('-30 day')) }}">Son 30 Gün</a>
+                    data-value="{{ date('Y-m-d', strtotime('-30 day')) }}">Son 30 Gün (Grafik Alınabilir)</a>
             </li>
         @endif
         @if ($organisation->historical_days >= 90)
@@ -790,7 +782,7 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
             {
                 $.each(obj.hits, function(key, o) {
                     var item = item_model.clone();
-                        item.removeClass('model hide').addClass('_tmp').attr('data-id', 'list-item-' + o.id)
+                        item.removeClass('model hide').addClass('_tmp').attr('data-id', 'list-item-' + o._id)
 
                     var model;
 
@@ -841,37 +833,46 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
 
     function __table_generate(id)
     {
+        var div = $('<div />', {
+            'class': 'card mb-1',
+            'css': {
+                'max-height': '400px',
+                'overflow': 'auto'
+            },
+            'html': [
+                $('<div />', {
+                    'class': 'card-content pb-0 right-align',
+                    'html': [
+                        $('<a />', {
+                            'class': 'btn-flat waves-effect',
+                            'href': '#',
+                            'data-excel': '#' + id,
+                            'data-name': 'Excel Kopya',
+                            'html': 'Excel\'e Aktar'
+                        })
+                    ]
+                }),
+                $('<div />', {
+                    'class': 'card-content table-area'
+                })
+            ]
+        });
         var table = $('#' + id);
-            table.remove()
+            table.closest('.card').remove()
 
         var table = $('<table />', {
                 'id': id,
-                'class': 'highlight mb-1'
+                'class': 'highlight'
             })
             table.append(
                 [
                     $('<thead />'),
-                    $('<tbody />'),
-                    $('<tfoot />', {
-                        'class': 'hide',
-                        'html': $('<tr />', {
-                            'html': $('<th />', {
-                                'colspan': 2,
-                                'html': $('<a />', {
-                                    'href': '#',
-                                    'class': 'd-table mx-auto',
-                                    'data-class': '#' + id + '->find(tr.hide)',
-                                    'data-class-remove': 'hide',
-                                    'data-class-hide': '#' + id + '->find(tfoot)',
-                                    'html': 'Tümünü Göster'
-                                })
-                            })
-                        })
-                    })
+                    $('<tbody />')
                 ]
             )
 
-            table.prependTo('#chart-tab')
+            div.children('.table-area').html(table)
+            div.prependTo('#chart-tab')
 
         return table;
     }
@@ -890,7 +891,12 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                     blur: 10,
                     opacity: 1
                 },
-                toolbar: { show: false }
+                toolbar: {
+                    show: true,
+                    tools: {
+                        download: '<i class="material-icons">save</i>'
+                    }
+                }
             },
             dataLabels: { enabled: true },
             stroke: {
@@ -1204,108 +1210,139 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                                 {
                                     var table = __table_generate('twitterMentions')
 
-                                    var i = 0;
-
                                     $.each(module.mentions.hits.buckets, function(bucket_key, bucket) {
                                         table.children('tbody').append(
                                             $('<tr />', {
-                                                'class': i >= 5 ? 'hide' : '',
                                                 'html': [
+                                                    $('<td />', { 'html': bucket.properties.hits.hits[0]._source.mention.name }),
                                                     $('<td />', {
-                                                        'html': [
-                                                            $('<span />', {
-                                                                'class': 'd-table',
-                                                                'html': bucket.properties.hits.hits[0]._source.mention.name
-                                                            }),
-                                                            $('<a />', {
-                                                                'href': '#',
-                                                                'class': 'd-table grey-text',
-                                                                'data-search': bucket.properties.hits.hits[0]._source.mention.screen_name,
-                                                                'data-update-click': true,
-                                                                'data-module': 'twitter',
-                                                                'html': '@' + bucket.properties.hits.hits[0]._source.mention.screen_name
-                                                            })
-                                                        ]
+                                                        'html': $('<a />', {
+                                                            'href': '#',
+                                                            'class': 'd-table grey-text',
+                                                            'data-search': bucket.properties.hits.hits[0]._source.mention.screen_name,
+                                                            'data-update-click': true,
+                                                            'data-module': 'twitter',
+                                                            'html': '@' + bucket.properties.hits.hits[0]._source.mention.screen_name
+                                                        })
                                                     }),
                                                     $('<td />', { 'class': 'right-align', 'html': bucket.doc_count })
                                                 ]
                                             })
                                         )
-
-                                        i++;
                                     })
 
-                                    table.children('thead').prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Kullanıcı' }), $('<th />', { 'class': 'right-align', 'html': 'Tweet' }) ] }))
+                                    table.children('thead').prepend($('<tr />', {
+                                        'html': [
+                                            $('<th />', { 'html': '<b>Adı</b>' }),
+                                            $('<th />', { 'html': '<b>Kullanıcı Adı</b>' }),
+                                            $('<th />', { 'class': 'right-align', 'html': '<b>Tweet</b>' })
+                                        ]
+                                    }))
                                     table.children('thead').prepend($('<tr />', {
                                         'html': [
                                             $('<th />', {
-                                                'colspan': 2,
+                                                'colspan': 3,
                                                 'class': 'yellow lighten-4 pl-1 pr-1',
-                                                'html': 'Twitter: Bahsedilen Kullanıcılar #100' + '<br />' + query
+                                                'html': '<b>Twitter: Bahsedilen Kullanıcılar #100</b>' + '<br />' + query
                                             })
                                         ]
                                     }))
-
-                                    if (i > 5)
-                                    {
-                                        table.children('tfoot').removeClass('hide')
-                                    }
                                 }
                                 else
                                 {
                                     //
                                 }
+/*
+                                if ((module.influencers.buckets).length)
+                                {
+                                    var table = __table_generate('twitterInfluencers')
 
+                                    $.each(module.influencers.buckets, function(bucket_key, bucket) {
+                                        table.children('tbody').append(
+                                            $('<tr />', {
+                                                'html': [
+                                                    $('<td />', { 'html': bucket.key.name }),
+                                                    $('<td />', {
+                                                        'html': $('<a />', {
+                                                            'href': '#',
+                                                            'class': 'd-table grey-text',
+                                                            'data-search': '@' + bucket.key.screen_name,
+                                                            'data-update-click': true,
+                                                            'data-module': 'twitter',
+                                                            'html': '@' + bucket.key.screen_name
+                                                        })
+                                                    }),
+                                                    $('<td />', { 'class': 'right-align', 'html': bucket.doc_count }),
+                                                    $('<td />', { 'class': 'right-align', 'html': number_format(bucket.key.followers) })
+                                                ]
+                                            })
+                                        )
+                                    })
+
+                                    table.children('thead').prepend($('<tr />', {
+                                        'html': [
+                                            $('<th />', { 'html': '<b>Ad</b>' }),
+                                            $('<th />', { 'html': '<b>Kullanıcı Adı</b>' }),
+                                            $('<th />', { 'class': 'right-align', 'html': '<b>Tweet</b>' }),
+                                            $('<th />', { 'class': 'right-align', 'html': '<b>Takipçi</b>' })
+                                        ]
+                                    }))
+                                    table.children('thead').prepend($('<tr />', {
+                                        'html': [
+                                            $('<th />', {
+                                                'colspan': 4,
+                                                'class': 'yellow lighten-4 pl-1 pr-1',
+                                                'html': '<b>Twitter: Paylaşım Yapan Kullanıcılar #100 (Takipçi Sayısına Göre)</b>' + '<br />' + query
+                                            })
+                                        ]
+                                    }))
+                                }
+                                else
+                                {
+                                    //
+                                }
+*/
                                 if ((module.users.buckets).length)
                                 {
                                     var table = __table_generate('twitterUsers')
 
-                                    var i = 0;
-
                                     $.each(module.users.buckets, function(bucket_key, bucket) {
                                         table.children('tbody').append(
                                             $('<tr />', {
-                                                'class': i >= 5 ? 'hide' : '',
                                                 'html': [
+                                                    $('<td />', { 'html': bucket.properties.hits.hits[0]._source.user.name }),
                                                     $('<td />', {
-                                                        'html': [
-                                                            $('<span />', {
-                                                                'class': 'd-table',
-                                                                'html': bucket.properties.hits.hits[0]._source.user.name
-                                                            }),
-                                                            $('<a />', {
-                                                                'href': '#',
-                                                                'class': 'd-table grey-text',
-                                                                'data-search': '@' + bucket.properties.hits.hits[0]._source.user.screen_name,
-                                                                'data-update-click': true,
-                                                                'data-module': 'twitter',
-                                                                'html': '@' + bucket.properties.hits.hits[0]._source.user.screen_name
-                                                            })
-                                                        ]
+                                                        'html': $('<a />', {
+                                                            'href': '#',
+                                                            'class': 'd-table grey-text',
+                                                            'data-search': '@' + bucket.properties.hits.hits[0]._source.user.screen_name,
+                                                            'data-update-click': true,
+                                                            'data-module': 'twitter',
+                                                            'html': '@' + bucket.properties.hits.hits[0]._source.user.screen_name
+                                                        })
                                                     }),
                                                     $('<td />', { 'class': 'right-align', 'html': bucket.doc_count })
                                                 ]
                                             })
                                         )
-
-                                        i++;
                                     })
 
-                                    table.children('thead').prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Kullanıcı' }), $('<th />', { 'class': 'right-align', 'html': 'Tweet' }) ] }))
+                                    table.children('thead').prepend($('<tr />', {
+                                        'html': [
+                                            $('<th />', { 'html': '<b>Adı</b>' }),
+                                            $('<th />', { 'html': '<b>Kullanıcı Adı</b>' }),
+                                            $('<th />', { 'class': 'right-align', 'html': '<b>Twee</b>t' })
+                                        ]
+                                    }))
                                     table.children('thead').prepend($('<tr />', {
                                         'html': [
                                             $('<th />', {
-                                                'colspan': 2,
+                                                'colspan': 3,
                                                 'class': 'yellow lighten-4 pl-1 pr-1',
-                                                'html': 'Twitter: Paylaşım Yapan Kullanıcılar #100' + '<br />' + query
+                                                'html': '<b>Twitter: Paylaşım Yapan Kullanıcılar #100</b>' + '<br />' + query
                                             })
                                         ]
                                     }))
-
-                                    if (i > 5)
-                                    {
-                                        table.children('tfoot').removeClass('hide')
-                                    }
                                 }
                                 else
                                 {
@@ -1317,52 +1354,43 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                                 {
                                     var table = __table_generate('youtubeUsers')
 
-                                    var i = 0;
-
                                     $.each(module.users.buckets, function(bucket_key, bucket) {
                                         table.append(
                                             $('<tr />', {
-                                                'class': i >= 5 ? 'hide' : '',
                                                 'html': [
                                                     $('<td />', {
-                                                        'html': [
-                                                            $('<span />', {
-                                                                'class': 'd-table',
-                                                                'html': bucket.properties.hits.hits[0]._source.channel.title
-                                                            }),
-                                                            $('<a />', {
-                                                                'href': '#',
-                                                                'class': 'd-table grey-text',
-                                                                'data-search': 'channel.id:"' + bucket.key + '"',
-                                                                'data-update-click': true,
-                                                                'data-module': 'youtube_video',
-                                                                'html': bucket.key
-                                                            })
-                                                        ]
+                                                        'html': $('<a />', {
+                                                            'href': '#',
+                                                            'class': 'd-table grey-text',
+                                                            'data-search': 'channel.id:"' + bucket.key + '"',
+                                                            'data-update-click': true,
+                                                            'data-module': 'youtube_video',
+                                                            'html': bucket.key
+                                                        })
                                                     }),
+                                                    $('<td />', { 'html': bucket.properties.hits.hits[0]._source.channel.title }),
                                                     $('<td />', { 'class': 'right-align', 'html': bucket.doc_count })
                                                 ]
                                             })
                                         )
-
-                                        i++;
                                     })
 
-                                    table.prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Kullanıcı' }), $('<th />', { 'class': 'right-align', 'html': 'Video' }) ] }))
+                                    table.prepend($('<tr />', {
+                                        'html': [
+                                            $('<th />', { 'html': '<b>Kanal Kimliği</b>' }),
+                                            $('<th />', { 'html': '<b>Kanal Adı</b>' }),
+                                            $('<th />', { 'class': 'right-align', 'html': '<b>Video</b>' })
+                                        ]
+                                    }))
                                     table.prepend($('<tr />', {
                                         'html': [
                                             $('<th />', {
-                                                'colspan': 2,
+                                                'colspan': 3,
                                                 'class': 'yellow lighten-4 pl-1 pr-1',
-                                                'html': 'YouTube: Yükleme Yapan Kullanıcılar #100' + '<br />' + query
+                                                'html': '<b>YouTube: Yükleme Yapan Kullanıcılar #100</b>' + '<br />' + query
                                             })
                                         ]
                                     }))
-
-                                    if (i > 5)
-                                    {
-                                        table.children('tfoot').removeClass('hide')
-                                    }
                                 }
                                 else
                                 {
@@ -1374,52 +1402,43 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                                 {
                                     var table = __table_generate('youtubeComments')
 
-                                    var i = 0;
-
                                     $.each(module.users.buckets, function(bucket_key, bucket) {
                                         table.append(
                                             $('<tr />', {
-                                                'class': i >= 5 ? 'hide' : '',
                                                 'html': [
                                                     $('<td />', {
-                                                        'html': [
-                                                            $('<span />', {
-                                                                'class': 'd-table',
-                                                                'html': bucket.properties.hits.hits[0]._source.channel.title
-                                                            }),
-                                                            $('<a />', {
-                                                                'href': '#',
-                                                                'class': 'd-table grey-text',
-                                                                'data-search': 'channel.id:"' + bucket.key + '"',
-                                                                'data-update-click': true,
-                                                                'data-module': 'youtube_comment',
-                                                                'html': bucket.key
-                                                            })
-                                                        ]
+                                                        'html': $('<a />', {
+                                                            'href': '#',
+                                                            'class': 'd-table grey-text',
+                                                            'data-search': 'channel.id:"' + bucket.key + '"',
+                                                            'data-update-click': true,
+                                                            'data-module': 'youtube_comment',
+                                                            'html': bucket.key
+                                                        })
                                                     }),
+                                                    $('<td />', { 'html': bucket.properties.hits.hits[0]._source.channel.title }),
                                                     $('<td />', { 'class': 'right-align', 'html': bucket.doc_count })
                                                 ]
                                             })
                                         )
-
-                                        i++;
                                     })
 
-                                    table.prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Kullanıcı' }), $('<th />', { 'class': 'right-align', 'html': 'Yorum' }) ] }))
+                                    table.prepend($('<tr />', {
+                                        'html': [
+                                            $('<th />', { 'html': '<b>Kanal Kimliği</b>' }),
+                                            $('<th />', { 'html': '<b>Kanal Adı</b>' }),
+                                            $('<th />', { 'class': 'right-align', 'html': 'Yorum' })
+                                        ]
+                                    }))
                                     table.prepend($('<tr />', {
                                         'html': [
                                             $('<th />', {
-                                                'colspan': 2,
+                                                'colspan': 3,
                                                 'class': 'yellow lighten-4 pl-1 pr-1',
-                                                'html': 'YouTube: Yorum Yapan Kullanıcılar #100' + '<br />' + query
+                                                'html': '<b>YouTube: Yorum Yapan Kullanıcılar #100</b>' + '<br />' + query
                                             })
                                         ]
                                     }))
-
-                                    if (i > 5)
-                                    {
-                                        table.children('tfoot').removeClass('hide')
-                                    }
                                 }
                                 else
                                 {
@@ -1431,13 +1450,11 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                                 {
                                     var table = __table_generate('sozlukSites')
 
-                                    var i = 0;
-
                                     $.each(module.sites, function(key, o) {
                                         table.append(
                                             $('<tr />', {
-                                                'class': i >= 5 ? 'hide' : '',
                                                 'html': [
+                                                    $('<td />', { 'html': '#' + o.id }),
                                                     $('<td />', {
                                                         'html': $('<a />', {
                                                             'href': '#',
@@ -1445,32 +1462,31 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                                                             'data-search': 'site_id:' + o.id,
                                                             'data-update-click': true,
                                                             'data-module': 'sozluk',
-                                                            'html': o.name + ' #' + o.id
+                                                            'html': o.name
                                                         })
                                                     }),
                                                     $('<td />', { 'class': 'right-align', 'html': o.hit })
                                                 ]
                                             })
                                         )
-
-                                        i++;
                                     })
 
-                                    table.prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Sözlük' }), $('<th />', { 'class': 'right-align', 'html': 'Entry' }) ] }))
+                                    table.prepend($('<tr />', {
+                                        'html': [
+                                            $('<th />', { 'html': '<b>Site Kimliği</b>' }),
+                                            $('<th />', { 'html': '<b>Sözlük</b>' }),
+                                            $('<th />', { 'class': 'right-align', 'html': '<b>Entry</b>' })
+                                        ]
+                                    }))
                                     table.prepend($('<tr />', {
                                         'html': [
                                             $('<th />', {
-                                                'colspan': 2,
+                                                'colspan': 3,
                                                 'class': 'yellow lighten-4 pl-1 pr-1',
-                                                'html': 'Paylaşım Yapılan Sözlükler' + '<br />' + query
+                                                'html': '<b>Paylaşım Yapılan Sözlükler</b>' + '<br />' + query
                                             })
                                         ]
                                     }))
-
-                                    if (i > 5)
-                                    {
-                                        table.children('tfoot').removeClass('hide')
-                                    }
                                 }
                                 else
                                 {
@@ -1481,52 +1497,43 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                                 {
                                     var table = __table_generate('sozlukUsers')
 
-                                    var i = 0;
-
                                     $.each(module.users, function(key, o) {
                                         table.append(
                                             $('<tr />', {
-                                                'class': i >= 5 ? 'hide' : '',
                                                 'html': [
+                                                    $('<td />', { 'html': o.site }),
                                                     $('<td />', {
-                                                        'html': [
-                                                            $('<span />', {
-                                                                'class': 'd-table',
-                                                                'html': o.name
-                                                            }),
-                                                            $('<a />', {
-                                                                'href': '#',
-                                                                'class': 'd-table grey-text',
-                                                                'data-search': 'author:"' + o.name + '"',
-                                                                'data-update-click': true,
-                                                                'data-module': 'sozluk',
-                                                                'html': '@' + o.name + ', ' + o.site
-                                                            })
-                                                        ]
+                                                        'html': $('<a />', {
+                                                            'href': '#',
+                                                            'class': 'd-table grey-text',
+                                                            'data-search': 'author:"' + o.name + '"',
+                                                            'data-update-click': true,
+                                                            'data-module': 'sozluk',
+                                                            'html': o.name
+                                                        })
                                                     }),
                                                     $('<td />', { 'class': 'right-align', 'html': o.hit })
                                                 ]
                                             })
                                         )
-
-                                        i++;
                                     })
 
-                                    table.prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Sözlük' }), $('<th />', { 'class': 'right-align', 'html': 'Entry' }) ] }))
+                                    table.prepend($('<tr />', {
+                                        'html': [
+                                            $('<th />', { 'html': '<b>Sözlük</b>' }),
+                                            $('<th />', { 'html': '<b>Yazar</b>' }),
+                                            $('<th />', { 'class': 'right-align', 'html': '<b>Entry</b>' })
+                                        ]
+                                    }))
                                     table.prepend($('<tr />', {
                                         'html': [
                                             $('<th />', {
-                                                'colspan': 2,
+                                                'colspan': 3,
                                                 'class': 'yellow lighten-4 pl-1 pr-1',
-                                                'html': 'Paylaşım Yapan Sözlük Yazarları' + '<br />' + query
+                                                'html': '<b>Paylaşım Yapan Sözlük Yazarları</b>' + '<br />' + query
                                             })
                                         ]
                                     }))
-
-                                    if (i > 5)
-                                    {
-                                        table.children('tfoot').removeClass('hide')
-                                    }
                                 }
                                 else
                                 {
@@ -1538,13 +1545,11 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                                 {
                                     var table = __table_generate('newsSites')
 
-                                    var i = 0;
-
                                     $.each(module.sites, function(key, o) {
                                         table.append(
                                             $('<tr />', {
-                                                'class': i >= 5 ? 'hide' : '',
                                                 'html': [
+                                                    $('<td />', { 'html': '#' + o.id }),
                                                     $('<td />', {
                                                         'html': $('<a />', {
                                                             'href': '#',
@@ -1552,32 +1557,31 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                                                             'data-search': 'site_id:' + o.id,
                                                             'data-update-click': true,
                                                             'data-module': 'news',
-                                                            'html': o.name + ' #' + o.id
+                                                            'html': o.name
                                                         })
                                                     }),
                                                     $('<td />', { 'class': 'right-align', 'html': o.hit })
                                                 ]
                                             })
                                         )
-
-                                        i++;
                                     })
 
-                                    table.prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Site' }), $('<th />', { 'class': 'right-align', 'html': 'Haber' }) ] }))
+                                    table.prepend($('<tr />', {
+                                        'html': [
+                                            $('<th />', { 'html': '<b>Site Kimliği</b>' }),
+                                            $('<th />', { 'html': '<b>Site</b>' }),
+                                            $('<th />', { 'class': 'right-align', 'html': '<b>Haber</b>' })
+                                        ]
+                                    }))
                                     table.prepend($('<tr />', {
                                         'html': [
                                             $('<th />', {
-                                                'colspan': 2,
+                                                'colspan': 3,
                                                 'class': 'yellow lighten-4 pl-1 pr-1',
-                                                'html': 'Haber Yapan Siteler #100' + '<br />' + query
+                                                'html': '<b>Haber Yapan Siteler #100</b>' + '<br />' + query
                                             })
                                         ]
                                     }))
-
-                                    if (i > 5)
-                                    {
-                                        table.children('tfoot').removeClass('hide')
-                                    }
                                 }
                                 else
                                 {
@@ -1589,13 +1593,11 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                                 {
                                     var table = __table_generate('blogSites')
 
-                                    var i = 0;
-
                                     $.each(module.sites, function(key, o) {
                                         table.append(
                                             $('<tr />', {
-                                                'class': i >= 5 ? 'hide' : '',
                                                 'html': [
+                                                    $('<td />', { 'html': '#' + o.id }),
                                                     $('<td />', {
                                                         'html': $('<a />', {
                                                             'href': '#',
@@ -1603,32 +1605,31 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                                                             'data-search': 'site_id:' + o.id,
                                                             'data-update-click': true,
                                                             'data-module': 'blog',
-                                                            'html': o.name + ' #' + o.id
+                                                            'html': o.name
                                                         })
                                                     }),
                                                     $('<td />', { 'class': 'right-align', 'html': o.hit })
                                                 ]
                                             })
                                         )
-
-                                        i++;
                                     })
 
-                                    table.prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Site' }), $('<th />', { 'class': 'right-align', 'html': 'Blog' }) ] }))
+                                    table.prepend($('<tr />', {
+                                        'html': [
+                                            $('<th />', { 'html': '<b>Site Kimliği</b>' }),
+                                            $('<th />', { 'html': '<b>Site</b>' }),
+                                            $('<th />', { 'class': 'right-align', 'html': '<b>Blog</b>' })
+                                        ]
+                                    }))
                                     table.prepend($('<tr />', {
                                         'html': [
                                             $('<th />', {
-                                                'colspan': 2,
+                                                'colspan': 3,
                                                 'class': 'yellow lighten-4 pl-1 pr-1',
-                                                'html': 'Blog Yazan Siteler' + '<br />' + query
+                                                'html': '<b>Blog Yazan Siteler</b>' + '<br />' + query
                                             })
                                         ]
                                     }))
-
-                                    if (i > 5)
-                                    {
-                                        table.children('tfoot').removeClass('hide')
-                                    }
                                 }
                                 else
                                 {
@@ -1640,13 +1641,11 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                                 {
                                     var table = __table_generate('shoppingSites')
 
-                                    var i = 0;
-
                                     $.each(module.sites, function(key, o) {
                                         table.append(
                                             $('<tr />', {
-                                                'class': i >= 5 ? 'hide' : '',
                                                 'html': [
+                                                    $('<td />', { 'html': '#' + o.id }),
                                                     $('<td />', {
                                                         'html': $('<a />', {
                                                             'href': '#',
@@ -1654,32 +1653,31 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                                                             'data-search': 'site_id:' + o.id,
                                                             'data-update-click': true,
                                                             'data-module': 'shopping',
-                                                            'html': o.name + ' #' + o.id
+                                                            'html': o.name
                                                         })
                                                     }),
                                                     $('<td />', { 'class': 'right-align', 'html': o.hit })
                                                 ]
                                             })
                                         )
-
-                                        i++;
                                     })
 
-                                    table.prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Site' }), $('<th />', { 'class': 'right-align', 'html': 'İlan' }) ] }))
+                                    table.prepend($('<tr />', {
+                                        'html': [
+                                            $('<th />', { 'html': '<b>Site Kimliği</b>' }),
+                                            $('<th />', { 'html': '<b>Site</b>' }),
+                                            $('<th />', { 'class': 'right-align', 'html': '<b>İlan</b>' })
+                                        ]
+                                    }))
                                     table.prepend($('<tr />', {
                                         'html': [
                                             $('<th />', {
-                                                'colspan': 2,
+                                                'colspan': 3,
                                                 'class': 'yellow lighten-4 pl-1 pr-1',
-                                                'html': 'E-ticaret: İlan Paylaşılan Siteler' + '<br />' + query
+                                                'html': '<b>E-ticaret: İlan Paylaşılan Siteler</b>' + '<br />' + query
                                             })
                                         ]
                                     }))
-
-                                    if (i > 5)
-                                    {
-                                        table.children('tfoot').removeClass('hide')
-                                    }
                                 }
                                 else
                                 {
@@ -1690,52 +1688,43 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                                 {
                                     var table = __table_generate('shoppingUsers')
 
-                                    var i = 0;
-
                                     $.each(module.users, function(key, o) {
                                         table.append(
                                             $('<tr />', {
-                                                'class': i >= 5 ? 'hide' : '',
                                                 'html': [
+                                                    $('<td />', { 'html': o.site }),
                                                     $('<td />', {
-                                                        'html': [
-                                                            $('<span />', {
-                                                                'class': 'd-table',
-                                                                'html': o.name
-                                                            }),
-                                                            $('<a />', {
-                                                                'href': '#',
-                                                                'class': 'd-table grey-text',
-                                                                'data-search': 'seller.name:"' + o.name + '"',
-                                                                'data-update-click': true,
-                                                                'data-module': 'shopping',
-                                                                'html': '@' + o.name + ', ' + o.site
-                                                            })
-                                                        ]
+                                                        'html': $('<a />', {
+                                                            'href': '#',
+                                                            'class': 'd-table grey-text',
+                                                            'data-search': 'seller.name:"' + o.name + '"',
+                                                            'data-update-click': true,
+                                                            'data-module': 'shopping',
+                                                            'html': o.name
+                                                        })
                                                     }),
                                                     $('<td />', { 'class': 'right-align', 'html': o.hit })
                                                 ]
                                             })
                                         )
-
-                                        i++;
                                     })
 
-                                    table.prepend($('<tr />', { 'html': [ $('<th />', { 'html': 'Site' }), $('<th />', { 'class': 'right-align', 'html': 'İlan' }) ] }))
+                                    table.prepend($('<tr />', {
+                                        'html': [
+                                            $('<th />', { 'html': '<b>Site</b>' }),
+                                            $('<th />', { 'html': '<b>Satıcı</b>' }),
+                                            $('<th />', { 'class': 'right-align', 'html': '<b>İlan</b>' })
+                                        ]
+                                    }))
                                     table.prepend($('<tr />', {
                                         'html': [
                                             $('<th />', {
-                                                'colspan': 2,
+                                                'colspan': 3,
                                                 'class': 'yellow lighten-4 pl-1 pr-1',
-                                                'html': 'E-ticaret: İlan Paylaşan Kullanıcılar' + '<br />' + query
+                                                'html': '<b>E-ticaret: İlan Paylaşan Kullanıcılar</b>' + '<br />' + query
                                             })
                                         ]
                                     }))
-
-                                    if (i > 5)
-                                    {
-                                        table.children('tfoot').removeClass('hide')
-                                    }
                                 }
                                 else
                                 {
@@ -1759,6 +1748,11 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                         }
                     };
                     twitterHashtagChartOption['subtitle'] = { 'text': 'Twitter Hashtag Grafiği' };
+                    twitterHashtagChartOption['chart']['events'] = {
+                        'click': function(event, chartContext, config) {
+                            //console.log(chartContext)
+                        }
+                    };
 
                     instagramHashtagChartOption['chart']['type'] = 'bar';
                     instagramHashtagChartOption['plotOptions'] = {
@@ -2116,31 +2110,54 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                 <div class="banner-overlay" data-name="overlay"></div>
             </div>
 
-            <div class="banner-4 mb-1">
-                <div class="banner-item tweet">
-                    <strong data-name="twitter-tweet">0</strong> tweet
-                </div>
-                <div class="banner-item entry">
-                    <strong data-name="sozluk-entry">0</strong> sözlük
-                </div>
-                <div class="banner-item article">
-                    <strong data-name="media-article">0</strong> haber
-                </div>
-                <div class="banner-item video">
-                    <strong data-name="youtube-video">0</strong> youtube
-                </div>
-                <div class="banner-item video-comment">
-                    <strong data-name="youtube-comment">0</strong> youtube yorum
-                </div>
-                <div class="banner-item product">
-                    <strong data-name="shopping-product">0</strong> ilan
-                </div>
-                <div class="banner-item document">
-                    <strong data-name="blog-document">0</strong> blog
-                </div>
-                <div class="banner-item media">
-                    <strong data-name="instagram-media">0</strong> Instagram
-                </div>
+            <div class="right-align">
+                <table id="banner-hits">
+                    <tbody>
+                        <tr>
+                            <td style="font-size: 20px; text-transform: uppercase;" class="right-align">
+                                <strong data-name="twitter-tweet" style="font-weight: bold;">0</strong>
+                                <span class="grey-text">tweet</span>
+                            </td>
+                            <td style="font-size: 20px; text-transform: uppercase;" class="right-align">
+                                <strong data-name="sozluk-entry" style="font-weight: bold;">0</strong>
+                                <span class="grey-text">sözlük</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-size: 20px; text-transform: uppercase;" class="right-align">
+                                <strong data-name="media-article" style="font-weight: bold;">0</strong>
+                                <span class="grey-text">haber</span>
+                            </td>
+                            <td style="font-size: 20px; text-transform: uppercase;" class="right-align">
+                                <strong data-name="youtube-video" style="font-weight: bold;">0</strong>
+                                <span class="grey-text">youtube</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-size: 20px; text-transform: uppercase;" class="right-align">
+                                <strong data-name="youtube-comment" style="font-weight: bold;">0</strong>
+                                <span class="grey-text">youtube yorum</span>
+                            </td>
+                            <td style="font-size: 20px; text-transform: uppercase;" class="right-align">
+                                <strong data-name="shopping-product" style="font-weight: bold;">0</strong>
+                                <span class="grey-text">ilan</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-size: 20px; text-transform: uppercase;" class="right-align">
+                                <strong data-name="blog-document" style="font-weight: bold;">0</strong>
+                                <span class="grey-text">blog</span>
+                            </td>
+                            <td style="font-size: 20px; text-transform: uppercase;" class="right-align">
+                                <strong data-name="instagram-media" style="font-weight: bold;">0</strong>
+                                <span class="grey-text">Instagram</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button class="btn-flat btn-floating btn-small" data-image="#banner-hits">
+                    <i class="material-icons">save</i>
+                </button>
             </div>
 
             <div class="d-flex flex-wrap mb-2">
@@ -2443,9 +2460,9 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
 @endpush
 
 @push('external.include.footer')
-    <script src="{{ asset('js/jquery.canvasjs.min.js?v='.config('system.version')) }}"></script>
     <script src="{{ asset('js/apex.min.js?v='.config('system.version')) }}"></script>
     <script src="{{ asset('js/owl.carousel.min.js?v='.config('system.version')) }}"></script>
+    <script src="{{ asset('js/jquery.table2excel.min.js?v='.config('system.version')) }}"></script>
     <script src="{{ asset('js/jquery.ui.min.js?v='.config('system.version')) }}"></script>
     <script src="{{ asset('js/jquery.mark.min.js?v='.config('system.version')) }}" charset="UTF-8"></script>
 @endpush

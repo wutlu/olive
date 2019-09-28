@@ -983,6 +983,8 @@
     <script src="{{ asset('js/jquery.min.js?v='.config('system.version')) }}"></script>
     <script src="{{ asset('js/materialize.min.js?v='.config('system.version')) }}"></script>
     <script src="{{ asset('js/jquery.timeago.min.js?v='.config('system.version')) }}"></script>
+    <script src="{{ asset('js/canvas2image.js?v='.config('system.version')) }}"></script>
+    <script src="{{ asset('js/html2canvas.min.js?v='.config('system.version')) }}"></script>
     <script src="{{ asset('js/core.js?v='.config('system.version')) }}"></script>
     <script src="{{ asset('js/data.pattern.js?v='.config('system.version')) }}"></script>
 

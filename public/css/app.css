@@ -87,26 +87,6 @@
   text-align: right;
 }
 
-.banner-4 {
-  display: -ms-flexbox;
-  display: flex;
-
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-}
-.banner-4 > .banner-item {
-  width: 50%;
-  padding: 1rem;
-  text-transform: uppercase;
-  font-size: 20px;
-  text-align: right;
-  color: #666;
-}
-.banner-4 > .banner-item > strong {
-  font-weight: 700;
-  color: #333;
-}
-
  /*!
  * range
  */
@@ -2650,8 +2630,8 @@ nav.nav-half {
   word-break: break-all;
 
   background-repeat: no-repeat;
-  background-position: top 16px right 16px;
-  background-size: 32px;
+  background-position: top 8px right 8px;
+  background-size: 24px;
 
   -webkit-transition: all 200ms cubic-bezier(.25, .46, .45, .94);
           transition: all 200ms cubic-bezier(.25, .46, .45, .94);
@@ -2747,11 +2727,6 @@ nav.nav-half {
 }
 .data:hover {
   background-color: #fff;
-  background-size: 24px;
-  background-position: top 8px right 8px;
-
-  -webkit-transform: scale(1.02);
-          transform: scale(1.02);
 }
 
 /*!

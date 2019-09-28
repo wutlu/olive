@@ -25,6 +25,29 @@ function msie()
     }
 }
 
+/* --- excel save --- */
+
+$(document).on('click', '[data-excel]', function() {
+    var __ = $(this);
+
+    $(_element(__.data('excel'))).table2excel({
+        exclude: '.noExl',
+        filename: __.data('name'),
+        fileext: '.xls'
+    })
+}).on('click', '[data-image]', function(e) {
+    var __ = $(this);
+    var target = $(__.data('image'));
+
+    html2canvas(target, {
+        onrendered: function(canvas) {
+            return Canvas2Image.saveAsPNG(canvas);
+        }
+    })
+
+    return e.preventDefault()
+})
+
 $(window).scroll(function() {
     var scrollTop = $(window).scrollTop();
     var nav = $('#main-nav');

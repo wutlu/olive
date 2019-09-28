@@ -189,7 +189,6 @@ function __joints(o)
             $('<a />', {
                 'class': 'btn-flat btn-floating waves-effect hide',
                 'href': '#',
-                'data-href': '#',
                 'data-trigger': 'create_analysis',
                 'data-index': o._index,
                 'data-type': o._type,
