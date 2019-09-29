@@ -386,6 +386,7 @@ class SearchController extends Controller
 
     public static function tweet($search, array $q)
     {
+        $aggs = [];
         $data = [];
         $stats = [ 'total' => 0 ];
 
@@ -404,6 +405,11 @@ class SearchController extends Controller
         }
 
         $query = Document::search([ 'twitter', 'tweets', '*' ], 'tweet', $q);
+
+        if (@$query->data['aggregations'])
+        {
+            $aggs = $query->data['aggregations'];
+        }
 
         if (@$query->data['hits']['hits'])
         {
@@ -449,7 +455,8 @@ class SearchController extends Controller
 
         return [
             'data' => $data,
-            'stats' => $stats
+            'stats' => $stats,
+            'aggs' => $aggs
         ];
     }
 

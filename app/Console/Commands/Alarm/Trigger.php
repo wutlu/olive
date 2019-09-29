@@ -70,27 +70,46 @@ class Trigger extends Command
             {
                 $es_data = self::elasticsearch($alarm);
 
-                $this->info($alarm->search->name.' - ['.count($es_data).']');
+                $this->info($alarm->search->name.' - ['.count($es_data['data']).']');
 
-                if (count($es_data))
+                if (count($es_data['data']))
                 {
-                    $this->info(count($es_data));
+                    $this->info(count($es_data['data']));
 
-                    $sources[] = '| Kaynak  | İçerik |';
-                    $sources[] = '|:--------|-------:|';
+                    $stats[] = '| '.implode(' | ', [
+                        number_format($es_data['stats']['mentions']),
+                        number_format($es_data['stats']['hashtags']),
+                        number_format($es_data['stats']['unique_users']),
+                        number_format($es_data['stats']['reach'])
+                    ]).' |';
+                    $stats[] = '|---:|---:|---:|---:|---:|';
+                    $stats[] = '| '.implode(' | ', [ '_Mention_', '_Hashtag_', '_Tekil_', '_Tahmini Ulaşılan_' ]).' |';
+
+                    $sources[] = '| '.implode(' | ', [ '_Kaynak_', '_İçerik_' ]).' |';
+                    $sources[] = '|:---|---:|';
 
                     foreach (json_decode($alarm->search->modules) as $module)
                     {
-                        $sources[] = '| '.config('system.modules')[$module].' | '.intval(@$es_data[$module]['count']).' |';
+                        $sources[] = '| '.config('system.modules')[$module].' | '.number_format(intval(@$es_data['data'][$module]['count'])).' |';
                     }
 
-                    foreach ($es_data as $item)
+                    foreach ($es_data['data'] as $item)
                     {
-                        $data[] = implode(' ', [ $item['text'], route('content', [
-                            'es_index' => $item['_index'],
-                            'es_type' => $item['_type'],
-                            'es_id' => $item['_id']
-                        ]) ]);
+                        $data[] = implode(
+                            ' ',
+                            [
+                                PHP_EOL,
+                                PHP_EOL,
+                                str_replace([ '#' ], [ ' \#'], $item['text']),
+                                route('content',
+                                    [
+                                        'es_index' => $item['_index'],
+                                        'es_type' => $item['_type'],
+                                        'es_id' => $item['_id']
+                                    ]
+                                )
+                            ]
+                        );
                     }
 
                     $alarm->update([
@@ -101,6 +120,7 @@ class Trigger extends Command
                     Mail::queue(
                         new AlarmMail(
                             [
+                                'stats' => implode(PHP_EOL, $stats),
                                 'data' => $data,
                                 'alarm' => $alarm,
                                 'sources' => implode(PHP_EOL, $sources)
@@ -188,6 +208,12 @@ class Trigger extends Command
         }
 
         $data = [];
+        $stats = [
+            'mentions' => 0,
+            'hashtags' => 0,
+            'unique_users' => 0,
+            'reach' => 0
+        ];
 
         foreach (json_decode($search->modules) as $module)
         {
@@ -196,7 +222,29 @@ class Trigger extends Command
                 case 'twitter':
                     if ($organisation->data_twitter)
                     {
-                        $item = $searchController->tweet($search, $q);
+                        $twitter_q = $q;
+
+                        $twitter_q['aggs']['mentions'] = [
+                            'nested' => [ 'path' => 'entities.mentions' ],
+                            'aggs' => [ 'xxx' => [ 'terms' => [ 'field' => 'entities.mentions.mention.id' ] ] ]
+                        ];
+                        $twitter_q['aggs']['hashtags'] = [
+                            'nested' => [ 'path' => 'entities.hashtags' ],
+                            'aggs' => [ 'xxx' => [ 'terms' => [ 'field' => 'entities.mentions.mention.id' ] ] ]
+                        ];
+                        $twitter_q['aggs']['unique_users'] = [
+                            'cardinality' => [ 'field' => 'user.id' ]
+                        ];
+                        $twitter_q['aggs']['reach'] = [
+                            'avg' => [ 'field' => 'user.counts.followers' ]
+                        ];
+
+                        $item = $searchController->tweet($search, $twitter_q);
+
+                        $stats['mentions'] = $stats['mentions'] + $item['aggs']['mentions']['doc_count'];
+                        $stats['hashtags'] = $stats['hashtags'] + $item['aggs']['hashtags']['doc_count'];
+                        $stats['unique_users'] = $stats['unique_users'] + $item['aggs']['unique_users']['value'];
+                        $stats['reach'] = $stats['reach'] + intval($item['aggs']['reach']['value']);
 
                         if (@$item['data'][0])
                         {
@@ -214,6 +262,20 @@ class Trigger extends Command
                 case 'instagram':
                     if ($organisation->data_instagram)
                     {
+                        $instagram_q = $q;
+
+                        $instagram_q['aggs']['mentions'] = [
+                            'nested' => [ 'path' => 'entities.mentions' ],
+                            'aggs' => [ 'xxx' => [ 'terms' => [ 'field' => 'entities.mentions.mention.id' ] ] ]
+                        ];
+                        $instagram_q['aggs']['hashtags'] = [
+                            'nested' => [ 'path' => 'entities.hashtags' ],
+                            'aggs' => [ 'xxx' => [ 'terms' => [ 'field' => 'entities.mentions.mention.id' ] ] ]
+                        ];
+                        $instagram_q['aggs']['unique_users'] = [
+                            'cardinality' => [ 'field' => 'user.id' ]
+                        ];
+
                         $item = $searchController->instagram($search, $q);
 
                         if (@$item['data'][0])
@@ -340,6 +402,9 @@ class Trigger extends Command
             }
         }
 
-        return $data;
+        return [
+            'data' => $data,
+            'stats' => $stats
+        ];
     }
 }
