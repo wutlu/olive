@@ -76,16 +76,11 @@ class Trigger extends Command
                 {
                     $this->info(count($es_data['data']));
 
-                    $stats[] = '| '.implode(' | ', [
-                        number_format($es_data['stats']['mentions']),
-                        number_format($es_data['stats']['hashtags']),
-                        number_format($es_data['stats']['unique_users']),
-                        number_format($es_data['stats']['reach'])
-                    ]).' |';
-                    $stats[] = '|---:|---:|---:|---:|---:|';
-                    $stats[] = '| '.implode(' | ', [ '_Mention_', '_Hashtag_', '_Tekil_', '_Tahmini Ulaşılan_' ]).' |';
+                    $stats[] = '| '.implode(' | ', [ 'Platform', number_format($es_data['stats']['mentions']), number_format($es_data['stats']['hashtags']), number_format($es_data['stats']['unique_users']), number_format($es_data['stats']['reach']) ]).' |';
+                    $stats[] = '|---:|---:|---:|---:|---:|---:|';
+                    $stats[] = '| '.implode(' | ', [ '_Platform_', '_Mention_', '_Hashtag_', '_Tekil_', '_Tahmini Ulaşılan_' ]).' |';
 
-                    $sources[] = '| '.implode(' | ', [ '_Kaynak_', '_İçerik_' ]).' |';
+                    $sources[] = '| '.implode(' | ', [ '_Platform_', '_İçerik_' ]).' |';
                     $sources[] = '|:---|---:|';
 
                     foreach (json_decode($alarm->search->modules) as $module)
@@ -158,6 +153,7 @@ class Trigger extends Command
             'sort' => [ 'created_at' => 'desc' ],
             'query' => [
                 'bool' => [
+                    /*
                     'filter' => [
                         [
                             'range' => [
@@ -168,6 +164,7 @@ class Trigger extends Command
                             ]
                         ]
                     ],
+                    */
                     'must' => [
                         [ 'exists' => [ 'field' => 'created_at' ] ],
                         [

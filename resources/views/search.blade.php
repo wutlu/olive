@@ -742,36 +742,60 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
             }
 
             $('[data-name=twitter-tweet]').html(number_format(obj.stats.counts.twitter_tweet)).attr('data-count', obj.stats.counts.twitter_tweet);
-            $('[data-name=twitter-unique_users]').html(number_format(obj.stats.twitter.unique_users));
-            $('[data-name=twitter-hashtags]').html(number_format(obj.stats.twitter.hashtags));
-            $('[data-name=twitter-mentions]').html(number_format(obj.stats.twitter.mentions));
+            if (obj.stats.counts.twitter_tweet)
+            {
+                $('[data-name=twitter-unique_users]').html(number_format(obj.stats.twitter.unique_users));
+                $('[data-name=twitter-hashtags]').html(number_format(obj.stats.twitter.hashtags));
+                $('[data-name=twitter-mentions]').html(number_format(obj.stats.twitter.mentions));
+            }
 
             $('[data-name=instagram-media]').html(number_format(obj.stats.counts.instagram_media)).attr('data-count', obj.stats.counts.instagram_media);
-            $('[data-name=instagram-unique_users]').html(number_format(obj.stats.instagram.unique_users));
-            $('[data-name=instagram-hashtags]').html(number_format(obj.stats.instagram.hashtags));
-            $('[data-name=instagram-mentions]').html(number_format(obj.stats.instagram.mentions));
+            if (obj.stats.counts.instagram_media)
+            {
+                $('[data-name=instagram-unique_users]').html(number_format(obj.stats.instagram.unique_users));
+                $('[data-name=instagram-hashtags]').html(number_format(obj.stats.instagram.hashtags));
+                $('[data-name=instagram-mentions]').html(number_format(obj.stats.instagram.mentions));
+            }
 
             $('[data-name=sozluk-entry]').html(number_format(obj.stats.counts.sozluk_entry)).attr('data-count', obj.stats.counts.sozluk_entry);
-            $('[data-name=sozluk-unique_users]').html(number_format(obj.stats.sozluk.unique_users));
-            $('[data-name=sozluk-unique_topics]').html(number_format(obj.stats.sozluk.unique_topics));
+            if (obj.stats.counts.sozluk_entry)
+            {
+                $('[data-name=sozluk-unique_users]').html(number_format(obj.stats.sozluk.unique_users));
+                $('[data-name=sozluk-unique_topics]').html(number_format(obj.stats.sozluk.unique_topics));
+            }
 
             $('[data-name=media-article]').html(number_format(obj.stats.counts.media_article)).attr('data-count', obj.stats.counts.media_article);
-            $('[data-name=news-unique_sites]').html(number_format(obj.stats.news.unique_sites));
+            if (obj.stats.counts.media_article)
+            {
+                $('[data-name=news-unique_sites]').html(number_format(obj.stats.news.unique_sites));
+            }
 
             $('[data-name=blog-document]').html(number_format(obj.stats.counts.blog_document)).attr('data-count', obj.stats.counts.blog_document);
-            $('[data-name=blog-unique_sites]').html(number_format(obj.stats.blog.unique_sites));
+            if (obj.stats.counts.blog_document)
+            {
+                $('[data-name=blog-unique_sites]').html(number_format(obj.stats.blog.unique_sites));
+            }
 
             $('[data-name=youtube-video]').html(number_format(obj.stats.counts.youtube_video)).attr('data-count', obj.stats.counts.youtube_video);
-            $('[data-name=youtube_video-unique_users]').html(number_format(obj.stats.youtube_video.unique_users));
-            $('[data-name=youtube_video-hashtags]').html(number_format(obj.stats.youtube_video.hashtags));
+            if (obj.stats.counts.youtube_video)
+            {
+                $('[data-name=youtube_video-unique_users]').html(number_format(obj.stats.youtube_video.unique_users));
+                $('[data-name=youtube_video-hashtags]').html(number_format(obj.stats.youtube_video.hashtags));
+            }
 
             $('[data-name=youtube-comment]').html(number_format(obj.stats.counts.youtube_comment)).attr('data-count', obj.stats.counts.youtube_comment);
-            $('[data-name=youtube_comment-unique_users]').html(number_format(obj.stats.youtube_comment.unique_users));
-            $('[data-name=youtube_comment-unique_videos]').html(number_format(obj.stats.youtube_comment.unique_videos));
+            if (obj.stats.counts.youtube_comment)
+            {
+                $('[data-name=youtube_comment-unique_users]').html(number_format(obj.stats.youtube_comment.unique_users));
+                $('[data-name=youtube_comment-unique_videos]').html(number_format(obj.stats.youtube_comment.unique_videos));
+            }
 
             $('[data-name=shopping-product]').html(number_format(obj.stats.counts.shopping_product)).attr('data-count', obj.stats.counts.shopping_product);
-            $('[data-name=shopping-unique_sites]').html(number_format(obj.stats.shopping.unique_sites));
-            $('[data-name=shopping-unique_users]').html(number_format(obj.stats.shopping.unique_users));
+            if (obj.stats.counts.shopping_product)
+            {
+                $('[data-name=shopping-unique_sites]').html(number_format(obj.stats.shopping.unique_sites));
+                $('[data-name=shopping-unique_users]').html(number_format(obj.stats.shopping.unique_users));
+            }
 
             $('.banner').addClass('hide')
 
