@@ -3,6 +3,8 @@
 
 _Alarm değerleri son {{ $data['alarm']->interval }} dakika içerisindeki aksiyonlardan elde edilmiştir._
 
+{{ $data['stats'] }}
+
 {{ $data['sources'] }}
 
 @if (count($data['data']))
@@ -12,9 +14,6 @@ _Alarm değerleri son {{ $data['alarm']->interval }} dakika içerisindeki aksiyo
 - {!! $item !!}
 @endforeach
 @endif
-
-## Twitter & Instagram - Etkileşim
-{{ $data['stats'] }}
 
 @component('mail::button', ['url' => route('search.dashboard', [
     'q' => $data['alarm']->search->string,

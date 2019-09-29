@@ -76,9 +76,18 @@ class Trigger extends Command
                 {
                     $this->info(count($es_data['data']));
 
-                    $stats[] = '| '.implode(' | ', [ 'Platform', number_format($es_data['stats']['mentions']), number_format($es_data['stats']['hashtags']), number_format($es_data['stats']['unique_users']), number_format($es_data['stats']['reach']) ]).' |';
-                    $stats[] = '|---:|---:|---:|---:|---:|---:|';
                     $stats[] = '| '.implode(' | ', [ '_Platform_', '_Mention_', '_Hashtag_', '_Tekil_', '_Tahmini Ulaşılan_' ]).' |';
+                    $stats[] = '|---:|---:|---:|---:|---:|---:|';
+                    foreach ($es_data['stats'] as $key => $platform)
+                    {
+                        $stats[] = '| '.implode(' | ', [
+                            $key,
+                            number_format($platform['mentions']),
+                            number_format($platform['hashtags']),
+                            number_format($platform['unique_users']),
+                            $platform['reach'] ? number_format($platform['reach']) : '-'
+                        ]).' |';
+                    }
 
                     $sources[] = '| '.implode(' | ', [ '_Platform_', '_İçerik_' ]).' |';
                     $sources[] = '|:---|---:|';
@@ -203,12 +212,7 @@ class Trigger extends Command
         }
 
         $data = [];
-        $stats = [
-            'mentions' => 0,
-            'hashtags' => 0,
-            'unique_users' => 0,
-            'reach' => 0
-        ];
+        $stats = [];
 
         foreach (json_decode($search->modules) as $module)
         {
@@ -236,10 +240,10 @@ class Trigger extends Command
 
                         $item = $searchController->tweet($search, $twitter_q);
 
-                        $stats['mentions'] = $stats['mentions'] + $item['aggs']['mentions']['doc_count'];
-                        $stats['hashtags'] = $stats['hashtags'] + $item['aggs']['hashtags']['doc_count'];
-                        $stats['unique_users'] = $stats['unique_users'] + $item['aggs']['unique_users']['value'];
-                        $stats['reach'] = $stats['reach'] + intval($item['aggs']['reach']['value']);
+                        $stats['twitter']['mentions'] = $item['aggs']['mentions']['doc_count'];
+                        $stats['twitter']['hashtags'] = $item['aggs']['hashtags']['doc_count'];
+                        $stats['twitter']['unique_users'] = $item['aggs']['unique_users']['value'];
+                        $stats['twitter']['reach'] = intval($item['aggs']['reach']['value']);
 
                         if (@$item['data'][0])
                         {
@@ -261,7 +265,7 @@ class Trigger extends Command
 
                         $instagram_q['aggs']['mentions'] = [
                             'nested' => [ 'path' => 'entities.mentions' ],
-                            'aggs' => [ 'xxx' => [ 'terms' => [ 'field' => 'entities.mentions.mention.id' ] ] ]
+                            'aggs' => [ 'xxx' => [ 'terms' => [ 'field' => 'entities.mentions.mention.name' ] ] ]
                         ];
                         $instagram_q['aggs']['hashtags'] = [
                             'nested' => [ 'path' => 'entities.hashtags' ],
@@ -271,7 +275,12 @@ class Trigger extends Command
                             'cardinality' => [ 'field' => 'user.id' ]
                         ];
 
-                        $item = $searchController->instagram($search, $q);
+                        $item = $searchController->instagram($search, $instagram_q);
+
+                        $stats['instagram']['mentions'] = $item['aggs']['mentions']['doc_count'];
+                        $stats['instagram']['hashtags'] = $item['aggs']['hashtags']['doc_count'];
+                        $stats['instagram']['unique_users'] = $item['aggs']['unique_users']['value'];
+                        $stats['instagram']['reach'] = 0;
 
                         if (@$item['data'][0])
                         {
