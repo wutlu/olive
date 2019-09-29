@@ -281,7 +281,18 @@ class SearchController extends Controller
                 case 'twitter':
                     if ($organisation->data_twitter)
                     {
-                        $tweet_data = self::tweet($request, $q);
+                        $twitter_q = $q;
+
+                        $twitter_q['aggs']['mentions'] = [ 'nested' => [ 'path' => 'entities.mentions' ], 'aggs' => [ 'xxx' => [ 'terms' => [ 'field' => 'entities.mentions.mention.id' ] ] ] ];
+                        $twitter_q['aggs']['hashtags'] = [ 'nested' => [ 'path' => 'entities.hashtags' ], 'aggs' => [ 'xxx' => [ 'terms' => [ 'field' => 'entities.hashtags.hashtag' ] ] ] ];
+                        $twitter_q['aggs']['unique_users'] = [ 'cardinality' => [ 'field' => 'user.id' ] ];
+
+                        $tweet_data = self::tweet($request, $twitter_q);
+
+                        $stats['twitter']['mentions'] = $tweet_data['aggs']['mentions']['doc_count'];
+                        $stats['twitter']['hashtags'] = $tweet_data['aggs']['hashtags']['doc_count'];
+                        $stats['twitter']['unique_users'] = $tweet_data['aggs']['unique_users']['value'];
+
                         $stats['hits'] = $stats['hits'] + $tweet_data['stats']['total'];
                         $stats['counts']['twitter_tweet'] = $tweet_data['stats']['total'];
 
@@ -291,7 +302,18 @@ class SearchController extends Controller
                 case 'instagram':
                     if ($organisation->data_instagram)
                     {
-                        $instagram_data = self::instagram($request, $q);
+                        $instagram_q = $q;
+
+                        $instagram_q['aggs']['mentions'] = [ 'nested' => [ 'path' => 'entities.mentions' ], 'aggs' => [ 'xxx' => [ 'terms' => [ 'field' => 'entities.mentions.mention.id' ] ] ] ];
+                        $instagram_q['aggs']['hashtags'] = [ 'nested' => [ 'path' => 'entities.hashtags' ], 'aggs' => [ 'xxx' => [ 'terms' => [ 'field' => 'entities.hashtags.hashtag' ] ] ] ];
+                        $instagram_q['aggs']['unique_users'] = [ 'cardinality' => [ 'field' => 'user.id' ] ];
+
+                        $instagram_data = self::instagram($request, $instagram_q);
+
+                        $stats['instagram']['mentions'] = $instagram_data['aggs']['mentions']['doc_count'];
+                        $stats['instagram']['hashtags'] = $instagram_data['aggs']['hashtags']['doc_count'];
+                        $stats['instagram']['unique_users'] = $instagram_data['aggs']['unique_users']['value'];
+
                         $stats['hits'] = $stats['hits'] + $instagram_data['stats']['total'];
                         $stats['counts']['instagram_media'] = $instagram_data['stats']['total'];
 
@@ -301,7 +323,16 @@ class SearchController extends Controller
                 case 'sozluk':
                     if ($organisation->data_sozluk)
                     {
-                        $sozluk_data = self::sozluk($request, $q, @$source->source_sozluk);
+                        $sozluk_q = $q;
+
+                        $sozluk_q['aggs']['unique_users'] = [ 'cardinality' => [ 'field' => 'author' ] ];
+                        $sozluk_q['aggs']['unique_topics'] = [ 'cardinality' => [ 'field' => 'group_name' ] ];
+
+                        $sozluk_data = self::sozluk($request, $sozluk_q, @$source->source_sozluk);
+
+                        $stats['sozluk']['unique_users'] = $sozluk_data['aggs']['unique_users']['value'];
+                        $stats['sozluk']['unique_topics'] = $sozluk_data['aggs']['unique_topics']['value'];
+
                         $stats['hits'] = $stats['hits'] + $sozluk_data['stats']['total'];
                         $stats['counts']['sozluk_entry'] = $sozluk_data['stats']['total'];
 
@@ -311,7 +342,14 @@ class SearchController extends Controller
                 case 'news':
                     if ($organisation->data_news)
                     {
-                        $news_data = self::news($request, $q, @$source->source_media);
+                        $news_q = $q;
+
+                        $news_q['aggs']['unique_sites'] = [ 'cardinality' => [ 'field' => 'site_id' ] ];
+
+                        $news_data = self::news($request, $news_q, @$source->source_media);
+
+                        $stats['news']['unique_sites'] = $news_data['aggs']['unique_sites']['value'];
+
                         $stats['hits'] = $stats['hits'] + $news_data['stats']['total'];
                         $stats['counts']['media_article'] = $news_data['stats']['total'];
 
@@ -321,7 +359,14 @@ class SearchController extends Controller
                 case 'blog':
                     if ($organisation->data_blog)
                     {
-                        $blog_data = self::blog($request, $q, @$source->source_blog);
+                        $blog_q = $q;
+
+                        $blog_q['aggs']['unique_sites'] = [ 'cardinality' => [ 'field' => 'site_id' ] ];
+
+                        $blog_data = self::blog($request, $blog_q, @$source->source_blog);
+
+                        $stats['blog']['unique_sites'] = $blog_data['aggs']['unique_sites']['value'];
+
                         $stats['hits'] = $stats['hits'] + $blog_data['stats']['total'];
                         $stats['counts']['blog_document'] = $blog_data['stats']['total'];
 
@@ -331,7 +376,16 @@ class SearchController extends Controller
                 case 'youtube_video':
                     if ($organisation->data_youtube_video)
                     {
-                        $youtube_video_data = self::youtube_video($request, $q);
+                        $youtube_video_q = $q;
+
+                        $youtube_video_q['aggs']['unique_users'] = [ 'cardinality' => [ 'field' => 'channel.id' ] ];
+                        $youtube_video_q['aggs']['hashtags'] = [ 'nested' => [ 'path' => 'tags' ], 'aggs' => [ 'xxx' => [ 'terms' => [ 'field' => 'tags.tag' ] ] ] ];
+
+                        $youtube_video_data = self::youtube_video($request, $youtube_video_q);
+
+                        $stats['youtube_video']['unique_users'] = $youtube_video_data['aggs']['unique_users']['value'];
+                        $stats['youtube_video']['hashtags'] = $youtube_video_data['aggs']['hashtags']['doc_count'];
+
                         $stats['hits'] = $stats['hits'] + $youtube_video_data['stats']['total'];
                         $stats['counts']['youtube_video'] = $youtube_video_data['stats']['total'];
 
@@ -341,7 +395,16 @@ class SearchController extends Controller
                 case 'youtube_comment':
                     if ($organisation->data_youtube_comment)
                     {
-                        $youtube_comment_data = self::youtube_comment($request, $q);
+                        $youtube_comment_q = $q;
+
+                        $youtube_comment_q['aggs']['unique_users'] = [ 'cardinality' => [ 'field' => 'channel.id' ] ];
+                        $youtube_comment_q['aggs']['unique_videos'] = [ 'cardinality' => [ 'field' => 'video_id' ] ];
+
+                        $youtube_comment_data = self::youtube_comment($request, $youtube_comment_q);
+
+                        $stats['youtube_comment']['unique_users'] = $youtube_comment_data['aggs']['unique_users']['value'];
+                        $stats['youtube_comment']['unique_videos'] = $youtube_comment_data['aggs']['unique_videos']['value'];
+
                         $stats['hits'] = $stats['hits'] + $youtube_comment_data['stats']['total'];
                         $stats['counts']['youtube_comment'] = $youtube_comment_data['stats']['total'];
 
@@ -351,7 +414,16 @@ class SearchController extends Controller
                 case 'shopping':
                     if ($organisation->data_shopping)
                     {
-                        $shopping_data = self::shopping($request, $q, @$source->source_shopping);
+                        $shopping_q = $q;
+
+                        $shopping_q['aggs']['unique_sites'] = [ 'cardinality' => [ 'field' => 'site_id' ] ];
+                        $shopping_q['aggs']['unique_users'] = [ 'cardinality' => [ 'field' => 'seller.name' ] ];
+
+                        $shopping_data = self::shopping($request, $shopping_q, @$source->source_shopping);
+
+                        $stats['shopping']['unique_sites'] = $shopping_data['aggs']['unique_sites']['value'];
+                        $stats['shopping']['unique_users'] = $shopping_data['aggs']['unique_users']['value'];
+
                         $stats['hits'] = $stats['hits'] + $shopping_data['stats']['total'];
                         $stats['counts']['shopping_product'] = $shopping_data['stats']['total'];
 
@@ -462,10 +534,16 @@ class SearchController extends Controller
 
     public static function instagram($search, array $q)
     {
+        $aggs = [];
         $data = [];
         $stats = [ 'total' => 0 ];
 
         $query = Document::search([ 'instagram', 'medias', '*' ], 'media', $q);
+
+        if (@$query->data['aggregations'])
+        {
+            $aggs = $query->data['aggregations'];
+        }
 
         if (@$query->data['hits']['hits'])
         {
@@ -494,12 +572,14 @@ class SearchController extends Controller
 
         return [
             'data' => $data,
-            'stats' => $stats
+            'stats' => $stats,
+            'aggs' => $aggs
         ];
     }
 
     public static function sozluk($search, array $q, $source = null)
     {
+        $aggs = [];
         $data = [];
         $stats = [ 'total' => 0 ];
 
@@ -521,6 +601,11 @@ class SearchController extends Controller
 
         $query = Document::search([ 'sozluk', '*' ], 'entry', $q);
 
+        if (@$query->data['aggregations'])
+        {
+            $aggs = $query->data['aggregations'];
+        }
+
         if (@$query->data['hits']['hits'])
         {
             $stats['total'] = $query->data['hits']['total'];
@@ -540,12 +625,14 @@ class SearchController extends Controller
 
         return [
             'data' => $data,
-            'stats' => $stats
+            'stats' => $stats,
+            'aggs' => $aggs
         ];
     }
 
     public static function news($search, array $q, $source = null)
     {
+        $aggs = [];
         $data = [];
         $stats = [ 'total' => 0 ];
 
@@ -563,6 +650,11 @@ class SearchController extends Controller
 
         $query = Document::search([ 'media', 's*' ], 'article', $q);
 
+        if (@$query->data['aggregations'])
+        {
+            $aggs = $query->data['aggregations'];
+        }
+
         if (@$query->data['hits']['hits'])
         {
             $stats['total'] = $query->data['hits']['total'];
@@ -586,12 +678,14 @@ class SearchController extends Controller
 
         return [
             'data' => $data,
-            'stats' => $stats
+            'stats' => $stats,
+            'aggs' => $aggs
         ];
     }
 
     public static function blog($search, array $q, $source = null)
     {
+        $aggs = [];
         $data = [];
         $stats = [ 'total' => 0 ];
 
@@ -609,6 +703,11 @@ class SearchController extends Controller
 
         $query = Document::search([ 'blog', 's*' ], 'document', $q);
 
+        if (@$query->data['aggregations'])
+        {
+            $aggs = $query->data['aggregations'];
+        }
+
         if (@$query->data['hits']['hits'])
         {
             $stats['total'] = $query->data['hits']['total'];
@@ -632,16 +731,23 @@ class SearchController extends Controller
 
         return [
             'data' => $data,
-            'stats' => $stats
+            'stats' => $stats,
+            'aggs' => $aggs
         ];
     }
 
     public static function youtube_video($search, array $q)
     {
+        $aggs = [];
         $data = [];
         $stats = [ 'total' => 0 ];
 
         $query = Document::search([ 'youtube', 'videos' ], 'video', $q);
+
+        if (@$query->data['aggregations'])
+        {
+            $aggs = $query->data['aggregations'];
+        }
 
         if (@$query->data['hits']['hits'])
         {
@@ -664,16 +770,23 @@ class SearchController extends Controller
 
         return [
             'data' => $data,
-            'stats' => $stats
+            'stats' => $stats,
+            'aggs' => $aggs
         ];
     }
 
     public static function youtube_comment($search, array $q)
     {
+        $aggs = [];
         $data = [];
         $stats = [ 'total' => 0 ];
 
         $query = Document::search([ 'youtube', 'comments', '*' ], 'comment', $q);
+
+        if (@$query->data['aggregations'])
+        {
+            $aggs = $query->data['aggregations'];
+        }
 
         if (@$query->data['hits']['hits'])
         {
@@ -696,12 +809,14 @@ class SearchController extends Controller
 
         return [
             'data' => $data,
-            'stats' => $stats
+            'stats' => $stats,
+            'aggs' => $aggs
         ];
     }
 
     public static function shopping($search, array $q, $source = null)
     {
+        $aggs = [];
         $data = [];
         $stats = [ 'total' => 0 ];
 
@@ -718,6 +833,11 @@ class SearchController extends Controller
         }
 
         $query = Document::search([ 'shopping', '*' ], 'product', $q);
+
+        if (@$query->data['aggregations'])
+        {
+            $aggs = $query->data['aggregations'];
+        }
 
         if (@$query->data['hits']['hits'])
         {
@@ -741,7 +861,8 @@ class SearchController extends Controller
 
         return [
             'data' => $data,
-            'stats' => $stats
+            'stats' => $stats,
+            'aggs' => $aggs
         ];
     }
 }

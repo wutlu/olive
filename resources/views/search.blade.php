@@ -742,13 +742,36 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
             }
 
             $('[data-name=twitter-tweet]').html(number_format(obj.stats.counts.twitter_tweet)).attr('data-count', obj.stats.counts.twitter_tweet);
-            $('[data-name=sozluk-entry]').html(number_format(obj.stats.counts.sozluk_entry)).attr('data-count', obj.stats.counts.sozluk_entry);
-            $('[data-name=youtube-video]').html(number_format(obj.stats.counts.youtube_video)).attr('data-count', obj.stats.counts.youtube_video);
-            $('[data-name=youtube-comment]').html(number_format(obj.stats.counts.youtube_comment)).attr('data-count', obj.stats.counts.youtube_comment);
-            $('[data-name=media-article]').html(number_format(obj.stats.counts.media_article)).attr('data-count', obj.stats.counts.media_article);
-            $('[data-name=blog-document]').html(number_format(obj.stats.counts.blog_document)).attr('data-count', obj.stats.counts.blog_document);
-            $('[data-name=shopping-product]').html(number_format(obj.stats.counts.shopping_product)).attr('data-count', obj.stats.counts.shopping_product);
+            $('[data-name=twitter-unique_users]').html(number_format(obj.stats.twitter.unique_users));
+            $('[data-name=twitter-hashtags]').html(number_format(obj.stats.twitter.hashtags));
+            $('[data-name=twitter-mentions]').html(number_format(obj.stats.twitter.mentions));
+
             $('[data-name=instagram-media]').html(number_format(obj.stats.counts.instagram_media)).attr('data-count', obj.stats.counts.instagram_media);
+            $('[data-name=instagram-unique_users]').html(number_format(obj.stats.instagram.unique_users));
+            $('[data-name=instagram-hashtags]').html(number_format(obj.stats.instagram.hashtags));
+            $('[data-name=instagram-mentions]').html(number_format(obj.stats.instagram.mentions));
+
+            $('[data-name=sozluk-entry]').html(number_format(obj.stats.counts.sozluk_entry)).attr('data-count', obj.stats.counts.sozluk_entry);
+            $('[data-name=sozluk-unique_users]').html(number_format(obj.stats.sozluk.unique_users));
+            $('[data-name=sozluk-unique_topics]').html(number_format(obj.stats.sozluk.unique_topics));
+
+            $('[data-name=media-article]').html(number_format(obj.stats.counts.media_article)).attr('data-count', obj.stats.counts.media_article);
+            $('[data-name=news-unique_sites]').html(number_format(obj.stats.news.unique_sites));
+
+            $('[data-name=blog-document]').html(number_format(obj.stats.counts.blog_document)).attr('data-count', obj.stats.counts.blog_document);
+            $('[data-name=blog-unique_sites]').html(number_format(obj.stats.blog.unique_sites));
+
+            $('[data-name=youtube-video]').html(number_format(obj.stats.counts.youtube_video)).attr('data-count', obj.stats.counts.youtube_video);
+            $('[data-name=youtube_video-unique_users]').html(number_format(obj.stats.youtube_video.unique_users));
+            $('[data-name=youtube_video-hashtags]').html(number_format(obj.stats.youtube_video.hashtags));
+
+            $('[data-name=youtube-comment]').html(number_format(obj.stats.counts.youtube_comment)).attr('data-count', obj.stats.counts.youtube_comment);
+            $('[data-name=youtube_comment-unique_users]').html(number_format(obj.stats.youtube_comment.unique_users));
+            $('[data-name=youtube_comment-unique_videos]').html(number_format(obj.stats.youtube_comment.unique_videos));
+
+            $('[data-name=shopping-product]').html(number_format(obj.stats.counts.shopping_product)).attr('data-count', obj.stats.counts.shopping_product);
+            $('[data-name=shopping-unique_sites]').html(number_format(obj.stats.shopping.unique_sites));
+            $('[data-name=shopping-unique_users]').html(number_format(obj.stats.shopping.unique_users));
 
             $('.banner').addClass('hide')
 
@@ -1737,6 +1760,7 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                 case 'hashtag':
                     const twitterHashtagChartOption = JSON.parse(JSON.stringify(options));
                     const instagramHashtagChartOption = JSON.parse(JSON.stringify(options));
+                    const youtubeVideoHashtagChartOption = JSON.parse(JSON.stringify(options));
 
                     twitterHashtagChartOption['chart']['type'] = 'bar';
                     twitterHashtagChartOption['plotOptions'] = {
@@ -1749,6 +1773,22 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                     };
                     twitterHashtagChartOption['subtitle'] = { 'text': 'Twitter Hashtag Grafiği' };
                     twitterHashtagChartOption['chart']['events'] = {
+                        'click': function(event, chartContext, config) {
+                            //console.log(chartContext)
+                        }
+                    };
+
+                    youtubeVideoHashtagChartOption['chart']['type'] = 'bar';
+                    youtubeVideoHashtagChartOption['plotOptions'] = {
+                        bar: {
+                            distributed: true,
+                            horizontal: true,
+                            barHeight: '100%',
+                            dataLabels: { position: 'bottom' }
+                        }
+                    };
+                    youtubeVideoHashtagChartOption['subtitle'] = { 'text': 'YouTube Hashtag Grafiği' };
+                    youtubeVideoHashtagChartOption['chart']['events'] = {
                         'click': function(event, chartContext, config) {
                             //console.log(chartContext)
                         }
@@ -1767,6 +1807,7 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
 
                     var instagram_hits = false;
                     var twitter_hits = false;
+                    var youtube_video_hits = false;
 
                     $.each(obj.data, function(module_key, module) {
                         var categories = [];
@@ -1782,6 +1823,11 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                             if (module_key == 'twitter')
                             {
                                 twitter_hits = true;
+                            }
+
+                            if (module_key == 'youtube_video')
+                            {
+                                youtube_video_hits = true;
                             }
 
                             if (module_key == 'instagram')
@@ -1816,6 +1862,18 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                                     categories: categories
                                 };
                             break;
+                            case 'youtube_video':
+                                youtubeVideoHashtagChartOption['series'] = [
+                                    {
+                                        name: 'Video',
+                                        data: datas
+                                    }
+                                ];
+
+                                youtubeVideoHashtagChartOption['xaxis'] = {
+                                    categories: categories
+                                };
+                            break;
                         }
                     })
 
@@ -1831,6 +1889,20 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                     else
                     {
                         M.toast({ html: 'Twitter paylaşımlarında hashtag verisi bulunamadı!' }, 200)
+                    }
+
+                    if (youtube_video_hits)
+                    {
+                        __chart_generate('youtubeVideoHashtag')
+
+                        var youtubeVideoChart = new ApexCharts(document.querySelector('#youtubeVideoHashtagChart'), youtubeVideoHashtagChartOption);
+                            youtubeVideoChart.render()
+
+                        $('#youtubeVideoHashtagChart').removeClass('hide')
+                    }
+                    else
+                    {
+                        M.toast({ html: 'YouTube paylaşımlarında hashtag verisi bulunamadı!' }, 200)
                     }
 
                     if (instagram_hits)
@@ -2050,7 +2122,7 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
         <a href="#" class="collection-item json loading" data-callback="__chart" data-type="gender" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}">Cinsiyet Grafiği</a>
         <a href="#" class="collection-item json loading" data-callback="__chart" data-type="author" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}">@bahsedenler</a>
         <a href="#" class="collection-item json loading" data-callback="__chart" data-type="hashtag" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}">#hashtagler</a>
-        <a href="#" class="collection-item loading" data-callback="__chart" data-type="hashtag" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}">Kategori <sup class="red-text">Yakında</sup></a>
+        <a href="#" class="collection-item loading" data-callback="__chart" data-type="" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}">Kategori <sup class="red-text">Yakında</sup></a>
     </div>
 @endsection
 
@@ -2114,43 +2186,131 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                 <table id="banner-hits">
                     <tbody>
                         <tr>
-                            <td style="font-size: 20px; text-transform: uppercase;" class="right-align">
+                            <td style="font-size: 20px; text-transform: uppercase;" class="pb-0 right-align">
                                 <strong data-name="twitter-tweet" style="font-weight: bold;">0</strong>
                                 <span class="grey-text">tweet</span>
                             </td>
-                            <td style="font-size: 20px; text-transform: uppercase;" class="right-align">
-                                <strong data-name="sozluk-entry" style="font-weight: bold;">0</strong>
-                                <span class="grey-text">sözlük</span>
+                            <td style="font-size: 20px; text-transform: uppercase;" class="pb-0 right-align">
+                                <strong data-name="instagram-media" style="font-weight: bold;">0</strong>
+                                <span class="grey-text">Instagram</span>
                             </td>
                         </tr>
                         <tr>
-                            <td style="font-size: 20px; text-transform: uppercase;" class="right-align">
-                                <strong data-name="media-article" style="font-weight: bold;">0</strong>
-                                <span class="grey-text">haber</span>
+                            <td style="padding: 0; text-transform: uppercase; vertical-align: top;" class="right-align">
+                                <p class="mb-0 d-flex justify-content-end">
+                                    <small class="grey-text">TEKİL KULLANICI</small>
+                                    <small class="pl-1" data-name="twitter-unique_users">0</small>
+                                </p>
+                                <p class="mb-0 d-flex justify-content-end">
+                                    <small class="grey-text">MENTION</small>
+                                    <small class="pl-1" data-name="twitter-mentions">0</small>
+                                </p>
+                                <p class="mb-0 d-flex justify-content-end">
+                                    <small class="grey-text">HASHTAG</small>
+                                    <small class="pl-1" data-name="twitter-hashtags">0</small>
+                                </p>
                             </td>
-                            <td style="font-size: 20px; text-transform: uppercase;" class="right-align">
+                            <td style="padding: 0; text-transform: uppercase; vertical-align: top;" class="right-align">
+                                <p class="mb-0 d-flex justify-content-end">
+                                    <small class="grey-text">TEKİL KULLANICI</small>
+                                    <small class="pl-1" data-name="instagram-unique_users">0</small>
+                                </p>
+                                <p class="mb-0 d-flex justify-content-end">
+                                    <small class="grey-text">MENTION</small>
+                                    <small class="pl-1" data-name="instagram-mentions">0</small>
+                                </p>
+                                <p class="mb-0 d-flex justify-content-end">
+                                    <small class="grey-text">HASHTAG</small>
+                                    <small class="pl-1" data-name="instagram-hashtags">0</small>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-size: 20px; text-transform: uppercase;" class="pb-0 right-align">
+                                <strong data-name="youtube-comment" style="font-weight: bold;">0</strong>
+                                <span class="grey-text">youtube yorum</span>
+                            </td>
+                            <td style="font-size: 20px; text-transform: uppercase;" class="pb-0 right-align">
                                 <strong data-name="youtube-video" style="font-weight: bold;">0</strong>
                                 <span class="grey-text">youtube</span>
                             </td>
                         </tr>
                         <tr>
-                            <td style="font-size: 20px; text-transform: uppercase;" class="right-align">
-                                <strong data-name="youtube-comment" style="font-weight: bold;">0</strong>
-                                <span class="grey-text">youtube yorum</span>
+                            <td style="padding: 0; text-transform: uppercase; vertical-align: top;" class="right-align">
+                                <p class="mb-0 d-flex justify-content-end">
+                                    <small class="grey-text">TEKİL KULLANICI</small>
+                                    <small class="pl-1" data-name="youtube_comment-unique_users">0</small>
+                                </p>
+                                <p class="mb-0 d-flex justify-content-end">
+                                    <small class="grey-text">TEKİL VİDEO</small>
+                                    <small class="pl-1" data-name="youtube_comment-unique_videos">0</small>
+                                </p>
                             </td>
-                            <td style="font-size: 20px; text-transform: uppercase;" class="right-align">
-                                <strong data-name="shopping-product" style="font-weight: bold;">0</strong>
-                                <span class="grey-text">ilan</span>
+                            <td style="padding: 0; text-transform: uppercase; vertical-align: top;" class="right-align">
+                                <p class="mb-0 d-flex justify-content-end">
+                                    <small class="grey-text">TEKİL KULLANICI</small>
+                                    <small class="pl-1" data-name="youtube_video-unique_users">0</small>
+                                </p>
+                                <p class="mb-0 d-flex justify-content-end">
+                                    <small class="grey-text">HASHTAG</small>
+                                    <small class="pl-1" data-name="youtube_video-hashtags">0</small>
+                                </p>
                             </td>
                         </tr>
                         <tr>
-                            <td style="font-size: 20px; text-transform: uppercase;" class="right-align">
+                            <td style="font-size: 20px; text-transform: uppercase;" class="pb-0 right-align">
+                                <strong data-name="media-article" style="font-weight: bold;">0</strong>
+                                <span class="grey-text">haber</span>
+                            </td>
+                            <td style="font-size: 20px; text-transform: uppercase;" class="pb-0 right-align">
                                 <strong data-name="blog-document" style="font-weight: bold;">0</strong>
                                 <span class="grey-text">blog</span>
                             </td>
-                            <td style="font-size: 20px; text-transform: uppercase;" class="right-align">
-                                <strong data-name="instagram-media" style="font-weight: bold;">0</strong>
-                                <span class="grey-text">Instagram</span>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0; text-transform: uppercase; vertical-align: top;" class="right-align">
+                                <p class="mb-0 d-flex justify-content-end">
+                                    <small class="grey-text">TEKİL SİTE</small>
+                                    <small class="pl-1" data-name="news-unique_sites">0</small>
+                                </p>
+                            </td>
+                            <td style="padding: 0; text-transform: uppercase; vertical-align: top;" class="right-align">
+                                <p class="mb-0 d-flex justify-content-end">
+                                    <small class="grey-text">TEKİL SİTE</small>
+                                    <small class="pl-1" data-name="blog-unique_sites">0</small>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-size: 20px; text-transform: uppercase;" class="pb-0 right-align">
+                                <strong data-name="shopping-product" style="font-weight: bold;">0</strong>
+                                <span class="grey-text">ilan</span>
+                            </td>
+                            <td style="font-size: 20px; text-transform: uppercase;" class="pb-0 right-align">
+                                <strong data-name="sozluk-entry" style="font-weight: bold;">0</strong>
+                                <span class="grey-text">sözlük</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0; text-transform: uppercase; vertical-align: top;" class="right-align">
+                                <p class="mb-0 d-flex justify-content-end">
+                                    <small class="grey-text">TEKİL KULLANICI</small>
+                                    <small class="pl-1" data-name="shopping-unique_users">0</small>
+                                </p>
+                                <p class="mb-0 d-flex justify-content-end">
+                                    <small class="grey-text">TEKİL SİTE</small>
+                                    <small class="pl-1" data-name="shopping-unique_sites">0</small>
+                                </p>
+                            </td>
+                            <td style="padding: 0; text-transform: uppercase; vertical-align: top;" class="right-align">
+                                <p class="mb-0 d-flex justify-content-end">
+                                    <small class="grey-text">TEKİL YAZAR</small>
+                                    <small class="pl-1" data-name="sozluk-unique_users">0</small>
+                                </p>
+                                <p class="mb-0 d-flex justify-content-end">
+                                    <small class="grey-text">TEKİL BAŞLIK</small>
+                                    <small class="pl-1" data-name="sozluk-unique_topics">0</small>
+                                </p>
                             </td>
                         </tr>
                     </tbody>

@@ -360,6 +360,19 @@ class AggregationController extends Controller
                         ]
                     ]
                 ];
+                $aggs['youtube_video'] = [
+                    'hashtag' => [
+                        'nested' => [ 'path' => 'tags' ],
+                        'aggs' => [
+                            'hits' => [
+                                'terms' => [
+                                    'field' => 'tags.tag',
+                                    'size' => 10
+                                ]
+                            ]
+                        ]
+                    ]
+                ];
             break;
             case 'sentiment':
                 unset($q['size']);

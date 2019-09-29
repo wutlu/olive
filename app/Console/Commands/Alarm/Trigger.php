@@ -230,7 +230,7 @@ class Trigger extends Command
                         ];
                         $twitter_q['aggs']['hashtags'] = [
                             'nested' => [ 'path' => 'entities.hashtags' ],
-                            'aggs' => [ 'xxx' => [ 'terms' => [ 'field' => 'entities.mentions.mention.id' ] ] ]
+                            'aggs' => [ 'xxx' => [ 'terms' => [ 'field' => 'entities.hashtags.hashtag' ] ] ]
                         ];
                         $twitter_q['aggs']['unique_users'] = [
                             'cardinality' => [ 'field' => 'user.id' ]
@@ -270,7 +270,7 @@ class Trigger extends Command
                         ];
                         $instagram_q['aggs']['hashtags'] = [
                             'nested' => [ 'path' => 'entities.hashtags' ],
-                            'aggs' => [ 'xxx' => [ 'terms' => [ 'field' => 'entities.mentions.mention.id' ] ] ]
+                            'aggs' => [ 'xxx' => [ 'terms' => [ 'field' => 'entities.hashtags.hashtag' ] ] ]
                         ];
                         $instagram_q['aggs']['unique_users'] = [
                             'cardinality' => [ 'field' => 'user.id' ]
