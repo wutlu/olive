@@ -748,6 +748,12 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                 $('[data-name=twitter-hashtags]').html(number_format(obj.stats.twitter.hashtags));
                 $('[data-name=twitter-mentions]').html(number_format(obj.stats.twitter.mentions));
             }
+            else
+            {
+                $('[data-name=twitter-unique_users]').html(0);
+                $('[data-name=twitter-hashtags]').html(0);
+                $('[data-name=twitter-mentions]').html(0);
+            }
 
             $('[data-name=instagram-media]').html(number_format(obj.stats.counts.instagram_media)).attr('data-count', obj.stats.counts.instagram_media);
             if (obj.stats.counts.instagram_media)
@@ -756,6 +762,12 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                 $('[data-name=instagram-hashtags]').html(number_format(obj.stats.instagram.hashtags));
                 $('[data-name=instagram-mentions]').html(number_format(obj.stats.instagram.mentions));
             }
+            else
+            {
+                $('[data-name=instagram-unique_users]').html(0);
+                $('[data-name=instagram-hashtags]').html(0);
+                $('[data-name=instagram-mentions]').html(0);
+            }
 
             $('[data-name=sozluk-entry]').html(number_format(obj.stats.counts.sozluk_entry)).attr('data-count', obj.stats.counts.sozluk_entry);
             if (obj.stats.counts.sozluk_entry)
@@ -763,17 +775,30 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                 $('[data-name=sozluk-unique_users]').html(number_format(obj.stats.sozluk.unique_users));
                 $('[data-name=sozluk-unique_topics]').html(number_format(obj.stats.sozluk.unique_topics));
             }
+            else
+            {
+                $('[data-name=sozluk-unique_users]').html(0);
+                $('[data-name=sozluk-unique_topics]').html(0);
+            }
 
             $('[data-name=media-article]').html(number_format(obj.stats.counts.media_article)).attr('data-count', obj.stats.counts.media_article);
             if (obj.stats.counts.media_article)
             {
                 $('[data-name=news-unique_sites]').html(number_format(obj.stats.news.unique_sites));
             }
+            else
+            {
+                $('[data-name=news-unique_sites]').html(0)
+            }
 
             $('[data-name=blog-document]').html(number_format(obj.stats.counts.blog_document)).attr('data-count', obj.stats.counts.blog_document);
             if (obj.stats.counts.blog_document)
             {
                 $('[data-name=blog-unique_sites]').html(number_format(obj.stats.blog.unique_sites));
+            }
+            else
+            {
+                $('[data-name=blog-unique_sites]').html(0);
             }
 
             $('[data-name=youtube-video]').html(number_format(obj.stats.counts.youtube_video)).attr('data-count', obj.stats.counts.youtube_video);
@@ -782,6 +807,11 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                 $('[data-name=youtube_video-unique_users]').html(number_format(obj.stats.youtube_video.unique_users));
                 $('[data-name=youtube_video-hashtags]').html(number_format(obj.stats.youtube_video.hashtags));
             }
+            else
+            {
+                $('[data-name=youtube_video-unique_users]').html(0);
+                $('[data-name=youtube_video-hashtags]').html(0);
+            }
 
             $('[data-name=youtube-comment]').html(number_format(obj.stats.counts.youtube_comment)).attr('data-count', obj.stats.counts.youtube_comment);
             if (obj.stats.counts.youtube_comment)
@@ -789,12 +819,22 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                 $('[data-name=youtube_comment-unique_users]').html(number_format(obj.stats.youtube_comment.unique_users));
                 $('[data-name=youtube_comment-unique_videos]').html(number_format(obj.stats.youtube_comment.unique_videos));
             }
+            else
+            {
+                $('[data-name=youtube_comment-unique_users]').html(0);
+                $('[data-name=youtube_comment-unique_videos]').html(0);
+            }
 
             $('[data-name=shopping-product]').html(number_format(obj.stats.counts.shopping_product)).attr('data-count', obj.stats.counts.shopping_product);
             if (obj.stats.counts.shopping_product)
             {
                 $('[data-name=shopping-unique_sites]').html(number_format(obj.stats.shopping.unique_sites));
                 $('[data-name=shopping-unique_users]').html(number_format(obj.stats.shopping.unique_users));
+            }
+            else
+            {
+                $('[data-name=shopping-unique_sites]').html(0);
+                $('[data-name=shopping-unique_users]').html(0);
             }
 
             $('.banner').addClass('hide')

@@ -153,7 +153,6 @@ class Trigger extends Command
             'sort' => [ 'created_at' => 'desc' ],
             'query' => [
                 'bool' => [
-                    /*
                     'filter' => [
                         [
                             'range' => [
@@ -164,7 +163,6 @@ class Trigger extends Command
                             ]
                         ]
                     ],
-                    */
                     'must' => [
                         [ 'exists' => [ 'field' => 'created_at' ] ],
                         [
