@@ -12,7 +12,7 @@ class TwitterCrawler
     public static function chunk($obj, array $bulk = [])
     {
         $bulk['body'][] = [
-            'create' => [
+            'index' => [
                 '_index' => Indices::name([ 'twitter', 'tweets', date('Y.m', strtotime($obj->created_at)) ]),
                 '_type' => 'tweet',
                 '_id' => $obj->id
@@ -65,6 +65,11 @@ class TwitterCrawler
                 'url' => intval(count(@$object['entities']['urls'])),
                 'mention' => intval(count(@$object['entities']['user_mentions'])),
                 'media' => intval(count(@$object['extended_entities']['media'])),
+
+                'retweet' => $object['retweet_count'],
+                'reply' => $object['reply_count'],
+                'quote' => $object['quote_count'],
+                'favorite' => $object['favorite_count']
             ]
         ];
 
@@ -309,6 +314,11 @@ class TwitterCrawler
                                 'url' => [ 'type' => 'integer' ],
                                 'mention' => [ 'type' => 'integer' ],
                                 'media' => [ 'type' => 'integer' ],
+
+                                'retweet' => [ 'type' => 'integer' ],
+                                'reply' => [ 'type' => 'integer' ],
+                                'quote' => [ 'type' => 'integer' ],
+                                'favorite' => [ 'type' => 'integer' ]
                             ]
                         ],
                         'entities' => [
