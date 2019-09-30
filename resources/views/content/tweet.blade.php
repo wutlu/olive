@@ -89,7 +89,7 @@
             </div>
         </div>
 
-        <div class="card-content d-flex flex-wrap grey lighten-4">
+        <div class="card-content d-flex flex-wrap grey lighten-4 mb-1">
             <div class="p-1">
                 <small class="d-table grey-text">Tweet</small>
                 <span class="d-table">{{ number_format($document['_source']['user']['counts']['statuses']) }}</span>
@@ -119,7 +119,7 @@
         </div>
 
         @isset ($document['_source']['entities']['medias'])
-            <div class="d-flex flex-wrap mb-1">
+            <div class="d-flex flex-wrap mx-auto" style="max-width: 600px;">
                 @foreach ($document['_source']['entities']['medias'] as $item)
                     @if ($item['media']['type'] == 'photo')
                         <img alt="" width="240" class="materialboxed" src="{{ $item['media']['media_url'] }}" />
@@ -139,36 +139,34 @@
             $url = 'https://twitter.com/'.$document['_source']['user']['screen_name'].'/status/'.$document['_source']['id'];
         @endphp
 
-        <div class="card-content">
-            <div class="d-table p-1" style="max-width: 600px;">
-                <small class="d-table grey-text">Tweet</small>
-                <div class="markdown">
-                    {!! Term::tweet($document['_source']['text']) !!}
-                </div>
-
-                @isset ($document['_source']['counts']['favorite'])
-                    <div class="d-flex flex-wrap">
-                        <div class="p-1">
-                            <small class="d-table grey-text">ReTweet</small>
-                            <span class="d-table">{{ number_format($document['_source']['counts']['retweet']) }}</span>
-                        </div>
-                        <div class="p-1">
-                            <small class="d-table grey-text">Cevap</small>
-                            <span class="d-table">{{ number_format($document['_source']['counts']['reply']) }}</span>
-                        </div>
-                        <div class="p-1">
-                            <small class="d-table grey-text">Alıntı</small>
-                            <span class="d-table">{{ number_format($document['_source']['counts']['quote']) }}</span>
-                        </div>
-                        <div class="p-1">
-                            <small class="d-table grey-text">Favori</small>
-                            <span class="d-table">{{ number_format($document['_source']['counts']['favorite']) }}</span>
-                        </div>
-                    </div>
-                @endisset
-
-                <a class="green-text" href="{{ $url }}" target="_blank">{{ $url }}</a>
+        <div class="d-table p-1 mx-auto" style="max-width: 600px;">
+            <small class="d-table grey-text">Tweet</small>
+            <div class="markdown">
+                {!! Term::tweet($document['_source']['text']) !!}
             </div>
+
+            @isset ($document['_source']['counts']['favorite'])
+                <div class="d-flex flex-wrap">
+                    <div class="p-1">
+                        <small class="d-table grey-text">ReTweet</small>
+                        <span class="d-table">{{ number_format($document['_source']['counts']['retweet']) }}</span>
+                    </div>
+                    <div class="p-1">
+                        <small class="d-table grey-text">Cevap</small>
+                        <span class="d-table">{{ number_format($document['_source']['counts']['reply']) }}</span>
+                    </div>
+                    <div class="p-1">
+                        <small class="d-table grey-text">Alıntı</small>
+                        <span class="d-table">{{ number_format($document['_source']['counts']['quote']) }}</span>
+                    </div>
+                    <div class="p-1">
+                        <small class="d-table grey-text">Favori</small>
+                        <span class="d-table">{{ number_format($document['_source']['counts']['favorite']) }}</span>
+                    </div>
+                </div>
+            @endisset
+
+            <a class="green-text" href="{{ $url }}" target="_blank">{{ $url }}</a>
         </div>
 
         @isset ($data['external'])
