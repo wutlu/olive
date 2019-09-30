@@ -1,0 +1,27 @@
+/*!
+ |-------------------------------
+ | veri.zone 1.0
+ |-------------------------------
+ | (c) 2019 - veri.zone
+ |-------------------------------
+ */
+
+#slide-out {
+  background-color: #263238;
+  color: #cfd8dc !important;
+}
+#slide-out a,
+#slide-out i.material-icons,
+#slide-out span {
+  color: #cfd8dc !important;
+}
+#slide-out .grey-text {
+  color: #90a4ae !important;
+}
+#slide-out .divider,
+#slide-out .grey {
+  background-color: #212121 !important;
+}
+#main-nav {
+  background-color: #263238;
+}
