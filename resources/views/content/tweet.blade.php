@@ -118,6 +118,23 @@
             @endisset
         </div>
 
+        @isset ($document['_source']['entities']['medias'])
+            <div class="d-flex flex-wrap mb-1">
+                @foreach ($document['_source']['entities']['medias'] as $item)
+                    @if ($item['media']['type'] == 'photo')
+                        <img alt="" width="240" class="materialboxed" src="{{ $item['media']['media_url'] }}" />
+                    @elseif ($item['media']['type'] == 'animated_gif' || $item['media']['type'] == 'video')
+                        <video width="100%" height="240" controls>
+                            <source src="{{ $item['media']['source_url'] }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video> 
+                    @else
+                        {{ $item['media']['type'] }}
+                    @endif
+                @endforeach
+            </div>
+        @endisset
+
         @php
             $url = 'https://twitter.com/'.$document['_source']['user']['screen_name'].'/status/'.$document['_source']['id'];
         @endphp
@@ -153,23 +170,6 @@
                 <a class="green-text" href="{{ $url }}" target="_blank">{{ $url }}</a>
             </div>
         </div>
-
-        @isset ($document['_source']['entities']['medias'])
-            <div class="d-flex flex-wrap mb-1">
-                @foreach ($document['_source']['entities']['medias'] as $item)
-                    @if ($item['media']['type'] == 'photo')
-                        <img alt="" width="240" class="materialboxed" src="{{ $item['media']['media_url'] }}" />
-                    @elseif ($item['media']['type'] == 'animated_gif' || $item['media']['type'] == 'video')
-                        <video width="100%" height="240" controls>
-                            <source src="{{ $item['media']['source_url'] }}" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video> 
-                    @else
-                        {{ $item['media']['type'] }}
-                    @endif
-                @endforeach
-            </div>
-        @endisset
 
         @isset ($data['external'])
             @php
