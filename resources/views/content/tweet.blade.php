@@ -346,8 +346,7 @@
             'mention_out' => 'Andığı Kişiler',
             'mention_in' => 'Anıldığı Kişiler',
             'hashtags' => 'Hashtag Geçmişi',
-            'places' => 'Konum Geçmişi',
-            'urls' => 'Bağlantı Geçmişi',
+            'places' => 'Konum Geçmişi'
         ] as $key => $model
     )
         <div class="card mb-1 p-0">
