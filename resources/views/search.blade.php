@@ -420,6 +420,11 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
 
             <div class="p-1">
                 <span class="grey-text">Twitter Filtreleri (Tweet)</span>
+                <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="number" data-search="counts.retweet">ReTweet Sayısı</button>
+                <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="number" data-search="counts.favorite">Favori Sayısı</button>
+                <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="number" data-search="counts.quote">Alıntı Sayısı</button>
+                <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="number" data-search="counts.reply">Cevap Sayısı</button>
+
                 <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="number" data-search="counts.hashtag">Hashtag Sayısı</button>
                 <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="number" data-search="counts.mention">Mention Sayısı</button>
                 <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="number" data-search="counts.url">Bağlantı Sayısı</button>
@@ -545,7 +550,7 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                     data-input="input[name=end_date]"
                     data-focus="input[name=start_date]"
                     data-input-value="{{ date('Y-m-d') }}"
-                    data-value="{{ date('Y-m-d', strtotime('-30 day')) }}">Son 30 Gün (Grafik Alınabilir)</a>
+                    data-value="{{ date('Y-m-d', strtotime('-30 day')) }}">Son 30 Gün</a>
             </li>
         @endif
         @if ($organisation->historical_days >= 90)

@@ -43,11 +43,6 @@
                         <span class="grey align-self-center" data-name="count" style="padding: 0 .4rem;"></span>
                     </div>
                 </li>
-                <li class="collection-item nothing hide">
-                    @component('components.nothing')
-                        @slot('size', 'small')
-                    @endcomponent
-                </li>
             </ul>
         </div>
     @endforeach
@@ -178,7 +173,6 @@
             }
             else
             {
-                collection.find('.nothing').removeClass('hide')
                 __.addClass('white-text').parent('.card-content').addClass('red')
             }
         }

@@ -381,43 +381,57 @@ function _tweet_(o)
         'class': 'data tweet',
         'html': [
             $('<div />', {
-                'class': 'd-flex mb-1',
+                'class': 'd-flex justify-content-between mb-1',
                 'html': [
-                    $('<img />', {
-                        'src': o.user.image,
-                        'alt': 'Avatar',
-                        'onerror': "this.onerror=null;this.src='/img/no_image-twitter.svg';",
-                        'css': {
-                            'width': '48px',
-                            'height': '48px'
-                        },
-                        'class': 'mr-1 tweet-avatar'
-                    }),
                     $('<div />', {
+                        'class': 'align-self-center',
                         'html': [
-                            $('<a />', {
-                                'html': o.user.name,
-                                'href': 'https://twitter.com/' + o.user.screen_name,
-                                'class': 'd-table red-text'
-                            }).attr('target', 'blank'),
-                            $('<span />', {
-                                'html': '@' + o.user.screen_name,
-                                'class': 'd-table grey-text'
-                            })
+                            $('<div />', {
+                                'class': 'd-flex',
+                                'html': [
+                                    $('<img />', {
+                                        'src': o.user.image,
+                                        'alt': 'Avatar',
+                                        'onerror': "this.onerror=null;this.src='/img/no_image-twitter.svg';",
+                                        'css': {
+                                            'width': '48px',
+                                            'height': '48px'
+                                        },
+                                        'class': 'mr-1 tweet-avatar'
+                                    }),
+                                    $('<div />', {
+                                        'class': 'align-self-center',
+                                        'html': [
+                                            $('<a />', {
+                                                'html': o.user.name,
+                                                'href': 'https://twitter.com/' + o.user.screen_name,
+                                                'class': 'd-table red-text'
+                                            }).attr('target', 'blank'),
+                                            $('<a />', {
+                                                'html': '@' + o.user.screen_name,
+                                                'href': 'https://twitter.com/' + o.user.screen_name,
+                                                'class': 'd-table grey-text'
+                                            }).attr('target', 'blank')
+                                        ]
+                                    }),
+                                    $('<i />', {
+                                        'class': 'material-icons cyan-text hide ml-1',
+                                        'html': 'check'
+                                    }).removeClass(o.user.verified ? 'hide' : '')
+                                ]
+                            }),
+                            $('<small />', {
+                                'class': 'mt-1 grey-text',
+                                'css': { 'max-width': '400px' },
+                                'html': o.user.description
+                            }).removeClass(o.user.description ? 'hide' : 'd-table').addClass(o.user.description ? 'd-table' : 'hide')
                         ]
                     }),
-                    $('<i />', {
-                        'class': 'material-icons cyan-text hide ml-1',
-                        'html': 'check'
-                    }).removeClass(o.user.verified ? 'hide' : ''),
                     $('<div />', {
-                        'class': 'align-self-center ml-auto hide-on-med-and-down',
-                        'css': {
-                            'max-width': '300px'
-                        },
+                        'class': 'align-self-end hide-on-med-and-down',
                         'html': [
                             $('<ul />', {
-                                'class': 'd-flex justify-content-end',
+                                'class': 'd-flex justify-content-end m-0',
                                 'html': [
                                     $('<li />', {
                                         'html': [
@@ -460,15 +474,69 @@ function _tweet_(o)
                                     })
                                 ]
                             }),
-                            $('<div />', {
-                                'html': o.user.description
-                            })
+                            $('<ul />', {
+                                'class': 'm-0',
+                                'html': [
+                                    $('<li />', {
+                                        'html': [
+                                            $('<small />', {
+                                                'class': 'grey-text d-block right-align',
+                                                'html': 'ReTweet'
+                                            }),
+                                            $('<span />', {
+                                                'class': 'blue-grey-text d-block right-align',
+                                                'html': o.counts.retweet ? number_format(o.counts.retweet) : 0
+                                            })
+                                        ],
+                                        'css': { 'padding': '4px' }
+                                    }),
+                                    $('<li />', {
+                                        'html': [
+                                            $('<small />', {
+                                                'class': 'grey-text d-block right-align',
+                                                'html': 'Favori'
+                                            }),
+                                            $('<span />', {
+                                                'class': 'blue-grey-text d-block right-align',
+                                                'html': o.counts.favorite ? number_format(o.counts.favorite) : 0
+                                            })
+                                        ],
+                                        'css': { 'padding': '4px' }
+                                    }),
+                                    $('<li />', {
+                                        'html': [
+                                            $('<small />', {
+                                                'class': 'grey-text d-block right-align',
+                                                'html': 'Cevap'
+                                            }),
+                                            $('<span />', {
+                                                'class': 'blue-grey-text d-block right-align',
+                                                'html': o.counts.reply ? number_format(o.counts.reply) : 0
+                                            })
+                                        ],
+                                        'css': { 'padding': '4px' }
+                                    }),
+                                    $('<li />', {
+                                        'html': [
+                                            $('<small />', {
+                                                'class': 'grey-text d-block right-align',
+                                                'html': 'Alıntı'
+                                            }),
+                                            $('<span />', {
+                                                'class': 'blue-grey-text d-block right-align',
+                                                'html': o.counts.quote ? number_format(o.counts.quote) : 0
+                                            })
+                                        ],
+                                        'css': { 'padding': '4px' }
+                                    }),
+                                ]
+                            }).addClass(o.counts.retweet ? 'hide' : 'd-flex').addClass(o.counts.retweet ? 'd-flex' : 'hide')
                         ]
                     })
                 ]
             }),
             $('<div />', {
-                'class': 'media-area d-flex flex-wrap mb-1'
+                'class': 'media-area flex-wrap mb-1 hide'
             }),
             $('<div />', {
                 'class': 'text-area',
@@ -481,6 +549,7 @@ function _tweet_(o)
                 'class': 'd-table green-text'
             }).attr('target', '_blank'),
             $('<div />', {
+                'class': 'mt-1',
                 'html': __joints(o)
             })
         ]
@@ -502,7 +571,7 @@ function _tweet_(o)
                     var __ = $(this);
                 })
 
-                tweet.find('.media-area').append(img)
+                tweet.find('.media-area').append(img).removeClass('hide').addClass('d-flex')
             }
             else if (item.media.type == 'video' || item.media.type == 'animated_gif')
             {
@@ -517,7 +586,7 @@ function _tweet_(o)
                         }),
                         'Your browser does not support the video tag.'
                     ]
-                }))
+                })).removeClass('hide').addClass('d-flex')
             }
         })
     }

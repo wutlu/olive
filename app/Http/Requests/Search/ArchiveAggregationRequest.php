@@ -38,7 +38,7 @@ class ArchiveAggregationRequest extends FormRequest
     {
         return [
             'date_limit' => 'Başlangıç tarihi '.$this->historical_days.' günden önce olamaz.',
-            'date_limit_between' => 'Arama raporları için tarih aralığı 30 günden geniş olamaz.',
+            'date_limit_between' => 'Arama raporları için tarih aralığı 14 günden geniş olamaz.',
         ];
     }
 
@@ -54,7 +54,7 @@ class ArchiveAggregationRequest extends FormRequest
         });
 
         Validator::extend('date_limit_between', function($attribute, $value) use($request) {
-            return Carbon::parse($request->start_date)->diffInDays($request->end_date) <= 90;
+            return Carbon::parse($request->start_date)->diffInDays($request->end_date) <= 14;
         });
 
         return [

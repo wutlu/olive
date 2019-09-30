@@ -521,6 +521,7 @@ class SearchController extends Controller
                 $data[] = array_merge($arr, [
                     'user' => $user,
                     'text' => Term::tweet($object['_source']['text']),
+                    'counts' => $object['_source']['counts']
                 ]);
             }
         }

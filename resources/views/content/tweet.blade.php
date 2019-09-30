@@ -61,129 +61,97 @@
 @push('wildcard-top')
     <div class="card d-block">
         <div class="card-content d-flex justify-content-between">
-            <span class="align-self-center">
-                <span class="card-title">{{ $document['_source']['user']['name'] }}</span>
-                <a href="https://twitter.com/intent/user?user_id={{ $document['_source']['user']['id'] }}" target="_blank" class="green-text">https://twitter.com/intent/user?user_id={{ $document['_source']['user']['id'] }}</a>
-            </span>
-            <img alt="Twitter" src="{{ asset('img/logos/twitter.svg') }}" class="align-self-center" style="width: 64px;" />
-        </div>
-    </div>
-@endpush
-
-@push('wildcard-bottom')
-    <div class="card">
-        <div class="card-tabs">
-            <ul class="tabs sub-tabs">
-                <li class="tab">
-                    <a href="#all_replies" class="active">Yanıtlar ({{ $data['reply']->data['count'] }})</a>
-                </li>
-                <li class="tab">
-                    <a href="#all_quotes">Alıntılar ({{ $data['quote']->data['count'] }})</a>
-                </li>
-                <li class="tab">
-                    <a href="#all_retweets">ReTweetler ({{ $data['retweet']->data['count'] }})</a>
-                </li>
-                <li class="tab">
-                    <a href="#all_tweets">Tüm Tweetleri ({{ $data['total']->data['hits']['total'] }})</a>
-                </li>
-                <li class="tab">
-                    <a href="#all_deleted_tweets">Silinen Tweetleri ({{ $data['deleted']->data['count'] }})</a>
-                </li>
-            </ul>
-        </div>
-
-        @foreach ([
-            'all_tweets' => '',
-            'all_retweets' => 'retweet',
-            'all_quotes' => 'quote',
-            'all_replies' => 'reply',
-            'all_deleted_tweets' => 'deleted'
-        ] as $key => $type)
-            <div
-                id="{{ $key }}"
-                class="halfload white"
-                @if ($key != 'all_replies')
-                style="display: none;"
-                @endif>
-                <div class="collection json-clear loading"
-                     id="loader-{{ $key }}"
-                     data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id, 'type' => $type ]) }}"
-                     data-method="post"
-                     data-skip="0"
-                     data-take="10"
-                     data-more-button="#{{ $key }}-more_button"
-                     data-callback="__all"
-                     data-loader="#{{ $key }}-loader"
-                     data-nothing>
-                    <div class="collection-item nothing hide">
-                        @component('components.nothing')
-                            @slot('size', 'small')
-                        @endcomponent
-                    </div>
-                    <div class="collection-item model hide"></div>
-                </div>
-
-                @if ($key == 'all_replies')
-                    <div id="{{ $key }}-loader" class="p-1 center-align">
-                        <a href="#" class="btn-flat waves-effect json" data-json-target="{{ '#loader-'.$key }}">Yükle</a>
-                    </div>
-                @else
-                    @component('components.loader')
-                        @slot('color', 'teal')
-                        @slot('id', $key.'-loader')
-                        @slot('class', 'card-loader-unstyled')
-                    @endcomponent
-                @endif
-
-                <a href="#"
-                   class="more hide json"
-                   id="{{ $key }}-more_button"
-                   data-json-target="#loader-{{ $key }}">Daha Fazla</a>
-            </div>
-        @endforeach
-    </div>
-@endpush
-
-@push('external.include.footer')
-    <script src="{{ asset('js/chart.min.js?v='.config('system.version')) }}"></script>
-@endpush
-
-@section('content')
-    <div class="card mb-1">
-        <div class="card-content">
-            <div class="d-flex">
+            <span class="d-flex align-self-center">
                 <img
                     alt="Avatar"
-                    style="width: 48px; height: 48px;"
+                    style="width: 72px; height: 72px;"
                     src="{{ $document['_source']['user']['image'] }}"
                     onerror="this.onerror=null;this.src='/img/no_image-twitter.svg';"
-                    class="mr-1" />
-                <div>
-                    <span class="d-flex justify-content-between">
+                    class="mr-1 align-self-center" />
+                <div class="align-self-center">
+                    <span class="card-title d-flex">
                         <span class="align-self-center">{{ $document['_source']['user']['name'] }}</span>
+
                         @isset ($document['_source']['user']['verified'])
                             <i class="material-icons teal-text align-self-center ml-1">check</i>
                         @endisset
                     </span>
-                    <a class="grey-text" href="https://twitter.com/{{ $document['_source']['user']['screen_name'] }}" target="_blank">{{ '@'.$document['_source']['user']['screen_name'] }}</a>
+                    <span class="grey-text d-table">{{ '@'.$document['_source']['user']['screen_name'] }}</span>
+                    <a href="https://twitter.com/intent/user?user_id={{ $document['_source']['user']['id'] }}" target="_blank" class="green-text">https://twitter.com/intent/user?user_id={{ $document['_source']['user']['id'] }}</a>
                 </div>
+            </span>
+            <div class="d-flex align-self-center flex-column">
+                <img alt="Twitter" src="{{ asset('img/logos/twitter.svg') }}" class="ml-auto" style="width: 64px;" />
+
                 @isset ($document['_source']['user']['created_at'])
-                    <time class="grey-text ml-auto" data-time="">{{ date('d.m.Y H:i', strtotime($document['_source']['user']['created_at'])) }}</time>
+                    <time class="grey-text" data-time="">Üyelik Tarihi: {{ date('d.m.Y H:i', strtotime($document['_source']['user']['created_at'])) }}</time>
                 @endisset
             </div>
         </div>
 
-        @isset ($document['_source']['user']['description'])
-            <div class="card-content markdown grey lighten-4 grey-text">{!! Term::tweet($document['_source']['user']['description']) !!}</div>
-        @endisset
+        <div class="card-content d-flex flex-wrap grey lighten-4">
+            <div class="p-1">
+                <small class="d-table grey-text">Tweet</small>
+                <span class="d-table">{{ number_format($document['_source']['user']['counts']['statuses']) }}</span>
+            </div>
+            <div class="p-1">
+                <small class="d-table grey-text">Takip</small>
+                <span class="d-table">{{ number_format($document['_source']['user']['counts']['friends']) }}</span>
+            </div>
+            <div class="p-1">
+                <small class="d-table grey-text">Takipçi</small>
+                <span class="d-table">{{ number_format($document['_source']['user']['counts']['followers']) }}</span>
+            </div>
+            <div class="p-1">
+                <small class="d-table grey-text">Liste</small>
+                <span class="d-table">{{ number_format($document['_source']['user']['counts']['listed']) }}</span>
+            </div>
+            <div class="p-1">
+                <small class="d-table grey-text">Favori</small>
+                <span class="d-table">{{ number_format($document['_source']['user']['counts']['favourites']) }}</span>
+            </div>
+            @isset ($document['_source']['user']['description'])
+                <div class="p-1 markdown">
+                    <small class="d-table grey-text">Profil Açıklaması</small>
+                    {!! Term::tweet($document['_source']['user']['description']) !!}
+                </div>
+            @endisset
+        </div>
 
         @php
             $url = 'https://twitter.com/'.$document['_source']['user']['screen_name'].'/status/'.$document['_source']['id'];
         @endphp
 
         <div class="card-content">
-            <div class="markdown">{!! Term::tweet($document['_source']['text']) !!}</div>
-            <a class="green-text" href="{{ $url }}" target="_blank">{{ $url }}</a>
+            <div class="d-table p-1" style="max-width: 600px;">
+                <small class="d-table grey-text">Tweet</small>
+                <div class="markdown">
+                    {!! Term::tweet($document['_source']['text']) !!}
+                </div>
+
+                @isset ($document['_source']['counts']['favorite'])
+                    <div class="d-flex flex-wrap">
+                        <div class="p-1">
+                            <small class="d-table grey-text">ReTweet</small>
+                            <span class="d-table">{{ number_format($document['_source']['counts']['retweet']) }}</span>
+                        </div>
+                        <div class="p-1">
+                            <small class="d-table grey-text">Cevap</small>
+                            <span class="d-table">{{ number_format($document['_source']['counts']['reply']) }}</span>
+                        </div>
+                        <div class="p-1">
+                            <small class="d-table grey-text">Alıntı</small>
+                            <span class="d-table">{{ number_format($document['_source']['counts']['quote']) }}</span>
+                        </div>
+                        <div class="p-1">
+                            <small class="d-table grey-text">Favori</small>
+                            <span class="d-table">{{ number_format($document['_source']['counts']['favorite']) }}</span>
+                        </div>
+                    </div>
+                @endisset
+
+                <a class="green-text" href="{{ $url }}" target="_blank">{{ $url }}</a>
+            </div>
         </div>
 
         @isset ($document['_source']['entities']['medias'])
@@ -237,112 +205,142 @@
             'document' => $document
         ])
     </div>
+@endpush
 
+@section('panel-icon', 'format_quote')
+@section('panel')
+    <div class="collection collection-unstyled">
+        <div class="collection-item pb-0">
+            <small class="blue-grey-text">Tweet</small>
+        </div>
+
+        <a data-tweets="tweet_replies" data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id, 'type' => 'tweet_replies' ]) }}" class="collection-item" href="#" data-alias="Tweet">Yanıtlar</a>
+        <a data-tweets="tweet_quotes" data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id, 'type' => 'tweet_quotes' ]) }}" class="collection-item" href="#" data-alias="Tweet">Alıntılar</a>
+        <a data-tweets="tweet_retweets" data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id, 'type' => 'tweet_retweets' ]) }}" class="collection-item" href="#" data-alias="Tweet">ReTweetler</a>
+        <a data-tweets="tweet_favorites" data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id, 'type' => 'tweet_favorites' ]) }}" class="collection-item" href="#" data-alias="Tweet">En Çok Favlanan</a>
+        <a data-tweets="tweet_deleted" data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id, 'type' => 'tweet_deleted' ]) }}" class="collection-item" href="#" data-alias="Tweet">Silinen Etkileşimler</a>
+
+        <div class="collection-item pb-0">
+            <small class="blue-grey-text">Kullanıcı</small>
+        </div>
+
+        <a data-tweets="user_replies" data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id, 'type' => 'user_replies' ]) }}" class="collection-item" href="#" data-alias="Kullanıcı">Verdiği Yanıtlar</a>
+        <a data-tweets="user_quotes" data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id, 'type' => 'user_quotes' ]) }}" class="collection-item" href="#" data-alias="Kullanıcı">Yaptığı Alıntılar</a>
+        <a data-tweets="user_retweets" data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id, 'type' => 'user_retweets' ]) }}" class="collection-item" href="#" data-alias="Kullanıcı">Yaptığı ReTweetler</a>
+        <a data-tweets="user_favorites" data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id, 'type' => 'user_favorites' ]) }}" class="collection-item" href="#" data-alias="Kullanıcı">Fav Sayısına Göre Tweetler</a>
+        <a data-tweets="user_favorites" data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id, 'type' => 'user_quotes_desc' ]) }}" class="collection-item" href="#" data-alias="Kullanıcı">Alıntı Sayısına Göre Tweetler</a>
+        <a data-tweets="user_favorites" data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id, 'type' => 'user_replies_desc' ]) }}" class="collection-item" href="#" data-alias="Kullanıcı">Yanıt Sayısına Tweetler</a>
+        <a data-tweets="user_favorites" data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id, 'type' => 'user_retweets_desc' ]) }}" class="collection-item" href="#" data-alias="Kullanıcı">ReTweet Sayısına Göre Tweetşer</a>
+        <a data-tweets="user_deleted" data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id, 'type' => 'user_deleted' ]) }}" class="collection-item" href="#" data-alias="Kullanıcı">Silinen Tweetler</a>
+    </div>
+@endsection
+
+@section('content')
+    @if (@$data['details'])
+        @push('local.scripts')
+            var options = {
+                chart: {
+                    height: 350,
+                    type: 'line',
+                    toolbar: {
+                        show: true,
+                        tools: {
+                            download: '<i class="material-icons">save</i>'
+                        }
+                    }
+                },
+                colors: [ '#77B6EA', '#f44336', '#009688', '#cddc39', '#9c27b0' ],
+                dataLabels: { enabled: true },
+                series: [
+                    {
+                        name: 'Tweet',
+                        data: {!! json_encode($data['details']['statuses']) !!}
+                    },
+                    {
+                        name: 'Takipçi',
+                        data: {!! json_encode($data['details']['friends']) !!}
+                    },
+                    {
+                        name: 'Takip',
+                        data: {!! json_encode($data['details']['followers']) !!}
+                    },
+                    {
+                        name: 'Liste',
+                        data: {!! json_encode($data['details']['lists']) !!}
+                    },
+                    {
+                        name: 'Favori',
+                        data: {!! json_encode($data['details']['favorites']) !!}
+                    }
+                ],
+                grid: {
+                    borderColor: '#f0f0f0',
+                    row: { colors: [ '#f0f0f0' ], opacity: 0.2 }
+                },
+                markers: { size: 6 },
+                yaxis: {
+                    min: 0
+                },
+                xaxis: {
+                    categories: {!! json_encode($data['details']['days']) !!}
+                },
+                legend: {
+                    position: 'top',
+                    horizontalAlign: 'left'
+                }
+            }
+
+            var chart = new ApexCharts(document.querySelector('#chart'), options);
+                chart.render()
+        @endpush
+
+        <div class="card mb-1">
+            <div class="card-content">
+                <span class="card-title">Profil Değerleri</span>
+            </div>
+            <div id="chart"></div>
+        </div>
+    @endif
     <div class="card">
         <div class="card-content">
-            <span class="card-title">Profil Değerleri</span>
+            <span class="card-title">
+                <span data-name="tweets-title">-</span>
+                (<span data-name="tweets-total">0</span>)
+            </span>
         </div>
-        <div class="card-content"> 
-            @isset ($data['stats'])
-                @foreach (
-                    [
-                        '_followers' => 'Takipçi Performans Grafiği',
-                        '_friends' => 'Takip Performans Grafiği',
-                        '_statuses' => 'Tweet Performans Grafiği',
-                        '_listed' => 'Liste Performans Grafiği',
-                        '_favourites' => 'Favori Performans Grafiği',
-                    ] as $key => $name
-                )
-                    @if (count($data['statistics']['diff'][$key]) >= 2)
-                        <div id="{{ $key }}" class="stat-charts hide">
-                            @push('local.scripts')
-                                new Chart($('#{{ $key }}-chart'), {
-                                    type: 'line',
-                                    data: {
-                                        labels: {{ json_encode($data['statistics']['diff'][$key]) }},
-                                        datasets: [{
-                                            backgroundColor: 'transparent',
-                                            borderColor: '#00796b',
-                                            data: {{ json_encode($data['statistics']['diff'][$key]) }},
-                                            tension: 0.1,
-                                            borderWidth: 1,
-                                            radius: 0
-                                        }]
-                                    },
-                                    options: {
-                                        legend: { display: false },
-                                        scales: {
-                                            xAxes: [{ display: false }],
-                                            yAxes: [{ display: false }]
-                                        },
-                                        tooltips: {
-                                             enabled: false
-                                        },
-                                        maintainAspectRatio: false
-                                    }
-                                })
-                            @endpush
-                            <span class="teal-text text-darken-2">{{ $name }}</span>
-                            <div class="stat-chart">
-                                <canvas id="{{ $key }}-chart" height="64"></canvas>
-                            </div>
-                        </div>
-                    @endif
-                @endforeach
-                <table>
-                    <thead>
-                        <tr>
-                            <th class="grey-text text-lighten-2">Tarih</th>
-                            <th class="right-align">
-                                <a href="#" class="d-flex justify-content-end" data-chart="_followers">
-                                    Tkpçi
-                                </a>
-                            </th>
-                            <th class="right-align">
-                                <a href="#" class="d-flex justify-content-end" data-chart="_friends">
-                                    Tkp
-                                </a>
-                            </th>
-                            <th class="right-align">
-                                <a href="#" class="d-flex justify-content-end" data-chart="_statuses">
-                                    Tweet
-                                </a>
-                            </th>
-                            <th class="right-align">
-                                <a href="#" class="d-flex justify-content-end" data-chart="_listed">
-                                    Liste
-                                </a>
-                            </th>
-                            <th class="right-align">
-                                <a href="#" class="d-flex justify-content-end" data-chart="_favourites">
-                                    Fav
-                                </a>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($data['stats'] as $item)
-                            <tr>
-                                <td class="grey-text">{{ $item['created_at'] }}</td>
-                                <td class="right-align {{ $item['diff']['followers'] }}-text">{{ number_format($item['followers']) }}</td>
-                                <td class="right-align {{ $item['diff']['friends'] }}-text">{{ number_format($item['friends']) }}</td>
-                                <td class="right-align {{ $item['diff']['statuses'] }}-text">{{ number_format($item['statuses']) }}</td>
-                                <td class="right-align {{ $item['diff']['listed'] }}-text">{{ number_format($item['listed']) }}</td>
-                                <td class="right-align {{ $item['diff']['favourites'] }}-text">{{ number_format($item['favourites']) }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            @endisset
+        <div
+            id="tweets"
+            class="collection collection-unstyled loading json-clear"
+            data-href="#"
+            data-method="post"
+            data-skip="0"
+            data-take="10"
+            data-more-button="#tweets-more_button"
+            data-callback="__all"
+            data-loader="#tweets-loader"
+            data-nothing>
+            <div class="collection-item nothing hide">
+                @component('components.nothing')
+                    @slot('size', 'small')
+                @endcomponent
+            </div>
+            <div class="collection-item model hide"></div>
         </div>
-    </div>
+        @component('components.loader')
+            @slot('color', 'teal')
+            @slot('id', 'tweets-loader')
+            @slot('class', 'card-loader-unstyled')
+        @endcomponent
+   </div>
+    <a href="#"
+       class="more hide json"
+       id="tweets-more_button"
+       data-json-target="#tweets">Daha Fazla</a>
 @endsection
 
 @section('dock')
     @foreach (
         [
-            'names' => 'Adları',
-            'screen_names' => 'Kullanıcı Adları',
             'platforms' => 'Platform Geçmişi',
             'langs' => 'Dil Geçmişi',
             'mention_out' => 'Andığı Kişiler',
@@ -353,16 +351,15 @@
         ] as $key => $model
     )
         <div class="card mb-1 p-0">
-            <div class="card-content d-flex justify-content-between">
-                <span class="card-title card-title-small align-self-center">{{ $model }}</span>
+            <div class="card-content">
                 <a
                     href="#"
-                    class="btn-floating waves-effect btn-flat json loading"
+                    class="card-title json loading"
                     data-method="post"
                     data-callback="__aggregation"
                     data-type="{{ $key }}"
                     data-href="{{ route('tweet.aggregation', [ 'type' => $key, 'id' => $document['_source']['user']['id'] ]) }}">
-                    <i class="material-icons">keyboard_arrow_down</i>
+                    {{ $model }}
                 </a>
             </div>
             <ul class="collection collection-unstyled aggregation-collection hide">
@@ -372,16 +369,15 @@
                         <span class="grey align-self-center" data-name="count" style="padding: 0 .4rem;"></span>
                     </div>
                 </li>
-                <li class="collection-item nothing hide">
-                    @component('components.nothing')
-                        @slot('size', 'small')
-                    @endcomponent
-                </li>
             </ul>
         </div>
     @endforeach
 @endsection
 
+@push('external.include.footer')
+    <script src="{{ asset('js/apex.min.js?v='.config('system.version')) }}"></script>
+    <script src="{{ asset('js/chart.min.js?v='.config('system.version')) }}"></script>
+@endpush
 @push('local.scripts')
     $('.materialboxed').materialbox()
 
@@ -389,7 +385,7 @@
     {
         if (obj.status == 'ok')
         {
-            __.addClass('hide')
+            __.removeClass('json')
 
             var collection = __.closest('.card').find('ul.collection');
             var model = collection.children('li.collection-item[data-model]')
@@ -456,19 +452,38 @@
             }
             else
             {
-                collection.find('.nothing').removeClass('hide')
+                __.addClass('white-text').parent('.card-content').addClass('red')
             }
         }
     }
 
+    $(document).on('click', '[data-tweets]', function() {
+        var __ = $(this);
+
+        $('[data-name=tweets-title]').html(__.data('alias') + ': ' + __.html())
+
+        var search = $('#tweets');
+            search.data('href', __.data('href'))
+            search.data('skip', 0).addClass('json-clear');
+
+        vzAjax(search)
+    })
+
+    $(document).ready(function() {
+        $('[data-tweets=tweet_replies]').click()
+    })
+
     function __all(__, obj)
     {
-        var ul = $('#' + __.attr('id'));
+        var ul = $('#tweets');
         var item_model = ul.children('.model');
 
         if (obj.status == 'ok')
         {
-            item_model.addClass('hide')
+            if (__.data('skip') <= __.data('take'))
+            {
+                $('[data-name=tweets-total]').html(obj.total)
+            }
 
             if (obj.hits.length)
             {
@@ -480,26 +495,4 @@
             }
         }
     }
-
-    $('.sub-tabs').tabs({
-        onShow: function(tab) {
-            var loader = $('#loader-' + tab.id);
-
-            if ($('#' + tab.id).hasClass('halfload'))
-            {
-                if (!loader.hasClass('loaded'))
-                {
-                    loader.addClass('loaded')
-                    vzAjax(loader)
-                }
-            }
-        }
-    })
-
-    $(document).on('click', '[data-chart]', function() {
-        var __ = $(this);
-
-        $('.stat-charts').addClass('hide')
-        $('#' + __.data('chart')).removeClass('hide')
-    })
 @endpush

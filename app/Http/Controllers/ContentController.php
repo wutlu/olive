@@ -173,165 +173,93 @@ class ContentController extends Controller
 
                     $title = implode(' / ', [ 'Twitter', $document['_source']['user']['name'], '#'.$es_id ]);
 
-                    $user = [
-                        [ 'match' => [ 'user.id' => $document['_source']['user']['id'] ] ]
-                    ];
-
-                    $data = [
-                        'total' => Document::search([ 'twitter', 'tweets', '*' ], 'tweet', [
+                    $details = Document::search(
+                        [
+                            'twitter',
+                            'tweets',
+                            '*'
+                        ],
+                        'tweet',
+                        [
+                            'size' => 0,
                             'query' => [
                                 'bool' => [
-                                    'must' => $user
+                                    'filter' => [
+                                        [
+                                            'range' => [
+                                                'created_at' => [
+                                                    'format' => 'YYYY-MM-dd',
+                                                    'gte' => date('Y-m-d', strtotime('-'.$days.' days'))
+                                                ]
+                                            ]
+                                        ]
+                                    ],
+                                    'must' => [
+                                        [
+                                            'match' => [ 'user.id' => $document['_source']['user']['id'] ]
+                                        ]
+                                    ]
                                 ]
                             ],
-                            'size' => 0
-                        ]),
-                        'retweet' => Document::count([ 'twitter', 'tweets', '*' ], 'tweet', [
-                            'query' => [
-                                'bool' => [
-                                    'must' => [
-                                        [ 'match' => [ 'external.id' => $document['_source']['id'] ] ],
-                                        [ 'match' => [ 'external.type' => 'retweet' ] ]
+                            'aggs' => [
+                                'metrics_by_day' => [
+                                    'date_histogram' => [
+                                        'field' => 'created_at',
+                                        'interval' => 'day',
+                                        'format' => 'yyyy-MM-dd',
+                                        'min_doc_count' => 1
+                                    ],
+                                    'aggs' => [
+                                        'properties' => [
+                                            'top_hits' => [
+                                                'size' => 1,
+                                                '_source' => [
+                                                    'include' => [
+                                                        'user.counts'
+                                                    ]
+                                                ]
+                                            ]
+                                        ]
                                     ]
                                 ]
                             ]
-                        ]),
-                        'quote' => Document::count([ 'twitter', 'tweets', '*' ], 'tweet', [
-                            'query' => [
-                                'bool' => [
-                                    'must' => [
-                                        [ 'match' => [ 'external.id' => $document['_source']['id'] ] ],
-                                        [ 'match' => [ 'external.type' => 'quote' ] ]
-                                    ]
-                                ]
-                            ]
-                        ]),
-                        'reply' => Document::count([ 'twitter', 'tweets', '*' ], 'tweet', [
-                            'query' => [
-                                'bool' => [
-                                    'must' => [
-                                        [ 'match' => [ 'external.id' => $document['_source']['id'] ] ],
-                                        [ 'match' => [ 'external.type' => 'reply' ] ]
-                                    ]
-                                ]
-                            ]
-                        ]),
-                        'deleted' => Document::count([ 'twitter', 'tweets', '*' ], 'tweet', [
-                            'query' => [
-                                'bool' => [
-                                    'must' => [
-                                        [ 'match' => [ 'user.id' => $document['_source']['user']['id'] ] ],
-                                        [ 'exists' => [ 'field' => 'deleted_at' ] ]
-                                    ]
-                                ]
-                            ]
-                        ])
-                    ];
+                        ]
+                    );
+
+                    $details = @$details->data['aggregations']['metrics_by_day']['buckets'];
+
+                    if (count($details))
+                    {
+                        $detail_keys = [
+                            'days' => [],
+                            'followers' => [],
+                            'favorites' => [],
+                            'lists' => [],
+                            'friends' => [],
+                            'statuses' => []
+                        ];
+
+                        foreach ($details as $detail)
+                        {
+                            $date = date('d.m.Y', strtotime($detail['key_as_string']));
+                            $counts = $detail['properties']['hits']['hits'][0]['_source']['user']['counts'];
+
+                            $detail_keys['days'][] = $date;
+                            $detail_keys['followers'][] = $counts['followers'];
+                            $detail_keys['favorites'][] = $counts['favourites'];
+                            $detail_keys['lists'][] = $counts['listed'];
+                            $detail_keys['friends'][] = $counts['friends'];
+                            $detail_keys['statuses'][] = $counts['statuses'];
+                        }
+
+                        $data['details'] = $detail_keys;
+                    }
 
                     if (@$document['_source']['external']['id'])
                     {
                         $external = Document::search([ 'twitter', 'tweets', '*' ], 'tweet', [ 'query' => [ 'match' => [ 'id' => $document['_source']['external']['id'] ] ] ]);
 
                         $data['external'] = @$external->data['hits']['hits'][0];
-                    }
-
-                    $follow_graph = Document::search([ 'twitter', 'tweets', '*' ], 'tweet', [
-                        'size' => 100,
-                        'query' => [
-                            'bool' => [
-                                'must' => [
-                                    [ 'match' => [ 'user.id' => $document['_source']['user']['id'] ] ]
-                                ]
-                            ]
-                        ],
-                        '_source' => [
-                            'user.counts.friends',
-                            'user.counts.followers',
-                            'user.counts.statuses',
-                            'user.counts.listed',
-                            'user.counts.favourites',
-                            'created_at'
-                        ],
-                        'sort' => [
-                             'created_at' => 'DESC'
-                        ]
-                    ]);
-
-                    if (@$follow_graph->data['hits']['hits'])
-                    {
-                        $stats = [];
-
-                        $_created_at = null;
-                        $_followers = null;
-                        $_friends = null;
-                        $_statuses = null;
-                        $_listed = null;
-                        $_favourites = null;
-
-                        foreach (array_reverse($follow_graph->data['hits']['hits']) as $arr)
-                        {
-                            $created_at = date('Y.m.d', strtotime($arr['_source']['created_at']));
-
-                            if ($created_at != $_created_at)
-                            {
-                                $followers = $arr['_source']['user']['counts']['followers'];
-                                $friends = $arr['_source']['user']['counts']['friends'];
-                                $statuses = $arr['_source']['user']['counts']['statuses'];
-                                $listed = $arr['_source']['user']['counts']['listed'];
-                                $favourites = $arr['_source']['user']['counts']['favourites'];
-
-                                $stats[] = [
-                                    'created_at' => $created_at,
-                                    'followers' => $followers,
-                                    'friends' => $friends,
-                                    'statuses' => $statuses,
-                                    'listed' => $listed,
-                                    'favourites' => $favourites,
-
-                                    'diff' => [
-                                        'followers'  => $followers  < $_followers  ? 'red' : ($followers  == $_followers  ? 'grey' : 'green'),
-                                        'friends'    => $friends    < $_friends    ? 'red' : ($friends    == $_friends    ? 'grey' : 'green'),
-                                        'statuses'   => $statuses   < $_statuses   ? 'red' : ($statuses   == $_statuses   ? 'grey' : 'green'),
-                                        'listed'     => $listed     < $_listed     ? 'red' : ($listed     == $_listed     ? 'grey' : 'green'),
-                                        'favourites' => $favourites < $_favourites ? 'red' : ($favourites == $_favourites ? 'grey' : 'green'),
-
-                                        '_followers'  => $followers  - $_followers,
-                                        '_friends'    => $friends    - $_friends,
-                                        '_statuses'   => $statuses   - $_statuses,
-                                        '_listed'     => $listed     - $_listed,
-                                        '_favourites' => $favourites - $_favourites,
-                                    ]
-                                ];
-
-                                $_followers = $followers;
-                                $_friends = $friends;
-                                $_statuses = $statuses;
-                                $_listed = $listed;
-                                $_favourites = $favourites;
-                            }
-
-                            $_created_at = $created_at;
-                        }
-
-                        $data['stats'] = array_reverse($stats);
-
-                        $_followers  = array_map(function($arr) { return $arr['diff']['_followers'];  }, $data['stats']);
-                        $_friends    = array_map(function($arr) { return $arr['diff']['_friends'];    }, $data['stats']);
-                        $_statuses   = array_map(function($arr) { return $arr['diff']['_statuses'];   }, $data['stats']);
-                        $_listed     = array_map(function($arr) { return $arr['diff']['_listed'];     }, $data['stats']);
-                        $_favourites = array_map(function($arr) { return $arr['diff']['_favourites']; }, $data['stats']);
-
-                        array_pop($_followers);
-                        array_pop($_friends);
-                        array_pop($_statuses);
-                        array_pop($_listed);
-                        array_pop($_favourites);
-
-                        $data['statistics']['diff']['_followers']  = $_followers;
-                        $data['statistics']['diff']['_friends']    = $_friends;
-                        $data['statistics']['diff']['_statuses']   = $_statuses;
-                        $data['statistics']['diff']['_listed']     = $_listed;
-                        $data['statistics']['diff']['_favourites'] = $_favourites;
                     }
                 break;
                 case 'video':
@@ -598,20 +526,6 @@ class ContentController extends Controller
 
         switch ($type)
         {
-            case 'names':
-                $data['aggs']['names'] = [
-                    'terms' => [
-                        'field' => 'user.name'
-                    ]
-                ];
-            break;
-            case 'screen_names':
-                $data['aggs']['screen_names'] = [
-                    'terms' => [
-                        'field' => 'user.screen_name'
-                    ]
-                ];
-            break;
             case 'platforms':
                 $data['aggs']['platforms'] = [
                     'terms' => [
@@ -712,31 +626,35 @@ class ContentController extends Controller
         $days = auth()->user()->organisation->historical_days;
 
         $user = Document::get([ 'instagram', 'users' ], 'user', $user_id);
-        $user = $user->data['_source'];
 
-        if ($type == 'mention_in')
+        if ($user->status == 'ok')
         {
-            $data = [
-                'query' => [
-                    'bool' => [
-                        'filter' => [
-                            [
-                                'range' => [
-                                    'created_at' => [
-                                        'format' => 'YYYY-MM-dd',
-                                        'gte' => date('Y-m-d', strtotime('-'.$days.' days'))
+            $user = $user->data['_source'];
+
+            if ($type == 'mention_in')
+            {
+                $data = [
+                    'query' => [
+                        'bool' => [
+                            'filter' => [
+                                [
+                                    'range' => [
+                                        'created_at' => [
+                                            'format' => 'YYYY-MM-dd',
+                                            'gte' => date('Y-m-d', strtotime('-'.$days.' days'))
+                                        ]
                                     ]
-                                ]
-                            ],
-                            [
-                                'nested' => [
-                                    'path' => 'entities.mentions',
-                                    'query' => [
-                                        'bool' => [
-                                            'filter' => [
-                                                [
-                                                    'match' => [
-                                                        'entities.mentions.mention.screen_name' => $user['screen_name']
+                                ],
+                                [
+                                    'nested' => [
+                                        'path' => 'entities.mentions',
+                                        'query' => [
+                                            'bool' => [
+                                                'filter' => [
+                                                    [
+                                                        'match' => [
+                                                            'entities.mentions.mention.screen_name' => $user['screen_name']
+                                                        ]
                                                     ]
                                                 ]
                                             ]
@@ -745,95 +663,102 @@ class ContentController extends Controller
                                 ]
                             ]
                         ]
-                    ]
-                ],
-                'size' => 0
+                    ],
+                    'size' => 0
+                ];
+            }
+            else
+            {
+                $data = [
+                    'query' => [
+                        'bool' => [
+                            'filter' => [
+                                [
+                                    'range' => [
+                                        'created_at' => [
+                                            'format' => 'YYYY-MM-dd',
+                                            'gte' => date('Y-m-d', strtotime('-'.$days.' days'))
+                                        ]
+                                    ]
+                                ],
+                                [ 'match' => [ 'user.id' => $user['id'] ] ]
+                            ]
+                        ]
+                    ],
+                    'size' => 0
+                ];
+            }
+
+            switch ($type)
+            {
+                case 'places':
+                    $data['aggs']['places'] = [
+                        'terms' => [
+                            'field' => 'place.name'
+                        ]
+                    ];
+                break;
+                case 'mention_out':
+                    $data['aggs']['mention_out'] = [
+                        'nested' => [ 'path' => 'entities.mentions' ],
+                        'aggs' => [
+                            'hit_items' => [
+                                'terms' => [
+                                    'field' => 'entities.mentions.mention.screen_name',
+                                    'size' => 15
+                                ]
+                            ]
+                        ]
+                    ];
+                break;
+                case 'hashtags':
+                    $data['aggs']['hashtags'] = [
+                        'nested' => [ 'path' => 'entities.hashtags' ],
+                        'aggs' => [
+                            'hit_items' => [
+                                'terms' => [
+                                    'field' => 'entities.hashtags.hashtag',
+                                    'size' => 15
+                                ]
+                            ]
+                        ]
+                    ];
+                break;
+                case 'mention_in':
+                    $data['aggs']['mention_in'] = [
+                        'terms' => [
+                            'field' => 'user.id',
+                            'size' => 15
+                        ]
+                    ];
+                break;
+            }
+
+            $data = Document::search([ 'instagram', 'medias', '*' ], 'media', $data);
+
+            switch ($type)
+            {
+                case 'mention_out':
+                case 'hashtags':
+                    $data = $data->data['aggregations'][$type]['hit_items']['buckets'];
+                break;
+                default:
+                    $data = $data->data['aggregations'][$type]['buckets'];
+                break;
+            }
+
+            return [
+                'status' => 'ok',
+                'data' => $data
             ];
         }
         else
         {
-            $data = [
-                'query' => [
-                    'bool' => [
-                        'filter' => [
-                            [
-                                'range' => [
-                                    'created_at' => [
-                                        'format' => 'YYYY-MM-dd',
-                                        'gte' => date('Y-m-d', strtotime('-'.$days.' days'))
-                                    ]
-                                ]
-                            ],
-                            [ 'match' => [ 'user.id' => $user['id'] ] ]
-                        ]
-                    ]
-                ],
-                'size' => 0
+            return [
+                'status' => 'err',
+                'message' => 'İçeriğe geçici olarak ulaşılamıyor.'
             ];
         }
-
-        switch ($type)
-        {
-            case 'places':
-                $data['aggs']['places'] = [
-                    'terms' => [
-                        'field' => 'place.name'
-                    ]
-                ];
-            break;
-            case 'mention_out':
-                $data['aggs']['mention_out'] = [
-                    'nested' => [ 'path' => 'entities.mentions' ],
-                    'aggs' => [
-                        'hit_items' => [
-                            'terms' => [
-                                'field' => 'entities.mentions.mention.screen_name',
-                                'size' => 15
-                            ]
-                        ]
-                    ]
-                ];
-            break;
-            case 'hashtags':
-                $data['aggs']['hashtags'] = [
-                    'nested' => [ 'path' => 'entities.hashtags' ],
-                    'aggs' => [
-                        'hit_items' => [
-                            'terms' => [
-                                'field' => 'entities.hashtags.hashtag',
-                                'size' => 15
-                            ]
-                        ]
-                    ]
-                ];
-            break;
-            case 'mention_in':
-                $data['aggs']['mention_in'] = [
-                    'terms' => [
-                        'field' => 'user.id',
-                        'size' => 15
-                    ]
-                ];
-            break;
-        }
-
-        $data = Document::search([ 'instagram', 'medias', '*' ], 'media', $data);
-
-        switch ($type)
-        {
-            case 'mention_out':
-            case 'hashtags':
-                $data = $data->data['aggregations'][$type]['hit_items']['buckets'];
-            break;
-            default:
-                $data = $data->data['aggregations'][$type]['buckets'];
-            break;
-        }
-
-        return [
-            'status' => 'ok',
-            'data' => $data
-        ];
     }
 
     /**
@@ -1088,25 +1013,60 @@ class ContentController extends Controller
                         ]
                     ];
 
-                    if ($type == 'retweet' || $type == 'quote' || $type == 'reply')
+                    switch ($type)
                     {
-                        $arr['query']['bool']['must'][] = [ 'match' => [ 'external.id' => $es_id ] ];
-                        $arr['query']['bool']['must'][] = [ 'match' => [ 'external.type' => $type ] ];
-                    }
-                    else if ($type == 'deleted')
-                    {
-                        $arr['query']['bool']['must'][] = [
-                            'match' => [ 'user.id' => $document->data['_source']['user']['id'] ]
-                        ];
-                        $arr['query']['bool']['must'][] = [
-                            'exists' => [ 'field' => 'deleted_at' ]
-                        ];
-                    }
-                    else
-                    {
-                        $arr['query']['bool']['must'][] = [
-                            'match' => [ 'user.id' => $document->data['_source']['user']['id'] ]
-                        ];
+                        case 'tweet_replies':
+                            $arr['query']['bool']['must'][] = [ 'match' => [ 'external.id' => $es_id ] ];
+                            $arr['query']['bool']['must'][] = [ 'match' => [ 'external.type' => 'reply' ] ];
+                        break;
+                        case 'tweet_quotes':
+                            $arr['query']['bool']['must'][] = [ 'match' => [ 'external.id' => $es_id ] ];
+                            $arr['query']['bool']['must'][] = [ 'match' => [ 'external.type' => 'quote' ] ];
+                        break;
+                        case 'tweet_retweets':
+                            $arr['query']['bool']['must'][] = [ 'match' => [ 'external.id' => $es_id ] ];
+                            $arr['query']['bool']['must'][] = [ 'match' => [ 'external.type' => 'retweet' ] ];
+                        break;
+                        case 'tweet_favorites':
+                            $arr['query']['bool']['must'][] = [ 'match' => [ 'external.id' => $es_id ] ];
+                            $arr['sort'] = [ 'counts.favorite' => 'desc' ];
+                        break;
+                        case 'tweet_deleted':
+                            $arr['query']['bool']['must'][] = [ 'match' => [ 'external.id' => $es_id ] ];
+                            $arr['query']['bool']['must'][] = [ 'exists' => [ 'field' => 'deleted_at' ] ];
+                        break;
+                        case 'user_replies':
+                            $arr['query']['bool']['must'][] = [ 'match' => [ 'user.id' => $document->data['_source']['user']['id'] ] ];
+                            $arr['query']['bool']['must'][] = [ 'match' => [ 'external.type' => 'reply' ] ];
+                        break;
+                        case 'user_quotes':
+                            $arr['query']['bool']['must'][] = [ 'match' => [ 'user.id' => $document->data['_source']['user']['id'] ] ];
+                            $arr['query']['bool']['must'][] = [ 'match' => [ 'external.type' => 'quote' ] ];
+                        break;
+                        case 'user_retweets':
+                            $arr['query']['bool']['must'][] = [ 'match' => [ 'user.id' => $document->data['_source']['user']['id'] ] ];
+                            $arr['query']['bool']['must'][] = [ 'match' => [ 'external.type' => 'retweet' ] ];
+                        break;
+                        case 'user_favorites':
+                            $arr['query']['bool']['must'][] = [ 'match' => [ 'user.id' => $document->data['_source']['user']['id'] ] ];
+                            $arr['sort'] = [ 'counts.favorite' => 'desc' ];
+                        break;
+                        case 'user_quotes_desc':
+                            $arr['query']['bool']['must'][] = [ 'match' => [ 'user.id' => $document->data['_source']['user']['id'] ] ];
+                            $arr['sort'] = [ 'counts.quote' => 'desc' ];
+                        break;
+                        case 'user_replies_desc':
+                            $arr['query']['bool']['must'][] = [ 'match' => [ 'user.id' => $document->data['_source']['user']['id'] ] ];
+                            $arr['sort'] = [ 'counts.reply' => 'desc' ];
+                        break;
+                        case 'user_retweets_desc':
+                            $arr['query']['bool']['must'][] = [ 'match' => [ 'user.id' => $document->data['_source']['user']['id'] ] ];
+                            $arr['sort'] = [ 'counts.retweet' => 'desc' ];
+                        break;
+                        case 'user_deleted':
+                            $arr['query']['bool']['must'][] = [ 'match' => [ 'user.id' => $document->data['_source']['user']['id'] ] ];
+                            $arr['query']['bool']['must'][] = [ 'exists' => [ 'field' => 'deleted_at' ] ];
+                        break;
                     }
 
                     $documents = Document::search([ 'twitter', 'tweets', '*' ], $es_type, $arr);
