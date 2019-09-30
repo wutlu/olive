@@ -48,12 +48,12 @@ class CoreExecute extends Command
 
         foreach (
             [
-                [ 'index' => 'twitter-tweets-2019.02',           'type' => 'tweet' ],
-                [ 'index' => 'twitter-tweets-2019.03',           'type' => 'tweet' ],
                 [ 'index' => 'twitter-tweets-2019.04',           'type' => 'tweet' ],
                 [ 'index' => 'twitter-tweets-2019.05',           'type' => 'tweet' ],
                 [ 'index' => 'twitter-tweets-2019.06',           'type' => 'tweet' ],
                 [ 'index' => 'twitter-tweets-2019.07',           'type' => 'tweet' ],
+                [ 'index' => 'twitter-tweets-2019.08',           'type' => 'tweet' ],
+                [ 'index' => 'twitter-tweets-2019.09',           'type' => 'tweet' ],
             ] as $arr
         )
         {
@@ -64,7 +64,10 @@ class CoreExecute extends Command
                     'body' => [
                         $arr['type'] => [
                             'properties' => [
-                                'category' => [ 'type' => 'keyword' ],
+                                'counts.retweet' => [ 'type' => 'integer' ],
+                                'counts.reply' => [ 'type' => 'integer' ],
+                                'counts.quote' => [ 'type' => 'integer' ],
+                                'counts.favorite' => [ 'type' => 'integer' ]
                             ]
                         ]
                     ]
