@@ -919,13 +919,12 @@ class AggregationController extends Controller
                     if (@$query['aggs']->data['aggregations'])
                     {
                         $clean_hits = $query['aggs']->data['aggregations'];
-                        $total_hits = $clean_hits['sentiment_hte']['value'] + $clean_hits['sentiment_neg']['value'] + $clean_hits['sentiment_neu']['value'] + $clean_hits['sentiment_hte']['value'];
 
                         $data['data'] = [
-                            'pos' => round($clean_hits['sentiment_hte']['value'] ? $clean_hits['sentiment_hte']['value']*100/$total_hits : 0, 2),
-                            'neg' => round($clean_hits['sentiment_neg']['value'] ? $clean_hits['sentiment_neg']['value']*100/$total_hits : 0, 2),
-                            'neu' => round($clean_hits['sentiment_neu']['value'] ? $clean_hits['sentiment_neu']['value']*100/$total_hits : 0, 2),
-                            'hte' => round($clean_hits['sentiment_hte']['value'] ? $clean_hits['sentiment_hte']['value']*100/$total_hits : 0, 2)
+                            'pos' => intval($clean_hits['sentiment_hte']['value']),
+                            'neg' => intval($clean_hits['sentiment_neg']['value']),
+                            'neu' => intval($clean_hits['sentiment_neu']['value']),
+                            'hte' => intval($clean_hits['sentiment_hte']['value'])
                         ];
                     }
                 }
@@ -941,10 +940,10 @@ class AggregationController extends Controller
                         $total_hits = $clean_hits['consumer_req']['value'] + $clean_hits['consumer_que']['value'] + $clean_hits['consumer_cmp']['value'] + $clean_hits['consumer_nws']['value'];
 
                         $data['data'] = [
-                            'que' => round($clean_hits['consumer_que']['value'] ? $clean_hits['consumer_que']['value']*100/$total_hits : 0, 2),
-                            'req' => round($clean_hits['consumer_req']['value'] ? $clean_hits['consumer_req']['value']*100/$total_hits : 0, 2),
-                            'cmp' => round($clean_hits['consumer_cmp']['value'] ? $clean_hits['consumer_cmp']['value']*100/$total_hits : 0, 2),
-                            'nws' => round($clean_hits['consumer_nws']['value'] ? $clean_hits['consumer_nws']['value']*100/$total_hits : 0, 2)
+                            'que' => intval($clean_hits['consumer_que']['value']),
+                            'req' => intval($clean_hits['consumer_req']['value']),
+                            'cmp' => intval($clean_hits['consumer_cmp']['value']),
+                            'nws' => intval($clean_hits['consumer_nws']['value'])
                         ];
 
                         foreach ([ 'que', 'req', 'cmp', 'nws' ] as $key => $item)
