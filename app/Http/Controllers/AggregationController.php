@@ -380,11 +380,11 @@ class AggregationController extends Controller
                 $results = [];
 
                 foreach ([
-                    'twitter'         => [ 'index' => [ 'twitter',   'tweets', '*'   ], 'type' => 'tweet'    ],
+                    'twitter'         => [ 'index' => [ 'twitter',   'tweets',   '*' ], 'type' => 'tweet'    ],
                     'sozluk'          => [ 'index' => [ 'sozluk',    '*'             ], 'type' => 'entry'    ],
                     'news'            => [ 'index' => [ 'media',     '*'             ], 'type' => 'article'  ],
                     'blog'            => [ 'index' => [ 'blog',      '*'             ], 'type' => 'document' ],
-                    'instagram'       => [ 'index' => [ 'instagram', 'medias', '*'   ], 'type' => 'media'    ],
+                    'instagram'       => [ 'index' => [ 'instagram', 'medias',   '*' ], 'type' => 'media'    ],
                     'shopping'        => [ 'index' => [ 'shopping',  '*'             ], 'type' => 'product'  ],
                     'youtube_video'   => [ 'index' => [ 'youtube',   'videos'        ], 'type' => 'video'    ],
                     'youtube_comment' => [ 'index' => [ 'youtube',   'comments', '*' ], 'type' => 'comment'  ]
@@ -392,25 +392,14 @@ class AggregationController extends Controller
                 {
                     if (@in_array($key, $request->modules))
                     {
-                        foreach ([ 'pos', 'neu', 'neg', 'hte' ] as $cnsmr)
+                        foreach ([ 'pos', 'neu', 'neg', 'hte' ] as $sntmnt)
                         {
-                            $array = $q;
-                            $array['query']['bool']['filter'][] = [
-                                [ 'range' => [ implode('.', [ 'sentiment', $cnsmr ]) => [ 'gte' => 0.5 ] ] ]
+                            $aggs[$key][$sntmnt] = [
+                                'filter' => [ 'range' => [ implode('.', [ 'sentiment', $sntmnt ]) => [ 'gte' => 0.5 ] ] ]
                             ];
-                            $results[$key][$cnsmr] = Document::count(
-                                $module['index'],
-                                $module['type'],
-                                $array
-                            )->data['count'];
                         }
                     }
                 }
-
-                return [
-                    'status' => 'ok',
-                    'data' => $results
-                ];
             break;
             case 'consumer':
                 unset($q['size']);
@@ -418,9 +407,9 @@ class AggregationController extends Controller
                 $results = [];
 
                 foreach ([
-                    'twitter'         => [ 'index' => [ 'twitter',   'tweets', '*'   ], 'type' => 'tweet'   ],
+                    'twitter'         => [ 'index' => [ 'twitter',   'tweets',   '*' ], 'type' => 'tweet'   ],
                     'sozluk'          => [ 'index' => [ 'sozluk',    '*'             ], 'type' => 'entry'   ],
-                    'instagram'       => [ 'index' => [ 'instagram', 'medias', '*'   ], 'type' => 'media'   ],
+                    'instagram'       => [ 'index' => [ 'instagram', 'medias',   '*' ], 'type' => 'media'   ],
                     'youtube_video'   => [ 'index' => [ 'youtube',   'videos'        ], 'type' => 'video'   ],
                     'youtube_comment' => [ 'index' => [ 'youtube',   'comments', '*' ], 'type' => 'comment' ]
                 ] as $key => $module)
@@ -429,23 +418,12 @@ class AggregationController extends Controller
                     {
                         foreach ([ 'nws', 'req', 'que', 'cmp' ] as $cnsmr)
                         {
-                            $array = $q;
-                            $array['query']['bool']['filter'][] = [
-                                [ 'range' => [ implode('.', [ 'consumer', $cnsmr ]) => [ 'gte' => 0.5 ] ] ]
+                            $aggs[$key][$cnsmr] = [
+                                'filter' => [ 'range' => [ implode('.', [ 'consumer', $cnsmr ]) => [ 'gte' => 0.5 ] ] ]
                             ];
-                            $results[$key][$cnsmr] = Document::count(
-                                $module['index'],
-                                $module['type'],
-                                $array
-                            )->data['count'];
                         }
                     }
                 }
-
-                return [
-                    'status' => 'ok',
-                    'data' => $results
-                ];
             break;
             case 'gender':
                 $aggs['twitter'] = [ 'gender' => [ 'terms' => [ 'field' => 'user.gender' ] ] ];

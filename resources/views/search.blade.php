@@ -2022,10 +2022,10 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
 
                         var datas = [];
 
-                        var req = module.req;
-                        var que = module.que;
-                        var cmp = module.cmp;
-                        var nws = module.nws;
+                        var req = module.req.doc_count;
+                        var que = module.que.doc_count;
+                        var cmp = module.cmp.doc_count;
+                        var nws = module.nws.doc_count;
 
                         datas.push((req ? req : 0).toFixed(2))
                         datas.push((que ? que : 0).toFixed(2))
@@ -2094,10 +2094,10 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
 
                         var datas = [];
 
-                        var pos = module.pos;
-                        var neu = module.neu;
-                        var neg = module.neg;
-                        var hte = module.hte;
+                        var pos = module.pos.doc_count;
+                        var neu = module.neu.doc_count;
+                        var neg = module.neg.doc_count;
+                        var hte = module.hte.doc_count;
 
                         datas.push((pos ? pos : 0).toFixed(2))
                         datas.push((neu ? neu : 0).toFixed(2))

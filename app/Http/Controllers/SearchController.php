@@ -289,9 +289,9 @@ class SearchController extends Controller
 
                         $tweet_data = self::tweet($request, $twitter_q);
 
-                        $stats['twitter']['mentions'] = $tweet_data['aggs']['mentions']['doc_count'];
-                        $stats['twitter']['hashtags'] = $tweet_data['aggs']['hashtags']['doc_count'];
-                        $stats['twitter']['unique_users'] = $tweet_data['aggs']['unique_users']['value'];
+                        $stats['twitter']['mentions'] = @$tweet_data['aggs']['mentions']['doc_count'];
+                        $stats['twitter']['hashtags'] = @$tweet_data['aggs']['hashtags']['doc_count'];
+                        $stats['twitter']['unique_users'] = @$tweet_data['aggs']['unique_users']['value'];
 
                         $stats['hits'] = $stats['hits'] + $tweet_data['stats']['total'];
                         $stats['counts']['twitter_tweet'] = $tweet_data['stats']['total'];
@@ -310,9 +310,9 @@ class SearchController extends Controller
 
                         $instagram_data = self::instagram($request, $instagram_q);
 
-                        $stats['instagram']['mentions'] = $instagram_data['aggs']['mentions']['doc_count'];
-                        $stats['instagram']['hashtags'] = $instagram_data['aggs']['hashtags']['doc_count'];
-                        $stats['instagram']['unique_users'] = $instagram_data['aggs']['unique_users']['value'];
+                        $stats['instagram']['mentions'] = @$instagram_data['aggs']['mentions']['doc_count'];
+                        $stats['instagram']['hashtags'] = @$instagram_data['aggs']['hashtags']['doc_count'];
+                        $stats['instagram']['unique_users'] = @$instagram_data['aggs']['unique_users']['value'];
 
                         $stats['hits'] = $stats['hits'] + $instagram_data['stats']['total'];
                         $stats['counts']['instagram_media'] = $instagram_data['stats']['total'];
@@ -330,8 +330,8 @@ class SearchController extends Controller
 
                         $sozluk_data = self::sozluk($request, $sozluk_q, @$source->source_sozluk);
 
-                        $stats['sozluk']['unique_users'] = $sozluk_data['aggs']['unique_users']['value'];
-                        $stats['sozluk']['unique_topics'] = $sozluk_data['aggs']['unique_topics']['value'];
+                        $stats['sozluk']['unique_users'] = @$sozluk_data['aggs']['unique_users']['value'];
+                        $stats['sozluk']['unique_topics'] = @$sozluk_data['aggs']['unique_topics']['value'];
 
                         $stats['hits'] = $stats['hits'] + $sozluk_data['stats']['total'];
                         $stats['counts']['sozluk_entry'] = $sozluk_data['stats']['total'];
@@ -348,7 +348,7 @@ class SearchController extends Controller
 
                         $news_data = self::news($request, $news_q, @$source->source_media);
 
-                        $stats['news']['unique_sites'] = $news_data['aggs']['unique_sites']['value'];
+                        $stats['news']['unique_sites'] = @$news_data['aggs']['unique_sites']['value'];
 
                         $stats['hits'] = $stats['hits'] + $news_data['stats']['total'];
                         $stats['counts']['media_article'] = $news_data['stats']['total'];
@@ -365,7 +365,7 @@ class SearchController extends Controller
 
                         $blog_data = self::blog($request, $blog_q, @$source->source_blog);
 
-                        $stats['blog']['unique_sites'] = $blog_data['aggs']['unique_sites']['value'];
+                        $stats['blog']['unique_sites'] = @$blog_data['aggs']['unique_sites']['value'];
 
                         $stats['hits'] = $stats['hits'] + $blog_data['stats']['total'];
                         $stats['counts']['blog_document'] = $blog_data['stats']['total'];
@@ -383,8 +383,8 @@ class SearchController extends Controller
 
                         $youtube_video_data = self::youtube_video($request, $youtube_video_q);
 
-                        $stats['youtube_video']['unique_users'] = $youtube_video_data['aggs']['unique_users']['value'];
-                        $stats['youtube_video']['hashtags'] = $youtube_video_data['aggs']['hashtags']['doc_count'];
+                        $stats['youtube_video']['unique_users'] = @$youtube_video_data['aggs']['unique_users']['value'];
+                        $stats['youtube_video']['hashtags'] = @$youtube_video_data['aggs']['hashtags']['doc_count'];
 
                         $stats['hits'] = $stats['hits'] + $youtube_video_data['stats']['total'];
                         $stats['counts']['youtube_video'] = $youtube_video_data['stats']['total'];
@@ -402,8 +402,8 @@ class SearchController extends Controller
 
                         $youtube_comment_data = self::youtube_comment($request, $youtube_comment_q);
 
-                        $stats['youtube_comment']['unique_users'] = $youtube_comment_data['aggs']['unique_users']['value'];
-                        $stats['youtube_comment']['unique_videos'] = $youtube_comment_data['aggs']['unique_videos']['value'];
+                        $stats['youtube_comment']['unique_users'] = @$youtube_comment_data['aggs']['unique_users']['value'];
+                        $stats['youtube_comment']['unique_videos'] = @$youtube_comment_data['aggs']['unique_videos']['value'];
 
                         $stats['hits'] = $stats['hits'] + $youtube_comment_data['stats']['total'];
                         $stats['counts']['youtube_comment'] = $youtube_comment_data['stats']['total'];
@@ -421,8 +421,8 @@ class SearchController extends Controller
 
                         $shopping_data = self::shopping($request, $shopping_q, @$source->source_shopping);
 
-                        $stats['shopping']['unique_sites'] = $shopping_data['aggs']['unique_sites']['value'];
-                        $stats['shopping']['unique_users'] = $shopping_data['aggs']['unique_users']['value'];
+                        $stats['shopping']['unique_sites'] = @$shopping_data['aggs']['unique_sites']['value'];
+                        $stats['shopping']['unique_users'] = @$shopping_data['aggs']['unique_users']['value'];
 
                         $stats['hits'] = $stats['hits'] + $shopping_data['stats']['total'];
                         $stats['counts']['shopping_product'] = $shopping_data['stats']['total'];

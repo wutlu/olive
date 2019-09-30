@@ -240,6 +240,11 @@ class Term
         $clean = ltrim($clean, '&&||');
         $clean = rtrim($clean, '&&||');
 
+        if (substr_count($clean, '"')%2)
+        {
+            $clean = str_replace('"', ' ', $clean);
+        }
+
         $words_raw = str_replace([ ' OR ', ' AND ', ')', '(', '"', '\'', '-', '+', '^', '~', '#', '||', '&&' ], ' ', $text);
         $words_raw = explode(' ', $words_raw);
 

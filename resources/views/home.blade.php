@@ -3,7 +3,7 @@
     'title' => [
         'text' => 'Veri Zone Teknoloji'
     ],
-    'description' => 'Veri Zone Teknoloji, web ve sosyal medya verilerine; üstün filtreleme ve çeşitli analiz özellikleriyle, daha hızlı ve daha anlamlı bir şekilde ulaşmanızı sağlayan yazılımlar geliştirir.'
+    'description' => 'Veri Zone Teknoloji, web ve sosyal medya verilerine anlam kazandıran yazılımlar ve raporlar üretir.'
 ])
 
 @push('local.styles')
@@ -149,11 +149,7 @@
             768: { items: 1 }
         },
         autoHeight: true,
-        navText: [
-            '<div class="nav-btn prev-slide d-flex"><i class="material-icons align-self-center">keyboard_arrow_left</i></div>',
-            '<div class="nav-btn next-slide d-flex"><i class="material-icons align-self-center">keyboard_arrow_right</i></div>'
-        ],
-        nav: true,
+        nav: false,
         autoplay: true,
         autoplayTimeout: 4000,
         autoplayHoverPause: true
@@ -301,7 +297,7 @@
                     <br />
                     <h1 class="white-text">Sosyal Medya'ya değer katıyoruz!</h1>
                     <p class="mb-2">
-                        <span class="white-text" style="font-size: 22px;">Veri Zone Teknoloji, web ve sosyal medya verilerine; üstün filtreleme ve çeşitli analiz özellikleriyle, daha hızlı ve daha anlamlı bir şekilde ulaşmanızı sağlayan yazılımlar geliştirir.</span>
+                        <span class="white-text" style="font-size: 22px;">Veri Zone Teknoloji, web ve sosyal medya verilerine anlam kazandıran yazılımlar ve raporlar üretir.</span>
                     </p>
                 </div>
             </div>
@@ -309,7 +305,7 @@
     </section>
 
     <div class="more-down">
-        <a href="#" class="btn-floating btn-large pulse white" data-scroll-to=".main-slider">
+        <a href="#" class="btn-floating btn-large pulse white" data-scroll-to=".y-section">
             <i class="material-icons grey-text text-darken-2">keyboard_arrow_down</i>
         </a>
     </div>
@@ -325,8 +321,7 @@
                         <br />
                         <p>Genç ve dinamik bir ekiple girmiş olduğumuz bu yolda, teknolojiyi en güncel noktalarından yakalayarak, siz değerli kullanıcılarımıza en iyi deneyimi yaşatmak yegâne hedefimizdir.</p>
                         <br />
-                        <p>Yenilikçi yazılımların neredeyse tamamı yabancı şirketler tarafından üretilmektedir. Bu nedenle büyük teknolojiler üreten yerli şirket sayısı yok denecek kadar az.</p>
-                        <p>Veri Zone Teknoloji olarak ülkemizi, dünya çapında temsil etmek üzere bu yolda büyük teknolojiler üreterek yürümeye devam ediyoruz.</p>
+                        <p>7/24 web ve sosyal medya takibi, ölçümleme, raporlama ve online itibar yönetimi için, markanızın veya kurumunuzun ihtiyaçları doğrultusunda hizmetler sunuyoruz.</p>
                     </div>
                 </div>
             </div>
@@ -335,10 +330,11 @@
                     <i class="large material-icons analytics">poll</i>
                     <h5>Analiz</h5>
                     <ul class="p-1">
-                        <li>- Türkçe için geliştirilmiş duygu analizleri.</li>
-                        <li>- Cinsiyet ve yaş tespitleri.</li>
+                        <li>- Türkçe için geliştirilmiş duygu analizleri gerçekleştirin.</li>
+                        <li>- Cinsiyet ve yaş tespitleri yapın.</li>
                         <li>- Nefret söylemi, şikayet, istek ve soru içeren verilere en hızlı şekilde ulaşın.</li>
                         <li>- Ürünlerinizi, markanızı veya rakiplerinizi detaylı bir şekilde inceleyin.</li>
+                        <li>- Analiz ve raporlama hizmetleri ile kolay ve anlamlı raporlarlamalar.</li>
                     </ul>
                 </div>
                 <div class="item p-2">
@@ -346,9 +342,9 @@
                     <h5>Gerçek Zamanlı Veri</h5>
                     <ul class="p-1">
                         <li>- Gerçek zamanlı filtreler ile sadece istediğiniz içerikleri süzün.</li>
-                        <li>- Trend olmaya çalışan konuları anında yakalayın.</li>
-                        <li>- Ürün, marka veya rakipleriniz hakkında yapılan paylaşımları anında görün.</li>
-                        <li>- İlgilendiğiniz içerikleri daha sonra incelemek üzere anında saklayın.</li>
+                        <li>- Trend olmak için çabalayan konuları anında yakalayın.</li>
+                        <li>- Ürününüz, markanız ve rakipleriniz hakkında yazılanlara eş zamanlı ulaşın.</li>
+                        <li>- İlgilendiğiniz içerikleri daha sonra incelemek üzere pinleyin.</li>
                     </ul>
                 </div>
                 <div class="item p-2">
@@ -357,7 +353,7 @@
                     <ul class="p-1">
                         <li>- Bir haber, tweet ve dahası hakkında detaylı incelemeler gerçekleştirin.</li>
                         <li>- Bahis veya çıplaklık içeren verileri karantinaya alın.</li>
-                        <li>- Yapay zekanın yanılgılarını düzelterek Olive'in öğrenmesine katkıda bulunun.</li>
+                        <li>- Yapay zekanın yanılgılarını düzelterek gelişmemize katkıda bulunun.</li>
                     </ul>
                 </div>
                 <div class="item p-2">
@@ -372,11 +368,12 @@
         </div>
 
         <div class="owl-carousel main-slider">
-            <div class="item">Online itibarınızı takip edin</div>
-            <div class="item">Gündemi anlık trendlerle ve anlık akışlarla inceleyin</div>
-            <div class="item">Gerçek zamanlı alarmlar oluşturun</div>
-            <div class="item">Arama sonuçlarınızı görselleştirin</div>
-            <div class="item">Rakiplerinizin ve sektörünüzün yeniliklerinden haberdar olun</div>
+            <div class="item">Kolay ve anlaşılır raporlamalar!</div>
+            <div class="item">Çevrimiçi itibarınızı takip edin!</div>
+            <div class="item">Gündemi anlık trendlerle ve anlık akışlarla inceleyin!</div>
+            <div class="item">Gerçek zamanlı alarmlar oluşturun!</div>
+            <div class="item">Arama sonuçlarınızı görselleştirin!</div>
+            <div class="item">Rakiplerinizin ve sektörünüzün yeniliklerinden haberdar olun!</div>
         </div>
 
         <div class="browser-mockup">
