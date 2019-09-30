@@ -189,7 +189,7 @@ class ContentController extends Controller
                                             'range' => [
                                                 'created_at' => [
                                                     'format' => 'YYYY-MM-dd',
-                                                    'gte' => date('Y-m-d', strtotime('-'.$days.' days'))
+                                                    'gte' => date('Y-m-d', strtotime('-30 days'))
                                                 ]
                                             ]
                                         ]
