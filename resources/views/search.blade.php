@@ -182,7 +182,10 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
 
         if (keycode == '13')
         {
-            //
+            var search = $('ul#search');
+                search.data('skip', 0).addClass('json-clear');
+
+            vzAjax(search)
         }
 
         operator('clear')
@@ -386,7 +389,7 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
             id="string"
             value="{{ $q }}"
             placeholder="Arayın"
-            class="json json-search"
+            class="json-search"
             data-json-target="ul#search" />
     </div>
     <div id="search-operators">
