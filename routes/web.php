@@ -119,6 +119,7 @@ Route::domain('olive.'.config('app.domain'))->group(function () {
             'tweet_quotes',
             'tweet_favorites',
             'tweet_deleted',
+            'user_tweets',
             'user_replies',
             'user_quotes',
             'user_retweets',

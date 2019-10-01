@@ -1035,6 +1035,10 @@ class ContentController extends Controller
                             $arr['query']['bool']['must'][] = [ 'match' => [ 'external.id' => $es_id ] ];
                             $arr['query']['bool']['must'][] = [ 'exists' => [ 'field' => 'deleted_at' ] ];
                         break;
+                        case 'user_tweets':
+                            $arr['query']['bool']['must'][] = [ 'match' => [ 'user.id' => $document->data['_source']['user']['id'] ] ];
+                            $arr['query']['bool']['must_not'][] = [ 'exists' => [ 'field' => 'external.id' ] ];
+                        break;
                         case 'user_replies':
                             $arr['query']['bool']['must'][] = [ 'match' => [ 'user.id' => $document->data['_source']['user']['id'] ] ];
                             $arr['query']['bool']['must'][] = [ 'match' => [ 'external.type' => 'reply' ] ];

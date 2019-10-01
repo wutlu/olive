@@ -89,12 +89,10 @@ class RealTimeController extends Controller
                 'query' => [
                     'bool' => [
                         'filter' => [
-                            [
-                                'range' => [
-                                    'called_at' => [
-                                        'format' => 'YYYY-MM-dd HH:mm',
-                                        'gte' => Carbon::now()->subMinutes(2)->format('Y-m-d H:i')
-                                    ]
+                            'range' => [
+                                'called_at' => [
+                                    'format' => 'YYYY-MM-dd HH:mm',
+                                    'gte' => Carbon::now()->subMinutes(5)->format('Y-m-d H:i')
                                 ]
                             ]
                         ],
@@ -143,7 +141,21 @@ class RealTimeController extends Controller
             {
                 switch ($module)
                 {
-                    case 'twitter'         : if ($organisation->data_twitter)         $data = array_merge($data, $searchController->tweet          ($search, $q)['data']);                            break;
+                    case 'twitter':
+                        if ($organisation->data_twitter)
+                        {
+                            $tweet_q = $q;
+
+                            unset($tweet_q['query']['bool']['filter']['range']['called_at']);
+
+                            $tweet_q['query']['bool']['filter']['range']['created_at'] = [
+                                'format' => 'YYYY-MM-dd HH:mm',
+                                'gte' => Carbon::now()->subMinutes(2)->format('Y-m-d H:i')
+                            ];
+
+                            $data = array_merge($data, $searchController->tweet($search, $tweet_q)['data']);
+                        }
+                    break;
                     case 'instagram'       : if ($organisation->data_instagram)       $data = array_merge($data, $searchController->instagram      ($search, $q)['data']);                            break;
                     case 'sozluk'          : if ($organisation->data_sozluk)          $data = array_merge($data, $searchController->sozluk         ($search, $q, @$source->source_sozluk)['data']);   break;
                     case 'news'            : if ($organisation->data_news)            $data = array_merge($data, $searchController->news           ($search, $q, @$source->source_media)['data']);    break;

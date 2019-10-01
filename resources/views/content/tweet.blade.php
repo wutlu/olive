@@ -22,8 +22,8 @@
 
     .stat-chart {
         line-height: 1px;
-        width: 100%;
         height: 64px;
+        width: 100%;
     }
 
     .stat-chart canvas {
@@ -222,6 +222,7 @@
             <small class="blue-grey-text">Kullanıcı</small>
         </div>
 
+        <a data-tweets="user_tweets" data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id, 'type' => 'user_tweets' ]) }}" class="collection-item" href="#" data-alias="Kullanıcı">Tweetler</a>
         <a data-tweets="user_replies" data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id, 'type' => 'user_replies' ]) }}" class="collection-item" href="#" data-alias="Kullanıcı">Verdiği Yanıtlar</a>
         <a data-tweets="user_quotes" data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id, 'type' => 'user_quotes' ]) }}" class="collection-item" href="#" data-alias="Kullanıcı">Yaptığı Alıntılar</a>
         <a data-tweets="user_retweets" data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id, 'type' => 'user_retweets' ]) }}" class="collection-item" href="#" data-alias="Kullanıcı">Yaptığı ReTweetler</a>
