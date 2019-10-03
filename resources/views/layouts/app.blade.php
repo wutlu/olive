@@ -942,6 +942,9 @@
                                 <li>
                                     <a class="grey-text" href="{{ route('page.view', 'kullanim-kosullari') }}">Kullanım Koşulları</a>
                                 </li>
+                                <li>
+                                    <a class="grey-text" href="{{ route('page.view', 'iletisim') }}">İletişim</a>
+                                </li>
                             </ul>
                         </div>
                     </div>

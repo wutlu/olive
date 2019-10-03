@@ -53,6 +53,54 @@
   font-style: italic
 }
 
+/*!
+ * Top Alert
+ */
+.banner-alert {
+  margin: 0 auto;
+}
+.banner-alert > a {
+  display: block;
+  width: 100%;
+
+  padding: 32px 0;
+
+  text-align: center;
+
+  font-size: 20px;
+}
+.banner-alert > a > span {
+  color: #000;
+  background-color: #fff;
+
+  -webkit-animation: blinked 2s infinite;
+          animation: blinked 2s infinite;
+}
+
+@-webkit-keyframes blinked {
+  10%, 11% {
+    background-color: #000;
+    color: #fff;
+  }
+  11%, 12% {
+    background-color: #fff;
+  }
+  12%, 13% {
+    background-color: #000;
+    color: #fff;
+  }
+  13%, 14% {
+    background-color: #fff;
+  }
+  14%, 15% {
+    background-color: #000;
+    color: #fff;
+  }
+  15%, 16% {
+    background-color: #fff;
+  }
+}
+
  /*!
  * banner
  */
@@ -2178,6 +2226,29 @@ ul#slide-out li > .collapsible-header > .material-icons {
 }
 
 /*!
+ * circle rank
+ */
+.circle-rank {
+  display: table;
+  width: 64px;
+  height: 64px;
+  border-radius: 100%;
+  text-align: center;
+
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 70%;
+}
+.circle-rank > span {
+  display: table;
+  margin: 0;
+  background-color: #fff;
+  border-radius: 50%;
+  width: 24px;
+  line-height: 24px;
+}
+
+/*!
  * rank
  */
 .rank {
@@ -2619,6 +2690,16 @@ nav.nav-half {
 }
 
 /*!
+ * Olive
+ */
+.olive {
+  background-image: url(../img/olive_logo-opacity.svg);
+  background-repeat: no-repeat;
+  background-size: 80%;
+  background-position: center;
+}
+
+/*!
  * content
  */
 .data {
@@ -2947,9 +3028,6 @@ nav.scrolled.active,
 .browser-mockup {
     border-top: 2em solid rgba(230, 230, 230, 0.7);
     border-radius: 3px 3px 0 0;
-
-    -webkit-box-shadow: 0 3px 1px -2px rgba(100, 100, 100, .1), 0 2px 2px 0 rgba(100, 100, 100, .1), 0 1px 5px 0px rgba(100, 100, 100, .1);
-            box-shadow: 0 3px 1px -2px rgba(100, 100, 100, .1), 0 2px 2px 0 rgba(100, 100, 100, .1), 0 1px 5px 0px rgba(100, 100, 100, .1);
 
     position: relative;
 

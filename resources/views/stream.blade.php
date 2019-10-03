@@ -7,8 +7,7 @@
     ],
     'dock' => true,
     'pin_group' => true,
-    'footer_hide' => true,
-    'help' => 'driver.start()'
+    'footer_hide' => true
 ])
 
 @push('local.styles')
@@ -36,6 +35,9 @@
         border-width: 2px;
         border-style: dashed;
         border-color: transparent;
+
+        max-height: 10000px;
+        overflow: hidden;
     }
 
     .time-line > .collection.active {
@@ -163,10 +165,10 @@
         <ul class="collection">
             <li class="collection-item model hide"></li>
             <li class="collection-item">
-                <p class="d-flex mb-0 teal-text">
+                <p class="d-flex mb-0 blue-grey-text">
                     <i class="material-icons realtime">navigate_next</i>
                     <span class="align-self-center">
-                        <a class="teal-text text-darken-4" href="{{ route('search.dashboard') }}">Arama Motoru</a> modülünden bir arama yapın ve kaydedin.<br />Kaydettiğiniz aramaları bulunduğunuz bölümden gerçek zamanlı takip edebilirsiniz.
+                        <a class="blue-grey-text text-darken-4" href="{{ route('search.dashboard') }}">Arama Motoru</a> modülünden bir arama yapın ve kaydedin.<br />Kaydettiğiniz aramaları bulunduğunuz bölümden gerçek zamanlı takip edebilirsiniz.
                     </span>
                 </p>
             </li>
@@ -510,8 +512,8 @@
                 <i class="material-icons align-self-center mr-1">save</i>
                 Kayıtlı Aramalar
             </span>
-            <small class="teal-text">
-                <a class="teal-text text-darken-4" href="{{ route('search.dashboard') }}">Arama Motoru</a> ile oluşturulup kaydedilen sorguları bu alanda, akış halinde kullanabilirsiniz.
+            <small class="blue-grey-text">
+                <a class="blue-grey-text text-darken-4" href="{{ route('search.dashboard') }}">Arama Motoru</a> ile oluşturulup kaydedilen sorguları bu alanda, akış halinde kullanabilirsiniz.
             </small>
         </div>
         <ul class="collection collection-unstyled load hide"

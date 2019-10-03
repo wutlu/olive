@@ -124,6 +124,11 @@ class Kernel extends ConsoleKernel
             $schedule->command('nohup "blog:minuter" --type=start')->hourly()->timezone(config('app.timezone'))->withoutOverlapping(1);
 
             /**
+             * Yeni domainler tespit eder.
+             */
+            $schedule->command('nohup "domain:detector" --type=start')->hourly()->timezone(config('app.timezone'))->withoutOverlapping(1);
+
+            /**
              * Veritabanındaki döküman sayılarını SQL\'e alır.
              */
             $schedule->command('nohup "update:crawler_counts" --type=start')->hourly()->timezone(config('app.timezone'))->withoutOverlapping(1);

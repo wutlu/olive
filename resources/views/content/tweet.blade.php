@@ -229,7 +229,7 @@
         <a data-tweets="user_favorites" data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id, 'type' => 'user_favorites' ]) }}" class="collection-item" href="#" data-alias="Kullanıcı">Fav Sayısına Göre Tweetler</a>
         <a data-tweets="user_favorites" data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id, 'type' => 'user_quotes_desc' ]) }}" class="collection-item" href="#" data-alias="Kullanıcı">Alıntı Sayısına Göre Tweetler</a>
         <a data-tweets="user_favorites" data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id, 'type' => 'user_replies_desc' ]) }}" class="collection-item" href="#" data-alias="Kullanıcı">Yanıt Sayısına Tweetler</a>
-        <a data-tweets="user_favorites" data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id, 'type' => 'user_retweets_desc' ]) }}" class="collection-item" href="#" data-alias="Kullanıcı">ReTweet Sayısına Göre Tweetşer</a>
+        <a data-tweets="user_favorites" data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id, 'type' => 'user_retweets_desc' ]) }}" class="collection-item" href="#" data-alias="Kullanıcı">ReTweet Sayısına Göre Tweetler</a>
         <a data-tweets="user_deleted" data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id, 'type' => 'user_deleted' ]) }}" class="collection-item" href="#" data-alias="Kullanıcı">Silinen Tweetler</a>
     </div>
 @endsection

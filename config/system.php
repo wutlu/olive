@@ -4,7 +4,7 @@ return [
     /**
      * Sistem Versiyonu
      */
-    'version' => '5.7.1.9',
+    'version' => '5.7.1.10',
 
     /**
      * db
@@ -105,23 +105,39 @@ return [
         ],
         'category' => [
             'types' => [
-                'category-1' =>  [ 'title' => 'Bilim & Teknoloji',     'per' => 0.1 ],
-                'category-2' =>  [ 'title' => 'Politika',              'per' => 0.1 ],
+/*
+Alışveriş
+Basın - Yayın
+Dayanıklı Tüketim
+Enerji
+Fenomenler
+Giyim
+Hızlı Tüketim
+Internet
+Kurumsal
+Organizasyon
+Otomotiv
+Reklam - Pazarlama
+Ürün - Hizmet
+Yapı Sektörü
+*/
+                'category-1' =>  [ 'title' => 'Teknoloji',             'per' => 0.1 ],
+                'category-2' =>  [ 'title' => 'Kamu ve Siyaset',       'per' => 0.1 ],
                 'category-3' =>  [ 'title' => 'Spor',                  'per' => 0.1 ],
                 'category-4' =>  [ 'title' => 'Kültür & Sanat',        'per' => 0.1 ],
                 'category-5' =>  [ 'title' => 'Popüler Medya',         'per' => 0.1 ],
                 'category-6' =>  [ 'title' => 'Eğitim',                'per' => 0.1 ],
-                'category-7' =>  [ 'title' => 'Bankacılık & Finans',   'per' => 0.1 ],
+                'category-7' =>  [ 'title' => 'Finans',                'per' => 0.1 ],
                 'category-8' =>  [ 'title' => 'İş',                    'per' => 0.1 ],
                 'category-9' =>  [ 'title' => 'Sosyal Sorumluluk',     'per' => 0.1 ],
                 'category-10' => [ 'title' => 'Güncel',                'per' => 0.1 ],
-                'category-11' => [ 'title' => 'Eğlence',               'per' => 0.1 ],
+                'category-11' => [ 'title' => 'Eğlence & Yaşam',       'per' => 0.1 ],
                 'category-12' => [ 'title' => 'İnanç',                 'per' => 0.1 ],
                 'category-13' => [ 'title' => 'Anne & Bebek',          'per' => 0.1 ],
                 'category-14' => [ 'title' => 'Kadın & Moda',          'per' => 0.1 ],
                 'category-15' => [ 'title' => 'Erkek',                 'per' => 0.1 ],
                 'category-16' => [ 'title' => 'Yemek',                 'per' => 0.1 ],
-                'category-17' => [ 'title' => 'Gezi & Seyahat',        'per' => 0.1 ],
+                'category-17' => [ 'title' => 'Seyahat',               'per' => 0.1 ],
                 'category-18' => [ 'title' => 'Sağlık',                'per' => 0.1 ],
                 'category-19' => [ 'title' => 'Sektörel',              'per' => 0.1 ],
                 'category-20' => [ 'title' => 'Markalar',              'per' => 0.1 ],

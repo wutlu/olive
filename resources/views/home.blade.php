@@ -7,14 +7,34 @@
 ])
 
 @push('local.styles')
-    .main-slider .item {
-        display: block;
-        width: 100%;
+    .mockup-slider {
+        margin: 0;
+        padding: 0;
+
+        max-width: 1024px;
     }
+    .mockup-slider .owl-stage-outer {
+        margin: 0;
+        padding: 0;
+
+        width: 100%;
+        background-color: #fff;
+    }
+
     .main-slider .owl-stage-outer {
-        padding: 2rem 0;
+        margin: 0;
+        padding: 0;
+        padding: 64px 0 48px;
         text-align: center;
         font-size: 24px;
+    }
+    .main-slider .item {
+        display: block;
+    }
+    .main-slider .item > .canvas {
+        border: 2px solid #666;
+        margin: 0 16px;
+        padding: 32px 16px;
     }
 
     section {
@@ -26,8 +46,6 @@
 
     .demo-section {
         padding: 100px 0;
-        background-color: #42a5f5;
-        color: #fff;
     }
 
     .y-section {
@@ -39,10 +57,11 @@
 
     .x-section {
         background-image: url({{ asset('img/photo/xolive.jpg?v3') }});
+        background-position: bottom;
     }
 
     .x-section > .section-overlay {
-        min-height: 100vh;
+        min-height: calc(70vh);
     }
 
     .rt-section {
@@ -50,9 +69,9 @@
         background-position: center bottom;
     }
 
-    .section-overlay {
-        background-color: rgba(26, 28, 32, .4);
-        padding: 4rem 0;
+    .work-section {
+        background-image: url({{ asset('img/photo/analysis.jpg') }});
+        background-position: center bottom;
     }
 
     section h1 {
@@ -65,9 +84,13 @@
         font-size: 32px;
     }
 
+    .section-overlay {
+        background-color: rgba(0, 0, 0, .4);
+        padding: 4rem 0;
+    }
+
     .browser-mockup {
         margin: 2rem auto 0;
-        max-width: 1024px;
     }
 
     .browser-mockup.mockup-news {
@@ -88,7 +111,7 @@
     }
 
     .logo {
-        width: 192px;
+        max-width: 256px;
         margin: 0 0 2rem;
     }
 
@@ -138,20 +161,56 @@
 
 @push('local.scripts')
     $('.main-slider').owlCarousel({
-        margin: 0,
         responsiveClass: true,
-        smartSpeed: 500,
+        smartSpeed: 100,
         dots: false,
         loop: true,
         responsive: {
             0: { items: 1 },
-            500: { items: 1 },
-            768: { items: 1 }
+            500: { items: 2 },
+            768: { items: 3 }
         },
         autoHeight: true,
         nav: false,
         autoplay: true,
-        autoplayTimeout: 4000,
+        autoplayTimeout: 1500,
+        autoplayHoverPause: true
+    })
+
+    $('.media-cards').owlCarousel({
+        responsive:{
+            0: { items: 1 },
+            720: { items: 2 },
+            1024: { items: 3 },
+            1366: { items: 4 },
+        },
+        lazyLoad: true,
+        center: true,
+        loop: true,
+
+        responsiveClass: true,
+        smartSpeed: 100,
+        dots: false,
+        nav: false,
+
+        autoplay: true,
+        autoplayTimeout: 1000,
+        autoplayHoverPause: true
+    })
+
+    $('.mockup-slider > .owl-carousel').owlCarousel({
+        items: 1,
+        lazyLoad: true,
+        center: true,
+        loop: true,
+
+        responsiveClass: true,
+        smartSpeed: 100,
+        dots: false,
+        nav: false,
+
+        autoplay: true,
+        autoplayTimeout: 1000,
         autoplayHoverPause: true
     })
 
@@ -291,13 +350,12 @@
         <div class="section-overlay">
             <div class="container">
                 <div style="max-width: 720px;">
-                    <img align="Veri Zone" src="{{ asset('img/veri.zone_logo-white.svg') }}" class="logo" />
+                    <img alt="Veri Zone" src="{{ asset('img/veri.zone_logo-white.svg') }}" class="logo" />
                     <br />
                     <br />
-                    <br />
-                    <h1 class="white-text">Sosyal Medya'ya değer katıyoruz!</h1>
+                    <h1 class="blue-grey white-text mb-0">Web ve Sosyal Medyayı Takip Edin</h1>
                     <p class="mb-2">
-                        <span class="white-text" style="font-size: 22px;">Veri Zone Teknoloji, web ve sosyal medya verilerine anlam kazandıran yazılımlar ve raporlar üretir.</span>
+                        <span class="white black-text" style="font-size: 26px;">Olan biteni ölçümleyin, olacaklardan eş zamanlı haberdar olun!</span>
                     </p>
                 </div>
             </div>
@@ -305,88 +363,95 @@
     </section>
 
     <div class="more-down">
-        <a href="#" class="btn-floating btn-large pulse white" data-scroll-to=".y-section">
+        <a href="#" class="btn-floating btn-large pulse white" data-scroll-to=".work-section">
             <i class="material-icons grey-text text-darken-2">keyboard_arrow_down</i>
         </a>
     </div>
+
+    <section class="y-section grey lighten-4">
+        <div class="container">
+            <div class="owl-carousel main-slider">
+                <div class="item">
+                    <div class="canvas">Sınırsız Sorgu!</div>
+                </div>
+                <div class="item">
+                    <div class="canvas">Sınırsız Sonuç!</div>
+                </div>
+                <div class="item">
+                    <div class="canvas">Eş Zamanlı Grafikler</div>
+                </div>
+                <div class="item">
+                    <div class="canvas">Boole Operatörleri</div>
+                </div>
+                <div class="item">
+                    <div class="canvas">Kelime ve Cümleler</div>
+                </div>
+                <div class="item">
+                    <div class="canvas">Trollsüz Sonuçlar</div>
+                </div>
+            </div>
+
+            <div style="max-width: 720px; font-size: 16px;" class="d-table mx-auto center-align">Olive web ve sosyal medya platformu, çevrimiçi konuşmaları gerçek zamanlı takip edebilmeniz için tasarlanmıştır. Web ve sosyal medyada; şirketiniz, organizasyonunuz veya yöneticileriniz için içgörüler elde edin. Müşteri ilişkilerinden kurumsal iletişime kadar her konudan haberdar olun.</div>
+
+            <div class="browser-mockup mockup-slider">
+                <div class="owl-carousel">
+                    <img src="{{ asset('img/mockup-slide-1.jpg?v5') }}" alt="Olive Mockup 1" />
+                    <img src="{{ asset('img/mockup-slide-2.jpg?v5') }}" alt="Olive Mockup 2" />
+                    <img src="{{ asset('img/mockup-slide-3.jpg?v5') }}" alt="Olive Mockup 3" />
+                    <img src="{{ asset('img/mockup-slide-4.jpg?v5') }}" alt="Olive Mockup 4" />
+                    <img src="{{ asset('img/mockup-slide-5.jpg?v5') }}" alt="Olive Mockup 4" />
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="work-section">
+        <div class="section-overlay">
+            <h2 class="white-text center-align">En İyi Araçlar</h2>
+            <p class="white-text blue-grey darken-2 d-table mx-auto mb-0" style="font-size: 16px;">Haftalık, Aylık ve Yıl Sonu rapor hizmetleri ve bir çok çevrimiçi araç.</p>
+            <p class="white-text blue-grey darken-2 d-table mx-auto mb-0" style="font-size: 16px;">Eş zamanlı web ve sosyal medya takip, ölçümleme, analiz ve içgörü için en iyi iş zekası platformu.</p>
+            <br />
+            <br />
+            <br />
+            <div class="media-cards owl-carousel">
+                @foreach ($array as $key => $item)
+                    <div>
+                        <div class="d-flex">
+                            <span class="circle-rank z-depth-1 white align-self-center mr-1 d-flex justify-content-end" style="background-image: url('{{ $item['icon'] }}');">
+                                <span class="align-self-end">{{ $key+1 }}</span>
+                            </span>
+                            <h5 class="white-text align-self-center m-0">{{ $item['title'] }}</h5>
+                        </div>
+                        <div class="card-panel left-align" style="width: 340px; font-size: 16px;">{{ $item['text'] }}</div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
 
     <section class="y-section">
         <div class="container">
             <div class="p-2 m-2">
                 <div class="card card-unstyled">
                     <div class="card-content">
-                        <span class="card-title">Veri Zone Teknoloji</span>
+                        <h2 style="font-size: 24px;">VERİ ZONE TEKNOLOJİ</h2>
+                        <p style="font-size: 16px;"><span class="blue-grey white-text">Heyecanlıyız ve her şeyi merak ediyoruz!</span> Markaları, kurumları, şirketleri ve kişileri! Aklınıza gelebilecek her şeyi! Kimler, kimler hakkında neler söylemiş? Bu tarz soruların cevabı bizi yakından ilgilendiriyor. <span class="blue-grey darken-1 white-text">Web</span> ve <span class="blue-grey darken-2 white-text">Sosyal Medya</span> hızla gelişip büyürken, merakımızı gidermek de bir hayli zorlaştı. Bol kahve eşliğinde yaptığımız uzun ve zorlu mesailerin sonunda <span class="blue-grey white-text">Olive</span>'i tasarladık.</p>
                         <br />
-                        <p>Veri Zone Teknoloji ekibi olarak; Ankara, CoZone'da bol kahve eşliğinde, heyecanlı ve hızlı bir şekilde çalışmalarımızı sürdürmekteyiz.</p>
+                        <p style="font-size: 16px;">Artık <span class="blue-grey white-text">Olive</span>'in yardımıyla, büyük ve karmaşık <span class="blue-grey darken-1 white-text">Web</span> ve <span class="blue-grey darken-2 white-text">Sosyal Medya</span> verilerini; çok daha hızlı ve zengin içerikler halinde rahatca okuyup, hızlı bir şekilde raporlayabiliyoruz.</p>
                         <br />
-                        <p>Genç ve dinamik bir ekiple girmiş olduğumuz bu yolda, teknolojiyi en güncel noktalarından yakalayarak, siz değerli kullanıcılarımıza en iyi deneyimi yaşatmak yegâne hedefimizdir.</p>
-                        <br />
-                        <p>7/24 web ve sosyal medya takibi, ölçümleme, raporlama ve online itibar yönetimi için, markanızın veya kurumunuzun ihtiyaçları doğrultusunda hizmetler sunuyoruz.</p>
+                        <p style="font-size: 16px;">Siz de <span class="blue-grey white-text">Olive</span>'in eşsiz özelliklerini denemek için hemen bizimle iletişime geçin!</p>
                     </div>
                 </div>
             </div>
-            <div class="item-group p-2">
-                <div class="item p-2">
-                    <i class="large material-icons analytics">poll</i>
-                    <h5>Analiz</h5>
-                    <ul class="p-1">
-                        <li>- Türkçe için geliştirilmiş duygu analizleri gerçekleştirin.</li>
-                        <li>- Cinsiyet ve yaş tespitleri yapın.</li>
-                        <li>- Nefret söylemi, şikayet, istek ve soru içeren verilere en hızlı şekilde ulaşın.</li>
-                        <li>- Ürünlerinizi, markanızı veya rakiplerinizi detaylı bir şekilde inceleyin.</li>
-                        <li>- Analiz ve raporlama hizmetleri ile kolay ve anlamlı raporlarlamalar.</li>
-                    </ul>
-                </div>
-                <div class="item p-2">
-                    <i class="large material-icons realtime">subject</i>
-                    <h5>Gerçek Zamanlı Veri</h5>
-                    <ul class="p-1">
-                        <li>- Gerçek zamanlı filtreler ile sadece istediğiniz içerikleri süzün.</li>
-                        <li>- Trend olmak için çabalayan konuları anında yakalayın.</li>
-                        <li>- Ürününüz, markanız ve rakipleriniz hakkında yazılanlara eş zamanlı ulaşın.</li>
-                        <li>- İlgilendiğiniz içerikleri daha sonra incelemek üzere pinleyin.</li>
-                    </ul>
-                </div>
-                <div class="item p-2">
-                    <i class="large material-icons rotate">toys</i>
-                    <h5>Araçlar</h5>
-                    <ul class="p-1">
-                        <li>- Bir haber, tweet ve dahası hakkında detaylı incelemeler gerçekleştirin.</li>
-                        <li>- Bahis veya çıplaklık içeren verileri karantinaya alın.</li>
-                        <li>- Yapay zekanın yanılgılarını düzelterek gelişmemize katkıda bulunun.</li>
-                    </ul>
-                </div>
-                <div class="item p-2">
-                    <i class="large material-icons cloud">cloud</i>
-                    <h5>Arşiv</h5>
-                    <ul class="p-1">
-                        <li>- Üstün arama filtreleri ile arama motoru deneyimini zirvede yaşayın.</li>
-                        <li>- Ortak veri havuzu sayesinde çok daha fazla veriye erişin.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <div class="owl-carousel main-slider">
-            <div class="item">Kolay ve anlaşılır raporlamalar!</div>
-            <div class="item">Çevrimiçi itibarınızı takip edin!</div>
-            <div class="item">Gündemi anlık trendlerle ve anlık akışlarla inceleyin!</div>
-            <div class="item">Gerçek zamanlı alarmlar oluşturun!</div>
-            <div class="item">Arama sonuçlarınızı görselleştirin!</div>
-            <div class="item">Rakiplerinizin ve sektörünüzün yeniliklerinden haberdar olun!</div>
-        </div>
-
-        <div class="browser-mockup">
-            <img src="{{ asset('img/search.jpg?v5') }}" alt="Olive Mockup" />
         </div>
     </section>
 
     <section class="rt-section">
         <div class="section-overlay">
             <div class="container">
-                <h2 class="white-text">Tam Anlamıyla Gerçek Zamanlı!</h2>
                 <div class="row">
                     <div class="col s12 m6">
+                        <h2 class="white-text">GERÇEK ZAMANLI AKIŞ</h2>
                         <div class="browser-mockup mockup-news">
                             <div
                                 class="card card-nb time-line load"
@@ -401,9 +466,9 @@
                     </div>
                     <div class="col s12 m6">
                         <div class="p-1">
-                            <p class="white-text">Sayfayı yenile, yeni verileri yükle vb. ilkel yöntemlerden kurtulun!</p>
-                            <p class="white-text">Belirlediğiniz kriterlere göre veriler anında önünüze düşsün!</p>
-                            <p class="white-text">Ayrıca filtrelediğiniz verileri kaçırmadan görmenizi sağlayan eşsiz kullanıcı deneyimini Olive ile yaşayın!</p>
+                            <p class="white-text" style="font-size: 16px; text-decoration: line-through;">Sayfayı yenile, yeni verileri yükle vb. ilkel yöntemlerden kurtulun!</p>
+                            <p class="white-text" style="font-size: 16px;">Belirlediğiniz kriterlere göre, veriler anında ekranınıza düşsün!</p>
+                            <p class="white-text" style="font-size: 16px;">Ayrıca filtrelediğiniz verileri veya gündemi kaçırmadan görmenizi sağlayan eşsiz kullanıcı deneyimini Olive ile yaşayın!</p>
 
                             <br />
 
@@ -417,6 +482,87 @@
                             <span class="chip white">+futbol</span>
                             <span class="chip white">+basketbol</span>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<!--
+    @push('local.styles')
+        #videos .indicators {
+            bottom: 48px;
+            height: 24px;
+        }
+        #videos .indicators > .indicator-item {
+            background-color: #000;
+            margin-top: 0;
+            margin-bottom: 0;
+            width: 16px;
+            height: 16px;
+        }
+        #videos .indicators > .indicator-item.active {
+            background-color: #1ab7ea;
+        }
+    @endpush
+    <section>
+        <div class="container">
+            <div class="mt-2 mb-2 pt-2 pb-2 center-align">
+                <h3 class="m-0">Kısa bir bakış?</h3>
+                <p class="grey-text mb-1">Hazırladığımız bu kısa videolar ile Olive'e kısaca bir göz atın!</p>
+                <div class="carousel carousel-slider" id="videos">
+                    <div class="carousel-item" style="height: 240px;">
+                        <iframe src="https://player.vimeo.com/video/359099769" width="100%" height="100%" frameborder="0" allow="fullscreen" allowfullscreen></iframe>
+                    </div>
+                    <div class="carousel-item" style="height: 240px;">
+                        <iframe src="https://player.vimeo.com/video/359099664" width="100%" height="100%" frameborder="0" allow="fullscreen" allowfullscreen></iframe>
+                    </div>
+                    <div class="carousel-item" style="height: 240px;">
+                        <iframe src="https://player.vimeo.com/video/359099748" width="100%" height="100%" frameborder="0" allow="fullscreen" allowfullscreen></iframe>
+                    </div>
+                    <div class="carousel-item" style="height: 240px;">
+                        <iframe src="https://player.vimeo.com/video/359099638" width="100%" height="100%" frameborder="0" allow="fullscreen" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+-->
+    <section>
+        <div class="container">
+            <div class="pt-2 pb-2 mt-2 mb-2">
+                <div class="d-flex justify-content-between">
+                    <div class="flex-fill align-self-center">
+                        <div class="p-1">
+                            <h2>ÇEVRİMİÇİ İTİBARINIZI KORUYUN</h2>
+                            <p class="mb-0" style="font-size: 16px;">Çevrimiçi itibarınıza yönelik olası tehditleri herkesten önce fark edin, stratejinizi geliştirin ve harekete geçin.</p>
+
+                            <div class="d-flex">
+                                <ul class="flex-fill">
+                                    <li class="d-flex">
+                                        <i class="align-self-start material-icons mr-1">arrow_forward</i>
+                                        <span class="align-self-start">Troll hesapları analizlerinizden çıkartın</span>
+                                    </li>
+                                    <li class="d-flex">
+                                        <i class="align-self-start material-icons mr-1">arrow_forward</i>
+                                        <span class="align-self-start">Influencer kriterlerinizi siz belirleyin</span>
+                                    </li>
+                                </ul>
+                                <ul class="flex-fill">
+                                    <li class="d-flex">
+                                        <i class="align-self-start material-icons mr-1">arrow_forward</i>
+                                        <span class="align-self-start">Markanızla ilgilenenlerin listesini çıkartın</span>
+                                    </li>
+                                    <li class="d-flex">
+                                        <i class="align-self-start material-icons mr-1">arrow_forward</i>
+                                        <span class="align-self-start">Olası krizleri önleyin</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex-fill align-self-center hide-on-med-and-down">
+                        <img alt="Reputation" src="{{ asset('img/photo/businessman.jpg') }}" class="responsive-img" />
                     </div>
                 </div>
             </div>
@@ -440,54 +586,14 @@
             indicators: true
         })
     @endpush
-    @push('local.styles')
-        #videos .indicators {
-            bottom: 48px;
-            height: 24px;
-        }
-        #videos .indicators > .indicator-item {
-            background-color: #000;
-            margin-top: 0;
-            margin-bottom: 0;
-            width: 16px;
-            height: 16px;
-        }
-        #videos .indicators > .indicator-item.active {
-            background-color: #1ab7ea;
-        }
-    @endpush
-
-    <section>
-        <div class="container">
-            <div class="mt-2 mb-2 pt-2 pb-2 center-align">
-                <h3 class="m-0">Kısa bir bakış?</h3>
-                <p class="grey-text mb-1">Hazırladığımız bu kısa videolar ile Olive'e kısaca bir göz atın!</p>
-                <div class="carousel carousel-slider" id="videos">
-                    <div class="carousel-item" style="height: 240px;">
-                        <iframe src="https://player.vimeo.com/video/359099769" width="100%" height="100%" frameborder="0" allow="fullscreen" allowfullscreen></iframe>
-                    </div>
-                    <div class="carousel-item" style="height: 240px;">
-                        <iframe src="https://player.vimeo.com/video/359099664" width="100%" height="100%" frameborder="0" allow="fullscreen" allowfullscreen></iframe>
-                    </div>
-                    <div class="carousel-item" style="height: 240px;">
-                        <iframe src="https://player.vimeo.com/video/359099748" width="100%" height="100%" frameborder="0" allow="fullscreen" allowfullscreen></iframe>
-                    </div>
-                    <div class="carousel-item" style="height: 240px;">
-                        <iframe src="https://player.vimeo.com/video/359099638" width="100%" height="100%" frameborder="0" allow="fullscreen" allowfullscreen></iframe>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="demo-section">
+    <section class="demo-section blue-grey white-text">
         <div class="container">
             <div class="row">
                 <div class="col m12 l6">
                     <div class="card card-unstyled">
                         <div class="card-content">
                             <form id="demo-form" method="post" action="{{ route('demo.request') }}" class="json" data-callback="__demo_request">
-                                <span class="card-title">Deneme Sürüşü</span>
+                                <h2>ŞİMDİ ÜCRETSİZ DENEYİN!</h2>
                                 <div class="input-field white-text">
                                     <i class="material-icons prefix">account_circle</i>
                                     <input id="icon_prefix" name="name" type="text" class="validate" />
@@ -509,9 +615,10 @@
                 <div class="col m12 l6">
                     <div class="card card-unstyled">
                         <div class="card-content">
-                            <h4>Gerek duymuyorsanız ödemeyin!</h4>
-                            <p>Hemen bilgilerinizi bırakın, en kısa sürede size tam özellikli bir Olive ile dönüş sağlayalım.</p>
-                            <p>Olive'i denerken, kullanmadığınız özellikleri tespit edin, paketinizden çıkaralım!</p>
+                            <h2>En Uygun Çözümü Oluşturalım!</h2>
+                            <p style="font-size: 16px;">Hemen bilgilerinizi bırakın, size en kısa sürede tam özellikli bir Olive ile dönüş sağlayalım.</p>
+                            <p style="font-size: 16px;">Olive'i denerken, kullanmadığınız özellikleri belirleyin, paketinizden çıkartalım!</p>
+                            <p style="font-size: 16px;">Gereksiz maliyetlerin altında kalmayın!</p>
                         </div>
                     </div>
                 </div>
