@@ -198,7 +198,7 @@ class HomeController extends Controller
             ],
             [
                 'title' => 'Eş Zamanlı Arama Motoru',
-                'text' => 'Şimdiyi ve geçmişi tek bir arama motorunda birleştirdik. Bilineni değiştirdik ve gelişmiş bir aramam motoru tasarladık.',
+                'text' => 'Şimdiyi ve geçmişi tek bir arama motorunda birleştirdik. Bilineni değiştirdik ve gelişmiş bir arama motoru tasarladık.',
                 'icon' => asset('img/icons/search.png')
             ],
             [
@@ -283,7 +283,7 @@ class HomeController extends Controller
             ],
             [
                 'title' => 'Güncel Teknoloji',
-                'text' => 'Her geçen gün yeni modüller ve özellikler üretmeye devam ediyoruz. Tüm özelliklerimizi, güncel teknolojiye ve ihtiyaçlarınıza göre geliştirmeye devam ediyoruz.',
+                'text' => 'Her geçen gün yeni modüller ve özellikler üretiyoruz. Tüm özelliklerimizi, güncel teknolojiye ve ihtiyaçlarınıza göre geliştirmeye devam ediyoruz.',
                 'icon' => asset('img/icons/apple-watch.png')
             ],
         ];

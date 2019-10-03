@@ -56,7 +56,7 @@
     }
 
     .x-section {
-        background-image: url({{ asset('img/photo/xolive.jpg?v3') }});
+        background-image: url({{ asset('img/photo/xolive.jpg?v5') }});
         background-position: bottom;
     }
 
@@ -65,12 +65,12 @@
     }
 
     .rt-section {
-        background-image: url({{ asset('img/photo/live.jpg') }});
+        background-image: url({{ asset('img/photo/live.jpg?v6') }});
         background-position: center bottom;
     }
 
     .work-section {
-        background-image: url({{ asset('img/photo/analysis.jpg') }});
+        background-image: url({{ asset('img/photo/analysis.jpg?v7') }});
         background-position: center bottom;
     }
 
@@ -353,7 +353,7 @@
                     <img alt="Veri Zone" src="{{ asset('img/veri.zone_logo-white.svg') }}" class="logo" />
                     <br />
                     <br />
-                    <h1 class="blue-grey white-text mb-0">Web ve Sosyal Medyayı Takip Edin</h1>
+                    <h1 class="white-text mb-0">Web ve Sosyal Medyayı Takip Edin</h1>
                     <p class="mb-2">
                         <span class="white black-text" style="font-size: 26px;">Olan biteni ölçümleyin, olacaklardan eş zamanlı haberdar olun!</span>
                     </p>
@@ -407,9 +407,9 @@
 
     <section class="work-section">
         <div class="section-overlay">
-            <h2 class="white-text center-align">En İyi Araçlar</h2>
-            <p class="white-text blue-grey darken-2 d-table mx-auto mb-0" style="font-size: 16px;">Haftalık, Aylık ve Yıl Sonu rapor hizmetleri ve bir çok çevrimiçi araç.</p>
-            <p class="white-text blue-grey darken-2 d-table mx-auto mb-0" style="font-size: 16px;">Eş zamanlı web ve sosyal medya takip, ölçümleme, analiz ve içgörü için en iyi iş zekası platformu.</p>
+            <h2 class="white-text center-align">EN İYİ ARAÇLAR</h2>
+            <p class="white-text d-table mx-auto mb-0" style="font-size: 16px;">Haftalık, Aylık ve Yıl Sonu rapor hizmetleri ve bir çok çevrimiçi araç.</p>
+            <p class="white-text d-table mx-auto mb-0" style="font-size: 16px;">Eş zamanlı web ve sosyal medya takip, ölçümleme, analiz ve içgörü için en iyi iş zekası platformu.</p>
             <br />
             <br />
             <br />
@@ -435,11 +435,11 @@
                 <div class="card card-unstyled">
                     <div class="card-content">
                         <h2 style="font-size: 24px;">VERİ ZONE TEKNOLOJİ</h2>
-                        <p style="font-size: 16px;"><span class="blue-grey white-text">Heyecanlıyız ve her şeyi merak ediyoruz!</span> Markaları, kurumları, şirketleri ve kişileri! Aklınıza gelebilecek her şeyi! Kimler, kimler hakkında neler söylemiş? Bu tarz soruların cevabı bizi yakından ilgilendiriyor. <span class="blue-grey darken-1 white-text">Web</span> ve <span class="blue-grey darken-2 white-text">Sosyal Medya</span> hızla gelişip büyürken, merakımızı gidermek de bir hayli zorlaştı. Bol kahve eşliğinde yaptığımız uzun ve zorlu mesailerin sonunda <span class="blue-grey white-text">Olive</span>'i tasarladık.</p>
+                        <p style="font-size: 16px;"><span class="">Heyecanlıyız ve her şeyi merak ediyoruz!</span> Markaları, kurumları, şirketleri ve kişileri! <span class="">Web</span> ve <span class="">Sosyal Medya</span> hızla gelişip büyürken, merakımızı gidermek de bir hayli zorlaştı. Bol kahve eşliğinde yaptığımız uzun ve zorlu mesailerin sonunda <span class="">Olive</span>'i tasarladık.</p>
                         <br />
-                        <p style="font-size: 16px;">Artık <span class="blue-grey white-text">Olive</span>'in yardımıyla, büyük ve karmaşık <span class="blue-grey darken-1 white-text">Web</span> ve <span class="blue-grey darken-2 white-text">Sosyal Medya</span> verilerini; çok daha hızlı ve zengin içerikler halinde rahatca okuyup, hızlı bir şekilde raporlayabiliyoruz.</p>
+                        <p style="font-size: 16px;">Artık <span class="">Olive</span>'in yardımıyla, büyük ve karmaşık <span class="">Web</span> ve <span class="">Sosyal Medya</span> verilerini; çok daha hızlı ve zengin içerikler halinde rahatca okuyup, hızlı bir şekilde raporlayabiliyoruz.</p>
                         <br />
-                        <p style="font-size: 16px;">Siz de <span class="blue-grey white-text">Olive</span>'in eşsiz özelliklerini denemek için hemen bizimle iletişime geçin!</p>
+                        <p style="font-size: 16px;">Siz de <span class="">Olive</span>'in eşsiz özelliklerini denemek için hemen bizimle iletişime geçin!</p>
                     </div>
                 </div>
             </div>
@@ -472,7 +472,7 @@
 
                             <br />
 
-                            <span class="chip blue-grey white-text">haber</span>
+                            <span class="chip pink darken-4 white-text">haber</span>
                             <span class="chip white">+bilgi</span>
                             <span class="chip white">+teknoloji</span>
                             <span class="chip white">+internet</span>
@@ -562,7 +562,7 @@
                         </div>
                     </div>
                     <div class="flex-fill align-self-center hide-on-med-and-down">
-                        <img alt="Reputation" src="{{ asset('img/photo/businessman.jpg') }}" class="responsive-img" />
+                        <img alt="Reputation" src="{{ asset('img/photo/businessman.jpg?v4') }}" class="responsive-img" />
                     </div>
                 </div>
             </div>
@@ -586,7 +586,7 @@
             indicators: true
         })
     @endpush
-    <section class="demo-section blue-grey white-text">
+    <section class="demo-section pink darken-4 white-text">
         <div class="container">
             <div class="row">
                 <div class="col m12 l6">
