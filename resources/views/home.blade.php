@@ -49,7 +49,7 @@
     }
 
     .y-section {
-        background-image: url({{ asset('img/obg.svg') }});
+        background-image: url({{ asset('img/obg.svg?v4') }});
         background-size: contain;
         background-attachment: scroll;
         background-position: center bottom;
