@@ -433,7 +433,7 @@
 
     <section class="y-section">
         <div class="container">
-            <div class="p-2 m-2">
+            <div class="pt-2 pb-2 mt-2 mb-2">
                 <h2 style="font-size: 24px;">VERİ ZONE TEKNOLOJİ</h2>
                 <p style="font-size: 16px;"><span class="">Heyecanlıyız ve her şeyi merak ediyoruz!</span> Markaları, kurumları, şirketleri ve kişileri! <span class="">Web</span> ve <span class="">Sosyal Medya</span> hızla gelişip büyürken, merakımızı gidermek de bir hayli zorlaştı. Bol kahve eşliğinde yaptığımız uzun ve zorlu mesailerin sonunda <span class="">Olive</span>'i tasarladık.</p>
                 <br />
