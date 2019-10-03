@@ -407,9 +407,11 @@
 
     <section class="work-section">
         <div class="section-overlay">
-            <h2 class="white-text center-align">EN İYİ ARAÇLAR</h2>
-            <p class="white-text d-table mx-auto mb-0" style="font-size: 16px;">Haftalık, Aylık ve Yıl Sonu rapor hizmetleri ve bir çok çevrimiçi araç.</p>
-            <p class="white-text d-table mx-auto mb-0" style="font-size: 16px;">Eş zamanlı web ve sosyal medya takip, ölçümleme, analiz ve içgörü için en iyi iş zekası platformu.</p>
+            <div class="container">
+                <h2 class="white-text center-align">EN İYİ ARAÇLAR</h2>
+                <p class="white-text d-table mx-auto mb-0" style="font-size: 16px;">Haftalık, Aylık ve Yıl Sonu rapor hizmetleri ve bir çok çevrimiçi araç.</p>
+                <p class="white-text d-table mx-auto mb-0" style="font-size: 16px;">Eş zamanlı web ve sosyal medya takip, ölçümleme, analiz ve içgörü için en iyi iş zekası platformu.</p>
+            </div>
             <br />
             <br />
             <br />
@@ -432,16 +434,12 @@
     <section class="y-section">
         <div class="container">
             <div class="p-2 m-2">
-                <div class="card card-unstyled">
-                    <div class="card-content">
-                        <h2 style="font-size: 24px;">VERİ ZONE TEKNOLOJİ</h2>
-                        <p style="font-size: 16px;"><span class="">Heyecanlıyız ve her şeyi merak ediyoruz!</span> Markaları, kurumları, şirketleri ve kişileri! <span class="">Web</span> ve <span class="">Sosyal Medya</span> hızla gelişip büyürken, merakımızı gidermek de bir hayli zorlaştı. Bol kahve eşliğinde yaptığımız uzun ve zorlu mesailerin sonunda <span class="">Olive</span>'i tasarladık.</p>
-                        <br />
-                        <p style="font-size: 16px;">Artık <span class="">Olive</span>'in yardımıyla, büyük ve karmaşık <span class="">Web</span> ve <span class="">Sosyal Medya</span> verilerini; çok daha hızlı ve zengin içerikler halinde rahatca okuyup, hızlı bir şekilde raporlayabiliyoruz.</p>
-                        <br />
-                        <p style="font-size: 16px;">Siz de <span class="">Olive</span>'in eşsiz özelliklerini denemek için hemen bizimle iletişime geçin!</p>
-                    </div>
-                </div>
+                <h2 style="font-size: 24px;">VERİ ZONE TEKNOLOJİ</h2>
+                <p style="font-size: 16px;"><span class="">Heyecanlıyız ve her şeyi merak ediyoruz!</span> Markaları, kurumları, şirketleri ve kişileri! <span class="">Web</span> ve <span class="">Sosyal Medya</span> hızla gelişip büyürken, merakımızı gidermek de bir hayli zorlaştı. Bol kahve eşliğinde yaptığımız uzun ve zorlu mesailerin sonunda <span class="">Olive</span>'i tasarladık.</p>
+                <br />
+                <p style="font-size: 16px;">Artık <span class="">Olive</span>'in yardımıyla, büyük ve karmaşık <span class="">Web</span> ve <span class="">Sosyal Medya</span> verilerini; çok daha hızlı ve zengin içerikler halinde rahatca okuyup, hızlı bir şekilde raporlayabiliyoruz.</p>
+                <br />
+                <p style="font-size: 16px;">Siz de <span class="">Olive</span>'in eşsiz özelliklerini denemek için hemen bizimle iletişime geçin!</p>
             </div>
         </div>
     </section>
