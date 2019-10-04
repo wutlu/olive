@@ -52,6 +52,15 @@ Route::domain('olive.'.config('app.domain'))->group(function () {
         Route::get('/', function () { return view('crawlers.dashboard'); })->name('crawlers');
 
         # 
+        # domain tespiti
+        #
+        Route::prefix('domain-tespiti')->group(function () {
+            Route::get('/', 'DomainController@dashboard')->name('domain.dashboard');
+            Route::post('durum', 'DomainController@check')->name('domain.check');
+            Route::delete('sil', 'DomainController@delete')->name('domain.delete');
+        });
+
+        # 
         # ALIŞVERİŞ
         # 
         Route::prefix('alisveris-botlari')->group(function () {

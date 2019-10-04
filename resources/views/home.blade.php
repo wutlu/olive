@@ -588,27 +588,23 @@
         <div class="container">
             <div class="row">
                 <div class="col m12 l6">
-                    <div class="card card-unstyled">
-                        <div class="card-content">
-                            <form id="demo-form" method="post" action="{{ route('demo.request') }}" class="json" data-callback="__demo_request">
-                                <h2>ŞİMDİ ÜCRETSİZ DENEYİN!</h2>
-                                <div class="input-field white-text">
+                    <form id="demo-form" method="post" action="{{ route('demo.request') }}" class="json" data-callback="__demo_request">
+                        <h2>ŞİMDİ ÜCRETSİZ DENEYİN!</h2>
+                        <div class="input-field white-text">
                                     <i class="material-icons prefix">account_circle</i>
                                     <input id="icon_prefix" name="name" type="text" class="validate" />
                                     <label for="icon_prefix">Firma / Kurum</label>
-                                </div>
-                                <div class="input-field white-text">
-                                    <i class="material-icons prefix">phone</i>
-                                    <input id="icon_telephone" name="phone" type="text" class="validate" />
-                                    <label for="icon_telephone">Telefon</label>
-                                </div>
-                                <div class="input-field white-text">
-                                    <div class="captcha" data-id="demo-captcha"></div>
-                                </div>
-                                <button type="submit" class="btn-flat white-text waves-effect">Gönder</button>
-                            </form>
                         </div>
-                    </div>
+                        <div class="input-field white-text">
+                            <i class="material-icons prefix">phone</i>
+                            <input id="icon_telephone" name="phone" type="text" class="validate" />
+                            <label for="icon_telephone">Telefon</label>
+                        </div>
+                        <div class="input-field white-text">
+                            <div class="captcha" data-id="demo-captcha"></div>
+                        </div>
+                        <button type="submit" class="btn-flat white-text waves-effect">Gönder</button>
+                    </form>
                 </div>
                 <div class="col m12 l6">
                     <div class="card card-unstyled">

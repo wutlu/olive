@@ -443,6 +443,12 @@
                                         Hosts Dosyası
                                     </a>
                                 </li>
+                                <li class="tiny">
+                                    <a class="waves-effect" href="{{ route('domain.dashboard') }}">
+                                        <i class="material-icons">domain</i>
+                                        Domain Tespiti
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </li>
