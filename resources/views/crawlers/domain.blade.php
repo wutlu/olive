@@ -2,7 +2,7 @@
     'sidenav_fixed_layout' => true,
     'breadcrumb' => [
         [
-            'text' => 'Analiz Araçları'
+            'text' => 'Domain Tespiti'
         ]
     ],
     'footer_hide' => true
@@ -14,7 +14,7 @@
             <div class="container">
                 <div class="d-flex flex-wrap justify-content-between">
                     <span class="wildcard-title align-self-center">
-                        Analiz Araçları
+                        Domain Tespiti
                         <small class="d-table" data-name="total">{{ $data->total() }}</small>
                     </span>
                     <input type="text" name="q" id="q" class="align-self-center sub-search" placeholder="Arayın" value="{{ $q }}" />
