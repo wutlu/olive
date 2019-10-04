@@ -166,8 +166,8 @@
         loop: true,
         responsive: {
             0: { items: 1 },
-            600: { items: 2 },
-            900: { items: 3 }
+            800: { items: 2 },
+            1400: { items: 3 }
         },
         autoHeight: true,
         nav: false,
