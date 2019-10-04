@@ -921,7 +921,6 @@
                             </a>
                         </div>
                         <div class="col l4 offset-l2 s12">
-                            <a href="{{ route('page.view', 'iletisim') }}" class="d-table black-text">İLETİŞİM</a>
                             <p class="grey-text">Mustafa Kemal Mh. Dumlupınar Blv. ODTÜ Teknokent Bilişim İnovasyon Merkezi</p>
                             <p class="grey-text">280/G No:1260 Alt Zemin Kat Çankaya, Ankara</p>
                             <a class="grey-text text-darken-2 d-table" href="tel:+908503021630">+90 850 302 16 30</a>

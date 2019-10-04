@@ -32,7 +32,6 @@
         display: block;
     }
     .main-slider .item > .canvas {
-        border: 2px solid #666;
         margin: 0 16px;
         padding: 32px 16px;
     }
@@ -59,7 +58,6 @@
         background-image: url({{ asset('img/photo/xolive.jpg?v5') }});
         background-position: bottom;
     }
-
     .x-section > .section-overlay {
         min-height: calc(70vh);
     }
@@ -78,7 +76,6 @@
         margin: 0 0 1rem;
         font-size: 48px;
     }
-
     section h2 {
         margin: 0 0 1rem;
         font-size: 32px;
@@ -92,7 +89,6 @@
     .browser-mockup {
         margin: 2rem auto 0;
     }
-
     .browser-mockup.mockup-news {
         margin: 0;
     }
@@ -112,7 +108,6 @@
 
     .logo {
         max-width: 256px;
-        margin: 0 0 2rem;
     }
 
     .more-down {
@@ -347,17 +342,13 @@
     </div>
 
     <section class="x-section">
-        <div class="section-overlay">
-            <div class="container">
-                <div style="max-width: 720px;">
-                    <img alt="Veri Zone" src="{{ asset('img/veri.zone_logo-white.svg') }}" class="logo" />
-                    <br />
-                    <br />
-                    <h1 class="white-text mb-0">Web ve Sosyal Medyayı Takip Edin</h1>
-                    <p class="mb-2">
-                        <span class="white black-text" style="font-size: 26px;">Olan biteni ölçümleyin, olacaklardan eş zamanlı haberdar olun!</span>
-                    </p>
+        <div class="section-overlay d-flex">
+            <div class="container align-self-center">
+                <div class="center-align">
+                    <img alt="Veri Zone" src="{{ asset('img/veri.zone_logo-white.svg') }}" class="logo mb-2" />
                 </div>
+                <h1 class="white-text mb-0 d-block center-align">Web ve Sosyal Medyayı Takip Edin</h1>
+                <p class="white-text mb-2 d-block center-align" style="font-size: 26px;">Olan biteni ölçümleyin, olacaklardan eş zamanlı haberdar olun!</p>
             </div>
         </div>
     </section>
@@ -368,7 +359,7 @@
         </a>
     </div>
 
-    <section class="y-section grey lighten-4">
+    <section class="y-section">
         <div class="container">
             <div class="owl-carousel main-slider">
                 <div class="item">
@@ -409,8 +400,8 @@
         <div class="section-overlay">
             <div class="container">
                 <h2 class="white-text center-align">EN İYİ ARAÇLAR</h2>
-                <p class="white-text d-table mx-auto mb-0" style="font-size: 16px;">Haftalık, Aylık ve Yıl Sonu rapor hizmetleri ve bir çok çevrimiçi araç.</p>
-                <p class="white-text d-table mx-auto mb-0" style="font-size: 16px;">Eş zamanlı web ve sosyal medya takip, ölçümleme, analiz ve içgörü için en iyi iş zekası platformu.</p>
+                <p class="grey-text text-lighten-4 d-table mx-auto mb-0" style="font-size: 16px;">Haftalık, Aylık ve Yıl Sonu rapor hizmetleri ve bir çok çevrimiçi araç.</p>
+                <p class="grey-text text-lighten-4 d-table mx-auto mb-0" style="font-size: 16px;">Eş zamanlı web ve sosyal medya takip, ölçümleme, analiz ve içgörü için en iyi iş zekası platformu.</p>
             </div>
             <br />
             <br />
@@ -431,15 +422,13 @@
         </div>
     </section>
 
-    <section class="y-section">
+    <section>
         <div class="container">
             <div class="pt-2 pb-2 mt-2 mb-2">
-                <h2 style="font-size: 24px;">VERİ ZONE TEKNOLOJİ</h2>
-                <p style="font-size: 16px;"><span class="">Heyecanlıyız ve her şeyi merak ediyoruz!</span> Markaları, kurumları, şirketleri ve kişileri! <span class="">Web</span> ve <span class="">Sosyal Medya</span> hızla gelişip büyürken, merakımızı gidermek de bir hayli zorlaştı. Bol kahve eşliğinde yaptığımız uzun ve zorlu mesailerin sonunda <span class="">Olive</span>'i tasarladık.</p>
-                <br />
-                <p style="font-size: 16px;">Artık <span class="">Olive</span>'in yardımıyla, büyük ve karmaşık <span class="">Web</span> ve <span class="">Sosyal Medya</span> verilerini; çok daha hızlı ve zengin içerikler halinde rahatca okuyup, hızlı bir şekilde raporlayabiliyoruz.</p>
-                <br />
-                <p style="font-size: 16px;">Siz de <span class="">Olive</span>'in eşsiz özelliklerini denemek için hemen bizimle iletişime geçin!</p>
+                <h2 class="grey-text text-darken-2 mb-2">VERİ ZONE TEKNOLOJİ</h2>
+                <p style="font-size: 16px;" class="grey-text text-darken-2 mb-1"><span class="">Heyecanlıyız ve her şeyi merak ediyoruz!</span> Markaları, kurumları, şirketleri ve kişileri! <span class="">Web</span> ve <span class="">Sosyal Medya</span> hızla gelişip büyürken, merakımızı gidermek de bir hayli zorlaştı. Bol kahve eşliğinde yaptığımız uzun ve zorlu mesailerin sonunda <span class="">Olive</span>'i tasarladık.</p>
+                <p style="font-size: 16px;" class="grey-text text-darken-2 mb-1">Artık <span class="">Olive</span>'in yardımıyla, büyük ve karmaşık <span class="">Web</span> ve <span class="">Sosyal Medya</span> verilerini; çok daha hızlı ve zengin içerikler halinde rahatca okuyup, hızlı bir şekilde raporlayabiliyoruz.</p>
+                <p style="font-size: 16px;" class="grey-text text-darken-2">Siz de <span class="">Olive</span>'in eşsiz özelliklerini denemek için hemen bizimle iletişime geçin!</p>
             </div>
         </div>
     </section>
@@ -470,7 +459,7 @@
 
                             <br />
 
-                            <span class="chip pink darken-4 white-text">haber</span>
+                            <span class="chip pink darken-2 white-text">haber</span>
                             <span class="chip white">+bilgi</span>
                             <span class="chip white">+teknoloji</span>
                             <span class="chip white">+internet</span>
@@ -486,53 +475,13 @@
         </div>
     </section>
 
-<!--
-    @push('local.styles')
-        #videos .indicators {
-            bottom: 48px;
-            height: 24px;
-        }
-        #videos .indicators > .indicator-item {
-            background-color: #000;
-            margin-top: 0;
-            margin-bottom: 0;
-            width: 16px;
-            height: 16px;
-        }
-        #videos .indicators > .indicator-item.active {
-            background-color: #1ab7ea;
-        }
-    @endpush
-    <section>
-        <div class="container">
-            <div class="mt-2 mb-2 pt-2 pb-2 center-align">
-                <h3 class="m-0">Kısa bir bakış?</h3>
-                <p class="grey-text mb-1">Hazırladığımız bu kısa videolar ile Olive'e kısaca bir göz atın!</p>
-                <div class="carousel carousel-slider" id="videos">
-                    <div class="carousel-item" style="height: 240px;">
-                        <iframe src="https://player.vimeo.com/video/359099769" width="100%" height="100%" frameborder="0" allow="fullscreen" allowfullscreen></iframe>
-                    </div>
-                    <div class="carousel-item" style="height: 240px;">
-                        <iframe src="https://player.vimeo.com/video/359099664" width="100%" height="100%" frameborder="0" allow="fullscreen" allowfullscreen></iframe>
-                    </div>
-                    <div class="carousel-item" style="height: 240px;">
-                        <iframe src="https://player.vimeo.com/video/359099748" width="100%" height="100%" frameborder="0" allow="fullscreen" allowfullscreen></iframe>
-                    </div>
-                    <div class="carousel-item" style="height: 240px;">
-                        <iframe src="https://player.vimeo.com/video/359099638" width="100%" height="100%" frameborder="0" allow="fullscreen" allowfullscreen></iframe>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
--->
     <section>
         <div class="container">
             <div class="pt-2 pb-2 mt-2 mb-2">
                 <div class="d-flex justify-content-between">
                     <div class="flex-fill align-self-center">
-                        <div class="p-1">
-                            <h2>ÇEVRİMİÇİ İTİBARINIZI KORUYUN</h2>
+                        <div class="p-1 grey-text text-darken-2">
+                            <h2 class="grey-text text-darken-4">ÇEVRİMİÇİ İTİBARINIZI KORUYUN</h2>
                             <p class="mb-0" style="font-size: 16px;">Çevrimiçi itibarınıza yönelik olası tehditleri herkesten önce fark edin, stratejinizi geliştirin ve harekete geçin.</p>
 
                             <div class="d-flex">
@@ -610,9 +559,9 @@
                     <div class="card card-unstyled">
                         <div class="card-content">
                             <h2>En Uygun Çözümü Oluşturalım!</h2>
-                            <p style="font-size: 16px;">Hemen bilgilerinizi bırakın, size en kısa sürede tam özellikli bir Olive ile dönüş sağlayalım.</p>
-                            <p style="font-size: 16px;">Olive'i denerken, kullanmadığınız özellikleri belirleyin, paketinizden çıkartalım!</p>
-                            <p style="font-size: 16px;">Gereksiz maliyetlerin altında kalmayın!</p>
+                            <p style="font-size: 16px;" class="pink-text text-lighten-4">Hemen bilgilerinizi bırakın, size en kısa sürede tam özellikli bir Olive ile dönüş sağlayalım.</p>
+                            <p style="font-size: 16px;" class="pink-text text-lighten-4">Olive'i denerken, kullanmadığınız özellikleri belirleyin, paketinizden çıkartalım!</p>
+                            <p style="font-size: 16px;" class="pink-text text-lighten-4">Gereksiz maliyetlerin altında kalmayın!</p>
                         </div>
                     </div>
                 </div>

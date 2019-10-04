@@ -359,6 +359,16 @@ time {
   to { -webkit-transform: rotate(0deg); }
 }
 
+@keyframes rotate_reverse {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(359deg); }
+}
+
+@-webkit-keyframes rotate_reverse {
+  from { -webkit-transform: rotate(0deg); }
+  to { -webkit-transform: rotate(359deg); }
+}
+
 @keyframes cloud {
   0% {
     transform: translateY(0);
