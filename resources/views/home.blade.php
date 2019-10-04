@@ -24,7 +24,6 @@
     .main-slider .owl-stage-outer {
         margin: 0;
         padding: 0;
-        padding: 64px 0 48px;
         text-align: center;
         font-size: 24px;
     }
@@ -33,7 +32,7 @@
     }
     .main-slider .item > .canvas {
         margin: 0 16px;
-        padding: 32px 16px;
+        padding: 48px 0 16px;
     }
 
     section {
@@ -52,6 +51,8 @@
         background-size: contain;
         background-attachment: scroll;
         background-position: center bottom;
+
+        padding: 2rem 0 0;
     }
 
     .x-section {
@@ -109,6 +110,9 @@
     .logo {
         max-width: 256px;
     }
+    .olive-logo {
+        max-width: 128px;
+    }
 
     .more-down {
         text-align: center;
@@ -162,8 +166,8 @@
         loop: true,
         responsive: {
             0: { items: 1 },
-            500: { items: 2 },
-            768: { items: 3 }
+            600: { items: 2 },
+            900: { items: 3 }
         },
         autoHeight: true,
         nav: false,
@@ -348,7 +352,7 @@
                     <img alt="Veri Zone" src="{{ asset('img/veri.zone_logo-white.svg') }}" class="logo mb-2" />
                 </div>
                 <h1 class="white-text mb-0 d-block center-align">Web ve Sosyal Medyayı Takip Edin</h1>
-                <p class="white-text mb-2 d-block center-align" style="font-size: 26px;">Olan biteni ölçümleyin, olacaklardan eş zamanlı haberdar olun!</p>
+                <p class="white-text d-block center-align" style="font-size: 26px;">Olan biteni ölçümleyin, olacaklardan eş zamanlı haberdar olun!</p>
             </div>
         </div>
     </section>
@@ -363,26 +367,33 @@
         <div class="container">
             <div class="owl-carousel main-slider">
                 <div class="item">
-                    <div class="canvas">Sınırsız Sorgu!</div>
+                    <div class="canvas">SINIRSIZ SORGU!</div>
                 </div>
                 <div class="item">
-                    <div class="canvas">Sınırsız Sonuç!</div>
+                    <div class="canvas">SINIRSIZ SONUÇ!</div>
                 </div>
                 <div class="item">
-                    <div class="canvas">Eş Zamanlı Grafikler</div>
+                    <div class="canvas">EŞ ZAMANLI GRAFİKLER</div>
                 </div>
                 <div class="item">
-                    <div class="canvas">Boole Operatörleri</div>
+                    <div class="canvas">BOOLE OPERATÖRLERİ</div>
                 </div>
                 <div class="item">
-                    <div class="canvas">Kelime ve Cümleler</div>
+                    <div class="canvas">TROLLSÜZ SONUÇLAR</div>
                 </div>
                 <div class="item">
-                    <div class="canvas">Trollsüz Sonuçlar</div>
+                    <div class="canvas">YERLİ TEKNOLOJİ</div>
+                </div>
+                <div class="item">
+                    <div class="canvas">MİLLİ TEKNOLOJİ</div>
                 </div>
             </div>
-
-            <div style="max-width: 720px; font-size: 16px;" class="d-table mx-auto center-align">Olive web ve sosyal medya platformu, çevrimiçi konuşmaları gerçek zamanlı takip edebilmeniz için tasarlanmıştır. Web ve sosyal medyada; şirketiniz, organizasyonunuz veya yöneticileriniz için içgörüler elde edin. Müşteri ilişkilerinden kurumsal iletişime kadar her konudan haberdar olun.</div>
+            <div class="d-flex justify-content-center mt-2 mb-2 pt-2 pb-2 mx-auto" style="max-width: 1024px;">
+                <div class="align-self-center right-align pr-2">
+                    <img alt="Olive" src="{{ asset('img/olive_logo-grey.svg') }}" class="olive-logo" />
+                </div>
+                <div class="align-self-center grey-text text-darken-4" style="font-size: 18px;">Olive web ve sosyal medya platformu, açık kaynak konuşmaları gerçek zamanlı takip edebilmeniz için tasarlanmıştır. Web ve sosyal medyada; şirketiniz, organizasyonunuz veya yöneticileriniz için içgörüler elde edin. Müşteri ilişkilerinden kurumsal iletişime kadar her konudan haberdar olun.</div>
+            </div>
 
             <div class="browser-mockup mockup-slider">
                 <div class="owl-carousel">
@@ -424,7 +435,7 @@
 
     <section>
         <div class="container">
-            <div class="pt-2 pb-2 mt-2 mb-2">
+            <div class="pt-2 pb-2 mt-2 mb-2 center-align">
                 <h2 class="grey-text text-darken-2 mb-2">VERİ ZONE TEKNOLOJİ</h2>
                 <p style="font-size: 16px;" class="grey-text text-darken-2 mb-1"><span class="">Heyecanlıyız ve her şeyi merak ediyoruz!</span> Markaları, kurumları, şirketleri ve kişileri! <span class="">Web</span> ve <span class="">Sosyal Medya</span> hızla gelişip büyürken, merakımızı gidermek de bir hayli zorlaştı. Bol kahve eşliğinde yaptığımız uzun ve zorlu mesailerin sonunda <span class="">Olive</span>'i tasarladık.</p>
                 <p style="font-size: 16px;" class="grey-text text-darken-2 mb-1">Artık <span class="">Olive</span>'in yardımıyla, büyük ve karmaşık <span class="">Web</span> ve <span class="">Sosyal Medya</span> verilerini; çok daha hızlı ve zengin içerikler halinde rahatca okuyup, hızlı bir şekilde raporlayabiliyoruz.</p>
