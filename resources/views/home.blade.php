@@ -397,11 +397,11 @@
 
             <div class="browser-mockup mockup-slider">
                 <div class="owl-carousel">
-                    <img src="{{ asset('img/mockup-slide-1.jpg?v5') }}" alt="Olive Mockup 1" />
-                    <img src="{{ asset('img/mockup-slide-2.jpg?v5') }}" alt="Olive Mockup 2" />
-                    <img src="{{ asset('img/mockup-slide-3.jpg?v5') }}" alt="Olive Mockup 3" />
-                    <img src="{{ asset('img/mockup-slide-4.jpg?v5') }}" alt="Olive Mockup 4" />
-                    <img src="{{ asset('img/mockup-slide-5.jpg?v5') }}" alt="Olive Mockup 4" />
+                    <img src="{{ asset('img/mockup-slide-1.jpg?v6') }}" alt="Olive Mockup 1" />
+                    <img src="{{ asset('img/mockup-slide-2.jpg?v6') }}" alt="Olive Mockup 2" />
+                    <img src="{{ asset('img/mockup-slide-3.jpg?v6') }}" alt="Olive Mockup 3" />
+                    <img src="{{ asset('img/mockup-slide-4.jpg?v6') }}" alt="Olive Mockup 4" />
+                    <img src="{{ asset('img/mockup-slide-5.jpg?v6') }}" alt="Olive Mockup 4" />
                 </div>
             </div>
         </div>
