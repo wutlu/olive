@@ -350,81 +350,106 @@ function __update_class(__, obj)
 
 function stacker(items, type)
 {
-    var _key = '';
-    var _val = 0;
+    var sentiment_titles = {
+        'pos': 'Pozitif',
+        'neg': 'Negatif',
+        'neu': 'Nötr',
+        'hte': 'Nefret Söylemi'
+    };
 
-    $.each(items, function(key, val) {
-        if (val >= _val)
-        {
-            _key = key;
-            _val = val;
-        }
-    })
+    var sentiment_class = {
+        'pos': 'green',
+        'neg': 'red',
+        'neu': 'grey',
+        'hte': 'black'
+    };
 
-    _val = (_val * 100).toFixed(0);
+    var consumer_titles = {
+        'req': 'İSTEK',
+        'que': 'SORU',
+        'cmp': 'ŞİKAYET',
+        'nws': 'HABER'
+    };
 
-    switch (type)
+    var consumer_class = {
+        'req': '',
+        'que': '',
+        'cmp': '',
+        'nws': ''
+    };
+
+    try
     {
-        case 'sentiment':
-            var _titles = {
-                'pos': 'Pozitif',
-                'neg': 'Negatif',
-                'neu': 'Nötr',
-                'hte': 'Nefret Söylemi'
-            };
+        var _key = '';
+        var _val = 0;
 
-            var _class = {
-                'pos': 'green',
-                'neg': 'red',
-                'neu': 'grey',
-                'hte': 'black'
-            };
-
-            return (items.pos == 0.25 && items.neu == 0.25 && items.neg == 0.25 && items.hte == 0.25) ?
+        $.each(items, function(key, val) {
+            if (val >= _val)
             {
-                'key': 'neu',
-                'val': 100,
-                'title': _titles['neu'],
-                'class': _class['neu']
+                _key = key;
+                _val = val;
             }
-            :
-            {
-                'key': _key,
-                'val': _val,
-                'title': _titles[_key],
-                'class': _class[_key]
-            };
-        break;
-        case 'consumer':
-            var _titles = {
-                'req': 'İSTEK',
-                'que': 'SORU',
-                'cmp': 'ŞİKAYET',
-                'nws': 'HABER'
-            };
+        })
 
-            var _class = {
-                'req': '',
-                'que': '',
-                'cmp': '',
-                'nws': ''
-            };
+        _val = (_val * 100).toFixed(0);
 
-            return (items.que == 0.25 && items.req == 0.25 && items.cmp == 0.25 && items.nws == 0.25) ?
-            {
-                'key': null,
-                'val': null,
-                'title': null,
-                'class': 'hide'
-            }
-            :
-            {
-                'key': _key,
-                'val': _val,
-                'title': _titles[_key],
-                'class': _class[_key]
-            };
-        break;
+        switch (type)
+        {
+            case 'sentiment':
+                return (items.pos == 0.25 && items.neu == 0.25 && items.neg == 0.25 && items.hte == 0.25) ?
+                {
+                    'key': 'neu',
+                    'val': 100,
+                    'title': sentiment_titles['neu'],
+                    'class': sentiment_class['neu']
+                }
+                :
+                {
+                    'key': _key,
+                    'val': _val,
+                    'title': sentiment_titles[_key],
+                    'class': sentiment_class[_key]
+                };
+            break;
+            case 'consumer':
+                return (items.que == 0.25 && items.req == 0.25 && items.cmp == 0.25 && items.nws == 0.25) ?
+                {
+                    'key': null,
+                    'val': null,
+                    'title': null,
+                    'class': 'hide'
+                }
+                :
+                {
+                    'key': _key,
+                    'val': _val,
+                    'title': consumer_titles[_key],
+                    'class': consumer_class[_key]
+                };
+            break;
+        }
+    }
+    catch (exception)
+    {
+        switch (type)
+        {
+            case 'sentiment':
+                return {
+                    'key': 'neu',
+                    'val': 100,
+                    'title': sentiment_titles['neu'],
+                    'class': sentiment_class['neu']
+                };
+            break;
+            case 'consumer':
+                return {
+                    'key': null,
+                    'val': null,
+                    'title': null,
+                    'class': 'hide'
+                };
+            break;
+        }
     }
 }
 
