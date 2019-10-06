@@ -34,7 +34,7 @@ class Instagram
                 'timeout' => 10,
                 'connect_timeout' => 5,
                 'headers' => [
-                    'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))],
+                    'User-Agent' => config('crawler.user_agents_mobile')[array_rand(config('crawler.user_agents_mobile'))],
                     'Accept-Language' => 'tr-TR;q=0.6,tr;q=0.4'
                 ],
                 'verify' => false,
