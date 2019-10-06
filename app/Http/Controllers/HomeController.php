@@ -17,6 +17,8 @@ use App\Models\Ticket;
 use App\Models\Forum\Message;
 use App\Models\Organisation\Organisation;
 use App\Models\Organisation\OrganisationInvoice;
+use App\Models\ReportedContents;
+use App\Models\DetectedDomains;
 
 use App\Models\Crawlers\MediaCrawler;
 use App\Models\Crawlers\ShoppingCrawler;
@@ -432,6 +434,12 @@ class HomeController extends Controller
             $data['organisation']['pending']['count'] = Organisation::where('updated_at', '>=', date('Y-m-d').' 00:00:00')->where('status', false)->count();
             $data['organisation']['invoices']['count'] = OrganisationInvoice::whereNull('paid_at')->count();
             $data['partner']['payments']['count'] = PartnerPayment::where('status', 'pending')->count();
+        }
+
+        if ($user->root())
+        {
+            $data['reported_contents']['count'] = ReportedContents::count();
+            $data['detected_domains']['count'] = DetectedDomains::where('status', 'new')->count();
         }
 
         $activities = UserActivity::where('user_id', $user->id)->where('push_notification', 'on')->limit(3)->get();

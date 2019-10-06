@@ -162,7 +162,7 @@
 
         <div class="navbar-fixed">
             @auth
-                <ul id="user-top-dropdown" class="dropdown-content">
+                <ul id="user-top_dropdown" class="dropdown-content">
                     <li>
                         <a href="{{ route('user.profile', auth()->user()->id) }}" class="d-flex">
                             <img
@@ -199,7 +199,7 @@
                 <div class="{{ isset($sidenav_layout) ? '' : (auth()->check() ? 'sidenav-fixed-layout' : 'container') }}">
                     <div class="nav-wrapper">
                         <a href="{{ route('dashboard') }}" class="brand-logo center">
-                            <img alt="{{ config('app.name') }}" src="{{ @$logo ? $logo : asset('img/olive_logo-white.svg') }}" />
+                            <img alt="{{ config('app.name') }}" src="{{ @$logo ? $logo : asset('img/olive_logo.svg') }}" />
                         </a>
 
                         @auth
@@ -231,7 +231,7 @@
                         @auth
                             <ul class="right hide-on-med-and-down">
                                 <li>
-                                    <a class="dropdown-trigger waves-effect" href="#" data-target="user-top-dropdown" data-align="right">
+                                    <a class="dropdown-trigger waves-effect" href="#" data-target="user-top_dropdown" data-align="right">
                                         {{ auth()->user()->name }} <i class="material-icons right">arrow_drop_down</i>
                                     </a>
                                 </li>
@@ -443,12 +443,6 @@
                                         Hosts Dosyası
                                     </a>
                                 </li>
-                                <li class="tiny">
-                                    <a class="waves-effect" href="{{ route('domain.dashboard') }}">
-                                        <i class="material-icons">domain</i>
-                                        Domain Tespiti
-                                    </a>
-                                </li>
                             </ul>
                         </div>
                     </li>
@@ -486,6 +480,20 @@
                                 </li>
                             </ul>
                         </div>
+                    </li>
+                    <li>
+                        <a class="waves-effect" href="{{ route('reported_contents') }}">
+                            <i class="material-icons">language</i>
+                            İçerik Sınıflandırma
+                            <span class="badge grey white-text" data-id="reported_contents-count">0</span>
+                        </a>
+                    </li>
+                    <li class="tiny">
+                        <a class="waves-effect" href="{{ route('domain.dashboard') }}">
+                            <i class="material-icons">domain</i>
+                            Domain Tespiti
+                            <span class="badge grey white-text" data-id="detected_domains-count">0</span>
+                        </a>
                     </li>
                     <li class="divider"></li>
                 @endif
@@ -839,6 +847,11 @@
 
                 if (obj.status == 'ok')
                 {
+                    @if (auth()->user()->root())
+                        $('[data-id=reported_contents-count]').html(obj.data.reported_contents.count).addClass(obj.data.reported_contents.count > 0 ? 'red' : 'grey').removeClass(obj.data.reported_contents.count > 0 ? 'grey' : 'red')
+                        $('[data-id=detected_domains-count]').html(obj.data.detected_domains.count).addClass(obj.data.detected_domains.count > 0 ? 'red' : 'grey').removeClass(obj.data.detected_domains.count > 0 ? 'grey' : 'red')
+                    @endif
+
                     @if (auth()->user()->admin())
                         $('[data-id=ticket-count]').html(obj.data.ticket.count).addClass(obj.data.ticket.count > 0 ? 'red' : 'grey').removeClass(obj.data.ticket.count > 0 ? 'grey' : 'red')
                         $('[data-id=organisation-count]').html(obj.data.organisation.pending.count).addClass(obj.data.organisation.pending.count > 0 ? 'red' : 'grey').removeClass(obj.data.organisation.pending.count > 0 ? 'grey' : 'red')

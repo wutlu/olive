@@ -16,6 +16,47 @@
 
 @section('dock')
     @include('trends._menu', [ 'active' => 'live' ])
+
+    <div class="card card-unstyled mt-1">
+        <table>
+            <tbody>
+                <tr>
+                    <td class="right-align">Ekrana Düşen Trend</td>
+                    <td>
+                        <span class="badge white grey-text text-darken-2" data-name="incoming-trends">0</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="right-align">Ekrandan Çıkan Trend</td>
+                    <td>
+                        <span class="badge white grey-text text-darken-2" data-name="outbound-trends">0</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card mt-1">
+        <div class="card-content">
+            <div class="d-flex flex-wrap">
+                <small class="red-text">
+                    Kırmızı, trendin düşüşte olduğunu gösterir.
+                </small>
+                <small class="green-text">
+                    Yeşil, trendin yükselişte olduğunu gösterir.
+                </small>
+                <small class="blue-text">
+                    Mavi, trendin yeni olduğunu gösterir.
+                </small>
+                <small class="grey-text">
+                    Gri, trendin yerini koruduğunu gösterir.
+                </small>
+                <small class="red lighten-4">
+                    Kırmızı zemin, olağanüstü bir hareketlilik olduğunu gösterir.
+                </small>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('local.scripts')
@@ -371,61 +412,6 @@
                 </ul>
             </div>
         @endforeach
-    </div>
-
-    <br />
-
-    <div class="card card-unstyled">
-        <div class="card-content">
-            <div class="d-flex flex-wrap">
-                <div  class="p-1">
-                    <div class="red-text">
-                        @component('components.alert')
-                            @slot('icon', 'info_outline')
-                            @slot('text', 'Kırmızı, trendin düşüşte olduğunu gösterir.')
-                        @endcomponent
-                    </div>
-                    <div class="green-text">
-                        @component('components.alert')
-                            @slot('icon', 'info_outline')
-                            @slot('text', 'Yeşil, trendin yükselişte olduğunu gösterir.')
-                        @endcomponent
-                    </div>
-                    <div class="blue-text">
-                        @component('components.alert')
-                            @slot('icon', 'info_outline')
-                            @slot('text', 'Mavi, trendin yeni olduğunu gösterir.')
-                        @endcomponent
-                    </div>
-                    <div class="grey-text">
-                        @component('components.alert')
-                            @slot('icon', 'info_outline')
-                            @slot('text', 'Gri, trendin yerini koruduğunu gösterir.')
-                        @endcomponent
-                    </div>
-                    <div class="red lighten-4">
-                        @component('components.alert')
-                            @slot('icon', 'info_outline')
-                            @slot('text', 'Kırmızı zemin, olağanüstü bir hareketlilik olduğunu gösterir.')
-                        @endcomponent
-                    </div>
-                </div>
-                <div  class="p-1">
-                    <div class="grey-text">
-                        @component('components.alert')
-                            @slot('icon', 'multiline_chart')
-                            @slot('text', 'Ekrana düşen toplam trend sayısı, <span data-name="incoming-trends">0</span>')
-                        @endcomponent
-                    </div>
-                    <div class="grey-text">
-                        @component('components.alert')
-                            @slot('icon', 'multiline_chart')
-                            @slot('text', 'Ekrandan çıkan toplam trend sayısı, <span data-name="outbound-trends">0</span>')
-                        @endcomponent
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 @endsection
 

@@ -105,6 +105,8 @@ Route::domain('olive.'.config('app.domain'))->group(function () {
 
     Route::prefix('db')->group(function () {
         Route::get('{es_index}/{es_type}/{es_id}', 'ContentController@module')->name('content');
+        Route::post('siniflandir', 'ContentController@classifier');
+
         Route::post(
             'histogram/{type}/{period}/{es_id}/{es_index_key?}',
             'ContentController@histogram')->name('content.histogram')->where([

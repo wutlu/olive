@@ -14,11 +14,11 @@
             </span>
         </div>
         <div class="card-image">
-            <a href="#" class="btn-floating halfway-fab waves-effect blue-grey" data-trigger="create-pin-group">
-                <i class="material-icons white-text">add</i>
+            <a href="#" class="btn-floating halfway-fab waves-effect white" data-trigger="create-pin-group">
+                <i class="material-icons grey-text text-darken-2">add</i>
             </a>
         </div>
-        <div class="card-content grey-text">
+        <div class="card-content grey-text text-darken-2">
             <span data-name="display-pin-group">0</span> / <span data-name="total-pin-group">0</span>
         </div>
 
@@ -45,7 +45,7 @@
                     data-method="post"
                     data-callback="__get_pin_group"
                     href="#">
-                    <i class="material-icons grey-text">create</i>        
+                    <i class="material-icons grey-text text-darken-2">create</i>        
                 </a>
                 <label class="align-self-center">
                     <input name="group_id" type="radio" />

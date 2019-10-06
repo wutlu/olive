@@ -480,7 +480,7 @@
 
         @if (auth()->check() && auth()->user()->root())
             <div class="card-content">
-                <span class="teal-text">Bu alan sadece yetkili kullanıcılar tarafından görüntülenebilir.</span>
+                <span class="grey-text">Bu alan sadece yetkili kullanıcılar tarafından görüntülenebilir.</span>
             </div>
         @endif
 

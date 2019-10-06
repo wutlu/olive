@@ -23,7 +23,7 @@ $(document).on('click', '.read-aloud', function() {
         __.addClass('playing').children('i.material-icons').html('stop')
         $.playSound('https://tts.voicetech.yandex.net/tts?text=' + text + '&lang=tr_TR&format=mp3&platform=web&application=translate&chunked=0&mock-ranges=1')
     }
-}).on('click', '[data-trigger=create_analysis]', function() {
+}).on('click', '[data-trigger=createAnalysis]', function() {
     var __ = $(this);
 
     var mdl = modal({
@@ -121,6 +121,193 @@ $(document).on('click', '.read-aloud', function() {
             })
         ]
     })
+}).on('click', '[data-trigger=updateClass]', function() {
+    var __ = $(this);
+
+    var mdl = modal({
+        'id': 'updateClass',
+        'body': $('<form />', {
+            'method': 'post',
+            'action': '/db/siniflandir',
+            'id': 'updateClass-form',
+            'class': 'json',
+            'data-callback': '__update_class',
+            'html': [
+                $('<input />', { 'type': 'hidden', 'name': 'id', 'value': __.data('id') }),
+                $('<input />', { 'type': 'hidden', 'name': 'type', 'value': __.data('type') }),
+                $('<input />', { 'type': 'hidden', 'name': 'index', 'value': __.data('index') }),
+                $('<ul />', {
+                    'class': 'collection collection-unstyled',
+                    'html': [
+                        $('<li />', {
+                            'class': 'collection-item',
+                            'css': { 'padding-top': 0, 'padding-bottom': 0 },
+                            'html': $('<span />', { 'class': 'grey-text text-lighten-2', 'html': 'Duygu Analizi' })
+                        }),
+                        $('<li />', {
+                            'class': 'collection-item d-flex flex-wrap',
+                            'html': [
+                                $('<label />', {
+                                    'class': 'flex-fill align-self-center',
+                                    'css': { 'width': '50%' },
+                                    'html': [
+                                        $('<input />', {
+                                            'type': 'radio',
+                                            'name': 'sentiment',
+                                            'value': 'pos'
+                                        }),
+                                        $('<span />', {
+                                            'html': 'Pozitif'
+                                        })
+                                    ]
+                                }),
+                                $('<label />', {
+                                    'class': 'flex-fill align-self-center',
+                                    'css': { 'width': '50%' },
+                                    'html': [
+                                        $('<input />', {
+                                            'type': 'radio',
+                                            'name': 'sentiment',
+                                            'value': 'neu'
+                                        }),
+                                        $('<span />', {
+                                            'html': 'Nötr'
+                                        })
+                                    ]
+                                }),
+                                $('<label />', {
+                                    'class': 'flex-fill align-self-center',
+                                    'css': { 'width': '50%' },
+                                    'html': [
+                                        $('<input />', {
+                                            'type': 'radio',
+                                            'name': 'sentiment',
+                                            'value': 'neg'
+                                        }),
+                                        $('<span />', {
+                                            'html': 'Negatif'
+                                        })
+                                    ]
+                                }),
+                                $('<label />', {
+                                    'class': 'flex-fill align-self-center',
+                                    'css': { 'width': '50%' },
+                                    'html': [
+                                        $('<input />', {
+                                            'type': 'radio',
+                                            'name': 'sentiment',
+                                            'value': 'hte'
+                                        }),
+                                        $('<span />', {
+                                            'html': 'Nefret'
+                                        })
+                                    ]
+                                })
+                            ]
+                        }),
+                        $('<li />', {
+                            'class': 'collection-item',
+                            'css': { 'padding-top': 0, 'padding-bottom': 0 },
+                            'html': $('<span />', { 'class': 'grey-text text-lighten-2', 'html': 'Müşteri Analizi' })
+                        }),
+                        $('<li />', {
+                            'class': 'collection-item d-flex flex-wrap',
+                            'html': [
+                                $('<label />', {
+                                    'class': 'flex-fill align-self-center',
+                                    'css': { 'width': '50%' },
+                                    'html': [
+                                        $('<input />', {
+                                            'type': 'radio',
+                                            'name': 'consumer',
+                                            'value': 'que'
+                                        }),
+                                        $('<span />', {
+                                            'html': 'Soru'
+                                        })
+                                    ]
+                                }),
+                                $('<label />', {
+                                    'class': 'flex-fill align-self-center',
+                                    'css': { 'width': '50%' },
+                                    'html': [
+                                        $('<input />', {
+                                            'type': 'radio',
+                                            'name': 'consumer',
+                                            'value': 'req'
+                                        }),
+                                        $('<span />', {
+                                            'html': 'İstek'
+                                        })
+                                    ]
+                                }),
+                                $('<label />', {
+                                    'class': 'flex-fill align-self-center',
+                                    'css': { 'width': '50%' },
+                                    'html': [
+                                        $('<input />', {
+                                            'type': 'radio',
+                                            'name': 'consumer',
+                                            'value': 'cmp'
+                                        }),
+                                        $('<span />', {
+                                            'html': 'Şikayet'
+                                        })
+                                    ]
+                                }),
+                                $('<label />', {
+                                    'class': 'flex-fill align-self-center',
+                                    'css': { 'width': '50%' },
+                                    'html': [
+                                        $('<input />', {
+                                            'type': 'radio',
+                                            'name': 'consumer',
+                                            'value': 'nws'
+                                        }),
+                                        $('<span />', {
+                                            'html': 'Haber'
+                                        })
+                                    ]
+                                })
+                            ]
+                        }),
+                        $('<li />', {
+                            'class': 'collection-item d-flex',
+                            'html': [
+                                $('<i />', {
+                                    'class': 'material-icons align-self-center mr-1 red-text',
+                                    'html': 'warning'
+                                }),
+                                $('<span />', {
+                                    'class': 'align-self-center red-text',
+                                    'html': 'Bu içerik için mevcut sınıflama Olive tarafından oluşturulmuştur. Sınıflandırma doğru değilse, lütfen doğru seçeneği Olive\'e bildirin.'
+                                })
+                            ]
+                        })
+                    ]
+                })
+            ]
+        }),
+        'size': 'modal-medium',
+        'title': 'Sınıflandır',
+        'options': {},
+        'footer': [
+            $('<a />', {
+                'href': '#',
+                'class': 'modal-close waves-effect btn-flat grey-text',
+                'html': buttons.cancel
+            }),
+            $('<span />', {
+                'html': ' '
+            }),
+            $('<button />', {
+                'type': 'submit',
+                'class': 'waves-effect btn-flat',
+                'data-submit': 'form#updateClass-form',
+                'html': buttons.ok
+            })
+        ]
+    })
 })
 
 function __analysis_create(__, obj)
@@ -138,214 +325,204 @@ function __analysis_create(__, obj)
     }
 }
 
+function __update_class(__, obj)
+{
+    if (obj.status == 'ok')
+    {
+        $('#modal-updateClass').modal('close')
+
+        return modal({
+            'id': 'alert',
+            'body': 'Veri gönderdiğiniz değerlere göre tekrar sınıflandırılacak.',
+            'title': 'Teşekkürler',
+            'size': 'modal-small',
+            'options': {},
+            'footer': [
+               $('<a />', {
+                   'href': '#',
+                   'class': 'modal-close waves-effect btn-flat',
+                   'html': buttons.ok
+               })
+            ]
+        })
+    }
+}
+
+function stacker(items, type)
+{
+    var _key = '';
+    var _val = 0;
+
+    $.each(items, function(key, val) {
+        if (val >= _val)
+        {
+            _key = key;
+            _val = val;
+        }
+    })
+
+    _val = (_val * 100).toFixed(0);
+
+    switch (type)
+    {
+        case 'sentiment':
+            var _titles = {
+                'pos': 'Pozitif',
+                'neg': 'Negatif',
+                'neu': 'Nötr',
+                'hte': 'Nefret Söylemi'
+            };
+
+            var _class = {
+                'pos': 'green',
+                'neg': 'red',
+                'neu': 'grey',
+                'hte': 'black'
+            };
+
+            return (items.pos == 0.25 && items.neu == 0.25 && items.neg == 0.25 && items.hte == 0.25) ?
+            {
+                'key': 'neu',
+                'val': 100,
+                'title': _titles['neu'],
+                'class': _class['neu']
+            }
+            :
+            {
+                'key': _key,
+                'val': _val,
+                'title': _titles[_key],
+                'class': _class[_key]
+            };
+        break;
+        case 'consumer':
+            var _titles = {
+                'req': 'İSTEK',
+                'que': 'SORU',
+                'cmp': 'ŞİKAYET',
+                'nws': 'HABER'
+            };
+
+            var _class = {
+                'req': '',
+                'que': '',
+                'cmp': '',
+                'nws': ''
+            };
+
+            return (items.que == 0.25 && items.req == 0.25 && items.cmp == 0.25 && items.nws == 0.25) ?
+            {
+                'key': null,
+                'val': null,
+                'title': null,
+                'class': 'hide'
+            }
+            :
+            {
+                'key': _key,
+                'val': _val,
+                'title': _titles[_key],
+                'class': _class[_key]
+            };
+        break;
+    }
+}
+
 function __joints(o)
 {
+    var _sentiment = stacker(o.sentiment, 'sentiment');
+    var _consumer = stacker(o.consumer, 'consumer');
+
     var card = $('<div />', {
         'html': [
             $('<time>', {
                 'html': o.created_at,
                 'class': 'd-table mb-1'
             }),
-            $('<a />', {
-                'class': 'btn-flat btn-floating waves-effect read-aloud',
-                'href': '#',
-                'html': $('<i />', {
-                    'class': 'material-icons',
-                    'html': 'volume_up',
-                    'css': { 'font-size': '24px' }
-                })
-            }),
-            $('<span />', { 'html': ' ' }),
-            $('<a />', {
-                'class': 'btn-flat btn-floating waves-effect',
-                'href': '/db/' + o._index + '/' + o._type + '/' + o._id,
-                'html': $('<i />', {
-                    'class': 'material-icons',
-                    'html': 'info',
-                    'css': { 'font-size': '24px' }
-                })
-            }),
-            $('<span />', { 'html': ' ' }),
-            $('<a />', {
-                'href': '#',
-                'html': $('<i />', {
-                    'class': 'material-icons',
-                    'html': 'add',
-                    'css': { 'font-size': '24px' }
-                }),
-                'class': 'btn-flat btn-floating waves-effect json',
-                'data-href': '/pinleme/add',
-                'data-method': 'post',
-                'data-include': 'group_id',
-                'data-callback': '__pin',
-                'data-error-callback': '__pin_dock',
-                'data-trigger': 'pin',
-                'data-id': o._id,
-                'data-pin-uuid': o.uuid,
-                'data-index': o._index,
-                'data-type': o._type
-            }).addClass($('[data-name=pin-dock-trigger]').length ? '' : 'hide'),
-            $('<span />', { 'html': ' ' }),
-            $('<a />', {
-                'class': 'btn-flat btn-floating waves-effect hide',
-                'href': '#',
-                'data-trigger': 'create_analysis',
-                'data-index': o._index,
-                'data-type': o._type,
-                'data-id': o._id,
-                'html': $('<i />', {
-                    'class': 'material-icons',
-                    'html': 'pie_chart',
-                    'css': { 'font-size': '24px' }
-                })
-            }).removeClass((o._type == 'tweet' || o._type == 'media' || o._type == 'video' || o._type == 'comment') ? 'hide' : ''),
+
             $('<div />', {
-                'class': 'd-block d-hide sentimental'
+                'class': 'd-flex justify-content-between',
+                'html': [
+                    $('<div />', {
+                        'class': 'align-self-center',
+                        'html': [
+                            $('<a />', {
+                                'class': 'align-self-center btn-flat btn-floating waves-effect read-aloud',
+                                'href': '#',
+                                'html': $('<i />', {
+                                    'class': 'material-icons',
+                                    'html': 'volume_up',
+                                    'css': { 'font-size': '24px' }
+                                })
+                            }),
+                            $('<span />', { 'html': ' ' }),
+                            $('<a />', {
+                                'class': 'align-self-center btn-flat btn-floating waves-effect',
+                                'href': '/db/' + o._index + '/' + o._type + '/' + o._id,
+                                'html': $('<i />', {
+                                    'class': 'material-icons',
+                                    'html': 'info',
+                                    'css': { 'font-size': '24px' }
+                                })
+                            }),
+                            $('<span />', { 'html': ' ' }),
+                            $('<a />', {
+                                'href': '#',
+                                'html': $('<i />', {
+                                    'class': 'material-icons',
+                                    'html': 'add',
+                                    'css': { 'font-size': '24px' }
+                                }),
+                                'class': 'align-self-center btn-flat btn-floating waves-effect json',
+                                'data-href': '/pinleme/add',
+                                'data-method': 'post',
+                                'data-include': 'group_id',
+                                'data-callback': '__pin',
+                                'data-error-callback': '__pin_dock',
+                                'data-trigger': 'pin',
+                                'data-id': o._id,
+                                'data-pin-uuid': o.uuid,
+                                'data-index': o._index,
+                                'data-type': o._type
+                            }).addClass($('[data-name=pin-dock-trigger]').length ? '' : 'hide'),
+                            $('<span />', { 'html': ' ' }),
+                            $('<a />', {
+                                'class': 'align-self-center btn-flat btn-floating waves-effect hide',
+                                'href': '#',
+                                'data-trigger': 'createAnalysis',
+                                'data-index': o._index,
+                                'data-type': o._type,
+                                'data-id': o._id,
+                                'html': $('<i />', {
+                                    'class': 'material-icons',
+                                    'html': 'pie_chart',
+                                    'css': { 'font-size': '24px' }
+                                })
+                            }).removeClass((o._type == 'tweet' || o._type == 'media' || o._type == 'video' || o._type == 'comment') ? 'hide' : '')
+                        ]
+                    }),
+                    $('<div />', {
+                        'class': 'd-flex align-self-center',
+                        'html': [
+                            $('<small />', {
+                                'class': 'align-self-center',
+                                'html': _consumer['title']
+                            }).addClass(_consumer.class),
+                            $('<a />', {
+                                'class': 'btn-flat btn-small btn-floating waves-effect white-text align-self-center ml-1',
+                                'html': $('<small />', { 'html': _sentiment.val + '%' }),
+                                'data-trigger': 'updateClass',
+                                'data-type': 'sentiment',
+                                'data-index': o._index,
+                                'data-type': o._type,
+                                'data-id': o._id
+                            }).addClass(_sentiment.class)
+                        ]
+                    })
+                ]
             })
         ]
     })
-
-    if (o.sentiment)
-    {
-        if (o.sentiment.pos != 0.25 && o.sentiment.neu != 0.25 && o.sentiment.neg != 0.25 && o.sentiment.hte != 0.25)
-        {
-            card.find('.sentimental')
-                .append(
-                    $('<ul />', {
-                        'class': 'd-flex mt-1',
-                        'html': [
-                            $('<li />', {
-                                'class': 'flex-fill green',
-                                'css': {
-                                    'width': (o.sentiment.pos*100) + '%',
-                                    'height': '2px'
-                                },
-                                'html': $('<small />', {
-                                    'class': 'grey-text hide-on-med-and-down',
-                                    'css': {
-                                        'white-space': 'nowrap'
-                                    },
-                                    'html': (o.sentiment.pos*100).toFixed(2) + '%'
-                                }).addClass(o.sentiment.pos < 0.25 ? 'hide' : '')
-                            }),
-                            $('<li />', {
-                                'class': 'flex-fill grey',
-                                'css': {
-                                    'width': (o.sentiment.neu*100) + '%',
-                                    'height': '2px'
-                                },
-                                'html': $('<small />', {
-                                    'class': 'grey-text hide-on-med-and-down',
-                                    'css': {
-                                        'white-space': 'nowrap'
-                                    },
-                                    'html': (o.sentiment.neu*100).toFixed(2) + '%'
-                                }).addClass(o.sentiment.neu < 0.25 ? 'hide' : '')
-                            }),
-                            $('<li />', {
-                                'class': 'flex-fill red',
-                                'css': {
-                                    'width': (o.sentiment.neg*100) + '%',
-                                    'height': '2px'
-                                },
-                                'html': $('<small />', {
-                                    'class': 'grey-text hide-on-med-and-down',
-                                    'css': {
-                                        'white-space': 'nowrap'
-                                    },
-                                    'html': (o.sentiment.neg*100).toFixed(2) + '%'
-                                }).addClass(o.sentiment.neg < 0.25 ? 'hide' : '')
-                            }),
-                            $('<li />', {
-                                'class': 'flex-fill grey darken-2',
-                                'css': {
-                                    'width': (o.sentiment.hte*100) + '%',
-                                    'height': '2px'
-                                },
-                                'html': $('<small />', {
-                                    'class': 'grey-text hide-on-med-and-down',
-                                    'css': {
-                                        'white-space': 'nowrap'
-                                    },
-                                    'html': (o.sentiment.hte*100).toFixed(2) + '%'
-                                }).addClass(o.sentiment.hte < 0.25 ? 'hide' : '')
-                            })
-                        ]
-                    })
-                )
-        }
-    }
-
-    if (o.consumer)
-    {
-        if (o.consumer.que != 0.25 && o.consumer.req != 0.25 && o.consumer.cmp != 0.25 && o.consumer.nws != 0.25)
-        {
-        card.find('.sentimental')
-            .append(
-                $('<ul />', {
-                    'class': 'd-flex mt-2',
-                    'html': [
-                        $('<li />', {
-                            'class': 'flex-fill grey',
-                            'css': {
-                                'width': (o.consumer.que*100) + '%',
-                                'height': '2px'
-                            },
-                            'html': $('<small />', {
-                                'class': 'grey-text hide-on-med-and-down',
-                                'css': {
-                                    'white-space': 'nowrap'
-                                },
-                                'html': 'Soru: ' + (o.consumer.que*100).toFixed(2) + '%'
-                            }).addClass(o.consumer.que < 0.25 ? 'hide' : '')
-                        }),
-                        $('<li />', {
-                            'class': 'flex-fill grey darken-1',
-                            'css': {
-                                'width': (o.consumer.req*100) + '%',
-                                'height': '2px'
-                            },
-                            'html': $('<small />', {
-                                'class': 'grey-text hide-on-med-and-down',
-                                'css': {
-                                    'white-space': 'nowrap'
-                                },
-                                'html': 'İstek: ' + (o.consumer.req*100).toFixed(2) + '%'
-                            }).addClass(o.consumer.req < 0.25 ? 'hide' : '')
-                        }),
-                        $('<li />', {
-                            'class': 'flex-fill grey darken-2',
-                            'css': {
-                                'width': (o.consumer.cmp*100) + '%',
-                                'height': '2px'
-                            },
-                            'html': $('<small />', {
-                                'class': 'grey-text hide-on-med-and-down',
-                                'css': {
-                                    'white-space': 'nowrap'
-                                },
-                                'html': 'Şikayet: ' + (o.consumer.cmp*100).toFixed(2) + '%'
-                            }).addClass(o.consumer.cmp < 0.25 ? 'hide' : '')
-                        }),
-                        $('<li />', {
-                            'class': 'flex-fill grey darken-3',
-                            'css': {
-                                'width': (o.consumer.nws*100) + '%',
-                                'height': '2px'
-                            },
-                            'html': $('<small />', {
-                                'class': 'grey-text hide-on-med-and-down',
-                                'css': {
-                                    'white-space': 'nowrap'
-                                },
-                                'html': 'Haber: ' + (o.consumer.nws*100).toFixed(2) + '%'
-                            }).addClass(o.consumer.nws < 0.25 ? 'hide' : '')
-                        })
-                    ]
-                })
-            )
-        }
-    }
 
     if (o.place)
     {

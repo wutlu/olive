@@ -193,6 +193,7 @@
         @if ($invoice->paid_at)
             <div class="row-col seal">
                 <img id="seal" alt="veri.zone-logo" src="{{ asset('img/maliye-damga.svg') }}" />
+                <small style="display: table; margin: 0 auto; max-width: 100px; opacity: .4;">Bu fatura sayfasının resmi bir geçerliliği yoktur. Gerçeğini temsil eder. Gerçek fatura adresinize gönderilmiştir.</small>
             </div>
         @endif
 

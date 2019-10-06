@@ -343,7 +343,7 @@
             'platforms' => 'Platform Geçmişi',
             'langs' => 'Dil Geçmişi',
             'mention_out' => 'Andığı Kişiler',
-            'mention_in' => 'Anıldığı Kişiler',
+            //'mention_in' => 'Anıldığı Kişiler',
             'hashtags' => 'Hashtag Geçmişi',
             'places' => 'Konum Geçmişi'
         ] as $key => $model

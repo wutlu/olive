@@ -372,6 +372,8 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
     }
 @endpush
 
+@include('_inc.alerts.search_operators')
+
 @section('wildcard')
     <div class="d-flex" id="search-area">
         <a href="#" class="flex-fill d-flex" data-trigger="clear">
@@ -382,6 +384,12 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
             class="flex-fill d-flex"
             data-trigger="save">
             <i class="material-icons align-self-center">save</i>
+        </a>
+        <a
+            href="#"
+            class="flex-fill d-flex"
+            data-trigger="info">
+            <i class="material-icons align-self-center">help</i>
         </a>
         <input
             type="text"
@@ -753,6 +761,7 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
             if (obj.stats.counts.twitter_tweet)
             {
                 $('[data-name=twitter-unique_users]').html(number_format(obj.stats.twitter.unique_users));
+                $('[data-name=twitter-verified_users]').html(number_format(obj.stats.twitter.verified_users));
                 $('[data-name=twitter-hashtags]').html(number_format(obj.stats.twitter.hashtags));
                 $('[data-name=twitter-mentions]').html(number_format(obj.stats.twitter.mentions));
             }
@@ -2272,6 +2281,10 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                                 <p class="mb-0 d-flex justify-content-end">
                                     <small class="grey-text">TEKİL KULLANICI</small>
                                     <small class="pl-1" data-name="twitter-unique_users">0</small>
+                                </p>
+                                <p class="mb-0 d-flex justify-content-end">
+                                    <small class="grey-text">DOĞRULANMIŞ HESAP</small>
+                                    <small class="pl-1" data-name="twitter-verified_users">0</small>
                                 </p>
                                 <p class="mb-0 d-flex justify-content-end">
                                     <small class="grey-text">MENTION</small>

@@ -5,6 +5,7 @@ return [
         'err' => 'Hata',
         'alert' => 'Uyarı',
         'ok' => 'Tamam',
+        'yes' => 'Evet',
         'create' => 'Oluştur',
         'save' => 'Kaydet',
         'cancel' => 'Vazgeç',

@@ -142,17 +142,6 @@
                     </div>
                 </div>
 
-                <div class="yellow-text text-darken-2">
-                    @component('components.alert')
-                        @slot('icon', 'info')
-                        @slot('text', 'Tüm alanlar '.config('formal.currency_text').' değerinde, 1 kullanıcı için geçerli özellik birim fiyatı olarak girilmelidir.')
-                    @endcomponent
-                    @component('components.alert')
-                        @slot('icon', 'info')
-                        @slot('text', 'Bu değerler özelliklerin maliyet değerleridir. Bu değerlerin altında ürün oluşturulmasına sistem müsade etmeyecektir.')
-                    @endcomponent
-                </div>
-
                 <ul class="item-group">
                     @foreach ([
                         'eagle' => 'Eagle',

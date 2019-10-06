@@ -1,5 +1,10 @@
 @extends('layouts.app', [
-    'sidenav_fixed_layout' => true
+    'sidenav_fixed_layout' => true,
+    'breadcrumb' => [
+        [
+            'text' => 'Ana Sayfa'
+        ]
+    ],
 ])
 
 @push('local.scripts')
@@ -420,9 +425,9 @@
     </div>
 
     <ul class="card">
-        <li class="card-content blue-grey">
-            <span class="card-title white-text">Güncel Forum Konuları</span>
-            <small class="blue-grey-text text-lighten-4">İlgili kategorilerde özgürce yardımlaşabilirsiniz.</small>
+        <li class="card-content">
+            <span class="card-title">Güncel Forum Konuları</span>
+            <small class="grey-text">İlgili kategorilerde özgürce yardımlaşabilirsiniz.</small>
         </li> 
         @forelse ($threads as $thread)
             @php
@@ -498,7 +503,6 @@
 @endsection
 
 @push('local.scripts')
-
     @if (session('validate'))
         M.toast({ html: 'Tebrikler! E-posta adresiniz doğrulandı!', classes: 'green darken-2' })
     @endif
@@ -510,5 +514,4 @@
     @if (session('deleted'))
         M.toast({ html: 'Organizasyon Silindi', classes: 'green darken-2' })
     @endif
-
 @endpush

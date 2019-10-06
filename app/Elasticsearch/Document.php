@@ -162,9 +162,12 @@ class Document
      *
      * @return object
      */
-    public static function patch(array $name, string $type, string $id, array $body = [])
+    public static function patch($name, string $type, string $id, array $body = [])
     {
-        $name = Indices::name($name);
+        if (is_array($name))
+        {
+            $name = Indices::name($name);
+        }
 
         $client = ClientBuilder::fromConfig([
             'hosts' => config('database.connections.elasticsearch.node.ips'),

@@ -16,8 +16,13 @@ use Carbon\Carbon;
 use App\Utilities\Term;
 
 use App\Http\Requests\SearchRequest;
+use App\Http\Requests\IdRequest;
 
 use System;
+
+use App\Http\Requests\ClassificationRequest;
+
+use App\Models\ReportedContents;
 
 class ContentController extends Controller
 {
@@ -43,6 +48,132 @@ class ContentController extends Controller
          * - Organizasyon Onayı
          */
         $this->middleware('can:organisation-status');
+    }
+
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * İçerik Bildirimi
+     *
+     * @return view
+     */
+    public static function reportedContents(int $pager = 10)
+    {
+        $data = ReportedContents::orderBy('id', 'DESC')->paginate($pager);
+
+        if ($data->total() > $pager && count($data) == 0)
+        {
+            return redirect()->route('reported_contents');
+        }
+
+        return view('content.reported_contents', compact('data', 'pager'));
+    }
+
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * İçerik Bildirimi, Sil
+     *
+     * @return array
+     */
+    public static function deleteContentReport(IdRequest $request)
+    {
+        $query = ReportedContents::where('id', $request->id)->delete();
+
+        return [
+            'status' => 'ok',
+            'data' => [
+                'id' => $request->id
+            ]
+        ];
+    }
+
+    /**
+     * İçerik Sınıflandır
+     *
+     * @return array
+     */
+    public static function classifier(ClassificationRequest $request)
+    {
+        $document = Document::get($request->index, $request->type, $request->id);
+
+        if ($document->status == 'ok')
+        {
+            $sources = [];
+
+            if ($request->sentiment)
+            {
+                $params['pos'] = $request->sentiment == 'pos' ? 0.55 : 0.15;
+                $params['neu'] = $request->sentiment == 'neu' ? 0.55 : 0.15;
+                $params['neg'] = $request->sentiment == 'neg' ? 0.55 : 0.15;
+                $params['hte'] = $request->sentiment == 'hte' ? 0.55 : 0.15;
+
+                $sources[] = 'ctx._source.sentiment.pos = params.pos;';
+                $sources[] = 'ctx._source.sentiment.neu = params.neu;';
+                $sources[] = 'ctx._source.sentiment.neg = params.neg;';
+                $sources[] = 'ctx._source.sentiment.hte = params.hte;';
+            }
+
+            if ($request->consumer)
+            {
+                $params['que'] = $request->consumer == 'que' ? 0.55 : 0.15;
+                $params['req'] = $request->consumer == 'req' ? 0.55 : 0.15;
+                $params['nws'] = $request->consumer == 'nws' ? 0.55 : 0.15;
+                $params['cmp'] = $request->consumer == 'cmp' ? 0.55 : 0.15;
+
+                $sources[] = 'ctx._source.consumer.que = params.que;';
+                $sources[] = 'ctx._source.consumer.req = params.req;';
+                $sources[] = 'ctx._source.consumer.nws = params.nws;';
+                $sources[] = 'ctx._source.consumer.cmp = params.cmp;';
+            }
+
+            try
+            {
+                Document::patch($request->index, $request->type, $request->id,
+                    [
+                        'script' => [
+                            'source' => implode(PHP_EOL, $sources),
+                            'params' => $params
+                        ]
+                    ]
+                );
+
+                ReportedContents::firstOrCreate(
+                    [
+                        '_id' => $request->id,
+                        '_type' => $request->type,
+                        '_index' => $request->index,
+                    ],
+                    [
+                        'sentiment' => $request->sentiment ? $request->sentiment : null,
+                        'consumer' => $request->consumer ? $request->consumer : null,
+                        'user_id' => auth()->user()->id
+                    ]
+                );
+            }
+            catch (\Exception $e)
+            {
+                System::log('Elasticsearch bağlantısı sağlanamadı.',
+                    'App\Http\Controllers\ContentController::classifier('.$request->index.', '.$request->type.', '.$request->id.')',
+                    10
+                );
+            }
+
+            return [
+                'status' => 'ok'
+            ];
+        }
+        else
+        {
+            return [
+                'status' => 'err',
+                'message' => 'Veritabanı bağlantısı sağlanamadı.'
+            ];
+        }
     }
 
     /**

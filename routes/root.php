@@ -23,6 +23,14 @@ Route::domain('olive.'.config('app.domain'))->group(function () {
         });
     });
 
+    # 
+    # içerik sınıflandırma
+    #
+    Route::prefix('icerik-siniflandirma')->group(function () {
+        Route::get('/', 'ContentController@reportedContents')->name('reported_contents');
+        Route::delete('sil', 'ContentController@deleteContentReport')->name('reported_contents.delete');
+    });
+
     Route::post('elasticsearch/index/durum', 'DataController@elasticsearchIndexStatus')->name('elasticsearch.index.status');
 
     Route::prefix('vekil-sunucu-yonetimi')->group(function () {

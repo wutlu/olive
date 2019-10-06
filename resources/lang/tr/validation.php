@@ -263,6 +263,7 @@ $arr = [
         'sentiment_neu'                   => 'Nötr Duygu',
         'sentiment_hte'                   => 'Nefret Söylemi Duygusu',
 
+        'consumer'                        => 'Müşteri',
         'consumer_que'                    => 'Soru Analizi',
         'consumer_req'                    => 'İstek Analizi',
         'consumer_cmp'                    => 'Şikayet Analizi',
