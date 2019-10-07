@@ -182,6 +182,15 @@ class Kernel extends ConsoleKernel
                                 return SystemUtility::option('trend.status.youtube_video') != 'on';
                              });
                 }
+                else if ($module == 'twitter_favorite')
+                {
+                    $schedule->command('nohup "trend:detect --module=twitter_favorite --time=\"-1 hours\" --redis=1" --type=restart')
+                             ->everyMinute()
+                             ->timezone(config('app.timezone'))
+                             ->skip(function() use($key) {
+                                return SystemUtility::option('trend.status.youtube_video') != 'on';
+                             });
+                }
                 else
                 {
                     $schedule->command('nohup "trend:detect --module='.$module.' --time=\"-10 minutes\" --redis=1" --type=restart')
