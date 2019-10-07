@@ -761,7 +761,9 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
             if (obj.stats.counts.twitter_tweet)
             {
                 $('[data-name=twitter-unique_users]').html(number_format(obj.stats.twitter.unique_users));
+                $('[data-name=twitter-reach]').html(number_format(obj.stats.twitter.reach));
                 $('[data-name=twitter-verified_users]').html(number_format(obj.stats.twitter.verified_users));
+                $('[data-name=twitter-followers]').html(number_format((obj.stats.twitter.followers).toFixed(0)));
                 $('[data-name=twitter-hashtags]').html(number_format(obj.stats.twitter.hashtags));
                 $('[data-name=twitter-mentions]').html(number_format(obj.stats.twitter.mentions));
             }
@@ -2268,7 +2270,7 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                     <tbody>
                         <tr>
                             <td style="font-size: 20px; text-transform: uppercase;" class="pb-0 right-align">
-                                <strong data-name="twitter-tweet" style="font-weight: bold;">0</strong>
+                                <strong data-name="twitter-tweet" style="font-weight: bold;">0</strong> / <strong data-name="twitter-reach" data-tooltip="RT, ALINTI, CEVAP">0</strong>
                                 <span class="grey-text">tweet</span>
                             </td>
                             <td style="font-size: 20px; text-transform: uppercase;" class="pb-0 right-align">
@@ -2285,6 +2287,10 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                                 <p class="mb-0 d-flex justify-content-end">
                                     <small class="grey-text">DOĞRULANMIŞ HESAP</small>
                                     <small class="pl-1" data-name="twitter-verified_users">0</small>
+                                </p>
+                                <p class="mb-0 d-flex justify-content-end">
+                                    <small class="grey-text">ORTALAMA TAKİPÇİ</small>
+                                    <small class="pl-1" data-name="twitter-followers">0</small>
                                 </p>
                                 <p class="mb-0 d-flex justify-content-end">
                                     <small class="grey-text">MENTION</small>

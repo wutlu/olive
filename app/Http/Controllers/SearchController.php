@@ -287,6 +287,8 @@ class SearchController extends Controller
                         $twitter_q['aggs']['hashtags'] = [ 'nested' => [ 'path' => 'entities.hashtags' ], 'aggs' => [ 'xxx' => [ 'terms' => [ 'field' => 'entities.hashtags.hashtag' ] ] ] ];
                         $twitter_q['aggs']['unique_users'] = [ 'cardinality' => [ 'field' => 'user.id' ] ];
                         $twitter_q['aggs']['verified_users'] = [ 'filter' => [ 'exists' => [ 'field' => 'user.verified' ] ] ];
+                        $twitter_q['aggs']['followers'] = [ 'avg' => [ 'field' => 'user.counts.followers' ] ];
+                        $twitter_q['aggs']['reach'] = [ 'terms' => [ 'field' => 'external.id' ] ];
 
                         $tweet_data = self::tweet($request, $twitter_q);
 
@@ -294,6 +296,8 @@ class SearchController extends Controller
                         $stats['twitter']['hashtags'] = @$tweet_data['aggs']['hashtags']['doc_count'];
                         $stats['twitter']['unique_users'] = @$tweet_data['aggs']['unique_users']['value'];
                         $stats['twitter']['verified_users'] = @$tweet_data['aggs']['verified_users']['doc_count'];
+                        $stats['twitter']['followers'] = @$tweet_data['aggs']['followers']['value'];
+                        $stats['twitter']['reach'] = @$tweet_data['aggs']['reach']['sum_other_doc_count'];
 
                         $stats['hits'] = $stats['hits'] + $tweet_data['stats']['total'];
                         $stats['counts']['twitter_tweet'] = $tweet_data['stats']['total'];
