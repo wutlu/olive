@@ -24,7 +24,7 @@ class TrendRequest extends FormRequest
     public function rules()
     {
         return [
-            'module' => 'required|string|in:news,entry,youtube_video,google,twitter_tweet,twitter_hashtag,blog,instagram_hashtag'
+            'module' => 'required|string|in:news,entry,youtube_video,google,twitter_tweet,twitter_favorite,twitter_hashtag,blog,instagram_hashtag'
         ];
     }
 }

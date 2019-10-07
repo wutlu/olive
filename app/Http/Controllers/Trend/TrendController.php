@@ -69,6 +69,10 @@ class TrendController extends Controller
                 'name' => 'Twitter, Tweet',
                 'icon' => asset('img/logos/twitter.svg')
             ],
+            'twitter_favorite' => [
+                'name' => 'Twitter, Favori',
+                'icon' => asset('img/logos/twitter.svg')
+            ],
         ];
     }
 
@@ -83,6 +87,10 @@ class TrendController extends Controller
             [
                 'title' => 'Twitter, Tweet',
                 'module' => 'twitter_tweet',
+            ],
+            [
+                'title' => 'Twitter, Favori',
+                'module' => 'twitter_favorite',
             ],
             [
                 'title' => 'Twitter, Hashtag',

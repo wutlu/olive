@@ -73,6 +73,7 @@ class Detect extends Command
 
         $modules = [
             'twitter_tweet',
+            'twitter_favorite',
             'twitter_hashtag',
             'instagram_hashtag',
             'news',
@@ -144,6 +145,9 @@ class Detect extends Command
             case 'twitter_tweet':
                 $data = $this->twitterTweet($time);
             break;
+            case 'twitter_favorite':
+                $data = $this->twitterFavorite($time);
+            break;
             case 'twitter_hashtag':
                 $data = $this->twitterHashtag($time);
             break;
@@ -191,6 +195,36 @@ class Detect extends Command
                 switch ($module)
                 {
                     case 'twitter_tweet':
+                        $pop_trend_id = $item['user']['id'];
+                        $pop_trend_details = [
+                            'id' => $item['user']['id'],
+                            'screen_name' => $item['user']['screen_name'],
+                            'name' => $item['user']['name'],
+                            'image' => $item['user']['image'],
+                            'verified' => @$item['user']['verified'] ? true : false
+                        ];
+
+                        $arr['id'] = implode('-', [ $module, $group, $item['id'] ]);
+                        $raw = [
+                            'id' => $item['id'],
+                            'text' => $item['text'],
+                            'created_at' => $item['created_at'],
+                            'user' => [
+                                'id' => $item['user']['id'],
+                                'screen_name' => $item['user']['screen_name'],
+                                'name' => $item['user']['name'],
+                                'image' => $item['user']['image']
+                            ]
+                        ];
+
+                        if (@$item['user']['verified'])
+                        {
+                            $raw['user']['verified'] = true;
+                        }
+
+                        $arr['data'] = $raw;
+                    break;
+                    case 'twitter_favorite':
                         $pop_trend_id = $item['user']['id'];
                         $pop_trend_details = [
                             'id' => $item['user']['id'],
@@ -400,7 +434,7 @@ class Detect extends Command
     }
 
     /**
-     * Twitter Hashtags
+     * Twitter Tweet
      *
      * @return array
      */
@@ -495,6 +529,75 @@ class Detect extends Command
                     $data = $hits;
                 }
             }
+        }
+
+        return $data;
+    }
+
+    /**
+     * Twitter Favorite
+     *
+     * @return array
+     */
+    private function twitterFavorite(string $time)
+    {
+        $data = [];
+
+        $search = Document::search([ 'twitter', 'tweets', '*' ], 'tweet', [
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [ 'match' => [ 'lang' => 'tr' ] ],
+                        [
+                            'range' => [ 'illegal.bet' => [ 'lte' => 0.3 ] ],
+                            'range' => [ 'illegal.nud' => [ 'lte' => 0.3 ] ],
+                        ]
+                    ],
+                    'must_not' => [
+                        [
+                            'exists' => [ 'field' => 'external.id' ]
+                        ]
+                    ],
+                    'filter' => [
+                        [
+                            'range' => [
+                                'created_at' => [
+                                    'format' => 'YYYY-MM-dd HH:mm',
+                                    'gte' => date('Y-m-d H:i', strtotime($time))
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'sort' => [ 'counts.favorite' => 'desc' ],
+            '_source' => [
+                'id',
+                'text',
+                'created_at',
+                'user.id',
+                'user.screen_name',
+                'user.name',
+                'user.image',
+                'user.verified',
+                'counts.favorite',
+            ],
+            'size' => 50
+        ]);
+
+        if ($search->status == 'ok')
+        {
+            $hits = $search->data['hits']['hits'];
+            $hits = array_map(function($arr) {
+                return array_merge(
+                    $arr['_source'],
+                    [
+                        'hit' => $arr['_source']['counts']['favorite']
+                    ]
+                );
+            }, $search->data['hits']['hits']);
+
+            $data = $hits;
         }
 
         return $data;

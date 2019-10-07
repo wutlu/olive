@@ -121,7 +121,7 @@
                     var item = (status == 'exists') ? __.find('[data-id=' + o.data.id + ']') : model.clone();
                         item.removeClass('model hide old').attr('data-id', o.data.id)
 
-                        item.find('[data-name=hit]').html(o.hit)
+                        item.find('[data-name=hit]').html(number_format(o.hit))
 
                         var rank = item.find('[data-name=rank]');
                             rank.html(o.rank)
@@ -159,6 +159,28 @@
                         }
 
                         if (__.data('module') == 'twitter_tweet')
+                        {
+                            var avatar = item.find('[data-name=image]');
+                                avatar.attr('src', o.data.user.image)
+                                      .removeClass('hide')
+                                      .addClass('circle')
+                                      .attr('alt', o.data.user.name)
+
+                            if (o.data.user.verified)
+                            {
+                                avatar.addClass('verified')
+                            }
+
+                            item.find('[data-name=title-1]').removeClass('hide').html(o.data.user.name)
+                            item.find('[data-name=title-2]').removeClass('hide').html('@' + o.data.user.screen_name)
+                            item.find('[data-name=created_at]').removeClass('hide').html(o.data.created_at)
+
+                            var date = o.data.created_at.split('-');
+
+                            links.olive = '/db/{{ config('system.db.alias') }}__twitter-tweets-' + date[0] + '.' + date[1] + '/tweet/' + o.data.id;
+                            links.twitter = 'https://twitter.com/' + o.data.user.screen_name + '/status/' + o.data.id;
+                        }
+                        else if (__.data('module') == 'twitter_favorite')
                         {
                             var avatar = item.find('[data-name=image]');
                                 avatar.attr('src', o.data.user.image)
@@ -513,6 +535,13 @@
             popover: {
                 title: 'Twitter, Tweet',
                 description: 'Son 1 dakika içerisinde paylaşılan Türkçe Tweetler arasında en çok etkileşim alan Tweetler.'
+            }
+        },
+        {
+            element: '#card-twitter_favorite',
+            popover: {
+                title: 'Twitter, Tweet',
+                description: 'Son 1 saat içerisinde paylaşılan Türkçe Tweetler arasında en çok beğenilen Tweetler.'
             }
         },
         {

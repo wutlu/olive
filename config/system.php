@@ -197,6 +197,7 @@ Yapı Sektörü
         'trend.status.instagram_hashtag' => 'Instagram Hashtag',
         'trend.status.facebook' => 'Facebook',
         'trend.status.twitter_tweet' => 'Twitter Tweet',
+        'trend.status.twitter_favorite' => 'Twitter Favori',
         'trend.status.twitter_hashtag' => 'Twitter Hashtag',
     ],
 
@@ -219,6 +220,7 @@ Yapı Sektörü
         'trend.status.google' => 'string|in:on,off',
         'trend.status.news' => 'string|in:on,off',
         'trend.status.twitter_tweet' => 'string|in:on,off',
+        'trend.status.twitter_favorite' => 'string|in:on,off',
         'trend.status.twitter_hashtag' => 'string|in:on,off',
         'trend.status.sozluk' => 'string|in:on,off',
         'trend.status.forum' => 'string|in:on,off',

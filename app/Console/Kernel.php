@@ -165,6 +165,7 @@ class Kernel extends ConsoleKernel
 
             foreach ([
                 'trend.status.twitter_tweet' => 'twitter_tweet',
+                'trend.status.twitter_favorite' => 'twitter_favorite',
                 'trend.status.twitter_hashtag' => 'twitter_hashtag',
                 'trend.status.instagram_hashtag' => 'instagram_hashtag',
                 'trend.status.news' => 'news',
