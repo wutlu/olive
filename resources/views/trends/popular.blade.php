@@ -74,7 +74,7 @@
                             <span class="d-block">hit trend</span>
                         </small>
                         <span class="align-self-center">
-                            @if ($item->module == 'twitter_tweet')
+                            @if ($item->module == 'twitter_tweet' || $item->module == 'twitter_favorite')
                                 <span class="d-flex">
                                     <img align="{{ $item->details['name'] }}" src="{{ $item->details['image'] }}" style="width: 32px; height: 32px;" class="align-self-center circle mr-1" />
                                     <span class="align-self-center">

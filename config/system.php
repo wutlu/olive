@@ -105,22 +105,6 @@ return [
         ],
         'category' => [
             'types' => [
-/*
-Alışveriş
-Basın - Yayın
-Dayanıklı Tüketim
-Enerji
-Fenomenler
-Giyim
-Hızlı Tüketim
-Internet
-Kurumsal
-Organizasyon
-Otomotiv
-Reklam - Pazarlama
-Ürün - Hizmet
-Yapı Sektörü
-*/
                 'category-1' =>  [ 'title' => 'Teknoloji',             'per' => 0.1 ],
                 'category-2' =>  [ 'title' => 'Kamu ve Siyaset',       'per' => 0.1 ],
                 'category-3' =>  [ 'title' => 'Spor',                  'per' => 0.1 ],
@@ -139,7 +123,7 @@ Yapı Sektörü
                 'category-16' => [ 'title' => 'Yemek',                 'per' => 0.1 ],
                 'category-17' => [ 'title' => 'Seyahat',               'per' => 0.1 ],
                 'category-18' => [ 'title' => 'Sağlık',                'per' => 0.1 ],
-                'category-19' => [ 'title' => 'Sektörel',              'per' => 0.1 ],
+                'category-19' => [ 'title' => 'Ürün & Hizmet',         'per' => 0.1 ],
                 'category-20' => [ 'title' => 'Markalar',              'per' => 0.1 ],
             ],
             'title' => 'Kategori Analizi'

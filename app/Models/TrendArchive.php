@@ -64,7 +64,7 @@ class TrendArchive extends Model
                             'type' => 'keyword' // 2018-52 | 2018.12 | 2018.12.31 | 2018.12.31-23 | 2018.12.31-23:59
                         ],
                         'module' => [
-                            'type' => 'keyword' // twitter_tweet, twitter_hashtag, news, entry, youtube_video, google, blog, instagram
+                            'type' => 'keyword' // twitter_tweet, twitter_favorite, twitter_hashtag, news, entry, youtube_video, google, blog, instagram
                         ],
                         'hit' => [
                             'type' => 'integer'

@@ -76,7 +76,7 @@
                                 @if ($document['_source']['module'] == 'youtube_video')
                                     <a class="green-text d-table" href="https://www.youtube.com/watch?v={{ $document['_source']['data']['id'] }}" target="_blank">https://www.youtube.com/watch?v={{ $document['_source']['data']['id'] }}</a>
                                 @endif
-                                @if ($document['_source']['module'] == 'twitter_tweet')
+                                @if ($document['_source']['module'] == 'twitter_tweet' || $document['_source']['module'] == 'twitter_favorite')
                                     <a class="green-text d-table" href="https://twitter.com/{{ $document['_source']['data']['user']['screen_name'] }}/status/{{ $document['_source']['data']['id'] }}" target="_blank">https://twitter.com/{{ $document['_source']['data']['user']['screen_name'] }}/status/{{ $document['_source']['data']['id'] }}</a>
                                 @endif
                                 @if ($document['_source']['module'] == 'twitter_hashtag')
