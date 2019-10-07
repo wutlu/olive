@@ -512,9 +512,6 @@
                 <i class="material-icons align-self-center mr-1">save</i>
                 Kayıtlı Aramalar
             </span>
-            <small class="blue-grey-text">
-                <a class="blue-grey-text text-darken-4" href="{{ route('search.dashboard') }}">Arama Motoru</a> ile oluşturulup kaydedilen sorguları bu alanda, akış halinde kullanabilirsiniz.
-            </small>
         </div>
         <ul class="collection collection-unstyled load hide"
             id="savedSearches"
@@ -535,6 +532,7 @@
             <li class="nothing hide">
                 @component('components.nothing')
                     @slot('size', 'small')
+                    @slot('text', 'İlk önce <a class="grey-text" href="'.route('search.dashboard').'">Arama Motoru</a> ile bir sorgu oluşturup kaydedin.')
                 @endcomponent
             </li>
         </ul>
