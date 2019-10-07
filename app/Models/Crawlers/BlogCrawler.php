@@ -48,6 +48,7 @@ class BlogCrawler extends Model
                             'analyzer' => 'turkish',
                             'fielddata' => true
                         ],
+                        'category' => [ 'type' => 'keyword' ],
                         'created_at' => [
                             'type' => 'date',
                             'format' => 'YYYY-MM-dd HH:mm:ss'

@@ -30,6 +30,7 @@ class YouTubeCrawler
                                     'analyzer' => 'turkish',
                                     'fielddata' => true
                                 ],
+                                'category' => [ 'type' => 'keyword' ],
                                 'tags' => [
                                     'type' => 'nested',
                                     'properties' => [
@@ -100,6 +101,7 @@ class YouTubeCrawler
                                     'analyzer' => 'turkish',
                                     'fielddata' => true
                                 ],
+                                'category' => [ 'type' => 'keyword' ],
                                 'video_id' => [ 'type' => 'keyword' ],
                                 'comment_id' => [ 'type' => 'keyword' ],
                                 'created_at' => [

@@ -121,6 +121,7 @@ class Selves extends Model
                                     'type' => 'keyword',
                                     'index' => false
                                 ],
+                                'category' => [ 'type' => 'keyword' ],
                                 'user' => [
                                     'properties' => [
                                         'id' => [ 'type' => 'long' ],

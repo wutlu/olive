@@ -54,6 +54,7 @@ class ShoppingCrawler extends Model
                             'analyzer' => 'turkish',
                             'fielddata' => true
                         ],
+                        'category' => [ 'type' => 'keyword' ],
                         'sentiment' => [
                             'properties' => [
                                 'neg' => [ 'type' => 'float' ],

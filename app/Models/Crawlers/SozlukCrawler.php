@@ -68,6 +68,7 @@ class SozlukCrawler extends Model
                             'analyzer' => 'turkish',
                             'fielddata' => true
                         ],
+                        'category' => [ 'type' => 'keyword' ],
                         'author' => [ 'type' => 'keyword' ],
                         'gender' => [ 'type' => 'keyword' ],
                         'created_at' => [
