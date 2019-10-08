@@ -504,6 +504,12 @@
                         <a href="#" class="subheader">Yönetici</a>
                     </li>
                     <li class="tiny">
+                        <a class="waves-effect" href="{{ route('analysis.dashboard') }}">
+                            <i class="material-icons">grain</i>
+                            Kelime Hafızası
+                        </a>
+                    </li>
+                    <li class="tiny">
                         <a class="waves-effect" href="#" data-name="organisation-route">
                             <i class="material-icons">group_work</i>
                             Organizasyonlar
@@ -542,12 +548,6 @@
                         <a class="waves-effect" href="{{ route('admin.page.list') }}">
                             <i class="material-icons">pages</i>
                             Sayfalar
-                        </a>
-                    </li>
-                    <li class="tiny">
-                        <a class="waves-effect" href="{{ route('analysis.dashboard') }}">
-                            <i class="material-icons">grain</i>
-                            Kelime Hafızası
                         </a>
                     </li>
                     <li class="tiny">
@@ -999,6 +999,7 @@
     var keywords = {!! json_encode(__('global.keywords')) !!};
     var verifications = {!! json_encode(__('global.verifications')) !!};
     var date = {!! json_encode(__('global.date')) !!};
+    var categories = {!! json_encode(config('system.analysis.category.types')) !!};
     </script>
     <!-- master scripts -->
     <script src="{{ asset('js/jquery.min.js?v='.config('system.version')) }}"></script>

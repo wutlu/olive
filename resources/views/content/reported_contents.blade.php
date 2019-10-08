@@ -30,15 +30,16 @@
                 @foreach ($data as $item)
                     <li class="collection-item d-flex justify-content-end" data-item-id="item-{{ $item->id }}">
                         <span class="d-flex align-self-center mr-auto">
-                            <a class="align-self-center" href="{{ route('content', [ 'es_index' => $item->_index, 'es_type' => $item->_type, 'es_id' => $item->_id ]) }}" target="_blank">
-                                {{ route('content', [ 'es_index' => $item->_index, 'es_type' => $item->_type, 'es_id' => $item->_id ]) }}
-                            </a>
+                            <a class="align-self-center" href="{{ route('content', [ 'es_index' => $item->_index, 'es_type' => $item->_type, 'es_id' => $item->_id ]) }}" target="_blank">{{ $item->_index }}</a>
                         </span>
                         @if ($item->sentiment)
-                            <span class="align-self-center mr-1">{{ $item->sentiment }}</span>
+                            <span class="align-self-center mr-1">{{ config('system.analysis.sentiment.types.sentiment-'.$item->sentiment)['title'] }}</span>
                         @endif
                         @if ($item->consumer)
-                            <span class="align-self-center mr-1">{{ $item->consumer }}</span>
+                            <span class="align-self-center mr-1">{{ config('system.analysis.consumer.types.consumer-'.$item->consumer)['title'] }}</span>
+                        @endif
+                        @if ($item->category)
+                            <span class="align-self-center mr-1">{{ config('system.analysis.category.types')[$item->category]['title'] }}</span>
                         @endif
                         <span class="align-self-center mr-1">{{ $item->user->email }}</span>
                         <span class="align-self-center mr-1">{{ date('d.m.Y H:i', strtotime($item->created_at)) }}</span>

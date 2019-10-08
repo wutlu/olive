@@ -28,7 +28,8 @@ class ClassificationRequest extends FormRequest
             'type' => 'required|string|in:tweet,entry,media,article,document,video,comment,product',
             'index' => 'required|string|max:255',
             'sentiment' => 'required_without:consumer|string|in:pos,neu,neg,hte',
-            'consumer' => 'required_without:sentiment|string|in:que,req,nws,cmp'
+            'consumer' => 'required_without:sentiment|string|in:que,req,nws,cmp',
+            'category' => 'nullable|string|in:'.implode(',', array_keys(config('system.analysis.category.types'))),
         ];
     }
 }

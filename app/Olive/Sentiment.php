@@ -120,15 +120,12 @@ class Sentiment {
      * @param str $sentence Text to analyze
      * @return int Score
      */
-    public function net($arr)
+    public function net($sentence, string $type)
     {
-        $scores = $this->score($arr);
+        $scores = $this->score($sentence);
         $max = array_keys($scores, max($scores));
 
-        return count($max) > 2 ? null : [
-            'id' => $max[0],
-            'name' => config('system.analysis.category.types')['category-'.$max[0]]['title']
-        ];
+        return count($max) > 2 ? null : config('system.analysis')[$type]['types'][$type.'-'.$max[0]]['title'];
     }
 
     /**

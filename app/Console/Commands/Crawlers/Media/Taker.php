@@ -61,7 +61,7 @@ class Taker extends Command
                     'source',
                     'site_id'
                 ],
-                'size' => 1000
+                'size' => 10000
             ]
         );
 

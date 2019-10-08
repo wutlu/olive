@@ -14,6 +14,7 @@ class ReportedContents extends Model
 		'_index',
 		'sentiment',
 		'consumer',
+        'category',
 		'user_id',
     ];
 

@@ -61,6 +61,9 @@ class TakerJob implements ShouldQueue
                 $sentiment = new Sentiment;
                 $sentiment->engine('sentiment');
 
+                $category = new Sentiment;
+                $category->engine('category');
+
                 $params = [
                     'title' => $item->data['title'],
                     'description' => $item->data['description'],
@@ -78,6 +81,14 @@ class TakerJob implements ShouldQueue
                     'ctx._source.status = params.status;',
                     'ctx._source.sentiment = params.sentiment;',
                 ];
+
+                $category_name = $category->net($item->data['description'], 'category');
+
+                if ($category_name)
+                {
+                    $params['category'] = $category_name;
+                    $sources[] = 'ctx._source.category = params.category;';
+                }
 
                 if (@$item->data['image_url'])
                 {

@@ -129,6 +129,9 @@ class VideoDetect extends Command
             $sentiment = new Sentiment;
             $sentiment->engine('sentiment');
 
+            $category = new Sentiment;
+            $category->engine('category');
+
             $consumer = new Sentiment;
             $consumer->engine('consumer');
 
@@ -150,6 +153,7 @@ class VideoDetect extends Command
                         [
                             'term' => $term,
                             'sentiment' => $sentiment,
+                            'category' => $category,
                             'consumer' => $consumer,
                             'illegal' => $illegal,
                             'gender' => $gender
@@ -184,6 +188,7 @@ class VideoDetect extends Command
                                             [
                                                 'term' => $term,
                                                 'sentiment' => $sentiment,
+                                                'category' => $category,
                                                 'consumer' => $consumer,
                                                 'illegal' => $illegal,
                                                 'gender' => $gender
@@ -252,12 +257,12 @@ class VideoDetect extends Command
     public static function video($item, $function)
     {
         $arr = [
-            'id'         => @$item->id->videoId ? $item->id->videoId : $item->id,
-            'title'      => $item->snippet->title,
+            'id' => @$item->id->videoId ? $item->id->videoId : $item->id,
+            'title' => $item->snippet->title,
             'created_at' => date('Y-m-d H:i:s', strtotime($item->snippet->publishedAt)),
-            'called_at'  => date('Y-m-d H:i:s'),
+            'called_at' => date('Y-m-d H:i:s'),
             'channel' => [
-                'id'    => $item->snippet->channelId,
+                'id' => $item->snippet->channelId,
                 'title' => $item->snippet->channelTitle,
                 'gender' => $function['gender']->detector([ $item->snippet->channelTitle ])
             ]
@@ -273,9 +278,16 @@ class VideoDetect extends Command
         if (@$item->snippet->description)
         {
             $arr['description'] = $function['term']->convertAscii($item->snippet->description);
-            $arr['sentiment']   = $function['sentiment']->score($arr['description']);
-            $arr['consumer']   = $function['consumer']->score($arr['description']);
-            $arr['illegal']   = $function['illegal']->score($arr['description']);
+            $arr['sentiment'] = $function['sentiment']->score($arr['description']);
+            $arr['consumer'] = $function['consumer']->score($arr['description']);
+            $arr['illegal'] = $function['illegal']->score($arr['description']);
+
+            $category_name = $function['category']->net($arr['description'], 'category');
+
+            if ($category_name)
+            {
+                $arr['category'] = $category_name;
+            }
         }
 
         if ($function['term']->languageDetector([ $arr['title'], @$arr['description'] ], 'tr'))

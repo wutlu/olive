@@ -2497,11 +2497,11 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                 </div>
             </div>
             <div>
-                <h6 class="blue-grey-text">Kategori <sup class="red-text">Yakında</sup></h6>
+                <h6 class="blue-grey-text">Kategori</h6>
                 <div class="d-flex flex-wrap"> 
                    @foreach(config('system.analysis.category.types') as $key => $cat)
                         <label class="flex-fill" style="width: 50%;">
-                            <input type="checkbox" disabled name="categories" id="categories" data-multiple="true" value="{{ $key }}" />
+                            <input data-update type="checkbox" name="categories" id="categories" data-multiple="true" value="{{ $key }}" />
                             <span>{{ $cat['title'] }}</span>
                         </label>
                     @endforeach

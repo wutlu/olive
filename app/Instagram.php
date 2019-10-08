@@ -173,7 +173,10 @@ class Instagram
         $illegal = new Sentiment;
         $illegal->engine('illegal');
 
-        return array_map(function($item) use ($method, $_arr, $sentiment, $consumer, $illegal) {
+        $category = new Sentiment;
+        $category->engine('category');
+
+        return array_map(function($item) use ($method, $_arr, $sentiment, $consumer, $illegal, $category) {
             $arr = [
                 'id' => $item->node->id,
                 'shortcode' => $item->node->shortcode,
@@ -201,6 +204,13 @@ class Instagram
             $arr['sentiment'] = $sentiment->score($text ? $text : '');
             $arr['consumer'] = $consumer->score($text ? $text : '');
             $arr['illegal'] = $illegal->score($text ? $text : '');
+
+            $category_name = $category->net($text ? $text : '', 'category');
+
+            if ($category_name)
+            {
+                $arr['category'] = $category_name;
+            }
 
             if ($text)
             {

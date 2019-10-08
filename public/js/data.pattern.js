@@ -272,6 +272,15 @@ $(document).on('click', '.read-aloud', function() {
                             ]
                         }),
                         $('<li />', {
+                            'class': 'collection-item',
+                            'css': { 'padding-top': 0, 'padding-bottom': 0 },
+                            'html': $('<span />', { 'class': 'grey-text text-lighten-2', 'html': 'Kategori' })
+                        }),
+                        $('<li />', {
+                            'class': 'collection-item d-flex flex-wrap',
+                            'data-name': 'change-categories'
+                        }),
+                        $('<li />', {
                             'class': 'collection-item d-flex',
                             'html': [
                                 $('<i />', {
@@ -308,6 +317,25 @@ $(document).on('click', '.read-aloud', function() {
             })
         ]
     })
+
+    $.each(categories, function(key, item) {
+        $('[data-name=change-categories]').append($('<label />', {
+            'class': 'flex-fill align-self-center',
+            'css': { 'width': '50%' },
+            'html': [
+                $('<input />', {
+                    'type': 'radio',
+                    'name': 'category',
+                    'value': key
+                }),
+                $('<span />', {
+                    'html': item.title
+                })
+            ]
+        }))
+    })
+
+    return mdl;
 })
 
 function __analysis_create(__, obj)
@@ -530,12 +558,17 @@ function __joints(o)
                         'class': 'd-flex align-self-center',
                         'html': [
                             $('<small />', {
-                                'class': 'align-self-center',
+                                'class': 'align-self-center ml-1',
+                                'html': o.category
+                            }).addClass(o.category ? '' : 'hide'),
+                            $('<small />', {
+                                'class': 'align-self-center ml-1',
                                 'html': _consumer['title']
                             }).addClass(_consumer.class),
                             $('<a />', {
                                 'class': 'btn-flat btn-small btn-floating waves-effect white-text align-self-center ml-1',
                                 'html': $('<small />', { 'html': _sentiment.val + '%' }),
+                                'data-category': o.category,
                                 'data-trigger': 'updateClass',
                                 'data-type': 'sentiment',
                                 'data-index': o._index,

@@ -85,7 +85,7 @@ class TakerJob implements ShouldQueue
                     'status' => 'ok'
                 ];
 
-                $source = [
+                $sources = [
                     'ctx._source.title = params.title;',
                     'ctx._source.breadcrumb = params.breadcrumb;',
                     'ctx._source.address = params.address;',
@@ -101,8 +101,19 @@ class TakerJob implements ShouldQueue
                     $params['description'] = $item->data['description'];
                     $params['sentiment'] = $sentiment->score($item->data['description']);
 
-                    $source[] = 'ctx._source.description = params.description;';
-                    $source[] = 'ctx._source.sentiment = params.sentiment;';
+                    $sources[] = 'ctx._source.description = params.description;';
+                    $sources[] = 'ctx._source.sentiment = params.sentiment;';
+
+                    $category = new Sentiment;
+                    $category->engine('category');
+
+                    $category_name = $category->net($item->data['description'], 'category');
+
+                    if ($category_name)
+                    {
+                        $params['category'] = $category_name;
+                        $sources[] = 'ctx._source.category = params.category;';
+                    }
                 }
 
                 if ($item->data['seller_phones'])
@@ -114,7 +125,7 @@ class TakerJob implements ShouldQueue
 
                 $upsert = Document::patch([ 'shopping', $crawler->id ], 'product', $this->data['id'], [
                     'script' => [
-                        'source' => implode(PHP_EOL, $source),
+                        'source' => implode(PHP_EOL, $sources),
                         'params' => $params
                     ]
                 ]);

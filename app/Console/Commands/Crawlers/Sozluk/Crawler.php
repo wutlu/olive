@@ -91,6 +91,9 @@ class Crawler extends Command
             $illegal = new Sentiment;
             $illegal->engine('illegal');
 
+            $category = new Sentiment;
+            $category->engine('category');
+
             while ($stream)
             {
                 $save          = false;
@@ -137,7 +140,7 @@ class Crawler extends Command
                             ]
                         ];
 
-                        $chunk['body'][] = [
+                        $arr = [
                             'id'         => $entry_id,
 
                             'url'        => $item->page,
@@ -158,6 +161,15 @@ class Crawler extends Command
                             'consumer'  => $consumer->score($item->data['entry']),
                             'illegal'  => $illegal->score($item->data['entry'])
                         ];
+
+                        $category_name = $category->net($item->data['entry'], 'category');
+
+                        if ($category_name)
+                        {
+                            $arr['category'] = $category_name;
+                        }
+
+                        $chunk['body'][] = $arr;
 
                         $errors = [];
 

@@ -103,44 +103,34 @@ class ContentController extends Controller
 
         if ($document->status == 'ok')
         {
-            $sources = [];
+            $arr = [];
 
             if ($request->sentiment)
             {
-                $params['pos'] = $request->sentiment == 'pos' ? 0.55 : 0.15;
-                $params['neu'] = $request->sentiment == 'neu' ? 0.55 : 0.15;
-                $params['neg'] = $request->sentiment == 'neg' ? 0.55 : 0.15;
-                $params['hte'] = $request->sentiment == 'hte' ? 0.55 : 0.15;
-
-                $sources[] = 'ctx._source.sentiment.pos = params.pos;';
-                $sources[] = 'ctx._source.sentiment.neu = params.neu;';
-                $sources[] = 'ctx._source.sentiment.neg = params.neg;';
-                $sources[] = 'ctx._source.sentiment.hte = params.hte;';
+                $arr['sentiment']['pos'] = $request->sentiment == 'pos' ? 0.55 : 0.15;
+                $arr['sentiment']['neu'] = $request->sentiment == 'neu' ? 0.55 : 0.15;
+                $arr['sentiment']['neg'] = $request->sentiment == 'neg' ? 0.55 : 0.15;
+                $arr['sentiment']['hte'] = $request->sentiment == 'hte' ? 0.55 : 0.15;
             }
 
             if ($request->consumer)
             {
-                $params['que'] = $request->consumer == 'que' ? 0.55 : 0.15;
-                $params['req'] = $request->consumer == 'req' ? 0.55 : 0.15;
-                $params['nws'] = $request->consumer == 'nws' ? 0.55 : 0.15;
-                $params['cmp'] = $request->consumer == 'cmp' ? 0.55 : 0.15;
+                $arr['consumer']['que'] = $request->consumer == 'que' ? 0.55 : 0.15;
+                $arr['consumer']['req'] = $request->consumer == 'req' ? 0.55 : 0.15;
+                $arr['consumer']['nws'] = $request->consumer == 'nws' ? 0.55 : 0.15;
+                $arr['consumer']['cmp'] = $request->consumer == 'cmp' ? 0.55 : 0.15;
+            }
 
-                $sources[] = 'ctx._source.consumer.que = params.que;';
-                $sources[] = 'ctx._source.consumer.req = params.req;';
-                $sources[] = 'ctx._source.consumer.nws = params.nws;';
-                $sources[] = 'ctx._source.consumer.cmp = params.cmp;';
+            if ($request->category)
+            {
+                $arr['category'] = config('system.analysis.category.types')[$request->category]['title'];
             }
 
             try
             {
-                Document::patch($request->index, $request->type, $request->id,
-                    [
-                        'script' => [
-                            'source' => implode(PHP_EOL, $sources),
-                            'params' => $params
-                        ]
-                    ]
-                );
+                $doc = Document::patch($request->index, $request->type, $request->id, [
+                    'doc' => $arr
+                ]);
 
                 ReportedContents::firstOrCreate(
                     [
@@ -151,6 +141,7 @@ class ContentController extends Controller
                     [
                         'sentiment' => $request->sentiment ? $request->sentiment : null,
                         'consumer' => $request->consumer ? $request->consumer : null,
+                        'category' => $request->category,
                         'user_id' => auth()->user()->id
                     ]
                 );

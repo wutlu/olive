@@ -490,7 +490,7 @@ class Crawler
             $breadcrumb = array_map(function ($breadcrumb) {
                 $text = trim($breadcrumb['#text'][0]);
 
-                return $text ? $text : $breadcrumb['a'][0]['title'];
+                return $text ? $text : trim($breadcrumb['a'][0]['#text'][0]);
             }, $breadcrumb);
 
             # seller name detect

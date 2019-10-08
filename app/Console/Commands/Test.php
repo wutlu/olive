@@ -38,9 +38,12 @@ class Test extends Command
      */
     public function handle()
     {
-        $sentiment = new Sentiment;
-        $sentiment->engine('category');
 
-        print_r($sentiment->net('Günaydın #Galatasaray Ailesi https://t.co/nnoKmbpraf bilim ile çalışmalı bence.'));
+        $category = new Sentiment;
+        $category->engine('category');
+        $text = '';
+            $category_name = $category->net($text ? $text : '', 'category');
+
+            print_r($category_name);
     }
 }

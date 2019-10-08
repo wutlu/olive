@@ -351,6 +351,21 @@ class Document
      *         }
      *     }
      * }
+
+     * curl -X POST "localhost:9201/olive__media-s/_delete_by_query" -H 'Content-Type: application/json' -d'
+     * {
+     *     "query": { 
+     *         "bool": {
+     *             "must": [
+     *                 {
+     *                     "match": {
+     *                         "status: "buffer"
+     *                     }
+     *                 }
+     *             ]
+     *         }
+     *     }
+     * }
      * '
 
      * curl -X POST "localhost:9201/oliveone__media-s14/_delete_by_query?pretty" -H 'Content-Type: application/json' -d'

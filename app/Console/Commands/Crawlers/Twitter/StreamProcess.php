@@ -196,6 +196,9 @@ class StreamProcess extends Command
             $illegal = new Sentiment;
             $illegal->engine('illegal');
 
+            $category = new Sentiment;
+            $category->engine('category');
+
             $bulk = [];
             $tracked_users = [];
 
@@ -229,6 +232,13 @@ class StreamProcess extends Command
                                 $tweet['consumer'] = $consumer->score($tweet['text']);
                                 $tweet['illegal'] = $illegal->score($tweet['text']);
 
+                                $category_name = $category->net($tweet['text'], 'category');
+
+                                if ($category_name)
+                                {
+                                    $tweet['category'] = $category_name;
+                                }
+
                                 $tweet = (object) $tweet;
 
                                 $store = true;
@@ -236,6 +246,7 @@ class StreamProcess extends Command
                                 $bulk = $crawler->chunk($tweet, $bulk);
 
                                 //$this->info('tweetledi [rt] ['.$tweet->user->screen_name.']');
+                                //$this->info($tweet->text);
                             }
                             else
                             {
@@ -255,6 +266,13 @@ class StreamProcess extends Command
                                 $tweet['consumer'] = $consumer->score($tweet['text']);
                                 $tweet['illegal'] = $illegal->score($tweet['text']);
 
+                                $category_name = $category->net($tweet['text'], 'category');
+
+                                if ($category_name)
+                                {
+                                    $tweet['category'] = $category_name;
+                                }
+
                                 $tweet = (object) $tweet;
 
                                 $store = true;
@@ -262,6 +280,7 @@ class StreamProcess extends Command
                                 $bulk = $crawler->chunk($tweet, $bulk);
 
                                 //$this->info('tweetledi [qt] ['.$tweet->user->screen_name.']');
+                                //$this->info($tweet->text);
                             }
                             else
                             {
@@ -279,6 +298,13 @@ class StreamProcess extends Command
                             $tweet['consumer'] = $consumer->score($tweet['text']);
                             $tweet['illegal'] = $illegal->score($tweet['text']);
 
+                            $category_name = $category->net($tweet['text'], 'category');
+
+                            if ($category_name)
+                            {
+                                $tweet['category'] = $category_name;
+                            }
+
                             $tweet = (object) $tweet;
 
                             if (@$tweet->user->verified && $tweet->user->lang == 'tr')
@@ -292,6 +318,7 @@ class StreamProcess extends Command
                             $bulk = $crawler->chunk($tweet, $bulk);
 
                             //$this->info('tweetledi [tw] ['.$tweet->user->screen_name.']');
+                            //$this->info($tweet->text);
 
                             $g = $gender->detector([ $tweet->user->screen_name, $tweet->user->name ]);
                         }

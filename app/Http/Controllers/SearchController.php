@@ -59,7 +59,11 @@ class SearchController extends Controller
     public static function save(SaveRequest $request)
     {
         $request['modules'] = json_encode($request->modules);
-        $request['categories'] = json_encode($request->categories);
+
+        if ($request->categories)
+        {
+            $request['categories'] = json_encode($request->categories);
+        }
 
         $query = new SavedSearch;
         $query->organisation_id = auth()->user()->organisation_id;
@@ -176,6 +180,11 @@ class SearchController extends Controller
             $arr['deleted_at'] = date('d.m.Y H:i:s', strtotime($object['_source']['deleted_at']));
         }
 
+        if (@$object['_source']['category'])
+        {
+            $arr['category'] = $object['_source']['category'];
+        }
+
         return $arr;
     }
 
@@ -233,6 +242,15 @@ class SearchController extends Controller
                 ]
             ]
         ];
+
+        if ($request->categories)
+        {
+            foreach ($request->categories as $cat)
+            {
+                $q['query']['bool']['should'][] = [ 'match' => [ 'category' => config('system.analysis.category.types')[$cat]['title'] ] ];
+                $q['query']['bool']['minimum_should_match'] = 1;
+            }
+        }
 
         foreach ([ [ 'consumer' => [ 'nws', 'que', 'req', 'cmp' ] ], [ 'sentiment' => [ 'pos', 'neg', 'neu', 'hte' ] ] ] as $key => $bucket)
         {
