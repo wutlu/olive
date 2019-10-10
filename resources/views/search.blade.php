@@ -770,6 +770,7 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
             else
             {
                 $('[data-name=twitter-unique_users]').html(0);
+                $('[data-name=twitter-reach]').html(0);
                 $('[data-name=twitter-hashtags]').html(0);
                 $('[data-name=twitter-mentions]').html(0);
             }
