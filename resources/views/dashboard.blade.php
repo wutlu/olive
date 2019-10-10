@@ -156,13 +156,13 @@
                     [
                         'route' => route('trend.archive'),
                         'icon' => 'archive',
-                        'name' => 'Trend Arşivi <sup class="red-text">Yeni</sup>',
+                        'name' => 'Trend Arşivi',
                         'key' => 'archive'
                     ],
                     [
                         'route' => route('trend.popular'),
                         'icon' => 'people',
-                        'name' => 'Popüler Kaynaklar <sup class="red-text">Yeni</sup>',
+                        'name' => 'Popüler Kaynaklar',
                         'key' => 'popular_sources'
                     ],
                 ] as $key => $item)
