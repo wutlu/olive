@@ -60,11 +60,6 @@ class SearchController extends Controller
     {
         $request['modules'] = json_encode($request->modules);
 
-        if ($request->categories)
-        {
-            $request['categories'] = json_encode($request->categories);
-        }
-
         $query = new SavedSearch;
         $query->organisation_id = auth()->user()->organisation_id;
         $query->fill($request->all());
@@ -119,7 +114,7 @@ class SearchController extends Controller
             'gender',
             'take',
             'modules',
-            'categories'
+            'category'
         ])->where('organisation_id', auth()->user()->organisation_id)->orderBy('id', 'desc')->get();
 
         return [
@@ -243,13 +238,9 @@ class SearchController extends Controller
             ]
         ];
 
-        if ($request->categories)
+        if ($request->category)
         {
-            foreach ($request->categories as $cat)
-            {
-                $q['query']['bool']['should'][] = [ 'match' => [ 'category' => config('system.analysis.category.types')[$cat]['title'] ] ];
-                $q['query']['bool']['minimum_should_match'] = 1;
-            }
+            $q['query']['bool']['must'][] = [ 'match' => [ 'category' => config('system.analysis.category.types')[$request->category]['title'] ] ];
         }
 
         foreach ([ [ 'consumer' => [ 'nws', 'que', 'req', 'cmp' ] ], [ 'sentiment' => [ 'pos', 'neg', 'neu', 'hte' ] ] ] as $key => $bucket)

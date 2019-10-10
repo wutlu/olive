@@ -12,7 +12,7 @@
 ])
 
 @php
-$elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_pos,sentiment_neu,sentiment_neg,sentiment_hte,consumer_que,consumer_req,consumer_cmp,consumer_nws,sharp,categories';
+$elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_pos,sentiment_neu,sentiment_neg,sentiment_hte,consumer_que,consumer_req,consumer_cmp,consumer_nws,sharp,category';
 @endphp
 
 @push('local.styles')
@@ -2498,10 +2498,14 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
             </div>
             <div>
                 <h6 class="blue-grey-text">Kategori</h6>
-                <div class="d-flex flex-wrap"> 
-                   @foreach(config('system.analysis.category.types') as $key => $cat)
+                <div class="d-flex flex-wrap">
+                    <label class="flex-fill" style="width: 100%;">
+                        <input data-update type="radio" name="category" id="category" value="" checked />
+                        <span>Tümü</span>
+                    </label>
+                    @foreach(config('system.analysis.category.types') as $key => $cat)
                         <label class="flex-fill" style="width: 50%;">
-                            <input data-update type="checkbox" name="categories" id="categories" data-multiple="true" value="{{ $key }}" />
+                            <input data-update type="radio" name="category" id="category" value="{{ $key }}" />
                             <span>{{ $cat['title'] }}</span>
                         </label>
                     @endforeach
@@ -2661,15 +2665,16 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
         $('select[name=take]').formSelect();
 
         $('input[name=modules]').prop('checked', false)
-        $('input[name=categories]').prop('checked', false)
+        $('input[name=category]').prop('checked', false)
 
         $.each(JSON.parse(option.modules), function(key, module) {
             $('input[name=modules][value=' + module + ']').prop('checked', true)
         })
 
-        $.each(JSON.parse(option.categories), function(key, category) {
-            $('input[name=categories][value=' + category + ']').prop('checked', true)
-        })
+        if (option.category)
+        {
+            $('input[name=category][value=' + option.category + ']').prop('checked', true)
+        }
 
         var search = $('ul#search');
             search.data('skip', 0).addClass('json-clear');

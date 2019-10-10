@@ -121,9 +121,11 @@
             </div>
         </div>
     @empty
-        @component('components.nothing')
-            @slot('cloud_class', 'white-text')
-        @endcomponent
+        <div class="p-1 mb-1"> 
+            @component('components.nothing')
+                @slot('cloud_class', 'white-text')
+            @endcomponent
+        </div>
     @endforelse
 
     @if ($ticket->status == 'open')

@@ -68,9 +68,18 @@ class DomainController extends Controller
 
         $key = str_replace([ 'https://', 'http://', 'www.' ], '', $query->domain);
 
-        $media_crawler = MediaCrawler::orWhere('site', 'like', 'http://'.$key.'%')->orWhere('site', 'like', 'http://www.'.$key.'%')->orWhere('site', 'like', 'https://'.$key.'%')->orWhere('site', 'like', 'https://www.'.$key.'%')->exists();
-        $blog_crawler = BlogCrawler::orWhere('site', 'like', 'http://'.$key.'%')->orWhere('site', 'like', 'http://www.'.$key.'%')->orWhere('site', 'like', 'https://'.$key.'%')->orWhere('site', 'like', 'https://www.'.$key.'%')->exists();
-        $sozluk_crawler = SozlukCrawler::orWhere('site', 'like', 'http://'.$key.'%')->orWhere('site', 'like', 'http://www.'.$key.'%')->orWhere('site', 'like', 'https://'.$key.'%')->orWhere('site', 'like', 'https://www.'.$key.'%')->exists();
+        $explode = explode('.', $key);
+
+        if (count($explode) >= 3 && strlen(end($explode)) != 2)
+        {
+            unset($explode[0]);
+        }
+
+        $key = implode('\.', $explode);
+
+        $media_crawler = MediaCrawler::orWhere('site', '~*', '^(http(s)?:\/\/((www|mobile|m|mobil)\.)?'.$key.')$')->exists();
+        $blog_crawler = BlogCrawler::orWhere('site', '~*', '^(http(s)?:\/\/((www|mobile|m|mobil)\.)?'.$key.')$')->exists();
+        $sozluk_crawler = SozlukCrawler::orWhere('site', '~*', '^(http(s)?:\/\/((www|mobile|m|mobil)\.)?'.$key.')$')->exists();
 
         if ($media_crawler)
         {

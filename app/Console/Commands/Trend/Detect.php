@@ -356,6 +356,16 @@ class Detect extends Command
                 {
                     $pop_trend = PopTrend::where([ 'module' => $module, 'social_id' => $pop_trend_id ])->first();
 
+                    switch ($module)
+                    {
+                        case 'twitter_favorite':
+                            $hit = 1000;
+                        break;
+                        default:
+                            $hit = 50;
+                        break;
+                    }
+
                     if (@$pop_trend)
                     {
                         $length = Carbon::createFromFormat('Y-m-d H:i:s', $pop_trend->updated_at)->diffInHours(Carbon::now());
@@ -363,14 +373,14 @@ class Detect extends Command
                         if ($length >= 6)
                         {
                             $pop_trend->trend_hit = $pop_trend->trend_hit+1;
-                            $pop_trend->exp_trend_hit = $item['hit'] >= 50 ? ($pop_trend->exp_trend_hit+1) : $pop_trend->exp_trend_hit;
+                            $pop_trend->exp_trend_hit = ($item['hit'] >= $hit) ? ($pop_trend->exp_trend_hit+1) : $pop_trend->exp_trend_hit;
                         }
                     }
                     else
                     {
                         $pop_trend = new PopTrend;
                         $pop_trend->trend_hit = 1;
-                        $pop_trend->exp_trend_hit = $item['hit'] >= 50 ? 1 : 0;
+                        $pop_trend->exp_trend_hit = ($item['hit'] >= $hit) ? 1 : 0;
 
                         $pop_trend->module = $module;
                         $pop_trend->social_id = $pop_trend_id;

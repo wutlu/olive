@@ -54,7 +54,7 @@ class ArchiveAggregationRequest extends FormRequest
         });
 
         Validator::extend('date_limit_between', function($attribute, $value) use($request) {
-            return Carbon::parse($request->start_date)->diffInDays($request->end_date) <= 14;
+            return Carbon::parse($request->start_date)->diffInDays($request->end_date) <= 30;
         });
 
         return [
@@ -64,8 +64,7 @@ class ArchiveAggregationRequest extends FormRequest
             'end_date' => 'required|date|after_or_equal:start_date|date_limit_between',
             'modules' => 'required|array|min:1',
             'modules.*' => 'required|string|in:'.implode(',',array_keys(config('system.modules'))),
-            'categories' => 'nullable|array',
-            'categories.*' => 'required|string|in:'.implode(',', array_keys(config('system.analysis.category.types'))),
+            'category' => 'nullable|string|in:'.implode(',', array_keys(config('system.analysis.category.types'))),
             'sharp' => 'nullable|string|in:on',
             'gender' => 'required|string|in:all,male,female,unknown',
             'sentiment_pos' => 'nullable|integer|between:0,9',
