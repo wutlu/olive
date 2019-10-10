@@ -13,7 +13,6 @@ use Term;
 
 use App\Mail\AlarmMail;
 
-use App\Elasticsearch\Document;
 use App\Models\Source;
 
 use Carbon\Carbon;
@@ -190,6 +189,11 @@ class Trigger extends Command
                 ]
             ]
         ];
+
+        if ($search->category)
+        {
+            $q['query']['bool']['must'][] = [ 'match' => [ 'category' => config('system.analysis.category.types')[$search->category]['title'] ] ];
+        }
 
         foreach ([ [ 'consumer' => [ 'nws', 'que', 'req', 'cmp' ] ], [ 'sentiment' => [ 'pos', 'neg', 'neu', 'hte' ] ] ] as $key => $bucket)
         {

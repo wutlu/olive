@@ -115,6 +115,11 @@ class RealTimeController extends Controller
                 ]
             ];
 
+            if ($search->category)
+            {
+                $q['query']['bool']['must'][] = [ 'match' => [ 'category' => config('system.analysis.category.types')[$search->category]['title'] ] ];
+            }
+
             foreach ([ [ 'consumer' => [ 'nws', 'que', 'req', 'cmp' ] ], [ 'sentiment' => [ 'pos', 'neg', 'neu', 'hte' ] ] ] as $key => $bucket)
             {
                 foreach ($bucket as $key => $b)
