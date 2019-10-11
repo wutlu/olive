@@ -19,7 +19,7 @@ class PageController extends Controller
     public static function view(string $slug)
     {
         $page = Page::where('slug', $slug)->firstOrFail();
-        $pages = Page::get();
+        $pages = Page::whereNotIn('slug', [ 'satis-sozlesmesi' ])->get();
 
         return view('page.view', compact('page', 'pages'));
     }
@@ -35,7 +35,7 @@ class PageController extends Controller
      */
     public static function adminListView(int $pager = 10)
     {
-        $pages = Page::paginate($pager);
+        $pages = Page::whereNotIn('slug', [ 'satis-sozlesmesi' ])->paginate($pager);
 
         return view('page.admin.list', compact('pages'));
     }

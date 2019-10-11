@@ -307,25 +307,20 @@
                     </div>
                 </div>
 
-                <div class="card-panel teal white-text">
-                    <p>Bu aşamadan sonra fatura sayfasından ödemenizi gerçekleştirebilirsiniz.</p>
-                </div>
+                <ul class="collection collection-unstyled mb-2">
+                    <li class="collection-item">
+                        <label>
+                            <input type="checkbox" name="tos" id="tos" />
+                            <span>
+                                <a target="_blank" href="{{ route('page.view', 'kullanim-kosullari') }}">Kullanım Koşulları</a>,
+                                <a target="_blank" href="{{ route('page.view', 'gizlilik-politikasi') }}">Gizlilik Politikası</a> ve
+                                <a target="_blank" href="{{ route('page.view', 'satis-sozlesmesi') }}">Satış Sözleşmesi</a>'ni okudum, anladım ve kabul ediyorum.
+                            </span>
+                        </label>
+                    </li>
+                </ul>
 
-                <div class="card card-unstyled">
-                    <div class="card-content">
-                        <p>
-                            <label>
-                                <input type="checkbox" name="tos" id="tos" />
-                                <span>
-                                    <a target="_blank" href="{{ route('page.view', 'kullanim-kosullari') }}">Kullanım Koşulları</a> ve <a target="_blank" href="{{ route('page.view', 'gizlilik-politikasi') }}">Gizlilik Politikası</a>'nı okudum, anladım ve kabul ediyorum.
-                                </span>
-                            </label>
-                        </p>
-                    </div>
-                    <div class="card-content center-align">
-                        <button type="submit" class="btn teal waves-effect">Fatura Oluştur</button>
-                    </div>
-                </div>
+                <button type="submit" class="btn teal waves-effect">Fatura Oluştur</button>
             </form>
         </div>
     </div>
