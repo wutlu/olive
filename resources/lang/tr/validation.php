@@ -359,6 +359,8 @@ $arr = [
         'period'                          => 'Periyot',
         'url'                             => 'URL',
         'search_id'                       => 'Arama',
+        'gsm'                             => 'GSM',
+        'code'                            => 'Kod',
     ],
 ];
 

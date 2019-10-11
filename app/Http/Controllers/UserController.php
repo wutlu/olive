@@ -41,12 +41,15 @@ use Session;
 use Jenssegers\Agent\Agent;
 use Image;
 use System;
+use Validator;
 use Carbon\Carbon;
 
 use Mail;
 use App\Mail\ServerAlertMail;
 
 use App\Http\Controllers\OrganisationController;
+
+use App\SMS;
 
 class UserController extends Controller
 {
@@ -76,6 +79,11 @@ class UserController extends Controller
             'notificationUpdate',
             'avatar',
             'avatarUpload',
+            'mobile',
+            'mobileCreate',
+            'mobileVerification',
+            'mobileDelete',
+            'mobileResend',
         ]);
 
         /**
@@ -101,6 +109,140 @@ class UserController extends Controller
         ### [ 1 işlemden sonra 1 dakika ile sınırla ] ###
         $this->middleware('throttle:1,1')->only('registerResend');
 	}
+
+    /**
+     * GSM bilgisi
+     *
+     * @return view
+     */
+    public static function mobile()
+    {
+        $user = auth()->user();
+
+        return view('user.mobile', compact('user'));
+    }
+
+    /**
+     * GSM oluştur
+     *
+     * @return array
+     */
+    public static function mobileCreate(Request $request)
+    {
+        $user = auth()->user();
+
+        Validator::extend('gsm', function() use ($user) {
+            return $user->gsm ? false : true;
+        }, 'Zaten kayıtlı bir GSM numaranız mevcut.');
+
+        $request->validate([ 'gsm' => 'required|bail|string|regex:/^90\(5\d{2}\) \d{3} \d{2} \d{2}/i|gsm|unique:users,gsm' ]);
+
+        $code = mt_rand(1000, 9999);
+
+        $sms = SMS::send('GSM doğrulama kodunuz: '.$code, [ str_replace([ ' ', '(', ')' ], '', $request->gsm) ]);
+
+        if ($sms['status'] == 'ok')
+        {
+            $user->gsm = $request->gsm;
+            $user->gsm_code = $code;
+            $user->save();
+        }
+
+        return $sms;
+    }
+
+    /**
+     * GSM doğrula
+     *
+     * @return array
+     */
+    public static function mobileVerification(Request $request)
+    {
+        $user = auth()->user();
+
+        Validator::extend('code', function($key, $code) use ($user) {
+            return $user->gsm_code == $code ? true : false;
+        }, 'Girdiğiniz kod geçerli değil.');
+
+        Validator::extend('gsm', function() use ($user) {
+            return $user->gsm_verified_at ? false : true;
+        }, 'Zaten doğrulanmış bir GSM numaranız mevcut.');
+
+        $request->validate([ 'code' => 'required|integer|between:1000,9999|gsm|code' ]);
+
+        $user->gsm_verified_at = date('Y-m-d H:i:s');
+        $user->save();
+
+        return [
+            'status' => 'ok'
+        ];
+    }
+
+    /**
+     * GSM tekrar gönder
+     *
+     * @return array
+     */
+    public static function mobileResend()
+    {
+        $user = auth()->user();
+
+        if ($user->gsm)
+        {
+            $to_time = time();
+            $from_time = strtotime($user->updated_at);
+
+            $diff = intval(($to_time - $from_time) / 60);
+
+            if ($diff >= 10)
+            {
+                $code = mt_rand(1000, 9999);
+
+                $sms = SMS::send('GSM doğrulama kodunuz: '.$code, [ str_replace([ ' ', '(', ')' ], '', $user->gsm) ]);
+
+                if ($sms['status'] == 'ok')
+                {
+                    $user->gsm_code = $code;
+                    $user->save();
+                }
+
+                return $sms;
+            }
+            else
+            {
+                return [
+                    'status' => 'err',
+                    'message' => 'Yeni doğrulama kodu için '.(10 - $diff).' dakika beklemeniz gerekiyor.'
+                ];
+            }
+        }
+        else
+        {
+            return [
+                'status' => 'err',
+                'message' => 'Önce bir GSM numarası eklemeniz gerekiyor.'
+            ];
+        }
+    }
+
+    /**
+     * GSM sil
+     *
+     * @return array
+     */
+    public static function mobileDelete()
+    {
+        $user = auth()->user();
+
+        $user->gsm_verified_at = null;
+        $user->gsm = null;
+        $user->gsm_code = null;
+        $user->save();
+
+        return [
+            'status' => 'ok'
+        ];
+    }
 
     /**
      * Forum, Kullanıcı Profili
@@ -581,6 +723,45 @@ class UserController extends Controller
      ******* ROOT *******
      ********************
      *
+     * Kullanıcı Şifre Oluştur, SMS ile gönder.
+     *
+     * @return view
+     */
+    public static function sendPasswordByGSM(int $id)
+    {
+        $user = User::where('id', $id)->firstOrFail();
+
+        if ($user->gsm)
+        {
+            $password = mt_rand(100000, 999999);
+
+            $sms = SMS::send(
+                implode(' ', [ 'Olive giriş bilgileriniz,', 'Kullanıcı Adı: '.$user->name, 'Şifre: '.$password ]),
+                [ str_replace([ ' ', '(', ')' ], '', $user->gsm) ]
+            );
+
+            if ($sms['status'] == 'ok')
+            {
+                $user->password = bcrypt($password);
+                $user->save();
+            }
+
+            return $sms;
+        }
+        else
+        {
+            return [
+                'status' => 'err',
+                'message' => 'SMS yöntemiyle şifre gönderebilmek için kullanıcının GSM numarası gerekiyor.'
+            ];
+        }
+    }
+
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
      * Kullanıcı Güncelle
      *
      * @return view
@@ -640,6 +821,7 @@ class UserController extends Controller
         }
 
         $user->verified = $request->verified ? true : false;
+        $user->gsm = $request->gsm ? $request->gsm : null;
         $user->avatar = $request->avatar ? null : $user->avatar;
         $user->root = $request->root ? true : false;
         $user->admin = $request->admin ? true : false;

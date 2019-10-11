@@ -4,7 +4,7 @@ return [
     /**
      * Sistem Versiyonu
      */
-    'version' => '5.7.1.15',
+    'version' => '5.7.1.17',
 
     /**
      * db
@@ -161,11 +161,11 @@ return [
      * E-posta Bildirimi Türleri
      */
     'notifications' => [
-        'important' => 'Sadece önemli bildirimler.',
-        'login' => 'Giriş bildirimleri.',
-        'forum' => 'Forum takip ve uyarı bildirimleri.',
-        'badge' => 'Yeni kazanılan etiket bildirimleri.',
-        'newsletter' => 'E-posta bülteni.',
+        'important' => 'Sadece Önemli Bildirimler',
+        'login' => 'Giriş Bildirimleri',
+        'forum' => 'Forum Takip ve Uyarı Bildirimleri',
+        'badge' => 'Yeni Kazanılan Etiket Bildirimleri',
+        'newsletter' => 'E-posta Bülteni',
     ],
 
     /**

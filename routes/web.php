@@ -222,6 +222,12 @@ Route::domain('olive.'.config('app.domain'))->group(function () {
         Route::get('hesap-bilgileri', 'UserController@account')->name('settings.account');
         Route::post('hesap-bilgileri', 'UserController@accountUpdate');
 
+        Route::get('mobil', 'UserController@mobile')->name('settings.mobile');
+        Route::put('mobil/olustur', 'UserController@mobileCreate')->name('settings.mobile.create');
+        Route::patch('mobil/dogrula', 'UserController@mobileVerification')->name('settings.mobile.verification');
+        Route::delete('mobil/sil', 'UserController@mobileDelete')->name('settings.mobile.delete');
+        Route::post('mobil/gonder', 'UserController@mobileResend')->name('settings.mobile.resend');
+
         Route::get('e-posta-bildirimleri', 'UserController@notifications')->name('settings.notifications');
         Route::patch('e-posta-bildirimleri', 'UserController@notificationUpdate')->name('settings.notification');
 

@@ -97,4 +97,10 @@ return [
     'medium' => [
         'url' => 'http://'
     ],
+
+    'netgsm' => [
+        'usercode' => env('NETGSM_USERCODE'),
+        'password' => env('NETGSM_PASSWORD'),
+        'msgheader' => env('NETGSM_MSGHEADER')
+    ]
 ];

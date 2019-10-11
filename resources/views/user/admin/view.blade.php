@@ -112,15 +112,22 @@
                     </div>
                 </div>
                 <div class="collection-item d-flex">
-                    <div class="input-field teal-text align-self-center">
+                    <div class="input-field teal-text align-self-center" style="max-width: 240px;">
                         <input name="email" id="email" value="{{ $user->email }}" type="email" class="validate" />
                         <label for="email">E-posta</label>
                         <small class="helper-text">Kullanıcının sistemdeki e-posta adresi.</small>
                     </div>
-                    <label class="align-self-center" style="padding: 0 0 0 1rem;">
+                    <label class="align-self-center ml-2">
                         <input name="verified" id="verified" value="on" type="checkbox" {{ $user->verified ? 'checked' : '' }} />
                         <span>Doğrulanmış</span>
                     </label>
+                </div>
+                <div class="collection-item">
+                    <div class="input-field teal-text" style="max-width: 240px;">
+                        <input name="gsm" id="gsm" value="{{ $user->gsm }}" type="text" class="validate" />
+                        <label for="gsm">GSM</label>
+                        <small class="helper-text">Kullanıcının sistemdeki gsm numarası.</small>
+                    </div>
                 </div>
                 <label class="collection-item waves-effect d-flex">
                     <span class="align-self-center" style="margin: 0 2rem 0 0;">
@@ -157,6 +164,44 @@
 @endsection
 
 @push('local.scripts')
+    $(document).on('click', '[data-trigger=gsm-password]', function() {
+        return modal({
+            'id': 'alert',
+            'body': 'Yeni bir şifre oluşturulacak ve giriş detayları kullanıcıya SMS ile bildirilecek. Onaylıyor musunuz?',
+            'size': 'modal-small',
+            'title': 'Şifre Gönder',
+            'footer': [
+                $('<a />', {
+                    'href': '#',
+                    'class': 'modal-close waves-effect grey-text btn-flat',
+                    'html': buttons.cancel
+                }),
+                $('<span />', {
+                    'html': ' '
+                }),
+                $('<a />', {
+                    'href': '#',
+                    'class': 'waves-effect btn-flat teal-text json',
+                    'html': buttons.ok,
+                    'data-href': '{{ route('admin.user.password.gsm', $user->id) }}',
+                    'data-method': 'post',
+                    'data-callback': '__passwordByGSM'
+                })
+            ],
+            'options': {}
+        })
+    })
+
+    function __passwordByGSM(__, obj)
+    {
+        if (obj.status == 'ok')
+        {
+            M.toast({ html: 'Yeni şifre sms ile gönderildi.', 'classes': 'green darken-2' })
+
+            $('#modal-alert').modal('close')
+        }
+    }
+
     $(document).ready(function() {
         $('textarea#about').characterCounter()
     })
@@ -164,4 +209,17 @@
 
 @section('dock')
     @include('user.admin._menu', [ 'active' => 'account', 'id' => $user->id ])
+
+    <div class="collection">
+        <a href="#" class="collection-item waves-effect" data-trigger="gsm-password">
+            SMS ile Yeni Şifre Gönder
+        </a>
+    </div>
 @endsection
+
+@push('external.include.footer')
+    <script src="{{ asset('js/jquery.maskedinput.min.js?v='.config('system.version')) }}"></script>
+    <script>
+        $('input#gsm').mask('90(999) 999 99 99')
+    </script>
+@endpush

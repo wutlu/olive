@@ -62,6 +62,8 @@ Route::domain('olive.'.config('app.domain'))->group(function () {
 
         Route::get('kullanici/{id}/fatura-gecmisi', 'UserController@adminInvoiceHistory')->name('admin.user.invoices');
         Route::get('kullanici/{id}/destek-talepleri', 'UserController@adminTickets')->name('admin.user.tickets');
+
+        Route::post('kullanici/{id}/gsm-sifre', 'UserController@sendPasswordByGSM')->name('admin.user.password.gsm');
     });
 
     Route::prefix('bulten')->group(function () {
