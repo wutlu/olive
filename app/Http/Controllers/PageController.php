@@ -35,7 +35,7 @@ class PageController extends Controller
      */
     public static function adminListView(int $pager = 10)
     {
-        $pages = Page::whereNotIn('slug', [ 'satis-sozlesmesi' ])->paginate($pager);
+        $pages = Page::whereNotIn('slug')->paginate($pager);
 
         return view('page.admin.list', compact('pages'));
     }
