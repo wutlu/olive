@@ -747,33 +747,6 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
 
         if (obj.status == 'ok')
         {
-            if (!__.data('aggs'))
-            {
-                window.clearTimeout(aggsTimer);
-
-                aggsTimer = window.setTimeout(function() {
-                    var _search_ = $('#search').clone();
-                        _search_.attr('data-aggs', 'on')
-
-                        vzAjax(_search_)
-                }, 2000)
-            }
-
-            item_model.addClass('hide')
-
-            if (obj.stats.hits)
-            {
-                $('[data-name=stats]').html('Yaklaşık ' + number_format(obj.stats.hits) + ' sonuç bulundu (' + obj.stats.took + ' saniye)').removeClass('hide');
-            }
-            else
-            {
-                $('[data-name=stats]').html('Daha fazla sonuç için arama kriterlerini azaltmanız gerekiyor.')
-            }
-
-            $('[data-stat]').addClass('hide')
-
-            $('[data-name=twitter-tweet]').html(number_format(obj.stats.counts.twitter_tweet)).attr('data-count', obj.stats.counts.twitter_tweet);
-
             if (__.data('aggs'))
             {
                 $('[data-name=twitter-unique_users]').html(number_format(obj.stats.twitter.unique_users)).closest('p').removeClass(obj.stats.twitter.unique_users ? 'hide' : '');
@@ -782,124 +755,121 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                 $('[data-name=twitter-followers]').html(number_format((obj.stats.twitter.followers).toFixed(0))).closest('p').removeClass(obj.stats.twitter.followers ? 'hide' : '');
                 $('[data-name=twitter-hashtags]').html(number_format(obj.stats.twitter.hashtags)).closest('p').removeClass(obj.stats.twitter.hashtags ? 'hide' : '');
                 $('[data-name=twitter-mentions]').html(number_format(obj.stats.twitter.mentions)).closest('p').removeClass(obj.stats.twitter.mentions ? 'hide' : '');
-            }
 
-            $('[data-name=instagram-media]').html(number_format(obj.stats.counts.instagram_media)).attr('data-count', obj.stats.counts.instagram_media);
-
-            if (__.data('aggs'))
-            {
                 $('[data-name=instagram-unique_users]').html(number_format(obj.stats.instagram.unique_users)).closest('p').removeClass(obj.stats.instagram.unique_users ? 'hide' : '');
                 $('[data-name=instagram-hashtags]').html(number_format(obj.stats.instagram.hashtags)).closest('p').removeClass(obj.stats.instagram.hashtags ? 'hide' : '');
                 $('[data-name=instagram-mentions]').html(number_format(obj.stats.instagram.mentions)).closest('p').removeClass(obj.stats.instagram.mentions ? 'hide' : '');
-            }
 
-            $('[data-name=sozluk-entry]').html(number_format(obj.stats.counts.sozluk_entry)).attr('data-count', obj.stats.counts.sozluk_entry);
-
-            if (__.data('aggs'))
-            {
                 $('[data-name=sozluk-unique_users]').html(number_format(obj.stats.sozluk.unique_users)).closest('p').removeClass(obj.stats.sozluk.unique_users ? 'hide' : '');
                 $('[data-name=sozluk-unique_topics]').html(number_format(obj.stats.sozluk.unique_topics)).closest('p').removeClass(obj.stats.sozluk.unique_topics ? 'hide' : '');
-            }
 
-            $('[data-name=media-article]').html(number_format(obj.stats.counts.media_article)).attr('data-count', obj.stats.counts.media_article);
-
-            if (__.data('aggs'))
-            {
-                $('[data-name=news-unique_sites]').html(number_format(obj.stats.news.unique_sites)).closest('p').removeClass(obj.stats.news.unique_sites ? 'hide' : '');
-            }
-
-            $('[data-name=blog-document]').html(number_format(obj.stats.counts.blog_document)).attr('data-count', obj.stats.counts.blog_document).closest('p').removeClass(obj.stats.counts.blog_documen ? 'hide' : '');
-
-            if (__.data('aggs'))
-            {
                 $('[data-name=blog-unique_sites]').html(number_format(obj.stats.blog.unique_sites)).closest('p').removeClass(obj.stats.blog.unique_sites ? 'hide' : '');
-            }
 
-            $('[data-name=youtube-video]').html(number_format(obj.stats.counts.youtube_video)).attr('data-count', obj.stats.counts.youtube_video).closest('p').removeClass(obj.stats.counts.youtube_vide ? 'hide' : '');
-
-            if (__.data('aggs'))
-            {
                 $('[data-name=youtube_video-unique_users]').html(number_format(obj.stats.youtube_video.unique_users)).closest('p').removeClass(obj.stats.youtube_video.unique_users ? 'hide' : '');
                 $('[data-name=youtube_video-hashtags]').html(number_format(obj.stats.youtube_video.hashtags)).closest('p').removeClass(obj.stats.youtube_video.hashtags ? 'hide' : '');
-            }
 
-            $('[data-name=youtube-comment]').html(number_format(obj.stats.counts.youtube_comment)).attr('data-count', obj.stats.counts.youtube_comment).closest('p').removeClass(obj.stats.counts.youtube_commen ? 'hide' : '');
-
-            if (__.data('aggs'))
-            {
                 $('[data-name=youtube_comment-unique_users]').html(number_format(obj.stats.youtube_comment.unique_users)).closest('p').removeClass(obj.stats.youtube_comment.unique_users ? 'hide' : '');
                 $('[data-name=youtube_comment-unique_videos]').html(number_format(obj.stats.youtube_comment.unique_videos)).closest('p').removeClass(obj.stats.youtube_comment.unique_videos ? 'hide' : '');
-            }
 
-            $('[data-name=shopping-product]').html(number_format(obj.stats.counts.shopping_product)).attr('data-count', obj.stats.counts.shopping_product);
-
-            if (__.data('aggs'))
-            {
                 $('[data-name=shopping-unique_sites]').html(number_format(obj.stats.shopping.unique_sites)).closest('p').removeClass(obj.stats.shopping.unique_sites ? 'hide' : '');
                 $('[data-name=shopping-unique_users]').html(number_format(obj.stats.shopping.unique_users)).closest('p').removeClass(obj.stats.shopping.unique_users ? 'hide' : '');
             }
-
-            $('.banner').addClass('hide')
-
-            if (obj.stats.hits)
+            else
             {
-                const date1 = new Date($('input[name=start_date]').val());
-                const date2 = new Date($('input[name=end_date]').val());
-                const diffTime = Math.abs(date2.getTime() - date1.getTime());
-                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+                window.clearTimeout(aggsTimer);
 
-                if (diffDays <= 14)
+                aggsTimer = window.setTimeout(function() {
+                    var _search_ = $('#search').clone();
+                        _search_.attr('data-aggs', 'on')
+                        _search_.removeClass('loading')
+
+                        vzAjax(_search_)
+                }, 2000)
+
+                item_model.addClass('hide')
+
+                if (obj.stats.hits)
                 {
-                    window.clearTimeout(bannerTimer)
-
-                    bannerTimer = window.setTimeout(function() {
-                        var bucket = [ 'sentiment', 'consumer', 'gender', 'hashtag' ];
-                        var selected_type = bucket[Math.floor(Math.random() * bucket.length)];
-
-                        vzAjax($('<div />', {
-                            'data-href': '{{ route('search.banner') }}',
-                            'data-method': 'post',
-                            'data-callback': '__banner',
-                            'data-type': selected_type,
-                            'data-include': '{{ $elements }}'
-                        }))
-                    }, 4000)
+                    $('[data-name=stats]').html('Yaklaşık ' + number_format(obj.stats.hits) + ' sonuç bulundu (' + obj.stats.took + ' saniye)').removeClass('hide');
                 }
-            }
+                else
+                {
+                    $('[data-name=stats]').html('Daha fazla sonuç için arama kriterlerini azaltmanız gerekiyor.')
+                }
 
-            if (obj.hits.length)
-            {
-                $.each(obj.hits, function(key, o) {
-                    var item = item_model.clone();
-                        item.removeClass('model hide').addClass('_tmp').attr('data-id', 'list-item-' + o._id)
+                $('[data-stat]').addClass('hide')
 
-                    var model;
+                $('[data-name=twitter-tweet]').html(number_format(obj.stats.counts.twitter_tweet)).attr('data-count', obj.stats.counts.twitter_tweet);
+                $('[data-name=instagram-media]').html(number_format(obj.stats.counts.instagram_media)).attr('data-count', obj.stats.counts.instagram_media);
+                $('[data-name=sozluk-entry]').html(number_format(obj.stats.counts.sozluk_entry)).attr('data-count', obj.stats.counts.sozluk_entry);
+                $('[data-name=media-article]').html(number_format(obj.stats.counts.media_article)).attr('data-count', obj.stats.counts.media_article);
+                $('[data-name=blog-document]').html(number_format(obj.stats.counts.blog_document)).attr('data-count', obj.stats.counts.blog_document).closest('p').removeClass(obj.stats.counts.blog_documen ? 'hide' : '');
+                $('[data-name=youtube-video]').html(number_format(obj.stats.counts.youtube_video)).attr('data-count', obj.stats.counts.youtube_video).closest('p').removeClass(obj.stats.counts.youtube_vide ? 'hide' : '');
+                $('[data-name=youtube-comment]').html(number_format(obj.stats.counts.youtube_comment)).attr('data-count', obj.stats.counts.youtube_comment).closest('p').removeClass(obj.stats.counts.youtube_commen ? 'hide' : '');
+                $('[data-name=shopping-product]').html(number_format(obj.stats.counts.shopping_product)).attr('data-count', obj.stats.counts.shopping_product);
 
-                    switch(o._type)
+                $('.banner').addClass('hide')
+
+                if (obj.stats.hits)
+                {
+                    const date1 = new Date($('input[name=start_date]').val());
+                    const date2 = new Date($('input[name=end_date]').val());
+                    const diffTime = Math.abs(date2.getTime() - date1.getTime());
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+
+                    if (diffDays <= 14)
                     {
-                        case 'tweet'   : model = _tweet_   (o); break;
-                        case 'entry'   : model = _entry_   (o); break;
-                        case 'article' : model = _article_ (o); break;
-                        case 'document': model = _document_(o); break;
-                        case 'product' : model = _product_ (o); break;
-                        case 'comment' : model = _comment_ (o); break;
-                        case 'video'   : model = _video_   (o); break;
-                        case 'media'   : model = _media_   (o); break;
+                        window.clearTimeout(bannerTimer)
+
+                        bannerTimer = window.setTimeout(function() {
+                            var bucket = [ 'sentiment', 'consumer', 'gender', 'hashtag' ];
+                            var selected_type = bucket[Math.floor(Math.random() * bucket.length)];
+
+                            vzAjax($('<div />', {
+                                'data-href': '{{ route('search.banner') }}',
+                                'data-method': 'post',
+                                'data-callback': '__banner',
+                                'data-type': selected_type,
+                                'data-include': '{{ $elements }}'
+                            }))
+                        }, 4000)
                     }
+                }
 
-                    model.find('.text-area').mark(obj.words, {
-                        'element': 'span',
-                        'className': 'marked yellow black-text',
-                        'accuracy': 'complementary'
+                if (obj.hits.length)
+                {
+                    $.each(obj.hits, function(key, o) {
+                        var item = item_model.clone();
+                            item.removeClass('model hide').addClass('_tmp').attr('data-id', 'list-item-' + o._id)
+
+                        var model;
+
+                        switch(o._type)
+                        {
+                            case 'tweet'   : model = _tweet_   (o); break;
+                            case 'entry'   : model = _entry_   (o); break;
+                            case 'article' : model = _article_ (o); break;
+                            case 'document': model = _document_(o); break;
+                            case 'product' : model = _product_ (o); break;
+                            case 'comment' : model = _comment_ (o); break;
+                            case 'video'   : model = _video_   (o); break;
+                            case 'media'   : model = _media_   (o); break;
+                        }
+
+                        model.find('.text-area').mark(obj.words, {
+                            'element': 'span',
+                            'className': 'marked yellow black-text',
+                            'accuracy': 'complementary'
+                        })
+
+                        item.html(model).appendTo(__)
                     })
+                }
 
-                    item.html(model).appendTo(__)
-                })
+                operator('fast-close')
+
+                $('.tabs').tabs('select', 'search-tab')
             }
-
-            operator('fast-close')
-
-            $('.tabs').tabs('select', 'search-tab')
         }
     }
 
