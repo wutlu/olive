@@ -90,7 +90,7 @@
                     @if (!$user->gsm_verified_at)
                         <form method="patch" action="{{ route('settings.mobile.verification') }}" class="json" id="mobile-form" data-callback="__mobile">
                             <div class="input-field" style="max-width: 120px;">
-                                <input name="code" id="code" type="text" class="validate" />
+                                <input name="code" id="code" type="text" class="validate" autocomplete="off" />
                                 <label for="code">Kod</label>
                                 <small class="helper-text">Doğrulama kodunu girin.</small>
                             </div>
