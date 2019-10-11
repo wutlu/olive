@@ -784,7 +784,7 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                         _search_.removeClass('loading')
 
                         vzAjax(_search_)
-                }, 2000)
+                }, 10000)
 
                 item_model.addClass('hide')
 
