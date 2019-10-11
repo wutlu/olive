@@ -773,6 +773,8 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
 
                 $('[data-name=shopping-unique_sites]').html(number_format(obj.stats.shopping.unique_sites)).closest('p').removeClass(obj.stats.shopping.unique_sites ? 'hide' : '');
                 $('[data-name=shopping-unique_users]').html(number_format(obj.stats.shopping.unique_users)).closest('p').removeClass(obj.stats.shopping.unique_users ? 'hide' : '');
+
+                $('[data-name=news-unique_sites]').html(number_format(obj.stats.news.unique_sites));
             }
             else
             {
