@@ -739,6 +739,7 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
     }
 
     var bannerTimer;
+    var aggsTimer;
 
     function __search_archive(__, obj)
     {
@@ -746,6 +747,18 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
 
         if (obj.status == 'ok')
         {
+            if (!__.data('aggs'))
+            {
+                window.clearTimeout(aggsTimer);
+
+                aggsTimer = window.setTimeout(function() {
+                    var _search_ = $('#search').clone();
+                        _search_.attr('data-aggs', 'on')
+
+                        vzAjax(_search_)
+                }, 2000)
+            }
+
             item_model.addClass('hide')
 
             if (obj.stats.hits)
@@ -757,104 +770,73 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                 $('[data-name=stats]').html('Daha fazla sonuç için arama kriterlerini azaltmanız gerekiyor.')
             }
 
+            $('[data-stat]').addClass('hide')
+
             $('[data-name=twitter-tweet]').html(number_format(obj.stats.counts.twitter_tweet)).attr('data-count', obj.stats.counts.twitter_tweet);
-            if (obj.stats.counts.twitter_tweet)
+
+            if (__.data('aggs'))
             {
-                $('[data-name=twitter-unique_users]').html(number_format(obj.stats.twitter.unique_users));
-                $('[data-name=twitter-reach]').html(number_format(obj.stats.twitter.reach));
-                $('[data-name=twitter-verified_users]').html(number_format(obj.stats.twitter.verified_users));
-                $('[data-name=twitter-followers]').html(number_format((obj.stats.twitter.followers).toFixed(0)));
-                $('[data-name=twitter-hashtags]').html(number_format(obj.stats.twitter.hashtags));
-                $('[data-name=twitter-mentions]').html(number_format(obj.stats.twitter.mentions));
-            }
-            else
-            {
-                $('[data-name=twitter-unique_users]').html(0);
-                $('[data-name=twitter-reach]').html(0);
-                $('[data-name=twitter-hashtags]').html(0);
-                $('[data-name=twitter-mentions]').html(0);
+                $('[data-name=twitter-unique_users]').html(number_format(obj.stats.twitter.unique_users)).closest('p').removeClass(obj.stats.twitter.unique_users ? 'hide' : '');
+                $('[data-name=twitter-reach]').html(number_format(obj.stats.twitter.reach)).closest('p').removeClass(obj.stats.twitter.reach ? 'hide' : '');
+                $('[data-name=twitter-verified_users]').html(number_format(obj.stats.twitter.verified_users)).closest('p').removeClass(obj.stats.twitter.verified_users ? 'hide' : '');
+                $('[data-name=twitter-followers]').html(number_format((obj.stats.twitter.followers).toFixed(0))).closest('p').removeClass(obj.stats.twitter.followers ? 'hide' : '');
+                $('[data-name=twitter-hashtags]').html(number_format(obj.stats.twitter.hashtags)).closest('p').removeClass(obj.stats.twitter.hashtags ? 'hide' : '');
+                $('[data-name=twitter-mentions]').html(number_format(obj.stats.twitter.mentions)).closest('p').removeClass(obj.stats.twitter.mentions ? 'hide' : '');
             }
 
             $('[data-name=instagram-media]').html(number_format(obj.stats.counts.instagram_media)).attr('data-count', obj.stats.counts.instagram_media);
-            if (obj.stats.counts.instagram_media)
+
+            if (__.data('aggs'))
             {
-                $('[data-name=instagram-unique_users]').html(number_format(obj.stats.instagram.unique_users));
-                $('[data-name=instagram-hashtags]').html(number_format(obj.stats.instagram.hashtags));
-                $('[data-name=instagram-mentions]').html(number_format(obj.stats.instagram.mentions));
-            }
-            else
-            {
-                $('[data-name=instagram-unique_users]').html(0);
-                $('[data-name=instagram-hashtags]').html(0);
-                $('[data-name=instagram-mentions]').html(0);
+                $('[data-name=instagram-unique_users]').html(number_format(obj.stats.instagram.unique_users)).closest('p').removeClass(obj.stats.instagram.unique_users ? 'hide' : '');
+                $('[data-name=instagram-hashtags]').html(number_format(obj.stats.instagram.hashtags)).closest('p').removeClass(obj.stats.instagram.hashtags ? 'hide' : '');
+                $('[data-name=instagram-mentions]').html(number_format(obj.stats.instagram.mentions)).closest('p').removeClass(obj.stats.instagram.mentions ? 'hide' : '');
             }
 
             $('[data-name=sozluk-entry]').html(number_format(obj.stats.counts.sozluk_entry)).attr('data-count', obj.stats.counts.sozluk_entry);
-            if (obj.stats.counts.sozluk_entry)
+
+            if (__.data('aggs'))
             {
-                $('[data-name=sozluk-unique_users]').html(number_format(obj.stats.sozluk.unique_users));
-                $('[data-name=sozluk-unique_topics]').html(number_format(obj.stats.sozluk.unique_topics));
-            }
-            else
-            {
-                $('[data-name=sozluk-unique_users]').html(0);
-                $('[data-name=sozluk-unique_topics]').html(0);
+                $('[data-name=sozluk-unique_users]').html(number_format(obj.stats.sozluk.unique_users)).closest('p').removeClass(obj.stats.sozluk.unique_users ? 'hide' : '');
+                $('[data-name=sozluk-unique_topics]').html(number_format(obj.stats.sozluk.unique_topics)).closest('p').removeClass(obj.stats.sozluk.unique_topics ? 'hide' : '');
             }
 
             $('[data-name=media-article]').html(number_format(obj.stats.counts.media_article)).attr('data-count', obj.stats.counts.media_article);
-            if (obj.stats.counts.media_article)
+
+            if (__.data('aggs'))
             {
-                $('[data-name=news-unique_sites]').html(number_format(obj.stats.news.unique_sites));
-            }
-            else
-            {
-                $('[data-name=news-unique_sites]').html(0)
+                $('[data-name=news-unique_sites]').html(number_format(obj.stats.news.unique_sites)).closest('p').removeClass(obj.stats.news.unique_sites ? 'hide' : '');
             }
 
-            $('[data-name=blog-document]').html(number_format(obj.stats.counts.blog_document)).attr('data-count', obj.stats.counts.blog_document);
-            if (obj.stats.counts.blog_document)
+            $('[data-name=blog-document]').html(number_format(obj.stats.counts.blog_document)).attr('data-count', obj.stats.counts.blog_document).closest('p').removeClass(obj.stats.counts.blog_documen ? 'hide' : '');
+
+            if (__.data('aggs'))
             {
-                $('[data-name=blog-unique_sites]').html(number_format(obj.stats.blog.unique_sites));
-            }
-            else
-            {
-                $('[data-name=blog-unique_sites]').html(0);
+                $('[data-name=blog-unique_sites]').html(number_format(obj.stats.blog.unique_sites)).closest('p').removeClass(obj.stats.blog.unique_sites ? 'hide' : '');
             }
 
-            $('[data-name=youtube-video]').html(number_format(obj.stats.counts.youtube_video)).attr('data-count', obj.stats.counts.youtube_video);
-            if (obj.stats.counts.youtube_video)
+            $('[data-name=youtube-video]').html(number_format(obj.stats.counts.youtube_video)).attr('data-count', obj.stats.counts.youtube_video).closest('p').removeClass(obj.stats.counts.youtube_vide ? 'hide' : '');
+
+            if (__.data('aggs'))
             {
-                $('[data-name=youtube_video-unique_users]').html(number_format(obj.stats.youtube_video.unique_users));
-                $('[data-name=youtube_video-hashtags]').html(number_format(obj.stats.youtube_video.hashtags));
-            }
-            else
-            {
-                $('[data-name=youtube_video-unique_users]').html(0);
-                $('[data-name=youtube_video-hashtags]').html(0);
+                $('[data-name=youtube_video-unique_users]').html(number_format(obj.stats.youtube_video.unique_users)).closest('p').removeClass(obj.stats.youtube_video.unique_users ? 'hide' : '');
+                $('[data-name=youtube_video-hashtags]').html(number_format(obj.stats.youtube_video.hashtags)).closest('p').removeClass(obj.stats.youtube_video.hashtags ? 'hide' : '');
             }
 
-            $('[data-name=youtube-comment]').html(number_format(obj.stats.counts.youtube_comment)).attr('data-count', obj.stats.counts.youtube_comment);
-            if (obj.stats.counts.youtube_comment)
+            $('[data-name=youtube-comment]').html(number_format(obj.stats.counts.youtube_comment)).attr('data-count', obj.stats.counts.youtube_comment).closest('p').removeClass(obj.stats.counts.youtube_commen ? 'hide' : '');
+
+            if (__.data('aggs'))
             {
-                $('[data-name=youtube_comment-unique_users]').html(number_format(obj.stats.youtube_comment.unique_users));
-                $('[data-name=youtube_comment-unique_videos]').html(number_format(obj.stats.youtube_comment.unique_videos));
-            }
-            else
-            {
-                $('[data-name=youtube_comment-unique_users]').html(0);
-                $('[data-name=youtube_comment-unique_videos]').html(0);
+                $('[data-name=youtube_comment-unique_users]').html(number_format(obj.stats.youtube_comment.unique_users)).closest('p').removeClass(obj.stats.youtube_comment.unique_users ? 'hide' : '');
+                $('[data-name=youtube_comment-unique_videos]').html(number_format(obj.stats.youtube_comment.unique_videos)).closest('p').removeClass(obj.stats.youtube_comment.unique_videos ? 'hide' : '');
             }
 
             $('[data-name=shopping-product]').html(number_format(obj.stats.counts.shopping_product)).attr('data-count', obj.stats.counts.shopping_product);
-            if (obj.stats.counts.shopping_product)
+
+            if (__.data('aggs'))
             {
-                $('[data-name=shopping-unique_sites]').html(number_format(obj.stats.shopping.unique_sites));
-                $('[data-name=shopping-unique_users]').html(number_format(obj.stats.shopping.unique_users));
-            }
-            else
-            {
-                $('[data-name=shopping-unique_sites]').html(0);
-                $('[data-name=shopping-unique_users]').html(0);
+                $('[data-name=shopping-unique_sites]').html(number_format(obj.stats.shopping.unique_sites)).closest('p').removeClass(obj.stats.shopping.unique_sites ? 'hide' : '');
+                $('[data-name=shopping-unique_users]').html(number_format(obj.stats.shopping.unique_users)).closest('p').removeClass(obj.stats.shopping.unique_users ? 'hide' : '');
             }
 
             $('.banner').addClass('hide')
@@ -2271,7 +2253,7 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                     <tbody>
                         <tr>
                             <td style="font-size: 20px; text-transform: uppercase;" class="pb-0 right-align">
-                                <strong data-name="twitter-tweet" style="font-weight: bold;">0</strong> / <strong data-name="twitter-reach" data-tooltip="RT, ALINTI, CEVAP">0</strong>
+                                <strong data-name="twitter-tweet" style="font-weight: bold;">0</strong>
                                 <span class="grey-text">tweet</span>
                             </td>
                             <td style="font-size: 20px; text-transform: uppercase;" class="pb-0 right-align">
@@ -2281,39 +2263,61 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                         </tr>
                         <tr>
                             <td style="padding: 0; text-transform: uppercase; vertical-align: top;" class="right-align">
-                                <p class="mb-0 d-flex justify-content-end">
-                                    <small class="grey-text">TEKİL KULLANICI</small>
-                                    <small class="pl-1" data-name="twitter-unique_users">0</small>
+                                <p class="mb-0 hide" data-stat>
+                                    <span class="d-flex justify-content-end">
+                                        <small class="grey-text">RT, ALINTI, CEVAP</small>
+                                        <small class="pl-1" data-name="twitter-reach">0</small>
+                                    </span>
                                 </p>
-                                <p class="mb-0 d-flex justify-content-end">
-                                    <small class="grey-text">DOĞRULANMIŞ HESAP</small>
-                                    <small class="pl-1" data-name="twitter-verified_users">0</small>
+                                <p class="mb-0 hide" data-stat>
+                                    <span class="d-flex justify-content-end">
+                                        <small class="grey-text">TEKİL KULLANICI</small>
+                                        <small class="pl-1" data-name="twitter-unique_users">0</small>
+                                    </span>
                                 </p>
-                                <p class="mb-0 d-flex justify-content-end">
-                                    <small class="grey-text">ORTALAMA TAKİPÇİ</small>
-                                    <small class="pl-1" data-name="twitter-followers">0</small>
+                                <p class="mb-0 hide" data-stat>
+                                    <span class="d-flex justify-content-end">
+                                        <small class="grey-text">DOĞRULANMIŞ HESAP</small>
+                                        <small class="pl-1" data-name="twitter-verified_users">0</small>
+                                    </span>
                                 </p>
-                                <p class="mb-0 d-flex justify-content-end">
-                                    <small class="grey-text">MENTION</small>
-                                    <small class="pl-1" data-name="twitter-mentions">0</small>
+                                <p class="mb-0 hide" data-stat>
+                                    <span class="d-flex justify-content-end">
+                                        <small class="grey-text">ORTALAMA TAKİPÇİ</small>
+                                        <small class="pl-1" data-name="twitter-followers">0</small>
+                                    </span>
                                 </p>
-                                <p class="mb-0 d-flex justify-content-end">
-                                    <small class="grey-text">HASHTAG</small>
-                                    <small class="pl-1" data-name="twitter-hashtags">0</small>
+                                <p class="mb-0 hide" data-stat>
+                                    <span class="d-flex justify-content-end">
+                                        <small class="grey-text">MENTION</small>
+                                        <small class="pl-1" data-name="twitter-mentions">0</small>
+                                    </span>
+                                </p>
+                                <p class="mb-0 hide" data-stat>
+                                    <span class="d-flex justify-content-end">
+                                        <small class="grey-text">HASHTAG</small>
+                                        <small class="pl-1" data-name="twitter-hashtags">0</small>
+                                    </span>
                                 </p>
                             </td>
                             <td style="padding: 0; text-transform: uppercase; vertical-align: top;" class="right-align">
-                                <p class="mb-0 d-flex justify-content-end">
-                                    <small class="grey-text">TEKİL KULLANICI</small>
-                                    <small class="pl-1" data-name="instagram-unique_users">0</small>
+                                <p class="mb-0 hide" data-stat>
+                                    <span class="d-flex justify-content-end">
+                                        <small class="grey-text">TEKİL KULLANICI</small>
+                                        <small class="pl-1" data-name="instagram-unique_users">0</small>
+                                    </span>
                                 </p>
-                                <p class="mb-0 d-flex justify-content-end">
-                                    <small class="grey-text">MENTION</small>
-                                    <small class="pl-1" data-name="instagram-mentions">0</small>
+                                <p class="mb-0 hide" data-stat>
+                                    <span class="d-flex justify-content-end">
+                                        <small class="grey-text">MENTION</small>
+                                        <small class="pl-1" data-name="instagram-mentions">0</small>
+                                    </span>
                                 </p>
-                                <p class="mb-0 d-flex justify-content-end">
-                                    <small class="grey-text">HASHTAG</small>
-                                    <small class="pl-1" data-name="instagram-hashtags">0</small>
+                                <p class="mb-0 hide" data-stat>
+                                    <span class="d-flex justify-content-end">
+                                        <small class="grey-text">HASHTAG</small>
+                                        <small class="pl-1" data-name="instagram-hashtags">0</small>
+                                    </span>
                                 </p>
                             </td>
                         </tr>
@@ -2329,23 +2333,31 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                         </tr>
                         <tr>
                             <td style="padding: 0; text-transform: uppercase; vertical-align: top;" class="right-align">
-                                <p class="mb-0 d-flex justify-content-end">
-                                    <small class="grey-text">TEKİL KULLANICI</small>
-                                    <small class="pl-1" data-name="youtube_comment-unique_users">0</small>
+                                <p class="mb-0 hide" data-stat>
+                                    <span class="d-flex justify-content-end">
+                                        <small class="grey-text">TEKİL KULLANICI</small>
+                                        <small class="pl-1" data-name="youtube_comment-unique_users">0</small>
+                                    </span>
                                 </p>
-                                <p class="mb-0 d-flex justify-content-end">
-                                    <small class="grey-text">TEKİL VİDEO</small>
-                                    <small class="pl-1" data-name="youtube_comment-unique_videos">0</small>
+                                <p class="mb-0 hide" data-stat>
+                                    <span class="d-flex justify-content-end">
+                                        <small class="grey-text">TEKİL VİDEO</small>
+                                        <small class="pl-1" data-name="youtube_comment-unique_videos">0</small>
+                                    </span>
                                 </p>
                             </td>
                             <td style="padding: 0; text-transform: uppercase; vertical-align: top;" class="right-align">
-                                <p class="mb-0 d-flex justify-content-end">
-                                    <small class="grey-text">TEKİL KULLANICI</small>
-                                    <small class="pl-1" data-name="youtube_video-unique_users">0</small>
+                                <p class="mb-0 hide" data-stat>
+                                    <span class="d-flex justify-content-end">
+                                        <small class="grey-text">TEKİL KULLANICI</small>
+                                        <small class="pl-1" data-name="youtube_video-unique_users">0</small>
+                                    </span>
                                 </p>
-                                <p class="mb-0 d-flex justify-content-end">
-                                    <small class="grey-text">HASHTAG</small>
-                                    <small class="pl-1" data-name="youtube_video-hashtags">0</small>
+                                <p class="mb-0 hide" data-stat>
+                                    <span class="d-flex justify-content-end">
+                                        <small class="grey-text">HASHTAG</small>
+                                        <small class="pl-1" data-name="youtube_video-hashtags">0</small>
+                                    </span>
                                 </p>
                             </td>
                         </tr>
@@ -2361,15 +2373,19 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                         </tr>
                         <tr>
                             <td style="padding: 0; text-transform: uppercase; vertical-align: top;" class="right-align">
-                                <p class="mb-0 d-flex justify-content-end">
-                                    <small class="grey-text">TEKİL SİTE</small>
-                                    <small class="pl-1" data-name="news-unique_sites">0</small>
+                                <p class="mb-0 hide" data-stat>
+                                    <span class="d-flex justify-content-end">
+                                        <small class="grey-text">TEKİL SİTE</small>
+                                        <small class="pl-1" data-name="news-unique_sites">0</small>
+                                    </span>
                                 </p>
                             </td>
                             <td style="padding: 0; text-transform: uppercase; vertical-align: top;" class="right-align">
-                                <p class="mb-0 d-flex justify-content-end">
-                                    <small class="grey-text">TEKİL SİTE</small>
-                                    <small class="pl-1" data-name="blog-unique_sites">0</small>
+                                <p class="mb-0 hide" data-stat>
+                                    <span class="d-flex justify-content-end">
+                                        <small class="grey-text">TEKİL SİTE</small>
+                                        <small class="pl-1" data-name="blog-unique_sites">0</small>
+                                    </span>
                                 </p>
                             </td>
                         </tr>
@@ -2385,23 +2401,31 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                         </tr>
                         <tr>
                             <td style="padding: 0; text-transform: uppercase; vertical-align: top;" class="right-align">
-                                <p class="mb-0 d-flex justify-content-end">
-                                    <small class="grey-text">TEKİL KULLANICI</small>
-                                    <small class="pl-1" data-name="shopping-unique_users">0</small>
+                                <p class="mb-0 hide" data-stat>
+                                    <span class="d-flex justify-content-end">
+                                        <small class="grey-text">TEKİL KULLANICI</small>
+                                        <small class="pl-1" data-name="shopping-unique_users">0</small>
+                                    </span>
                                 </p>
-                                <p class="mb-0 d-flex justify-content-end">
-                                    <small class="grey-text">TEKİL SİTE</small>
-                                    <small class="pl-1" data-name="shopping-unique_sites">0</small>
+                                <p class="mb-0 hide" data-stat>
+                                    <span class="d-flex justify-content-end">
+                                        <small class="grey-text">TEKİL SİTE</small>
+                                        <small class="pl-1" data-name="shopping-unique_sites">0</small>
+                                    </span>
                                 </p>
                             </td>
                             <td style="padding: 0; text-transform: uppercase; vertical-align: top;" class="right-align">
-                                <p class="mb-0 d-flex justify-content-end">
-                                    <small class="grey-text">TEKİL YAZAR</small>
-                                    <small class="pl-1" data-name="sozluk-unique_users">0</small>
+                                <p class="mb-0 hide" data-stat>
+                                    <span class="d-flex justify-content-end">
+                                        <small class="grey-text">TEKİL YAZAR</small>
+                                        <small class="pl-1" data-name="sozluk-unique_users">0</small>
+                                    </span>
                                 </p>
-                                <p class="mb-0 d-flex justify-content-end">
-                                    <small class="grey-text">TEKİL BAŞLIK</small>
-                                    <small class="pl-1" data-name="sozluk-unique_topics">0</small>
+                                <p class="mb-0 hide" data-stat>
+                                    <span class="d-flex justify-content-end">
+                                        <small class="grey-text">TEKİL BAŞLIK</small>
+                                        <small class="pl-1" data-name="sozluk-unique_topics">0</small>
+                                    </span>
                                 </p>
                             </td>
                         </tr>

@@ -238,6 +238,12 @@ class SearchController extends Controller
             ]
         ];
 
+        if ($request->aggs)
+        {
+            $q['size'] = 0;
+            $q['from'] = 0;
+        }
+
         if ($request->category)
         {
             $q['query']['bool']['must'][] = [ 'match' => [ 'category' => config('system.analysis.category.types')[$request->category]['title'] ] ];
@@ -292,21 +298,27 @@ class SearchController extends Controller
                     {
                         $twitter_q = $q;
 
-                        $twitter_q['aggs']['mentions'] = [ 'nested' => [ 'path' => 'entities.mentions' ], 'aggs' => [ 'xxx' => [ 'terms' => [ 'field' => 'entities.mentions.mention.id' ] ] ] ];
-                        $twitter_q['aggs']['hashtags'] = [ 'nested' => [ 'path' => 'entities.hashtags' ], 'aggs' => [ 'xxx' => [ 'terms' => [ 'field' => 'entities.hashtags.hashtag' ] ] ] ];
-                        $twitter_q['aggs']['unique_users'] = [ 'cardinality' => [ 'field' => 'user.id' ] ];
-                        $twitter_q['aggs']['verified_users'] = [ 'filter' => [ 'exists' => [ 'field' => 'user.verified' ] ] ];
-                        $twitter_q['aggs']['followers'] = [ 'avg' => [ 'field' => 'user.counts.followers' ] ];
-                        $twitter_q['aggs']['reach'] = [ 'terms' => [ 'field' => 'external.id' ] ];
+                        if ($request->aggs)
+                        {
+                            $twitter_q['aggs']['mentions'] = [ 'nested' => [ 'path' => 'entities.mentions' ], 'aggs' => [ 'xxx' => [ 'terms' => [ 'field' => 'entities.mentions.mention.id' ] ] ] ];
+                            $twitter_q['aggs']['hashtags'] = [ 'nested' => [ 'path' => 'entities.hashtags' ], 'aggs' => [ 'xxx' => [ 'terms' => [ 'field' => 'entities.hashtags.hashtag' ] ] ] ];
+                            $twitter_q['aggs']['unique_users'] = [ 'cardinality' => [ 'field' => 'user.id' ] ];
+                            $twitter_q['aggs']['verified_users'] = [ 'filter' => [ 'exists' => [ 'field' => 'user.verified' ] ] ];
+                            $twitter_q['aggs']['followers'] = [ 'avg' => [ 'field' => 'user.counts.followers' ] ];
+                            $twitter_q['aggs']['reach'] = [ 'terms' => [ 'field' => 'external.id' ] ];
+                        }
 
                         $tweet_data = self::tweet($request, $twitter_q);
 
-                        $stats['twitter']['mentions'] = @$tweet_data['aggs']['mentions']['doc_count'];
-                        $stats['twitter']['hashtags'] = @$tweet_data['aggs']['hashtags']['doc_count'];
-                        $stats['twitter']['unique_users'] = @$tweet_data['aggs']['unique_users']['value'];
-                        $stats['twitter']['verified_users'] = @$tweet_data['aggs']['verified_users']['doc_count'];
-                        $stats['twitter']['followers'] = @$tweet_data['aggs']['followers']['value'];
-                        $stats['twitter']['reach'] = @$tweet_data['aggs']['reach']['sum_other_doc_count'];
+                        if ($request->aggs)
+                        {
+                            $stats['twitter']['mentions'] = @$tweet_data['aggs']['mentions']['doc_count'];
+                            $stats['twitter']['hashtags'] = @$tweet_data['aggs']['hashtags']['doc_count'];
+                            $stats['twitter']['unique_users'] = @$tweet_data['aggs']['unique_users']['value'];
+                            $stats['twitter']['verified_users'] = @$tweet_data['aggs']['verified_users']['doc_count'];
+                            $stats['twitter']['followers'] = @$tweet_data['aggs']['followers']['value'];
+                            $stats['twitter']['reach'] = @$tweet_data['aggs']['reach']['sum_other_doc_count'];
+                        }
 
                         $stats['hits'] = $stats['hits'] + $tweet_data['stats']['total'];
                         $stats['counts']['twitter_tweet'] = $tweet_data['stats']['total'];
@@ -319,15 +331,21 @@ class SearchController extends Controller
                     {
                         $instagram_q = $q;
 
-                        $instagram_q['aggs']['mentions'] = [ 'nested' => [ 'path' => 'entities.mentions' ], 'aggs' => [ 'xxx' => [ 'terms' => [ 'field' => 'entities.mentions.mention.id' ] ] ] ];
-                        $instagram_q['aggs']['hashtags'] = [ 'nested' => [ 'path' => 'entities.hashtags' ], 'aggs' => [ 'xxx' => [ 'terms' => [ 'field' => 'entities.hashtags.hashtag' ] ] ] ];
-                        $instagram_q['aggs']['unique_users'] = [ 'cardinality' => [ 'field' => 'user.id' ] ];
+                        if ($request->aggs)
+                        {
+                            $instagram_q['aggs']['mentions'] = [ 'nested' => [ 'path' => 'entities.mentions' ], 'aggs' => [ 'xxx' => [ 'terms' => [ 'field' => 'entities.mentions.mention.id' ] ] ] ];
+                            $instagram_q['aggs']['hashtags'] = [ 'nested' => [ 'path' => 'entities.hashtags' ], 'aggs' => [ 'xxx' => [ 'terms' => [ 'field' => 'entities.hashtags.hashtag' ] ] ] ];
+                            $instagram_q['aggs']['unique_users'] = [ 'cardinality' => [ 'field' => 'user.id' ] ];
+                        }
 
                         $instagram_data = self::instagram($request, $instagram_q);
 
-                        $stats['instagram']['mentions'] = @$instagram_data['aggs']['mentions']['doc_count'];
-                        $stats['instagram']['hashtags'] = @$instagram_data['aggs']['hashtags']['doc_count'];
-                        $stats['instagram']['unique_users'] = @$instagram_data['aggs']['unique_users']['value'];
+                        if ($request->aggs)
+                        {
+                            $stats['instagram']['mentions'] = @$instagram_data['aggs']['mentions']['doc_count'];
+                            $stats['instagram']['hashtags'] = @$instagram_data['aggs']['hashtags']['doc_count'];
+                            $stats['instagram']['unique_users'] = @$instagram_data['aggs']['unique_users']['value'];
+                        }
 
                         $stats['hits'] = $stats['hits'] + $instagram_data['stats']['total'];
                         $stats['counts']['instagram_media'] = $instagram_data['stats']['total'];
@@ -340,13 +358,19 @@ class SearchController extends Controller
                     {
                         $sozluk_q = $q;
 
-                        $sozluk_q['aggs']['unique_users'] = [ 'cardinality' => [ 'field' => 'author' ] ];
-                        $sozluk_q['aggs']['unique_topics'] = [ 'cardinality' => [ 'field' => 'group_name' ] ];
+                        if ($request->aggs)
+                        {
+                            $sozluk_q['aggs']['unique_users'] = [ 'cardinality' => [ 'field' => 'author' ] ];
+                            $sozluk_q['aggs']['unique_topics'] = [ 'cardinality' => [ 'field' => 'group_name' ] ];
+                        }
 
                         $sozluk_data = self::sozluk($request, $sozluk_q, @$source->source_sozluk);
 
-                        $stats['sozluk']['unique_users'] = @$sozluk_data['aggs']['unique_users']['value'];
-                        $stats['sozluk']['unique_topics'] = @$sozluk_data['aggs']['unique_topics']['value'];
+                        if ($request->aggs)
+                        {
+                            $stats['sozluk']['unique_users'] = @$sozluk_data['aggs']['unique_users']['value'];
+                            $stats['sozluk']['unique_topics'] = @$sozluk_data['aggs']['unique_topics']['value'];
+                        }
 
                         $stats['hits'] = $stats['hits'] + $sozluk_data['stats']['total'];
                         $stats['counts']['sozluk_entry'] = $sozluk_data['stats']['total'];
@@ -359,11 +383,17 @@ class SearchController extends Controller
                     {
                         $news_q = $q;
 
-                        $news_q['aggs']['unique_sites'] = [ 'cardinality' => [ 'field' => 'site_id' ] ];
+                        if ($request->aggs)
+                        {
+                            $news_q['aggs']['unique_sites'] = [ 'cardinality' => [ 'field' => 'site_id' ] ];
+                        }
 
                         $news_data = self::news($request, $news_q, @$source->source_media);
 
-                        $stats['news']['unique_sites'] = @$news_data['aggs']['unique_sites']['value'];
+                        if ($request->aggs)
+                        {
+                            $stats['news']['unique_sites'] = @$news_data['aggs']['unique_sites']['value'];
+                        }
 
                         $stats['hits'] = $stats['hits'] + $news_data['stats']['total'];
                         $stats['counts']['media_article'] = $news_data['stats']['total'];
@@ -376,11 +406,17 @@ class SearchController extends Controller
                     {
                         $blog_q = $q;
 
-                        $blog_q['aggs']['unique_sites'] = [ 'cardinality' => [ 'field' => 'site_id' ] ];
+                        if ($request->aggs)
+                        {
+                            $blog_q['aggs']['unique_sites'] = [ 'cardinality' => [ 'field' => 'site_id' ] ];
+                        }
 
                         $blog_data = self::blog($request, $blog_q, @$source->source_blog);
 
-                        $stats['blog']['unique_sites'] = @$blog_data['aggs']['unique_sites']['value'];
+                        if ($request->aggs)
+                        {
+                            $stats['blog']['unique_sites'] = @$blog_data['aggs']['unique_sites']['value'];
+                        }
 
                         $stats['hits'] = $stats['hits'] + $blog_data['stats']['total'];
                         $stats['counts']['blog_document'] = $blog_data['stats']['total'];
@@ -393,13 +429,19 @@ class SearchController extends Controller
                     {
                         $youtube_video_q = $q;
 
-                        $youtube_video_q['aggs']['unique_users'] = [ 'cardinality' => [ 'field' => 'channel.id' ] ];
-                        $youtube_video_q['aggs']['hashtags'] = [ 'nested' => [ 'path' => 'tags' ], 'aggs' => [ 'xxx' => [ 'terms' => [ 'field' => 'tags.tag' ] ] ] ];
+                        if ($request->aggs)
+                        {
+                            $youtube_video_q['aggs']['unique_users'] = [ 'cardinality' => [ 'field' => 'channel.id' ] ];
+                            $youtube_video_q['aggs']['hashtags'] = [ 'nested' => [ 'path' => 'tags' ], 'aggs' => [ 'xxx' => [ 'terms' => [ 'field' => 'tags.tag' ] ] ] ];
+                        }
 
                         $youtube_video_data = self::youtube_video($request, $youtube_video_q);
 
-                        $stats['youtube_video']['unique_users'] = @$youtube_video_data['aggs']['unique_users']['value'];
-                        $stats['youtube_video']['hashtags'] = @$youtube_video_data['aggs']['hashtags']['doc_count'];
+                        if ($request->aggs)
+                        {
+                            $stats['youtube_video']['unique_users'] = @$youtube_video_data['aggs']['unique_users']['value'];
+                            $stats['youtube_video']['hashtags'] = @$youtube_video_data['aggs']['hashtags']['doc_count'];
+                        }
 
                         $stats['hits'] = $stats['hits'] + $youtube_video_data['stats']['total'];
                         $stats['counts']['youtube_video'] = $youtube_video_data['stats']['total'];
@@ -412,13 +454,19 @@ class SearchController extends Controller
                     {
                         $youtube_comment_q = $q;
 
-                        $youtube_comment_q['aggs']['unique_users'] = [ 'cardinality' => [ 'field' => 'channel.id' ] ];
-                        $youtube_comment_q['aggs']['unique_videos'] = [ 'cardinality' => [ 'field' => 'video_id' ] ];
+                        if ($request->aggs)
+                        {
+                            $youtube_comment_q['aggs']['unique_users'] = [ 'cardinality' => [ 'field' => 'channel.id' ] ];
+                            $youtube_comment_q['aggs']['unique_videos'] = [ 'cardinality' => [ 'field' => 'video_id' ] ];
+                        }
 
                         $youtube_comment_data = self::youtube_comment($request, $youtube_comment_q);
 
-                        $stats['youtube_comment']['unique_users'] = @$youtube_comment_data['aggs']['unique_users']['value'];
-                        $stats['youtube_comment']['unique_videos'] = @$youtube_comment_data['aggs']['unique_videos']['value'];
+                        if ($request->aggs)
+                        {
+                            $stats['youtube_comment']['unique_users'] = @$youtube_comment_data['aggs']['unique_users']['value'];
+                            $stats['youtube_comment']['unique_videos'] = @$youtube_comment_data['aggs']['unique_videos']['value'];
+                        }
 
                         $stats['hits'] = $stats['hits'] + $youtube_comment_data['stats']['total'];
                         $stats['counts']['youtube_comment'] = $youtube_comment_data['stats']['total'];
@@ -431,13 +479,19 @@ class SearchController extends Controller
                     {
                         $shopping_q = $q;
 
-                        $shopping_q['aggs']['unique_sites'] = [ 'cardinality' => [ 'field' => 'site_id' ] ];
-                        $shopping_q['aggs']['unique_users'] = [ 'cardinality' => [ 'field' => 'seller.name' ] ];
+                        if ($request->aggs)
+                        {
+                            $shopping_q['aggs']['unique_sites'] = [ 'cardinality' => [ 'field' => 'site_id' ] ];
+                            $shopping_q['aggs']['unique_users'] = [ 'cardinality' => [ 'field' => 'seller.name' ] ];
+                        }
 
                         $shopping_data = self::shopping($request, $shopping_q, @$source->source_shopping);
 
-                        $stats['shopping']['unique_sites'] = @$shopping_data['aggs']['unique_sites']['value'];
-                        $stats['shopping']['unique_users'] = @$shopping_data['aggs']['unique_users']['value'];
+                        if ($request->aggs)
+                        {
+                            $stats['shopping']['unique_sites'] = @$shopping_data['aggs']['unique_sites']['value'];
+                            $stats['shopping']['unique_users'] = @$shopping_data['aggs']['unique_users']['value'];
+                        }
 
                         $stats['hits'] = $stats['hits'] + $shopping_data['stats']['total'];
                         $stats['counts']['shopping_product'] = $shopping_data['stats']['total'];

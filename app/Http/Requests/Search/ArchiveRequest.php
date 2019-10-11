@@ -71,6 +71,7 @@ class ArchiveRequest extends FormRequest
             'consumer_req' => 'nullable|integer|between:0,9',
             'consumer_cmp' => 'nullable|integer|between:0,9',
             'consumer_nws' => 'nullable|integer|between:0,9',
+            'aggs' => 'nullable|string|in:on'
         ];
     }
 }
