@@ -22,7 +22,7 @@ return [
      *
      * @var integer
      */
-    'term_version' => 3,
+    'term_version' => 4,
 
     /**
      * Analiz Katmanları
