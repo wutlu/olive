@@ -3,7 +3,10 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Sentiment;
+
+use App\Models\Geo\States;
+use App\Models\Crawlers\MediaCrawler;
+use Term;
 
 class Test extends Command
 {
@@ -38,12 +41,51 @@ class Test extends Command
      */
     public function handle()
     {
+        $states = States::where('country_id', 223)->get();
 
-        $category = new Sentiment;
-        $category->engine('category');
-        $text = '';
-            $category_name = $category->net($text ? $text : '', 'category');
+        $count = 0;
 
-            print_r($category_name);
+        foreach ($states as $state)
+        {
+            $crawlers = MediaCrawler::orWhere('name', 'ilike', '%'.str_slug($state->name).'%')
+                                    ->orWhere('name', 'ilike', '%'.$state->name.'%')
+                                    ->orWhere(
+                                        'site',
+                                        'ilike',
+                                        '%'.str_replace(
+                                            [
+                                                'sanliurfa',
+                                                'kahramanmaras',
+                                                'gaziantep',
+                                            ],
+                                            [
+                                                'urfa',
+                                                'maras',
+                                                'antep',
+                                            ],
+                                            str_slug($state->name)
+                                        ).'%'
+                                    )
+                                    ->get();
+            if (count($crawlers))
+            {
+                $this->info($state->name);
+
+                foreach ($crawlers as $crawler)
+                {
+                    $count++;
+
+                    $this->info($crawler->name);
+                    /*
+                    $crawler->state = $state->name;
+                    $crawler->update();
+                    */
+                }
+
+                $this->info('---');
+            }
+        }
+
+        $this->info($count);
     }
 }

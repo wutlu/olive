@@ -596,7 +596,7 @@ function __joints(o)
             'class': 'd-flex justify-content-between red mt-1 p-1 z-depth-1',
             'html': [
                 $('<span />', {
-                    'html': 'Silindi',
+                    'html': 'Ulaşılamıyor',
                     'class': 'white-text'
                 }),
                 $('<span />', {

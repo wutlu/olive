@@ -15,6 +15,7 @@ class MediaCrawler extends Model
         'url_pattern',
         'selector_title',
         'selector_description',
+        'state',
 
         'off_limit',
         'control_interval',
@@ -49,6 +50,7 @@ class MediaCrawler extends Model
                             'fielddata' => true
                         ],
                         'category' => [ 'type' => 'keyword' ],
+                        'state' => [ 'type' => 'keyword' ],
                         'created_at' => [
                             'type' => 'date',
                             'format' => 'YYYY-MM-dd HH:mm:ss'

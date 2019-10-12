@@ -26,6 +26,8 @@ use GuzzleHttp\HandlerStack;
 
 use App\Jobs\Elasticsearch\DeleteDocumentJob;
 
+use App\Models\Geo\States;
+
 class MediaController extends Controller
 {
     /**
@@ -382,7 +384,9 @@ class MediaController extends Controller
             return redirect()->route('crawlers.media.bot', $crawler->id);
         }
 
-        return view('crawlers.media.view', compact('crawler'));
+        $states = States::where('country_id', 223)->get();
+
+        return view('crawlers.media.view', compact('crawler', 'states'));
     }
 
     /**

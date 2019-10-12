@@ -217,6 +217,20 @@
                             <small class="helper-text">Veri toplanacak sitenin adı.</small>
                         </div>
                     </div>
+
+                    <div class="collection-item">
+                        <div class="input-field">
+                            <select name="state" id="state">
+                                    <option value="">Yerel Değil</option>
+                                @foreach ($states as $state)
+                                    <option value="{{ $state->name }}" @if ($crawler->state == $state->name){{ 'selected' }}@endif>{{ $state->name }}</option>
+                                @endforeach
+                            </select>
+                            <label for="state">Yerel</label>
+                            <small class="helper-text">Eğer haber sitesi yerel ise belirtin.</small>
+                        </div>
+                    </div>
+
                     <div class="collection-item">
                         <div class="d-flex flex-wrap">
                             <div style="min-width: 50%; padding: 1rem;">
@@ -338,6 +352,8 @@
 @endsection
 
 @push('local.scripts')
+    $('select[name=state]').formSelect()
+
     $(document).on('change', 'input[name=standard]', function() {
         var patterns = $('[data-name=patterns]');
 
