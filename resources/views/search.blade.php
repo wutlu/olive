@@ -2138,7 +2138,47 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                     }
                 break;
                 case 'category':
-alert(0)
+                    if (obj.data.solt.buckets.length)
+                    {
+                        const categoryChartOption = JSON.parse(JSON.stringify(options));
+
+                        __chart_generate('category')
+
+                        categoryChartOption['chart']['type'] = 'bar';
+                        categoryChartOption['chart']['height'] = 500;
+                        categoryChartOption['plotOptions'] = {
+                            bar: {
+                                distributed: true,
+                                horizontal: true,
+                                barHeight: '100%',
+                                dataLabels: { position: 'bottom' }
+                            }
+                        };
+                        categoryChartOption['subtitle'] = { 'text': 'Kategori Grafiği' };
+
+                        var categories = [];
+                        var datas = [];
+
+                        $.each(obj.data.solt.buckets, function(key, bucket) {
+                            categories.push(bucket.key)
+                            datas.push(bucket.doc_count)
+                        })
+
+                        $('#categoryChart').removeClass('hide')
+
+                        categoryChartOption['series'] = [
+                            { name: 'İçerik', data: datas }
+                        ];
+
+                        categoryChartOption['xaxis'] = { categories: categories };
+
+                        var categoryChart = new ApexCharts(document.querySelector('#categoryChart'), categoryChartOption);
+                            categoryChart.render()
+                    }
+                    else
+                    {
+                        M.toast({ html: 'Kategorize edilmiş içerik bulunamadı.' }, 200)
+                    }
                 break;
             }
 

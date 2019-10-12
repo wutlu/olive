@@ -797,10 +797,7 @@ class AggregationController extends Controller
 
             $query = Document::search([ '*' ], 'product,entry,comment,video,document,article,media,tweet', $solt_q);
 
-            echo '<pre>';
-            print_r($query);
-            exit();
-            $data['q']['aggs'] = $aggregations['solt'];
+            $aggs['solt'] = @$query->data['aggregations']['solt'];
         }
 
         return $aggs;
