@@ -459,7 +459,7 @@
       min-width: 25%;
     }
 
-    @media only screen and (max-width: 1366px) {
+    @media only screen and (max-width: 1600px) {
       .card-deck > .card {
         max-width: 50%;
         min-width: 50%;
@@ -482,7 +482,8 @@
         },
         stop:function( event, ui ) { 
             $(ui.item).removeClass('blue-grey lighten-4');
-        }
+        },
+        placeholder: 'card'
     })
 
     const helpStart = new Driver({

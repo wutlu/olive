@@ -110,6 +110,7 @@ $ nano /etc/apache2/apache2.conf
 </Directory>
 
 $ sudo service apache2 reload
+$ sudo swapoff -a
 ~~~~
 
 ### Sistemin Kurulumu

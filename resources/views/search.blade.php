@@ -1959,7 +1959,7 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
 
                     consumerChartOption['stroke']['width'] = 4;
                     consumerChartOption['xaxis']['title']['text'] = 'Müşteri Grafiği';
-                    consumerChartOption['xaxis']['categories'] = [ '% İstek', '% Soru', '% Şikayet', '% Haber' ];
+                    consumerChartOption['xaxis']['categories'] = [ 'İstek', 'Soru', 'Şikayet', 'Haber' ];
 
                     $.each(obj.data, function(module_key, module) {
                         var label = '';
@@ -2019,7 +2019,7 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
 
                     sentimentChartOption['stroke']['width'] = 4;
                     sentimentChartOption['xaxis']['title']['text'] = 'Duygu Grafiği';
-                    sentimentChartOption['xaxis']['categories'] = [ '% Pozitif', '% Nötr', '% Negatif', '% Nefret Söylemi' ];
+                    sentimentChartOption['xaxis']['categories'] = [ 'Pozitif', 'Nötr', 'Negatif', 'Nefret Söylemi' ];
 
                     $.each(obj.data, function(module_key, module) {
                         var label = '';
@@ -2137,6 +2137,9 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                         M.toast({ html: 'Paylaşımlarda cinsiyet verisi bulunamadı!' }, 200)
                     }
                 break;
+                case 'category':
+alert(0)
+                break;
             }
 
             $('.tabs').tabs('select', 'chart-tab')
@@ -2155,7 +2158,7 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
         <a href="#" class="collection-item json loading" data-callback="__chart" data-type="gender" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}">Cinsiyet Grafiği</a>
         <a href="#" class="collection-item json loading" data-callback="__chart" data-type="author" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}">@bahsedenler</a>
         <a href="#" class="collection-item json loading" data-callback="__chart" data-type="hashtag" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}">#hashtagler</a>
-        <a href="#" class="collection-item loading" data-callback="__chart" data-type="" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}">Kategori <sup class="red-text">Yakında</sup></a>
+        <a href="#" class="collection-item json loading" data-callback="__chart" data-type="category" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}">Kategori</a>
     </div>
 @endsection
 

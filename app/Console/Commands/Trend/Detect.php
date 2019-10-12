@@ -564,9 +564,7 @@ class Detect extends Command
                         ]
                     ],
                     'must_not' => [
-                        [
-                            'exists' => [ 'field' => 'external.id' ]
-                        ]
+                        [ 'match' => [ 'external.type' => 'retweet' ] ]
                     ],
                     'filter' => [
                         [
