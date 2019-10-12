@@ -259,7 +259,7 @@ class Elasticsearch extends Command
                         if ($total_fields_limit) $settings['index']['mapping']['total_fields']['limit'] = $total_fields_limit;
 
                         $number_of_replicas = $this->ask('number_of_replicas: (integer)');
-                        if ($number_of_replicas) $settings['number_of_replicas'] = $number_of_replicas;
+                        if ($number_of_replicas !== null) $settings['number_of_replicas'] = $number_of_replicas;
 
                         $read_only_allow_delete = $this->ask('read_only_allow_delete: (boolean)');
                         if ($read_only_allow_delete) $settings['index']['blocks']['read_only_allow_delete'] = $read_only_allow_delete == 'null' ? null : $read_only_allow_delete;

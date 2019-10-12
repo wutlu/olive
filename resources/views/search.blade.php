@@ -580,6 +580,13 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
 @endpush
 
 @push('local.scripts')
+    $(document).on('click', '[data-trigger=stats-more]', function() {
+        var _search_ = $('#search').clone();
+            _search_.attr('data-aggs', 'on')
+
+            vzAjax(_search_)
+    })
+
     function __banner(__, obj)
     {
         if (obj.status == 'ok')
@@ -739,12 +746,9 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
     }
 
     var bannerTimer;
-    var aggsTimer;
 
     function __search_archive(__, obj)
     {
-        var item_model = __.children('.model');
-
         if (obj.status == 'ok')
         {
             if (__.data('aggs'))
@@ -752,7 +756,7 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                 $('[data-name=twitter-unique_users]').html(number_format(obj.stats.twitter.unique_users)).closest('p').removeClass(obj.stats.twitter.unique_users ? 'hide' : '');
                 $('[data-name=twitter-reach]').html(number_format(obj.stats.twitter.reach)).closest('p').removeClass(obj.stats.twitter.reach ? 'hide' : '');
                 $('[data-name=twitter-verified_users]').html(number_format(obj.stats.twitter.verified_users)).closest('p').removeClass(obj.stats.twitter.verified_users ? 'hide' : '');
-                $('[data-name=twitter-followers]').html(number_format((obj.stats.twitter.followers).toFixed(0))).closest('p').removeClass(obj.stats.twitter.followers ? 'hide' : '');
+                $('[data-name=twitter-followers]').html(obj.stats.twitter.followers ? number_format((obj.stats.twitter.followers).toFixed(0)) : 0).closest('p').removeClass(obj.stats.twitter.followers ? 'hide' : '');
                 $('[data-name=twitter-hashtags]').html(number_format(obj.stats.twitter.hashtags)).closest('p').removeClass(obj.stats.twitter.hashtags ? 'hide' : '');
                 $('[data-name=twitter-mentions]').html(number_format(obj.stats.twitter.mentions)).closest('p').removeClass(obj.stats.twitter.mentions ? 'hide' : '');
 
@@ -778,17 +782,8 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
             }
             else
             {
-                window.clearTimeout(aggsTimer);
-
-                aggsTimer = window.setTimeout(function() {
-                    var _search_ = $('#search').clone();
-                        _search_.attr('data-aggs', 'on')
-                        _search_.removeClass('loading')
-
-                        vzAjax(_search_)
-                }, 10000)
-
-                item_model.addClass('hide')
+                var item_model = __.children('.model');
+                    item_model.addClass('hide')
 
                 if (obj.stats.hits)
                 {
@@ -2221,7 +2216,13 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
             </div>
 
             <div class="right-align">
-                <table id="banner-hits">
+                <a href="#" class="btn-flat btn-floating waves-effect" data-trigger="stats-more" data-tooltip="Sayaç Detaylarını Göster">
+                    <i class="material-icons">settings_input_svideo</i>
+                </a>
+                <a href="#" class="btn-flat btn-floating waves-effect" data-image="#banner-hits" data-tooltip="Sayaç Görüntüsünü Kaydet">
+                    <i class="material-icons">save</i>
+                </a>
+                <table id="banner-hits" class="mb-1">
                     <tbody>
                         <tr>
                             <td style="font-size: 20px; text-transform: uppercase;" class="pb-0 right-align">
@@ -2403,9 +2404,6 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                         </tr>
                     </tbody>
                 </table>
-                <button class="btn-flat btn-floating btn-small" data-image="#banner-hits">
-                    <i class="material-icons">save</i>
-                </button>
             </div>
 
             <div class="d-flex flex-wrap mb-2">
