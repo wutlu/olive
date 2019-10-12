@@ -76,10 +76,9 @@ class Test extends Command
                     $count++;
 
                     $this->info($crawler->name);
-                    /*
+
                     $crawler->state = $state->name;
                     $crawler->update();
-                    */
                 }
 
                 $this->info('---');
