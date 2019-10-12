@@ -163,7 +163,19 @@ class RealTimeController extends Controller
                     break;
                     case 'instagram'       : if ($organisation->data_instagram)       $data = array_merge($data, $searchController->instagram      ($search, $q)['data']);                            break;
                     case 'sozluk'          : if ($organisation->data_sozluk)          $data = array_merge($data, $searchController->sozluk         ($search, $q, @$source->source_sozluk)['data']);   break;
-                    case 'news'            : if ($organisation->data_news)            $data = array_merge($data, $searchController->news           ($search, $q, @$source->source_media)['data']);    break;
+                    case 'news':
+                        if ($organisation->data_news)
+                        {
+                            $news_q = $q;
+
+                            if ($search->state)
+                            {
+                                $news_q['query']['bool']['must'][] = [ 'match' => [ 'state' => $search->state ] ];
+                            }
+
+                            $data = array_merge($data, $searchController->news($search, $news_q, @$source->source_media)['data']);
+                        }
+                    break;
                     case 'blog'            : if ($organisation->data_blog)            $data = array_merge($data, $searchController->blog           ($search, $q, @$source->source_blog)['data']);     break;
                     case 'youtube_video'   : if ($organisation->data_youtube_video)   $data = array_merge($data, $searchController->youtube_video  ($search, $q)['data']);                            break;
                     case 'youtube_comment' : if ($organisation->data_youtube_comment) $data = array_merge($data, $searchController->youtube_comment($search, $q)['data']);                            break;

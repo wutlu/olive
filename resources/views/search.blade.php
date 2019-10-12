@@ -11,10 +11,6 @@
     'dock' => true
 ])
 
-@php
-$elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_pos,sentiment_neu,sentiment_neg,sentiment_hte,consumer_que,consumer_req,consumer_cmp,consumer_nws,sharp,category';
-@endphp
-
 @push('local.styles')
     #search-operators {
         display: none;
@@ -2619,6 +2615,22 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
                                 <span>İyi Sonuç</span>
                             </label>
                         </div>
+                    @elseif ($key == 'news')
+                        <div class="d-flex justify-content-between mb-2">
+                            <label class="module-label">
+                                <input data-update name="modules" checked value="{{ $key }}" data-multiple="true" type="checkbox" />
+                                <span>{{ $module }}</span>
+                            </label>
+                        </div>
+                        <div class="input-field">
+                            <select name="state" id="state" data-update>
+                                <option value="">Hepsi</option>
+                                @foreach ($states as $state)
+                                    <option value="{{ $state->name }}">{{ $state->name }}</option>
+                                @endforeach
+                            </select>
+                            <label>Yerel Haber</label>
+                        </div>
                     @else
                         <label class="module-label">
                             <input data-update name="modules" checked value="{{ $key }}" data-multiple="true" type="checkbox" />
@@ -2681,7 +2693,8 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
 @push('local.scripts')
     $(document).on('click', '[data-trigger=loadSearch]', function() {
         var __ = $(this),
-            option = __.data('options');
+
+        option = __.data('options');
 
         $('input[name=string]').val(option.string)
         $('input[name=reverse]').prop('checked', option.reverse ? true : false)
@@ -2704,6 +2717,7 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
 
         $('input[name=modules]').prop('checked', false)
         $('input[name=category]').prop('checked', false)
+        $('select[name=state]').val('').formSelect()
 
         $.each(JSON.parse(option.modules), function(key, module) {
             $('input[name=modules][value=' + module + ']').prop('checked', true)
@@ -2712,6 +2726,11 @@ $elements = 'start_date,end_date,modules,string,reverse,take,gender,sentiment_po
         if (option.category)
         {
             $('input[name=category][value=' + option.category + ']').prop('checked', true)
+        }
+
+        if (option.state)
+        {
+            $('select[name=state]').val(option.state).formSelect()
         }
 
         var search = $('ul#search');

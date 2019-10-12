@@ -20,6 +20,8 @@ use App\Models\SavedSearch;
 
 use App\Utilities\Crawler;
 
+use App\Models\Geo\States;
+
 class SearchController extends Controller
 {
     /**
@@ -103,18 +105,22 @@ class SearchController extends Controller
             'string',
             'reverse',
             'sharp',
+
             'sentiment_pos',
             'sentiment_neu',
             'sentiment_neg',
             'sentiment_hte',
+
             'consumer_que',
             'consumer_req',
             'consumer_cmp',
             'consumer_nws',
+
             'gender',
             'take',
             'modules',
-            'category'
+            'category',
+            'state'
         ])->where('organisation_id', auth()->user()->organisation_id)->orderBy('id', 'desc')->get();
 
         return [
@@ -135,11 +141,36 @@ class SearchController extends Controller
         $e = $request->e;
 
         $organisation = auth()->user()->organisation;
+
         $sources = Source::where('organisation_id', $organisation->id)->get();
+        $states = States::where('country_id', 223)->orderBy('name', 'ASC')->get();
 
         $trends = json_decode(RedisCache::get(implode(':', [ config('system.db.alias'), 'trends', 'twitter_hashtag' ])));
 
-        return view('search', compact('q', 's', 'e', 'trends', 'organisation', 'sources'));
+        $elements = [
+            'start_date',
+            'end_date',
+            'modules',
+            'string',
+            'reverse',
+            'take',
+            'gender',
+            'sentiment_pos',
+            'sentiment_neu',
+            'sentiment_neg',
+            'sentiment_hte',
+            'consumer_que',
+            'consumer_req',
+            'consumer_cmp',
+            'consumer_nws',
+            'sharp',
+            'category',
+            'state'
+        ];
+
+        $elements = implode(',', $elements);
+
+        return view('search', compact('q', 's', 'e', 'trends', 'organisation', 'sources', 'states', 'elements'));
     }
 
     /**
@@ -386,6 +417,11 @@ class SearchController extends Controller
                         if ($request->aggs)
                         {
                             $news_q['aggs']['unique_sites'] = [ 'cardinality' => [ 'field' => 'site_id' ] ];
+                        }
+
+                        if ($request->state)
+                        {
+                            $news_q['query']['bool']['must'][] = [ 'match' => [ 'state' => $request->state ] ];
                         }
 
                         $news_data = self::news($request, $news_q, @$source->source_media);

@@ -59,6 +59,7 @@ class ArchiveRequest extends FormRequest
             'modules' => 'required|array|min:1',
             'modules.*' => 'required|string|in:'.implode(',',array_keys(config('system.modules'))),
             'category' => 'nullable|string|in:'.implode(',', array_keys(config('system.analysis.category.types'))),
+            'state' => 'nullable|string|max:64',
             'sort' => 'nullable|string|in:asc,desc',
             'reverse' => 'nullable|string|in:on',
             'sharp' => 'nullable|string|in:on',

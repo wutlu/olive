@@ -70,7 +70,7 @@ class TakerJob implements ShouldQueue
                     'created_at' => $item->data['created_at'],
                     'called_at' => date('Y-m-d H:i:s'),
                     'status' => 'ok',
-                    'sentiment' => $sentiment->score($item->data['description'])
+                    'sentiment' => $sentiment->score($item->data['description']),
                 ];
 
                 $sources = [
@@ -81,6 +81,12 @@ class TakerJob implements ShouldQueue
                     'ctx._source.status = params.status;',
                     'ctx._source.sentiment = params.sentiment;',
                 ];
+
+                if ($crawler->state)
+                {
+                    $params['state'] = $crawler->state;
+                    $sources[] = 'ctx._source.state = params.state;';
+                }
 
                 $category_name = $category->net($item->data['description'], 'category');
 

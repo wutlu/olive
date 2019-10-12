@@ -25,7 +25,8 @@ class SavedSearch extends Model
 		'take',
 		'modules',
 		'sharp',
-		'category'
+		'category',
+		'state',
     ];
 
     # alarm

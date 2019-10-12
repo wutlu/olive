@@ -384,7 +384,7 @@ class MediaController extends Controller
             return redirect()->route('crawlers.media.bot', $crawler->id);
         }
 
-        $states = States::where('country_id', 223)->get();
+        $states = States::where('country_id', 223)->orderBy('name', 'ASC')->get();
 
         return view('crawlers.media.view', compact('crawler', 'states'));
     }

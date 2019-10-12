@@ -320,7 +320,14 @@ class Trigger extends Command
                 case 'news':
                     if ($organisation->data_news)
                     {
-                        $item = $searchController->news($search, $q, @$source->source_media);
+                        $news_q = $q;
+
+                        if ($search->state)
+                        {
+                            $news_q['query']['bool']['must'][] = [ 'match' => [ 'state' => $search->state ] ];
+                        }
+
+                        $item = $searchController->news($search, $news_q, @$source->source_media);
 
                         if (@$item['data'][0])
                         {
