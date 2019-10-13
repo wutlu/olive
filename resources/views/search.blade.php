@@ -2181,6 +2181,63 @@
             $('.tabs').tabs('select', 'chart-tab')
         }
     }
+
+    function __map(__, obj)
+    {
+        if (obj.status == 'ok')
+        {
+            if (obj.data.news.locals.buckets.length)
+            {
+                var chart = $('#local_press-chart');
+
+                if (chart.length)
+                {
+                    chart.remove()
+                }
+
+                var chart = $('<div />', {
+                    'id': 'local_press-chart',
+                    'html': [
+                        $('<h6 />', {
+                            'html': 'Yerel Basın - ' + $('input[name=string]').val() + ' / ' + $('input[name=start_date]').val() + ' - ' + $('input[name=end_date]').val()
+                        }),
+                        $('<div />', {
+                            'class': 'tr-map'
+                        })
+                    ]
+                })
+
+                var total = 0;
+
+                $.each(obj.data.news.locals.buckets, function(key, o) {
+                    total = total + o.doc_count;
+                })
+
+                $.each(obj.data.news.locals.buckets, function(key, o) {
+                    var per = parseInt(o.doc_count*255)/total;
+                    var cr = 0 + per,
+                        cg = 0,
+                        cb = 0,
+                        color = 'rgba(' + cr + ', ' + cg + ', ' + cb + ')';
+
+                    chart.children('.tr-map').append($('<small />', {
+                        'class': 'state state-' + getSlug(o.key),
+                        'data-title': o.key,
+                        'html': o.doc_count,
+                        'css': { 'background-color': color }
+                    }))
+                })
+
+                chart.prependTo('#chart-tab')
+            }
+            else
+            {
+                M.toast({ html: 'Yerel haber bulunamadı.' }, 200)
+            }
+
+            $('.tabs').tabs('select', 'chart-tab')
+        }
+    }
 @endpush
 
 @section('panel-icon', 'pie_chart')
@@ -2195,6 +2252,7 @@
         <a href="#" class="collection-item json loading" data-callback="__chart" data-type="author" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}">@bahsedenler</a>
         <a href="#" class="collection-item json loading" data-callback="__chart" data-type="hashtag" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}">#hashtagler</a>
         <a href="#" class="collection-item json loading" data-callback="__chart" data-type="category" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}">Kategori</a>
+        <a href="#" class="collection-item json loading" data-callback="__map" data-type="local_press" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}">Yerel Basın</a>
     </div>
 @endsection
 
@@ -2629,7 +2687,7 @@
                                     <option value="{{ $state->name }}">{{ $state->name }}</option>
                                 @endforeach
                             </select>
-                            <label>Yerel Haber</label>
+                            <label>Yerel Basın</label>
                         </div>
                     @else
                         <label class="module-label">
@@ -2778,4 +2836,5 @@
     <script src="{{ asset('js/jquery.table2excel.min.js?v='.config('system.version')) }}"></script>
     <script src="{{ asset('js/jquery.ui.min.js?v='.config('system.version')) }}"></script>
     <script src="{{ asset('js/jquery.mark.min.js?v='.config('system.version')) }}" charset="UTF-8"></script>
+    <script src="{{ asset('js/speakingurl.min.js?v='.config('system.version')) }}" charset="UTF-8"></script>
 @endpush

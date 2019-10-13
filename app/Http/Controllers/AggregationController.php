@@ -183,6 +183,16 @@ class AggregationController extends Controller
                     ]
                 ];
             break;
+            case 'local_press':
+                $aggs['news'] = [
+                    'locals' => [
+                        'terms' => [
+                            'field' => 'state',
+                            'size' => 100
+                        ]
+                    ]
+                ];
+            break;
             case 'platform':
                 $aggs['twitter'] = [
                     'platform' => [

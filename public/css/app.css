@@ -54,6 +54,129 @@
 }
 
 /*!
+ * tr-map
+ */
+.tr-map {
+  background-image: url('../img/olive_logo-opacity.svg'), url('../img/tr_map.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 70%, contain;
+  width: 100%;
+  padding-top: 48%;
+  position: relative;
+}
+.tr-map > small.state {
+  position: absolute;
+  background-color: #444;
+  color: #fff;
+  border-radius: 2px;
+  padding: 0 4px;
+
+  -webkit-box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, .4), 1px 1px 4px 1px rgba(0, 0, 0, .4);
+          box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, .4), 1px 1px 4px 1px rgba(0, 0, 0, .4);
+}
+.tr-map > small.state:before {
+  content: attr(data-title);
+  position: absolute;
+  color: #ccc;
+  transform: translateY(-100%);
+  width: 100px;
+}
+.tr-map > small.state:after {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #444;
+  color: #fff;
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+}
+.tr-map > small.state-adana { top: 73%; left: 49%; }
+.tr-map > small.state-adiyaman { top: 66%; left: 64%; }
+.tr-map > small.state-afyon { top: 53%; left: 25%; }
+.tr-map > small.state-agri { top: 39%; left: 87%; }
+.tr-map > small.state-aksaray { top: 58%; left: 40%; }
+.tr-map > small.state-amasya { top: 28%; left: 51%; }
+.tr-map > small.state-ankara { top: 38%; left: 35%; }
+.tr-map > small.state-antalya { top: 75%; left: 26%; }
+.tr-map > small.state-ardahan { top: 20%; left: 86%; }
+.tr-map > small.state-artvin { top: 19%; left: 81%; }
+.tr-map > small.state-aydin { top: 64%; left: 11%; }
+.tr-map > small.state-balikesir { top: 38%; left: 12%; }
+.tr-map > small.state-bartin { top: 14%; left: 35%; }
+.tr-map > small.state-batman { top: 65%; left: 79%; }
+.tr-map > small.state-bayburt { top: 33%; left: 73%; }
+.tr-map > small.state-bilecik { top: 34%; left: 23%; }
+.tr-map > small.state-bingol { top: 49%; left: 76%; }
+.tr-map > small.state-bitlis { top: 57%; left: 83%; }
+.tr-map > small.state-bolu { top: 29%; left: 32%; }
+.tr-map > small.state-burdur { top: 69%; left: 21%; }
+.tr-map > small.state-bursa { top: 34%; left: 18%; }
+.tr-map > small.state-canakkale { top: 33%; left: 6%; }
+.tr-map > small.state-cankiri { top: 28%; left: 39%; }
+.tr-map > small.state-corum { top: 31%; left: 45%; }
+.tr-map > small.state-denizli { top: 64%; left: 17%; }
+.tr-map > small.state-diyarbakir { top: 62%; left: 73%; }
+.tr-map > small.state-duzce { top: 24%; left: 29%; }
+.tr-map > small.state-edirne { top: 9%; left: 8%; }
+.tr-map > small.state-elazig { top: 55%; left: 67%; }
+.tr-map > small.state-erzincan { top: 40%; left: 67%; }
+.tr-map > small.state-erzurum { top: 34%; left: 78%; }
+.tr-map > small.state-eskisehir { top: 40%; left: 26%; }
+.tr-map > small.state-gaziantep { top: 75%; left: 61%; }
+.tr-map > small.state-giresun { top: 27%; left: 64%; }
+.tr-map > small.state-gumushane { top: 31%; left: 69%; }
+.tr-map > small.state-hakkari { top: 66%; left: 92%; }
+.tr-map > small.state-hatay { top: 86%; left: 54%; }
+.tr-map > small.state-igdir { top: 35%; left: 92%; }
+.tr-map > small.state-isparta { top: 64%; left: 26%; }
+.tr-map > small.state-istanbul { top: 19%; left: 17%; }
+.tr-map > small.state-izmir { top: 56%; left: 7%; }
+.tr-map > small.state-kahramanmaras { top: 64%; left: 56%; }
+.tr-map > small.state-karabuk { top: 21%; left: 36%; }
+.tr-map > small.state-karaman { top: 74%; left: 38%; }
+.tr-map > small.state-kars { top: 28%; left: 87%; }
+.tr-map > small.state-kastamonu { top: 15%; left: 40%; }
+.tr-map > small.state-kayseri { top: 55%; left: 52%; }
+.tr-map > small.state-kilis { top: 79%; left: 58%; }
+.tr-map > small.state-kirikkale { top: 40%; left: 41%; }
+.tr-map > small.state-kirklareli { top: 11%; left: 12%; }
+.tr-map > small.state-kirsehir { top: 46.5%; left: 42.5%; }
+.tr-map > small.state-kocaeli { top: 23%; left: 22.5%; }
+.tr-map > small.state-konya { top: 63%; left: 34%; }
+.tr-map > small.state-kutahya { top: 44%; left: 20%; }
+.tr-map > small.state-kibris { top: 95%; left: 40%; }
+.tr-map > small.state-malatya { top: 56%; left: 61%; }
+.tr-map > small.state-manisa { top: 49%; left: 11%; }
+.tr-map > small.state-mardin { top: 73%; left: 76%; }
+.tr-map > small.state-mersin { top: 80%; left: 42%; }
+.tr-map > small.state-mugla { top: 73%; left: 14%; }
+.tr-map > small.state-mus { top: 49%; left: 82%; }
+.tr-map > small.state-nevsehir { top: 54%; left: 45%; }
+.tr-map > small.state-nigde { top: 63%; left: 45%; }
+.tr-map > small.state-ordu { top: 25%; left: 58.5%; }
+.tr-map > small.state-osmaniye { top: 74%; left: 53.5%; }
+.tr-map > small.state-rize { top: 24%; left: 75.5%; }
+.tr-map > small.state-sakarya { top: 28%; left: 25%; }
+.tr-map > small.state-samsun { top: 20.5%; left: 51.5%; }
+.tr-map > small.state-sanliurfa { top: 74.5%; left: 67%; }
+.tr-map > small.state-siirt { top: 63.5%; left: 84.5%; }
+.tr-map > small.state-sinop { top: 15%; left: 47%; }
+.tr-map > small.state-sirnak { top: 71%; left: 85.5%; }
+.tr-map > small.state-sivas { top: 42%; left: 57%; }
+.tr-map > small.state-tekirdağ { top: 20%; left: 9.5%; }
+.tr-map > small.state-tokat { top: 33%; left: 54%; }
+.tr-map > small.state-trabzon { top: 23%; left: 70%; }
+.tr-map > small.state-tunceli { top: 47%; left: 69%; }
+.tr-map > small.state-usak { top: 54%; left: 18%; }
+.tr-map > small.state-van { top: 55%; left: 91%; }
+.tr-map > small.state-yalova { top: 27%; left: 19%; }
+.tr-map > small.state-yozgat { top: 41%; left: 47%; }
+.tr-map > small.state-zonguldak { top: 18%; left: 31.5%;; }
+
+/*!
  * Top Alert
  */
 .banner-alert {

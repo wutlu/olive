@@ -29,6 +29,15 @@
         }
     }
 
+    .indicators > .indicator-item {
+        background-color: #666 !important;
+        width: 14px !important;
+        height: 14px !important;
+    }
+    .indicators > .indicator-item.active {
+        background-color: #333 !important;
+    }
+
     .organisation-card > .card-content-image {
         padding: 72px 1rem 1rem;
 
