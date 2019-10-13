@@ -749,32 +749,56 @@
         {
             if (__.data('aggs'))
             {
-                $('[data-name=twitter-unique_users]').html(number_format(obj.stats.twitter.unique_users)).closest('p').removeClass(obj.stats.twitter.unique_users ? 'hide' : '');
-                $('[data-name=twitter-reach]').html(number_format(obj.stats.twitter.reach)).closest('p').removeClass(obj.stats.twitter.reach ? 'hide' : '');
-                $('[data-name=twitter-verified_users]').html(number_format(obj.stats.twitter.verified_users)).closest('p').removeClass(obj.stats.twitter.verified_users ? 'hide' : '');
-                $('[data-name=twitter-followers]').html(obj.stats.twitter.followers ? number_format((obj.stats.twitter.followers).toFixed(0)) : 0).closest('p').removeClass(obj.stats.twitter.followers ? 'hide' : '');
-                $('[data-name=twitter-hashtags]').html(number_format(obj.stats.twitter.hashtags)).closest('p').removeClass(obj.stats.twitter.hashtags ? 'hide' : '');
-                $('[data-name=twitter-mentions]').html(number_format(obj.stats.twitter.mentions)).closest('p').removeClass(obj.stats.twitter.mentions ? 'hide' : '');
+                if ($('input[name=modules][value=twitter]').is(':checked'))
+                {
+                    $('[data-name=twitter-unique_users]').html(number_format(obj.stats.twitter.unique_users)).closest('p').removeClass(obj.stats.twitter.unique_users ? 'hide' : '');
+                    $('[data-name=twitter-reach]').html(number_format(obj.stats.twitter.reach)).closest('p').removeClass(obj.stats.twitter.reach ? 'hide' : '');
+                    $('[data-name=twitter-verified_users]').html(number_format(obj.stats.twitter.verified_users)).closest('p').removeClass(obj.stats.twitter.verified_users ? 'hide' : '');
+                    $('[data-name=twitter-followers]').html(obj.stats.twitter.followers ? number_format((obj.stats.twitter.followers).toFixed(0)) : 0).closest('p').removeClass(obj.stats.twitter.followers ? 'hide' : '');
+                    $('[data-name=twitter-hashtags]').html(number_format(obj.stats.twitter.hashtags)).closest('p').removeClass(obj.stats.twitter.hashtags ? 'hide' : '');
+                    $('[data-name=twitter-mentions]').html(number_format(obj.stats.twitter.mentions)).closest('p').removeClass(obj.stats.twitter.mentions ? 'hide' : '');
+                }
 
-                $('[data-name=instagram-unique_users]').html(number_format(obj.stats.instagram.unique_users)).closest('p').removeClass(obj.stats.instagram.unique_users ? 'hide' : '');
-                $('[data-name=instagram-hashtags]').html(number_format(obj.stats.instagram.hashtags)).closest('p').removeClass(obj.stats.instagram.hashtags ? 'hide' : '');
-                $('[data-name=instagram-mentions]').html(number_format(obj.stats.instagram.mentions)).closest('p').removeClass(obj.stats.instagram.mentions ? 'hide' : '');
+                if ($('input[name=modules][value=instagram]').is(':checked'))
+                {
+                    $('[data-name=instagram-unique_users]').html(number_format(obj.stats.instagram.unique_users)).closest('p').removeClass(obj.stats.instagram.unique_users ? 'hide' : '');
+                    $('[data-name=instagram-hashtags]').html(number_format(obj.stats.instagram.hashtags)).closest('p').removeClass(obj.stats.instagram.hashtags ? 'hide' : '');
+                    $('[data-name=instagram-mentions]').html(number_format(obj.stats.instagram.mentions)).closest('p').removeClass(obj.stats.instagram.mentions ? 'hide' : '');
+                }
 
-                $('[data-name=sozluk-unique_users]').html(number_format(obj.stats.sozluk.unique_users)).closest('p').removeClass(obj.stats.sozluk.unique_users ? 'hide' : '');
-                $('[data-name=sozluk-unique_topics]').html(number_format(obj.stats.sozluk.unique_topics)).closest('p').removeClass(obj.stats.sozluk.unique_topics ? 'hide' : '');
+                if ($('input[name=modules][value=sozluk]').is(':checked'))
+                {
+                    $('[data-name=sozluk-unique_users]').html(number_format(obj.stats.sozluk.unique_users)).closest('p').removeClass(obj.stats.sozluk.unique_users ? 'hide' : '');
+                    $('[data-name=sozluk-unique_topics]').html(number_format(obj.stats.sozluk.unique_topics)).closest('p').removeClass(obj.stats.sozluk.unique_topics ? 'hide' : '');
+                }
 
-                $('[data-name=blog-unique_sites]').html(number_format(obj.stats.blog.unique_sites)).closest('p').removeClass(obj.stats.blog.unique_sites ? 'hide' : '');
+                if ($('input[name=modules][value=blog]').is(':checked'))
+                {
+                    $('[data-name=blog-unique_sites]').html(number_format(obj.stats.blog.unique_sites)).closest('p').removeClass(obj.stats.blog.unique_sites ? 'hide' : '');
+                }
 
-                $('[data-name=youtube_video-unique_users]').html(number_format(obj.stats.youtube_video.unique_users)).closest('p').removeClass(obj.stats.youtube_video.unique_users ? 'hide' : '');
-                $('[data-name=youtube_video-hashtags]').html(number_format(obj.stats.youtube_video.hashtags)).closest('p').removeClass(obj.stats.youtube_video.hashtags ? 'hide' : '');
+                if ($('input[name=modules][value=youtube_video]').is(':checked'))
+                {
+                    $('[data-name=youtube_video-unique_users]').html(number_format(obj.stats.youtube_video.unique_users)).closest('p').removeClass(obj.stats.youtube_video.unique_users ? 'hide' : '');
+                    $('[data-name=youtube_video-hashtags]').html(number_format(obj.stats.youtube_video.hashtags)).closest('p').removeClass(obj.stats.youtube_video.hashtags ? 'hide' : '');
+                }
 
-                $('[data-name=youtube_comment-unique_users]').html(number_format(obj.stats.youtube_comment.unique_users)).closest('p').removeClass(obj.stats.youtube_comment.unique_users ? 'hide' : '');
-                $('[data-name=youtube_comment-unique_videos]').html(number_format(obj.stats.youtube_comment.unique_videos)).closest('p').removeClass(obj.stats.youtube_comment.unique_videos ? 'hide' : '');
+                if ($('input[name=modules][value=youtube_comment]').is(':checked'))
+                {
+                    $('[data-name=youtube_comment-unique_users]').html(number_format(obj.stats.youtube_comment.unique_users)).closest('p').removeClass(obj.stats.youtube_comment.unique_users ? 'hide' : '');
+                    $('[data-name=youtube_comment-unique_videos]').html(number_format(obj.stats.youtube_comment.unique_videos)).closest('p').removeClass(obj.stats.youtube_comment.unique_videos ? 'hide' : '');
+                }
 
-                $('[data-name=shopping-unique_sites]').html(number_format(obj.stats.shopping.unique_sites)).closest('p').removeClass(obj.stats.shopping.unique_sites ? 'hide' : '');
-                $('[data-name=shopping-unique_users]').html(number_format(obj.stats.shopping.unique_users)).closest('p').removeClass(obj.stats.shopping.unique_users ? 'hide' : '');
+                if ($('input[name=modules][value=shopping]').is(':checked'))
+                {
+                    $('[data-name=shopping-unique_sites]').html(number_format(obj.stats.shopping.unique_sites)).closest('p').removeClass(obj.stats.shopping.unique_sites ? 'hide' : '');
+                    $('[data-name=shopping-unique_users]').html(number_format(obj.stats.shopping.unique_users)).closest('p').removeClass(obj.stats.shopping.unique_users ? 'hide' : '');
+                }
 
-                $('[data-name=news-unique_sites]').html(number_format(obj.stats.news.unique_sites)).closest('p').removeClass(obj.stats.news.unique_sites ? 'hide' : '');
+                if ($('input[name=modules][value=news]').is(':checked'))
+                {
+                    $('[data-name=news-unique_sites]').html(number_format(obj.stats.news.unique_sites)).closest('p').removeClass(obj.stats.news.unique_sites ? 'hide' : '');
+                }
             }
             else
             {
