@@ -628,6 +628,11 @@ class AggregationController extends Controller
                 $media_q['query']['bool']['minimum_should_match'] = 1;
             }
 
+            if ($request->state)
+            {
+                $media_q['query']['bool']['must'][] = [ 'match' => [ 'state' => $request->state ] ];
+            }
+
             $query = Document::search([ 'media', 's*' ], 'article', $media_q);
 
             $_aggs = @$query->data['aggregations'];
