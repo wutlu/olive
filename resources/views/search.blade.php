@@ -2238,10 +2238,10 @@
                 })
 
                 $.each(obj.data.news.locals.buckets, function(key, o) {
-                    var per = parseInt(o.doc_count*255)/total;
-                    var cr = 0 + per,
-                        cg = 0,
-                        cb = 0,
+                    var per = parseInt(o.doc_count*100)/total;
+                    var cr = 55 + per,
+                        cg = 55,
+                        cb = 55,
                         color = 'rgba(' + cr + ', ' + cg + ', ' + cb + ')';
 
                     chart.children('.tr-map').append($('<small />', {
@@ -2319,14 +2319,7 @@
                            id="search-more_button"
                            data-json-target="ul#search">Daha Fazla</a>
                     </div>
-                    <div id="chart-tab" style="display: none;">
-                        <span class="grey-text text-darken-2" data-id="chart-alert">
-                            @component('components.alert')
-                                @slot('icon', 'info')
-                                @slot('text', 'Öncelikle bir sorgu girin ve soldaki menüden bir istatistik isteği yapın.')
-                            @endcomponent
-                        </span>
-                    </div>
+                    <div id="chart-tab" style="display: none;"></div>
                 </div>
             </div>
         </div>

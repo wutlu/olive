@@ -61,6 +61,7 @@
   background-repeat: no-repeat;
   background-position: center;
   background-size: 70%, contain;
+  background-color: #666;
   width: 100%;
   padding-top: 48%;
   position: relative;
@@ -86,8 +87,7 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background-color: #444;
-  color: #fff;
+  background-color: #fff;
   content: '';
   position: absolute;
   top: -4px;
@@ -128,7 +128,7 @@
 .tr-map > small.state-gaziantep { top: 75%; left: 61%; }
 .tr-map > small.state-giresun { top: 27%; left: 64%; }
 .tr-map > small.state-gumushane { top: 31%; left: 69%; }
-.tr-map > small.state-hakkari { top: 66%; left: 92%; }
+.tr-map > small.state-hakkari { top: 67%; left: 93%; }
 .tr-map > small.state-hatay { top: 86%; left: 54%; }
 .tr-map > small.state-igdir { top: 35%; left: 92%; }
 .tr-map > small.state-isparta { top: 64%; left: 26%; }
