@@ -285,6 +285,15 @@ class ContentController extends Controller
                         [ 'match' => [ 'status' => 'ok' ] ]
                     ];
 
+                    if (@$document['_source']['price'] || @$document['_source']['breadcrumb'] || @$document['_source']['seller'] || @$document['_source']['address'])
+                    {
+                        $data['dock'] = true;
+                    }
+                    else
+                    {
+                        $data['dock'] = false;
+                    }
+
                     $title = implode(' ', [ $crawler->name, '/', '#'.$document['_source']['id'] ]);
                 break;
                 case 'tweet':

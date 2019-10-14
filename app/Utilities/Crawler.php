@@ -524,11 +524,7 @@ class Crawler
 
             $data['data'] = [
                 'title' => $title,
-                'created_at' => $created_at,
-                'address' => $address,
-                'breadcrumb' => $breadcrumb,
-                'seller_name' => $seller_name,
-                'seller_phones' => $seller_phones
+                'created_at' => $created_at
             ];
 
             if ($price)
@@ -538,7 +534,6 @@ class Crawler
             else
             {
                 $data['error_reasons'][] = 'Ücret tespit edilemedi.';
-                $data['status'] = 'err';
             }
 
             if (!$created_at)
@@ -553,7 +548,7 @@ class Crawler
                 $data['error_reasons'][] = 'Başlık tespit edilemedi.';
                 $data['status'] = 'err';
             }
-            else if (strlen($title) > 155)
+            else if (strlen($title) > 200)
             {
                 $data['error_reasons'][] = 'Başlık çok uzun.';
                 $data['status'] = 'err';
@@ -564,7 +559,7 @@ class Crawler
             {
                 $data['error_reasons'][] = 'Açıklama tespit edilemedi.';
             }
-            else if (strlen($description) > 10000)
+            else if (strlen($description) > 5000)
             {
                 $data['error_reasons'][] = 'Açıklama çok uzun.';
                 $data['status'] = 'err';
@@ -575,29 +570,46 @@ class Crawler
             }
 
             # address
-            if (count($address) <= 1)
+            if (count($address))
+            {
+                $data['data']['address'] = $address;
+            }
+            else
             {
                 $data['error_reasons'][] = 'Adres tespit edilemedi.';
-                $data['status'] = 'err';
             }
 
             # breadcrumb
-            if (count($breadcrumb) <= 1)
+            if (count($breadcrumb))
+            {
+                $data['data']['breadcrumb'] = $breadcrumb;
+            }
+            else
             {
                 $data['error_reasons'][] = 'Mini harita tespit edilemedi.';
-                $data['status'] = 'err';
             }
 
             # seller name
             if ($seller_name == null)
             {
                 $data['error_reasons'][] = 'Satıcı adı tespit edilemedi.';
-                $data['status'] = 'err';
             }
-            else if (strlen($seller_name) > 48)
+            else if (strlen($seller_name) > 64)
             {
                 $data['error_reasons'][] = 'Satıcı adı çok uzun.';
-                $data['status'] = 'err';
+            }
+            else
+            {
+                $data['data']['seller_name'] = $seller_name;
+            }
+
+            if (count($seller_phones))
+            {
+                $data['data']['seller_phones'] = $seller_phones;
+            }
+            else
+            {
+                $data['error_reasons'][] = 'Satıcı telefon numarası tespit edilemedi.';
             }
         }
         catch (\Exception $e)

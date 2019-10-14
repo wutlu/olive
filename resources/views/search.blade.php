@@ -2210,7 +2210,7 @@
     {
         if (obj.status == 'ok')
         {
-            if (obj.data.news.locals.buckets.length)
+            if (obj.data.news && obj.data.news.locals.buckets.length)
             {
                 var chart = $('#local_press-chart');
 

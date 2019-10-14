@@ -6,7 +6,7 @@
         ]
     ],
     'pin_group' => true,
-    'dock' => true,
+    'dock' => $data['dock'],
     'delete' => [
         'id' => $document['_id'],
         'type' => $document['_type'],
@@ -107,49 +107,62 @@
     </div>
 @endsection
 
-@section('dock')
-    <div class="card blue-grey">
-        <div class="card-content blue-grey darken-2">
-            <span class="white-text text-darken-4">{{ number_format($document['_source']['price']['amount']) }}</span>
-            <span class="white-text">{{ $document['_source']['price']['currency'] }}</span>
-        </div>
-        <div class="card-content">
-            <span class="blue-grey-text text-lighten-4">{{ title_case($document['_source']['seller']['name']) }}</span>
-            @isset ($document['_source']['seller']['phones'])
-                @foreach ($document['_source']['seller']['phones'] as $key => $phone)
-                    <p class="white-text">{{ $phone['phone'] }}</p>
-                @endforeach
+@if ($data['dock'])
+    @section('dock')
+        <div class="card blue-grey">
+            @isset ($document['_source']['price']['amount'])
+                <div class="card-content blue-grey darken-2">
+                    <span class="white-text text-darken-4">{{ number_format($document['_source']['price']['amount']) }}</span>
+                    <span class="white-text">{{ $document['_source']['price']['currency'] }}</span>
+                </div>
             @endisset
+
+            @isset ($document['_source']['seller']['name'])
+                <div class="card-content">
+                    <span class="blue-grey-text text-lighten-4">{{ title_case($document['_source']['seller']['name']) }}</span>
+                    @isset ($document['_source']['seller']['phones'])
+                        @foreach ($document['_source']['seller']['phones'] as $key => $phone)
+                            <p class="white-text">{{ $phone['phone'] }}</p>
+                        @endforeach
+                    @endisset
+                </div>
+            @endisset
+
+            @if (@$document['_source']['breadcrumb'] || @$document['_source']['address'])
+                <div class="card-tabs">
+                    <ul class="tabs dock-tabs tabs-transparent tabs-fixed-width">
+                        @isset ($document['_source']['breadcrumb'])
+                            <li class="tab">
+                                <a href="#category" class="active">Kategori</a>
+                            </li>
+                        @endisset
+                        @isset ($document['_source']['address'])
+                            <li class="tab" class="{{ !@$document['_source']['breadcrumb'] ? 'active' : '' }}">
+                                <a href="#address">Adres</a>
+                            </li>
+                        @endisset
+                    </ul>
+                </div>
+
+                @isset ($document['_source']['breadcrumb'])
+                    <ul class="collection collection-unstyled white" id="category">
+                        @foreach ($document['_source']['breadcrumb'] as $key => $segment)
+                            <li class="collection-item" data-icon="»">{{ $segment['segment'] }}</li>
+                        @endforeach
+                    </ul>
+                @endisset
+
+                @isset ($document['_source']['address'])
+                    <ul class="collection collection-unstyled white" id="address" style="{{ @$document['_source']['breadcrumb'] ? 'display: none;' : '' }}">
+                        @foreach ($document['_source']['address'] as $key => $segment)
+                            <li class="collection-item" data-icon="»">{{ $segment['segment'] }}</li>
+                        @endforeach
+                    </ul>
+                @endisset
+            @endif
         </div>
-
-        <div class="card-tabs">
-            <ul class="tabs dock-tabs tabs-transparent tabs-fixed-width">
-                <li class="tab">
-                    <a href="#category" class="active">Kategori</a>
-                </li>
-                <li class="tab">
-                    <a href="#address">Adres</a>
-                </li>
-            </ul>
-        </div>
-
-        @isset ($document['_source']['breadcrumb'])
-            <ul class="collection collection-unstyled white" id="category">
-                @foreach ($document['_source']['breadcrumb'] as $key => $segment)
-                    <li class="collection-item" data-icon="»">{{ $segment['segment'] }}</li>
-                @endforeach
-            </ul>
-        @endisset
-
-        @isset ($document['_source']['address'])
-            <ul class="collection collection-unstyled white" id="address" style="display: none;">
-                @foreach ($document['_source']['address'] as $key => $segment)
-                    <li class="collection-item" data-icon="»">{{ $segment['segment'] }}</li>
-                @endforeach
-            </ul>
-        @endisset
-    </div>
-@endsection
+    @endsection
+@endif
 
 @push('external.include.footer')
     <script src="{{ asset('js/chart.min.js?v='.config('system.version')) }}"></script>

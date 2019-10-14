@@ -219,7 +219,7 @@
                         @endauth
 
                         <ul class="right">
-                            @isset($dock)
+                            @if (@$dock && $dock == true)
                                 <li>
                                     <a href="#" data-class="body" data-class-toggle="dock-active" class="dock-menu">
                                         <i class="material-icons">blur_linear</i>
@@ -660,7 +660,7 @@
                         </div>
                     @endif
                     <div class="flex-fill">
-                        @isset($dock)
+                        @if (@$dock && $dock == true)
                             <aside id="dock-content">
                                 <div class="content">
                                     @if (trim($__env->yieldContent('action-bar:half')))
