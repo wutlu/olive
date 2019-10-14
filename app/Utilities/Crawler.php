@@ -491,17 +491,17 @@ class Crawler
             $breadcrumb = array_map(function ($breadcrumb) {
                 $text = @$breadcrumb['a'][0]['span'][0]['#text'][0];
 
-                if (!$text)
-                {
-                    $text = @$breadcrumb['#text'][0];
-                }
-
-                if (!$text)
+                if (!$text && @$breadcrumb['a'][0]['#text'][0])
                 {
                     $text = @$breadcrumb['a'][0]['#text'][0];
                 }
 
-                return $text ? $text : '';
+                if (!$text && @$breadcrumb['#text'][0])
+                {
+                    $text = @$breadcrumb['#text'][0];
+                }
+
+                return $text ? trim($text) : '';
             }, $breadcrumb);
 
             if (count($breadcrumb))

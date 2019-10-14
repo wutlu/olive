@@ -22,7 +22,7 @@ use Sentiment;
 
 use App\Olive\Gender;
 
-class TakerJob// implements ShouldQueue
+class TakerJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
