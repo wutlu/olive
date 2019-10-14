@@ -22,7 +22,7 @@ use Sentiment;
 
 use App\Olive\Gender;
 
-class TakerJob implements ShouldQueue
+class TakerJob// implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -70,31 +70,47 @@ class TakerJob implements ShouldQueue
             	$params = [
                     'title' => $item->data['title'],
                     'created_at' => $item->data['created_at'],
-                    'breadcrumb' => array_map(function ($value) {
-				        return [ 'segment' => $value ];
-				    }, $item->data['breadcrumb']),
-                    'address' => array_map(function ($value) {
-				        return [ 'segment' => $value ];
-				    }, $item->data['address']),
-                    'seller' => [
-                    	'name' => $item->data['seller_name'],
-                        'gender' => $gender->detector([ $item->data['seller_name'] ]),
-                    ],
-                    'price' => $item->data['price'],
                     'called_at' => date('Y-m-d H:i:s'),
                     'status' => 'ok'
                 ];
 
                 $sources = [
                     'ctx._source.title = params.title;',
-                    'ctx._source.breadcrumb = params.breadcrumb;',
-                    'ctx._source.address = params.address;',
-                    'ctx._source.seller = params.seller;',
                     'ctx._source.created_at = params.created_at;',
                     'ctx._source.called_at = params.called_at;',
                     'ctx._source.status = params.status;',
-                    'ctx._source.price = params.price;',
                 ];
+
+                if (@$item->data['seller_name'])
+                {
+                    $params['seller'] = [
+                        'name' => $item->data['seller_name'],
+                        'gender' => $gender->detector([ $item->data['seller_name'] ]),
+                    ];
+                    $sources[] = 'ctx._source.seller = params.seller;';
+                }
+
+                if (@$item->data['price'])
+                {
+                    $params['price'] = $item->data['price'];
+                    $sources[] = 'ctx._source.price = params.price;';
+                }
+
+                if (@$item->data['address'])
+                {
+                    $params['address'] = array_map(function ($value) {
+                        return [ 'segment' => $value ];
+                    }, $item->data['address']);
+                    $sources[] = 'ctx._source.address = params.address;';
+                }
+
+                if (@$item->data['breadcrumb'])
+                {
+                    $params['breadcrumb'] = array_map(function ($value) {
+                        return [ 'segment' => $value ];
+                    }, $item->data['breadcrumb']);
+                    $sources[] = 'ctx._source.breadcrumb = params.breadcrumb;';
+                }
 
                 if (@$item->data['description'])
                 {
@@ -116,7 +132,7 @@ class TakerJob implements ShouldQueue
                     }
                 }
 
-                if ($item->data['seller_phones'])
+                if (@$item->data['seller_phones'])
                 {
                     $params['seller']['phones'] = array_map(function ($value) {
                         return [ 'phone' => $value ];

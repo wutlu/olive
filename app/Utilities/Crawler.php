@@ -467,6 +467,7 @@ class Crawler
                 }
             }
 
+            //$dom = $client->get($page, $arr)->getBody();
             $dom = $client->get($page, $arr)->getBody();
 
             $saw = new Wrawler($dom);
@@ -488,10 +489,25 @@ class Crawler
             # breadcrumb detect
             $breadcrumb = $saw->get($selector->breadcrumb)->toArray();
             $breadcrumb = array_map(function ($breadcrumb) {
-                $text = trim($breadcrumb['#text'][0]);
+                $text = @$breadcrumb['a'][0]['span'][0]['#text'][0];
 
-                return $text ? $text : trim($breadcrumb['a'][0]['#text'][0]);
+                if (!$text)
+                {
+                    $text = @$breadcrumb['#text'][0];
+                }
+
+                if (!$text)
+                {
+                    $text = @$breadcrumb['a'][0]['#text'][0];
+                }
+
+                return $text ? $text : '';
             }, $breadcrumb);
+
+            if (count($breadcrumb))
+            {
+                $breadcrumb = array_values(array_filter($breadcrumb));
+            }
 
             # seller name detect
             $seller_name = $saw->get($selector->seller_name)->toText();
