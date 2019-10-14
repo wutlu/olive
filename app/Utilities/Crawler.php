@@ -467,57 +467,85 @@ class Crawler
                 }
             }
 
-            //$dom = $client->get($page, $arr)->getBody();
             $dom = $client->get($page, $arr)->getBody();
 
             $saw = new Wrawler($dom);
 
             # title detect
             $title = $saw->get($selector->title)->toText();
+
             $title = Term::convertAscii($title);
 
             # description detect
             $description = $saw->get($selector->description)->toText();
-            $description = Term::convertAscii($description);
+
+            if (@$description)
+            {
+                $description = Term::convertAscii($description);
+            }
 
             # address detect
             $address = $saw->get($selector->address)->toArray();
-            $address = array_map(function ($address) {
-                return trim($address['#text'][0]);
-            }, $address);
+
+            if (@$address)
+            {
+                $address = array_map(function ($address) {
+                    return trim(title_case($address['#text'][0]));
+                }, $address);
+
+                if (count($address) == 1)
+                {
+                    if (substr_count($address[0], '/'))
+                    {
+                        $address = explode('/', $address[0]);
+                    }
+                }
+            }
 
             # breadcrumb detect
             $breadcrumb = $saw->get($selector->breadcrumb)->toArray();
-            $breadcrumb = array_map(function ($breadcrumb) {
-                $text = @$breadcrumb['a'][0]['span'][0]['#text'][0];
 
-                if (!$text && @$breadcrumb['a'][0]['#text'][0])
-                {
-                    $text = @$breadcrumb['a'][0]['#text'][0];
-                }
-
-                if (!$text && @$breadcrumb['#text'][0])
-                {
-                    $text = @$breadcrumb['#text'][0];
-                }
-
-                return $text ? trim($text) : '';
-            }, $breadcrumb);
-
-            if (count($breadcrumb))
+            if (@$breadcrumb)
             {
-                $breadcrumb = array_values(array_filter($breadcrumb));
+                $breadcrumb = array_map(function ($breadcrumb) {
+                    $text = @$breadcrumb['a'][0]['span'][0]['#text'][0];
+
+                    if (!$text && @$breadcrumb['a'][0]['#text'][0])
+                    {
+                        $text = @$breadcrumb['a'][0]['#text'][0];
+                    }
+
+                    if (!$text && @$breadcrumb['#text'][0])
+                    {
+                        $text = @$breadcrumb['#text'][0];
+                    }
+
+                    return $text ? trim($text) : '';
+                }, $breadcrumb);
+
+                if (count($breadcrumb))
+                {
+                    $breadcrumb = array_values(array_filter($breadcrumb));
+                }
             }
 
             # seller name detect
             $seller_name = $saw->get($selector->seller_name)->toText();
-            $seller_name = Term::convertAscii($seller_name);
+
+            if (@$seller_name)
+            {
+                $seller_name = Term::convertAscii($seller_name);
+            }
 
             # seller phones detect
             $seller_phones = $saw->get($selector->seller_phones)->toArray();
-            $seller_phones = array_map(function ($seller_phones) {
-                return trim($seller_phones['#text'][0]);
-            }, $seller_phones);
+
+            if (@$seller_phones)
+            {
+                $seller_phones = array_map(function ($seller_phones) {
+                    return trim($seller_phones['#text'][0]);
+                }, $seller_phones);
+            }
 
             # price detect
             $price = null;
@@ -588,17 +616,7 @@ class Crawler
             # address
             if (count($address))
             {
-                if (count($address) == 1)
-                {
-                    if (substr_count($address[0], '/'))
-                    {
-                        $address = explode('/', $address[0]);
-                    }
-                }
-
-                $data['data']['address'] = array_map(function($arr) {
-                    return trim(title_case($arr));
-                }, $address);
+                $data['data']['address'] = $address;
             }
             else
             {
