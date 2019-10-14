@@ -499,6 +499,21 @@ class Crawler
                     {
                         $address = explode('/', $address[0]);
                     }
+                    else if (substr_count($address[0], ','))
+                    {
+                        $address = explode(',', $address[0]);
+                    }
+                    else
+                    {
+                        $address = trim($address[0]);
+                    }
+
+                    if (is_array($address))
+                    {
+                        $address = array_map(function($item) {
+                            return trim(title_case($item));
+                        }, $address);
+                    }
                 }
             }
 
