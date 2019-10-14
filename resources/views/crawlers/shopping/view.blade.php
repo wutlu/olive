@@ -476,17 +476,20 @@
 
                 if (o.data)
                 {
-                    textarea.val(textarea.val() + '- 1: ' + o.data.title + '\n');
-                    textarea.val(textarea.val() + '- 2: ' + o.data.description + '\n');
-                    textarea.val(textarea.val() + '- 3: ' + o.data.created_at + '\n');
+                    textarea.val(textarea.val() + '- Başlık: ' + o.data.title + '\n');
+                    textarea.val(textarea.val() + '- Açıklama: ' + o.data.description + '\n');
+                    textarea.val(textarea.val() + '- Tarih: ' + o.data.created_at + '\n');
 
-                    textarea.val(textarea.val() + '- 4: ' + o.data.address + '\n');
-					textarea.val(textarea.val() + '- 5: ' + o.data.breadcrumb + '\n');
-					textarea.val(textarea.val() + '- 6: ' + o.data.seller_name + '\n');
-                    textarea.val(textarea.val() + '- 7: ' + o.data.seller_phones + '\n');
+                    textarea.val(textarea.val() + '- Adres: ' + o.data.address + '\n');
+                    textarea.val(textarea.val() + '- Kırıntı: ' + o.data.breadcrumb + '\n');
+                    textarea.val(textarea.val() + '- Satıcı Adı: ' + o.data.seller_name + '\n');
+                    textarea.val(textarea.val() + '- Satıcı Telefon: ' + o.data.seller_phones + '\n');
 
-					textarea.val(textarea.val() + '- 8: ' + o.data.price.amount + '\n');
-                    textarea.val(textarea.val() + '- 9: ' + o.data.price.currency + '\n');
+                    if (o.data.price)
+                    {
+                        textarea.val(textarea.val() + '- Fiyat: ' + o.data.price.amount + '\n');
+                        textarea.val(textarea.val() + '- Birim: ' + o.data.price.currency + '\n');
+                    }
                 }
                 else
                 {

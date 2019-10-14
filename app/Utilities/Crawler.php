@@ -572,7 +572,17 @@ class Crawler
             # address
             if (count($address))
             {
-                $data['data']['address'] = $address;
+                if (count($address) == 1)
+                {
+                    if (substr_count($address[0], '/'))
+                    {
+                        $address = explode('/', $address[0]);
+                    }
+                }
+
+                $data['data']['address'] = array_map(function($arr) {
+                    return trim(title_case($arr));
+                }, $address);
             }
             else
             {
