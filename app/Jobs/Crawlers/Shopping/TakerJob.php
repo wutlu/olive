@@ -146,16 +146,16 @@ class TakerJob implements ShouldQueue
                     ]
                 ]);
 
-                # Hata varken sorunsuz işlem gerçekleştirildiğinde hata alanını sıfırla.
-                if ($crawler->error_count > 0)
-                {
-                    $crawler->update([ 'error_count' => 0 ]);
-                }
-
                 # ES hatalarını 10 dakika sonra tekrar dene.
                 if ($upsert->status == 'err')
                 {
                     TakerJob::dispatch($this->data)->onQueue('error-crawler')->delay(now()->addMinutes(10));
+                }
+
+                # Hata varken sorunsuz işlem gerçekleştirildiğinde hata alanını sıfırla.
+                if ($crawler->error_count > 0)
+                {
+                    $crawler->update([ 'error_count' => 0 ]);
                 }
             }
             else if ($item->status == 'err' || $item->status == 'failed')
