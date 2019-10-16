@@ -596,12 +596,14 @@ class ContentController extends Controller
 
                     $user = Document::get([ 'instagram', 'users' ], 'user', $document['_source']['user']['id']);
 
-                    if (!$user->status == 'ok')
+                    if ($user->status == 'ok')
+                    {
+                        $data['user'] = $user->data['_source'];
+                    }
+                    else
                     {
                         return view('content.media_loading', compact('document'));
                     }
-
-                    $data['user'] = $user->data['_source'];
 
                     $title = implode(' / ', [ 'Instagram', 'Medya', '#'.$es_id ]);
                 break;
