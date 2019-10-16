@@ -119,7 +119,7 @@
     <div class="card mb-1">
         <div class="card-image">
             <img src="{{ @$document['_source']['image_url'] }}" onerror="this.onerror=null;this.src='/img/md-s/21.jpg';" alt="Image" />
-            <span class="card-title">{{ $document['_source']['title'] }}</span>
+            <span class="card-title blue-grey white-text">{{ $document['_source']['title'] }}</span>
         </div>
         <div class="card-content">
             <div class="markdown">{!! Term::markdown($document['_source']['description']) !!}</div>
