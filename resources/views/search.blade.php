@@ -89,6 +89,8 @@
         nav: true
     })
 
+    var updateTimer;
+
     $(document).on('click', '[data-trigger=clear]', function() {
         $('input[name=string]').val('').hide().show( 'highlight', { 'color': '#f0f4c3' }, 400 ).focus()
     }).on('click', '[data-search]', function() {
@@ -190,15 +192,21 @@
     }).on('blur', 'input[name=string]', function() {
         operator('close')
     }).on('change', '[data-update]', function() {
-        var search = $('ul#search');
-            search.data('skip', 0).addClass('json-clear');
+        window.clearTimeout(updateTimer)
 
-        vzAjax(search)
+        updateTimer = window.setTimeout(function() {
+            var search = $('ul#search');
+                search.data('skip', 0).addClass('json-clear');
+
+            vzAjax(search)
+        }, 200)
     }).on('click', '[data-update-click]', function() {
-        var search = $('ul#search');
-            search.data('skip', 0).addClass('json-clear');
+        updateTimer = window.setTimeout(function() {
+            var search = $('ul#search');
+                search.data('skip', 0).addClass('json-clear');
 
-        vzAjax(search)
+            vzAjax(search)
+        }, 200)
     })
 
     var operatorTimer;
@@ -2629,16 +2637,18 @@
         $('input[name=modules]').prop('checked', false)
         $(this).children('input[type=checkbox]').prop('checked', true)
 
-        setTimeout(function() {
+        window.clearTimeout(updateTimer)
+
+        updateTimer = window.setTimeout(function() {
             var search = $('ul#search');
                 search.data('skip', 0).addClass('json-clear');
 
             vzAjax(search)
-        }, 600)
+        }, 400)
     }).on('click', '[data-trigger=select-allSources]', function() {
         $('input[name=modules]').prop('checked', true)
 
-        setTimeout(function() {
+        updateTimer = window.setTimeout(function() {
             var search = $('ul#search');
                 search.data('skip', 0).addClass('json-clear');
 
@@ -2652,7 +2662,7 @@
         $('input[name=modules]').prop('checked', false)
         $('input[name=modules][value=' + __.data('module') + ']').prop('checked', true)
 
-        setTimeout(function() {
+        updateTimer = window.setTimeout(function() {
             var search = $('ul#search');
                 search.data('skip', 0).addClass('json-clear');
 
@@ -2808,10 +2818,12 @@
             $('select[name=state]').val(option.state).formSelect()
         }
 
-        var search = $('ul#search');
-            search.data('skip', 0).addClass('json-clear');
+        updateTimer = window.setTimeout(function() {
+            var search = $('ul#search');
+                search.data('skip', 0).addClass('json-clear');
 
-        vzAjax(search)
+            vzAjax(search)
+        }, 200)
     })
 
     function __saved_searches(__, obj)

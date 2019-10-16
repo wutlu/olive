@@ -678,6 +678,13 @@ class ContentController extends Controller
                     ]
                 ];
             break;
+            case 'category':
+                $data['aggs']['category'] = [
+                    'terms' => [
+                        'field' => 'category'
+                    ]
+                ];
+            break;
             case 'mention_out':
                 $data['aggs']['mention_out'] = [
                     'nested' => [ 'path' => 'entities.mentions' ],
@@ -728,6 +735,8 @@ class ContentController extends Controller
         }
 
         $data = Document::search([ 'twitter', 'tweets', '*' ], 'tweet', $data);
+
+        print_r($data); exit();
 
         switch ($type)
         {
@@ -1061,11 +1070,19 @@ class ContentController extends Controller
             case 'product':
                 $doc = Document::get([ 'shopping', $es_index_key ], 'product', $es_id);
 
+                $smilar = Term::commonWords($doc->data['_source']['title']);
+
+                $arr['query']['bool']['must'][] = [ 'match' => [ 'status' => 'ok' ] ];
                 $arr['query']['bool']['must'][] = [
-                    'match' => [ 'status' => 'ok' ]
+                    'more_like_this' => [
+                        'fields' => [ 'title', 'description' ],
+                        'like' => array_keys($smilar),
+                        'min_term_freq' => 1,
+                        'min_doc_freq' => 1
+                    ]
                 ];
 
-                $arr['min_score'] = 4;
+                $arr['min_score'] = 10;
 
                 $document = Document::search([ 'shopping', '*' ], 'product', $arr);
             break;
