@@ -17,7 +17,7 @@
 
 @if (@$data['keywords'])
     @push('local.scripts')
-        var words = [
+        $('#words').jQCloud([
             @foreach ($data['keywords'] as $key => $count)
                 {
                     text: '{{ $key }}',
@@ -25,9 +25,7 @@
                     link: '{{ route('search.dashboard') }}?q="{{ $key }}"'
                 },
             @endforeach
-        ];
-
-        $('#words').jQCloud(words)
+        ])
     @endpush
 
     @push('local.styles')
@@ -39,14 +37,35 @@
 
 @section('dock')
     <div class="card mb-1">
-        <div class="card-content"> 
+        <div class="card-content blue-grey white-text">
+            <span class="card-title">Yazarın Sık Kullandığı Kelimeler</span>
+        </div>
+        <div class="card-content">
             @if (@$data['keywords'])
-                <div id="words"></div> 
+                <div id="words"></div>
             @else
                 @component('components.nothing')@endcomponent
             @endif
         </div>
     </div>
+
+    @if (@$data['category'])
+        <div class="card mb-1 p-0">
+            <div class="card-content blue-grey white-text">
+                <span class="card-title">Yazarın İlgi Alanları</span>
+            </div>
+            <ul class="collection collection-unstyled aggregation-collection">
+                @foreach ($data['category'] as $category => $count)
+                    <li class="collection-item">
+                        <div class="d-flex justify-content-between">
+                            <span class="align-self-center" data-name="name">{{ $category }}</span>
+                            <span class="grey align-self-center" data-name="count" style="padding: 0 .4rem;">{{ $count }}</span>
+                        </div>
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 @endsection
 
 @include('content._inc.histogram', [
@@ -54,7 +73,7 @@
         [
             'type' => 'entry',
             'period' => 'daily',
-            'title' => 'Başlığa Günlük Cevap',
+            'title' => 'Yazarın Günlük Aktivitesi',
             'id' => $document['_id'],
             'unique_id' => 'tab_1',
             'es_index_key' => $document['_source']['site_id'],
@@ -63,7 +82,7 @@
         [
             'type' => 'entry',
             'period' => 'hourly',
-            'title' => 'Başlığa Saatlik Cevap',
+            'title' => 'Yazarın Saatlik Aktivitesi',
             'id' => $document['_id'],
             'unique_id' => 'tab_2',
             'es_index_key' => $document['_source']['site_id']

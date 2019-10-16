@@ -414,7 +414,8 @@
 
     @foreach (
         [
-            'titles' => 'Kanal Adları'
+            'titles' => 'Kanal Adları',
+            'category' => 'Kanalın İlgi Alanları'
         ] as $key => $model
     )
         <div class="card mb-1">

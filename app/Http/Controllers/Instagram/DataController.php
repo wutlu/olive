@@ -83,7 +83,7 @@ class DataController extends Controller
             $dateUtility = new DateUtility;
 
             $instagram = new Instagram;
-            $connect = $instagram->connect('https://www.instagram.com/'.$array['user']['username'].'/');
+            $connect = $instagram->connect('https://www.instagram.com/'.$array['user']['username'].'/', false);
 
             if ($connect->status == 'ok')
             {

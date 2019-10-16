@@ -22,6 +22,7 @@
             'mention_in' => 'Anıldığı Kişiler',
             'hashtags' => 'Hashtag Geçmişi',
             'places' => 'Konum Geçmişi',
+            'category' => 'İlgi Alanları'
         ] as $key => $model
     )
         <div class="card mb-1 p-0">

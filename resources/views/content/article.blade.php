@@ -17,7 +17,7 @@
 
 @if (@$data['keywords'])
     @push('local.scripts')
-        var words = [
+        $('#words').jQCloud([
             @foreach ($data['keywords'] as $key => $count)
                 {
                     text: '{{ $key }}',
@@ -25,9 +25,7 @@
                     link: '{{ route('search.dashboard') }}?q="{{ $key }}"'
                 },
             @endforeach
-        ];
-
-        $('#words').jQCloud(words)
+        ])
     @endpush
 
     @push('local.styles')
@@ -38,15 +36,46 @@
 @endif
 
 @section('dock')
-    <div class="card mb-1">
-        <div class="card-content"> 
-            @if (@$data['keywords'])
-                <div id="words"></div> 
-            @else
-                @component('components.nothing')@endcomponent
-            @endif
+        <div class="card mb-1">
+            <div class="card-content blue-grey white-text">
+                <span class="card-title">Sitenin Sık Kullandığı Kelimeler</span>
+            </div>
+            <div class="card-content">
+                @if (@$data['keywords'])
+                    <div id="words"></div>
+                @else
+                    @component('components.nothing')@endcomponent
+                @endif
+            </div>
         </div>
-    </div>
+
+    @foreach (
+        [
+            'category' => 'Sitenin İlgi Alanları'
+        ] as $key => $model
+    )
+        <div class="card mb-1 p-0">
+            <div class="card-content blue-grey">
+                <a
+                    href="#"
+                    class="card-title json loading white-text"
+                    data-method="post"
+                    data-callback="__aggregation"
+                    data-type="{{ $key }}"
+                    data-href="{{ route('article.aggregation', [ 'type' => $key, 'site_id' => $data['crawler']->id ]) }}">
+                    {{ $model }}
+                </a>
+            </div>
+            <ul class="collection collection-unstyled aggregation-collection hide">
+                <li class="collection-item hide" data-model>
+                    <div class="d-flex justify-content-between">
+                        <span class="align-self-center" data-name="name"></span>
+                        <span class="grey align-self-center" data-name="count" style="padding: 0 .4rem;"></span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    @endforeach
 @endsection
 
 @include('content._inc.histogram', [
@@ -151,6 +180,46 @@
 @endpush
 
 @push('local.scripts')
+    function __aggregation(__, obj)
+    {
+        if (obj.status == 'ok')
+        {
+            __.removeClass('json')
+
+            var collection = __.closest('.card').find('ul.collection');
+            var model = collection.children('li.collection-item[data-model]')
+
+            if (obj.data.length)
+            {
+                collection.removeClass('hide')
+
+                $.each(obj.data, function(key, o) {
+                    var item = model.clone();
+                        item.removeAttr('data-model').removeClass('hide')
+
+                    var name = item.find('[data-name=name]');
+
+                    if (__.attr('data-type') == 'category')
+                    {
+                        name.html(o.key)
+                    }
+                    else
+                    {
+                        name.html(o.key)
+                    }
+
+                        item.find('[data-name=count]').html(o.doc_count)
+
+                    item.appendTo(collection)
+                })
+            }
+            else
+            {
+                __.addClass('white-text').parent('.card-content').addClass('red')
+            }
+        }
+    }
+
     function __smilars(__, obj)
     {
         var ul = $('#smilars');

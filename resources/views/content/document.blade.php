@@ -17,7 +17,7 @@
 
 @if (@$data['keywords'])
     @push('local.scripts')
-        var words = [
+        $('#words').jQCloud([
             @foreach ($data['keywords'] as $key => $count)
                 {
                     text: '{{ $key }}',
@@ -25,9 +25,7 @@
                     link: '{{ route('search.dashboard') }}?q="{{ $key }}"'
                 },
             @endforeach
-        ];
-
-        $('#words').jQCloud(words)
+        ])
     @endpush
 
     @push('local.styles')
@@ -39,14 +37,35 @@
 
 @section('dock')
     <div class="card mb-1">
-        <div class="card-content"> 
+        <div class="card-content blue-grey white-text">
+            <span class="card-title">Blog'un Sık Kullandığı Kelimeler</span>
+        </div>
+        <div class="card-content">
             @if (@$data['keywords'])
-                <div id="words"></div> 
+                <div id="words"></div>
             @else
                 @component('components.nothing')@endcomponent
             @endif
         </div>
     </div>
+
+    @if (@$data['category'])
+        <div class="card mb-1 p-0">
+            <div class="card-content blue-grey white-text">
+                <span class="card-title">Blog'un İlgi Alanları</span>
+            </div>
+            <ul class="collection collection-unstyled aggregation-collection">
+                @foreach ($data['category'] as $category => $count)
+                    <li class="collection-item">
+                        <div class="d-flex justify-content-between">
+                            <span class="align-self-center" data-name="name">{{ $category }}</span>
+                            <span class="grey align-self-center" data-name="count" style="padding: 0 .4rem;">{{ $count }}</span>
+                        </div>
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 @endsection
 
 @include('content._inc.histogram', [
@@ -90,7 +109,7 @@
     <div class="card mb-1">
         <div class="card-image">
             <img src="{{ @$document['_source']['image_url'] }}" onerror="this.onerror=null;this.src='/img/md-s/21.jpg';" alt="Image" />
-            <span class="card-title">{{ $document['_source']['title'] }}</span>
+            <span class="card-title blue-grey white-text">{{ $document['_source']['title'] }}</span>
         </div>
         <div class="card-content">
             <div class="markdown">{!! Term::markdown($document['_source']['description']) !!}</div>
@@ -151,6 +170,46 @@
 @endpush
 
 @push('local.scripts')
+    function __aggregation(__, obj)
+    {
+        if (obj.status == 'ok')
+        {
+            __.removeClass('json')
+
+            var collection = __.closest('.card').find('ul.collection');
+            var model = collection.children('li.collection-item[data-model]')
+
+            if (obj.data.length)
+            {
+                collection.removeClass('hide')
+
+                $.each(obj.data, function(key, o) {
+                    var item = model.clone();
+                        item.removeAttr('data-model').removeClass('hide')
+
+                    var name = item.find('[data-name=name]');
+
+                    if (__.attr('data-type') == 'category')
+                    {
+                        name.html(o.key)
+                    }
+                    else
+                    {
+                        name.html(o.key)
+                    }
+
+                        item.find('[data-name=count]').html(o.doc_count)
+
+                    item.appendTo(collection)
+                })
+            }
+            else
+            {
+                __.addClass('white-text').parent('.card-content').addClass('red')
+            }
+        }
+    }
+
     function __smilars(__, obj)
     {
         var ul = $('#smilars');

@@ -31,7 +31,7 @@
     }
 
     .aggregation-collection {
-        max-height: 200px;
+        max-height: 400px;
         overflow: auto;
     }
 @endpush

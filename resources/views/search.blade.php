@@ -1623,6 +1623,53 @@
                                 {
                                     //
                                 }
+
+                                if ((module.topics).length)
+                                {
+                                    var table = __table_generate('sozlukTopics')
+
+                                    $.each(module.topics, function(key, o) {
+                                        table.append(
+                                            $('<tr />', {
+                                                'html': [
+                                                    $('<td />', { 'html': o.site }),
+                                                    $('<td />', {
+                                                        'html': $('<a />', {
+                                                            'href': '#',
+                                                            'class': 'd-table grey-text',
+                                                            'data-search': '"' + o.title + '"',
+                                                            'data-update-click': true,
+                                                            'data-module': 'sozluk',
+                                                            'html': o.title
+                                                        })
+                                                    }),
+                                                    $('<td />', { 'class': 'right-align', 'html': o.hit })
+                                                ]
+                                            })
+                                        )
+                                    })
+
+                                    table.prepend($('<tr />', {
+                                        'html': [
+                                            $('<th />', { 'html': '<b>Sözlük</b>' }),
+                                            $('<th />', { 'html': '<b>Başlık</b>' }),
+                                            $('<th />', { 'class': 'right-align', 'html': '<b>Entry</b>' })
+                                        ]
+                                    }))
+                                    table.prepend($('<tr />', {
+                                        'html': [
+                                            $('<th />', {
+                                                'colspan': 3,
+                                                'class': 'yellow lighten-4 pl-1 pr-1',
+                                                'html': '<b>En Çok Cevap Alan Sözlük Başlıkları</b>' + '<br />' + query
+                                            })
+                                        ]
+                                    }))
+                                }
+                                else
+                                {
+                                    //
+                                }
                             break;
                             case 'news':
                                 if ((module.sites).length)

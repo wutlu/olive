@@ -213,15 +213,13 @@ class ContentController extends Controller
 
                     $crawler = SozlukCrawler::where('id', $document['_source']['site_id'])->firstOrFail();
 
-                    $site = [
-                        [ 'match' => [ 'group_name' => $document['_source']['group_name'] ] ]
-                    ];
-
                     $data = [
                         'total' => Document::search($es_index, 'entry', [
                             'query' => [
                                 'bool' => [
-                                    'must' => $site
+                                    'must' => [
+                                        [ 'match' => [ 'author' => $document['_source']['author'] ] ]
+                                    ]
                                 ]
                             ],
                             'aggs' => [
@@ -229,6 +227,12 @@ class ContentController extends Controller
                                     'terms' => [
                                         'field' => 'entry',
                                         'size' => 50
+                                    ]
+                                ],
+                                'category' => [
+                                    'terms' => [
+                                        'field' => 'category',
+                                        'size' => 100
                                     ]
                                 ]
                             ],
@@ -268,6 +272,23 @@ class ContentController extends Controller
                         }
 
                         $data['keywords'] = $_temp_data;
+                    }
+
+                    $bucket = @$data['total']->data['aggregations']['category']['buckets'];
+
+                    if ($bucket)
+                    {
+                        $_temp_data = [];
+
+                        foreach ($bucket as $item)
+                        {
+                            if (strlen($item['key']) > 2)
+                            {
+                                $_temp_data[$item['key']] = $item['doc_count'];
+                            }
+                        }
+
+                        $data['category'] = $_temp_data;
                     }
 
                     $title = implode(' ', [ $crawler->name, '/', $document['_source']['title'] ]);
@@ -519,6 +540,12 @@ class ContentController extends Controller
                                         'field' => 'description',
                                         'size' => 50
                                     ]
+                                ],
+                                'category' => [
+                                    'terms' => [
+                                        'field' => 'category',
+                                        'size' => 100
+                                    ]
                                 ]
                             ],
                             'size' => 0
@@ -542,6 +569,23 @@ class ContentController extends Controller
                         $data['keywords'] = $_temp_data;
                     }
 
+                    $bucket = @$data['total']->data['aggregations']['category']['buckets'];
+
+                    if ($bucket)
+                    {
+                        $_temp_data = [];
+
+                        foreach ($bucket as $item)
+                        {
+                            if (strlen($item['key']) > 2)
+                            {
+                                $_temp_data[$item['key']] = $item['doc_count'];
+                            }
+                        }
+
+                        $data['category'] = $_temp_data;
+                    }
+
                     $title = $crawler->name . ' / ' . '#'.$document['_source']['id'];
                 break;
                 case 'media':
@@ -552,16 +596,7 @@ class ContentController extends Controller
 
                     $user = Document::get([ 'instagram', 'users' ], 'user', $document['_source']['user']['id']);
 
-                    if ($user->status == 'ok')
-                    {
-                        $called_at = date('Y-m-d H:i:s', strtotime($user->data['_source']['called_at']));
-
-                        if ($called_at <= date('Y-m-d H:i:s', strtotime('-2 days')))
-                        {
-                            return view('content.media_loading', compact('document'));
-                        }
-                    }
-                    else
+                    if (!$user->status == 'ok')
                     {
                         return view('content.media_loading', compact('document'));
                     }
@@ -736,8 +771,6 @@ class ContentController extends Controller
 
         $data = Document::search([ 'twitter', 'tweets', '*' ], 'tweet', $data);
 
-        print_r($data); exit();
-
         switch ($type)
         {
             case 'mention_out':
@@ -838,6 +871,13 @@ class ContentController extends Controller
                         ]
                     ];
                 break;
+                case 'category':
+                    $data['aggs']['category'] = [
+                        'terms' => [
+                            'field' => 'category'
+                        ]
+                    ];
+                break;
                 case 'mention_out':
                     $data['aggs']['mention_out'] = [
                         'nested' => [ 'path' => 'entities.mentions' ],
@@ -902,6 +942,138 @@ class ContentController extends Controller
     }
 
     /**
+     * article Aggregations
+     *
+     * @return array
+     */
+    public static function articleAggregation(string $type, int $site_id)
+    {
+        $days = auth()->user()->organisation->historical_days;
+
+        $crawler = MediaCrawler::where('id', $site_id)->firstOrFail();
+
+        $data = [
+            'query' => [
+                'bool' => [
+                    'filter' => [
+                        [
+                            'range' => [
+                                'created_at' => [
+                                    'format' => 'YYYY-MM-dd',
+                                    'gte' => date('Y-m-d', strtotime('-'.$days.' days'))
+                                ]
+                            ]
+                        ],
+                        [ 'match' => [ 'site_id' => $crawler->id ] ]
+                    ]
+                ]
+            ],
+            'size' => 0
+        ];
+
+        switch ($type)
+        {
+            case 'category':
+                $data['aggs']['category'] = [
+                    'terms' => [
+                        'field' => 'category'
+                    ]
+                ];
+            break;
+        }
+
+        $data = Document::search([ 'media', $crawler->elasticsearch_index_name ], 'article', $data);
+
+        if ($data->status == 'ok')
+        {
+            switch ($type)
+            {
+                case 'category':
+                    $data = $data->data['aggregations']['category']['buckets'];
+                break;
+            }
+
+            return [
+                'status' => 'ok',
+                'data' => $data
+            ];
+        }
+        else
+        {
+            return [
+                'status' => 'err',
+                'message' => 'İçeriğe geçici olarak ulaşılamıyor.'
+            ];
+        }
+    }
+
+    /**
+     * blog Aggregations
+     *
+     * @return array
+     */
+    public static function documentAggregation(string $type, int $site_id)
+    {
+        $days = auth()->user()->organisation->historical_days;
+
+        $crawler = BlogCrawler::where('id', $site_id)->firstOrFail();
+
+        $data = [
+            'query' => [
+                'bool' => [
+                    'filter' => [
+                        [
+                            'range' => [
+                                'created_at' => [
+                                    'format' => 'YYYY-MM-dd',
+                                    'gte' => date('Y-m-d', strtotime('-'.$days.' days'))
+                                ]
+                            ]
+                        ],
+                        [ 'match' => [ 'site_id' => $crawler->id ] ]
+                    ]
+                ]
+            ],
+            'size' => 0
+        ];
+
+        switch ($type)
+        {
+            case 'category':
+                $data['aggs']['category'] = [
+                    'terms' => [
+                        'field' => 'category'
+                    ]
+                ];
+            break;
+        }
+
+        $data = Document::search([ 'blog', $crawler->elasticsearch_index_name ], 'document', $data);
+
+        if ($data->status == 'ok')
+        {
+            switch ($type)
+            {
+                case 'category':
+                    $data = $data->data['aggregations']['category']['buckets'];
+                break;
+            }
+
+            return [
+                'status' => 'ok',
+                'data' => $data
+            ];
+        }
+        else
+        {
+            return [
+                'status' => 'err',
+                'message' => 'İçeriğe geçici olarak ulaşılamıyor.'
+            ];
+        }
+    }
+
+    /**
      * video Aggregations
      *
      * @return array
@@ -922,6 +1094,7 @@ class ContentController extends Controller
         switch ($type)
         {
             case 'titles': $data['aggs']['titles'] = [ 'terms' => [ 'field' => 'channel.title' ] ]; break;
+            case 'category': $data['aggs']['category'] = [ 'terms' => [ 'field' => 'category' ] ]; break;
         }
 
         $query = Document::search([ 'youtube', '*' ], 'video,comment', $data);
@@ -1047,7 +1220,7 @@ class ContentController extends Controller
                 if ($doc->status == 'ok')
                 {
                     $arr['query']['bool']['must'][] = [
-                        'match' => [ 'group_name' => $doc->data['_source']['group_name'] ]
+                        'match' => [ 'author' => $doc->data['_source']['author'] ]
                     ];
 
                     $document = Document::search([ 'sozluk', $es_index_key ], 'entry', $arr);

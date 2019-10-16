@@ -20,12 +20,12 @@ class Instagram
     private $base_uri = 'https://www.instagram.com';
     private $dom;
 
-    public function connect(string $url)
+    public function connect(string $url, bool $cookies = true)
     {
         $client = new Client([
             'base_uri' => $this->base_uri,
             'handler' => HandlerStack::create(),
-            'cookies' => true
+            'cookies' => $cookies
         ]);
 
         try
@@ -37,9 +37,13 @@ class Instagram
                     'User-Agent' => config('crawler.user_agents_mobile')[array_rand(config('crawler.user_agents_mobile'))],
                     'Accept-Language' => 'tr-TR;q=0.6,tr;q=0.4'
                 ],
-                'verify' => false,
-                'cookies' => CookieJar::fromArray([ 'sessionid' => config('services.instagram.session.id') ], '.instagram.com')
+                'verify' => false
             ];
+
+            if ($cookies)
+            {
+                $arr['cookies'] = CookieJar::fromArray([ 'sessionid' => config('services.instagram.session.id') ], '.instagram.com');
+            }
 
             $proxy = Proxy::where('health', '>', 7)->inRandomOrder();
 

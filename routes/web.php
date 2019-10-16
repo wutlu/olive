@@ -136,8 +136,10 @@ Route::domain('olive.'.config('app.domain'))->group(function () {
 
         Route::post('benzer/{es_index}/{es_type}/{es_id}/{type?}', 'ContentController@smilar')->name('content.smilar')->where('type', '('.implode('|', $smilar_types).')');
         Route::post('aggregation/tweet/{type}/{id}', 'ContentController@tweetAggregation')->name('tweet.aggregation')->where('type', '(platforms|langs|mention_in|mention_out|hashtags|places|category)');
-        Route::post('aggregation/media/{type}/{screen_name}', 'ContentController@mediaAggregation')->name('media.aggregation')->where('type', '(mention_out|mention_in|mention_out_public|hashtags|hashtags_public|places|)');
-        Route::post('aggregation/video/{type}/{id}', 'ContentController@videoAggregation')->name('video.aggregation')->where([ 'type' => '(titles)', 'id' => '[0-9a-zA-Z_-]+']);
+        Route::post('aggregation/article/{type}/{id}', 'ContentController@articleAggregation')->name('article.aggregation')->where('type', '(category)');
+        Route::post('aggregation/document/{type}/{id}', 'ContentController@documentAggregation')->name('document.aggregation')->where('type', '(category)');
+        Route::post('aggregation/media/{type}/{screen_name}', 'ContentController@mediaAggregation')->name('media.aggregation')->where('type', '(mention_out|mention_in|mention_out_public|hashtags|hashtags_public|places|category)');
+        Route::post('aggregation/video/{type}/{id}', 'ContentController@videoAggregation')->name('video.aggregation')->where([ 'type' => '(titles|category)', 'id' => '[0-9a-zA-Z_-]+']);
 
         Route::post('video/yorum/{id}', 'ContentController@videoComments')->name('youtube.comments')->where('id', '[0-9a-zA-Z_-]+');
         Route::post('videos/{id}', 'ContentController@channelVideos')->name('youtube.videos')->where('id', '[0-9a-zA-Z_-]+');

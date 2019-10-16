@@ -313,6 +313,25 @@ class AggregationController extends Controller
                             'field' => 'site_id',
                             'size' => 100
                         ]
+                    ],
+                    'topics' => [
+                        'terms' => [
+                            'field' => 'group_name',
+                            'size' => 100
+                        ],
+                        'aggs' => [
+                            'properties' => [
+                                'top_hits' => [
+                                    'size' => 1,
+                                    '_source' => [
+                                        'include' => [
+                                            'title',
+                                            'site_id'
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
                     ]
                 ];
                 $aggs['shopping'] = [
@@ -598,7 +617,27 @@ class AggregationController extends Controller
                 $check++;
             }
 
-            if ($check == 2)
+            if (@$_aggs['topics']['buckets'])
+            {
+                foreach ($_aggs['topics']['buckets'] as $key => $item)
+                {
+                    $id = @$item['properties']['hits']['hits'][0]['_source']['site_id'];
+                    $title = $item['properties']['hits']['hits'][0]['_source']['title'];
+
+                    $aggs['sozluk']['topics'][] = [
+                        'hit' => $item['doc_count'],
+                        'name' => $item['key'],
+                        'site' => @SozlukCrawler::where('id', intval($id))->value('name'),
+                        'title' => $title
+                    ];
+                }
+            }
+            else
+            {
+                $check++;
+            }
+
+            if ($check == 3)
             {
                 $aggs['sozluk'] = $_aggs;
             }
@@ -804,7 +843,7 @@ class AggregationController extends Controller
             }
         }
 
-        if ($solt)
+        if ($solt && @$aggregations['solt'])
         {
             $solt_q = $data['q'];
             $solt_q['query']['bool']['must'][] = [ 'exists' => [ 'field' => 'category' ] ];
