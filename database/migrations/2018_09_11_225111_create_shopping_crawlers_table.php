@@ -24,8 +24,6 @@ class CreateShoppingCrawlersTable extends Migration
 
             $table->string('selector_title');
             $table->string('selector_description');
-            $table->string('selector_address');
-            $table->string('selector_breadcrumb');
             $table->string('selector_seller_name');
             $table->string('selector_seller_phones')->nullable()->default(null);
             $table->string('selector_price');

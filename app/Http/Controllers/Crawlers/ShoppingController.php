@@ -334,8 +334,6 @@ class ShoppingController extends Controller
             $crawler->url_pattern = '([a-z0-9-]{4,128})';
             $crawler->selector_title = 'h1';
             $crawler->selector_description = '#classifiedDescription';
-            $crawler->selector_address = 'h2 > a';
-            $crawler->selector_breadcrumb = '.classifiedBreadCrumb .trackId_breadcrumb';
             $crawler->selector_seller_name = '.username-info-area';
             $crawler->selector_seller_phones = '.pretty-phone-part';
             $crawler->selector_price = '.classifiedInfo > h3';
@@ -382,8 +380,6 @@ class ShoppingController extends Controller
                     $item = Crawler::productDetection($request->site, $link, [
                         'title'         => $request->selector_title,
                         'description'   => $request->selector_description,
-                        'address'       => $request->selector_address,
-                        'breadcrumb'    => $request->selector_breadcrumb,
                         'seller_name'   => $request->selector_seller_name,
                         'seller_phones' => $request->selector_seller_phones,
                         'price'         => $request->selector_price,

@@ -312,20 +312,6 @@
                             </div>
                             <div style="min-width: 50%; padding: 1rem;">
                                 <div class="input-field">
-                                    <input name="selector_breadcrumb" id="selector_breadcrumb" value="{{ $crawler->selector_breadcrumb }}" type="text" class="validate" data-length="255" />
-                                    <label for="selector_breadcrumb">Ürün Mini Haritası (Dize)</label>
-                                    <small class="helper-text">Kaynak ürün için mini harita (breadcrumb) CSS seçicisi.</small>
-                                </div>
-                            </div>
-                            <div style="min-width: 50%; padding: 1rem;">
-                                <div class="input-field">
-                                    <input name="selector_address" id="selector_address" value="{{ $crawler->selector_address }}" type="text" class="validate" data-length="255" />
-                                    <label for="selector_address">Ürün Adres Seçicisi (Dize)</label>
-                                    <small class="helper-text">Kaynak ürün adresinin CSS seçicisi.</small>
-                                </div>
-                            </div>
-                            <div style="min-width: 50%; padding: 1rem;">
-                                <div class="input-field">
                                     <input name="selector_seller_name" id="selector_seller_name" value="{{ $crawler->selector_seller_name }}" type="text" class="validate" data-length="255" />
                                     <label for="selector_seller_name">Satıcı Adı Seçicisi</label>
                                     <small class="helper-text">Satıcı adı CSS seçicisi.</small>
@@ -480,8 +466,6 @@
                     textarea.val(textarea.val() + '- Açıklama: ' + o.data.description + '\n');
                     textarea.val(textarea.val() + '- Tarih: ' + o.data.created_at + '\n');
 
-                    textarea.val(textarea.val() + '- Adres: ' + o.data.address + '\n');
-                    textarea.val(textarea.val() + '- Kırıntı: ' + o.data.breadcrumb + '\n');
                     textarea.val(textarea.val() + '- Satıcı Adı: ' + o.data.seller_name + '\n');
                     textarea.val(textarea.val() + '- Satıcı Telefon: ' + o.data.seller_phones + '\n');
 

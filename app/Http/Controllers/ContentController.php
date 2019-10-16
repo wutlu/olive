@@ -285,7 +285,7 @@ class ContentController extends Controller
                         [ 'match' => [ 'status' => 'ok' ] ]
                     ];
 
-                    if (@$document['_source']['price'] || @$document['_source']['breadcrumb'] || @$document['_source']['seller'] || @$document['_source']['address'])
+                    if (@$document['_source']['price'] || @$document['_source']['seller'])
                     {
                         $data['dock'] = true;
                     }
@@ -1064,20 +1064,6 @@ class ContentController extends Controller
                 $arr['query']['bool']['must'][] = [
                     'match' => [ 'status' => 'ok' ]
                 ];
-                $arr['query']['bool']['must'][] = [
-                    'nested' => [
-                        'path' => 'breadcrumb',
-                        'query' => [
-                            'query_string' => [
-                                'fields' => [
-                                    'breadcrumb.segment'
-                                ],
-                                'query' => implode(' || ', array_map(function($arr) { return $arr['segment']; }, $doc->data['_source']['breadcrumb'])),
-                                'default_operator' => 'OR'
-                            ]
-                        ]
-                    ]
-                ];
 
                 $arr['min_score'] = 4;
 
@@ -1361,24 +1347,20 @@ class ContentController extends Controller
                                         'bool' => [
                                             'must' => [
                                                 [
-                                                    'nested' => [
-                                                        'path' => 'breadcrumb',
-                                                        'query' => [
-                                                            'query_string' => [
-                                                                'fields' => [
-                                                                    'breadcrumb.segment'
-                                                                ],
-                                                                'query' => implode(' || ', array_map(function($arr) { return $arr['segment']; }, $document->data['_source']['breadcrumb'])),
-                                                                'default_operator' => 'OR'
-                                                            ]
-                                                        ]
-                                                    ]
+                                                    'match' => [ 'status' => 'ok' ]
                                                 ],
-                                                [ 'match' => [ 'status' => 'ok' ] ]
+                                                [
+                                                    'more_like_this' => [
+                                                        'fields' => [ 'title', 'description' ],
+                                                        'like' => array_keys($smilar),
+                                                        'min_term_freq' => 1,
+                                                        'min_doc_freq' => 1
+                                                    ]
+                                                ]
                                             ]
                                         ]
                                     ],
-                                    'min_score' => 3,
+                                    'min_score' => 10,
                                     'from' => $request->skip,
                                     'size' => $request->take,
                                     '_source' => [
@@ -1386,7 +1368,6 @@ class ContentController extends Controller
                                         'title',
                                         'description',
                                         'price',
-                                        'breadcrumb',
                                         'created_at',
                                         'deleted_at',
                                         'sentiment'

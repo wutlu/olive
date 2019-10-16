@@ -18,8 +18,6 @@ class ShoppingCrawler extends Model
 
 		'selector_title',
 		'selector_description',
-		'selector_address',
-		'selector_breadcrumb',
 		'selector_seller_name',
 		'selector_seller_phone',
         'selector_price',
@@ -80,18 +78,6 @@ class ShoppingCrawler extends Model
                                     ]
                         		]
                         	]
-                        ],
-                        'breadcrumb' => [
-                        	'type' => 'nested',
-                            'properties' => [
-                                'segment' => [ 'type' => 'keyword' ]
-                            ]
-                        ],
-                        'address' => [
-                        	'type' => 'nested',
-                            'properties' => [
-                                'segment' => [ 'type' => 'keyword' ]
-                            ]
                         ],
                         'created_at' => [
                             'type' => 'date',

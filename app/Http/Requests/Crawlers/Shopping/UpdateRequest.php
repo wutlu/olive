@@ -33,8 +33,6 @@ class UpdateRequest extends FormRequest
             'google_time'            => 'required|string|in:h,d,w,m,y',
             'url_pattern'            => 'required|string|max:255',
             'selector_title'         => 'required|string|max:255',
-            'selector_breadcrumb'    => 'required|string|max:255',
-            'selector_address'       => 'required|string|max:255',
             'selector_seller_name'   => 'required|string|max:255',
             'selector_seller_phones' => 'required|string|max:255',
             'selector_price'         => 'required|string|max:255',

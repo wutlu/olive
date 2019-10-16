@@ -58,8 +58,6 @@ class TakerJob implements ShouldQueue
             $item = Crawler::productDetection($crawler->site, $this->data['url'], [
 				'title' => $crawler->selector_title,
 				'description' => $crawler->selector_description,
-				'address' => $crawler->selector_address,
-				'breadcrumb' => $crawler->selector_breadcrumb,
 				'seller_name' => $crawler->selector_seller_name,
                 'seller_phones' => $crawler->selector_seller_phones,
 				'price' => $crawler->selector_price,
@@ -94,22 +92,6 @@ class TakerJob implements ShouldQueue
                 {
                     $params['price'] = $item->data['price'];
                     $sources[] = 'ctx._source.price = params.price;';
-                }
-
-                if (@$item->data['address'])
-                {
-                    $params['address'] = array_map(function ($value) {
-                        return [ 'segment' => $value ];
-                    }, $item->data['address']);
-                    $sources[] = 'ctx._source.address = params.address;';
-                }
-
-                if (@$item->data['breadcrumb'])
-                {
-                    $params['breadcrumb'] = array_map(function ($value) {
-                        return [ 'segment' => $value ];
-                    }, $item->data['breadcrumb']);
-                    $sources[] = 'ctx._source.breadcrumb = params.breadcrumb;';
                 }
 
                 if (@$item->data['description'])

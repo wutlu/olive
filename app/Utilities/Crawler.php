@@ -484,66 +484,6 @@ class Crawler
                 $description = Term::convertAscii($description);
             }
 
-            # address detect
-            $address = $saw->get($selector->address)->toArray();
-
-            if (@$address)
-            {
-                $address = array_map(function ($address) {
-                    return trim(title_case($address['#text'][0]));
-                }, $address);
-
-                if (count($address) == 1)
-                {
-                    if (substr_count($address[0], '/'))
-                    {
-                        $address = explode('/', $address[0]);
-                    }
-                    else if (substr_count($address[0], ','))
-                    {
-                        $address = explode(',', $address[0]);
-                    }
-                    else
-                    {
-                        $address = trim($address[0]);
-                    }
-
-                    if (is_array($address))
-                    {
-                        $address = array_map(function($item) {
-                            return trim(title_case($item));
-                        }, $address);
-                    }
-                }
-            }
-
-            # breadcrumb detect
-            $breadcrumb = $saw->get($selector->breadcrumb)->toArray();
-
-            if (@$breadcrumb)
-            {
-                $breadcrumb = array_map(function ($breadcrumb) {
-                    $text = @$breadcrumb['a'][0]['span'][0]['#text'][0];
-
-                    if (!$text && @$breadcrumb['a'][0]['#text'][0])
-                    {
-                        $text = @$breadcrumb['a'][0]['#text'][0];
-                    }
-
-                    if (!$text && @$breadcrumb['#text'][0])
-                    {
-                        $text = @$breadcrumb['#text'][0];
-                    }
-
-                    return $text ? trim($text) : '';
-                }, $breadcrumb);
-
-                if (count($breadcrumb))
-                {
-                    $breadcrumb = array_values(array_filter($breadcrumb));
-                }
-            }
-
             # seller name detect
             $seller_name = $saw->get($selector->seller_name)->toText();
 
@@ -626,26 +566,6 @@ class Crawler
             else
             {
                 $data['data']['description'] = $description;
-            }
-
-            # address
-            if (count($address))
-            {
-                $data['data']['address'] = $address;
-            }
-            else
-            {
-                $data['error_reasons'][] = 'Adres tespit edilemedi.';
-            }
-
-            # breadcrumb
-            if (count($breadcrumb))
-            {
-                $data['data']['breadcrumb'] = $breadcrumb;
-            }
-            else
-            {
-                $data['error_reasons'][] = 'Mini harita tespit edilemedi.';
             }
 
             # seller name

@@ -127,39 +127,6 @@
                     @endisset
                 </div>
             @endisset
-
-            @if (@$document['_source']['breadcrumb'] || @$document['_source']['address'])
-                <div class="card-tabs">
-                    <ul class="tabs dock-tabs tabs-transparent tabs-fixed-width">
-                        @isset ($document['_source']['breadcrumb'])
-                            <li class="tab">
-                                <a href="#category" class="active">Kategori</a>
-                            </li>
-                        @endisset
-                        @isset ($document['_source']['address'])
-                            <li class="tab" class="{{ !@$document['_source']['breadcrumb'] ? 'active' : '' }}">
-                                <a href="#address">Adres</a>
-                            </li>
-                        @endisset
-                    </ul>
-                </div>
-
-                @isset ($document['_source']['breadcrumb'])
-                    <ul class="collection collection-unstyled white" id="category">
-                        @foreach ($document['_source']['breadcrumb'] as $key => $segment)
-                            <li class="collection-item" data-icon="»">{{ $segment['segment'] }}</li>
-                        @endforeach
-                    </ul>
-                @endisset
-
-                @isset ($document['_source']['address'])
-                    <ul class="collection collection-unstyled white" id="address" style="{{ @$document['_source']['breadcrumb'] ? 'display: none;' : '' }}">
-                        @foreach ($document['_source']['address'] as $key => $segment)
-                            <li class="collection-item" data-icon="»">{{ $segment['segment'] }}</li>
-                        @endforeach
-                    </ul>
-                @endisset
-            @endif
         </div>
     @endsection
 @endif
