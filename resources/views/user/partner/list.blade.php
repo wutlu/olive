@@ -53,7 +53,7 @@
             <div class="d-flex">
                 <img class="wildcard-icon" alt="{{ $user->partner }}" src="{{ asset('img/partner-'.$user->partner.'.png') }}" />
                 <span class="wildcard-title">
-                    Partner Kullanıcıları <small class="grey-text">Alt Partner</small>
+                    Partner Kullanıcıları @if ($user->sub_partner_percent) <small class="grey-text">Alt Partner</small> @endif
                 </span>
             </div>
         </div>
