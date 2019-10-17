@@ -60,6 +60,34 @@
 @endpush
 
 @section('content')
+    @if (@$user)
+        <form id="sub_partner" method="post" action="{{ route('partner.user.percent') }}" class="json" data-callback="__sub_percent" data-include="user_id">
+            <div class="card red lighten-4">
+                <div class="card-content">
+                    <div class="p-1">
+                        <div class="input-field" style="max-width: 240px;">
+                            <input name="sub_partner_percent" id="sub_partner_percent" type="number" class="validate" value="{{ $user->sub_partner_percent }}" />
+                            <label for="sub_partner_percent">Alt Partner Oranı</label>
+                            <small class="helper-text">Bu değer girilirse, ilgili kullanıcı alt partner olacaktır. Sizin kazancınızdan belirlediğiniz oranda pay alacaktır.</small>
+                        </div>
+                        <button type="submit" class="btn-flat waves-effect">Oranı Güncelle</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        @push('local.scripts')
+            function __sub_percent(__, obj)
+            {
+                if (obj.status == 'ok')
+                {
+                    M.toast({
+                        html: 'Oran Güncellendi',
+                        classes: 'green darken-2'
+                    }, 200)
+                }
+            }
+        @endpush
+    @endif
     <form
         id="details-form"
         method="post"

@@ -185,7 +185,7 @@
 
         <div class="col s12 xl5">
             @if (@auth()->user()->organisation_id)
-                @if (!auth()->user()->intro('search.module'))
+                @if (!auth()->user()->intro('search.module') && auth()->user()->term_version)
                     <div class="tap-target red white-text" data-target="search-trigger">
                         <div class="tap-target-content">
                             <h5>Pratiklik Kazanın</h5>

@@ -59,6 +59,7 @@ Route::domain('olive.'.config('app.domain'))->group(function () {
             Route::get('/', 'UserController@partnerListView')->name('partner.user.list');
 
             Route::get('kullanici/{id?}', 'UserController@partnerUserView')->name('partner.user');
+            Route::post('alt-partner-orani/{id?}', 'UserController@partnerSubPercent')->name('partner.user.percent');
 
             Route::post('kullanici/olustur', 'UserController@partnerUserCreate')->name('partner.user.create');
             Route::post('kullanici/guncelle', 'UserController@partnerUserUpdate')->name('partner.user.update');

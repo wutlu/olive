@@ -56,7 +56,7 @@ class UpdateRequest extends FormRequest
             'ban_reason' => 'nullable|string|max:255',
             'about' => 'nullable|string|max:10000',
             'partner' => 'nullable|string|in:eagle,phoenix,gryphon,dragon',
-            'gsm' => 'nullable|regex:/^90\(5\d{2}\) \d{3} \d{2} \d{2}/i|unique:users,gsm,'.$request->id
+            'gsm' => 'nullable|regex:/^\(5\d{2}\) \d{3} \d{2} \d{2}/i|unique:users,gsm,'.$request->id
         ];
     }
 }

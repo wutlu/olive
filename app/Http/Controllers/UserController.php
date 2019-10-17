@@ -84,6 +84,7 @@ class UserController extends Controller
             'mobileVerification',
             'mobileDelete',
             'mobileResend',
+            'partnerSubPercent',
         ]);
 
         /**
@@ -97,7 +98,8 @@ class UserController extends Controller
             'partnerUserView',
             'partnerUserCreate',
             'partnerUserUpdate',
-            'partnerHistory'
+            'partnerHistory',
+            'partnerSubPercent',
         ]);
 
         ### [ 5 işlemden sonra 5 dakika ile sınırla ] ###
@@ -109,6 +111,31 @@ class UserController extends Controller
         ### [ 1 işlemden sonra 1 dakika ile sınırla ] ###
         $this->middleware('throttle:1,1')->only('registerResend');
 	}
+
+    /**
+     * Alt Partner Yüzdesi
+     *
+     * @return array
+     */
+    public static function partnerSubPercent(Request $request)
+    {
+        $request->validate([
+            'sub_partner_percent' => 'required|integer|min:0|max:100',
+            'user_id' => 'required|integer'
+        ]);
+
+        $user = User::where('partner_user_id', auth()->user()->id)->where('id', $request->user_id)->firstOrFail();
+
+        $user->sub_partner_percent = $request->sub_partner_percent;
+
+        $user->partner = $request->sub_partner_percent ? 'eagle' : null;
+
+        $user->update();
+
+        return [
+            'status' => 'ok'
+        ];
+    }
 
     /**
      * GSM bilgisi
@@ -135,7 +162,7 @@ class UserController extends Controller
             return $user->gsm ? false : true;
         }, 'Zaten kayıtlı bir GSM numaranız mevcut.');
 
-        $request->validate([ 'gsm' => 'required|bail|string|regex:/^90\(5\d{2}\) \d{3} \d{2} \d{2}/i|gsm|unique:users,gsm' ]);
+        $request->validate([ 'gsm' => 'required|bail|string|regex:/^\(5\d{2}\) \d{3} \d{2} \d{2}/i|gsm|unique:users,gsm' ]);
 
         $code = mt_rand(1000, 9999);
 

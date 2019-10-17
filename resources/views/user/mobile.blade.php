@@ -147,7 +147,7 @@
 @push('external.include.footer')
     <script src="{{ asset('js/jquery.maskedinput.min.js?v='.config('system.version')) }}"></script>
     <script>
-        $('input#gsm').mask('90(999) 999 99 99')
+        $('input#gsm').mask('(999) 999 99 99')
         $('input#code').mask('9999')
     </script>
 @endpush

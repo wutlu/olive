@@ -361,6 +361,7 @@ $arr = [
         'search_id'                       => 'Arama',
         'gsm'                             => 'GSM',
         'code'                            => 'Kod',
+        'sub_partner_percent'             => 'Alt Partner Oranı',
     ],
 ];
 

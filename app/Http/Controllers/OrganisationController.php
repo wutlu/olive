@@ -653,37 +653,70 @@ class OrganisationController extends Controller
                     $author->addBadge(999); // destekçi
                 }
 
-                $reference = $author->reference;
-
-                /*
-                 */
-                if ($reference)
+                if ($author->reference && @$author->reference->partner)
                 {
-                    $partner_percent = System::option('formal.partner.'.$reference->partner.'.percent');
+                    /* --- */
+                    $consumer = $author;
+                    $reference = $author->reference;
 
-                    $pay = new PartnerPayment;
-                    $pay->currency = config('formal.currency_text');
-                    $pay->amount = $invoice->total_price / 100 * $partner_percent;
-                    $pay->status = 'success';
-                    $pay->message = $author->email.' tarafından bir ödeme alındı.';
-                    $pay->user_id = $reference->id;
-                    $pay->save();
+                    $each = true;
 
-                    $reference->notify(
-                        (
-                            new MessageNotification(
-                                'Bir Kullanıcı Ödeme Gerçekleştirdi',
-                                'Merhaba, '.$reference->name,
-                                implode(PHP_EOL, [
-                                    'Alt kullanıcınız "'.$author->email.'" hesabından, '.$invoice->month.' ay için '.config('formal.currency').' '.$invoice->total_price.' tutarında bir ödeme gerçekleştirdi.',
-                                    'Size düşen miktar ('.config('formal.currency').' '.($invoice->total_price / 100 * $partner_percent).') hesabınıza yansıtıldı.'
-                                ])
-                            )
-                        )->onQueue('email')
-                    );
+                    $paydaslar = [];
+
+                    while ($each)
+                    {
+                        $pay_orani = $reference->sub_partner_percent ? $reference->sub_partner_percent : System::option('formal.partner.'.$reference->partner.'.percent');
+
+                        $paydaslar[] = [
+                            'user_id' => $reference->id,
+                            'name' => $reference->name,
+                            'email' => $reference->email,
+                            'percent' => $pay_orani,
+                            'consumer' => [
+                                'email' => $consumer->email
+                            ]
+                        ];
+
+                        $consumer = $reference;
+                        $reference = User::where('id', $reference->partner_user_id)->first();
+
+                        if (!$reference) break;
+                    }
+
+                    $paydaslar = array_reverse($paydaslar);
+
+                    $kalan_pay = $invoice->total_price / 100 * $paydaslar[0]['percent'];
+
+                    foreach ($paydaslar as $key => $paydas)
+                    {
+                        if ($key > 0)
+                        {
+                            $kalan_pay = $kalan_pay / 100 * $paydas['percent'];
+                        }
+
+                        $paydaslar[$key]['pay'] = $kalan_pay;
+                    }
+
+                    foreach ($paydaslar as $key => $paydas)
+                    {
+                        if (@$paydaslar[$key+1])
+                        {
+                            $paydaslar[$key]['pay'] = $paydas['pay'] - $paydaslar[$key+1]['pay'];
+                        }
+                    }
+
+                    foreach ($paydaslar as $key => $paydas)
+                    {
+                        $pay = new PartnerPayment;
+                        $pay->currency = config('formal.currency_text');
+                        $pay->amount = $paydas['pay'];
+                        $pay->status = 'success';
+                        $pay->message = $paydas['consumer']['email'].' tarafından bir ödeme alındı.';
+                        $pay->user_id = $paydas['user_id'];
+                        $pay->save();
+                    }
+                    /* --- */
                 }
-                /*
-                 */
 
                 $invoice->total_amount = $request->total_amount;
                 $invoice->paid_at = date('Y-m-d H:i:s');
@@ -1340,32 +1373,69 @@ class OrganisationController extends Controller
 
             $author = $organisation->author;
 
-            if ($author->reference)
+            if ($author->reference && @$author->reference->partner)
             {
+                /* --- */
+                $consumer = $author;
                 $reference = $author->reference;
 
-                $partner_percent = System::option('formal.partner.'.$reference->partner.'.percent');
+                $each = true;
 
-                $pay = new PartnerPayment;
-                $pay->currency = config('formal.currency_text');
-                $pay->amount = $invoice->total_price / 100 * $partner_percent;
-                $pay->status = 'success';
-                $pay->message = $author->email.' tarafından bir ödeme alındı.';
-                $pay->user_id = $reference->id;
-                $pay->save();
+                $paydaslar = [];
 
-                $reference->notify(
-                    (
-                        new MessageNotification(
-                            'Bir Kullanıcı Ödeme Gerçekleştirdi',
-                            'Merhaba, '.$reference->name,
-                            implode(PHP_EOL, [
-                                'Alt kullanıcınız "'.$author->email.'" hesabından, '.$invoice->month.' ay için '.config('formal.currency').' '.$invoice->total_price.' tutarında bir ödeme gerçekleştirdi.',
-                                'Size düşen miktar ('.config('formal.currency').' '.($invoice->total_price / 100 * $partner_percent).') hesabınıza yansıtıldı.'
-                            ])
-                        )
-                    )->onQueue('email')
-                );
+                while ($each)
+                {
+                    $pay_orani = $reference->sub_partner_percent ? $reference->sub_partner_percent : System::option('formal.partner.'.$reference->partner.'.percent');
+
+                    $paydaslar[] = [
+                        'user_id' => $reference->id,
+                        'name' => $reference->name,
+                        'email' => $reference->email,
+                        'percent' => $pay_orani,
+                        'consumer' => [
+                            'email' => $consumer->email
+                        ]
+                    ];
+
+                    $consumer = $reference;
+                    $reference = User::where('id', $reference->partner_user_id)->first();
+
+                    if (!$reference) break;
+                }
+
+                $paydaslar = array_reverse($paydaslar);
+
+                $kalan_pay = $invoice->total_price / 100 * $paydaslar[0]['percent'];
+
+                foreach ($paydaslar as $key => $paydas)
+                {
+                    if ($key > 0)
+                    {
+                        $kalan_pay = $kalan_pay / 100 * $paydas['percent'];
+                    }
+
+                    $paydaslar[$key]['pay'] = $kalan_pay;
+                }
+
+                foreach ($paydaslar as $key => $paydas)
+                {
+                    if (@$paydaslar[$key+1])
+                    {
+                        $paydaslar[$key]['pay'] = $paydas['pay'] - $paydaslar[$key+1]['pay'];
+                    }
+                }
+
+                foreach ($paydaslar as $key => $paydas)
+                {
+                    $pay = new PartnerPayment;
+                    $pay->currency = config('formal.currency_text');
+                    $pay->amount = $paydas['pay'];
+                    $pay->status = 'success';
+                    $pay->message = $paydas['consumer']['email'].' tarafından bir ödeme alındı.';
+                    $pay->user_id = $paydas['user_id'];
+                    $pay->save();
+                }
+                /* --- */
             }
 
             $organisation->status = true;
