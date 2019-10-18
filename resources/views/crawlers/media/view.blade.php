@@ -233,22 +233,48 @@
 
                     <div class="collection-item">
                         <div class="d-flex flex-wrap">
-                            <div style="min-width: 50%; padding: 1rem;">
+                            <div style="min-width: 40%; padding: 1rem;">
                                 <div class="input-field">
                                     <input name="site" id="site" value="{{ $crawler->site }}" type="text" class="validate" data-length="255" />
                                     <label for="site">Ana Sayfa</label>
                                     <small class="helper-text">Veri toplanacak sitenin kök http(s) adresi.</small>
                                 </div>
                             </div>
-                            <div style="min-width: 50%; padding: 1rem;">
+                            <div style="min-width: 40%; padding: 1rem;">
                                 <div class="input-field">
                                     <input name="base" id="base" value="{{ $crawler->base }}" type="text" class="validate" data-length="255" />
                                     <label for="base">Temel Dizin</label>
                                     <small class="helper-text">Ana Sayfa alt segmentten oluşuyorsa belirtin.</small>
                                 </div>
                             </div>
+                            <div style="min-width: 20%; padding: 1rem;">
+                                <a href="#" class="btn-flat waves-effect json" data-href="{{ route('crawlers.site_detect') }}" data-include="site,base,proxy" data-callback="__site_detect" data-method="post">Tespit Et</a>
+                            </div>
                         </div>
                     </div>
+
+                    @push('local.scripts')
+                        function __site_detect(__, obj)
+                        {
+                            if (obj.status == 'ok')
+                            {
+                                if (obj.data.url_pattern)
+                                {
+                                    $('input[name=url_pattern]').val(obj.data.url_pattern)
+                                }
+
+                                if (obj.data.title)
+                                {
+                                    $('input[name=selector_title]').val(obj.data.title)
+                                }
+
+                                if (obj.data.description)
+                                {
+                                    $('input[name=selector_description]').val(obj.data.description)
+                                }
+                            }
+                        }
+                    @endpush
 
                     <div class="collection-item">
                         <label>

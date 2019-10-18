@@ -256,11 +256,11 @@
                         data: {!! json_encode($data['details']['statuses']) !!}
                     },
                     {
-                        name: 'Takipçi',
+                        name: 'Takip',
                         data: {!! json_encode($data['details']['friends']) !!}
                     },
                     {
-                        name: 'Takip',
+                        name: 'Takipçi',
                         data: {!! json_encode($data['details']['followers']) !!}
                     },
                     {
@@ -361,14 +361,16 @@
                     {{ $model }}
                 </a>
             </div>
-            <ul class="collection collection-unstyled aggregation-collection hide">
-                <li class="collection-item hide" data-model>
-                    <div class="d-flex justify-content-between">
-                        <span class="align-self-center" data-name="name"></span>
-                        <span class="grey align-self-center" data-name="count" style="padding: 0 .4rem;"></span>
-                    </div>
-                </li>
-            </ul>
+            <div class="aggregation-collection">
+                <table>
+                    <tbody>
+                        <tr class="hide" data-model>
+                            <th data-name="name" style="padding: .6rem 1rem;"></th>
+                            <th data-name="count" style="padding: .6rem 1rem; width: 64px;"></th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     @endforeach
 @endsection
@@ -386,8 +388,8 @@
         {
             __.removeClass('json')
 
-            var collection = __.closest('.card').find('ul.collection');
-            var model = collection.children('li.collection-item[data-model]')
+            var collection = __.closest('.card').find('table');
+            var model = collection.find('tr[data-model]')
 
             if (obj.data.length)
             {

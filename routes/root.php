@@ -195,6 +195,8 @@ Route::domain('olive.'.config('app.domain'))->group(function () {
             });
         });
 
+        Route::post('tespit-et', 'DomainController@siteDetect')->name('crawlers.site_detect');
+
         # 
         # MEDYA
         # 

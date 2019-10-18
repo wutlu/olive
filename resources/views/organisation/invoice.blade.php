@@ -318,7 +318,7 @@
                 <td class="description">
                     <p>1 Aylık Olive Aboneliği</p>
                 </td>
-                <td class="quantity">{{ $invoice->month }} Ay</td>
+                <td class="quantity">{{ $invoice->month }}</td>
                 <td class="unit-price">
                     <p>{{ config('formal.currency').' '.$invoice->unit_price }}</p>
                 </td>
