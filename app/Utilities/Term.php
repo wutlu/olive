@@ -195,7 +195,17 @@ class Term
         $str = mb_substr($str, 0, ($options['limit'] ? $options['limit'] : mb_strlen($str, 'UTF-8')), 'UTF-8');
         $str = trim($str, $options['delimiter']);
 
-        return $options['lowercase'] ? mb_strtolower($str, 'UTF-8') : $str;
+        if ($options['lowercase'])
+        {
+            $str = mb_strtolower($str, 'UTF-8');
+        }
+
+        if ($options['uppercase'])
+        {
+            $str = mb_strtoupper($str, 'UTF-8');
+        }
+
+        return $str;
     }
 
     /**

@@ -272,6 +272,11 @@
                                 {
                                     $('input[name=selector_description]').val(obj.data.description)
                                 }
+
+                                if (obj.data.name)
+                                {
+                                    $('input[name=name]').val(obj.data.name)
+                                }
                             }
                         }
                     @endpush

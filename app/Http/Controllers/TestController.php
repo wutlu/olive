@@ -5,16 +5,22 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
-use App\Models\User\User;
+use App\Models\Crawlers\MediaCrawler;
 use System;
+use Term;
 
 class TestController extends Controller
 {
     public static function test(Request $request)
     {
-		$dizge = 'nth-child(1)';
-		$sablon = '/nth-child\(\d+\)/i';
-		$yenisi = 'nth-child(test)';
-		echo preg_replace($sablon, $yenisi, $dizge);
+    	$cr = MediaCrawler::get();
+
+    	foreach ($cr as $craw)
+    	{
+	    	$name = $craw->site;
+
+
+	    	echo PHP_EOL;
+    	}
     }
 }

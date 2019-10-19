@@ -50,6 +50,35 @@ class DomainController extends Controller
             'handler' => HandlerStack::create()
         ]);
 
+        $name = str_replace(
+            [
+                'https://',
+                'http://',
+                'www.',
+                '.com',
+                '.tr',
+                '.net',
+                '.org',
+                '.bel',
+                '.space',
+                '.gen',
+                '.tv',
+                '.nl',
+                '.gov',
+                '.co',
+                '.uk',
+                '.info',
+                '.biz',
+                '.web',
+                '.aero',
+                '.tc',
+            ],
+            '',
+            $request->site
+        );
+        $name = str_replace('.', '-', $name);
+        $data['data']['name'] = Term::convertAscii($name, [ 'uppercase' => true ]);
+
         try
         {
             $arr = [
