@@ -118,6 +118,7 @@ class Term
             'delimiter' => ' ',
             'limit' => null,
             'lowercase' => false,
+            'uppercase' => false,
             'replacements' => [],
             'transliterate' => false
         ];
