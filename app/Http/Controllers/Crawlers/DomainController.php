@@ -19,6 +19,8 @@ use GuzzleHttp\HandlerStack;
 
 use App\Models\Proxy;
 
+use App\Utilities\Crawler;
+
 use App\Wrawler;
 use Term;
 
@@ -79,112 +81,189 @@ class DomainController extends Controller
         $name = str_replace('.', '-', $name);
         $data['data']['name'] = Term::convertAscii($name, [ 'uppercase' => true ]);
 
-        try
+        $arr = [
+            'timeout' => 10,
+            'connect_timeout' => 5,
+            'headers' => [
+                'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))],
+                'Accept-Language' => 'tr-TR;q=0.6,tr;q=0.4'
+            ],
+            'curl' => [
+                CURLOPT_REFERER => $request->site,
+                CURLOPT_COOKIE => 'AspxAutoDetectCookieSupport=1'
+            ],
+            'verify' => false,
+            'allow_redirects' => [
+                'max' => 6
+            ]
+        ];
+
+        if ($request->proxy)
         {
-            $arr = [
-                'timeout' => 10,
-                'connect_timeout' => 5,
-                'headers' => [
-                    'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))],
-                    'Accept-Language' => 'tr-TR;q=0.6,tr;q=0.4'
-                ],
-                'curl' => [
-                    CURLOPT_REFERER => $request->site,
-                    CURLOPT_COOKIE => 'AspxAutoDetectCookieSupport=1'
-                ],
-                'verify' => false,
-                'allow_redirects' => [
-                    'max' => 6
-                ]
-            ];
+            $p = Proxy::where('ipv', 4)->where('health', '>', 7)->inRandomOrder()->first();
 
-            if ($request->proxy)
+            if (@$p)
             {
-                $p = Proxy::where('ipv', 4)->where('health', '>', 7)->inRandomOrder()->first();
-
-                if (@$p)
-                {
-                    $arr['proxy'] = $p->proxy;
-                }
+                $arr['proxy'] = $p->proxy;
             }
+        }
 
-            $dom = $client->get($request->base, $arr)->getBody();
+        $dom = $client->get($request->base, $arr)->getBody();
 
-            $patterns = MediaCrawler::select('url_pattern', \DB::raw('count(*) as total'))
-                                    ->whereNotNull('url_pattern')
-                                    ->whereNotIn('url_pattern', [
-                                        '(\b(?!kategori|placeholders|user|article))([a-z0-9-]{4,24})\/([a-z0-9-]{16,128})'
-                                    ])
-                                    ->groupBy('url_pattern')
-                                    ->orderByRaw('CHAR_LENGTH(url_pattern) DESC')
-                                    ->get();
+        $patterns = MediaCrawler::select('url_pattern', \DB::raw('count(*) as total'))
+                                ->whereNotNull('url_pattern')
+                                ->whereNotIn('url_pattern', [
+                                    '([a-z0-9-]{4,128})'
+                                ])
+                                ->where('url_pattern', 'NOT LIKE', '%?%')
+                                ->groupBy('url_pattern')
+                                ->orderBy('total', 'DESC')
+                                ->get();
 
-            foreach ($patterns as $pattern)
+        $urls = [];
+
+        foreach ($patterns as $pattern)
+        {
+            $links = Crawler::linkInDom($request->site, $pattern->url_pattern, $dom);
+
+            if ($links->status == 'ok' && count($links->data))
             {
-                preg_match_all('/'.$pattern->url_pattern.'/', $dom, $match);
+                $urls[] = [
+                    'count' => count($links->data),
+                    'pattern' => $pattern->url_pattern,
+                    'url' => $links->data[0]
+                ];
+            }
+        }
 
-                if (@$match[0])
+        asort($urls);
+
+        $urls = array_reverse($urls);
+
+        /* --- */
+
+        foreach ($urls as $key => $url)
+        {
+            if ($url['count'] >= 20 && $url['count'] <= 600)
+            {
+                $data['data']['url_pattern'] = $url['pattern'];
+
+                try
                 {
-                    $match = array_values(array_unique($match[0])); 
+                    $source = $client->get($url['url'], $arr)->getBody();
+                    $source = str_replace('&nbsp;', ' ', $source);
 
-                    if (count($match) >= 20 && count($match) <= 600)
+                    $saw = new Wrawler($source);
+
+                    $selectors = [
+                        'h1.entry-title',
+                        '.entry-title',
+                        'h1.title',
+                        'h1[itemprop="name"]',
+                        'h1[itemprop="headline"]',
+                        '.panel-title > h1',
+                        'h1.content-title',
+                        'h1.detail-post-title',
+                        '.haber_ayrinti_baslik',
+                        'h1.baslik',
+                        '.single_title',
+                        'h3.title',
+                        'h1.news-title',
+                        '.Baslik h1',
+                        '.haberBaslik',
+                        '.news-title > h1',
+                        'h1.mainHeading',
+                        '.haber-baslik',
+                        'h1#haber_baslik',
+                        'h1.post-title',
+                        'h2.title',
+                        '.panel-title h1',
+                        'h1.hbr-baslik',
+                        '#kapsayici > h1',
+                        'header h1',
+                        'h1.pageTitle',
+                        'h2[itemprop="headline"]',
+                        'h1.single-post-title',
+                        '.haber-ust h1',
+                    ];
+
+                    foreach ($selectors as $selector)
                     {
-                        $data['data']['url_pattern'] = $pattern->url_pattern;
+                        $title = $saw->get($selector)->toText();
+                        $title = Term::convertAscii($title);
 
-                        $source = $client->get($match[10], $arr)->getBody();
-
-                        $source = str_replace('&nbsp;', ' ', $source);
-
-                        $saw = new Wrawler($source);
-
-                        $selectors = MediaCrawler::select('selector_title', \DB::raw('count(*) as total'))
-                                                 ->whereNotNull('selector_title')
-                                                 ->whereNotIn('selector_title', [ 'h1' ])
-                                                 ->groupBy('selector_title')
-                                                 ->orderBy('total', 'DESC')
-                                                 ->get();
-
-                        foreach ($selectors as $selector)
+                        if (strlen($title) >= 16 && strlen($title) <= 100)
                         {
-                            $title = $saw->get($selector->selector_title)->toText();
-                            $title = Term::convertAscii($title);
-
-                            if (strlen($title) >= 16 && strlen($title) <= 100)
-                            {
-                                $data['data']['title'] = $selector->selector_title;
-                                break;
-                            }
+                            $data['data']['title'] = $selector;
+                            break;
                         }
+                    }
 
-                        $selectors = MediaCrawler::select('selector_description', \DB::raw('count(*) as total'))
-                                                 ->whereNotNull('selector_description')
-                                                 ->whereNotIn('selector_title', [ 'h2' ])
-                                                 ->groupBy('selector_description')
-                                                 ->orderBy('total', 'DESC')
-                                                 ->get();
+                    $selectors = [
+                        '.entry-content > p:nth-child(1)',
+                        '.entry-content p:nth-child(1)',
+                        'p.lead',
+                        '.text_post_block > h2',
+                        '.haber_ayrinti_spot',
+                        'h2.lead',
+                        '.lead',
+                        'h2.detail-post-spot',
+                        'p.spot',
+                        '.spot',
+                        '.short_content',
+                        '.description',
+                        '#iceriks p:nth-child(1)',
+                        'p[itemprop="description"]',
+                        '.haberSpot',
+                        '.summary > h2',
+                        'header > h2',
+                        '#haberdetaybaslik > h2',
+                        '.td-post-content > p:nth-child(1)',
+                        '#singleContent > p:nth-child(1)',
+                        'h2.content-description',
+                        '.panel-title > p',
+                        'h2[itemprop="description"]',
+                        '#singleContent p:nth-child(1)',
+                        '[itemprop="articleBody"] p:nth-child(1)',
+                        '.panel-title p:nth-child(1)',
+                        '.haber_ayrinti_detay p:nth-child(1)',
+                        'header h2',
+                        'h2.entry-sub-title',
+                        '.icerik_detay p:nth-child(1)',
+                        'h2.hdesc',
+                        'p.brief',
+                        '.icerik > p:nth-child(1)',
+                        '.entry-content h2',
+                        '.haber-icerik p:nth-child(1)',
+                        '.ozet > h2',
+                        '#spot',
+                    ];
 
-                        foreach ($selectors as $selector)
+                    foreach ($selectors as $selector)
+                    {
+                        $description = $saw->get($selector)->toText();
+                        $description = Term::convertAscii($description);
+
+                        if (strlen($description) >= 64 && strlen($description) <= 500)
                         {
-                            $description = $saw->get($selector->selector_description)->toText();
-
-                            $description = Term::convertAscii($description);
-
-                            if (strlen($description) >= 64 && strlen($description) <= 500)
-                            {
-                                $data['data']['description'] = $selector->selector_description;
-                                break;
-                            }
+                            $data['data']['description'] = $selector;
+                            break;
                         }
+                    }
 
+                    if (@$data['data']['title'] && @$data['data']['description'])
+                    {
                         break;
                     }
                 }
+                catch (\Exception $e)
+                {
+                    $data['error_reasons'][] = $e->getMessage();
+                }
             }
         }
-        catch (\Exception $e)
-        {
-            $data['error_reasons'][] = $e->getMessage();
-        }
+
+        /* --- */
 
         return $data;
     }

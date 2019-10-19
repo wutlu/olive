@@ -25,6 +25,80 @@ class Crawler
      *
      * @return object
      */
+    public static function linkInDom(string $site, string $url_pattern, string $dom)
+    {
+        preg_match_all('/'.$url_pattern.'/', $dom, $match);
+
+        if (@$match[0])
+        {
+            $data = [];
+
+            $starts_with = [
+                'device-width',
+                'initial-scale',
+                'user-scalable',
+                'favicon',
+                'data-optimized',
+                'aioseop-schema',
+                'dns-prefetch',
+                'onreadystatechange',
+                'no-inlinesvg',
+                'google-analytics',
+                'googlesyndication',
+                'navbar',
+                'img',
+                'feed',
+                'hsa',
+                'without',
+                'background',
+                'article-header',
+                'maximum-scale',
+                'apple-mobile',
+                'facebook-jssdk',
+                'hidden-',
+                'iframe',
+                'banner',
+                'custom',
+                'topcategories',
+                'scrollamount',
+                'vertical',
+                'horizontal',
+                'uploads',
+                'ca-pub',
+            ];
+            $ends_with = [ '.com', '.css', '.js', '.png', '.jpg', '.gif', '.net', '.org', '.tr' ];
+            $contains = [ 'wp-', 'kategori', 'iletisim', 'etiket', 'module', 'assets' ];
+
+            $match = array_values(array_filter(array_unique($match[0])));
+
+            foreach ($match as $item)
+            {
+                if (strlen($item) >= 12 && !Str::contains($item, $contains) && !Str::endsWith($item, $ends_with) && !Str::startsWith($item, $starts_with))
+                {
+                    $data[] = $site.'/'.str_after($item, $site.'/');
+                }
+            }
+
+            if (count($data))
+            {
+                return (object) [
+                    'status' => 'ok',
+                    'data' => $data
+                ];
+            }
+        }
+
+        return (object) [
+            'status' => 'err',
+            'reason' => 'Hiçbir desen eşleşmedi.'
+        ];
+    }
+
+    /**
+     * Makale, Bağlantı Tespiti
+     *
+     * @return object
+     */
     public static function articleLinkDetection(string $site, string $url_pattern = null, string $base, bool $standard, bool $proxy)
     {
         $data = [];
@@ -82,57 +156,11 @@ class Crawler
             }
             else
             {
-                preg_match_all('/'.$url_pattern.'/', $dom, $match);
+                $linkInDom = self::linkInDom($site, $url_pattern, $dom);
 
-                if (@$match[0])
+                if ($linkInDom->status == 'ok')
                 {
-                    $starts_with = [
-                        'device-width',
-                        'initial-scale',
-                        'user-scalable',
-                        'favicon',
-                        'data-optimized',
-                        'aioseop-schema',
-                        'dns-prefetch',
-                        'onreadystatechange',
-                        'no-inlinesvg',
-                        'google-analytics',
-                        'googlesyndication',
-                        'navbar',
-                        'img',
-                        'feed',
-                        'hsa',
-                        'without',
-                        'background',
-                        'article-header',
-                        'maximum-scale',
-                        'apple-mobile',
-                        'facebook-jssdk',
-                        'hidden-',
-                        'iframe',
-                        'banner',
-                        'custom',
-                        'topcategories',
-                        'scrollamount',
-                        'vertical',
-                        'horizontal',
-                    ];
-                    $ends_with = [ '.com', '.css', '.js', '.png', '.jpg', '.gif', '.net', '.org', '.tr' ];
-                    $contains = [ 'wp-', 'kategori', 'iletisim', 'etiket', 'module' ];
-
-                    $match = array_values(array_filter(array_unique($match[0])));
-
-                    foreach ($match as $item)
-                    {
-                        if (strlen($item) >= 12 && !Str::contains($item, $contains) && !Str::endsWith($item, $ends_with) && !Str::startsWith($item, $starts_with))
-                        {
-                            $data['links'][] = $site.'/'.str_after($item, $site.'/');
-                        }
-                    }
-                }
-                else
-                {
-                    $data['error_reasons'][] = 'Girilen desen hiçbir sonuç ile eşleşmedi.';
+                    $data['links'] = $linkInDom->data;
                 }
             }
         }
