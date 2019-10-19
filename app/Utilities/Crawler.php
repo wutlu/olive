@@ -16,6 +16,8 @@ use App\Models\Proxy;
 
 use App\Utilities\ImageUtility;
 
+use Illuminate\Support\Str;
+
 class Crawler
 {
     /**
@@ -84,11 +86,48 @@ class Crawler
 
                 if (@$match[0])
                 {
-                    $match = array_unique($match[0]); 
+                    $starts_with = [
+                        'device-width',
+                        'initial-scale',
+                        'user-scalable',
+                        'favicon',
+                        'data-optimized',
+                        'aioseop-schema',
+                        'dns-prefetch',
+                        'onreadystatechange',
+                        'no-inlinesvg',
+                        'google-analytics',
+                        'googlesyndication',
+                        'navbar',
+                        'img',
+                        'feed',
+                        'hsa',
+                        'without',
+                        'background',
+                        'article-header',
+                        'maximum-scale',
+                        'apple-mobile',
+                        'facebook-jssdk',
+                        'hidden-',
+                        'iframe',
+                        'banner',
+                        'custom',
+                        'topcategories',
+                        'scrollamount',
+                        'vertical',
+                        'horizontal',
+                    ];
+                    $ends_with = [ '.com', '.css', '.js', '.png', '.jpg', '.gif', '.net', '.org', '.tr' ];
+                    $contains = [ 'wp-', 'kategori', 'iletisim', 'etiket', 'module' ];
+
+                    $match = array_values(array_filter(array_unique($match[0])));
 
                     foreach ($match as $item)
                     {
-                        $data['links'][] = $site.'/'.str_after($item, $site.'/');
+                        if (strlen($item) >= 12 && !Str::contains($item, $contains) && !Str::endsWith($item, $ends_with) && !Str::startsWith($item, $starts_with))
+                        {
+                            $data['links'][] = $site.'/'.str_after($item, $site.'/');
+                        }
                     }
                 }
                 else
@@ -303,6 +342,27 @@ class Crawler
             {
                 # description detect
                 $description = $saw->get($description_selector)->toText();
+
+                if (strlen($description) < 24 && Str::contains($description_selector, 'nth-child'))
+                {
+                    $nth = 1;
+
+                    while ($nth < 5)
+                    {
+                        $description_selector = preg_replace('/nth-child\(\d+\)/i', 'nth-child('.$nth.')', $description_selector);
+                        $description = $saw->get($description_selector)->toText();
+
+                        if ($description)
+                        {
+                            $data['error_reasons'][] = 'nth-child('.$nth.') ile açıklama bulundu.';
+                            break;
+                        }
+                        else
+                        {
+                            $nth++;
+                        }
+                    }
+                }
             }
 
             if (!$description)

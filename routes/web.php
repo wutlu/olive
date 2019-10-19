@@ -69,6 +69,7 @@ Route::domain('olive.'.config('app.domain'))->group(function () {
     });
 
     Route::get('test', 'TestController@test');
+    Route::post('test', 'TestController@test');
 
     Route::post('organizasyon', 'HomeController@organisation')->name('dashboard.organisation');
 

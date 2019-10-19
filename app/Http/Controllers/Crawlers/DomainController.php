@@ -83,6 +83,9 @@ class DomainController extends Controller
 
             $patterns = MediaCrawler::select('url_pattern', \DB::raw('count(*) as total'))
                                     ->whereNotNull('url_pattern')
+                                    ->whereNotIn('url_pattern', [
+                                        '(\b(?!kategori|placeholders|user|article))([a-z0-9-]{4,24})\/([a-z0-9-]{16,128})'
+                                    ])
                                     ->groupBy('url_pattern')
                                     ->orderByRaw('CHAR_LENGTH(url_pattern) DESC')
                                     ->get();
@@ -107,6 +110,7 @@ class DomainController extends Controller
 
                         $selectors = MediaCrawler::select('selector_title', \DB::raw('count(*) as total'))
                                                  ->whereNotNull('selector_title')
+                                                 ->whereNotIn('selector_title', [ 'h1' ])
                                                  ->groupBy('selector_title')
                                                  ->orderBy('total', 'DESC')
                                                  ->get();
@@ -125,6 +129,7 @@ class DomainController extends Controller
 
                         $selectors = MediaCrawler::select('selector_description', \DB::raw('count(*) as total'))
                                                  ->whereNotNull('selector_description')
+                                                 ->whereNotIn('selector_title', [ 'h2' ])
                                                  ->groupBy('selector_description')
                                                  ->orderBy('total', 'DESC')
                                                  ->get();
