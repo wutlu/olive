@@ -309,7 +309,7 @@
                                 site = site.replace('.gov.tr', '\\.gov\\.tr')
 
                             $('input[name=selector_title]').val('h2.page-title > span')
-                            $('input[name=selector_description]').val('.icerik > div')
+                            $('input[name=selector_description]').val('.icerik > div:nth-child(1)')
                             $('input[name=base]').val('haberler')
                             $('input[name=url_pattern]').val('(?<=class\\=\\"card news-card-horizontal\\" href\\=\\"' + site + '\\/)([a-z0-9-]{4,128})(?=")')
 
