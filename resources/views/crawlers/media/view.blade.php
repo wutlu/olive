@@ -301,6 +301,19 @@
                                 url_pattern.focus()
 
                                 M.updateTextFields()
+                        }).on('click', '[data-id=belediye]', function() {
+                            var site = $('input[name=site]').val()
+                                site = site.replace('http://', '\\/\\/')
+                                site = site.replace('https://', '\\/\\/')
+                                site = site.replace('www.', 'www\\.')
+                                site = site.replace('.gov.tr', '\\.gov\\.tr')
+
+                            $('input[name=selector_title]').val('h2.page-title > span')
+                            $('input[name=selector_description]').val('.icerik > div')
+                            $('input[name=base]').val('haberler')
+                            $('input[name=url_pattern]').val('(?<=class\\=\\"card news-card-horizontal\\" href\\=\\"' + site + '\\/)([a-z0-9-]{4,128})(?=")')
+
+                            M.updateTextFields()
                         })
                     @endpush
                     <div class="collection-item green lighten-5 z-depth-1 {{ $crawler->standard ? 'hide' : '' }}" data-name="patterns">
@@ -310,6 +323,7 @@
                             <small class="helper-text">Kaynak içerik adreslerinin <strong>REGEX</strong> deseni.</small>
                         </div>
                         @include('crawlers._inc.regex')
+                        <a style="padding: 0 .4rem;" href="#" data-id="belediye">BELEDİYE SİTESİ</a>
                     </div>
                     <div class="collection-item {{ $crawler->standard ? 'hide' : '' }}" data-name="patterns">
                         <div class="d-flex flex-wrap">
