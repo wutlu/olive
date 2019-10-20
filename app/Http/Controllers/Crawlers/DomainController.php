@@ -73,6 +73,7 @@ class DomainController extends Controller
                 '.biz',
                 '.web',
                 '.aero',
+                '.at',
                 '.tc',
             ],
             '',
@@ -112,12 +113,10 @@ class DomainController extends Controller
 
         $patterns = MediaCrawler::select('url_pattern', \DB::raw('count(*) as total'))
                                 ->whereNotNull('url_pattern')
-                                ->whereNotIn('url_pattern', [
-                                    '([a-z0-9-]{4,128})'
-                                ])
-                                ->where('url_pattern', 'NOT LIKE', '%?%')
+                                ->whereRaw('CHAR_LENGTH(url_pattern) > 24')
                                 ->groupBy('url_pattern')
                                 ->orderBy('total', 'DESC')
+                                ->limit(14)
                                 ->get();
 
         $urls = [];
@@ -166,10 +165,12 @@ class DomainController extends Controller
                         'h1.detail-post-title',
                         '.haber_ayrinti_baslik',
                         'h1.baslik',
+                        'h1.jeg_post_title',
                         '.single_title',
                         'h3.title',
                         'h1.news-title',
                         '.Baslik h1',
+                        '.haberBaslik > h1',
                         '.haberBaslik',
                         '.news-title > h1',
                         'h1.mainHeading',
@@ -181,10 +182,12 @@ class DomainController extends Controller
                         'h1.hbr-baslik',
                         '#kapsayici > h1',
                         'header h1',
+                        'h1.h1class',
                         'h1.pageTitle',
                         'h2[itemprop="headline"]',
                         'h1.single-post-title',
                         '.haber-ust h1',
+                        'h1.singular_title_v2',
                     ];
 
                     foreach ($selectors as $selector)
@@ -208,6 +211,7 @@ class DomainController extends Controller
                         'h2.lead',
                         '.lead',
                         'h2.detail-post-spot',
+                        'h2.jeg_post_subtitle',
                         'p.spot',
                         '.spot',
                         '.short_content',
@@ -217,14 +221,17 @@ class DomainController extends Controller
                         '.haberSpot',
                         '.summary > h2',
                         'header > h2',
+                        '.haberText p:nth-child(1)',
                         '#haberdetaybaslik > h2',
                         '.td-post-content > p:nth-child(1)',
+                        '.td-post-content p:nth-child(1)',
                         '#singleContent > p:nth-child(1)',
                         'h2.content-description',
                         '.panel-title > p',
                         'h2[itemprop="description"]',
                         '#singleContent p:nth-child(1)',
                         '[itemprop="articleBody"] p:nth-child(1)',
+                        '[itemprop="articleBody"] > p:nth-child(1)',
                         '.panel-title p:nth-child(1)',
                         '.haber_ayrinti_detay p:nth-child(1)',
                         'header h2',
@@ -237,6 +244,7 @@ class DomainController extends Controller
                         '.haber-icerik p:nth-child(1)',
                         '.ozet > h2',
                         '#spot',
+                        '.content_inner_section_salt > p:nth-child(1)',
                     ];
 
                     foreach ($selectors as $selector)
@@ -250,16 +258,16 @@ class DomainController extends Controller
                             break;
                         }
                     }
-
-                    if (@$data['data']['title'] && @$data['data']['description'])
-                    {
-                        break;
-                    }
                 }
                 catch (\Exception $e)
                 {
                     $data['error_reasons'][] = $e->getMessage();
                 }
+            }
+
+            if (@$data['data']['title'] && @$data['data']['description'])
+            {
+                break;
             }
         }
 

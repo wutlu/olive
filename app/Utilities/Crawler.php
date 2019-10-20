@@ -65,6 +65,9 @@ class Crawler
                 'horizontal',
                 'uploads',
                 'ca-pub',
+                'menu-item',
+                'single-poll',
+                'homepage',
             ];
             $ends_with = [ '.com', '.css', '.js', '.png', '.jpg', '.gif', '.net', '.org', '.tr' ];
             $contains = [ 'wp-', 'kategori', 'iletisim', 'etiket', 'module', 'assets' ];
@@ -161,6 +164,10 @@ class Crawler
                 if ($linkInDom->status == 'ok')
                 {
                     $data['links'] = $linkInDom->data;
+                }
+                else
+                {
+                    $data['error_reasons'][] = 'Desen ile bağlantı tespit edilemedi.';
                 }
             }
         }
