@@ -2725,6 +2725,17 @@
 
             vzAjax(search)
         }, 600)
+    }).on('change', 'input[name=reverse]', function() {
+        if ($(this).is(':checked'))
+        {
+            $('select[name=twitter_sort]').val('').formSelect()
+            $('select[name=twitter_sort_operator]').val('asc').formSelect()
+        }
+    }).on('change', 'select[name=twitter_sort]', function() {
+        if ($(this).val != '')
+        {
+            $('input[name=reverse]').prop('checked', false)
+        }
     })
 @endpush
 
