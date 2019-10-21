@@ -227,7 +227,8 @@ class AggregationController extends Controller
 
                     'influencers' => [
                         'terms' => [
-                            'field' => 'user.id'
+                            'field' => 'user.id',
+                            'size' => 100
                         ],
                         'aggs' => [
                             'properties' => [
@@ -251,8 +252,7 @@ class AggregationController extends Controller
                                 'bucket_sort' => [
                                     'sort' => [
                                         [ 'total_followers' => [ 'order' => 'desc' ] ]
-                                    ],
-                                    'size' => 100
+                                    ]
                                 ]
                             ]
                         ]

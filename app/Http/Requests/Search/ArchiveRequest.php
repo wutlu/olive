@@ -72,7 +72,9 @@ class ArchiveRequest extends FormRequest
             'consumer_req' => 'nullable|integer|between:0,9',
             'consumer_cmp' => 'nullable|integer|between:0,9',
             'consumer_nws' => 'nullable|integer|between:0,9',
-            'aggs' => 'nullable|string|in:on'
+            'aggs' => 'nullable|string|in:on',
+            'twitter_sort' => 'nullable|string|in:counts.favorite,counts.retweet,counts.quote,counts.reply,user.counts.followers,user.counts.friends,user.counts.statuses,user.counts.listed',
+            'twitter_sort_operator' => 'required_with:twitter_sort|string|in:asc,desc'
         ];
     }
 }

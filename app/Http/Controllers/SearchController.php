@@ -120,7 +120,10 @@ class SearchController extends Controller
             'take',
             'modules',
             'category',
-            'state'
+            'state',
+
+            'twitter_sort',
+            'twitter_sort_operator'
         ])->where('organisation_id', auth()->user()->organisation_id)->orderBy('id', 'desc')->get();
 
         return [
@@ -165,7 +168,9 @@ class SearchController extends Controller
             'consumer_nws',
             'sharp',
             'category',
-            'state'
+            'state',
+            'twitter_sort',
+            'twitter_sort_operator'
         ];
 
         $elements = implode(',', $elements);
@@ -328,6 +333,11 @@ class SearchController extends Controller
                     if ($organisation->data_twitter)
                     {
                         $twitter_q = $q;
+
+                        if ($request->twitter_sort)
+                        {
+                            $twitter_q['sort'] = [ $request->twitter_sort => $request->twitter_sort_operator ];
+                        }
 
                         if ($request->aggs)
                         {

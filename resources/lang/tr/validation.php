@@ -362,6 +362,8 @@ $arr = [
         'gsm'                             => 'GSM',
         'code'                            => 'Kod',
         'sub_partner_percent'             => 'Alt Partner Oranı',
+        'twitter_sort'                    => 'Twitter Sıralaması',
+        'twitter_sort_operator'           => 'Twitter Sıralama Operatörü',
     ],
 ];
 

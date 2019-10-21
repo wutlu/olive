@@ -2742,11 +2742,11 @@
                 Kaynak
             </a>
         </div>
-        <ul class="collection collection-unstyled collapsible">
+        <ul class="collection collection-unstyled">
             @foreach (config('system.modules') as $key => $module)
                 <li class="collection-item">
                     @if ($key == 'twitter')
-                        <div class="d-flex justify-content-between">
+                        <div class="d-flex justify-content-between mb-2">
                             <label class="module-label">
                                 <input data-update name="modules" checked value="{{ $key }}" data-multiple="true" type="checkbox" />
                                 <span>{{ $module }}</span>
@@ -2756,6 +2756,28 @@
                                 <input data-update name="sharp" checked value="on" type="checkbox" />
                                 <span>İyi Sonuç</span>
                             </label>
+                        </div>
+                        <div class="d-flex">
+                            <div class="input-field">
+                                <select name="twitter_sort" id="twitter_sort" data-update>
+                                    <option value="">Normal</option>
+                                        <option value="counts.favorite">Favori</option>
+                                        <option value="counts.retweet">ReTweet</option>
+                                        <option value="counts.quote">Alıntı</option>
+                                        <option value="counts.reply">Cevap</option>
+                                        <option value="" disabled>---</option>
+                                        <option value="user.counts.followers">Takipçi</option>
+                                        <option value="user.counts.friends">Takip</option>
+                                        <option value="user.counts.statuses">Tweet</option>
+                                </select>
+                                <label>Twitter Sıralaması</label>
+                            </div>
+                            <div class="input-field">
+                                <select name="twitter_sort_operator" id="twitter_sort_operator" data-update>
+                                    <option value="desc">Azalan</option>
+                                    <option value="asc">Artan</option>
+                                </select>
+                            </div>
                         </div>
                     @elseif ($key == 'news')
                         <div class="d-flex justify-content-between mb-2">
@@ -2860,6 +2882,8 @@
         $('input[name=modules]').prop('checked', false)
         $('input[name=category]').prop('checked', false)
         $('select[name=state]').val('').formSelect()
+        $('select[name=twitter_sort]').val('').formSelect()
+        $('select[name=twitter_sort_operator]').val('asc').formSelect()
 
         $.each(JSON.parse(option.modules), function(key, module) {
             $('input[name=modules][value=' + module + ']').prop('checked', true)
@@ -2873,6 +2897,16 @@
         if (option.state)
         {
             $('select[name=state]').val(option.state).formSelect()
+        }
+
+        if (option.twitter_sort)
+        {
+            $('select[name=twitter_sort]').val(option.twitter_sort).formSelect()
+        }
+
+        if (option.twitter_sort_operator)
+        {
+            $('select[name=twitter_sort_operator]').val(option.twitter_sort_operator).formSelect()
         }
 
         updateTimer = window.setTimeout(function() {

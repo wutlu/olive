@@ -27,6 +27,8 @@ class SavedSearch extends Model
 		'sharp',
 		'category',
 		'state',
+		'twitter_sort',
+		'twitter_sort_operator',
     ];
 
     # alarm
