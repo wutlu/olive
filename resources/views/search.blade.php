@@ -2213,7 +2213,17 @@
                     }
                 break;
                 case 'category':
-                    if (obj.data.solt.buckets.length)
+                    var _items_ = {};
+                    var chart_data = false;
+
+                    $.each(obj.data, function(module_key, module) {
+                        $.each(module.category.buckets, function(key, bucket) {
+                            chart_data = true;
+                            _items_[bucket.key] = _items_[bucket.key] ? _items_[bucket.key] + bucket.doc_count : bucket.doc_count;
+                        })
+                    })
+
+                    if (chart_data)
                     {
                         const categoryChartOption = JSON.parse(JSON.stringify(options));
 
@@ -2234,9 +2244,9 @@
                         var categories = [];
                         var datas = [];
 
-                        $.each(obj.data.solt.buckets, function(key, bucket) {
-                            categories.push(bucket.key)
-                            datas.push(bucket.doc_count)
+                        $.each(_items_, function(key, value) {
+                            categories.push(key)
+                            datas.push(value)
                         })
 
                         $('#categoryChart').removeClass('hide')

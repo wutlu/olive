@@ -174,8 +174,8 @@ class AggregationController extends Controller
                 ];
             break;
             case 'category':
-                $aggs['solt'] = [
-                    'solt' => [
+                $aggs['all'] = [
+                    'category' => [
                         'terms' => [
                             'field' => 'category',
                             'size' => 100
@@ -500,11 +500,9 @@ class AggregationController extends Controller
         }
 
         $aggs = [];
-        $solt = true;
 
         if ($data['organisation']->data_twitter && (@$aggregations['twitter'] || @$aggregations['all']) && @in_array('twitter', $request->modules))
         {
-            $solt = false;
             $twitter_q = $data['q'];
 
             if ($data['request']->gender != 'all')
@@ -535,7 +533,6 @@ class AggregationController extends Controller
 
         if ($data['organisation']->data_instagram && (@$aggregations['instagram'] || @$aggregations['all']) && @in_array('instagram', $request->modules))
         {
-            $solt = false;
             $instagram_q = $data['q'];
 
             if (@$aggregations['instagram'])
@@ -552,7 +549,6 @@ class AggregationController extends Controller
 
         if ($data['organisation']->data_sozluk && (@$aggregations['sozluk'] || @$aggregations['all']) && @in_array('sozluk', $request->modules))
         {
-            $solt = false;
             $sozluk_q = $data['q'];
 
             if (@$aggregations['sozluk'])
@@ -647,7 +643,6 @@ class AggregationController extends Controller
 
         if ($data['organisation']->data_news && (@$aggregations['news'] || @$aggregations['all']) && @in_array('news', $request->modules))
         {
-            $solt = false;
             $media_q = $data['q'];
 
             if (@$aggregations['news'])
@@ -697,7 +692,6 @@ class AggregationController extends Controller
 
         if ($data['organisation']->data_blog && (@$aggregations['blog'] || @$aggregations['all']) && @in_array('blog', $request->modules))
         {
-            $solt = false;
             $blog_q = $data['q'];
 
             if (@$aggregations['blog'])
@@ -742,7 +736,6 @@ class AggregationController extends Controller
 
         if ($data['organisation']->data_youtube_video && (@$aggregations['youtube_video'] || @$aggregations['all']) && @in_array('youtube_video', $request->modules))
         {
-            $solt = false;
             $youtube_video_q = $data['q'];
 
             if (@$aggregations['youtube_video'])
@@ -759,7 +752,6 @@ class AggregationController extends Controller
 
         if ($data['organisation']->data_youtube_comment && (@$aggregations['youtube_comment'] || @$aggregations['all']) && @in_array('youtube_comment', $request->modules))
         {
-            $solt = false;
             $youtube_comment_q = $data['q'];
 
             if (@$aggregations['youtube_comment'])
@@ -776,7 +768,6 @@ class AggregationController extends Controller
 
         if ($data['organisation']->data_shopping && (@$aggregations['shopping'] || @$aggregations['all']) && @in_array('shopping', $request->modules))
         {
-            $solt = false;
             $shopping_q = $data['q'];
 
             if (@$aggregations['shopping'])
@@ -841,17 +832,6 @@ class AggregationController extends Controller
             {
                 $aggs['shopping'] = $_aggs;
             }
-        }
-
-        if ($solt && @$aggregations['solt'])
-        {
-            $solt_q = $data['q'];
-            $solt_q['query']['bool']['must'][] = [ 'exists' => [ 'field' => 'category' ] ];
-            $solt_q['aggs'] = $aggregations['solt'];
-
-            $query = Document::search([ '*' ], 'product,entry,comment,video,document,article,media,tweet', $solt_q);
-
-            $aggs['solt'] = @$query->data['aggregations']['solt'];
         }
 
         return $aggs;
