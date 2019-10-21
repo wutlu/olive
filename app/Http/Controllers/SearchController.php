@@ -558,7 +558,7 @@ class SearchController extends Controller
 
         if ($request->twitter_sort)
         {
-            //
+            $data = array_reverse($data);
         }
         else
         {
