@@ -9,8 +9,7 @@
         ]
     ],
     'footer_hide' => true,
-    'dock' => true,
-    'wide' => true
+    'dock' => true
 ])
 
 @push('local.scripts')
@@ -53,7 +52,7 @@
 
 @section('wildcard')
     <div class="card wild-background">
-        <div class="pl-1">
+        <div class="container">
             <span class="wildcard-title">Trend Arşivi</span>
         </div>
     </div>
@@ -86,7 +85,7 @@
                     </div>
                     <div class="input-field">
                         <select name="year" id="year">
-                            @for ($i = date('Y'); $i >= (date('Y')-2); $i--)
+                            @for ($i = date('Y'); $i >= 2019; $i--)
                                 <option value="{{ $i }}" {{ $request->year == $i ? 'selected' : '' }}>{{ $i }}</option>
                             @endfor
                         </select>

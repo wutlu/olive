@@ -8,6 +8,10 @@ class PopTrend extends Model
 {
     protected $table = 'popular_trends';
 
+    protected $fillable = [
+        'category'
+    ];
+
     /**
      * The attributes that should be cast to native types.
      *

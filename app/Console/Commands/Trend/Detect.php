@@ -354,7 +354,7 @@ class Detect extends Command
 
                 if ($pop_trend_id)
                 {
-                    $pop_trend = PopTrend::where([ 'module' => $module, 'social_id' => $pop_trend_id ])->first();
+                    $pop_trend = PopTrend::where([ 'module' => $module, 'social_id' => $pop_trend_id, 'month_key' => date('Ym') ])->first();
 
                     switch ($module)
                     {
@@ -384,6 +384,7 @@ class Detect extends Command
 
                         $pop_trend->module = $module;
                         $pop_trend->social_id = $pop_trend_id;
+                        $pop_trend->month_key = date('Ym');
                     }
 
                     $pop_trend->details = $pop_trend_details;

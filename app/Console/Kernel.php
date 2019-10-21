@@ -60,6 +60,14 @@ class Kernel extends ConsoleKernel
                      ->withoutOverlapping(1);
 
             /**
+             * Popüler Trendleri kategorize et.
+             */
+            $schedule->command('nohup "trend:pop_categorization" --type=start')
+                     ->dailyAt('07:00')
+                     ->timezone(config('app.timezone'))
+                     ->withoutOverlapping(1);
+
+            /**
              * Twitter için takip edilen kullanıcıların hesap durumlarını kontrol et.
              */
             $schedule->command('nohup "twitter:user_status" --type=start')

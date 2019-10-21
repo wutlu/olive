@@ -9,12 +9,21 @@
         ]
     ],
     'footer_hide' => true,
-    'dock' => true,
-    'wide' => true
+    'dock' => true
 ])
 
 @push('local.scripts')
     $('select').formSelect()
+
+    $(document).on('change', 'select[name=month]', function() {
+        var year = $('select[name=year]');
+
+        if (!year.val())
+        {
+            year.val({{ date('Y') }})
+            year.formSelect()
+        }
+    })
 @endpush
 
 @section('dock')
@@ -43,6 +52,38 @@
                 </div>
             </div>
             <div class="card-content">
+                <div class="input-field">
+                    <select name="category" id="category">
+                        <option value="" {{ $request->module ? '' : 'selected' }}>Tümü</option>
+                        @foreach (config('system.analysis.category.types') as $key => $category)
+                            <option value="{{ $category['title'] }}" {{ $request->category == $category['title'] ? 'selected' : '' }}>{{ $category['title'] }}</option>
+                        @endforeach
+                    </select>
+                    <label for="category">Kategori</label>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="d-flex">
+                    <div class="input-field">
+                        <select name="month" id="month">
+                            <option value="" selected>-</option>
+                            @for ($i = 1; $i <= 12; $i++)
+                                <option value="{{ $i }}" {{ $request->month ? ($request->month == $i ? 'selected' : '') : ($i == date('m') ? 'selected' : '') }}>{{ $i }}</option>
+                            @endfor
+                        </select>
+                        <label for="month">Ay</label>
+                    </div>
+                    <div class="input-field">
+                        <select name="year" id="year">
+                            @for ($i = date('Y'); $i >= 2019; $i--)
+                                <option value="{{ $i }}" {{ $request->year ? ($request->year == $i ? 'selected' : '') : ($i == date('Y') ? 'selected' : '') }}>{{ $i }}</option>
+                            @endfor
+                        </select>
+                        <label for="year">Yıl</label>
+                    </div>
+                </div>
+            </div>
+            <div class="card-content">
                 <button type="submit" class="btn blue-grey waves-effect">Süz</button>
             </div>
         </div>
@@ -50,9 +91,12 @@
 @endsection
 
 @section('wildcard')
-    <div class="card wild-background">
-        <div class="pl-1">
-            <span class="wildcard-title">Popüler Kaynaklar</span>
+    <div class="card wild-background php">
+        <div class="container">
+            <span class="wildcard-title d-flex flex-column">
+                <span>Popüler Kaynaklar</span>
+                <small>{{ __('global.date.i18n.months')[($request->month ? ($request->month >= 1 && $request->month <= 12 ? $request->month : intval(date('m'))) : intval(date('m'))) - 1] }} Ayı</small>
+            </span>
         </div>
     </div>
 @endsection
@@ -118,6 +162,9 @@
                                 </span>
                             @endif
                         </span>
+                        @if ($item->category)
+                            <span class="align-self-center ml-auto chip">{{ $item->category }}</span>
+                        @endif
                     </li>
                 @endforeach
             </ul>

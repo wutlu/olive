@@ -223,6 +223,7 @@ class DomainController extends Controller
                         'header > h2',
                         '.haberText p:nth-child(1)',
                         '#haberdetaybaslik > h2',
+                        'h1.news-detail-title',
                         '.td-post-content > p:nth-child(1)',
                         '.td-post-content p:nth-child(1)',
                         '#singleContent > p:nth-child(1)',
@@ -243,6 +244,7 @@ class DomainController extends Controller
                         '.entry-content h2',
                         '.haber-icerik p:nth-child(1)',
                         '.ozet > h2',
+                        '.hbr-metin',
                         '#spot',
                         '.content_inner_section_salt > p:nth-child(1)',
                     ];

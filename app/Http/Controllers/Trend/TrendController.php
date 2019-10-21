@@ -267,6 +267,7 @@ class TrendController extends Controller
     {
         $modules = $this->modules;
         $modules['twitter_tweet']['name'] = 'Twitter, Kullanıcı';
+        $modules['twitter_favorite']['name'] = 'Twitter, Kullanıcı (Fav)';
         $modules['youtube_video']['name'] = 'YouTube, Kullanıcı';
         $modules['entry']['name'] = 'Sözlük, Başlık';
 
@@ -275,7 +276,10 @@ class TrendController extends Controller
 
         $request->validate([
             'module' => 'nullable|string|in:'.implode(',', array_keys($modules)),
-            'sort' => 'nullable|string|in:trend_hit,exp_trend_hit'
+            'sort' => 'nullable|string|in:trend_hit,exp_trend_hit',
+            'month' => 'nullable|integer|between:1,12',
+            'year' => 'nullable|integer|min:2019|max:'.date('Y'),
+            'category' => 'nullable|string|max:155'
         ]);
 
         $data = new PopTrend;
@@ -283,6 +287,21 @@ class TrendController extends Controller
         if ($request->module)
         {
             $data = $data->where('module', $request->module);
+        }
+
+        if ($request->category)
+        {
+            $data = $data->where('category', $request->category);
+        }
+
+        $year = $request->year ? $request->year : date('Y');
+        $month = $request->month ? $request->month : date('m');
+
+        $data = $data->where('month_key', $year.$month);
+
+        if ($request->sort)
+        {
+            $data = $data->where($request->sort, '>=', 10);
         }
 
         $data = $data->orderBy($request->sort ? $request->sort : 'trend_hit', 'DESC')->limit(10000)->paginate($pager);

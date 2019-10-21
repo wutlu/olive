@@ -296,10 +296,6 @@ class UserController extends Controller
                 'text' => 'Galata Kulesi / İstanbul'
             ],
             [
-                'img' => asset('img/photo/gazi.jpeg'),
-                'text' => 'Anıtkabir / Ankara'
-            ],
-            [
                 'img' => asset('img/photo/bogaz.jpeg'),
                 'text' => 'İstanbul Boğazı / İstanbul'
             ]

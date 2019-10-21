@@ -912,7 +912,7 @@ code {
 }
 .wildcard .wildcard-title {
   margin: 0;
-  padding: 64px 0 32px;
+  padding: 48px 0 24px;
   display: table;
   font-size: 32px;
 }
@@ -925,10 +925,11 @@ code {
   margin: 54px 16px 32px 0;
 }
 .wildcard .wild-background {
-  background-image: url('../img/low.png');
+  background-image: url('../img/php_banner.jpg');
   background-repeat: no-repeat;
-  background-position: right center;
-  background-size: contain;
+  background-position: center center;
+  background-size: cover;
+  color: #fff;
 }
 .wildcard > .card {
   border-radius: 0;
