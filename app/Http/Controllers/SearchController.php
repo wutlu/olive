@@ -556,7 +556,14 @@ class SearchController extends Controller
             $stats['took'] = sprintf('%0.2f', $totaltime);
         }
 
-        usort($data, '\App\Utilities\DateUtility::dateSort');
+        if ($request->twitter_sort)
+        {
+            //
+        }
+        else
+        {
+            usort($data, '\App\Utilities\DateUtility::dateSort');
+        }
 
         if (!$request->reverse)
         {
