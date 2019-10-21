@@ -298,7 +298,7 @@ class TrendController extends Controller
         $month = $request->month ? $request->month : date('m');
 
         $data = $data->where('month_key', $year.$month);
-        $data = $data->where($request->sort ? $request->sort : 'trend_hit', '>=', 10);
+        $data = $data->where($request->sort ? $request->sort : 'trend_hit', '>=', 2);
 
         $data = $data->orderBy($request->sort ? $request->sort : 'trend_hit', 'DESC')->limit(10000)->paginate($pager);
 

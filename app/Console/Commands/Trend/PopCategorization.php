@@ -41,7 +41,7 @@ class PopCategorization extends Command
      */
     public function handle()
     {
-        $query = PopTrend::where('month_key', date('Ym'))->where('trend_hit', '>=', 10)->get();
+        $query = PopTrend::where('month_key', date('Ym'))->where('trend_hit', '>=', 2)->get();
 
         if (count($query))
         {

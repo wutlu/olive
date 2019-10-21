@@ -1336,7 +1336,7 @@
                                 {
                                     //
                                 }
-/*
+
                                 if ((module.influencers.buckets).length)
                                 {
                                     var table = __table_generate('twitterInfluencers')
@@ -1345,19 +1345,19 @@
                                         table.children('tbody').append(
                                             $('<tr />', {
                                                 'html': [
-                                                    $('<td />', { 'html': bucket.key.name }),
+                                                    $('<td />', { 'html': bucket.properties.hits.hits[0]._source.user.name }),
                                                     $('<td />', {
                                                         'html': $('<a />', {
                                                             'href': '#',
                                                             'class': 'd-table grey-text',
-                                                            'data-search': '@' + bucket.key.screen_name,
+                                                            'data-search': '@' + bucket.properties.hits.hits[0]._source.user.screen_name,
                                                             'data-update-click': true,
                                                             'data-module': 'twitter',
-                                                            'html': '@' + bucket.key.screen_name
+                                                            'html': '@' + bucket.properties.hits.hits[0]._source.user.screen_name
                                                         })
                                                     }),
                                                     $('<td />', { 'class': 'right-align', 'html': bucket.doc_count }),
-                                                    $('<td />', { 'class': 'right-align', 'html': number_format(bucket.key.followers) })
+                                                    $('<td />', { 'class': 'right-align', 'html': number_format(bucket.properties.hits.hits[0]._source.user.counts.followers) })
                                                 ]
                                             })
                                         )
@@ -1385,7 +1385,7 @@
                                 {
                                     //
                                 }
-*/
+
                                 if ((module.users.buckets).length)
                                 {
                                     var table = __table_generate('twitterUsers')

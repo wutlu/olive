@@ -224,6 +224,40 @@ class AggregationController extends Controller
                             ]
                         ]
                     ],
+
+                    'influencers' => [
+                        'terms' => [
+                            'field' => 'user.id'
+                        ],
+                        'aggs' => [
+                            'properties' => [
+                                'top_hits' => [
+                                    'size' => 1,
+                                    '_source' => [
+                                        'include' => [
+                                            'user.name',
+                                            'user.screen_name',
+                                            'user.counts.followers'
+                                        ]
+                                    ]
+                                ]
+                            ],
+                            'total_followers' => [
+                                'avg' => [
+                                    'field' => 'user.counts.followers'
+                                ]
+                            ],
+                            'followers_bucket_sort' => [
+                                'bucket_sort' => [
+                                    'sort' => [
+                                        [ 'total_followers' => [ 'order' => 'desc' ] ]
+                                    ],
+                                    'size' => 100
+                                ]
+                            ]
+                        ]
+                    ],
+
                     'mentions' => [
                         'nested' => [ 'path' => 'entities.mentions' ],
                         'aggs' => [
