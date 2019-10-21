@@ -17,7 +17,7 @@ class AddMonthlyToPopularTrendsTable extends Migration
             $table->dropUnique([ 'module', 'social_id' ]);
 
             $table->string('month_key')->index();
-            $table->string('category')->index();
+            $table->string('category')->index()->nullable()->default(null);
             $table->unsignedInteger('followers')->default(0);
 
             $table->unique([ 'module', 'social_id', 'month_key' ]);
