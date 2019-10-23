@@ -57,19 +57,18 @@
  * tr-map
  */
 .tr-map {
-  background-image: url('../img/olive_logo-opacity.svg'), url('../img/tr_map.png');
+  background-image: url('../img/tr_map.png?v2');
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 70%, contain;
-  background-color: #666;
+  background-size: contain;
   width: 100%;
   padding-top: 48%;
   position: relative;
 }
 .tr-map > small.state {
   position: absolute;
-  background-color: #444;
-  color: #fff;
+  background-color: #ccc;
+  color: #333;
   border-radius: 2px;
   padding: 0 4px;
 
@@ -79,7 +78,7 @@
 .tr-map > small.state:before {
   content: attr(data-title);
   position: absolute;
-  color: #ccc;
+  color: #333;
   transform: translateY(-100%);
   width: 100px;
 }
@@ -927,8 +926,9 @@ code {
 .wildcard .wild-background {
   background-image: url('../img/php_banner.jpg');
   background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
+  background-position: bottom center;
+  background-size: contain;
+  background-color: #2f3a40;
   color: #fff;
 }
 .wildcard > .card {
