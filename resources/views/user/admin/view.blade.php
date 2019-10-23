@@ -42,17 +42,42 @@
         id="details-form"
         data-id="{{ $user->id }}"
         data-callback="__account">
+        <div class="card blue-grey darken-4 mb-1">
+            <div class="card-content">
+                <span class="card-title white-text">Referans Bilgileri</span>
+                <p class="grey-text">
+                    @if ($user->reference)
+                        <a class="yellow-text" href="{{ route('admin.user', $user->reference->id) }}">{{ $user->reference->name }}</a> tarafından üye yapıldı.
+                    @else
+                        Referanssız Üyelik
+                    @endif
+                </p>
+                @if ($user->subUsers->count())
+                    <span class="card-title white-text">Referans Olduğu Kullanıcılar ({{ $user->subUsers->count() }})</span>
+                    <ul class="collection collection-hoverable collection-unstyled">
+                        @foreach ($user->subUsers as $key => $sub)
+                            <li class="collection-item d-flex justify-content-end">
+                                <span class="d-flex flex-column mr-auto align-self-center">
+                                    <a class="grey-text" href="{{ route('admin.user', $sub->id) }}">{{ $sub->name }}</a>
+                                    <span class="grey-text text-lighten-2">{{ $sub->email }}</span>
+                                </span>
+                                <span class="d-flex flex-column right-align align-self-center"> 
+                                    @if ($sub->sub_partner_percent)
+                                        <span class="white-text ml-1">% {{ $sub->sub_partner_percent }} alt partner</span>
+                                    @endif
+                                    <span class="badge white ml-1">{{ $sub->subUsers->count() }} alt kullanıcı</span>
+                                </span>
+                            </li>
+                        @endforeach
+                    </ul>
+                @endif
+            </div>
+        </div>
         <div class="card">
             <div class="card-content">
                 <span class="card-title">Kullanıcı Bilgileri</span>
             </div>
             <ul class="item-group mt-0 mb-0">
-                @if ($user->reference)
-                    <li class="item p-1">
-                        <small class="cyan-text text-darken-2">Referans</small>
-                        <a class="d-block" href="{{ route('admin.user', $user->reference->id) }}">{{ $user->reference->name }}</a>
-                    </li>
-                @endif
                 <li class="item p-1">
                     <small class="grey-text">Oluşturuldu</small>
                     <p class="d-block">{{ date('d.m.Y H:i', strtotime($user->created_at)) }}</p>

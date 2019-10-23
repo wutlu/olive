@@ -2003,6 +2003,10 @@ nav .nav-wrapper > ul > li > a > i {
   border-color: #ccc;
 }
 
+.collection > a.collection-item:last-child {
+  border-radius: 0 0 2px 2px !important;
+}
+
 /*!
  * divider
  */

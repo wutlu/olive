@@ -8,22 +8,23 @@
     <div class="divider"></div>
 
     <div class="collection-item pb-0">
-        <span class="grey-text">Kullanıcılar</span>
+        <span class="orange-text">Kullanıcılar</span>
     </div> 
     @forelse($organisation->users as $user)
         <a href="{{ route('admin.user', $user->id) }}" class="collection-item waves-effect">
             {{ $user->name }}
-            <p class="grey-text mb-0">{{ $user->id == $organisation->user_id ? 'Organizasyon Sahibi' : 'Kullanıcı' }}</p>
+            <span class="d-table grey-text">{{ $user->id == $organisation->user_id ? 'Organizasyon Sahibi' : 'Kullanıcı' }}</span>
         </a>
     @empty
         <a href="{{ route('admin.user', $organisation->author->id) }}" class="collection-item waves-effect">
             {{ $organisation->author->name }}
-            <p class="grey-text mb-0">Eski Organizasyon Sahibi</p>
+            <span class="d-table grey-text">Eski Organizasyon Sahibi</span>
         </a>
     @endforelse
 
     <div class="divider"></div>
 
+    <a href="{{ route('admin.organisation.saved_searches', $organisation->id) }}" class="collection-item waves-effect {{ $active == 'saved.searches' ? 'active' : '' }}">Kayıtlı Aramalar</a>
     <a href="{{ route('admin.organisation.pin_groups', $organisation->id) }}" class="collection-item waves-effect {{ $active == 'groups.pin' ? 'active' : '' }}">Pin Grupları</a>
     <a href="{{ route('admin.organisation.alarms', $organisation->id) }}" class="collection-item waves-effect {{ $active == 'alarms' ? 'active' : '' }}">Alarmlar</a>
 

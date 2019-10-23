@@ -163,7 +163,7 @@
                             @endif
                         </span>
                         @if ($item->category)
-                            <span class="align-self-center ml-auto chip">{{ $item->category }}</span>
+                            <span class="align-self-center ml-auto chip hide-on-med-and-down">{{ $item->category }}</span>
                         @endif
                     </li>
                 @endforeach

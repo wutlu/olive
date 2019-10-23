@@ -68,6 +68,7 @@ class Crawler
                 'menu-item',
                 'single-poll',
                 'homepage',
+                'shortcodes',
             ];
             $ends_with = [ '.com', '.css', '.js', '.png', '.jpg', '.gif', '.net', '.org', '.tr' ];
             $contains = [ 'wp-', 'kategori', 'iletisim', 'etiket', 'module', 'assets' ];

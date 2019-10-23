@@ -36,6 +36,12 @@ class Organisation extends Model
         return $this->hasMany('App\Models\Organisation\OrganisationInvoice', 'organisation_id', 'id')->orderBy('created_at', 'DESC');
     }
 
+    # kayıtlı aramalar
+    public function savedSearches()
+    {
+        return $this->hasMany('App\Models\SavedSearch', 'organisation_id', 'id')->orderBy('created_at', 'DESC');
+    }
+
     # kaynak tercihleri
     public function sources()
     {

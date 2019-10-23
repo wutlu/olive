@@ -39,7 +39,7 @@ return [
     |
     */
 
-    'theme_color' => '#4b636e',
+    'theme_color' => '#ffffff',
     'background_color' => '#ffffff',
 
 ];

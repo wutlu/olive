@@ -17,6 +17,8 @@ use App\Models\Pin\Group as PinGroup;
 use App\Models\BillingInformation;
 use App\Models\Alarm;
 use App\Models\Option;
+use App\Models\SavedSearch;
+use App\Models\Geo\States;
 
 use App\Http\Requests\Organisation\BillingUpdateRequest;
 use App\Http\Requests\Organisation\NameRequest;
@@ -28,11 +30,11 @@ use App\Http\Requests\Organisation\Admin\UpdateRequest as AdminUpdateRequest;
 use App\Http\Requests\Organisation\Admin\CreateRequest as AdminCreateRequest;
 use App\Http\Requests\Organisation\Admin\InvoiceApproveRequest;
 use App\Http\Requests\Organisation\Admin\PriceSettingsSaveRequest;
-
-use App\Http\Requests\RealTime\KeywordGroup\AdminUpdateRequest as KeywordGroupAdminUpdateRequest;
-
+use App\Http\Requests\Search\AdminSaveRequest;
 use App\Http\Requests\IdRequest;
 use App\Http\Requests\SearchRequest;
+
+use App\Http\Requests\RealTime\KeywordGroup\AdminUpdateRequest as KeywordGroupAdminUpdateRequest;
 
 use App\Notifications\OrganisationWasUpdatedNotification;
 use App\Notifications\MessageNotification;
@@ -45,6 +47,7 @@ use App\Jobs\CheckUpcomingPayments;
 use App\Http\Requests\PaymentCallbackRequest;
 
 use System;
+use Validator;
 
 use Mail;
 use App\Mail\ServerAlertMail;
@@ -1333,6 +1336,88 @@ class OrganisationController extends Controller
                 'reason' => 'Kullanıcı bulunamadı!'
             ];
         }
+    }
+
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Organizasyon, kayıtlı aramalar.
+     *
+     * @return view
+     */
+    public static function adminSavedSearches(int $id)
+    {
+        $organisation = Organisation::where('id', $id)->firstOrFail();
+
+        return view('organisation.admin.savedSearches', compact('organisation'));
+    }
+
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Organizasyon, kayıtlı arama form.
+     *
+     * @return view
+     */
+    public static function adminSavedSearch(int $id, int $search_id = null)
+    {
+        $organisation = Organisation::where('id', $id)->firstOrFail();
+        $search = $search_id ? $organisation->savedSearches()->where('id', $search_id)->firstOrFail() : null;
+        $states = States::where('country_id', 223)->orderBy('name', 'ASC')->get();
+
+        return view('organisation.admin.savedSearch', compact('organisation', 'search', 'states'));
+    }
+
+    /**
+     ********************
+     ******* ROOT *******
+     ********************
+     *
+     * Organizasyon, kayıtlı arama güncelle.
+     *
+     * @return array
+     */
+    public static function adminSavedSearchSave(int $id, int $search_id = null, AdminSaveRequest $request)
+    {
+        $organisation = Organisation::where('id', $id)->firstOrFail();
+        $search = $search_id ? $organisation->savedSearches()->where('id', $search_id)->firstOrFail() : null;
+
+        if (!$search)
+        {
+            Validator::extend('limit', function($attribute) use ($organisation) {
+                return $organisation->savedSearches->count() < $organisation->saved_searches_limit;
+            }, 'Bu organizasyon arama kaydetme üst limitine ulaştı.');
+
+            $request->validate([
+                'name' => 'limit'
+            ]);
+        }
+
+        if ($search)
+        {
+            $status = 'updated';
+        }
+        else
+        {
+            $status = 'created';
+
+            $search = new SavedSearch;
+            $search->organisation_id = $organisation->id;
+        }
+
+        $search->fill($request->all());
+        $search->save();
+
+        return [
+            'status' => 'ok',
+            'data' => [
+                'status' => $status
+            ]
+        ];
     }
 
     /**

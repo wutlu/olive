@@ -132,6 +132,12 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\User\Badge', 'user_id', 'id');
     }
 
+    # alt kullanıcılar
+    public function subUsers()
+    {
+        return $this->hasMany('App\Models\User\User', 'partner_user_id', 'id')->orderBy('created_at', 'DESC');
+    }
+
     # partner ödemeler
     public function partnerPayments()
     {

@@ -91,7 +91,7 @@ class Trigger extends Command
                     $sources[] = '| '.implode(' | ', [ '_Platform_', '_İçerik_' ]).' |';
                     $sources[] = '|:---|---:|';
 
-                    foreach (json_decode($alarm->search->modules) as $module)
+                    foreach ($alarm->search->modules as $module)
                     {
                         $sources[] = '| '.config('system.modules')[$module].' | '.number_format(intval(@$es_data['data'][$module]['count'])).' |';
                     }
@@ -218,7 +218,7 @@ class Trigger extends Command
         $data = [];
         $stats = [];
 
-        foreach (json_decode($search->modules) as $module)
+        foreach ($search->modules as $module)
         {
             switch ($module)
             {

@@ -142,7 +142,7 @@ class RealTimeController extends Controller
 
             $data = [];
 
-            foreach (json_decode($search->modules) as $module)
+            foreach ($search->modules as $module)
             {
                 switch ($module)
                 {

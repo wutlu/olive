@@ -25,8 +25,8 @@
         <div class="card-content">
             <span class="card-title">Fatura Geçmişi</span>
         </div>
-        @if ($organisation->invoices->count())
-            <div class="collection">
+        @if ($organisation->savedSearches->count())
+            <div class="collection collection-unstyled">
                 @foreach($organisation->invoices()->paginate(5) as $invoice)
                 <a href="{{ route('organisation.invoice', $invoice->invoice_id) }}" class="collection-item d-flex justify-content-between waves-effect {{ $invoice->paid_at ? 'green-text' : 'red-text' }}">
                     <i class="material-icons align-self-center">history</i>
@@ -51,8 +51,3 @@
 @section('dock')
     @include('organisation.admin._menu', [ 'active' => 'invoices', 'id' => $organisation->id ])
 @endsection
-
-@push('local.scripts')
-    $('select').formSelect()
-    $('.tabs').tabs()
-@endpush

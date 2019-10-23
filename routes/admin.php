@@ -97,6 +97,10 @@ Route::domain('olive.'.config('app.domain'))->group(function () {
 
             Route::get('{id}/fatura-gecmisi', 'OrganisationController@adminInvoiceHistory')->name('admin.organisation.invoices');
             Route::post('{id}/fatura-onay', 'OrganisationController@adminInvoiceApprove')->name('admin.organisation.invoice.approve');
+
+            Route::get('{id}/kayitli-aramalar', 'OrganisationController@adminSavedSearches')->name('admin.organisation.saved_searches');
+            Route::get('{id}/kayitli-aramalar/form/{search_id?}', 'OrganisationController@adminSavedSearch')->name('admin.organisation.saved_search');
+            Route::post('{id}/kayitli-aramalar/form/{search_id?}', 'OrganisationController@adminSavedSearchSave');
         });
     });
 

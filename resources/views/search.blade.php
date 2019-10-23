@@ -2896,7 +2896,7 @@
         $('select[name=twitter_sort]').val('').formSelect()
         $('select[name=twitter_sort_operator]').val('asc').formSelect()
 
-        $.each(JSON.parse(option.modules), function(key, module) {
+        $.each(option.modules, function(key, module) {
             $('input[name=modules][value=' + module + ']').prop('checked', true)
         })
 

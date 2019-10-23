@@ -18,10 +18,7 @@
 @section('wildcard')
     <div class="card wild-background">
         <div class="container">
-            <div class="d-flex">
-                <img class="wildcard-icon" alt="{{ $auth->partner }}" src="{{ asset('img/partner-'.$auth->partner.'.png') }}" />
-                <span class="wildcard-title">{{ $user ? $user->name : 'Kullanıcı Oluştur' }}</span>
-            </div>
+            <span class="wildcard-title">{{ $user ? $user->name : 'Kullanıcı Oluştur' }}</span>
         </div>
     </div>
 @endsection

@@ -17,10 +17,9 @@ use Term;
 
 use App\Models\Source;
 use App\Models\SavedSearch;
+use App\Models\Geo\States;
 
 use App\Utilities\Crawler;
-
-use App\Models\Geo\States;
 
 class SearchController extends Controller
 {
@@ -60,8 +59,6 @@ class SearchController extends Controller
      */
     public static function save(SaveRequest $request)
     {
-        $request['modules'] = json_encode($request->modules);
-
         $query = new SavedSearch;
         $query->organisation_id = auth()->user()->organisation_id;
         $query->fill($request->all());

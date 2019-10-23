@@ -19,10 +19,7 @@
 @section('wildcard')
     <div class="card wild-background">
         <div class="container">
-            <div class="d-flex">
-                <img class="wildcard-icon" alt="{{ $user->partner }}" src="{{ asset('img/partner-'.$user->partner.'.png') }}" />
-                <span class="wildcard-title">Hesap Geçmişi</span>
-            </div>
+            <span class="wildcard-title">Hesap Geçmişi</span>
         </div>
     </div>
 @endsection

@@ -15,13 +15,13 @@
 #slide-out span {
   color: #cfd8dc !important;
 }
+#slide-out a.subheader {
+	color: #546e7a !important;
+}
 #slide-out .grey-text {
   color: #90a4ae !important;
 }
 #slide-out .divider,
 #slide-out .grey {
   background-color: #212121 !important;
-}
-#main-nav {
-  background-color: #263238;
 }

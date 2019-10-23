@@ -36,4 +36,13 @@ class SavedSearch extends Model
     {
         return $this->hasOne('App\Models\Alarm', 'id', 'alarm_id');
     }
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'modules' => 'array',
+    ];
 }

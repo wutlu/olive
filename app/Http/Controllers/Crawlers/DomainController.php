@@ -116,7 +116,7 @@ class DomainController extends Controller
                                 ->whereRaw('CHAR_LENGTH(url_pattern) > 24')
                                 ->groupBy('url_pattern')
                                 ->orderBy('total', 'DESC')
-                                ->limit(14)
+                                ->limit(50)
                                 ->get();
 
         $urls = [];
@@ -206,6 +206,7 @@ class DomainController extends Controller
                         '.entry-content > p:nth-child(1)',
                         '.entry-content p:nth-child(1)',
                         'p.lead',
+                        '.panel-title > h2',
                         '.text_post_block > h2',
                         '.haber_ayrinti_spot',
                         'h2.lead',

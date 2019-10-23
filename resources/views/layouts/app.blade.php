@@ -25,6 +25,7 @@
 
     <link rel="stylesheet" href="{{ asset('css/materialize.min.css?v='.config('system.version')) }}" />
     <link rel="stylesheet" href="{{ asset('css/app.css?v='.config('system.version')) }}" />
+    <link rel="stylesheet" href="{{ asset('css/dark.theme.css?v='.config('system.version')) }}" />
 
     @isset($help)
         <link rel="stylesheet" href="{{ asset('css/driver.min.css?v='.config('system.version')) }}" />
@@ -327,29 +328,6 @@
                             <img class="align-self-center mr-1" alt="{{ auth()->user()->partner }}" src="{{ asset('img/partner-'.auth()->user()->partner) }}.png" style="width: 32px; height: 32px;" />
                             <span class="align-self-center">{{ strtoupper(auth()->user()->partner) }} PARTNER</span>
                         </a>
-                    </li>
-                    <li>
-                        <div class="collapsible-header waves-effect">
-                            <i class="material-icons">slideshow</i>
-                            <span>Sunumlar</span>
-                            <i class="material-icons arrow">keyboard_arrow_down</i>
-                        </div>
-                        <div class="collapsible-body">
-                            <ul>
-                                <li class="tiny">
-                                    <a class="waves-effect" href="{{ asset('slide/hard-slide.pdf?v='.config('system.version')) }}">
-                                        <i class="material-icons">picture_as_pdf</i>
-                                        PDF Sunum
-                                    </a>
-                                </li>
-                                <li class="tiny">
-                                    <a class="waves-effect" href="{{ asset('slide/soft-slide.pptx?v='.config('system.version')) }}">
-                                        <i class="material-icons">slideshow</i>
-                                        PPTX Sunum
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
                     </li>
                     <li class="divider"></li> 
                 @endif
