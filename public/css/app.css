@@ -67,8 +67,8 @@
 }
 .tr-map > small.state {
   position: absolute;
-  background-color: #ccc;
-  color: #333;
+  background-color: #000;
+  color: #fff;
   border-radius: 2px;
   padding: 0 4px;
 
@@ -86,7 +86,7 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background-color: #fff;
+  background-color: #222;
   content: '';
   position: absolute;
   top: -4px;
