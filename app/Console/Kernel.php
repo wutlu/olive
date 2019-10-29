@@ -43,7 +43,7 @@ class Kernel extends ConsoleKernel
              * Organizasyon sahibi olan kullanıcılara
              * her gün belirlenen saatlerde ödeme bildirimi e-postası gönder.
              */
-            foreach (['00:00', '09:00', '15:00', '20:00'] as $time)
+            foreach ([ '11:00', '16:00' ] as $time)
             {
                 $schedule->command('check:upcoming_payments')
                          ->dailyAt($time)

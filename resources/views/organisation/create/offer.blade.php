@@ -408,6 +408,8 @@
                 </div>
             </div>
 
+            <div class="center-align red-text hide" data-name="alert" style="font-size: 20px;"></div>
+
             <div id="price" class="center-align">{{ config('formal.currency') }}<span data-name="price-total">0</span> +kdv <sub class="grey-text">/ ay</sub></div>
             <div class="grey-text text-darken-2 p-2">
                 @component('components.alert')
@@ -577,6 +579,8 @@
         $('[data-step]').addClass('hide')
 
         $('[data-step=' + next + ']').removeClass('hide').hide().show('drop', {}, 600)
+
+        $('[data-name=alert]').addClass('hide')
     })
 
     function calculate()
@@ -590,9 +594,6 @@
     calculate()
 
     $(document).on('change keydown keyup', 'input[data-update]', calculate)
-
-
-
 
     @if (session('timeout'))
         M.toast({ html: 'İşlem zaman aşımına uğradı! Lütfen tekrar deneyin.', classes: 'red' })
@@ -623,6 +624,14 @@
         {
             __.addClass('hide')
             $('.olive-alert').removeClass('hide')
+        }
+        else if (obj.status == 'step')
+        {
+            $('[data-name=alert]').removeClass('hide').html(obj.message)
+
+            $('[data-step]').addClass('hide')
+
+            $('[data-step=' + obj.step + ']').removeClass('hide').hide().show('fade', {}, 600)
         }
     }
 @endpush

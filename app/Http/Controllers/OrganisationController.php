@@ -169,10 +169,26 @@ class OrganisationController extends Controller
                 if (!$source_count)
                 {
                     return [
-                        'status' => 'err',
-                        'reason' => 'Canlı Akış, Arama veya Alarm seçiliyken en az 1 veri kaynağı seçmeniz gerekiyor.'
+                        'status' => 'step',
+                        'step' => 2,
+                        'message' => 'Canlı Akış, Arama veya Alarm seçiliyken en az 1 veri kaynağı seçmeniz gerekiyor.'
                     ];
                 }
+            }
+
+            $module_count = 0;
+            $module_count = $request->module_real_time ? ($module_count+1) : $module_count;
+            $module_count = $request->module_search ? ($module_count+1) : $module_count;
+            $module_count = $request->module_alarm ? ($module_count+1) : $module_count;
+            $module_count = $request->module_trend ? ($module_count+1) : $module_count;
+
+            if (!$module_count)
+            {
+                return [
+                    'status' => 'step',
+                    'step' => 1,
+                    'message' => 'En az 1 modül seçmeniz gerekiyor.'
+                ];
             }
 
             $organisation = new Organisation;
