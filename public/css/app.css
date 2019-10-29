@@ -1846,6 +1846,17 @@ footer.page-footer > .container > .row > .col > img#vz-logo {
 }
 
 /*!
+ * info bg
+ */
+.info-bg {
+  background-repeat: no-repeat;
+  background-size: 64px;
+  background-position: bottom -24px right;
+  background-image: url('../img/icons/info.png');
+  background-repeat: no-repeat;
+}
+
+/*!
  * alert
  */
 .alert {

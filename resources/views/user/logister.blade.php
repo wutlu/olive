@@ -87,7 +87,12 @@
 
                 @if (config('system.user.registration'))
                     <div class="card-content white" id="tab-kaydol" style="display: none;">
-                        <form id="register-form" data-callback="__register" action="{{ route('user.register') }}" method="put" class="json">
+                        <form id="register-form" data-callback="__register" action="{{ route('user.register') }}" method="put" class="json" autocomplete="off">
+                            <div class="input-field">
+                                <input name="name" id="name" type="text" class="validate" />
+                                <label for="name">Kullanıcı Adı</label>
+                                <span class="helper-text">Herkese açık benzersiz bir kullanıcı adı girin.</span>
+                            </div>
                             <div class="input-field">
                                 <input name="email" id="email" type="email" class="validate" />
                                 <label for="email">E-posta</label>
@@ -96,12 +101,7 @@
                             <div class="input-field">
                                 <input name="password" id="password" type="password" class="validate" />
                                 <label for="password">Şifre</label>
-                                <span class="helper-text">Özel hesap şifreniz.</span>
-                            </div>
-                            <div class="input-field">
-                                <input name="name" id="name" type="text" class="validate" />
-                                <label for="name">Kullanıcı Adı</label>
-                                <span class="helper-text">Herkese açık benzersiz kullanıcı adınız.</span>
+                                <span class="helper-text">Güçlü bir hesap şifresi oluşturun.</span>
                             </div>
                             <div class="input-field">
                                 <div class="captcha" data-id="register-captcha"></div>

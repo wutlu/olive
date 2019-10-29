@@ -397,6 +397,7 @@
                 <li class="nothing hide">
                     @component('components.nothing')
                         @slot('cloud_class', 'white-text')
+                        @slot('text', 'Henüz bir aktiviteniz olmadı.')
                     @endcomponent
                 </li>
                 <li class="model hide">

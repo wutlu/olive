@@ -17,27 +17,16 @@
             <a href="{{ route('settings.organisation') }}" class="btn green waves-effect">Organizasyon</a>
         </div>
         <form class="json" method="post" action="{{ route('organisation.create.offer') }}" data-callback="__create" id="offer">
-            <div class="d-flex mx-auto" style="max-width: 400px;">
+            <div class="d-flex mx-auto" style="max-width: 600px;">
                 <div class="flex-fill card card-unstyled" data-step="1">
                     <div class="card-content card-step">
                         <span class="step">1/4</span>
                         <span class="title">Modül Seçimi</span>
-                        <a
-                            href="#"
-                            data-tooltip="Bilgi"
-                            data-position="right"
-                            data-trigger="info"
-                            data-title="Modüller">
-                            <i class="material-icons">info</i>
-                            <div class="hide" data-helper>
-                                <span style="font-size: 16px;">Olive 4 ana modülden oluşur.</span>
-                            </div>
-                        </a>
                     </div>
                     <ul class="collection collection-hoverable">
                         @foreach (config('system.static_modules') as $key => $module)
-                            <li class="collection-item d-flex justify-content-between">
-                                <label class="align-self-center">
+                            <li class="collection-item info-bg">
+                                <label>
                                     <input
                                         data-update
                                         data-option="module"
@@ -48,26 +37,16 @@
                                         type="checkbox" />
                                     <span>{{ $module }} {!! $prices['unit_price.'.$key]['value'] ? '' : '<sup class="red-text">Ücretsiz</sup>' !!}</span>
                                 </label>
-                                <a
-                                    href="#"
-                                    class="align-self-center"
-                                    data-tooltip="Bilgi"
-                                    data-position="right"
-                                    data-trigger="info"
-                                    data-title="{{ $module }}">
-                                    <i class="material-icons">info</i>
-                                    <div class="hide" data-helper>
-                                        @if ($key == 'module_real_time')
-                                            <span style="font-size: 16px;">Geniş çaplı filtreleme özellikleri ve kullanıcı dostu arayüzü ile gündemdeki paylaşımları eş zamanlı bir akışa alarak takip etmenizi sağlar.</span>
-                                        @elseif ($key == 'module_search')
-                                            <span style="font-size: 16px;">Geniş çaplı filtreleme özellikleri ile gerçek zamanlı veya geçmişe yönelik aramalar yapabilmenizi sağlar. Ayrıca kolay ve hızlı bir şekilde grafikler oluşturabilir, kitlenizi ölçümleyebilirsiniz.</span>
-                                        @elseif ($key == 'module_trend')
-                                            <span style="font-size: 16px;">Eş zamanlı veya geçmişe yönelik trend kelime, kullanıcı veya başlık takibi, genel veya sektörel kullanıcı listeleri.</span>
-                                        @elseif ($key == 'module_alarm')
-                                            <span style="font-size: 16px;">Bilgisayar başında harcayacak vaktiniz yoksa ve konuşulanlardan eş zamanlı haberdar olmak istiyorsanız alarm modülünü kullanabilirsiniz.</span>
-                                        @endif
-                                    </div>
-                                </a>
+
+                                @if ($key == 'module_real_time')
+                                    <p class="mb-0">Geniş çaplı filtreleme özellikleri ve kullanıcı dostu arayüzü ile gündemdeki paylaşımları eş zamanlı izlemenizi sağlar.</p>
+                                @elseif ($key == 'module_search')
+                                    <p class="mb-0">Eş zamanlı veya geçmişe yönelik sosyal medya ve web verileri içerisinden geniş çaplı filtreler ile aramalar gerçekleştirebilirsiniz. Elde edeceğiniz sonuçları görselleştirerek kitle ölçümlemeleri, rakip analizleri ve çeşitli görüler elde edebilmenize olanak tanır.</p>
+                                @elseif ($key == 'module_trend')
+                                    <p class="mb-0">Eş zamanlı veya geçmişe yönelik trend olmuş; kelime, kullanıcı veya başlık takibi, genel veya sektörel popüler kullanıcı listeleri sağlar.</p>
+                                @elseif ($key == 'module_alarm')
+                                    <p class="mb-0">Bilgisayar başında gerçirecek vaktiniz yoksa "Alarmlar" sayesinde konuşulanlardan eş zamanlı haberdar olabilirsiniz.</p>
+                                @endif
                             </li>
                         @endforeach
                     </ul>
@@ -81,22 +60,11 @@
                     <div class="card-content card-step">
                         <span class="step">2/4</span>
                         <span class="title">Veri Kaynakları</span>
-                        <a
-                            href="#"
-                            data-tooltip="Bilgi"
-                            data-position="right"
-                            data-trigger="info"
-                            data-title="Veri Kaynakları">
-                            <i class="material-icons">info</i>
-                            <div class="hide" data-helper>
-                                <span class="font-size: 16px;">Canlı Akış, Arama ve Alarm modülleri için en az 1 kaynak seçilmelidir.</span>
-                            </div>
-                        </a>
                     </div>
                     <ul class="collection collection-hoverable" data-tab="source">
                         @foreach (config('system.modules') as $key => $module)
-                            <li class="collection-item d-flex justify-content-between">
-                                <label class="align-self-center">
+                            <li class="collection-item">
+                                <label>
                                     <input
                                         data-update
                                         data-option="source"
@@ -107,37 +75,10 @@
                                         type="checkbox" />
                                     <span class="align-self-center">{{ $module }} {!! $prices['unit_price.data_'.$key]['value'] ? '' : '<sup class="red-text">Ücretsiz</sup>' !!}</span>
                                 </label>
-                                <a
-                                    href="#"
-                                    class="align-self-center"
-                                    data-tooltip="Bilgi"
-                                    data-position="right"
-                                    data-trigger="info"
-                                    data-title="{{ $module }}">
-                                    <i class="material-icons">info</i>
-                                    <div class="hide" data-helper>
-                                        @if ($key == 'twitter')
-                                            <span style="font-size: 16px;">Twitter'ın açık kaynak Türkçe paylaşımlarına erişim.</span>
-                                        @elseif ($key == 'sozluk')
-                                            <span style="font-size: 16px;">Türkçe sözlük siteleri paylaşımlarına erişim.</span>
-                                        @elseif ($key == 'news')
-                                            <span style="font-size: 16px;">Yerel ve genel Türkçe haber siteleri paylaşımlarına erişim.</span>
-                                        @elseif ($key == 'blog')
-                                            <span style="font-size: 16px;">Türkçe blog siteleri paylaşımlarına erişim.</span>
-                                        @elseif ($key == 'instagram')
-                                            <span style="font-size: 16px;">Instagram'ın açık kaynak Türkçe paylaşımlarına erişim.</span>
-                                        @elseif ($key == 'youtube_video')
-                                            <span style="font-size: 16px;">YouTube'un açık kaynak Türkçe paylaşımlarına erişim.</span>
-                                        @elseif ($key == 'youtube_comment')
-                                            <span style="font-size: 16px;">YouTube'un açık kaynak Türkçe video yorumlarına erişim.</span>
-                                        @elseif ($key == 'shopping')
-                                            <span style="font-size: 16px;">Belirli ikinci el e-ticaret sitelerinin paylaşımlarına erişim.</span>
-                                        @endif
-                                    </div>
-                                </a>
                             </li>
                         @endforeach
                     </ul>
+                    <div class="card-content info-bg">Olive örümcekleri tıpkı Google'ın yaptığı gibi fakat Google'dan biraz daha hızlı bir şekilde web'de gezinerek çeşitli mecralardan veri elde eder. Bu veri türlerinden hangilerine erişmek istiyorsunuz?</div>
                     <div class="card-content d-flex justify-content-between">
                         <a href="#" class="btn-flat btn-large waves-effect" data-steps="1" data-prev="true">
                             <i class="material-icons">arrow_back</i>
@@ -154,21 +95,7 @@
                     </div>
                     <div class="card-content">
                         <div class="d-flex justify-content-between">
-                            <small class="d-flex">
-                                <span class="align-self-center mr-1">Kullanıcı Kapasitesi</span>
-                                <a
-                                    href="#"
-                                    class="align-self-center"
-                                    data-tooltip="Bilgi"
-                                    data-position="right"
-                                    data-trigger="info"
-                                    data-title="Pin Grubu">
-                                    <i class="material-icons tiny">info</i>
-                                    <div class="hide" data-helper>
-                                        <span style="font-size: 16px;">Olive ekip (organizasyon) yöntemi ile kullanılır. En az 1 kişilik bir organizasyona sahip olmalısınız.</span>
-                                    </div>
-                                </a>
-                            </small>
+                            <small>Kullanıcı Kapasitesi</small>
                             <small data-name="value">1</small>
                         </div>
                         <div class="range-field">
@@ -191,9 +118,9 @@
                                     data-position="right"
                                     data-trigger="info"
                                     data-title="Pin Grubu">
-                                    <i class="material-icons tiny">info</i>
+                                    <i class="material-icons tiny teal-text">info</i>
                                     <div class="hide" data-helper>
-                                        <span style="font-size: 16px;">İlgilendiğiniz içerikleri gruplar halinde saklayabilir ve istediğiniz zaman çıktılarını alabilirsiniz.</span>
+                                        <span style="font-size: 16px;">İlgilendiğiniz içerikleri gruplar halinde saklayabilir ve istediğiniz zaman çıktılarını alabilirsiniz. Bu alan zorunlu değildir.</span>
                                     </div>
                                 </a>
                             </small>
@@ -220,9 +147,9 @@
                                     data-position="right"
                                     data-trigger="info"
                                     data-title="Geçmişe Yönelik Arama">
-                                    <i class="material-icons tiny">info</i>
+                                    <i class="material-icons tiny teal-text">info</i>
                                     <div class="hide" data-helper>
-                                        <span style="font-size: 16px;">Arama, Alarm ve Akış modülü kullanmak istiyorsanız en az 1 gün "Geçmişe Yönelik Arama" seçimi yapmalısınız.</span>
+                                        <span style="font-size: 16px;">Arama, Alarm ve Akış modülü kullanmak istiyorsanız en az 1 gün "Geçmişe Yönelik Arama" yapabiliyor olmalısınız.</span>
                                     </div>
                                 </a>
                             </small>
@@ -250,9 +177,9 @@
                                     data-position="right"
                                     data-trigger="info"
                                     data-title="Arama Kaydetme">
-                                    <i class="material-icons tiny">info</i>
+                                    <i class="material-icons tiny teal-text">info</i>
                                     <div class="hide" data-helper>
-                                        <span style="font-size: 16px;">Aramalarınızı kaydederek diğer modüllerde tekrar kullanabilirsiniz. Canlı Akış ve Alarm bölümünü kullanabilmek için en az 1 "Arama Kaydetme" seçimi yapmalısınız.</span>
+                                        <span style="font-size: 16px;">Aramalarınızı kaydederek "Alarm ve Akış" modüllerinde kullanabilirsiniz. "Alarm ve Akış" bölümünü kullanabilmek için en az 1 "Arama Kaydetme" seçimi yapmalısınız.</span>
                                     </div>
                                 </a>
                             </small>
@@ -283,18 +210,6 @@
                     <div class="card-content card-step">
                         <span class="step">4/4</span>
                         <span class="title">Kaynak Takibi</span>
-                        <a
-                            href="#"
-                            class="align-self-center"
-                            data-tooltip="Bilgi"
-                            data-position="left"
-                            data-trigger="info"
-                            data-title="Kaynak Takibi">
-                            <i class="material-icons">info</i>
-                            <div class="hide" data-helper>
-                                <span style="font-size: 16px;">Olive tüm aktif veri kaynaklarını takip eder. Gündem dışı kalan takip edilmesini istediğiniz kaynakları Olive'e tanımlayabilirsiniz.</span>
-                            </div>
-                        </a>
                     </div>
                     <div class="card-content">
                         <div class="d-flex justify-content-between">
@@ -399,6 +314,7 @@
                                 type="range" />
                         </div>
                     </div>
+                    <div class="card-content info-bg">Bazı içerikler Olive örümceklerinin gözünden kaçabilir. Bu gibi durumlarda takip edilmesini istediğiniz özel kaynakları belirtebilirsiniz.</div>
                     <div class="card-content d-flex justify-content-between">
                         <a href="#" class="btn-flat btn-large waves-effect" data-steps="3" data-prev="true">
                             <i class="material-icons">arrow_back</i>
@@ -627,7 +543,7 @@
         }
         else if (obj.status == 'step')
         {
-            $('[data-name=alert]').removeClass('hide').html(obj.message)
+            $('[data-name=alert]').removeClass('hide').hide().fadeIn().html(obj.message)
 
             $('[data-step]').addClass('hide')
 

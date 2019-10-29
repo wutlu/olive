@@ -123,7 +123,7 @@
                         <div class="input-field" style="max-width: 240px;">
                             <input name="gsm" id="gsm" type="text" class="validate" />
                             <label for="gsm">GSM</label>
-                            <small class="helper-text">Mobil GSM numaranızı girin.</small>
+                            <small class="helper-text">GSM numaranızı girin.</small>
                         </div>
                         <button type="submit" class="btn-flat waves-effect">Ekle</button>
                     </form>
