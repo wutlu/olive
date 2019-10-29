@@ -43,6 +43,9 @@
     }
 
     .demo-section {
+        background-image: url({{ asset('img/photo/carbon.jpg?v4') }});
+    }
+    .demo-section > .section-overlay {
         padding: 100px 0;
     }
 
@@ -358,7 +361,8 @@
     </section>
 
     <div class="more-down">
-        <a href="#" class="btn-floating btn-large pulse white" data-scroll-to=".work-section">
+        <span class="white-text d-table mx-auto mb-1">ÜCRETSİZ DENEYİN</span>
+        <a href="#" class="btn-floating btn-large pulse white" data-scroll-to=".demo-section">
             <i class="material-icons grey-text text-darken-2">keyboard_arrow_down</i>
         </a>
     </div>
@@ -527,80 +531,79 @@
         </div>
     </section>
 
-    @push('local.scripts')
-        function __demo_request(__, obj)
-        {
-            if (obj.status == 'ok')
+    @if (config('system.user.registration'))
+        <section class="demo-section white-text">
+            <div class="section-overlay">
+                <div class="container">
+                    <div class="d-flex flex-wrap">
+                        <div class="flex-fill">
+                            <div class="card card-unstyled">
+                                <div class="card-content">
+                                    <h2>ÜCRETSİZ DENEYİN!</h2>
+                                    <p style="font-size: 16px;">Deneme süreniz bittikten sonra çeşitli özelliklerden ücretsiz faydalanmaya devam edebilirsiniz.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-fill align-self-center center-align">
+                            <div class="p-2">
+                                <a href="{{ route('user.login') }}" class="btn-flat btn-large heartbeat white grey-text text-darken-2 waves-effect">Deneyin!</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    @else
+        @push('local.scripts')
+            function __demo_request(__, obj)
             {
-                M.toast({ html: 'Talebinizi Aldık!', classes: 'green darken-2' })
-                M.toast({ html: 'Ekibimiz en kısa sürede sizinle iletişime geçecektir.', classes: 'blue-grey' })
+                if (obj.status == 'ok')
+                {
+                    M.toast({ html: 'Talebinizi Aldık!', classes: 'green darken-2' })
+                    M.toast({ html: 'Ekibimiz en kısa sürede sizinle iletişime geçecektir.', classes: 'blue-grey' })
 
-                __.find('input[type=text]').html('')
+                    __.find('input[type=text]').html('')
+                }
             }
-        }
-
-        $('.carousel.carousel-slider').carousel({
-            fullWidth: true,
-            indicators: true
-        })
-    @endpush
-    <!--
-    <section class="demo-section pink darken-4 white-text">
-        <div class="container">
-            <div class="row">
-                <div class="col m12 l6">
-                    <form id="demo-form" method="post" action="{{ route('demo.request') }}" class="json" data-callback="__demo_request">
-                        <h2>ŞİMDİ ÜCRETSİZ DENEYİN!</h2>
-                        <div class="input-field white-text">
-                                    <i class="material-icons prefix">account_circle</i>
-                                    <input id="icon_prefix" name="name" type="text" class="validate" />
-                                    <label for="icon_prefix">Firma / Kurum</label>
+        @endpush
+        <section class="demo-section white-text">
+            <div class="section-overlay">
+                <div class="container">
+                    <div class="row">
+                        <div class="col m12 l6">
+                            <form id="demo-form" method="post" action="{{ route('demo.request') }}" class="json" data-callback="__demo_request">
+                                <h2>ŞİMDİ ÜCRETSİZ DENEYİN!</h2>
+                                <div class="input-field white-text">
+                                            <i class="material-icons prefix">account_circle</i>
+                                            <input id="icon_prefix" name="name" type="text" class="validate" />
+                                            <label for="icon_prefix">Firma / Kurum</label>
+                                </div>
+                                <div class="input-field white-text">
+                                    <i class="material-icons prefix">phone</i>
+                                    <input id="icon_telephone" name="phone" type="text" class="validate" />
+                                    <label for="icon_telephone">Telefon</label>
+                                </div>
+                                <div class="input-field white-text">
+                                    <div class="captcha" data-id="demo-captcha"></div>
+                                </div>
+                                <button type="submit" class="btn-flat white-text waves-effect">Gönder</button>
+                            </form>
                         </div>
-                        <div class="input-field white-text">
-                            <i class="material-icons prefix">phone</i>
-                            <input id="icon_telephone" name="phone" type="text" class="validate" />
-                            <label for="icon_telephone">Telefon</label>
-                        </div>
-                        <div class="input-field white-text">
-                            <div class="captcha" data-id="demo-captcha"></div>
-                        </div>
-                        <button type="submit" class="btn-flat white-text waves-effect">Gönder</button>
-                    </form>
-                </div>
-                <div class="col m12 l6">
-                    <div class="card card-unstyled">
-                        <div class="card-content">
-                            <h2>En Uygun Çözümü Oluşturalım!</h2>
-                            <p style="font-size: 16px;" class="pink-text text-lighten-4">Hemen bilgilerinizi bırakın, size en kısa sürede tam özellikli bir Olive ile dönüş sağlayalım.</p>
-                            <p style="font-size: 16px;" class="pink-text text-lighten-4">Olive'i denerken, kullanmadığınız özellikleri belirleyin, paketinizden çıkartalım!</p>
-                            <p style="font-size: 16px;" class="pink-text text-lighten-4">Gereksiz maliyetlerin altında kalmayın!</p>
+                        <div class="col m12 l6">
+                            <div class="card card-unstyled">
+                                <div class="card-content">
+                                    <h2>En Uygun Çözümü Oluşturalım!</h2>
+                                    <p style="font-size: 16px;">Hemen bilgilerinizi bırakın, size en kısa sürede tam özellikli bir Olive ile dönüş sağlayalım.</p>
+                                    <p style="font-size: 16px;">Olive'i denerken, kullanmadığınız özellikleri belirleyin, paketinizden çıkartalım!</p>
+                                    <p style="font-size: 16px;">Gereksiz maliyetlerin altında kalmayın!</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-    -->
-    <section class="demo-section pink darken-4 white-text">
-        <div class="container">
-            <div class="d-flex flex-wrap">
-                <div class="flex-fill">
-                    <div class="card card-unstyled">
-                        <div class="card-content">
-                            <h2>ÜCRETSİZ DENEYİN!</h2>
-                            <p style="font-size: 16px;" class="pink-text text-lighten-4">Deneme süreniz bittikten sonra çeşitli özelliklerden ücretsiz faydalanmaya devam edebilirsiniz.</p>
-                            <p style="font-size: 16px;" class="pink-text text-lighten-4">Olive'i denerken, kullanmadığınız özellikleri belirleyin, paketinizden çıkartalım! Gereksiz maliyetlerin altında kalmayın!</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex-fill align-self-center center-align">
-                    <div class="p-2">
-                        <a href="{{ route('user.login') }}" class="btn-flat btn-large pulse white grey-text text-darken-2 waves-effect">Deneyin!</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+        </section>
+    @endif
 @endsection
 
 @push('external.include.header')

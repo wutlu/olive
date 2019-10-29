@@ -304,7 +304,7 @@
                     }
                 @endpush
             @else
-                <div class="card mb-1">
+                <div class="card mb-1" data-card="organisation">
                     <div class="card-content">
                         <span class="card-title">Organizasyon Oluşturun!</span>
                         <p class="grey-text">Bireysel veya ekip olarak çalışmak için size en uygun organizasyonu oluşturun.</p>
@@ -323,6 +323,11 @@
                     </div>
 
                     @push('local.scripts')
+                        _scrollTo({
+                            'target': '[data-card=organisation]',
+                            'tolerance': '-128px'
+                        })
+
                         $('[data-target=start]').tapTarget({
                             'onClose': function() {
                                 vzAjax($('<div />', {
