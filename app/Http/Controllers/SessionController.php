@@ -48,7 +48,8 @@ class SessionController extends Controller
                     'location' => [
                         'city' => $location->city,
                         'country' => $location->country
-                    ]
+                    ],
+                    'updated_at' => date('H:i:s', $array['last_activity'])
                 ]);
             }, $logs),
             'total' => count($logs)

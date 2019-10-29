@@ -344,6 +344,11 @@ input[type=range][disabled] {
           filter: grayscale(0);
 }
 
+.greyscale {
+  -webkit-filter: grayscale(1);
+          filter: grayscale(1);
+}
+
 /*!
  * font-face
  */

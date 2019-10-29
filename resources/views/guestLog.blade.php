@@ -22,8 +22,8 @@
     {
         if (obj.status == 'ok')
         {
-            var collection = $('ul#console.collection'),
-                model = collection.children('.collection-item.hide');
+            var collection = __,
+                model = collection.children('tr.hide');
 
             collection.children('.collection-item:not(.hide)').remove()
 
@@ -32,57 +32,45 @@
             if (obj.hits.length)
             {
                 $.each(obj.hits, function(key, o) {
-                    var item = model.clone();
+                    var item = $('[data-pid=' + o.id + ']');
+                        item = item.length ? item : model.clone();
 
-                        item.removeClass('hide').attr('data-pid', o.pid)
+                        item.removeClass('hide').attr('data-pid', o.id)
 
                         item.find('[data-name=ip]').html(o.ip_address)
-                        item.find('[data-name=ping]').html(o.ping + ' hit')
-                        item.find('[data-name=page]').html(o.page).attr('href', o.page)
+                        item.find('[data-name=location]').html(o.location.city + ' / ' + o.location.country)
+                        item.find('[data-name=ping]').html(o.ping)
+                        item.find('[data-name=updated-at]').html(o.updated_at)
+
+                        var type = '-';
+
+                        if      (o.is_desktop) type = 'PC'        ;
+                        else if (o.is_phone  ) type = 'Telefon'   ;
+                        else if (o.is_tablet ) type = 'Tablet'    ;
+                        else if (o.is_mobile ) type = 'Mobil'     ;
+
+                        item.find('[data-name=type]').html(type).addClass(type ? '' : 'hide')
                         item.find('[data-name=os]').html(o.os.name + ( o.os.version ? ' (' + o.os.version + ') ' : '' ))
                         item.find('[data-name=browser]').html(o.browser.name + ( o.browser.version ? ' (' + o.browser.version + ') ' : '' ))
-                        item.find('[data-name=location]').html('(' + o.location.city + ' / ' + o.location.country + ')')
 
                         if (o.user)
                         {
-                            item.find('[data-id=user-name]').html(o.user.name).removeClass('hide').data('id', o.user.id)
+                            item.find('[data-name=user]').html('(' + o.user.name + ')').attr('href', '/admin/kullanici-yonetimi/kullanici/' + o.user.id).removeClass('hide')
                         }
 
                         if (o.device)
                         {
-                            item.find('[data-name=device]').html(o.device).removeClass('hide')
+                            item.find('[data-name=device]').html(o.device)
                         }
 
                         if (o.robot)
                         {
-                            item.find('[data-name=robot]').html(o.robot).removeClass('hide')
+                            item.find('[data-name=robot]').html(o.robot).removeClass(o.robot ? '' : 'hide')
                         }
 
-                        if (o.referer)
-                        {
-                            item.find('[data-name=referer]').html(o.referer).attr('href', o.referer).removeClass('hide')
-                        }
+                        item.find('[data-name=referer]').attr('href', o.referer ? o.referer : '#').removeClass('greyscale').addClass(o.referer ? '' : 'greyscale')
+                        item.find('[data-name=page]').attr('href', o.page ? o.page : '#').removeClass('greyscale').addClass(o.page ? '' : 'greyscale')
 
-                        var type = '';
-
-                        if (o.is_desktop)
-                        {
-                        	type = 'PC';
-                        }
-                        else if (o.is_phone)
-                        {
-                        	type = 'Telefon';
-                        }
-                        else if (o.is_tablet)
-                        {
-                        	type = 'Tablet';
-                        }
-                        else if (o.is_mobile)
-                        {
-                        	type = 'Mobil';
-                        }
-
-                        item.find('[data-name=type]').html(type).addClass(type ? '' : 'hide')
 
                         item.prependTo(collection)
                 })
@@ -99,76 +87,64 @@
     }
 @endpush
 
-@push('local.styles')
-    #console.collection {
-        background-image: url('{{ asset('img/olive_logo-opacity.svg') }}');
-        background-repeat: no-repeat;
-        background-position: center;
-        padding: 1rem 0;
-    }
-    #console.collection > .collection-item {
-        color: rgba(255, 255, 255, .6);
-    }
-    #console.collection > .collection-item:hover {
-        background-color: rgba(255, 255, 255, .2);
-        color: #fff;
-    }
-@endpush
-
 @section('content')
     <div class="card mb-1">
         <div class="card-content">
-            <span class="card-title">Ziyaretçi Logları</span>
-            <span class="grey-text" data-name="total">0</span>
+            <span class="card-title">Ziyaretçi Logları (<span data-name="total">0</span>)</span>
         </div>
-        <ul
-            id="console"
-            class="collection load hide"
-            data-href="{{ route('admin.session.logs') }}"
-            data-callback="__log"
-            data-loader="#home-loader"
-            data-method="post">
-            <li class="collection-item hide">
-                <div class="d-flex justify-content-between flex-wrap">
-                	<span>
-                        <span class="d-block">
-                            <a
-                                href="#"
-                                data-id="user-name"
-                                class="teal-text hide json"
-                                style="padding: .1rem;"
-                                data-href="{{ route('route.generate.id') }}"
-                                data-method="post"
-                                data-name="admin.user"
-                                data-callback="__go"></a>
-                            <span data-name="ip" style="padding: .1rem;"></span>
-                            <span data-name="location" style="padding: .1rem;"></span>
+        <table class="highlight">
+            <thead class="grey darken-2 white-text">
+                <tr>
+                    <th>IP</th>
+                    <th>Ping</th>
+                    <th>Donanım</th>
+                    <th>Cihaz</th>
+                    <th>Sayfa</th>
+                    <th>Referer</th>
+                </tr>
+            </thead>
+            <tbody
+                class="load"
+                data-href="{{ route('admin.session.logs') }}"
+                data-callback="__log"
+                data-loader="#home-loader"
+                data-method="post">
+                <tr class="hide">
+                    <th>
+                        <span class="d-table">
+                            <span data-name="ip"></span>
+                            <a href="#" data-name="user"></a>
                         </span>
-                        <span class="d-block">
-                            <a href="#" class="d-table grey-text" style="padding: .1rem;" target="_blank" data-name="page"></a>
-                            <a href="#" class="d-table grey-text hide" style="padding: .1rem;" target="_blank" data-name="referer"></a>
+                        <span class="d-table" data-name="location"></span>
+                    </th>
+                    <th>
+                        <span class="d-table" data-name="ping"></span>
+                        <span class="d-table" data-name="updated-at"></span>
+                    </th>
+                    <th>
+                        <span class="d-table">
+                            <span data-name="type"></span>
+                            <span data-name="robot" class="hide"></span>
                         </span>
-                    </span>
-                    <span class="d-flex flex-column align-items-end">
-                        <span class="hide" data-name="robot" style="padding: .1rem;"></span>
-                        <span class="d-block">
-                            <span data-name="type" style="padding: .1rem;"></span>
-                            <span data-name="os" style="padding: .1rem;"></span>
-                        </span>
-                        <span data-name="browser" style="padding: .1rem;"></span>
-                        <span class="hide" data-name="device" style="padding: .1rem;"></span>
-                        <span data-name="ping" style="padding: .1rem;"></span>
-                    </span>
-                </div>
-            </li>
-        </ul>
-
-        @component('components.loader')
-            @slot('color', 'blue-grey')
-            @slot('id', 'home-loader')
-            @slot('class', 'card-loader-unstyled')
-        @endcomponent
+                        <span data-name="os"></span>
+                        <span data-name="browser"></span>
+                    </th>
+                    <th data-name="device">-</th>
+                    <th>
+                        <a target="_blank" href="#" data-name="page">
+                            <i class="material-icons">language</i>
+                        </a>
+                    </th>
+                    <th>
+                        <a target="_blank" href="#" data-name="referer">
+                            <i class="material-icons">language</i>
+                        </a>
+                    </th>
+                </tr>
+            </tbody>
+        </table>
     </div>
+
 
     <div class="card">
         <div class="card-content">
@@ -195,7 +171,7 @@
                 data-href="{{ route('admin.session.activities') }}"
                 data-include="string"
                 data-skip="0"
-                data-take="5"
+                data-take="15"
                 data-more-button="#activities-more_button"
                 data-callback="__activities"
                 data-method="post"
@@ -206,7 +182,7 @@
                         @slot('cloud_class', 'white-text')
                     @endcomponent
                 </li>
-                <li class="model hide">
+                <li class="model hide hoverable">
                     <div class="collapsible-header">
                         <i class="material-icons" data-name="icon"></i>
                         <span>
