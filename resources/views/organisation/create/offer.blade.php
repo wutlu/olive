@@ -13,7 +13,7 @@
             <div class="anim"></div>
             <h4 class="mb-2">Organizasyon Oluşturuldu!</h4>
             <p class="mb-2">Organizasyonunuz aktif edildi. İyi araştırmalar dileriz...</p>
-            <a href="{{ route('dashboard') }}" class="btn green waves-effect">Ana Sayfa</a>
+            <a href="{{ route('dashboard') }}" class="btn-flat waves-effect">Ana Sayfa</a>
             <a href="{{ route('settings.organisation') }}" class="btn green waves-effect">Organizasyon</a>
         </div>
         <form class="json" method="post" action="{{ route('organisation.create.offer') }}" data-callback="__create" id="offer">

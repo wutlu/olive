@@ -154,6 +154,25 @@ class OrganisationController extends Controller
                 ];
             }
 
+            $source_count = 0;
+
+            /**
+             * modules
+             */
+            foreach (config('system.modules') as $key => $module)
+            {
+                $source_count = $request->{'data_'.$key} ? ($source_count+1) : $source_count;
+            }
+
+            if (!$source_count)
+            {
+                return [
+                    'status' => 'err',
+                    'reason' => 'Canlı Akış, Arama veya Alarm seçiliyken en az 1 veri kaynağı seçmeniz gerekiyor.'
+                ];
+            }
+
+
             $organisation = new Organisation;
             $organisation->user_id = $user->id;
             $organisation->gsm = $user->gsm;
