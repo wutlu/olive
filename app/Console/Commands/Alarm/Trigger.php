@@ -13,8 +13,6 @@ use Term;
 
 use App\Mail\AlarmMail;
 
-use App\Models\Source;
-
 use Carbon\Carbon;
 
 use App\Http\Controllers\SearchController;
@@ -144,14 +142,6 @@ class Trigger extends Command
         $organisation = $alarm->organisation;
 
         $search = $alarm->search;
-
-        preg_match_all('/(?<=\[s:)[([0-9]+(?=\])/m', $search->string, $matches);
-
-        if (@$matches[0][0])
-        {
-            $source = Source::whereIn('id', $matches[0])->where('organisation_id', $organisation->id)->first();
-            $search->string = preg_replace('/\[s:([0-9]+)\]/m', '', $search->string);
-        }
 
         $clean = Term::cleanSearchQuery($search->string);
         $searchController = new SearchController;
@@ -302,7 +292,7 @@ class Trigger extends Command
                 case 'sozluk':
                     if ($organisation->data_sozluk)
                     {
-                        $item = $searchController->sozluk($search, $q, @$source->source_sozluk);
+                        $item = $searchController->sozluk($search, $q);
 
                         if (@$item['data'][0])
                         {
@@ -327,7 +317,7 @@ class Trigger extends Command
                             $news_q['query']['bool']['must'][] = [ 'match' => [ 'state' => $search->state ] ];
                         }
 
-                        $item = $searchController->news($search, $news_q, @$source->source_media);
+                        $item = $searchController->news($search, $news_q);
 
                         if (@$item['data'][0])
                         {
@@ -345,7 +335,7 @@ class Trigger extends Command
                 case 'blog':
                     if ($organisation->data_blog)
                     {
-                        $item = $searchController->blog($search, $q, @$source->source_blog);
+                        $item = $searchController->blog($search, $q);
 
                         if (@$item['data'][0])
                         {
@@ -399,7 +389,7 @@ class Trigger extends Command
                 case 'shopping':
                     if ($organisation->data_shopping)
                     {
-                        $item = $searchController->shopping($search, $q, @$source->source_shopping);
+                        $item = $searchController->shopping($search, $q);
 
                         if (@$item['data'][0])
                         {

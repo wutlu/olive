@@ -544,6 +544,7 @@
             indicators: true
         })
     @endpush
+    <!--
     <section class="demo-section pink darken-4 white-text">
         <div class="container">
             <div class="row">
@@ -574,6 +575,27 @@
                             <p style="font-size: 16px;" class="pink-text text-lighten-4">Olive'i denerken, kullanmadığınız özellikleri belirleyin, paketinizden çıkartalım!</p>
                             <p style="font-size: 16px;" class="pink-text text-lighten-4">Gereksiz maliyetlerin altında kalmayın!</p>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    -->
+    <section class="demo-section pink darken-4 white-text">
+        <div class="container">
+            <div class="d-flex flex-wrap">
+                <div class="flex-fill">
+                    <div class="card card-unstyled">
+                        <div class="card-content">
+                            <h2>ÜCRETSİZ DENEYİN!</h2>
+                            <p style="font-size: 16px;" class="pink-text text-lighten-4">Deneme süreniz bittikten sonra çeşitli özelliklerden ücretsiz faydalanmaya devam edebilirsiniz.</p>
+                            <p style="font-size: 16px;" class="pink-text text-lighten-4">Olive'i denerken, kullanmadığınız özellikleri belirleyin, paketinizden çıkartalım! Gereksiz maliyetlerin altında kalmayın!</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-fill align-self-center center-align">
+                    <div class="p-2">
+                        <a href="{{ route('user.login') }}" class="btn-flat btn-large pulse white grey-text text-darken-2 waves-effect">Deneyin!</a>
                     </div>
                 </div>
             </div>

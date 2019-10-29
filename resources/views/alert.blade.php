@@ -9,12 +9,12 @@
 ])
 
 @section('content')
-    <div class="card card-unstyled">
-        <div class="card-content">
-            @if (session('alert'))
-            <i class="material-icons large">warning</i>
-            <p>{{ session('alert') }}</p>
-            @endif
-        </div>
+    <div class="olive-alert warning">
+        <div class="anim"></div>
+        <h4 class="mb-1">Uyarı</h4>
+        @if (session('alert'))
+            <p class="mb-1">{{ session('alert') }}</p>
+        @endif
+        <a href="{{ route('dashboard') }}" class="btn-flat waves-effect">Ana Sayfa</a>
     </div>
 @endsection

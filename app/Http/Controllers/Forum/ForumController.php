@@ -75,7 +75,6 @@ class ForumController extends Controller
          */
         $this->middleware([
             'verification.email',
-            'organisation:have,module_forum'
         ])->only([
             'replySave',
             'replyGet',

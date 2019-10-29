@@ -118,7 +118,7 @@
                         <div class="card mb-0">
                             <div class="card-content">
                                 <p>E-posta ({{ auth()->user()->email }}) adresinizi henüz doğrulamadınız.</p>
-                                <p>Bu adres size ait değilse <a href="{{ route('settings.account') }}">Hesap Bilgileri</a> bölümünden size ait bir e-posta tanımlayın.</p>
+                                <p>Bu adres size ait değilse <a href="{{ route('settings.account') }}" class="cyan-text text-darken-2">Hesap Bilgileri</a> sayfasından size ait bir e-posta adresi tanımlayın.</p>
                             </div>
                             <div class="card-action">
                                 <a href="#" class="waves-effect btn-flat json" data-href="{{ route('user.register.resend') }}" data-method="post" data-callback="__resend">Tekrar Gönder</a>
@@ -199,7 +199,7 @@
             <nav id="main-nav">
                 <div class="{{ isset($sidenav_layout) ? '' : (auth()->check() ? 'sidenav-fixed-layout' : 'container') }}">
                     <div class="nav-wrapper">
-                        <a href="{{ route('dashboard') }}" class="brand-logo center">
+                        <a href="{{ @$logo_route ? $logo_route : route('dashboard') }}" class="brand-logo center">
                             <img alt="{{ config('app.name') }}" src="{{ @$logo ? $logo : asset('img/olive_logo.svg') }}" />
                         </a>
 

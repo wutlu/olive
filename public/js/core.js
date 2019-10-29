@@ -14,6 +14,34 @@ $(function() {
     msie()
 })
 
+function math_prices()
+{
+    var price = 0;
+
+    $.each($('input[type=number][data-unit-price], input[type=range][data-unit-price]'), function(key, item) {
+        var __ = $(this);
+        var up = __.data('unit-price') * __.val();
+
+        price = price + up;
+    })
+
+    return price;
+}
+
+function single_prices()
+{
+    var price = 0;
+
+    $.each($('input[type=checkbox][data-unit-price]:checked'), function(key, item) {
+        var __ = $(this);
+        var up = __.data('unit-price');
+
+        price = price + up;
+    })
+
+    return price;
+}
+
 function msie()
 {
     var ua = window.navigator.userAgent;

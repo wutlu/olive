@@ -33,6 +33,7 @@ use App\Http\Requests\Organisation\Admin\PriceSettingsSaveRequest;
 use App\Http\Requests\Search\AdminSaveRequest;
 use App\Http\Requests\IdRequest;
 use App\Http\Requests\SearchRequest;
+use App\Http\Requests\Organisation\CreateRequest as OfferCreateRequest;
 
 use App\Http\Requests\RealTime\KeywordGroup\AdminUpdateRequest as KeywordGroupAdminUpdateRequest;
 
@@ -88,7 +89,8 @@ class OrganisationController extends Controller
          * - Organizasyonu Olmayanlar
          */
         $this->middleware('organisation:have_not')->only([
-            'offer'
+            'offer',
+            'offerCreate',
         ]);
 
         /**
@@ -116,7 +118,116 @@ class OrganisationController extends Controller
      */
     public static function offer()
     {
-        return view('organisation.create.offer');
+        $prices = Option::select('key', 'value')->where('key', 'LIKE', 'unit_price.%')->get()->keyBy('key')->toArray();
+        $user = auth()->user();
+
+        return view('organisation.create.offer', compact('user', 'prices'));
+    }
+
+    /**
+     *
+     * Organizasyon, Plan Oluştur
+     *
+     * @return array
+     */
+    public static function offerCreate(OfferCreateRequest $request)
+    {
+        $user = auth()->user();
+
+        if (!$user->verified)
+        {
+            return [
+                'status' => 'err',
+                'reason' => 'E-posta adresinizi doğrulamadan kayıt işlemini tamamlayamazsınız!'
+            ];
+        }
+
+        if ($user->gsm_verified_at)
+        {
+            $gsm_control = Organisation::where('gsm', $user->gsm)->exists();
+
+            if ($gsm_control)
+            {
+                return [
+                    'status' => 'err',
+                    'reason' => 'Hesabınıza tanımlı GSM numarası ile daha önceden bir organizasyon oluşturulmuş.'
+                ];
+            }
+
+            $organisation = new Organisation;
+            $organisation->user_id = $user->id;
+            $organisation->gsm = $user->gsm;
+
+            $calculate = self::calculate($request);
+
+            $organisation->status = true;
+            $organisation->name = $user->name.'.org';
+            $organisation->user_capacity = $request->user_capacity;
+            $organisation->start_date = date('Y-m-d H:i:s');
+            $organisation->end_date = date('Y-m-d H:i:s', strtotime('+36 hours'));
+            $organisation->historical_days = $request->historical_days;
+            $organisation->pin_group_limit = $request->pin_group_limit;
+            $organisation->saved_searches_limit = $request->saved_searches_limit;
+
+            $organisation->data_pool_youtube_channel_limit = $request->data_pool_youtube_channel_limit;
+            $organisation->data_pool_youtube_video_limit = $request->data_pool_youtube_video_limit;
+            $organisation->data_pool_youtube_keyword_limit = $request->data_pool_youtube_keyword_limit;
+            $organisation->data_pool_twitter_keyword_limit = $request->data_pool_twitter_keyword_limit;
+            $organisation->data_pool_twitter_user_limit = $request->data_pool_twitter_user_limit;
+            $organisation->data_pool_instagram_follow_limit = $request->data_pool_instagram_follow_limit;
+
+            $organisation->unit_price = $calculate['total_price'];
+
+            $organisation->module_real_time = $request->module_real_time ? true : false;
+            $organisation->module_search = $request->module_search ? true : false;
+            $organisation->module_trend = $request->module_trend ? true : false;
+            $organisation->module_alarm = $request->module_alarm ? true : false;
+
+            /*!
+             * modules
+             */
+            foreach (config('system.modules') as $key => $module)
+            {
+                $organisation->{'data_'.$key} = $request->{'data_'.$key} ? true : false;
+            }
+
+            $organisation->save();
+
+            /*!
+             * user save
+             */
+            $user->organisation_id = $organisation->id;
+            $user->save();
+
+            $message = [
+                'title' => 'Organizasyon Oluşturuldu',
+                'info' => 'Tebrikler! Organizasyonunuz başarılı bir şekilde oluşturuldu.',
+                'body' => 'Deneme süreniz aktif edildi. Süre sonunda ücretsiz özellikleri kullanmaya devam edebileceğinizi unutmayın!'
+            ];
+
+            $user->notify((new MessageNotification('Olive: '.$message['title'], $message['info'], $message['body']))->onQueue('email'));
+
+            Activity::push(
+                $message['title'],
+                [
+                    'icon' => 'access_time',
+                    'markdown' => $message['body'],
+                    'user_id' => $user->id,
+                    'key' => implode('-', [ $user->id, 'welcome' ])
+                ]
+            );
+
+            return [
+                'status' => 'ok'
+            ];
+        }
+        else
+        {
+            return [
+                'status' => 'err',
+                'reason' => 'Lütfen ilk önce bir GSM numarası tanımlayın!'
+            ];
+        }
     }
 
     /**
@@ -494,70 +605,6 @@ class OrganisationController extends Controller
                 ]
             );
         }
-
-        return [
-            'status' => 'ok'
-        ];
-    }
-
-    /**
-     *
-     * Organizasyon, Sil
-     *
-     * @return array
-     */
-    public static function delete(DeleteRequest $request)
-    {
-        $user = auth()->user();
-        $organisation = $user->organisation;
-
-        session()->flash('deleted', true);
-
-        $users = User::where('organisation_id', $user->organisation_id)->get();
-
-        foreach ($users as $u)
-        {
-            $title = 'Organizasyon Silindi';
-
-            if ($user->id == $u->id)
-            {
-                $message = 'Organizasyon başarılı bir şekilde silindi.';
-
-                if (count($users) > 1)
-                {
-                    $message .= ' ';
-                    $message .= 'Diğer kullanıcılara gerekli açıklama bildirim ve e-posta yoluyla iletilecektir.';
-                }
-            }
-            else
-            {
-                $message = $organisation->name.', '.$user->name.' tarafından silindi.';
-            }
-
-            if ($u->notification('important'))
-            {
-                $u->notify(
-                    (
-                        new MessageNotification(
-                            'Olive: '.$title,
-                            'Merhaba, '.$u->name,
-                            $message
-                        )
-                    )->onQueue('email')
-                );
-            }
-
-            Activity::push(
-                $title,
-                [
-                    'icon' => 'delete',
-                    'markdown' => $message,
-                    'user_id' => $u->id
-                ]
-            );
-        }
-
-        $organisation->delete();
 
         return [
             'status' => 'ok'
@@ -1077,7 +1124,6 @@ class OrganisationController extends Controller
         Option::updateOrCreate([ 'key' => 'unit_price.pin_group_limit'                 ], [ 'value' => $request->pin_group_limit                 ]);
         Option::updateOrCreate([ 'key' => 'unit_price.analysis_tools_limit'            ], [ 'value' => $request->analysis_tools_limit            ]);
         Option::updateOrCreate([ 'key' => 'unit_price.saved_searches_limit'            ], [ 'value' => $request->saved_searches_limit            ]);
-        Option::updateOrCreate([ 'key' => 'unit_price.source_limit'                    ], [ 'value' => $request->source_limit                    ]);
         Option::updateOrCreate([ 'key' => 'unit_price.historical_days'                 ], [ 'value' => $request->historical_days                 ]);
 
         Option::updateOrCreate([ 'key' => 'unit_price.data_pool_youtube_channel_limit'  ], [ 'value' => $request->data_pool_youtube_channel_limit  ]);
@@ -1091,8 +1137,6 @@ class OrganisationController extends Controller
         Option::updateOrCreate([ 'key' => 'unit_price.module_search'                   ], [ 'value' => $request->module_search                   ]);
         Option::updateOrCreate([ 'key' => 'unit_price.module_trend'                    ], [ 'value' => $request->module_trend                    ]);
         Option::updateOrCreate([ 'key' => 'unit_price.module_alarm'                    ], [ 'value' => $request->module_alarm                    ]);
-        Option::updateOrCreate([ 'key' => 'unit_price.module_pin'                      ], [ 'value' => $request->module_pin                      ]);
-        Option::updateOrCreate([ 'key' => 'unit_price.module_forum'                    ], [ 'value' => $request->module_forum                    ]);
 
         Option::updateOrCreate([ 'key' => 'unit_price.user'                            ], [ 'value' => $request->user_price                      ]);
 
@@ -1172,15 +1216,11 @@ class OrganisationController extends Controller
             'pin_group_limit'                  => '*',
             'analysis_tools_limit'             => '*',
             'saved_searches_limit'             => '*',
-            'source_limit'                     => '*',
 
             'module_real_time'                 => '+',
             'module_search'                    => '+',
             'module_trend'                     => '+',
             'module_alarm'                     => '+',
-            'module_pin'                       => '+',
-            'module_model'                     => '+',
-            'module_forum'                     => '+',
 
             'data_pool_youtube_channel_limit'  => '*',
             'data_pool_youtube_video_limit'    => '*',
@@ -1263,7 +1303,6 @@ class OrganisationController extends Controller
         $organisation->pin_group_limit = $request->pin_group_limit;
         $organisation->analysis_tools_limit = $request->analysis_tools_limit;
         $organisation->saved_searches_limit = $request->saved_searches_limit;
-        $organisation->source_limit = $request->source_limit;
 
         $organisation->data_pool_youtube_channel_limit = $request->data_pool_youtube_channel_limit;
         $organisation->data_pool_youtube_video_limit = $request->data_pool_youtube_video_limit;
@@ -1278,9 +1317,6 @@ class OrganisationController extends Controller
         $organisation->module_search = $request->module_search ? true : false;
         $organisation->module_trend = $request->module_trend ? true : false;
         $organisation->module_alarm = $request->module_alarm ? true : false;
-        $organisation->module_pin = $request->module_pin ? true : false;
-        $organisation->module_model = $request->module_model ? true : false;
-        $organisation->module_forum = $request->module_forum ? true : false;
 
         /**
          * modules

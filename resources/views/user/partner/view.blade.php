@@ -323,19 +323,6 @@
                                         class="validate" />
                                     <small class="helper-text">Arama Kaydetme Limiti</small>
                                 </div>
-                                <div class="collection-item input-field">
-                                    <input
-                                        data-update
-                                        name="source_limit"
-                                        id="source_limit"
-                                        max="12"
-                                        min="0"
-                                        value="{{ $user->organisation->source_limit }}"
-                                        type="number"
-                                        data-unit-price="{{ $prices['unit_price.source_limit']['value'] }}"
-                                        class="validate" />
-                                    <small class="helper-text">Kaynak Tercih Limiti</small>
-                                </div>
                             </div>
                         </li>
                         <li class="item">
@@ -495,34 +482,4 @@
 
         $('[data-name=price-total]').html((total_price).toFixed(2))
     }
-
-    function math_prices()
-    {
-        var price = 0;
-
-        $.each($('input[type=number][data-unit-price]'), function(key, item) {
-            var __ = $(this);
-            var up = __.data('unit-price') * __.val();
-
-            price = price + up;
-        })
-
-        return price;
-    }
-
-    function single_prices()
-    {
-        var price = 0;
-
-        $.each($('input[type=checkbox][data-unit-price]:checked'), function(key, item) {
-            var __ = $(this);
-            var up = __.data('unit-price');
-
-            price = price + up;
-        })
-
-        return price;
-    }
-
-    $('select').formSelect()
 @endpush

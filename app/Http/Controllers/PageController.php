@@ -19,9 +19,8 @@ class PageController extends Controller
     public static function view(string $slug)
     {
         $page = Page::where('slug', $slug)->firstOrFail();
-        $pages = Page::whereNotIn('slug', [ 'satis-sozlesmesi' ])->get();
 
-        return view('page.view', compact('page', 'pages'));
+        return view('page.view', compact('page'));
     }
 
     /**

@@ -1118,7 +1118,6 @@ class UserController extends Controller
             $organisation->pin_group_limit = $request->pin_group_limit;
             $organisation->analysis_tools_limit = $request->analysis_tools_limit;
             $organisation->saved_searches_limit = $request->saved_searches_limit;
-            $organisation->source_limit = $request->source_limit;
 
             $organisation->data_pool_youtube_channel_limit = $request->data_pool_youtube_channel_limit;
             $organisation->data_pool_youtube_video_limit = $request->data_pool_youtube_video_limit;
@@ -1133,9 +1132,6 @@ class UserController extends Controller
             $organisation->module_search = $request->module_search ? true : false;
             $organisation->module_trend = $request->module_trend ? true : false;
             $organisation->module_alarm = $request->module_alarm ? true : false;
-            $organisation->module_pin = $request->module_pin ? true : false;
-            $organisation->module_model = $request->module_model ? true : false;
-            $organisation->module_forum = $request->module_forum ? true : false;
 
             /**
              * modules

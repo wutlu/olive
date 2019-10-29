@@ -130,12 +130,6 @@
                         'key' => 'alarm'
                     ],
                     [
-                        'route' => route('sources.index'),
-                        'icon' => 'call_split',
-                        'name' => 'Kaynak Tercihleri',
-                        'key' => 'sources'
-                    ],
-                    [
                         'route' => route('pin.groups'),
                         'icon' => 'fiber_pin',
                         'name' => 'Pin Grupları',
@@ -147,17 +141,14 @@
                         'name' => 'Veri Havuzu',
                         'key' => 'pool'
                     ],
-                    /*
                     [
                         'route' => route('forum.index'),
                         'icon' => 'forum',
                         'name' => 'Forum',
                         'key' => 'forum'
                     ],
-                    */
                     [
-                        //'route' => route('analysis_tools.dashboard'),
-                        'route' => '#',
+                        'route' => route('analysis_tools.dashboard'),
                         'icon' => 'pie_chart',
                         'name' => 'Analiz Araçları <sup class="red-text">Yakında</sup>',
                         'key' => 'pool'
@@ -315,18 +306,18 @@
             @else
                 <div class="card mb-1">
                     <div class="card-content">
-                        <span class="card-title">Teklif Alın</span>
-                        <p class="grey-text">Size uygun en iyi teklifler için hemen bizimle iletişime geçin..</p>
+                        <span class="card-title">Organizasyon Oluşturun!</span>
+                        <p class="grey-text">Bireysel veya ekip olarak çalışmak için size en uygun organizasyonu oluşturun.</p>
                     </div>
                     <div class="card-content right-align">
-                        <a href="{{ route('organisation.create.offer') }}" class="btn-flat waves-effect" id="start">Başlayın</a>
+                        <a href="{{ route('organisation.create.offer') }}" class="btn-flat waves-effect" id="start">Başla</a>
                     </div>
                 </div>
 
                 @if (!auth()->user()->intro('welcome.create.organisation') && auth()->user()->verified && auth()->user()->term_version == config('system.term_version'))
                     <div class="tap-target cyan darken-4 white-text" data-target="start">
                         <div class="tap-target-content">
-                            <h5>Teklif Alın</h5>
+                            <h5>Organizasyon Oluşturun!</h5>
                             <p>Olive ayrıcalıklarından faydalanarak profesyonel dünyadaki yerinizi öğrenmek için hemen başlayın.</p>
                         </div>
                     </div>

@@ -39,14 +39,6 @@ Route::domain('olive.'.config('app.domain'))->group(function () {
 
     Route::get('kaynaklar', 'HomeController@sources')->name('sources');
 
-    Route::prefix('kaynak-tercihleri')->group(function () {
-        Route::get('/', 'SourceController@index')->name('sources.index');
-
-        Route::get('kaynak/{id?}', 'SourceController@form')->name('sources.form');
-        Route::post('kaynak/{id?}', 'SourceController@save');
-        Route::delete('kaynak', 'SourceController@delete')->name('sources.delete');
-    });
-
     Route::prefix('kullanici')->group(function () {
         Route::get('{id}', 'UserController@profile')->name('user.profile');
     });
@@ -84,7 +76,8 @@ Route::domain('olive.'.config('app.domain'))->group(function () {
     Route::post('modul-git', 'ModuleSearchController@go')->name('module.go');
 
     Route::prefix('organizasyon')->group(function () {
-        Route::get('teklif', 'OrganisationController@offer')->name('organisation.create.offer');
+        Route::get('olustur', 'OrganisationController@offer')->name('organisation.create.offer');
+        Route::post('olustur', 'OrganisationController@offerCreate');
         Route::patch('/', 'OrganisationController@update')->name('organisation.update');
 
         Route::patch('update/name', 'OrganisationController@updateName')->name('organisation.update.name');
@@ -202,7 +195,6 @@ Route::domain('olive.'.config('app.domain'))->group(function () {
             Route::get('/', 'OrganisationController@settings')->name('settings.organisation');
 
             Route::post('ayril', 'OrganisationController@leave')->name('settings.organisation.leave');
-            Route::delete('sil', 'OrganisationController@delete')->name('settings.organisation.delete');
             Route::post('devret', 'OrganisationController@transfer')->name('settings.organisation.transfer');
             Route::delete('cikar', 'OrganisationController@remove')->name('settings.organisation.remove');
             Route::post('davet', 'OrganisationController@invite')->name('settings.organisation.invite');
@@ -313,13 +305,14 @@ Route::domain('olive.'.config('app.domain'))->group(function () {
         Route::get('sifre/{user_id}/{sid}', 'UserController@passwordNew')->name('user.password.new');
         Route::patch('sifre/{user_id}/{sid}', 'UserController@passwordNewPatch');
     });
-
-    Route::get('{slug}', 'PageController@view')->name('page.view');
 });
 
 Route::get('/', 'HomeController@index')->name('home');
+
 Route::post('demo-istek', 'HomeController@demoRequest')->name('demo.request');
 
 Route::prefix('gercek-zamanli')->namespace('RealTime')->group(function () {
     Route::post('sorgu/ornek', 'RealTimeController@querySample')->name('realtime.query.sample');
 });
+
+Route::get('{slug}', 'PageController@view')->name('page.view');

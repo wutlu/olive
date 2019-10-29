@@ -52,7 +52,7 @@
             <canvas class="overlay bg-overlay" id="bubble"></canvas>
         </div>
         <div class="area flex-fill z-depth-1">
-            <a class="bb" href="{{ route('home') }}"></a>
+            <div class="bb"></div>
             <div class="card card-unstyled mx-auto mb-2">
                 <div class="card-tabs">
                     <ul class="tabs tabs-fixed-width">
@@ -96,12 +96,12 @@
                             <div class="input-field">
                                 <input name="password" id="password" type="password" class="validate" />
                                 <label for="password">Şifre</label>
-                                <span class="helper-text">Hesap şifreniz.</span>
+                                <span class="helper-text">Özel hesap şifreniz.</span>
                             </div>
                             <div class="input-field">
                                 <input name="name" id="name" type="text" class="validate" />
                                 <label for="name">Kullanıcı Adı</label>
-                                <span class="helper-text">Eşsiz kullanıcı adınız.</span>
+                                <span class="helper-text">Herkese açık benzersiz kullanıcı adınız.</span>
                             </div>
                             <div class="input-field">
                                 <div class="captcha" data-id="register-captcha"></div>
@@ -109,7 +109,10 @@
                             <label>
                                 <input name="terms" type="checkbox" value="1" />
                                 <span>
-                                    <a target="_blank" href="{{ route('page.view', 'kullanim-kosullari') }}">Kullanım Koşulları</a> ve <a target="_blank" href="{{ route('page.view', 'gizlilik-politikasi') }}">Gizlilik Politikası</a> sayfalarındaki maddeleri okudum, kabul ediyorum.
+                                    <a class="blue-grey-text text-darken-2" target="_blank" href="{{ route('page.view', 'kullanim-kosullari') }}">Kullanım Koşulları</a>'nı ve<br />
+                                    <a class="blue-grey-text text-darken-2" target="_blank" href="{{ route('page.view', 'gizlilik-politikasi') }}">Gizlilik Politikası</a>'nı<br />
+                                    okudum ve<br />
+                                    kabul ediyorum.
                                 </span>
                             </label>
                             <button type="submit" class="waves-effect waves-light btn blue-grey mt-1" style="width: 100%;">Kaydol</button>

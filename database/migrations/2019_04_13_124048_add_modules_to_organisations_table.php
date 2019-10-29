@@ -18,9 +18,6 @@ class AddModulesToOrganisationsTable extends Migration
             $table->boolean('module_search')->default(0);
             $table->boolean('module_trend')->default(0);
             $table->boolean('module_alarm')->default(0);
-            $table->boolean('module_pin')->default(0);
-            $table->boolean('module_model')->default(0);
-            $table->boolean('module_forum')->default(0);
         });
     }
 
@@ -36,9 +33,6 @@ class AddModulesToOrganisationsTable extends Migration
             $table->dropColumn('module_search');
             $table->dropColumn('module_trend');
             $table->dropColumn('module_alarm');
-            $table->dropColumn('module_pin');
-            $table->dropColumn('module_model');
-            $table->dropColumn('module_forum');
         });
     }
 }

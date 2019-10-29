@@ -63,7 +63,6 @@ class OptionTableSeeder extends Seeder
         Option::firstOrCreate( [ 'key' => 'unit_price.pin_group_limit'                   ], [ 'value' => 0                                     ] );
         Option::firstOrCreate( [ 'key' => 'unit_price.analysis_tools_limit'              ], [ 'value' => 0                                     ] );
         Option::firstOrCreate( [ 'key' => 'unit_price.saved_searches_limit'              ], [ 'value' => 0                                     ] );
-        Option::firstOrCreate( [ 'key' => 'unit_price.source_limit'                      ], [ 'value' => 0                                     ] );
         Option::firstOrCreate( [ 'key' => 'unit_price.historical_days'                   ], [ 'value' => 0                                     ] );
         Option::firstOrCreate( [ 'key' => 'unit_price.data_pool_youtube_channel_limit'   ], [ 'value' => 0                                     ] );
         Option::firstOrCreate( [ 'key' => 'unit_price.data_pool_youtube_video_limit'     ], [ 'value' => 0                                     ] );
@@ -77,9 +76,6 @@ class OptionTableSeeder extends Seeder
         Option::firstOrCreate( [ 'key' => 'unit_price.module_search'                     ], [ 'value' => 0                                     ] );
         Option::firstOrCreate( [ 'key' => 'unit_price.module_trend'                      ], [ 'value' => 0                                     ] );
         Option::firstOrCreate( [ 'key' => 'unit_price.module_alarm'                      ], [ 'value' => 0                                     ] );
-        Option::firstOrCreate( [ 'key' => 'unit_price.module_pin'                        ], [ 'value' => 0                                     ] );
-        Option::firstOrCreate( [ 'key' => 'unit_price.module_model'                      ], [ 'value' => 0                                     ] );
-        Option::firstOrCreate( [ 'key' => 'unit_price.module_forum'                      ], [ 'value' => 0                                     ] );
         Option::firstOrCreate( [ 'key' => 'unit_price.user'                              ], [ 'value' => 0                                     ] );
 
         Option::firstOrCreate( [ 'key' => 'formal.discount_with_year'                    ], [ 'value' => 0                                     ] );

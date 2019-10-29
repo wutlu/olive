@@ -34,7 +34,7 @@ class CreateAccountRequest extends FormRequest
     public function messages()
     {
         return [
-            'limit' => 'Maksimum hesap limitine ulaştınız.',
+            'limit' => 'Kullanıcı havuzunuz doldu. Daha fazla kullanıcı ekleyebilmek için paketinizi yükseltin',
             'twitter_account' => 'Hesap, takip için uygun değil.'
         ];
     }

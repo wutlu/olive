@@ -69,6 +69,8 @@ class Crawler
                 'single-poll',
                 'homepage',
                 'shortcodes',
+                'cache-control',
+                'shrink-to-fit',
             ];
             $ends_with = [ '.com', '.css', '.js', '.png', '.jpg', '.gif', '.net', '.org', '.tr' ];
             $contains = [ 'wp-', 'kategori', 'iletisim', 'etiket', 'module', 'assets' ];
@@ -383,7 +385,7 @@ class Crawler
                 {
                     $nth = 1;
 
-                    while ($nth < 5)
+                    while ($nth < 12)
                     {
                         $description_selector = preg_replace('/nth-child\(\d+\)/i', 'nth-child('.$nth.')', $description_selector);
                         $description = $saw->get($description_selector)->toText();

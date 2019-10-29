@@ -72,14 +72,6 @@ class RealTimeController extends Controller
 
         if (@$search)
         {
-            preg_match_all('/(?<=\[s:)[([0-9]+(?=\])/m', $search->string, $matches);
-
-            if (@$matches[0][0])
-            {
-                $source = Source::whereIn('id', $matches[0])->where('organisation_id', $organisation->id)->first();
-                $search->string = preg_replace('/\[s:([0-9]+)\]/m', '', $search->string);
-            }
-
             $clean = Term::cleanSearchQuery($search->string);
             $searchController = new SearchController;
 
@@ -161,8 +153,8 @@ class RealTimeController extends Controller
                             $data = array_merge($data, $searchController->tweet($search, $tweet_q)['data']);
                         }
                     break;
-                    case 'instagram'       : if ($organisation->data_instagram)       $data = array_merge($data, $searchController->instagram      ($search, $q)['data']);                            break;
-                    case 'sozluk'          : if ($organisation->data_sozluk)          $data = array_merge($data, $searchController->sozluk         ($search, $q, @$source->source_sozluk)['data']);   break;
+                    case 'instagram'       : if ($organisation->data_instagram)       $data = array_merge($data, $searchController->instagram      ($search, $q)['data']); break;
+                    case 'sozluk'          : if ($organisation->data_sozluk)          $data = array_merge($data, $searchController->sozluk         ($search, $q)['data']); break;
                     case 'news':
                         if ($organisation->data_news)
                         {
@@ -173,13 +165,13 @@ class RealTimeController extends Controller
                                 $news_q['query']['bool']['must'][] = [ 'match' => [ 'state' => $search->state ] ];
                             }
 
-                            $data = array_merge($data, $searchController->news($search, $news_q, @$source->source_media)['data']);
+                            $data = array_merge($data, $searchController->news($search, $news_q)['data']);
                         }
                     break;
-                    case 'blog'            : if ($organisation->data_blog)            $data = array_merge($data, $searchController->blog           ($search, $q, @$source->source_blog)['data']);     break;
-                    case 'youtube_video'   : if ($organisation->data_youtube_video)   $data = array_merge($data, $searchController->youtube_video  ($search, $q)['data']);                            break;
-                    case 'youtube_comment' : if ($organisation->data_youtube_comment) $data = array_merge($data, $searchController->youtube_comment($search, $q)['data']);                            break;
-                    case 'shopping'        : if ($organisation->data_shopping)        $data = array_merge($data, $searchController->shopping       ($search, $q, @$source->source_shopping)['data']); break;
+                    case 'blog'            : if ($organisation->data_blog)            $data = array_merge($data, $searchController->blog           ($search, $q)['data']); break;
+                    case 'youtube_video'   : if ($organisation->data_youtube_video)   $data = array_merge($data, $searchController->youtube_video  ($search, $q)['data']); break;
+                    case 'youtube_comment' : if ($organisation->data_youtube_comment) $data = array_merge($data, $searchController->youtube_comment($search, $q)['data']); break;
+                    case 'shopping'        : if ($organisation->data_shopping)        $data = array_merge($data, $searchController->shopping       ($search, $q)['data']); break;
                 }
             }
 

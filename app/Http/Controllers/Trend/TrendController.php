@@ -27,14 +27,13 @@ class TrendController extends Controller
          * - Kullanıcı
          * - Organizasyon
          */
-        $this->middleware([ 'auth', 'organisation:have' ]);
-        $this->middleware([ 'can:organisation-status' ])->except([ 'live', 'archive' ]);
+        $this->middleware([ 'auth' ]);
 
-        $this->middleware('organisation:have,module_trend')->only([
-            'liveRedis',
-            'archiveView',
-            'popular'
-        ]);
+        //$this->middleware('organisation:have,module_trend')->only([
+        //    'liveRedis',
+        //    'archiveView',
+        //    'popular'
+        //]);
 
         $this->modules = [
             'google' => [

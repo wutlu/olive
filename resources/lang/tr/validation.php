@@ -307,7 +307,6 @@ $arr = [
         'analysis_tools_limit'            => 'Analiz Araçları Limiti',
         'historical_days'                 => 'Geriye Dönük Arama Limiti',
         'saved_searches_limit'            => 'Arama Kaydetme Limiti',
-        'source_limit'                    => 'Kaynak Tercih Limiti',
 
         'data_pool_youtube_channel_limit'  => 'YouTube Kanal Limiti',
         'data_pool_youtube_video_limit'    => 'YouTube Video Limiti',
@@ -323,9 +322,6 @@ $arr = [
         'module_search'                   => 'Arama Modülü',
         'module_trend'                    => 'Trend Modülü',
         'module_alarm'                    => 'Alarm Modülü',
-        'module_pin'                      => 'Pin Modülü',
-        'module_model'                    => 'Model Modülü',
-        'module_forum'                    => 'Forum Modülü',
 
         'phone'                           => 'Telefon',
 

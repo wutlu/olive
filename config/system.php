@@ -4,7 +4,7 @@ return [
     /**
      * Sistem Versiyonu
      */
-    'version' => '5.7.1.28',
+    'version' => '6.0.1',
 
     /**
      * db
@@ -237,12 +237,10 @@ return [
      * Aktif Modüller
      */
     'static_modules' => [
-        'module_real_time' => 'Gerçek Zamanlı',
+        'module_real_time' => 'Canlı Akış',
         'module_search' => 'Arama',
         'module_trend' => 'Trend',
         'module_alarm' => 'Alarm',
-        'module_pin' => 'Pin',
-        'module_forum' => 'Forum',
     ],
 
     /**
@@ -358,7 +356,7 @@ return [
     'search' => [
         'modules' => [
             1 => [
-                'name' => 'Gerçek Zamanlı',
+                'name' => 'Canlı Akış',
                 'route' => 'realtime.stream',
                 'icon' => 'timeline'
             ],

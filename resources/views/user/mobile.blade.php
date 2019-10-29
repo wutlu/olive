@@ -97,6 +97,8 @@
                             <button type="submit" class="btn-flat waves-effect">Doğrula</button>
                         </form>
                         @push('local.scripts')
+                            $('input[name=code]').focus()
+
                             function __mobile(__, obj)
                             {
                                 if (obj.status == 'ok')

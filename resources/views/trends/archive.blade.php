@@ -1,5 +1,5 @@
 @extends('layouts.app', [
-    'sidenav_layout' => true,
+    'sidenav_fixed_layout' => true,
     'breadcrumb' => [
         [
             'text' => 'Trend Analizi'
@@ -9,7 +9,8 @@
         ]
     ],
     'footer_hide' => true,
-    'dock' => true
+    'dock' => true,
+    'wide' => true
 ])
 
 @push('local.scripts')
@@ -52,9 +53,7 @@
 
 @section('wildcard')
     <div class="card wild-background">
-        <div class="container">
-            <span class="wildcard-title">Trend Arşivi</span>
-        </div>
+        <span class="wildcard-title">Trend Arşivi</span>
     </div>
 @endsection
 

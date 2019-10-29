@@ -15,7 +15,6 @@ use App\Elasticsearch\Document;
 
 use Term;
 
-use App\Models\Source;
 use App\Models\SavedSearch;
 use App\Models\Geo\States;
 
@@ -142,7 +141,6 @@ class SearchController extends Controller
 
         $organisation = auth()->user()->organisation;
 
-        $sources = Source::where('organisation_id', $organisation->id)->get();
         $states = States::where('country_id', 223)->orderBy('name', 'ASC')->get();
 
         $trends = json_decode(RedisCache::get(implode(':', [ config('system.db.alias'), 'trends', 'twitter_hashtag' ])));
@@ -172,7 +170,7 @@ class SearchController extends Controller
 
         $elements = implode(',', $elements);
 
-        return view('search', compact('q', 's', 'e', 'trends', 'organisation', 'sources', 'states', 'elements'));
+        return view('search', compact('q', 's', 'e', 'trends', 'organisation', 'states', 'elements'));
     }
 
     /**
@@ -224,14 +222,6 @@ class SearchController extends Controller
     public static function search(ArchiveRequest $request)
     {
         $organisation = auth()->user()->organisation;
-
-        preg_match_all('/(?<=\[s:)[([0-9]+(?=\])/m', $request->string, $matches);
-
-        if (@$matches[0][0])
-        {
-            $source = Source::whereIn('id', $matches[0])->where('organisation_id', $organisation->id)->first();
-            $request['string'] = preg_replace('/\[s:([0-9]+)\]/m', '', $request->string);
-        }
 
         $clean = Term::cleanSearchQuery($request->string);
 
@@ -402,7 +392,7 @@ class SearchController extends Controller
                             $sozluk_q['aggs']['unique_topics'] = [ 'cardinality' => [ 'field' => 'group_name' ] ];
                         }
 
-                        $sozluk_data = self::sozluk($request, $sozluk_q, @$source->source_sozluk);
+                        $sozluk_data = self::sozluk($request, $sozluk_q);
 
                         if ($request->aggs)
                         {
@@ -431,7 +421,7 @@ class SearchController extends Controller
                             $news_q['query']['bool']['must'][] = [ 'match' => [ 'state' => $request->state ] ];
                         }
 
-                        $news_data = self::news($request, $news_q, @$source->source_media);
+                        $news_data = self::news($request, $news_q);
 
                         if ($request->aggs)
                         {
@@ -454,7 +444,7 @@ class SearchController extends Controller
                             $blog_q['aggs']['unique_sites'] = [ 'cardinality' => [ 'field' => 'site_id' ] ];
                         }
 
-                        $blog_data = self::blog($request, $blog_q, @$source->source_blog);
+                        $blog_data = self::blog($request, $blog_q);
 
                         if ($request->aggs)
                         {
@@ -528,7 +518,7 @@ class SearchController extends Controller
                             $shopping_q['aggs']['unique_users'] = [ 'cardinality' => [ 'field' => 'seller.name' ] ];
                         }
 
-                        $shopping_data = self::shopping($request, $shopping_q, @$source->source_shopping);
+                        $shopping_data = self::shopping($request, $shopping_q);
 
                         if ($request->aggs)
                         {
@@ -697,21 +687,11 @@ class SearchController extends Controller
         ];
     }
 
-    public static function sozluk($search, array $q, $source = null)
+    public static function sozluk($search, array $q)
     {
         $aggs = [];
         $data = [];
         $stats = [ 'total' => 0 ];
-
-        if (@$source)
-        {
-            foreach ($source as $key => $id)
-            {
-                $q['query']['bool']['should'][] = [ 'match' => [ 'site_id' => $id ] ];
-            }
-
-            $q['query']['bool']['minimum_should_match'] = 1;
-        }
 
         if ($search->gender != 'all')
         {
@@ -750,23 +730,13 @@ class SearchController extends Controller
         ];
     }
 
-    public static function news($search, array $q, $source = null)
+    public static function news($search, array $q)
     {
         $aggs = [];
         $data = [];
         $stats = [ 'total' => 0 ];
 
         $q['query']['bool']['must'][] = [ 'match' => [ 'status' => 'ok' ] ];
-
-        if ($source)
-        {
-            foreach ($source as $key => $id)
-            {
-                $q['query']['bool']['should'][] = [ 'match' => [ 'site_id' => $id ] ];
-            }
-
-            $q['query']['bool']['minimum_should_match'] = 1;
-        }
 
         $query = Document::search([ 'media', 's*' ], 'article', $q);
 
@@ -803,23 +773,13 @@ class SearchController extends Controller
         ];
     }
 
-    public static function blog($search, array $q, $source = null)
+    public static function blog($search, array $q)
     {
         $aggs = [];
         $data = [];
         $stats = [ 'total' => 0 ];
 
         $q['query']['bool']['must'][] = [ 'match' => [ 'status' => 'ok' ] ];
-
-        if (@$source)
-        {
-            foreach ($source as $key => $id)
-            {
-                $media_q['query']['bool']['should'][] = [ 'match' => [ 'site_id' => $id ] ];
-            }
-
-            $media_q['query']['bool']['minimum_should_match'] = 1;
-        }
 
         $query = Document::search([ 'blog', 's*' ], 'document', $q);
 
@@ -934,23 +894,13 @@ class SearchController extends Controller
         ];
     }
 
-    public static function shopping($search, array $q, $source = null)
+    public static function shopping($search)
     {
         $aggs = [];
         $data = [];
         $stats = [ 'total' => 0 ];
 
         $q['query']['bool']['must'][] = [ 'match' => [ 'status' => 'ok' ] ];
-
-        if (@$source)
-        {
-            foreach ($source as $key => $id)
-            {
-                $media_q['query']['bool']['should'][] = [ 'match' => [ 'site_id' => $id ] ];
-            }
-
-            $media_q['query']['bool']['minimum_should_match'] = 1;
-        }
 
         $query = Document::search([ 'shopping', '*' ], 'product', $q);
 

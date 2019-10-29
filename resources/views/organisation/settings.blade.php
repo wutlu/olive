@@ -488,119 +488,9 @@
             <div class="card-content">
                 @if ($user->organisation->user_id == $user->id)
                     <span>
-                        <h6>Organizasyonu Silin</h6>
-                        <p class="grey-text">- Organizasyona ait tüm etkinlikler kalıcı olarak silinir.</p>
-                        <p class="grey-text">- Organizasyona dahil tüm kullanıcıların organizasyon bağlantıları kaldırılır.</p>
-                        <p class="grey-text">- Silinen organizasyonlar için ücret iadesi yapılamaz.</p>
+                        <h6>Organizasyonu Sil</h6>
+                        <p class="grey-text">Organizasyonu silemezsiniz ancak farklı bir kullanıcıya devredip ayrılabilirsiniz.</p>
                     </span>
-                    <br />
-                    <a href="#" class="btn red darken-1 waves-effect" data-button="__delete">Sil</a>
-
-                    @push('local.scripts')
-                        @php
-                        $key = 'organizasyonu silmek istiyorum';
-                        @endphp
-
-                        $(document).on('click', '[data-button=__delete]', function() {
-                            var mdl = modal({
-                                'id': 'delete',
-                                'body': [
-                                    $('<p />', {
-                                        'html': 'Organizasyonu silmek için aşağıdaki alana küçük harflerle "{{ $key }}" yazmanız gerekiyor.'
-                                    }),
-                                    $('<p />', {
-                                        'html': 'Bu işlem geri alınamaz!',
-                                        'class': 'red-text'
-                                    }),
-                                    $('<div />', {
-                                        'class': 'input-field',
-                                        'html': [
-                                            $('<input />', {
-                                                'id': 'delete_key',
-                                                'name': 'delete_key',
-                                                'type': 'text',
-                                                'class': 'validate',
-                                                'pattern': '^\{{ $key }}$'
-                                            }),
-                                            $('<span />', {
-                                                'class': 'helper-text',
-                                                'html': 'Organizasyonu silmek için belirlenen kelimeleri girin.'
-                                            })
-                                        ]
-                                    }),
-                                    $('<div />', {
-                                        'class': 'input-field',
-                                        'html': [
-                                            $('<input />', {
-                                                'id': 'password',
-                                                'name': 'password',
-                                                'type': 'password',
-                                                'class': 'validate'
-                                            }),
-                                            $('<label />', {
-                                                'for': 'password',
-                                                'html': 'Mevcut Şifreniz'
-                                            }),
-                                            $('<span />', {
-                                                'class': 'helper-text',
-                                                'html': 'Hesap şifrenizi girin.'
-                                            })
-                                        ]
-                                    })
-                                ],
-                                'size': 'modal-medium',
-                                'title': 'Sil',
-                                'options': {},
-                                'footer': [
-                                   $('<a />', {
-                                       'href': '#',
-                                       'class': 'modal-close waves-effect btn-flat grey-text',
-                                       'html': buttons.cancel
-                                   }),
-                                   $('<span />', {
-                                       'html': ' '
-                                   }),
-                                   $('<a />', {
-                                       'href': '#',
-                                       'class': 'waves-effect btn-flat red-text json',
-                                       'data-href': '{{ route('settings.organisation.delete') }}',
-                                       'data-include': 'delete_key,password',
-                                       'data-method': 'delete',
-                                       'data-callback': '__delete',
-                                       'html': buttons.ok
-                                   })
-                                ]
-                            })
-
-                            M.updateTextFields()
-
-                            return mdl;
-                        })
-
-                        function __delete(__, obj)
-                        {
-                            var delete_key_input = $('input[name=delete_key]');
-
-                            if (delete_key_input.val() == '{{ $key }}')
-                            {
-                                if (obj.status == 'ok')
-                                {
-                                    $('#modal-delete').modal('close')
-
-                                    setTimeout(function() {
-                                        window.location.href = '{{ route('dashboard') }}';
-                                    }, 400)
-                                }
-                            }
-                            else
-                            {
-                                M.toast({
-                                    html: 'Onay alanı geçerli değil!',
-                                    classes: 'red darken-2'
-                                })
-                            }
-                        }
-                    @endpush
                 @else
                     <div class="d-flex justify-content-between">
                         <span>
@@ -716,7 +606,7 @@
                     <div class="collection-item">
                         @component('components.nothing')
                             @slot('size', 'small')
-                            @slot('text', 'Organizasyonunuza ait bir fatura bulunmuyor.')
+                            @slot('text', 'Organizasyonunuza ait fatura bulunmuyor.')
                         @endcomponent
                     </div>
                 @endforelse

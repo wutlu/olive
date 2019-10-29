@@ -13,7 +13,6 @@ use App\Elasticsearch\Document;
 
 use Term;
 
-use App\Models\Source;
 use App\Models\SavedSearch;
 use App\Models\Crawlers\SozlukCrawler;
 use App\Models\Crawlers\MediaCrawler;
@@ -65,16 +64,6 @@ class AggregationController extends Controller
             'organisation' => $organisation,
             'request' => $request
         ];
-
-        preg_match_all('/(?<=\[s:)[([0-9]+(?=\])/m', $request->string, $matches);
-
-        if (@$matches[0][0])
-        {
-            $source = Source::whereIn('id', $matches[0])->where('organisation_id', $organisation->id)->first();
-            $request['string'] = preg_replace('/\[s:([0-9]+)\]/m', '', $request->string);
-
-            $data['source'] = $source;
-        }
 
         $clean = Term::cleanSearchQuery($request->string);
 
@@ -590,16 +579,6 @@ class AggregationController extends Controller
                 $sozluk_q['aggs'] = $aggregations['sozluk'];
             }
 
-            if (@$data['source']->source_sozluk)
-            {
-                foreach ($data['source']->source_sozluk as $key => $id)
-                {
-                    $media_q['query']['bool']['should'][] = [ 'match' => [ 'site_id' => $id ] ];
-                }
-
-                $media_q['query']['bool']['minimum_should_match'] = 1;
-            }
-
             if ($data['request']->gender != 'all')
             {
                 $sozluk_q['query']['bool']['should'][] = [ 'match' => [ 'gender' => $data['request']->gender ] ];
@@ -686,16 +665,6 @@ class AggregationController extends Controller
 
             $media_q['query']['bool']['must'][] = [ 'match' => [ 'status' => 'ok' ] ];
 
-            if (@$data['source']->source_media)
-            {
-                foreach ($data['source']->source_media as $key => $id)
-                {
-                    $media_q['query']['bool']['should'][] = [ 'match' => [ 'site_id' => $id ] ];
-                }
-
-                $media_q['query']['bool']['minimum_should_match'] = 1;
-            }
-
             if ($request->state)
             {
                 $media_q['query']['bool']['must'][] = [ 'match' => [ 'state' => $request->state ] ];
@@ -734,16 +703,6 @@ class AggregationController extends Controller
             }
 
             $blog_q['query']['bool']['must'][] = [ 'match' => [ 'status' => 'ok' ] ];
-
-            if (@$data['source']->source_blog)
-            {
-                foreach ($data['source']->source_blog as $key => $id)
-                {
-                    $media_q['query']['bool']['should'][] = [ 'match' => [ 'site_id' => $id ] ];
-                }
-
-                $media_q['query']['bool']['minimum_should_match'] = 1;
-            }
 
             $query = Document::search([ 'blog', 's*' ], 'document', $blog_q);
 
@@ -810,16 +769,6 @@ class AggregationController extends Controller
             }
 
             $shopping_q['query']['bool']['must'][] = [ 'match' => [ 'status' => 'ok' ] ];
-
-            if (@$data['source']->shopping_q)
-            {
-                foreach ($data['source']->shopping_q as $key => $id)
-                {
-                    $media_q['query']['bool']['should'][] = [ 'match' => [ 'site_id' => $id ] ];
-                }
-
-                $media_q['query']['bool']['minimum_should_match'] = 1;
-            }
 
             $query = Document::search([ 'shopping', '*' ], 'product', $shopping_q);
 

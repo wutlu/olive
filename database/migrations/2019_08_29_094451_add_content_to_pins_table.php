@@ -26,7 +26,7 @@ class AddContentToPinsTable extends Migration
     public function down()
     {
         Schema::table('pins', function (Blueprint $table) {
-            $table->dropColumn('source_limit');
+            $table->dropColumn('content');
         });
     }
 }

@@ -48,7 +48,7 @@ class PinController extends Controller
             'comment'
         ]);
 
-        $this->middleware('organisation:have,module_pin')->only([
+        $this->middleware('organisation:have')->only([
             'groupCreate'
         ]);
     }

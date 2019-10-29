@@ -33,8 +33,10 @@ class AnalysisToolsController extends Controller
          ***** ZORUNLU *****
          *
          * - Kullanıcı
+         * - Organizasyon
          */
-        $this->middleware('auth');
+        $this->middleware([ 'auth', 'organisation:have' ]);
+        $this->middleware([ 'can:organisation-status' ]);
     }
 
     /**

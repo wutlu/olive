@@ -91,6 +91,7 @@ class MediaController extends Controller
                     $query = $query->orderBy('control_interval', 'ASC');
                 break;
                 case 'error':
+                    $query = $query->where('error_count', '>=', 5);
                     $query = $query->orderBy('error_count', 'DESC');
                 break;
             }
@@ -501,7 +502,18 @@ class MediaController extends Controller
     {
         $crawler = MediaCrawler::where('id', $request->id)->first();
 
-        $crawler->status = $crawler->status ? 0 : 1;
+        if ($crawler->status)
+        {
+            $crawler->status = false;
+            $crawler->error_count = $crawler->off_limit;
+            $crawler->off_reason = 'Bu bot '.auth()->user()->name.' tarafından kapatıldı.';
+        }
+        else
+        {
+            $crawler->status = true;
+            $crawler->error_count = 0;
+        }
+
         $crawler->save();
 
         return [

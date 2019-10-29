@@ -1,18 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Organisation\Admin;
+namespace App\Http\Requests\Organisation;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-use Illuminate\Http\Request;
-
-use Validator;
-
-use App\Models\Option;
-
-use System;
-
-class UpdateRequest extends FormRequest
+class CreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,47 +17,26 @@ class UpdateRequest extends FormRequest
     }
 
     /**
-     * Get the error messages for the defined validation rules.
-     *
-     * @return array
-     */
-    public function messages()
-    {
-        return [
-            'name' => 'Sadece alfa-nümerik karakterler ve "." nokta kullanabilirsiniz.',
-        ];
-    }
-
-    /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
     public function rules()
     {
-        $prices = Option::select('key', 'value')->where('key', 'LIKE', 'unit_price.%')->get()->keyBy('key')->toArray();
-
-        Validator::extend('name', function($attribute, $value) {
-            return !preg_match('/[^a-zA-Z0-9\.]/', $value);
-        });
-
         $validations = [
-            'name' => 'required|string|max:100|name',
-            'status' => 'nullable|string|in:on',
             'user_capacity' => 'required|integer|max:12|min:1',
-            'end_date' => 'required|date_format:Y-m-d',
             'historical_days' => 'required|integer|max:90|min:0',
 
             'pin_group_limit' => 'required|integer|max:12|min:0',
-            'analysis_tools_limit' => 'required|integer|max:100|min:0',
             'saved_searches_limit' => 'required|integer|max:12|min:0',
 
             'data_pool_youtube_channel_limit' => 'required|integer|max:100|min:0',
             'data_pool_youtube_video_limit' => 'required|integer|max:100|min:0',
             'data_pool_youtube_keyword_limit' => 'required|integer|max:100|min:0',
-            'data_pool_twitter_keyword_limit' => 'required|integer|max:400|min:0',
-            'data_pool_twitter_user_limit' => 'required|integer|max:1000000|min:0',
-            'data_pool_instagram_follow_limit' => 'required|integer|max:1000000|min:0',
+            'data_pool_instagram_follow_limit' => 'required|integer|max:100|min:0',
+            'data_pool_twitter_keyword_limit' => 'required|integer|max:100|min:0',
+            'data_pool_twitter_user_limit' => 'required|integer|max:100|min:0',
+            'data_pool_instagram_follow_limit' => 'required|integer|max:100|min:0',
 
             'module_real_time' => 'nullable|string|in:on',
             'module_search' => 'nullable|string|in:on',

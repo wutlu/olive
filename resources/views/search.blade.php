@@ -458,15 +458,6 @@
                 <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="string" data-search="channel.id">Kanal Id</button>
                 <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="string" data-search="video_id">Video Id</button>
             </div>
-
-            <div class="p-1">
-                <span class="grey-text">Kaynak Tercihleri</span> <sup><a href="{{ route('sources.index') }}">Yönet</a></sup>
-                @forelse ($sources as $source)
-                    <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-operator=" " data-search="[s:{{ $source->id }}]">{{ $source->name }}</button>
-                @empty
-                    <span class="d-block red-text">Henüz tercih oluşturulmadı.</span>
-                @endforelse
-            </div>
         </div>
     </div>
 

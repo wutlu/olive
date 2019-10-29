@@ -29,7 +29,7 @@ class CreateKeywordRequest extends FormRequest
     {
         return [
             'unique_keyword' => 'Bu kelime zaten mevcut.',
-            'limit' => 'Maksimum kelime limitine ulaştınız.'
+            'limit' => 'Kelime havuzunuz doldu. Daha fazla kelime ekleyebilmek için paketinizi yükseltin.'
         ];
     }
 

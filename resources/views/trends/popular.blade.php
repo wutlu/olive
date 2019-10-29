@@ -1,5 +1,5 @@
 @extends('layouts.app', [
-    'sidenav_layout' => true,
+    'sidenav_fixed_layout' => true,
     'breadcrumb' => [
         [
             'text' => 'Trend Analizi'
@@ -9,7 +9,8 @@
         ]
     ],
     'footer_hide' => true,
-    'dock' => true
+    'dock' => true,
+    'wide' => true
 ])
 
 @push('local.scripts')
@@ -91,13 +92,11 @@
 @endsection
 
 @section('wildcard')
-    <div class="card wild-background php">
-        <div class="container">
-            <span class="wildcard-title d-flex flex-column">
-                <span>Popüler Kaynaklar</span>
-                <small>{{ __('global.date.i18n.months')[($request->month ? ($request->month >= 1 && $request->month <= 12 ? $request->month : intval(date('m'))) : intval(date('m'))) - 1] }} Ayı</small>
-            </span>
-        </div>
+    <div class="card wild-background">
+        <span class="wildcard-title d-flex flex-column">
+            <span>Popüler Kaynaklar</span>
+            <small>{{ __('global.date.i18n.months')[($request->month ? ($request->month >= 1 && $request->month <= 12 ? $request->month : intval(date('m'))) : intval(date('m'))) - 1] }} Ayı</small>
+        </span>
     </div>
 @endsection
 
@@ -177,7 +176,10 @@
         @if ($data->total() > $pager)
             <span class="d-table mx-auto">{!! $data->appends([
                 'module' => $request->module,
-                'sort' => $request->sort
+                'sort' => $request->sort,
+                'category' => $request->category,
+                'month' => $request->month,
+                'year' => $request->year
             ])->links('vendor.pagination.materializecss') !!}</span>
         @endif
     </div>
