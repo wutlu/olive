@@ -18,7 +18,7 @@
         </div>
         <form class="json" method="post" action="{{ route('organisation.create.offer') }}" data-callback="__create" id="offer">
             <div class="d-flex mx-auto" style="max-width: 400px;">
-                <div class="flex-fill card card-unstyled hide" data-step="1">
+                <div class="flex-fill card card-unstyled" data-step="1">
                     <div class="card-content card-step">
                         <span class="step">1/4</span>
                         <span class="title">Modül Seçimi</span>
@@ -279,7 +279,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="flex-fill card card-unstyled" data-step="4">
+                <div class="flex-fill card card-unstyled hide" data-step="4">
                     <div class="card-content card-step">
                         <span class="step">4/4</span>
                         <span class="title">Kaynak Takibi</span>
