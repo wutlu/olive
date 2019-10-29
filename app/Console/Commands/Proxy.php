@@ -8,6 +8,7 @@ use App\Models\Proxy as ProxyModel;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Cookie\FileCookieJar;
 
 class Proxy extends Command
 {
@@ -52,9 +53,13 @@ class Proxy extends Command
 
                 $starttime = microtime(true);
 
+                $cookieFile = storage_path('app/cookies/cookie_jar.txt');
+                $cookieJar = new FileCookieJar($cookieFile, true);
+
                 $client = new Client([
                     'base_uri' => config('app.url'),
-                    'handler' => HandlerStack::create()
+                    'handler' => HandlerStack::create(),
+                    'cookies' => $cookieJar
                 ]);
 
                 try

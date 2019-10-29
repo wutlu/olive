@@ -25,7 +25,7 @@
             var collection = __,
                 model = collection.children('tr.hide');
 
-            collection.children('.collection-item:not(.hide)').remove()
+            collection.children('tr:not(.hide)').remove()
 
             $('[data-name=total]').html(obj.total)
 
