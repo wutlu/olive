@@ -165,16 +165,16 @@ class OrganisationController extends Controller
             $organisation->user_capacity = $request->user_capacity;
             $organisation->start_date = date('Y-m-d H:i:s');
             $organisation->end_date = date('Y-m-d H:i:s', strtotime('+36 hours'));
-            $organisation->historical_days = $request->historical_days;
-            $organisation->pin_group_limit = $request->pin_group_limit;
-            $organisation->saved_searches_limit = $request->saved_searches_limit;
+            $organisation->historical_days = $request->historical_days ? $request->historical_days : 0;
+            $organisation->pin_group_limit = $request->pin_group_limit ? $request->pin_group_limit : 0;
+            $organisation->saved_searches_limit = $request->saved_searches_limit ? $request->saved_searches_limit : 0;
 
-            $organisation->data_pool_youtube_channel_limit = $request->data_pool_youtube_channel_limit;
-            $organisation->data_pool_youtube_video_limit = $request->data_pool_youtube_video_limit;
-            $organisation->data_pool_youtube_keyword_limit = $request->data_pool_youtube_keyword_limit;
-            $organisation->data_pool_twitter_keyword_limit = $request->data_pool_twitter_keyword_limit;
-            $organisation->data_pool_twitter_user_limit = $request->data_pool_twitter_user_limit;
-            $organisation->data_pool_instagram_follow_limit = $request->data_pool_instagram_follow_limit;
+            $organisation->data_pool_youtube_channel_limit = $request->data_pool_youtube_channel_limit ? $request->data_pool_youtube_channel_limit : 0;
+            $organisation->data_pool_youtube_video_limit = $request->data_pool_youtube_video_limit ? $request->data_pool_youtube_video_limit : 0;
+            $organisation->data_pool_youtube_keyword_limit = $request->data_pool_youtube_keyword_limit ? $request->data_pool_youtube_keyword_limit : 0;
+            $organisation->data_pool_twitter_keyword_limit = $request->data_pool_twitter_keyword_limit ? $request->data_pool_twitter_keyword_limit : 0;
+            $organisation->data_pool_twitter_user_limit = $request->data_pool_twitter_user_limit ? $request->data_pool_twitter_user_limit : 0;
+            $organisation->data_pool_instagram_follow_limit = $request->data_pool_instagram_follow_limit ? $request->data_pool_instagram_follow_limit : 0;
 
             $organisation->unit_price = $calculate['total_price'];
 
