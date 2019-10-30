@@ -425,6 +425,14 @@ class Kernel extends ConsoleKernel
                      ->everyMinute()
                      ->timezone(config('app.timezone'))
                      ->withoutOverlapping(1);
+
+            $schedule->command('nohup "currency:update" --type=restart')
+                     ->hourlyAt('58')
+                     ->timezone(config('app.timezone'));
+
+            $schedule->command('nohup "crypto:update" --type=restart')
+                     ->hourlyAt('58')
+                     ->timezone(config('app.timezone'));
         }
     }
 

@@ -102,5 +102,11 @@ return [
         'usercode' => env('NETGSM_USERCODE'),
         'password' => env('NETGSM_PASSWORD'),
         'msgheader' => env('NETGSM_MSGHEADER')
+    ],
+
+    'cryptocompare' => [
+        'api' => [
+            'key' => env('CRYPTOCOMPARE')
+        ]
     ]
 ];
