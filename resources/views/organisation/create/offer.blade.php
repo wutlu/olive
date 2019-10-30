@@ -12,7 +12,8 @@
         <div class="olive-alert success hide">
             <div class="anim"></div>
             <h4 class="mb-2">Organizasyon Oluşturuldu!</h4>
-            <p class="mb-2">Organizasyonunuz aktif edildi. İyi araştırmalar dileriz...</p>
+            <p>Organizasyonunuz aktif! Seçtiğiniz tüm özellikleri 1 gün boyunca ücretsiz olarak kullanabilirsiniz.<p>
+            <p class="mb-2"> İyi araştırmalar dileriz!</p>
             <a href="{{ route('dashboard') }}" class="btn-flat waves-effect">Ana Sayfa</a>
             <a href="{{ route('settings.organisation') }}" class="btn green waves-effect">Organizasyon</a>
         </div>
