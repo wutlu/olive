@@ -55,7 +55,7 @@
 
                         if (o.user)
                         {
-                            item.find('[data-name=user]').html('(' + o.user.name + ')').attr('href', '/admin/kullanici-yonetimi/kullanici/' + o.user.id).removeClass('hide')
+                            item.find('[data-name=user]').html('(' + o.user.name + ')').attr('href', '/admin/kullanici-yonetimi/kullanici/' + o.user.id).removeClass('hide').addClass('blue-grey-text')
                         }
 
                         if (o.device)
