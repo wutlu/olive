@@ -52,15 +52,21 @@
                         @endforeach
                     </ul>
                     <div class="card-content d-flex justify-content-end">
-                        <a href="#" class="btn-flat btn-large waves-effect" data-steps="2">
+                        <button type="button" class="btn blue-grey btn-large waves-effect" data-steps="2">
                             <i class="material-icons">arrow_forward</i>
-                        </a>
+                        </button>
                     </div>
                 </div>
                 <div class="flex-fill card card-unstyled hide" data-step="2">
                     <div class="card-content card-step">
                         <span class="step">2/4</span>
                         <span class="title">Veri Kaynakları</span>
+                    </div>
+                    <div class="card-content red-text text-darken-2 hide" data-alert="trend-info">
+                        @component('components.alert')
+                            @slot('icon', 'info')
+                            @slot('text', 'Seçtiğiniz modül(ler) veri kaynağına ihtiyaç duymuyor.')
+                        @endcomponent
                     </div>
                     <ul class="collection collection-hoverable" data-tab="source">
                         @foreach (config('system.modules') as $key => $module)
@@ -81,12 +87,12 @@
                     </ul>
                     <div class="card-content info-bg">Olive örümcekleri tıpkı Google'ın yaptığı gibi fakat Google'dan biraz daha hızlı bir şekilde web'de gezinerek çeşitli mecralardan veri elde eder. Bu veri türlerinden hangilerine erişmek istiyorsunuz?</div>
                     <div class="card-content d-flex justify-content-between">
-                        <a href="#" class="btn-flat btn-large waves-effect" data-steps="1" data-prev="true">
+                        <button type="button" class="btn red lighten-2 btn-large waves-effect" data-steps="1" data-prev="true">
                             <i class="material-icons">arrow_back</i>
-                        </a>
-                        <a href="#" class="btn-flat btn-large waves-effect" data-steps="3">
+                        </button>
+                        <button type="button" class="btn blue-grey btn-large waves-effect" data-steps="3">
                             <i class="material-icons">arrow_forward</i>
-                        </a>
+                        </button>
                     </div>
                 </div>
                 <div class="flex-fill card card-unstyled hide" data-step="3">
@@ -199,12 +205,12 @@
                         </div>
                     </div>
                     <div class="card-content d-flex justify-content-between">
-                        <a href="#" class="btn-flat btn-large waves-effect" data-steps="2" data-prev="true">
+                        <button type="button" class="btn red lighten-2 btn-large waves-effect" data-steps="2" data-prev="true">
                             <i class="material-icons">arrow_back</i>
-                        </a>
-                        <a href="#" class="btn-flat btn-large waves-effect" data-steps="4">
+                        </button>
+                        <button type="button" class="btn blue-grey btn-large waves-effect" data-steps="4">
                             <i class="material-icons">arrow_forward</i>
-                        </a>
+                        </button>
                     </div>
                 </div>
                 <div class="flex-fill card card-unstyled hide" data-step="4">
@@ -317,10 +323,10 @@
                     </div>
                     <div class="card-content info-bg">Bazı içerikler Olive örümceklerinin gözünden kaçabilir. Bu gibi durumlarda takip edilmesini istediğiniz özel kaynakları belirtebilirsiniz.</div>
                     <div class="card-content d-flex justify-content-between">
-                        <a href="#" class="btn-flat btn-large waves-effect" data-steps="3" data-prev="true">
+                        <button type="button" class="btn red lighten-2 btn-large waves-effect" data-steps="3" data-prev="true">
                             <i class="material-icons">arrow_back</i>
-                        </a>
-                        <button type="submit" class="btn-flat btn-large waves-effect">Oluştur</button>
+                        </button>
+                        <button type="submit" class="btn cyan darken-2 btn-large waves-effect">Oluştur</button>
                     </div>
                 </div>
             </div>
@@ -427,10 +433,14 @@
         if (min_data_select)
         {
             source_inputs.removeClass('disabled').removeAttr('disabled')
+
+            $('[data-alert=trend-info]').addClass('hide')
         }
         else
         {
             source_inputs.addClass('disabled').attr('disabled', 'disabled').prop('checked', false)
+
+            $('[data-alert=trend-info]').removeClass('hide')
         }
 
         if (min_pool_select)
@@ -499,6 +509,12 @@
         $('[data-step=' + next + ']').removeClass('hide').hide().show('drop', {}, 600)
 
         $('[data-name=alert]').addClass('hide')
+
+        _scrollTo({
+            'target': '#offer',
+            'tolerance': '-64px',
+            'speed': 1
+        })
     })
 
     function calculate()
@@ -541,7 +557,13 @@
         if (obj.status == 'ok')
         {
             __.addClass('hide')
+
             $('.olive-alert').removeClass('hide')
+
+            _scrollTo({
+                'target': '.olive-alert',
+                'tolerance': '-64px'
+            })
         }
         else if (obj.status == 'step')
         {
@@ -550,6 +572,12 @@
             $('[data-step]').addClass('hide')
 
             $('[data-step=' + obj.step + ']').removeClass('hide').hide().show('fade', {}, 600)
+
+            _scrollTo({
+                'target': '[data-name=alert]',
+                'tolerance': '-256px',
+                'speed': 1
+            })
         }
     }
 @endpush
