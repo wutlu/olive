@@ -41,7 +41,7 @@
                                 @if ($key == 'module_real_time')
                                     <p class="mb-0">Geniş çaplı filtreleme özellikleri ve kullanıcı dostu arayüzü ile gündemdeki paylaşımları eş zamanlı izlemenizi sağlar.</p>
                                 @elseif ($key == 'module_search')
-                                    <p class="mb-0">Eş zamanlı veya geçmişe yönelik sosyal medya ve web verileri içerisinden geniş çaplı filtreler ile aramalar gerçekleştirebilirsiniz. Elde edeceğiniz sonuçları görselleştirerek kitle ölçümlemeleri, rakip analizleri ve çeşitli görüler elde edebilmenize olanak tanır.</p>
+                                    <p class="mb-0">Eş zamanlı veya geçmişe yönelik sosyal medya ve web verileri içerisinden geniş çaplı filtreler ile aramalar gerçekleştirebilirsiniz. Ayrıca elde edeceğiniz sonuçları görselleştirerek kitle ölçümleri, rakip analizleri ve çeşitli görüler elde edebilmenize olanak tanır.</p>
                                 @elseif ($key == 'module_trend')
                                     <p class="mb-0">Eş zamanlı veya geçmişe yönelik trend olmuş; kelime, kullanıcı veya başlık takibi, genel veya sektörel popüler kullanıcı listeleri sağlar.</p>
                                 @elseif ($key == 'module_alarm')
@@ -342,6 +342,7 @@
         <div class="olive-alert warning">
             <div class="anim"></div>
             <h4 class="mb-2">GSM Ekleyin</h4>
+            <p>Bir çok ücretsiz özelliği organizasyon oluşturmadan da kullanabilirsiniz. Ancak tüm özelliklerden faydalanmak için bir organizasyon oluşturmanız gerekiyor.</p>
             <p class="mb-2">Organizasyon oluşturabilmek için öncelikle bir GSM numarası eklemeniz gerekiyor.</p>
             <a href="{{ route('settings.mobile') }}" class="btn-flat waves-effect">GSM Ekle</a>
         </div>

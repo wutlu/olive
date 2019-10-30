@@ -254,6 +254,12 @@ class OrganisationController extends Controller
                 ]
             );
 
+            if (!$user->badge(12))
+            {
+                ### [ organizatör ] ###
+                $user->addBadge(12);
+            }
+
             return [
                 'status' => 'ok'
             ];

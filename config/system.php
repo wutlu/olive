@@ -317,6 +317,11 @@ return [
                 'image_src' => 'img/icons/badges/partner.png',
                 'description' => 'Partner sistemine dahil olun.'
             ],
+            12 => [
+                'name' => 'Organizatör',
+                'image_src' => 'img/icons/badges/organisation.png',
+                'description' => 'Bir organizasyon oluşturun.'
+            ],
 
             /* ... */
 
