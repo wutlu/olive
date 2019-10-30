@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Organisation;
 
 use Illuminate\Foundation\Http\FormRequest;
+
 use Validator;
 
 class NameRequest extends FormRequest
@@ -25,7 +26,7 @@ class NameRequest extends FormRequest
     public function messages()
     {
         return [
-            'name' => 'Sadece alfa-nümerik karakterler ve "." nokta kullanabilirsiniz.',
+            'name' => 'Sadece alfa-nümerik karakterler ve "-" tire kullanabilirsiniz.',
         ];
     }
 
@@ -37,7 +38,7 @@ class NameRequest extends FormRequest
     public function rules()
     {
         Validator::extend('name', function($attribute, $value) {
-            return !preg_match('/[^a-zA-Z0-9\.]/', $value);
+            return !preg_match('/[^a-zA-Z0-9-]/', $value);
         });
 
         return [

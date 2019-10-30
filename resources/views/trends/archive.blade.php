@@ -116,7 +116,7 @@
                 </div>
             </div>
             <div class="card-content">
-                <button type="submit" class="btn blue-grey waves-effect">Süz</button>
+                <button type="submit" class="btn btn-large blue-grey darken-2 waves-effect">Süz</button>
             </div>
         </div>
     </form>

@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 
 use App\Http\Requests\Search\ArchiveRequest;
 use App\Http\Requests\Search\SaveRequest;
+use App\Http\Requests\Search\CompareRequest;
 use App\Http\Requests\QRequest;
 use App\Http\Requests\IdRequest;
 
@@ -19,6 +20,8 @@ use App\Models\SavedSearch;
 use App\Models\Geo\States;
 
 use App\Utilities\Crawler;
+
+use Carbon\Carbon;
 
 class SearchController extends Controller
 {
@@ -39,6 +42,8 @@ class SearchController extends Controller
             'can:organisation-status',
             'organisation:have,module_search'
         ])->only([
+            'compare',
+            'compareProcess',
             'search',
             'aggregation',
             'save'
@@ -49,6 +54,181 @@ class SearchController extends Controller
             'search',
             'aggregation'
         ]);
+    }
+
+    /**
+     * Veri Kıyaslama
+     *
+     * @return view
+     */
+    public static function compare()
+    {
+        $organisation = auth()->user()->organisation;
+
+        return view('compare', compact('organisation'));
+    }
+
+    /**
+     * Veri Kıyaslama İşlem
+     *
+     * @return array
+     */
+    public static function compareProcess(CompareRequest $request)
+    {
+        if (count($request->searches) >= 2)
+        {
+            $results = [];
+
+            $begin = new \DateTime($request->start_date);
+            $end   = new \DateTime($request->end_date);
+
+            $dates_model = [];
+
+            for($i = $begin; $i <= $end; $i->modify('+1 day')){
+                $dates_model[$i->format('Y-m-d')] = 0;
+            }
+
+            $organisation = auth()->user()->organisation;
+
+            foreach ($request->searches as $id)
+            {
+                $search = SavedSearch::where('id', $id)->first();
+
+                if (@$search)
+                {
+                    $dates = $dates_model;
+                    $data = [];
+
+                    $clean = Term::cleanSearchQuery($search->string);
+
+                    $q = [
+                        'size' => 0,
+                        'query' => [
+                            'bool' => [
+                                'filter' => [
+                                    'range' => [
+                                        'created_at' => [
+                                            'format' => 'YYYY-MM-dd',
+                                            'gte' => date('Y-m-d', strtotime($request->start_date)),
+                                            'lte' => date('Y-m-d', strtotime($request->end_date))
+                                        ]
+                                    ]
+                                ],
+                                'must' => [
+                                    [ 'exists' => [ 'field' => 'created_at' ] ],
+                                    [
+                                        'query_string' => [
+                                            'fields' => [
+                                                'title',
+                                                'description',
+                                                'entry',
+                                                'text'
+                                            ],
+                                            'query' => $clean->line,
+                                            'default_operator' => 'AND'
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ],
+                        'aggs' => [
+                            'metrics_by_day' => [
+                                'date_histogram' => [
+                                    'field' => 'created_at',
+                                    'interval' => 'day',
+                                    'format' => 'yyyy-MM-dd',
+                                    'min_doc_count' => 1
+                                ]
+                            ]
+                        ]
+                    ];
+
+                    if ($search->category)
+                    {
+                        $q['query']['bool']['must'][] = [ 'match' => [ 'category' => config('system.analysis.category.types')[$search->category]['title'] ] ];
+                    }
+
+                    foreach ([ [ 'consumer' => [ 'nws', 'que', 'req', 'cmp' ] ], [ 'sentiment' => [ 'pos', 'neg', 'neu', 'hte' ] ] ] as $key => $bucket)
+                    {
+                        foreach ($bucket as $key => $b)
+                        {
+                            foreach ($b as $o)
+                            {
+                                if ($search->{$key.'_'.$o})
+                                {
+                                    $q['query']['bool']['filter'][] = [
+                                        'range' => [
+                                            implode('.', [ $key, $o ]) => [
+                                                'gte' => implode('.', [ 0, $search->{$key.'_'.$o} ])
+                                            ]
+                                        ]
+                                    ];
+                                }
+                            }
+                        }
+                    }
+
+                    foreach ($search->modules as $module)
+                    {
+                        switch ($module)
+                        {
+                            case 'twitter'         : if ($organisation->data_twitter)         $data[] = self::tweet          ($search, $q)['aggs']; break;
+                            case 'instagram'       : if ($organisation->data_instagram)       $data[] = self::instagram      ($search, $q)['aggs']; break;
+                            case 'sozluk'          : if ($organisation->data_sozluk)          $data[] = self::sozluk         ($search, $q)['aggs']; break;
+                            case 'news':
+                                if ($organisation->data_news)
+                                {
+                                    $news_q = $q;
+
+                                    if ($search->state)
+                                    {
+                                        $news_q['query']['bool']['must'][] = [ 'match' => [ 'state' => $search->state ] ];
+                                    }
+
+                                    $data[] = self::news($search, $news_q)['aggs'];
+                                }
+                            break;
+                            case 'blog'            : if ($organisation->data_blog)            $data[] = self::blog           ($search, $q)['aggs']; break;
+                            case 'youtube_video'   : if ($organisation->data_youtube_video)   $data[] = self::youtube_video  ($search, $q)['aggs']; break;
+                            case 'youtube_comment' : if ($organisation->data_youtube_comment) $data[] = self::youtube_comment($search, $q)['aggs']; break;
+                            case 'shopping'        : if ($organisation->data_shopping)        $data[] = self::shopping       ($search, $q)['aggs']; break;
+                        }
+                    }
+
+                    foreach ($data as $dt)
+                    {
+                        if (@$dt['metrics_by_day']['buckets'])
+                        {
+                            foreach ($dt['metrics_by_day']['buckets'] as $bucket)
+                            {
+                                $dates[$bucket['key_as_string']] = $dates[$bucket['key_as_string']] + $bucket['doc_count'];
+                            }
+                        }
+                    }
+
+                    $results[] = [
+                        'name' => $search->name,
+                        'data' => array_values($dates)
+                    ];
+                }
+            }
+
+            return [
+                'status' => 'ok',
+                'categories' => array_keys($dates_model),
+                'datas' => $results,
+            ];
+        }
+        else
+        {
+            return [
+                'status' => 'failed',
+                'reason' => [
+                    'title' => 'Eksik Seçim',
+                    'text' => 'Lütfen en az 2 kayıtlı arama seçin!'
+                ]
+            ];
+        }
     }
 
     /**

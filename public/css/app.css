@@ -3188,6 +3188,17 @@ nav.nav-half {
   -webkit-box-shadow: 0 0 4px 1px #f44336;
           box-shadow: 0 0 4px 1px #f44336;
 }
+.olive-alert.info {
+  color: #39b49a;
+}
+.olive-alert.info > .anim {
+  background-image: url('../img/info-anim.gif');
+
+  background-color: #39b49a;
+
+  -webkit-box-shadow: 0 0 4px 1px #39b49a;
+          box-shadow: 0 0 4px 1px #39b49a;
+}
 
 /*!
  * nav scrolled

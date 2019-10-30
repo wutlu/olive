@@ -23,104 +23,6 @@ $(document).on('click', '.read-aloud', function() {
         __.addClass('playing').children('i.material-icons').html('stop')
         $.playSound('https://tts.voicetech.yandex.net/tts?text=' + text + '&lang=tr_TR&format=mp3&platform=web&application=translate&chunked=0&mock-ranges=1')
     }
-}).on('click', '[data-trigger=createAnalysis]', function() {
-    var __ = $(this);
-
-    var mdl = modal({
-        'id': 'createAnalysis',
-        'body': $('<form />', {
-            'method': 'post',
-            'action': '/analiz-araclari/analiz',
-            'id': 'createAnalysis-form',
-            'class': 'json',
-            'data-callback': '__analysis_create',
-            'html': [
-                $('<input />', { 'type': 'hidden', 'name': 'id', 'value': __.data('id') }),
-                $('<input />', { 'type': 'hidden', 'name': 'type', 'value': __.data('type') }),
-                $('<input />', { 'type': 'hidden', 'name': 'index', 'value': __.data('index') }),
-                $('<ul />', {
-                    'class': 'collection collection-unstyled',
-                    'html': [
-                        $('<li />', {
-                            'class': 'collection-item d-flex',
-                            'html': $('<label />', {
-                                'class': 'flex-fill align-self-center',
-                                'html': [
-                                    $('<input />', {
-                                        'type': 'checkbox',
-                                        'name': 'data_pool',
-                                        'id': 'data_pool',
-                                        'value': 'on'
-                                    }),
-                                    $('<span />', {
-                                        'html': 'Kullanıcıyı Veri Havuzuna Ekle'
-                                    })
-                                ]
-                            })
-                        }),
-                        $('<li />', {
-                            'class': 'collection-item d-flex',
-                            'html': [
-                                $('<i />', {
-                                    'class': 'material-icons align-self-center mr-1',
-                                    'html': 'info'
-                                }),
-                                $('<span />', {
-                                    'class': 'align-self-center',
-                                    'html': 'Oluşturacağınız analiz aracı, paylaşımı yapan kullanıcının profil değerlerini her gece kontrol eder.'
-                                })
-                            ]
-                        }),
-                        $('<li />', {
-                            'class': 'collection-item d-flex',
-                            'html': [
-                                $('<i />', {
-                                    'class': 'material-icons align-self-center mr-1 red-text',
-                                    'html': 'warning'
-                                }),
-                                $('<span />', {
-                                    'class': 'align-self-center red-text',
-                                    'html': 'Daha iyi sonuçlar alabilmek için, analiz alacağınız profilleri Veri Havuzuna da eklemelisiniz.'
-                                })
-                            ]
-                        }),
-                        $('<li />', {
-                            'class': 'collection-item d-flex',
-                            'html': [
-                                $('<i />', {
-                                    'class': 'material-icons align-self-center mr-1',
-                                    'html': 'info'
-                                }),
-                                $('<span />', {
-                                    'class': 'align-self-center',
-                                    'html': 'Takip ettiğiniz kullanıcıları Analiz Araçları sayfasından inceleyebilirsiniz.'
-                                })
-                            ]
-                        })
-                    ]
-                })
-            ]
-        }),
-        'size': 'modal-medium',
-        'title': 'Analiz Aracı Oluştur',
-        'options': {},
-        'footer': [
-            $('<a />', {
-                'href': '#',
-                'class': 'modal-close waves-effect btn-flat grey-text',
-                'html': buttons.cancel
-            }),
-            $('<span />', {
-                'html': ' '
-            }),
-            $('<button />', {
-                'type': 'submit',
-                'class': 'waves-effect btn-flat',
-                'data-submit': 'form#createAnalysis-form',
-                'html': buttons.ok
-            })
-        ]
-    })
 }).on('click', '[data-trigger=updateClass]', function() {
     var __ = $(this);
 
@@ -338,21 +240,6 @@ $(document).on('click', '.read-aloud', function() {
     return mdl;
 })
 
-function __analysis_create(__, obj)
-{
-    if (obj.status == 'ok')
-    {
-        $('#modal-createAnalysis').modal('close')
-
-        M.toast({ html: 'Analiz Aracı Oluşturuldu', classes: 'green' })
-
-        if (obj.data.data_pool == false)
-        {
-            M.toast({ html: 'Veri havuzunuz dolduğundan, seçtiğiniz hesap, veri havuzuna eklenemedi.', classes: 'red' })
-        }
-    }
-}
-
 function __update_class(__, obj)
 {
     if (obj.status == 'ok')
@@ -537,21 +424,7 @@ function __joints(o)
                                 'data-pin-uuid': o.uuid,
                                 'data-index': o._index,
                                 'data-type': o._type
-                            }).addClass($('[data-name=pin-dock-trigger]').length ? '' : 'hide'),
-                            $('<span />', { 'html': ' ' }),
-                            $('<a />', {
-                                'class': 'align-self-center btn-flat btn-floating waves-effect hide',
-                                'href': '#',
-                                'data-trigger': 'createAnalysis',
-                                'data-index': o._index,
-                                'data-type': o._type,
-                                'data-id': o._id,
-                                'html': $('<i />', {
-                                    'class': 'material-icons',
-                                    'html': 'pie_chart',
-                                    'css': { 'font-size': '24px' }
-                                })
-                            }).removeClass((o._type == 'tweet' || o._type == 'media' || o._type == 'video' || o._type == 'comment') ? 'hide' : '')
+                            }).addClass($('[data-name=pin-dock-trigger]').length ? '' : 'hide')
                         ]
                     }),
                     $('<div />', {

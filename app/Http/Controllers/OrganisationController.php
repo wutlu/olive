@@ -1165,7 +1165,6 @@ class OrganisationController extends Controller
         Option::updateOrCreate([ 'key' => 'unit_price.data_instagram'                  ], [ 'value' => $request->data_instagram                  ]);
 
         Option::updateOrCreate([ 'key' => 'unit_price.pin_group_limit'                 ], [ 'value' => $request->pin_group_limit                 ]);
-        Option::updateOrCreate([ 'key' => 'unit_price.analysis_tools_limit'            ], [ 'value' => $request->analysis_tools_limit            ]);
         Option::updateOrCreate([ 'key' => 'unit_price.saved_searches_limit'            ], [ 'value' => $request->saved_searches_limit            ]);
         Option::updateOrCreate([ 'key' => 'unit_price.historical_days'                 ], [ 'value' => $request->historical_days                 ]);
 
@@ -1257,7 +1256,6 @@ class OrganisationController extends Controller
         $arr = [
             'historical_days'                  => '*',
             'pin_group_limit'                  => '*',
-            'analysis_tools_limit'             => '*',
             'saved_searches_limit'             => '*',
 
             'module_real_time'                 => '+',
@@ -1344,7 +1342,6 @@ class OrganisationController extends Controller
         $organisation->end_date = $request->end_date.' '.$request->end_time;
         $organisation->historical_days = $request->historical_days;
         $organisation->pin_group_limit = $request->pin_group_limit;
-        $organisation->analysis_tools_limit = $request->analysis_tools_limit;
         $organisation->saved_searches_limit = $request->saved_searches_limit;
 
         $organisation->data_pool_youtube_channel_limit = $request->data_pool_youtube_channel_limit;

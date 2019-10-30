@@ -83,6 +83,11 @@ Route::domain('olive.'.config('app.domain'))->group(function () {
         Route::patch('update/name', 'OrganisationController@updateName')->name('organisation.update.name');
     });
 
+    Route::prefix('veri-kiyasla')->group(function () {
+        Route::get('/', 'SearchController@compare')->name('compare.dashboard');
+        Route::post('islem', 'SearchController@compareProcess')->name('compare.process');
+    });
+
     Route::prefix('arama-motoru')->group(function () {
         Route::get('/', 'SearchController@dashboard')->name('search.dashboard');
 
@@ -284,13 +289,6 @@ Route::domain('olive.'.config('app.domain'))->group(function () {
             Route::put('baglanti', 'DataController@urlCreate')->name('instagram.url.create');
             Route::delete('baglanti', 'DataController@urlDelete')->name('instagram.url.delete');
         });
-    });
-
-    Route::prefix('analiz-araclari')->group(function () {
-        Route::get('/', 'AnalysisToolsController@dashboard')->name('analysis_tools.dashboard');
-        Route::get('analiz/{id}', 'AnalysisToolsController@analysis')->name('analysis_tools.analysis');
-        Route::post('analiz', 'AnalysisToolsController@create');
-        Route::delete('analiz', 'AnalysisToolsController@delete')->name('analysis_tools.analysis.delete');
     });
 
     Route::prefix('oturum')->group(function () {

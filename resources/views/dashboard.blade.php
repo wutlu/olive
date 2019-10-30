@@ -106,6 +106,12 @@
             <div class="fast-menu">
                 @foreach ([
                     [
+                        'route' => route('compare.dashboard'),
+                        'icon' => 'pie_chart',
+                        'name' => 'Veri Kıyasla <sup class="red-text">Yeni</sup>',
+                        'key' => 'pool'
+                    ],
+                    [
                         'route' => route('trend.live'),
                         'icon' => 'trending_up',
                         'name' => 'Canlı Trend',
@@ -146,12 +152,6 @@
                         'icon' => 'forum',
                         'name' => 'Forum',
                         'key' => 'forum'
-                    ],
-                    [
-                        'route' => route('analysis_tools.dashboard'),
-                        'icon' => 'pie_chart',
-                        'name' => 'Analiz Araçları <sup class="red-text">Yakında</sup>',
-                        'key' => 'pool'
                     ],
                     [
                         'route' => route('trend.archive'),

@@ -4,7 +4,7 @@ return [
     /**
      * Sistem Versiyonu
      */
-    'version' => '6.0.7',
+    'version' => '6.0.8',
 
     /**
      * db
@@ -580,11 +580,13 @@ return [
                 'root' => true,
                 'icon' => 'widgets'
             ],
+            /*
             35 => [
                 'name' => 'Analiz Araçları',
                 'route' => 'analysis_tools.dashboard',
                 'icon' => 'pie_chart'
             ],
+            */
             36 => [
                 'name' => 'Popüler Kaynaklar',
                 'route' => 'trend.popular',

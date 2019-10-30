@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+
 use App\Elasticsearch\Document;
 use App\Elasticsearch\Indices;
 
@@ -10,19 +11,17 @@ use App\Models\Crawlers\SozlukCrawler;
 use App\Models\Crawlers\MediaCrawler;
 use App\Models\Crawlers\ShoppingCrawler;
 use App\Models\Crawlers\BlogCrawler;
+use App\Models\ReportedContents;
 
 use Carbon\Carbon;
+
+use System;
 
 use App\Utilities\Term;
 
 use App\Http\Requests\SearchRequest;
 use App\Http\Requests\IdRequest;
-
-use System;
-
 use App\Http\Requests\ClassificationRequest;
-
-use App\Models\ReportedContents;
 
 class ContentController extends Controller
 {

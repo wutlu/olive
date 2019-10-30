@@ -304,7 +304,6 @@ $arr = [
         'data_shopping'                   => 'E-ticaret Verileri',
 
         'pin_group_limit'                 => 'Pin Grubu Limiti',
-        'analysis_tools_limit'            => 'Analiz Araçları Limiti',
         'historical_days'                 => 'Geriye Dönük Arama Limiti',
         'saved_searches_limit'            => 'Arama Kaydetme Limiti',
 

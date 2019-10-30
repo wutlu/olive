@@ -28,5 +28,5 @@
   background-color: transparent !important;
   border-width: 1px 0;
   border-style: solid;
-  border-color: #162248 transparent #27474f;
+  border-color: rgba(0, 0, 0, .4) transparent rgba(255, 255, 255, .1);
 }

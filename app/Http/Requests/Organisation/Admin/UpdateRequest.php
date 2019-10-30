@@ -8,10 +8,6 @@ use Illuminate\Http\Request;
 
 use Validator;
 
-use App\Models\Option;
-
-use System;
-
 class UpdateRequest extends FormRequest
 {
     /**
@@ -32,7 +28,7 @@ class UpdateRequest extends FormRequest
     public function messages()
     {
         return [
-            'name' => 'Sadece alfa-nümerik karakterler ve "." nokta kullanabilirsiniz.',
+            'name' => 'Sadece alfa-nümerik karakterler ve "-" tire kullanabilirsiniz.',
         ];
     }
 
@@ -43,10 +39,8 @@ class UpdateRequest extends FormRequest
      */
     public function rules()
     {
-        $prices = Option::select('key', 'value')->where('key', 'LIKE', 'unit_price.%')->get()->keyBy('key')->toArray();
-
         Validator::extend('name', function($attribute, $value) {
-            return !preg_match('/[^a-zA-Z0-9\.]/', $value);
+            return !preg_match('/[^a-zA-Z0-9-]/', $value);
         });
 
         $validations = [
@@ -57,7 +51,6 @@ class UpdateRequest extends FormRequest
             'historical_days' => 'required|integer|max:90|min:0',
 
             'pin_group_limit' => 'required|integer|max:12|min:0',
-            'analysis_tools_limit' => 'required|integer|max:100|min:0',
             'saved_searches_limit' => 'required|integer|max:12|min:0',
 
             'data_pool_youtube_channel_limit' => 'required|integer|max:100|min:0',

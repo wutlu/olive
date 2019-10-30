@@ -28,7 +28,7 @@ class CreateRequest extends FormRequest
     public function messages()
     {
         return [
-            'organisation_name' => 'Sadece alfa-nümerik karakterler ve "." nokta kullanabilirsiniz.',
+            'organisation_name' => 'Sadece alfa-nümerik karakterler ve "-" tire kullanabilirsiniz.',
             'organisation_exists' => 'Bu kullanıcı zaten bir organizasyona dahil.'
         ];
     }
@@ -41,7 +41,7 @@ class CreateRequest extends FormRequest
     public function rules()
     {
         Validator::extend('organisation_name', function($attribute, $value) {
-            return !preg_match('/[^a-zA-Z0-9\.]/', $value);
+            return !preg_match('/[^a-zA-Z0-9-]/', $value);
         });
 
         Validator::extend('organisation_exists', function($attribute, $name) {

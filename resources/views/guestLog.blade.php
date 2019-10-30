@@ -97,8 +97,8 @@
                 <tr>
                     <th>IP</th>
                     <th>Ping</th>
-                    <th>Donanım</th>
-                    <th>Cihaz</th>
+                    <th class="hide-on-med-and-down">Donanım</th>
+                    <th class="hide-on-med-and-down">Cihaz</th>
                     <th>Sayfa</th>
                     <th>Referer</th>
                 </tr>
@@ -121,7 +121,7 @@
                         <span class="d-table" data-name="ping"></span>
                         <span class="d-table" data-name="updated-at"></span>
                     </th>
-                    <th>
+                    <th class="hide-on-med-and-down">
                         <span class="d-table">
                             <span data-name="type"></span>
                             <span data-name="robot" class="hide"></span>
@@ -129,7 +129,7 @@
                         <span data-name="os"></span>
                         <span data-name="browser"></span>
                     </th>
-                    <th data-name="device">-</th>
+                    <th class="hide-on-med-and-down" data-name="device">-</th>
                     <th>
                         <a target="_blank" href="#" data-name="page">
                             <i class="material-icons">language</i>

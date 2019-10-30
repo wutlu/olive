@@ -35,7 +35,7 @@ class ArchiveRequest extends FormRequest
     public function messages()
     {
         return [
-            'date_limit' => 'Başlangıç tarihi '.$this->historical_days.' günden önce olamaz.'
+            'date_limit' => 'Başlangıç tarihi en fazla '.$this->historical_days.' gün öncesi olabilir.'
         ];
     }
 

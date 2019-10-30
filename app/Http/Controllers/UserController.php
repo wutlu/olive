@@ -1116,7 +1116,6 @@ class UserController extends Controller
 
             $organisation->historical_days = $request->historical_days;
             $organisation->pin_group_limit = $request->pin_group_limit;
-            $organisation->analysis_tools_limit = $request->analysis_tools_limit;
             $organisation->saved_searches_limit = $request->saved_searches_limit;
 
             $organisation->data_pool_youtube_channel_limit = $request->data_pool_youtube_channel_limit;
