@@ -21,7 +21,12 @@
 #slide-out .grey-text {
   color: #90a4ae !important;
 }
-#slide-out .divider,
 #slide-out .grey {
   background-color: #212121 !important;
+}
+#slide-out .divider {
+  background-color: transparent !important;
+  border-width: 1px 0;
+  border-style: solid;
+  border-color: #162248 transparent #27474f;
 }
