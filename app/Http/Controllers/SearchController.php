@@ -894,7 +894,7 @@ class SearchController extends Controller
         ];
     }
 
-    public static function shopping($search)
+    public static function shopping($search, array $q)
     {
         $aggs = [];
         $data = [];
