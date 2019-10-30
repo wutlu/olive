@@ -592,6 +592,11 @@ return [
                 'route' => 'trend.popular',
                 'icon' => 'people'
             ],
+            37 => [
+                'name' => 'Veri Kıyasla',
+                'route' => 'compare.dashboard',
+                'icon' => 'pie_chart'
+            ],
         ]
     ],
 ];

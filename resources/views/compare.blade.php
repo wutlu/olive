@@ -116,7 +116,7 @@
             <li class="nothing hide">
                 @component('components.nothing')
                     @slot('size', 'small')
-                    @slot('text', 'Veri karşılaştırmak için 2 kayıtlı aramanızın olması gerekiyor.<br />Lütfen öncelikle <a class="blue-grey-text" href="'.route('search.dashboard').'">Arama Motoru</a> ile 2 kayıtlı arama oluşturun.')
+                    @slot('text', 'Veri karşılaştırmak için 2 kayıtlı aramanızın olması gerekiyor.<br />Lütfen öncelikle <a class="blue-grey-text" href="'.route('search.dashboard').'">Arama Motoru</a> ile 2 arama kaydedin.')
                 @endcomponent
             </li>
         </ul>
