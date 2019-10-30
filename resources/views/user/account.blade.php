@@ -38,14 +38,14 @@
                     <div class="input-field" style="max-width: 240px;">
                         <input name="name" id="name" value="{{ $user->name }}" type="text" class="validate" />
                         <label for="name">Ad</label>
-                        <small class="helper-text">Sistem üzerinde görünen kullanıcı adınız.</small>
+                        <small class="helper-text">Kullanıcı Adınız</small>
                     </div>
                 </div>
                 <div class="collection-item">
                     <div class="input-field" style="max-width: 240px;">
                         <input name="email" id="email" value="{{ $user->email }}" type="email" class="validate" />
                         <label for="email">E-posta</label>
-                        <small class="helper-text">Sistemdeki e-posta adresiniz.</small>
+                        <small class="helper-text">E-posta Adresiniz</small>
                     </div>
                 </div>
                 <div class="collection-item">

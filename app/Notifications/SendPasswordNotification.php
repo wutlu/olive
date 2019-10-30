@@ -11,7 +11,7 @@ class SendPasswordNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    protected $name;
+    protected $email;
     protected $password;
 
     /**
@@ -19,9 +19,9 @@ class SendPasswordNotification extends Notification implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(string $name, string $password)
+    public function __construct(string $email, string $password)
     {
-        $this->name = $name;
+        $this->email = $email;
         $this->password = $password;
     }
 
@@ -44,9 +44,9 @@ class SendPasswordNotification extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        $message[] = '| Kullanıcı Adı   | Şifre                  |';
-        $message[] = '| --------------: | :--------------------- |';
-        $message[] = '| '.$this->name.' | '.$this->password.'    |';
+        $message[] = '| E-posta          | Şifre                  |';
+        $message[] = '| ---------------: | :--------------------- |';
+        $message[] = '| '.$this->email.' | '.$this->password.'    |';
 
         return (new MailMessage)
                 ->subject('Olive: Hesap Bilgileriniz')

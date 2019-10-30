@@ -198,7 +198,7 @@ class OrganisationController extends Controller
             $calculate = self::calculate($request);
 
             $organisation->status = true;
-            $organisation->name = $user->name.'.org';
+            $organisation->name = $user->name.'-org';
             $organisation->user_capacity = $request->user_capacity;
             $organisation->start_date = date('Y-m-d H:i:s');
             $organisation->end_date = date('Y-m-d H:i:s', strtotime('+36 hours'));
@@ -442,7 +442,7 @@ class OrganisationController extends Controller
 
             $user = User::find($user->id);
 
-            $user->notify((new SendPasswordNotification($new_name, $new_password))->onQueue('email'));
+            $user->notify((new SendPasswordNotification($user->email, $new_password))->onQueue('email'));
         }
 
         $user->organisation_id = auth()->user()->organisation_id;

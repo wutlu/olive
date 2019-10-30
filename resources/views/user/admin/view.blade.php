@@ -118,7 +118,7 @@
                     <div class="input-field">
                         <input name="name" id="name" value="{{ $user->name }}" type="text" class="validate" />
                         <label for="name">Ad</label>
-                        <small class="helper-text">Kullanıcının sistemdeki kullanıcı adı.</small>
+                        <small class="helper-text">Kullanıcı Adı</small>
                     </div>
                 </div>
                 <div class="collection-item">
@@ -140,7 +140,7 @@
                     <div class="input-field teal-text align-self-center" style="max-width: 240px;">
                         <input name="email" id="email" value="{{ $user->email }}" type="email" class="validate" />
                         <label for="email">E-posta</label>
-                        <small class="helper-text">Kullanıcının sistemdeki e-posta adresi.</small>
+                        <small class="helper-text">E-posta Adresi</small>
                     </div>
                     <label class="align-self-center ml-2">
                         <input name="verified" id="verified" value="on" type="checkbox" {{ $user->verified ? 'checked' : '' }} />
@@ -151,7 +151,7 @@
                     <div class="input-field teal-text" style="max-width: 240px;">
                         <input name="gsm" id="gsm" value="{{ $user->gsm }}" type="text" class="validate" />
                         <label for="gsm">GSM</label>
-                        <small class="helper-text">Kullanıcının sistemdeki gsm numarası.</small>
+                        <small class="helper-text">GSM Numarası</small>
                     </div>
                 </div>
                 <label class="collection-item waves-effect d-flex">

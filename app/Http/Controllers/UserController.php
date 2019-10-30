@@ -759,7 +759,7 @@ class UserController extends Controller
             $password = mt_rand(100000, 999999);
 
             $sms = SMS::send(
-                implode(' ', [ 'Olive giriş bilgileriniz,', 'Kullanıcı Adı: '.$user->name, 'Şifre: '.$password ]),
+                implode(' ', [ 'Olive giriş bilgileriniz,', 'E-posta: '.$user->email, 'Şifre: '.$password ]),
                 [ str_replace([ ' ', '(', ')' ], '', $user->gsm) ]
             );
 
@@ -1068,7 +1068,7 @@ class UserController extends Controller
         $user->verified = true;
         $user->save();
 
-        $user->notify((new SendPasswordNotification($user->name, $password))->onQueue('email'));
+        $user->notify((new SendPasswordNotification($user->email, $password))->onQueue('email'));
 
         foreach (config('system.notifications') as $key => $title)
         {
@@ -1151,7 +1151,7 @@ class UserController extends Controller
         else
         {
             $organisation = new Organisation;
-            $organisation->name = $user->name.'.org';
+            $organisation->name = $user->name.'-org';
             $organisation->user_id = $user->id;
             $organisation->start_date = date('Y-m-d H:i:s');
             $organisation->end_date = date('Y-m-d H:i:s');
