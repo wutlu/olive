@@ -920,16 +920,6 @@
                         <div class="col l2 s12">
                             <ul class="mt-0 mb-1">
                                 <li>
-                                    <a class="grey-text" href="{{ route('page.view', 'hakkimizda') }}">Hakkımızda</a>
-                                </li>
-                                @auth
-                                    <li>
-                                        <a class="grey-text" href="{{ route('sources') }}">Kaynaklar</a>
-                                    </li>
-                                @endauth
-                            </ul>
-                            <ul class="mt-0 mb-0">
-                                <li>
                                     <a class="grey-text" href="{{ route('page.view', 'gizlilik-politikasi') }}">Gizlilik Politikası</a>
                                 </li>
                                 <li>
@@ -937,6 +927,11 @@
                                 </li>
                                 <li>
                                     <a class="grey-text" href="{{ route('page.view', 'kullanim-kosullari') }}">Kullanım Koşulları</a>
+                                </li>
+                            </ul>
+                            <ul class="mt-0 mb-0">
+                                <li>
+                                    <a class="grey-text" href="{{ route('page.view', 'hakkimizda') }}">Hakkımızda</a>
                                 </li>
                                 <li>
                                     <a class="grey-text" href="{{ route('page.view', 'iletisim') }}">İletişim</a>
