@@ -142,7 +142,9 @@
         <h4 class="mb-2">Veri Kıyasla</h4>
         <p>Sağ menüden en az 2 arama seçin ve kıyaslamayı başlatın.</p>
     </div>
-    <div id="chart"></div>
+    <div class="card hide" id="chart-card">
+        <div class="card-content"></div>
+    </div>
 @endsection
 
 @push('external.include.footer')
@@ -154,13 +156,17 @@
     {
         var alert = $('.olive-alert');
 
+        var chart_card = $('#chart-card');
+            chart_card.addClass('hide')
+            chart_card.find('#chart').remove()
+
         if (obj.status == 'ok')
         {
             alert.addClass('hide')
 
             var options = {
                 chart: {
-                    height: 350,
+                    height: 440,
                     type: 'line',
                     toolbar: {
                         show: true,
@@ -173,7 +179,7 @@
                 series: obj.datas,
                 grid: {
                     borderColor: '#f0f0f0',
-                    row: { colors: [ '#f0f0f0' ], opacity: 0.2 }
+                    row: { opacity: 0 }
                 },
                 markers: { size: 6 },
                 yaxis: { min: 0 },
@@ -183,9 +189,12 @@
                     horizontalAlign: 'left'
                 },
                 stroke: {
-                    width: 1     
+                    curve: 'smooth',
+                    width: 1
                 }
             }
+
+            $('#chart-card').removeClass('hide').children('.card-content').append($('<div />', { 'id': 'chart' }))
 
             var chart = new ApexCharts(document.querySelector('#chart'), options);
                 chart.render()
