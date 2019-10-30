@@ -208,7 +208,7 @@
 @section('content')
     <div class="card with-bg">
         <div class="card-image">
-            <img src="{{ asset('img/md-s/25.jpg') }}" alt="Image" />
+            <img src="{{ asset('img/md-s/21.jpg') }}" alt="Image" />
             <span class="card-title white-text d-flex">
                 <i class="material-icons align-self-center mr-1">speaker_notes</i>
                 Pin Grupları
@@ -219,7 +219,7 @@
         </div>
         <div class="card-content">
             <span class="d-block grey-text text-darken-2" data-name="group-count"></span>
-            <p class="grey-text text-darken-2">İlgilendiğiniz içerikleri pinleyerek daha sonra kullanmak üzere saklayabilirsiniz.</p>
+            <p class="grey-text text-darken-2">İlgilendiğiniz içerikleri pinleyerek daha sonra kullanmak üzere gruplar halinde saklayabilirsiniz.</p>
         </div>
         <nav class="nav-half mb-0">
             <div class="nav-wrapper">

@@ -36,26 +36,24 @@
         </table>
     </div>
 
-    <div class="card mt-1">
-        <div class="card-content">
-            <div class="d-flex flex-wrap">
-                <small class="red-text">
-                    Kırmızı, trendin düşüşte olduğunu gösterir.
-                </small>
-                <small class="green-text">
-                    Yeşil, trendin yükselişte olduğunu gösterir.
-                </small>
-                <small class="blue-text">
-                    Mavi, trendin yeni olduğunu gösterir.
-                </small>
-                <small class="grey-text">
-                    Gri, trendin yerini koruduğunu gösterir.
-                </small>
-                <small class="red lighten-4">
-                    Kırmızı zemin, olağanüstü bir hareketlilik olduğunu gösterir.
-                </small>
-            </div>
-        </div>
+    <div class="card card-unstyled mt-1">
+        <ul>
+            <li>
+                <small class="d-table red-text">DÜŞÜŞTE</small>
+            </li>
+            <li>
+                <small class="d-table green-text">YÜKSELİŞTE</small>
+            </li>
+            <li>
+                <small class="d-table blue-text">YENİ</small>
+            </li>
+            <li>
+                <small class="d-table grey-text">YERİNİ KORUYOR</small>
+            </li>
+            <li>
+                <small class="d-table red lighten-4">OLAĞANÜSTÜ BİR HAREKETLİLİK</small>
+            </li>
+        </ul>
     </div>
 @endsection
 
@@ -338,6 +336,41 @@
         -webkit-box-shadow: 0 0 0 4px #bbdefb;
                 box-shadow: 0 0 0 4px #bbdefb;
     }
+
+    .card-deck {
+      display: -ms-flexbox;
+      display: flex;
+
+      -ms-flex-direction: column;
+          flex-direction: column;
+
+      -ms-flex-flow: row wrap;
+          flex-flow: row wrap;
+    }
+    .card-deck > .card {
+      -ms-flex: 1 0 0%;
+          flex: 1 0 0%;
+
+      -ms-flex-direction: column;
+          flex-direction: column;
+
+      max-width: 25%;
+      min-width: 25%;
+    }
+
+    @media only screen and (max-width: 1600px) {
+      .card-deck > .card {
+        max-width: 50%;
+        min-width: 50%;
+      }
+    }
+
+    @media only screen and (max-width: 992px) {
+      .card-deck > .card {
+        max-width: 100%;
+        min-width: 100%;
+      }
+    }
 @endpush
 
 @section('content')
@@ -436,43 +469,6 @@
         @endforeach
     </div>
 @endsection
-
-@push('local.styles')
-    .card-deck {
-      display: -ms-flexbox;
-      display: flex;
-
-      -ms-flex-direction: column;
-          flex-direction: column;
-
-      -ms-flex-flow: row wrap;
-          flex-flow: row wrap;
-    }
-    .card-deck > .card {
-      -ms-flex: 1 0 0%;
-          flex: 1 0 0%;
-
-      -ms-flex-direction: column;
-          flex-direction: column;
-
-      max-width: 25%;
-      min-width: 25%;
-    }
-
-    @media only screen and (max-width: 1600px) {
-      .card-deck > .card {
-        max-width: 50%;
-        min-width: 50%;
-      }
-    }
-
-    @media only screen and (max-width: 992px) {
-      .card-deck > .card {
-        max-width: 100%;
-        min-width: 100%;
-      }
-    }
-@endpush
 
 @push('local.scripts')
     $('.sortable').sortable({

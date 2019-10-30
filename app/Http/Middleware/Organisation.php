@@ -47,7 +47,7 @@ class Organisation
 
                     if (!$organisation->{$module})
                     {
-                        session()->flash('alert', 'Organizasyon planınız bu özelliği desteklemiyor. Hemen destek bölümünden yetkililerimizle iletişime geçerek ihtiyacınız olan diğer özellikleri planınıza ekletebilirsiniz.');
+                        session()->flash('alert', 'Organizasyon planınız bu özelliği desteklemiyor.<br />Hemen destek bölümünden yetkililerimizle iletişime geçerek ihtiyacınız olan diğer özellikleri planınıza ekletebilirsiniz.');
 
                         return $request->expectsJson() ?
                             response()->json([

@@ -12,15 +12,19 @@ use Illuminate\Support\Facades\Redis as RedisCache;
 
 use App\Models\TrendArchive;
 use App\Models\PopTrend;
+use App\Models\Option;
 
 use App\Elasticsearch\Document;
 
 class TrendController extends Controller
 {
     private $modules;
+    private $price;
 
     public function __construct()
     {
+        $this->price = Option::where('key', 'unit_price.module_trend')->value('value');
+
         /**
          ***** ZORUNLU *****
          *
@@ -29,11 +33,14 @@ class TrendController extends Controller
          */
         $this->middleware([ 'auth' ]);
 
-        //$this->middleware('organisation:have,module_trend')->only([
-        //    'liveRedis',
-        //    'archiveView',
-        //    'popular'
-        //]);
+        if ($this->price)
+        {
+            $this->middleware('organisation:have,module_trend')->only([
+                'liveRedis',
+                'archiveView',
+                'popular'
+            ]);
+        }
 
         $this->modules = [
             'google' => [
@@ -121,7 +128,9 @@ class TrendController extends Controller
             ]
         ];
 
-        return view('trends.live', compact('trends'));
+        $price = $this->price;
+
+        return view('trends.live', compact('trends', 'price'));
     }
 
     /**
@@ -144,6 +153,8 @@ class TrendController extends Controller
      */
     public function archive(Request $request, int $pager = 20)
     {
+        $price = $this->price;
+
         $modules = $this->modules;
 
         $request->validate([
@@ -224,7 +235,7 @@ class TrendController extends Controller
             return redirect()->route('trend.archive');
         }
 
-        return view('trends.archive', compact('data', 'request', 'pager', 'modules'));
+        return view('trends.archive', compact('data', 'request', 'pager', 'modules', 'price'));
     }
 
     /**
@@ -264,7 +275,10 @@ class TrendController extends Controller
      */
     public function popular(Request $request, int $pager = 100)
     {
+        $price = $this->price;
+
         $modules = $this->modules;
+
         $modules['twitter_tweet']['name'] = 'Twitter, Kullanıcı';
         $modules['twitter_favorite']['name'] = 'Twitter, Kullanıcı (Fav)';
         $modules['youtube_video']['name'] = 'YouTube, Kullanıcı';
@@ -315,6 +329,6 @@ class TrendController extends Controller
             return redirect()->route('trend.popular');
         }
 
-        return view('trends.popular', compact('data', 'request', 'pager', 'modules'));
+        return view('trends.popular', compact('data', 'request', 'pager', 'modules', 'price'));
     }
 }
