@@ -529,7 +529,7 @@
                     </label>
                 </div>
             </li>
-            <li class="nothing hide">
+            <li class="collection-item nothing hide">
                 @component('components.nothing')
                     @slot('size', 'small')
                     @slot('text', 'İlk önce <a class="grey-text" href="'.route('search.dashboard').'">Arama Motoru</a> ile bir sorgu oluşturup kaydedin.')

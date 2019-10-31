@@ -63,7 +63,11 @@ class CompareRequest extends FormRequest
             'searches.*' => 'required|string|private_exists',
 
             'start_date' => 'required|date|date_limit',
-            'end_date' => 'required|date|after_or_equal:start_date',
+            'end_date' => 'required_unless:metric,on|date|after_or_equal:start_date',
+
+            'metric' => 'nullable|string|in:on',
+
+            'currency' => 'nullable|string|in:USD,EUR,BTC'
         ];
     }
 }

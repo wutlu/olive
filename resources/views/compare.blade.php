@@ -11,87 +11,22 @@
 ])
 
 @section('dock')
+    <div class="switch mb-2">
+        <label class="d-table pt-1 pb-1 ">
+            <input type="checkbox" name="metric" value="on" />
+            <span class="lever"></span>
+            Saatlik
+        </label>
+    </div>
+
     <div class="input-field">
         <input type="date" name="start_date" id="start_date" value="{{ date('Y-m-d', strtotime('-2 day')) }}" class="validate" />
-        <label for="start_date">Başlangıç Tarihi</label>
+        <label for="start_date">1. Tarih</label>
     </div>
     <div class="input-field">
         <input type="date" name="end_date" id="end_date" value="{{ date('Y-m-d') }}" class="validate" />
-        <label for="end_date">Bitiş Tarihi</label>
+        <label for="end_date">2. Tarih</label>
     </div>
-
-    <ul id="date-menu" class="dropdown-content">
-        <li>
-            <a
-                href="#"
-                class="collection-item waves-effect"
-                data-update-click
-                data-input="input[name=end_date]"
-                data-focus="input[name=start_date]"
-                data-input-value="{{ date('Y-m-d') }}"
-                data-value="{{ date('Y-m-d') }}">Bugün (Grafik Alınabilir)</a>
-        </li>
-        @if ($organisation->historical_days >= 1)
-            <li>
-                <a
-                    href="#"
-                    class="collection-item waves-effect"
-                    data-update-click
-                    data-input="input[name=end_date]"
-                    data-focus="input[name=start_date]"
-                    data-input-value="{{ date('Y-m-d', strtotime('-1 day')) }}"
-                    data-value="{{ date('Y-m-d', strtotime('-1 day')) }}">Dün (Grafik Alınabilir)</a>
-            </li>
-        @endif
-        @if ($organisation->historical_days >= 2)
-            <li>
-                <a
-                    href="#"
-                    class="collection-item waves-effect"
-                    data-update-click
-                    data-input="input[name=end_date]"
-                    data-focus="input[name=start_date]"
-                    data-input-value="{{ date('Y-m-d') }}"
-                    data-value="{{ date('Y-m-d', strtotime('-1 day')) }}">Son 2 Gün (Grafik Alınabilir)</a>
-            </li>
-        @endif
-        @if ($organisation->historical_days >= 7)
-            <li>
-                <a
-                    href="#"
-                    class="collection-item waves-effect"
-                    data-update-click
-                    data-input="input[name=end_date]"
-                    data-focus="input[name=start_date]"
-                    data-input-value="{{ date('Y-m-d') }}"
-                    data-value="{{ date('Y-m-d', strtotime('-7 day')) }}">Son 7 Gün (Grafik Alınabilir)</a>
-            </li>
-        @endif
-        @if ($organisation->historical_days >= 14)
-            <li>
-                <a
-                    href="#"
-                    class="collection-item waves-effect"
-                    data-update-click
-                    data-input="input[name=end_date]"
-                    data-focus="input[name=start_date]"
-                    data-input-value="{{ date('Y-m-d') }}"
-                    data-value="{{ date('Y-m-d', strtotime('-14 day')) }}">Son 14 Gün (Grafik Alınabilir)</a>
-            </li>
-        @endif
-        @if ($organisation->historical_days >= 30)
-            <li>
-                <a
-                    href="#"
-                    class="collection-item waves-effect"
-                    data-update-click
-                    data-input="input[name=end_date]"
-                    data-focus="input[name=start_date]"
-                    data-input-value="{{ date('Y-m-d') }}"
-                    data-value="{{ date('Y-m-d', strtotime('-30 day')) }}">Son 30 Gün</a>
-            </li>
-        @endif
-    </ul>
 
     <div class="card card-unstyled mb-1">
         <div class="card-content">
@@ -108,12 +43,15 @@
             data-loader="#ss-loader"
             data-nothing>
             <li class="collection-item model hide">
-                <label class="module-label">
-                    <input name="searches" data-multiple="true" type="checkbox" />
-                    <span data-name="name"></span>
-                </label>
+                <div class="d-flex">
+                    <input type="color" data-name="color" class="align-self-center mr-1" />
+                    <label class="module-label align-self-center">
+                        <input name="searches" data-multiple="true" type="checkbox" />
+                        <span data-name="name"></span>
+                    </label>
+                </div>
             </li>
-            <li class="nothing hide">
+            <li class="collection-item nothing hide">
                 @component('components.nothing')
                     @slot('size', 'small')
                     @slot('text', 'Veri karşılaştırmak için 2 kayıtlı aramanızın olması gerekiyor.<br />Lütfen öncelikle <a class="blue-grey-text" href="'.route('search.dashboard').'">Arama Motoru</a> ile 2 arama kaydedin.')
@@ -126,11 +64,23 @@
             @slot('class', 'card-loader-unstyled')
         @endcomponent
     </div>
+
+    <div class="input-field">
+        <select name="currency" id="currency">
+            <option value="">Birim Ekle</option>
+            <option value="USD">Dolar</option>
+            <option value="EUR">Euro</option>
+            <option value="BTC">Bitcoin</option>
+        </select>
+    </div>
+
+    <br />
+
     <button
         type="button"
         class="btn blue-grey darken-2 btn-large waves-effect hide json"
         data-name="run"
-        data-include="searches,start_date,end_date"
+        data-include="searches,start_date,end_date,metric,currency"
         data-href="{{ route('compare.process') }}"
         data-method="post"
         data-callback="__compare">Kıyasla</button>
@@ -152,6 +102,29 @@
 @endpush
 
 @push('local.scripts')
+    $('select').formSelect()
+
+    function hourly()
+    {
+        var metric = $('input[name=metric]:checked');
+        var end_date = $('input[name=end_date]');
+
+        if (metric.length)
+        {
+            end_date.parent('.input-field').addClass('hide')
+        }
+        else
+        {
+            end_date.parent('.input-field').removeClass('hide')
+        }
+    }
+
+    $(document).on('change', 'input[name=metric]', function() {
+        hourly()
+    })
+
+    hourly()
+
     function __compare(__, obj)
     {
         var alert = $('.olive-alert');
@@ -176,6 +149,7 @@
                     }
                 },
                 dataLabels: { enabled: true },
+                colors: [],
                 series: obj.datas,
                 grid: {
                     borderColor: '#f0f0f0',
@@ -193,6 +167,22 @@
                     width: 1
                 }
             }
+
+            $('input[data-name=color].active').each(function(key, item) {
+                var item = $(item);
+
+                if (item.closest('.collection-item').find('input[type=checkbox]:checked').length)
+                {
+                    options.colors.push(item.val())
+                }
+            })
+
+            $.each(obj.datas, function(key, o) {
+                if (o.color)
+                {
+                    options.colors.push(o.color)
+                }
+            })
 
             $('#chart-card').removeClass('hide').children('.card-content').append($('<div />', { 'id': 'chart' }))
 
@@ -226,6 +216,7 @@
 
                         item.find('input[name=searches]').val(o.id)
                         item.find('[data-name=name]').html(o.name)
+                        item.find('[data-name=color]').addClass('active').val('#'+Math.floor(Math.random()*16777215).toString(16))
 
                         item.appendTo(__)
                 })

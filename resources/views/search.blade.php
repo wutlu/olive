@@ -2829,7 +2829,7 @@
                     <i class="material-icons grey-text text-darken-2">delete_forever</i>        
                 </a>
             </li>
-            <li class="nothing hide">
+            <li class="collection-item nothing hide">
                 @component('components.nothing')
                     @slot('size', 'small')
                 @endcomponent
@@ -2894,6 +2894,10 @@
         if (option.category)
         {
             $('input[name=category][value=' + option.category + ']').prop('checked', true)
+        }
+        else if (option.category === null)
+        {
+            $('input[name=category][value=""]').prop('checked', true)
         }
 
         if (option.state)

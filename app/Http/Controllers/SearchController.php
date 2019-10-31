@@ -16,6 +16,7 @@ use App\Elasticsearch\Document;
 
 use Term;
 
+use App\Models\Currency;
 use App\Models\SavedSearch;
 use App\Models\Geo\States;
 
@@ -77,16 +78,44 @@ class SearchController extends Controller
     {
         if (count($request->searches) >= 2)
         {
-            $results = [];
+            $time_model = [];
 
-            $begin = new \DateTime($request->start_date);
-            $end   = new \DateTime($request->end_date);
+            if ($request->metric == 'on')
+            {
+                $begin = new \DateTime($request->start_date.' 00:00:00');
+                $end   = new \DateTime($request->start_date.' 23:59:59');
 
-            $dates_model = [];
+                $histogram = [
+                    'field' => 'created_at',
+                    'interval' => 'hour',
+                    'format' => 'HH:mm',
+                    'min_doc_count' => 1
+                ];
 
-            for($i = $begin; $i <= $end; $i->modify('+1 day')){
-                $dates_model[$i->format('Y-m-d')] = 0;
+                for ($i = $begin; $i <= $end; $i->modify('+1 hour'))
+                {
+                    $time_model[$i->format('H:i')] = 0;
+                }
             }
+            else
+            {
+                $begin = new \DateTime($request->start_date);
+                $end   = new \DateTime($request->end_date);
+
+                $histogram = [
+                    'field' => 'created_at',
+                    'interval' => 'day',
+                    'format' => 'yyyy-MM-dd',
+                    'min_doc_count' => 1
+                ];
+
+                for ($i = $begin; $i <= $end; $i->modify('+1 day'))
+                {
+                    $time_model[$i->format('Y-m-d')] = 0;
+                }
+            }
+
+            $results = [];
 
             $organisation = auth()->user()->organisation;
 
@@ -96,7 +125,7 @@ class SearchController extends Controller
 
                 if (@$search)
                 {
-                    $dates = $dates_model;
+                    $dates = $time_model;
                     $data = [];
 
                     $clean = Term::cleanSearchQuery($search->string);
@@ -110,7 +139,7 @@ class SearchController extends Controller
                                         'created_at' => [
                                             'format' => 'YYYY-MM-dd',
                                             'gte' => date('Y-m-d', strtotime($request->start_date)),
-                                            'lte' => date('Y-m-d', strtotime($request->end_date))
+                                            'lte' => date('Y-m-d', strtotime($request->metric ? $request->start_date : $request->end_date))
                                         ]
                                     ]
                                 ],
@@ -132,13 +161,8 @@ class SearchController extends Controller
                             ]
                         ],
                         'aggs' => [
-                            'metrics_by_day' => [
-                                'date_histogram' => [
-                                    'field' => 'created_at',
-                                    'interval' => 'day',
-                                    'format' => 'yyyy-MM-dd',
-                                    'min_doc_count' => 1
-                                ]
+                            'metrics' => [
+                                'date_histogram' => $histogram
                             ]
                         ]
                     ];
@@ -197,9 +221,9 @@ class SearchController extends Controller
 
                     foreach ($data as $dt)
                     {
-                        if (@$dt['metrics_by_day']['buckets'])
+                        if (@$dt['metrics']['buckets'])
                         {
-                            foreach ($dt['metrics_by_day']['buckets'] as $bucket)
+                            foreach ($dt['metrics']['buckets'] as $bucket)
                             {
                                 $dates[$bucket['key_as_string']] = $dates[$bucket['key_as_string']] + $bucket['doc_count'];
                             }
@@ -213,9 +237,38 @@ class SearchController extends Controller
                 }
             }
 
+            if ($request->currency)
+            {
+                $currencies = Currency::selectRaw('date_trunc(\'day\', date), max(value)')
+                                      ->whereDate('date', '>=', $request->start_date)
+                                      ->whereDate('date', '<=', $request->end_date)
+                                      ->where('key', $request->currency)
+                                      ->groupBy(\DB::raw('1'))
+                                      ->get();
+
+                if (count($currencies))
+                {
+                    $cur_arr = $time_model;
+
+                    foreach ($currencies as $key => $cur)
+                    {
+                        $cur_arr[date('Y-m-d', strtotime($cur->date_trunc))] = round($cur->max, 2);
+                    }
+                }
+
+                if (@$cur_arr)
+                {
+                    $results[] = [
+                        'name' => $request->currency,
+                        'color' => '#ccc',
+                        'data' => array_values($cur_arr)
+                    ];
+                }
+            }
+
             return [
                 'status' => 'ok',
-                'categories' => array_keys($dates_model),
+                'categories' => array_keys($time_model),
                 'datas' => $results,
             ];
         }
