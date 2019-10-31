@@ -85,6 +85,9 @@ class SearchController extends Controller
                 $begin = new \DateTime($request->start_date.' 00:00:00');
                 $end   = new \DateTime($request->start_date.' 23:59:59');
 
+                $start_date = new \DateTime($request->start_date.' 00:00:00');
+                $end_date = new \DateTime($request->start_date.' 23:59:59');
+
                 $histogram = [
                     'field' => 'created_at',
                     'interval' => 'hour',
@@ -101,6 +104,9 @@ class SearchController extends Controller
             {
                 $begin = new \DateTime($request->start_date);
                 $end   = new \DateTime($request->end_date);
+
+                $start_date = new \DateTime($request->start_date);
+                $end_date = new \DateTime($request->end_date);
 
                 $histogram = [
                     'field' => 'created_at',
@@ -138,8 +144,8 @@ class SearchController extends Controller
                                     'range' => [
                                         'created_at' => [
                                             'format' => 'YYYY-MM-dd',
-                                            'gte' => date('Y-m-d', strtotime($request->start_date)),
-                                            'lte' => date('Y-m-d', strtotime($request->metric ? $request->start_date : $request->end_date))
+                                            'gte' => $start_date->format('Y-m-d'),
+                                            'lte' => $end_date->format('Y-m-d')
                                         ]
                                     ]
                                 ],
@@ -239,9 +245,9 @@ class SearchController extends Controller
 
             if ($request->currency)
             {
-                $currencies = Currency::selectRaw('date_trunc(\'day\', date), max(value)')
-                                      ->whereDate('date', '>=', $request->start_date)
-                                      ->whereDate('date', '<=', $request->end_date)
+                $currencies = Currency::selectRaw('date_trunc(\''.($request->metric ? 'hour' : 'day').'\', date), max(value)')
+                                      ->whereDate('date', '>=', $start_date->format('Y-m-d H:i:s'))
+                                      ->whereDate('date', '<=', $end_date->format('Y-m-d H:i:s'))
                                       ->where('key', $request->currency)
                                       ->groupBy(\DB::raw('1'))
                                       ->get();
@@ -252,7 +258,14 @@ class SearchController extends Controller
 
                     foreach ($currencies as $key => $cur)
                     {
-                        $cur_arr[date('Y-m-d', strtotime($cur->date_trunc))] = round($cur->max, 2);
+                        if ($request->metric)
+                        {
+                            $cur_arr[date('H:i', strtotime($cur->date_trunc))] = round($cur->max, 2);
+                        }
+                        else
+                        {
+                            $cur_arr[date('Y-m-d', strtotime($cur->date_trunc))] = round($cur->max, 2);
+                        }
                     }
                 }
 
