@@ -285,15 +285,6 @@
                     }
                 }
 
-                $('input[data-name=color].active').each(function(key, item) {
-                    var item = $(item);
-
-                    if (item.closest('.collection-item').find('input[type=checkbox]:checked').length)
-                    {
-                        normalize_options.colors.push(item.val())
-                    }
-                })
-
                 var currency = $('select[name=currency]');
 
                 if (currency.val())
