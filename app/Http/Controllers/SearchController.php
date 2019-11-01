@@ -271,7 +271,7 @@ class SearchController extends Controller
                 $normalized = array_map(function($value) use($max, $min) {
                     try
                     {
-                        return round(($value-$min)/($max-$min), 2);
+                        return round(($value-$min)/($max-$min), 1);
                     }
                     catch (\Exception $e)
                     {
