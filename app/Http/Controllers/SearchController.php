@@ -274,8 +274,7 @@ class SearchController extends Controller
                     $results[] = [
                         'name' => $request->currency,
                         'color' => '#ccc',
-                        'data' => array_values($cur_arr),
-                        'type' => 'area'
+                        'data' => array_values($cur_arr)
                     ];
                 }
             }
