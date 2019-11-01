@@ -177,7 +177,7 @@
                     borderColor: '#f0f0f0',
                     row: { opacity: 0 }
                 },
-                markers: { size: 6 },
+                markers: { size: 4 },
                 xaxis: { categories: obj.categories },
                 legend: {
                     position: 'top',
@@ -205,13 +205,14 @@
                 options['yaxis'] = [];
 
                 $.each($('input[name=searches]:checked'), function(key, item) {
+                    var color = $(item).closest('.collection-item').find('input[type=color]').val()
+
                     options['yaxis'].push(
                         {
-                            labels: {
-                                style: { color: '#333' }
-                            },
+                            labels: { style: { color: color } },
                             title: {
-                                text: $(this).next('[data-name=name]').html()
+                                text: $(this).next('[data-name=name]').html(),
+                                style: { color: color }
                             }
                         }
                     )
@@ -245,6 +246,8 @@
             var chart = new ApexCharts(document.querySelector('#chart'), options);
                 chart.render()
 
+            /* ------------------------------------------------ */
+
             if (obj.normalized)
             {
                 var normalize_options = {
@@ -259,19 +262,21 @@
                         }
                     },
                     dataLabels: { enabled: true },
+                    colors: [ '#ef5350' ],
                     series: [ obj.normalized ],
                     grid: {
                         borderColor: '#f0f0f0',
                         row: { opacity: 0 }
                     },
-                    markers: { size: 6 },
+                    markers: { size: 4 },
                     yaxis: [
                         {
                             labels: {
-                                style: { color: '#333' }
+                                style: { color: '#ef5350' }
                             },
                             title: {
-                                text: 'Normalize Fark (' + $('select[name=normalize_1] > option:selected').html() + ' - ' + $('select[name=normalize_2] > option:selected').html() + ')'
+                                text: 'Normalize Fark (' + $('select[name=normalize_1] > option:selected').html() + ' - ' + $('select[name=normalize_2] > option:selected').html() + ')',
+                                style: { color: '#ef5350' }
                             },
                             max: 1
                         }
@@ -294,16 +299,20 @@
                         {
                             opposite: true,
                             labels: {
-                                style: { color: '#ccc' }
+                                style: { color: '#5c6bc0' }
                             },
                             title: {
                                 text: currency.val(),
-                                style: { color: '#ccc' }
+                                style: { color: '#5c6bc0' }
                             },
                             max: obj.datas[obj.datas.length-1].max,
-                            min: obj.datas[obj.datas.length-1].min
+                            min: obj.datas[obj.datas.length-1].min,
+                            offsetX: 10,
+                            offsetY: 10
                         }
                     )
+
+                    normalize_options.colors.push('#5c6bc0')
                 }
 
                 $('#normalize-card').removeClass('hide').children('.card-content').append($('<div />', { 'id': 'normalize-chart' }))
@@ -311,6 +320,8 @@
                 var normalize_chart = new ApexCharts(document.querySelector('#normalize-chart'), normalize_options);
                     normalize_chart.render()
             }
+
+            /* ------------------------------------------------ */
         }
         else if (obj.status == 'failed')
         {
