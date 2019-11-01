@@ -269,16 +269,13 @@
                                 style: { color: '#333' }
                             },
                             title: {
-                                text: 'Normalize 1 - Normalize 2'
+                                text: 'Normalize Fark (' + $('select[name=normalize_1] > option:selected').html() + ' - ' + $('select[name=normalize_2] > option:selected').html() + ')'
                             },
                             'max': 1
                         }
                     ],
                     xaxis: { categories: obj.categories },
-                    legend: {
-                        position: 'top',
-                        horizontalAlign: 'left'
-                    },
+                    legend: { show: false },
                     stroke: {
                         curve: 'smooth',
                         width: 2
