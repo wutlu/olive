@@ -162,7 +162,7 @@
                     horizontalAlign: 'left'
                 },
                 stroke: {
-                    curve: 'straight',
+                    curve: 'smooth',
                     width: 2
                 }
             }
