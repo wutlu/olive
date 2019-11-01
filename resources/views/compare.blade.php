@@ -156,15 +156,14 @@
                     row: { opacity: 0 }
                 },
                 markers: { size: 6 },
-                yaxis: { min: 0 },
                 xaxis: { categories: obj.categories },
                 legend: {
                     position: 'top',
                     horizontalAlign: 'left'
                 },
                 stroke: {
-                    curve: 'smooth',
-                    width: 1
+                    curve: 'straight',
+                    width: 2
                 }
             }
 
@@ -176,6 +175,32 @@
                     options.colors.push(item.val())
                 }
             })
+
+            var currency = $('select[name=currency]');
+
+            if (currency.val())
+            {
+                options['yaxis'] = [
+                    {
+                        labels: {
+                            style: { color: '#333' }
+                        },
+                        title: {
+                            text: 'Paylaşım Sayısı'
+                        }
+                    },
+                    {
+                        opposite: true,
+                        labels: {
+                            style: { color: '#ccc' }
+                        },
+                        title: {
+                            text: currency.val(),
+                            style: { color: '#ccc' }
+                        }
+                    }
+                ];
+            }
 
             $.each(obj.datas, function(key, o) {
                 if (o.color)
