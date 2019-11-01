@@ -359,7 +359,9 @@ $arr = [
         'sub_partner_percent'             => 'Alt Partner Oranı',
         'twitter_sort'                    => 'Twitter Sıralaması',
         'twitter_sort_operator'           => 'Twitter Sıralama Operatörü',
-        'metric'                          => 'Metrik'
+        'metric'                          => 'Metrik',
+        'normalize_1'                     => 'Normalize Değeri 1',
+        'normalize_2'                     => 'Normalize Değeri 2',
     ],
 ];
 

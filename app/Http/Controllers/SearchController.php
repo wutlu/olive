@@ -80,6 +80,9 @@ class SearchController extends Controller
         {
             $time_model = [];
 
+            $normalize_1 = [];
+            $normalize_2 = [];
+
             if ($request->metric == 'on')
             {
                 $begin = new \DateTime($request->start_date.' 00:00:00');
@@ -236,11 +239,38 @@ class SearchController extends Controller
                         }
                     }
 
+                    if ($request->normalize_1 == $id && $request->normalize_1)
+                    {
+                        $normalize_1 = array_values($dates);
+                    }
+
+                    if ($request->normalize_2 == $id && $request->normalize_2)
+                    {
+                        $normalize_2 = array_values($dates);
+                    }
+
                     $results[] = [
                         'name' => $search->name,
                         'data' => array_values($dates)
                     ];
                 }
+            }
+
+            if (count($normalize_1) && count($normalize_2))
+            {
+                $normalized = [];
+
+                foreach ($normalize_1 as $key => $value)
+                {
+                    $normalized[] = $value - $normalize_2[$key];
+                }
+
+                $max = max($normalized);
+                $min = min($normalized);
+
+                $normalized = array_map(function($value) use($max, $min) {
+                    return round(($value - $min) / ($max - $min));
+                }, $normalized);
             }
 
             if ($request->currency)
@@ -279,11 +309,21 @@ class SearchController extends Controller
                 }
             }
 
-            return [
+            $return = [
                 'status' => 'ok',
                 'categories' => array_keys($time_model),
                 'datas' => $results,
             ];
+
+            if (@$normalized)
+            {
+                $return['normalized'] = [
+                    'name' => 'Normalize',
+                    'data' => $normalized
+                ];
+            }
+
+            return $return;
         }
         else
         {

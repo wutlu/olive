@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Search;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 
 use Validator;
 
@@ -47,7 +48,7 @@ class CompareRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(Request $request)
     {
         $user = auth()->user();
 
@@ -59,15 +60,22 @@ class CompareRequest extends FormRequest
             return Carbon::now()->diffInDays($value) <= $this->historical_days;
         });
 
-        return [
-            'searches.*' => 'required|string|private_exists',
+        $request->validate([
+            'searches.*' => 'required|string|private_exists'
+        ]);
 
+        $selected_values = @implode(',', $request->searches);
+
+        return [
             'start_date' => 'required|date|date_limit',
             'end_date' => 'required_unless:metric,on|date|after_or_equal:start_date',
 
             'metric' => 'nullable|string|in:on',
 
-            'currency' => 'nullable|string|in:USD,EUR,BTC'
+            'currency' => 'nullable|string|in:USD,EUR,BTC',
+
+            'normalize_1' => 'nullable|required_with:normalize_2|different:normalize_2|private_exists|in:'.$selected_values,
+            'normalize_2' => 'nullable|required_with:normalize_1|different:normalize_1|private_exists|in:'.$selected_values,
         ];
     }
 }

@@ -74,13 +74,28 @@
         </select>
     </div>
 
+    <div class="d-flex">
+        <div class="input-field flex-fill">
+            <select data-name="normalize" name="normalize_1" id="normalize_1">
+                <option value="">Yok</option>
+            </select>
+            <label>Normalize</label>
+        </div>
+        <span class="align-self-center p-1">-</span>
+        <div class="input-field flex-fill">
+            <select data-name="normalize" name="normalize_2" id="normalize_2">
+                <option value="">Yok</option>
+            </select>
+        </div>
+    </div>
+
     <br />
 
     <button
         type="button"
         class="btn blue-grey darken-2 btn-large waves-effect hide json"
         data-name="run"
-        data-include="searches,start_date,end_date,metric,currency"
+        data-include="searches,start_date,end_date,metric,currency,normalize_1,normalize_2"
         data-href="{{ route('compare.process') }}"
         data-method="post"
         data-callback="__compare">Kıyasla</button>
@@ -92,7 +107,10 @@
         <h4 class="mb-2">Veri Kıyasla</h4>
         <p>Sağ menüden en az 2 arama seçin ve kıyaslamayı başlatın.</p>
     </div>
-    <div class="card hide" id="chart-card">
+    <div class="card hide mb-1" id="chart-card">
+        <div class="card-content"></div>
+    </div>
+    <div class="card hide mb-1" id="normalize-card">
         <div class="card-content"></div>
     </div>
 @endsection
@@ -132,6 +150,10 @@
         var chart_card = $('#chart-card');
             chart_card.addClass('hide')
             chart_card.find('#chart').remove()
+
+        var normalize_card = $('#normalize-card');
+            normalize_card.addClass('hide')
+            normalize_card.find('#normalize-chart').remove()
 
         if (obj.status == 'ok')
         {
@@ -220,6 +242,83 @@
 
             var chart = new ApexCharts(document.querySelector('#chart'), options);
                 chart.render()
+
+            if (obj.normalized)
+            {
+                var normalize_options = {
+                    chart: {
+                        height: 440,
+                        type: 'line',
+                        toolbar: {
+                            show: true,
+                            tools: {
+                                download: '<i class="material-icons">save</i>'
+                            }
+                        }
+                    },
+                    dataLabels: { enabled: true },
+                    series: [ obj.normalized ],
+                    grid: {
+                        borderColor: '#f0f0f0',
+                        row: { opacity: 0 }
+                    },
+                    markers: { size: 6 },
+                    yaxis: [
+                        {
+                            labels: {
+                                style: { color: '#333' }
+                            },
+                            title: {
+                                text: 'Normalize 1 - Normalize 2'
+                            },
+                            'max': 1
+                        }
+                    ],
+                    xaxis: { categories: obj.categories },
+                    legend: {
+                        position: 'top',
+                        horizontalAlign: 'left'
+                    },
+                    stroke: {
+                        curve: 'smooth',
+                        width: 2
+                    }
+                }
+
+                $('input[data-name=color].active').each(function(key, item) {
+                    var item = $(item);
+
+                    if (item.closest('.collection-item').find('input[type=checkbox]:checked').length)
+                    {
+                        normalize_options.colors.push(item.val())
+                    }
+                })
+
+                var currency = $('select[name=currency]');
+
+                if (currency.val())
+                {
+                    normalize_options['series'].push(obj.datas[obj.datas.length-1])
+
+                    normalize_options['yaxis'].push(
+                        {
+                            opposite: true,
+                            labels: {
+                                style: { color: '#ccc' }
+                            },
+                            title: {
+                                text: currency.val(),
+                                style: { color: '#ccc' }
+                            }
+                        }
+                    )
+                }
+
+                $('#normalize-card').removeClass('hide').children('.card-content').append($('<div />', { 'id': 'normalize-chart' }))
+
+                var normalize_chart = new ApexCharts(document.querySelector('#normalize-chart'), normalize_options);
+                    normalize_chart.render()
+            }
         }
         else if (obj.status == 'failed')
         {
@@ -241,16 +340,24 @@
             if (obj.hits.length)
             {
                 $.each(obj.hits, function(key, o) {
-                    var selector = __.children('[data-id=' + o.id + ']'),
+                    var selector = __.children('[data-id=' + o.id + ']');
+                    var option = $('<option />', {
+                        'value': o.id,
+                        'html': o.name
+                    })
 
-                        item = selector.length ? selector : item_model.clone();
-                        item.removeClass('model hide').addClass('_tmp d-flex').attr('data-id', o.id)
+                    option.appendTo($('[data-name=normalize]'))
 
-                        item.find('input[name=searches]').val(o.id)
-                        item.find('[data-name=name]').html(o.name)
-                        item.find('[data-name=color]').addClass('active').val('#'+Math.floor(Math.random()*16777215).toString(16))
+                    $('[data-name=normalize]').formSelect()
 
-                        item.appendTo(__)
+                    item = selector.length ? selector : item_model.clone();
+                    item.removeClass('model hide').addClass('_tmp d-flex').attr('data-id', o.id)
+
+                    item.find('input[name=searches]').val(o.id)
+                    item.find('[data-name=name]').html(o.name)
+                    item.find('[data-name=color]').addClass('active').val('#'+Math.floor(Math.random()*16777215).toString(16))
+
+                    item.appendTo(__)
                 })
 
                 $('[data-name=run]').removeClass('hide')
