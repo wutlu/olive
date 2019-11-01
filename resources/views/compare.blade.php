@@ -271,7 +271,7 @@
                             title: {
                                 text: 'Normalize Fark (' + $('select[name=normalize_1] > option:selected').html() + ' - ' + $('select[name=normalize_2] > option:selected').html() + ')'
                             },
-                            'max': 1
+                            max: 1
                         }
                     ],
                     xaxis: { categories: obj.categories },
@@ -298,8 +298,8 @@
                                 text: currency.val(),
                                 style: { color: '#ccc' }
                             },
-                            'max': obj.max,
-                            'min': obj.min
+                            max: obj.datas[obj.datas.length-1].max,
+                            min: obj.datas[obj.datas.length-1].min
                         }
                     )
                 }
