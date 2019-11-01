@@ -226,7 +226,9 @@
                         title: {
                             text: currency.val(),
                             style: { color: '#ccc' }
-                        }
+                        },
+                        max: obj.datas[obj.datas.length-1].max,
+                        min: obj.datas[obj.datas.length-1].min
                     }
                 )
             }
