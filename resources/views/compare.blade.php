@@ -297,7 +297,9 @@
                             title: {
                                 text: currency.val(),
                                 style: { color: '#ccc' }
-                            }
+                            },
+                            'max': obj.max,
+                            'min': obj.min
                         }
                     )
                 }

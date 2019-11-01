@@ -258,26 +258,26 @@ class SearchController extends Controller
 
             if (count($normalize_1) && count($normalize_2))
             {
-                $normalized = [];
+                $metric = [];
 
                 foreach ($normalize_1 as $key => $value)
                 {
-                    $normalized[] = $value - $normalize_2[$key];
+                    $metric[] = $value - $normalize_2[$key];
                 }
 
-                $max = max($normalized);
-                $min = min($normalized);
+                $max = max($metric);
+                $min = min($metric);
 
-                $normalized = array_map(function($value) use($max, $min) {
+                $metric = array_map(function($metric) use($max, $min) {
                     try
                     {
-                        return round(($value-$min)/($max-$min), 1);
+                        return round(($metric-$min)/($max-$min), 1);
                     }
                     catch (\Exception $e)
                     {
                         return 0;
                     }
-                }, $normalized);
+                }, $metric);
             }
 
             if ($request->currency)
@@ -311,7 +311,9 @@ class SearchController extends Controller
                     $results[] = [
                         'name' => $request->currency,
                         'color' => '#ccc',
-                        'data' => array_values($cur_arr)
+                        'data' => array_values($cur_arr),
+                        'max' => max($cur_arr),
+                        'min' => min($cur_arr)
                     ];
                 }
             }
@@ -322,11 +324,11 @@ class SearchController extends Controller
                 'datas' => $results,
             ];
 
-            if (@$normalized)
+            if (@$metric)
             {
                 $return['normalized'] = [
                     'name' => 'Normalize',
-                    'data' => $normalized
+                    'data' => $metric
                 ];
             }
 
