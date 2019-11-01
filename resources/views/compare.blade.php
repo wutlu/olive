@@ -180,15 +180,22 @@
 
             if (currency.val())
             {
-                options['yaxis'] = [
-                    {
-                        labels: {
-                            style: { color: '#333' }
-                        },
-                        title: {
-                            text: 'Paylaşım Sayısı'
+                options['yaxis'] = [];
+
+                $.each($('input[name=searches]:checked'), function(key, item) {
+                    options['yaxis'].push(
+                        {
+                            labels: {
+                                style: { color: '#333' }
+                            },
+                            title: {
+                                text: $(this).next('[data-name=name]').html()
+                            }
                         }
-                    },
+                    )
+                })
+
+                options['yaxis'].push(
                     {
                         opposite: true,
                         labels: {
@@ -199,7 +206,7 @@
                             style: { color: '#ccc' }
                         }
                     }
-                ];
+                )
             }
 
             $.each(obj.datas, function(key, o) {
