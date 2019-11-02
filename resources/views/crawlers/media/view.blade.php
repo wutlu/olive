@@ -373,6 +373,15 @@
                             {{ $crawler->proxy ? 'checked' : '' }} />
                         <span>Proxy Kullan</span>
                     </label>
+                    <label class="collection-item waves-effect d-block">
+                        <input
+                            name="cookie"
+                            id="cookie"
+                            value="on"
+                            type="checkbox"
+                            {{ $crawler->cookie ? 'checked' : '' }} />
+                        <span>Çerezleri Kabul Et</span>
+                    </label>
                 </div>
             </div>
             <div class="card-content yellow lighten-4">Bu aşamada girilen değerler test edilir. Test sonucu olumlu olmadığı sürece değerler kaydedilmeyecektir.</div>

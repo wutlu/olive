@@ -433,7 +433,8 @@ class MediaController extends Controller
             $request->url_pattern ? $request->url_pattern : null,
             $request->base,
             $request->standard ? true : false,
-            $request->proxy ? true : false
+            $request->proxy ? true : false,
+            $request->cookie ? true : false
         );
 
         $total = 0;
@@ -451,7 +452,8 @@ class MediaController extends Controller
                         $request->selector_title ? $request->selector_title : null,
                         $request->selector_description ? $request->selector_description : null,
                         $request->standard ? true : false,
-                        $request->proxy ? true : false
+                        $request->proxy ? true : false,
+                        $request->cookie ? true : false
                     );
 
                     $data['items'][] = $item;
@@ -473,6 +475,7 @@ class MediaController extends Controller
                 $crawler->test = true;
                 $crawler->error_count = 0;
                 $crawler->off_reason = null;
+                $crawler->cookie = $request->cookie ? true : false;
 
                 $data['status'] = 'ok';
             }

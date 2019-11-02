@@ -428,7 +428,8 @@ class BlogController extends Controller
             $request->url_pattern ? $request->url_pattern : null,
             $request->base,
             $request->standard ? true : false,
-            $request->proxy ? true : false
+            $request->proxy ? true : false,
+            $request->cookie ? true : false
         );
 
         $total = 0;
@@ -446,7 +447,8 @@ class BlogController extends Controller
                         $request->selector_title ? $request->selector_title : null,
                         $request->selector_description ? $request->selector_description : null,
                         $request->standard ? true : false,
-                        $request->proxy ? true : false
+                        $request->proxy ? true : false,
+                        $request->cookie ? true : false
                     );
 
                     $data['items'][] = $item;

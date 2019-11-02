@@ -5,6 +5,7 @@ namespace App\Utilities;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Cookie\CookieJar;
+use GuzzleHttp\Cookie\FileCookieJar;
 
 use App\Wrawler;
 use App\Utilities\DateUtility;
@@ -98,88 +99,6 @@ class Crawler
             'status' => 'err',
             'reason' => 'Hiçbir desen eşleşmedi.'
         ];
-    }
-
-    /**
-     * Makale, Bağlantı Tespiti
-     *
-     * @return object
-     */
-    public static function articleLinkDetection(string $site, string $url_pattern = null, string $base, bool $standard, bool $proxy)
-    {
-        $data = [];
-
-        $client = new Client([
-            'base_uri' => $site,
-            'handler' => HandlerStack::create()
-        ]);
-
-        try
-        {
-            $arr = [
-                'timeout' => 10,
-                'connect_timeout' => 5,
-                'headers' => [
-                    'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))],
-                    'Accept-Language' => 'tr-TR;q=0.6,tr;q=0.4'
-                ],
-                'curl' => [
-                    CURLOPT_REFERER => $site,
-                    CURLOPT_COOKIE => 'AspxAutoDetectCookieSupport=1'
-                ],
-                'verify' => false,
-                'allow_redirects' => [
-                    'max' => 6
-                ]
-            ];
-
-            if ($standard)
-            {
-                $arr['headers']['Accept'] = 'application/xml';
-            }
-
-            if ($proxy)
-            {
-                $p = Proxy::where('ipv', 4)->where('health', '>', 7)->inRandomOrder()->first();
-
-                if (@$p)
-                {
-                    $arr['proxy'] = $p->proxy;
-                }
-            }
-
-            $dom = $client->get($base, $arr)->getBody();
-
-            if ($standard)
-            {
-                $xml = new \SimpleXMLElement($dom);
-                $feed = (array) $xml->channel;
-
-                foreach ($feed['item'] as $item)
-                {
-                    $data['links'][] = ((array) $item->link)[0];
-                }
-            }
-            else
-            {
-                $linkInDom = self::linkInDom($site, $url_pattern, $dom);
-
-                if ($linkInDom->status == 'ok')
-                {
-                    $data['links'] = $linkInDom->data;
-                }
-                else
-                {
-                    $data['error_reasons'][] = 'Desen ile bağlantı tespit edilemedi.';
-                }
-            }
-        }
-        catch (\Exception $e)
-        {
-            $data['error_reasons'][] = $e->getMessage();
-        }
-
-        return (object) $data;
     }
 
     /**
@@ -294,21 +213,121 @@ class Crawler
     }
 
     /**
+     * Makale, Bağlantı Tespiti
+     *
+     * @return object
+     */
+    public static function articleLinkDetection(string $site, string $url_pattern = null, string $base, bool $standard, bool $proxy, bool $cookie)
+    {
+        $data = [];
+
+
+        $client_arr = [
+            'base_uri' => $site,
+            'handler' => HandlerStack::create()
+        ];
+
+        if ($cookie)
+        {
+            $file_path = storage_path('app/cookies/.'.str_slug($site).'.txt');
+
+            $client_arr['cookies'] = new FileCookieJar($file_path, true);
+        }
+
+        $client = new Client($client_arr);
+
+        try
+        {
+            $arr = [
+                'timeout' => 10,
+                'connect_timeout' => 5,
+                'headers' => [
+                    'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))],
+                    'Accept-Language' => 'tr-TR;q=0.6,tr;q=0.4'
+                ],
+                'curl' => [
+                    CURLOPT_REFERER => $site,
+                    CURLOPT_COOKIE => 'AspxAutoDetectCookieSupport=1'
+                ],
+                'verify' => false,
+                'allow_redirects' => [
+                    'max' => 6
+                ]
+            ];
+
+            if ($standard)
+            {
+                $arr['headers']['Accept'] = 'application/xml';
+            }
+
+            if ($proxy)
+            {
+                $p = Proxy::where('ipv', 4)->where('health', '>', 7)->inRandomOrder()->first();
+
+                if (@$p)
+                {
+                    $arr['proxy'] = $p->proxy;
+                }
+            }
+
+            $dom = $client->get($base, $arr)->getBody();
+
+            if ($standard)
+            {
+                $xml = new \SimpleXMLElement($dom);
+                $feed = (array) $xml->channel;
+
+                foreach ($feed['item'] as $item)
+                {
+                    $data['links'][] = ((array) $item->link)[0];
+                }
+            }
+            else
+            {
+                $linkInDom = self::linkInDom($site, $url_pattern, $dom);
+
+                if ($linkInDom->status == 'ok')
+                {
+                    $data['links'] = $linkInDom->data;
+                }
+                else
+                {
+                    $data['error_reasons'][] = 'Desen ile bağlantı tespit edilemedi.';
+                }
+            }
+        }
+        catch (\Exception $e)
+        {
+            $data['error_reasons'][] = $e->getMessage();
+        }
+
+        return (object) $data;
+    }
+
+    /**
      * Makale Tespiti
      *
      * @return object
      */
-    public static function articleDetection(string $site, string $page, string $title_selector = null, string $description_selector = null, bool $standard, bool $proxy)
+    public static function articleDetection(string $site, string $page, string $title_selector = null, string $description_selector = null, bool $standard, bool $proxy, bool $cookie)
     {
         $data = [
             'page' => $page,
             'status' => 'ok'
         ];
 
-        $client = new Client([
+        $client_arr = [
             'base_uri' => $site,
             'handler' => HandlerStack::create()
-        ]);
+        ];
+
+        if ($cookie)
+        {
+            $file_path = storage_path('app/cookies/.'.str_slug($site).'.txt');
+            $client_arr['cookies'] = new FileCookieJar($file_path, true);
+        }
+
+        $client = new Client($client_arr);
 
         try
         {
@@ -381,16 +400,16 @@ class Crawler
                 # description detect
                 $description = $saw->get($description_selector)->toText();
 
-                if (strlen($description) < 24 && Str::contains($description_selector, 'nth-child'))
+                if (strlen($description) <= 48 && Str::contains($description_selector, 'nth-child'))
                 {
                     $nth = 1;
 
-                    while ($nth < 12)
+                    while ($nth <= 10)
                     {
                         $description_selector = preg_replace('/nth-child\(\d+\)/i', 'nth-child('.$nth.')', $description_selector);
                         $description = $saw->get($description_selector)->toText();
 
-                        if ($description)
+                        if (strlen($description) >= 48)
                         {
                             $data['error_reasons'][] = 'nth-child('.$nth.') ile açıklama bulundu.';
                             break;

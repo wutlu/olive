@@ -38,6 +38,7 @@ class UpdateRequest extends FormRequest
             'test_count'           => 'required|integer|max:100|min:1',
             'proxy'                => 'nullable|string|in:on',
             'standard'             => 'nullable|string|in:on',
+            'cookie'               => 'nullable|string|in:on',
         ];
     }
 }

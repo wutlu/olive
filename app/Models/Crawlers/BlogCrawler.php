@@ -23,6 +23,7 @@ class BlogCrawler extends Model
         'status',
         'error_count',
         'proxy',
+        'cookie',
         'count',
     ];
 
