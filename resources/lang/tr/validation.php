@@ -320,6 +320,8 @@ $arr = [
         'module_real_time'                => 'Gerçek Zamanlı Modülü',
         'module_search'                   => 'Arama Modülü',
         'module_trend'                    => 'Trend Modülü',
+        'module_compare'                  => 'Veri Kıyaslama Modülü',
+        'module_replica_engine'           => 'Kopya İçerik Modülü',
         'module_alarm'                    => 'Alarm Modülü',
 
         'phone'                           => 'Telefon',

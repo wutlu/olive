@@ -836,14 +836,18 @@ table.invoice tfoot > tr {
   margin: 0;
   line-height: 48px;
 
-  background-color: #263238;
+  background-color: #f0f0f0;
 
-  -webkit-box-shadow: 1px 1px 4px rgba(0, 0, 0, .1), 1px 1px 0 rgba(0, 0, 0, .1);
-          box-shadow: 1px 1px 4px rgba(0, 0, 0, .1), 1px 1px 0 rgba(0, 0, 0, .1);
+  -webkit-box-shadow: none;
+          box-shadow: none;
+
+  border-width: 0 0 1px;
+  border-style: solid;
+  border-color: #e1e1e1;
 }
 #breadcrumb .breadcrumb:before,
 #breadcrumb .breadcrumb {
-  color: #fff;
+  color: #666;
 }
 @media (max-width: 1024px) {
   #breadcrumb {
@@ -3156,8 +3160,8 @@ nav.nav-half {
 .olive-alert > .anim {
   display: table;
   margin: 0 auto 2rem;
-  width: 96px;
-  height: 96px;
+  width: 128px;
+  height: 128px;
   border-radius: 50%;
   background-repeat: no-repeat;
   background-size: contain;
@@ -3189,15 +3193,15 @@ nav.nav-half {
           box-shadow: 0 0 4px 1px #f44336;
 }
 .olive-alert.info {
-  color: #39b49a;
+  color: #ffad40;
 }
 .olive-alert.info > .anim {
   background-image: url('../img/info-anim.gif');
 
-  background-color: #39b49a;
+  background-color: #ffad40;
 
-  -webkit-box-shadow: 0 0 4px 1px #39b49a;
-          box-shadow: 0 0 4px 1px #39b49a;
+  -webkit-box-shadow: 0 0 4px 1px #ccc;
+          box-shadow: 0 0 4px 1px #ccc;
 }
 
 /*!

@@ -4,7 +4,7 @@ return [
     /**
      * Sistem Versiyonu
      */
-    'version' => '6.0.9',
+    'version' => '6.0.10',
 
     /**
      * db
@@ -241,6 +241,8 @@ return [
         'module_search' => 'Arama',
         'module_trend' => 'Trend',
         'module_alarm' => 'Alarm',
+        'module_compare' => 'Veri Kıyaslama',
+        'module_replica_engine' => 'Kopya İçerik'
     ],
 
     /**

@@ -54,7 +54,7 @@
             <li class="collection-item nothing hide">
                 @component('components.nothing')
                     @slot('size', 'small')
-                    @slot('text', 'Veri karşılaştırmak için 2 kayıtlı aramanızın olması gerekiyor.<br />Lütfen öncelikle <a class="blue-grey-text" href="'.route('search.dashboard').'">Arama Motoru</a> ile 2 arama kaydedin.')
+                    @slot('text', 'Veri kıyaslamak için 2 kayıtlı aramanızın olması gerekiyor.<br />Lütfen ilk önce <a class="blue-grey-text" href="'.route('search.dashboard').'">Arama Motoru</a>\'nu kullanarak 2 arama kaydedin.')
                 @endcomponent
             </li>
         </ul>

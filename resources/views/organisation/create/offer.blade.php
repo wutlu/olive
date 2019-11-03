@@ -33,6 +33,11 @@
                                         data-option="module"
                                         data-unit-price="{{ $prices['unit_price.'.$key]['value'] }}"
                                         name="{{ $key }}"
+
+                                        @if ($key == 'module_real_time' || $key == 'module_compare' || $key == 'module_replica_engine' || $key == 'module_alarm')
+                                            data-requirement="module_search"
+                                        @endif
+
                                         id="{{ $key }}"
                                         value="on"
                                         type="checkbox" />
@@ -45,13 +50,18 @@
                                     <p class="mb-0">Eş zamanlı veya geçmişe yönelik sosyal medya ve web verileri içerisinden geniş çaplı filtreler ile aramalar gerçekleştirebilirsiniz. Ayrıca elde edeceğiniz sonuçları görselleştirerek kitle ölçümleri, rakip analizleri ve çeşitli görüler elde edebilmenize olanak tanır.</p>
                                 @elseif ($key == 'module_trend')
                                     <p class="mb-0">Eş zamanlı veya geçmişe yönelik trend olmuş; kelime, kullanıcı veya başlık takibi, genel veya sektörel popüler kullanıcı listeleri sağlar.</p>
+                                @elseif ($key == 'module_compare')
+                                    <p class="mb-0">Arama ile belirleyeceğiniz kriterleri Veri Kıyaslama modülü ile karşılaştırabilirsiniz.</p>
+                                @elseif ($key == 'module_replica_engine')
+                                    <p class="mb-0">İnternette dolaşan kopya içerikleri tespit edebilirsiniz.</p>
                                 @elseif ($key == 'module_alarm')
                                     <p class="mb-0">Bilgisayar başında gerçirecek vaktiniz yoksa "Alarmlar" sayesinde konuşulanlardan eş zamanlı haberdar olabilirsiniz.</p>
                                 @endif
                             </li>
                         @endforeach
                     </ul>
-                    <div class="card-content d-flex justify-content-end">
+                    <div class="card-content d-flex justify-content-between">
+                        <a class="btn red btn-large waves-effect" href="{{ route('dashboard') }}" data-tooltip="Ücretsiz özellikleri kullanmaya devam et!">Vazgeç</a>
                         <button type="button" class="btn blue-grey btn-large waves-effect" data-steps="2">
                             <i class="material-icons">arrow_forward</i>
                         </button>
@@ -156,7 +166,7 @@
                                     data-title="Geçmişe Yönelik Arama">
                                     <i class="material-icons tiny teal-text">info</i>
                                     <div class="hide" data-helper>
-                                        <span style="font-size: 16px;">Arama, Alarm ve Akış modülü kullanmak istiyorsanız en az 1 gün "Geçmişe Yönelik Arama" yapabiliyor olmalısınız.</span>
+                                        <span style="font-size: 16px;">Arama, Alarm, Veri Kıyaslama ve Akış modülü kullanmak istiyorsanız en az 1 gün "Geçmişe Yönelik Arama" yapabiliyor olmanız gerekiyor.</span>
                                     </div>
                                 </a>
                             </small>
@@ -186,7 +196,7 @@
                                     data-title="Arama Kaydetme">
                                     <i class="material-icons tiny teal-text">info</i>
                                     <div class="hide" data-helper>
-                                        <span style="font-size: 16px;">Aramalarınızı kaydederek "Alarm ve Akış" modüllerinde kullanabilirsiniz. "Alarm ve Akış" bölümünü kullanabilmek için en az 1 "Arama Kaydetme" seçimi yapmalısınız.</span>
+                                        <span style="font-size: 16px;">Aramalarınızı kaydederek "Alarm, Akış ve Veri Kıyaslama" modüllerinde kullanabilirsiniz. "Alarm, Akış ve Veri Kıyaslama" bölümünü kullanabilmek için en az 1 "Arama Kaydetme" seçimi yapmalısınız.</span>
                                     </div>
                                 </a>
                             </small>
@@ -331,7 +341,7 @@
                 </div>
             </div>
 
-            <div class="center-align red-text hide" data-name="alert" style="font-size: 20px;"></div>
+            <div class="center-align red-text hide p-2" data-name="alert" style="font-size: 20px;"></div>
 
             <div id="price" class="center-align">{{ config('formal.currency') }}<span data-name="price-total">0</span> +kdv <sub class="grey-text">/ ay</sub></div>
             <div class="grey-text text-darken-2 p-2">
@@ -380,6 +390,19 @@
     $(document).on('change', 'input[type=range]', function() {
         range_function($(this))
     }).on('change', '[data-option]', function() {
+        var __ = $(this);
+
+        if (__.is(':checked') && __.data('requirement'))
+        {
+            $('input[name=' + __.data('requirement') + ']').prop('checked', true)
+        }
+        else if (!__.is(':checked') && __.attr('name') == 'module_search' && $('[data-requirement=module_search]:checked').length)
+        {
+            __.prop('checked', true)
+
+             M.toast({ html: 'Arama modülü gerektiren modül veya modüller seçiliyken "Arama" modülü olmak zorundadır!', classes: 'orange' })
+        }
+
         optimize()
     })
 
@@ -512,7 +535,7 @@
 
         _scrollTo({
             'target': '#offer',
-            'tolerance': '-64px',
+            'tolerance': '-526px',
             'speed': 1
         })
     })
@@ -567,7 +590,7 @@
         }
         else if (obj.status == 'step')
         {
-            $('[data-name=alert]').removeClass('hide').hide().fadeIn().html(obj.message)
+            $('[data-name=alert]').removeClass('hide').hide().effect('highlight', { 'color': '#F44336' }, 1000).html(obj.message)
 
             $('[data-step]').addClass('hide')
 

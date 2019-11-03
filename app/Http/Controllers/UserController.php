@@ -1130,6 +1130,8 @@ class UserController extends Controller
             $organisation->module_real_time = $request->module_real_time ? true : false;
             $organisation->module_search = $request->module_search ? true : false;
             $organisation->module_trend = $request->module_trend ? true : false;
+            $organisation->module_compare = $request->module_compare ? true : false;
+            $organisation->module_replica_engine = $request->module_replica_engine ? true : false;
             $organisation->module_alarm = $request->module_alarm ? true : false;
 
             /**

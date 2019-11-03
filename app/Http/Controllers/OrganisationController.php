@@ -181,6 +181,8 @@ class OrganisationController extends Controller
             $module_count = $request->module_search ? ($module_count+1) : $module_count;
             $module_count = $request->module_alarm ? ($module_count+1) : $module_count;
             $module_count = $request->module_trend ? ($module_count+1) : $module_count;
+            $module_count = $request->module_compare ? ($module_count+1) : $module_count;
+            $module_count = $request->module_replica_engine ? ($module_count+1) : $module_count;
 
             if (!$module_count)
             {
@@ -218,6 +220,8 @@ class OrganisationController extends Controller
             $organisation->module_real_time = $request->module_real_time ? true : false;
             $organisation->module_search = $request->module_search ? true : false;
             $organisation->module_trend = $request->module_trend ? true : false;
+            $organisation->module_compare = $request->module_compare ? true : false;
+            $organisation->module_replica_engine = $request->module_replica_engine ? true : false;
             $organisation->module_alarm = $request->module_alarm ? true : false;
 
             /*!
@@ -1178,6 +1182,8 @@ class OrganisationController extends Controller
         Option::updateOrCreate([ 'key' => 'unit_price.module_real_time'                ], [ 'value' => $request->module_real_time                ]);
         Option::updateOrCreate([ 'key' => 'unit_price.module_search'                   ], [ 'value' => $request->module_search                   ]);
         Option::updateOrCreate([ 'key' => 'unit_price.module_trend'                    ], [ 'value' => $request->module_trend                    ]);
+        Option::updateOrCreate([ 'key' => 'unit_price.module_compare'                  ], [ 'value' => $request->module_compare                    ]);
+        Option::updateOrCreate([ 'key' => 'unit_price.module_replica_engine'           ], [ 'value' => $request->module_replica_engine                    ]);
         Option::updateOrCreate([ 'key' => 'unit_price.module_alarm'                    ], [ 'value' => $request->module_alarm                    ]);
 
         Option::updateOrCreate([ 'key' => 'unit_price.user'                            ], [ 'value' => $request->user_price                      ]);
@@ -1261,6 +1267,8 @@ class OrganisationController extends Controller
             'module_real_time'                 => '+',
             'module_search'                    => '+',
             'module_trend'                     => '+',
+            'module_compare'                   => '+',
+            'module_replica_engine'            => '+',
             'module_alarm'                     => '+',
 
             'data_pool_youtube_channel_limit'  => '*',
@@ -1356,6 +1364,8 @@ class OrganisationController extends Controller
         $organisation->module_real_time = $request->module_real_time ? true : false;
         $organisation->module_search = $request->module_search ? true : false;
         $organisation->module_trend = $request->module_trend ? true : false;
+        $organisation->module_compare = $request->module_compare ? true : false;
+        $organisation->module_replica_engine = $request->module_replica_engine ? true : false;
         $organisation->module_alarm = $request->module_alarm ? true : false;
 
         /**

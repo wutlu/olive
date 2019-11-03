@@ -79,10 +79,18 @@
     section h1 {
         margin: 0 0 1rem;
         font-size: 48px;
+        display: block;
     }
     section h2 {
         margin: 0 0 1rem;
         font-size: 32px;
+    }
+
+    @media (max-width: 1024px)
+    {
+        section h1 {
+            font-size: 32px;
+        }
     }
 
     .section-overlay {
@@ -355,7 +363,7 @@
                     <img alt="Veri Zone" src="{{ asset('img/veri.zone_logo-white.svg') }}" class="logo mb-2" />
                 </div>
                 <h1 class="white-text mb-0 d-block center-align">Web ve Sosyal Medyayı Takip Edin</h1>
-                <p class="white-text d-block center-align" style="font-size: 26px;">Olan biteni ölçümleyin, olacaklardan eş zamanlı haberdar olun!</p>
+                <p class="white-text d-block center-align" style="font-size: 24px;">Olan biteni ölçümleyin, olacaklardan eş zamanlı haberdar olun!</p>
             </div>
         </div>
     </section>

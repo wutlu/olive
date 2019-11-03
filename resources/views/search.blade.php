@@ -2763,14 +2763,14 @@
                             <div class="input-field">
                                 <select name="twitter_sort" id="twitter_sort" data-update>
                                     <option value="">Normal</option>
-                                        <option value="counts.favorite">Favori</option>
-                                        <option value="counts.retweet">ReTweet</option>
-                                        <option value="counts.quote">Alıntı</option>
-                                        <option value="counts.reply">Cevap</option>
-                                        <option value="" disabled>---</option>
-                                        <option value="user.counts.followers">Takipçi</option>
-                                        <option value="user.counts.friends">Takip</option>
-                                        <option value="user.counts.statuses">Tweet</option>
+                                    <option value="counts.favorite">Favori</option>
+                                    <option value="counts.retweet">ReTweet</option>
+                                    <option value="counts.quote">Alıntı</option>
+                                    <option value="counts.reply">Cevap</option>
+                                    <option value="" disabled>---</option>
+                                    <option value="user.counts.followers">Takipçi</option>
+                                    <option value="user.counts.friends">Takip</option>
+                                    <option value="user.counts.statuses">Tweet</option>
                                 </select>
                                 <label>Twitter Sıralaması</label>
                             </div>

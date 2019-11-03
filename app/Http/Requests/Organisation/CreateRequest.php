@@ -28,7 +28,7 @@ class CreateRequest extends FormRequest
             'historical_days' => 'required_with:module_search,module_real_time,module_alarm|integer|max:90|min:0',
 
             'pin_group_limit' => 'nullable|integer|max:12|min:0',
-            'saved_searches_limit' => 'required_with:module_search,module_real_time,module_alarm|integer|max:12|min:0',
+            'saved_searches_limit' => 'required_with:module_search,module_real_time,module_alarm,module_compare|integer|max:12|min:0',
 
             'data_pool_youtube_channel_limit' => 'nullable|integer|max:100|min:0',
             'data_pool_youtube_video_limit' => 'nullable|integer|max:100|min:0',
@@ -40,6 +40,8 @@ class CreateRequest extends FormRequest
             'module_real_time' => 'nullable|string|in:on',
             'module_search' => 'required_with:module_real_time,module_alarm|string|in:on',
             'module_trend' => 'nullable|string|in:on',
+            'module_compare' => 'nullable|string|in:on',
+            'module_replica_engine' => 'nullable|string|in:on',
             'module_alarm' => 'nullable|string|in:on',
         ];
 

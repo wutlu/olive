@@ -88,6 +88,11 @@ Route::domain('olive.'.config('app.domain'))->group(function () {
         Route::post('islem', 'SearchController@compareProcess')->name('compare.process');
     });
 
+    Route::prefix('kopya-icerik')->group(function () {
+        Route::get('/', 'ReplicaController@dashboard')->name('replica.dashboard');
+        Route::post('/', 'ReplicaController@search');
+    });
+
     Route::prefix('arama-motoru')->group(function () {
         Route::get('/', 'SearchController@dashboard')->name('search.dashboard');
 

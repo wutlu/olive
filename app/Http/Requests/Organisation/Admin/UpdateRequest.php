@@ -63,6 +63,8 @@ class UpdateRequest extends FormRequest
             'module_real_time' => 'nullable|string|in:on',
             'module_search' => 'nullable|string|in:on',
             'module_trend' => 'nullable|string|in:on',
+            'module_compare' => 'nullable|string|in:on',
+            'module_replica_engine' => 'nullable|string|in:on',
             'module_alarm' => 'nullable|string|in:on',
         ];
 

@@ -49,6 +49,7 @@ class Crawler
                 'navbar',
                 'img',
                 'feed',
+                'font',
                 'hsa',
                 'without',
                 'background',

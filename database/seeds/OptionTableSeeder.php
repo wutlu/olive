@@ -75,6 +75,8 @@ class OptionTableSeeder extends Seeder
         Option::firstOrCreate( [ 'key' => 'unit_price.module_search'                     ], [ 'value' => 0                                     ] );
         Option::firstOrCreate( [ 'key' => 'unit_price.module_trend'                      ], [ 'value' => 0                                     ] );
         Option::firstOrCreate( [ 'key' => 'unit_price.module_alarm'                      ], [ 'value' => 0                                     ] );
+        Option::firstOrCreate( [ 'key' => 'unit_price.module_compare'                    ], [ 'value' => 0                                     ] );
+        Option::firstOrCreate( [ 'key' => 'unit_price.module_replica_engine'             ], [ 'value' => 0                                     ] );
         Option::firstOrCreate( [ 'key' => 'unit_price.user'                              ], [ 'value' => 0                                     ] );
 
         Option::firstOrCreate( [ 'key' => 'formal.discount_with_year'                    ], [ 'value' => 0                                     ] );

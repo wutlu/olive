@@ -26,22 +26,14 @@ use Carbon\Carbon;
 
 class SearchController extends Controller
 {
-    /**
-     * Temel sorgu.
-     *
-     * @var array
-     */
-    private $query;
-
     public function __construct()
     {
-        ### [ üyelik ve organizasyon zorunlu ve organizasyonun zorunlu ] ###
+        ### [ üyelik ve organizasyon zorunlu ] ###
         $this->middleware([ 'auth', 'organisation:have' ]);
 
         ### [ zorunlu aktif organizasyon ] ###
         $this->middleware([
-            'can:organisation-status',
-            'organisation:have,module_search'
+            'can:organisation-status'
         ])->only([
             'compare',
             'compareProcess',
