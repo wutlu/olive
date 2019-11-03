@@ -51,7 +51,7 @@
                                 @elseif ($key == 'module_trend')
                                     <p class="mb-0">Eş zamanlı veya geçmişe yönelik trend olmuş; kelime, kullanıcı veya başlık takibi, genel veya sektörel popüler kullanıcı listeleri sağlar.</p>
                                 @elseif ($key == 'module_compare')
-                                    <p class="mb-0">Arama ile belirleyeceğiniz kriterleri Veri Kıyaslama modülü ile karşılaştırabilirsiniz.</p>
+                                    <p class="mb-0">Arama ile belirleyeceğiniz kriterleri sorgu sınırı olmadan kıyaslayabilirsiniz.</p>
                                 @elseif ($key == 'module_replica_engine')
                                     <p class="mb-0">İnternette dolaşan kopya içerikleri tespit edebilirsiniz.</p>
                                 @elseif ($key == 'module_alarm')
@@ -344,10 +344,15 @@
             <div class="center-align red-text hide p-2" data-name="alert" style="font-size: 20px;"></div>
 
             <div id="price" class="center-align">{{ config('formal.currency') }}<span data-name="price-total">0</span> +kdv <sub class="grey-text">/ ay</sub></div>
+            <small class="grey-text d-table mx-auto">DENEME SONRASI ÖDEMENİZ GEREKEN FİYAT</small>
             <div class="grey-text text-darken-2 p-2">
                 @component('components.alert')
                     @slot('icon', 'info')
                     @slot('text', 'Organizasyon deneme süresi 1 gündür. Hizmetlerin kesintisizce devam edebilmesi için en geç 1 gün sonra paketinizi yenilemeniz gerekmektedir.')
+                @endcomponent
+                @component('components.alert')
+                    @slot('icon', 'info')
+                    @slot('text', 'Ücretsiz ibaresi olan özelliklerin kullanımında organizasyon oluşturma zorunluluğu yoktur.')
                 @endcomponent
                 @component('components.alert')
                     @slot('icon', 'info')

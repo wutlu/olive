@@ -313,7 +313,7 @@
                     <div class="tap-target cyan darken-4 white-text" data-target="start">
                         <div class="tap-target-content">
                             <h5>Organizasyon Oluşturun!</h5>
-                            <p>Olive ayrıcalıklarından faydalanarak profesyonel dünyadaki yerinizi öğrenmek için hemen başlayın.</p>
+                            <p>Olive'in tüm özelliklerini keşfetmek için hemen denemeye başlayın!</p>
                         </div>
                     </div>
 
