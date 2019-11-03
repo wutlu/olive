@@ -1,10 +1,5 @@
 @extends('layouts.app', [
-    'sidenav_fixed_layout' => true,
-    'breadcrumb' => [
-        [
-            'text' => 'Ana Sayfa'
-        ]
-    ],
+    'sidenav_fixed_layout' => true
 ])
 
 @push('local.scripts')
