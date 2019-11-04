@@ -364,6 +364,7 @@ $arr = [
         'metric'                          => 'Metrik',
         'normalize_1'                     => 'Normalize Değeri 1',
         'normalize_2'                     => 'Normalize Değeri 2',
+        'smilarity'                     => 'Benzerlik',
     ],
 ];
 

@@ -27,6 +27,7 @@ class ReplicaRequest extends FormRequest
             'string' => 'required|string|min:24|max:255',
             'skip' => 'required|integer',
             'take' => 'required|integer|max:100',
+            'smilarity' => 'required|integer|in:100,90,80,70,60,50,40',
 
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',

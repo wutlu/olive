@@ -35,7 +35,8 @@ class ReplicaController extends Controller
             'start_date',
             'end_date',
             'string',
-            'source'
+            'source',
+            'smilarity'
         ];
 
         $elements = implode(',', $elements);
@@ -102,7 +103,7 @@ class ReplicaController extends Controller
                     ]
                 ]
             ],
-            'min_score' => 10,
+            'min_score' => $request->smilarity / 10,
             'from' => $request->skip,
             'size' => $request->take,
         ];
