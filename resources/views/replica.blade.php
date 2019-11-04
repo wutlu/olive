@@ -3,7 +3,7 @@
     'footer_hide' => true,
     'breadcrumb' => [
         [
-            'text' => 'Kopya İçerik (beta)'
+            'text' => 'Kopya İçerik Tespiti (beta)'
         ]
     ],
     'wide' => true

@@ -143,10 +143,10 @@
                         'key' => 'pool'
                     ],
                     [
-                        'route' => route('compare.dashboard'),
+                        'route' => route('replica.dashboard'),
                         'icon' => 'content_copy',
-                        'name' => 'Benzer İçerik <sup class="red-text">Yeni</sup>',
-                        'key' => 'compare'
+                        'name' => 'Kopya İçerik Tespiti <sup class="red-text">Yeni</sup>',
+                        'key' => 'replica'
                     ],
                     [
                         'route' => route('trend.archive'),
