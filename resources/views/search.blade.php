@@ -92,7 +92,7 @@
     var updateTimer;
 
     $(document).on('click', '[data-trigger=clear]', function() {
-        $('input[name=string]').val('').hide().show( 'highlight', { 'color': '#f0f4c3' }, 400 ).focus()
+        $('input[name=string]').val('').effect( 'highlight', { 'color': '#e8f5e9' }, 800 ).focus()
     }).on('click', '[data-search]', function() {
         var __ = $(this);
         var input = $('input[name=string]');

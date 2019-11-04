@@ -232,8 +232,6 @@ class DomainController extends Controller
                         '.panel-title > p',
                         'h2[itemprop="description"]',
                         '#singleContent p:nth-child(1)',
-                        '[itemprop="articleBody"] p:nth-child(1)',
-                        '[itemprop="articleBody"] > p:nth-child(1)',
                         '.panel-title p:nth-child(1)',
                         '.haber_ayrinti_detay p:nth-child(1)',
                         'header h2',
@@ -248,6 +246,8 @@ class DomainController extends Controller
                         '.hbr-metin',
                         '#spot',
                         '.content_inner_section_salt > p:nth-child(1)',
+                        '[itemprop="articleBody"] p:nth-child(1)',
+                        '[itemprop="articleBody"] > p:nth-child(1)',
                     ];
 
                     foreach ($selectors as $selector)

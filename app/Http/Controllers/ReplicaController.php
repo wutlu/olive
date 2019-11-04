@@ -6,6 +6,12 @@ use Illuminate\Http\Request;
 
 use App\Elasticsearch\Document;
 
+use Term;
+
+use App\Http\Requests\ReplicaRequest;
+
+use App\Models\Crawlers\MediaCrawler;
+
 class ReplicaController extends Controller
 {
     public function __construct()
@@ -25,10 +31,12 @@ class ReplicaController extends Controller
      */
     public static function dashboard()
     {
-    	$elements = [
-    		'start_date',
-    		'end_date',
-    	];
+        $elements = [
+            'start_date',
+            'end_date',
+            'string',
+            'source'
+        ];
 
         $elements = implode(',', $elements);
 
@@ -40,8 +48,15 @@ class ReplicaController extends Controller
      *
      * @return array
      */
-    public static function search(Request $request)
+    public static function search(ReplicaRequest $request)
     {
+        $starttime = explode(' ', microtime());
+        $starttime = $starttime[1] + $starttime[0];
+
+        $smilar = Term::commonWords($request->string);
+
+        $crawler_count = MediaCrawler::count();
+
         $q = [
             'from' => $request->skip,
             'size' => $request->take,
@@ -64,7 +79,7 @@ class ReplicaController extends Controller
                         [
                             'more_like_this' => [
                                 'fields' => [ 'title', 'description' ],
-                                'like' => 'bilgi',
+                                'like' => array_keys($smilar),
                                 'min_term_freq' => 1,
                                 'min_doc_freq' => 1
                             ]
@@ -72,7 +87,21 @@ class ReplicaController extends Controller
                     ]
                 ]
             ],
-            'min_score' => 1,
+            'aggs' => [
+                'locals' => [
+                    'terms' => [
+                        'field' => 'state',
+                        'size' => 100
+                    ]
+                ],
+                'unique' => [
+                    'terms' => [
+                        'field' => 'site_id',
+                        'size' => $crawler_count
+                    ]
+                ]
+            ],
+            'min_score' => 0.1,
             'from' => $request->skip,
             'size' => $request->take,
         ];
@@ -80,15 +109,75 @@ class ReplicaController extends Controller
         $query = Document::search([ 'media', '*' ], 'article', $q);
 
         $results = [
-        	'status' => $query->status
+            'status' => $query->status,
+            'aggs' => [],
+            'stats' => [
+                'hits' => 0,
+                'took' => 0
+            ]
         ];
 
         if ($query->status == 'ok')
         {
-        	$results['hits'] = $query->data['hits']['hits'];
-        	$results['stats'] = [
-        		'total' => $query->data['hits']['total']
-        	];
+            $media_crawlers = null;
+
+            if (@$query->data['aggregations']['unique']['buckets'])
+            {
+                $ids = array_map(function($item) {
+                    return $item['key'];
+                }, $query->data['aggregations']['unique']['buckets']);
+
+                $media_crawlers = @MediaCrawler::select([ 'id', 'name', 'site', 'base' ])->whereIn('id', $ids)->get()->keyBy('id')->toArray();
+
+                if ($media_crawlers)
+                {
+                    $results['aggs']['unique'] = array_map(function($bucket) use($media_crawlers) {
+                        return [
+                            'name' => $media_crawlers[$bucket['key']]['name'],
+                            'address' => $media_crawlers[$bucket['key']]['site'],
+                            'base' => $media_crawlers[$bucket['key']]['base'],
+                            'hit' => $bucket['doc_count']
+                        ];
+                    }, $query->data['aggregations']['unique']['buckets']);
+                }
+            }
+
+            $results['hits'] = array_map(function($item) use($media_crawlers) {
+                $line = $item['_source'];
+                $site = @$media_crawlers[$item['_source']['site_id']];
+
+                if ($site)
+                {
+                    unset($line['site_id']);
+
+                    $line['created_at'] = date('d.m.Y H:i', strtotime($line['created_at']));
+
+                    $line['site']['name'] = $site['name'];
+                    $line['site']['address'] = $site['site'];
+
+                    if ($site['base'] != '/')
+                    {
+                        $line['site']['address'] = $site['site'].'/'.$site['base'];
+                    }
+                }
+
+                return $line;
+            }, $query->data['hits']['hits']);
+
+            if (@$query->data['aggregations']['locals']['buckets'])
+            {
+                $results['aggs']['locals'] = $query->data['aggregations']['locals']['buckets'];
+            }
+
+            $results['stats']['hits'] = $query->data['hits']['total'];
+        }
+
+        $mtime = explode(' ', microtime());
+        $totaltime = $mtime[0] + $mtime[1] - $starttime;
+
+        if ($results['stats']['hits'])
+        {
+            $results['stats']['took'] = sprintf('%0.2f', $totaltime);
         }
 
         return $results;
