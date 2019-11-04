@@ -238,21 +238,26 @@
                                             'html': [
                                                 $('<th />', { 'html': 'Site Adı' }),
                                                 $('<th />', { 'html': 'Site Adresi' }),
-                                                $('<th />', { 'html': 'İçerik Sayısı' }),
-                                                $('<th />', {
-                                                    'class': 'right-align',
-                                                    'html': $('<a />', {
-                                                        'class': 'btn-flat waves-effect noExl',
-                                                        'href': '#',
-                                                        'data-excel': '#unique-sites',
-                                                        'data-name': 'Excel Kopya',
-                                                        'html': 'Excel\'e Aktar'
-                                                    })
-                                                })
+                                                $('<th />', { 'html': 'İçerik Sayısı' })
                                             ]
                                         })
                                     }),
-                                    $('<tbody />')
+                                    $('<tbody />'),
+                                    $('<tfoot />', {
+                                        'html': $('<tr />', {
+                                            'html': $('<td />', {
+                                                'colspan': 3,
+                                                'class': 'center-align',
+                                                'html': $('<a />', {
+                                                    'class': 'btn-flat waves-effect noExl',
+                                                    'href': '#',
+                                                    'data-excel': '#unique-sites',
+                                                    'data-name': 'Excel Kopya',
+                                                    'html': 'Excel\'e Aktar'
+                                                })
+                                            })
+                                        })
+                                    })
                                 ]
                             })
                         ]
@@ -281,7 +286,7 @@
                                     'padding': '4px'
                                 }
                             }),
-                            $('<td />', { 'html': item.hit, 'css': { 'padding': '4px' }, 'colspan': 2 })
+                            $('<td />', { 'html': item.hit, 'css': { 'padding': '4px' } })
                         ]
                     })
 
