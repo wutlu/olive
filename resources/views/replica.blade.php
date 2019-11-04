@@ -145,7 +145,7 @@
                     id="search"
                     data-href="{{ route('replica.dashboard') }}"
                     data-skip="0"
-                    data-take="10"
+                    data-take="50"
                     data-more-button="#search-more_button"
                     data-callback="__search"
                     data-method="post"

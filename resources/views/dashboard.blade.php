@@ -143,10 +143,10 @@
                         'key' => 'pool'
                     ],
                     [
-                        'route' => route('forum.index'),
-                        'icon' => 'forum',
-                        'name' => 'Forum',
-                        'key' => 'forum'
+                        'route' => route('compare.dashboard'),
+                        'icon' => 'content_copy',
+                        'name' => 'Benzer İçerik <sup class="red-text">Yeni</sup>',
+                        'key' => 'compare'
                     ],
                     [
                         'route' => route('trend.archive'),
