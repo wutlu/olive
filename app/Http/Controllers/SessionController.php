@@ -37,21 +37,45 @@ class SessionController extends Controller
     {
         $date = Carbon::now()->subMinutes(1)->timestamp;
 
-        $logs = SessionTable::with('user')->where('last_activity', '>=', $date)->get()->toArray();
+        $logs = SessionTable::with('user')
+                            ->where('last_activity', '>=', $date)
+                            ->orderBy('ip_address', 'asc')
+                            ->orderBy('last_activity', 'asc')
+                            ->get();
 
-        return [
-            'status' => 'ok',
-            'hits' => array_map(function($array) {
-                $location = geoip()->getLocation($array['ip_address']);
+        $items = [];
 
-                return array_merge($array, [
+        if (count($logs))
+        {
+            foreach ($logs as $log)
+            {
+                $location = geoip()->getLocation($log->ip_address);
+
+                $array = [
                     'location' => [
                         'city' => $location->city,
                         'country' => $location->country
                     ],
-                    'updated_at' => date('H:i:s', $array['last_activity'])
-                ]);
-            }, $logs),
+                    'updated_at' => date('H:i:s', $log->last_activity)
+                ];
+
+                if (@$items[$log->ip_address])
+                {
+                    if ($log->ping > $items[$log->ip_address]['ping'])
+                    {
+                        $items[$log->ip_address] = array_merge($array, $log->toArray());
+                    }
+                }
+                else
+                {
+                    $items[$log->ip_address] = array_merge($array, $log->toArray());
+                }
+            }
+        }
+
+        return [
+            'status' => 'ok',
+            'hits' => array_values($items),
             'total' => count($logs)
         ];
     }
