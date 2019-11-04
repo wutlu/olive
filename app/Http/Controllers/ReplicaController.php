@@ -83,7 +83,8 @@ class ReplicaController extends Controller
                                 'fields' => [ 'title', 'description' ],
                                 'like' => array_keys($smilar),
                                 'min_term_freq' => 1,
-                                'min_doc_freq' => 1
+                                'min_doc_freq' =>1,
+                                'min_word_length' =>1
                             ]
                         ]
                     ]

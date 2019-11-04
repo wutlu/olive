@@ -24,7 +24,7 @@ class ReplicaRequest extends FormRequest
     public function rules()
     {
         return [
-            'string' => 'required|string|min:24|max:255',
+            //'string' => 'required|string|min:20|max:255',
             'skip' => 'required|integer',
             'take' => 'required|integer|max:100',
             'smilarity' => 'required|integer|in:100,90,80,70,60,50,40',

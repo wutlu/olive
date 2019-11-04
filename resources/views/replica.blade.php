@@ -221,39 +221,42 @@
 
                 var chart = $('<div />', {
                     'id': 'unique-chart',
-                    'class': 'mb-2',
-                    'html': [
-                        $('<h6 />', {
-                            'html': 'Tekil Site: ' + '(' + obj.aggs.unique.length + ')',
-                            'class': 'grey-text m-0'
-                        }),
-                        $('<table />', {
-                            'id': 'unique-sites',
-                            'class': 'highlight',
-                            'html': [
-                                $('<thead />', {
-                                    'html': $('<tr />', {
-                                        'html': [
-                                            $('<th />', { 'html': 'Site Adı' }),
-                                            $('<th />', { 'html': 'Site Adresi' }),
-                                            $('<th />', { 'html': 'İçerik Sayısı' }),
-                                            $('<th />', {
-                                                'class': 'right-align',
-                                                'html': $('<a />', {
-                                                    'class': 'btn-flat waves-effect noExl',
-                                                    'href': '#',
-                                                    'data-excel': '#unique-sites',
-                                                    'data-name': 'Excel Kopya',
-                                                    'html': 'Excel\'e Aktar'
+                    'class': 'card mb-2',
+                    'html': $('<div />', {
+                        'class': 'card-content',
+                        'html': [
+                            $('<span />', {
+                                'html': 'Tekil Site: ' + '(' + obj.aggs.unique.length + ')',
+                                'class': 'card-title'
+                            }),
+                            $('<table />', {
+                                'id': 'unique-sites',
+                                'class': 'highlight',
+                                'html': [
+                                    $('<thead />', {
+                                        'html': $('<tr />', {
+                                            'html': [
+                                                $('<th />', { 'html': 'Site Adı' }),
+                                                $('<th />', { 'html': 'Site Adresi' }),
+                                                $('<th />', { 'html': 'İçerik Sayısı' }),
+                                                $('<th />', {
+                                                    'class': 'right-align',
+                                                    'html': $('<a />', {
+                                                        'class': 'btn-flat waves-effect noExl',
+                                                        'href': '#',
+                                                        'data-excel': '#unique-sites',
+                                                        'data-name': 'Excel Kopya',
+                                                        'html': 'Excel\'e Aktar'
+                                                    })
                                                 })
-                                            })
-                                        ]
-                                    })
-                                }),
-                                $('<tbody />')
-                            ]
-                        })
-                    ]
+                                            ]
+                                        })
+                                    }),
+                                    $('<tbody />')
+                                ]
+                            })
+                        ]
+                    })
                 })
 
                 $.each(obj.aggs.unique, function(key, item) {
@@ -282,7 +285,7 @@
                         ]
                     })
 
-                    chart.children('table').children('tbody').append(tr)
+                    chart.find('#unique-sites').children('tbody').append(tr)
                 })
 
                 chart.prependTo('#stats')
