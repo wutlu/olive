@@ -107,9 +107,9 @@
         <div class="d-flex justify-content-start flex-wrap">
             <div class="input-field m-0 align-self-center">
                 <select name="smilarity" id="smilarity">
-                    <option value="100">100%</option>
+                    <option value="100" selected>100%</option>
                     <option value="90">90%</option>
-                    <option value="80" selected>80%</option>
+                    <option value="80">80%</option>
                     <option value="70">70%</option>
                     <option value="60">60%</option>
                     <option value="50">50%</option>
