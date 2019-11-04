@@ -10,6 +10,11 @@
 ])
 
 @push('local.styles')
+    .marked {
+        padding: .4rem;
+        border-radius: .2rem;
+    }
+
     #search-area {
         border-width: 0 0 1px;
         border-style: solid;
@@ -79,6 +84,7 @@
 @push('external.include.footer')
     <script src="{{ asset('js/jquery.ui.min.js?v='.config('system.version')) }}"></script>
     <script src="{{ asset('js/speakingurl.min.js?v='.config('system.version')) }}" charset="UTF-8"></script>
+    <script src="{{ asset('js/jquery.mark.min.js?v='.config('system.version')) }}" charset="UTF-8"></script>
     <script src="{{ asset('js/jquery.table2excel.min.js?v='.config('system.version')) }}"></script>
 @endpush
 
@@ -181,6 +187,12 @@
                         item.find('[data-name=description]').html(o.description)
                         item.find('[data-name=created_at]').html(o.created_at)
                         item.find('[data-name=url]').html(o.url).attr('href', o.url)
+
+                        item.mark(obj.words, {
+                            'element': 'span',
+                            'className': 'marked yellow black-text',
+                            'accuracy': 'complementary'
+                        })
 
                         item.appendTo(__)
                 })

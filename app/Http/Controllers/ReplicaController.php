@@ -54,6 +54,7 @@ class ReplicaController extends Controller
         $starttime = $starttime[1] + $starttime[0];
 
         $smilar = Term::commonWords($request->string);
+        $clean = Term::cleanSearchQuery($request->string);
 
         $crawler_count = MediaCrawler::count();
 
@@ -101,7 +102,7 @@ class ReplicaController extends Controller
                     ]
                 ]
             ],
-            'min_score' => 0.1,
+            'min_score' => 10,
             'from' => $request->skip,
             'size' => $request->take,
         ];
@@ -114,7 +115,8 @@ class ReplicaController extends Controller
             'stats' => [
                 'hits' => 0,
                 'took' => 0
-            ]
+            ],
+            'words' => $clean->words
         ];
 
         if ($query->status == 'ok')
