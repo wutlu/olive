@@ -193,7 +193,7 @@ class Trigger extends Command
                 {
                     if ($search->{$key.'_'.$o})
                     {
-                        $q['query']['bool']['filter'][] = [
+                        $q['query']['bool']['must'][] = [
                             'range' => [
                                 implode('.', [ $key, $o ]) => [
                                     'gte' => implode('.', [ 0, $search->{$key.'_'.$o} ])

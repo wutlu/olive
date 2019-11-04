@@ -2871,7 +2871,7 @@
         $('input[name=sentiment_neg]').prop('checked', option.sentiment_neg ? true : false)
         $('input[name=sentiment_hte]').prop('checked', option.sentiment_hte ? true : false)
 
-        $('input[name=consumer_que]').prop('checked', option.sentiment_hte ? true : false)
+        $('input[name=consumer_que]').prop('checked', option.consumer_que ? true : false)
         $('input[name=consumer_req]').prop('checked', option.consumer_req ? true : false)
         $('input[name=consumer_cmp]').prop('checked', option.consumer_cmp ? true : false)
         $('input[name=consumer_nws]').prop('checked', option.consumer_nws ? true : false)

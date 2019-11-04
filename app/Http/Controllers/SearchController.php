@@ -173,7 +173,26 @@ class SearchController extends Controller
                         $q['query']['bool']['must'][] = [ 'match' => [ 'category' => config('system.analysis.category.types')[$search->category]['title'] ] ];
                     }
 
-                    foreach ([ [ 'consumer' => [ 'nws', 'que', 'req', 'cmp' ] ], [ 'sentiment' => [ 'pos', 'neg', 'neu', 'hte' ] ] ] as $key => $bucket)
+                    foreach (
+                        [
+                            [
+                                'consumer' => [
+                                    'nws',
+                                    'que',
+                                    'req',
+                                    'cmp'
+                                ]
+                            ],
+                            [
+                                'sentiment' => [
+                                    'pos',
+                                    'neg',
+                                    'neu',
+                                    'hte'
+                                ]
+                            ]
+                        ] as $key => $bucket
+                    )
                     {
                         foreach ($bucket as $key => $b)
                         {
@@ -181,7 +200,7 @@ class SearchController extends Controller
                             {
                                 if ($search->{$key.'_'.$o})
                                 {
-                                    $q['query']['bool']['filter'][] = [
+                                    $q['query']['bool']['must'][] = [
                                         'range' => [
                                             implode('.', [ $key, $o ]) => [
                                                 'gte' => implode('.', [ 0, $search->{$key.'_'.$o} ])
@@ -197,9 +216,30 @@ class SearchController extends Controller
                     {
                         switch ($module)
                         {
-                            case 'twitter'         : if ($organisation->data_twitter)         $data[] = self::tweet          ($search, $q)['aggs']; break;
-                            case 'instagram'       : if ($organisation->data_instagram)       $data[] = self::instagram      ($search, $q)['aggs']; break;
-                            case 'sozluk'          : if ($organisation->data_sozluk)          $data[] = self::sozluk         ($search, $q)['aggs']; break;
+                            case 'twitter':
+                                if ($organisation->data_twitter)
+                                {
+                                    $twitter_q = $q;
+
+                                    $data[] = self::tweet($search, $twitter_q)['aggs'];
+                                }
+                            break;
+                            case 'instagram':
+                                if ($organisation->data_instagram)
+                                {
+                                    $instagram_q = $q;
+
+                                    $data[] = self::instagram($search, $instagram_q)['aggs'];
+                                }
+                            break;
+                            case 'sozluk':
+                                if ($organisation->data_sozluk)
+                                {
+                                    $sozluk_q = $q;
+
+                                    $data[] = self::sozluk($search, $sozluk_q)['aggs'];
+                                }
+                            break;
                             case 'news':
                                 if ($organisation->data_news)
                                 {
@@ -213,11 +253,39 @@ class SearchController extends Controller
                                     $data[] = self::news($search, $news_q)['aggs'];
                                 }
                             break;
-                            case 'blog'            : if ($organisation->data_blog)            $data[] = self::blog           ($search, $q)['aggs']; break;
-                            case 'youtube_video'   : if ($organisation->data_youtube_video)   $data[] = self::youtube_video  ($search, $q)['aggs']; break;
-                            case 'youtube_comment' : if ($organisation->data_youtube_comment) $data[] = self::youtube_comment($search, $q)['aggs']; break;
-                            case 'shopping'        : if ($organisation->data_shopping)        $data[] = self::shopping       ($search, $q)['aggs']; break;
-                        }
+                            case 'blog':
+                                if ($organisation->data_blog)
+                                {
+                                    $blog_q = $q;
+
+                                    $data[] = self::blog($search, $blog_q)['aggs'];
+                                }
+                            break;
+                            case 'youtube_video':
+                                if ($organisation->data_youtube_video)
+                                {
+                                    $youtube_video_q = $q;
+
+                                    $data[] = self::youtube_video($search, $youtube_video_q)['aggs'];
+                                }
+                            break;
+                            case 'youtube_comment':
+                                if ($organisation->data_youtube_comment)
+                                {
+                                    $youtube_comment_q = $q;
+
+                                    $data[] = self::youtube_comment($search, $youtube_comment_q)['aggs'];
+                                }
+                            break;
+                            case 'shopping':
+                                if ($organisation->data_shopping)
+                                {
+                                    $shopping_q = $q;
+
+                                    $data[] = self::shopping($search, $shopping_q)['aggs'];
+                                }
+                            break;
+                    }
                     }
 
                     foreach ($data as $dt)
@@ -567,7 +635,7 @@ class SearchController extends Controller
                 {
                     if ($request->{$key.'_'.$o})
                     {
-                        $q['query']['bool']['filter'][] = [
+                        $q['query']['bool']['must'][] = [
                             'range' => [
                                 implode('.', [ $key, $o ]) => [
                                     'gte' => implode('.', [ 0, $request->{$key.'_'.$o} ])

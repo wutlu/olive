@@ -248,6 +248,8 @@ class TrendController extends Controller
      */
     public function archiveView(int $id)
     {
+        $price = $this->price;
+
         $query = TrendArchive::where('id', $id)->firstOrFail();
         $query->disabled_mutator = true;
 
@@ -268,7 +270,7 @@ class TrendController extends Controller
             'size' => 100
         ]);
 
-        return view('trends.archiveView', compact('query', 'module', 'documents'));
+        return view('trends.archiveView', compact('query', 'module', 'documents', 'price'));
     }
 
     /**

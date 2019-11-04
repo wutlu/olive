@@ -114,7 +114,7 @@ class AggregationController extends Controller
                 {
                     if ($request->{$key.'_'.$o})
                     {
-                        $q['query']['bool']['filter'][] = [
+                        $q['query']['bool']['must'][] = [
                             'range' => [
                                 implode('.', [ $key, $o ]) => [
                                     'gte' => implode('.', [ 0, $request->{$key.'_'.$o} ])

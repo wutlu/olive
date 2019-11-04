@@ -163,7 +163,7 @@
                             <h5 class="m-0 d-table blue-text" data-name="title"></h5>
                             <span class="grey-text" data-name="created_at"></span>
                             <p class="mb-0 grey-text text-darken-2" data-name="description"></p>
-                            <a href="#" class="d-table green-text" data-name="url"></a>
+                            <a href="#" target="_blank" class="d-table green-text" data-name="url"></a>
                         </div>
                     </li>
                 </ul>
