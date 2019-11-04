@@ -32,6 +32,9 @@ class TrendController extends Controller
          * - Organizasyon
          */
         $this->middleware([ 'auth' ]);
+        $this->middleware([ 'verification.email' ])->only([
+            'liveRedis'
+        ]);
 
         if ($this->price)
         {
