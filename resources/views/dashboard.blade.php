@@ -25,7 +25,8 @@
         },
         autoplay: true,
         autoplayTimeout: 1500,
-        autoplayHoverPause: true
+        autoplayHoverPause: true,
+        lazyLoad: true
     })
 @endpush
 

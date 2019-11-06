@@ -15,6 +15,12 @@
 ])
 
 @section('dock')
+    <div class="right-align pb-1">
+        <a href="#" class="btn-flat btn-floating waves-effect" data-trigger="full-screen">
+            <i class="material-icons">fullscreen</i>
+        </a>
+    </div>
+
     @include('trends._menu', [ 'active' => 'live' ])
 
     <div class="card card-unstyled mt-1">
@@ -319,6 +325,30 @@
             }, 30000)
         }
     }
+
+    $(document).keydown(function(e) {
+        if (e.keyCode == 27)
+        {
+            $('[data-full-screen]').attr('data-full-screen', 'off')
+        }
+    }).on('click', '[data-trigger=full-screen]', function() {
+        $('[data-full-screen]').attr('data-full-screen', 'on')
+
+        modal({
+            'id': 'info',
+            'body': 'Tam ekran modundan çıkmak için ESC tuşunu kullanın.',
+            'size': 'modal-small',
+            'title': keywords.info,
+            'options': {},
+            'footer': [
+               $('<a />', {
+                   'href': '#',
+                   'class': 'modal-close waves-effect btn-flat',
+                   'html': buttons.ok
+               })
+            ]
+        })
+    })
 @endpush
 
 @push('local.styles')
@@ -371,10 +401,20 @@
         min-width: 100%;
       }
     }
+
+    [data-full-screen=on] {
+        position: fixed;
+        z-index: 999;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: #f0f0f0;
+    }
 @endpush
 
 @section('content')
-    <div class="card-deck sortable">
+    <div class="card-deck sortable" data-full-screen="off">
         @foreach ($trends as $trend)
             <script>
             {{ 'var '.$trend['module'].'_timer' }};

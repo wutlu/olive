@@ -173,7 +173,11 @@
                id="search-more_button"
                data-json-target="ul#search">Daha Fazla</a>
         </div>
-        <div class="col s12 l6 xl5" id="stats"></div>
+        <div class="col s12 l6 xl5" id="stats">
+            <div id="local_press-chart" class="card card-unstyled mb-1">
+                <div class="tr-map"></div>
+            </div>
+        </div>
     </div>
 @endsection
 
@@ -221,7 +225,7 @@
 
                 var chart = $('<div />', {
                     'id': 'unique-chart',
-                    'class': 'card mb-2',
+                    'class': 'card card-unstyled',
                     'html': $('<div />', {
                         'class': 'card-content',
                         'html': [
@@ -293,31 +297,12 @@
                     chart.find('#unique-sites').children('tbody').append(tr)
                 })
 
-                chart.prependTo('#stats')
+                chart.appendTo('#stats')
             }
 
             if (obj.aggs.locals)
             {
                 var chart = $('#local_press-chart');
-
-                if (chart.length)
-                {
-                    chart.remove()
-                }
-
-                var chart = $('<div />', {
-                    'id': 'local_press-chart',
-                    'class': 'mb-2',
-                    'html': [
-                        $('<h6 />', {
-                            'html': 'Yerel Basın: ' + '(' + obj.aggs.locals.length + ')',
-                            'class': 'grey-text m-0'
-                        }),
-                        $('<div />', {
-                            'class': 'tr-map'
-                        })
-                    ]
-                })
 
                 var total = 0;
 
@@ -339,8 +324,6 @@
                         'css': { 'background-color': color }
                     }))
                 })
-
-                chart.prependTo('#stats')
             }
         }
     }
