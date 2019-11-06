@@ -7,6 +7,26 @@
         fullWidth: true,
         indicators: true
     })
+
+    $('.carousel-news').owlCarousel({
+        responsiveClass: true,
+        autoWidth: true,
+        dotClass: 'hide',
+        navText: [
+            '<div class="nav-btn prev-slide d-flex"><i class="material-icons align-self-center">keyboard_arrow_left</i></div>',
+            '<div class="nav-btn next-slide d-flex"><i class="material-icons align-self-center">keyboard_arrow_right</i></div>'
+        ],
+        nav: true,
+        loop: true,
+        responsive: {
+            0: { items: 1 },
+            800: { items: 2 },
+            1400: { items: 3 }
+        },
+        autoplay: true,
+        autoplayTimeout: 1500,
+        autoplayHoverPause: true
+    })
 @endpush
 
 @push('local.styles')
@@ -22,6 +42,17 @@
         .carousel-slider {
             margin: 1rem 0 0;
         }
+    }
+
+    .carousel-news [data-name=item] > img {
+        width: auto;
+        height: 64px;
+    }
+    .carousel-news [data-name=item] > span {
+        max-height: 64px;
+        max-width: 200px;
+        padding: 0 1rem;
+        overflow: hidden;
     }
 
     .indicators > .indicator-item {
@@ -43,6 +74,19 @@
         text-shadow: 1px 1px 1px rgba(0, 0, 0, .4);
     }
 @endpush
+
+@section('wildcard')
+    @if (count($news))
+        <div class="carousel-news owl-carousel grey lighten-4 z-depth-1">
+            @foreach ($news as $item)
+                <a href="{{ route('search.dashboard').'?q="'.$item->data->title.'"' }}" class="d-flex" data-name="item">
+                    <img class="align-self-center" alt="{{ $item->data->title }}" src="{{ $item->data->image }}" />
+                    <span class="align-self-center">{{ $item->data->title }}</span>
+                </a>
+            @endforeach
+        </div>
+    @endif
+@endsection
 
 @section('content')
     @if (count($carousels))
@@ -515,4 +559,12 @@
     @if (session('deleted'))
         M.toast({ html: 'Organizasyon Silindi', classes: 'green darken-2' })
     @endif
+@endpush
+
+@push('external.include.header')
+    <link rel="stylesheet" href="{{ asset('css/owl.carousel.min.css?v='.config('system.version')) }}" />
+@endpush
+
+@push('external.include.footer')
+    <script src="{{ asset('js/owl.carousel.min.js?v='.config('system.version')) }}"></script>
 @endpush

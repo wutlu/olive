@@ -337,7 +337,18 @@ class HomeController extends Controller
 
         $photo = $photos[0];
 
-        return view('dashboard', compact('carousels', 'modals', 'photo', 'threads'));
+        $news = json_decode(RedisCache::get(implode(':', [ config('system.db.alias'), 'trends', 'news' ])));
+
+        return view(
+            'dashboard',
+            compact(
+                'carousels',
+                'modals',
+                'photo',
+                'threads',
+                'news'
+            )
+        );
     }
 
     /**

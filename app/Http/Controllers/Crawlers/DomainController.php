@@ -245,9 +245,7 @@ class DomainController extends Controller
                         '.ozet > h2',
                         '.hbr-metin',
                         '#spot',
-                        '.content_inner_section_salt > p:nth-child(1)',
-                        '[itemprop="articleBody"] p:nth-child(1)',
-                        '[itemprop="articleBody"] > p:nth-child(1)',
+                        '.content_inner_section_salt > p:nth-child(1)'
                     ];
 
                     foreach ($selectors as $selector)
