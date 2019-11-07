@@ -329,10 +329,25 @@
     $(document).keydown(function(e) {
         if (e.keyCode == 27)
         {
-            $('[data-full-screen]').attr('data-full-screen', 'off')
+            $('body').removeClass('full-screen')
         }
     }).on('click', '[data-trigger=full-screen]', function() {
-        $('[data-full-screen]').attr('data-full-screen', 'on')
+        $('body').addClass('full-screen')
+
+        var docElm = document.documentElement;
+
+        if (docElm.requestFullscreen)
+        {
+            docElm.requestFullscreen();
+        }
+        else if (docElm.mozRequestFullScreen)
+        {
+            docElm.mozRequestFullScreen();
+        }
+        else if (docElm.webkitRequestFullScreen)
+        {
+            docElm.webkitRequestFullScreen();
+        }
 
         modal({
             'id': 'info',
@@ -402,7 +417,10 @@
       }
     }
 
-    [data-full-screen=on] {
+    body.full-screen {
+        overflow: hidden;
+    }
+    body.full-screen [data-full-screen] {
         position: fixed;
         z-index: 999;
         top: 0;
@@ -410,11 +428,12 @@
         bottom: 0;
         left: 0;
         background-color: #f0f0f0;
+        overflow: auto;
     }
 @endpush
 
 @section('content')
-    <div class="card-deck sortable" data-full-screen="off">
+    <div class="card-deck sortable" data-full-screen>
         @foreach ($trends as $trend)
             <script>
             {{ 'var '.$trend['module'].'_timer' }};
@@ -441,7 +460,7 @@
                 <ul
                     id="trend_list-{{ $trend['module'] }}"
                     data-id="trend_list"
-                    class="collapsible"
+                    class="collapsible resizable"
                     data-href="{{ route('trend.live') }}"
                     data-module="{{ $trend['module'] }}"
                     data-method="post"

@@ -63,12 +63,12 @@ class SessionController extends Controller
                 {
                     if ($log->ping > $items[$log->ip_address]['ping'])
                     {
-                        $items[$log->ip_address] = array_merge($array, $log->toArray());
+                        $items[implode('.', [ $log->ip_address, md5($log->user_agent) ])] = array_merge($array, $log->toArray());
                     }
                 }
                 else
                 {
-                    $items[$log->ip_address] = array_merge($array, $log->toArray());
+                    $items[implode('.', [ $log->ip_address, md5($log->user_agent) ])] = array_merge($array, $log->toArray());
                 }
             }
         }

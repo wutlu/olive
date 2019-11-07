@@ -7,19 +7,19 @@
  */
 
 #slide-out {
-  background-color: #263238;
-  color: #cfd8dc !important;
+  background-color: #2f2f2f;
+  color: #d5d5d5 !important;
 }
 #slide-out a,
 #slide-out i.material-icons,
 #slide-out span {
-  color: #cfd8dc !important;
+  color: #d5d5d5 !important;
 }
 #slide-out a.subheader {
-	color: #546e7a !important;
+	color: #676767 !important;
 }
 #slide-out .grey-text {
-  color: #90a4ae !important;
+  color: #9f9f9f !important;
 }
 #slide-out .grey {
   background-color: #212121 !important;

@@ -81,7 +81,9 @@
         <div class="carousel-news owl-carousel grey lighten-4 z-depth-1">
             @foreach ($news as $item)
                 <a href="{{ route('search.dashboard').'?q="'.$item->data->title.'"' }}" class="d-flex" data-name="item">
-                    <img class="align-self-center" alt="{{ $item->data->title }}" src="{{ $item->data->image }}" />
+                    @isset($item->data->image)
+                        <img class="align-self-center" alt="{{ $item->data->title }}" src="{{ $item->data->image }}" />
+                    @endisset
                     <span class="align-self-center">{{ $item->data->title }}</span>
                 </a>
             @endforeach

@@ -14,6 +14,7 @@ $(function() {
     msie()
 })
 
+
 function math_prices()
 {
     var price = 0;
