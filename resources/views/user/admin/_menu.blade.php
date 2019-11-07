@@ -14,6 +14,9 @@
     <a href="{{ route('forum.group', [ __('route.forum.user'), $id ]) }}" class="collection-item waves-effect">
         Açtığı Konular <span class="badge teal white-text">{{ $user->messages()->whereNull('message_id')->count() }}</span>
     </a>
+    <a href="{{ route('admin.user.search_history', $id) }}" class="collection-item waves-effect {{ $active == 'search_history' ? 'active' : '' }}">
+        Arama Geçmişi <span class="badge teal white-text">{{ $user->searchHistory()->count() }}</span>
+    </a>
     @if ($user->organisation_id)
         <div class="divider"></div>
         <a href="{{ route('admin.organisation', $user->organisation->id) }}" class="collection-item waves-effect">

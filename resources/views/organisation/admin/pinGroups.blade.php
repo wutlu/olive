@@ -21,7 +21,7 @@
 ])
 
 @section('content')
-    <div class="card with-bg">
+    <div class="card mb-1">
         <div class="card-content">
             <span class="card-title">Pin Grupları</span>
         </div>

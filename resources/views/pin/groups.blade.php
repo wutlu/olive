@@ -101,7 +101,7 @@
             ]
         });
 
-        mdl.find('input[name=name]').characterCounter()
+        mdl.find('input[name=name]').characterCounter().focus()
 
         M.updateTextFields()
 
@@ -206,7 +206,7 @@
 @endpush
 
 @section('content')
-    <div class="card with-bg">
+    <div class="card mb-1">
         <div class="card-image">
             <img src="{{ asset('img/md-s/21.jpg') }}" alt="Image" />
             <span class="card-title white-text d-flex">

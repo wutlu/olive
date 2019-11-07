@@ -178,6 +178,50 @@ class UserController extends Controller
     }
 
     /**
+     *******************
+     ****** ADMIN ******
+     *******************
+     *
+     * Kullanıcı Arama Geçmişi
+     *
+     * @return view
+     */
+    public static function adminSearchHistory(int $id)
+    {
+        $user = User::where('id', $id)->firstOrFail();
+
+        return view('user.admin.search_history', compact('user'));
+    }
+
+    /**
+     *******************
+     ****** ADMIN ******
+     *******************
+     *
+     * Kullanıcı Arama Geçmişi, Data
+     *
+     * @return array
+     */
+    public static function adminSearchHistoryData(int $id, SearchRequest $request)
+    {
+        $take = $request->take;
+        $skip = $request->skip;
+
+        $query = SearchHistory::where('user_id', $id);
+        $query = $request->string ? $query->where('query', 'ILIKE', '%'.$request->string.'%') : $query;
+        $query = $query->withTrashed();
+        $query = $query->skip($skip)
+                       ->take($take)
+                       ->orderBy('id', 'DESC');
+
+        return [
+            'status' => 'ok',
+            'hits' => $query->get(),
+            'total' => $query->count()
+        ];
+    }
+
+    /**
      * Kullanıcı Arama Geçmişi, Sil
      *
      * @return array

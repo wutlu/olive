@@ -132,6 +132,12 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\User\Badge', 'user_id', 'id');
     }
 
+    # arama geçmişi
+    public function searchHistory()
+    {
+        return $this->hasMany('App\Models\SearchHistory', 'user_id', 'id');
+    }
+
     # alt kullanıcılar
     public function subUsers()
     {
