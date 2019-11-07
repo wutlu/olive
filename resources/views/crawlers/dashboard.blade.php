@@ -24,13 +24,9 @@
         <i class="material-icons">widgets</i>
         <span class="d-block">E-ticaret Botları</span>
     </a>
-    <a href="#" class="d-block card-panel hoverable" style="opacity: .4;" data-tooltip="Forum Botları" data-position="right">
+    <a href="{{ route('crawlers.blog.list') }}" class="d-block card-panel hoverable" data-tooltip="Blog & Forum Botları" data-position="right">
         <i class="material-icons">widgets</i>
-        <span class="d-block">Forum Botları</span>
-    </a>
-    <a href="{{ route('crawlers.blog.list') }}" class="d-block card-panel hoverable" data-tooltip="Blog Botları" data-position="right">
-        <i class="material-icons">widgets</i>
-        <span class="d-block">Blog Botları</span>
+        <span class="d-block">Blog & Forum Botları</span>
     </a>
 
     <a href="{{ route('admin.twitter.settings') }}" class="d-block card-panel hoverable" data-tooltip="Twitter Ayarları" data-position="right">

@@ -454,6 +454,17 @@
             background-position: center;
         }
     }
+
+    .logo {
+        width: 144px;
+        height: auto;
+        display: table;
+    }
+    </style>
+
+    <!-- local styles -->
+    <style>
+    @stack('local.styles')
     </style>
 </head>
 <body class="antialiased font-sans">
@@ -461,16 +472,16 @@
         <div class="w-full md:w-1/2 bg-white flex items-center justify-center">
             <div class="max-w-sm m-8">
                 <div class="text-black text-5xl md:text-15xl font-black">
-                    @yield('code', __('Oh no'))
+                    <img alt="Olive" src="{{ asset('img/olive_logo.png') }}" class="logo" />
                 </div>
 
-                <div class="w-16 h-1 bg-purple-light my-3 md:my-6"></div>
+                <div class="w-16 h-1 bg-indigo-light my-3 md:my-6"></div>
 
                 <p class="text-grey-darker text-2xl md:text-3xl font-light mb-8 leading-normal">
                     @yield('message')
                 </p>
 
-                @if (trim($__env->yieldContent('code')) != 503)
+                @if (trim($__env->yieldContent('code')) != 503 && trim($__env->yieldContent('code')) != 429)
                     <a href="{{ route('dashboard') }}">
                         <button class="bg-transparent text-grey-darkest font-bold uppercase tracking-wide py-3 px-6 border-2 border-grey-light hover:border-grey rounded-lg">
                             {{ __('Ana Sayfa') }}
@@ -482,7 +493,10 @@
 
         <div class="relative pb-full md:flex md:pb-0 md:min-h-screen w-full md:w-1/2">
             @yield('image')
+            @yield('content')
         </div>
     </div>
+    <!-- external include -->
+    @stack('external.include.footer')
 </body>
 </html>

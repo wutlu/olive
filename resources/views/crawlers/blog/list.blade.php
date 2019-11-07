@@ -9,7 +9,7 @@
             'link' => route('crawlers')
         ],
         [
-            'text' => '🐞 Blog Botları'
+            'text' => '🐞 Blog & Forum Botları'
         ]
     ],
     'dock' => true,
@@ -197,7 +197,7 @@
 @section('content')
     <div class="card with-bg">
         <div class="card-content">
-            <span class="card-title">Blog Botları</span>
+            <span class="card-title">Blog & Forum Botları</span>
             <span class="d-block grey-text text-darken-2" data-name="bots-count"></span>
         </div>
 

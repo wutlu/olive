@@ -31,15 +31,24 @@ class SearchController extends Controller
         ### [ üyelik ve organizasyon zorunlu ] ###
         $this->middleware([ 'auth', 'organisation:have' ]);
 
-        ### [ zorunlu aktif organizasyon ] ###
+        ### [ zorunlu aktif organizasyon ve module_search ] ###
         $this->middleware([
-            'can:organisation-status'
+            'can:organisation-status',
+            'organisation:have,module_search'
         ])->only([
             'compare',
             'compareProcess',
             'search',
             'aggregation',
             'save'
+        ]);
+
+        ### [ zorunlu aktif organizasyon ] ###
+        $this->middleware([
+            'organisation:have,module_compare'
+        ])->only([
+            'compare',
+            'compareProcess'
         ]);
 
         ### [ 500 işlemden sonra 5 dakika ile sınırla ] ###

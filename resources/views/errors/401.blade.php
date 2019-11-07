@@ -1,10 +1,22 @@
-@extends('errors::illustrated-layout')
+@extends('layouts.app', [
+    'sidenav_fixed_layout' => true,
+    'breadcrumb' => [
+        [
+            'text' => 'Yetki Kısıtlaması!'
+        ]
+    ],
+    'footer_hide' => true
+])
 
 @section('code', '401')
-@section('title', __('Yetkiniz Yok!'))
 
-@section('image')
-	<div style="background-image: url({{ asset('/svg/403.svg') }});" class="absolute pin bg-cover bg-no-repeat md:bg-left lg:bg-center"></div>
+@section('content')
+    <div class="olive-alert alert-left warning">
+        <div class="anim"></div>
+        <h4 class="mb-2">401</h4>
+        <p class="mb-1">Üzgünüm, bu bölüme erişiminiz kısıtlanmış gibi görünüyor.</p>
+        <p>- Bulunduğunuz organizasyonun süresi bitmiş olabilir.</p>
+        <p>- Bulunduğunuz organizasyon bu alanı kapsamıyor olabilir.</p>
+        <p>- Olive yönetimiyle ilgili bir alana girmeyi deniyor olabilirsiniz.</p>
+    </div>
 @endsection
-
-@section('message', __('Üzgünüz, bu bölüme erişim yetkiniz yok.'))

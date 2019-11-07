@@ -3,8 +3,37 @@
 @section('code', '503')
 @section('title', __('Servis Modu'))
 
-@section('image')
-	<div style="background-image: url({{ asset('/svg/503.svg') }});" class="absolute pin bg-cover bg-no-repeat md:bg-left lg:bg-center"></div>
+@section('message', __($exception->getMessage() ?: 'Bakım ve yedekleme zamanı! Sistem kısa bir süre sonra aktif olacak.'))
+
+@section('content')
+    <div id="pacman"></div>
 @endsection
 
-@section('message', __($exception->getMessage() ?: 'Üzgünüz, biraz bakım yapıyoruz. Lütfen kısa süre sonra tekrar deneyin.'))
+@push('external.include.footer')
+    <script src="{{ asset('js/modernizr.min.js?v='.config('system.version')) }}"></script>
+    <script src="{{ asset('js/jquery.min.js?v='.config('system.version')) }}"></script>
+    <script src="{{ asset('js/pacman.min.js?v='.config('system.version')) }}"></script>
+@endpush
+
+@push('local.styles')
+    #pacman {
+        height: 470px;
+        width: 382px;
+        margin: 10vh auto;
+    }
+
+    body {
+        background-color: #000;
+    }
+
+    @media (max-width: 1024px)
+    {
+        #pacman {
+            display: none;
+        }
+
+        body {
+            background-color: #fff;
+        }
+    }
+@endpush

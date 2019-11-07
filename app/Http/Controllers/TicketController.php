@@ -34,7 +34,7 @@ class TicketController extends Controller
          *
          * - ROOT
          */
-        $this->middleware('root')->only([
+        $this->middleware('admin')->only([
             'adminList',
             'adminView'
         ]);

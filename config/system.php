@@ -4,7 +4,7 @@ return [
     /**
      * Sistem Versiyonu
      */
-    'version' => '6.0.13',
+    'version' => '6.0.14',
 
     /**
      * db
@@ -176,8 +176,7 @@ return [
         'trend.status.youtube_video' => 'YouTube',
         'trend.status.sozluk' => 'Sözlük',
         'trend.status.news' => 'Haber',
-        'trend.status.forum' => 'Forum',
-        'trend.status.blog' => 'Blog',
+        'trend.status.blog' => 'Blog & Forum',
         'trend.status.instagram_hashtag' => 'Instagram Hashtag',
         'trend.status.facebook' => 'Facebook',
         'trend.status.twitter_tweet' => 'Twitter Tweet',
@@ -207,7 +206,6 @@ return [
         'trend.status.twitter_favorite' => 'string|in:on,off',
         'trend.status.twitter_hashtag' => 'string|in:on,off',
         'trend.status.sozluk' => 'string|in:on,off',
-        'trend.status.forum' => 'string|in:on,off',
         'trend.status.blog' => 'string|in:on,off',
         'trend.status.youtube_video' => 'string|in:on,off',
         'trend.status.instagram_hashtag' => 'string|in:on,off',
@@ -226,7 +224,7 @@ return [
         'twitter' => 'Twitter',
         'sozluk' => 'Sözlük',
         'news' => 'Haber',
-        'blog' => 'Blog',
+        'blog' => 'Blog & Forum',
         'instagram' => 'Instagram',
         'youtube_video' => 'YouTube Video',
         'youtube_comment' => 'YouTube Yorum',
@@ -577,7 +575,7 @@ return [
                 'icon' => 'search'
             ],
             34 => [
-                'name' => 'Blog Botları',
+                'name' => 'Blog & Forum Botları',
                 'route' => 'crawlers.blog.list',
                 'root' => true,
                 'icon' => 'widgets'

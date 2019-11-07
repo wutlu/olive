@@ -1,10 +1,31 @@
-@extends('errors::illustrated-layout')
+@extends('layouts.app', [
+    'sidenav_fixed_layout' => true,
+    'breadcrumb' => [
+        [
+            'text' => 'Sayfa Bulunamadı!'
+        ]
+    ],
+    'footer_hide' => true
+])
 
 @section('code', '404')
-@section('title', __('Sayfa Bulunamadı!'))
 
-@section('image')
-	<div style="background-image: url({{ asset('/svg/404.svg') }});" class="absolute pin bg-cover bg-no-repeat md:bg-left lg:bg-center"></div>
+@section('content')
+    <div class="olive-alert alert-left warning">
+        <div class="anim"></div>
+        <h4 class="mb-2">404</h4>
+        <p>Üzgünüm, aradığınız sayfa/içerik bulunamadı.</p>
+        <p>Aradığınız sayfayı/içeriği bulmak için aramayı kullanabilirsiniz.</p>
+    </div>
+    <div class="tap-target green white-text" data-target="search-trigger">
+        <div class="tap-target-content">
+            <h5>Ne Aramıştınız?</h5>
+            <p>Aradığınız sayfayı/içeriği bulmak için aramayı kullanabilirsiniz.</p>
+        </div>
+    </div>
 @endsection
 
-@section('message', __('Üzgünüz, sayfa/içerik bulunamadı.'))
+@push('local.scripts')
+    $('[data-target=search-trigger]').tapTarget()
+    $('[data-target=search-trigger]').tapTarget('open')
+@endpush

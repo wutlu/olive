@@ -704,7 +704,7 @@ time {
 
 body {
   overflow-x: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
   background-color: #f9f9f9;
 }
 body * {
@@ -3169,6 +3169,13 @@ nav.nav-half {
 .olive-alert > h4,
 .olive-alert > p {
   margin: 0;
+}
+.olive-alert.alert-left {
+  text-align: left;
+}
+.olive-alert.alert-left .anim {
+  margin: 0 0 2rem;
+  border-radius: 0;
 }
 .olive-alert.success {
   color: #4caf50;

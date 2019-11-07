@@ -1,10 +1,19 @@
-@extends('errors::illustrated-layout')
+@extends('layouts.app', [
+    'sidenav_fixed_layout' => true,
+    'breadcrumb' => [
+        [
+            'text' => 'Yetkisiz Erişim!'
+        ]
+    ],
+    'footer_hide' => true
+])
 
 @section('code', '403')
-@section('title', __('Kısıtlı Erişim'))
 
-@section('image')
-	<div style="background-image: url({{ asset('/svg/403.svg') }});" class="absolute pin bg-cover bg-no-repeat md:bg-left lg:bg-center"></div>
+@section('content')
+    <div class="olive-alert alert-left warning">
+        <div class="anim"></div>
+        <h4 class="mb-2">403</h4>
+        <p class="mb-1">Üzgünüm, sunucu bu bölüme erişmenize izin vermiyor.</p>
+    </div>
 @endsection
-
-@section('message', __('Üzgünüz, bu içeriğe erişim yetkiniz yok!'))

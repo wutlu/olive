@@ -9,7 +9,7 @@
             'link' => route('crawlers')
         ],
         [
-            'text' => 'Blog Botları',
+            'text' => 'Blog & Forum Botları',
             'link' => route('crawlers.blog.list')
         ],
         [
@@ -71,7 +71,7 @@
 @section('content')
     <div class="card with-bg">
         <div class="card-content">
-            <span class="card-title">Blog Index Yönetimi</span>
+            <span class="card-title">Blog & Forum Index Yönetimi</span>
         </div>
         <ul class="collection collection-unstyled load" 
              id="indices"
@@ -108,7 +108,7 @@
 @section('dock')
     @if ($options['blog.index.status'] != count($index_groups))
         <div class="card mb-1" data-name="index-trigger-menu">
-            <div class="card-content red white-text">Uyarı! Blog tarafında eksik indexler mevcut!</div>
+            <div class="card-content red white-text">Uyarı! Blog & Forum tarafında eksik indexler mevcut!</div>
             <div class="collection">
                 <a
                     href="#"
@@ -140,7 +140,7 @@
     {
         if (obj.status == 'ok')
         {
-            M.toast({ html: 'Indexler oluşturuldu. Blog botlarını çalıştırabilirsiniz.', classes: 'green darken-2' })
+            M.toast({ html: 'Indexler oluşturuldu. Blog & Forum botlarını çalıştırabilirsiniz.', classes: 'green darken-2' })
 
             $('[data-name=index-trigger-menu]').addClass('hide')
         }

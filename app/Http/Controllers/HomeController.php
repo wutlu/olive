@@ -317,6 +317,7 @@ class HomeController extends Controller
      */
     public static function dashboard(int $pager = 10)
     {
+        return abort(503);
         $carousels = Carousel::where('carousel', true)->orderBy('updated_at', 'DESC')->get();
         $modals = Carousel::where('modal', true)->orderBy('updated_at', 'DESC')->get();
 

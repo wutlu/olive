@@ -9,7 +9,7 @@
             'link' => route('crawlers')
         ],
         [
-            'text' => 'Blog Botları',
+            'text' => 'Blog & Forum Botları',
             'link' => route('crawlers.blog.list')
         ],
         [

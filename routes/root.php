@@ -224,7 +224,7 @@ Route::domain('olive.'.config('app.domain'))->group(function () {
         # 
         # BLOG
         # 
-        Route::prefix('blog-botlari')->group(function () {
+        Route::prefix('blog-forum-botlari')->group(function () {
             Route::get('/', 'BlogController@listView')->name('crawlers.blog.list');
             Route::post('json', 'BlogController@listViewJson')->name('crawlers.blog.list.json');
 
