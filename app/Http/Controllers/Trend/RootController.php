@@ -94,7 +94,7 @@ class RootController extends Controller
                     'query' => [
                         'bool' => [
                             'must' => [
-                                [ 'match' => [ 'module' => end($key) ] ]
+                                [ 'match' => [ 'module' => end($key) == 'sozluk' ? 'entry' : end($key) ] ]
                             ]
                         ]
                     ]
