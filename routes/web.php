@@ -228,6 +228,10 @@ Route::domain('olive.'.config('app.domain'))->group(function () {
         Route::get('hesap-bilgileri', 'UserController@account')->name('settings.account');
         Route::post('hesap-bilgileri', 'UserController@accountUpdate');
 
+        Route::get('arama-gecmisi', 'UserController@searchHistory')->name('settings.search_history');
+        Route::post('arama-gecmisi', 'UserController@searchHistoryData');
+        Route::delete('arama-gecmisi', 'UserController@searchHistoryDelete');
+
         Route::get('mobil', 'UserController@mobile')->name('settings.mobile');
         Route::put('mobil/olustur', 'UserController@mobileCreate')->name('settings.mobile.create');
         Route::patch('mobil/dogrula', 'UserController@mobileVerification')->name('settings.mobile.verification');

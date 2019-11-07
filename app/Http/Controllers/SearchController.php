@@ -19,6 +19,7 @@ use Term;
 use App\Models\Currency;
 use App\Models\SavedSearch;
 use App\Models\Geo\States;
+use App\Models\SearchHistory;
 
 use App\Utilities\Crawler;
 
@@ -585,9 +586,25 @@ class SearchController extends Controller
      */
     public static function search(ArchiveRequest $request)
     {
-        $organisation = auth()->user()->organisation;
+        $user = auth()->user();
+        $organisation = $user->organisation;
 
         $clean = Term::cleanSearchQuery($request->string);
+
+        if ($clean->line && $request->skip == 0)
+        {
+            $history = SearchHistory::where([ 'query' => $clean->line, 'user_id' => $user->id ])
+                                    ->where('created_at', '>=', Carbon::now()->subMinutes(10))
+                                    ->exists();
+
+            if (!$history)
+            {
+                $history = new SearchHistory;
+                $history->query = $clean->line;
+                $history->user_id = $user->id;
+                $history->save();
+            }
+        }
 
         $q = [
             'from' => $request->skip,

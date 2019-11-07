@@ -19,6 +19,7 @@ use App\Http\Requests\User\Partner\PaymentRequest;
 use App\Http\Requests\SearchRequest;
 use App\Http\Requests\AutocompleteRequest;
 use App\Http\Requests\QRequest;
+use App\Http\Requests\IdRequest;
 
 use App\Notifications\PasswordValidationNotification;
 use App\Notifications\EmailValidationNotification;
@@ -35,6 +36,7 @@ use App\Models\User\PartnerPayment;
 use App\Models\User\UserNotification;
 use App\Models\Option;
 use App\Models\Organisation\Organisation;
+use App\Models\SearchHistory;
 
 use Auth;
 use Session;
@@ -85,6 +87,9 @@ class UserController extends Controller
             'mobileDelete',
             'mobileResend',
             'partnerSubPercent',
+            'searchHistory',
+            'searchHistoryData',
+            'searchHistoryDelete',
         ]);
 
         /**
@@ -134,6 +139,58 @@ class UserController extends Controller
 
         return [
             'status' => 'ok'
+        ];
+    }
+
+    /**
+     * Kullanıcı Arama Geçmişi
+     *
+     * @return view
+     */
+    public static function searchHistory()
+    {
+        $user = auth()->user();
+
+        return view('user.search_history', compact('user'));
+    }
+
+    /**
+     * Kullanıcı Arama Geçmişi, Data
+     *
+     * @return array
+     */
+    public static function searchHistoryData(SearchRequest $request)
+    {
+        $take = $request->take;
+        $skip = $request->skip;
+
+        $query = SearchHistory::where('user_id', auth()->user()->id);
+        $query = $request->string ? $query->where('query', 'ILIKE', '%'.$request->string.'%') : $query;
+        $query = $query->skip($skip)
+                       ->take($take)
+                       ->orderBy('id', 'DESC');
+
+        return [
+            'status' => 'ok',
+            'hits' => $query->get(),
+            'total' => $query->count()
+        ];
+    }
+
+    /**
+     * Kullanıcı Arama Geçmişi, Sil
+     *
+     * @return array
+     */
+    public static function searchHistoryDelete(IdRequest $request)
+    {
+        $query = SearchHistory::where([ 'id' => $request->id, 'user_id' => auth()->user()->id ])->delete();
+
+        return [
+            'status' => 'ok',
+            'data' => [
+                'id' => $request->id
+            ]
         ];
     }
 
