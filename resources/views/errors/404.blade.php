@@ -17,15 +17,19 @@
         <p>Üzgünüm, aradığınız sayfa/içerik bulunamadı.</p>
         <p>Aradığınız sayfayı/içeriği bulmak için aramayı kullanabilirsiniz.</p>
     </div>
-    <div class="tap-target green white-text" data-target="search-trigger">
-        <div class="tap-target-content">
-            <h5>Ne Aramıştınız?</h5>
-            <p>Aradığınız sayfayı/içeriği bulmak için aramayı kullanabilirsiniz.</p>
+    @auth
+        <div class="tap-target green white-text" data-target="search-trigger">
+            <div class="tap-target-content">
+                <h5>Ne Aramıştınız?</h5>
+                <p>Aradığınız sayfayı/içeriği bulmak için aramayı kullanabilirsiniz.</p>
+            </div>
         </div>
-    </div>
+    @endauth
 @endsection
 
-@push('local.scripts')
-    $('[data-target=search-trigger]').tapTarget()
-    $('[data-target=search-trigger]').tapTarget('open')
-@endpush
+@auth
+    @push('local.scripts')
+        $('[data-target=search-trigger]').tapTarget()
+        $('[data-target=search-trigger]').tapTarget('open')
+    @endpush
+@endauth

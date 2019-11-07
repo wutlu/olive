@@ -8,7 +8,7 @@
     'footer_hide' => true
 ])
 
-@section('code', '404')
+@section('code', '500')
 
 @section('content')
     <div class="olive-alert alert-left info">
