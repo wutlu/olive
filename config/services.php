@@ -108,5 +108,9 @@ return [
         'api' => [
             'key' => env('CRYPTOCOMPARE')
         ]
+    ],
+
+    'smartlook' => [
+        'code' => env('SMARTLOOK_CODE')
     ]
 ];

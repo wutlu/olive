@@ -529,7 +529,7 @@
                             {!! $thread->replies()->paginate(10)->onEachSide(1)->setPath($thread->route())->links('vendor.pagination.materializecss_in') !!}
                         @endif
                     </div>
-                    <div class="align-self-center ml-auto d-flex flex-column">
+                    <div class="align-self-center ml-auto hide-on-med-and-down">
                         <a href="{{ route('forum.category', $thread->category->slug) }}" class="chip waves-effect center-align {{ $color_light }}">{{ $thread->category->name }}</a>
                         <span class="badge d-flex grey-text justify-content-end">
                             <span class="align-self-center">{{ count($thread->replies) }}</span>
