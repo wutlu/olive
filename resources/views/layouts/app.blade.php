@@ -25,7 +25,6 @@
 
     <link rel="stylesheet" href="{{ asset('css/materialize.min.css?v='.config('system.version')) }}" />
     <link rel="stylesheet" href="{{ asset('css/app.css?v='.config('system.version')) }}" />
-    <link rel="stylesheet" href="{{ asset('css/dark.theme.css?v='.config('system.version')) }}" />
 
     @isset($help)
         <link rel="stylesheet" href="{{ asset('css/driver.min.css?v='.config('system.version')) }}" />
@@ -1011,6 +1010,8 @@
             location.reload()
         }
     }
+
+    var assistant = {!! json_encode(config('system.assistant')) !!}
     </script>
 
     @if (config('services.google.analytics.code'))

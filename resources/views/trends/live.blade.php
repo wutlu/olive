@@ -561,8 +561,8 @@
         {
             element: '.play-btn',
             popover: {
-                title: 'Başlayın',
-                description: 'İstediğiniz kaynağı başlatarak kaynağın trendlerini canlı olarak izleyebilirsiniz.',
+                title: 'Hadi Başlayalım!',
+                description: 'İlgilendiğiniz grubu başlatın ve trendlerini canlı olarak izleyin.',
                 position: 'left'
             }
         }
@@ -582,71 +582,71 @@
         {
             element: '.drag-btn',
             popover: {
-                title: 'Önceliklerinizi Belirleyin',
-                description: 'Bölümleri sürükleyerek istediğiniz sıralamayı elde edebilirsiniz.'
+                title: 'Önce Sıralama',
+                description: 'Grupları sürükleyerek istediğiniz şekilde sıralayın.'
             }
         },
         {
             element: '#card-twitter_tweet',
             popover: {
                 title: 'Twitter, Tweet',
-                description: 'Son 1 dakika içerisinde paylaşılan Türkçe Tweetler arasında en çok etkileşim alan Tweetler.'
+                description: 'Son 10 dakika içerisinde paylaşılan Türkçe Tweetler arasında en çok etkileşim alan Tweetler bu grupta sıralanır.'
             }
         },
         {
             element: '#card-twitter_favorite',
             popover: {
-                title: 'Twitter, Tweet',
-                description: 'Son 1 saat içerisinde paylaşılan Türkçe Tweetler arasında en çok beğenilen Tweetler.'
+                title: 'Twitter, Favori',
+                description: 'Son 1 saat içerisinde paylaşılan Türkçe Tweetler arasında en çok beğenilen Tweetler bu grupta sıralanır.'
             }
         },
         {
             element: '#card-twitter_hashtag',
             popover: {
                 title: 'Twitter, Hashtag',
-                description: 'Son 1 dakika içerisinde paylaşılan ve hashtag içeren Türkçe Tweetler arasında en çok kullanılan hashtagler.'
+                description: 'Son 10 dakika içerisinde paylaşılan ve en az 1 #hashtag içeren Türkçe Tweetler içerisinde en çok kullanılan hashtagler bu grupta sıralanır.'
             }
         },
         {
             element: '#card-news',
             popover: {
                 title: 'Medya, Haber',
-                description: 'Haberler, sitelerin Alexa değerleri baz alınarak yapılan puanlamalara göre belirlenir.'
+                description: 'Tüm haber sitelerinin son 10 dakika içerisinde paylaştığı haberler benzerlik oranlarına göre gruplanır ve sitenin Alexa değerleri göz önünde bulundurularak içerikler bu grupta sıralanır.'
             }
         },
         {
             element: '#card-entry',
             popover: {
                 title: 'Sözlük, Entry',
-                description: 'Başlıklar, tüm sözlüklerde açılan başlıkların aldığı cevaplara göre belirlenir.'
+                description: 'Sözlüklerde, açılan başlıkların aldığı cevaplara göre son 10 dakika içerisinde en çok cevap alan başlıklar bu grupta sıralanır.'
             }
         },
         {
             element: '#card-youtube_video',
             popover: {
                 title: 'YouTube, Video',
-                description: 'Türkçe videolara yapılan yorum yoğunluğuna göre belirlenen videolar.'
+                description: 'Son 1 saat içerisinde yapılan yorumlara göre Türkçe videolar bu grupta sıralanır.'
             }
         },
         {
             element: '#card-google',
             popover: {
                 title: 'Google',
-                description: 'Türkiye genelinde, Google üzerinde yapılan arama sıralaması.'
+                description: 'Şu an Türkiye, Google\'da neler arıyor? Bu verileri dinamikleştirip bu grupta sıralıyoruz. Tabii ki de son 1 saat.'
             }
         },
         {
             element: '#card-blog',
             popover: {
                 title: 'Blog, Makale',
-                description: 'Bloglar, sitelerin Alexa değerleri baz alınarak yapılan puanlamalara göre belirlenir.'
+                description: 'Tüm blog sitelerinin son 10 dakika içerisinde paylaştığı bloglar benzerlik oranlarına göre gruplanır ve sitenin Alexa değerleri göz önünde bulundurularak içerikler bu grupta sıralanır.'
             }
         },
         {
             element: '#card-instagram_hashtag',
             popover: {
                 title: 'Instagram, Hashtag',
-                description: 'Son 1 dakika içerisinde paylaşılan ve hashtag içeren Türkçe Instagram medyaları arasında en çok kullanılan hashtagler.'
+                description: 'Son 10 dakika içerisinde paylaşılan ve en az 1 #hashtag içeren Türkçe medyalar içerisinde en çok kullanılan hashtagler bu grupta sıralanır.'
             }
         }
     ])

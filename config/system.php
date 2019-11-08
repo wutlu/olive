@@ -4,7 +4,7 @@ return [
     /**
      * Sistem Versiyonu
      */
-    'version' => '6.0.14',
+    'version' => '6.0.15',
 
     /**
      * db
@@ -23,6 +23,16 @@ return [
      * @var integer
      */
     'term_version' => 4,
+
+    /**
+     * Asistan Bilgisi
+     *
+     * @var array
+     */
+    'assistant' => [
+        'name' => 'mutlu',
+        'avatar' => asset('img/team-mutlu.jpg')
+    ],
 
     /**
      * Analiz Katmanları
