@@ -366,6 +366,8 @@ $arr = [
         'normalize_2'                     => 'Normalize Değeri 2',
         'smilarity'                       => 'Benzerlik',
         'lot'                             => 'Hisse',
+        'sk'                              => 'Sıralama Adı',
+        'sv'                              => 'Sıralama Değeri',
     ],
 ];
 
