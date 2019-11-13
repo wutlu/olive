@@ -134,7 +134,7 @@
                             </a>
                         </th>
                         <th>
-                            <a href="#" class="d-flex justify-content-end" data-sort="pos-neg">
+                            <a href="#" class="d-flex justify-content-end" data-sort="pos_neg">
                                 <span class="align-self-center">Al-Sat</span>
                                 <i class="material-icons align-self-center">arrow_drop_down</i>
                             </a>
@@ -162,7 +162,7 @@
                         <td data-name="tl" class="hide-on-med-and-down right-align">-</td>
                         <td data-name="total_pos" class="hide-on-med-and-down right-align">-</td>
                         <td data-name="total_neg" class="hide-on-med-and-down right-align">-</td>
-                        <td data-name="pos-neg" class="right-align">-</td>
+                        <td data-name="pos_neg" class="right-align">-</td>
                     </tr>
                 </tbody>
             </table>
@@ -297,7 +297,7 @@
                         item.find('[data-name=tl]').html(number_format(o.tl))
                         item.find('[data-name=total_pos]').html(o.total_pos ? number_format(o.total_pos) : '-')
                         item.find('[data-name=total_neg]').html(o.total_neg ? number_format(o.total_neg) : '-')
-                        item.find('[data-name=pos-neg]').html(o.pos_neg ? number_format(o.pos_neg) : '-').addClass(o.diff < 0 ? 'red-text' : 'green-text')
+                        item.find('[data-name=pos_neg]').html(o.pos_neg ? number_format(o.pos_neg) : '-').addClass(o.diff < 0 ? 'red-text' : 'green-text')
 
                     __.children('tbody').append(item)
                 })
