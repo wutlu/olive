@@ -50,6 +50,7 @@ class Crawler
                 'img',
                 'feed',
                 'font',
+                'header',
                 'hsa',
                 'without',
                 'background',

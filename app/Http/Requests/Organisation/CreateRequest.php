@@ -41,7 +41,7 @@ class CreateRequest extends FormRequest
             'module_search' => 'required_with:module_real_time,module_alarm|string|in:on',
             'module_trend' => 'nullable|string|in:on',
             'module_compare' => 'nullable|string|in:on',
-            'module_replica_engine' => 'nullable|string|in:on',
+            'module_borsa' => 'nullable|string|in:on',
             'module_alarm' => 'nullable|string|in:on',
         ];
 

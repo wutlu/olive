@@ -60,6 +60,23 @@ class Kernel extends ConsoleKernel
                      ->withoutOverlapping(1);
 
             /**
+             * Borsa bilgilerini güncelle.
+             */
+            $schedule->command('nohup "borsa:update --type=xu030-bist-30" --type=start')
+                     ->hourlyAt(15)
+                     ->between('09:00', '19:00')
+                     ->timezone(config('app.timezone'))
+                     ->withoutOverlapping(1);
+
+            /**
+             * Borsa bilgilerini güncelle.
+             */
+            $schedule->command('nohup "borsa:counter" --type=start')
+                     ->hourlyAt(45)
+                     ->timezone(config('app.timezone'))
+                     ->withoutOverlapping(1);
+
+            /**
              * Popüler Trendleri kategorize et.
              */
             $schedule->command('nohup "trend:pop_categorization" --type=start')

@@ -2,6 +2,9 @@
     'sidenav_fixed_layout' => true,
     'breadcrumb' => [
         [
+            'text' => 'Admin'
+        ],
+        [
             'text' => 'Kelime Hafızası',
             'link' => route('analysis.dashboard')
         ],

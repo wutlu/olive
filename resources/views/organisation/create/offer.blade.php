@@ -34,7 +34,7 @@
                                         data-unit-price="{{ $prices['unit_price.'.$key]['value'] }}"
                                         name="{{ $key }}"
 
-                                        @if ($key == 'module_real_time' || $key == 'module_compare' || $key == 'module_replica_engine' || $key == 'module_alarm')
+                                        @if ($key == 'module_real_time' || $key == 'module_compare' || $key == 'module_alarm')
                                             data-requirement="module_search"
                                         @endif
 
@@ -52,8 +52,8 @@
                                     <p class="mb-0">Eş zamanlı veya geçmişe yönelik trend olmuş; kelime, kullanıcı veya başlık takibi, genel veya sektörel popüler kullanıcı listeleri sağlar.</p>
                                 @elseif ($key == 'module_compare')
                                     <p class="mb-0">Arama ile belirleyeceğiniz kriterleri sorgu sınırı olmadan kıyaslayabilirsiniz.</p>
-                                @elseif ($key == 'module_replica_engine')
-                                    <p class="mb-0">İnternette dolaşan kopya içerikleri tespit edebilirsiniz.</p>
+                                @elseif ($key == 'module_borsa')
+                                    <p class="mb-0">Kalabalığın düşüncesini dinleyerek hisselerinize yön verebilirsiniz.</p>
                                 @elseif ($key == 'module_alarm')
                                     <p class="mb-0">Bilgisayar başında gerçirecek vaktiniz yoksa "Alarmlar" sayesinde konuşulanlardan eş zamanlı haberdar olabilirsiniz.</p>
                                 @endif

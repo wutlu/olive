@@ -14,7 +14,7 @@
     <div class="olive-alert alert-left info">
         <div class="anim"></div>
         <h4 class="mb-2">İç Sunucu Hatası</h4>
-        <h5>Sunucu tarafında beklenmedik bir hata medyada geldi.</h5>
+        <h5>Sunucu tarafında beklenmedik bir hata meydana geldi.</h5>
         <p>Sizi böyle bir sayfa ile karşılaştırdığımız için çok üzgünüz.</p>
         <p>Biz bu hatayı düzelte duralım, siz de farklı bir bölümde çalışmalarınıza devam edin.</p>
     </div>

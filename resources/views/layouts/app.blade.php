@@ -474,11 +474,46 @@
                     <li>
                         <a href="#" class="subheader">Yönetici</a>
                     </li>
-                    <li class="tiny">
-                        <a class="waves-effect" href="{{ route('analysis.dashboard') }}">
-                            <i class="material-icons">grain</i>
-                            Kelime Hafızası
-                        </a>
+                    <li>
+                        <div class="collapsible-header waves-effect">
+                            <i class="material-icons">computer</i>
+                            <span>Site</span>
+                            <i class="material-icons arrow">keyboard_arrow_down</i>
+                        </div>
+                        <div class="collapsible-body">
+                            <ul>
+                                <li class="tiny">
+                                    <a class="waves-effect" href="{{ route('admin.page.list') }}">
+                                        <i class="material-icons">pages</i>
+                                        Sayfalar
+                                    </a>
+                                </li>
+                                <li class="tiny">
+                                    <a class="waves-effect" href="{{ route('admin.carousels') }}">
+                                        <i class="material-icons">view_carousel</i>
+                                        Carousel Yönetimi
+                                    </a>
+                                </li>
+                                <li class="tiny">
+                                    <a class="waves-effect" href="{{ route('admin.newsletter') }}">
+                                        <i class="material-icons">email</i>
+                                        E-posta Bülteni
+                                    </a>
+                                </li>
+                                <li class="tiny">
+                                    <a class="waves-effect" href="{{ route('borsa.queries') }}">
+                                        <i class="material-icons">money</i>
+                                        Borsa Sorguları
+                                    </a>
+                                </li>
+                                <li class="tiny">
+                                    <a class="waves-effect" href="{{ route('analysis.dashboard') }}">
+                                        <i class="material-icons">grain</i>
+                                        Kelime Hafızası
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
                     <li class="tiny">
                         <a class="waves-effect" href="#" data-name="organisation-route">
@@ -512,25 +547,6 @@
                         <a class="waves-effect" href="{{ route('admin.user.list') }}">
                             <i class="material-icons">people</i>
                             Kullanıcılar
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li class="tiny">
-                        <a class="waves-effect" href="{{ route('admin.page.list') }}">
-                            <i class="material-icons">pages</i>
-                            Sayfalar
-                        </a>
-                    </li>
-                    <li class="tiny">
-                        <a class="waves-effect" href="{{ route('admin.carousels') }}">
-                            <i class="material-icons">view_carousel</i>
-                            Carousel Yönetimi
-                        </a>
-                    </li>
-                    <li class="tiny">
-                        <a class="waves-effect" href="{{ route('admin.newsletter') }}">
-                            <i class="material-icons">email</i>
-                            E-posta Bülteni
                         </a>
                     </li>
                     <li class="divider"></li>

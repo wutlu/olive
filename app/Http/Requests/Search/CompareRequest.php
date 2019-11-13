@@ -61,21 +61,26 @@ class CompareRequest extends FormRequest
         });
 
         $request->validate([
-            'searches.*' => 'required|string|private_exists'
+            'searches.*' => 'required|string|private_exists',
+            'metric' => 'nullable|string|in:on'
         ]);
 
         $selected_values = @implode(',', $request->searches);
 
-        return [
+        $arr = [
             'start_date' => 'required|date|date_limit',
-            'end_date' => 'required_unless:metric,on|date|after_or_equal:start_date',
-
-            'metric' => 'nullable|string|in:on',
 
             'currency' => 'nullable|string|in:USD,EUR,BTC',
 
             'normalize_1' => 'nullable|required_with:normalize_2|different:normalize_2|private_exists|in:'.$selected_values,
             'normalize_2' => 'nullable|required_with:normalize_1|different:normalize_1|private_exists|in:'.$selected_values,
         ];
+
+        if (!$request->metric)
+        {
+            $arr['end_date'] = 'required|date|after_or_equal:start_date';
+        }
+
+        return $arr;
     }
 }

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ReplicaRequest extends FormRequest
+class BorsaRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,13 +24,9 @@ class ReplicaRequest extends FormRequest
     public function rules()
     {
         return [
-            'string' => 'required|string|min:20|max:255',
-            'skip' => 'required|integer',
-            'take' => 'required|integer|max:100',
-            'smilarity' => 'required|integer|in:100,90,80,70,60,50,40',
-
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
+            'sk' => 'required|string|in:name,hour,value,buy,sell,diff,max,min,lot,tl,total_pos,total_neg,normalize',
+            'sv' => 'required|string|in:asc,desc',
+            'group' => 'required|string|in:xu030-bist-30,xu100-bist-100'
         ];
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddCompareAndReplicaEngineToOrganisationsTable extends Migration
+class AddBorsaToOrganisationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddCompareAndReplicaEngineToOrganisationsTable extends Migration
     public function up()
     {
         Schema::table('organisations', function (Blueprint $table) {
-            $table->boolean('module_compare')->default(0);
+            $table->boolean('module_borsa')->default(0);
         });
     }
 
@@ -26,7 +26,7 @@ class AddCompareAndReplicaEngineToOrganisationsTable extends Migration
     public function down()
     {
         Schema::table('organisations', function (Blueprint $table) {
-            $table->dropColumn('module_compare');
+            $table->dropColumn('module_borsa');
         });
     }
 }

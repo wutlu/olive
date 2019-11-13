@@ -45,6 +45,11 @@
         }
     }
 
+    .carousel-news {
+        display: none;
+        height: 92px;
+        overflow: hidden;
+    }
     .carousel-news [data-name=item] > img {
         width: auto;
         height: 64px;
@@ -150,7 +155,7 @@
                     [
                         'route' => route('compare.dashboard'),
                         'icon' => 'pie_chart',
-                        'name' => 'Veri Kıyasla <sup class="red-text">Yeni</sup>',
+                        'name' => 'Veri Kıyasla',
                         'key' => 'pool'
                     ],
                     [
@@ -190,10 +195,10 @@
                         'key' => 'pool'
                     ],
                     [
-                        'route' => route('replica.dashboard'),
-                        'icon' => 'content_copy',
-                        'name' => 'Kopya İçerik Tespiti <sup class="red-text">Yeni</sup>',
-                        'key' => 'replica'
+                        'route' => route('borsa.main'),
+                        'icon' => 'money',
+                        'name' => 'Kalabalığın Düşüncesi (Borsa) <sup class="red-text">Yeni</sup>',
+                        'key' => 'borsa'
                     ],
                     [
                         'route' => route('trend.archive'),

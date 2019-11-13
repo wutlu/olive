@@ -53,7 +53,7 @@ $arr = [
         'numeric' => ':attribute değeri en fazla :max olabilir.',
         'file' => ':attribute değeri :max kilobayt değerinden küçük olmalıdır.',
         'string' => ':attribute uzunluğu :max karakterden kısa olmalıdır.',
-        'array' => ':attribute değeri :max adedinden az nesneye sahip olmalıdır.',
+        'array' => ':attribute en fazla :max adet olabilir.',
     ],
     'mimes' => ':attribute dosya biçimi :values olmalıdır.',
     'mimetypes' => ':attribute dosya biçimi :values olmalıdır.',
@@ -67,7 +67,7 @@ $arr = [
     'numeric' => ':attribute sayı olmalıdır.',
     'present' => ':attribute alanı mevcut olmalıdır.',
     'regex' => ':attribute biçimi geçersiz.',
-    'required' => ':attribute değeri boş kalamaz!',
+    'required' => ':attribute girmelisiniz!',
     'required_if' => ':attribute alanını boş bırakamazsınız.', // :attribute alanı, :other :value değerine sahip olduğunda zorunludur.
     'required_unless' => ':attribute alanını boş bırakamazsınız.', // :attribute alanı, :other alanı :value değerlerinden birine sahip olmadığında zorunludur.
     'required_with' => ':attribute alanı :values varken zorunludur.',
@@ -321,7 +321,7 @@ $arr = [
         'module_search'                   => 'Arama Modülü',
         'module_trend'                    => 'Trend Modülü',
         'module_compare'                  => 'Veri Kıyaslama Modülü',
-        'module_replica_engine'           => 'Kopya İçerik Modülü',
+        'module_borsa'                    => 'Borsa Modülü',
         'module_alarm'                    => 'Alarm Modülü',
 
         'phone'                           => 'Telefon',
@@ -364,7 +364,8 @@ $arr = [
         'metric'                          => 'Metrik',
         'normalize_1'                     => 'Normalize Değeri 1',
         'normalize_2'                     => 'Normalize Değeri 2',
-        'smilarity'                     => 'Benzerlik',
+        'smilarity'                       => 'Benzerlik',
+        'lot'                             => 'Hisse',
     ],
 ];
 

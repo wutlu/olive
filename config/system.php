@@ -4,7 +4,7 @@ return [
     /**
      * Sistem Versiyonu
      */
-    'version' => '6.0.15',
+    'version' => '6.1.2',
 
     /**
      * db
@@ -31,7 +31,7 @@ return [
      */
     'assistant' => [
         'name' => 'mutlu',
-        'avatar' => asset('img/team-mutlu.jpg')
+        'avatar' => '/img/team-mutlu.jpg'
     ],
 
     /**
@@ -250,7 +250,7 @@ return [
         'module_trend' => 'Trend',
         'module_alarm' => 'Alarm',
         'module_compare' => 'Veri Kıyaslama',
-        'module_replica_engine' => 'Kopya İçerik'
+        'module_borsa' => 'Kalabalığın Düşüncesi'
     ],
 
     /**

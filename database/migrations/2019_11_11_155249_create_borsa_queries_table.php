@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSearchHistoriesTable extends Migration
+class CreateBorsaQueriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,15 @@ class CreateSearchHistoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('search_histories', function (Blueprint $table) {
+        Schema::create('borsa_queries', function (Blueprint $table) {
             $table->bigIncrements('id')->unsigned();
 
-            $table->string('query');
+            $table->string('query_pos')->nullable()->default(null);
+            $table->string('query_neg')->nullable()->default(null);
 
-            $table->unsignedInteger('user_id')->index();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->string('name')->unique();
 
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -33,6 +32,6 @@ class CreateSearchHistoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('search_histories');
+        Schema::dropIfExists('borsa_queries');
     }
 }

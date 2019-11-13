@@ -3,7 +3,7 @@
     'footer_hide' => true,
     'breadcrumb' => [
         [
-            'text' => 'Veri Kıyasla (beta)'
+            'text' => 'Veri Kıyasla'
         ]
     ],
     'dock' => true,

@@ -2362,10 +2362,22 @@
                             data-include="{{ $elements }}"
                             data-nothing>
                             <li class="collection-item nothing">
-                                @component('components.alert')
-                                    @slot('icon', 'info')
-                                    @slot('text', 'Hiç sonuç bulunamadı!')
-                                @endcomponent
+                                @php
+                                    $hints = [
+                                        'Bir Twitter kullanıcısını aramak için, <span class="green darken-2 white-text">@KullaniciAdı</span> olarak arama gerçekleştirebilirsiniz. Büyük/Küçük harf duyarlılığına ve tarih aralığının geniş olmasına da dikkat edin!',
+                                    ];
+
+                                    shuffle($hints);
+                                @endphp
+
+                                <div class="pt-1 pb-1">
+                                    <div class="green-text text-darken-2 mt-1">
+                                        @component('components.alert')
+                                            @slot('icon', 'lightbulb_outline')
+                                            @slot('text', $hints[0])
+                                        @endcomponent
+                                    </div>
+                                </div>
                             </li>
                             <li class="collection-item model hide"></li>
                         </ul>

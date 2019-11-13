@@ -2,7 +2,10 @@
     'sidenav_fixed_layout' => true,
     'breadcrumb' => [
         [
-            'text' => 'Domain Tespiti'
+            'text' => 'Admin'
+        ],
+        [
+            'text' => '🐞 Domain Tespiti'
         ]
     ],
     'footer_hide' => true

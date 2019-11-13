@@ -43,6 +43,12 @@ Route::domain('olive.'.config('app.domain'))->group(function () {
         Route::get('{id}', 'UserController@profile')->name('user.profile');
     });
 
+    Route::prefix('kalabaligin-dusuncesi')->group(function () {
+        Route::get('/', 'BorsaController@main')->name('borsa.main');
+        Route::post('veriler', 'BorsaController@data')->name('borsa.data');
+        Route::post('grafik', 'BorsaController@graph')->name('borsa.graph');
+    });
+
     Route::prefix('partner')->group(function () {
         Route::get('hesap-gecmisi', 'UserController@partnerHistory')->name('partner.history');
         Route::post('odeme-istegi', 'UserController@partnerPaymentRequest')->name('partner.payment.request');
@@ -86,11 +92,6 @@ Route::domain('olive.'.config('app.domain'))->group(function () {
     Route::prefix('veri-kiyasla')->group(function () {
         Route::get('/', 'SearchController@compare')->name('compare.dashboard');
         Route::post('islem', 'SearchController@compareProcess')->name('compare.process');
-    });
-
-    Route::prefix('kopya-icerik')->group(function () {
-        Route::get('/', 'ReplicaController@dashboard')->name('replica.dashboard');
-        Route::post('/', 'ReplicaController@search');
     });
 
     Route::prefix('arama-motoru')->group(function () {

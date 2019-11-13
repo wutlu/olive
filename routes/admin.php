@@ -11,6 +11,15 @@ Route::domain('olive.'.config('app.domain'))->group(function () {
         Route::post('siralama', 'CarouselController@sortable')->name('admin.carousel.sortable');
     });
 
+    # 
+    # borsa ayarları
+    #
+    Route::prefix('borsa-sorgulari')->group(function () {
+        Route::get('/', 'BorsaController@queries')->name('borsa.queries');
+        Route::post('{id}', 'BorsaController@getQuery')->name('borsa.query');
+        Route::patch('update', 'BorsaController@updateQuery')->name('borsa.query.update');
+    });
+
     Route::prefix('forum-yonetimi')->namespace('Forum')->group(function () {
         Route::prefix('kategori')->group(function () {
             Route::post('/', 'ForumController@categoryGet')->name('admin.forum.category');

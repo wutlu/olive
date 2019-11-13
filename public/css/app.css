@@ -1646,6 +1646,15 @@ footer.page-footer > .container > .row > .col > img#vz-logo {
   padding: 1rem;
   border-radius: 0;
 }
+.card > .card-table {
+  padding: 0 1rem 1rem;
+}
+.card > .card-table td {
+  font-weight: 300;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  font-size: 14px;
+}
 .card.with-bg {
 }
 .card.with-bg.bg-soft {
@@ -2160,6 +2169,41 @@ nav .nav-wrapper > ul > li > a > i {
  */
 table tr {
   border-width: 0;
+}
+table.table-loading {
+  position: relative;
+}
+table.table-loading:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: -1rem;
+  bottom: 0;
+  left: -1rem;
+  padding: 4rem;
+
+  -webkit-box-shadow: 0 0 24px 1px rgba(0, 0, 0, .1);
+          box-shadow: 0 0 24px 1px rgba(0, 0, 0, .1);
+
+  animation-duration: 400ms;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: placeHolderShimmer;
+  animation-timing-function: linear;
+
+  background-color: rgba(255, 255, 255, .8);
+  background: linear-gradient(to bottom, rgba(255, 255, 255, .4) 10%, #fff 20%, rgba(255, 255, 255, .4) 30%);
+  background-size: 100px 1920px;
+}
+
+@keyframes placeHolderShimmer{
+    0% { background-position: 0 -1024px; }
+    100% { background-position: 0 1024px; }
+}
+
+@-webkit-keyframes placeHolderShimmer{
+    0% { background-position: 0 -1024px; }
+    100% { background-position: 0 1024px; }
 }
 
 /*!
