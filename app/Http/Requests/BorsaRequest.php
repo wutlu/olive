@@ -24,7 +24,7 @@ class BorsaRequest extends FormRequest
     public function rules()
     {
         return [
-            'sk' => 'required|string|in:name,hour,value,buy,sell,diff,max,min,lot,tl,total_pos,total_neg,pos_neg',
+            'sk' => 'required|string|in:name,hour,value,buy,sell,diff,max,min,lot,tl,total_pos,total_neg,pos-neg',
             'sv' => 'required|string|in:asc,desc',
             'group' => 'required|string|in:xu030-bist-30,xu100-bist-100'
         ];
