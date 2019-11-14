@@ -297,7 +297,7 @@
                         item.find('[data-name=tl]').html(number_format(o.tl))
                         item.find('[data-name=total_pos]').html(o.total_pos ? number_format(o.total_pos) : '-')
                         item.find('[data-name=total_neg]').html(o.total_neg ? number_format(o.total_neg) : '-')
-                        item.find('[data-name=pos_neg]').html(o.pos_neg ? number_format(o.pos_neg) : '-').addClass(o.diff < 0 ? 'red-text' : 'green-text')
+                        item.find('[data-name=pos_neg]').html(o.pos_neg ? number_format(o.pos_neg) : '-').addClass(o.pos_neg < 0 ? 'red-text' : 'green-text')
 
                     __.children('tbody').append(item)
                 })
