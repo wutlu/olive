@@ -43,6 +43,10 @@ Route::domain('olive.'.config('app.domain'))->group(function () {
         Route::get('{id}', 'UserController@profile')->name('user.profile');
     });
 
+    Route::prefix('crm')->group(function () {
+        Route::get('/', 'CRMController@dashboard')->name('crm.dashboard');
+    });
+
     Route::prefix('kalabaligin-dusuncesi')->group(function () {
         Route::get('/', 'BorsaController@main')->name('borsa.main');
         Route::post('veriler', 'BorsaController@data')->name('borsa.data');

@@ -203,7 +203,7 @@
                             style: { color: '#ef5350' }
                         },
                         title: {
-                            text: 'Test',
+                            text: 'Hisse Normalize (Al-Sat)',
                             style: { color: '#ef5350' }
                         },
                         max: 1
@@ -230,7 +230,7 @@
                             style: { color: '#ccc' }
                         },
                         title: {
-                            text: 'Deneme',
+                            text: 'Hisse Değeri',
                             style: { color: '#ccc' }
                         },
                         max: obj.datas[obj.datas.length-1].max,

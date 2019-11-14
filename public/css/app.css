@@ -957,7 +957,7 @@ code {
   background-image: url('../img/php_banner.jpg');
   background-repeat: repeat-x;
   background-position: bottom center;
-  background-size: contain;
+  background-size: cover;
   background-color: #434d53;
   color: #fff;
   padding: 0 1rem;
@@ -1232,10 +1232,6 @@ code {
   .search-wrapper {
     padding: 10%;
   }
-}
-
-.fixed-action-btn {
-  bottom: 64px;
 }
 
 body.module-search-active {

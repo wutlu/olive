@@ -910,13 +910,13 @@
                             <i class="social-icon icon-call">&#xe806;</i>
                             <i class="social-icon icon-facebook">&#xe807;</i>
                             -->
-                            <a target="_blank" href="https://twitter.com/veri8zone" class="btn-flat btn-small btn-floating social-icon mt-1">
+                            <a target="_blank" href="https://twitter.com/verizonetek" class="btn-flat btn-small btn-floating social-icon mt-1">
                                 <i class="social-icon icon-twitter white-text">&#xe803;</i>
                             </a>
-                            <a target="_blank" href="https://www.linkedin.com/company/veri8zone/" class="btn-flat btn-small btn-floating social-icon mt-1">
+                            <a target="_blank" href="https://www.linkedin.com/company/verizonetek/" class="btn-flat btn-small btn-floating social-icon mt-1">
                                 <i class="social-icon icon-linkedin white-text">&#xe805;</i>
                             </a>
-                            <a target="_blank" href="https://www.instagram.com/veri8zone/" class="btn-flat btn-small btn-floating social-icon mt-1">
+                            <a target="_blank" href="https://www.instagram.com/verizonetek/" class="btn-flat btn-small btn-floating social-icon mt-1">
                                 <i class="social-icon icon-instagram white-text">&#xe808;</i>
                             </a>
                         </div>

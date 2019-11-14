@@ -16,7 +16,7 @@ class CreateSearchHistoriesTable extends Migration
         Schema::create('search_histories', function (Blueprint $table) {
             $table->bigIncrements('id')->unsigned();
 
-            $table->string('query');
+            $table->text('query');
 
             $table->unsignedInteger('user_id')->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
