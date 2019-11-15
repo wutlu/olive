@@ -128,7 +128,9 @@ class BorsaController extends Controller
      */
     public static function data(BorsaRequest $request)
     {
-        $data = Borsa::where('group', $request->group)->where('date', date('Y-m-d'))->orderBy($request->sk, $request->sv)->get();
+        $last = Borsa::where('group', $request->group)->orderBy('date', 'DESC')->first();
+
+        $data = Borsa::where('group', $request->group)->where('date', @$last ? $last->date : date('Y-m-d'))->orderBy($request->sk, $request->sv)->get();
 
         return [
             'status' => 'ok',

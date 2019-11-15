@@ -453,6 +453,11 @@ class HomeController extends Controller
             $data['detected_domains']['count'] = DetectedDomains::where('status', 'new')->count();
         }
 
+        if ($user->report_id)
+        {
+            $data['report'] = $user->report;
+        }
+
         $activities = UserActivity::where('user_id', $user->id)->where('push_notification', 'on')->limit(3)->get();
 
         if (count($activities))

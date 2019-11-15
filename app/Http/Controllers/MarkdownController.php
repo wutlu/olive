@@ -32,7 +32,7 @@ class MarkdownController extends Controller
         return [
             'status' => 'ok',
             'data' => [
-                'message' => $request->body ? Term::markdown($request->body) : 'Önizleme Yok'
+                'message' => $request->body ? Term::markdown($request->body) : ''
             ]
         ];
     }

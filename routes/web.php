@@ -43,6 +43,11 @@ Route::domain('olive.'.config('app.domain'))->group(function () {
         Route::get('{id}', 'UserController@profile')->name('user.profile');
     });
 
+    Route::prefix('rapor')->group(function () {
+        Route::post('durum', 'ReportController@status')->name('report.status');
+        Route::post('baslat', 'ReportController@start')->name('report.start');
+    });
+
     Route::prefix('crm')->group(function () {
         Route::get('/', 'CRMController@dashboard')->name('crm.dashboard');
     });

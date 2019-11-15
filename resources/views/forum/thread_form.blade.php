@@ -81,7 +81,7 @@
                 @endif
             </div>
             <div class="card-tabs">
-                <ul class="tabs tabs-fixed-width">
+                <ul class="tabs tabs-fixed-width thread-tabs">
                     <li class="tab">
                         <a href="#textarea" class="active">Konu İçeriği</a>
                     </li>
@@ -166,7 +166,7 @@
     }
 
     $(document).ready(function() {
-        $('.tabs').tabs({
+        $('.thread-tabs').tabs({
             onShow: function(e) {
                 if (e.id == 'preview')
                 {

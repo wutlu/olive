@@ -129,7 +129,8 @@ $ chmod 777 -R storage
 $ chmod 777 -R /etc/hosts
 
 // Kelimelerde güncelleme yapılırsa bu işlem tekrarlanmalı.
-$ cp -R /var/www/veri.zone/database/analysis /etc/elasticsearch/analysis
+$ cp -R /var/www/veri.zone/database/analysis /data/elasticsearch-n1/config
+$ cp -R /var/www/veri.zone/database/analysis /data/elasticsearch-n2/config
 
 // Otomatik işlemler için Supervisor yapılandırması.
 $ nano /etc/supervisor/supervisord.conf

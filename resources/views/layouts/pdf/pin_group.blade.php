@@ -2,9 +2,11 @@
 <html lang="{{ app()->getLocale() }}">
     <head>
         <title>{{ $pg->name }}</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <style>
-            body { font-family: DejaVu Sans, sans-serif; }
+            body {
+                font-family: DejaVu Sans, sans-serif;
+            }
 
             .clearfix:after {
                 display: block;

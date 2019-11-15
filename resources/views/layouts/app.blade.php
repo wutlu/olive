@@ -53,6 +53,380 @@
 </head>
 <body>
     @auth
+        <div id="report-menu">
+            <a data-name="report-trigger" href="#" class="json" data-method="post" data-href="{{ route('report.status') }}" data-callback="__olive_report_status">
+                <i class="material-icons small">fiber_manual_record</i>
+                <span></span>
+            </a>
+            <a data-name="report-new_page" href="#" data-start="true">
+                <i class="material-icons small">note_add</i>
+                <span>Bağımsız Sayfa Ekle</span>
+            </a>
+            <a href="#">
+                <i class="material-icons small">filter_none</i>
+                <span>Bitmiş Raporlar</span>
+            </a>
+            <a href="#" data-help="report">
+                <i class="material-icons small">info</i>
+                <span>Yardım</span>
+            </a>
+        </div>
+        @push('local.scripts')
+            $(document).on('click', '[data-help=report]', function() {
+                return modal({
+                    'id': 'info',
+                    'body': [
+                        $('<p />', { 'html': 'Olive ile rapor hazırlamak çok kolay. "Olive Rapor Aracı" ile araştırmanızı yaparken, eş zamanlı bir rapor da oluşturabilirsiniz.' }),
+                        $('<p />', { 'html': 'Bir rapor başlattığınız zaman; içerik ve grafiklerin altında bulunan rapor simgesine tıklayarak başlattığınız rapora yeni alanlar ekleyebilirsiniz.' }),
+                    ],
+                    'title': buttons.help,
+                    'options': {
+                        dismissible: false
+                    },
+                    'size': 'modal-medium',
+                    'options': {},
+                    'footer': [
+                       $('<a />', {
+                           'href': '#',
+                           'class': 'modal-close waves-effect btn-flat',
+                           'html': buttons.ok
+                       })
+                    ]
+                })
+            }).on('click', '#report-menu.active [data-name=report-new_page]', function() {
+                var mdl = modal({
+                    'id': 'report-page',
+                    'body': $('<form />', {
+                        'method': 'post',
+                        'action': '#',
+                        'id': 'page',
+                        'class': 'json',
+                        'data-callback': '__olive_report_newPage',
+                        'html': [
+                            $('<div />', {
+                                'class': 'input-field',
+                                'html': [
+                                    $('<input />', {
+                                        'id': 'title',
+                                        'name': 'title',
+                                        'type': 'text',
+                                        'class': 'validate'
+                                    }),
+                                    $('<label />', {
+                                        'for': 'title',
+                                        'html': 'Sayfa Başlığı'
+                                    }),
+                                    $('<span />', {
+                                        'class': 'helper-text',
+                                        'html': 'Oluşturacağınız sayfa için bir başlık belirtin.'
+                                    })
+                                ]
+                            }),
+                            $('<div />', {
+                                'class': 'input-field',
+                                'html': [
+                                    $('<input />', {
+                                        'id': 'subtitle',
+                                        'name': 'subtitle',
+                                        'type': 'text',
+                                        'class': 'validate'
+                                    }),
+                                    $('<label />', {
+                                        'for': 'subtitle',
+                                        'html': 'Sayfa Alt Başlığı'
+                                    }),
+                                    $('<span />', {
+                                        'class': 'helper-text',
+                                        'html': 'Açıklama niteliğinde bir alt başlık girebilirsiniz. (Zorunlu Değil)'
+                                    })
+                                ]
+                            }),
+                            $('<div />', {
+                                'class': 'card-tabs',
+                                'html': $('<ul />', {
+                                    'class': 'tabs tabs-fixed-width report-page_tabs',
+                                    'html': [
+                                        $('<li />', {
+                                            'class': 'tab',
+                                            'html': $('<a />', {
+                                                'href': '#report-page_textarea',
+                                                'class': 'active',
+                                                'html': 'Sayfa İçeriği'
+                                            })
+                                        }),
+                                        $('<li />', {
+                                            'class': 'tab',
+                                            'html': $('<a />', {
+                                                'href': '#report-page_preview',
+                                                'html': 'Önizleme'
+                                            })
+                                        })
+                                    ]
+                                })
+                            }),
+
+                            $('<div />', {
+                                'class': 'card-content textarea-content',
+                                'id': 'report-page_textarea',
+                                'html': $('<div />', {
+                                    'class': 'input-field',
+                                    'html': [
+                                        $('<textarea />', {
+                                            'id': 'body',
+                                            'name': 'body',
+                                            'class': 'materialize-textarea validate',
+                                            'data-length': '1000'
+                                        }),
+                                        $('<label />', {
+                                            'for': 'body',
+                                            'html': 'Sayfa İçeriği'
+                                        }),
+                                        $('<small />', {
+                                            'class': 'grey-text',
+                                            'html': 'Bu alanda <a href="https://guides.github.com/features/mastering-markdown/" target="_blank">Markdown</a> kullanabilirsiniz'
+                                        }),
+                                        $('<span />', { 'class': 'helper-text' })
+                                    ]
+                                })
+                            }),
+
+                            $('<div />', {
+                                'class': 'card-content',
+                                'id': 'report-page_preview',
+                                'data-href': '{{ route('markdown.preview') }}',
+                                'data-method': 'post',
+                                'data-include': 'body',
+                                'data-callback': '__report_pagePreview',
+                                'css': { 'display': 'none' },
+                                'html': $('<div />', { 'class': 'markdown' })
+                            })
+                        ]
+                    }),
+                    'size': 'modal-xlarge',
+                    'title': 'Bağımsız Sayfa Ekle',
+                    'options': {
+                        dismissible: false
+                    },
+                    'footer': [
+                        $('<a />', {
+                            'href': '#',
+                            'class': 'modal-close waves-effect btn-flat grey-text',
+                            'html': buttons.cancel
+                        }),
+                        $('<span />', {
+                            'html': ' '
+                        }),
+                        $('<button />', {
+                            'type': 'submit',
+                            'class': 'waves-effect btn-flat',
+                            'data-submit': 'form#page',
+                            'html': buttons.ok
+                        })
+                    ]
+                })
+
+                $('.report-page_tabs').tabs({
+                    onShow: function(e) {
+                        if (e.id == 'report-page_preview')
+                        {
+                            vzAjax($('#report-page_preview'))
+                        }
+                    }
+                })
+
+                mdl.find('input[name=title]').focus()
+            })
+
+            function __report_pagePreview(__, obj)
+            {
+                if (obj.status == 'ok')
+                {
+                    __.children('.markdown').html(obj.data.message)
+                }
+            }
+
+            function __olive_report_status(__, obj)
+            {
+                if (obj.status == 'ok')
+                {
+                    if (obj.data.status === false && obj.data.validate === false)
+                    {
+                        var mdl = modal({
+                            'id': 'report',
+                            'body': $('<form />', {
+                                'method': 'post',
+                                'action': '{{ route('report.start') }}',
+                                'id': 'new',
+                                'class': 'json',
+                                'data-callback': '__olive_report_start',
+                                'html': [
+                                    $('<div />', {
+                                        'class': 'input-field',
+                                        'html': [
+                                            $('<input />', {
+                                                'id': 'name',
+                                                'name': 'name',
+                                                'type': 'text',
+                                                'class': 'validate'
+                                            }),
+                                            $('<label />', {
+                                                'for': 'name',
+                                                'html': 'Rapor Adı/Başlığı'
+                                            }),
+                                            $('<span />', {
+                                                'class': 'helper-text',
+                                                'html': 'Oluşturacağınız rapor için başlık veya isim belirtin.'
+                                            })
+                                        ]
+                                    }),
+                                    $('<div />', {
+                                        'class': 'blue-grey-text text-darken-2',
+                                        'html': 'Rapor için 1 veya 2 aralıkta tarih belirtin.'
+                                    }),
+                                    $('<div />', {
+                                        'class': 'd-flex justify-content-between',
+                                        'html': [
+                                            $('<div />', {
+                                                'class': 'input-field flex-fill',
+                                                'html': [
+                                                    $('<input />', {
+                                                        'id': 'date_1',
+                                                        'name': 'date_1',
+                                                        'type': 'date',
+                                                        'class': 'validate',
+                                                        'placeholder': 'Tarih 1'
+                                                    }),
+                                                    $('<span />', {
+                                                        'class': 'helper-text',
+                                                        'html': 'İsteğe Bağlı'
+                                                    })
+                                                ]
+                                            }),
+                                            $('<div />', {
+                                                'class': 'input-field flex-fill',
+                                                'html': [
+                                                    $('<input />', {
+                                                        'id': 'date_2',
+                                                        'name': 'date_2',
+                                                        'type': 'date',
+                                                        'class': 'validate',
+                                                        'placeholder': 'Tarih 2'
+                                                    }),
+                                                    $('<span />', {
+                                                        'class': 'helper-text',
+                                                        'html': 'İsteğe Bağlı'
+                                                    })
+                                                ]
+                                            })
+                                        ]
+                                    }),
+                                    $('<ol />', {
+                                        'class': 'blue-grey-text text-darken-2',
+                                        'html': [
+                                            $('<li />', { 'html': 'Raporu başlattıktan sonra; araştırmanız esnasında karşılaşacağınız içerik ve grafiklerin altında bulunan rapor simgesine tıklayarak veya rapor bölmesini kullanarak raporunuzu geliştirin.' }),
+                                            $('<li />', { 'html': 'Raporunuzun hazır olduğunda rapor bölmesinden "Raporu Tamamla" butonuna basın.' }),
+                                            $('<li />', { 'html': 'Oluşturduğunuz raporun çıktısını almak için rapor bölmesinden "Bitmiş Raporlar" butonuna basın.' }),
+                                        ]
+                                    })
+                                ]
+                            }),
+                            'size': 'modal-medium',
+                            'title': 'Rapor Başlat',
+                            'options': {
+                                dismissible: false
+                            },
+                            'footer': [
+                                $('<a />', {
+                                    'href': '#',
+                                    'class': 'modal-close waves-effect btn-flat grey-text',
+                                    'html': buttons.cancel
+                                }),
+                                $('<span />', {
+                                    'html': ' '
+                                }),
+                                $('<button />', {
+                                    'type': 'submit',
+                                    'class': 'waves-effect btn-flat',
+                                    'data-submit': 'form#new',
+                                    'html': buttons.ok
+                                })
+                            ]
+                        })
+
+                        mdl.find('input[name=name]').focus()
+                    }
+                    else if (obj.data.status === true && obj.data.validate === false)
+                    {
+                        return modal({
+                            'id': 'alert',
+                            'body': 'Raporu tamamladıktan sonra "Bitmiş Raporlar" bölümünden değişiklik yapabilirsiniz.',
+                            'size': 'modal-small',
+                            'title': 'Raporu Tamamla',
+                            'footer': [
+                                $('<a />', {
+                                    'href': '#',
+                                    'class': 'modal-close waves-effect grey-text btn-flat',
+                                    'html': buttons.cancel
+                                }),
+                                $('<span />', {
+                                    'html': ' '
+                                }),
+                                $('<a />', {
+                                    'href': '#',
+                                    'class': 'waves-effect btn-flat red-text json',
+                                    'html': buttons.ok,
+                                    'data-href': '{{ route('report.status', [ 'validate' => 'on' ]) }}',
+                                    'data-method': 'post',
+                                    'data-callback': '__olive_report_status'
+                                })
+                            ],
+                            'options': {}
+                        })
+                    }
+                    else
+                    {
+                        flash_alert('Rapor Tamamlandı!', 'orange white-text')
+
+                        $('#modal-alert').modal('close')
+
+                        $('#report-menu').addClass('show').removeClass('active')
+
+                        var start_trigger = $('[data-name=report-trigger]');
+                            start_trigger.removeClass('red-text')
+                            start_trigger.children('span').html('Rapor Başlat')
+                            start_trigger.children('i.material-icons')
+
+                        setTimeout(function() {
+                            $('#report-menu').removeClass('show')
+                        }, 2000)
+                    }
+                }
+            }
+
+            function __olive_report_start(__, obj)
+            {
+                if (obj.status == 'ok')
+                {
+                    flash_alert('Rapor Başlatıldı!', 'green white-text')
+
+                    $('#modal-report').modal('close')
+
+                    $('#report-menu').addClass('show active')
+
+                    setTimeout(function() {
+                        $('#report-menu').removeClass('show')
+                    }, 2000)
+
+                    $('#report-menu').addClass('active')
+
+                    var start_trigger = $('[data-name=report-trigger]');
+                        start_trigger.addClass('red-text')
+                        start_trigger.children('span').html('Raporu Tamamla')
+                        start_trigger.children('i.material-icons')
+                }
+            }
+        @endpush
+
         @if (isset($email) != 'hide')
             @push('local.scripts')
                 @if (auth()->user()->email == 'anonymous@veri.zone')
@@ -847,6 +1221,25 @@
 
                         $('[data-name=organisation-route]').attr('href', obj.data.organisation.pending.count ? '{{ route('admin.organisation.list', [ 'status' => 'off' ]) }}' : '{{ route('admin.organisation.list', [ 'status' => '' ]) }}')
                     @endif
+
+                    if (obj.data.report)
+                    {
+                        $('#report-menu').addClass('active')
+
+                        var start_trigger = $('[data-name=report-trigger]');
+                            start_trigger.addClass('red-text')
+                            start_trigger.children('span').html('Raporu Tamamla')
+                            start_trigger.children('i.material-icons')
+                    }
+                    else
+                    {
+                        $('#report-menu').removeClass('active')
+
+                        var start_trigger = $('[data-name=report-trigger]');
+                            start_trigger.removeClass('red-text')
+                            start_trigger.children('span').html('Rapor Başlat')
+                            start_trigger.children('i.material-icons')
+                    }
 
                     if (obj.data.push_notifications.length)
                     {

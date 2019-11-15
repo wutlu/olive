@@ -17,6 +17,7 @@ return [
         'verification' => 'Doğrulama',
         'iagree' => 'Kabul Ediyorum',
         'go' => 'Git',
+        'help' => 'Yardım',
         'success' => 'Başarılı'
     ],
     'errors' => [

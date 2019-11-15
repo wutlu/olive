@@ -14,6 +14,26 @@ $(function() {
     msie()
 })
 
+function flash_alert(_text, _class)
+{
+    $('body').append(
+        $('<div />', {
+            'id': 'flash-alert',
+            'class': 'd-flex justify-content-center',
+            'html': $('<div />', {
+                'class': 'flash-alert-text align-self-center',
+                'html': _text
+            })
+        }).addClass(_class)
+    )
+
+    setTimeout(function() {
+        $('#flash-alert').animate({ 'opacity': 0 }, 600, function() {
+            $(this).remove()
+        })
+    }, 1000)
+}
+
 function math_prices()
 {
     var price = 0;

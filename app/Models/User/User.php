@@ -162,6 +162,12 @@ class User extends Authenticatable
         return $this->hasOne('App\Models\Session', 'id', 'session_id');
     }
 
+    # mevcut rapor
+    public function report()
+    {
+        return $this->hasOne('App\Models\Report', 'id', 'report_id');
+    }
+
     # forum mesajları
     public function messages()
     {
