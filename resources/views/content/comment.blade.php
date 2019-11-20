@@ -12,7 +12,8 @@
         'type' => $document['_type'],
         'index' => $document['_index']
     ],
-    'footer_hide' => true
+    'footer_hide' => true,
+    'report_menu' => true
 ])
 
 @section('content')

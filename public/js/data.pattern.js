@@ -5,6 +5,7 @@
  | (c) 2019 - veri.zone
  |-------------------------------
  */
+
 $(document).on('click', '.read-aloud', function() {
     var __ = $(this);
     var text = __.closest('.data').find('.text-area').html();
@@ -420,11 +421,27 @@ function __joints(o)
                                 'data-callback': '__pin',
                                 'data-error-callback': '__pin_dock',
                                 'data-trigger': 'pin',
-                                'data-id': o._id,
                                 'data-pin-uuid': o.uuid,
+                                'data-id': o._id,
+                                'data-type': o._type,
+                                'data-index': o._index
+                            }).addClass($('[data-name=pin-dock-trigger]').length ? '' : 'hide'),
+                            $('<span />', { 'html': ' ' }),
+                            $('<a />', {
+                                'href': '#',
+                                'html': $('<i />', {
+                                    'class': 'material-icons',
+                                    'html': 'note_add',
+                                    'css': { 'font-size': '24px' }
+                                }),
+                                'class': 'align-self-center btn-flat btn-floating waves-effect json',
+                                'data-href': '/db/data/' + o._index + '/' + o._type + '/' + o._id,
                                 'data-index': o._index,
-                                'data-type': o._type
-                            }).addClass($('[data-name=pin-dock-trigger]').length ? '' : 'hide')
+                                'data-type': o._type,
+                                'data-id': o._id,
+                                'data-method': 'post',
+                                'data-callback': '__report__data'
+                            })
                         ]
                     }),
                     $('<div />', {
@@ -1024,4 +1041,1651 @@ function _video_(o)
             })
         ]
     })
+}
+
+function _tweet_report_(o)
+{
+    var tweet = $('<div />', {
+        'html': [
+            $('<div />', {
+                'class': 'd-flex justify-content-between',
+                'html': [
+                    $('<div />', {
+                        'class': 'align-self-center',
+                        'html': [
+                            $('<div />', {
+                                'class': 'd-flex',
+                                'html': [
+                                    $('<img />', {
+                                        'src': o.user.image,
+                                        'alt': 'Avatar',
+                                        'onerror': "this.onerror=null;this.src='/img/no_image-twitter.svg';",
+                                        'css': {
+                                            'width': '48px',
+                                            'height': '48px'
+                                        },
+                                        'class': 'align-self-center mr-1'
+                                    }),
+                                    $('<div />', {
+                                        'class': 'align-self-center',
+                                        'html': [
+                                            $('<span />', { 'html': o.user.name, 'class': 'd-table red-text' }),
+                                            $('<span />', { 'html': '@' + o.user.screen_name, 'class': 'd-table grey-text' })
+                                        ]
+                                    }),
+                                    $('<i />', {
+                                        'class': 'material-icons cyan-text hide ml-1',
+                                        'html': 'check'
+                                    }).removeClass(o.user.verified ? 'hide' : '')
+                                ]
+                            }),
+                            $('<small />', {
+                                'class': 'grey-text pt-1 pb-1',
+                                'css': { 'max-width': '400px' },
+                                'html': o.user.description
+                            }).removeClass(o.user.description ? 'hide' : 'd-table').addClass(o.user.description ? 'd-table' : 'hide')
+                        ]
+                    }),
+                    $('<div />', {
+                        'class': 'align-self-end',
+                        'html': [
+                            $('<ul />', {
+                                'class': 'd-flex justify-content-end m-0',
+                                'html': [
+                                    $('<li />', {
+                                        'html': [
+                                            $('<small />', {
+                                                'class': 'grey-text d-block right-align',
+                                                'html': 'Tweet'
+                                            }),
+                                            $('<span />', {
+                                                'class': 'blue-grey-text d-block right-align',
+                                                'html': number_format(o.user.counts.statuses)
+                                            })
+                                        ],
+                                        'css': { 'padding': '4px' }
+                                    }),
+                                    $('<li />', {
+                                        'html': [
+                                            $('<small />', {
+                                                'class': 'grey-text d-block right-align',
+                                                'html': 'Takipçi'
+                                            }),
+                                            $('<span />', {
+                                                'class': 'blue-grey-text d-block right-align',
+                                                'html': number_format(o.user.counts.followers)
+                                            })
+                                        ],
+                                        'css': { 'padding': '4px' }
+                                    }),
+                                    $('<li />', {
+                                        'html': [
+                                            $('<small />', {
+                                                'class': 'grey-text d-block right-align',
+                                                'html': 'Takip'
+                                            }),
+                                            $('<span />', {
+                                                'class': 'blue-grey-text d-block right-align',
+                                                'html': number_format(o.user.counts.friends)
+                                            })
+                                        ],
+                                        'css': { 'padding': '4px' }
+                                    })
+                                ]
+                            }),
+                            $('<ul />', {
+                                'class': 'm-0',
+                                'html': [
+                                    $('<li />', {
+                                        'html': [
+                                            $('<small />', {
+                                                'class': 'grey-text d-block right-align',
+                                                'html': 'ReTweet'
+                                            }),
+                                            $('<span />', {
+                                                'class': 'blue-grey-text d-block right-align',
+                                                'html': o.counts.retweet ? number_format(o.counts.retweet) : 0
+                                            })
+                                        ],
+                                        'css': { 'padding': '4px' }
+                                    }),
+                                    $('<li />', {
+                                        'html': [
+                                            $('<small />', {
+                                                'class': 'grey-text d-block right-align',
+                                                'html': 'Favori'
+                                            }),
+                                            $('<span />', {
+                                                'class': 'blue-grey-text d-block right-align',
+                                                'html': o.counts.favorite ? number_format(o.counts.favorite) : 0
+                                            })
+                                        ],
+                                        'css': { 'padding': '4px' }
+                                    }),
+                                    $('<li />', {
+                                        'html': [
+                                            $('<small />', {
+                                                'class': 'grey-text d-block right-align',
+                                                'html': 'Cevap'
+                                            }),
+                                            $('<span />', {
+                                                'class': 'blue-grey-text d-block right-align',
+                                                'html': o.counts.reply ? number_format(o.counts.reply) : 0
+                                            })
+                                        ],
+                                        'css': { 'padding': '4px' }
+                                    }),
+                                    $('<li />', {
+                                        'html': [
+                                            $('<small />', {
+                                                'class': 'grey-text d-block right-align',
+                                                'html': 'Alıntı'
+                                            }),
+                                            $('<span />', {
+                                                'class': 'blue-grey-text d-block right-align',
+                                                'html': o.counts.quote ? number_format(o.counts.quote) : 0
+                                            })
+                                        ],
+                                        'css': { 'padding': '4px' }
+                                    }),
+                                ]
+                            }).addClass(o.counts.retweet ? 'hide' : 'd-flex').addClass(o.counts.retweet ? 'd-flex' : 'hide')
+                        ]
+                    })
+                ]
+            }),
+            $('<div />', {
+                'class': 'media-area flex-wrap hide'
+            }),
+            $('<div />', {
+                'class': 'pt-1 pb-1',
+                'html': o.text
+            }),
+            $('<div />', {
+                'class': 'joints',
+                'html': [
+                    $('<span>', {
+                        'html': o.created_at,
+                        'class': 'date'
+                    })
+                ]
+            })
+        ]
+    })
+
+    if (o.place)
+    {
+        tweet.find('.joints').prepend($('<span />', { 'html': o.place.name }))
+    }
+
+    if (o.deleted_at)
+    {
+        tweet.find('.joints').append($('<span />', {
+            'class': 'date red-text',
+            'html': o.deleted_at + ' / Ulaşılamıyor'
+        }))
+    }
+
+    if (o.entities)
+    {
+        if (o.entities.medias)
+        {
+            $.each (o.entities.medias, function (key, item) {
+                if (item.media.type == 'photo')
+                {
+                    var rid = Math.random();
+
+                    var img = $('<img />', {
+                       'alt': 'Media',
+                       'src': item.media.media_url,
+                       'class': 'align-self-start',
+                       'css': { 'height': '100px' },
+                       'id': 'img-' + rid
+                    }).on('load', function() {
+                        var __ = $(this);
+                    })
+
+                    tweet.find('.media-area').append(img).removeClass('hide').addClass('d-flex')
+                }
+                else if (item.media.type == 'video' || item.media.type == 'animated_gif')
+                {
+                    tweet.find('.media-area').append($('<video />', {
+                        'width': 'auto',
+                        'height': '100px',
+                        'controls': 'true',
+                        'html': [
+                            $('<source />', {
+                                'src': item.media.source_url,
+                                'type': 'video/mp4'
+                            }),
+                            'Your browser does not support the video tag.'
+                        ]
+                    })).removeClass('hide').addClass('d-flex')
+                }
+            })
+        }
+    }
+
+    return tweet;
+}
+
+function __report__pattern(obj, form, type, method)
+{
+    switch (type)
+    {
+        case 'title':
+        case 'lines':
+            if (type == 'title' && method == 'read')
+            {
+                form.find('.logo').remove()
+                form.find('.content').remove()
+                form.find('.date').remove()
+                form.find('.report-page').removeClass('report-page').addClass('content-title')
+            }
+
+            if (type == 'lines' || method == 'write')
+            {
+                form.find('.content').html(
+                    [
+                        $('<div />', {
+                            'class': 'flex-fill lines',
+                            'css': { 'width': '50%' }
+                        }),
+                        $('<div />', {
+                            'class': 'flex-fill textarea',
+                            'css': { 'width': '50%' },
+                            'html': method == 'write' ? $('<textarea />', { 'name': 'text', 'placeholder': 'Metin Alanı', 'html': obj.page ? obj.page.text : '' }) : obj.page ? obj.page.text : ''
+                        })
+                    ]
+                )
+
+                form.find('.report-tools').prepend(
+                    $('<a />', {
+                        'href': '#',
+                        'class': 'btn-floating btn-flat white waves-effect',
+                        'data-report-element': 'line',
+                        'html': $('<i />', {
+                            'class': 'material-icons',
+                            'html': 'text_format'
+                        })
+                    })
+                )
+
+                $.each(obj.data, function(key, o) {
+                    var id = 'item-' + Math.floor(Math.random() * 1000000);
+
+                    var element = $('<div />', {
+                        'data-report-item': 'line',
+                        'data-max-item': 10,
+                        'class': 'draggable',
+                        'id': id,
+                        'css': {
+                            'top': o.position.top,
+                            'left': o.position.left,
+                            'position': 'absolute'
+                        },
+                        'html': method == 'write' ? [
+                            $('<i />', {
+                                'class': 'material-icons drag-handle',
+                                'html': 'drag_handle'
+                            }),
+                            $('<i />', {
+                                'class': 'material-icons delete',
+                                'html': 'delete',
+                                'data-remove': '#' + id
+                            }),
+                            $('<input />', {
+                                'placeholder': 'Satır',
+                                'type': 'text',
+                                'class': 'auto-width',
+                                'maxlength': '50',
+                                'value': o.text
+                            })
+                        ] : $('<div />', {
+                            'class': 'd-flex',
+                            'html': [
+                                $('<i />', {
+                                    'class': 'material-icons align-self-center',
+                                    'html': 'navigate_next'
+                                }),
+                                $('<span />', {
+                                    'class': 'align-self-center',
+                                    'html': o.text
+                                })
+                            ]   
+                        })
+                    });
+
+                    form.find('.lines').append(element)
+                })
+
+                form.find('.lines').find('.draggable').draggable({
+                    'handle': '.drag-handle',
+                    'containment': '.lines',
+                    'snap': true
+                })
+            }
+        break;
+        case 'article':
+        case 'document':
+            form.find('.content').html(
+                [
+                    $('<div />', {
+                        'class': 'flex-fill report-data',
+                        'css': { 'min-width': '70%' }
+                    }),
+                    $('<div />', {
+                        'class': 'flex-fill textarea markdown',
+                        'css': { 'min-width': '30%' },
+                        'html': method == 'write' ? $('<textarea />', { 'name': 'text', 'placeholder': 'Metin Alanı', 'html': obj.page ? obj.page.text : '' }) : obj.page ? obj.page.text : ''
+                    })
+                ]
+            )
+
+            if (obj.data.image_url)
+            {
+                form.find('.report-data').append($('<img />', {
+                    'class': 'thumb',
+                    'alt': 'Resim',
+                    'src': obj.data.image_url
+                }))
+            }
+
+            form.find('.report-data').append($('<h4 />', { 'html': obj.data.title }))
+            form.find('.report-data').append($('<p />', { 'html': obj.data.description }))
+            form.find('.report-data').append($('<span />', {
+                'class': 'date mt-1',
+                'html': obj.data.created_at
+            }))
+        break;
+        case 'entry':
+            form.find('.content').html(
+                [
+                    $('<div />', {
+                        'class': 'flex-fill report-data',
+                        'css': { 'min-width': '70%' }
+                    }),
+                    $('<div />', {
+                        'class': 'flex-fill textarea',
+                        'css': { 'min-width': '30%' },
+                        'html': method == 'write' ? $('<textarea />', { 'name': 'text', 'placeholder': 'Metin Alanı', 'html': obj.page ? obj.page.text : '' }) : obj.page ? obj.page.text : ''
+                    })
+                ]
+            )
+
+            form.find('.report-data').append($('<h4 />', {
+                'html': obj.data.title
+            }))
+            form.find('.report-data').append(
+                $('<span />', {
+                    'class': 'd-flex',
+                    'html': [
+                        $('<i />', {
+                            'class': 'material-icons align-self-center mr-1',
+                            'html': 'person'
+                        }),
+                        $('<span />', {
+                            'class': 'align-self-center',
+                            'html': obj.data.author
+                        })
+                    ]
+                })
+            )
+            form.find('.report-data').append($('<p />', { 'html': obj.data.entry }))
+            form.find('.report-data').append($('<span />', {
+                'class': 'date mt-1',
+                'html': obj.data.created_at
+            }))
+        break;
+        case 'media':
+            form.find('.content').html(
+                [
+                    $('<div />', {
+                        'class': 'flex-fill report-data',
+                        'css': { 'min-width': '70%' }
+                    }),
+                    $('<div />', {
+                        'class': 'flex-fill textarea',
+                        'css': { 'min-width': '30%' },
+                        'html': method == 'write' ? $('<textarea />', { 'name': 'text', 'placeholder': 'Metin Alanı', 'html': obj.page ? obj.page.text : '' }) : obj.page ? obj.page.text : ''
+                    })
+                ]
+            )
+
+            var media = $('<div />', {
+                'html': $('<img />', {
+                   'alt': 'Media',
+                   'src': obj.data.display_url,
+                   'css': { 'height': '100px' }
+                })
+            });
+
+            if (obj.data.text)
+            {
+                media.append($('<div />', {
+                    'html': obj.data.text,
+                    'class': 'pt-1 pb-1'
+                }))
+            }
+
+            media.append($('<div />', {
+                'class': 'joints',
+                'html': [
+                    $('<span>', {
+                        'html': obj.data.created_at,
+                        'class': 'date'
+                    })
+                ]
+            }))
+
+            if (obj.data.place)
+            {
+                media.find('.joints').prepend($('<span />', { 'html': obj.data.place.name }))
+            }
+
+            if (obj.data.user)
+            {
+                if (obj.data.user.name)
+                {
+                    media.prepend($('<div />', {
+                        'class': 'd-flex justify-content-between',
+                        'html': [
+                            $('<div />', {
+                                'class': 'align-self-center',
+                                'html': [
+                                    $('<div />', {
+                                        'class': 'd-flex',
+                                        'html': [
+                                            $('<img />', {
+                                                'src': obj.data.user.image,
+                                                'alt': 'Avatar',
+                                                'onerror': "this.onerror=null;this.src='/img/no_image-twitter.svg';",
+                                                'css': {
+                                                    'width': '48px',
+                                                    'height': '48px'
+                                                },
+                                                'class': 'align-self-center mr-1'
+                                            }),
+                                            $('<div />', {
+                                                'class': 'align-self-center',
+                                                'html': [
+                                                    $('<span />', { 'html': obj.data.user.name, 'class': 'd-table red-text' }),
+                                                    $('<span />', { 'html': '@' + obj.data.user.screen_name, 'class': 'd-table grey-text' })
+                                                ]
+                                            }),
+                                            $('<i />', {
+                                                'class': 'material-icons cyan-text hide ml-1',
+                                                'html': 'check'
+                                            }).removeClass(obj.data.user.verified ? 'hide' : '')
+                                        ]
+                                    }),
+                                    $('<small />', {
+                                        'class': 'grey-text pt-1 pb-1',
+                                        'css': { 'max-width': '400px' },
+                                        'html': obj.data.user.description
+                                    }).removeClass(obj.data.user.description ? 'hide' : 'd-table').addClass(obj.data.user.description ? 'd-table' : 'hide')
+                                ]
+                            }),
+                            $('<ul />', {
+                                'class': 'd-flex align-self-start m-0',
+                                'html': [
+                                    $('<li />', {
+                                        'html': [
+                                            $('<small />', {
+                                                'class': 'grey-text d-block right-align',
+                                                'html': 'Medya'
+                                            }),
+                                            $('<span />', {
+                                                'class': 'blue-grey-text d-block right-align',
+                                                'html': number_format(obj.data.user.counts.media)
+                                            })
+                                        ],
+                                        'css': { 'padding': '4px' }
+                                    }),
+                                    $('<li />', {
+                                        'html': [
+                                            $('<small />', {
+                                                'class': 'grey-text d-block right-align',
+                                                'html': 'Takipçi'
+                                            }),
+                                            $('<span />', {
+                                                'class': 'blue-grey-text d-block right-align',
+                                                'html': number_format(obj.data.user.counts.followed_by)
+                                            })
+                                        ],
+                                        'css': { 'padding': '4px' }
+                                    }),
+                                    $('<li />', {
+                                        'html': [
+                                            $('<small />', {
+                                                'class': 'grey-text d-block right-align',
+                                                'html': 'Takip'
+                                            }),
+                                            $('<span />', {
+                                                'class': 'blue-grey-text d-block right-align',
+                                                'html': number_format(obj.data.user.counts.follow)
+                                            })
+                                        ],
+                                        'css': { 'padding': '4px' }
+                                    })
+                                ]
+                            })
+                        ]
+                    }))
+                }
+            }
+
+            form.find('.report-data').append(media)
+        break;
+        case 'comment':
+            form.find('.content').html(
+                [
+                    $('<div />', {
+                        'class': 'flex-fill report-data',
+                        'css': { 'min-width': '70%' }
+                    }),
+                    $('<div />', {
+                        'class': 'flex-fill textarea',
+                        'css': { 'min-width': '30%' },
+                        'html': method == 'write' ? $('<textarea />', { 'name': 'text', 'placeholder': 'Metin Alanı', 'html': obj.page ? obj.page.text : '' }) : obj.page ? obj.page.text : ''
+                    })
+                ]
+            )
+
+            form.find('.report-data').append(
+                $('<div />', {
+                    'class': 'card-panel',
+                    'html': [
+                        $('<a />', {
+                            'class': 'link d-flex',
+                            'target': '_blank',
+                            'href': 'https://www.youtube.com/channel/' + obj.data.channel.id,
+                            'html': [
+                                $('<i />', {
+                                    'class': 'material-icons align-self-center mr-1',
+                                    'html': 'person'
+                                }),
+                                $('<span />', {
+                                    'class': 'align-self-center',
+                                    'html': obj.data.channel.title
+                                })
+                            ]
+                        }),
+                        $('<p />', {
+                            'html': obj.data.text
+                        }),
+                        $('<span />', {
+                            'class': 'date',
+                            'html': obj.data.created_at
+                        })
+                    ]
+                })
+            )
+
+            form.find('.report-data').append(
+                $('<div />', {
+                    'class': 'd-flex',
+                    'html': [
+                        $('<img />', {
+                            'alt': 'Resim',
+                            'src': 'https://i.ytimg.com/vi/' + obj.data.video.id + '/hq720.jpg',
+                            'class': 'align-self-center thumb mr-1'
+                        }),
+                        $('<span />', {
+                            'class': 'align-self-center',
+                            'html': [
+                                $('<h4 />', { 'html': obj.data.video.title }),
+                                $('<a />', {
+                                    'class': 'link d-flex',
+                                    'target': '_blank',
+                                    'href': 'https://www.youtube.com/channel/' + obj.data.video.channel.id,
+                                    'html': [
+                                        $('<i />', {
+                                            'class': 'material-icons align-self-center mr-1',
+                                            'html': 'play_circle_filled'
+                                        }),
+                                        $('<span />', {
+                                            'class': 'align-self-center',
+                                            'html': obj.data.video.channel.title
+                                        })
+                                    ]
+                                })
+                            ]
+                        })
+                    ]
+                })
+            )
+        break;
+        case 'video':
+            form.find('.content').html(
+                [
+                    $('<div />', {
+                        'class': 'flex-fill report-data',
+                        'css': { 'min-width': '70%' }
+                    }),
+                    $('<div />', {
+                        'class': 'flex-fill textarea',
+                        'css': { 'min-width': '30%' },
+                        'html': method == 'write' ? $('<textarea />', { 'name': 'text', 'placeholder': 'Metin Alanı', 'html': obj.page ? obj.page.text : '' }) : obj.page ? obj.page.text : ''
+                    })
+                ]
+            )
+
+            form.find('.report-data').append(
+                $('<div />', {
+                    'class': 'd-flex',
+                    'html': [
+                        $('<img />', {
+                            'alt': 'Resim',
+                            'src': 'https://i.ytimg.com/vi/' + obj.data.id + '/hq720.jpg',
+                            'class': 'align-self-center thumb mr-1'
+                        }),
+                        $('<span />', {
+                            'class': 'align-self-center',
+                            'html': [
+                                $('<h4 />', { 'html': obj.data.title }),
+                                $('<a />', {
+                                    'class': 'link d-flex',
+                                    'target': '_blank',
+                                    'href': 'https://www.youtube.com/channel/' + obj.data.channel.id,
+                                    'html': [
+                                        $('<i />', {
+                                            'class': 'material-icons align-self-center mr-1',
+                                            'html': 'play_circle_filled'
+                                        }),
+                                        $('<span />', {
+                                            'class': 'align-self-center',
+                                            'html': obj.data.channel.title
+                                        })
+                                    ]
+                                })
+                            ]
+                        })
+                    ]
+                })
+            )
+
+            if (obj.data.description)
+            {
+                form.find('.report-data').append($('<p />', {
+                    'html': obj.data.description
+                }))
+            }
+
+            form.find('.report-data').append($('<span />', {
+                'class': 'date',
+                'html': obj.data.created_at
+            }))
+        break;
+        case 'product':
+            form.find('.content').html(
+                [
+                    $('<div />', {
+                        'class': 'flex-fill report-data',
+                        'css': { 'min-width': '70%' }
+                    }),
+                    $('<div />', {
+                        'class': 'flex-fill textarea',
+                        'css': { 'min-width': '30%' },
+                        'html': method == 'write' ? $('<textarea />', { 'name': 'text', 'placeholder': 'Metin Alanı', 'html': obj.page ? obj.page.text : '' }) : obj.page ? obj.page.text : ''
+                    })
+                ]
+            )
+
+            form.find('.report-data').append($('<h4 />', {
+                'html': obj.data.title
+            }))
+
+            if (obj.data.seller.name)
+            {
+                form.find('.report-data').append(
+                    $('<span />', {
+                        'class': 'd-flex',
+                        'html': [
+                            $('<i />', {
+                                'class': 'material-icons align-self-center mr-1',
+                                'html': 'person'
+                            }),
+                            $('<span />', {
+                                'class': 'align-self-center',
+                                'html': obj.data.seller.name
+                            })
+                        ]
+                    })
+                )
+            }
+
+            if (obj.data.description)
+            {
+                form.find('.report-data').append($('<p />', { 'html': obj.data.description }))
+            }
+
+            form.find('.report-data').append($('<span />', {
+                'class': 'date mt-1',
+                'html': obj.data.created_at
+            }))
+        break;
+        case 'tweet':
+            form.find('.content').html(
+                [
+                    $('<div />', {
+                        'class': 'flex-fill report-data',
+                        'css': { 'min-width': '70%' }
+                    }),
+                    $('<div />', {
+                        'class': 'flex-fill textarea',
+                        'css': { 'min-width': '30%' },
+                        'html': method == 'write' ? $('<textarea />', { 'name': 'text', 'placeholder': 'Metin Alanı', 'html': obj.page ? obj.page.text : '' }) : obj.page ? obj.page.text : ''
+                    })
+                ]
+            )
+
+            if (obj.data.original)
+            {
+                form.find('.report-data').append(_tweet_report_(obj.data))
+                form.find('.report-data').append($('<div />', {
+                    'class': 'card-panel',
+                    'html': _tweet_report_(obj.data.original)
+                }))
+            }
+            else
+            {
+                form.find('.report-data').append(_tweet_report_(obj.data))
+            }
+        break;
+        case 'stats':
+            if (method == 'read')
+            {
+                form.addClass('cyan darken-4')
+            }
+
+            form.find('.content').html(
+                [
+                    $('<div />', {
+                        'class': 'flex-fill report-stats',
+                        'css': { 'min-width': '70%' }
+                    }),
+                    $('<div />', {
+                        'class': 'flex-fill textarea',
+                        'css': { 'min-width': '30%' },
+                        'html': method == 'write' ? $('<textarea />', { 'name': 'text', 'placeholder': 'Metin Alanı', 'html': obj.page ? obj.page.text : '' }) : obj.page ? obj.page.text : ''
+                    })
+                ]
+            )
+
+            form.find('.report-stats').append($('<div />', { 'class': 'panel twitter' }))
+            form.find('.report-stats').append($('<div />', { 'class': 'panel instagram' }))
+            form.find('.report-stats').append($('<div />', { 'class': 'panel youtube-video' }))
+            form.find('.report-stats').append($('<div />', { 'class': 'panel youtube-comment' }))
+            form.find('.report-stats').append($('<div />', { 'class': 'panel news' }))
+            form.find('.report-stats').append($('<div />', { 'class': 'panel blog' }))
+            form.find('.report-stats').append($('<div />', { 'class': 'panel shopping' }))
+            form.find('.report-stats').append($('<div />', { 'class': 'panel sozluk' }))
+
+            form.append($('<input />', {
+                'type': 'hidden',
+                'name': 'data',
+                'value': JSON.stringify(obj.stats)
+            }))
+
+            if (obj.stats.counts.twitter_tweet)
+            {
+                form.find('.report-stats').children('.twitter').append(
+                    $('<span />', {
+                        'class': 'total',
+                        'html': [
+                            $('<span />', { 'class': 'count', 'html': number_format(obj.stats.counts.twitter_tweet) }),
+                            $('<span />', { 'class': 'label', 'html': 'twitter' })
+                        ]
+                    })
+                )
+
+                if (obj.stats.twitter.reach)
+                {
+                    form.find('.report-stats').children('.twitter').append($('<span />', { 'html': number_format(obj.stats.twitter.reach) + ' etkileşim (rt, qt, rp)', 'class': 'd-table' }))
+                }
+
+                if (obj.stats.twitter.unique_users)
+                {
+                    form.find('.report-stats').children('.twitter').append($('<span />', { 'html': number_format(obj.stats.twitter.unique_users) + ' farklı kullanıcı', 'class': 'd-table' }))
+                }
+
+                if (obj.stats.twitter.verified_users)
+                {
+                    form.find('.report-stats').children('.twitter').append($('<span />', { 'html': number_format(obj.stats.twitter.verified_users) + ' tanınmış hesap', 'class': 'd-table' }))
+                }
+
+                if (obj.stats.twitter.mentions)
+                {
+                    form.find('.report-stats').children('.twitter').append($('<span />', { 'html': number_format(obj.stats.twitter.mentions) + ' mention', 'class': 'd-table' }))
+                }
+
+                if (obj.stats.twitter.hashtags)
+                {
+                    form.find('.report-stats').children('.twitter').append($('<span />', { 'html': number_format(obj.stats.twitter.hashtags) + ' hashtag', 'class': 'd-table' }))
+                }
+
+                if (obj.stats.twitter.followers)
+                {
+                    form.find('.report-stats').children('.twitter').append($('<span />', { 'html': number_format(parseInt(obj.stats.twitter.followers)) + ' ortalama takipçi', 'class': 'd-table' }))
+                }
+            }
+
+            if (obj.stats.counts.instagram_media)
+            {
+                form.find('.report-stats').children('.instagram').append(
+                    $('<span />', {
+                        'class': 'total',
+                        'html': [
+                            $('<span />', { 'class': 'count', 'html': number_format(parseInt(obj.stats.counts.instagram_media)) }),
+                            $('<span />', { 'class': 'label', 'html': 'instagram' })
+                        ]
+                    })
+                )
+
+                if (obj.stats.instagram.unique_users)
+                {
+                    form.find('.report-stats').children('.instagram').append($('<span />', { 'html': number_format(obj.stats.instagram.unique_users) + ' farklı kullanıcı', 'class': 'd-table' }))
+                }
+
+                if (obj.stats.instagram.mentions)
+                {
+                    form.find('.report-stats').children('.instagram').append($('<span />', { 'html': number_format(obj.stats.instagram.mentions) + ' mention', 'class': 'd-table' }))
+                }
+
+                if (obj.stats.instagram.hashtags)
+                {
+                    form.find('.report-stats').children('.instagram').append($('<span />', { 'html': number_format(obj.stats.instagram.hashtags) + ' hashtag', 'class': 'd-table' }))
+                }
+            }
+
+            if (obj.stats.counts.sozluk_entry)
+            {
+                form.find('.report-stats').children('.sozluk').append(
+                    $('<span />', {
+                        'class': 'total',
+                        'html': [
+                            $('<span />', { 'class': 'count', 'html': number_format(parseInt(obj.stats.counts.sozluk_entry)) }),
+                            $('<span />', { 'class': 'label', 'html': 'sözlük' })
+                        ]
+                    })
+                )
+
+                if (obj.stats.sozluk.unique_users)
+                {
+                    form.find('.report-stats').children('.sozluk').append($('<span />', { 'html': number_format(obj.stats.sozluk.unique_users) + ' farklı kullanıcı', 'class': 'd-table' }))
+                }
+
+                if (obj.stats.sozluk.unique_topics)
+                {
+                    form.find('.report-stats').children('.sozluk').append($('<span />', { 'html': number_format(obj.stats.sozluk.unique_topics) + ' farklı başlık', 'class': 'd-table' }))
+                }
+
+                if (obj.stats.sozluk.unique_sites)
+                {
+                    form.find('.report-stats').children('.sozluk').append($('<span />', { 'html': number_format(obj.stats.sozluk.unique_sites) + ' farklı sözlük sitesi', 'class': 'd-table' }))
+                }
+            }
+
+            if (obj.stats.counts.media_article)
+            {
+                form.find('.report-stats').children('.news').append(
+                    $('<span />', {
+                        'class': 'total',
+                        'html': [
+                            $('<span />', { 'class': 'count', 'html': number_format(parseInt(obj.stats.counts.media_article)) }),
+                            $('<span />', { 'class': 'label', 'html': 'haber' })
+                        ]
+                    })
+                )
+
+                if (obj.stats.news.unique_sites)
+                {
+                    form.find('.report-stats').children('.news').append($('<span />', { 'html': number_format(obj.stats.news.unique_sites) + ' farklı haber sitesi', 'class': 'd-table' }))
+                }
+
+                if (obj.stats.news.local_states)
+                {
+                    form.find('.report-stats').children('.news').append($('<span />', { 'html': number_format(obj.stats.news.local_states) + ' yerel medya', 'class': 'd-table' }))
+                }
+            }
+
+            if (obj.stats.counts.blog_document)
+            {
+                form.find('.report-stats').children('.blog').append(
+                    $('<span />', {
+                        'class': 'total',
+                        'html': [
+                            $('<span />', { 'class': 'count', 'html': number_format(parseInt(obj.stats.counts.blog_document)) }),
+                            $('<span />', { 'class': 'label', 'html': 'blog' })
+                        ]
+                    })
+                )
+
+                if (obj.stats.blog.unique_sites)
+                {
+                    form.find('.report-stats').children('.blog').append($('<span />', { 'html': number_format(obj.stats.blog.unique_sites) + ' farklı blog sitesi', 'class': 'd-table' }))
+                }
+            }
+
+            if (obj.stats.counts.youtube_video)
+            {
+                form.find('.report-stats').children('.youtube-video').append(
+                    $('<span />', {
+                        'class': 'total',
+                        'html': [
+                            $('<span />', { 'class': 'count', 'html': number_format(parseInt(obj.stats.counts.youtube_video)) }),
+                            $('<span />', { 'class': 'label', 'html': 'youtube video' })
+                        ]
+                    })
+                )
+
+                if (obj.stats.youtube_video.unique_users)
+                {
+                    form.find('.report-stats').children('.youtube-video').append($('<span />', { 'html': number_format(obj.stats.youtube_video.unique_users) + ' farklı kullanıcı', 'class': 'd-table' }))
+                }
+
+                if (obj.stats.youtube_video.hashtags)
+                {
+                    form.find('.report-stats').children('.youtube-video').append($('<span />', { 'html': number_format(obj.stats.youtube_video.hashtags) + ' hashtag', 'class': 'd-table' }))
+                }
+            }
+
+            if (obj.stats.counts.youtube_comment)
+            {
+                form.find('.report-stats').children('.youtube-comment').append(
+                    $('<span />', {
+                        'class': 'total',
+                        'html': [
+                            $('<span />', { 'class': 'count', 'html': number_format(parseInt(obj.stats.counts.youtube_comment)) }),
+                            $('<span />', { 'class': 'label', 'html': 'youtube yorum' })
+                        ]
+                    })
+                )
+
+                if (obj.stats.youtube_comment.unique_users)
+                {
+                    form.find('.report-stats').children('.youtube-comment').append($('<span />', { 'html': number_format(obj.stats.youtube_comment.unique_users) + ' farklı kullanıcı', 'class': 'd-table' }))
+                }
+
+                if (obj.stats.youtube_comment.unique_videos)
+                {
+                    form.find('.report-stats').children('.youtube-comment').append($('<span />', { 'html': number_format(obj.stats.youtube_comment.unique_videos) + ' video', 'class': 'd-table' }))
+                }
+            }
+
+            if (obj.stats.counts.shopping_product)
+            {
+                form.find('.report-stats').children('.shopping').append(
+                    $('<span />', {
+                        'class': 'total',
+                        'html': [
+                            $('<span />', { 'class': 'count', 'html': number_format(parseInt(obj.stats.counts.shopping_product)) }),
+                            $('<span />', { 'class': 'label', 'html': 'ürün' })
+                        ]
+                    })
+                )
+
+                if (obj.stats.shopping.unique_users)
+                {
+                    form.find('.report-stats').children('.shopping').append($('<span />', { 'html': number_format(obj.stats.shopping.unique_users) + ' farklı satıcı', 'class': 'd-table' }))
+                }
+
+                if (obj.stats.shopping.unique_sites)
+                {
+                    form.find('.report-stats').children('.shopping').append($('<span />', { 'html': number_format(obj.stats.shopping.unique_sites) + ' farklı site', 'class': 'd-table' }))
+                }
+            }
+        break;
+        case 'chart':
+            var id = 'chart-' + Math.floor(Math.random() * 1000000);
+
+            form.find('.content').html(
+                [
+                    $('<div />', {
+                        'class': 'flex-fill report-chart',
+                        'css': { 'min-width': '70%' },
+                        'html': $('<div />', {
+                            'id': id,
+                            'html': 'Yükleniyor...'
+                        })
+                    }),
+                    $('<div />', {
+                        'class': 'flex-fill textarea',
+                        'css': { 'min-width': '30%' },
+                        'html': method == 'write' ? $('<textarea />', { 'name': 'text', 'placeholder': 'Metin Alanı', 'html': obj.page ? obj.page.text : '' }) : obj.page ? obj.page.text : ''
+                    })
+                ]
+            )
+
+            setTimeout(function() {
+                $('#' + id).html('')
+
+                var reportChart = new ApexCharts(document.querySelector('#' + id), obj.data ? obj.data : $.parseJSON(obj));
+                    reportChart.render()
+            }, 1000)
+
+            form.append($('<input />', {
+                'type': 'hidden',
+                'name': 'data',
+                'value': obj.data ? JSON.stringify(obj.data) : obj
+            }))
+        break;
+        case 'tr_map':
+            if (method == 'read')
+            {
+                form.find('.report-page').addClass('lime lighten-5')
+                form.addClass('lime darken-1')
+            }
+
+            form.find('.content').html(
+                [
+                    $('<div />', {
+                        'class': 'flex-fill d-flex',
+                        'css': { 'min-width': '70%' },
+                        'html': [
+                            $('<div />', {
+                                'class': 'tr-map align-self-center'
+                            })
+                        ]
+                    }),
+                    $('<div />', {
+                        'class': 'flex-fill textarea',
+                        'css': { 'min-width': '30%' },
+                        'html': method == 'write' ? $('<textarea />', { 'name': 'text', 'placeholder': 'Metin Alanı', 'html': obj.page ? obj.page.text : '' }) : obj.page ? obj.page.text : ''
+                    })
+                ]
+            )
+
+            var data = obj.data ? obj.data : $.parseJSON(obj);
+
+            var total = 0;
+
+            $.each(data, function(key, o) {
+                total = total + o.doc_count;
+            })
+
+            $.each(data, function(key, o) {
+                var per = parseInt(o.doc_count*255)/total;
+                var cr = per,
+                    cg = 0,
+                    cb = 0,
+                    color = 'rgba(' + cr + ', ' + cg + ', ' + cb + ')';
+
+                form.find('.tr-map').append($('<small />', {
+                    'class': 'state state-' + getSlug(o.key),
+                    'data-title': o.key,
+                    'html': o.doc_count,
+                    'css': { 'background-color': color }
+                }))
+            })
+
+            form.append($('<input />', {
+                'type': 'hidden',
+                'name': 'data',
+                'value': JSON.stringify(data)
+            }))
+        break;
+    }
+
+    form.find('.report-page').addClass(type)
+}
+
+function __report__page_form(options)
+{
+    return $('<form />', {
+        'method': options.method,
+        'action': options.action,
+        'id': 'report-page',
+        'class': 'json align-self-center',
+        'data-callback': options.callback,
+        'data-type': options.type,
+        'html': [
+            $('<div />', {
+                'class': 'show-on-1024-and-up',
+                'html': [
+                    $('<div />', {
+                        'class': 'report-page',
+                        'html': [
+                            $('<input />', {
+                                'type': 'text',
+                                'name': 'title',
+                                'placeholder': 'Başlık',
+                                'maxlength': 64
+                            }),
+                            $('<input />', {
+                                'type': 'text',
+                                'name': 'subtitle',
+                                'placeholder': 'Alt Başlık',
+                                'maxlength': 128
+                            }),
+                            $('<div />', {
+                                'class': 'logo',
+                                'html': [
+                                    $('<img />', {
+                                        'alt': 'Logo',
+                                        'src': '/img/olive_logo-grey.svg'
+                                    })
+                                ]
+                            }),
+                            $('<div />', {
+                                'class': 'content d-flex align-items-stretch'
+                            }).html(options.content ? options.content : ''),
+                            $('<span />', {
+                                'class': 'date',
+                                'html': [
+                                    $('<small />', options.date_1 ? options.date_1 : ''),
+                                    $('<small />', options.date_2 ? options.date_2 : '')
+                                ]
+                            })
+                        ]
+                    }),
+                    $('<div />', {
+                        'class': 'report-tools',
+                        'html': [
+                            $('<a />', {
+                                'href': '#',
+                                'data-trigger': 'report-page_save',
+                                'data-type': options.type,
+                                'class': 'btn-floating btn-flat white waves-effect',
+                                'html': $('<i />', {
+                                    'class': 'material-icons',
+                                    'html': 'save'
+                                })
+                            })
+                        ]
+                    })
+                ]
+            }),
+            $('<div />', {
+                'class': 'olive-alert warning hide-on-1024-and-up',
+                'html': [
+                    $('<div />', { 'class': 'anim' }),
+                    $('<h4 />', { 'class': 'mb-1', 'html': 'Yetersiz Pencere' }),
+                    $('<p />', { 'class': 'mb-1', 'html': 'Pencere boyutunuz bu sayfayı kullanmak için yeterli seviyede değil.' }),
+                    $('<p />', { 'class': 'mb-1', 'html': 'Lütfen en az 1024px genişliğinde bir pencere ile tekrar deneyin.' })
+                ]
+            })
+        ]
+    });
+}
+
+function __report__page_create(__, obj)
+{
+    if (obj.status == 'ok')
+    {
+        var menu = $('#report-menu');
+
+        $('body').removeClass('fpw-active')
+
+        menu.addClass('show')
+
+        setTimeout(function() {
+            menu.removeClass('show')
+        }, 2000)
+
+        flash_alert('Rapora Eklendi!', 'green white-text')
+    }
+}
+
+function __report__elements()
+{
+    $('.report-page > .content > .lines > .draggable').draggable({
+        'handle': '.drag-handle',
+        'containment': '.lines',
+        'snap': true
+    })
+}
+
+$(document).on('click', '#report-menu.active [data-report-element=add-page]', function() {
+    var form = __report__page_form(
+        {
+            'action': '/raporlar/sayfa',
+            'method': 'put',
+            'callback': '__report__page_create',
+            'content': [
+                $('<div />', {
+                    'class': 'flex-fill lines',
+                    'css': { 'width': '50%' }
+                }),
+                $('<div />', {
+                    'class': 'flex-fill textarea',
+                    'css': { 'width': '50%' },
+                    'html': $('<textarea />', {
+                        'name': 'text',
+                        'placeholder': 'Metin Alanı'
+                    })
+                })
+            ],
+            'type': 'lines'
+        }
+    );
+
+        form.find('.report-tools').prepend(
+            $('<a />', {
+                'href': '#',
+                'class': 'btn-floating btn-flat white waves-effect',
+                'data-report-element': 'line',
+                'html': $('<i />', {
+                    'class': 'material-icons',
+                    'html': 'text_format'
+                })
+            }),
+        );
+
+    full_page_wrapper(form)
+
+    form.find('input[name=title]').focus()
+}).on('click', '[data-report-element]', function() {
+    var __ = $(this);
+    var event = false;
+
+    var id = 'item-' + Math.floor(Math.random() * 1000000);
+
+    switch (__.data('report-element'))
+    {
+        case 'line':
+            var element = $('<div />', {
+                'data-report-item': 'line',
+                'data-max-item': 10,
+                'class': 'draggable',
+                'id': id,
+                'html': [
+                    $('<i />', {
+                        'class': 'material-icons drag-handle',
+                        'html': 'drag_handle'
+                    }),
+                    $('<i />', {
+                        'class': 'material-icons delete',
+                        'html': 'delete',
+                        'data-remove': '#' + id
+                    }),
+                    $('<input />', {
+                        'placeholder': 'Satır',
+                        'type': 'text',
+                        'class': 'auto-width',
+                        'maxlength': '50'
+                    })
+                ]
+            });
+
+            event = true;
+        break;
+    }
+
+    if (event)
+    {
+        if (element.data('max-item') && $('[data-report-item=' + element.data('report-item') + ']').length >= element.data('max-item'))
+        {
+            M.toast({ 'html': 'Bu elemandan daha fazla kullanamazsınız.', 'classes': 'red' })
+        }
+        else
+        {
+            switch (__.data('report-element'))
+            {
+                case 'line':
+                    $('.report-page').find('.lines').append(element.effect('highlight', { 'color': '#ccc' }, 1000))
+
+                    element.find('input[type=text]').focus()
+                break;
+            }
+        }
+
+        __report__elements()
+    }
+}).on('click', '[data-help=report]', function() {
+    return modal({
+        'id': 'info',
+        'body': [
+            $('<p />', { 'html': 'Olive ile rapor hazırlamak çok kolay. "Olive Rapor Aracı" ile araştırmanızı yaparken, eş zamanlı bir rapor da oluşturabilirsiniz.' }),
+            $('<p />', { 'html': 'Bir rapor başlattığınız zaman; içerik ve grafiklerin altında bulunan rapor simgesine tıklayarak başlattığınız rapora yeni alanlar ekleyebilirsiniz.' }),
+        ],
+        'title': buttons.help,
+        'options': {
+            dismissible: false
+        },
+        'size': 'modal-medium',
+        'options': {},
+        'footer': [
+           $('<a />', {
+               'href': '#',
+               'class': 'modal-close waves-effect btn-flat',
+               'html': buttons.ok
+           })
+        ]
+    })
+}).on('click', '[data-trigger=report-page_save]', function() {
+    var __ = $(this);
+    var form = $('form#report-page');
+
+    if (__.data('type') == 'lines' || __.data('type') == 'title')
+    {
+        var line_ground = $('.report-page > .content > .lines');
+        var data = [];
+
+        $.each(line_ground.children('[data-report-item=line]'), function() {
+            var __ = $(this);
+            var item = { 'text': __.find('input[type=text]').val() };
+                item.position = __.position()
+
+            data.push(item)
+        })
+
+        var lines_input = form.find('input[name=lines]');
+
+        if (data.length)
+        {
+            var input = $('<input />', {
+                'name': 'lines',
+                'type': 'hidden',
+                'value': JSON.stringify(data)
+            })
+
+            if (!lines_input.length)
+            {
+                form.append(input)
+            }
+        }
+        else
+        {
+            lines_input.remove()
+        }
+    }
+
+    vzAjax(form)
+})
+
+function __report__status(__, obj)
+{
+    if (obj.status == 'ok')
+    {
+        if (obj.data.status === false && obj.data.validate === false)
+        {
+            var mdl = modal({
+                'id': 'report',
+                'body': $('<form />', {
+                    'method': 'post',
+                    'action': '/raporlar/rapor-baslat',
+                    'id': 'report-new',
+                    'class': 'json',
+                    'data-callback': '__report__start',
+                    'html': [
+                        $('<div />', {
+                            'class': 'input-field',
+                            'html': [
+                                $('<input />', {
+                                    'id': 'name',
+                                    'name': 'name',
+                                    'type': 'text',
+                                    'class': 'validate'
+                                }),
+                                $('<label />', {
+                                    'for': 'name',
+                                    'html': 'Rapor Adı/Başlığı'
+                                }),
+                                $('<span />', {
+                                    'class': 'helper-text',
+                                    'html': 'Oluşturacağınız rapor için başlık veya isim belirtin.'
+                                })
+                            ]
+                        }),
+                        $('<ol />', {
+                            'class': 'blue-grey-text text-darken-2',
+                            'html': [
+                                $('<li />', { 'html': 'Raporu başlattıktan sonra; araştırmanız esnasında karşılaşacağınız içerik ve grafiklerin altında bulunan rapor simgesine tıklayarak veya rapor bölmesini kullanarak raporunuzu geliştirin.' }),
+                                $('<li />', { 'html': 'Raporunuzun hazır olduğunda rapor bölmesinden "Raporu Tamamla" butonuna basın.' }),
+                                $('<li />', { 'html': 'Oluşturduğunuz raporun çıktısını almak için rapor bölmesinden "Raporlar" butonuna basın.' }),
+                            ]
+                        })
+                    ]
+                }),
+                'size': 'modal-medium',
+                'title': 'Rapor Başlat',
+                'options': {
+                    dismissible: false
+                },
+                'footer': [
+                    $('<a />', {
+                        'href': '#',
+                        'class': 'modal-close waves-effect btn-flat grey-text',
+                        'html': buttons.cancel
+                    }),
+                    $('<span />', {
+                        'html': ' '
+                    }),
+                    $('<button />', {
+                        'type': 'submit',
+                        'class': 'waves-effect btn-flat',
+                        'data-submit': 'form#report-new',
+                        'html': buttons.ok
+                    })
+                ]
+            })
+
+            mdl.find('input[name=name]').focus()
+
+            return mdl;
+        }
+        else if (obj.data.status === true && obj.data.validate === false)
+        {
+            return modal({
+                'id': 'alert',
+                'body': [
+                    $('<div />', {
+                        'class': 'input-field',
+                        'html': [
+                            $('<input />', {
+                                'id': 'report_password',
+                                'name': 'report_password',
+                                'type': 'text',
+                                'class': 'validate',
+                                'placeholder': 'Şifre'
+                            }),
+                            $('<label />', {
+                                'for': 'report_password',
+                                'html': 'Rapor Şifresi'
+                            }),
+                            $('<span />', {
+                                'class': 'helper-text',
+                                'html': 'Raporu açacak kişiler için rapor şifresi. Boş bırakılırsa, rapor herkes tarafından açılabilir. (İsteğe Bağlı)'
+                            })
+                        ]
+                    }),
+                    $('<div />', {
+                        'class': 'd-flex justify-content-between',
+                        'html': [
+                            $('<div />', {
+                                'class': 'input-field flex-fill',
+                                'html': [
+                                    $('<input />', {
+                                        'id': 'report_date_1',
+                                        'name': 'report_date_1',
+                                        'type': 'date',
+                                        'class': 'validate',
+                                        'placeholder': 'Tarih 1'
+                                    }),
+                                    $('<span />', {
+                                        'class': 'helper-text',
+                                        'html': '1. Tarih (İsteğe Bağlı)'
+                                    })
+                                ]
+                            }),
+                            $('<div />', {
+                                'class': 'input-field flex-fill',
+                                'html': [
+                                    $('<input />', {
+                                        'id': 'report_date_2',
+                                        'name': 'report_date_2',
+                                        'type': 'date',
+                                        'class': 'validate',
+                                        'placeholder': 'Tarih 2'
+                                    }),
+                                    $('<span />', {
+                                        'class': 'helper-text',
+                                        'html': '2. Tarih (İsteğe Bağlı)'
+                                    })
+                                ]
+                            })
+                        ]
+                    }),
+                    $('<p />', { 'html': 'Raporu tamamladıktan sonra "Raporlar" bölümünden tekrar değişiklik yapabilirsiniz.' })
+                ],
+                'size': 'modal-medium',
+                'title': 'Raporu Tamamla',
+                'footer': [
+                    $('<a />', {
+                        'href': '#',
+                        'class': 'modal-close waves-effect grey-text btn-flat',
+                        'html': buttons.cancel
+                    }),
+                    $('<span />', {
+                        'html': ' '
+                    }),
+                    $('<a />', {
+                        'href': '#',
+                        'class': 'waves-effect btn-flat json',
+                        'html': buttons.ok,
+                        'data-href': '/raporlar/durum?validate=on',
+                        'data-method': 'post',
+                        'data-include': 'report_date_1,report_date_2,report_password',
+                        'data-callback': '__report__status'
+                    })
+                ],
+                'options': {}
+            })
+        }
+        else
+        {
+            flash_alert('Rapor Tamamlandı!', 'orange white-text')
+
+            $('#modal-alert').modal('close')
+
+            $('#report-menu').addClass('show')
+                             .removeClass('active')
+                             .attr('date-1', '')
+                             .attr('date-2', '')
+
+            var start_trigger = $('[data-name=report-trigger]');
+                start_trigger.removeClass('red-text')
+                start_trigger.children('span').html('Rapor Başlat')
+                start_trigger.children('i.material-icons').html('fiber_manual_record')
+
+            setTimeout(function() {
+                $('#report-menu').removeClass('show')
+            }, 2000)
+        }
+    }
+}
+
+function __report__start(__, obj)
+{
+    if (obj.status == 'ok')
+    {
+        flash_alert('Rapor Başlatıldı!', 'green white-text')
+
+        $('#modal-report').modal('close')
+
+        $('#report-menu').addClass('show active').attr('data-source', obj.data)
+
+        setTimeout(function() {
+            $('#report-menu').removeClass('show')
+        }, 2000)
+
+        $('#report-menu').addClass('active')
+
+        var start_trigger = $('[data-name=report-trigger]');
+            start_trigger.addClass('red-text')
+            start_trigger.children('span').html('Raporu Tamamla')
+            start_trigger.children('i.material-icons').html('stop')
+    }
+}
+
+function __report__data(__, obj)
+{
+    if (obj.status == 'ok')
+    {
+        var form = __report__page_form(
+            {
+                'action': '/raporlar/icerik',
+                'method': 'put',
+                'callback': '__report__page_create',
+                'type': __.data('type')
+            }
+        );
+
+        form.data('id', __.data('id'))
+        form.data('type', __.data('type'))
+        form.data('index', __.data('index'))
+
+        switch (__.data('type'))
+        {
+            case 'article':
+                form.find('input[name=title]').val('Haber')
+                form.find('input[name=subtitle]').val(obj.data.url)
+            break;
+            case 'entry':
+                form.find('input[name=title]').val('Sözlük')
+                form.find('input[name=subtitle]').val(obj.data.url)
+            break;
+            case 'media':
+                form.find('input[name=title]').val('Instagram, Medya')
+                form.find('input[name=subtitle]').val('https://www.instagram.com/p/' + obj.data.shortcode + '/')
+            break;
+            case 'document':
+                form.find('input[name=title]').val('Blog & Forum')
+                form.find('input[name=subtitle]').val(obj.data.url)
+            break;
+            case 'comment':
+                form.find('input[name=title]').val('YouTube, Yorum')
+                form.find('input[name=subtitle]').val('https://www.youtube.com/watch?v=' + obj.data.video_id)
+            break;
+            case 'video':
+                form.find('input[name=title]').val('YouTube, Video')
+                form.find('input[name=subtitle]').val('https://www.youtube.com/watch?v=' + obj.data.id)
+            break;
+            case 'product':
+                form.find('input[name=title]').val('E-ticaret')
+                form.find('input[name=subtitle]').val(obj.data.url)
+            break;
+            case 'tweet':
+                form.find('input[name=title]').val('Twitter, Tweet')
+                form.find('input[name=subtitle]').val('https://twitter.com/' + obj.data.user.screen_name + '/status/' + obj.data.id)
+            break;
+        }
+
+        __report__pattern(obj, form, __.data('type'), 'write')
+
+        full_page_wrapper(form)
+
+        form.find('input[name=title]').focus()
+    }
+}
+
+function __report__aggs(__, obj)
+{
+    if (obj.status == 'ok')
+    {
+        var form = __report__page_form(
+            {
+                'action': '/raporlar/aggs',
+                'method': 'put',
+                'callback': '__report__page_create',
+                'type': __.data('report')
+            }
+        );
+
+        switch (__.data('report'))
+        {
+            case 'stats':
+                form.find('input[name=title]').val('Sayılar')
+                form.find('input[name=subtitle]').val('İlgili konu toplamda ' + number_format(obj.stats.hits) + ' web paylaşımında yer aldı. Ayrıntılar aşağıdadır.')
+            break;
+        }
+
+        __report__pattern(obj, form, __.data('report'), 'write')
+
+        full_page_wrapper(form)
+
+        form.find('input[name=title]').focus()
+    }
 }

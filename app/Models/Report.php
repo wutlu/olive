@@ -4,13 +4,31 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\User\User;
+
 class Report extends Model
 {
     protected $table = 'reports';
 
     protected $fillable = [
-    	'name',
-    	'date_1',
-    	'date_2'
+        'name'
     ];
+
+    # sayfalar
+    public function pages()
+    {
+        return $this->hasMany('App\Models\ReportPage', 'report_id', 'id')->orderBy('sort', 'asc');
+    }
+
+    # kullanıcı
+    public function user()
+    {
+        return $this->hasOne('App\Models\User\User', 'id', 'user_id');
+    }
+
+    # durum
+    public function status()
+    {
+        return !User::where('report_id', $this->id)->exists();
+    }
 }

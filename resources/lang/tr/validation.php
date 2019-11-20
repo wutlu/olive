@@ -67,7 +67,7 @@ $arr = [
     'numeric' => ':attribute sayı olmalıdır.',
     'present' => ':attribute alanı mevcut olmalıdır.',
     'regex' => ':attribute biçimi geçersiz.',
-    'required' => ':attribute girmelisiniz!',
+    'required' => ':attribute boş kalamaz!',
     'required_if' => ':attribute alanını boş bırakamazsınız.', // :attribute alanı, :other :value değerine sahip olduğunda zorunludur.
     'required_unless' => ':attribute alanını boş bırakamazsınız.', // :attribute alanı, :other alanı :value değerlerinden birine sahip olmadığında zorunludur.
     'required_with' => ':attribute alanı :values varken zorunludur.',
@@ -116,6 +116,7 @@ $arr = [
     'except_list' => 'Bu kelimeyi kullanamazsınız.',
     'iban' => 'Iban numarası geçerli değil.',
     'root_password' => 'Root şifresi geçerli değil.',
+    'recaptcha' => 'Captcha süresi doldu',
 
     /*
     |--------------------------------------------------------------------------
@@ -138,6 +139,7 @@ $arr = [
         'password_login'                  => 'Şifre',
         'terms'                           => 'Kurallar',
         'gRecaptchaResponse'              => 'Güvenlik Doğrulaması',
+        'g-recaptcha-response'            => 'Güvenlik Doğrulaması',
         'month'                           => 'Ay',
         'address'                         => 'Adres',
         'notes'                           => 'Notlar',
@@ -166,9 +168,13 @@ $arr = [
         'avatar'                          => 'Avatar',
         'notification'                    => 'Bildirim',
         'string'                          => 'Sorgu',
-        'id'                              => 'Kimlik',
+        'id'                              => 'Kimlik Numarası',
+        'ids'                             => 'Kimlik Numaraları',
+        'ids.*'                           => 'Kimlik Numarası',
         'start_date'                      => 'Başlangıç Tarihi',
         'start_time'                      => 'Başlangıç Saati',
+        'report_date_1'                   => 'Tarih 1',
+        'report_date_2'                   => 'Tarih 2',
         'end_date'                        => 'Bitiş Tarihi',
         'end_time'                        => 'Bitiş Saati',
         'serial'                          => 'Seri',
@@ -182,6 +188,7 @@ $arr = [
         'body'                            => 'Gövde',
         'slug'                            => 'Slug',
         'title'                           => 'Başlık',
+        'subtitle'                        => 'Alt Başlık',
         'keyword'                         => 'Kelime',
         'keywords'                        => 'Anahtar Kelimeler',
         'description'                     => 'Açıklama',
@@ -278,7 +285,7 @@ $arr = [
 
         'interval'                        => 'Aralık',
 
-        'text'                            => 'Sorgu',
+        'text'                            => 'Metin',
         'user_ids'                        => 'Kullanıcılar',
 
         'hit'                             => 'Bildirim Sayısı',
@@ -339,6 +346,7 @@ $arr = [
         'reverse'                         => 'İlk İçerikler',
 
         'root_password'                   => 'Root Şifresi',
+        'report_password'                 => 'Root Şifresi',
         'root'                            => 'Sistem Sorumlusu',
         'admin'                           => 'Yönetici',
 
@@ -368,7 +376,9 @@ $arr = [
         'lot'                             => 'Hisse',
         'sk'                              => 'Sıralama Adı',
         'sv'                              => 'Sıralama Değeri',
-    ],
+        'lines'                           => 'Satırlar',
+        'data'                            => 'Veri',
+    ]
 ];
 
 /**

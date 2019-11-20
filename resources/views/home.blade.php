@@ -1,5 +1,4 @@
 @extends('layouts.app', [
-    'footer_extend' => true,
     'title' => [
         'text' => 'Veri Zone Teknoloji'
     ],
@@ -172,7 +171,7 @@
 @push('local.scripts')
     $('.main-slider').owlCarousel({
         responsiveClass: true,
-        smartSpeed: 100,
+        smartSpeed: 1000,
         dots: false,
         loop: true,
         responsive: {
@@ -183,7 +182,7 @@
         autoHeight: true,
         nav: false,
         autoplay: true,
-        autoplayTimeout: 1500,
+        autoplayTimeout: 2000,
         autoplayHoverPause: true
     })
 
@@ -204,7 +203,7 @@
         nav: false,
 
         autoplay: true,
-        autoplayTimeout: 1000,
+        autoplayTimeout: 2000,
         autoplayHoverPause: true
     })
 
@@ -220,7 +219,7 @@
         nav: false,
 
         autoplay: true,
-        autoplayTimeout: 1000,
+        autoplayTimeout: 4000,
         autoplayHoverPause: true
     })
 
@@ -623,5 +622,4 @@
     <script src="{{ asset('js/jquery.typewrite.min.js?v='.config('system.version')) }}"></script>
     <script src="{{ asset('js/owl.carousel.min.js?v='.config('system.version')) }}"></script>
     <script src="{{ asset('js/jquery.mark.min.js?v='.config('system.version')) }}" charset="UTF-8"></script>
-    <script src="{{ asset('js/jquery.ui.min.js?v='.config('system.version')) }}"></script>
 @endpush

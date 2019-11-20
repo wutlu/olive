@@ -59,7 +59,6 @@
 @endpush
 
 @push('external.include.footer')
-    <script src="{{ asset('js/jquery.ui.min.js?v='.config('system.version')) }}"></script>
     <script src="{{ asset('js/owl.carousel.min.js?v='.config('system.version')) }}"></script>
     <script src="{{ asset('js/jquery.mark.min.js?v='.config('system.version')) }}" charset="UTF-8"></script>
 @endpush

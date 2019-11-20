@@ -8,7 +8,8 @@
     ],
     'wide' => true,
     'pin_group' => true,
-    'dock' => true
+    'dock' => true,
+    'report_menu' => true
 ])
 
 @push('local.styles')
@@ -423,7 +424,7 @@
                 <span class="grey-text">Twitter Filtreleri (Kullanıcı)</span>
                 <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="string" data-search="user.screen_name">Kullanıcı Adı</button>
                 <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="number" data-search="user.id">Kullanıcı Id</button>
-                <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-search="user.verified:true">Doğrulanmış Hesaplar</button>
+                <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-search="user.verified:true">Tanınmış Hesaplar</button>
 
                 <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="number" data-search="user.counts.statuses">Tweet Sayısı</button>
                 <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="number" data-search="user.counts.favourites">Favori Sayısı</button>
@@ -575,9 +576,22 @@
 @endpush
 
 @push('local.scripts')
+    function __report__aggs__add(__, obj)
+    {
+        __report__aggs(__, obj)
+    }
+
     $(document).on('click', '[data-trigger=stats-more]', function() {
         var _search_ = $('#search').clone();
             _search_.attr('data-aggs', 'on')
+
+            var __ = $(this);
+
+            if (__.data('report-type'))
+            {
+                _search_.attr('data-callback', '__report__aggs__add')
+                _search_.attr('data-report', __.data('report-type'))
+            }
 
             vzAjax(_search_)
     })
@@ -769,6 +783,7 @@
                 {
                     $('[data-name=sozluk-unique_users]').html(number_format(obj.stats.sozluk.unique_users)).closest('p').removeClass(obj.stats.sozluk.unique_users ? 'hide' : '');
                     $('[data-name=sozluk-unique_topics]').html(number_format(obj.stats.sozluk.unique_topics)).closest('p').removeClass(obj.stats.sozluk.unique_topics ? 'hide' : '');
+                    $('[data-name=sozluk-unique_sites]').html(number_format(obj.stats.sozluk.unique_sites)).closest('p').removeClass(obj.stats.sozluk.unique_sites ? 'hide' : '');
                 }
 
                 if ($('input[name=modules][value=blog]').is(':checked'))
@@ -797,6 +812,7 @@
                 if ($('input[name=modules][value=news]').is(':checked'))
                 {
                     $('[data-name=news-unique_sites]').html(number_format(obj.stats.news.unique_sites)).closest('p').removeClass(obj.stats.news.unique_sites ? 'hide' : '');
+                    $('[data-name=news-local_states]').html(number_format(obj.stats.news.local_states)).closest('p').removeClass(obj.stats.news.local_states ? 'hide' : '');
                 }
             }
             else
@@ -889,7 +905,7 @@
         }
     }
 
-    function __chart_generate(id)
+    function __chart_generate(id, data)
     {
         $('#' + id + 'Chart').addClass('hide')
 
@@ -899,12 +915,60 @@
                 $('<div />', {
                     'id': id + 'Chart',
                     'class': 'chart-container hide'
+                }),
+                $('<div />', {
+                    'class': 'd-flex mb-2',
+                    'html': $('<a />', {
+                        'class': 'btn-flat waves-effect d-flex',
+                        'data-position': 'right',
+                        'data-report-type': 'chart',
+                        'data-trigger': 'report-chart',
+                        'data-title': data.title,
+                        'data-subtitle': data.subtitle,
+                        'html': [
+                            $('<i />', {
+                                'class': 'material-icons align-self-center mr-1',
+                                'html': 'note_add'
+                            }),
+                            $('<span />', {
+                                'class': 'align-self-center',
+                                'html': 'Grafiği Rapora Ekle'
+                            })
+                        ]
+                    })
+                }),
+                $('<input />', {
+                    'type': 'hidden',
+                    'data-chart': 'value'
                 })
             ]
         })
 
         chart_element.prependTo('#chart-tab')
     }
+
+    $(document).on('click', '[data-trigger=report-chart]', function() {
+        var __ = $(this);
+        var action = '/raporlar/aggs';
+
+        var form = __report__page_form(
+            {
+                'action': action,
+                'method': 'put',
+                'callback': '__report__page_create',
+                'type': __.data('report-type')
+            }
+        );
+
+        form.find('input[name=title]').val(__.data('title'))
+        form.find('input[name=subtitle]').val(__.data('subtitle'))
+
+        __report__pattern(__.closest('.chart').find('input[data-chart=value]').val(), form, __.data('report-type'), 'write')
+
+        full_page_wrapper(form)
+
+        form.find('input[name=title]').focus()
+    })
 
     function __table_generate(id)
     {
@@ -950,6 +1014,31 @@
             div.prependTo('#chart-tab')
 
         return table;
+    }
+
+    function chartToJson(selector, data)
+    {
+        var ndata = JSON.parse(JSON.stringify(data));
+            ndata.chart.toolbar.show = false;
+            ndata.grid = {
+                  borderColor: 'transparent',
+                  row: {
+                      colors: [ 'transparent', 'transparent' ]
+                  }
+            };
+            ndata.chart.height = 400;
+            ndata.title.text = 'Grafik';
+            delete ndata.xaxis.title;
+            delete ndata.yaxis;
+
+            if (ndata.subtitle)
+            {
+                ndata.title.text = ndata.subtitle.text;
+
+                delete ndata.subtitle;
+            }
+
+        $(selector).parent('.chart').find('input[data-chart]').val(JSON.stringify(ndata))
     }
 
     function __chart(__, obj)
@@ -1011,8 +1100,8 @@
             switch (__.data('type'))
             {
                 case 'histogram':
-                    __chart_generate('histogramHourly');
-                    __chart_generate('histogramDaily');
+                    __chart_generate('histogramHourly', __.data());
+                    __chart_generate('histogramDaily', __.data());
 
                     const hourlyChartOption = JSON.parse(JSON.stringify(options));
                     const dailyChartOption = JSON.parse(JSON.stringify(options));
@@ -1020,7 +1109,7 @@
                     hourlyChartOption['stroke']['width'] = 2;
                     hourlyChartOption['yaxis'] = {
                         'title': {
-                            'text': 'Saatlik Paylaşım Grafiği'
+                            'text': 'Paylaşımların Saatlere Dağılımı'
                         }
                     }
                     hourlyChartOption['xaxis']['categories'] = [ '00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00' ];
@@ -1028,7 +1117,7 @@
                     dailyChartOption['stroke']['width'] = 2;
                     dailyChartOption['yaxis'] = {
                         'title': {
-                            'text': 'Günlük Paylaşım Grafiği'
+                            'text': 'Paylaşımların Günlere Dağılımı'
                         }
                     }
                     dailyChartOption['xaxis']['categories'] = [ 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi', 'Pazar' ];
@@ -1095,6 +1184,9 @@
                             }
                         })
                     })
+
+                    chartToJson('#histogramHourlyChart', hourlyChartOption)
+                    chartToJson('#histogramDailyChart', dailyChartOption)
 
                     var hourlyChart = new ApexCharts(document.querySelector('#histogramHourlyChart'), hourlyChartOption);
                     var dailyChart = new ApexCharts(document.querySelector('#histogramDailyChart'), dailyChartOption);
@@ -1185,7 +1277,9 @@
 
                     if (instagram_hits)
                     {
-                        __chart_generate('instagramPlace')
+                        __chart_generate('instagramPlace', __.data())
+
+                        chartToJson('#instagramPlaceChart', instagramChartOption)
 
                         var instagramChart = new ApexCharts(document.querySelector('#instagramPlaceChart'), instagramChartOption);
                             instagramChart.render()
@@ -1199,7 +1293,9 @@
 
                     if (twitter_hits)
                     {
-                        __chart_generate('twitterPlace')
+                        __chart_generate('twitterPlace', __.data())
+
+                        chartToJson('#twitterPlaceChart', twitterChartOption)
 
                         var twitterChart = new ApexCharts(document.querySelector('#twitterPlaceChart'), twitterChartOption);
                             twitterChart.render()
@@ -1262,7 +1358,9 @@
 
                     if (twitter_hits)
                     {
-                        __chart_generate('twitterPlatform')
+                        __chart_generate('twitterPlatform', __.data())
+
+                        chartToJson('#twitterPlatformChart', twitterPlatformChartOption)
 
                         var twitterPlatformChart = new ApexCharts(document.querySelector('#twitterPlatformChart'), twitterPlatformChartOption);
                             twitterPlatformChart.render()
@@ -1978,7 +2076,9 @@
 
                     if (twitter_hits)
                     {
-                        __chart_generate('twitterHashtag')
+                        __chart_generate('twitterHashtag', __.data())
+
+                        chartToJson('#twitterHashtagChart', twitterHashtagChartOption)
 
                         var twitterChart = new ApexCharts(document.querySelector('#twitterHashtagChart'), twitterHashtagChartOption);
                             twitterChart.render()
@@ -1992,7 +2092,9 @@
 
                     if (youtube_video_hits)
                     {
-                        __chart_generate('youtubeVideoHashtag')
+                        __chart_generate('youtubeVideoHashtag', __.data())
+
+                        chartToJson('#youtubeVideoHashtagChart', youtubeVideoHashtagChartOption)
 
                         var youtubeVideoChart = new ApexCharts(document.querySelector('#youtubeVideoHashtagChart'), youtubeVideoHashtagChartOption);
                             youtubeVideoChart.render()
@@ -2006,7 +2108,9 @@
 
                     if (instagram_hits)
                     {
-                        __chart_generate('instagramHashtag')
+                        __chart_generate('instagramHashtag', __.data())
+
+                        chartToJson('#instagramHashtagChart', instagramHashtagChartOption)
 
                         var instagramChart = new ApexCharts(document.querySelector('#instagramHashtagChart'), instagramHashtagChartOption);
                             instagramChart.render()
@@ -2019,7 +2123,7 @@
                     }
                 break;
                 case 'consumer':
-                    __chart_generate('consumer');
+                    __chart_generate('consumer', __.data());
 
                     const consumerChartOption = JSON.parse(JSON.stringify(options));
 
@@ -2075,11 +2179,13 @@
                         }
                     })
 
+                    chartToJson('#consumerChart', consumerChartOption)
+
                     var consumerChart = new ApexCharts(document.querySelector('#consumerChart'), consumerChartOption);
                         consumerChart.render()
                 break;
                 case 'sentiment':
-                    __chart_generate('sentiment');
+                    __chart_generate('sentiment', __.data());
 
                     const sentimentChartOption = JSON.parse(JSON.stringify(options));
 
@@ -2147,6 +2253,8 @@
                         }
                     })
 
+                    chartToJson('#sentimentChart', sentimentChartOption)
+
                     var sentimentChart = new ApexCharts(document.querySelector('#sentimentChart'), sentimentChartOption);
                         sentimentChart.render()
                 break;
@@ -2191,7 +2299,9 @@
 
                     if (gender_hits)
                     {
-                        __chart_generate('gender');
+                        __chart_generate('gender', __.data());
+
+                        chartToJson('#genderChart', genderChartOption)
 
                         var genderChart = new ApexCharts(document.querySelector('#genderChart'), genderChartOption);
                             genderChart.render()
@@ -2218,7 +2328,7 @@
                     {
                         const categoryChartOption = JSON.parse(JSON.stringify(options));
 
-                        __chart_generate('category')
+                        __chart_generate('category', __.data())
 
                         categoryChartOption['chart']['type'] = 'bar';
                         categoryChartOption['chart']['height'] = 500;
@@ -2247,6 +2357,8 @@
                         ];
 
                         categoryChartOption['xaxis'] = { categories: categories };
+
+                        chartToJson('#categoryChart', categoryChartOption)
 
                         var categoryChart = new ApexCharts(document.querySelector('#categoryChart'), categoryChartOption);
                             categoryChart.render()
@@ -2277,12 +2389,39 @@
 
                 var chart = $('<div />', {
                     'id': 'local_press-chart',
+                    'class': 'chart',
                     'html': [
                         $('<h6 />', {
                             'html': 'Yerel Basın - ' + $('input[name=string]').val() + ' / ' + $('input[name=start_date]').val() + ' - ' + $('input[name=end_date]').val()
                         }),
                         $('<div />', {
                             'class': 'tr-map'
+                        }),
+                        $('<div />', {
+                            'class': 'd-flex mb-2',
+                            'html': $('<a />', {
+                                'class': 'btn-flat waves-effect d-flex',
+                                'data-position': 'right',
+                                'data-report-type': 'tr_map',
+                                'data-trigger': 'report-chart',
+                                'data-title': __.data('title'),
+                                'data-subtitle': __.data('subtitle'),
+                                'html': [
+                                    $('<i />', {
+                                        'class': 'material-icons align-self-center mr-1',
+                                        'html': 'note_add'
+                                    }),
+                                    $('<span />', {
+                                        'class': 'align-self-center',
+                                        'html': 'Grafiği Rapora Ekle'
+                                    })
+                                ]
+                            })
+                        }),
+                        $('<input />', {
+                            'type': 'hidden',
+                            'data-chart': 'value',
+                            'value': JSON.stringify(obj.data.news.locals.buckets)
                         })
                     ]
                 })
@@ -2323,16 +2462,16 @@
 @section('panel-icon', 'pie_chart')
 @section('panel')
     <div class="collection collection-unstyled">
-        <a href="#" class="collection-item json loading" data-callback="__chart" data-type="histogram" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}">Zaman İstatistikleri</a>
-        <a href="#" class="collection-item json loading" data-callback="__chart" data-type="place" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}">Lokasyon</a>
-        <a href="#" class="collection-item json loading" data-callback="__chart" data-type="platform" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}">Platform</a>
-        <a href="#" class="collection-item json loading" data-callback="__chart" data-type="sentiment" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}">Duygu</a>
-        <a href="#" class="collection-item json loading" data-callback="__chart" data-type="consumer" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}">Soru, İstek, Şikayet ve Haber</a>
-        <a href="#" class="collection-item json loading" data-callback="__chart" data-type="gender" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}">Cinsiyet Grafiği</a>
-        <a href="#" class="collection-item json loading" data-callback="__chart" data-type="author" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}">@bahsedenler</a>
-        <a href="#" class="collection-item json loading" data-callback="__chart" data-type="hashtag" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}">#hashtagler</a>
-        <a href="#" class="collection-item json loading" data-callback="__chart" data-type="category" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}">Kategori</a>
-        <a href="#" class="collection-item json loading" data-callback="__map" data-type="local_press" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}">Yerel Basın</a>
+        <a href="#" class="collection-item json loading" data-callback="__chart" data-type="histogram" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}" data-title="Zaman Grafiği">Zaman İstatistikleri</a>
+        <a href="#" class="collection-item json loading" data-callback="__chart" data-type="place" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}" data-title="Lokasyon Grafiği" data-subtitle="Konum bilgisi paylaşan kullanıcılardan elde edilmiş başlıca lokasyonlar.">Lokasyon</a>
+        <a href="#" class="collection-item json loading" data-callback="__chart" data-type="platform" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}" data-title="Platform Grafiği" data-subtitle="Tweet paylaşımında kullanılan başlıca uygulamalar.">Platform</a>
+        <a href="#" class="collection-item json loading" data-callback="__chart" data-type="sentiment" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}" data-title="Duygu Grafiği">Duygu</a>
+        <a href="#" class="collection-item json loading" data-callback="__chart" data-type="consumer" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}" data-title="Soru, İstek, Şikayet ve Haber Grafiği">Soru, İstek, Şikayet ve Haber</a>
+        <a href="#" class="collection-item json loading" data-callback="__chart" data-type="gender" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}" data-title="Cinsiyet Grafiği">Cinsiyet Grafiği</a>
+        <a href="#" class="collection-item json loading" data-callback="__chart" data-type="author" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}" data-title="Bahsedenler">@bahsedenler</a>
+        <a href="#" class="collection-item json loading" data-callback="__chart" data-type="hashtag" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}" data-title="Hashtag Grafiği" data-subtitle="Konu ile birlikte kullanılan başlıca hashtagler.">#hashtagler</a>
+        <a href="#" class="collection-item json loading" data-callback="__chart" data-type="category" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}" data-title="Kategori Grafiği" data-subtitle="Verilerin genel kategori dağılımı.">Kategori</a>
+        <a href="#" class="collection-item json loading" data-callback="__map" data-type="local_press" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}" data-title="Yerel Basın">Yerel Basın</a>
     </div>
 @endsection
 
@@ -2398,6 +2537,9 @@
             </div>
 
             <div class="right-align">
+                <a href="#" class="btn-flat btn-floating waves-effect" data-report-type="stats" data-trigger="stats-more" data-tooltip="Sayacı Rapora Ekle">
+                    <i class="material-icons">note_add</i>
+                </a>
                 <a href="#" class="btn-flat btn-floating waves-effect" data-trigger="stats-more" data-tooltip="Sayaç Detaylarını Göster">
                     <i class="material-icons">settings_input_svideo</i>
                 </a>
@@ -2432,7 +2574,7 @@
                                 </p>
                                 <p class="mb-0 hide" data-stat>
                                     <span class="d-flex justify-content-end">
-                                        <small class="grey-text">DOĞRULANMIŞ HESAP</small>
+                                        <small class="grey-text">TANINMIŞ HESAP</small>
                                         <small class="pl-1" data-name="twitter-verified_users">0</small>
                                     </span>
                                 </p>
@@ -2534,6 +2676,12 @@
                                         <small class="pl-1" data-name="news-unique_sites">0</small>
                                     </span>
                                 </p>
+                                <p class="mb-0 hide" data-stat>
+                                    <span class="d-flex justify-content-end">
+                                        <small class="grey-text">YEREL MEDYA</small>
+                                        <small class="pl-1" data-name="news-local_states">0</small>
+                                    </span>
+                                </p>
                             </td>
                             <td style="padding: 0; text-transform: uppercase; vertical-align: top;" class="right-align">
                                 <p class="mb-0 hide" data-stat>
@@ -2558,7 +2706,7 @@
                             <td style="padding: 0; text-transform: uppercase; vertical-align: top;" class="right-align">
                                 <p class="mb-0 hide" data-stat>
                                     <span class="d-flex justify-content-end">
-                                        <small class="grey-text">TEKİL KULLANICI</small>
+                                        <small class="grey-text">TEKİL SATICI</small>
                                         <small class="pl-1" data-name="shopping-unique_users">0</small>
                                     </span>
                                 </p>
@@ -2580,6 +2728,12 @@
                                     <span class="d-flex justify-content-end">
                                         <small class="grey-text">TEKİL BAŞLIK</small>
                                         <small class="pl-1" data-name="sozluk-unique_topics">0</small>
+                                    </span>
+                                </p>
+                                <p class="mb-0 hide" data-stat>
+                                    <span class="d-flex justify-content-end">
+                                        <small class="grey-text">TEKİL SÖZLÜK</small>
+                                        <small class="pl-1" data-name="sozluk-unique_sites">0</small>
                                     </span>
                                 </p>
                             </td>
@@ -2969,10 +3123,8 @@
 @endpush
 
 @push('external.include.footer')
-    <script src="{{ asset('js/apex.min.js?v='.config('system.version')) }}"></script>
     <script src="{{ asset('js/owl.carousel.min.js?v='.config('system.version')) }}"></script>
     <script src="{{ asset('js/jquery.table2excel.min.js?v='.config('system.version')) }}"></script>
-    <script src="{{ asset('js/jquery.ui.min.js?v='.config('system.version')) }}"></script>
     <script src="{{ asset('js/jquery.mark.min.js?v='.config('system.version')) }}" charset="UTF-8"></script>
     <script src="{{ asset('js/speakingurl.min.js?v='.config('system.version')) }}" charset="UTF-8"></script>
 @endpush

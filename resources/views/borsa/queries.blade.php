@@ -11,16 +11,34 @@
     'footer_hide' => true
 ])
 
+@push('local.styles')
+    [data-name=query-pos],
+    [data-name=query-neg] {
+        width: 50%;
+    }
+    [data-name=query-pos]:empty,
+    [data-name=query-neg]:empty {
+        display: none;
+    }
+@endpush
+
 @section('wildcard')
-    <form method="get" action="">
+    <form method="get" action="{{ route('borsa.queries') }}">
         <div class="card">
             <div class="container">
-                <div class="d-flex flex-wrap justify-content-between">
-                    <span class="wildcard-title align-self-center">
+                <div class="wildcard-searchground">
+                    <span class="wildcard-title">
                         Borsa Sorguları
                         <small class="d-table" data-name="total">{{ $data->total() }}</small>
                     </span>
-                    <input type="text" name="q" id="q" class="align-self-center sub-search" placeholder="Arayın" value="{{ $q }}" />
+                    <div class="wildcard-search">
+                        <input type="text" name="q" id="q" placeholder="Arayın" value="{{ $q }}" />
+                        @if ($q)
+                            <a href="{{ route('borsa.queries') }}" class="clear">
+                                <i class="material-icons">close</i>
+                            </a>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
@@ -30,14 +48,14 @@
 @section('content')
     <div class="card card-unstyled">
         @if (count($data))
-            <ul class="collection collection-unstyled">
+            <ul class="collection collection-hoverable collection-unstyled">
                 @foreach ($data as $item)
                     <li class="collection-item" data-item-id="item-{{ $item->id }}">
                         <div class="d-flex justify-content-between">
                             <span class="align-self-center">{{ $item->name }}</span>
                             <a
                                 href="#"
-                                class="btn-flat btn-floating waves-effect align-self-center json"
+                                class="grey-text text-darken-2 align-self-center json"
                                 data-href="{{ route('borsa.query', $item->id) }}"
                                 data-id="{{ $item->id }}"
                                 data-method="post"
@@ -45,9 +63,9 @@
                                 <i class="material-icons">edit</i>
                             </a>
                         </div>
-                        <div class="d-flex mt-1">
-                            <span data-name="query-pos" style="width: 50%;" class="p-1 flex-fill {{ $item->query_pos ? 'green lighten-5' : 'grey lighten-4' }} green-text">{{ $item->query_pos }}</span>
-                            <span data-name="query-neg" style="width: 50%;" class="p-1 flex-fill {{ $item->query_neg ? 'red lighten-5' : 'grey lighten-4' }} red-text">{{ $item->query_neg }}</span>
+                        <div class="d-flex">
+                            <span data-name="query-pos" class="flex-fill green-text">{{ $item->query_pos }}</span>
+                            <span data-name="query-neg" class="flex-fill red-text">{{ $item->query_neg }}</span>
                         </div>
                     </li>
                 @endforeach
@@ -149,14 +167,8 @@
         if (obj.status == 'ok')
         {
             var item = $('[data-item-id=item-' + obj.data.id + ']');
-                item.find('[data-name=query-pos]')
-                    .html(obj.data.query_pos)
-                    .addClass(obj.data.query_pos ? 'green lighten-5' : 'grey lighten-4')
-                    .removeClass(obj.data.query_pos ? 'grey lighten-4' : 'green lighten-5')
-                item.find('[data-name=query-neg]')
-                    .html(obj.data.query_neg)
-                    .addClass(obj.data.query_neg ? 'red lighten-5' : 'grey lighten-4')
-                    .removeClass(obj.data.query_neg ? 'grey lighten-4' : 'red lighten-5')
+                item.find('[data-name=query-pos]').html(obj.data.query_pos)
+                item.find('[data-name=query-neg]').html(obj.data.query_neg)
 
             $('#modal-detail').modal('close')
         }

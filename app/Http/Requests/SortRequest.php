@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Report;
+namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StartRequest extends FormRequest
+class SortRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,9 @@ class StartRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|max:100'
+            'id' => 'required|integer',
+            'ids' => 'required|array',
+            'ids.*' => 'required|integer'
         ];
     }
 }

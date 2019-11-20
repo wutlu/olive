@@ -4,7 +4,7 @@ namespace App\Http\Requests\Report;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StartRequest extends FormRequest
+class DataRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,13 @@ class StartRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|max:100'
+            'title' => 'required|string|min:4|max:64',
+            'subtitle' => 'nullable|string|min:10|max:128',
+            'text' => 'nullable|string|max:2000',
+
+            'index' => 'nullable|string|max:255',
+            'type' => 'nullable|string|in:tweet,entry,media,article,document,video,comment,product',
+            'id' => 'nullable|string|max:255'
         ];
     }
 }

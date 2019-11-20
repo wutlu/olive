@@ -655,7 +655,3 @@
         driver.start()
     @endif
 @endpush
-
-@push('external.include.footer')
-    <script src="{{ asset('js/jquery.ui.min.js?v='.config('system.version')) }}"></script>
-@endpush

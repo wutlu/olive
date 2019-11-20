@@ -5,7 +5,8 @@
             'text' => 'İçerik Sınıflandırma'
         ]
     ],
-    'footer_hide' => true
+    'footer_hide' => true,
+    'report_menu' => true
 ])
 
 @section('wildcard')

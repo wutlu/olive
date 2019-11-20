@@ -1,5 +1,6 @@
 @extends('layouts.app', [
-    'sidenav_fixed_layout' => true
+    'sidenav_fixed_layout' => true,
+    'report_menu' => true
 ])
 
 @push('local.scripts')
@@ -24,7 +25,7 @@
             1400: { items: 3 }
         },
         autoplay: true,
-        autoplayTimeout: 1500,
+        autoplayTimeout: 2000,
         autoplayHoverPause: true,
         lazyLoad: true
     })
@@ -87,7 +88,7 @@
             @foreach ($news as $item)
                 <a href="{{ route('search.dashboard').'?q="'.$item->data->title.'"' }}" class="d-flex" data-name="item">
                     @isset($item->data->image)
-                        <img class="align-self-center" alt="{{ $item->data->title }}" src="{{ $item->data->image }}" />
+                        <!--<img class="align-self-center" alt="{{ $item->data->title }}" src="{{ $item->data->image }}" />-->
                     @endisset
                     <span class="align-self-center">{{ $item->data->title }}</span>
                 </a>

@@ -299,9 +299,9 @@ class OrganisationController extends Controller
                     {
                         $message = [
                             'title' => 'Üzgünüm :(',
-                            'info' => 'Organizasyon Süreniz Doldu',
+                            'info' => 'Organizasyon Süresi Bitti',
                             'body' => implode(PHP_EOL, [
-                                'Araçlardan tekrar faydalanabilmek için aboneliğinizi uzatmanız gerekiyor.'
+                                'Organizasyonunuzun süresi bitti. Üzülmeyin! Hala ücretsiz araçlardan faydalanabilirsiniz.'
                             ])
                         ];
                         $message_root = [

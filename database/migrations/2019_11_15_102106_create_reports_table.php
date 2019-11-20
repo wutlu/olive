@@ -30,6 +30,10 @@ class CreateReportsTable extends Migration
 
             $table->date('pdf')->nullable()->default(null);
 
+            $table->string('password')->nullable()->default(null);
+
+            $table->unsignedInteger('hit')->nullable()->default(null);
+
             $table->timestamps();
         });
     }

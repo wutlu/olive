@@ -324,88 +324,6 @@ class ContentController extends Controller
 
                     $title = implode(' / ', [ 'Twitter', $document['_source']['user']['name'], '#'.$es_id ]);
 
-                    $details = Document::search(
-                        [
-                            'twitter',
-                            'tweets',
-                            '*'
-                        ],
-                        'tweet',
-                        [
-                            'size' => 0,
-                            'query' => [
-                                'bool' => [
-                                    'filter' => [
-                                        [
-                                            'range' => [
-                                                'created_at' => [
-                                                    'format' => 'YYYY-MM-dd',
-                                                    'gte' => date('Y-m-d', strtotime('-30 days'))
-                                                ]
-                                            ]
-                                        ]
-                                    ],
-                                    'must' => [
-                                        [
-                                            'match' => [ 'user.id' => $document['_source']['user']['id'] ]
-                                        ]
-                                    ]
-                                ]
-                            ],
-                            'aggs' => [
-                                'metrics_by_day' => [
-                                    'date_histogram' => [
-                                        'field' => 'created_at',
-                                        'interval' => 'day',
-                                        'format' => 'yyyy-MM-dd',
-                                        'min_doc_count' => 1
-                                    ],
-                                    'aggs' => [
-                                        'properties' => [
-                                            'top_hits' => [
-                                                'size' => 1,
-                                                '_source' => [
-                                                    'include' => [
-                                                        'user.counts'
-                                                    ]
-                                                ]
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                            ]
-                        ]
-                    );
-
-                    $details = @$details->data['aggregations']['metrics_by_day']['buckets'];
-
-                    if (count($details))
-                    {
-                        $detail_keys = [
-                            'days' => [],
-                            'followers' => [],
-                            'favorites' => [],
-                            'lists' => [],
-                            'friends' => [],
-                            'statuses' => []
-                        ];
-
-                        foreach ($details as $detail)
-                        {
-                            $date = date('d.m.Y', strtotime($detail['key_as_string']));
-                            $counts = $detail['properties']['hits']['hits'][0]['_source']['user']['counts'];
-
-                            $detail_keys['days'][] = $date;
-                            $detail_keys['followers'][] = $counts['followers'];
-                            $detail_keys['favorites'][] = $counts['favourites'];
-                            $detail_keys['lists'][] = $counts['listed'];
-                            $detail_keys['friends'][] = $counts['friends'];
-                            $detail_keys['statuses'][] = $counts['statuses'];
-                        }
-
-                        $data['details'] = $detail_keys;
-                    }
-
                     if (@$document['_source']['external']['id'])
                     {
                         $external = Document::search([ 'twitter', 'tweets', '*' ], 'tweet', [ 'query' => [ 'match' => [ 'id' => $document['_source']['external']['id'] ] ] ]);
@@ -617,6 +535,68 @@ class ContentController extends Controller
             ];
 
             return view(implode('.', [ 'content', $es_type ]), compact('document', 'title', 'es', 'data'));
+        }
+        else
+        {
+            return abort(404);
+        }
+    }
+
+    /**
+     * Data
+     *
+     * @return array
+     */
+    public static function data(string $es_index, string $es_type, string $es_id)
+    {
+        $document = Document::get($es_index, $es_type, $es_id);
+
+        if ($document->status == 'ok')
+        {
+            $data = [
+                'status' => 'ok',
+                'data' => $document->data['_source']
+            ];
+
+            switch ($es_type)
+            {
+                case 'comment':
+                    $video = Document::get([ 'youtube', 'videos' ], 'video', $document->data['_source']['video_id']);
+
+                    if ($video->status == 'ok')
+                    {
+                        $data['data']['video'] = $video->data['_source'];
+                    }
+                break;
+                case 'tweet':
+                    if (@$document->data['_source']['external']['id'])
+                    {
+                        $external = Document::search([ 'twitter', 'tweets', '*' ], 'tweet', [
+                            'query' => [
+                                'bool' => [ 'must' => [ 'match' => [ 'id' => $document->data['_source']['external']['id'] ] ] ]
+                            ]
+                        ]);
+
+                        if ($external->status == 'ok' && @$external->data['hits']['hits'][0])
+                        {
+                            $data['data']['original'] = $external->data['hits']['hits'][0]['_source'];
+                        }
+                    }
+                break;
+                case 'media':
+                    if (@$document->data['_source']['user']['id'])
+                    {
+                        $external = Document::get([ 'instagram', 'users' ], 'user', $document->data['_source']['user']['id']);
+
+                        if ($external->status == 'ok')
+                        {
+                            $data['data']['user'] = $external->data['_source'];
+                        }
+                    }
+                break;
+            }
+
+            return $data;
         }
         else
         {

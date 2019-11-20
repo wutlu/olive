@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use PDF;
+use PDF2;
 
 class TestController extends Controller
 {
@@ -48,8 +49,10 @@ class TestController extends Controller
             ]
         ];
 
-        $pdf = PDF::loadView('layouts.pdf.report', [ 'data' => $data ])
-                  ->setPaper('a4', 'landscape')
-                  ->save($pdf_path);
+        $content = view('layouts.pdf.report', [ 'data' => $data ]);
+
+        $html2pdf = new PDF2('L', [ 200, 396 ], 'tr');
+        $html2pdf->writeHTML($content);
+        $html2pdf->output();
     }
 }

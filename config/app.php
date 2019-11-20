@@ -273,7 +273,7 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         'YouTube' => Alaouy\Youtube\Facades\Youtube::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
-        'PDF' => Barryvdh\DomPDF\Facade::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class
     ],
 
 ];

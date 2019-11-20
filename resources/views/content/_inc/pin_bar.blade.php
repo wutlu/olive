@@ -19,6 +19,23 @@
             data-index="{{ $document['_index'] }}">
             <i class="material-icons grey-text text-darken-2">add</i>
         </a>
+        <span class="p-1"></span>
+        <a
+            href="#"
+            class="btn-floating btn-small waves-effect white json align-self-center"
+            data-href="{{ route('content.data', [
+                'es_id' => $document['_id'],
+                'es_type' => $document['_type'],
+                'es_index' => $document['_index']
+            ]) }}"
+            data-method="post"
+            data-callback="__report__data"
+            data-tooltip="Rapora Ekle"
+            data-id="{{ $document['_id'] }}"
+            data-type="{{ $document['_type'] }}"
+            data-index="{{ $document['_index'] }}">
+            <i class="material-icons grey-text text-darken-2">note_add</i>
+        </a>
     </span>
 
      <span class="right-align p-1">

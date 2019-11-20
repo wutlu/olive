@@ -12,7 +12,8 @@
         'index' => $document['_index']
     ],
     'footer_hide' => true,
-    'dock' => true
+    'dock' => true,
+    'report_menu' => true
 ])
 
 @section('dock')

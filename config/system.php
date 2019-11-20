@@ -4,7 +4,7 @@ return [
     /**
      * Sistem Versiyonu
      */
-    'version' => '6.1.3',
+    'version' => '7.0.1',
 
     /**
      * db
@@ -164,6 +164,7 @@ return [
             'search.module',
             'driver.trend',
             'driver.stream',
+            'driver.report.sortable'
         ]
     ],
 

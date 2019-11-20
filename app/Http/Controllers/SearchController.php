@@ -715,6 +715,7 @@ class SearchController extends Controller
                             $twitter_q['aggs']['verified_users'] = [ 'filter' => [ 'exists' => [ 'field' => 'user.verified' ] ] ];
                             $twitter_q['aggs']['followers'] = [ 'avg' => [ 'field' => 'user.counts.followers' ] ];
                             $twitter_q['aggs']['reach'] = [ 'terms' => [ 'field' => 'external.id' ] ];
+                            $twitter_q['aggs']['total'] = [ 'value_count' => [ 'field' => 'id' ] ];
                         }
 
                         $tweet_data = self::tweet($request, $twitter_q);
@@ -729,8 +730,8 @@ class SearchController extends Controller
                             $stats['twitter']['reach'] = @$tweet_data['aggs']['reach']['sum_other_doc_count'];
                         }
 
-                        $stats['hits'] = $stats['hits'] + $tweet_data['stats']['total'];
-                        $stats['counts']['twitter_tweet'] = $tweet_data['stats']['total'];
+                        $stats['hits'] = $stats['hits'] + ($request->aggs ? $tweet_data['aggs']['total']['value'] : $tweet_data['stats']['total']);
+                        $stats['counts']['twitter_tweet'] = $request->aggs ? $tweet_data['aggs']['total']['value'] : $tweet_data['stats']['total'];
 
                         $data = array_merge($data, $tweet_data['data']);
                     }
@@ -745,6 +746,7 @@ class SearchController extends Controller
                             $instagram_q['aggs']['mentions'] = [ 'nested' => [ 'path' => 'entities.mentions' ], 'aggs' => [ 'xxx' => [ 'terms' => [ 'field' => 'entities.mentions.mention.id' ] ] ] ];
                             $instagram_q['aggs']['hashtags'] = [ 'nested' => [ 'path' => 'entities.hashtags' ], 'aggs' => [ 'xxx' => [ 'terms' => [ 'field' => 'entities.hashtags.hashtag' ] ] ] ];
                             $instagram_q['aggs']['unique_users'] = [ 'cardinality' => [ 'field' => 'user.id' ] ];
+                            $instagram_q['aggs']['total'] = [ 'value_count' => [ 'field' => 'id' ] ];
                         }
 
                         $instagram_data = self::instagram($request, $instagram_q);
@@ -756,8 +758,8 @@ class SearchController extends Controller
                             $stats['instagram']['unique_users'] = @$instagram_data['aggs']['unique_users']['value'];
                         }
 
-                        $stats['hits'] = $stats['hits'] + $instagram_data['stats']['total'];
-                        $stats['counts']['instagram_media'] = $instagram_data['stats']['total'];
+                        $stats['hits'] = $stats['hits'] + ($request->aggs ? $instagram_data['aggs']['total']['value'] : $instagram_data['stats']['total']);
+                        $stats['counts']['instagram_media'] = $request->aggs ? $instagram_data['aggs']['total']['value'] : $instagram_data['stats']['total'];
 
                         $data = array_merge($data, $instagram_data['data']);
                     }
@@ -771,6 +773,8 @@ class SearchController extends Controller
                         {
                             $sozluk_q['aggs']['unique_users'] = [ 'cardinality' => [ 'field' => 'author' ] ];
                             $sozluk_q['aggs']['unique_topics'] = [ 'cardinality' => [ 'field' => 'group_name' ] ];
+                            $sozluk_q['aggs']['unique_sites'] = [ 'cardinality' => [ 'field' => 'site_id' ] ];
+                            $sozluk_q['aggs']['total'] = [ 'value_count' => [ 'field' => 'id' ] ];
                         }
 
                         $sozluk_data = self::sozluk($request, $sozluk_q);
@@ -779,10 +783,11 @@ class SearchController extends Controller
                         {
                             $stats['sozluk']['unique_users'] = @$sozluk_data['aggs']['unique_users']['value'];
                             $stats['sozluk']['unique_topics'] = @$sozluk_data['aggs']['unique_topics']['value'];
+                            $stats['sozluk']['unique_sites'] = @$sozluk_data['aggs']['unique_sites']['value'];
                         }
 
-                        $stats['hits'] = $stats['hits'] + $sozluk_data['stats']['total'];
-                        $stats['counts']['sozluk_entry'] = $sozluk_data['stats']['total'];
+                        $stats['hits'] = $stats['hits'] + ($request->aggs ? $sozluk_data['aggs']['total']['value'] : $sozluk_data['stats']['total']);
+                        $stats['counts']['sozluk_entry'] = $request->aggs ? $sozluk_data['aggs']['total']['value'] : $sozluk_data['stats']['total'];
 
                         $data = array_merge($data, $sozluk_data['data']);
                     }
@@ -795,6 +800,8 @@ class SearchController extends Controller
                         if ($request->aggs)
                         {
                             $news_q['aggs']['unique_sites'] = [ 'cardinality' => [ 'field' => 'site_id' ] ];
+                            $news_q['aggs']['local_states'] = [ 'cardinality' => [ 'field' => 'state' ] ];
+                            $news_q['aggs']['total'] = [ 'value_count' => [ 'field' => 'id' ] ];
                         }
 
                         if ($request->state)
@@ -807,10 +814,11 @@ class SearchController extends Controller
                         if ($request->aggs)
                         {
                             $stats['news']['unique_sites'] = @$news_data['aggs']['unique_sites']['value'];
+                            $stats['news']['local_states'] = @$news_data['aggs']['local_states']['value'];
                         }
 
-                        $stats['hits'] = $stats['hits'] + $news_data['stats']['total'];
-                        $stats['counts']['media_article'] = $news_data['stats']['total'];
+                        $stats['hits'] = $stats['hits'] + ($request->aggs ? $news_data['aggs']['total']['value'] : $news_data['stats']['total']);
+                        $stats['counts']['media_article'] = $request->aggs ? $news_data['aggs']['total']['value'] : $news_data['stats']['total'];
 
                         $data = array_merge($data, $news_data['data']);
                     }
@@ -823,6 +831,7 @@ class SearchController extends Controller
                         if ($request->aggs)
                         {
                             $blog_q['aggs']['unique_sites'] = [ 'cardinality' => [ 'field' => 'site_id' ] ];
+                            $blog_q['aggs']['total'] = [ 'value_count' => [ 'field' => 'id' ] ];
                         }
 
                         $blog_data = self::blog($request, $blog_q);
@@ -832,8 +841,8 @@ class SearchController extends Controller
                             $stats['blog']['unique_sites'] = @$blog_data['aggs']['unique_sites']['value'];
                         }
 
-                        $stats['hits'] = $stats['hits'] + $blog_data['stats']['total'];
-                        $stats['counts']['blog_document'] = $blog_data['stats']['total'];
+                        $stats['hits'] = $stats['hits'] + ($request->aggs ? $blog_data['aggs']['total']['value'] : $blog_data['stats']['total']);
+                        $stats['counts']['blog_document'] = $request->aggs ? $blog_data['aggs']['total']['value'] : $blog_data['stats']['total'];
 
                         $data = array_merge($data, $blog_data['data']);
                     }
@@ -847,6 +856,7 @@ class SearchController extends Controller
                         {
                             $youtube_video_q['aggs']['unique_users'] = [ 'cardinality' => [ 'field' => 'channel.id' ] ];
                             $youtube_video_q['aggs']['hashtags'] = [ 'nested' => [ 'path' => 'tags' ], 'aggs' => [ 'xxx' => [ 'terms' => [ 'field' => 'tags.tag' ] ] ] ];
+                            $youtube_video_q['aggs']['total'] = [ 'value_count' => [ 'field' => 'id' ] ];
                         }
 
                         $youtube_video_data = self::youtube_video($request, $youtube_video_q);
@@ -857,8 +867,8 @@ class SearchController extends Controller
                             $stats['youtube_video']['hashtags'] = @$youtube_video_data['aggs']['hashtags']['doc_count'];
                         }
 
-                        $stats['hits'] = $stats['hits'] + $youtube_video_data['stats']['total'];
-                        $stats['counts']['youtube_video'] = $youtube_video_data['stats']['total'];
+                        $stats['hits'] = $stats['hits'] + ($request->aggs ? $youtube_video_data['aggs']['total']['value'] : $youtube_video_data['stats']['total']);
+                        $stats['counts']['youtube_video'] = $request->aggs ? $youtube_video_data['aggs']['total']['value'] : $youtube_video_data['stats']['total'];
 
                         $data = array_merge($data, $youtube_video_data['data']);
                     }
@@ -872,6 +882,7 @@ class SearchController extends Controller
                         {
                             $youtube_comment_q['aggs']['unique_users'] = [ 'cardinality' => [ 'field' => 'channel.id' ] ];
                             $youtube_comment_q['aggs']['unique_videos'] = [ 'cardinality' => [ 'field' => 'video_id' ] ];
+                            $youtube_comment_q['aggs']['total'] = [ 'value_count' => [ 'field' => 'id' ] ];
                         }
 
                         $youtube_comment_data = self::youtube_comment($request, $youtube_comment_q);
@@ -882,8 +893,8 @@ class SearchController extends Controller
                             $stats['youtube_comment']['unique_videos'] = @$youtube_comment_data['aggs']['unique_videos']['value'];
                         }
 
-                        $stats['hits'] = $stats['hits'] + $youtube_comment_data['stats']['total'];
-                        $stats['counts']['youtube_comment'] = $youtube_comment_data['stats']['total'];
+                        $stats['hits'] = $stats['hits'] + ($request->aggs ? $youtube_comment_data['aggs']['total']['value'] : $youtube_comment_data['stats']['total']);
+                        $stats['counts']['youtube_comment'] = $request->aggs ? $youtube_comment_data['aggs']['total']['value'] : $youtube_comment_data['stats']['total'];
 
                         $data = array_merge($data, $youtube_comment_data['data']);
                     }
@@ -897,6 +908,7 @@ class SearchController extends Controller
                         {
                             $shopping_q['aggs']['unique_sites'] = [ 'cardinality' => [ 'field' => 'site_id' ] ];
                             $shopping_q['aggs']['unique_users'] = [ 'cardinality' => [ 'field' => 'seller.name' ] ];
+                            $shopping_q['aggs']['total'] = [ 'value_count' => [ 'field' => 'id' ] ];
                         }
 
                         $shopping_data = self::shopping($request, $shopping_q);
@@ -907,8 +919,8 @@ class SearchController extends Controller
                             $stats['shopping']['unique_users'] = @$shopping_data['aggs']['unique_users']['value'];
                         }
 
-                        $stats['hits'] = $stats['hits'] + $shopping_data['stats']['total'];
-                        $stats['counts']['shopping_product'] = $shopping_data['stats']['total'];
+                        $stats['hits'] = $stats['hits'] + ($request->aggs ? $shopping_data['aggs']['total']['value'] : $shopping_data['stats']['total']);
+                        $stats['counts']['shopping_product'] = $request->aggs ? $shopping_data['aggs']['total']['value'] : $shopping_data['stats']['total'];
 
                         $data = array_merge($data, $shopping_data['data']);
                     }
@@ -936,6 +948,11 @@ class SearchController extends Controller
         if (!$request->reverse)
         {
             $data = array_reverse($data);
+        }
+
+        if ($request->aggs)
+        {
+            unset($stats['took']);
         }
 
         return [

@@ -809,5 +809,4 @@
 
 @push('external.include.footer')
     <script src="{{ asset('js/highlight.min.js?v='.config('system.version')) }}"></script>
-    <script src="{{ asset('js/jquery.ui.min.js?v='.config('system.version')) }}"></script>
 @endpush

@@ -209,10 +209,6 @@
     </ul>
 @endsection
 
-@push('external.include.footer')
-    <script src="{{ asset('js/jquery.ui.min.js?v='.config('system.version')) }}"></script>
-@endpush
-
 @push('local.scripts')
     $('.droppable').droppable(
         {

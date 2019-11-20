@@ -34,6 +34,13 @@ function flash_alert(_text, _class)
     }, 1000)
 }
 
+function full_page_wrapper(html)
+{
+    $('body').addClass('fpw-active')
+
+    $('#full_page-wrapper').children('.content').html(html)
+}
+
 function math_prices()
 {
     var price = 0;
@@ -115,6 +122,11 @@ $(window).scroll(function() {
         }
     }
 })
+
+function autoWidth()
+{
+    $(this).attr('size', $(this).val().length);
+}
 
 /* --- hash --- */
 
@@ -313,7 +325,7 @@ $(document).on('click', '[data-dock]', function() {
 $(document).on('click', '[data-remove]', function() {
     var __ = $(this);
 
-    var target = __.data('focus'),
+    var target = __.data('remove'),
         target = _element(target);
 
     target.remove()
@@ -1131,6 +1143,10 @@ function vzAjax(__)
                         })
                     ]
                 })
+            }
+            else if (obj.status == 'flash-alert')
+            {
+                flash_alert(obj.text, obj.class)
             }
 
             if (callback)

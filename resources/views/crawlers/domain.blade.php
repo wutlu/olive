@@ -12,15 +12,22 @@
 ])
 
 @section('wildcard')
-    <form method="get" action="">
+    <form method="get" action="{{ route('domain.dashboard') }}">
         <div class="card">
             <div class="container">
-                <div class="d-flex flex-wrap justify-content-between">
-                    <span class="wildcard-title align-self-center">
+                <div class="wildcard-searchground">
+                    <span class="wildcard-title">
                         Domain Tespiti
                         <small class="d-table" data-name="total">{{ $data->total() }}</small>
                     </span>
-                    <input type="text" name="q" id="q" class="align-self-center sub-search" placeholder="Arayın" value="{{ $q }}" />
+                    <div class="wildcard-search">
+                        <input type="text" name="q" id="q" placeholder="Arayın" value="{{ $q }}" />
+                        @if ($q)
+                            <a href="{{ route('domain.dashboard') }}" class="clear">
+                                <i class="material-icons">close</i>
+                            </a>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>

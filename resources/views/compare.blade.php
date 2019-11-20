@@ -107,17 +107,13 @@
         <h4 class="mb-2">Veri Kıyasla</h4>
         <p>Sağ menüden en az 2 arama seçin ve kıyaslamayı başlatın.</p>
     </div>
-    <div class="card hide mb-1" id="chart-card">
+    <div class="card card-unstyled hide mb-1" id="chart-card">
         <div class="card-content"></div>
     </div>
-    <div class="card hide mb-1" id="normalize-card">
+    <div class="card card-unstyled hide mb-1" id="normalize-card">
         <div class="card-content"></div>
     </div>
 @endsection
-
-@push('external.include.footer')
-    <script src="{{ asset('js/apex.min.js?v='.config('system.version')) }}"></script>
-@endpush
 
 @push('local.scripts')
     $('select').formSelect()

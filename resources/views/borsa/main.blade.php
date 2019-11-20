@@ -170,10 +170,6 @@
     </div>
 @endsection
 
-@push('external.include.footer')
-    <script src="{{ asset('js/apex.min.js?v='.config('system.version')) }}"></script>
-@endpush
-
 @push('local.scripts')
     function __graph(__, obj)
     {

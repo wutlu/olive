@@ -13,7 +13,8 @@
         'type' => $document['_type'],
         'index' => $document['_index']
     ],
-    'footer_hide' => true
+    'footer_hide' => true,
+    'report_menu' => true
 ])
 
 @push('local.styles')
@@ -235,71 +236,6 @@
 @endsection
 
 @section('content')
-    @if (@$data['details'])
-        @push('local.scripts')
-            var options = {
-                chart: {
-                    height: 350,
-                    type: 'line',
-                    toolbar: {
-                        show: true,
-                        tools: {
-                            download: '<i class="material-icons">save</i>'
-                        }
-                    }
-                },
-                colors: [ '#77B6EA', '#f44336', '#009688', '#cddc39', '#9c27b0' ],
-                dataLabels: { enabled: true },
-                series: [
-                    {
-                        name: 'Tweet',
-                        data: {!! json_encode($data['details']['statuses']) !!}
-                    },
-                    {
-                        name: 'Takip',
-                        data: {!! json_encode($data['details']['friends']) !!}
-                    },
-                    {
-                        name: 'Takipçi',
-                        data: {!! json_encode($data['details']['followers']) !!}
-                    },
-                    {
-                        name: 'Liste',
-                        data: {!! json_encode($data['details']['lists']) !!}
-                    },
-                    {
-                        name: 'Favori',
-                        data: {!! json_encode($data['details']['favorites']) !!}
-                    }
-                ],
-                grid: {
-                    borderColor: '#f0f0f0',
-                    row: { colors: [ '#f0f0f0' ], opacity: 0.2 }
-                },
-                markers: { size: 6 },
-                yaxis: {
-                    min: 0
-                },
-                xaxis: {
-                    categories: {!! json_encode($data['details']['days']) !!}
-                },
-                legend: {
-                    position: 'top',
-                    horizontalAlign: 'left'
-                }
-            }
-
-            var chart = new ApexCharts(document.querySelector('#chart'), options);
-                chart.render()
-        @endpush
-
-        <div class="card mb-1">
-            <div class="card-content">
-                <span class="card-title">Profil Değerleri</span>
-            </div>
-            <div id="chart"></div>
-        </div>
-    @endif
     <div class="card">
         <div class="card-content">
             <span class="card-title">
@@ -376,7 +312,6 @@
 @endsection
 
 @push('external.include.footer')
-    <script src="{{ asset('js/apex.min.js?v='.config('system.version')) }}"></script>
     <script src="{{ asset('js/chart.min.js?v='.config('system.version')) }}"></script>
 @endpush
 @push('local.scripts')

@@ -21,10 +21,11 @@ return [
         'success' => 'Başarılı'
     ],
     'errors' => [
-        'disconnected' => 'Sunucu bağlantısı sağlanamadı.',
+        'maxlength' => 'Bu alan daha fazla karakter desteklemiyor!',
+        'disconnected' => 'İnternet bağlantınız kesildi.',
         'time_out' => 'Oturumunuz sona erdi. Lütfen sayfayı yenileyin ve giriş yapın.',
         'calm' => 'Çok fazla işlem yaptınız. Lütfen bir kaç dakika sonra tekrar deneyin.',
-        'notfound' => 'Kaynağa erişilemiyor.',
+        'notfound' => 'Bu içeriğe şu anda ulaşılamıyor.',
         'exited' => 'Oturumunuz sona erdi. Lütfen tekrar giriş yapın.',
         'permission' => 'Aktif bir organizasyonda değilsiniz. Lütfen organizasyonunuzu aktif edin veya aktif edilene kadar bekleyin ve tekrar deneyin.'
     ],

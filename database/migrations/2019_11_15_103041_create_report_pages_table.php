@@ -24,10 +24,10 @@ class CreateReportPagesTable extends Migration
             $table->text('text')->nullable()->default(null);
             $table->string('image')->nullable()->default(null);
 
-            $table->unsignedSmallInteger('sort')->default(0);
+            $table->unsignedSmallInteger('sort')->default(0)->index();
 
             $table->json('data')->nullable()->default(null);
-            $table->string('data_type')->nullable()->default(null);
+            $table->string('type')->nullable()->default(null);
 
             $table->timestamps();
         });

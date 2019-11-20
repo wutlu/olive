@@ -43,9 +43,29 @@ Route::domain('olive.'.config('app.domain'))->group(function () {
         Route::get('{id}', 'UserController@profile')->name('user.profile');
     });
 
-    Route::prefix('rapor')->group(function () {
+    Route::prefix('raporlar')->group(function () {
+        Route::get('/', 'ReportController@dashboard')->name('report.dashboard');
+        Route::get('rapor/{id}/duzenle', 'ReportController@edit')->name('report.edit');
+        Route::post('rapor/{id}/duzenle', 'ReportController@editSave');
+
+        Route::get('rapor/{key}', 'ReportController@view')->name('report.view');
+        Route::post('rapor/{key}', 'ReportController@view');
+        Route::delete('rapor', 'ReportController@delete')->name('report.delete');
+
         Route::post('durum', 'ReportController@status')->name('report.status');
-        Route::post('baslat', 'ReportController@start')->name('report.start');
+        Route::post('rapor-baslat', 'ReportController@start')->name('report.start');
+
+        Route::post('sayfa/{id}', 'ReportController@page')->name('report.page');
+        Route::patch('sayfa/{id}', 'ReportController@pageUpdate');
+        Route::delete('sayfa', 'ReportController@pageDelete')->name('report.page.delete');
+        Route::post('sayfa/sirala', 'ReportController@pageSort')->name('report.page.sort');
+        Route::put('sayfa', 'ReportController@pageCreate')->name('report.page.create');
+
+        Route::put('icerik', 'ReportController@dataCreate')->name('report.data.create');
+        Route::patch('icerik/{id}', 'ReportController@dataUpdate')->name('report.data.update');
+
+        Route::put('aggs', 'ReportController@aggsCreate')->name('report.aggs.create');
+        Route::patch('aggs/{id}', 'ReportController@aggsUpdate')->name('report.aggs.update');
     });
 
     Route::prefix('crm')->group(function () {
@@ -120,6 +140,7 @@ Route::domain('olive.'.config('app.domain'))->group(function () {
 
     Route::prefix('db')->group(function () {
         Route::get('{es_index}/{es_type}/{es_id}', 'ContentController@module')->name('content');
+        Route::post('data/{es_index}/{es_type}/{es_id}', 'ContentController@data')->name('content.data');
         Route::post('siniflandir', 'ContentController@classifier');
 
         Route::post(
