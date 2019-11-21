@@ -2126,6 +2126,359 @@ function __report__pattern(obj, form, type, method)
                 'value': JSON.stringify(data)
             }))
         break;
+        case 'twitterMentions':
+        case 'twitterInfluencers':
+        case 'twitterUsers':
+        case 'youtubeUsers':
+        case 'youtubeComments':
+        case 'sozlukSites':
+        case 'sozlukUsers':
+        case 'sozlukTopics':
+        case 'newsSites':
+        case 'blogSites':
+        case 'shoppingSites':
+        case 'shoppingUsers':
+            form.find('.report-page').addClass('table-graph')
+            form.find('.content').html(
+                [
+                    $('<div />', {
+                        'class': 'flex-fill report-table',
+                        'css': { 'min-width': '70%' }
+                    }),
+                    $('<div />', {
+                        'class': 'flex-fill textarea',
+                        'css': { 'min-width': '30%' },
+                        'html': method == 'write' ? $('<textarea />', { 'name': 'text', 'placeholder': 'Metin Alanı', 'html': obj.page ? obj.page.text : '' }) : obj.page ? obj.page.text : ''
+                    })
+                ]
+            )
+
+            var title = '';
+            var subtitle = '';
+            var table = __report__table__generate();
+            var data = obj.data ? obj.data : $.parseJSON(obj);
+
+            switch (type)
+            {
+                case 'twitterMentions':
+                    title = 'Twitter: Konuşulan Kişiler';
+                    subtitle = 'Paylaşımlarda en fazla adı geçen başlıca hesaplar.';
+
+                    table.children('thead').append(
+                        $('<tr />', {
+                            'html': [
+                                $('<th />', { 'html': 'Adı' }),
+                                $('<th />', { 'html': 'Kullanıcı Adı' }),
+                                $('<th />', { 'class': 'right-align', 'html': 'Tweet Sayısı' })
+                            ]
+                        })
+                    )
+
+                    $.each(data, function(key, bucket) {
+                        table.children('tbody').append(
+                            $('<tr />', {
+                                'html': [
+                                    $('<td />', { 'html': bucket.properties.hits.hits[0]._source.mention.name }),
+                                    $('<td />', { 'html': bucket.properties.hits.hits[0]._source.mention.screen_name }),
+                                    $('<td />', { 'class': 'right-align', 'html': bucket.doc_count })
+                                ]
+                            })
+                        )
+                    })
+                break;
+                case 'twitterInfluencers':
+                    title = 'Twitter: En Yüksek Takipçi';
+                    subtitle = 'Konuya dahil olan kişiler. Takipçi sayılarına göre ilk 100 hesap.';
+
+                    table.children('thead').append(
+                        $('<tr />', {
+                            'html': [
+                                $('<th />', { 'html': 'Adı' }),
+                                $('<th />', { 'html': 'Kullanıcı Adı' }),
+                                $('<th />', { 'class': 'right-align', 'html': 'Tweet Sayısı' }),
+                                $('<th />', { 'class': 'right-align', 'html': 'Takipçi Sayısı' })
+                            ]
+                        })
+                    )
+
+                    $.each(data, function(key, bucket) {
+                        table.children('tbody').append(
+                            $('<tr />', {
+                                'html': [
+                                    $('<td />', { 'html': bucket.properties.hits.hits[0]._source.user.name }),
+                                    $('<td />', { 'html': bucket.properties.hits.hits[0]._source.user.screen_name }),
+                                    $('<td />', { 'class': 'right-align', 'html': bucket.doc_count }),
+                                    $('<td />', { 'class': 'right-align', 'html': number_format(bucket.properties.hits.hits[0]._source.user.counts.followers) })
+                                ]
+                            })
+                        )
+                    })
+                break;
+                case 'twitterUsers':
+                    title = 'Twitter: En Çok Tweet';
+                    subtitle = 'Konuyla ilgili en fazla tweet paylaşan hesaplar.';
+
+                    table.children('thead').append(
+                        $('<tr />', {
+                            'html': [
+                                $('<th />', { 'html': 'Adı' }),
+                                $('<th />', { 'html': 'Kullanıcı Adı' }),
+                                $('<th />', { 'class': 'right-align', 'html': 'Tweet Sayısı' })
+                            ]
+                        })
+                    )
+
+                    $.each(data, function(key, bucket) {
+                        table.children('tbody').append(
+                            $('<tr />', {
+                                'html': [
+                                    $('<td />', { 'html': bucket.properties.hits.hits[0]._source.user.name }),
+                                    $('<td />', { 'html': bucket.properties.hits.hits[0]._source.user.screen_name }),
+                                    $('<td />', { 'class': 'right-align', 'html': bucket.doc_count })
+                                ]
+                            })
+                        )
+                    })
+                break;
+                case 'youtubeUsers':
+                    title = 'YouTube: En Çok Video';
+                    subtitle = 'Konu hakkında en fazla video yükleyen başlıca kullanıcılar.';
+
+                    table.children('thead').append(
+                        $('<tr />', {
+                            'html': [
+                                $('<th />', { 'html': 'Kanal Kimliği' }),
+                                $('<th />', { 'html': 'Kanal Adı' }),
+                                $('<th />', { 'class': 'right-align', 'html': 'Video Sayısı' })
+                            ]
+                        })
+                    )
+
+                    $.each(data, function(key, bucket) {
+                        table.children('tbody').append(
+                            $('<tr />', {
+                                'html': [
+                                    $('<td />', { 'html': bucket.key }),
+                                    $('<td />', { 'html': bucket.properties.hits.hits[0]._source.channel.title }),
+                                    $('<td />', { 'class': 'right-align', 'html': bucket.doc_count })
+                                ]
+                            })
+                        )
+                    })
+                break;
+                case 'youtubeComments':
+                    title = 'YouTube: En Çok Yorum';
+                    subtitle = 'Konu hakkında en fazla yorum yapan ilk 100 kullanıcı.';
+
+                    table.children('thead').append(
+                        $('<tr />', {
+                            'html': [
+                                $('<th />', { 'html': 'Kanal Kimliği' }),
+                                $('<th />', { 'html': 'Kanal Adı' }),
+                                $('<th />', { 'class': 'right-align', 'html': 'Yorum Sayısı' })
+                            ]
+                        })
+                    )
+
+                    $.each(data, function(bucket_key, bucket) {
+                        table.children('tbody').append(
+                            $('<tr />', {
+                                'html': [
+                                    $('<td />', { 'html': bucket.key }),
+                                    $('<td />', { 'html': bucket.properties.hits.hits[0]._source.channel.title }),
+                                    $('<td />', { 'class': 'right-align', 'html': bucket.doc_count })
+                                ]
+                            })
+                        )
+                    })
+                break;
+                case 'sozlukSites':
+                    title = 'Sözlükler';
+                    subtitle = 'Konu hakkında entry girilen sözlükler.';
+
+                    table.children('thead').append(
+                        $('<tr />', {
+                            'html': [
+                                $('<th />', { 'html': 'Sözlük Adı' }),
+                                $('<th />', { 'class': 'right-align', 'html': 'Entry Sayısı' })
+                            ]
+                        })
+                    )
+
+                    $.each(data, function(key, o) {
+                        table.children('tbody').append(
+                            $('<tr />', {
+                                'html': [
+                                    $('<td />', { 'html': o.name }),
+                                    $('<td />', { 'class': 'right-align', 'html': o.hit })
+                                ]
+                            })
+                        )
+                    })
+                break;
+                case 'sozlukUsers':
+                    title = 'Sözlük Yazarları';
+                    subtitle = 'Konu hakkında en çok entry giren sözlük yazarları.';
+
+                    table.children('thead').append(
+                        $('<tr />', {
+                            'html': [
+                                $('<th />', { 'html': 'Sözlük Adı' }),
+                                $('<th />', { 'html': 'Yazar Adı' }),
+                                $('<th />', { 'class': 'right-align', 'html': 'Entry Sayısı' })
+                            ]
+                        })
+                    )
+
+                    $.each(data, function(key, o) {
+                        table.children('tbody').append(
+                            $('<tr />', {
+                                'html': [
+                                    $('<td />', { 'html': o.site }),
+                                    $('<td />', { 'html': o.name }),
+                                    $('<td />', { 'class': 'right-align', 'html': o.hit })
+                                ]
+                            })
+                        )
+                    })
+                break;
+                case 'sozlukTopics':
+                    title = 'Sözlük Başlıkları';
+                    subtitle = 'Konu hakkında en çok entry girilen başlıklar.';
+
+                    table.children('thead').append(
+                        $('<tr />', {
+                            'html': [
+                                $('<th />', { 'html': 'Sözlük Adı' }),
+                                $('<th />', { 'html': 'Başlık' }),
+                                $('<th />', { 'class': 'right-align', 'html': 'Entry Sayısı' })
+                            ]
+                        })
+                    )
+
+                    $.each(data, function(key, o) {
+                        table.children('tbody').append(
+                            $('<tr />', {
+                                'html': [
+                                    $('<td />', { 'html': o.site }),
+                                    $('<td />', { 'html': o.title }),
+                                    $('<td />', { 'class': 'right-align', 'html': o.hit })
+                                ]
+                            })
+                        )
+                    })
+                break;
+                case 'newsSites':
+                    title = 'Haber Siteleri';
+                    subtitle = 'Konu hakkında en çok haber yapan haber siteleri.';
+
+                    table.children('thead').append(
+                        $('<tr />', {
+                            'html': [
+                                $('<th />', { 'html': 'Site Adı' }),
+                                $('<th />', { 'class': 'right-align', 'html': 'Haber Sayısı' })
+                            ]
+                        })
+                    )
+
+                    $.each(data, function(key, o) {
+                        table.children('tbody').append(
+                            $('<tr />', {
+                                'html': [
+                                    $('<td />', { 'html': o.name }),
+                                    $('<td />', { 'class': 'right-align', 'html': o.hit })
+                                ]
+                            })
+                        )
+                    })
+                break;
+                case 'blogSites':
+                    title = 'Bloglar';
+                    subtitle = 'Konu hakkında en çok blog yazısı paylaşan bloglar.';
+
+                    table.children('thead').append(
+                        $('<tr />', {
+                            'html': [
+                                $('<th />', { 'html': 'Site Adı' }),
+                                $('<th />', { 'class': 'right-align', 'html': 'İçerik Sayısı' })
+                            ]
+                        })
+                    )
+
+                    $.each(data, function(key, o) {
+                        table.children('tbody').append(
+                            $('<tr />', {
+                                'html': [
+                                    $('<td />', { 'html': o.name }),
+                                    $('<td />', { 'class': 'right-align', 'html': o.hit })
+                                ]
+                            })
+                        )
+                    })
+                break;
+                case 'shoppingSites':
+                    title = 'E-ticaret Siteleri';
+                    subtitle = 'Konu hakkında en çok ilan yayınlanan e-ticaret siteleri.';
+
+                    table.children('thead').append(
+                        $('<tr />', {
+                            'html': [
+                                $('<th />', { 'html': 'Site Adı' }),
+                                $('<th />', { 'class': 'right-align', 'html': 'İlan Sayısı' })
+                            ]
+                        })
+                    )
+
+                    $.each(data, function(key, o) {
+                        table.children('tbody').append(
+                            $('<tr />', {
+                                'html': [
+                                    $('<td />', { 'html': o.name }),
+                                    $('<td />', { 'class': 'right-align', 'html': o.hit })
+                                ]
+                            })
+                        )
+                    })
+                break;
+                case 'shoppingUsers':
+                    title = 'E-ticaret Satıcıları';
+                    subtitle = 'Konu hakkında en çok ürün yayınlayan e-ticaret satıcıları.';
+
+                    table.children('thead').append(
+                        $('<tr />', {
+                            'html': [
+                                $('<th />', { 'html': 'Site Adı' }),
+                                $('<th />', { 'html': 'Satıcı Adı' }),
+                                $('<th />', { 'class': 'right-align', 'html': 'İlan Sayısı' })
+                            ]
+                        })
+                    )
+
+                    $.each(data, function(key, o) {
+                        table.children('tbody').append(
+                            $('<tr />', {
+                                'html': [
+                                    $('<td />', { 'html': o.site }),
+                                    $('<td />', { 'html': o.name }),
+                                    $('<td />', { 'class': 'right-align', 'html': o.hit })
+                                ]
+                            })
+                        )
+                    })
+                break;
+            }
+
+            form.find('input[name=title]').val(title)
+            form.find('input[name=subtitle]').val(subtitle)
+
+            form.find('.report-table').html(table)
+
+            form.append($('<input />', {
+                'type': 'hidden',
+                'name': 'data',
+                'value': JSON.stringify(data)
+            }))
+        break;
     }
 
     form.find('.report-page').addClass(type)
@@ -2337,14 +2690,30 @@ $(document).on('click', '#report-menu.active [data-report-element=add-page]', fu
     return modal({
         'id': 'info',
         'body': [
-            $('<p />', { 'html': 'Olive ile rapor hazırlamak çok kolay. "Olive Rapor Aracı" ile araştırmanızı yaparken, eş zamanlı bir rapor da oluşturabilirsiniz.' }),
-            $('<p />', { 'html': 'Bir rapor başlattığınız zaman; içerik ve grafiklerin altında bulunan rapor simgesine tıklayarak başlattığınız rapora yeni alanlar ekleyebilirsiniz.' }),
+            $('<p />', { 'html': '"Olive Rapor Aracı" sayesinde, araştırmanızı yaparken eş zamanlı olarak raporunuzu da oluşturabilirsiniz.' }),
+            $('<ol />', {
+                'html': [
+                    $('<li />', { 'html': 'Olive ekranının alt kısmında bulunan menüden "Rapor Başlat" butonuna tıklayın ve rapor adı ile birlikte yeni bir rapor başlatın.' }),
+                    $('<li />', { 'html': 'Rapor başlatıldıktan sonra, diğer Olive araçlarını kullanarak araştırmanıza başlayın.' }),
+                    $('<li />', { 'html': 'Araştırmanız esnasında elde edeceğiniz önemli verilerin, grafiklerin, tabloların veya göstergelerin etrafında bulunan "Rapora Ekle" butonuna tıklayın.' }),
+                    $('<li />', { 'html': 'Açılan pencereden, varsa; başlık, alt başlık veya açıklama gibi seçeneklerinizi girin.' }),
+                    $('<li />', { 'html': 'Hazır olan sayfayı kayıt butonuna basarak raporunuza ekleyin.' }),
+                    $('<li />', { 'html': 'Harici bir sayfa eklemek için, rapor menüsünden "Yeni Sayfa" butonuna tıklayarak benzer işlemi tekrar edebilirsiniz.' }),
+                    $('<li />', { 'html': 'Harici sayfa eklerken; sadece başlık veya alt başlık girerek, başlık sayfası oluşturabilirsiniz.' }),
+                    $('<li />', { 'html': 'Ayrıca yine harici bir sayfa eklerken; satır özelliğini kullanarak rapor sayfasının %50\'lik kısmında sürüklenebilir satırlar oluşturabilirsiniz.' }),
+                    $('<li />', { 'html': 'Rapor menüsünden istediğiniz zaman raporunuzun son halini görmek için Önizleme yapabilirsiniz.' }),
+                    $('<li />', { 'html': 'Raporunuzu tamamlarken veya tamamladıktan sonra, özel bir şifre tanımlayabilirsiniz. Böylece sadece şifreye sahip kişiler raporunuza erişebilir.' }),
+                    $('<li />', { 'html': 'Rapor tamamlandıktan sonra yeni bir sayfa eklenemez. Ancak mevcut sayfalar düzenlenebilir, sayfa sıralamaları değiştirilebilir veya mevcut sayfalar silinebilir.' }),
+                    $('<li />', { 'html': 'Rapor adını, verilerin alındığı tarihi ifade eden tarih aralığını ve rapor şifresini de istediğiniz zaman güncelleyebilirsiniz.' }),
+                    $('<li />', { 'html': 'Daha önceden oluşturulmuş, şifreye sahip raporların mevcut şifrelerini görebilmek için, "Raporlar" sayfasında ilgili rapor satırında bulunan "Yıldız" simgesini kullanabilirsiniz.' }),
+                ]
+            })
         ],
         'title': buttons.help,
         'options': {
             dismissible: false
         },
-        'size': 'modal-medium',
+        'size': 'modal-large',
         'options': {},
         'footer': [
            $('<a />', {
@@ -2688,4 +3057,17 @@ function __report__aggs(__, obj)
 
         form.find('input[name=title]').focus()
     }
+}
+
+function __report__table__generate()
+{
+    var table = $('<table />', {
+        'class': 'highlight',
+        'html': [
+            $('<thead />'),
+            $('<tbody />')
+        ]
+    })
+
+    return table;
 }

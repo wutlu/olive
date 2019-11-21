@@ -15,7 +15,7 @@
         return modal({
             'id': 'info',
             'body': 'İnternet ortamından elde ettiğimiz verileri düzenli olarak sorgulayarak, hisselere yapılan yorumları olumlu/al ve olumsuz/sat bir şekilde inceliyoruz. Elde ettiğimiz sonuçları bu modül ile rahatlıkla inceleyebilirsiniz.',
-            'title': 'Kalabalığın Sesi',
+            'title': 'Kalabalığın Düşüncesi',
             'size': 'modal-medium',
             'options': {},
             'footer': [

@@ -73,7 +73,11 @@
                 </a>
                 <a data-report-element="add-page" href="#" data-start="true">
                     <i class="material-icons small">note_add</i>
-                    <span>Sayfa Ekle</span>
+                    <span>Yeni Sayfa</span>
+                </a>
+                <a data-report-element="preview" href="#" data-start="true" target="_blank">
+                    <i class="material-icons small">visibility</i>
+                    <span>Önizleme</span>
                 </a>
                 <a href="{{ route('report.dashboard') }}">
                     <i class="material-icons small">filter_none</i>
@@ -884,23 +888,29 @@
                     @endif
 
                     @isset ($report_menu)
+                        var report_menu = $('#report-menu');
+                        var start_trigger = $('[data-name=report-trigger]');
+                        var report_preview = $('[data-report-element=preview]');
+
                         if (obj.data.report)
                         {
-                            $('#report-menu').addClass('active').attr('data-source', obj.data.report)
+                            report_menu.addClass('active').attr('data-source', obj.data.report)
 
-                            var start_trigger = $('[data-name=report-trigger]');
-                                start_trigger.addClass('red-text')
-                                start_trigger.children('span').html('Raporu Tamamla')
-                                start_trigger.children('i.material-icons').html('stop')
+                            start_trigger.addClass('red-text')
+                            start_trigger.children('span').html('Raporu Tamamla')
+                            start_trigger.children('i.material-icons').html('stop')
+
+                            report_preview.attr('href', obj.data.report.route)
                         }
                         else
                         {
-                            $('#report-menu').removeClass('active').removeAttr('data-source')
+                            report_menu.removeClass('active').removeAttr('data-source')
 
-                            var start_trigger = $('[data-name=report-trigger]');
-                                start_trigger.removeClass('red-text')
-                                start_trigger.children('span').html('Rapor Başlat')
-                                start_trigger.children('i.material-icons').html('fiber_manual_record')
+                            start_trigger.removeClass('red-text')
+                            start_trigger.children('span').html('Rapor Başlat')
+                            start_trigger.children('i.material-icons').html('fiber_manual_record')
+
+                            report_preview.attr('href', '#')
                         }
                     @endisset
 

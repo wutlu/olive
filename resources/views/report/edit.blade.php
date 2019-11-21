@@ -99,6 +99,18 @@
             case 'stats':
             case 'chart':
             case 'tr_map':
+            case 'twitterMentions':
+            case 'twitterInfluencers':
+            case 'twitterUsers':
+            case 'youtubeUsers':
+            case 'youtubeComments':
+            case 'sozlukSites':
+            case 'sozlukUsers':
+            case 'sozlukTopics':
+            case 'newsSites':
+            case 'blogSites':
+            case 'shoppingSites':
+            case 'shoppingUsers':
                 action = '/raporlar/aggs/' + obj.page.id;
                 action = '/raporlar/aggs/' + obj.page.id;
             break;

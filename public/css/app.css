@@ -417,6 +417,14 @@
   background-image: url('../img/logos/shopping.svg');
 }
 
+.report-page > .content > .report-table {
+  max-height: 100%;
+  overflow: auto;
+}
+.report-page > .content > .report-table > table > tbody > tr > td {
+  padding: 6px 12px;
+}
+
 .report-page > .content > .lines {
   position: relative;
 }
@@ -517,6 +525,9 @@
 }
 .report-view > .report-page.product:before {
   background-image: url('../img/logos/shopping.svg');
+}
+.report-view > .report-page.table-graph:before {
+  background-image: url('../img/table.svg');
 }
 
 .report-view > .report-page > img.logo {

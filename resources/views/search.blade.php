@@ -920,7 +920,6 @@
                     'class': 'd-flex mb-2',
                     'html': $('<a />', {
                         'class': 'btn-flat waves-effect d-flex',
-                        'data-position': 'right',
                         'data-report-type': 'chart',
                         'data-trigger': 'report-chart',
                         'data-title': data.title,
@@ -968,6 +967,26 @@
         full_page_wrapper(form)
 
         form.find('input[name=title]').focus()
+    }).on('click', '[data-trigger=report-table]', function() {
+        var __ = $(this);
+        var action = '/raporlar/aggs';
+        var type = __.closest('.card').children('input[data-table=key]').val();
+        var value = __.closest('.card').children('input[data-table=value]').val();
+
+        var form = __report__page_form(
+            {
+                'action': action,
+                'method': 'put',
+                'callback': '__report__page_create',
+                'type': type
+            }
+        );
+
+        __report__pattern(value, form, type, 'write')
+
+        full_page_wrapper(form)
+
+        form.find('input[name=title]').focus()
     })
 
     function __table_generate(id)
@@ -979,15 +998,39 @@
                 'overflow': 'auto'
             },
             'html': [
+                $('<input />', {
+                    'type': 'hidden',
+                    'data-table': 'value'
+                }),
+                $('<input />', {
+                    'type': 'hidden',
+                    'data-table': 'key'
+                }),
                 $('<div />', {
-                    'class': 'card-content pb-0 right-align',
+                    'class': 'card-content d-flex justify-content-end',
                     'html': [
                         $('<a />', {
-                            'class': 'btn-flat waves-effect',
+                            'class': 'btn-flat waves-effect d-flex ml-1',
+                            'data-report-type': 'table',
+                            'data-trigger': 'report-table',
+                            'data-table': '#' + id,
+                            'html': [
+                                $('<i />', {
+                                    'class': 'material-icons align-self-center mr-1',
+                                    'html': 'note_add'
+                                }),
+                                $('<span />', {
+                                    'class': 'align-self-center',
+                                    'html': 'Tabloyu Rapora Ekle'
+                                })
+                            ]
+                        }),
+                        $('<a />', {
+                            'class': 'btn-flat waves-effect ml-1',
                             'href': '#',
                             'data-excel': '#' + id,
                             'data-name': 'Excel Kopya',
-                            'html': 'Excel\'e Aktar'
+                            'html': 'Excel'
                         })
                     ]
                 }),
@@ -996,6 +1039,7 @@
                 })
             ]
         });
+
         var table = $('#' + id);
             table.closest('.card').remove()
 
@@ -1382,6 +1426,9 @@
                                 if ((module.mentions.hits.buckets).length)
                                 {
                                     var table = __table_generate('twitterMentions')
+                                    var card = table.closest('.card');
+                                        card.children('input[data-table=value]').val(JSON.stringify(module.mentions.hits.buckets))
+                                        card.children('input[data-table=key]').val('twitterMentions')
 
                                     $.each(module.mentions.hits.buckets, function(bucket_key, bucket) {
                                         table.children('tbody').append(
@@ -1408,7 +1455,7 @@
                                         'html': [
                                             $('<th />', { 'html': '<b>Adı</b>' }),
                                             $('<th />', { 'html': '<b>Kullanıcı Adı</b>' }),
-                                            $('<th />', { 'class': 'right-align', 'html': '<b>Tweet</b>' })
+                                            $('<th />', { 'class': 'right-align', 'html': '<b>Tweet Sayısı</b>' })
                                         ]
                                     }))
                                     table.children('thead').prepend($('<tr />', {
@@ -1429,6 +1476,9 @@
                                 if ((module.influencers.buckets).length)
                                 {
                                     var table = __table_generate('twitterInfluencers')
+                                    var card = table.closest('.card');
+                                        card.children('input[data-table=value]').val(JSON.stringify(module.influencers.buckets))
+                                        card.children('input[data-table=key]').val('twitterInfluencers')
 
                                     $.each(module.influencers.buckets, function(bucket_key, bucket) {
                                         table.children('tbody').append(
@@ -1454,10 +1504,10 @@
 
                                     table.children('thead').prepend($('<tr />', {
                                         'html': [
-                                            $('<th />', { 'html': '<b>Ad</b>' }),
+                                            $('<th />', { 'html': '<b>Adı</b>' }),
                                             $('<th />', { 'html': '<b>Kullanıcı Adı</b>' }),
-                                            $('<th />', { 'class': 'right-align', 'html': '<b>Tweet</b>' }),
-                                            $('<th />', { 'class': 'right-align', 'html': '<b>Takipçi</b>' })
+                                            $('<th />', { 'class': 'right-align', 'html': '<b>Tweet Sayısı</b>' }),
+                                            $('<th />', { 'class': 'right-align', 'html': '<b>Takipçi Sayısı</b>' })
                                         ]
                                     }))
                                     table.children('thead').prepend($('<tr />', {
@@ -1478,6 +1528,9 @@
                                 if ((module.users.buckets).length)
                                 {
                                     var table = __table_generate('twitterUsers')
+                                    var card = table.closest('.card');
+                                        card.children('input[data-table=value]').val(JSON.stringify(module.users.buckets))
+                                        card.children('input[data-table=key]').val('twitterUsers')
 
                                     $.each(module.users.buckets, function(bucket_key, bucket) {
                                         table.children('tbody').append(
@@ -1504,7 +1557,7 @@
                                         'html': [
                                             $('<th />', { 'html': '<b>Adı</b>' }),
                                             $('<th />', { 'html': '<b>Kullanıcı Adı</b>' }),
-                                            $('<th />', { 'class': 'right-align', 'html': '<b>Twee</b>t' })
+                                            $('<th />', { 'class': 'right-align', 'html': '<b>Tweet Sayısı</b>' })
                                         ]
                                     }))
                                     table.children('thead').prepend($('<tr />', {
@@ -1526,6 +1579,9 @@
                                 if ((module.users.buckets).length)
                                 {
                                     var table = __table_generate('youtubeUsers')
+                                    var card = table.closest('.card');
+                                        card.children('input[data-table=value]').val(JSON.stringify(module.users.buckets))
+                                        card.children('input[data-table=key]').val('youtubeUsers')
 
                                     $.each(module.users.buckets, function(bucket_key, bucket) {
                                         table.append(
@@ -1552,7 +1608,7 @@
                                         'html': [
                                             $('<th />', { 'html': '<b>Kanal Kimliği</b>' }),
                                             $('<th />', { 'html': '<b>Kanal Adı</b>' }),
-                                            $('<th />', { 'class': 'right-align', 'html': '<b>Video</b>' })
+                                            $('<th />', { 'class': 'right-align', 'html': '<b>Video Sayısı</b>' })
                                         ]
                                     }))
                                     table.prepend($('<tr />', {
@@ -1574,6 +1630,9 @@
                                 if ((module.users.buckets).length)
                                 {
                                     var table = __table_generate('youtubeComments')
+                                    var card = table.closest('.card');
+                                        card.children('input[data-table=value]').val(JSON.stringify(module.users.buckets))
+                                        card.children('input[data-table=key]').val('youtubeComments')
 
                                     $.each(module.users.buckets, function(bucket_key, bucket) {
                                         table.append(
@@ -1600,7 +1659,7 @@
                                         'html': [
                                             $('<th />', { 'html': '<b>Kanal Kimliği</b>' }),
                                             $('<th />', { 'html': '<b>Kanal Adı</b>' }),
-                                            $('<th />', { 'class': 'right-align', 'html': 'Yorum' })
+                                            $('<th />', { 'class': 'right-align', 'html': '<b>Yorum Sayısı</b>' })
                                         ]
                                     }))
                                     table.prepend($('<tr />', {
@@ -1622,6 +1681,9 @@
                                 if ((module.sites).length)
                                 {
                                     var table = __table_generate('sozlukSites')
+                                    var card = table.closest('.card');
+                                        card.children('input[data-table=value]').val(JSON.stringify(module.sites))
+                                        card.children('input[data-table=key]').val('sozlukSites')
 
                                     $.each(module.sites, function(key, o) {
                                         table.append(
@@ -1647,8 +1709,8 @@
                                     table.prepend($('<tr />', {
                                         'html': [
                                             $('<th />', { 'html': '<b>Site Kimliği</b>' }),
-                                            $('<th />', { 'html': '<b>Sözlük</b>' }),
-                                            $('<th />', { 'class': 'right-align', 'html': '<b>Entry</b>' })
+                                            $('<th />', { 'html': '<b>Sözlük Adı</b>' }),
+                                            $('<th />', { 'class': 'right-align', 'html': '<b>Entry Sayısı</b>' })
                                         ]
                                     }))
                                     table.prepend($('<tr />', {
@@ -1669,6 +1731,9 @@
                                 if ((module.users).length)
                                 {
                                     var table = __table_generate('sozlukUsers')
+                                    var card = table.closest('.card');
+                                        card.children('input[data-table=value]').val(JSON.stringify(module.users))
+                                        card.children('input[data-table=key]').val('sozlukUsers')
 
                                     $.each(module.users, function(key, o) {
                                         table.append(
@@ -1693,9 +1758,9 @@
 
                                     table.prepend($('<tr />', {
                                         'html': [
-                                            $('<th />', { 'html': '<b>Sözlük</b>' }),
-                                            $('<th />', { 'html': '<b>Yazar</b>' }),
-                                            $('<th />', { 'class': 'right-align', 'html': '<b>Entry</b>' })
+                                            $('<th />', { 'html': '<b>Sözlük Adı</b>' }),
+                                            $('<th />', { 'html': '<b>Yazar Adı</b>' }),
+                                            $('<th />', { 'class': 'right-align', 'html': '<b>Entry Sayısı</b>' })
                                         ]
                                     }))
                                     table.prepend($('<tr />', {
@@ -1716,6 +1781,9 @@
                                 if ((module.topics).length)
                                 {
                                     var table = __table_generate('sozlukTopics')
+                                    var card = table.closest('.card');
+                                        card.children('input[data-table=value]').val(JSON.stringify(module.topics))
+                                        card.children('input[data-table=key]').val('sozlukTopics')
 
                                     $.each(module.topics, function(key, o) {
                                         table.append(
@@ -1740,9 +1808,9 @@
 
                                     table.prepend($('<tr />', {
                                         'html': [
-                                            $('<th />', { 'html': '<b>Sözlük</b>' }),
+                                            $('<th />', { 'html': '<b>Sözlük Adı</b>' }),
                                             $('<th />', { 'html': '<b>Başlık</b>' }),
-                                            $('<th />', { 'class': 'right-align', 'html': '<b>Entry</b>' })
+                                            $('<th />', { 'class': 'right-align', 'html': '<b>Entry Sayısı</b>' })
                                         ]
                                     }))
                                     table.prepend($('<tr />', {
@@ -1764,6 +1832,9 @@
                                 if ((module.sites).length)
                                 {
                                     var table = __table_generate('newsSites')
+                                    var card = table.closest('.card');
+                                        card.children('input[data-table=value]').val(JSON.stringify(module.sites))
+                                        card.children('input[data-table=key]').val('newsSites')
 
                                     $.each(module.sites, function(key, o) {
                                         table.append(
@@ -1789,8 +1860,8 @@
                                     table.prepend($('<tr />', {
                                         'html': [
                                             $('<th />', { 'html': '<b>Site Kimliği</b>' }),
-                                            $('<th />', { 'html': '<b>Site</b>' }),
-                                            $('<th />', { 'class': 'right-align', 'html': '<b>Haber</b>' })
+                                            $('<th />', { 'html': '<b>Site Adı</b>' }),
+                                            $('<th />', { 'class': 'right-align', 'html': '<b>Haber Sayısı</b>' })
                                         ]
                                     }))
                                     table.prepend($('<tr />', {
@@ -1812,6 +1883,9 @@
                                 if ((module.sites).length)
                                 {
                                     var table = __table_generate('blogSites')
+                                    var card = table.closest('.card');
+                                        card.children('input[data-table=value]').val(JSON.stringify(module.sites))
+                                        card.children('input[data-table=key]').val('blogSites')
 
                                     $.each(module.sites, function(key, o) {
                                         table.append(
@@ -1837,8 +1911,8 @@
                                     table.prepend($('<tr />', {
                                         'html': [
                                             $('<th />', { 'html': '<b>Site Kimliği</b>' }),
-                                            $('<th />', { 'html': '<b>Site</b>' }),
-                                            $('<th />', { 'class': 'right-align', 'html': '<b>Blog</b>' })
+                                            $('<th />', { 'html': '<b>Blog Adı</b>' }),
+                                            $('<th />', { 'class': 'right-align', 'html': '<b>Blog Sayısı</b>' })
                                         ]
                                     }))
                                     table.prepend($('<tr />', {
@@ -1860,6 +1934,9 @@
                                 if ((module.sites).length)
                                 {
                                     var table = __table_generate('shoppingSites')
+                                    var card = table.closest('.card');
+                                        card.children('input[data-table=value]').val(JSON.stringify(module.sites))
+                                        card.children('input[data-table=key]').val('shoppingSites')
 
                                     $.each(module.sites, function(key, o) {
                                         table.append(
@@ -1885,8 +1962,8 @@
                                     table.prepend($('<tr />', {
                                         'html': [
                                             $('<th />', { 'html': '<b>Site Kimliği</b>' }),
-                                            $('<th />', { 'html': '<b>Site</b>' }),
-                                            $('<th />', { 'class': 'right-align', 'html': '<b>İlan</b>' })
+                                            $('<th />', { 'html': '<b>Site Adı</b>' }),
+                                            $('<th />', { 'class': 'right-align', 'html': '<b>İlan Sayısı</b>' })
                                         ]
                                     }))
                                     table.prepend($('<tr />', {
@@ -1907,6 +1984,9 @@
                                 if ((module.users).length)
                                 {
                                     var table = __table_generate('shoppingUsers')
+                                    var card = table.closest('.card');
+                                        card.children('input[data-table=value]').val(JSON.stringify(module.users))
+                                        card.children('input[data-table=key]').val('shoppingUsers')
 
                                     $.each(module.users, function(key, o) {
                                         table.append(
@@ -1931,9 +2011,9 @@
 
                                     table.prepend($('<tr />', {
                                         'html': [
-                                            $('<th />', { 'html': '<b>Site</b>' }),
-                                            $('<th />', { 'html': '<b>Satıcı</b>' }),
-                                            $('<th />', { 'class': 'right-align', 'html': '<b>İlan</b>' })
+                                            $('<th />', { 'html': '<b>Site Adı</b>' }),
+                                            $('<th />', { 'html': '<b>Satıcı Adı</b>' }),
+                                            $('<th />', { 'class': 'right-align', 'html': '<b>İlan Sayısı</b>' })
                                         ]
                                     }))
                                     table.prepend($('<tr />', {
@@ -2401,7 +2481,6 @@
                             'class': 'd-flex mb-2',
                             'html': $('<a />', {
                                 'class': 'btn-flat waves-effect d-flex',
-                                'data-position': 'right',
                                 'data-report-type': 'tr_map',
                                 'data-trigger': 'report-chart',
                                 'data-title': __.data('title'),

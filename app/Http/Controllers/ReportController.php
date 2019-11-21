@@ -214,6 +214,19 @@ class ReportController extends Controller
             'data.stats' => 'İstatistik',
             'data.chart' => 'Grafik',
             'data.tr_map' => 'Türkiye Haritası',
+
+            'data.twitterMentions' => 'Twitter Bahsedilen Hesaplar',
+            'data.twitterInfluencers' => 'Twitter Takipçi Sırasına Göre Hesaplar',
+            'data.twitterUsers' => 'Twitter, En Çok Tweet Paylaşan Hesaplar',
+            'data.youtubeUsers' => 'YouTube, En Çok Video Yükleyen Hesaplar',
+            'data.youtubeComments' => 'YouTube, En Çok Yorum Yapan Hesaplar',
+            'data.sozlukSites' => 'Sözlükler',
+            'data.sozlukUsers' => 'Sözlük Yazarları',
+            'data.sozlukTopics' => 'Sözlük Başlıkları',
+            'data.newsSites' => 'Haber Siteleri',
+            'data.blogSites' => 'Blog Siteleri',
+            'data.shoppingSites' => 'E-ticaret Siteleri',
+            'data.shoppingUsers' => 'E-ticaret Satıcıları',
         ];
 
         return view('report.edit', compact('report', 'pages', 'types'));

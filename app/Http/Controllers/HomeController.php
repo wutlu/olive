@@ -455,7 +455,9 @@ class HomeController extends Controller
 
         if ($user->report_id)
         {
-            $data['report'] = json_encode($user->report);
+            $user->report['route'] = route('report.view', $user->report->key);
+
+            $data['report'] = $user->report;
         }
 
         $activities = UserActivity::where('user_id', $user->id)->where('push_notification', 'on')->limit(3)->get();

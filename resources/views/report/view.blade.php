@@ -12,7 +12,7 @@
             <div class="section cyan darken-4">
                 <div class="report-view">
                     <div class="hide-on-1024-and-up">
-                        <span class="white-text d-table mx-auto p-2 center-align">Bu sayfayı görüntüleyebilmek için lütfen en az 1024px genişliğinde bir pencere ile tekrar deneyin.</span>
+                        <span class="white-text d-table mx-auto p-2 center-align">Bu sayfa sadece geniş ekranlı cihazlar ile görüntülenebilir.</span>
                     </div>
                     <div class="report-page">
                         <div class="sphere sphere-2"></div>
@@ -34,7 +34,7 @@
                 <div class="section" id="section-{{ $page->id }}">
                     <div class="report-view">
                         <div class="hide-on-1024-and-up">
-                            <span class="d-table mx-auto p-2 center-align">Bu sayfayı görüntüleyebilmek için lütfen en az 1024px genişliğinde bir pencere ile tekrar deneyin.</span>
+                            <span class="d-table mx-auto p-2 center-align">Bu sayfa sadece geniş ekranlı cihazlar ile görüntülenebilir.</span>
                         </div>
                         <div class="report-page">
                             <h3 class="title">{{ $page->title }}</h3>
@@ -58,7 +58,7 @@
             <div class="section cyan darken-4">
                 <div class="report-view">
                     <div class="hide-on-1024-and-up">
-                        <span class="white-text d-table mx-auto p-2 center-align">Bu sayfayı görüntüleyebilmek için lütfen en az 1024px genişliğinde bir pencere ile tekrar deneyin.</span>
+                        <span class="white-text d-table mx-auto p-2 center-align">Bu sayfa sadece geniş ekranlı cihazlar ile görüntülenebilir.</span>
                     </div>
                     <div class="report-page">
                         <div class="sphere sphere-center sphere-2"></div>
