@@ -976,13 +976,13 @@
                             <i class="social-icon icon-call">&#xe806;</i>
                             <i class="social-icon icon-facebook">&#xe807;</i>
                             -->
-                            <a target="_blank" href="https://twitter.com/verizonetek" class="btn-flat btn-small btn-floating social-icon mt-1">
+                            <a target="_blank" href="https://twitter.com/verizonetek" class="btn-flat btn-small btn-floating">
                                 <i class="social-icon icon-twitter white-text">&#xe803;</i>
                             </a>
-                            <a target="_blank" href="https://www.linkedin.com/company/verizonetek/" class="btn-flat btn-small btn-floating social-icon mt-1">
+                            <a target="_blank" href="https://www.linkedin.com/company/verizonetek/" class="btn-flat btn-small btn-floating">
                                 <i class="social-icon icon-linkedin white-text">&#xe805;</i>
                             </a>
-                            <a target="_blank" href="https://www.instagram.com/verizonetek/" class="btn-flat btn-small btn-floating social-icon mt-1">
+                            <a target="_blank" href="https://www.instagram.com/verizonetek/" class="btn-flat btn-small btn-floating">
                                 <i class="social-icon icon-instagram white-text">&#xe808;</i>
                             </a>
                         </div>
@@ -998,10 +998,10 @@
                                     <a class="grey-text" href="{{ route('page.view', 'gizlilik-politikasi') }}">Gizlilik Politikası</a>
                                 </li>
                                 <li>
-                                    <a class="grey-text" href="{{ route('page.view', 'cerez-politikasi') }}">Çerez Politikası</a>
+                                    <a class="grey-text" href="{{ route('page.view', 'kullanim-kosullari') }}">Kullanım Koşulları</a>
                                 </li>
                                 <li>
-                                    <a class="grey-text" href="{{ route('page.view', 'kullanim-kosullari') }}">Kullanım Koşulları</a>
+                                    <a class="grey-text" href="{{ route('page.view', 'cerez-politikasi') }}">Çerez Politikası</a>
                                 </li>
                             </ul>
                             <ul class="mt-0 mb-0">

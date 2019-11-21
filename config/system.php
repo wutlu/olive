@@ -602,13 +602,11 @@ return [
                 'root' => true,
                 'icon' => 'widgets'
             ],
-            /*
             35 => [
-                'name' => 'Analiz Araçları',
-                'route' => 'analysis_tools.dashboard',
+                'name' => 'Raporlar',
+                'route' => 'report.dashboard',
                 'icon' => 'pie_chart'
             ],
-            */
             36 => [
                 'name' => 'Popüler Kaynaklar',
                 'route' => 'trend.popular',
@@ -618,6 +616,11 @@ return [
                 'name' => 'Veri Kıyasla',
                 'route' => 'compare.dashboard',
                 'icon' => 'pie_chart'
+            ],
+            38 => [
+                'name' => 'Kalabalığın Düşüncesi (Borsa)',
+                'route' => 'borsa.main',
+                'icon' => 'money'
             ],
         ]
     ],

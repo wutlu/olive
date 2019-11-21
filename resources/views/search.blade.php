@@ -907,7 +907,7 @@
 
     function __chart_generate(id, data)
     {
-        $('#' + id + 'Chart').addClass('hide')
+        $('#' + id + 'Chart').addClass('hide').closest('.chart').find('._tmp').remove()
 
         var chart_element = $('<div />', {
             'class': 'chart',
@@ -917,7 +917,7 @@
                     'class': 'chart-container hide'
                 }),
                 $('<div />', {
-                    'class': 'd-flex mb-2',
+                    'class': 'd-flex mb-2 _tmp',
                     'html': $('<a />', {
                         'class': 'btn-flat waves-effect d-flex',
                         'data-report-type': 'chart',
@@ -937,6 +937,7 @@
                     })
                 }),
                 $('<input />', {
+                    'class': '_tmp',
                     'type': 'hidden',
                     'data-chart': 'value'
                 })
@@ -1062,27 +1063,7 @@
 
     function chartToJson(selector, data)
     {
-        var ndata = JSON.parse(JSON.stringify(data));
-            ndata.chart.toolbar.show = false;
-            ndata.grid = {
-                  borderColor: 'transparent',
-                  row: {
-                      colors: [ 'transparent', 'transparent' ]
-                  }
-            };
-            ndata.chart.height = 400;
-            ndata.title.text = 'Grafik';
-            delete ndata.xaxis.title;
-            delete ndata.yaxis;
-
-            if (ndata.subtitle)
-            {
-                ndata.title.text = ndata.subtitle.text;
-
-                delete ndata.subtitle;
-            }
-
-        $(selector).parent('.chart').find('input[data-chart]').val(JSON.stringify(ndata))
+        $(selector).parent('.chart').find('input[data-chart]').val(__report__chart_clear(data))
     }
 
     function __chart(__, obj)
@@ -2549,7 +2530,7 @@
         <a href="#" class="collection-item json loading" data-callback="__chart" data-type="gender" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}" data-title="Cinsiyet Grafiği">Cinsiyet Grafiği</a>
         <a href="#" class="collection-item json loading" data-callback="__chart" data-type="author" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}" data-title="Bahsedenler">@bahsedenler</a>
         <a href="#" class="collection-item json loading" data-callback="__chart" data-type="hashtag" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}" data-title="Hashtag Grafiği" data-subtitle="Konu ile birlikte kullanılan başlıca hashtagler.">#hashtagler</a>
-        <a href="#" class="collection-item json loading" data-callback="__chart" data-type="category" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}" data-title="Kategori Grafiği" data-subtitle="Verilerin genel kategori dağılımı.">Kategori</a>
+        <a href="#" class="collection-item json loading" data-callback="__chart" data-type="category" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}" data-title="Kategori Grafiği" data-subtitle="Verilerin genel kategorilere dağılımı.">Kategori</a>
         <a href="#" class="collection-item json loading" data-callback="__map" data-type="local_press" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}" data-title="Yerel Basın">Yerel Basın</a>
     </div>
 @endsection

@@ -7,7 +7,8 @@
         ]
     ],
     'dock' => true,
-    'wide' => true
+    'wide' => true,
+    'report_menu' => true
 ])
 
 @section('dock')
@@ -135,6 +136,27 @@
 
     $(document).on('change', 'input[name=metric]', function() {
         hourly()
+    }).on('click', '[data-trigger=report-chart]', function() {
+        var __ = $(this);
+        var action = '/raporlar/aggs';
+
+        var form = __report__page_form(
+            {
+                'action': action,
+                'method': 'put',
+                'callback': '__report__page_create',
+                'type': __.data('report-type')
+            }
+        );
+
+        form.find('input[name=title]').val(__.data('title'))
+        form.find('input[name=subtitle]').val(__.data('subtitle'))
+
+        __report__pattern(__.closest('.card').find('input[data-chart=value]').val(), form, __.data('report-type'), 'write')
+
+        full_page_wrapper(form)
+
+        form.find('input[name=title]').focus()
     })
 
     hourly()
@@ -146,10 +168,12 @@
         var chart_card = $('#chart-card');
             chart_card.addClass('hide')
             chart_card.find('#chart').remove()
+            chart_card.find('._tmp').remove()
 
         var normalize_card = $('#normalize-card');
             normalize_card.addClass('hide')
             normalize_card.find('#normalize-chart').remove()
+            normalize_card.find('._tmp').remove()
 
         if (obj.status == 'ok')
         {
@@ -165,6 +189,10 @@
                             download: '<i class="material-icons">save</i>'
                         }
                     }
+                },
+                title: {
+                    text: '',
+                    align: 'left'
                 },
                 dataLabels: { enabled: true },
                 colors: [],
@@ -237,7 +265,39 @@
                 }
             })
 
-            $('#chart-card').removeClass('hide').children('.card-content').append($('<div />', { 'id': 'chart' }))
+            $('#chart-card').removeClass('hide')
+                            .children('.card-content')
+                            .append(
+                                $('<div />', { 'id': 'chart' })
+                            )
+                            .append(
+                                $('<div />', {
+                                    'class': 'd-flex mb-2 _tmp',
+                                    'html': $('<a />', {
+                                        'class': 'btn-flat waves-effect d-flex',
+                                        'data-report-type': 'chart',
+                                        'data-trigger': 'report-chart',
+                                        'html': [
+                                            $('<i />', {
+                                                'class': 'material-icons align-self-center mr-1',
+                                                'html': 'note_add'
+                                            }),
+                                            $('<span />', {
+                                                'class': 'align-self-center',
+                                                'html': 'Grafiği Rapora Ekle'
+                                            })
+                                        ]
+                                    })
+                                })
+                            )
+                            .append(
+                                $('<input />', {
+                                    'class': '_tmp',
+                                    'type': 'hidden',
+                                    'data-chart': 'value',
+                                    'value': __report__chart_clear(options)
+                                })
+                            )
 
             var chart = new ApexCharts(document.querySelector('#chart'), options);
                 chart.render()
@@ -256,6 +316,10 @@
                                 download: '<i class="material-icons">save</i>'
                             }
                         }
+                    },
+                    title: {
+                        text: '',
+                        align: 'left'
                     },
                     dataLabels: { enabled: true },
                     colors: [ '#ef5350' ],
@@ -278,7 +342,10 @@
                         }
                     ],
                     xaxis: { categories: obj.categories },
-                    legend: { show: false },
+                    legend: {
+                        position: 'top',
+                        horizontalAlign: 'left'
+                    },
                     stroke: {
                         curve: 'smooth',
                         width: 2
@@ -311,7 +378,41 @@
                     normalize_options.colors.push('#5c6bc0')
                 }
 
-                $('#normalize-card').removeClass('hide').children('.card-content').append($('<div />', { 'id': 'normalize-chart' }))
+                $('#normalize-card').removeClass('hide')
+                                    .children('.card-content')
+                                    .append(
+                                        $('<div />', {
+                                            'id': 'normalize-chart'
+                                        })
+                                    )
+                                    .append(
+                                        $('<div />', {
+                                            'class': 'd-flex mb-2 _tmp',
+                                            'html': $('<a />', {
+                                                'class': 'btn-flat waves-effect d-flex',
+                                                'data-report-type': 'chart',
+                                                'data-trigger': 'report-chart',
+                                                'html': [
+                                                    $('<i />', {
+                                                        'class': 'material-icons align-self-center mr-1',
+                                                        'html': 'note_add'
+                                                    }),
+                                                    $('<span />', {
+                                                        'class': 'align-self-center',
+                                                        'html': 'Grafiği Rapora Ekle'
+                                                    })
+                                                ]
+                                            })
+                                        })
+                                    )
+                                    .append(
+                                        $('<input />', {
+                                            'class': '_tmp',
+                                            'type': 'hidden',
+                                            'data-chart': 'value',
+                                            'value': __report__chart_clear(normalize_options)
+                                        })
+                                    )
 
                 var normalize_chart = new ApexCharts(document.querySelector('#normalize-chart'), normalize_options);
                     normalize_chart.render()

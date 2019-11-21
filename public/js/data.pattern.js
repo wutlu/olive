@@ -2061,8 +2061,15 @@ function __report__pattern(obj, form, type, method)
             setTimeout(function() {
                 $('#' + id).html('')
 
-                var reportChart = new ApexCharts(document.querySelector('#' + id), obj.data ? obj.data : $.parseJSON(obj));
-                    reportChart.render()
+                try
+                {
+                    var reportChart = new ApexCharts(document.querySelector('#' + id), obj.data ? obj.data : $.parseJSON(obj));
+                        reportChart.render()
+                }
+                catch (e)
+                {
+                    $('#' + id).html('Grafik Yüklenemedi!')
+                }
             }, 1000)
 
             form.append($('<input />', {
@@ -3070,4 +3077,30 @@ function __report__table__generate()
     })
 
     return table;
+}
+
+function __report__chart_clear(data)
+{
+    var ndata = $.parseJSON(JSON.stringify(data));
+        ndata.chart.toolbar.show = false;
+        ndata.grid = {
+            borderColor: 'transparent',
+            row: {
+                colors: [ 'transparent', 'transparent' ]
+            }
+        };
+        ndata.title.text = 'Grafik';
+        ndata.chart.height = 400;
+
+        delete ndata.xaxis.title;
+        delete ndata.yaxis;
+
+        if (ndata.subtitle)
+        {
+            ndata.title.text = ndata.subtitle.text;
+
+            delete ndata.subtitle;
+        }
+
+    return JSON.stringify(ndata);
 }

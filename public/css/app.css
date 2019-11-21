@@ -746,8 +746,8 @@ body.fpw-active > #full_page-wrapper {
 #report-menu:hover {
   opacity: 1;
 
-  -webkit-box-shadow: 0 0 0 4px #fff, 0 0 48px 1px #ccc;
-          box-shadow: 0 0 0 4px #fff, 0 0 48px 1px #ccc;
+  -webkit-box-shadow: 0 0 0 4px #fff, 0 0 48px 1px rgba(0, 0, 0, .4);
+          box-shadow: 0 0 0 4px #fff, 0 0 48px 1px rgba(0, 0, 0, .4);
 
   -webkit-transform: translateY(-10px);
           transform: translateY(-10px);
@@ -1187,12 +1187,12 @@ time {
 
 @keyframes heartbeat {
   0% { transform: scale(1); }
-  50% {  transform: scale(1.2); }
+  50% {  transform: scale(1.1); }
   100% { transform: scale(1); }
 }
 @-webkit-keyframes heartbeat {
   0% { -webkit-transform: scale(1); }
-  50% {  -webkit-transform: scale(1.2); }
+  50% {  -webkit-transform: scale(1.1); }
   100% { -webkit-transform: scale(1); }
 }
 
@@ -3987,9 +3987,7 @@ nav.scrolled.active,
    -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  background-color: #263238;
-
-  margin: 0 0 1rem;
+  background-color: #111;
 }
 
 /*!

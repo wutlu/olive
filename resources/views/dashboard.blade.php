@@ -198,7 +198,7 @@
                     [
                         'route' => route('borsa.main'),
                         'icon' => 'money',
-                        'name' => 'Kalabalığın Düşüncesi (Borsa) <sup class="red-text">Yeni</sup>',
+                        'name' => 'Kalabalığın Düşüncesi (Borsa)',
                         'key' => 'borsa'
                     ],
                     [
