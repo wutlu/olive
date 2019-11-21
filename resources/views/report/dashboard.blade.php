@@ -39,7 +39,7 @@
                 @foreach ($data as $item)
                     <li class="collection-item {{ $item->status() ? 'green' : 'red' }} lighten-5" data-item-id="item-{{ $item->id }}">
                         <span>
-                            <span style="font-size: 20px;">{{ $item->name }}</span>
+                            <span>{{ $item->name }}</span>
                             <a class="blue-grey-text align-self-center" href="{{ route('user.profile', $item->user_id) }}">{{ '@'.$item->user->name }}</a>
                         </span>
                         <div class="d-flex mt-1">
