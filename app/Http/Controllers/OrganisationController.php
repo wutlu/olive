@@ -183,6 +183,7 @@ class OrganisationController extends Controller
             $module_count = $request->module_trend ? ($module_count+1) : $module_count;
             $module_count = $request->module_compare ? ($module_count+1) : $module_count;
             $module_count = $request->module_borsa ? ($module_count+1) : $module_count;
+            $module_count = $request->module_report ? ($module_count+1) : $module_count;
 
             if (!$module_count)
             {
@@ -222,6 +223,7 @@ class OrganisationController extends Controller
             $organisation->module_trend = $request->module_trend ? true : false;
             $organisation->module_compare = $request->module_compare ? true : false;
             $organisation->module_borsa = $request->module_borsa ? true : false;
+            $organisation->module_report = $request->module_report ? true : false;
             $organisation->module_alarm = $request->module_alarm ? true : false;
 
             /*!
@@ -1182,8 +1184,9 @@ class OrganisationController extends Controller
         Option::updateOrCreate([ 'key' => 'unit_price.module_real_time'                ], [ 'value' => $request->module_real_time                ]);
         Option::updateOrCreate([ 'key' => 'unit_price.module_search'                   ], [ 'value' => $request->module_search                   ]);
         Option::updateOrCreate([ 'key' => 'unit_price.module_trend'                    ], [ 'value' => $request->module_trend                    ]);
-        Option::updateOrCreate([ 'key' => 'unit_price.module_compare'                  ], [ 'value' => $request->module_compare                    ]);
+        Option::updateOrCreate([ 'key' => 'unit_price.module_compare'                  ], [ 'value' => $request->module_compare                  ]);
         Option::updateOrCreate([ 'key' => 'unit_price.module_borsa'                    ], [ 'value' => $request->module_borsa                    ]);
+        Option::updateOrCreate([ 'key' => 'unit_price.module_report'                   ], [ 'value' => $request->module_report                   ]);
         Option::updateOrCreate([ 'key' => 'unit_price.module_alarm'                    ], [ 'value' => $request->module_alarm                    ]);
 
         Option::updateOrCreate([ 'key' => 'unit_price.user'                            ], [ 'value' => $request->user_price                      ]);
@@ -1269,6 +1272,7 @@ class OrganisationController extends Controller
             'module_trend'                     => '+',
             'module_compare'                   => '+',
             'module_borsa'                     => '+',
+            'module_report'                    => '+',
             'module_alarm'                     => '+',
 
             'data_pool_youtube_channel_limit'  => '*',
@@ -1366,6 +1370,7 @@ class OrganisationController extends Controller
         $organisation->module_trend = $request->module_trend ? true : false;
         $organisation->module_compare = $request->module_compare ? true : false;
         $organisation->module_borsa = $request->module_borsa ? true : false;
+        $organisation->module_report = $request->module_report ? true : false;
         $organisation->module_alarm = $request->module_alarm ? true : false;
 
         /**

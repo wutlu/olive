@@ -21,20 +21,21 @@
     </div>
     <div class="card">
         <div class="container">
-            <div class="pt-1 pb-1">
-                <div class="d-flex flex-wrap justify-content-center">
+            <div class="row pt-1 pb-1">
+                <div class="col l6 offset-l3 d-flex flex-wrap justify-content-center">
                     @foreach (config('system.user.badges') as $id => $badge)
                         @php
                         $have = $user->badge($id);
                         @endphp
-
-                        <a href="#" class="waves-effect rosette {{ $have ? 'active' : '' }}" data-trigger="badge" data-text="{{ $badge['description'] }}">
-                            <img
-                                alt="{{ $badge['name'] }}"
-                                src="{{ asset($badge['image_src']) }}"
-                                data-tooltip="{{ $badge['name'] }}"
-                                class="" />
-                        </a>
+                        <div class="p-1">
+                            <a href="#" class="waves-effect rosette {{ $have ? 'active' : '' }}" data-trigger="badge" data-text="{{ $badge['description'] }}">
+                                <img
+                                    alt="{{ $badge['name'] }}"
+                                    src="{{ asset($badge['image_src']) }}"
+                                    data-tooltip="{{ $badge['name'] }}"
+                                    class="" />
+                            </a>
+                        </div>
                     @endforeach
                 </div>
             </div>

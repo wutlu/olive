@@ -251,7 +251,8 @@ return [
         'module_trend' => 'Trend',
         'module_alarm' => 'Alarm',
         'module_compare' => 'Veri Kıyaslama',
-        'module_borsa' => 'Kalabalığın Düşüncesi'
+        'module_borsa' => 'Kalabalığın Düşüncesi',
+        'module_report' => 'Raporlama'
     ],
 
     /**
@@ -332,6 +333,16 @@ return [
                 'name' => 'Organizatör',
                 'image_src' => 'img/icons/badges/organisation.png',
                 'description' => 'Bir organizasyon oluşturun.'
+            ],
+            13 => [
+                'name' => 'Analist',
+                'image_src' => 'img/icons/badges/report.png',
+                'description' => 'En az 1 rapor oluşturun.'
+            ],
+            14 => [
+                'name' => 'Veri Gurusu',
+                'image_src' => 'img/icons/badges/guru.png',
+                'description' => '100 rapor oluşturun.'
             ],
 
             /* ... */

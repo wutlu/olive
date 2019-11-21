@@ -27,7 +27,7 @@ return [
         'calm' => 'Çok fazla işlem yaptınız. Lütfen bir kaç dakika sonra tekrar deneyin.',
         'notfound' => 'Bu içeriğe şu anda ulaşılamıyor.',
         'exited' => 'Oturumunuz sona erdi. Lütfen tekrar giriş yapın.',
-        'permission' => 'Aktif bir organizasyonda değilsiniz. Lütfen organizasyonunuzu aktif edin veya aktif edilene kadar bekleyin ve tekrar deneyin.'
+        'permission' => 'Organizasyonunuz aktif değil. Lütfen organizasyonunuz aktif edildikten sonra tekrar deneyin.'
     ],
     'verifications' => [
         'email' => 'E-posta adresinizi doğrulamadan bu işlemi gerçekleştiremezsiniz.'

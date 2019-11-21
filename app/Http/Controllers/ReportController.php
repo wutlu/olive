@@ -31,6 +31,14 @@ class ReportController extends Controller
          * - Kullanıcı
          */
         $this->middleware('auth')->except('view');
+
+        ### [ zorunlu aktif organizasyon ] ###
+        $this->middleware([
+            'organisation:have,module_report',
+            'can:organisation-status'
+        ])->except([
+            'view'
+        ]);
     }
 
     /**
@@ -90,6 +98,21 @@ class ReportController extends Controller
 
             $user->report_id = null;
             $user->save();
+
+            if (!$user->badge(13))
+            {
+                ### [ analist rozeti ] ###
+                $user->addBadge(13);
+            }
+
+            if ($user->reports->count() >= 100)
+            {
+                if (!$user->badge(14))
+                {
+                    ### [ veri gurusu rozeti ] ###
+                    $user->addBadge(14);
+                }
+            }
 
             foreach ($user->organisation->users as $u)
             {

@@ -329,6 +329,7 @@ $arr = [
         'module_trend'                    => 'Trend Modülü',
         'module_compare'                  => 'Veri Kıyaslama Modülü',
         'module_borsa'                    => 'Borsa Modülü',
+        'module_report'                   => 'Raporlama Modülü',
         'module_alarm'                    => 'Alarm Modülü',
 
         'phone'                           => 'Telefon',

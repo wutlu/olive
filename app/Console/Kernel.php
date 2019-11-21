@@ -60,6 +60,14 @@ class Kernel extends ConsoleKernel
                      ->withoutOverlapping(1);
 
             /**
+             * Açık unutulan raporlar için e-posta bildirimi gönder.
+             */
+            $schedule->command('nohup "report:alert" --type=start')
+                     ->everyThirtyMinutes()
+                     ->timezone(config('app.timezone'))
+                     ->withoutOverlapping(1);
+
+            /**
              * Borsa bilgilerini güncelle.
              */
             $schedule->command('nohup "borsa:update --type=xu030-bist-30" --type=start')

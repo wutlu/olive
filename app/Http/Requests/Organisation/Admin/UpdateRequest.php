@@ -65,6 +65,7 @@ class UpdateRequest extends FormRequest
             'module_trend' => 'nullable|string|in:on',
             'module_compare' => 'nullable|string|in:on',
             'module_borsa' => 'nullable|string|in:on',
+            'module_report' => 'nullable|string|in:on',
             'module_alarm' => 'nullable|string|in:on',
         ];
 

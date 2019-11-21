@@ -49,6 +49,7 @@ class PriceSettingsSaveRequest extends FormRequest
             'module_trend'                    => 'required|integer|min:0',
             'module_compare'                  => 'required|integer|min:0',
             'module_borsa'                    => 'required|integer|min:0',
+            'module_report'                   => 'required|integer|min:0',
             'module_alarm'                    => 'required|integer|min:0',
 
             'user_price'                      => 'required|integer|min:0',

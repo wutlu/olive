@@ -54,6 +54,8 @@
                                     <p class="mb-0">Arama ile belirleyeceğiniz kriterleri sorgu sınırı olmadan kıyaslayabilirsiniz.</p>
                                 @elseif ($key == 'module_borsa')
                                     <p class="mb-0">Kalabalığın düşüncesini dinleyerek hisselerinize yön verebilirsiniz.</p>
+                                @elseif ($key == 'module_report')
+                                    <p class="mb-0">Araştırmalarınızı yaparken raporlama editörünü kullanarak eş zamanlı raporlar oluşturabilirsiniz.</p>
                                 @elseif ($key == 'module_alarm')
                                     <p class="mb-0">Bilgisayar başında gerçirecek vaktiniz yoksa "Alarmlar" sayesinde konuşulanlardan eş zamanlı haberdar olabilirsiniz.</p>
                                 @endif

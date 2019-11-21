@@ -169,6 +169,12 @@ class User extends Authenticatable
     }
 
     # forum mesajları
+    public function reports()
+    {
+        return $this->hasMany('App\Models\Report', 'user_id', 'id');
+    }
+
+    # forum mesajları
     public function messages()
     {
         return $this->hasMany('App\Models\Forum\Message', 'user_id', 'id');
