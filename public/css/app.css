@@ -1539,6 +1539,9 @@ code {
   margin: 0 !important;
 }
 
+.markdown table {
+  margin: 0 0 .4rem;
+}
 .markdown table tr > td,
 .markdown table tr > th {
   padding: 6px;
