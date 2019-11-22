@@ -2081,8 +2081,7 @@ function __report__pattern(obj, form, type, method)
         case 'tr_map':
             if (method == 'read')
             {
-                form.find('.report-page').addClass('red lighten-5')
-                form.addClass('red darken-1')
+                form.addClass('teal lighten-5')
             }
 
             form.find('.content').html(
