@@ -485,9 +485,6 @@
 /*!
  * report page view
  */
-.report-view {
-  padding: 32px;
-}
 .report-view > .report-page {
   overflow: hidden;
 }
