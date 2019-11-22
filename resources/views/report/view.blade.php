@@ -88,7 +88,7 @@
         </div>
     @else
         <div id="fullpage">
-            <div class="section red darken-4">
+            <div class="section">
                 <div class="card d-table mx-auto">
                     <div class="card-content p-2">
                         <span class="card-title">Şifreli Rapor</span>
@@ -149,6 +149,7 @@
 @endpush
 
 @push('local.styles')
+
     #fp-nav ul li .fp-tooltip {
         color: #111;
     }
