@@ -384,7 +384,7 @@
                         <div class="pl-2 lr-2">
                             <h3 class="mb-2">BULUT RAPORLAMA</h3>
                             <p class="lead mb-1">Olive Rapor Editörü sayesinde, araştırmanızı yaparken eş zamanlı olarak ve sadece tıklamalar ile hızlı bir şekilde raporunuzu oluşturabilirsiniz.</p>
-                            <p class="lead mb-1">Olive Bulut Raporlama sistemi raporlarınızın kopyalanması engel olur.</p>
+                            <p class="lead mb-1">Olive Bulut Raporlama sistemi raporlarınızın kopyalanmasına engel olur.</p>
                             <p class="lead mb-1">Raporunuz bulutta güvende! Sadece bir bağlantı ile raporunuzu hedefine ulaştırabilirsiniz. Ayrıca raporunuzu şifreleyerek, sadece hedef kullanıcının okumasını sağlayabilirsiniz.</p>
                             <p class="lead">Tüm araçlarda olduğu gibi raporlarınızı da limitsizce oluşturabilirsiniz.</p>
                         </div>

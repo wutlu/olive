@@ -2082,7 +2082,7 @@ function __report__pattern(obj, form, type, method)
             if (method == 'read')
             {
                 form.find('.report-page').addClass('red lighten-5')
-                form.addClass('lime darken-1')
+                form.addClass('red darken-1')
             }
 
             form.find('.content').html(
