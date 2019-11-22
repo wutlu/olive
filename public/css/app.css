@@ -451,7 +451,7 @@
   margin: 0 0 0 10px;
 }
 .report-page > .content > .textarea {
-  padding: 16px 32px;
+  padding: 16px 0 16px 32px;
   border-width: 0 0 0 4px;
   border-style: solid;
   border-color: #4db6ac;

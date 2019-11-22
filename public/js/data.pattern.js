@@ -2475,8 +2475,16 @@ function __report__pattern(obj, form, type, method)
                 break;
             }
 
-            form.find('input[name=title]').val(title)
-            form.find('input[name=subtitle]').val(subtitle)
+            try
+            {
+                form.find('input[name=title]').val(obj.page.title ? obj.page.title : title)
+                form.find('input[name=subtitle]').val(obj.page.subtitle ? obj.page.subtitle : subtitle)
+            }
+            catch (e)
+            {
+                form.find('input[name=title]').val(title)
+                form.find('input[name=subtitle]').val(subtitle)
+            }
 
             form.find('.report-table').html(table)
 
@@ -3054,7 +3062,7 @@ function __report__aggs(__, obj)
         {
             case 'stats':
                 form.find('input[name=title]').val('Sayılar')
-                form.find('input[name=subtitle]').val('İlgili konu toplamda ' + number_format(obj.stats.hits) + ' web paylaşımında yer aldı. Ayrıntılar aşağıdadır.')
+                form.find('input[name=subtitle]').val('İlgili konu toplamda ' + number_format(obj.stats.hits) + ' web paylaşımında yer aldı.')
             break;
         }
 
