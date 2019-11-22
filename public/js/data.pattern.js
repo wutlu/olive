@@ -1292,7 +1292,7 @@ function __report__pattern(obj, form, type, method)
                             'css': { 'width': '50%' }
                         }),
                         $('<div />', {
-                            'class': 'flex-fill textarea',
+                            'class': 'flex-fill textarea markdown',
                             'css': { 'width': '50%' },
                             'html': method == 'write' ? $('<textarea />', { 'name': 'text', 'placeholder': 'Metin Alanı', 'html': obj.page ? obj.page.text : '' }) : obj.page ? obj.page.text : ''
                         })
@@ -1406,7 +1406,7 @@ function __report__pattern(obj, form, type, method)
                         'css': { 'min-width': '70%' }
                     }),
                     $('<div />', {
-                        'class': 'flex-fill textarea',
+                        'class': 'flex-fill textarea markdown',
                         'css': { 'min-width': '30%' },
                         'html': method == 'write' ? $('<textarea />', { 'name': 'text', 'placeholder': 'Metin Alanı', 'html': obj.page ? obj.page.text : '' }) : obj.page ? obj.page.text : ''
                     })
@@ -1445,7 +1445,7 @@ function __report__pattern(obj, form, type, method)
                         'css': { 'min-width': '70%' }
                     }),
                     $('<div />', {
-                        'class': 'flex-fill textarea',
+                        'class': 'flex-fill textarea markdown',
                         'css': { 'min-width': '30%' },
                         'html': method == 'write' ? $('<textarea />', { 'name': 'text', 'placeholder': 'Metin Alanı', 'html': obj.page ? obj.page.text : '' }) : obj.page ? obj.page.text : ''
                     })
@@ -1585,7 +1585,7 @@ function __report__pattern(obj, form, type, method)
                         'css': { 'min-width': '70%' }
                     }),
                     $('<div />', {
-                        'class': 'flex-fill textarea',
+                        'class': 'flex-fill textarea markdown',
                         'css': { 'min-width': '30%' },
                         'html': method == 'write' ? $('<textarea />', { 'name': 'text', 'placeholder': 'Metin Alanı', 'html': obj.page ? obj.page.text : '' }) : obj.page ? obj.page.text : ''
                     })
@@ -1664,7 +1664,7 @@ function __report__pattern(obj, form, type, method)
                         'css': { 'min-width': '70%' }
                     }),
                     $('<div />', {
-                        'class': 'flex-fill textarea',
+                        'class': 'flex-fill textarea markdown',
                         'css': { 'min-width': '30%' },
                         'html': method == 'write' ? $('<textarea />', { 'name': 'text', 'placeholder': 'Metin Alanı', 'html': obj.page ? obj.page.text : '' }) : obj.page ? obj.page.text : ''
                     })
@@ -1725,7 +1725,7 @@ function __report__pattern(obj, form, type, method)
                         'css': { 'min-width': '70%' }
                     }),
                     $('<div />', {
-                        'class': 'flex-fill textarea',
+                        'class': 'flex-fill textarea markdown',
                         'css': { 'min-width': '30%' },
                         'html': method == 'write' ? $('<textarea />', { 'name': 'text', 'placeholder': 'Metin Alanı', 'html': obj.page ? obj.page.text : '' }) : obj.page ? obj.page.text : ''
                     })
@@ -1773,7 +1773,7 @@ function __report__pattern(obj, form, type, method)
                         'css': { 'min-width': '70%' }
                     }),
                     $('<div />', {
-                        'class': 'flex-fill textarea',
+                        'class': 'flex-fill textarea markdown',
                         'css': { 'min-width': '30%' },
                         'html': method == 'write' ? $('<textarea />', { 'name': 'text', 'placeholder': 'Metin Alanı', 'html': obj.page ? obj.page.text : '' }) : obj.page ? obj.page.text : ''
                     })
@@ -1806,7 +1806,7 @@ function __report__pattern(obj, form, type, method)
                         'css': { 'min-width': '70%' }
                     }),
                     $('<div />', {
-                        'class': 'flex-fill textarea',
+                        'class': 'flex-fill textarea markdown',
                         'css': { 'min-width': '30%' },
                         'html': method == 'write' ? $('<textarea />', { 'name': 'text', 'placeholder': 'Metin Alanı', 'html': obj.page ? obj.page.text : '' }) : obj.page ? obj.page.text : ''
                     })
@@ -2051,7 +2051,7 @@ function __report__pattern(obj, form, type, method)
                         })
                     }),
                     $('<div />', {
-                        'class': 'flex-fill textarea',
+                        'class': 'flex-fill textarea markdown',
                         'css': { 'min-width': '30%' },
                         'html': method == 'write' ? $('<textarea />', { 'name': 'text', 'placeholder': 'Metin Alanı', 'html': obj.page ? obj.page.text : '' }) : obj.page ? obj.page.text : ''
                     })
@@ -2097,7 +2097,7 @@ function __report__pattern(obj, form, type, method)
                         ]
                     }),
                     $('<div />', {
-                        'class': 'flex-fill textarea',
+                        'class': 'flex-fill textarea markdown',
                         'css': { 'min-width': '30%' },
                         'html': method == 'write' ? $('<textarea />', { 'name': 'text', 'placeholder': 'Metin Alanı', 'html': obj.page ? obj.page.text : '' }) : obj.page ? obj.page.text : ''
                     })
@@ -2153,7 +2153,7 @@ function __report__pattern(obj, form, type, method)
                         'css': { 'min-width': '70%' }
                     }),
                     $('<div />', {
-                        'class': 'flex-fill textarea',
+                        'class': 'flex-fill textarea markdown',
                         'css': { 'min-width': '30%' },
                         'html': method == 'write' ? $('<textarea />', { 'name': 'text', 'placeholder': 'Metin Alanı', 'html': obj.page ? obj.page.text : '' }) : obj.page ? obj.page.text : ''
                     })
@@ -2617,7 +2617,7 @@ $(document).on('click', '#report-menu.active [data-report-element=add-page]', fu
                     'css': { 'width': '50%' }
                 }),
                 $('<div />', {
-                    'class': 'flex-fill textarea',
+                    'class': 'flex-fill textarea markdown',
                     'css': { 'width': '50%' },
                     'html': $('<textarea />', {
                         'name': 'text',
