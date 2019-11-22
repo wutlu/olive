@@ -3,8 +3,7 @@
         'text' => $report->password ? 'Şifreli Rapor' : $report->name
     ],
     'footer_hide' => true,
-    'robots' => $report->password ? [ 'noindex' ] : false,
-    'desktop' => true
+    'robots' => $report->password ? [ 'noindex' ] : false
 ])
 
 @section('content')
@@ -12,6 +11,9 @@
         <div id="fullpage">
             <div class="section cyan darken-4">
                 <div class="report-view">
+                    <div class="hide-on-1024-and-up">
+                        <span class="white-text d-table mx-auto p-2 center-align">Bu sayfa sadece geniş ekranlı cihazlar ile görüntülenebilir.</span>
+                    </div>
                     <div class="report-page">
                         <div class="sphere sphere-2"></div>
 
@@ -31,6 +33,9 @@
             @foreach ($report->pages as $page)
                 <div class="section" id="section-{{ $page->id }}">
                     <div class="report-view">
+                        <div class="hide-on-1024-and-up">
+                            <span class="d-table mx-auto p-2 center-align">Bu sayfa sadece geniş ekranlı cihazlar ile görüntülenebilir.</span>
+                        </div>
                         <div class="report-page">
                             <h3 class="title">{{ $page->title }}</h3>
                             <h6 class="subtitle">{{ $page->subtitle }}</h6>
@@ -52,6 +57,9 @@
             @endforeach
             <div class="section cyan darken-4">
                 <div class="report-view">
+                    <div class="hide-on-1024-and-up">
+                        <span class="white-text d-table mx-auto p-2 center-align">Bu sayfa sadece geniş ekranlı cihazlar ile görüntülenebilir.</span>
+                    </div>
                     <div class="report-page">
                         <div class="sphere sphere-center sphere-2"></div>
 
