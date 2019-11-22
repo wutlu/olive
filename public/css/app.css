@@ -1539,6 +1539,11 @@ code {
   margin: 0 !important;
 }
 
+.markdown table tr > td,
+.markdown table tr > th {
+  padding: 6px;
+}
+
 /*!
  * cards
  */
