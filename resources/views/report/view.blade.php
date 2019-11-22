@@ -127,4 +127,5 @@
 
 @push('external.include.footer')
     <script src='//www.google.com/recaptcha/api.js'></script>
+    <script src="{{ asset('js/speakingurl.min.js?v='.config('system.version')) }}" charset="UTF-8"></script>
 @endpush
