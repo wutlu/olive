@@ -2079,11 +2079,6 @@ function __report__pattern(obj, form, type, method)
             }))
         break;
         case 'tr_map':
-            if (method == 'read')
-            {
-                form.addClass('teal lighten-5')
-            }
-
             form.find('.content').html(
                 [
                     $('<div />', {

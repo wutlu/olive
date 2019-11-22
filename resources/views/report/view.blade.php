@@ -3,7 +3,8 @@
         'text' => $report->password ? 'Şifreli Rapor' : $report->name
     ],
     'footer_hide' => true,
-    'robots' => $report->password ? [ 'noindex' ] : false
+    'robots' => $report->password ? [ 'noindex' ] : false,
+    'desktop' => true
 ])
 
 @push('local.styles')
