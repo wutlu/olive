@@ -6,14 +6,17 @@
     'robots' => $report->password ? [ 'noindex' ] : false
 ])
 
+@push('local.styles')
+    body {
+        overflow: auto !important;
+    }
+@endpush
+
 @section('content')
     @if ($authenticate === null || $authenticate === true)
         <div id="fullpage">
-            <div class="section cyan darken-4">
+            <div class="section">
                 <div class="report-view">
-                    <div class="hide-on-1024-and-up">
-                        <span class="white-text d-table mx-auto p-2 center-align">Bu sayfa sadece geniş ekranlı cihazlar ile görüntülenebilir.</span>
-                    </div>
                     <div class="report-page">
                         <div class="sphere sphere-2"></div>
 
@@ -33,9 +36,6 @@
             @foreach ($report->pages as $page)
                 <div class="section" id="section-{{ $page->id }}">
                     <div class="report-view">
-                        <div class="hide-on-1024-and-up">
-                            <span class="d-table mx-auto p-2 center-align">Bu sayfa sadece geniş ekranlı cihazlar ile görüntülenebilir.</span>
-                        </div>
                         <div class="report-page">
                             <h3 class="title">{{ $page->title }}</h3>
                             <h6 class="subtitle">{{ $page->subtitle }}</h6>
@@ -55,11 +55,8 @@
                     __report__pattern({!! $page->pattern() !!}, $('#section-{{ $page->id }}'), '{{ explode('.', $page->type)[1] }}', 'read')
                 @endpush
             @endforeach
-            <div class="section cyan darken-4">
+            <div class="section">
                 <div class="report-view">
-                    <div class="hide-on-1024-and-up">
-                        <span class="white-text d-table mx-auto p-2 center-align">Bu sayfa sadece geniş ekranlı cihazlar ile görüntülenebilir.</span>
-                    </div>
                     <div class="report-page">
                         <div class="sphere sphere-center sphere-2"></div>
 
@@ -89,7 +86,7 @@
     @else
         <div id="fullpage">
             <div class="section">
-                <div class="card d-table mx-auto">
+                <div class="card d-table mx-auto mb-1">
                     <div class="card-content p-2">
                         <span class="card-title">Şifreli Rapor</span>
                         <form method="post" action="{{ route('report.view', $report->key) }}">
@@ -122,35 +119,12 @@
                         </form>
                     </div>
                 </div>
+                <p class="grey-text center-align">{{ date('Y') }} © <a href="https://veri.zone/" class="grey-text">Veri Zone Teknoloji</a></p>
             </div>
         </div>
     @endif
 @endsection
 
-@push('local.scripts')
-    var myFullpage = new fullpage('#fullpage', {
-        navigation: {{ $authenticate === null || $authenticate === true ? ($report->pages->count() <= 30 ? 'true' : 'false') : 'false' }},
-        navigationPosition: 'right',
-        scrollBar: {{ $report->pages->count() <= 10 ? 'false' : 'true' }},
-        anchors: {!! json_encode($anchors) !!},
-        showActiveTooltip: true,
-        navigationTooltips: {!! json_encode($titles) !!}
-    })
-@endpush
-
-@push('external.include.header')
-    <link rel="stylesheet" href="{{ asset('css/fullpage.min.css?v='.config('system.version')) }}" />
-@endpush
-
 @push('external.include.footer')
     <script src='//www.google.com/recaptcha/api.js'></script>
-    <script src="{{ asset('js/fullpage.min.js?v='.config('system.version')) }}"></script>
-    <script src="{{ asset('js/speakingurl.min.js?v='.config('system.version')) }}" charset="UTF-8"></script>
-@endpush
-
-@push('local.styles')
-
-    #fp-nav ul li .fp-tooltip {
-        color: #111;
-    }
 @endpush

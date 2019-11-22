@@ -478,7 +478,7 @@
 @media (max-width: 1024px)
 {
   .report-page {
-    display: none;
+    /* display: none; */
   }
 }
 
@@ -645,7 +645,6 @@
   text-align: center;
   padding: 128px;
 }
-
 
 .report-page > .sphere {
   width: 600px;
@@ -2984,6 +2983,9 @@ ul#slide-out li.copyright {
   padding: 2rem;
 }
 
+ul#slide-out li.copyright > p {
+  margin: 0;
+}
 ul#slide-out li > a > span.badge {
   min-width: 1rem;
 }
