@@ -7,8 +7,6 @@
     <!-- viewport -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, shring-to-fit=no, user-scalable=no" />
-
     @isset($breadcrumb)
         @php $title = end($breadcrumb); @endphp
     @endisset
@@ -54,6 +52,16 @@
     <style>
     @stack('local.styles')
     </style>
+
+    @isset($desktop)
+    <style>
+        body {
+            overflow: auto !important;
+        }
+    </style>
+    @else
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, shring-to-fit=no, user-scalable=no" />
+    @endisset
 </head>
 <body>
     <div id="full_page-wrapper">
