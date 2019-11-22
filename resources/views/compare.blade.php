@@ -149,9 +149,6 @@
             }
         );
 
-        form.find('input[name=title]').val(__.data('title'))
-        form.find('input[name=subtitle]').val(__.data('subtitle'))
-
         __report__pattern(__.closest('.card').find('input[data-chart=value]').val(), form, __.data('report-type'), 'write')
 
         full_page_wrapper(form)

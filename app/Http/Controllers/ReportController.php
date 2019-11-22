@@ -201,17 +201,24 @@ class ReportController extends Controller
         }
 
         $anchors = [ 'giris' ];
+        $titles = [ 'Giriş' ];
 
         for ($i = 1; $i <= $report->pages->count(); $i++)
         {
             $anchors[] = 'sayfa-'.$i;
         }
 
+        foreach ($report->pages as $page)
+        {
+            $titles[] = $page->title;
+        }
+
         $anchors[] = 'olive';
+        $titles[] = 'Olive';
 
         $anchors = array_values($anchors);
 
-        return view('report.view', compact('report', 'authenticate', 'request', 'anchors'));
+        return view('report.view', compact('report', 'authenticate', 'request', 'anchors', 'titles'));
     }
 
     /**

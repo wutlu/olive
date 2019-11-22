@@ -132,7 +132,9 @@
         navigation: {{ $authenticate === null || $authenticate === true ? ($report->pages->count() <= 30 ? 'true' : 'false') : 'false' }},
         navigationPosition: 'right',
         scrollBar: {{ $report->pages->count() <= 10 ? 'false' : 'true' }},
-        anchors: {!! json_encode($anchors) !!}
+        anchors: {!! json_encode($anchors) !!},
+        showActiveTooltip: true,
+        navigationTooltips: {!! json_encode($titles) !!}
     })
 @endpush
 
@@ -144,4 +146,10 @@
     <script src='//www.google.com/recaptcha/api.js'></script>
     <script src="{{ asset('js/fullpage.min.js?v='.config('system.version')) }}"></script>
     <script src="{{ asset('js/speakingurl.min.js?v='.config('system.version')) }}" charset="UTF-8"></script>
+@endpush
+
+@push('local.styles')
+    #fp-nav ul li .fp-tooltip {
+        color: #111;
+    }
 @endpush

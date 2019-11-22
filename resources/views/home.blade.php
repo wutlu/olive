@@ -540,8 +540,8 @@
         navigationPosition: 'right',
         scrollBar: true,
         anchors: [ 'ana-sayfa', 'olive', 'gercek-zamanli', 'gorseller', 'bulut-raporlama', 'araclar', 'iletisim' ],
-        navigationTooltips: [ 'Ana Sayfa', 'Olive', 'Gerçek Zamanlı', 'Görseller', 'Bulut Raporlama', 'Araçlar', 'İletişim' ],
-        showActiveTooltip: true
+        showActiveTooltip: true,
+        navigationTooltips: [ 'Ana Sayfa', 'Olive', 'Gerçek Zamanlı', 'Görseller', 'Bulut Raporlama', 'Araçlar', 'İletişim' ]
     })
 @endpush
 
