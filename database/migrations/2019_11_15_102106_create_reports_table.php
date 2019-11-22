@@ -32,7 +32,7 @@ class CreateReportsTable extends Migration
 
             $table->string('password')->nullable()->default(null);
 
-            $table->unsignedInteger('hit')->nullable()->default(null);
+            $table->unsignedInteger('hit')->default(0);
 
             $table->timestamps();
         });
