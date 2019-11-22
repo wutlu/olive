@@ -69,7 +69,7 @@
                                 <a href="tel:850-302-1631">(+90) 850 302 16 30</a>
                                 <a href="https://veri.zone/">https://veri.zone</a>
                                 <a href="https://olive.veri.zone/">https://olive.veri.zone</a>
-                                <p>Mustafa Kemal Mh. Dumlupınar Blv. ODTÜ Teknokent Bilişim İnovasyon Merkezi 280/G No:1260 Alt Zemin Kat Çankaya, Ankara</p>
+                                <p>Mustafa Kemal Mh. Dumlupınar Blv. ODTÜ Teknokent Bilişim İnovasyon Merkezi 280/G No: 1260 Alt Zemin Kat Çankaya, Ankara</p>
                                 <img class="logo" alt="Logo" src="{{ asset('img/olive_logo.svg') }}" />
                             </div>
                             <div class="ground center">

@@ -1540,7 +1540,7 @@ code {
 }
 
 .markdown table {
-  margin: 0 0 .4rem;
+  margin: 0 0 1rem;
 }
 .markdown table tr > td,
 .markdown table tr > th {
