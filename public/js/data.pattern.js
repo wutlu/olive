@@ -1794,11 +1794,6 @@ function __report__pattern(obj, form, type, method)
             }
         break;
         case 'stats':
-            if (method == 'read')
-            {
-                form.addClass('cyan darken-4')
-            }
-
             form.find('.content').html(
                 [
                     $('<div />', {
