@@ -48,6 +48,7 @@ class Crawler
                 'googlesyndication',
                 'navbar',
                 'img',
+                'themes',
                 'feed',
                 'main-wrapper',
                 'font',

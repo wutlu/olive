@@ -7,10 +7,10 @@
     <!-- viewport -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-    @isset($desktop)
+    @if(@$desktop == true)
     @else
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, shring-to-fit=no, user-scalable=no" />
-    @endisset
+    @endif
 
     @isset($breadcrumb)
         @php $title = end($breadcrumb); @endphp

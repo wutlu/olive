@@ -4,17 +4,17 @@
     ],
     'footer_hide' => true,
     'robots' => $report->password ? [ 'noindex' ] : false,
-    'desktop' => true
+    'desktop' => $authenticate === null || $authenticate === true ? true : false
 ])
-
-@push('local.styles')
-    body {
-        overflow: auto !important;
-    }
-@endpush
 
 @section('content')
     @if ($authenticate === null || $authenticate === true)
+        @push('local.styles')
+            body {
+                overflow: auto !important;
+            }
+        @endpush
+
         <div id="fullpage">
             <div class="section">
                 <div class="report-view">
@@ -87,7 +87,7 @@
     @else
         <div id="fullpage">
             <div class="section">
-                <div class="card d-table mx-auto mb-1">
+                <div class="card card-unstyled d-table mx-auto mb-1">
                     <div class="card-content p-2">
                         <span class="card-title">Şifreli Rapor</span>
                         <form method="post" action="{{ route('report.view', $report->key) }}">
