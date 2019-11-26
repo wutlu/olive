@@ -1277,6 +1277,8 @@ function __report__pattern(obj, form, type, method)
         case 'lines':
             if (type == 'title' && method == 'read')
             {
+                form.addClass('teal lighten-5 z-depth-2')
+
                 form.find('.logo').remove()
                 form.find('.content').remove()
                 form.find('.date').remove()

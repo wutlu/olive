@@ -188,6 +188,8 @@ class ReportController extends Controller
                 ]);
 
                 $authenticate = true;
+
+                $report->increment('hit_with_password');
             }
             else
             {

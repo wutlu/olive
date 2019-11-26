@@ -37,7 +37,7 @@
         @if (count($data))
             <ul class="collection collection-hoverable collection-unstyled">
                 @foreach ($data as $item)
-                    <li class="collection-item {{ $item->status() ? 'green' : 'red' }} lighten-5" data-item-id="item-{{ $item->id }}">
+                    <li class="collection-item {{ $item->status() ? '' : 'red' }} lighten-5" data-item-id="item-{{ $item->id }}">
                         <span>
                             <span>{{ $item->name }}</span>
                             <a class="blue-grey-text align-self-center" href="{{ route('user.profile', $item->user_id) }}">{{ '@'.$item->user->name }}</a>
@@ -53,6 +53,10 @@
                                     <span class="align-self-center d-flex pl-1 pr-1">
                                         <i class="material-icons align-self-center mr-1">remove_red_eye</i>
                                         <span class="align-self-center" style="width: 48px;">{{ $item->hit }}</span>
+                                    </span>
+                                    <span class="align-self-center d-flex pl-1 pr-1">
+                                        <i class="material-icons align-self-center mr-1">lock</i>
+                                        <span class="align-self-center" style="width: 48px;">{{ $item->hit_with_password }}</span>
                                     </span>
                                 </div>
                             </div>
