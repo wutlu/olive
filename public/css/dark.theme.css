@@ -28,5 +28,50 @@
   background-color: transparent !important;
   border-width: 1px 0;
   border-style: solid;
-  border-color: rgba(0, 0, 0, .4) transparent rgba(255, 255, 255, .1);
+  border-color: rgba(0, 0, 0, .4);
+}
+
+body,
+main {
+  background-color: #212121;
+}
+
+/*!
+ * footer
+ */
+footer.page-footer {
+  border-top: 1px solid #111;
+}
+
+/*!
+ * breadcrumb
+ */
+#breadcrumb {
+  background-color: #424242;
+  border-color: #111;
+}
+#breadcrumb .breadcrumb:before,
+#breadcrumb .breadcrumb {
+  color: rgba(255, 255, 255, .6);
+}
+
+/*!
+ * card
+ */
+.card {
+  background-color: #323232;
+}
+.card > .card-content span.card-title {
+  color: #fff;
+}
+
+/*!
+ * main nav
+ */
+#main-nav {
+  background-color: #222;
+}
+
+#main-nav.active {
+  background-color: #111;
 }

@@ -798,9 +798,7 @@
                     <div class="markdown"></div>
                 </div>
                 <div class="card-action right-align">
-                    <button type="submit" class="btn-flat waves-effect">
-                        <i class="material-icons">send</i>
-                    </button>
+                    <button type="submit" class="btn-flat waves-effect">Gönder</button>
                 </div>
             </div>
         </form>

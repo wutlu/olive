@@ -50,6 +50,9 @@
         display: none;
         height: 92px;
         overflow: hidden;
+
+        -webkit-box-shadow: 0 0 24px 0 rgba(0, 0, 0, .1);
+                box-shadow: 0 0 24px 0 rgba(0, 0, 0, .1);
     }
     .carousel-news [data-name=item] > img {
         width: auto;
@@ -84,7 +87,7 @@
 
 @section('wildcard')
     @if (count($news))
-        <div class="carousel-news owl-carousel grey lighten-4 z-depth-1">
+        <div class="carousel-news owl-carousel">
             @foreach ($news as $item)
                 <a href="{{ route('search.dashboard').'?q="'.$item->data->title.'"' }}" class="d-flex" data-name="item">
                     @isset($item->data->image)

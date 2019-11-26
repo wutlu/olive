@@ -256,8 +256,8 @@
   margin: 0 auto;
   padding: 32px;
 
-  -webkit-box-shadow: 3px 0px 16px 1px rgba(0, 0, 0, .1), 0 0 3px 1px rgba(0, 0, 0, .1);
-          box-shadow: 3px 0px 16px 1px rgba(0, 0, 0, .1), 0 0 3px 1px rgba(0, 0, 0, .1);
+  -webkit-box-shadow: 0 0 24px 0 rgba(0, 0, 0, .1);
+          box-shadow: 0 0 24px 0 rgba(0, 0, 0, .1);
 }
 .report-page input[type=text] {
   position: relative;
@@ -721,12 +721,9 @@ body.fpw-active > #full_page-wrapper {
   width: 600px;
   height: 128px;
 
-  background-color: rgba(255, 255, 255, .8);
+  background-color: #333;
 
   border-radius: 1rem;
-  border-width: 2px;
-  border-style: dashed;
-  border-color: #c00;
 
   opacity: .8;
 
@@ -746,18 +743,18 @@ body.fpw-active > #full_page-wrapper {
 #report-menu.ghost,
 #report-menu.show,
 #report-menu:hover {
+  background-color: #fff;
+
   opacity: 1;
 
-  -webkit-box-shadow: 0 0 0 4px #fff, 0 0 48px 1px rgba(0, 0, 0, .4);
-          box-shadow: 0 0 0 4px #fff, 0 0 48px 1px rgba(0, 0, 0, .4);
+  -webkit-box-shadow: 0 0 32px 0 rgba(0, 0, 0, .2);
+          box-shadow: 0 0 32px 0 rgba(0, 0, 0, .2);
 
   -webkit-transform: translateY(-10px);
           transform: translateY(-10px);
 
   -webkit-transition: all 200ms cubic-bezier(.25, .46, .45, .94);
           transition: all 200ms cubic-bezier(.25, .46, .45, .94);
-
-  border-color: #fff;
 }
 
 @keyframes ghost {
@@ -1445,14 +1442,10 @@ table.invoice tfoot > tr {
   margin: 0;
   line-height: 48px;
 
-  background-color: #f0f0f0;
+  background-color: #e0e0e0;
 
   -webkit-box-shadow: none;
           box-shadow: none;
-
-  border-width: 0 0 1px;
-  border-style: solid;
-  border-color: #e1e1e1;
 }
 #breadcrumb .breadcrumb:before,
 #breadcrumb .breadcrumb {
@@ -2060,7 +2053,10 @@ main {
 footer.page-footer {
   padding-top: 2rem;
   background-color: transparent;
-  border-top: 1px solid #f0f0f0;
+
+  border-width: 2px;
+  border-style: solid;
+  border-color: #f0f0f0;
 }
 footer.page-footer > .container > .row > .col > img#vz-logo {
   max-width: 128px;
@@ -2263,6 +2259,9 @@ footer.page-footer > .container > .row > .col > img#vz-logo {
   margin: 0;
   border-radius: .2rem;
   word-break: break-word;
+
+  -webkit-box-shadow: 0 0 16px 0 rgba(0, 0, 0, .1);
+          box-shadow: 0 0 16px 0 rgba(0, 0, 0, .1);
 }
 .card > .card-image,
 .card > .card-image > img {
@@ -2947,12 +2946,12 @@ table.table-loading:after {
   -webkit-transition: all 400ms cubic-bezier(.25, .46, .45, .94);
           transition: all 400ms cubic-bezier(.25, .46, .45, .94);
 
-  -webkit-box-shadow: 3px 0px 16px 1px rgba(0, 0, 0, .1), 0 0 3px 1px rgba(0, 0, 0, .1);
-          box-shadow: 3px 0px 16px 1px rgba(0, 0, 0, .1), 0 0 3px 1px rgba(0, 0, 0, .1);
+  -webkit-box-shadow: 0 0 24px 0 rgba(0, 0, 0, .1);
+          box-shadow: 0 0 24px 0 rgba(0, 0, 0, .1);
 }
 
 #main-nav.active {
-  background-color: #f9f9f9;
+  background-color: rgba(255, 255, 255, 1);
 }
 
 /*!
@@ -2961,8 +2960,8 @@ table.table-loading:after {
 ul#slide-out {
   height: 100% !important;
 
-  -webkit-box-shadow: 3px 0px 16px 1px rgba(0, 0, 0, .1), 1px 0px 6px 1px rgba(0, 0, 0, .1);
-          box-shadow: 3px 0px 16px 1px rgba(0, 0, 0, .1), 1px 0px 6px 1px rgba(0, 0, 0, .1);
+  -webkit-box-shadow: 0 0 24px 0 rgba(0, 0, 0, .1);
+          box-shadow: 0 0 24px 0 rgba(0, 0, 0, .1);
 
   overflow: hidden;
 }
@@ -3172,7 +3171,7 @@ ul#slide-out li > .collapsible-header > .material-icons {
 }
 
 .chip:focus {
-  background-color: #78909c;
+  background-color: #333;
 }
 
 /*!
@@ -3944,10 +3943,9 @@ nav.scrolled {
 .z-depth-1,
 nav.scrolled.active,
 .card-panel,
-.card,
 .sidenav {
-  -webkit-box-shadow: 3px 0px 16px 1px rgba(0, 0, 0, .1), 0 0 3px 1px rgba(0, 0, 0, .1);
-          box-shadow: 3px 0px 16px 1px rgba(0, 0, 0, .1), 0 0 3px 1px rgba(0, 0, 0, .1);
+  -webkit-box-shadow: 0 0 24px 0 rgba(0, 0, 0, .1);
+          box-shadow: 0 0 24px 0 rgba(0, 0, 0, .1);
 }
 
 /*!
@@ -4007,7 +4005,7 @@ nav.scrolled.active,
  * browser mockup
  */
 .browser-mockup {
-    border-top: 2em solid rgba(230, 230, 230, 0.7);
+    border-top: 2em solid rgba(200, 200, 200, .8);
     border-radius: 3px 3px 0 0;
 
     position: relative;

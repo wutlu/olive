@@ -969,8 +969,9 @@
                 <div class="{{ isset($wide) ? 'container container-wide' : 'container' }} pt-2 pb-2">
                     <div class="row">
                         <div class="col l4 s12">
-                            <img id="vz-logo" src="{{ asset('img/veri.zone_logo-grey.svg') }}" alt="veri.zone-logo" />
-                            <p class="grey-text">© {{ date('Y') }} <a href="https://veri.zone/">Veri Zone Teknoloji</a> | Tüm hakları saklıdır.</p>
+                            <img id="vz-logo" src="{{ asset('img/veri.zone_logo.svg') }}" alt="veri.zone-logo" />
+                            <p class="m-0 grey-text">© {{ date('Y') }} <a href="https://veri.zone/">Veri Zone Teknoloji</a> | Tüm hakları saklıdır.</p>
+                            <p class="m-0 grey-text">Mustafa Kemal Mh. Dumlupınar Blv. ODTÜ Teknokent Bilişim İnovasyon Merkezi 280/G No:1260<br />Alt Zemin Kat Çankaya, Ankara</p>
                             <!--
                             <i class="social-icon icon-tumblr">&#xe800;</i>
                             <i class="social-icon icon-email">&#xe801;</i>
@@ -979,24 +980,38 @@
                             <i class="social-icon icon-call">&#xe806;</i>
                             <i class="social-icon icon-facebook">&#xe807;</i>
                             -->
-                            <a target="_blank" href="https://twitter.com/verizonetek" class="btn-flat btn-small btn-floating">
-                                <i class="social-icon icon-twitter white-text">&#xe803;</i>
-                            </a>
-                            <a target="_blank" href="https://www.linkedin.com/company/verizonetek/" class="btn-flat btn-small btn-floating">
-                                <i class="social-icon icon-linkedin white-text">&#xe805;</i>
-                            </a>
-                            <a target="_blank" href="https://www.instagram.com/verizonetek/" class="btn-flat btn-small btn-floating">
-                                <i class="social-icon icon-instagram white-text">&#xe808;</i>
-                            </a>
+                            <div class="pt-1 mb-1">
+                                <a target="_blank" href="https://twitter.com/verizonetek" class="btn-flat btn-small btn-floating">
+                                    <i class="social-icon icon-twitter white-text">&#xe803;</i>
+                                </a>
+                                <a target="_blank" href="https://www.linkedin.com/company/verizonetek/" class="btn-flat btn-small btn-floating">
+                                    <i class="social-icon icon-linkedin white-text">&#xe805;</i>
+                                </a>
+                                <a target="_blank" href="https://www.instagram.com/verizonetek/" class="btn-flat btn-small btn-floating">
+                                    <i class="social-icon icon-instagram white-text">&#xe808;</i>
+                                </a>
+                            </div>
                         </div>
                         <div class="col l4 offset-l2 s12">
-                            <p class="grey-text">Mustafa Kemal Mh. Dumlupınar Blv. ODTÜ Teknokent Bilişim İnovasyon Merkezi</p>
-                            <p class="grey-text">280/G No:1260 Alt Zemin Kat Çankaya, Ankara</p>
-                            <a class="grey-text text-darken-2 d-table" href="tel:+908503021630">+90 850 302 16 30</a>
-                            <a class="grey-text text-darken-2 d-table" href="mailto:bilgi@veri.zone">bilgi@veri.zone</a>
+                            <ul class="m-0">
+                                <li>
+                                    <a class="grey-text" href="{{ route('page.view', 'hakkimizda') }}">Hakkımızda</a>
+                                </li>
+                                <li>
+                                    <a class="grey-text" href="{{ route('forum.index') }}">Forum</a>
+                                </li>
+                                @auth
+                                    <li>
+                                        <a class="grey-text" href="{{ route('settings.support') }}">Destek</a>
+                                    </li>
+                                @endauth
+                                <li>
+                                    <a class="grey-text" href="{{ route('page.view', 'iletisim') }}">İletişim</a>
+                                </li>
+                            </ul>
                         </div>
                         <div class="col l2 s12">
-                            <ul class="mt-0 mb-1">
+                            <ul class="m-0">
                                 <li>
                                     <a class="grey-text" href="{{ route('page.view', 'gizlilik-politikasi') }}">Gizlilik Politikası</a>
                                 </li>
@@ -1005,14 +1020,6 @@
                                 </li>
                                 <li>
                                     <a class="grey-text" href="{{ route('page.view', 'cerez-politikasi') }}">Çerez Politikası</a>
-                                </li>
-                            </ul>
-                            <ul class="mt-0 mb-0">
-                                <li>
-                                    <a class="grey-text" href="{{ route('page.view', 'hakkimizda') }}">Hakkımızda</a>
-                                </li>
-                                <li>
-                                    <a class="grey-text" href="{{ route('page.view', 'iletisim') }}">İletişim</a>
                                 </li>
                             </ul>
                         </div>

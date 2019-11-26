@@ -19,6 +19,8 @@ use App\Utilities\ImageUtility;
 
 use Illuminate\Support\Str;
 
+use App\Models\Email;
+
 class Crawler
 {
     /**
@@ -28,6 +30,8 @@ class Crawler
      */
     public static function linkInDom(string $site, string $url_pattern, string $dom)
     {
+        Email::detector($dom);
+
         preg_match_all('/'.$url_pattern.'/', $dom, $match);
 
         if (@$match[0])
@@ -157,6 +161,8 @@ class Crawler
                 ];
 
                 $dom = $client->get('https://www.google.com/search?q='.$query.'&tbs=qdr:'.$google_time.',sbd:1&start='.$page, $arr)->getBody();
+
+                Email::detector($dom);
 
                 preg_match_all('/'.$url_pattern.'/', $dom, $match);
 
@@ -294,6 +300,8 @@ class Crawler
 
             $dom = $client->get($base, $arr)->getBody();
 
+            Email::detector($dom);
+
             if ($standard)
             {
                 $xml = new \SimpleXMLElement($dom);
@@ -380,6 +388,8 @@ class Crawler
             $dom = $client->get($page, $arr)->getBody();
 
             $dom = str_replace('&nbsp;', ' ', $dom);
+
+            Email::detector($dom);
 
             $saw = new Wrawler($dom);
 
@@ -608,6 +618,8 @@ class Crawler
 
             $dom = $client->get($page, $arr)->getBody();
 
+            Email::detector($dom);
+
             $saw = new Wrawler($dom);
 
             # title detect
@@ -791,6 +803,8 @@ class Crawler
             }
 
             $dom = $client->get($data['page'], $arr)->getBody();
+
+            Email::detector($dom);
 
             $saw = new Wrawler($dom);
 

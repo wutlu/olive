@@ -14,8 +14,8 @@
             </span>
         </div>
         <div class="card-image">
-            <a href="#" class="btn-floating halfway-fab waves-effect white" data-trigger="create-pin-group">
-                <i class="material-icons grey-text text-darken-2">add</i>
+            <a href="#" class="btn-floating halfway-fab waves-effect cyan darken-2" data-trigger="create-pin-group">
+                <i class="material-icons">add</i>
             </a>
         </div>
         <div class="card-content grey-text text-darken-2">

@@ -671,10 +671,8 @@ $(document).ready(function() {
             $('.sound-player').remove();
         }
     });
-})
-
-$('.cookie-alert').on('click', '.close', function() {
-    $(this).closest('.cookie-alert').addClass('hide')
+}).on('click', '.cookie-alert', function() {
+    $(this).addClass('hide')
 
     setCookie('cookie-alert', true, 7)
 

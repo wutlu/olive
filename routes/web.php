@@ -345,12 +345,14 @@ Route::domain('olive.'.config('app.domain'))->group(function () {
     });
 });
 
-Route::get('/', 'HomeController@index')->name('home');
+Route::domain(config('app.domain'))->group(function () {
+    Route::get('/', 'HomeController@index')->name('home');
 
-Route::post('demo-istek', 'HomeController@demoRequest')->name('demo.request');
+    Route::post('demo-istek', 'HomeController@demoRequest')->name('demo.request');
 
-Route::prefix('gercek-zamanli')->namespace('RealTime')->group(function () {
-    Route::post('sorgu/ornek', 'RealTimeController@querySample')->name('realtime.query.sample');
+    Route::prefix('gercek-zamanli')->namespace('RealTime')->group(function () {
+        Route::post('sorgu/ornek', 'RealTimeController@querySample')->name('realtime.query.sample');
+    });
+
+    Route::get('{slug}', 'PageController@view')->name('page.view');
 });
-
-Route::get('{slug}', 'PageController@view')->name('page.view');

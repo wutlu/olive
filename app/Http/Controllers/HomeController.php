@@ -214,8 +214,8 @@ class HomeController extends Controller
                 'icon' => asset('img/icons/alarm.png')
             ],
             [
-                'title' => 'Bulut Rapor Editörü',
-                'text' => 'Analizlerinizi Olive Bulut Rapor Editörü ile anında rapor haline getirin.',
+                'title' => 'Olive Rapor Editörü',
+                'text' => 'Analiz oluştururken aynı zamanda rapor da hazırlayın.',
                 'icon' => asset('img/icons/analytics.png')
             ],
             [

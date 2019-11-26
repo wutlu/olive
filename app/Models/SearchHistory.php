@@ -7,12 +7,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class SearchHistory extends Model
 {
-	use SoftDeletes;
+    use SoftDeletes;
 
     protected $table = 'search_histories';
 
     protected $fillable = [
-    	'query'
+        'query'
     ];
 
     protected $softDelete = true;
