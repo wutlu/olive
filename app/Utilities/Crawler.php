@@ -52,6 +52,8 @@ class Crawler
                 'feed',
                 'main-wrapper',
                 'font',
+                'external',
+                'dist',
                 'header',
                 'hsa',
                 'without',

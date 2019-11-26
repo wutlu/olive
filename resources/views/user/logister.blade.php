@@ -79,7 +79,7 @@
                         <div class="input-field">
                             <input name="password_login" id="password_login" type="password" class="validate" />
                             <label for="password_login">Şifre</label>
-                            <span class="helper-text">Hesap şifreniz.</span>
+                            <span class="helper-text"></span>
                         </div>
                         <button type="submit" class="waves-effect waves-light btn blue-grey" style="width: 100%;">Giriş Yap</button>
                     </form>

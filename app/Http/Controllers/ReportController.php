@@ -155,7 +155,7 @@ class ReportController extends Controller
         $report->fill($request->all());
         $report->organisation_id = $user->organisation_id;
         $report->user_id = $user->id;
-        $report->key = md5(time().$user->id.$user->organisation_id);
+        $report->key = time().$user->id.$user->organisation_id.rand(1000, 1000000);
         $report->save();
 
         $user->report_id = $report->id;

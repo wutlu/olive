@@ -7,17 +7,24 @@
     'desktop' => $authenticate === null || $authenticate === true ? true : false
 ])
 
-@section('content')
-    @if ($authenticate === null || $authenticate === true)
-        @push('local.styles')
-            body {
-                overflow: auto !important;
-            }
-        @endpush
+@push('local.styles')
+    .header,
+    .footer {
+        height: 100vh;
+        background-color: #006064;
+    }
+@endpush
 
-        <div id="fullpage">
-            <div class="section">
-                <div class="report-view">
+@section('content')
+    <div id="fullpage">
+        @if ($authenticate === null || $authenticate === true)
+            @push('local.styles')
+                body {
+                    overflow: auto !important;
+                }
+            @endpush
+            <div class="section header d-flex justify-content-center">
+                <div class="report-view align-self-center">
                     <div class="report-page">
                         <div class="sphere sphere-2"></div>
 
@@ -35,8 +42,8 @@
                 </div>
             </div>
             @foreach ($report->pages as $page)
-                <div class="section" id="section-{{ $page->id }}">
-                    <div class="report-view">
+                <div class="section d-flex justify-content-center" id="section-{{ $page->id }}">
+                    <div class="report-view align-self-center">
                         <div class="report-page">
                             <h3 class="title">{{ $page->title }}</h3>
                             <h6 class="subtitle">{{ $page->subtitle }}</h6>
@@ -56,8 +63,8 @@
                     __report__pattern({!! $page->pattern() !!}, $('#section-{{ $page->id }}'), '{{ explode('.', $page->type)[1] }}', 'read')
                 @endpush
             @endforeach
-            <div class="section">
-                <div class="report-view">
+            <div class="section footer d-flex justify-content-center">
+                <div class="report-view align-self-center">
                     <div class="report-page">
                         <div class="sphere sphere-center sphere-2"></div>
 
@@ -83,9 +90,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-    @else
-        <div id="fullpage">
+        @else
             <div class="section">
                 <div class="card card-unstyled d-table mx-auto mb-1">
                     <div class="card-content p-2">
@@ -122,8 +127,8 @@
                 </div>
                 <p class="grey-text center-align">{{ date('Y') }} © <a href="https://veri.zone/" class="grey-text">Veri Zone Teknoloji</a></p>
             </div>
-        </div>
-    @endif
+        @endif
+    </div>
 @endsection
 
 @push('external.include.footer')
