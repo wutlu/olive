@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEmailsTable extends Migration
+class CreateLinksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,14 @@ class CreateEmailsTable extends Migration
      */
     public function up()
     {
-        Schema::create('emails', function (Blueprint $table) {
+        Schema::create('links', function (Blueprint $table) {
             $table->increments('id')->unsigned();
 
-            $table->string('email')->unique();
-            $table->string('name')->nullable()->default(null);
-            $table->string('category')->nullable()->default(null);
+            $table->string('key')->unique();
 
-            $table->enum('status', [ 'new', 'checked', 'disabled' ])->default('new');
+            $table->string('url')->index();
 
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -34,6 +31,6 @@ class CreateEmailsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('emails');
+        Schema::dropIfExists('links');
     }
 }
