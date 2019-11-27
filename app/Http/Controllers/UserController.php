@@ -511,7 +511,7 @@ class UserController extends Controller
                 $agent_browser = $agent->browser();
                 $agent_platform = $agent->platform();
 
-                $browser['name'] = $agent_browser;
+                $browser['name'] = $agent_browser ? $agent_browser : 'unknown';
 
                 if ($agent->version($agent_browser))
                 {
