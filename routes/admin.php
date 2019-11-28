@@ -78,17 +78,6 @@ Route::domain('olive.'.config('app.domain'))->group(function () {
         Route::post('arama-gecmisi/{id}', 'UserController@adminSearchHistoryData');
     });
 
-    Route::prefix('bulten')->group(function () {
-        Route::get('/', 'NewsletterController@dashboard')->name('admin.newsletter');
-        Route::post('/', 'NewsletterController@json');
-        Route::get('islem/{id?}', 'NewsletterController@form')->name('admin.newsletter.form');
-        Route::post('kayit', 'NewsletterController@save')->name('admin.newsletter.form.save');
-        Route::post('durum', 'NewsletterController@status')->name('admin.newsletter.status');
-        Route::delete('/', 'NewsletterController@delete')->name('admin.newsletter.delete');
-
-        Route::post('kullanici-listesi', 'NewsletterController@users')->name('admin.newsletter.users');
-    });
-
     Route::prefix('organizasyon-yonetimi')->group(function () {
         Route::get('{status?}', 'OrganisationController@adminListView')->name('admin.organisation.list')->where('status', '(on|off)');
         Route::post('json', 'OrganisationController@adminListViewJson')->name('admin.organisation.list.json');

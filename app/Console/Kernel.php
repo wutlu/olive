@@ -428,14 +428,6 @@ class Kernel extends ConsoleKernel
                      ->withoutOverlapping(1);
 
             /**
-             * E-posta bülteni e-posta kuyruğu.
-             */
-            $schedule->command('nohup "newsletter:process_trigger" --type=restart')
-                     ->everyMinute()
-                     ->timezone(config('app.timezone'))
-                     ->withoutOverlapping(1);
-
-            /**
              * Başarılı olamayan eylemlerin tekrar kuyruğu.
              */
             $schedule->command('nohup "queue:retry all" --type=restart')

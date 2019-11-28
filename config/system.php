@@ -175,8 +175,7 @@ return [
         'important' => 'Sadece Önemli Bildirimler',
         'login' => 'Giriş Bildirimleri',
         'forum' => 'Forum Takip ve Uyarı Bildirimleri',
-        'badge' => 'Yeni Kazanılan Etiket Bildirimleri',
-        'newsletter' => 'E-posta Bülteni',
+        'badge' => 'Yeni Kazanılan Etiket Bildirimleri'
     ],
 
     /**
