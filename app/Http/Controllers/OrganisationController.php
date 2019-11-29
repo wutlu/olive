@@ -1244,7 +1244,7 @@ class OrganisationController extends Controller
 
         $query = $query->skip($skip)
                        ->take($take)
-                       ->orderBy('id', 'DESC')
+                       ->orderBy('updated_at', 'DESC')
                        ->get();
 
         return [
