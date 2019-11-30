@@ -112,5 +112,9 @@ return [
 
     'smartlook' => [
         'code' => env('SMARTLOOK_CODE')
+    ],
+
+    'smartsupp' => [
+        'code' => env('SMARTSUPP_CODE')
     ]
 ];

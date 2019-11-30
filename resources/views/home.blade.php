@@ -570,4 +570,14 @@
     <script src="{{ asset('js/owl.carousel.min.js?v='.config('system.version')) }}"></script>
     <script src="{{ asset('js/simpleParallax.min.js?v='.config('system.version')) }}"></script>
     <script src="{{ asset('js/jquery.mark.min.js?v='.config('system.version')) }}" charset="UTF-8"></script>
+    <script type="text/javascript">
+    var _smartsupp = _smartsupp || {};
+    _smartsupp.key = '{{ config('services.smartsupp.code') }}';
+    window.smartsupp||(function(d) {
+      var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+      s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+      c.type='text/javascript';c.charset='utf-8';c.async=true;
+      c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+    })(document);
+    </script>
 @endpush
