@@ -114,7 +114,7 @@ return [
         'code' => env('SMARTLOOK_CODE')
     ],
 
-    'smartsupp' => [
-        'code' => env('SMARTSUPP_CODE')
+    'jivo' => [
+        'code' => env('JIVO_CODE')
     ]
 ];

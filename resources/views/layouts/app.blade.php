@@ -1142,5 +1142,8 @@
             smartlook('init', '{{ config('services.smartlook.code') }}');
         </script>
     @endif
+    @if (config('services.jivo.code'))
+        <script src="//code.jivosite.com/widget.js" data-jv-id="{{ config('services.jivo.code') }}" async></script>
+    @endif
 </body>
 </html>
