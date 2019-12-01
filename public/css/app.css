@@ -721,9 +721,11 @@ body.fpw-active > #full_page-wrapper {
   width: 600px;
   height: 128px;
 
-  background-color: #333;
-
+  background-color: #263238;
   border-radius: 1rem;
+
+  -webkit-box-shadow: 0 0 24px 0 #263238;
+          box-shadow: 0 0 24px 0 #263238;
 
   opacity: .8;
 
