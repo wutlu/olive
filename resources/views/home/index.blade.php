@@ -99,7 +99,7 @@
         var test_top = $('.section-test').offset().top;
         var scroll_top = $(this).scrollTop();
 
-        if ((scroll_top + 48) >= test_top && phone_form === false)
+        if (scroll_top >= test_top && phone_form === false)
         {
             phone_form = true;
 
@@ -607,11 +607,13 @@
                         <img alt="Logo" src="{{ asset('img/logo-btk.png') }}" class="brand-logo" />
                     </a>
                 </div>
+                <!--
                 <div class="p-1">
                     <a target="_blank" rel="nofollow" href="https://www.almbase.com/">
                         <img alt="Logo" src="{{ asset('img/logo-almbase.png') }}" class="brand-logo" />
                     </a>
                 </div>
+                -->
                 <div class="p-1">
                     <a target="_blank" rel="nofollow" href="https://cozone.co/">
                         <img alt="Logo" src="{{ asset('img/logo-cozone.png') }}" class="brand-logo" />
