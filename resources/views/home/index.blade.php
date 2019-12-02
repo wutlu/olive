@@ -396,7 +396,6 @@
     @push('local.styles')
         .section-realtime {
             background-image: url('{{ asset('img/photo/section-realtime.jpg') }}');
-            text-align: center;
         }
 
         /*!
