@@ -96,7 +96,7 @@
     var phone_form = false;
 
     $(window).scroll(function() {
-        var test_top = $('.section-test').offset().top;
+        var test_top = ($('.section-test').offset().top) - 96;
         var scroll_top = $(this).scrollTop();
 
         if (scroll_top >= test_top && phone_form === false)
@@ -105,7 +105,7 @@
 
             modal({
                 'id': 'info',
-                'title': 'Bilgi Bırakın Sizi Arayalım!',
+                'title': 'Telefon Bırakın Sizi Arayalım!',
                 'body': $('<div />', {
                     'html': $('<form />', {
                         'class': 'json',
