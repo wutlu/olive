@@ -38,7 +38,7 @@ class ArchiveAggregationRequest extends FormRequest
     {
         return [
             'date_limit' => 'Başlangıç tarihi '.$this->historical_days.' günden önce olamaz.',
-            'date_limit_between' => 'Arama raporları için tarih aralığı 14 günden geniş olamaz.',
+            'date_limit_between' => 'Arama raporları için tarih aralığı 30 günden geniş olamaz.',
         ];
     }
 
