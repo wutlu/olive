@@ -114,6 +114,10 @@
                         'id': 'phone_form',
                         'data-callback': '__phone_form',
                         'html': [
+                            $('<p />', {
+                                'class': 'grey-text mb-0',
+                                'html': 'Sizi anlamak ve daha iyi bir hizmet verebilmek için aramamıza izin verin.'
+                            }),
                             $('<div />', {
                                 'class': 'd-flex',
                                 'html': [
@@ -129,7 +133,7 @@
                                             }),
                                             $('<label />', {
                                                 'for': 'name',
-                                                'html': 'Adınız'
+                                                'html': 'Adınız *'
                                             }),
                                             $('<span />', {
                                                 'class': 'helper-text'
@@ -148,7 +152,7 @@
                                             }),
                                             $('<label />', {
                                                 'for': 'corporate_name',
-                                                'html': 'Organizasyon Adınız'
+                                                'html': 'Organizasyon'
                                             }),
                                             $('<span />', {
                                                 'class': 'helper-text'
@@ -169,7 +173,7 @@
                                     }),
                                     $('<label />', {
                                         'for': 'phone',
-                                        'html': 'Telefon Numaranız'
+                                        'html': 'Telefon Numaranız *'
                                     }),
                                     $('<span />', {
                                         'class': 'helper-text'
