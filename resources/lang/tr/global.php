@@ -18,7 +18,8 @@ return [
         'iagree' => 'Kabul Ediyorum',
         'go' => 'Git',
         'help' => 'Yardım',
-        'success' => 'Başarılı'
+        'success' => 'Başarılı',
+        'send' => 'Gönder'
     ],
     'errors' => [
         'maxlength' => 'Bu alan daha fazla karakter desteklemiyor!',

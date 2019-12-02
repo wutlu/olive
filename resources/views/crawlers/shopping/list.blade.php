@@ -229,7 +229,7 @@
                 $('<a />', {
                     'href': '#',
                     'class': 'modal-close waves-effect btn-flat grey-text',
-                    'html': buttons.cancel
+                    'html': keywords.cancel
                 }),
                 $('<span />', {
                     'html': ' '
@@ -237,7 +237,7 @@
                 $('<a />', {
                     'href': '#',
                     'class': 'waves-effect btn-flat json',
-                    'html': buttons.ok,
+                    'html': keywords.ok,
                     'data-href': __.data('href'),
                     'data-method': 'post',
                     'data-callback': __.data('callback')

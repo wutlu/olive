@@ -324,7 +324,7 @@
                 $('<a />', {
                     'href': '#',
                     'class': 'modal-close waves-effect btn-flat grey-text',
-                    'html': buttons.cancel
+                    'html': keywords.cancel
                 }),
                 $('<span />', {
                     'html': ' '
@@ -333,7 +333,7 @@
                     'type': 'submit',
                     'class': 'waves-effect btn-flat',
                     'data-submit': 'form#edit-form',
-                    'html': buttons.ok
+                    'html': keywords.ok
                 })
             ]
         })
@@ -493,7 +493,7 @@
                    $('<a />', {
                        'href': '#',
                        'class': 'modal-close waves-effect btn-flat grey-text',
-                       'html': buttons.cancel
+                       'html': keywords.cancel
                    }),
                    $('<span />', {
                        'html': ' '
@@ -502,7 +502,7 @@
                        'type': 'submit',
                        'class': 'waves-effect btn-flat',
                        'data-submit': 'form#action-form',
-                       'html': buttons.ok
+                       'html': keywords.ok
                    })
                 ]
             })

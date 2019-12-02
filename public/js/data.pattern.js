@@ -207,7 +207,7 @@ $(document).on('click', '.read-aloud', function() {
             $('<a />', {
                 'href': '#',
                 'class': 'modal-close waves-effect btn-flat grey-text',
-                'html': buttons.cancel
+                'html': keywords.cancel
             }),
             $('<span />', {
                 'html': ' '
@@ -216,7 +216,7 @@ $(document).on('click', '.read-aloud', function() {
                 'type': 'submit',
                 'class': 'waves-effect btn-flat',
                 'data-submit': 'form#updateClass-form',
-                'html': buttons.ok
+                'html': keywords.ok
             })
         ]
     })
@@ -257,7 +257,7 @@ function __update_class(__, obj)
                $('<a />', {
                    'href': '#',
                    'class': 'modal-close waves-effect btn-flat',
-                   'html': buttons.ok
+                   'html': keywords.ok
                })
             ]
         })
@@ -2715,7 +2715,7 @@ $(document).on('click', '#report-menu.active [data-report-element=add-page]', fu
                 ]
             })
         ],
-        'title': buttons.help,
+        'title': keywords.help,
         'options': {
             dismissible: false
         },
@@ -2725,7 +2725,7 @@ $(document).on('click', '#report-menu.active [data-report-element=add-page]', fu
            $('<a />', {
                'href': '#',
                'class': 'modal-close waves-effect btn-flat',
-               'html': buttons.ok
+               'html': keywords.ok
            })
         ]
     })
@@ -2823,7 +2823,7 @@ function __report__status(__, obj)
                     $('<a />', {
                         'href': '#',
                         'class': 'modal-close waves-effect btn-flat grey-text',
-                        'html': buttons.cancel
+                        'html': keywords.cancel
                     }),
                     $('<span />', {
                         'html': ' '
@@ -2832,7 +2832,7 @@ function __report__status(__, obj)
                         'type': 'submit',
                         'class': 'waves-effect btn-flat',
                         'data-submit': 'form#report-new',
-                        'html': buttons.ok
+                        'html': keywords.ok
                     })
                 ]
             })
@@ -2911,7 +2911,7 @@ function __report__status(__, obj)
                     $('<a />', {
                         'href': '#',
                         'class': 'modal-close waves-effect grey-text btn-flat',
-                        'html': buttons.cancel
+                        'html': keywords.cancel
                     }),
                     $('<span />', {
                         'html': ' '
@@ -2919,7 +2919,7 @@ function __report__status(__, obj)
                     $('<a />', {
                         'href': '#',
                         'class': 'waves-effect btn-flat json',
-                        'html': buttons.ok,
+                        'html': keywords.ok,
                         'data-href': '/raporlar/durum?validate=on',
                         'data-method': 'post',
                         'data-include': 'report_date_1,report_date_2,report_password',

@@ -111,7 +111,7 @@
                             $('<a />', {
                                 'href': '{{ route('settings.account') }}',
                                 'class': 'waves-effect btn-flat grey-text text-darken-4',
-                                'html': buttons.ok
+                                'html': keywords.ok
                             })
                         ]
                     })
@@ -136,7 +136,7 @@
                                 'class': 'modal-close waves-effect btn-flat grey-text text-darken-4 json',
                                 'data-method': 'post',
                                 'data-href': '{{ route('term.version') }}',
-                                'html': buttons.iagree
+                                'html': keywords.iagree
                             })
                         ]
                     })
@@ -154,7 +154,7 @@
             @if (!auth()->user()->verified)
                 <div id="modal-confirmation" class="modal bottom-sheet">
                     <div class="modal-content">
-                        <div class="card mb-0">
+                        <div class="card">
                             <div class="card-content">
                                 <p>E-posta ({{ auth()->user()->email }}) adresinizi henüz doğrulamadınız.</p>
                                 <p>Bu adres size ait değilse <a href="{{ route('settings.account') }}" class="cyan-text text-darken-2">Hesap Bilgileri</a> sayfasından size ait bir e-posta adresi tanımlayın.</p>
@@ -168,34 +168,33 @@
                 </div>
 
                 @push('local.scripts')
+                    var instance = M.Modal.getInstance($('#modal-confirmation'));
+                        instance.open()
 
-                var instance = M.Modal.getInstance($('#modal-confirmation'));
-                    instance.open()
-
-                function __resend(__, obj)
-                {
-                    if (obj.status == 'ok')
+                    function __resend(__, obj)
                     {
-                        M.toast({
-                            html: 'Yeni bir doğrulama e-postası gönderildi.',
-                            classes: 'blue',
-                            completeCallback: function() {
-                                M.toast({ html: 'Lütfen e-posta kutunuzu kontrol edin.', classes: 'green darken-2' })
-                                instance.close()
-                            }
-                        })
+                        if (obj.status == 'ok')
+                        {
+                            M.toast({
+                                html: 'Yeni bir doğrulama e-postası gönderildi.',
+                                classes: 'blue',
+                                completeCallback: function() {
+                                    M.toast({ html: 'Lütfen e-posta kutunuzu kontrol edin.', classes: 'green darken-2' })
+                                    instance.close()
+                                }
+                            })
+                        }
+                        else if (obj.status == 'err')
+                        {
+                            M.toast({
+                                html: 'Mevcut hesap daha önceden doğrulanmış.',
+                                classes: 'red',
+                                completeCallback: function() {
+                                    instance.close()
+                                }
+                            })
+                        }
                     }
-                    else if (obj.status == 'err')
-                    {
-                        M.toast({
-                            html: 'Mevcut hesap daha önceden doğrulanmış.',
-                            classes: 'red',
-                            completeCallback: function() {
-                                instance.close()
-                            }
-                        })
-                    }
-                }
                 @endpush
             @endif
         @endauth
@@ -294,7 +293,7 @@
                                                         $('<a />', {
                                                             'href': '#',
                                                             'class': 'modal-close waves-effect btn-flat green-text',
-                                                            'html': buttons.cancel
+                                                            'html': keywords.cancel
                                                         }),
                                                         $('<span />', {
                                                             'html': ' '
@@ -305,7 +304,7 @@
                                                             'data-method': 'delete',
                                                             'data-href': '{{ route('admin.content.delete', [ 'es_index' => $delete['index'], 'es_type' => $delete['type'], 'es_id' => $delete['id'] ]) }}',
                                                             'data-callback': '__forever_deleted',
-                                                            'html': buttons.ok
+                                                            'html': keywords.ok
                                                         })
                                                     ]
                                                 })
@@ -1046,7 +1045,6 @@
     var recaptcha = {
         'site_key': '{{ config('services.google.recaptcha.site_key') }}'
     };
-    var buttons = {!! json_encode(__('global.keywords')) !!};
     var errors = {!! json_encode(__('global.errors')) !!};
     var keywords = {!! json_encode(__('global.keywords')) !!};
     var verifications = {!! json_encode(__('global.verifications')) !!};

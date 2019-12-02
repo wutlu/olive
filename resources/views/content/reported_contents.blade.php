@@ -72,7 +72,7 @@
                 $('<a />', {
                     'href': '#',
                     'class': 'modal-close waves-effect grey-text btn-flat',
-                    'html': buttons.cancel
+                    'html': keywords.cancel
                 }),
                 $('<span />', {
                     'html': ' '
@@ -80,7 +80,7 @@
                 $('<a />', {
                     'href': '#',
                     'class': 'waves-effect btn-flat json',
-                    'html': buttons.yes,
+                    'html': keywords.yes,
                     'data-href': '{{ route('reported_contents.delete') }}',
                     'data-method': 'delete',
                     'data-id': $(this).data('id'),

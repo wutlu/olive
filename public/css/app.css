@@ -2037,6 +2037,80 @@ body.module-search-active > .search-wrapper {
 }
 
 /*!
+ * home
+ */
+.home-items {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  border-style: solid;
+  border-width: 20vh;
+  border-color: #000;
+  background-color: #000;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.home-items > a.item {
+  opacity: .8;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+
+  -webkit-transition: all 1s cubic-bezier(.25, .46, .45, .94);
+          transition: all 1s cubic-bezier(.25, .46, .45, .94);
+}
+.home-items > a.item:hover {
+  opacity: 1;
+}
+.home-items > a.item:hover > .cover {
+  -webkit-box-shadow: 0 0 0 100vh rgba(0, 0, 0, .6);
+          box-shadow: 0 0 0 100vh rgba(0, 0, 0, .6);
+}
+.home-items > a.item > .cover {
+  background-repeat: no-repeat;
+  background-position: center bottom, center top;
+  background-size: 100% auto;
+  background-color: #111;
+
+  -webkit-transition: all 1s cubic-bezier(.25, .46, .45, .94);
+          transition: all 1s cubic-bezier(.25, .46, .45, .94);
+
+  width: 72px;
+  height: 100%;
+}
+.home-items > a.item[data-type=kisiler] {
+  background-image: url('../img/photo/1500x1500@person.jpg');
+}
+.home-items > a.item[data-type=kisiler] > .cover {
+  background-image: url('../img/kisiler.svg'), url('../img/emblem-colored.svg');
+}
+.home-items > a.item[data-type=markalar] {
+  background-image: url('../img/photo/1500x1500@brand.jpg');
+}
+.home-items > a.item[data-type=markalar] > .cover {
+  background-image: url('../img/markalar.svg'), url('../img/emblem-colored.svg');
+}
+.home-items > a.item[data-type=reklam-ajanslari] {
+  background-image: url('../img/photo/1500x1500@agency.jpg');
+}
+.home-items > a.item[data-type=reklam-ajanslari] > .cover {
+  background-image: url('../img/reklam-ajanslari.svg'), url('../img/emblem-colored.svg');
+}
+
+@media (max-width: 1024px) {
+  .home-items {
+    border-width: 10vh 0;
+  }
+  .home-items > a.item > .cover {
+    width: 48px;
+  }
+}
+
+/*!
  * main
  */
 main {
@@ -2056,7 +2130,7 @@ footer.page-footer {
   padding-top: 2rem;
   background-color: transparent;
 
-  border-width: 2px;
+  border-width: 2px 0 0;
   border-style: solid;
   border-color: #f0f0f0;
 }

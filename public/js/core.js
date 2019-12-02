@@ -267,14 +267,14 @@ $(document).on('keydown keyup change click', '.goodbye', function() {
                 'font-size': '18px'
             }
         }),
-        'title': __.data('modal-alert-title') ? __.data('modal-alert-title') : buttons.info,
+        'title': __.data('modal-alert-title') ? __.data('modal-alert-title') : keywords.info,
         'size': 'modal-small',
         'options': {},
         'footer': [
            $('<a />', {
                'href': '#',
                'class': 'modal-close waves-effect btn-flat',
-               'html': buttons.ok
+               'html': keywords.ok
            })
         ]
     })
@@ -932,7 +932,7 @@ function vzAjax(__)
                                $('<a />', {
                                    'href': '#',
                                    'class': 'modal-close waves-effect btn-flat',
-                                   'html': buttons.ok
+                                   'html': keywords.ok
                                })
                             ]
                         })
@@ -1015,7 +1015,7 @@ function vzAjax(__)
                                 $('<a />', {
                                     'href': '#',
                                     'class': 'modal-close waves-effect btn-flat',
-                                    'html': buttons.ok
+                                    'html': keywords.ok
                                 })
                             ]
                         })
@@ -1047,7 +1047,7 @@ function vzAjax(__)
                                 $('<a />', {
                                     'href': '#',
                                     'class': 'modal-close waves-effect btn-flat',
-                                    'html': buttons.ok
+                                    'html': keywords.ok
                                 })
                             ]
                         })
@@ -1065,7 +1065,7 @@ function vzAjax(__)
                             $('<a />', {
                                 'href': '#',
                                 'class': 'modal-close waves-effect btn-flat',
-                                'html': buttons.ok
+                                'html': keywords.ok
                             })
                         ]
                     })
@@ -1137,7 +1137,7 @@ function vzAjax(__)
                         $('<a />', {
                             'href': '#',
                             'class': 'modal-close waves-effect btn-flat',
-                            'html': buttons.ok
+                            'html': keywords.ok
                         })
                     ]
                 })
@@ -1164,7 +1164,7 @@ function vzAjax(__)
                         $('<a />', {
                             'href': '#',
                             'class': 'modal-close waves-effect btn-flat',
-                            'html': buttons.ok
+                            'html': keywords.ok
                         })
                     ]
                 })

@@ -205,7 +205,7 @@
                 $('<a />', {
                     'href': '#',
                     'class': 'modal-close waves-effect btn-flat grey-text',
-                    'html': buttons.cancel
+                    'html': keywords.cancel
                 }),
                 $('<span />', {
                     'html': ' '
@@ -214,7 +214,7 @@
                     'data-trigger': 'delete',
                     'href': '#',
                     'class': 'waves-effect btn-flat red-text hide',
-                    'html': buttons.remove
+                    'html': keywords.remove
                 }),
                 $('<span />', {
                     'html': ' '
@@ -223,7 +223,7 @@
                     'type': 'submit',
                     'class': 'waves-effect btn-flat',
                     'data-submit': 'form#form',
-                    'html': buttons.ok
+                    'html': keywords.ok
                 })
             ],
             'size': 'modal-medium',
@@ -243,7 +243,7 @@
                 $('<a />', {
                     'href': '#',
                     'class': 'modal-close waves-effect grey-text btn-flat',
-                    'html': buttons.cancel
+                    'html': keywords.cancel
                 }),
                 $('<span />', {
                     'html': ' '
@@ -251,7 +251,7 @@
                 $('<a />', {
                     'href': '#',
                     'class': 'waves-effect btn-flat red-text json',
-                    'html': buttons.ok,
+                    'html': keywords.ok,
                     'data-href': '{{ route('admin.carousel') }}',
                     'data-method': 'delete',
                     'data-id': $(this).data('id'),

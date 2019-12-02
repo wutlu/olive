@@ -145,7 +145,7 @@
                 $('<a />', {
                     'href': '#',
                     'class': 'modal-close waves-effect btn-flat grey-text',
-                    'html': buttons.cancel
+                    'html': keywords.cancel
                 }),
                 $('<span />', {
                     'html': ' '
@@ -154,7 +154,7 @@
                     'type': 'submit',
                     'class': 'waves-effect btn-flat',
                     'data-submit': 'form#form',
-                    'html': buttons.ok
+                    'html': keywords.ok
                 })
             ]
         })

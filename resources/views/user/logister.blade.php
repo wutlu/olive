@@ -165,7 +165,7 @@
                    $('<a />', {
                        'href': '#',
                        'class': 'modal-close waves-effect btn-flat',
-                       'html': buttons.ok
+                       'html': keywords.ok
                    })
                 ]
             })

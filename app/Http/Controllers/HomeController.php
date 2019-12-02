@@ -91,8 +91,15 @@ class HomeController extends Controller
         $ticket->user_id = config('app.user_id_support');
         $ticket->status = 'open';
 
-        $ticket->subject = 'Demo İsteği';
-        $ticket->message = '"'.$request->name.'" | "'.$request->phone.'"';
+        $ticket->subject = 'Bilgi Bırakıldı';
+        $ticket->message = implode(
+            PHP_EOL,
+            [
+                $request->name,
+                $request->corporate_name ? $request->corporate_name : 'Şirket Yok',
+                $request->phone
+            ]
+        );
         $ticket->type = 'organisayon-teklifi';
 
         $ticket->save();
@@ -181,11 +188,21 @@ class HomeController extends Controller
     }
 
     /**
+     * Site Ana Sayfa Seçimi
+     *
+     * @return view
+     */
+    public static function lobby()
+    {
+        return view('home.lobby');
+    }
+
+    /**
      * Site Ana Sayfası
      *
      * @return view
      */
-    public static function index()
+    public static function index(string $type)
     {
         $array = [
             [
@@ -215,7 +232,7 @@ class HomeController extends Controller
             ],
             [
                 'title' => 'Olive Rapor Editörü',
-                'text' => 'Analiz oluştururken aynı zamanda rapor da hazırlayın.',
+                'text' => 'Araştırma yaparken sadece tıklamalar ile eş zamanlı ve hızlı raporlar oluşturun.',
                 'icon' => asset('img/icons/analytics.png')
             ],
             [
@@ -295,7 +312,29 @@ class HomeController extends Controller
             ],
         ];
 
-        return view('home', compact('array'));
+        $types = [
+            'kisiler' => [
+                'key' => 'kisiler',
+                'title' => 'Kişiler İçin',
+                'description' => 'Alanınızdaki rekabeti eş zamanlı takip edin!',
+                'image' => asset('img/photo/1500x1500@person.jpg'),
+            ],
+            'markalar' => [
+                'key' => 'markalar',
+                'title' => 'Markalar İçin',
+                'description' => 'Rakiplerinizi hızlı bir şekilde inceleyin, dijitaldeki itibarınızdan her zaman haberdar olun!',
+                'image' => asset('img/photo/1500x1500@brand.jpg'),
+            ],
+            'reklam-ajanslari' => [
+                'key' => 'reklam-ajanslari',
+                'title' => 'Reklam Ajansları İçin',
+                'description' => 'Müşterilerinizin dijital meleği olun!',
+                'image' => asset('img/photo/1500x1500@agency.jpg'),
+            ],
+        ];
+        $type = $types[$type];
+
+        return view('home.index', compact('array', 'type', 'types'));
     }
 
     /**

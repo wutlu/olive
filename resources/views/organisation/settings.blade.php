@@ -64,7 +64,7 @@
                     $('<a />', {
                         'href': '#',
                         'class': 'modal-close waves-effect btn-flat grey-text',
-                        'html': buttons.cancel
+                        'html': keywords.cancel
                     }),
                     $('<span />', {
                         'html': ' '
@@ -73,7 +73,7 @@
                         'type': 'submit',
                         'class': 'waves-effect btn-flat',
                         'data-submit': 'form#form',
-                        'html': buttons.update
+                        'html': keywords.update
                     })
                 ]
             })
@@ -213,7 +213,7 @@
                            $('<a />', {
                                'href': '#',
                                'class': 'modal-close waves-effect btn-flat grey-text',
-                               'html': buttons.cancel
+                               'html': keywords.cancel
                            }),
                            $('<span />', {
                                'html': ' '
@@ -225,7 +225,7 @@
                                'data-user_id': __.data('user-id'),
                                'data-method': 'post',
                                'data-callback': '__transfer',
-                               'html': buttons.ok
+                               'html': keywords.ok
                            })
                         ]
                     })
@@ -244,7 +244,7 @@
                            $('<a />', {
                                'href': '#',
                                'class': 'modal-close waves-effect btn-flat grey-text',
-                               'html': buttons.cancel
+                               'html': keywords.cancel
                            }),
                            $('<span />', {
                                'html': ' '
@@ -256,7 +256,7 @@
                                'data-user_id': __.data('user-id'),
                                'data-method': 'delete',
                                'data-callback': '__remove_user',
-                               'html': buttons.ok
+                               'html': keywords.ok
                            })
                         ]
                     })
@@ -441,7 +441,7 @@
                                    $('<a />', {
                                        'href': '#',
                                        'class': 'modal-close waves-effect btn-flat grey-text',
-                                       'html': buttons.cancel
+                                       'html': keywords.cancel
                                    }),
                                    $('<span />', {
                                        'html': ' '
@@ -452,7 +452,7 @@
                                        'data-href': '{{ route('settings.organisation.invoice.cancel') }}',
                                        'data-method': 'delete',
                                        'data-callback': '__cancel',
-                                       'html': buttons.ok
+                                       'html': keywords.ok
                                    })
                                 ]
                             })
@@ -539,7 +539,7 @@
                                    $('<a />', {
                                        'href': '#',
                                        'class': 'modal-close waves-effect btn-flat grey-text',
-                                       'html': buttons.cancel
+                                       'html': keywords.cancel
                                    }),
                                    $('<span />', {
                                        'html': ' '
@@ -551,7 +551,7 @@
                                        'data-include': 'leave_key',
                                        'data-method': 'post',
                                        'data-callback': '__leave',
-                                       'html': buttons.ok
+                                       'html': keywords.ok
                                    })
                                 ]
                             })

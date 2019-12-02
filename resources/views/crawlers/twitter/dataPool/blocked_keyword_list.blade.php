@@ -99,7 +99,7 @@
                     $('<a />', {
                         'href': '#',
                         'class': 'modal-close waves-effect btn-flat grey-text',
-                        'html': buttons.cancel
+                        'html': keywords.cancel
                     }),
                     $('<span />', {
                         'html': ' '
@@ -107,7 +107,7 @@
                     $('<a />', {
                         'href': '#',
                         'class': 'waves-effect btn-flat red-text json',
-                        'html': buttons.ok,
+                        'html': keywords.ok,
                         'data-href': '{{ route('admin.twitter.trend.blocked_keywords') }}',
                         'data-id': __.data('id'),
                         'data-method': 'delete',

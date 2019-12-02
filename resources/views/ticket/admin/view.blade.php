@@ -51,7 +51,7 @@
                    $('<a />', {
                        'href': '#',
                        'class': 'modal-close waves-effect btn-flat grey-text',
-                       'html': buttons.cancel
+                       'html': keywords.cancel
                    }),
                    $('<span />', {
                        'html': ' '
@@ -62,7 +62,7 @@
                        'data-href': '{{ route('settings.support.ticket.close', $ticket->id) }}',
                        'data-method': 'patch',
                        'data-callback': '__close',
-                       'html': buttons.ok
+                       'html': keywords.ok
                    })
                 ]
             });

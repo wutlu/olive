@@ -58,7 +58,7 @@
 
     function goHome()
     {
-        location.href = '{{ route('home') }}';
+        location.href = '{{ route('home.lobby') }}';
     }
 
 	$(document).ready(function() {

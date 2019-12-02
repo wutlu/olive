@@ -56,7 +56,7 @@
                 $('<a />', {
                     'href': '#',
                     'class': 'modal-close waves-effect btn-flat grey-text',
-                    'html': buttons.cancel
+                    'html': keywords.cancel
                 }),
                 $('<span />', {
                     'html': ' '
@@ -64,7 +64,7 @@
                 $('<a />', {
                     'href': '#',
                     'class': 'waves-effect btn-flat json',
-                    'html': buttons.ok,
+                    'html': keywords.ok,
                     'data-href': '{{ route('crawlers.media.bot.status') }}',
                     'data-id': '{{ $crawler->id }}',
                     'data-method': 'post',
@@ -126,7 +126,7 @@
                 $('<a />', {
                     'href': '#',
                     'class': 'modal-close waves-effect btn-flat grey-text',
-                    'html': buttons.cancel
+                    'html': keywords.cancel
                 }),
                 $('<span />', {
                     'html': ' '
@@ -134,7 +134,7 @@
                 $('<a />', {
                     'href': '#',
                     'class': 'waves-effect btn-flat json',
-                    'html': buttons.ok,
+                    'html': keywords.ok,
                     'data-href': __.data('href'),
                     'data-method': 'post',
                     'data-callback': __.data('callback')
@@ -432,7 +432,7 @@
                 $('<a />', {
                     'href': '#',
                     'class': 'modal-close waves-effect btn-flat grey-text',
-                    'html': buttons.cancel
+                    'html': keywords.cancel
                 }),
                 $('<span />', {
                     'html': ' '
@@ -440,7 +440,7 @@
                 $('<a />', {
                     'href': '#',
                     'class': 'waves-effect btn-flat red-text json',
-                    'html': buttons.ok,
+                    'html': keywords.ok,
                     'data-href': '{{ route('crawlers.media.bot') }}',
                     'data-id': '{{ $crawler->id }}',
                     'data-method': 'delete',
@@ -470,7 +470,7 @@
                 $('<a />', {
                     'href': '#',
                     'class': 'modal-close waves-effect btn-flat',
-                    'html': buttons.ok
+                    'html': keywords.ok
                 })
             ]
         });

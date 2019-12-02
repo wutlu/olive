@@ -199,7 +199,7 @@
                 $('<a />', {
                     'href': '#',
                     'class': 'modal-close waves-effect grey-text btn-flat',
-                    'html': buttons.cancel
+                    'html': keywords.cancel
                 }),
                 $('<span />', {
                     'html': ' '
@@ -207,7 +207,7 @@
                 $('<a />', {
                     'href': '#',
                     'class': 'waves-effect btn-flat teal-text json',
-                    'html': buttons.ok,
+                    'html': keywords.ok,
                     'data-href': '{{ route('admin.user.password.gsm', $user->id) }}',
                     'data-method': 'post',
                     'data-callback': '__passwordByGSM'

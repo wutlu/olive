@@ -351,7 +351,7 @@
                 $('<a />', {
                     'href': '#',
                     'class': 'modal-close waves-effect btn-flat grey-text',
-                    'html': buttons.cancel
+                    'html': keywords.cancel
                 }),
                 $('<span />', {
                     'html': ' '
@@ -360,7 +360,7 @@
                     'type': 'submit',
                     'class': 'waves-effect btn-flat',
                     'data-submit': 'form#alarm-form',
-                    'html': buttons.ok
+                    'html': keywords.ok
                 })
             ],
             'size': 'modal-large',
@@ -443,7 +443,7 @@
                 $('<a />', {
                     'href': '#',
                     'class': 'modal-close waves-effect btn-flat grey-text',
-                    'html': buttons.cancel
+                    'html': keywords.cancel
                 }),
                 $('<span />', {
                     'html': ' '
@@ -451,7 +451,7 @@
                 $('<a />', {
                     'href': '#',
                     'class': 'waves-effect btn-flat red-text json',
-                    'html': buttons.ok,
+                    'html': keywords.ok,
                     'data-href': '{{ route('alarm') }}',
                     'data-method': 'delete',
                     'data-id': $(this).data('id'),

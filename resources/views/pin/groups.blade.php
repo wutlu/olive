@@ -78,7 +78,7 @@
                 $('<a />', {
                     'href': '#',
                     'class': 'modal-close waves-effect btn-flat grey-text',
-                    'html': buttons.cancel
+                    'html': keywords.cancel
                 }),
                 $('<span />', {
                     'html': ' '
@@ -87,7 +87,7 @@
                     'data-trigger': 'delete-pin-group',
                     'href': '#',
                     'class': 'waves-effect btn-flat red-text hide',
-                    'html': buttons.remove
+                    'html': keywords.remove
                 }),
                 $('<span />', {
                     'html': ' '
@@ -96,7 +96,7 @@
                     'type': 'submit',
                     'class': 'waves-effect btn-flat',
                     'data-submit': 'form#pin-group-form',
-                    'html': buttons.ok
+                    'html': keywords.ok
                 })
             ]
         });
@@ -165,7 +165,7 @@
                     $('<a />', {
                         'href': '#',
                         'class': 'modal-close waves-effect btn-flat grey-text',
-                        'html': buttons.cancel
+                        'html': keywords.cancel
                     }),
                     $('<span />', {
                         'html': ' '
@@ -173,7 +173,7 @@
                     $('<a />', {
                         'href': '#',
                         'class': 'waves-effect btn-flat red-text json',
-                        'html': buttons.ok,
+                        'html': keywords.ok,
                         'data-href': '{{ route('pin.group') }}',
                         'data-method': 'delete',
                         'data-id': $(this).data('id'),

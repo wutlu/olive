@@ -88,7 +88,7 @@
                             $('<a />', {
                                 'href': '#',
                                 'class': 'modal-close waves-effect btn-flat grey-text',
-                                'html': buttons.cancel
+                                'html': keywords.cancel
                             }),
                             $('<span />', {
                                 'html': ' '
@@ -96,7 +96,7 @@
                             $('<a />', {
                                 'href': '#',
                                 'class': 'waves-effect btn-flat json',
-                                'html': buttons.ok,
+                                'html': keywords.ok,
                                 'data-href': '{{ route('forum.message.delete') }}',
                                 'data-id': __.data('id'),
                                 'data-method': 'delete',
@@ -211,7 +211,7 @@
                             $('<a />', {
                                 'href': '#',
                                 'class': 'modal-close waves-effect btn-flat grey-text',
-                                'html': buttons.cancel
+                                'html': keywords.cancel
                             }),
                             $('<span />', {
                                 'html': ' '
@@ -220,7 +220,7 @@
                                 'data-trigger': 'delete',
                                 'href': '#',
                                 'class': 'waves-effect btn-flat grey-text hide',
-                                'html': buttons.remove
+                                'html': keywords.remove
                             }),
                             $('<span />', {
                                 'html': ' '
@@ -229,7 +229,7 @@
                                 'type': 'submit',
                                 'class': 'waves-effect btn-flat',
                                 'data-submit': 'form#move-form',
-                                'html': buttons.ok
+                                'html': keywords.ok
                             })
                         ],
                         'size': 'modal-medium',
@@ -309,7 +309,7 @@
                         $('<a />', {
                             'href': '#',
                             'class': 'modal-close waves-effect btn-flat grey-text',
-                            'html': buttons.cancel
+                            'html': keywords.cancel
                         }),
                         $('<span />', {
                             'html': ' '
@@ -317,7 +317,7 @@
                         $('<a />', {
                             'href': '#',
                             'class': 'waves-effect btn-flat json',
-                            'html': buttons.ok,
+                            'html': keywords.ok,
                             'data-href': '{{ route('forum.message.spam') }}',
                             'data-id': __.data('id'),
                             'data-method': 'post',

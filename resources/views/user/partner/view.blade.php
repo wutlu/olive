@@ -46,7 +46,7 @@
                             $('<a />', {
                                 'href': '#',
                                 'class': 'modal-close waves-effect btn-flat',
-                                'html': buttons.ok
+                                'html': keywords.ok
                             })
                         ]
                     })
@@ -446,13 +446,13 @@
                 $('<a />', {
                     'href': '#',
                     'class': 'modal-close waves-effect btn-flat',
-                    'html': buttons.cancel
+                    'html': keywords.cancel
                 }),
                 $('<a />', {
                     'href': '#',
                     'class': 'waves-effect btn-flat red-text json',
                     'data-json-target': '#details-form',
-                    'html': buttons.ok
+                    'html': keywords.ok
                 })
             ]
         })

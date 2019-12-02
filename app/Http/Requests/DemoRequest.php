@@ -25,6 +25,7 @@ class DemoRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:100',
+            'corporate_name' => 'nullable|string|max:100',
             'phone' => 'required|string|max:50',
             'gRecaptchaResponse' => 'required|recaptcha'
         ];

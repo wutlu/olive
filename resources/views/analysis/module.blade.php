@@ -299,7 +299,7 @@
                 $('<a />', {
                     'href': '#',
                     'class': 'modal-close waves-effect grey-text btn-flat',
-                    'html': buttons.cancel
+                    'html': keywords.cancel
                 }),
                 $('<span />', {
                     'html': ' '
@@ -307,7 +307,7 @@
                 $('<a />', {
                     'href': '#',
                     'class': 'waves-effect btn-flat red-text json',
-                    'html': buttons.ok,
+                    'html': keywords.ok,
                     'data-href': '{{ route('analysis.module.word.delete') }}',
                     'data-method': 'delete',
                     'data-id': $(this).data('id'),
