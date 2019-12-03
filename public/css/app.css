@@ -2101,7 +2101,7 @@ body.module-search-active > .search-wrapper {
   background-image: url('../img/reklam-ajanslari.svg'), url('../img/emblem-colored.svg');
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1440px) {
   .home-items {
     border-width: 10vh 0;
   }
