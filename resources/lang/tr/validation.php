@@ -379,6 +379,7 @@ $arr = [
         'sv'                              => 'Sıralama Değeri',
         'lines'                           => 'Satırlar',
         'data'                            => 'Veri',
+        'daily_report'                    => 'Günlük Rapor',
     ]
 ];
 

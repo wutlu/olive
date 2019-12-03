@@ -1,6 +1,7 @@
 @extends('layouts.app', [
     'sidenav_fixed_layout' => true,
-    'report_menu' => true
+    'report_menu' => true,
+    'chat' => true
 ])
 
 @push('local.scripts')

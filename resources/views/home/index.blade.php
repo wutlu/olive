@@ -2,7 +2,8 @@
     'title' => [
         'text' => $type['title']
     ],
-    'description' => 'Veri Zone Teknoloji, Büyük Veri Takip ve Raporlama Merkezi!'
+    'description' => 'Veri Zone Teknoloji, Büyük Veri Takip ve Raporlama Merkezi!',
+    'chat' => true
 ])
 
 @push('local.styles')

@@ -29,6 +29,7 @@ class SavedSearch extends Model
 		'state',
 		'twitter_sort',
 		'twitter_sort_operator',
+		'daily_report'
     ];
 
     # alarm
@@ -45,4 +46,10 @@ class SavedSearch extends Model
     protected $casts = [
         'modules' => 'array',
     ];
+
+    # organisation
+    public function organisation()
+    {
+        return $this->hasOne('App\Models\Organisation\Organisation', 'id', 'organisation_id');
+    }
 }

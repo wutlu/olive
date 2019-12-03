@@ -4,7 +4,8 @@
     ],
     'footer_hide' => true,
     'robots' => $report->password ? [ 'noindex' ] : false,
-    'desktop' => $authenticate === null || $authenticate === true ? true : false
+    'desktop' => $authenticate === null || $authenticate === true ? true : false,
+    'search_hide' => true
 ])
 
 @push('local.styles')
@@ -13,6 +14,16 @@
         height: 100vh;
         background-color: #006064;
     }
+@endpush
+
+@push('local.scripts')
+    $(document).on('click', '[data-trigger=print]', function() {
+        window.print()
+    })
+
+    setTimeout(function() {
+        $('[data-trigger=print]').removeAttr('disabled')
+    }, 2000)
 @endpush
 
 @section('content')
@@ -35,6 +46,10 @@
                                 <small>{{ $report->date_2 ? date('d.m.Y', strtotime($report->date_2)) : '' }}</small>
                             </div>
                             <h1 class="page-title">{{ $report->name }}</h1>
+
+                            <a href="#" data-trigger="print" disabled class="btn-floating btn-flat no-print">
+                                <i class="material-icons">print</i>
+                            </a>
                         </header>
 
                         <img class="logo" alt="Logo" src="{{ asset('img/veri.zone_logo.svg') }}" />
@@ -63,30 +78,32 @@
                     __report__pattern({!! $page->pattern() !!}, $('#section-{{ $page->id }}'), '{{ explode('.', $page->type)[1] }}', 'read')
                 @endpush
             @endforeach
-            <div class="section footer d-flex justify-content-center">
-                <div class="report-view align-self-center">
-                    <div class="report-page">
-                        <div class="sphere sphere-center sphere-2"></div>
+            <div class="no-print">
+                <div class="section footer d-flex justify-content-center">
+                    <div class="report-view align-self-center">
+                        <div class="report-page">
+                            <div class="sphere sphere-center sphere-2"></div>
 
-                        <footer>
-                            <div class="ground left">
-                                <a href="mailto:bilgi@veri.zone">bilgi@veri.zone</a>
-                                <a href="tel:850-302-1631">(+90) 850 302 16 30</a>
-                                <a href="https://veri.zone/">https://veri.zone</a>
-                                <a href="https://olive.veri.zone/">https://olive.veri.zone</a>
-                                <p>Mustafa Kemal Mh. Dumlupınar Blv. ODTÜ Teknokent Bilişim İnovasyon Merkezi 280/G No: 1260 Alt Zemin Kat Çankaya, Ankara</p>
-                                <img class="logo" alt="Logo" src="{{ asset('img/olive_logo.svg') }}" />
-                            </div>
-                            <div class="ground center">
-                                <img class="logo" alt="Logo" src="{{ asset('img/veri.zone_logo.svg') }}" />
-                                <span>v e r i . z o n e . t e k n o l o j i</span>
-                            </div>
-                            <div class="ground right">
-                                <a target="_blank" href="https://twitter.com/verizonetek">Twitter @verizonetek</a>
-                                <a target="_blank" href="https://www.linkedin.com/company/verizonetek/">Linkedin @verizonetek</a>
-                                <a target="_blank" href="https://www.instagram.com/verizonetek/">Instagram @verizonetek</a>
-                            </div>
-                        </footer>
+                            <footer>
+                                <div class="ground left">
+                                    <a href="mailto:bilgi@veri.zone">bilgi@veri.zone</a>
+                                    <a href="tel:850-302-1631">(+90) 850 302 16 30</a>
+                                    <a href="https://veri.zone/">https://veri.zone</a>
+                                    <a href="https://olive.veri.zone/">https://olive.veri.zone</a>
+                                    <p>Mustafa Kemal Mh. Dumlupınar Blv. ODTÜ Teknokent Bilişim İnovasyon Merkezi 280/G No: 1260 Alt Zemin Kat Çankaya, Ankara</p>
+                                    <img class="logo" alt="Logo" src="{{ asset('img/olive_logo.svg') }}" />
+                                </div>
+                                <div class="ground center">
+                                    <img class="logo" alt="Logo" src="{{ asset('img/veri.zone_logo.svg') }}" />
+                                    <span>v e r i . z o n e . t e k n o l o j i</span>
+                                </div>
+                                <div class="ground right">
+                                    <a target="_blank" href="https://twitter.com/verizonetek">Twitter @verizonetek</a>
+                                    <a target="_blank" href="https://www.linkedin.com/company/verizonetek/">Linkedin @verizonetek</a>
+                                    <a target="_blank" href="https://www.instagram.com/verizonetek/">Instagram @verizonetek</a>
+                                </div>
+                            </footer>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -130,6 +147,56 @@
         @endif
     </div>
 @endsection
+
+@push('local.styles')
+    @media print {
+        @page { 
+            size: A4 portrait;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+
+            -webkit-transform: scale(1, 1); 
+               -moz-transform: scale(1, 1);
+        }
+        .section {
+            width: 100vh;
+            height: 100vw;
+        }
+        .report-view {
+            margin: 0;
+            padding: 0;
+        }
+        .report-page {
+            margin: 0;
+            padding: 0;
+
+            -webkit-box-shadow: none;
+                    box-shadow: none;
+        }
+        .no-print,
+        .no-print * {
+            display: none !important;
+        }
+        .tr-map > small.state {
+            background-color: #fff !important;
+        }
+        .tr-map,
+        .tr-map > small.state:before,
+        .tr-map > small.state:after,
+        .tr-map > small.state {
+            -webkit-print-color-adjust: exact !important;
+                          color-adjust: exact !important;
+        }
+    }
+@endpush
+
+@push('external.include.header')
+    <link media="print" rel="Alternate" href="print.pdf" />
+@endpush
 
 @push('external.include.footer')
     <script src='//www.google.com/recaptcha/api.js'></script>

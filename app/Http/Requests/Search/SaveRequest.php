@@ -72,7 +72,8 @@ class SaveRequest extends FormRequest
             'consumer_nws' => 'nullable|integer|between:0,9',
             'sharp' => 'nullable|string|in:on',
             'twitter_sort' => 'nullable|string|in:counts.favorite,counts.retweet,counts.quote,counts.reply,user.counts.followers,user.counts.friends,user.counts.statuses,user.counts.listed',
-            'twitter_sort_operator' => 'required_with:twitter_sort|string|in:asc,desc'
+            'twitter_sort_operator' => 'required_with:twitter_sort|string|in:asc,desc',
+            'daily_report' => 'nullable|string|in:on'
         ];
     }
 }

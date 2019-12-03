@@ -3,7 +3,8 @@
         'text' => 'Veri Zone Teknoloji'
     ],
     'description' => 'Veri Zone Teknoloji, Büyük Veri Takip ve Raporlama Merkezi!',
-    'footer_hide' => true
+    'footer_hide' => true,
+    'chat' => true
 ])
 
 @section('content')

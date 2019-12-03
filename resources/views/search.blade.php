@@ -270,24 +270,47 @@
                 'class': 'json',
                 'data-callback': '__search_save',
                 'data-include': '{{ $elements }}',
-                'html': $('<div />', {
-                    'class': 'input-field',
-                    'html': [
-                        $('<input />', {
-                            'id': 'name',
-                            'name': 'name',
-                            'type': 'text',
-                            'class': 'validate'
-                        }),
-                        $('<label />', {
-                            'for': 'name',
-                            'html': 'Arama Adı'
-                        }),
-                        $('<span />', {
-                            'class': 'helper-text'
-                        })
-                    ]
-                })
+                'html': [
+                    $('<div />', {
+                        'class': 'input-field',
+                        'html': [
+                            $('<input />', {
+                                'id': 'name',
+                                'name': 'name',
+                                'type': 'text',
+                                'class': 'validate'
+                            }),
+                            $('<label />', {
+                                'for': 'name',
+                                'html': 'Arama Adı'
+                            }),
+                            $('<span />', {
+                                'class': 'helper-text'
+                            })
+                        ]
+                    }),
+                    $('<label />', {
+                        'class': 'input-field',
+                        'html': [
+                            $('<input />', {
+                                'id': 'daily_report',
+                                'name': 'daily_report',
+                                'value': 'on',
+                                'type': 'checkbox'
+                            }),
+                            $('<span />', {
+                                'html': 'Günlük Rapor Gönder'
+                            }),
+                            $('<span />', {
+                                'class': 'helper-text mt-1',
+                                'html': 'Kaydettiğiniz aramalar her sabah 08:00\'de yeni bir konu raporu oluşturur.'
+                            })
+                        ]
+                    }),
+                    $('<div />', {
+                        'class': 'pb-1'
+                    })
+                ]
             }),
             'size': 'modal-small',
             'title': 'Aramayı Kaydet',

@@ -530,7 +530,8 @@ class SearchController extends Controller
             'category',
             'state',
             'twitter_sort',
-            'twitter_sort_operator'
+            'twitter_sort_operator',
+            'daily_report'
         ];
 
         $elements = implode(',', $elements);

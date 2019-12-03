@@ -717,139 +717,143 @@
     @endisset
 
     @auth
-        <div class="fixed-action-btn">
-            <a data-trigger="module-search" id="search-trigger" class="btn-floating btn-large white waves-effect" data-tooltip="Modül Ara (CTRL + G)" data-position="left">
-                <i class="material-icons grey-text text-darken-4">search</i>
-            </a>
-        </div>
+        @isset($search_hide)
 
-        <div class="search-wrapper" id="module-search">
-            <div class="search-content">
-                <div class="right-align">
-                    <a href="#" class="btn-floating btn-flat waves-effect" data-trigger="module-search-close">
-                        <i class="material-icons white-text">close</i>
-                    </a>
-                </div>
-                <div class="input-field">
-                    <input
-                        name="search_input"
-                        id="search_input"
-                        type="text"
-                        class="validate json"
-                        placeholder="Arayın"
-                        data-href="{{ route('module.search') }}"
-                        data-method="post"
-                        data-delay="1"
-                        data-callback="__module_search" />
-                </div>
-                <div id="ms-results"></div>
+        @else
+            <div class="fixed-action-btn">
+                <a data-trigger="module-search" id="search-trigger" class="btn-floating btn-large white waves-effect" data-tooltip="Modül Ara (CTRL + G)" data-position="left">
+                    <i class="material-icons grey-text text-darken-4">search</i>
+                </a>
             </div>
-        </div>
 
-        @push('local.scripts')
-            var ms_results = $('#ms-results');
+            <div class="search-wrapper" id="module-search">
+                <div class="search-content">
+                    <div class="right-align">
+                        <a href="#" class="btn-floating btn-flat waves-effect" data-trigger="module-search-close">
+                            <i class="material-icons white-text">close</i>
+                        </a>
+                    </div>
+                    <div class="input-field">
+                        <input
+                            name="search_input"
+                            id="search_input"
+                            type="text"
+                            class="validate json"
+                            placeholder="Arayın"
+                            data-href="{{ route('module.search') }}"
+                            data-method="post"
+                            data-delay="1"
+                            data-callback="__module_search" />
+                    </div>
+                    <div id="ms-results"></div>
+                </div>
+            </div>
 
-            $(document).keydown(function(e) {
-                if (e.ctrlKey && e.keyCode == 71)
-                {
-                    $('[data-trigger=module-search]').click()
+            @push('local.scripts')
+                var ms_results = $('#ms-results');
 
-                    e.preventDefault()
-                }
-            })
+                $(document).keydown(function(e) {
+                    if (e.ctrlKey && e.keyCode == 71)
+                    {
+                        $('[data-trigger=module-search]').click()
 
-            $(document).on('click', '[data-trigger=module-search]', function() {
-                var search_wrapper = $('#module-search');
-                var input = search_wrapper.find('input[name=search_input]');
+                        e.preventDefault()
+                    }
+                })
 
-                $('body').addClass('module-search-active')
+                $(document).on('click', '[data-trigger=module-search]', function() {
+                    var search_wrapper = $('#module-search');
+                    var input = search_wrapper.find('input[name=search_input]');
 
-                vzAjax(input)
+                    $('body').addClass('module-search-active')
 
-                    input.focus()
+                    vzAjax(input)
 
-                setTimeout(function() {
-                    input.focus()
-                }, 200)
-            }).on('click', '[data-trigger=module-search-close]', function() {
-                $('body').removeClass('module-search-active')
-            }).on('click', '.search-wrapper', function() {
-                var search_wrapper = $('#module-search');
-                    search_wrapper.find('input[name=search_input]').focus();
-            })
+                        input.focus()
 
-            $('#module-search').keydown(function(e) {
-                if (e.which == 27)
-                {
+                    setTimeout(function() {
+                        input.focus()
+                    }, 200)
+                }).on('click', '[data-trigger=module-search-close]', function() {
                     $('body').removeClass('module-search-active')
-                }
-                else if (e.keyCode == 37)
-                {
-                    console.log('Left')
-                }
-                else if (e.keyCode == 38)
-                {
-                    console.log('Up')
-                }
-                else if (e.keyCode == 39)
-                {
-                    console.log('Right')
-                }
-                else if (e.keyCode == 40)
-                {
-                    console.log('Down')
-                }
-            }).find('input[name=search_input]').keydown(function(e) {
-                var __ = $(this);
+                }).on('click', '.search-wrapper', function() {
+                    var search_wrapper = $('#module-search');
+                        search_wrapper.find('input[name=search_input]').focus();
+                })
 
-                if (e.keyCode == 13)
-                {
-                    window.location = '{{ route('search.dashboard') }}?q=' + __.val();
-                }
-            })
-
-            function __module_search(__, obj)
-            {
-                if (obj.status == 'ok')
-                {
-                    if (obj.data.length)
+                $('#module-search').keydown(function(e) {
+                    if (e.which == 27)
                     {
-                        ms_results.html('')
+                        $('body').removeClass('module-search-active')
                     }
-
-                    if (obj.data.length)
+                    else if (e.keyCode == 37)
                     {
-                        $.each (obj.data, function(key, o) {
-                            var item = $('<a />', {
-                                'class': 'ms-item waves-effect json',
-                                'href': o.route,
-                                'data-href': '{{ route('module.go') }}',
-                                'data-method': 'post',
-                                'data-callback': '__go',
-                                'html': [
-                                    $('<i />', { 'class': 'material-icons', 'html': o.icon }),
-                                    $('<span />', { 'class': 'd-block', 'html': o.name })
-                                ],
-                                'data-module_id': o.module_id,
-                                'data-include': 'search_input'
-                            });
+                        console.log('Left')
+                    }
+                    else if (e.keyCode == 38)
+                    {
+                        console.log('Up')
+                    }
+                    else if (e.keyCode == 39)
+                    {
+                        console.log('Right')
+                    }
+                    else if (e.keyCode == 40)
+                    {
+                        console.log('Down')
+                    }
+                }).find('input[name=search_input]').keydown(function(e) {
+                    var __ = $(this);
 
-                            if (o.route)
-                            {
-                                item.attr('data-route', o.route)
-                            }
+                    if (e.keyCode == 13)
+                    {
+                        window.location = '{{ route('search.dashboard') }}?q=' + __.val();
+                    }
+                })
 
-                            item.addClass(o.root ? 'teal-text' : '')
-                            item.appendTo(ms_results)
-                        })
+                function __module_search(__, obj)
+                {
+                    if (obj.status == 'ok')
+                    {
+                        if (obj.data.length)
+                        {
+                            ms_results.html('')
+                        }
+
+                        if (obj.data.length)
+                        {
+                            $.each (obj.data, function(key, o) {
+                                var item = $('<a />', {
+                                    'class': 'ms-item waves-effect json',
+                                    'href': o.route,
+                                    'data-href': '{{ route('module.go') }}',
+                                    'data-method': 'post',
+                                    'data-callback': '__go',
+                                    'html': [
+                                        $('<i />', { 'class': 'material-icons', 'html': o.icon }),
+                                        $('<span />', { 'class': 'd-block', 'html': o.name })
+                                    ],
+                                    'data-module_id': o.module_id,
+                                    'data-include': 'search_input'
+                                });
+
+                                if (o.route)
+                                {
+                                    item.attr('data-route', o.route)
+                                }
+
+                                item.addClass(o.root ? 'teal-text' : '')
+                                item.appendTo(ms_results)
+                            })
+                        }
                     }
                 }
-            }
-        @endpush
+            @endpush
+        @endisset
 
         <div class="load" data-href="{{ route('dashboard.monitor') }}" data-method="post" data-callback="__monitor"></div>
         <div class="push-notifications">
-            <div class="notification hide _model">
+            <div class="notification hide _model mb-1">
                 <div class="card z-depth-5">
                     <div class="card-content">
                         <p data-name="text"></p>
@@ -1140,7 +1144,7 @@
             smartlook('init', '{{ config('services.smartlook.code') }}');
         </script>
     @endif
-    @if (config('services.jivo.code'))
+    @if (config('services.jivo.code') && @$chat)
         <script src="//code.jivosite.com/widget.js" data-jv-id="{{ config('services.jivo.code') }}" async></script>
     @endif
 </body>
