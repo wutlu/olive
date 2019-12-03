@@ -610,13 +610,11 @@
                         <img alt="Logo" src="{{ asset('img/logo-btk.png') }}" class="brand-logo" />
                     </a>
                 </div>
-                <!--
                 <div class="p-1">
                     <a target="_blank" rel="nofollow" href="https://www.almbase.com/">
                         <img alt="Logo" src="{{ asset('img/logo-almbase.png') }}" class="brand-logo" />
                     </a>
                 </div>
-                -->
                 <div class="p-1">
                     <a target="_blank" rel="nofollow" href="https://cozone.co/">
                         <img alt="Logo" src="{{ asset('img/logo-cozone.png') }}" class="brand-logo" />
