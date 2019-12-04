@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddDailyReportToSavedSearchesTable extends Migration
+class AddReportToSavedSearchesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,8 @@ class AddDailyReportToSavedSearchesTable extends Migration
     public function up()
     {
         Schema::table('saved_searches', function (Blueprint $table) {
-            $table->boolean('daily_report')->default(0);
+            $table->enum('report', [ 'hourly', 'daily' ])->nullable()->default(null);
+            $table->string('email')->nullable()->default(null);
         });
     }
 
@@ -26,7 +27,8 @@ class AddDailyReportToSavedSearchesTable extends Migration
     public function down()
     {
         Schema::table('saved_searches', function (Blueprint $table) {
-            $table->dropColumn('daily_report');
+            $table->dropColumn('report');
+            $table->dropColumn('email');
         });
     }
 }

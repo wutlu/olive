@@ -41,7 +41,7 @@ class Report extends Command
      */
     public function handle()
     {
-        $ss = SavedSearch::where('daily_report', true)->get();
+        $ss = SavedSearch::whereNotNull('report')->get();
 
         if (count($ss))
         {

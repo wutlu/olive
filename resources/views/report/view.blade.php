@@ -78,32 +78,30 @@
                     __report__pattern({!! $page->pattern() !!}, $('#section-{{ $page->id }}'), '{{ explode('.', $page->type)[1] }}', 'read')
                 @endpush
             @endforeach
-            <div class="no-print">
-                <div class="section footer d-flex justify-content-center">
-                    <div class="report-view align-self-center">
-                        <div class="report-page">
-                            <div class="sphere sphere-center sphere-2"></div>
+            <div class="section footer d-flex justify-content-center">
+                <div class="report-view align-self-center">
+                    <div class="report-page">
+                        <div class="sphere sphere-center sphere-2"></div>
 
-                            <footer>
-                                <div class="ground left">
-                                    <a href="mailto:bilgi@veri.zone">bilgi@veri.zone</a>
-                                    <a href="tel:850-302-1631">(+90) 850 302 16 30</a>
-                                    <a href="https://veri.zone/">https://veri.zone</a>
-                                    <a href="https://olive.veri.zone/">https://olive.veri.zone</a>
-                                    <p>Mustafa Kemal Mh. Dumlupınar Blv. ODTÜ Teknokent Bilişim İnovasyon Merkezi 280/G No: 1260 Alt Zemin Kat Çankaya, Ankara</p>
-                                    <img class="logo" alt="Logo" src="{{ asset('img/olive_logo.svg') }}" />
-                                </div>
-                                <div class="ground center">
-                                    <img class="logo" alt="Logo" src="{{ asset('img/veri.zone_logo.svg') }}" />
-                                    <span>v e r i . z o n e . t e k n o l o j i</span>
-                                </div>
-                                <div class="ground right">
-                                    <a target="_blank" href="https://twitter.com/verizonetek">Twitter @verizonetek</a>
-                                    <a target="_blank" href="https://www.linkedin.com/company/verizonetek/">Linkedin @verizonetek</a>
-                                    <a target="_blank" href="https://www.instagram.com/verizonetek/">Instagram @verizonetek</a>
-                                </div>
-                            </footer>
-                        </div>
+                        <footer>
+                            <div class="ground left">
+                                <a href="mailto:bilgi@veri.zone">bilgi@veri.zone</a>
+                                <a href="tel:850-302-1631">(+90) 850 302 16 30</a>
+                                <a href="https://veri.zone/">https://veri.zone</a>
+                                <a href="https://olive.veri.zone/">https://olive.veri.zone</a>
+                                <p>Mustafa Kemal Mh. Dumlupınar Blv. ODTÜ Teknokent Bilişim İnovasyon Merkezi 280/G No: 1260 Alt Zemin Kat Çankaya, Ankara</p>
+                                <img class="logo" alt="Logo" src="{{ asset('img/olive_logo.svg') }}" />
+                            </div>
+                            <div class="ground center">
+                                <img class="logo" alt="Logo" src="{{ asset('img/veri.zone_logo.svg') }}" />
+                                <span>v e r i . z o n e . t e k n o l o j i</span>
+                            </div>
+                            <div class="ground right">
+                                <a target="_blank" href="https://twitter.com/verizonetek">Twitter @verizonetek</a>
+                                <a target="_blank" href="https://www.linkedin.com/company/verizonetek/">Linkedin @verizonetek</a>
+                                <a target="_blank" href="https://www.instagram.com/verizonetek/">Instagram @verizonetek</a>
+                            </div>
+                        </footer>
                     </div>
                 </div>
             </div>
@@ -171,8 +169,7 @@
             padding: 0;
         }
         .report-page {
-            margin: 0;
-            padding: 0;
+            border: 1px solid #ccc;
 
             -webkit-box-shadow: none;
                     box-shadow: none;
@@ -184,6 +181,7 @@
         .tr-map > small.state {
             background-color: #fff !important;
         }
+        .report-page,
         .tr-map,
         .tr-map > small.state:before,
         .tr-map > small.state:after,

@@ -29,7 +29,8 @@ class SavedSearch extends Model
 		'state',
 		'twitter_sort',
 		'twitter_sort_operator',
-		'daily_report'
+		'report',
+		'email'
     ];
 
     # alarm

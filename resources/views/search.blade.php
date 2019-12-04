@@ -293,22 +293,50 @@
                         'class': 'input-field',
                         'html': [
                             $('<input />', {
-                                'id': 'daily_report',
-                                'name': 'daily_report',
-                                'value': 'on',
-                                'type': 'checkbox'
+                                'name': 'report',
+                                'value': 'daily',
+                                'type': 'radio'
                             }),
                             $('<span />', {
-                                'html': 'Günlük Rapor Gönder'
+                                'html': 'Günlük Rapor Oluştur'
+                            })
+                        ]
+                    }),
+                    $('<label />', {
+                        'class': 'input-field',
+                        'html': [
+                            $('<input />', {
+                                'name': 'report',
+                                'value': 'hourly',
+                                'type': 'radio'
                             }),
                             $('<span />', {
-                                'class': 'helper-text mt-1',
-                                'html': 'Kaydettiğiniz aramalar her sabah 08:00\'de yeni bir konu raporu oluşturur.'
+                                'html': 'Saatlik Rapor Oluştur'
                             })
                         ]
                     }),
                     $('<div />', {
-                        'class': 'pb-1'
+                        'class': 'grey-text pt-1',
+                        'html': '"Rapor Oluştur" seçilirse, kaydedilen arama için her sabah 08:00\'de veya saat başı yeni bir konu raporu oluşturulur.'
+                    }),
+                    $('<div />', {
+                        'class': 'input-field',
+                        'html': [
+                            $('<input />', {
+                                'id': 'email',
+                                'name': 'email',
+                                'type': 'text',
+                                'class': 'validate'
+                            }),
+                            $('<label />', {
+                                'for': 'email',
+                                'html': 'E-posta'
+                            }),
+                            $('<span />', {
+                                'class': 'helper-text',
+                                'html': 'E-posta girilirse, tamamlanan rapor girilen e-posta adresine gönderilir.'
+                            })
+                        ]
                     })
                 ]
             }),

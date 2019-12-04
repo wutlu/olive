@@ -531,7 +531,8 @@ class SearchController extends Controller
             'state',
             'twitter_sort',
             'twitter_sort_operator',
-            'daily_report'
+            'report',
+            'email'
         ];
 
         $elements = implode(',', $elements);
@@ -964,7 +965,7 @@ class SearchController extends Controller
         ];
     }
 
-    public static function tweet($search, array $q)
+    public static function tweet($search, array $q, bool $source = false)
     {
         $aggs = [];
         $data = [];
@@ -1026,6 +1027,11 @@ class SearchController extends Controller
                     $arr['place'] = $object['_source']['place'];
                 }
 
+                if ($source)
+                {
+                    $arr['_source'] = $object['_source'];
+                }
+
                 $data[] = array_merge($arr, [
                     'user' => $user,
                     'text' => Term::tweet($object['_source']['text']),
@@ -1041,7 +1047,7 @@ class SearchController extends Controller
         ];
     }
 
-    public static function instagram($search, array $q)
+    public static function instagram($search, array $q, bool $source = false)
     {
         $aggs = [];
         $data = [];
@@ -1075,6 +1081,11 @@ class SearchController extends Controller
                     $arr['place'] = $object['_source']['place'];
                 }
 
+                if ($source)
+                {
+                    $arr['_source'] = $object['_source'];
+                }
+
                 $data[] = $arr;
             }
         }
@@ -1086,7 +1097,7 @@ class SearchController extends Controller
         ];
     }
 
-    public static function sozluk($search, array $q)
+    public static function sozluk($search, array $q, bool $source = false)
     {
         $aggs = [];
         $data = [];
@@ -1113,6 +1124,11 @@ class SearchController extends Controller
             {
                 $arr = self::result_default($object);
 
+                if ($source)
+                {
+                    $arr['_source'] = $object['_source'];
+                }
+
                 $data[] = array_merge($arr, [
                     'url' => $object['_source']['url'],
                     'title' => $object['_source']['title'],
@@ -1129,7 +1145,7 @@ class SearchController extends Controller
         ];
     }
 
-    public static function news($search, array $q)
+    public static function news($search, array $q, bool $source = false)
     {
         $aggs = [];
         $data = [];
@@ -1161,6 +1177,11 @@ class SearchController extends Controller
                     $arr['image'] = $object['_source']['image_url'];
                 }
 
+                if ($source)
+                {
+                    $arr['_source'] = $object['_source'];
+                }
+
                 $data[] = $arr;
             }
         }
@@ -1172,7 +1193,7 @@ class SearchController extends Controller
         ];
     }
 
-    public static function blog($search, array $q)
+    public static function blog($search, array $q, bool $source = false)
     {
         $aggs = [];
         $data = [];
@@ -1204,6 +1225,11 @@ class SearchController extends Controller
                     $arr['image'] = $object['_source']['image_url'];
                 }
 
+                if ($source)
+                {
+                    $arr['_source'] = $object['_source'];
+                }
+
                 $data[] = $arr;
             }
         }
@@ -1215,7 +1241,7 @@ class SearchController extends Controller
         ];
     }
 
-    public static function youtube_video($search, array $q)
+    public static function youtube_video($search, array $q, bool $source = false)
     {
         $aggs = [];
         $data = [];
@@ -1236,6 +1262,11 @@ class SearchController extends Controller
             {
                 $arr = self::result_default($object);
 
+                if ($source)
+                {
+                    $arr['_source'] = $object['_source'];
+                }
+
                 $data[] = array_merge($arr, [
                     'title' => $object['_source']['title'],
                     'text' => @$object['_source']['description'],
@@ -1254,7 +1285,7 @@ class SearchController extends Controller
         ];
     }
 
-    public static function youtube_comment($search, array $q)
+    public static function youtube_comment($search, array $q, bool $source = false)
     {
         $aggs = [];
         $data = [];
@@ -1275,6 +1306,11 @@ class SearchController extends Controller
             {
                 $arr = self::result_default($object);
 
+                if ($source)
+                {
+                    $arr['_source'] = $object['_source'];
+                }
+
                 $data[] = array_merge($arr, [
                     'video_id' => $object['_source']['video_id'],
                     'channel' => [
@@ -1293,7 +1329,7 @@ class SearchController extends Controller
         ];
     }
 
-    public static function shopping($search, array $q)
+    public static function shopping($search, array $q, bool $source = false)
     {
         $aggs = [];
         $data = [];
@@ -1319,6 +1355,11 @@ class SearchController extends Controller
                 if (@$object['_source']['description'])
                 {
                     $arr['text'] = $object['_source']['description'];
+                }
+
+                if ($source)
+                {
+                    $arr['_source'] = $object['_source'];
                 }
 
                 $data[] = array_merge($arr, [
