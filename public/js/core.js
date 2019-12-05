@@ -268,7 +268,7 @@ $(document).on('keydown keyup change click', '.goodbye', function() {
             }
         }),
         'title': __.data('modal-alert-title') ? __.data('modal-alert-title') : keywords.info,
-        'size': 'modal-small',
+        'size': __.data('modal-size') ? __.data('modal-size') : 'modal-small',
         'options': {},
         'footer': [
            $('<a />', {

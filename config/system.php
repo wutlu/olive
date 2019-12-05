@@ -4,7 +4,7 @@ return [
     /**
      * Sistem Versiyonu
      */
-    'version' => '7.1.5',
+    'version' => '7.1.6',
 
     /**
      * db
@@ -163,6 +163,7 @@ return [
             'welcome.create.organisation',
             'search.module',
             'driver.trend',
+            'driver.search',
             'driver.stream',
             'driver.report.sortable'
         ]

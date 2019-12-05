@@ -234,6 +234,15 @@
                 </ul>
             @endauth
 
+            @if (@$dock && $dock == true)
+                <div class="menu-alert">
+                    <div class="d-flex">
+                        <span>Düşük çözünürlüklü ekranlarda bazı şeyleri burada tutuyoruz!</span>
+                        <i class="material-icons">arrow_upward</i>
+                    </div>
+                </div>
+            @endisset
+
             <nav id="main-nav">
                 <div class="{{ isset($sidenav_layout) ? '' : (auth()->check() ? 'sidenav-fixed-layout' : 'container') }}">
                     <div class="nav-wrapper">
@@ -894,7 +903,7 @@
 
                         if (obj.data.report)
                         {
-                            report_menu.addClass('active').attr('data-source', obj.data.report)
+                            report_menu.addClass('active').attr('data-source', JSON.stringify(obj.data.report))
 
                             start_trigger.addClass('red-text')
                             start_trigger.children('span').html('Raporu Tamamla')

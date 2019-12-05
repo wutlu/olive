@@ -66,7 +66,7 @@
   -ms-flex-pack: center;
   justify-content: center;
 
-   margin: 0 24px 24px;
+   margin: 24px;
 }
 .gender-grid > .gender {
   position: relative;
@@ -255,6 +255,30 @@
 
   -webkit-animation: blinked 2s infinite;
           animation: blinked 2s infinite;
+}
+
+@keyframes blinked {
+  10%, 11% {
+    background-color: #000;
+    color: #fff;
+  }
+  11%, 12% {
+    background-color: #fff;
+  }
+  12%, 13% {
+    background-color: #000;
+    color: #fff;
+  }
+  13%, 14% {
+    background-color: #fff;
+  }
+  14%, 15% {
+    background-color: #000;
+    color: #fff;
+  }
+  15%, 16% {
+    background-color: #fff;
+  }
 }
 
 @-webkit-keyframes blinked {
@@ -2244,7 +2268,40 @@ footer.page-footer > .container > .row > .col > img#vz-logo {
           transition: all 200ms cubic-bezier(.25, .46, .45, .94);
 }
 
+@-webkit-keyframes menuAlert {
+  0% { top: 72px; }
+  50% { top: 64px; }
+}
+
+.menu-alert {
+  display: none;
+
+  position: fixed;
+  top: 72px;
+  right: 16px;
+
+  color: #222;
+
+  max-width: 200px;
+
+  text-align: right;
+
+  -webkit-animation: menuAlert 1s infinite cubic-bezier(.25, .46, .45, .94);
+          animation: menuAlert 1s infinite cubic-bezier(.25, .46, .45, .94);
+}
+.menu-alert i.material-icons {
+  margin: 0 0 0 6px;
+}
+
 @media only screen and (max-width: 1440px) {
+  .menu-alert {
+    display: initial;
+  }
+
+  body.dock-active .menu-alert {
+    display: none;
+  }
+
   #dock-content > .menu {
     position: fixed;
 
@@ -2968,12 +3025,12 @@ table.table-loading:after {
   background-size: 100px 1920px;
 }
 
-@keyframes placeHolderShimmer{
+@keyframes placeHolderShimmer {
     0% { background-position: 0 -1024px; }
     100% { background-position: 0 1024px; }
 }
 
-@-webkit-keyframes placeHolderShimmer{
+@-webkit-keyframes placeHolderShimmer {
     0% { background-position: 0 -1024px; }
     100% { background-position: 0 1024px; }
 }

@@ -9,7 +9,8 @@
     'wide' => true,
     'pin_group' => true,
     'dock' => true,
-    'report_menu' => true
+    'report_menu' => true,
+    'help' => 'helpStart.start()'
 ])
 
 @push('local.styles')
@@ -79,6 +80,68 @@
 @endpush
 
 @push('local.scripts')
+    const helpStart = new Driver({
+        allowClose: false,
+        showButtons: false,
+        keyboardControl: false,
+        padding: 16,
+        onReset: function() {
+            @if (!auth()->user()->intro('driver.search'))
+                vzAjax($('<div />', {
+                    'class': 'json',
+                    'data-method': 'post',
+                    'data-href': '{{ route('intro', 'driver.search') }}'
+                }))
+            @endif
+
+            flash_alert('Mükemmel!', 'green white-text')
+        }
+    })
+
+    helpStart.defineSteps([
+        {
+            element: '#string',
+            popover: {
+                title: 'Bir Şeyler Yaz!',
+                description: 'Seni gördüğüme sevindim! Hemen bir kelime veya çift tırnak içinde bir cümle yaz ve enter tuşuyla gönder. Öğrenme turundasın, lütfen mantıklı bir arama yap! Doğru bir arama yapana kadar buradayım :)',
+                position: 'bottom'
+            },
+            onHighlightStarted: function() {
+                $('#string').focus()
+            }
+        },
+        {
+            element: '#search',
+            showButtons: true,
+            popover: {
+                title: 'Harika!',
+                description: 'Şu an arama sonuçlarını görüyorsun!',
+                position: 'top'
+            }
+        },
+        {
+            element: '#date-inputs',
+            showButtons: true,
+            popover: {
+                title: 'Tarih Aralığı',
+                description: 'Varsayılan tarih aralığı son 2 gündür. İstediğin sonuçları alabilmek için bu aralığı değiştirebilirsin.',
+                position: 'bottom'
+            }
+        },
+        {
+            element: '[data-name=aggregation-menu]',
+            popover: {
+                title: 'Grafikler',
+                description: 'Grafik almak için bir seçim yap.',
+                position: 'right'
+            }
+        }
+    ])
+
+    @if (!auth()->user()->intro('driver.search'))
+        helpStart.start()
+    @endif
+
     $('.owl-chips').owlCarousel({
         responsiveClass: true,
         autoWidth: true,
@@ -530,7 +593,7 @@
                 <span class="align-self-center">Aramak istediğiniz metni arama alanına girin.</span>
             </div>
         </div>
-        <div class="d-flex align-self-center">
+        <div class="d-flex align-self-center" id="date-inputs">
             <input data-update type="date" class="align-self-center" name="start_date" value="{{ $s ? $s : date('Y-m-d', strtotime('-1 day')) }}" placeholder="Başlangıç" />
             <input data-update type="date" class="align-self-center" name="end_date" value="{{ $e ? $e : date('Y-m-d') }}" placeholder="Bitiş" />
 
@@ -952,6 +1015,20 @@
                 operator('fast-close')
 
                 $('.tabs').tabs('select', 'search-tab')
+
+                if (helpStart.isActivated)
+                {
+                    if (obj.hits.length)
+                    {
+                        setTimeout(function() {
+                            helpStart.start(stepNumber = 1);
+                        }, 1000)
+                    }
+                    else
+                    {
+                        flash_alert('Sonuç Bulunamadı! Başka bir şey ara!', 'red white-text')
+                    }
+                }
             }
         }
     }
@@ -1119,6 +1196,7 @@
 
     function __chart(__, obj)
     {
+        var helpDriverStatus = false;
         const options = {
             chart: {
                 height: 350,
@@ -1268,6 +1346,8 @@
                     var dailyChart = new ApexCharts(document.querySelector('#histogramDailyChart'), dailyChartOption);
                         hourlyChart.render()
                         dailyChart.render()
+
+                    helpDriverStatus = true;
                 break;
                 case 'place':
                     const twitterChartOption = JSON.parse(JSON.stringify(options));
@@ -1361,6 +1441,8 @@
                             instagramChart.render()
 
                         $('#instagramPlaceChart').removeClass('hide')
+
+                        helpDriverStatus = true;
                     }
                     else
                     {
@@ -1377,6 +1459,8 @@
                             twitterChart.render()
 
                         $('#twitterPlaceChart').removeClass('hide')
+
+                        helpDriverStatus = true;
                     }
                     else
                     {
@@ -1442,6 +1526,8 @@
                             twitterPlatformChart.render()
 
                         $('#twitterPlatformChart').removeClass('hide')
+
+                        helpDriverStatus = true;
                     }
                     else
                     {
@@ -2065,6 +2151,8 @@
                             break;
                         }
                     })
+
+                    helpDriverStatus = true;
                 break;
                 case 'hashtag':
                     const twitterHashtagChartOption = JSON.parse(JSON.stringify(options));
@@ -2196,6 +2284,8 @@
                             twitterChart.render()
 
                         $('#twitterHashtagChart').removeClass('hide')
+
+                        helpDriverStatus = true;
                     }
                     else
                     {
@@ -2212,6 +2302,8 @@
                             youtubeVideoChart.render()
 
                         $('#youtubeVideoHashtagChart').removeClass('hide')
+
+                        helpDriverStatus = true;
                     }
                     else
                     {
@@ -2228,6 +2320,8 @@
                             instagramChart.render()
 
                         $('#instagramHashtagChart').removeClass('hide')
+
+                        helpDriverStatus = true;
                     }
                     else
                     {
@@ -2288,6 +2382,8 @@
                         if (datas.length)
                         {
                             $('#consumerChart').removeClass('hide')
+
+                            helpDriverStatus = true;
                         }
                     })
 
@@ -2362,6 +2458,8 @@
                         if (datas.length)
                         {
                             $('#sentimentChart').removeClass('hide')
+
+                            helpDriverStatus = true;
                         }
                     })
 
@@ -2371,85 +2469,94 @@
                         sentimentChart.render()
                 break;
                 case 'gender':
-                    var chart = $('#gender-chart');
-
-                    if (chart.length)
+                    if (obj.data.length)
                     {
-                        chart.remove()
-                    }
+                        var chart = $('#gender-chart');
 
-                    var chart = $('<div />', {
-                        'class': 'chart',
-                        'id': 'gender-chart',
-                        'html': [
-                            $('<div />', {
-                                'class': 'gender-grid'
-                            }),
-                            $('<div />', {
-                                'class': 'd-flex mb-2',
-                                'html': $('<a />', {
-                                    'class': 'btn-flat waves-effect d-flex',
-                                    'data-report-type': 'gender',
-                                    'data-trigger': 'report-chart',
-                                    'data-title': __.data('title'),
-                                    'data-subtitle': __.data('subtitle'),
-                                    'html': [
-                                        $('<i />', {
-                                            'class': 'material-icons align-self-center mr-1',
-                                            'html': 'note_add'
-                                        }),
-                                        $('<span />', {
-                                            'class': 'align-self-center',
-                                            'html': 'Grafiği Rapora Ekle'
-                                        })
-                                    ]
+                        if (chart.length)
+                        {
+                            chart.remove()
+                        }
+
+                        var chart = $('<div />', {
+                            'class': 'chart',
+                            'id': 'gender-chart',
+                            'html': [
+                                $('<div />', {
+                                    'class': 'gender-grid'
+                                }),
+                                $('<div />', {
+                                    'class': 'd-flex mb-2',
+                                    'html': $('<a />', {
+                                        'class': 'btn-flat waves-effect d-flex',
+                                        'data-report-type': 'gender',
+                                        'data-trigger': 'report-chart',
+                                        'data-title': __.data('title'),
+                                        'data-subtitle': __.data('subtitle'),
+                                        'html': [
+                                            $('<i />', {
+                                                'class': 'material-icons align-self-center mr-1',
+                                                'html': 'note_add'
+                                            }),
+                                            $('<span />', {
+                                                'class': 'align-self-center',
+                                                'html': 'Grafiği Rapora Ekle'
+                                            })
+                                        ]
+                                    })
+                                }),
+                                $('<input />', {
+                                    'type': 'hidden',
+                                    'data-chart': 'value',
+                                    'value': JSON.stringify(obj.data)
                                 })
-                            }),
-                            $('<input />', {
-                                'type': 'hidden',
-                                'data-chart': 'value',
-                                'value': JSON.stringify(obj.data)
-                            })
-                        ]
-                    })
+                            ]
+                        })
 
-                    var label = '';
+                        var label = '';
 
-                    $.each(obj.data, function(module_key, module) {
-                        switch (module_key)
-                        {
-                            case 'twitter'         :label = 'Twitter'      ; break;
-                            case 'sozluk'          :label = 'Sözlük'       ; break;
-                            case 'youtube_video'   :label = 'YouTube Video'; break;
-                            case 'youtube_comment' :label = 'YouTube Yorum'; break;
-                        }
-
-                        if (module)
-                        {
-                            var _append = false;
-
-                            var gender_element = $('<div />', {
-                                'class': 'gender',
-                                'html': $('<span />', { 'class': 'chip', 'html': label })
-                            })
-
-                            $.each(module.gender.buckets, function(gender_key, gender) {
-                                gender_element.attr('data-' + gender.key, number_format(gender.doc_count))
-
-                                if (gender.doc_count)
-                                {
-                                    _append = true;
-                                }
-                            })
-
-                            if (_append)
+                        $.each(obj.data, function(module_key, module) {
+                            switch (module_key)
                             {
-                                gender_element.appendTo(chart.find('.gender-grid'))
+                                case 'twitter'         :label = 'Twitter'      ; break;
+                                case 'sozluk'          :label = 'Sözlük'       ; break;
+                                case 'youtube_video'   :label = 'YouTube Video'; break;
+                                case 'youtube_comment' :label = 'YouTube Yorum'; break;
                             }
-                        }
-                    })
 
-                    chart.prependTo('#chart-tab')
+                            if (module)
+                            {
+                                var _append = false;
+
+                                var gender_element = $('<div />', {
+                                    'class': 'gender',
+                                    'html': $('<span />', { 'class': 'chip', 'html': label })
+                                })
+
+                                $.each(module.gender.buckets, function(gender_key, gender) {
+                                    gender_element.attr('data-' + gender.key, number_format(gender.doc_count))
+
+                                    if (gender.doc_count)
+                                    {
+                                        _append = true;
+                                    }
+                                })
+
+                                if (_append)
+                                {
+                                    gender_element.appendTo(chart.find('.gender-grid'))
+                                }
+                            }
+                        })
+
+                        chart.prependTo('#chart-tab')
+
+                        helpDriverStatus = true;
+                    }
+                    else
+                    {
+                        M.toast({ html: 'Tespit edilmiş cinsiyet bulunamadı.' }, 200)
+                    }
                 break;
                 case 'category':
                     var _items_ = {};
@@ -2500,6 +2607,8 @@
 
                         var categoryChart = new ApexCharts(document.querySelector('#categoryChart'), categoryChartOption);
                             categoryChart.render()
+
+                        helpDriverStatus = true;
                     }
                     else
                     {
@@ -2509,6 +2618,18 @@
             }
 
             $('.tabs').tabs('select', 'chart-tab')
+        }
+
+        if (helpDriverStatus === true)
+        {
+            if (helpStart.isActivated)
+            {
+                helpStart.reset()
+            }
+        }
+        else
+        {
+            flash_alert('Sonuç Bulunamadı! Başka bir grafik seç!', 'red white-text')
         }
     }
 
@@ -2589,11 +2710,21 @@
                     }))
                 })
 
+                if (helpStart.isActivated)
+                {
+                    helpStart.reset()
+                }
+
                 chart.prependTo('#chart-tab')
             }
             else
             {
                 M.toast({ html: 'Yerel haber bulunamadı.' }, 200)
+
+                if (helpStart.isActivated)
+                {
+                    flash_alert('Sonuç Bulunamadı! Başka bir grafik seç!', 'red white-text')
+                }
             }
 
             $('.tabs').tabs('select', 'chart-tab')
@@ -2603,7 +2734,13 @@
 
 @section('panel-icon', 'pie_chart')
 @section('panel')
-    <div class="collection collection-unstyled">
+    <div class="collection">
+        <a href="#" data-trigger="filtre-video" class="collection-item d-flex" data-modal-size="modal-medium" data-modal-alert='<iframe src="https://player.vimeo.com/video/377641136" width="100%" height="300" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>'>
+            <i class="material-icons small align-self-center">help</i>
+            <span class="align-self-center">Filtreler</span>
+        </a>
+    </div>
+    <div data-name="aggregation-menu" class="collection collection-unstyled">
         <a href="#" class="collection-item json loading" data-callback="__chart" data-type="histogram" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}" data-title="Zaman Grafiği">Zaman İstatistikleri</a>
         <a href="#" class="collection-item json loading" data-callback="__chart" data-type="place" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}" data-title="Lokasyon Grafiği" data-subtitle="Konum bilgisi paylaşan kullanıcılardan elde edilmiş başlıca lokasyonlar.">Lokasyon</a>
         <a href="#" class="collection-item json loading" data-callback="__chart" data-type="platform" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}" data-title="Platform Grafiği" data-subtitle="Tweet paylaşırken kullanılan başlıca uygulamalar.">Platform</a>
