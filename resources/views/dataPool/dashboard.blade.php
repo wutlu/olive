@@ -55,11 +55,17 @@
                 </div>
             </div>
         </div>
-        <ul class="collection collection-unstyled">
-            <li class="collection-item">Olive ekosistemi, ortak veri havuzu prensibiyle çalışır.</li>
-            <li class="collection-item">Olive organizasyonlarının ve Olive ekibinin belirlediği kriterlere göre, sosyal medya verileri analiz edilmek üzere toplanır.</li>
-            <li class="collection-item">Elde edilen veriler; anlık veri sorgulama motorları ile, kullanıcı ekranlarına sunulur.</li>
-            <li class="collection-item">Havuz kriterlerini, organizasyonunuza ait limitler doğrultusunda kullanabilirsiniz.</li>
-        </ul>
+        <div class="card red">
+            <div class="card-content">
+                <div class="white-text">
+                    @component('components.alert')
+                        @slot('icon', 'warning')
+                        @slot('text', '!! BU BÖLÜM BİR ARAÇ DEĞİLDİR !!<br />
+                            Bu bölüm sadece veri kaynaklarını beslemek için gerekli olan ekstra kriterleri belirtmeniz için vardır.<br />
+                            Bazen bazı veriler gözümüzden kaçabiliyor. Bu durumun önüne geçebilmek için bize kriter belirtmenizi istiyoruz.')
+                    @endcomponent
+                </div>
+            </div>
+        </div>
     </div>
 @endsection

@@ -139,7 +139,10 @@
     ])
 
     @if (!auth()->user()->intro('driver.search'))
-        helpStart.start()
+        if ($(window).width() >= 1024)
+        {
+            helpStart.start()
+        }
     @endif
 
     $('.owl-chips').owlCarousel({

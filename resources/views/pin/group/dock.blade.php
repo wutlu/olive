@@ -14,7 +14,7 @@
             </span>
         </div>
         <div class="card-image">
-            <a href="#" class="btn-floating halfway-fab waves-effect cyan darken-2" data-trigger="create-pin-group">
+            <a href="#" class="btn-floating halfway-fab waves-effect cyan darken-2" data-trigger="create-pin_group">
                 <i class="material-icons">add</i>
             </a>
         </div>
@@ -174,12 +174,12 @@
         return mdl;
     }
 
-    $(document).on('click', '[data-trigger=create-pin-group]', function() {
+    $(document).on('click', '[data-trigger=create-pin_group]', function() {
         var mdl = pin_group_modal();
             mdl.find('.modal-title').html('Grup Oluştur')
             mdl.find('form#pin-group-form').data('method', 'put')
 
-            mdl.find('[name=group_name]').val('')
+            mdl.find('[name=group_name]').val('').focus()
 
         $('[data-trigger=delete-pin-group]').removeAttr('data-id').addClass('hide')
     })
@@ -191,7 +191,7 @@
             var mdl = pin_group_modal();
                 mdl.find('.modal-title').html('Grup Güncelle')
                 mdl.find('form#pin-group-form').data('id', obj.data.id).data('method', 'patch')
-                mdl.find('[name=group_name]').val(obj.data.name)
+                mdl.find('[name=group_name]').val(obj.data.name).focus()
 
             $('[data-trigger=delete-pin-group]').data('id', obj.data.id).removeClass('hide')
         }
@@ -209,7 +209,7 @@
 
                 if ($('[data-name=total-pin-group]').html() == 0)
                 {
-                    $('[data-trigger=create-pin-group]').removeClass('pulse')
+                    $('[data-trigger=create-pin_group]').removeClass('pulse')
                 }
             }
             else if (obj.type == 'updated')
@@ -280,7 +280,7 @@
 
         if ($('[data-name=total-pin-group]').html() == 0)
         {
-            $('[data-trigger=create-pin-group]').addClass('pulse')
+            $('[data-trigger=create-pin_group]').addClass('pulse')
 
             M.toast({
                 html: 'Önce bir pin grubu oluşturmalısınız.',
