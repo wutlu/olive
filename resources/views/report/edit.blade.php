@@ -111,6 +111,7 @@
             case 'blogSites':
             case 'shoppingSites':
             case 'shoppingUsers':
+            case 'gender':
                 action = '/raporlar/aggs/' + obj.page.id;
                 action = '/raporlar/aggs/' + obj.page.id;
             break;

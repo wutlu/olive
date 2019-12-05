@@ -11,5 +11,9 @@ class TestController extends Controller
     public static function test(Request $request)
     {
 
+    	if (count(@$deneme))
+    	{
+    		echo 'var';
+    	}
     }
 }

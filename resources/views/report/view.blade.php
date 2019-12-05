@@ -169,7 +169,7 @@
             padding: 0;
         }
         .report-page {
-            border: 1px solid #ccc;
+            border: 2px solid #ccc;
 
             -webkit-box-shadow: none;
                     box-shadow: none;

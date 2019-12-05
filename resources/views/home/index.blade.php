@@ -107,6 +107,7 @@
             modal({
                 'id': 'info',
                 'title': 'Telefon Bırakın Sizi Arayalım!',
+                'class': 'with-bg',
                 'body': $('<div />', {
                     'html': $('<form />', {
                         'class': 'json',
@@ -191,7 +192,7 @@
                         ]
                     })
                 }),
-                'size': 'modal-medium',
+                'size': 'modal-large',
                 'options': {
                     dismissible: false
                 },
@@ -594,7 +595,7 @@
 
     <!-- section 6 -->
 
-    <section class="section section-test d-flex mb-1">
+    <section class="section section-test d-flex mb-1 with-bg">
         <div class="section-overlay cyan darken-2"></div>
         <div class="container align-self-center">
             <div class="pl-2 lr-2 mb-2">

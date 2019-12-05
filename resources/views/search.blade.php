@@ -2371,18 +2371,51 @@
                         sentimentChart.render()
                 break;
                 case 'gender':
-                    var genders = { 'male': 'Erkek', 'female': 'Kadın', 'unknown': 'Bilinmeyen' };
+                    var chart = $('#gender-chart');
 
-                    const genderChartOption = JSON.parse(JSON.stringify(options));
+                    if (chart.length)
+                    {
+                        chart.remove()
+                    }
 
-                    genderChartOption['xaxis']['title']['text'] = 'Cinsiyet Grafiği';
-                    genderChartOption['markers']['size'] = 10;
+                    var chart = $('<div />', {
+                        'class': 'chart',
+                        'id': 'gender-chart',
+                        'html': [
+                            $('<div />', {
+                                'class': 'gender-grid'
+                            }),
+                            $('<div />', {
+                                'class': 'd-flex mb-2',
+                                'html': $('<a />', {
+                                    'class': 'btn-flat waves-effect d-flex',
+                                    'data-report-type': 'gender',
+                                    'data-trigger': 'report-chart',
+                                    'data-title': __.data('title'),
+                                    'data-subtitle': __.data('subtitle'),
+                                    'html': [
+                                        $('<i />', {
+                                            'class': 'material-icons align-self-center mr-1',
+                                            'html': 'note_add'
+                                        }),
+                                        $('<span />', {
+                                            'class': 'align-self-center',
+                                            'html': 'Grafiği Rapora Ekle'
+                                        })
+                                    ]
+                                })
+                            }),
+                            $('<input />', {
+                                'type': 'hidden',
+                                'data-chart': 'value',
+                                'value': JSON.stringify(obj.data)
+                            })
+                        ]
+                    })
 
-                    var gender_hits = false;
+                    var label = '';
 
                     $.each(obj.data, function(module_key, module) {
-                        var label = '';
-
                         switch (module_key)
                         {
                             case 'twitter'         :label = 'Twitter'      ; break;
@@ -2391,39 +2424,32 @@
                             case 'youtube_comment' :label = 'YouTube Yorum'; break;
                         }
 
-                        var datas = [];
-
                         if (module)
                         {
-                            $.each(module.gender.buckets, function(gender_key, gender) {
-                                genderChartOption['xaxis']['categories'].push(genders[gender.key])
-                                datas.push(gender.doc_count)
+                            var _append = false;
 
-                                gender_hits = true;
+                            var gender_element = $('<div />', {
+                                'class': 'gender',
+                                'html': $('<span />', { 'class': 'chip', 'html': label })
                             })
-                        }
 
-                        genderChartOption['series'].push({
-                            name: label,
-                            data: datas
-                        })
+                            $.each(module.gender.buckets, function(gender_key, gender) {
+                                gender_element.attr('data-' + gender.key, number_format(gender.doc_count))
+
+                                if (gender.doc_count)
+                                {
+                                    _append = true;
+                                }
+                            })
+
+                            if (_append)
+                            {
+                                gender_element.appendTo(chart.find('.gender-grid'))
+                            }
+                        }
                     })
 
-                    if (gender_hits)
-                    {
-                        __chart_generate('gender', __.data());
-
-                        chartToJson('#genderChart', genderChartOption)
-
-                        var genderChart = new ApexCharts(document.querySelector('#genderChart'), genderChartOption);
-                            genderChart.render()
-
-                        $('#genderChart').removeClass('hide')
-                    }
-                    else
-                    {
-                        M.toast({ html: 'Paylaşımlarda cinsiyet verisi bulunamadı!' }, 200)
-                    }
+                    chart.prependTo('#chart-tab')
                 break;
                 case 'category':
                     var _items_ = {};
@@ -2538,14 +2564,19 @@
                 })
 
                 var total = 0;
+                var max = 0;
+                var min = 99999;
 
                 $.each(obj.data.news.locals.buckets, function(key, o) {
                     total = total + o.doc_count;
+
+                    if (o.doc_count > max) max = o.doc_count;
+                    if (o.doc_count < min) min = o.doc_count;
                 })
 
                 $.each(obj.data.news.locals.buckets, function(key, o) {
-                    var per = parseInt(o.doc_count*255)/total;
-                    var cr = per,
+                    var per = (o.doc_count-min)/(max-min);
+                    var cr = per*255,
                         cg = 0,
                         cb = 0,
                         color = 'rgba(' + cr + ', ' + cg + ', ' + cb + ')';
@@ -2673,7 +2704,7 @@
                             <td style="padding: 0; text-transform: uppercase; vertical-align: top;" class="right-align">
                                 <p class="mb-0 hide" data-stat>
                                     <span class="d-flex justify-content-end">
-                                        <small class="grey-text">RT, ALINTI, CEVAP</small>
+                                        <small class="grey-text">TEKİL İÇERİK</small>
                                         <small class="pl-1" data-name="twitter-reach">0</small>
                                     </span>
                                 </p>

@@ -1839,7 +1839,7 @@ function __report__pattern(obj, form, type, method)
 
                 if (obj.stats.twitter.reach)
                 {
-                    form.find('.report-stats').children('.twitter').append($('<span />', { 'html': number_format(obj.stats.twitter.reach) + ' etkileşim (rt, qt, rp)', 'class': 'd-table' }))
+                    form.find('.report-stats').children('.twitter').append($('<span />', { 'html': number_format(obj.stats.twitter.reach) + ' etkileşim hariç', 'class': 'd-table' }))
                 }
 
                 if (obj.stats.twitter.unique_users)
@@ -2098,14 +2098,19 @@ function __report__pattern(obj, form, type, method)
             var data = obj.data ? obj.data : $.parseJSON(obj);
 
             var total = 0;
+            var max = 0;
+            var min = 99999;
 
             $.each(data, function(key, o) {
                 total = total + o.doc_count;
+
+                if (o.doc_count > max) max = o.doc_count;
+                if (o.doc_count < min) min = o.doc_count;
             })
 
             $.each(data, function(key, o) {
-                var per = parseInt(o.doc_count*255)/total;
-                var cr = per,
+                var per = (o.doc_count-min)/(max-min);
+                var cr = per*255,
                     cg = 0,
                     cb = 0,
                     color = 'rgba(' + cr + ', ' + cg + ', ' + cb + ')';
@@ -2117,6 +2122,65 @@ function __report__pattern(obj, form, type, method)
                     'css': { 'background-color': color }
                 }))
             })
+
+            form.append($('<input />', {
+                'type': 'hidden',
+                'name': 'data',
+                'value': JSON.stringify(data)
+            }))
+        break;
+        case 'gender':
+            form.find('.content').html(
+                [
+                    $('<div />', {
+                        'class': 'flex-fill gender-grid',
+                        'css': { 'min-width': '70%' }
+                    }),
+                    $('<div />', {
+                        'class': 'flex-fill textarea markdown',
+                        'css': { 'min-width': '30%' },
+                        'html': method == 'write' ? $('<textarea />', { 'name': 'text', 'placeholder': 'Metin Alanı', 'html': obj.page ? obj.page.text : '' }) : obj.page ? obj.page.text : ''
+                    })
+                ]
+            )
+
+            var data = obj.data ? obj.data : $.parseJSON(obj);
+
+             var label = '';
+
+             $.each(data, function(module_key, module) {
+                 switch (module_key)
+                 {
+                     case 'twitter'         :label = 'Twitter'      ; break;
+                     case 'sozluk'          :label = 'Sözlük'       ; break;
+                     case 'youtube_video'   :label = 'YouTube Video'; break;
+                     case 'youtube_comment' :label = 'YouTube Yorum'; break;
+                 }
+
+                 if (module)
+                 {
+                     var _append = false;
+
+                     var gender_element = $('<div />', {
+                         'class': 'gender',
+                         'html': $('<span />', { 'class': 'chip', 'html': label })
+                     })
+
+                     $.each(module.gender.buckets, function(gender_key, gender) {
+                         gender_element.attr('data-' + gender.key, number_format(gender.doc_count))
+
+                         if (gender.doc_count)
+                         {
+                             _append = true;
+                         }
+                     })
+
+                     if (_append)
+                     {
+                         gender_element.appendTo(form.find('.gender-grid'))
+                     }
+                 }
+             })
 
             form.append($('<input />', {
                 'type': 'hidden',

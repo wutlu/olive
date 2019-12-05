@@ -245,6 +245,7 @@ class ReportController extends Controller
             'data.product' => 'E-ticaret',
             'data.stats' => 'İstatistik',
             'data.chart' => 'Grafik',
+            'data.gender' => 'Cinsiyet Dağılımı',
             'data.tr_map' => 'Türkiye Haritası',
 
             'data.twitterMentions' => 'Twitter Bahsedilen Hesaplar',
