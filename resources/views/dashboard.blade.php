@@ -382,11 +382,13 @@
 
                         $('[data-target=start]').tapTarget({
                             'onClose': function() {
-                                vzAjax($('<div />', {
-                                    'class': 'json',
-                                    'data-method': 'post',
-                                    'data-href': '{{ route('intro', 'welcome.create.organisation') }}'
-                                }))
+                                /*!
+                                 * vzAjax($('<div />', {
+                                 *     'class': 'json',
+                                 *     'data-method': 'post',
+                                 *     'data-href': '{{ route('intro', 'welcome.create.organisation') }}'
+                                 * }))
+                                 */
                             }
                         })
                         $('[data-target=start]').tapTarget('open')

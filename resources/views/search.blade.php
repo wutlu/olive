@@ -131,8 +131,8 @@
         {
             element: '[data-name=aggregation-menu]',
             popover: {
-                title: 'Grafikler',
-                description: 'Grafik almak için bir seçim yap.',
+                title: 'İstatistikler',
+                description: 'İstatistik almak için bir seçim yap.',
                 position: 'right'
             }
         }

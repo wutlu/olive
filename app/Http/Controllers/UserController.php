@@ -302,7 +302,8 @@ class UserController extends Controller
         $user->save();
 
         return [
-            'status' => 'ok'
+            'status' => 'ok',
+            'organisation_status' => $user->organisation_id ? true : false
         ];
     }
 

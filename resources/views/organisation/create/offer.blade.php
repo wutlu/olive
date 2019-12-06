@@ -4,18 +4,113 @@
         [
             'text' => 'Organizasyon Oluştur'
         ]
-    ]
+    ],
+    'help' => 'helpStart.start()'
 ])
 
 @section('content')
     @if ($user->gsm_verified_at)
+        @push('local.scripts')
+            const helpStart = new Driver({
+                allowClose: false
+            })
+
+            helpStart.defineSteps([
+                {
+                    element: '[data-id=price]',
+                    popover: {
+                        title: 'Ücretlendirme',
+                        description: 'Özellik seçtikçe güncellenecek olan bu alan sadece bilgilendirme amaçlıdır. Deneme süresi boyunca senden hiçbir ücret talep etmeyeceğiz.',
+                        position: 'top'
+                    },
+                    onHighlightStarted: function() {
+                        $('#string').focus()
+                    }
+                },
+                {
+                    element: '[data-id=module_real_time]',
+                    showButtons: true,
+                    popover: {
+                        title: 'Canlı Akış',
+                        description: 'Web ortamında paylaşılan ve sizi ilgilendiren her şey eş zamanlı olarak önünüze düşer. <br /><br /><a href="{{ asset('img/realtime.gif') }}" target="_blank"><img alt="Image" src="{{ asset('img/realtime.gif') }}" class="responsive-img" /></a>',
+                        position: 'bottom'
+                    }
+                },
+                {
+                    element: '[data-id=module_search]',
+                    showButtons: true,
+                    popover: {
+                        title: 'Arama Motoru',
+                        description: 'Kitle ölçümlemeleri, web araştırmaları ve çeşitli analizler üretebileceğin Olive ana modülü. <br /><br /><a href="{{ asset('img/search.jpg') }}" target="_blank"><img alt="Image" src="{{ asset('img/search.jpg') }}" class="responsive-img" /></a>',
+                        position: 'bottom'
+                    }
+                },
+                {
+                    element: '[data-id=module_trend]',
+                    showButtons: true,
+                    popover: {
+                        title: 'Trendler',
+                        description: 'Türkiye\'de şu an neler oluyor? Eş zamanlı takibini yapabilirsin. <br /><br /><a href="{{ asset('img/trend.jpg') }}" target="_blank"><img alt="Image" src="{{ asset('img/trend.jpg') }}" class="responsive-img" /></a>',
+                        position: 'bottom'
+                    }
+                },
+                {
+                    element: '[data-id=module_alarm]',
+                    showButtons: true,
+                    popover: {
+                        title: 'Alarmlar',
+                        description: 'Google veya Yandex gibi arama motorlarının bile günler sonra ulaştığı ve bazen ulaşamadığı verilerden eş zamanlı haberdar olun. <br /><br /><a href="{{ asset('img/alarm.jpg') }}" target="_blank"><img alt="Image" src="{{ asset('img/alarm.jpg') }}" class="responsive-img" /></a>',
+                        position: 'bottom'
+                    }
+                },
+                {
+                    element: '[data-id=module_compare]',
+                    showButtons: true,
+                    popover: {
+                        title: 'Veri Kıyaslama',
+                        description: 'Rakiplerini veya ilgilendiğin konuları istatistiksel olarak karşılaştırabilirsin.',
+                        position: 'bottom'
+                    }
+                },
+                {
+                    element: '[data-id=module_borsa]',
+                    showButtons: true,
+                    popover: {
+                        title: 'Kalabalığın Düşüncesi',
+                        description: 'Borsa verilerinden çıkarımlar gerçekleştirebilirsin.',
+                        position: 'bottom'
+                    }
+                },
+                {
+                    element: '[data-id=module_report]',
+                    showButtons: true,
+                    popover: {
+                        title: 'Raporlama',
+                        description: 'İster otomatik, ister Olive Rapor editörünü kullanarak hızlı, anlamlı ve iyi görünümlü raporlar oluşturabilirsin.',
+                        position: 'bottom'
+                    }
+                },
+                {
+                    element: '[data-id=first-next]',
+                    showButtons: false,
+                    popover: {
+                        title: 'Harika!',
+                        description: 'Bir sonraki aşamaya geçebilirsin.',
+                        position: 'left'
+                    }
+                }
+            ])
+
+            helpStart.start()
+        @endpush
+
         <div class="olive-alert success hide">
             <div class="anim"></div>
             <h4 class="mb-2">Organizasyon Oluşturuldu!</h4>
-            <p>Organizasyonunuz aktif! Seçtiğiniz tüm özellikleri 1 gün boyunca ücretsiz olarak kullanabilirsiniz.</p>
+            <p>Organizasyon aktif! Seçtiğin tüm özellikleri 1 gün boyunca ücretsiz olarak kullanabilirsin.</p>
             <p class="mb-2"> İyi araştırmalar dileriz!</p>
-            <a href="{{ route('dashboard') }}" class="btn-flat waves-effect">Ana Sayfa</a>
-            <a href="{{ route('settings.organisation') }}" class="btn green waves-effect">Organizasyon</a>
+            <a href="{{ route('settings.organisation') }}" class="btn-flat waves-effect">Organizasyon</a>
+            <a href="{{ route('search.dashboard') }}" class="btn green waves-effect">Hemen Başla!</a>
         </div>
         <form class="json" method="post" action="{{ route('organisation.create.offer') }}" data-callback="__create" id="offer">
             <div class="d-flex mx-auto" style="max-width: 600px;">
@@ -24,9 +119,9 @@
                         <span class="step">1/4</span>
                         <span class="title">Modül Seçimi</span>
                     </div>
-                    <ul class="collection collection-hoverable">
+                    <ul class="collection">
                         @foreach (config('system.static_modules') as $key => $module)
-                            <li class="collection-item info-bg">
+                            <li class="collection-item" data-id="{{ $key }}">
                                 <label>
                                     <input
                                         data-update
@@ -41,30 +136,14 @@
                                         id="{{ $key }}"
                                         value="on"
                                         type="checkbox" />
-                                    <span>{{ $module }} {!! $prices['unit_price.'.$key]['value'] ? '' : '<sup class="red-text">Ücretsiz</sup>' !!}</span>
+                                    <span>{{ $module }}</span>
                                 </label>
-
-                                @if ($key == 'module_real_time')
-                                    <p class="mb-0">Geniş çaplı filtreleme özellikleri ve kullanıcı dostu arayüzü ile gündemdeki paylaşımları eş zamanlı izlemenizi sağlar.</p>
-                                @elseif ($key == 'module_search')
-                                    <p class="mb-0">Eş zamanlı veya geçmişe yönelik sosyal medya ve web verileri içerisinden geniş çaplı filtreler ile aramalar gerçekleştirebilirsiniz. Ayrıca elde edeceğiniz sonuçları görselleştirerek kitle ölçümleri, rakip analizleri ve çeşitli görüler elde edebilmenize olanak tanır.</p>
-                                @elseif ($key == 'module_trend')
-                                    <p class="mb-0">Eş zamanlı veya geçmişe yönelik trend olmuş; kelime, kullanıcı veya başlık takibi, genel veya sektörel popüler kullanıcı listeleri sağlar.</p>
-                                @elseif ($key == 'module_compare')
-                                    <p class="mb-0">Arama ile belirleyeceğiniz kriterleri sorgu sınırı olmadan kıyaslayabilirsiniz.</p>
-                                @elseif ($key == 'module_borsa')
-                                    <p class="mb-0">Kalabalığın düşüncesini dinleyerek hisselerinize yön verebilirsiniz.</p>
-                                @elseif ($key == 'module_report')
-                                    <p class="mb-0">Araştırmalarınızı yaparken raporlama editörünü kullanarak eş zamanlı raporlar oluşturabilirsiniz.</p>
-                                @elseif ($key == 'module_alarm')
-                                    <p class="mb-0">Bilgisayar başında gerçirecek vaktiniz yoksa "Alarmlar" sayesinde konuşulanlardan eş zamanlı haberdar olabilirsiniz.</p>
-                                @endif
                             </li>
                         @endforeach
                     </ul>
                     <div class="card-content d-flex justify-content-between">
                         <a class="btn red btn-large waves-effect" href="{{ route('dashboard') }}" data-tooltip="Ücretsiz özellikleri kullanmaya devam et!">Vazgeç</a>
-                        <button type="button" class="btn blue-grey btn-large waves-effect" data-steps="2">
+                        <button type="button" class="btn blue-grey btn-large waves-effect" data-steps="2" data-id="first-next">
                             <i class="material-icons">arrow_forward</i>
                         </button>
                     </div>
@@ -77,9 +156,10 @@
                     <div class="card-content red-text text-darken-2 hide" data-alert="trend-info">
                         @component('components.alert')
                             @slot('icon', 'info')
-                            @slot('text', 'Seçtiğiniz modül(ler) veri kaynağına ihtiyaç duymuyor.')
+                            @slot('text', 'Seçtiğin modül(ler) veri kaynağına ihtiyaç duymuyor.')
                         @endcomponent
                     </div>
+                    <div class="card-content info-bg" data-id="data-sources">Olive örümcekleri tıpkı Google'ın yaptığı gibi fakat Google'dan biraz daha hızlı bir şekilde web'de gezinerek çeşitli mecralardan veri elde eder. Bu veri türlerinden erişmek istediklerinizi seçin. <strong>Ayrıca Olive'e sonradan eklenecek veri kaynaklarına da bir sonraki fatura döneminize kadar ücretsiz erişebilirsiniz.</strong></div>
                     <ul class="collection collection-hoverable" data-tab="source">
                         @foreach (config('system.modules') as $key => $module)
                             <li class="collection-item">
@@ -92,12 +172,11 @@
                                         value="on"
                                         data-unit-price="{{ $prices['unit_price.data_'.$key]['value'] }}"
                                         type="checkbox" />
-                                    <span class="align-self-center">{{ $module }} {!! $prices['unit_price.data_'.$key]['value'] ? '' : '<sup class="red-text">Ücretsiz</sup>' !!}</span>
+                                    <span class="align-self-center">{{ $module }}</span>
                                 </label>
                             </li>
                         @endforeach
                     </ul>
-                    <div class="card-content info-bg">Olive örümcekleri tıpkı Google'ın yaptığı gibi fakat Google'dan biraz daha hızlı bir şekilde web'de gezinerek çeşitli mecralardan veri elde eder. Bu veri türlerinden hangilerine erişmek istiyorsunuz?</div>
                     <div class="card-content d-flex justify-content-between">
                         <button type="button" class="btn red lighten-2 btn-large waves-effect" data-steps="1" data-prev="true">
                             <i class="material-icons">arrow_back</i>
@@ -132,14 +211,14 @@
                                 <span class="align-self-center mr-1">Pin Grubu</span>
                                 <a
                                     href="#"
-                                    class="align-self-center"
+                                    class="btn-floating blue-grey pulse align-self-center"
                                     data-tooltip="Bilgi"
                                     data-position="right"
                                     data-trigger="info"
                                     data-title="Pin Grubu">
-                                    <i class="material-icons tiny teal-text">info</i>
+                                    <i class="material-icons black-text" data-id="sample-info">info_outline</i>
                                     <div class="hide" data-helper>
-                                        <span style="font-size: 16px;">İlgilendiğiniz içerikleri gruplar halinde saklayabilir ve istediğiniz zaman çıktılarını alabilirsiniz. Bu alan zorunlu değildir.</span>
+                                        <span style="font-size: 16px;">İlgilendiğn içerikleri gruplar halinde saklayabilir ve istediğin zaman çıktılarını alabilirsin. Bu alan zorunlu değildir.</span>
                                     </div>
                                 </a>
                             </small>
@@ -161,12 +240,12 @@
                                 <span class="align-self-center mr-1">Geçmişe Yönelik Arama (Gün)</span>
                                 <a
                                     href="#"
-                                    class="align-self-center"
+                                    class="btn-floating blue-grey pulse align-self-center"
                                     data-tooltip="Bilgi"
                                     data-position="right"
                                     data-trigger="info"
                                     data-title="Geçmişe Yönelik Arama">
-                                    <i class="material-icons tiny teal-text">info</i>
+                                    <i class="material-icons black-text">info_outline</i>
                                     <div class="hide" data-helper>
                                         <span style="font-size: 16px;">Arama, Alarm, Veri Kıyaslama ve Akış modülü kullanmak istiyorsanız en az 1 gün "Geçmişe Yönelik Arama" yapabiliyor olmanız gerekiyor.</span>
                                     </div>
@@ -191,14 +270,14 @@
                                 <span class="align-self-center mr-1">Arama Kaydetme</span>
                                 <a
                                     href="#"
-                                    class="align-self-center"
+                                    class="btn-floating blue-grey pulse align-self-center"
                                     data-tooltip="Bilgi"
                                     data-position="right"
                                     data-trigger="info"
                                     data-title="Arama Kaydetme">
-                                    <i class="material-icons tiny teal-text">info</i>
+                                    <i class="material-icons black-text">info_outline</i>
                                     <div class="hide" data-helper>
-                                        <span style="font-size: 16px;">Aramalarınızı kaydederek "Alarm, Akış ve Veri Kıyaslama" modüllerinde kullanabilirsiniz. "Alarm, Akış ve Veri Kıyaslama" bölümünü kullanabilmek için en az 1 "Arama Kaydetme" seçimi yapmalısınız.</span>
+                                        <span style="font-size: 16px;">Aramalarınızı kaydederek "Alarm, Akış ve Veri Kıyaslama" modüllerinde kullanabilirsin. "Alarm, Akış ve Veri Kıyaslama" bölümünü kullanabilmek için en az 1 "Arama Kaydetme" seçimi yapmalısınız.</span>
                                     </div>
                                 </a>
                             </small>
@@ -230,6 +309,7 @@
                         <span class="step">4/4</span>
                         <span class="title">Kaynak Takibi</span>
                     </div>
+                    <div class="card-content info-bg" data-id="data-limits">Bazı içerikler Olive örümceklerinin gözünden kaçabilir. Bu gibi durumlar için takip edilmesini istediğin özel kaynakları belirtebilirsin.</div>
                     <div class="card-content">
                         <div class="d-flex justify-content-between">
                             <small>YouTube Kanal Takibi</small>
@@ -333,7 +413,6 @@
                                 type="range" />
                         </div>
                     </div>
-                    <div class="card-content info-bg">Bazı içerikler Olive örümceklerinin gözünden kaçabilir. Bu gibi durumlarda takip edilmesini istediğiniz özel kaynakları belirtebilirsiniz.</div>
                     <div class="card-content d-flex justify-content-between">
                         <button type="button" class="btn red lighten-2 btn-large waves-effect" data-steps="3" data-prev="true">
                             <i class="material-icons">arrow_back</i>
@@ -345,29 +424,17 @@
 
             <div class="center-align red-text hide p-2" data-name="alert" style="font-size: 20px;"></div>
 
-            <div id="price" class="center-align">{{ config('formal.currency') }}<span data-name="price-total">0</span> +kdv <sub class="grey-text">/ ay</sub></div>
-            <small class="grey-text d-table mx-auto">DENEME SONRASI ÖDEMENİZ GEREKEN FİYAT</small>
-            <div class="grey-text text-darken-2 p-2">
-                @component('components.alert')
-                    @slot('icon', 'info')
-                    @slot('text', 'Organizasyon deneme süresi 1 gündür. Hizmetlerin kesintisizce devam edebilmesi için en geç 1 gün sonra paketinizi yenilemeniz gerekmektedir.')
-                @endcomponent
-                @component('components.alert')
-                    @slot('icon', 'info')
-                    @slot('text', 'Ücretsiz ibaresi olan özelliklerin kullanımında organizasyon oluşturma zorunluluğu yoktur.')
-                @endcomponent
-                @component('components.alert')
-                    @slot('icon', 'info')
-                    @slot('text', 'Hizmet sonlandırıldıktan sonra, ücretsiz özellikleri kesintisiz olarak kullanmaya devam edebilirsiniz.')
-                @endcomponent
+            <div class="d-table mx-auto" data-id="price">
+                <div id="price">{{ config('formal.currency') }}<span data-name="price-total">0</span> +kdv <sub class="grey-text">/ ay</sub></div>
+                <small class="grey-text d-table mx-auto">DENEME SONRASI ÖDEMENİZ GEREKEN FİYAT</small>
             </div>
         </form>
     @else
         <div class="olive-alert warning">
             <div class="anim"></div>
             <h4 class="mb-2">GSM Ekleyin</h4>
-            <p>Bir çok ücretsiz özelliği organizasyon oluşturmadan da kullanabilirsiniz. Ancak tüm özelliklerden faydalanmak için bir organizasyon oluşturmanız gerekiyor.</p>
-            <p class="mb-2">Organizasyon oluşturabilmek için öncelikle bir GSM numarası eklemeniz gerekiyor.</p>
+            <p>Bir çok ücretsiz özelliği organizasyon oluşturmadan da kullanabilirsin. Ancak tüm özelliklerden faydalanmak için bir organizasyon oluşturmanız gerekiyor.</p>
+            <p class="mb-2">Organizasyon oluşturabilmek için öncelikle bir GSM numarası eklemen gerekiyor.</p>
             <a href="{{ route('settings.mobile') }}" class="btn-flat waves-effect">GSM Ekle</a>
         </div>
     @endif
@@ -545,6 +612,23 @@
             'tolerance': '-526px',
             'speed': 1
         })
+
+        if (__.data('steps') == 2)
+        {
+            helpStart.reset()
+
+            setTimeout(function() {
+                const driver = new Driver();
+                      driver.highlight('[data-id=data-sources]');
+            }, 1000)
+        }
+        else if (__.data('steps') == 4)
+        {
+            setTimeout(function() {
+                const driver = new Driver();
+                      driver.highlight('[data-id=data-limits]');
+            }, 1000)
+        }
     })
 
     function calculate()

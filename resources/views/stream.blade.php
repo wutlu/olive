@@ -501,6 +501,10 @@
                         item.appendTo(__)
                 })
             }
+            else
+            {
+                $('body').addClass('dock-active')
+            }
         }
     }
 @endpush
@@ -529,10 +533,10 @@
                     </label>
                 </div>
             </li>
-            <li class="collection-item nothing hide">
+            <li class="collection-item nothing hide" data-id="search-alert">
                 @component('components.nothing')
                     @slot('size', 'small')
-                    @slot('text', 'İlk önce <a class="grey-text" href="'.route('search.dashboard').'">Arama Motoru</a> ile bir sorgu oluşturup kaydedin.')
+                    @slot('text', 'İlk önce <a class="btn red btn-small waves-effect" href="'.route('search.dashboard').'">Arama Motoru</a> ile bir arama yapıp, aramayı kaydedin.<br /><br />Daha sonra bu alandan kayıtlı aramayı seçmeniz gerekecek.')
                 @endcomponent
             </li>
         </ul>
@@ -560,3 +564,11 @@
 @endsection
 
 @include('_inc.alerts.search_operators')
+
+@push('external.include.header')
+    <link rel="stylesheet" href="{{ asset('css/driver.min.css?v='.config('system.version')) }}" />
+@endpush
+
+@push('external.include.footer')
+    <script src="{{ asset('js/driver.min.js?v='.config('system.version')) }}"></script>
+@endpush

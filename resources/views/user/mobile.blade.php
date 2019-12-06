@@ -103,11 +103,18 @@
                             {
                                 if (obj.status == 'ok')
                                 {
-                                    M.toast({ html: 'Doğrulama Başarılı!', 'classes': 'green darken-2' })
+                                    flash_alert('Doğrulama Başarılı!', 'green white-text')
 
                                     setTimeout(function() {
-                                        location.reload()
-                                    }, 1000)
+                                        if (obj.organisation_status == true)
+                                        {
+                                            location.reload()
+                                        }
+                                        else
+                                        {
+                                            location.href = '{{ route('organisation.create.offer') }}';
+                                        }
+                                    }, 600)
                                 }
                             }
                         @endpush
@@ -128,6 +135,21 @@
                         <button type="submit" class="btn-flat waves-effect">Ekle</button>
                     </form>
                     @push('local.scripts')
+                        var gsm = $('input#gsm');
+                            gsm.focus()
+                        var focusDriver = new Driver();
+                            focusDriver.highlight({
+                                element: '#' + gsm.attr('id'),
+                                popover: {
+                                    title: 'GSM Ekleyin',
+                                    description: 'Denemeniz boyunca sizden hiçbir ücret talep etmeyeceğiz. Lütfen adımları takip edin.',
+                                }
+                            })
+
+                        $(document).on('keyup', gsm, function() {
+                            focusDriver.reset()
+                        })
+
                         function __mobile(__, obj)
                         {
                             if (obj.status == 'ok')
@@ -146,10 +168,15 @@
     @include('settings._menu', [ 'active' => 'mobile' ])
 @endsection
 
+@push('external.include.header')
+    <link rel="stylesheet" href="{{ asset('css/driver.min.css?v='.config('system.version')) }}" />
+@endpush
+
 @push('external.include.footer')
     <script src="{{ asset('js/jquery.maskedinput.min.js?v='.config('system.version')) }}"></script>
     <script>
         $('input#gsm').mask('(999) 999 99 99')
         $('input#code').mask('9999')
     </script>
+    <script src="{{ asset('js/driver.min.js?v='.config('system.version')) }}"></script>
 @endpush
