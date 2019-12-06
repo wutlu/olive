@@ -19,7 +19,7 @@
                 {
                     element: '[data-id=price]',
                     popover: {
-                        title: 'Ücretlendirme',
+                        title: 'Hadi Başlayalım!',
                         description: 'Özellik seçtikçe güncellenecek olan bu alan sadece bilgilendirme amaçlıdır. Deneme süresi boyunca senden hiçbir ücret talep etmeyeceğiz.',
                         position: 'top'
                     },
@@ -218,7 +218,7 @@
                                     data-title="Pin Grubu">
                                     <i class="material-icons black-text" data-id="sample-info">info_outline</i>
                                     <div class="hide" data-helper>
-                                        <span style="font-size: 16px;">İlgilendiğn içerikleri gruplar halinde saklayabilir ve istediğin zaman çıktılarını alabilirsin. Bu alan zorunlu değildir.</span>
+                                        <span style="font-size: 16px;">İlgilendiğin içerikleri gruplar halinde saklayabilir ve istediğin zaman çıktılarını alabilirsin. Bu alan zorunlu değildir.</span>
                                     </div>
                                 </a>
                             </small>
@@ -247,7 +247,7 @@
                                     data-title="Geçmişe Yönelik Arama">
                                     <i class="material-icons black-text">info_outline</i>
                                     <div class="hide" data-helper>
-                                        <span style="font-size: 16px;">Arama, Alarm, Veri Kıyaslama ve Akış modülü kullanmak istiyorsanız en az 1 gün "Geçmişe Yönelik Arama" yapabiliyor olmanız gerekiyor.</span>
+                                        <span style="font-size: 16px;">Arama, Alarm, Veri Kıyaslama ve Akış modülü kullanmak istiyorsan en az 1 gün "Geçmişe Yönelik Arama" yapabiliyor olman gerekiyor.</span>
                                     </div>
                                 </a>
                             </small>
@@ -277,7 +277,7 @@
                                     data-title="Arama Kaydetme">
                                     <i class="material-icons black-text">info_outline</i>
                                     <div class="hide" data-helper>
-                                        <span style="font-size: 16px;">Aramalarınızı kaydederek "Alarm, Akış ve Veri Kıyaslama" modüllerinde kullanabilirsin. "Alarm, Akış ve Veri Kıyaslama" bölümünü kullanabilmek için en az 1 "Arama Kaydetme" seçimi yapmalısınız.</span>
+                                        <span style="font-size: 16px;">Aramaları kaydederek "Alarm, Akış ve Veri Kıyaslama" modüllerinde kullanabilirsin. "Alarm, Akış ve Veri Kıyaslama" bölümünü kullanabilmek için en az 1 "Arama Kaydetme" seçimi yapmalısın.</span>
                                     </div>
                                 </a>
                             </small>
@@ -433,7 +433,7 @@
         <div class="olive-alert warning">
             <div class="anim"></div>
             <h4 class="mb-2">GSM Ekleyin</h4>
-            <p>Bir çok ücretsiz özelliği organizasyon oluşturmadan da kullanabilirsin. Ancak tüm özelliklerden faydalanmak için bir organizasyon oluşturmanız gerekiyor.</p>
+            <p>Bir çok ücretsiz özelliği organizasyon oluşturmadan da kullanabilirsin. Ancak tüm özelliklerden faydalanmak için bir organizasyon oluşturman gerekiyor.</p>
             <p class="mb-2">Organizasyon oluşturabilmek için öncelikle bir GSM numarası eklemen gerekiyor.</p>
             <a href="{{ route('settings.mobile') }}" class="btn-flat waves-effect">GSM Ekle</a>
         </div>
@@ -613,7 +613,11 @@
             'speed': 1
         })
 
-        if (__.data('steps') == 2)
+        if (__.data('steps') == 1)
+        {
+            $('#help-button').removeClass('hide')
+        }
+        else if (__.data('steps') == 2)
         {
             helpStart.reset()
 
@@ -621,6 +625,8 @@
                 const driver = new Driver();
                       driver.highlight('[data-id=data-sources]');
             }, 1000)
+
+            $('#help-button').addClass('hide')
         }
         else if (__.data('steps') == 4)
         {
@@ -671,6 +677,8 @@
         if (obj.status == 'ok')
         {
             __.addClass('hide')
+
+            flash_alert('Harika!', 'green white-text')
 
             $('.olive-alert').removeClass('hide')
 

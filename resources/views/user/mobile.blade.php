@@ -114,7 +114,7 @@
                                         {
                                             location.href = '{{ route('organisation.create.offer') }}';
                                         }
-                                    }, 600)
+                                    }, 1000)
                                 }
                             }
                         @endpush

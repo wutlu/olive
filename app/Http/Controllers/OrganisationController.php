@@ -422,17 +422,21 @@ class OrganisationController extends Controller
         {
             $new_password = str_random(6);
             $new_name = null;
+            $name_i = 1;
+            $explode_email = explode('@', $request->email);
 
             while ($new_name === null)
             {
-                $generated_name = str_random(6);
+                $new_name = str_slug($name_i == 1 ? $explode_email[0] : $explode_email[0].'-'.$name_i);
 
-                $new_name = @User::where('name', $generated_name)->exists() ? null : $generated_name;
+                $new_name = @User::where('name', $new_name)->exists() ? null : $new_name;
+
+                $name_i++;
             }
 
             $user = new User;
             $user->name = $new_name;
-            $user->email = $request->email;
+            $user->email = strtolower($request->email);
             $user->verified = true;
             $user->password = bcrypt($new_password);
             $user->session_id = str_random(100);
