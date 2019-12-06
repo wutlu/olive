@@ -2844,7 +2844,7 @@
         <a href="#" class="collection-item json loading" data-callback="__chart" data-type="hashtag" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}" data-title="Hashtag Grafiği" data-subtitle="Konu ile birlikte kullanılan başlıca hashtagler.">#hashtagler</a>
         <a href="#" class="collection-item json loading" data-callback="__chart" data-type="category" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}" data-title="Kategori Grafiği" data-subtitle="Verilerin genel kategorilere dağılımı.">Kategori</a>
         <a href="#" class="collection-item json loading" data-callback="__map" data-type="local_press" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}" data-title="Yerel Basın">Yerel Basın</a>
-        <a href="#" class="collection-item json loading" data-callback="__profile_cloud" data-type="user_description" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}" data-title="Profil Bulutu" data-subtitle="Kullanıcıların profil açıklamalarında sık kullandıkları kelimeler.">Profil Bulutu</a>
+        <!--<a href="#" class="collection-item json loading" data-callback="__profile_cloud" data-type="user_description" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}" data-title="Profil Bulutu" data-subtitle="Kullanıcıların profil açıklamalarında sık kullandıkları kelimeler.">Profil Bulutu</a>-->
     </div>
 @endsection
 
