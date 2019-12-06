@@ -14,6 +14,10 @@
 ])
 
 @push('local.styles')
+    #profile_cloud-chart > .content {
+        height: 400px;
+    }
+
     #search-operators {
         display: none;
         padding: 1rem;
@@ -2472,7 +2476,7 @@
                         sentimentChart.render()
                 break;
                 case 'gender':
-                    if (obj.data.length)
+                    if (obj.data.twitter.gender.buckets.length || obj.data.sozluk.gender.buckets.length || obj.data.youtube_video.gender.buckets.length || obj.data.youtube_comment.gender.buckets.length)
                     {
                         var chart = $('#gender-chart');
 
@@ -2636,6 +2640,92 @@
         }
     }
 
+    function __profile_cloud(__, obj)
+    {
+        if (obj.status == 'ok')
+        {
+            if (obj.data.twitter && obj.data.twitter.user_description.buckets.length)
+            {
+                var chart = $('#profile_cloud-chart');
+
+                if (chart.length)
+                {
+                    chart.remove()
+                }
+
+                var chart = $('<div />', {
+                    'id': 'profile_cloud-chart',
+                    'class': 'chart',
+                    'html': [
+                        $('<h6 />', {
+                            'html': 'Profil Açıklamalarında Sık Kullanılan Kelimeler'
+                        }),
+                        $('<div />', {
+                            'class': 'content'
+                        }),
+                        $('<div />', {
+                            'class': 'd-flex mb-2',
+                            'html': $('<a />', {
+                                'class': 'btn-flat waves-effect d-flex',
+                                'data-report-type': 'user_description',
+                                'data-trigger': 'report-chart',
+                                'data-title': __.data('title'),
+                                'data-subtitle': __.data('subtitle'),
+                                'html': [
+                                    $('<i />', {
+                                        'class': 'material-icons align-self-center mr-1',
+                                        'html': 'note_add'
+                                    }),
+                                    $('<span />', {
+                                        'class': 'align-self-center',
+                                        'html': 'Bulutu Rapora Ekle'
+                                    })
+                                ]
+                            })
+                        }),
+                        $('<input />', {
+                            'type': 'hidden',
+                            'data-chart': 'value',
+                            'value': JSON.stringify(obj.data.twitter.user_description.buckets)
+                        })
+                    ]
+                })
+
+                chart.prependTo('#chart-tab')
+
+                setTimeout(function() {
+                    var bucket = [];
+
+                    $.each(obj.data.twitter.user_description.buckets, function(key, o) {
+                        bucket.push(
+                            {
+                                'text': o.key,
+                                'weight': o.doc_count,
+                                'link': '#',
+                                'handlers': {
+                                    'click': function() {
+                                        $('input#string').val('user.description:' + o.key)
+
+                                        var search = $('ul#search');
+                                            search.data('skip', 0).addClass('json-clear');
+
+                                        vzAjax(search)
+                                    }
+                                }
+                            }
+                        )
+                    })
+
+                    chart.find('.content').jQCloud(bucket, {
+                        'autosize': true
+                    })
+                }, 400)
+
+                $('.tabs').tabs('select', 'chart-tab')
+            }
+        }
+    }
+
     function __map(__, obj)
     {
         if (obj.status == 'ok')
@@ -2754,6 +2844,7 @@
         <a href="#" class="collection-item json loading" data-callback="__chart" data-type="hashtag" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}" data-title="Hashtag Grafiği" data-subtitle="Konu ile birlikte kullanılan başlıca hashtagler.">#hashtagler</a>
         <a href="#" class="collection-item json loading" data-callback="__chart" data-type="category" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}" data-title="Kategori Grafiği" data-subtitle="Verilerin genel kategorilere dağılımı.">Kategori</a>
         <a href="#" class="collection-item json loading" data-callback="__map" data-type="local_press" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}" data-title="Yerel Basın">Yerel Basın</a>
+        <a href="#" class="collection-item json loading" data-callback="__profile_cloud" data-type="user_description" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}" data-title="Profil Bulutu" data-subtitle="Kullanıcıların profil açıklamalarında sık kullandıkları kelimeler.">Profil Bulutu</a>
     </div>
 @endsection
 
@@ -3402,6 +3493,7 @@
 
 @push('external.include.header')
     <link rel="stylesheet" href="{{ asset('css/owl.carousel.min.css?v='.config('system.version')) }}" />
+    <link rel="stylesheet" href="{{ asset('css/jquery.cloud.min.css?v='.config('system.version')) }}" />
 @endpush
 
 @push('external.include.footer')
@@ -3409,4 +3501,5 @@
     <script src="{{ asset('js/jquery.table2excel.min.js?v='.config('system.version')) }}"></script>
     <script src="{{ asset('js/jquery.mark.min.js?v='.config('system.version')) }}" charset="UTF-8"></script>
     <script src="{{ asset('js/speakingurl.min.js?v='.config('system.version')) }}" charset="UTF-8"></script>
+    <script src="{{ asset('js/jquery.cloud.min.js?v='.config('system.version')) }}"></script>
 @endpush

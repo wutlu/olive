@@ -194,9 +194,11 @@
 
 @push('external.include.header')
     <link media="print" rel="Alternate" href="print.pdf" />
+    <link rel="stylesheet" href="{{ asset('css/jquery.cloud.min.css?v='.config('system.version')) }}" />
 @endpush
 
 @push('external.include.footer')
     <script src='//www.google.com/recaptcha/api.js'></script>
     <script src="{{ asset('js/speakingurl.min.js?v='.config('system.version')) }}" charset="UTF-8"></script>
+    <script src="{{ asset('js/jquery.cloud.min.js?v='.config('system.version')) }}"></script>
 @endpush

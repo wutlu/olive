@@ -441,6 +441,33 @@ class AggregationController extends Controller
                     ]
                 ];
             break;
+            case 'user_description':
+                $aggs['twitter'] = [
+                    'user_description' => [
+                        'terms' => [
+                            'field' => 'user.description',
+                            'size' => 50,
+                            'exclude' => [
+                                'http',
+                                'https',
+                                't.co',
+                                'youtube.co',
+                                'facebook.co',
+                                'instagram.co',
+                                'twitter',
+                                'hesabı',
+                                'son',
+                                'canlı',
+                                'hesap',
+                                'haber',
+                                'türki',
+                                'takip',
+                                'dm'
+                            ]
+                        ]
+                    ]
+                ];
+            break;
             case 'sentiment':
                 unset($q['size']);
 

@@ -112,6 +112,7 @@
             case 'shoppingSites':
             case 'shoppingUsers':
             case 'gender':
+            case 'user_description':
                 action = '/raporlar/aggs/' + obj.page.id;
                 action = '/raporlar/aggs/' + obj.page.id;
             break;
@@ -301,6 +302,11 @@
     @endif
 @endpush
 
+@push('external.include.header')
+    <link rel="stylesheet" href="{{ asset('css/jquery.cloud.min.css?v='.config('system.version')) }}" />
+@endpush
+
 @push('external.include.footer')
     <script src="{{ asset('js/speakingurl.min.js?v='.config('system.version')) }}" charset="UTF-8"></script>
+    <script src="{{ asset('js/jquery.cloud.min.js?v='.config('system.version')) }}"></script>
 @endpush

@@ -58,7 +58,7 @@ class ArchiveAggregationRequest extends FormRequest
         });
 
         return [
-            'type' => 'required|string|in:place,histogram,platform,author,hashtag,sentiment,consumer,gender,category,local_press',
+            'type' => 'required|string|in:place,histogram,platform,author,hashtag,sentiment,consumer,gender,category,local_press,user_description',
             'string' => 'required|string|max:255',
             'start_date' => 'required|date|date_limit',
             'end_date' => 'required|date|after_or_equal:start_date|date_limit_between',

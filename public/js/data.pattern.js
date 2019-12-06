@@ -2129,6 +2129,56 @@ function __report__pattern(obj, form, type, method)
                 'value': JSON.stringify(data)
             }))
         break;
+        case 'user_description':
+            form.find('.content').html(
+                [
+                    $('<div />', {
+                        'class': 'flex-fill d-flex',
+                        'css': { 'min-width': '70%' },
+                        'html': [
+                            $('<div />', {
+                                'class': 'words align-self-center',
+                                'css': {
+                                    'width': '100%',
+                                    'height': '300px'
+                                }
+                            })
+                        ]
+                    }),
+                    $('<div />', {
+                        'class': 'flex-fill textarea markdown',
+                        'css': { 'min-width': '30%' },
+                        'html': method == 'write' ? $('<textarea />', { 'name': 'text', 'placeholder': 'Metin Alanı', 'html': obj.page ? obj.page.text : '' }) : obj.page ? obj.page.text : ''
+                    })
+                ]
+            )
+
+            var data = obj.data ? obj.data : $.parseJSON(obj);
+
+            setTimeout(function() {
+                var bucket = [];
+
+                $.each(data, function(key, o) {
+                    bucket.push(
+                        {
+                            'text': o.key,
+                            'weight': o.doc_count,
+                            'link': '#'
+                        }
+                    )
+                })
+
+                form.find('.words').jQCloud(bucket, {
+                    'autosize': true
+                })
+            }, 400)
+
+            form.append($('<input />', {
+                'type': 'hidden',
+                'name': 'data',
+                'value': JSON.stringify(data)
+            }))
+        break;
         case 'gender':
             form.find('.content').html(
                 [
