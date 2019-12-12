@@ -24,6 +24,10 @@ class AppServiceProvider extends ServiceProvider
 
         URL::forceScheme(config('app.ssl') ? 'https' : 'http');
 
+        Validator::extend('phone_number', function($attribute, $phone) {
+            return preg_match('/\(5\d{2}\) \d{3} \d{2} \d{2}/i', $phone) ? true : false;
+        });
+
         Validator::extend('recaptcha', function($attribute, $value, $parameters) {
             $link = 'https://www.google.com/recaptcha/api/siteverify?secret='.config('services.google.recaptcha.secret_key').'&response='.$value.'&remoteip='.Request::getClientIp();
 

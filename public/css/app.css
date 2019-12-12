@@ -66,7 +66,7 @@
   -ms-flex-pack: center;
   justify-content: center;
 
-   margin: 24px;
+  padding: 24px;
 }
 .gender-grid > .gender {
   position: relative;
@@ -109,6 +109,10 @@
 }
 .gender-grid > .gender > .chip {
   background-color: #fff;
+
+  border-width: 1px 0;
+  border-style: solid;
+  border-color: #64b5f6 #fff #f06292;
 }
 
 /*!
@@ -3474,7 +3478,7 @@ nav.nav-half {
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 99999;
+  z-index: 9999999999;
   opacity: .8;
 }
 #flash-alert > .flash-alert-text {
@@ -4169,6 +4173,19 @@ nav.scrolled.active,
   color: rgba(255, 255, 255, .8) !important;
 }
 
+.input-field.input-unstyled > input[type=text],
+.input-field.input-unstyled > input[type=text]:focus {
+  border-width: 0 !important;
+  box-shadow: none !important;
+}
+.input-field.input-unstyled.white-text {
+  padding: 0 1rem !important;
+}
+
+.btn-opacity {
+  background-color: rgba(255, 255, 255, .6);
+}
+
 /*!
  * social media icon
  */
@@ -4494,4 +4511,14 @@ input[type=color] {
 .timepicker-modal,
 .datepicker-modal {
   width: auto !important;
+}
+
+/*!
+ * buttons
+ */
+.btn-outline {
+  background-color: transparent;
+  border-width: 1px;
+  border-style: solid;
+  border-color: inline;
 }

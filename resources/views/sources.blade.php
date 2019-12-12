@@ -79,6 +79,22 @@
                     Facebook
                     <span class="badge red white-text">Pasif</span>
                 </a>
+                <a href="https://www.twitch.tv" target="_blank" class="collection-item">
+                    Twitch
+                    <span class="badge red white-text">Pasif</span>
+                </a>
+                <a href="https://www.linkedin.com" target="_blank" class="collection-item">
+                    Linkedin
+                    <span class="badge red white-text">Pasif</span>
+                </a>
+                <a href="https://tr.pinterest.com" target="_blank" class="collection-item">
+                    Pinterest
+                    <span class="badge red white-text">Pasif</span>
+                </a>
+                <a href="https://tr.pinterest.com" target="_blank" class="collection-item">
+                    Tumblr
+                    <span class="badge red white-text">Pasif</span>
+                </a>
                 <a href="https://www.instagram.com" target="_blank" class="collection-item">
                     Instagram
 

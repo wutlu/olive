@@ -247,7 +247,16 @@ class UserController extends Controller
     {
         $user = auth()->user();
 
-        return view('user.mobile', compact('user'));
+        if ($user->verified)
+        {
+            return view('user.mobile', compact('user'));
+        }
+        else
+        {
+            session()->flash('alert', 'Lütfen önce e-posta adresinizi doğrulayın!');
+
+            return view('alert');
+        }
     }
 
     /**
@@ -259,11 +268,32 @@ class UserController extends Controller
     {
         $user = auth()->user();
 
+        if (!$user->verified)
+        {
+            return [
+                'status' => 'err',
+                'message' => 'Önce e-posta adresinizi doğrulayın!'
+            ];
+        }
+
         Validator::extend('gsm', function() use ($user) {
             return $user->gsm ? false : true;
         }, 'Zaten kayıtlı bir GSM numaranız mevcut.');
 
-        $request->validate([ 'gsm' => 'required|bail|string|regex:/^\(5\d{2}\) \d{3} \d{2} \d{2}/i|gsm|unique:users,gsm' ]);
+        $request->validate([ 'gsm' => 'required|bail|string|phone_number|gsm|unique:users,gsm' ]);
+
+        if (!$user->organisation_id)
+        {
+            $exists = Organisation::where('gsm', $request->gsm)->exists();
+
+            if ($exists)
+            {
+                return [
+                    'status' => 'err',
+                    'message' => 'Bu GSM numarası daha önce kullanıldı.'
+                ];
+            }
+        }
 
         $code = mt_rand(1000, 9999);
 
@@ -301,9 +331,109 @@ class UserController extends Controller
         $user->gsm_verified_at = date('Y-m-d H:i:s');
         $user->save();
 
+        $subject = 'GSM eklendi!';
+        $message = $user->gsm.' gsm numarası hesabınıza tanımlandı.';
+
+        if ($user->notification('important'))
+        {
+            $user->notify(
+                (
+                    new MessageNotification(
+                        $subject,
+                        'Merhaba, '.$user->name,
+                        $message
+                    )
+                )->onQueue('email')
+            );
+        }
+
+        UserActivityUtility::push(
+            $subject,
+            [
+                'key'       => implode('-', [ 'user', $user->id, 'gsm' ]),
+                'icon'      => 'phone_android',
+                'markdown'  => $message
+            ]
+        );
+
+        if ($user->organisation_id)
+        {
+            $demo = false;
+        }
+        else
+        {
+            $demo = true;
+
+            $organisation = new Organisation;
+            $organisation->name = $user->name.'-org';
+            $organisation->start_date = date('Y-m-d H:i:s');
+            $organisation->end_date = date('Y-m-d H:i:s', strtotime('+8 days'));
+            $organisation->user_id = $user->id;
+            $organisation->status = true;
+            $organisation->user_capacity = 1;
+            $organisation->data_twitter = true;
+            $organisation->data_sozluk = true;
+            $organisation->data_news = true;
+            $organisation->data_youtube_video = true;
+            $organisation->data_youtube_comment = true;
+            $organisation->data_shopping = true;
+            $organisation->data_facebook = true;
+            $organisation->data_instagram = true;
+            $organisation->data_blog = true;
+            $organisation->pin_group_limit = 2;
+            $organisation->data_pool_youtube_channel_limit = 2;
+            $organisation->data_pool_youtube_video_limit = 2;
+            $organisation->data_pool_youtube_keyword_limit = 2;
+            $organisation->data_pool_twitter_keyword_limit = 2;
+            $organisation->data_pool_twitter_user_limit = 2;
+            $organisation->data_pool_facebook_keyword_limit = 2;
+            $organisation->data_pool_facebook_user_limit = 2;
+            $organisation->data_pool_instagram_follow_limit = 2;
+            $organisation->historical_days = 7;
+            $organisation->module_real_time = true;
+            $organisation->module_search = true;
+            $organisation->module_trend = true;
+            $organisation->module_alarm = true;
+            $organisation->saved_searches_limit = 2;
+            $organisation->gsm = $user->gsm;
+            $organisation->module_compare = true;
+            $organisation->module_borsa = true;
+            $organisation->module_report = true;
+            $organisation->demo = true;
+            $organisation->save();
+
+            $user->organisation_id = $organisation->id;
+            $user->save();
+
+            $subject = 'Deneme hesabınız aktif edildi!';
+            $message = 'Deneme hesabınız 7 gün süreyle aktif edildi. İyi araştırmalar dileriz.';
+
+            UserActivityUtility::push(
+                $subject,
+                [
+                    'key'       => implode('-', [ 'user', $user->id, 'demo' ]),
+                    'icon'      => 'av_timer',
+                    'markdown'  => $message
+                ]
+            );
+
+            if ($user->notification('important'))
+            {
+                $user->notify(
+                    (
+                        new MessageNotification(
+                            $subject,
+                            'Merhaba, '.$user->name,
+                            $message
+                        )
+                    )->onQueue('email')
+                );
+            }
+        }
+
         return [
             'status' => 'ok',
-            'organisation_status' => $user->organisation_id ? true : false
+            'demo' => $demo
         ];
     }
 
@@ -746,14 +876,15 @@ class UserController extends Controller
 
             # --- #
 
-            return redirect()->route('dashboard');
+            session()->flash('alert', 'Tebrikler! E-posta adresinizi doğruladınız.');
+            session()->flash('status', 'success');
         }
         else
         {
             session()->flash('alert', 'Geçersiz veya eski bir bağlantı kullandınız. Lütfen şifre hatırlatma bölümünü en baştan tekrar kullanın.');
-
-            return view('alert');
         }
+
+        return view('alert');
     }
 
     /**

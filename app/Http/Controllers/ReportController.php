@@ -247,7 +247,7 @@ class ReportController extends Controller
             'data.chart' => 'Grafik',
             'data.gender' => 'Cinsiyet Dağılımı',
             'data.tr_map' => 'Türkiye Haritası',
-            'data.user_description' => 'Profil Bulutu',
+            'data.jcloud' => 'Kelime Bulutu',
 
             'data.twitterMentions' => 'Twitter Bahsedilen Hesaplar',
             'data.twitterInfluencers' => 'Twitter Takipçi Sırasına Göre Hesaplar',

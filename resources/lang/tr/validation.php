@@ -117,6 +117,7 @@ $arr = [
     'iban' => 'Iban numarası geçerli değil.',
     'root_password' => 'Root şifresi geçerli değil.',
     'recaptcha' => 'Captcha süresi doldu',
+    'phone_number' => 'GSM numarası geçerli değil.',
 
     /*
     |--------------------------------------------------------------------------
@@ -380,6 +381,7 @@ $arr = [
         'lines'                           => 'Satırlar',
         'data'                            => 'Veri',
         'report'                          => 'Rapor',
+        'interval'                        => 'Aralık',
     ]
 ];
 

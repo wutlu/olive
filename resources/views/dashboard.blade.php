@@ -324,7 +324,7 @@
 
                             $('[data-name=organisation-name]').html(obj.organisation.name)
                             $('[data-name=organisation-capacity]').html(obj.users.length + ' / ' + obj.organisation.user_capacity)
-                            $('[data-name=organisation-status]').html(obj.organisation.status ? obj.organisation.days + ' gün kaldı' : 'Pasif').addClass(obj.organisation.status ? '' : 'red-text')
+                            $('[data-name=organisation-status]').html(obj.organisation.status ? (obj.organisation.days ? obj.organisation.days + ' gün kaldı' : 'Son Gün') : 'Pasif').addClass(obj.organisation.status ? '' : 'red-text')
 
                             if (obj.users.length)
                             {
@@ -356,44 +356,22 @@
                     }
                 @endpush
             @else
-                <div class="card mb-1" data-card="organisation">
+                <div class="card heartbeat mb-1" data-card="organisation">
                     <div class="card-content">
                         <span class="card-title">Organizasyon Oluşturun!</span>
-                        <p class="grey-text">Bireysel veya ekip olarak çalışmak için size en uygun organizasyonu oluşturun.</p>
-                    </div>
-                    <div class="card-content right-align">
-                        <a href="{{ route('organisation.create.offer') }}" class="btn-flat waves-effect" id="start">Başla</a>
+                        <p class="grey-text mb-1">E-posta adresinizi ve GSM numaranızı doğruladıktan sonra hesabınıza yeni bir organizasyon tanımlanacaktır.</p>
+                        @if (!auth()->user()->gsm_verified_at)
+                            <a href="{{ route('settings.mobile') }}" class="btn-flat waves-effect">GSM Ekle</a>
+                        @endif
                     </div>
                 </div>
 
-                @if (!auth()->user()->intro('welcome.create.organisation') && auth()->user()->verified && auth()->user()->term_version == config('system.term_version'))
-                    <div class="tap-target cyan darken-4 white-text" data-target="start">
-                        <div class="tap-target-content">
-                            <h5>Organizasyon Oluşturun!</h5>
-                            <p>Olive'in tüm özelliklerini keşfetmek için hemen denemeye başlayın!</p>
-                        </div>
-                    </div>
-
-                    @push('local.scripts')
-                        _scrollTo({
-                            'target': '[data-card=organisation]',
-                            'tolerance': '-128px'
-                        })
-
-                        $('[data-target=start]').tapTarget({
-                            'onClose': function() {
-                                /*!
-                                 * vzAjax($('<div />', {
-                                 *     'class': 'json',
-                                 *     'data-method': 'post',
-                                 *     'data-href': '{{ route('intro', 'welcome.create.organisation') }}'
-                                 * }))
-                                 */
-                            }
-                        })
-                        $('[data-target=start]').tapTarget('open')
-                    @endpush
-                @endif
+                @push('local.scripts')
+                    _scrollTo({
+                        'target': '[data-card=organisation]',
+                        'tolerance': '-128px'
+                    })
+                @endpush
             @endif
         </div>
         <div class="col s12 xl7">

@@ -56,7 +56,7 @@ class BillingUpdateRequest extends FormRequest
             'person_lastname'    => 'nullable|string|max:30|required_unless:type,corporate',
             'person_tckn'        => 'nullable|integer|tckn|required_if:type,person|required_if:type,individual',
 
-            'phone'              => 'required|string|regex:/(^\(\d{3}\) \d{3} \d{2} \d{2}$)/u',
+            'phone'              => 'required|string|phone_number',
 
             'tckn_without'       => 'nullable|in:on',
 

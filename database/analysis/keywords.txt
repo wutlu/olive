@@ -10063,3 +10063,6 @@ VAKBN
 VAKBN
 YKBNK
 YKBNK
+e-fatura
+e-mail
+e-posta

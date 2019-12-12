@@ -42,12 +42,6 @@ class Organisation extends Model
         return $this->hasMany('App\Models\SavedSearch', 'organisation_id', 'id')->orderBy('created_at', 'DESC');
     }
 
-    # kaynak tercihleri
-    public function sources()
-    {
-        return $this->hasMany('App\Models\Source', 'organisation_id', 'id');
-    }
-
     /**
      * twitter area
      */

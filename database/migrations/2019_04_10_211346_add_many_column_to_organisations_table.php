@@ -23,7 +23,6 @@ class AddManyColumnToOrganisationsTable extends Migration
             $table->boolean('data_youtube_video')->default(false);
             $table->boolean('data_youtube_comment')->default(false);
             $table->boolean('data_shopping')->default(false);
-            $table->boolean('data_forum')->default(false);
             $table->boolean('data_facebook')->default(false);
             $table->boolean('data_instagram')->default(false);
             $table->boolean('data_blog')->default(false);
@@ -59,7 +58,6 @@ class AddManyColumnToOrganisationsTable extends Migration
             $table->dropColumn('data_youtube_video');
             $table->dropColumn('data_youtube_comment');
             $table->dropColumn('data_shopping');
-            $table->dropColumn('data_forum');
             $table->dropColumn('data_facebook');
             $table->dropColumn('data_instagram');
             $table->dropColumn('data_blog');

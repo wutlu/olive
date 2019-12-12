@@ -42,7 +42,6 @@ class OptionTableSeeder extends Seeder
         Option::firstOrCreate( [ 'key' => 'trend.status.twitter_hashtag'        ], [ 'value' => 'off'                                 ] );
         Option::firstOrCreate( [ 'key' => 'trend.status.youtube_video'          ], [ 'value' => 'off'                                 ] );
         Option::firstOrCreate( [ 'key' => 'trend.status.sozluk'                 ], [ 'value' => 'off'                                 ] );
-        Option::firstOrCreate( [ 'key' => 'trend.status.forum'                  ], [ 'value' => 'off'                                 ] );
         Option::firstOrCreate( [ 'key' => 'trend.status.blog'                   ], [ 'value' => 'off'                                 ] );
         Option::firstOrCreate( [ 'key' => 'trend.status.instagram_hashtag'      ], [ 'value' => 'off'                                 ] );
         Option::firstOrCreate( [ 'key' => 'trend.status.facebook'               ], [ 'value' => 'off'                                 ] );
@@ -56,7 +55,6 @@ class OptionTableSeeder extends Seeder
         Option::firstOrCreate( [ 'key' => 'unit_price.data_youtube_video'                ], [ 'value' => 0                                     ] );
         Option::firstOrCreate( [ 'key' => 'unit_price.data_youtube_comment'              ], [ 'value' => 0                                     ] );
         Option::firstOrCreate( [ 'key' => 'unit_price.data_shopping'                     ], [ 'value' => 0                                     ] );
-        Option::firstOrCreate( [ 'key' => 'unit_price.data_forum'                        ], [ 'value' => 0                                     ] );
         Option::firstOrCreate( [ 'key' => 'unit_price.data_facebook'                     ], [ 'value' => 0                                     ] );
         Option::firstOrCreate( [ 'key' => 'unit_price.data_instagram'                    ], [ 'value' => 0                                     ] );
         Option::firstOrCreate( [ 'key' => 'unit_price.data_blog'                         ], [ 'value' => 0                                     ] );

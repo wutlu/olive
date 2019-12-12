@@ -69,7 +69,7 @@
                             <div class="logo">
                                 <img alt="Logo" src="{{ asset('img/olive_logo.svg') }}" />
                             </div>
-                            <div class="content d-flex align-self-stretch"></div>
+                            <div class="content d-flex justify-content-center align-self-stretch"></div>
                         </div>
                     </div>
                 </div>

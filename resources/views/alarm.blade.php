@@ -253,7 +253,7 @@
                                                     'type': 'number',
                                                     'value': '5',
                                                     'min': '1',
-                                                    'max': '120',
+                                                    'max': '720',
                                                     'class': 'validate'
                                                 })
                                             }),
@@ -275,6 +275,24 @@
                                     $('<span />', {
                                         'class': 'grey-text',
                                         'html': 'Örnek kullanım: "<span class="blue-grey-text">09:00</span> ile <span class="blue-grey-text">18:00</span> arası <span class="blue-grey-text">5</span> dakikada bir toplamda <span class="blue-grey-text">20</span> adet bildirim gönder."'
+                                    })
+                                ]
+                            }),
+                            $('<li />', {
+                                'class': 'collection-item',
+                                'html': [
+                                    $('<label />', {
+                                        'class': 'd-block',
+                                        'html': [
+                                            $('<input />', {
+                                                'type': 'checkbox',
+                                                'name': 'report',
+                                                'value': 'on'
+                                            }),
+                                            $('<span />', {
+                                                'html': 'Detaylı Rapor'
+                                            })
+                                        ]
                                     })
                                 ]
                             }),
@@ -412,6 +430,11 @@
             $.each(obj.data.user_ids, function(key, id) {
                 mdl.find('[name=user_ids][value=' + id + ']').prop('checked', true)
             })
+
+            if (obj.data.report)
+            {
+                mdl.find('input[name=report]').prop('checked', true)
+            }
 
                 mdl.modal('open')
         }

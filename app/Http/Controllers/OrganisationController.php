@@ -81,14 +81,6 @@ class OrganisationController extends Controller
             'update',
             'paymentStatus',
             'invoiceCancel',
-        ]);
-
-        /**
-         ***** ZORUNLU *****
-         *
-         * - Organizasyonu Olmayanlar
-         */
-        $this->middleware('organisation:have_not')->only([
             'offer',
             'offerCreate',
         ]);
@@ -144,16 +136,6 @@ class OrganisationController extends Controller
 
         if ($user->gsm_verified_at)
         {
-            $gsm_control = Organisation::where('gsm', $user->gsm)->exists();
-
-            if ($gsm_control)
-            {
-                return [
-                    'status' => 'err',
-                    'reason' => 'Hesabınıza tanımlı GSM numarası ile daha önceden bir organizasyon oluşturulmuş.'
-                ];
-            }
-
             if ($request->module_real_time || $request->module_search || $request->module_alarm)
             {
                 $source_count = 0;
@@ -194,17 +176,14 @@ class OrganisationController extends Controller
                 ];
             }
 
-            $organisation = new Organisation;
-            $organisation->user_id = $user->id;
-            $organisation->gsm = $user->gsm;
+            $organisation = $user->organisation;
 
             $calculate = self::calculate($request);
 
             $organisation->status = true;
-            $organisation->name = $user->name.'-org';
             $organisation->user_capacity = $request->user_capacity;
             $organisation->start_date = date('Y-m-d H:i:s');
-            $organisation->end_date = date('Y-m-d H:i:s', strtotime('+36 hours'));
+            $organisation->end_date = date('Y-m-d H:i:s', strtotime('+24 hours'));
             $organisation->historical_days = $request->historical_days ? $request->historical_days : 0;
             $organisation->pin_group_limit = $request->pin_group_limit ? $request->pin_group_limit : 0;
             $organisation->saved_searches_limit = $request->saved_searches_limit ? $request->saved_searches_limit : 0;
@@ -226,6 +205,8 @@ class OrganisationController extends Controller
             $organisation->module_report = $request->module_report ? true : false;
             $organisation->module_alarm = $request->module_alarm ? true : false;
 
+            $organisation->demo = false;
+
             /*!
              * modules
              */
@@ -236,16 +217,10 @@ class OrganisationController extends Controller
 
             $organisation->save();
 
-            /*!
-             * user save
-             */
-            $user->organisation_id = $organisation->id;
-            $user->save();
-
             $message = [
-                'title' => 'Organizasyon Oluşturuldu',
-                'info' => 'Tebrikler! Organizasyonunuz başarılı bir şekilde oluşturuldu.',
-                'body' => 'Deneme süreniz aktif edildi. Süre sonunda ücretsiz özellikleri kullanmaya devam edebileceğinizi unutmayın!'
+                'title' => 'Organizasyon Yükseltildi',
+                'info' => 'Tebrikler! Organizasyonunuz başarılı bir şekilde yükseltildi.',
+                'body' => 'Deneme süreniz 1 gün daha uzatıldı. 1 gün sonunda kesintisiz bir şekilde devam edebilmek için lütfen "Organizasyon Ayarları" sayfasından paketinizi uzatın.'
             ];
 
             $user->notify((new MessageNotification('Olive: '.$message['title'], $message['info'], $message['body']))->onQueue('email'));
@@ -274,7 +249,7 @@ class OrganisationController extends Controller
         {
             return [
                 'status' => 'err',
-                'reason' => 'Lütfen ilk önce bir GSM numarası tanımlayın!'
+                'reason' => 'Lütfen ilk önce "Hesap Bilgileri -> Mobil" sayfasından bir GSM numarası tanımlayın!'
             ];
         }
     }
@@ -295,82 +270,102 @@ class OrganisationController extends Controller
             {
                 echo Term::line($organisation->name);
 
-                if ($organisation->status == true)
+                if ($organisation->status == true && $organisation->demo == true)
                 {
                     if ($organisation->days() <= 0)
                     {
                         $message = [
-                            'title' => 'Üzgünüm :(',
-                            'info' => 'Organizasyon Süresi Bitti',
+                            'title' => 'Deneme Süreniz Bitti :(',
+                            'info' => '1 gün daha ücretsiz denemek ister misiniz?',
                             'body' => implode(PHP_EOL, [
-                                'Organizasyonunuzun süresi bitti. Üzülmeyin! Hala ücretsiz araçlardan faydalanabilirsiniz.'
+                                'Paketinizi şimdi yükseltin ve sadece istediğiniz özellikleri seçerek araştırmalarınıza kaldığınız yerden devam edin.'
                             ])
-                        ];
-                        $message_root = [
-                            'title' => 'Hizmet Sonlandırıldı',
-                            'message' => 'Aşağıdaki organizasyonun ödemesi sağlanmadığından hizmeti sonlandırıldı.'
                         ];
 
                         $organisation->status = false;
                         $organisation->save();
                     }
-                    else
+                    else if ($organisation->days() > 0)
                     {
-                        $day_message = $organisation->days() ? $organisation->days().' gün kaldı!' : 'Son gün!';
                         $message = [
                             'title' => 'Yenileyin',
-                            'info' => $day_message,
+                            'info' => $organisation->days() ? $organisation->days().' gün kaldı!' : 'Son gün!',
                             'body' => implode(PHP_EOL, [
-                                'Kesinti yaşamamak için aboneliğinizi uzatmanız gerekiyor.'
+                                'Paketinizi şimdi yükseltin ve sadece istediğiniz özellikleri seçerek araştırmalarınıza kaldığınız yerden devam edin.'
                             ])
                         ];
-                        $message_root = [
-                            'title' => 'Hizmet Ödemesi Bekleniyor',
-                            'message' => 'Aşağıdaki organizasyondan ödeme bekleniyor.'
+                    }
+                }
+                else if ($organisation->status == true && $organisation->demo == false)
+                {
+                    if ($organisation->days() <= 0)
+                    {
+                        $message = [
+                            'title' => 'Ödeme Gerçekleşmedi',
+                            'info' => 'Hizmet Süreniz Doldu',
+                            'body' => implode(PHP_EOL, [
+                                'Araştırmalarınıza kaldığınız yerden devam edebilmek için lütfen hizmet sürenizi uzatın.'
+                            ])
+                        ];
+
+                        $organisation->status = false;
+                        $organisation->save();
+                    }
+                    else if ($organisation->days() > 0)
+                    {
+                        $message = [
+                            'title' => 'Ödeme Gerekiyor',
+                            'info' => $organisation->days() ? $organisation->days().' gün kaldı!' : 'Son gün!',
+                            'body' => implode(PHP_EOL, [
+                                'Kesinti yaşamamak için hizmet sürenizi uzatmanız gerekiyor.'
+                            ])
                         ];
                     }
-
-                    /*!
-                     * email
-                     */
-                    $author = $organisation->author;
-
-                    $author->notify((new MessageNotification('Olive: '.$message['title'], $message['info'], $message['body']))->onQueue('email'));
-
-                    Activity::push(
-                        $message['title'],
-                        [
-                            'icon' => 'access_time',
-                            'markdown' => $message['body'],
-                            'user_id' => $organisation->user_id,
-                            'key' => implode('-', [ $organisation->user_id, 'upcoming_payments' ]),
-                            'button' => [
-                                'type' => 'http',
-                                'method' => 'GET',
-                                'action' => route('settings.organisation').'#tab-2',
-                                'class' => 'btn-flat waves-effect',
-                                'text' => 'Uzatın'
-                            ]
-                        ]
-                    );
-
-                    /*!
-                     * admin alert
-                     */
-                    Mail::queue(
-                        new ServerAlertMail(
-                            $message_root['title'],
-                            implode(
-                                PHP_EOL.PHP_EOL,
-                                [
-                                    $message_root['message'],
-                                    '['.$author->name.'@'.$organisation->name.']('.route('admin.organisation', $organisation->id).')'
-                                ]
-                            ),
-                            'admin'
-                        )
-                    );
                 }
+                else if ($organisation->status == false && $organisation->demo == true)
+                {
+                    $message = [
+                        'title' => '1 Gün Daha Deneyin!',
+                        'info' => 'Deneme süreniz bitti :( 1 gün daha ücretsiz denemek ister misiniz?',
+                        'body' => implode(PHP_EOL, [
+                            'Paketinizi şimdi yükseltin ve sadece istediğiniz özellikleri seçerek araştırmalarınıza kaldığınız yerden devam edin.'
+                        ])
+                    ];
+                }
+                else if ($organisation->status == false && $organisation->demo == false)
+                {
+                    $message = [
+                        'title' => 'Hemen Şimdi Uzatın',
+                        'info' => 'Hizmet Süreniz Doldu',
+                        'body' => implode(PHP_EOL, [
+                            'Araştırmalarınıza kaldığınız yerden devam edebilmek için lütfen hizmet sürenizi uzatın.'
+                        ])
+                    ];
+                }
+
+                /*!
+                 * email
+                 */
+                $author = $organisation->author;
+
+                $author->notify((new MessageNotification('Olive: '.$message['title'], $message['info'], $message['body']))->onQueue('email'));
+
+                Activity::push(
+                    $message['title'],
+                    [
+                        'icon' => 'access_time',
+                        'markdown' => $message['body'],
+                        'user_id' => $organisation->user_id,
+                        'key' => implode('-', [ $organisation->user_id, 'upcoming_payments' ]),
+                        'button' => [
+                            'type' => 'http',
+                            'method' => 'GET',
+                            'action' => route('settings.organisation').'#tab-2',
+                            'class' => 'btn-flat waves-effect',
+                            'text' => 'Uzatın'
+                        ]
+                    ]
+                );
             }
         }
         else
@@ -388,9 +383,19 @@ class OrganisationController extends Controller
     public static function settings()
     {
         $user = auth()->user();
-        $discount_with_year = System::option('formal.discount_with_year');
 
-        return view('organisation.settings', compact('user', 'discount_with_year'));
+        if ($user->organisation->demo == true)
+        {
+            $prices = Option::select('key', 'value')->where('key', 'LIKE', 'unit_price.%')->get()->keyBy('key')->toArray();
+
+            return view('organisation.create.offer', compact('user', 'prices'));
+        }
+        else
+        {
+            $discount_with_year = System::option('formal.discount_with_year');
+
+            return view('organisation.settings', compact('user', 'discount_with_year'));
+        }
     }
 
     /**
@@ -984,6 +989,14 @@ class OrganisationController extends Controller
     {
         $user = auth()->user();
 
+        if ($user->organisation->demo)
+        {
+            return [
+                'status' => 'err',
+                'message' => 'Deneme aşamasında ödeme gerçekleştiremezsiniz!'
+            ];
+        }
+
         $discount_rate = $request->month >= System::option('formal.discount_with_year');
 
         $billing_information = new BillingInformation;
@@ -991,7 +1004,7 @@ class OrganisationController extends Controller
         $billing_information->fill($request->all());
         $billing_information->save();
 
-        $invoice_id = date('ymdhis').$user->id.$user->organisation_id.rand(10, 99);
+        $invoice_id = $user->id.$user->organisation_id.rand(10, 99);
 
         $unit_price = $user->organisation->unit_price;
 

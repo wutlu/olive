@@ -106,15 +106,15 @@
                                     flash_alert('Doğrulama Başarılı!', 'green white-text')
 
                                     setTimeout(function() {
-                                        if (obj.organisation_status == true)
+                                        if (obj.demo == true)
                                         {
-                                            location.reload()
+                                            location.href = '{{ route('search.dashboard') }}';
                                         }
                                         else
                                         {
-                                            location.href = '{{ route('organisation.create.offer') }}';
+                                            location.reload()
                                         }
-                                    }, 1000)
+                                    }, 1200)
                                 }
                             }
                         @endpush
@@ -142,7 +142,7 @@
                                 element: '#' + gsm.attr('id'),
                                 popover: {
                                     title: 'GSM Ekleyin',
-                                    description: 'Denemeniz boyunca sizden hiçbir ücret talep etmeyeceğiz. Lütfen adımları takip edin.',
+                                    description: '{{ $user->organisation_id ? 'Size daha iyi hizmet verebilmemiz için lütfen bir GSM numaranızı bırakın.' : 'Numaranızı ekledikten sonra Olive\'i hemen denemeye başlayabilirsiniz.' }}',
                                 }
                             })
 

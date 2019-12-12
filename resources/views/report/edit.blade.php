@@ -99,6 +99,7 @@
             case 'stats':
             case 'chart':
             case 'tr_map':
+            case 'jcloud':
             case 'twitterMentions':
             case 'twitterInfluencers':
             case 'twitterUsers':
@@ -112,8 +113,6 @@
             case 'shoppingSites':
             case 'shoppingUsers':
             case 'gender':
-            case 'user_description':
-                action = '/raporlar/aggs/' + obj.page.id;
                 action = '/raporlar/aggs/' + obj.page.id;
             break;
         }

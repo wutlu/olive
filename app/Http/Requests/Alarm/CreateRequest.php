@@ -10,6 +10,8 @@ use App\Models\User\User;
 use App\Models\Alarm;
 use App\Models\SavedSearch;
 
+use Illuminate\Http\Request;
+
 class CreateRequest extends FormRequest
 {
     /**
@@ -32,7 +34,8 @@ class CreateRequest extends FormRequest
         return [
             'email_validation' => 'E-posta adreslerinin organizasyonunuzda olması gerekir.',
             'private_exists' => 'Seçtiğiniz arama silinmiş olabilir. Lütfen sayfayı yenileyin ve tekrar deneyin!',
-            'private_unique' => 'Seçtiğiniz arama için farklı bir alarm mevcut. Lütfen farklı bir arama seçin!'
+            'private_unique' => 'Seçtiğiniz arama için farklı bir alarm mevcut. Lütfen farklı bir arama seçin!',
+            'min_interval_by_report' => 'Detaylı rapor seçiliyken aralık periyodu en az 60 dakika olabilir.'
         ];
     }
 
@@ -41,7 +44,7 @@ class CreateRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(Request $request)
     {
         $user = auth()->user();
 
@@ -57,7 +60,11 @@ class CreateRequest extends FormRequest
             return !Alarm::where([ 'search_id' => $id, 'organisation_id' => $user->organisation_id ])->exists();
         });
 
-        return [
+        Validator::extend('min_interval_by_report', function($key, $interval) use ($user) {
+            return $interval >= 60 ? true : false;
+        });
+
+        $arr = [
             'search_id' => 'required|integer|private_exists|private_unique',
 
             'hit' => 'required|integer|min:1|max:120',
@@ -65,13 +72,22 @@ class CreateRequest extends FormRequest
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'required|date_format:H:i|after:start_time',
 
-            'interval' => 'required|integer|min:1|max:120',
+            'interval' => 'required|integer|min:1|max:720',
+
+            'report' => 'nullable|string|in:on',
 
             'weekdays' => 'required|array|min:1',
             'weekdays.*' => 'required|string|in:day_1,day_2,day_3,day_4,day_5,day_6,day_7',
 
             'user_ids' => 'required|array|min:1',
-            'user_ids.*' => 'required|integer|email_validation',
+            'user_ids.*' => 'required|integer|email_validation'
         ];
+
+        if ($request->report)
+        {
+            $arr['interval'] = 'required|integer|min:1|max:720|min_interval_by_report';
+        }
+
+        return $arr;
     }
 }

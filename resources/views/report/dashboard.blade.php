@@ -35,7 +35,7 @@
 @section('content')
     <div class="card card-unstyled">
         @if (count($data))
-            <ul class="collection collection-hoverable collection-unstyled">
+            <ul class="collection collection-unstyled">
                 @foreach ($data as $item)
                     <li class="collection-item {{ $item->status() ? '' : 'red' }} lighten-5" data-item-id="item-{{ $item->id }}">
                         <span>
@@ -43,7 +43,7 @@
                             <a class="blue-grey-text align-self-center" href="{{ route('user.profile', $item->user_id) }}">{{ '@'.$item->user->name }}</a>
                         </span>
                         <div class="d-flex mt-1">
-                            <span class="align-self-center" style="width: 96px;">{{ date('d.m.Y H:i', strtotime($item->created_at)) }}</span>
+                            <span class="align-self-center" style="width: 128px;">{{ date('d.m.Y H:i', strtotime($item->created_at)) }}</span>
                             <div class="align-self-center hide-on-med-and-down">
                                 <div class="d-flex">
                                     <span class="align-self-center d-flex pl-1 pr-1">
@@ -77,6 +77,23 @@
                                 </a>
                             </span>
                         </div>
+                        @if ($item->status)
+                            <div class="hide-on-med-and-down">
+                                <div class="d-flex justify-content-between teal lighten-5 mt-1">
+                                    <span class="align-self-center p-1"> 
+                                        @if ($item->status == 'creating')
+                                            Oluşturuluyor
+                                        @elseif ($item->status == 'creating')
+                                            Gönderiliyor
+                                        @else
+                                            Tamamlandı
+                                        @endif
+                                    </span>
+                                    <span class="align-self-center p-1">{{ $item->subject }}</span>
+                                    <span class="align-self-center p-1">{{ $item->gsm }}</span>
+                                </div>
+                            </div>
+                        @endif
                     </li>
                 @endforeach
             </ul>

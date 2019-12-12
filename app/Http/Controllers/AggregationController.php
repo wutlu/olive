@@ -14,6 +14,7 @@ use App\Elasticsearch\Document;
 use Term;
 
 use App\Models\SavedSearch;
+
 use App\Models\Crawlers\SozlukCrawler;
 use App\Models\Crawlers\MediaCrawler;
 use App\Models\Crawlers\BlogCrawler;
@@ -408,7 +409,7 @@ class AggregationController extends Controller
                             'hits' => [
                                 'terms' => [
                                     'field' => 'entities.hashtags.hashtag',
-                                    'size' => 10
+                                    'size' => 25
                                 ]
                             ]
                         ]
@@ -421,7 +422,7 @@ class AggregationController extends Controller
                             'hits' => [
                                 'terms' => [
                                     'field' => 'entities.hashtags.hashtag',
-                                    'size' => 10
+                                    'size' => 25
                                 ]
                             ]
                         ]
@@ -434,35 +435,8 @@ class AggregationController extends Controller
                             'hits' => [
                                 'terms' => [
                                     'field' => 'tags.tag',
-                                    'size' => 10
+                                    'size' => 25
                                 ]
-                            ]
-                        ]
-                    ]
-                ];
-            break;
-            case 'user_description':
-                $aggs['twitter'] = [
-                    'user_description' => [
-                        'terms' => [
-                            'field' => 'user.description',
-                            'size' => 50,
-                            'exclude' => [
-                                'http',
-                                'https',
-                                't.co',
-                                'youtube.co',
-                                'facebook.co',
-                                'instagram.co',
-                                'twitter',
-                                'hesabı',
-                                'son',
-                                'canlı',
-                                'hesap',
-                                'haber',
-                                'türki',
-                                'takip',
-                                'dm'
                             ]
                         ]
                     ]

@@ -16,40 +16,7 @@
     'report_menu' => true
 ])
 
-@if (@$data['keywords'])
-    @push('local.scripts')
-        $('#words').jQCloud([
-            @foreach ($data['keywords'] as $key => $count)
-                {
-                    text: '{{ $key }}',
-                    weight: {{ $count }},
-                    link: '{{ route('search.dashboard') }}?q="{{ $key }}"'
-                },
-            @endforeach
-        ])
-    @endpush
-
-    @push('local.styles')
-        #words {
-            height: 400px;
-        }
-    @endpush
-@endif
-
 @section('dock')
-    <div class="card mb-1">
-        <div class="card-content blue-grey white-text">
-            <span class="card-title">Yazarın Sık Kullandığı Kelimeler</span>
-        </div>
-        <div class="card-content">
-            @if (@$data['keywords'])
-                <div id="words"></div>
-            @else
-                @component('components.nothing')@endcomponent
-            @endif
-        </div>
-    </div>
-
     @if (@$data['category'])
         <div class="card mb-1 p-0">
             <div class="card-content blue-grey white-text">
@@ -161,12 +128,8 @@
        data-json-target="#smilars">Daha Fazla</a>
 @endsection
 
-@push('external.include.header')
-    <link rel="stylesheet" href="{{ asset('css/jquery.cloud.min.css?v='.config('system.version')) }}" />
-@endpush
 @push('external.include.footer')
     <script src="{{ asset('js/chart.min.js?v='.config('system.version')) }}"></script>
-    <script src="{{ asset('js/jquery.cloud.min.js?v='.config('system.version')) }}"></script>
 @endpush
 
 @push('local.scripts')

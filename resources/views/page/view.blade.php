@@ -3,7 +3,7 @@
     'term' => 'hide',
     'email' => 'hide',
     'logo' => asset('img/veri.zone_logo.svg'),
-    'logo_route' => route('home.lobby'),
+    'logo_route' => route('home'),
     'title' => [
         'text' => $page->title
     ],

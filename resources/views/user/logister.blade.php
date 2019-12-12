@@ -61,7 +61,7 @@
                         </li>
                         @if (config('system.user.registration'))
                             <li class="tab">
-                                <a href="#tab-kaydol" class="waves-effect waves-light">Kayıt</a>
+                                <a href="#tab-kaydol" class="waves-effect waves-light">Kaydol</a>
                             </li>
                         @endif
                         <li class="tab">
@@ -115,7 +115,7 @@
                                     kabul ediyorum.
                                 </span>
                             </label>
-                            <button type="submit" class="waves-effect waves-light btn blue-grey mt-1" style="width: 100%;">Kaydol</button>
+                            <button type="submit" class="waves-effect waves-light btn blue-grey mt-1" style="width: 100%;">Ücretsiz Kaydol</button>
                         </form>
                     </div>
                 @endif

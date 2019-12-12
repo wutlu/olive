@@ -87,6 +87,8 @@ class AlarmController extends Controller
     {
         $data = new Alarm;
 
+        $data->report = $request->report ? true : false;
+
         $data->fill($request->all());
 
         $data->organisation_id = auth()->user()->organisation_id;
@@ -109,6 +111,8 @@ class AlarmController extends Controller
             'id' => $request->id,
             'organisation_id' => auth()->user()->organisation_id
         ])->firstOrFail();
+
+        $data->report = $request->report ? true : false;
 
         $data->fill($request->all());
         $data->save();

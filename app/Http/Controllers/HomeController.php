@@ -7,7 +7,9 @@ use Illuminate\Support\Facades\Redis as RedisCache;
 
 use App\Http\Requests\SearchRequest;
 use App\Http\Requests\DemoRequest;
+use App\Http\Requests\ReportRequest;
 
+use App\Models\User\User;
 use App\Models\User\UserActivity;
 use App\Models\User\UserIntro;
 use App\Models\User\PartnerPayment;
@@ -24,8 +26,10 @@ use App\Models\Crawlers\MediaCrawler;
 use App\Models\Crawlers\ShoppingCrawler;
 use App\Models\Crawlers\SozlukCrawler;
 use App\Models\Crawlers\BlogCrawler;
+use App\Models\Report;
 
 use YouTube;
+use System;
 use App\Elasticsearch\Document;
 use App\Utilities\Term;
 
@@ -114,6 +118,77 @@ class HomeController extends Controller
     }
 
     /**
+     * Rapor istek formu.
+     *
+     * @return array
+     */
+    public static function reportRequest(ReportRequest $request)
+    {
+        $ticket = new Ticket;
+        $ticket->user_id = config('app.user_id_support');
+        $ticket->status = 'open';
+
+        $ticket->subject = 'Rapor İstenildi';
+        $ticket->message = implode(
+            PHP_EOL,
+            [
+                $request->subject,
+                $request->name,
+                $request->phone
+            ]
+        );
+        $ticket->type = 'diger';
+
+        $ticket->save();
+        $ticket->id = $ticket->id.rand(100, 999);
+        $ticket->save();
+
+        Option::where('key', 'root_alert.support')->first()->incr();
+
+        $exists = Report::where('gsm', $request->phone)->exists();
+
+        if ($exists)
+        {
+            return [
+                'status' => 'err',
+                'message' => 'Daha önce bir rapor istediniz.'
+            ];
+        }
+        else
+        {
+            $user = User::where('id', config('app.user_id_support'))->first();
+
+            if (@$user && $user->organisation_id)
+            {
+                $report = new Report;
+                $report->key = time().rand(1, 10).rand(10, 100).rand(1000, 1000000);
+                $report->name = 'Örnek Otomatik Rapor';
+                $report->date_1 = date('d-m-Y', strtotime('-8 days'));
+                $report->date_2 = date('d-m-Y', strtotime('-1 days'));
+                $report->organisation_id = $user->organisation_id;
+                $report->user_id = $user->id;
+                $report->password = rand(1000, 9999);
+                $report->status = 'creating';
+                $report->gsm = $request->phone;
+                $report->subject = $request->subject;
+                $report->save();
+            }
+            else
+            {
+                System::log(
+                    'ENV dosyasında belirtilen destek hesabına erişilemiyor.',
+                    'App\Http\Controllers\HomeController::reportRequest()',
+                    10
+                );
+            }
+        }
+
+        return [
+            'status' => 'ok'
+        ];
+    }
+
+    /**
      * Kaynaklar Sayfası
      *
      * @return view
@@ -188,21 +263,11 @@ class HomeController extends Controller
     }
 
     /**
-     * Site Ana Sayfa Seçimi
-     *
-     * @return view
-     */
-    public static function lobby()
-    {
-        return view('home.lobby');
-    }
-
-    /**
      * Site Ana Sayfası
      *
      * @return view
      */
-    public static function index(string $type)
+    public static function index(string $type = '')
     {
         $array = [
             [
@@ -330,9 +395,13 @@ class HomeController extends Controller
                 'title' => 'Reklam Ajansları İçin',
                 'description' => 'Müşterilerinizin dijital meleği olun!',
                 'image' => asset('img/photo/1500x1500@agency.jpg'),
-            ],
+            ]
         ];
-        $type = $types[$type];
+
+        if ($type)
+        {
+            $type = $types[$type];
+        }
 
         return view('home.index', compact('array', 'type', 'types'));
     }

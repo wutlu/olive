@@ -222,12 +222,6 @@ class ContentController extends Controller
                                 ]
                             ],
                             'aggs' => [
-                                'popular_keywords' => [
-                                    'terms' => [
-                                        'field' => 'entry',
-                                        'size' => 50
-                                    ]
-                                ],
                                 'category' => [
                                     'terms' => [
                                         'field' => 'category',
@@ -254,23 +248,6 @@ class ContentController extends Controller
                     elseif (strpos($document['_source']['url'], 'uludagsozluk.com/'))
                     {
                         $data['slug'] = 'uludag';
-                    }
-
-                    $bucket = @$data['total']->data['aggregations']['popular_keywords']['buckets'];
-
-                    if ($bucket)
-                    {
-                        $_temp_data = [];
-
-                        foreach ($bucket as $item)
-                        {
-                            if (strlen($item['key']) > 2)
-                            {
-                                $_temp_data[$item['key']] = $item['doc_count'];
-                            }
-                        }
-
-                        $data['keywords'] = $_temp_data;
                     }
 
                     $bucket = @$data['total']->data['aggregations']['category']['buckets'];
@@ -399,34 +376,9 @@ class ContentController extends Controller
                                     'must' => $site
                                 ]
                             ],
-                            'aggs' => [
-                                'popular_keywords' => [
-                                    'terms' => [
-                                        'field' => 'description',
-                                        'size' => 50
-                                    ]
-                                ]
-                            ],
                             'size' => 0
                         ])
                     ];
-
-                    $bucket = @$data['total']->data['aggregations']['popular_keywords']['buckets'];
-
-                    if ($bucket)
-                    {
-                        $_temp_data = [];
-
-                        foreach ($bucket as $item)
-                        {
-                            if (strlen($item['key']) > 2)
-                            {
-                                $_temp_data[$item['key']] = $item['doc_count'];
-                            }
-                        }
-
-                        $data['keywords'] = $_temp_data;
-                    }
 
                     $title = $crawler->name . ' / ' . '#'.$document['_source']['id'];
                 break;
@@ -452,12 +404,6 @@ class ContentController extends Controller
                                 ]
                             ],
                             'aggs' => [
-                                'popular_keywords' => [
-                                    'terms' => [
-                                        'field' => 'description',
-                                        'size' => 50
-                                    ]
-                                ],
                                 'category' => [
                                     'terms' => [
                                         'field' => 'category',
@@ -468,23 +414,6 @@ class ContentController extends Controller
                             'size' => 0
                         ])
                     ];
-
-                    $bucket = @$data['total']->data['aggregations']['popular_keywords']['buckets'];
-
-                    if ($bucket)
-                    {
-                        $_temp_data = [];
-
-                        foreach ($bucket as $item)
-                        {
-                            if (strlen($item['key']) > 2)
-                            {
-                                $_temp_data[$item['key']] = $item['doc_count'];
-                            }
-                        }
-
-                        $data['keywords'] = $_temp_data;
-                    }
 
                     $bucket = @$data['total']->data['aggregations']['category']['buckets'];
 

@@ -346,10 +346,10 @@ Route::domain('olive.'.config('app.domain'))->group(function () {
 });
 
 Route::domain(config('app.domain'))->group(function () {
-    Route::get('/', 'HomeController@lobby')->name('home.lobby');
-    Route::get('{type}', 'HomeController@index')->name('home')->where('type', '(kisiler|markalar|reklam-ajanslari)');
+    Route::get('{type?}', 'HomeController@index')->name('home')->where('type', '(kisiler|markalar|reklam-ajanslari)');
 
     Route::post('demo-istek', 'HomeController@demoRequest')->name('demo.request');
+    Route::post('rapor-istek', 'HomeController@reportRequest')->name('report.request');
 
     Route::prefix('gercek-zamanli')->namespace('RealTime')->group(function () {
         Route::post('sorgu/ornek', 'RealTimeController@querySample')->name('realtime.query.sample');

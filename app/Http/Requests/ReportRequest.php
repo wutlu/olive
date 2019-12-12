@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DemoRequest extends FormRequest
+class ReportRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +24,11 @@ class DemoRequest extends FormRequest
     public function rules()
     {
         return [
+            'subject' => 'required|string|max:100',
             'name' => 'required|string|max:100',
-            'corporate_name' => 'nullable|string|max:100',
             'phone' => 'required|string|phone_number',
-            'gRecaptchaResponse' => 'required|recaptcha'
+            'gRecaptchaResponse' => 'required|recaptcha',
+            'terms' => 'accepted'
         ];
     }
 }

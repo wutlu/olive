@@ -116,7 +116,11 @@
 
         @if ($user->id == $user->organisation->user_id)
             @if ($user->organisation->status)
-                <p class="grey-text">{{ $user->organisation->days() }} gün kaldı.</p>
+                @if ($user->organisation->days())
+                    <p class="grey-text">{{ $user->organisation->days() }} gün kaldı.</p>
+                @else
+                    <p class="grey-text">Son Gün</p>
+                @endif
             @else
                 <p class="red-text">Pasif</p>
             @endif

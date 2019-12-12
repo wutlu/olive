@@ -14,8 +14,8 @@
 ])
 
 @push('local.styles')
-    #profile_cloud-chart > .content {
-        height: 400px;
+    .cloud-content {
+        height: 200px;
     }
 
     #search-operators {
@@ -56,8 +56,8 @@
     #date-area > .d-flex input[type=date] {
         border-width: 0 !important;
 
-        margin: 0 12px !important;
-        max-width: calc(50% - 56px);
+        margin: 0 !important;
+        max-width: calc(50%);
 
         -webkit-box-shadow: none !important;
                 box-shadow: none !important;
@@ -71,12 +71,6 @@
         text-align: center;
     }
 
-    @media (max-width: 700px) {
-        #date-area > .d-flex {
-            width: 100%;
-        }
-    }
-
     .marked {
         padding: .4rem;
         border-radius: .2rem;
@@ -84,7 +78,8 @@
 @endpush
 
 @push('local.scripts')
-    const helpStart = new Driver({
+    var searchSave = new Driver();
+    var helpStart = new Driver({
         allowClose: false,
         showButtons: false,
         keyboardControl: false,
@@ -99,6 +94,16 @@
             @endif
 
             flash_alert('Mükemmel!', 'green white-text')
+
+            setTimeout(function() {
+                searchSave.highlight({
+                    element: '[data-trigger=save] > i.material-icons',
+                    popover: {
+                        title: 'Aramayı Kaydet',
+                        description: 'Bu aramayı kaydet ve CTRL + G tuşlarına bas. Açılan menüden "Canlı Akış" modülüne geç.'
+                    }
+                })
+            }, 2000)
         }
     })
 
@@ -331,6 +336,11 @@
     })
 
     $(document).on('click', '[data-trigger=save]', function() {
+        if (searchSave.isActivated)
+        {
+            searchSave.reset()
+        }
+
         var mdl = modal({
             'id': 'save',
             'body': $('<form />', {
@@ -355,56 +365,8 @@
                                 'html': 'Arama Adı'
                             }),
                             $('<span />', {
-                                'class': 'helper-text'
-                            })
-                        ]
-                    }),
-                    $('<label />', {
-                        'class': 'input-field',
-                        'html': [
-                            $('<input />', {
-                                'name': 'report',
-                                'value': 'daily',
-                                'type': 'radio'
-                            }),
-                            $('<span />', {
-                                'html': 'Günlük Rapor Oluştur'
-                            })
-                        ]
-                    }),
-                    $('<label />', {
-                        'class': 'input-field',
-                        'html': [
-                            $('<input />', {
-                                'name': 'report',
-                                'value': 'hourly',
-                                'type': 'radio'
-                            }),
-                            $('<span />', {
-                                'html': 'Saatlik Rapor Oluştur'
-                            })
-                        ]
-                    }),
-                    $('<div />', {
-                        'class': 'grey-text pt-1',
-                        'html': '"Rapor Oluştur" seçilirse, kaydedilen arama için her sabah 08:00\'de veya saat başı yeni bir konu raporu oluşturulur.'
-                    }),
-                    $('<div />', {
-                        'class': 'input-field',
-                        'html': [
-                            $('<input />', {
-                                'id': 'email',
-                                'name': 'email',
-                                'type': 'text',
-                                'class': 'validate'
-                            }),
-                            $('<label />', {
-                                'for': 'email',
-                                'html': 'E-posta'
-                            }),
-                            $('<span />', {
                                 'class': 'helper-text',
-                                'html': 'E-posta girilirse, tamamlanan rapor girilen e-posta adresine gönderilir.'
+                                'html': 'Kaydedilen aramalar diğer modüllerle ortak kullanımda olacaktır.'
                             })
                         ]
                     })
@@ -562,7 +524,7 @@
                 <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="number" data-search="counts.quote">Alıntı Sayısı</button>
                 <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="number" data-search="counts.reply">Cevap Sayısı</button>
 
-                <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="number" data-search="counts.hashtag">Hashtag Sayısı</button>
+                <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="number" data-search="counts.hashtag">Etiket Sayısı</button>
                 <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="number" data-search="counts.mention">Mention Sayısı</button>
                 <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="number" data-search="counts.url">Bağlantı Sayısı</button>
                 <button data-update-click type="button" class="btn-flat waves-effect btn-small d-table" data-validate="number" data-search="counts.media">Medya Sayısı</button>
@@ -594,15 +556,17 @@
 
 @push('wildcard-bottom')
     <div id="date-area" class="d-flex justify-content-between grey lighten-4">
-        <div class="grey-text align-self-center hide-on-med-and-down pl-1" data-name="stats">
-            <div class="ml-1 d-flex">
+        <div class="flex-fill align-self-center hide-on-med-and-down pl-1 grey-text" data-name="stats">
+            <div class="d-flex">
                 <i class="material-icons align-self-center mr-1">info</i>
                 <span class="align-self-center">Aramak istediğiniz metni arama alanına girin.</span>
             </div>
         </div>
-        <div class="d-flex align-self-center" id="date-inputs">
-            <input data-update type="date" class="align-self-center" name="start_date" value="{{ $s ? $s : date('Y-m-d', strtotime('-1 day')) }}" placeholder="Başlangıç" />
-            <input data-update type="date" class="align-self-center" name="end_date" value="{{ $e ? $e : date('Y-m-d') }}" placeholder="Bitiş" />
+        <div class="flex-fill d-flex justify-content-end align-self-center">
+            <div class="d-flex align-self-center" id="date-inputs">
+                <input style="min-width: 132px;" data-update type="date" class="align-self-center" name="start_date" value="{{ $s ? $s : date('Y-m-d', strtotime('-1 day')) }}" placeholder="Başlangıç" />
+                <input style="min-width: 132px;" data-update type="date" class="align-self-center" name="end_date" value="{{ $e ? $e : date('Y-m-d') }}" placeholder="Bitiş" />
+            </div>
 
             <a href="#" class="btn-flat waves-effect dropdown-trigger align-self-center" data-target="date-menu" data-align="right">
                 <i class="material-icons">date_range</i>
@@ -614,7 +578,7 @@
         <li>
             <a
                 href="#"
-                class="collection-item waves-effect"
+                class="waves-effect"
                 data-update-click
                 data-input="input[name=end_date]"
                 data-focus="input[name=start_date]"
@@ -625,7 +589,7 @@
             <li>
                 <a
                     href="#"
-                    class="collection-item waves-effect"
+                    class="waves-effect"
                     data-update-click
                     data-input="input[name=end_date]"
                     data-focus="input[name=start_date]"
@@ -637,7 +601,7 @@
             <li>
                 <a
                     href="#"
-                    class="collection-item waves-effect"
+                    class="waves-effect"
                     data-update-click
                     data-input="input[name=end_date]"
                     data-focus="input[name=start_date]"
@@ -649,7 +613,7 @@
             <li>
                 <a
                     href="#"
-                    class="collection-item waves-effect"
+                    class="waves-effect"
                     data-update-click
                     data-input="input[name=end_date]"
                     data-focus="input[name=start_date]"
@@ -661,7 +625,7 @@
             <li>
                 <a
                     href="#"
-                    class="collection-item waves-effect"
+                    class="waves-effect"
                     data-update-click
                     data-input="input[name=end_date]"
                     data-focus="input[name=start_date]"
@@ -673,7 +637,7 @@
             <li>
                 <a
                     href="#"
-                    class="collection-item waves-effect"
+                    class="waves-effect"
                     data-update-click
                     data-input="input[name=end_date]"
                     data-focus="input[name=start_date]"
@@ -685,12 +649,17 @@
             <li>
                 <a
                     href="#"
-                    class="collection-item waves-effect"
+                    class="waves-effect"
                     data-update-click
                     data-input="input[name=end_date]"
                     data-focus="input[name=start_date]"
                     data-input-value="{{ date('Y-m-d') }}"
                     data-value="{{ date('Y-m-d', strtotime('-90 day')) }}">Son 90 Gün</a>
+            </li>
+        @endif
+        @if ($organisation->demo)
+            <li class="disabled">
+                <a href="#" class="cyan-text">Daha fazlası için paketinizi yükseltin!</a>
             </li>
         @endif
     </ul>
@@ -2162,178 +2131,112 @@
                     helpDriverStatus = true;
                 break;
                 case 'hashtag':
-                    const twitterHashtagChartOption = JSON.parse(JSON.stringify(options));
-                    const instagramHashtagChartOption = JSON.parse(JSON.stringify(options));
-                    const youtubeVideoHashtagChartOption = JSON.parse(JSON.stringify(options));
-
-                    twitterHashtagChartOption['chart']['type'] = 'bar';
-                    twitterHashtagChartOption['plotOptions'] = {
-                        bar: {
-                            distributed: true,
-                            horizontal: true,
-                            barHeight: '100%',
-                            dataLabels: { position: 'bottom' }
-                        }
-                    };
-                    twitterHashtagChartOption['subtitle'] = { 'text': 'Twitter Hashtag Grafiği' };
-                    twitterHashtagChartOption['chart']['events'] = {
-                        'click': function(event, chartContext, config) {
-                            //console.log(chartContext)
-                        }
-                    };
-
-                    youtubeVideoHashtagChartOption['chart']['type'] = 'bar';
-                    youtubeVideoHashtagChartOption['plotOptions'] = {
-                        bar: {
-                            distributed: true,
-                            horizontal: true,
-                            barHeight: '100%',
-                            dataLabels: { position: 'bottom' }
-                        }
-                    };
-                    youtubeVideoHashtagChartOption['subtitle'] = { 'text': 'YouTube Hashtag Grafiği' };
-                    youtubeVideoHashtagChartOption['chart']['events'] = {
-                        'click': function(event, chartContext, config) {
-                            //console.log(chartContext)
-                        }
-                    };
-
-                    instagramHashtagChartOption['chart']['type'] = 'bar';
-                    instagramHashtagChartOption['plotOptions'] = {
-                        bar: {
-                            distributed: true,
-                            horizontal: true,
-                            barHeight: '100%',
-                            dataLabels: { position: 'bottom' }
-                        }
-                    };
-                    instagramHashtagChartOption['subtitle'] = { 'text': 'Instagram Hashtag Grafiği' };
-
-                    var instagram_hits = false;
-                    var twitter_hits = false;
-                    var youtube_video_hits = false;
-
                     $.each(obj.data, function(module_key, module) {
-                        var categories = [];
-                        var datas = [];
+                        var hashtagChart = $('#hashtag-' + module_key);
 
-                        if (module.hashtag.hits.buckets.length)
+                        if (hashtagChart.length)
                         {
-                            $.each(module.hashtag.hits.buckets, function(key, bucket) {
-                                categories.push(bucket.key)
-                                datas.push(bucket.doc_count)
+                            hashtagChart.remove()
+                        }
+
+                        var titles = {
+                            'twitter': {
+                                'title': 'Twitter Etiket Bulutu',
+                                'name': 'Twitter'
+                            },
+                            'instagram': {
+                                'title': 'Instagram Etiket Bulutu',
+                                'name': 'Instagram'
+                            },
+                            'youtube_video': {
+                                'title': 'YouTube Etiket Bulutu',
+                                'name': 'YouTube'
+                            },
+                        };
+
+                        if (module.hashtag.doc_count)
+                        {
+                            var chart = $('<div />', {
+                                'id': 'hashtag-' + module_key,
+                                'class': 'card chart mb-1',
+                                'html': $('<div />', {
+                                    'class': 'card-content',
+                                    'html': [
+                                        $('<span />', {
+                                            'html': titles[module_key].title,
+                                            'class': 'card-title'
+                                        }),
+                                        $('<div />', {
+                                            'class': 'cloud-content'
+                                        }),
+                                        $('<div />', {
+                                            'class': 'd-flex mt-1',
+                                            'html': [
+                                                $('<a />', {
+                                                    'class': 'btn-flat waves-effect d-flex align-self-center',
+                                                    'data-report-type': 'jcloud',
+                                                    'data-trigger': 'report-chart',
+                                                    'data-title': __.data('title'),
+                                                    'data-subtitle': titles[module_key].name + ' ' + __.data('subtitle'),
+                                                    'html': [
+                                                        $('<i />', {
+                                                            'class': 'material-icons align-self-center mr-1',
+                                                            'html': 'note_add'
+                                                        }),
+                                                        $('<span />', {
+                                                            'class': 'align-self-center',
+                                                            'html': 'Bulutu Rapora Ekle'
+                                                        })
+                                                    ]
+                                                })
+                                            ]
+                                        }),
+                                        $('<input />', {
+                                            'type': 'hidden',
+                                            'data-chart': 'value',
+                                            'value': JSON.stringify(module.hashtag.hits.buckets)
+                                        })
+                                    ]
+                                })
                             })
 
-                            if (module_key == 'twitter')
-                            {
-                                twitter_hits = true;
-                            }
+                                chart.prependTo('#chart-tab')
 
-                            if (module_key == 'youtube_video')
-                            {
-                                youtube_video_hits = true;
-                            }
+                            setTimeout(function() {
+                                var bucket = [];
 
-                            if (module_key == 'instagram')
-                            {
-                                instagram_hits = true;
-                            }
+                                $.each(module.hashtag.hits.buckets, function(key, o) {
+                                    bucket.push(
+                                        {
+                                            'text': o.key,
+                                            'weight': o.doc_count,
+                                            'link': '#',
+                                            'handlers': {
+                                                'click': function() {
+                                                    $('input#string').val(o.key)
+
+                                                    var search = $('ul#search');
+                                                        search.data('skip', 0).addClass('json-clear');
+
+                                                    vzAjax(search)
+                                                }
+                                            }
+                                        }
+                                    )
+                                })
+
+                                chart.find('.cloud-content').jQCloud(bucket, {
+                                    'autosize': true
+                                })
+                            }, 400)
                         }
-
-                        switch (module_key)
+                        else
                         {
-                            case 'instagram':
-                                instagramHashtagChartOption['series'] = [
-                                    {
-                                        name: 'Medya',
-                                        data: datas
-                                    }
-                                ];
-
-                                instagramHashtagChartOption['xaxis'] = {
-                                    categories: categories
-                                };
-                            break;
-                            case 'twitter':
-                                twitterHashtagChartOption['series'] = [
-                                    {
-                                        name: 'Tweet',
-                                        data: datas
-                                    }
-                                ];
-
-                                twitterHashtagChartOption['xaxis'] = {
-                                    categories: categories
-                                };
-                            break;
-                            case 'youtube_video':
-                                youtubeVideoHashtagChartOption['series'] = [
-                                    {
-                                        name: 'Video',
-                                        data: datas
-                                    }
-                                ];
-
-                                youtubeVideoHashtagChartOption['xaxis'] = {
-                                    categories: categories
-                                };
-                            break;
+                            M.toast({ 'html': titles[module_key].name + ' için sonuç bulunamadı!' })
                         }
                     })
 
-                    if (twitter_hits)
-                    {
-                        __chart_generate('twitterHashtag', __.data())
-
-                        chartToJson('#twitterHashtagChart', twitterHashtagChartOption)
-
-                        var twitterChart = new ApexCharts(document.querySelector('#twitterHashtagChart'), twitterHashtagChartOption);
-                            twitterChart.render()
-
-                        $('#twitterHashtagChart').removeClass('hide')
-
-                        helpDriverStatus = true;
-                    }
-                    else
-                    {
-                        M.toast({ html: 'Twitter paylaşımlarında hashtag verisi bulunamadı!' }, 200)
-                    }
-
-                    if (youtube_video_hits)
-                    {
-                        __chart_generate('youtubeVideoHashtag', __.data())
-
-                        chartToJson('#youtubeVideoHashtagChart', youtubeVideoHashtagChartOption)
-
-                        var youtubeVideoChart = new ApexCharts(document.querySelector('#youtubeVideoHashtagChart'), youtubeVideoHashtagChartOption);
-                            youtubeVideoChart.render()
-
-                        $('#youtubeVideoHashtagChart').removeClass('hide')
-
-                        helpDriverStatus = true;
-                    }
-                    else
-                    {
-                        M.toast({ html: 'YouTube paylaşımlarında hashtag verisi bulunamadı!' }, 200)
-                    }
-
-                    if (instagram_hits)
-                    {
-                        __chart_generate('instagramHashtag', __.data())
-
-                        chartToJson('#instagramHashtagChart', instagramHashtagChartOption)
-
-                        var instagramChart = new ApexCharts(document.querySelector('#instagramHashtagChart'), instagramHashtagChartOption);
-                            instagramChart.render()
-
-                        $('#instagramHashtagChart').removeClass('hide')
-
-                        helpDriverStatus = true;
-                    }
-                    else
-                    {
-                        M.toast({ html: 'Instagram paylaşımlarında hashtag verisi bulunamadı!' }, 200)
-                    }
+                    helpDriverStatus = true;
                 break;
                 case 'consumer':
                     __chart_generate('consumer', __.data());
@@ -2640,92 +2543,6 @@
         }
     }
 
-    function __profile_cloud(__, obj)
-    {
-        if (obj.status == 'ok')
-        {
-            if (obj.data.twitter && obj.data.twitter.user_description.buckets.length)
-            {
-                var chart = $('#profile_cloud-chart');
-
-                if (chart.length)
-                {
-                    chart.remove()
-                }
-
-                var chart = $('<div />', {
-                    'id': 'profile_cloud-chart',
-                    'class': 'chart',
-                    'html': [
-                        $('<h6 />', {
-                            'html': 'Profil Açıklamalarında Sık Kullanılan Kelimeler'
-                        }),
-                        $('<div />', {
-                            'class': 'content'
-                        }),
-                        $('<div />', {
-                            'class': 'd-flex mb-2',
-                            'html': $('<a />', {
-                                'class': 'btn-flat waves-effect d-flex',
-                                'data-report-type': 'user_description',
-                                'data-trigger': 'report-chart',
-                                'data-title': __.data('title'),
-                                'data-subtitle': __.data('subtitle'),
-                                'html': [
-                                    $('<i />', {
-                                        'class': 'material-icons align-self-center mr-1',
-                                        'html': 'note_add'
-                                    }),
-                                    $('<span />', {
-                                        'class': 'align-self-center',
-                                        'html': 'Bulutu Rapora Ekle'
-                                    })
-                                ]
-                            })
-                        }),
-                        $('<input />', {
-                            'type': 'hidden',
-                            'data-chart': 'value',
-                            'value': JSON.stringify(obj.data.twitter.user_description.buckets)
-                        })
-                    ]
-                })
-
-                chart.prependTo('#chart-tab')
-
-                setTimeout(function() {
-                    var bucket = [];
-
-                    $.each(obj.data.twitter.user_description.buckets, function(key, o) {
-                        bucket.push(
-                            {
-                                'text': o.key,
-                                'weight': o.doc_count,
-                                'link': '#',
-                                'handlers': {
-                                    'click': function() {
-                                        $('input#string').val('user.description:' + o.key)
-
-                                        var search = $('ul#search');
-                                            search.data('skip', 0).addClass('json-clear');
-
-                                        vzAjax(search)
-                                    }
-                                }
-                            }
-                        )
-                    })
-
-                    chart.find('.content').jQCloud(bucket, {
-                        'autosize': true
-                    })
-                }, 400)
-
-                $('.tabs').tabs('select', 'chart-tab')
-            }
-        }
-    }
-
     function __map(__, obj)
     {
         if (obj.status == 'ok')
@@ -2841,10 +2658,9 @@
         <a href="#" class="collection-item json loading" data-callback="__chart" data-type="consumer" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}" data-title="Soru, İstek, Şikayet ve Haber Grafiği">Soru, İstek, Şikayet ve Haber</a>
         <a href="#" class="collection-item json loading" data-callback="__chart" data-type="gender" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}" data-title="Cinsiyet Grafiği">Cinsiyet Grafiği</a>
         <a href="#" class="collection-item json loading" data-callback="__chart" data-type="author" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}" data-title="Bahsedenler">@bahsedenler</a>
-        <a href="#" class="collection-item json loading" data-callback="__chart" data-type="hashtag" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}" data-title="Hashtag Grafiği" data-subtitle="Konu ile birlikte kullanılan başlıca hashtagler.">#hashtagler</a>
+        <a href="#" class="collection-item json loading" data-callback="__chart" data-type="hashtag" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}" data-title="Etiket Bulutu" data-subtitle="Sık kullanılan kelimelerden etiket bulutu.">#etiket Bulutu</a>
         <a href="#" class="collection-item json loading" data-callback="__chart" data-type="category" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}" data-title="Kategori Grafiği" data-subtitle="Verilerin genel kategorilere dağılımı.">Kategori</a>
         <a href="#" class="collection-item json loading" data-callback="__map" data-type="local_press" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}" data-title="Yerel Basın">Yerel Basın</a>
-        <!--<a href="#" class="collection-item json loading" data-callback="__profile_cloud" data-type="user_description" data-href="{{ route('search.aggregation') }}" data-method="post" data-include="{{ $elements }}" data-title="Profil Bulutu" data-subtitle="Kullanıcıların profil açıklamalarında sık kullandıkları kelimeler.">Profil Bulutu</a>-->
     </div>
 @endsection
 
@@ -2965,7 +2781,7 @@
                                 </p>
                                 <p class="mb-0 hide" data-stat>
                                     <span class="d-flex justify-content-end">
-                                        <small class="grey-text">HASHTAG</small>
+                                        <small class="grey-text">ETİKET</small>
                                         <small class="pl-1" data-name="twitter-hashtags">0</small>
                                     </span>
                                 </p>
@@ -2985,7 +2801,7 @@
                                 </p>
                                 <p class="mb-0 hide" data-stat>
                                     <span class="d-flex justify-content-end">
-                                        <small class="grey-text">HASHTAG</small>
+                                        <small class="grey-text">ETİKET</small>
                                         <small class="pl-1" data-name="instagram-hashtags">0</small>
                                     </span>
                                 </p>
@@ -3025,7 +2841,7 @@
                                 </p>
                                 <p class="mb-0 hide" data-stat>
                                     <span class="d-flex justify-content-end">
-                                        <small class="grey-text">HASHTAG</small>
+                                        <small class="grey-text">ETİKET</small>
                                         <small class="pl-1" data-name="youtube_video-hashtags">0</small>
                                     </span>
                                 </p>

@@ -2129,7 +2129,7 @@ function __report__pattern(obj, form, type, method)
                 'value': JSON.stringify(data)
             }))
         break;
-        case 'user_description':
+        case 'jcloud':
             form.find('.content').html(
                 [
                     $('<div />', {
@@ -2161,9 +2161,8 @@ function __report__pattern(obj, form, type, method)
                 $.each(data, function(key, o) {
                     bucket.push(
                         {
-                            'text': o.key,
-                            'weight': o.doc_count,
-                            'link': '#'
+                            'text': '#' + o.key,
+                            'weight': o.doc_count
                         }
                     )
                 })
@@ -2183,11 +2182,11 @@ function __report__pattern(obj, form, type, method)
             form.find('.content').html(
                 [
                     $('<div />', {
-                        'class': 'flex-fill gender-grid',
+                        'class': 'gender-grid',
                         'css': { 'min-width': '70%' }
                     }),
                     $('<div />', {
-                        'class': 'flex-fill textarea markdown',
+                        'class': 'textarea markdown',
                         'css': { 'min-width': '30%' },
                         'html': method == 'write' ? $('<textarea />', { 'name': 'text', 'placeholder': 'Metin Alanı', 'html': obj.page ? obj.page.text : '' }) : obj.page ? obj.page.text : ''
                     })
@@ -2642,7 +2641,7 @@ function __report__page_form(options)
                                 ]
                             }),
                             $('<div />', {
-                                'class': 'content d-flex align-items-stretch'
+                                'class': 'content d-flex justify-content-center align-items-stretch'
                             }).html(options.content ? options.content : ''),
                             $('<span />', {
                                 'class': 'date',

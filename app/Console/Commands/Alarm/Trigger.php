@@ -17,6 +17,8 @@ use Carbon\Carbon;
 
 use App\Http\Controllers\SearchController;
 
+use App\Jobs\ReportJob;
+
 class Trigger extends Command
 {
     /**
@@ -65,6 +67,13 @@ class Trigger extends Command
 
             foreach ($alarms as $alarm)
             {
+                if ($alarm->report)
+                {
+                    ReportJob::dispatch($alarm->search, $alarm->interval)->onQueue('process');
+
+                    $this->info('Rapor İstenildi!');
+                }
+
                 $es_data = self::elasticsearch($alarm);
 
                 $this->info($alarm->search->name.' - ['.count($es_data['data']).']');
@@ -112,12 +121,11 @@ class Trigger extends Command
                             ]
                         );
                     }
-
+/*
                     $alarm->update([
                         'sended_at' => date('Y-m-d H:i:s'),
                         'hit' => $alarm->hit-1
                     ]);
-
                     Mail::queue(
                         new AlarmMail(
                             [
@@ -128,6 +136,7 @@ class Trigger extends Command
                             ]
                         )
                     );
+*/
                 }
             }
         }
