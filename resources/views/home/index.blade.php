@@ -236,7 +236,6 @@
 @section('content')
     <div class="cookie-alert z-depth-1 hide">
         <a href="{{ route('page.view', 'cerez-politikasi') }}" class="cyan-text">Çerezler</a> özel bir deneyim sunarak ziyaretçilerimize daha iyi hizmet vermemizi ve daha faydalı bilgiler sunmak üzere kendi dahili amaçlarımız için kullanılacaktır.
-        <a href="#" class="btn-flat waves-effect right mt-1">Tamam</a>
     </div>
 
     <!-- section 1 -->
@@ -270,7 +269,8 @@
                                     <a href="#" class="chip waves-effect waves-light" data-input="#report_subject" data-input-value='"Ahmet Kural"'>"Ahmet Kural"</a>
                                     <a href="#" class="chip waves-effect waves-light" data-input="#report_subject" data-input-value="Dolar">Dolar</a>
                                     <a href="#" class="chip waves-effect waves-light" data-input="#report_subject" data-input-value="Migros">Migros</a>
-                                    <a href="#" class="chip waves-effect waves-light" data-input="#report_subject" data-input-value="Ankara && Deprem">Ankara && Deprem</a>
+                                    <a href="#" class="chip waves-effect waves-light" data-input="#report_subject" data-input-value="Ankara && Deprem" data-tooltip="ve">Ankara && Deprem</a>
+                                    <a href="#" class="chip waves-effect waves-light" data-input="#report_subject" data-input-value="Ankara && Deprem" data-tooltip="veya">Ankara || İstanbul</a>
                                 </div>
                                 <div class="input-field">
                                     <input data-name="report" type="text" name="report_name" data-alias="name" placeholder="Sizin veya Şirketinizin Adı" maxlength="55" />
