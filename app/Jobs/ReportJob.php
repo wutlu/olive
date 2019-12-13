@@ -64,6 +64,7 @@ class ReportJob implements ShouldQueue
             $search->name = $this->report->name;
             $search->string = $this->report->subject;
             $search->modules = array_keys(config('system.modules'));
+            $search->gender = 'all';
 
             $interval = Carbon::parse($this->report->date_1)->diffInMinutes($this->report->date_2);
 
@@ -1155,7 +1156,7 @@ class ReportJob implements ShouldQueue
             {
                 $link = Link::generate(route('report.view', $report->key));
 
-                $sms = SMS::send('Raporunuz hazır! Şifre: '.$this->report->password.' '.$link, [ str_replace([ ' ', '(', ')' ], '', $report->gsm) ], false);
+                //$sms = SMS::send('Raporunuz hazır! Şifre: '.$this->report->password.' '.$link, [ str_replace([ ' ', '(', ')' ], '', $report->gsm) ], false);
                 $report->status = 'ok';
                 $report->save();
             }
@@ -1189,7 +1190,7 @@ class ReportJob implements ShouldQueue
 
                 if ($report->status)
                 {
-                    $sms = SMS::send('Girdiğiniz konu hakkında son 1 hafta içerisinde hiç sonuç bulunamadı.', [ str_replace([ ' ', '(', ')' ], '', $report->gsm) ]);
+                    //$sms = SMS::send('Girdiğiniz konu hakkında son 1 hafta içerisinde hiç sonuç bulunamadı.', [ str_replace([ ' ', '(', ')' ], '', $report->gsm) ]);
                 }
 
                 $report->status = 'failed';

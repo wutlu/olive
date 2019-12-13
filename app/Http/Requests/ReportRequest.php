@@ -27,7 +27,7 @@ class ReportRequest extends FormRequest
             'subject' => 'required|string|max:100',
             'name' => 'required|string|max:100',
             'phone' => 'required|string|phone_number',
-            'gRecaptchaResponse' => 'required|recaptcha',
+            //'gRecaptchaResponse' => 'required|recaptcha',
             'terms' => 'accepted'
         ];
     }
