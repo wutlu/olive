@@ -33,6 +33,8 @@ use System;
 use App\Elasticsearch\Document;
 use App\Utilities\Term;
 
+use App\Jobs\ReportJob;
+
 class HomeController extends Controller
 {
     public function __construct()
@@ -145,7 +147,7 @@ class HomeController extends Controller
 
         Option::where('key', 'root_alert.support')->first()->incr();
 
-        $exists = Report::where('gsm', $request->phone)->exists();
+        $exists = Report::where('gsm', $request->phone)->where('status', '<>', 'failed')->exists();
 
         if ($exists)
         {
@@ -172,6 +174,8 @@ class HomeController extends Controller
                 $report->gsm = $request->phone;
                 $report->subject = $request->subject;
                 $report->save();
+
+                ReportJob::dispatch(null, $report)->onQueue('process');
             }
             else
             {

@@ -83,8 +83,10 @@
                                     <span class="align-self-center p-1"> 
                                         @if ($item->status == 'creating')
                                             Oluşturuluyor
-                                        @elseif ($item->status == 'creating')
+                                        @elseif ($item->status == 'sending')
                                             Gönderiliyor
+                                        @elseif ($item->status == 'failed')
+                                            Başarısız
                                         @else
                                             Tamamlandı
                                         @endif

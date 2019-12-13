@@ -12,7 +12,7 @@ use System;
 
 class SMS extends Model
 {
-    public static function send(string $message = null, array $gsmno = [])
+    public static function send(string $message = null, array $gsmno = [], bool $brand = true)
     {
         $message = Term::convertAscii(
             $message,
@@ -44,7 +44,15 @@ class SMS extends Model
         }
         else
         {
-            $message = implode('\n', [ $message, 'Olive', 'https://olive.veri.zone' ]);
+            $arr = [ $message ];
+
+            if ($brand)
+            {
+                $arr[] = 'Olive';
+                $arr[] = config('app.url');
+            }
+
+            $message = implode('\n', $arr);
 
             $client = new Client();
             $response = $client->request('GET','https://api.netgsm.com.tr/sms/send/get/', [

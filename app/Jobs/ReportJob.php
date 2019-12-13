@@ -26,23 +26,29 @@ use App\SMS;
 use App\Elasticsearch\Document;
 
 use App\Models\User\User;
+use App\Models\SavedSearch;
+use App\Models\Link;
 
 use App\Notifications\AlarmReportNotification;
+
+use Carbon\Carbon;
 
 class ReportJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     private $alarm;
+    private $report;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(Alarm $alarm)
+    public function __construct(Alarm $alarm = null, Report $report = null)
     {
         $this->alarm = $alarm;
+        $this->report = $report;
     }
 
     /**
@@ -52,8 +58,24 @@ class ReportJob implements ShouldQueue
      */
     public function handle()
     {
-        $search = $this->alarm->search;
-        $organisation = $search->organisation;
+        if ($this->report)
+        {
+            $search = new SavedSearch;
+            $search->name = $this->report->name;
+            $search->string = $this->report->subject;
+            $search->modules = array_keys(config('system.modules'));
+
+            $interval = Carbon::parse($this->report->date_1)->diffInMinutes($this->report->date_2);
+
+            $organisation = $this->report->organisation;
+        }
+        else
+        {
+            $search = $this->alarm->search;
+            $interval = $this->alarm->interval;
+
+            $organisation = $search->organisation;
+        }
 
         $clean = Term::cleanSearchQuery($search->string);
 
@@ -68,7 +90,7 @@ class ReportJob implements ShouldQueue
                             'range' => [
                                 'created_at' => [
                                     'format' => 'YYYY-MM-dd HH',
-                                    'gte' => date('Y-m-d H', strtotime('-'.$this->alarm->interval.' minutes'))
+                                    'gte' => date('Y-m-d H', strtotime('-'.$interval.' minutes'))
                                 ]
                             ]
                         ]
@@ -316,66 +338,66 @@ class ReportJob implements ShouldQueue
 
                                 $twitter_retweet_datas[] = $item['_source'];
                             }
+
+                            $_histogram = $this->histogram('Twitter', $tweet_data['aggs']); if ($_histogram) $histogram[] = $_histogram;
+                            $_sentiment = $this->sentiment('Twitter', $tweet_data['aggs']); if ($_sentiment) $sentiment[] = $_sentiment;
+                            $_consumer = $this->consumer('Twitter', $tweet_data['aggs']); if ($_consumer) $consumer[] = $_consumer;
+                            $_gender = $tweet_data['aggs']['gender']; if ($_gender) $gender['twitter']['gender'] = $_gender;
+                            $_place = $this->place('Twitter', $tweet_data['aggs']); if ($_place) $place['twitter'] = $_place;
+                            $_platform = $this->platform('Twitter', $tweet_data['aggs']); if ($_platform) $platform['twitter'] = $_platform;
+                            $_category = $tweet_data['aggs']['category']['buckets']; if ($_category) $category[] = $_category;
+                            $_hashtag = $tweet_data['aggs']['hashtag']['hits']['buckets']; if ($_hashtag) $hashtag['twitter'] = $_hashtag;
+
+                            if (count($tweet_data['aggs']['hit_users']['buckets']))
+                            {
+                                $raw_datas[] = [
+                                    'title' => 'Twitter Kullanıcıları / En Çok Tweet',
+                                    'subtitle' => 'Konu hakkında en çok Tweet paylaşan Twitter kullanıcıları.',
+                                    'data' => $tweet_data['aggs']['hit_users']['buckets'],
+                                    'type' => 'data.twitterUsers'
+                                ];
+                            }
+
+                            if (count($twitter_verified_data['aggs']['hit_users']['buckets']))
+                            {
+                                $raw_datas[] = [
+                                    'title' => 'Twitter Kullanıcıları / Tanınmış Hesaplar',
+                                    'subtitle' => 'Konu hakkında en çok Tweet paylaşan tanınmış Twitter kullanıcıları.',
+                                    'data' => $twitter_verified_data['aggs']['hit_users']['buckets'],
+                                    'type' => 'data.twitterUsers'
+                                ];
+                            }
+
+                            if (count($tweet_data['aggs']['influencers']['buckets']))
+                            {
+                                $raw_datas[] = [
+                                    'title' => 'Twitter Kullanıcıları / Takipçi Sayısına Göre',
+                                    'subtitle' => 'Konuya dahil olmuş yüksek takipçili Twitter kullanıcıları.',
+                                    'data' => $tweet_data['aggs']['influencers']['buckets'],
+                                    'type' => 'data.twitterInfluencers'
+                                ];
+                            }
+
+                            if ($tweet_data['aggs']['hit_mentions']['doc_count'])
+                            {
+                                $raw_datas[] = [
+                                    'title' => 'Twitter Kullanıcıları / Konuşulanlar',
+                                    'subtitle' => 'Konu içerisinde en çok bahsedilen Twitter kullanıcıları.',
+                                    'data' => $tweet_data['aggs']['hit_mentions']['hits']['buckets'],
+                                    'type' => 'data.twitterMentions'
+                                ];
+                            }
+
+                            $stats['twitter']['mentions'] = @$tweet_data['aggs']['mentions']['doc_count'];
+                            $stats['twitter']['hashtags'] = @$tweet_data['aggs']['hashtags']['doc_count'];
+                            $stats['twitter']['unique_users'] = @$tweet_data['aggs']['unique_users']['value'];
+                            $stats['twitter']['verified_users'] = @$tweet_data['aggs']['verified_users']['doc_count'];
+                            $stats['twitter']['followers'] = @$tweet_data['aggs']['followers']['value'];
+                            $stats['twitter']['reach'] = @$tweet_data['aggs']['reach']['sum_other_doc_count'];
+
+                            $stats['hits'] = $stats['hits'] + $tweet_data['aggs']['total']['value'];
+                            $stats['counts']['twitter_tweet'] = $tweet_data['aggs']['total']['value'];
                         }
-
-                        $_histogram = $this->histogram('Twitter', $tweet_data['aggs']); if ($_histogram) $histogram[] = $_histogram;
-                        $_sentiment = $this->sentiment('Twitter', $tweet_data['aggs']); if ($_sentiment) $sentiment[] = $_sentiment;
-                        $_consumer = $this->consumer('Twitter', $tweet_data['aggs']); if ($_consumer) $consumer[] = $_consumer;
-                        $_gender = $tweet_data['aggs']['gender']; if ($_gender) $gender['twitter']['gender'] = $_gender;
-                        $_place = $this->place('Twitter', $tweet_data['aggs']); if ($_place) $place['twitter'] = $_place;
-                        $_platform = $this->platform('Twitter', $tweet_data['aggs']); if ($_platform) $platform['twitter'] = $_platform;
-                        $_category = $tweet_data['aggs']['category']['buckets']; if ($_category) $category[] = $_category;
-                        $_hashtag = $tweet_data['aggs']['hashtag']['hits']['buckets']; if ($_hashtag) $hashtag['twitter'] = $_hashtag;
-
-                        if (count($tweet_data['aggs']['hit_users']['buckets']))
-                        {
-                            $raw_datas[] = [
-                                'title' => 'Twitter Kullanıcıları / En Çok Tweet',
-                                'subtitle' => 'Konu hakkında en çok Tweet paylaşan Twitter kullanıcıları.',
-                                'data' => $tweet_data['aggs']['hit_users']['buckets'],
-                                'type' => 'data.twitterUsers'
-                            ];
-                        }
-
-                        if (count($twitter_verified_data['aggs']['hit_users']['buckets']))
-                        {
-                            $raw_datas[] = [
-                                'title' => 'Twitter Kullanıcıları / Tanınmış Hesaplar',
-                                'subtitle' => 'Konu hakkında en çok Tweet paylaşan tanınmış Twitter kullanıcıları.',
-                                'data' => $twitter_verified_data['aggs']['hit_users']['buckets'],
-                                'type' => 'data.twitterUsers'
-                            ];
-                        }
-
-                        if (count($tweet_data['aggs']['influencers']['buckets']))
-                        {
-                            $raw_datas[] = [
-                                'title' => 'Twitter Kullanıcıları / Takipçi Sayısına Göre',
-                                'subtitle' => 'Konuya dahil olmuş yüksek takipçili Twitter kullanıcıları.',
-                                'data' => $tweet_data['aggs']['influencers']['buckets'],
-                                'type' => 'data.twitterInfluencers'
-                            ];
-                        }
-
-                        if ($tweet_data['aggs']['hit_mentions']['doc_count'])
-                        {
-                            $raw_datas[] = [
-                                'title' => 'Twitter Kullanıcıları / Konuşulanlar',
-                                'subtitle' => 'Konu içerisinde en çok bahsedilen Twitter kullanıcıları.',
-                                'data' => $tweet_data['aggs']['hit_mentions']['hits']['buckets'],
-                                'type' => 'data.twitterMentions'
-                            ];
-                        }
-
-                        $stats['twitter']['mentions'] = @$tweet_data['aggs']['mentions']['doc_count'];
-                        $stats['twitter']['hashtags'] = @$tweet_data['aggs']['hashtags']['doc_count'];
-                        $stats['twitter']['unique_users'] = @$tweet_data['aggs']['unique_users']['value'];
-                        $stats['twitter']['verified_users'] = @$tweet_data['aggs']['verified_users']['doc_count'];
-                        $stats['twitter']['followers'] = @$tweet_data['aggs']['followers']['value'];
-                        $stats['twitter']['reach'] = @$tweet_data['aggs']['reach']['sum_other_doc_count'];
-
-                        $stats['hits'] = $stats['hits'] + $tweet_data['aggs']['total']['value'];
-                        $stats['counts']['twitter_tweet'] = $tweet_data['aggs']['total']['value'];
                     }
                 break;
                 case 'instagram':
@@ -393,18 +415,21 @@ class ReportJob implements ShouldQueue
 
                         $instagram_data = SearchController::instagram($search, $instagram_q, true);
 
-                        $_histogram = $this->histogram('Instagram', $instagram_data['aggs']); if ($_histogram) $histogram[] = $_histogram;
-                        $_sentiment = $this->sentiment('Instagram', $instagram_data['aggs']); if ($_sentiment) $sentiment[] = $_sentiment;
-                        $_consumer = $this->consumer('Instagram', $instagram_data['aggs']); if ($_consumer) $consumer[] = $_consumer;
-                        $_category = $instagram_data['aggs']['category']['buckets']; if ($_category) $category[] = $_category;
-                        $_hashtag = $instagram_data['aggs']['hashtag']['hits']['buckets']; if ($_hashtag) $hashtag['instagram'] = $_hashtag;
+                        if (count($instagram_data['data']))
+                        {
+                            $_histogram = $this->histogram('Instagram', $instagram_data['aggs']); if ($_histogram) $histogram[] = $_histogram;
+                            $_sentiment = $this->sentiment('Instagram', $instagram_data['aggs']); if ($_sentiment) $sentiment[] = $_sentiment;
+                            $_consumer = $this->consumer('Instagram', $instagram_data['aggs']); if ($_consumer) $consumer[] = $_consumer;
+                            $_category = $instagram_data['aggs']['category']['buckets']; if ($_category) $category[] = $_category;
+                            $_hashtag = $instagram_data['aggs']['hashtag']['hits']['buckets']; if ($_hashtag) $hashtag['instagram'] = $_hashtag;
 
-                        $stats['instagram']['mentions'] = @$instagram_data['aggs']['mentions']['doc_count'];
-                        $stats['instagram']['hashtags'] = @$instagram_data['aggs']['hashtags']['doc_count'];
-                        $stats['instagram']['unique_users'] = @$instagram_data['aggs']['unique_users']['value'];
+                            $stats['instagram']['mentions'] = @$instagram_data['aggs']['mentions']['doc_count'];
+                            $stats['instagram']['hashtags'] = @$instagram_data['aggs']['hashtags']['doc_count'];
+                            $stats['instagram']['unique_users'] = @$instagram_data['aggs']['unique_users']['value'];
 
-                        $stats['hits'] = $stats['hits'] + $instagram_data['aggs']['total']['value'];
-                        $stats['counts']['instagram_media'] = $instagram_data['aggs']['total']['value'];
+                            $stats['hits'] = $stats['hits'] + $instagram_data['aggs']['total']['value'];
+                            $stats['counts']['instagram_media'] = $instagram_data['aggs']['total']['value'];
+                        }
                     }
                 break;
                 case 'sozluk':
@@ -464,74 +489,74 @@ class ReportJob implements ShouldQueue
 
                         $sozluk_data = SearchController::sozluk($search, $sozluk_q, true);
 
-                        $_histogram = $this->histogram('Sözlük', $sozluk_data['aggs']); if ($_histogram) $histogram[] = $_histogram;
-                        $_sentiment = $this->sentiment('Sözlük', $sozluk_data['aggs']); if ($_sentiment) $sentiment[] = $_sentiment;
-                        $_consumer = $this->consumer('Sözlük', $sozluk_data['aggs']); if ($_consumer) $consumer[] = $_consumer;
-                        $_gender = $sozluk_data['aggs']['gender']; if ($_gender) $gender['sozluk']['gender'] = $_gender;
-                        $_category = $sozluk_data['aggs']['category']['buckets']; if ($_category) $category[] = $_category;
-
-                        $stats['sozluk']['unique_users'] = @$sozluk_data['aggs']['unique_users']['value'];
-                        $stats['sozluk']['unique_topics'] = @$sozluk_data['aggs']['unique_topics']['value'];
-                        $stats['sozluk']['unique_sites'] = @$sozluk_data['aggs']['unique_sites']['value'];
-
-                        if (count($sozluk_data['aggs']['hit_sites']['buckets']))
-                        {
-                            $_items = array_map(function($item) {
-                                return [
-                                    'hit' => $item['doc_count'],
-                                    'name' => @SozlukCrawler::where('id', $item['key'])->value('name')
-                                ];
-                            }, $sozluk_data['aggs']['hit_sites']['buckets']);
-
-                            $raw_datas[] = [
-                                'title' => 'Sözlükler',
-                                'subtitle' => 'Konu hakkında entry girilen sözlükler.',
-                                'data' => $_items,
-                                'type' => 'data.sozlukSites'
-                            ];
-                        }
-
-                        if (count($sozluk_data['aggs']['hit_topics']['buckets']))
-                        {
-                            $_items = array_map(function($item) {
-                                return [
-                                    'hit' => $item['doc_count'],
-                                    'site' => @SozlukCrawler::where('id', $item['properties']['hits']['hits'][0]['_source']['site_id'])->value('name'),
-                                    'title' => $item['properties']['hits']['hits'][0]['_source']['title']
-                                ];
-                            }, $sozluk_data['aggs']['hit_topics']['buckets']);
-
-                            $raw_datas[] = [
-                                'title' => 'Sözlük Başlıkları',
-                                'subtitle' => 'Konu hakkında entry girilen sözlük başlıkları.',
-                                'data' => $_items,
-                                'type' => 'data.sozlukTopics'
-                            ];
-                        }
-
-                        if (count($sozluk_data['aggs']['hit_users']['buckets']))
-                        {
-                            $_items = array_map(function($item) {
-                                return [
-                                    'hit' => $item['doc_count'],
-                                    'site' => @SozlukCrawler::where('id', $item['properties']['hits']['hits'][0]['_source']['site_id'])->value('name'),
-                                    'name' => $item['key']
-                                ];
-                            }, $sozluk_data['aggs']['hit_users']['buckets']);
-
-                            $raw_datas[] = [
-                                'title' => 'Sözlük Yazarları',
-                                'subtitle' => 'Konu hakkında en çok entry giren sözlük yazarları.',
-                                'data' => $_items,
-                                'type' => 'data.sozlukUsers'
-                            ];
-                        }
-
-                        $stats['hits'] = $stats['hits'] + $sozluk_data['aggs']['total']['value'];
-                        $stats['counts']['sozluk_entry'] = $sozluk_data['aggs']['total']['value'];
-
                         if (count($sozluk_data['data']))
                         {
+                            $_histogram = $this->histogram('Sözlük', $sozluk_data['aggs']); if ($_histogram) $histogram[] = $_histogram;
+                            $_sentiment = $this->sentiment('Sözlük', $sozluk_data['aggs']); if ($_sentiment) $sentiment[] = $_sentiment;
+                            $_consumer = $this->consumer('Sözlük', $sozluk_data['aggs']); if ($_consumer) $consumer[] = $_consumer;
+                            $_gender = $sozluk_data['aggs']['gender']; if ($_gender) $gender['sozluk']['gender'] = $_gender;
+                            $_category = $sozluk_data['aggs']['category']['buckets']; if ($_category) $category[] = $_category;
+
+                            $stats['sozluk']['unique_users'] = @$sozluk_data['aggs']['unique_users']['value'];
+                            $stats['sozluk']['unique_topics'] = @$sozluk_data['aggs']['unique_topics']['value'];
+                            $stats['sozluk']['unique_sites'] = @$sozluk_data['aggs']['unique_sites']['value'];
+
+                            if (count($sozluk_data['aggs']['hit_sites']['buckets']))
+                            {
+                                $_items = array_map(function($item) {
+                                    return [
+                                        'hit' => $item['doc_count'],
+                                        'name' => @SozlukCrawler::where('id', $item['key'])->value('name')
+                                    ];
+                                }, $sozluk_data['aggs']['hit_sites']['buckets']);
+
+                                $raw_datas[] = [
+                                    'title' => 'Sözlükler',
+                                    'subtitle' => 'Konu hakkında entry girilen sözlükler.',
+                                    'data' => $_items,
+                                    'type' => 'data.sozlukSites'
+                                ];
+                            }
+
+                            if (count($sozluk_data['aggs']['hit_topics']['buckets']))
+                            {
+                                $_items = array_map(function($item) {
+                                    return [
+                                        'hit' => $item['doc_count'],
+                                        'site' => @SozlukCrawler::where('id', $item['properties']['hits']['hits'][0]['_source']['site_id'])->value('name'),
+                                        'title' => $item['properties']['hits']['hits'][0]['_source']['title']
+                                    ];
+                                }, $sozluk_data['aggs']['hit_topics']['buckets']);
+
+                                $raw_datas[] = [
+                                    'title' => 'Sözlük Başlıkları',
+                                    'subtitle' => 'Konu hakkında entry girilen sözlük başlıkları.',
+                                    'data' => $_items,
+                                    'type' => 'data.sozlukTopics'
+                                ];
+                            }
+
+                            if (count($sozluk_data['aggs']['hit_users']['buckets']))
+                            {
+                                $_items = array_map(function($item) {
+                                    return [
+                                        'hit' => $item['doc_count'],
+                                        'site' => @SozlukCrawler::where('id', $item['properties']['hits']['hits'][0]['_source']['site_id'])->value('name'),
+                                        'name' => $item['key']
+                                    ];
+                                }, $sozluk_data['aggs']['hit_users']['buckets']);
+
+                                $raw_datas[] = [
+                                    'title' => 'Sözlük Yazarları',
+                                    'subtitle' => 'Konu hakkında en çok entry giren sözlük yazarları.',
+                                    'data' => $_items,
+                                    'type' => 'data.sozlukUsers'
+                                ];
+                            }
+
+                            $stats['hits'] = $stats['hits'] + $sozluk_data['aggs']['total']['value'];
+                            $stats['counts']['sozluk_entry'] = $sozluk_data['aggs']['total']['value'];
+
                             foreach ($sozluk_data['data'] as $item)
                             {
                                 $first_datas[$item['_type']][] = $item['_source'];
@@ -568,40 +593,40 @@ class ReportJob implements ShouldQueue
 
                         $news_data = SearchController::news($search, $news_q, true);
 
-                        $_histogram = $this->histogram('Haber', $news_data['aggs']); if ($_histogram) $histogram[] = $_histogram;
-                        $_sentiment = $this->sentiment('Haber', $news_data['aggs']); if ($_sentiment) $sentiment[] = $_sentiment;
-                        $_category = $news_data['aggs']['category']['buckets']; if ($_category) $category[] = $_category;
-
-                        if (count(@$news_data['aggs']['local_press']))
-                        {
-                            $local_press = $news_data['aggs']['local_press']['buckets'];
-                        }
-
-                        if (count($news_data['aggs']['hit_sites']['buckets']))
-                        {
-                            $_items = array_map(function($item) {
-                                return [
-                                    'hit' => $item['doc_count'],
-                                    'name' => @MediaCrawler::where('id', $item['key'])->value('name')
-                                ];
-                            }, $news_data['aggs']['hit_sites']['buckets']);
-
-                            $raw_datas[] = [
-                                'title' => 'Haber',
-                                'subtitle' => 'Konu hakkında en çok haber yazan haber siteleri.',
-                                'data' => $_items,
-                                'type' => 'data.newsSites'
-                            ];
-                        }
-
-                        $stats['news']['unique_sites'] = @$news_data['aggs']['unique_sites']['value'];
-                        $stats['news']['local_states'] = @$news_data['aggs']['local_states']['value'];
-
-                        $stats['hits'] = $stats['hits'] + $news_data['aggs']['total']['value'];
-                        $stats['counts']['media_article'] = $news_data['aggs']['total']['value'];
-
                         if (count($news_data['data']))
                         {
+                            $_histogram = $this->histogram('Haber', $news_data['aggs']); if ($_histogram) $histogram[] = $_histogram;
+                            $_sentiment = $this->sentiment('Haber', $news_data['aggs']); if ($_sentiment) $sentiment[] = $_sentiment;
+                            $_category = $news_data['aggs']['category']['buckets']; if ($_category) $category[] = $_category;
+
+                            if (count(@$news_data['aggs']['local_press']))
+                            {
+                                $local_press = $news_data['aggs']['local_press']['buckets'];
+                            }
+
+                            if (count($news_data['aggs']['hit_sites']['buckets']))
+                            {
+                                $_items = array_map(function($item) {
+                                    return [
+                                        'hit' => $item['doc_count'],
+                                        'name' => @MediaCrawler::where('id', $item['key'])->value('name')
+                                    ];
+                                }, $news_data['aggs']['hit_sites']['buckets']);
+
+                                $raw_datas[] = [
+                                    'title' => 'Haber',
+                                    'subtitle' => 'Konu hakkında en çok haber yazan haber siteleri.',
+                                    'data' => $_items,
+                                    'type' => 'data.newsSites'
+                                ];
+                            }
+
+                            $stats['news']['unique_sites'] = @$news_data['aggs']['unique_sites']['value'];
+                            $stats['news']['local_states'] = @$news_data['aggs']['local_states']['value'];
+
+                            $stats['hits'] = $stats['hits'] + $news_data['aggs']['total']['value'];
+                            $stats['counts']['media_article'] = $news_data['aggs']['total']['value'];
+
                             foreach ($news_data['data'] as $item)
                             {
                                 $first_datas[$item['_type']][] = $item['_source'];
@@ -631,31 +656,34 @@ class ReportJob implements ShouldQueue
 
                         $blog_data = SearchController::blog($search, $blog_q, true);
 
-                        $_histogram = $this->histogram('Blog', $blog_data['aggs']); if ($_histogram) $histogram[] = $_histogram;
-                        $_sentiment = $this->sentiment('Blog', $blog_data['aggs']); if ($_sentiment) $sentiment[] = $_sentiment;
-                        $_category = $blog_data['aggs']['category']['buckets']; if ($_category) $category[] = $_category;
-
-                        if (count($blog_data['aggs']['hit_sites']['buckets']))
+                        if (count($blog_data['data']))
                         {
-                            $_items = array_map(function($item) {
-                                return [
-                                    'hit' => $item['doc_count'],
-                                    'name' => @BlogCrawler::where('id', $item['key'])->value('name')
+                            $_histogram = $this->histogram('Blog', $blog_data['aggs']); if ($_histogram) $histogram[] = $_histogram;
+                            $_sentiment = $this->sentiment('Blog', $blog_data['aggs']); if ($_sentiment) $sentiment[] = $_sentiment;
+                            $_category = $blog_data['aggs']['category']['buckets']; if ($_category) $category[] = $_category;
+
+                            if (count($blog_data['aggs']['hit_sites']['buckets']))
+                            {
+                                $_items = array_map(function($item) {
+                                    return [
+                                        'hit' => $item['doc_count'],
+                                        'name' => @BlogCrawler::where('id', $item['key'])->value('name')
+                                    ];
+                                }, $blog_data['aggs']['hit_sites']['buckets']);
+
+                                $raw_datas[] = [
+                                    'title' => 'Blog/Forum',
+                                    'subtitle' => 'Konu hakkında en çok içerik girilen blog/forum siteleri.',
+                                    'data' => $_items,
+                                    'type' => 'data.blogSites'
                                 ];
-                            }, $blog_data['aggs']['hit_sites']['buckets']);
+                            }
 
-                            $raw_datas[] = [
-                                'title' => 'Blog/Forum',
-                                'subtitle' => 'Konu hakkında en çok içerik girilen blog/forum siteleri.',
-                                'data' => $_items,
-                                'type' => 'data.blogSites'
-                            ];
+                            $stats['blog']['unique_sites'] = @$blog_data['aggs']['unique_sites']['value'];
+
+                            $stats['hits'] = $stats['hits'] + $blog_data['aggs']['total']['value'];
+                            $stats['counts']['blog_document'] = $blog_data['aggs']['total']['value'];
                         }
-
-                        $stats['blog']['unique_sites'] = @$blog_data['aggs']['unique_sites']['value'];
-
-                        $stats['hits'] = $stats['hits'] + $blog_data['aggs']['total']['value'];
-                        $stats['counts']['blog_document'] = $blog_data['aggs']['total']['value'];
                     }
                 break;
                 case 'youtube_video':
@@ -690,28 +718,31 @@ class ReportJob implements ShouldQueue
 
                         $youtube_video_data = SearchController::youtube_video($search, $youtube_video_q, true);
 
-                        $_histogram = $this->histogram('YouTube Video', $youtube_video_data['aggs']); if ($_histogram) $histogram[] = $_histogram;
-                        $_sentiment = $this->sentiment('YouTube Video', $youtube_video_data['aggs']); if ($_sentiment) $sentiment[] = $_sentiment;
-                        $_consumer = $this->consumer('YouTube Video', $youtube_video_data['aggs']); if ($_consumer) $consumer[] = $_consumer;
-                        $_gender = $youtube_video_data['aggs']['gender']; if ($_gender) $gender['youtube_video']['gender'] = $_gender;
-                        $_category = $youtube_video_data['aggs']['category']['buckets']; if ($_category) $category[] = $_category;
-                        $_hashtag = $youtube_video_data['aggs']['hashtag']['hits']['buckets']; if ($_hashtag) $hashtag['youtube'] = $_hashtag;
-
-                        if (count($youtube_video_data['aggs']['hit_users']['buckets']))
+                        if (count($youtube_video_data['data']))
                         {
-                            $raw_datas[] = [
-                                'title' => 'YouTube Kullanıcıları',
-                                'subtitle' => 'Konu hakkında en çok video yükleyen YouTube kullanıcıları.',
-                                'data' => $youtube_video_data['aggs']['hit_users']['buckets'],
-                                'type' => 'data.youtubeUsers'
-                            ];
+                            $_histogram = $this->histogram('YouTube Video', $youtube_video_data['aggs']); if ($_histogram) $histogram[] = $_histogram;
+                            $_sentiment = $this->sentiment('YouTube Video', $youtube_video_data['aggs']); if ($_sentiment) $sentiment[] = $_sentiment;
+                            $_consumer = $this->consumer('YouTube Video', $youtube_video_data['aggs']); if ($_consumer) $consumer[] = $_consumer;
+                            $_gender = $youtube_video_data['aggs']['gender']; if ($_gender) $gender['youtube_video']['gender'] = $_gender;
+                            $_category = $youtube_video_data['aggs']['category']['buckets']; if ($_category) $category[] = $_category;
+                            $_hashtag = $youtube_video_data['aggs']['hashtag']['hits']['buckets']; if ($_hashtag) $hashtag['youtube'] = $_hashtag;
+
+                            if (count($youtube_video_data['aggs']['hit_users']['buckets']))
+                            {
+                                $raw_datas[] = [
+                                    'title' => 'YouTube Kullanıcıları',
+                                    'subtitle' => 'Konu hakkında en çok video yükleyen YouTube kullanıcıları.',
+                                    'data' => $youtube_video_data['aggs']['hit_users']['buckets'],
+                                    'type' => 'data.youtubeUsers'
+                                ];
+                            }
+
+                            $stats['youtube_video']['unique_users'] = @$youtube_video_data['aggs']['unique_users']['value'];
+                            $stats['youtube_video']['hashtags'] = @$youtube_video_data['aggs']['hashtags']['doc_count'];
+
+                            $stats['hits'] = $stats['hits'] + $youtube_video_data['aggs']['total']['value'];
+                            $stats['counts']['youtube_video'] = $youtube_video_data['aggs']['total']['value'];
                         }
-
-                        $stats['youtube_video']['unique_users'] = @$youtube_video_data['aggs']['unique_users']['value'];
-                        $stats['youtube_video']['hashtags'] = @$youtube_video_data['aggs']['hashtags']['doc_count'];
-
-                        $stats['hits'] = $stats['hits'] + $youtube_video_data['aggs']['total']['value'];
-                        $stats['counts']['youtube_video'] = $youtube_video_data['aggs']['total']['value'];
                     }
                 break;
                 case 'youtube_comment':
@@ -745,27 +776,30 @@ class ReportJob implements ShouldQueue
 
                         $youtube_comment_data = SearchController::youtube_comment($search, $youtube_comment_q, true);
 
-                        $_histogram = $this->histogram('YouTube Yorum', $youtube_comment_data['aggs']); if ($_histogram) $histogram[] = $_histogram;
-                        $_sentiment = $this->sentiment('YouTube Yorum', $youtube_comment_data['aggs']); if ($_sentiment) $sentiment[] = $_sentiment;
-                        $_consumer = $this->consumer('YouTube Yorum', $youtube_comment_data['aggs']); if ($_consumer) $consumer[] = $_consumer;
-                        $_gender = $youtube_comment_data['aggs']['gender']; if ($_gender) $gender['youtube_comment']['gender'] = $_gender;
-                        $_category = $youtube_comment_data['aggs']['category']['buckets']; if ($_category) $category[] = $_category;
-
-                        if (count($youtube_comment_data['aggs']['hit_users']['buckets']))
+                        if (count($youtube_comment_data['data']))
                         {
-                            $raw_datas[] = [
-                                'title' => 'YouTube Kullanıcıları',
-                                'subtitle' => 'Konu hakkında en çok yorum yazan YouTube kullanıcıları.',
-                                'data' => $youtube_comment_data['aggs']['hit_users']['buckets'],
-                                'type' => 'data.youtubeComments'
-                            ];
+                            $_histogram = $this->histogram('YouTube Yorum', $youtube_comment_data['aggs']); if ($_histogram) $histogram[] = $_histogram;
+                            $_sentiment = $this->sentiment('YouTube Yorum', $youtube_comment_data['aggs']); if ($_sentiment) $sentiment[] = $_sentiment;
+                            $_consumer = $this->consumer('YouTube Yorum', $youtube_comment_data['aggs']); if ($_consumer) $consumer[] = $_consumer;
+                            $_gender = $youtube_comment_data['aggs']['gender']; if ($_gender) $gender['youtube_comment']['gender'] = $_gender;
+                            $_category = $youtube_comment_data['aggs']['category']['buckets']; if ($_category) $category[] = $_category;
+
+                            if (count($youtube_comment_data['aggs']['hit_users']['buckets']))
+                            {
+                                $raw_datas[] = [
+                                    'title' => 'YouTube Kullanıcıları',
+                                    'subtitle' => 'Konu hakkında en çok yorum yazan YouTube kullanıcıları.',
+                                    'data' => $youtube_comment_data['aggs']['hit_users']['buckets'],
+                                    'type' => 'data.youtubeComments'
+                                ];
+                            }
+
+                            $stats['youtube_comment']['unique_users'] = @$youtube_comment_data['aggs']['unique_users']['value'];
+                            $stats['youtube_comment']['unique_videos'] = @$youtube_comment_data['aggs']['unique_videos']['value'];
+
+                            $stats['hits'] = $stats['hits'] + $youtube_comment_data['aggs']['total']['value'];
+                            $stats['counts']['youtube_comment'] = $youtube_comment_data['aggs']['total']['value'];
                         }
-
-                        $stats['youtube_comment']['unique_users'] = @$youtube_comment_data['aggs']['unique_users']['value'];
-                        $stats['youtube_comment']['unique_videos'] = @$youtube_comment_data['aggs']['unique_videos']['value'];
-
-                        $stats['hits'] = $stats['hits'] + $youtube_comment_data['aggs']['total']['value'];
-                        $stats['counts']['youtube_comment'] = $youtube_comment_data['aggs']['total']['value'];
                     }
                 break;
                 case 'shopping':
@@ -810,51 +844,54 @@ class ReportJob implements ShouldQueue
 
                         $shopping_data = SearchController::shopping($search, $shopping_q, true);
 
-                        $_histogram = $this->histogram('E-ticaret', $shopping_data['aggs']); if ($_histogram) $histogram[] = $_histogram;
-                        $_sentiment = $this->sentiment('E-ticaret', $shopping_data['aggs']); if ($_sentiment) $sentiment[] = $_sentiment;
-                        $_gender = $shopping_data['aggs']['gender']; if ($_gender) $gender['shopping']['gender'] = $_gender;
-                        $_category = $shopping_data['aggs']['category']['buckets']; if ($_category) $category[] = $_category;
-
-                        if (count($shopping_data['aggs']['hit_sites']['buckets']))
+                        if (count($shopping_data['data']))
                         {
-                            $_items = array_map(function($item) {
-                                return [
-                                    'hit' => $item['doc_count'],
-                                    'name' => @ShoppingCrawler::where('id', $item['key'])->value('name')
+                            $_histogram = $this->histogram('E-ticaret', $shopping_data['aggs']); if ($_histogram) $histogram[] = $_histogram;
+                            $_sentiment = $this->sentiment('E-ticaret', $shopping_data['aggs']); if ($_sentiment) $sentiment[] = $_sentiment;
+                            $_gender = $shopping_data['aggs']['gender']; if ($_gender) $gender['shopping']['gender'] = $_gender;
+                            $_category = $shopping_data['aggs']['category']['buckets']; if ($_category) $category[] = $_category;
+
+                            if (count($shopping_data['aggs']['hit_sites']['buckets']))
+                            {
+                                $_items = array_map(function($item) {
+                                    return [
+                                        'hit' => $item['doc_count'],
+                                        'name' => @ShoppingCrawler::where('id', $item['key'])->value('name')
+                                    ];
+                                }, $shopping_data['aggs']['hit_sites']['buckets']);
+
+                                $raw_datas[] = [
+                                    'title' => 'E-ticaret',
+                                    'subtitle' => 'Konu hakkında ürün girilen e-ticaret siteleri.',
+                                    'data' => $_items,
+                                    'type' => 'data.shoppingSites'
                                 ];
-                            }, $shopping_data['aggs']['hit_sites']['buckets']);
+                            }
 
-                            $raw_datas[] = [
-                                'title' => 'E-ticaret',
-                                'subtitle' => 'Konu hakkında ürün girilen e-ticaret siteleri.',
-                                'data' => $_items,
-                                'type' => 'data.shoppingSites'
-                            ];
-                        }
+                            if (count($shopping_data['aggs']['hit_users']['buckets']))
+                            {
+                                $_items = array_map(function($item) {
+                                    return [
+                                        'hit' => $item['doc_count'],
+                                        'site' => @ShoppingCrawler::where('id', $item['properties']['hits']['hits'][0]['_source']['site_id'])->value('name'),
+                                        'name' => $item['key']
+                                    ];
+                                }, $shopping_data['aggs']['hit_users']['buckets']);
 
-                        if (count($shopping_data['aggs']['hit_users']['buckets']))
-                        {
-                            $_items = array_map(function($item) {
-                                return [
-                                    'hit' => $item['doc_count'],
-                                    'site' => @ShoppingCrawler::where('id', $item['properties']['hits']['hits'][0]['_source']['site_id'])->value('name'),
-                                    'name' => $item['key']
+                                $raw_datas[] = [
+                                    'title' => 'E-ticaret, Satıcılar',
+                                    'subtitle' => 'Konu hakkında en çok ürün giren e-ticaret satıcıları.',
+                                    'data' => $_items,
+                                    'type' => 'data.shoppingUsers'
                                 ];
-                            }, $shopping_data['aggs']['hit_users']['buckets']);
+                            }
 
-                            $raw_datas[] = [
-                                'title' => 'E-ticaret, Satıcılar',
-                                'subtitle' => 'Konu hakkında en çok ürün giren e-ticaret satıcıları.',
-                                'data' => $_items,
-                                'type' => 'data.shoppingUsers'
-                            ];
+                            $stats['shopping']['unique_sites'] = @$shopping_data['aggs']['unique_sites']['value'];
+                            $stats['shopping']['unique_users'] = @$shopping_data['aggs']['unique_users']['value'];
+
+                            $stats['hits'] = $stats['hits'] + $shopping_data['aggs']['total']['value'];
+                            $stats['counts']['shopping_product'] = $shopping_data['aggs']['total']['value'];
                         }
-
-                        $stats['shopping']['unique_sites'] = @$shopping_data['aggs']['unique_sites']['value'];
-                        $stats['shopping']['unique_users'] = @$shopping_data['aggs']['unique_users']['value'];
-
-                        $stats['hits'] = $stats['hits'] + $shopping_data['aggs']['total']['value'];
-                        $stats['counts']['shopping_product'] = $shopping_data['aggs']['total']['value'];
                     }
                 break;
             }
@@ -873,7 +910,7 @@ class ReportJob implements ShouldQueue
                 'type' => 'data.stats'
             ];
 
-            if ($this->alarm->interval >= 120)
+            if ($interval >= 120)
             {
                 $pages[] = [
                     'title' => 'Yoğunluk',
@@ -995,14 +1032,21 @@ class ReportJob implements ShouldQueue
 
             /* --------- */
 
-            $report = new Report;
-            $report->name = implode(' ', [ $search->name, 'Son', intval($this->alarm->interval / 60), 'Saat' ]);
-            $report->date_1 = date('Y-m-d');
-            $report->organisation_id = $organisation->id;
-            $report->user_id = config('app.user_id_support');
-            $report->key = time().$organisation->author->id.$organisation->id.rand(1000, 1000000);
-            $report->password = rand(1000, 9999);
-            $report->save();
+            if ($this->report)
+            {
+                $report = $this->report;
+            }
+            else
+            {
+                $report = new Report;
+                $report->name = implode(' ', [ $search->name, 'Son', intval($interval / 60), 'Saat' ]);
+                $report->date_1 = date('Y-m-d');
+                $report->organisation_id = $organisation->id;
+                $report->user_id = config('app.user_id_support');
+                $report->key = time().$organisation->author->id.$organisation->id.rand(1000, 1000000);
+                $report->password = rand(1000, 9999);
+                $report->save();
+            }
 
             $insert = new ReportPage;
             $insert->report_id = $report->id;
@@ -1100,13 +1144,16 @@ class ReportJob implements ShouldQueue
             $insert->type = 'page.title';
             $insert->save();
 
-            if ($report->status)
+            if ($this->report && $this->report->status)
             {
-                $sms = SMS::send('GSM doğrulama kodunuz: '.$code, [ str_replace([ ' ', '(', ')' ], '', $request->gsm) ]);
+                $link = Link::generate(route('report.view', $report->key));
+
+                $sms = SMS::send('Raporunuz hazır! '.$link, [ str_replace([ ' ', '(', ')' ], '', $report->gsm) ], false);
                 $report->status = 'ok';
                 $report->save();
             }
-            else
+
+            if ($this->alarm)
             {
                 $users = User::whereIn('id', $this->alarm->user_ids)->get();
 
@@ -1125,6 +1172,21 @@ class ReportJob implements ShouldQueue
                         );
                     }
                 }
+            }
+        }
+        else
+        {
+            if ($this->report && $this->report->status)
+            {
+                $report = $this->report;
+
+                if ($report->status)
+                {
+                    $sms = SMS::send('Girdiğiniz konu hakkında son 1 hafta içerisinde hiç sonuç bulunamadı.', [ str_replace([ ' ', '(', ')' ], '', $report->gsm) ]);
+                }
+
+                $report->status = 'failed';
+                $report->save();
             }
         }
     }

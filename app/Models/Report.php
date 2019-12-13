@@ -26,6 +26,12 @@ class Report extends Model
         return $this->hasOne('App\Models\User\User', 'id', 'user_id');
     }
 
+    # organizasyon
+    public function organisation()
+    {
+        return $this->hasOne('App\Models\Organisation\Organisation', 'id', 'organisation_id');
+    }
+
     # durum
     public function status()
     {

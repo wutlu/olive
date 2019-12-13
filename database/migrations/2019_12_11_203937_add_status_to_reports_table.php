@@ -14,7 +14,7 @@ class AddStatusToReportsTable extends Migration
     public function up()
     {
         Schema::table('reports', function (Blueprint $table) {
-            $table->enum('status', [ 'creating', 'sending', 'ok' ])->nullable()->default(null);
+            $table->enum('status', [ 'creating', 'sending', 'ok', 'failed' ])->nullable()->default(null);
             $table->string('gsm')->nullable()->default(null)->index();
             $table->string('subject')->nullable()->default(null);
         });

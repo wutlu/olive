@@ -26,7 +26,7 @@ class CreateAlarmsTable extends Migration
             $table->string('start_time')->default('00:00');
             $table->string('end_time')->default('00:00');
 
-            $table->unsignedSmallInteger('interval')->default(1);
+            $table->unsignedInteger('interval')->default(1);
 
             $table->json('modules');
 
