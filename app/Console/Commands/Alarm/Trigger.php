@@ -69,7 +69,7 @@ class Trigger extends Command
             {
                 if ($alarm->report)
                 {
-                    ReportJob::dispatch($alarm->search, $alarm->interval)->onQueue('process');
+                    ReportJob::dispatch($alarm)->onQueue('process');
 
                     $this->info('Rapor İstenildi!');
                 }
@@ -80,8 +80,6 @@ class Trigger extends Command
 
                 if (count($es_data['data']))
                 {
-                    $this->info(count($es_data['data']));
-
                     $stats[] = '| '.implode(' | ', [ '_Platform_', '_Mention_', '_Hashtag_', '_Tekil_', '_Tahmini Ulaşılan_' ]).' |';
                     $stats[] = '|---:|---:|---:|---:|---:|---:|';
                     foreach ($es_data['stats'] as $key => $platform)
@@ -121,11 +119,12 @@ class Trigger extends Command
                             ]
                         );
                     }
-/*
+
                     $alarm->update([
                         'sended_at' => date('Y-m-d H:i:s'),
                         'hit' => $alarm->hit-1
                     ]);
+
                     Mail::queue(
                         new AlarmMail(
                             [
@@ -136,7 +135,6 @@ class Trigger extends Command
                             ]
                         )
                     );
-*/
                 }
             }
         }

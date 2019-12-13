@@ -8,9 +8,9 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
-use App\Models\SavedSearch;
 use App\Models\Report;
 use App\Models\ReportPage;
+use App\Models\Alarm;
 
 use App\Models\Crawlers\SozlukCrawler;
 use App\Models\Crawlers\ShoppingCrawler;
@@ -21,24 +21,28 @@ use App\Http\Controllers\SearchController;
 
 use Term;
 
+use App\SMS;
+
 use App\Elasticsearch\Document;
 
-class ReportJob// implements ShouldQueue
+use App\Models\User\User;
+
+use App\Notifications\AlarmReportNotification;
+
+class ReportJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private $search;
-    private $interval;
+    private $alarm;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(SavedSearch $search, int $interval)
+    public function __construct(Alarm $alarm)
     {
-        $this->search = $search;
-        $this->interval = $interval;
+        $this->alarm = $alarm;
     }
 
     /**
@@ -48,7 +52,7 @@ class ReportJob// implements ShouldQueue
      */
     public function handle()
     {
-        $search = $this->search;
+        $search = $this->alarm->search;
         $organisation = $search->organisation;
 
         $clean = Term::cleanSearchQuery($search->string);
@@ -64,7 +68,7 @@ class ReportJob// implements ShouldQueue
                             'range' => [
                                 'created_at' => [
                                     'format' => 'YYYY-MM-dd HH',
-                                    'gte' => date('Y-m-d H', strtotime('-'.$this->interval.' minutes'))
+                                    'gte' => date('Y-m-d H', strtotime('-'.$this->alarm->interval.' minutes'))
                                 ]
                             ]
                         ]
@@ -162,6 +166,9 @@ class ReportJob// implements ShouldQueue
 
         $pages = [];
         $sort = 1;
+
+        $starttime = explode(' ', microtime());
+        $starttime = $starttime[1] + $starttime[0];
 
         foreach ($search->modules as $module)
         {
@@ -853,6 +860,9 @@ class ReportJob// implements ShouldQueue
             }
         }
 
+        $mtime = explode(' ', microtime());
+        $totaltime = $mtime[0] + $mtime[1] - $starttime;
+
         if ($stats['hits'])
         {
             $pages[] = [
@@ -863,7 +873,7 @@ class ReportJob// implements ShouldQueue
                 'type' => 'data.stats'
             ];
 
-            if ($this->interval >= 120)
+            if ($this->alarm->interval >= 120)
             {
                 $pages[] = [
                     'title' => 'Yoğunluk',
@@ -925,21 +935,27 @@ class ReportJob// implements ShouldQueue
                 }
             }
 
-            $pages[] = [
-                'title' => 'Duygu Grafiği',
-                'subtitle' => 'Paylaşımların duygusal grafiği.',
-                'sort' => $sort++,
-                'data' => [ 'chart' => [ 'height' => 400, 'type' => 'line', 'shadow' => [ 'enabled' => true, 'color' => '#000', 'top' => 18, 'left' => 7, 'blur' => 10, 'opacity' => 1 ], 'toolbar' => [ 'show' => false, 'tools' => [ 'download' => '<i class="material-icons">save<\/i>' ] ] ], 'dataLabels' => [ 'enabled' => true ], 'stroke' => [ 'width' => 4, 'curve' => 'smooth' ], 'series' => $sentiment, 'title' => [ 'text' => 'Grafik', 'align' => 'left' ], 'grid' => [ 'borderColor' => 'transparent', 'row' => [ 'colors' => [ 'transparent', 'transparent' ] ] ], 'markers' => [ 'size' => 4 ], 'xaxis' => [ 'categories' => [ 'Pozitif', 'Nötr', 'Negatif', 'Nefret Söylemi' ] ], 'legend' => [ 'position' => 'top', 'horizontalAlign' => 'right', 'floating' => true, 'offsetY' => -25, 'offsetX' => -5 ] ],
-                'type' => 'data.chart'
-            ];
+            if (count($sentiment))
+            {
+                $pages[] = [
+                    'title' => 'Duygu Grafiği',
+                    'subtitle' => 'Paylaşımların duygusal grafiği.',
+                    'sort' => $sort++,
+                    'data' => [ 'chart' => [ 'height' => 400, 'type' => 'line', 'shadow' => [ 'enabled' => true, 'color' => '#000', 'top' => 18, 'left' => 7, 'blur' => 10, 'opacity' => 1 ], 'toolbar' => [ 'show' => false, 'tools' => [ 'download' => '<i class="material-icons">save<\/i>' ] ] ], 'dataLabels' => [ 'enabled' => true ], 'stroke' => [ 'width' => 4, 'curve' => 'smooth' ], 'series' => $sentiment, 'title' => [ 'text' => 'Grafik', 'align' => 'left' ], 'grid' => [ 'borderColor' => 'transparent', 'row' => [ 'colors' => [ 'transparent', 'transparent' ] ] ], 'markers' => [ 'size' => 4 ], 'xaxis' => [ 'categories' => [ 'Pozitif', 'Nötr', 'Negatif', 'Nefret Söylemi' ] ], 'legend' => [ 'position' => 'top', 'horizontalAlign' => 'right', 'floating' => true, 'offsetY' => -25, 'offsetX' => -5 ] ],
+                    'type' => 'data.chart'
+                ];
+            }
 
-            $pages[] = [
-                'title' => 'Soru, İstek, Şikayet ve Haber Grafiği',
-                'subtitle' => 'Paylaşımların niteliksel grafiği.',
-                'sort' => $sort++,
-                'data' => [ 'chart' => [ 'height' => 400, 'type' => 'line', 'shadow' => [ 'enabled' => true, 'color' => '#000', 'top' => 18, 'left' => 7, 'blur' => 10, 'opacity' => 1 ], 'toolbar' => [ 'show' => false, 'tools' => [ 'download' => '<i class="material-icons">save<\/i>' ] ] ], 'dataLabels' => [ 'enabled' => true ], 'stroke' => [ 'width' => 4, 'curve' => 'smooth' ], 'series' => $consumer, 'title' => [ 'text' => 'Grafik', 'align' => 'left' ], 'grid' => [ 'borderColor' => 'transparent', 'row' => [ 'colors' => [ 'transparent', 'transparent' ] ] ], 'markers' => [ 'size' => 4 ], 'xaxis' => [ 'categories' => [ 'İstek', 'Soru', 'Şikayet', 'Haber' ] ], 'legend' => [ 'position' => 'top', 'horizontalAlign' => 'right', 'floating' => true, 'offsetY' => -25, 'offsetX' => -5 ] ],
-                'type' => 'data.chart'
-            ];
+            if (count($consumer))
+            {
+                $pages[] = [
+                    'title' => 'Soru, İstek, Şikayet ve Haber Grafiği',
+                    'subtitle' => 'Paylaşımların niteliksel grafiği.',
+                    'sort' => $sort++,
+                    'data' => [ 'chart' => [ 'height' => 400, 'type' => 'line', 'shadow' => [ 'enabled' => true, 'color' => '#000', 'top' => 18, 'left' => 7, 'blur' => 10, 'opacity' => 1 ], 'toolbar' => [ 'show' => false, 'tools' => [ 'download' => '<i class="material-icons">save<\/i>' ] ] ], 'dataLabels' => [ 'enabled' => true ], 'stroke' => [ 'width' => 4, 'curve' => 'smooth' ], 'series' => $consumer, 'title' => [ 'text' => 'Grafik', 'align' => 'left' ], 'grid' => [ 'borderColor' => 'transparent', 'row' => [ 'colors' => [ 'transparent', 'transparent' ] ] ], 'markers' => [ 'size' => 4 ], 'xaxis' => [ 'categories' => [ 'İstek', 'Soru', 'Şikayet', 'Haber' ] ], 'legend' => [ 'position' => 'top', 'horizontalAlign' => 'right', 'floating' => true, 'offsetY' => -25, 'offsetX' => -5 ] ],
+                    'type' => 'data.chart'
+                ];
+            }
 
             if (count($gender))
             {
@@ -980,17 +996,18 @@ class ReportJob// implements ShouldQueue
             /* --------- */
 
             $report = new Report;
-            $report->name = implode(' ', [ $search->name, 'Son', intval($this->interval / 60), 'Saat' ]);
+            $report->name = implode(' ', [ $search->name, 'Son', intval($this->alarm->interval / 60), 'Saat' ]);
             $report->date_1 = date('Y-m-d');
             $report->organisation_id = $organisation->id;
             $report->user_id = config('app.user_id_support');
             $report->key = time().$organisation->author->id.$organisation->id.rand(1000, 1000000);
+            $report->password = rand(1000, 9999);
             $report->save();
 
             $insert = new ReportPage;
             $insert->report_id = $report->id;
             $insert->title = 'Otomatik Rapor';
-            $insert->subtitle = 'Bu rapor Olive tarafından otomatik olarak oluşturulmuştur.';
+            $insert->subtitle = 'Bu rapor Olive tarafından '.sprintf('%0.2f', $totaltime).' saniyede otomatik olarak oluşturulmuştur.';
             $insert->sort = 0;
             $insert->type = 'page.title';
             $insert->save();
@@ -1077,11 +1094,38 @@ class ReportJob// implements ShouldQueue
 
             $insert = new ReportPage;
             $insert->report_id = $report->id;
-            $insert->title = 'Teşekkürler';
-            $insert->subtitle = 'Daha fazlası için lütfen Olive\'i ziyaret edin.';
+            $insert->title = 'Daha fazlası için Olive\'i ziyaret edin!';
+            $insert->subtitle = 'Olive ekranlarıyla gündemin olan bitenlerini eş zamanlı takip edebilirsiniz.';
             $insert->sort = $sort++;
             $insert->type = 'page.title';
             $insert->save();
+
+            if ($report->status)
+            {
+                $sms = SMS::send('GSM doğrulama kodunuz: '.$code, [ str_replace([ ' ', '(', ')' ], '', $request->gsm) ]);
+                $report->status = 'ok';
+                $report->save();
+            }
+            else
+            {
+                $users = User::whereIn('id', $this->alarm->user_ids)->get();
+
+                if (count($users))
+                {
+                    foreach ($users as $user)
+                    {
+                        $user->notify(
+                            (
+                                new AlarmReportNotification(
+                                    $this->alarm,
+                                    $user,
+                                    $report
+                                )
+                            )->onQueue('email')
+                        );
+                    }
+                }
+            }
         }
     }
 
