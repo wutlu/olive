@@ -67,12 +67,22 @@ class ReportJob implements ShouldQueue
 
             $interval = Carbon::parse($this->report->date_1)->diffInMinutes($this->report->date_2);
 
+            $range = [
+                'format' => 'YYYY-MM-dd',
+                'gte' => date('Y-m-d', strtotime('-'.$interval.' minutes'))
+            ];
+
             $organisation = $this->report->organisation;
         }
         else
         {
             $search = $this->alarm->search;
             $interval = $this->alarm->interval;
+
+            $range = [
+                'format' => 'YYYY-MM-dd HH',
+                'gte' => date('Y-m-d H', strtotime('-'.$interval.' minutes'))
+            ];
 
             $organisation = $search->organisation;
         }
@@ -88,10 +98,7 @@ class ReportJob implements ShouldQueue
                     'filter' => [
                         [
                             'range' => [
-                                'created_at' => [
-                                    'format' => 'YYYY-MM-dd HH',
-                                    'gte' => date('Y-m-d H', strtotime('-'.$interval.' minutes'))
-                                ]
+                                'created_at' => $range
                             ]
                         ]
                     ],

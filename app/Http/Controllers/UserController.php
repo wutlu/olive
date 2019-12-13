@@ -405,8 +405,8 @@ class UserController extends Controller
             $user->organisation_id = $organisation->id;
             $user->save();
 
-            $subject = 'Deneme hesabınız aktif edildi!';
-            $message = 'Deneme hesabınız 7 gün süreyle aktif edildi. İyi araştırmalar dileriz.';
+            $subject = 'Deneme paketiniz aktif edildi!';
+            $message = 'Deneme paketiniz 7 gün süreyle aktif edildi. İyi araştırmalar dileriz.';
 
             UserActivityUtility::push(
                 $subject,
@@ -851,7 +851,7 @@ class UserController extends Controller
 
             session()->flash('validate', 'ok');
 
-            $text = 'E-posta adresiniz başarılı bir şekilde doğrulandı. İyi araştırmalar dileriz...';
+            $text = 'E-posta adresiniz başarılı bir şekilde doğruladınız. İyi araştırmalar!';
 
             ### [ e-posta doğrulandı ] ###
             $user->addBadge(1);
