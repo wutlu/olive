@@ -165,8 +165,8 @@ class HomeController extends Controller
                 $report = new Report;
                 $report->key = time().rand(1, 10).rand(10, 100).rand(1000, 1000000);
                 $report->name = $request->subject;
-                $report->date_1 = date('d-m-Y', strtotime('-8 days'));
-                $report->date_2 = date('d-m-Y', strtotime('-1 days'));
+                $report->date_1 = date('Y-m-d', strtotime('-8 days'));
+                $report->date_2 = date('Y-m-d', strtotime('-1 days'));
                 $report->organisation_id = $user->organisation_id;
                 $report->user_id = $user->id;
                 $report->password = rand(1000, 9999);
