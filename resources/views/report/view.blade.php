@@ -50,6 +50,13 @@
                             <a href="#" data-trigger="print" disabled class="btn-floating btn-flat no-print">
                                 <i class="material-icons">print</i>
                             </a>
+
+                            <br />
+                            <br />
+                            <br />
+
+                            <small style="width: 600px;" class="grey-text d-table mx-auto">Bu raporda yeralan tüm istatistikler, internette paylaşılan kamuya açık verilerden derlenmiştir.</small>
+                            <small style="width: 600px;" class="grey-text d-table mx-auto">Bu raporun tüm yayın hakları Veri Zone Teknoloji'ye aittir. Yazılı izin alınmadan herkese açık kaynaklarda kısmen veya tamamen alıntı yapılamaz, hiçbir şekilde kopya edilemez, çoğaltılamaz ve yayınlanamaz.</small>
                         </header>
 
                         <img class="logo" alt="Logo" src="{{ asset('img/veri.zone_logo.svg') }}" />
@@ -100,6 +107,10 @@
                                 <a target="_blank" href="https://twitter.com/verizonetek">Twitter @verizonetek</a>
                                 <a target="_blank" href="https://www.linkedin.com/company/verizonetek/">Linkedin @verizonetek</a>
                                 <a target="_blank" href="https://www.instagram.com/verizonetek/">Instagram @verizonetek</a>
+                                <br />
+                                <p class="red-text">Bu rapor Veri Zone Teknoloji; Gizlilik Politikası ve Kullanım Koşulları sözleşmeleri dahilinde üretilmiştir. Bu sözleşmelere aşağıdaki bağlantılardan ulaşabilirsiniz.</p>
+                                <a href="https://veri.zone/gizlilik-politikasi" target="_blank" class="d-block red-text">https://veri.zone/gizlilik-politikasi</a>
+                                <a href="https://veri.zone/kullanim-kosullari" target="_blank" class="d-block red-text">https://veri.zone/kullanim-kosullari</a>
                             </div>
                         </footer>
                     </div>

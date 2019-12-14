@@ -217,7 +217,9 @@
         <a data-tweets="tweet_quotes" data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id, 'type' => 'tweet_quotes' ]) }}" class="collection-item" href="#" data-alias="Tweet">Alıntılar</a>
         <a data-tweets="tweet_retweets" data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id, 'type' => 'tweet_retweets' ]) }}" class="collection-item" href="#" data-alias="Tweet">ReTweetler</a>
         <a data-tweets="tweet_favorites" data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id, 'type' => 'tweet_favorites' ]) }}" class="collection-item" href="#" data-alias="Tweet">En Çok Favlanan</a>
-        <a data-tweets="tweet_deleted" data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id, 'type' => 'tweet_deleted' ]) }}" class="collection-item" href="#" data-alias="Tweet">Ulaşılamayan Etkileşimler</a>
+        @if (@auth()->user()->organisation->demo === false)
+            <a data-tweets="tweet_deleted" data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id, 'type' => 'tweet_deleted' ]) }}" class="collection-item" href="#" data-alias="Tweet">Ulaşılamayan Etkileşimler</a>
+        @endif
 
         <div class="collection-item pb-0">
             <small class="blue-grey-text">Kullanıcı</small>
@@ -231,7 +233,9 @@
         <a data-tweets="user_favorites" data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id, 'type' => 'user_quotes_desc' ]) }}" class="collection-item" href="#" data-alias="Kullanıcı">Alıntı Sayısına Göre Tweetler</a>
         <a data-tweets="user_favorites" data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id, 'type' => 'user_replies_desc' ]) }}" class="collection-item" href="#" data-alias="Kullanıcı">Yanıt Sayısına Göre Tweetler</a>
         <a data-tweets="user_favorites" data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id, 'type' => 'user_retweets_desc' ]) }}" class="collection-item" href="#" data-alias="Kullanıcı">ReTweet Sayısına Göre Tweetler</a>
-        <a data-tweets="user_deleted" data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id, 'type' => 'user_deleted' ]) }}" class="collection-item" href="#" data-alias="Kullanıcı">Ulaşılamayan Tweetler</a>
+        @if (@auth()->user()->organisation->demo === false)
+            <a data-tweets="user_deleted" data-href="{{ route('content.smilar', [ 'es_index' => $es->index, 'es_type' => $es->type, 'es_id' => $es->id, 'type' => 'user_deleted' ]) }}" class="collection-item" href="#" data-alias="Kullanıcı">Ulaşılamayan Tweetler</a>
+        @endif
     </div>
 @endsection
 
