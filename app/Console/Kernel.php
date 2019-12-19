@@ -137,7 +137,7 @@ class Kernel extends ConsoleKernel
              * Kaynak Toplama
              */
             $schedule->command('nohup "media:taker" --type=restart')
-                     ->everyMinute()
+                     ->everyFifteenMinutes()
                      ->timezone(config('app.timezone'));
             $schedule->command('nohup "shopping:taker" --type=restart')
                      ->everyMinute()

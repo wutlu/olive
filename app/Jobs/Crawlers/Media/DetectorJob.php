@@ -68,12 +68,16 @@ class DetectorJob implements ShouldQueue
                     ]
                 ];
 
-                $chunk['body'][] = [
+                $body = [
                     'id' => md5($link),
                     'site_id' => $this->crawler->id,
                     'url' => $link,
                     'status' => 'buffer'
                 ];
+
+                $chunk['body'][] = $body;
+
+                TakerJob::dispatch($body)->onQueue('power-crawler')->delay(now()->addSeconds(30));
             }
 
             BulkInsertJob::dispatch($chunk)->onQueue('elasticsearch');

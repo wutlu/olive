@@ -108,7 +108,7 @@
         <h4 class="mb-2">Hesap Yükseltildi!</h4>
         <p>Ödeme işlemi için Organizasyon sayfasını kullanabilirsiniz!</p>
         <p class="mb-2"> İyi araştırmalar dileriz!</p>
-        <a href="{{ route('settings.organisation') }}" class="btn-flat waves-effect">Organizasyon</a>
+        <a href="{{ route('dashboard') }}" class="btn-flat waves-effect">Ana Sayfa</a>
         <a href="{{ route('search.dashboard') }}" class="btn green waves-effect">Hemen Başla!</a>
     </div>
     <form class="json" method="post" action="{{ route('organisation.create.offer') }}" data-callback="__create" id="offer">
