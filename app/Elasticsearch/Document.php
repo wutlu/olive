@@ -359,7 +359,7 @@ class Document
      *             "must": [
      *                 {
      *                     "match": {
-     *                         "status: "buffer"
+     *                         "status": "buffer"
      *                     }
      *                 }
      *             ]
