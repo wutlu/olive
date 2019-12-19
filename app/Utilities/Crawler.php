@@ -249,7 +249,6 @@ class Crawler
     {
         $data = [];
 
-
         $client_arr = [
             'base_uri' => $site,
             'handler' => HandlerStack::create()
@@ -267,7 +266,7 @@ class Crawler
         try
         {
             $arr = [
-                'timeout' => 10,
+                'timeout' => 5,
                 'connect_timeout' => 5,
                 'headers' => [
                     'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))],
