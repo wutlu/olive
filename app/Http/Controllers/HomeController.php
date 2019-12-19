@@ -456,6 +456,10 @@ class HomeController extends Controller
 
         $news = json_decode(RedisCache::get(implode(':', [ config('system.db.alias'), 'trends', 'news' ])));
 
+        $discount_with_year = Option::where('key', 'formal.discount_with_year')->value('value');
+
+        $user = auth()->user();
+
         return view(
             'dashboard',
             compact(
@@ -463,7 +467,9 @@ class HomeController extends Controller
                 'modals',
                 'photo',
                 'threads',
-                'news'
+                'news',
+                'discount_with_year',
+                'user'
             )
         );
     }

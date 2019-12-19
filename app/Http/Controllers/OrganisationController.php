@@ -80,9 +80,11 @@ class OrganisationController extends Controller
             'invite',
             'update',
             'paymentStatus',
-            'invoiceCancel',
-            'offer',
-            'offerCreate',
+            'invoiceCancel'
+        ]);
+
+        $this->middleware('organisation:have_not')->only([
+            'offer'
         ]);
 
         /**
@@ -176,14 +178,26 @@ class OrganisationController extends Controller
                 ];
             }
 
-            $organisation = $user->organisation;
+            if ($user->organisation_id)
+            {
+                $organisation = $user->organisation;
+                $organisation->demo = false;
+                $organisation->end_date = date('Y-m-d H:i:s', strtotime('+2 days'));
+            }
+            else
+            {
+                $organisation = new Organisation;
+                $organisation->name = $user->name.'-org';
+                $organisation->user_id = $user->id;
+                $organisation->demo = true;
+                $organisation->end_date = date('Y-m-d H:i:s', strtotime('+8 days'));
+            }
 
             $calculate = self::calculate($request);
 
             $organisation->status = true;
             $organisation->user_capacity = $request->user_capacity;
             $organisation->start_date = date('Y-m-d H:i:s');
-            $organisation->end_date = date('Y-m-d H:i:s', strtotime('+24 hours'));
             $organisation->historical_days = $request->historical_days ? $request->historical_days : 0;
             $organisation->pin_group_limit = $request->pin_group_limit ? $request->pin_group_limit : 0;
             $organisation->saved_searches_limit = $request->saved_searches_limit ? $request->saved_searches_limit : 0;
@@ -205,8 +219,6 @@ class OrganisationController extends Controller
             $organisation->module_report = $request->module_report ? true : false;
             $organisation->module_alarm = $request->module_alarm ? true : false;
 
-            $organisation->demo = false;
-
             /*!
              * modules
              */
@@ -216,6 +228,9 @@ class OrganisationController extends Controller
             }
 
             $organisation->save();
+
+            $user->organisation_id = $organisation->id;
+            $user->save();
 
             $message = [
                 'title' => 'Organizasyon Yükseltildi',

@@ -87,6 +87,15 @@
 @endpush
 
 @section('wildcard')
+    @if (@$user->organisation->demo)
+        @if ($discount_with_year)
+            <div class="upgrade">
+                <h4>Tam Sürüme Geçin</h4>
+                <p>12 ay ve üzeri yapacağınız ödemelerde <span class="chip white black-text">{{ $discount_with_year }}%</span> indirim fırsatını şimdi yakalayın!</p>
+                <a href="{{ route('settings.organisation') }}" class="btn-flat white waves-effect">Şimdi Yükselt</a>
+            </div>
+        @endif
+    @endif
     @if (count($news))
         <div class="carousel-news owl-carousel">
             @foreach ($news as $item)
@@ -227,8 +236,8 @@
         </div>
 
         <div class="col s12 xl5">
-            @if (@auth()->user()->organisation_id)
-                @if (!auth()->user()->intro('search.module') && auth()->user()->term_version)
+            @if (@$user->organisation_id)
+                @if (!$user->intro('search.module') && $user->term_version)
                     <div class="tap-target red white-text" data-target="search-trigger">
                         <div class="tap-target-content">
                             <h5>Pratiklik Kazanın</h5>
@@ -359,9 +368,12 @@
                 <div class="card heartbeat mb-1" data-card="organisation">
                     <div class="card-content">
                         <span class="card-title">Organizasyon Oluşturun!</span>
-                        <p class="grey-text mb-1">E-posta adresinizi ve GSM numaranızı doğruladıktan sonra hesabınıza yeni bir organizasyon tanımlanacaktır.</p>
-                        @if (!auth()->user()->gsm_verified_at)
+                        @if ($user->gsm_verified_at === null && $user->verified === false)
+                            <p class="grey-text mb-1">Organizasyon oluşturabilmek için lütfen hesabınıza GSM ve E-posta tanımlayın!</p>
                             <a href="{{ route('settings.mobile') }}" class="btn-flat waves-effect">GSM Ekle</a>
+                        @else
+                            <p class="grey-text mb-1">Tüm özelliklerden faydalanabilmek için hemen bir organizasyon oluşturun!</p>
+                            <a href="{{ route('organisation.create.offer') }}" class="btn-flat waves-effect">Organizasyon Oluştur</a>
                         @endif
                     </div>
                 </div>
