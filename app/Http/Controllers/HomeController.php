@@ -49,11 +49,22 @@ class HomeController extends Controller
             'organisation',
             'activity',
             'intro',
-            'alert',
             'monitor',
             'sources',
             'termVersion'
         ]);
+    }
+
+    /**
+     * Uyarı Sayfası
+     *
+     * @return mixed
+     */
+    public static function alert()
+    {
+        $data = session('alert');
+
+        return $data ? view('alert', compact('data')) : redirect()->route('dashboard');
     }
 
     /**
@@ -225,16 +236,6 @@ class HomeController extends Controller
             'blog',
             'options'
         ));
-    }
-
-    /**
-     * Uyarı Sayfası
-     *
-     * @return mixed
-     */
-    public static function alert()
-    {
-        return session('alert') ? view('alert') : redirect()->route('dashboard');
     }
 
     /**

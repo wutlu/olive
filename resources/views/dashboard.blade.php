@@ -87,13 +87,25 @@
 @endpush
 
 @section('wildcard')
-    @if (@$user->organisation->demo)
-        @if ($discount_with_year)
+    @if ($user->organisation_id)
+        @if (@$user->organisation->demo)
             <div class="upgrade">
-                <h4>Tam Sürüme Geçin</h4>
-                <p>12 ay ve üzeri yapacağınız ödemelerde <span class="chip white black-text">{{ $discount_with_year }}%</span> indirim fırsatını şimdi yakalayın!</p>
+                <h4>Tam Sürüme Yükseltin</h4>
+                @if ($discount_with_year)
+                    <p>12 ay ve üzeri yapacağınız ödemelerde <span class="chip white black-text">{{ $discount_with_year }}%</span> indirim fırsatını şimdi yakalayın!</p>
+                @endif
                 <a href="{{ route('settings.organisation') }}" class="btn-flat white waves-effect">Şimdi Yükselt</a>
             </div>
+        @else
+            @if ($user->organisation->days() <= 7)
+                <div class="upgrade payment">
+                    <h4>Ödeme Gerekiyor</h4>
+                    @if ($discount_with_year)
+                        <p>12 ay ve üzeri yapacağınız ödemelerde <span class="chip white black-text">{{ $discount_with_year }}%</span> indirim fırsatını şimdi yakalayın!</p>
+                    @endif
+                    <a href="{{ route('settings.organisation') }}" class="btn-flat white waves-effect">Şimdi Öde</a>
+                </div>
+            @endif
         @endif
     @endif
     @if (count($news))

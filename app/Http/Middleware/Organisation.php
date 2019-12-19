@@ -19,14 +19,15 @@ class Organisation
         {
             if (auth()->user()->organisation_id)
             {
-                session()->flash('organisation', 'have');
-                session()->flash('alert', 'Zaten bir organizasyona dahilsiniz.');
+                session()->flash('alert', (object) [
+                    'message' => 'Zaten bir organizasyona dahilsiniz!'
+                ]);
 
                 return $request->expectsJson()
                     ? response()->json([
                         'status' => 'warn',
                         'errors' => [
-                            'global' => [ session('alert') ]
+                            'global' => [ session('alert')->message ]
                         ],
                         'organisation' => 'have'
                     ], 422)
@@ -47,13 +48,15 @@ class Organisation
 
                     if (!$organisation->{$module})
                     {
-                        session()->flash('alert', 'Organizasyon planınız bu özelliği desteklemiyor.<br />Hemen destek bölümünden yetkililerimizle iletişime geçerek ihtiyacınız olan diğer özellikleri planınıza ekletebilirsiniz.');
+                        session()->flash('alert', (object) [
+                            'message' => 'Organizasyon planınız bu özelliği desteklemiyor.<br />Hemen destek bölümünü kullanarak ihtiyacınız olan diğer özellikleri planınıza ekletebilirsiniz.'
+                        ]);
 
                         return $request->expectsJson() ?
                             response()->json([
                                 'status' => 'warn',
                                 'errors' => [
-                                    'global' => [ session('alert') ]
+                                    'global' => [ session('alert')->message ]
                                 ],
                                 'organisation' => 'have_not'
                             ], 422)
@@ -65,13 +68,15 @@ class Organisation
             }
             else
             {
-                session()->flash('alert', 'Bu bölümü kullanabilmek için bir organizasyona dahil olmanız gerekiyor.');
+                session()->flash('alert', (object) [
+                    'message' => 'Bu bölümü kullanabilmek için bir organizasyona dahil olmanız gerekiyor.'
+                ]);
 
                 return $request->expectsJson() ?
                     response()->json([
                         'status' => 'warn',
                         'errors' => [
-                            'global' => [ session('alert') ]
+                            'global' => [ session('alert')->message ]
                         ],
                         'organisation' => 'have_not'
                     ], 422)

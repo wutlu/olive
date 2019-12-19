@@ -3,6 +3,8 @@
 Route::domain('olive.'.config('app.domain'))->group(function () {
     Route::get('/', 'HomeController@dashboard')->name('dashboard');
 
+    Route::get('uyari', 'HomeController@alert')->name('alert');
+
     Route::get('manifest.json', 'HomeController@manifest')->name('olive.manifest');
 
     Route::get('p/{r}', 'HomeController@ipLog');
@@ -135,8 +137,6 @@ Route::domain('olive.'.config('app.domain'))->group(function () {
         Route::post('analiz', 'AggregationController@search')->name('search.aggregation');
         Route::post('banner', 'AggregationController@banner')->name('search.banner');
     });
-
-    Route::get('uyari', 'HomeController@alert')->name('alert');
 
     Route::prefix('db')->group(function () {
         Route::get('{es_index}/{es_type}/{es_id}', 'ContentController@module')->name('content');

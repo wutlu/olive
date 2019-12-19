@@ -253,9 +253,15 @@ class UserController extends Controller
         }
         else
         {
-            session()->flash('alert', 'Lütfen önce e-posta adresinizi doğrulayın!');
+            $data = (object) [
+                'message' => 'Lütfen önce e-posta adresinizi doğrulayın! 222',
+                'button' => [
+                    'text' => 'Hesap Bilgileri',
+                    'route' => route('settings.account')
+                ]
+            ];
 
-            return view('alert');
+            return view('alert', compact('data'));
         }
     }
 
@@ -272,7 +278,7 @@ class UserController extends Controller
         {
             return [
                 'status' => 'err',
-                'message' => 'Önce e-posta adresinizi doğrulayın!'
+                'message' => 'Lütfen önce e-posta adresinizi doğrulayın!'
             ];
         }
 
@@ -851,7 +857,7 @@ class UserController extends Controller
 
             session()->flash('validate', 'ok');
 
-            $text = 'E-posta adresiniz başarılı bir şekilde doğruladınız. İyi araştırmalar!';
+            $text = 'E-posta adresiniz başarılı bir şekilde doğrulandı! İyi araştırmalar...';
 
             ### [ e-posta doğrulandı ] ###
             $user->addBadge(1);
@@ -876,15 +882,20 @@ class UserController extends Controller
 
             # --- #
 
-            session()->flash('alert', 'Tebrikler! E-posta adresinizi doğruladınız.');
-            session()->flash('status', 'success');
+            $data = (object) [
+                'title' => 'Bilgi',
+                'message' => 'Tebrikler! E-posta adresiniz doğrulandı.',
+                'status' => 'success'
+            ];
         }
         else
         {
-            session()->flash('alert', 'Geçersiz veya eski bir bağlantı kullandınız. Lütfen şifre hatırlatma bölümünü en baştan tekrar kullanın.');
+            $data = (object) [
+                'message' => 'Geçersiz veya eski bir bağlantı kullandınız.',
+            ];
         }
 
-        return view('alert');
+        return view('alert', compact('data'));
     }
 
     /**

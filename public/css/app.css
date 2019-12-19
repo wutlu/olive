@@ -133,6 +133,10 @@
   margin: 0 0 0 auto;
   display: table;
 }
+.upgrade.payment {
+  background-color: #3a67a8;
+  background-image: url('../img/upgrade.payment_bg.png');
+}
 
 @media (max-width: 720px) {
   .upgrade > h4,

@@ -78,7 +78,7 @@
                         {
                             if (obj.status == 'ok')
                             {
-                                M.toast({ html: 'GSM numarası kaldırıldı!', 'classes': 'green darken-2' })
+                                M.toast({ html: 'GSM numarası kaldırıldı!', 'classes': 'cyan darken-2' })
 
                                 setTimeout(function() {
                                     location.reload()

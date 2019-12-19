@@ -113,9 +113,37 @@ class OrganisationController extends Controller
     public static function offer()
     {
         $prices = Option::select('key', 'value')->where('key', 'LIKE', 'unit_price.%')->get()->keyBy('key')->toArray();
+
         $user = auth()->user();
 
-        return view('organisation.create.offer', compact('user', 'prices'));
+        if ($user->verified)
+        {
+            if ($user->gsm_verified_at)
+            {
+                return view('organisation.create.offer', compact('user', 'prices'));
+            }
+            else
+            {
+                $data = (object) [
+                    'title' => 'Bilgi',
+                    'message' => 'Bu aşamadan önce GSM numarası tanımlamanız gerekiyor!',
+                    'button' => [
+                        'text' => 'GSM Ekle',
+                        'route' => route('settings.mobile')
+                    ]
+                ];
+            }
+        }
+        else
+        {
+            $data = (object) [
+                'title' => 'Uyarı',
+                'message' => 'Lütfen önce e-posta adresinizi doğrulayın!'
+            ];
+        }
+
+        return view('alert', compact('data'));
+
     }
 
     /**
@@ -128,143 +156,151 @@ class OrganisationController extends Controller
     {
         $user = auth()->user();
 
-        if (!$user->verified)
+        if ($user->verified)
         {
-            return [
-                'status' => 'err',
-                'reason' => 'E-posta adresinizi doğrulamadan kayıt işlemini tamamlayamazsınız!'
-            ];
-        }
-
-        if ($user->gsm_verified_at)
-        {
-            if ($request->module_real_time || $request->module_search || $request->module_alarm)
+            if ($user->gsm_verified_at)
             {
-                $source_count = 0;
+                if ($request->module_real_time || $request->module_search || $request->module_alarm)
+                {
+                    $source_count = 0;
 
-                /**
+                    /**
+                     * modules
+                     */
+                    foreach (config('system.modules') as $key => $module)
+                    {
+                        $source_count = $request->{'data_'.$key} ? ($source_count+1) : $source_count;
+                    }
+
+                    if (!$source_count)
+                    {
+                        return [
+                            'status' => 'step',
+                            'step' => 2,
+                            'message' => 'Canlı Akış, Arama veya Alarm seçiliyken en az 1 veri kaynağı seçmeniz gerekiyor.'
+                        ];
+                    }
+                }
+
+                $module_count = 0;
+                $module_count = $request->module_real_time ? ($module_count+1) : $module_count;
+                $module_count = $request->module_search ? ($module_count+1) : $module_count;
+                $module_count = $request->module_alarm ? ($module_count+1) : $module_count;
+                $module_count = $request->module_trend ? ($module_count+1) : $module_count;
+                $module_count = $request->module_compare ? ($module_count+1) : $module_count;
+                $module_count = $request->module_borsa ? ($module_count+1) : $module_count;
+                $module_count = $request->module_report ? ($module_count+1) : $module_count;
+
+                if (!$module_count)
+                {
+                    return [
+                        'status' => 'step',
+                        'step' => 1,
+                        'message' => 'En az 1 modül seçmeniz gerekiyor.'
+                    ];
+                }
+
+                if ($user->organisation_id)
+                {
+                    $organisation = $user->organisation;
+                    $organisation->end_date = date('Y-m-d H:i:s', strtotime('+2 days'));
+
+                    if ($user->organisation->demo == false)
+                    {
+                        $organisation->status = false;
+                    }
+
+                    $organisation->demo = false;
+                }
+                else
+                {
+                    $organisation = new Organisation;
+                    $organisation->name = $user->name.'-org';
+                    $organisation->user_id = $user->id;
+                    $organisation->demo = true;
+                    $organisation->end_date = date('Y-m-d H:i:s', strtotime('+8 days'));
+                    $organisation->status = true;
+                }
+
+                $calculate = self::calculate($request);
+
+                $organisation->user_capacity = $request->user_capacity;
+                $organisation->start_date = date('Y-m-d H:i:s');
+                $organisation->historical_days = $request->historical_days ? $request->historical_days : 0;
+                $organisation->pin_group_limit = $request->pin_group_limit ? $request->pin_group_limit : 0;
+                $organisation->saved_searches_limit = $request->saved_searches_limit ? $request->saved_searches_limit : 0;
+
+                $organisation->data_pool_youtube_channel_limit = $request->data_pool_youtube_channel_limit ? $request->data_pool_youtube_channel_limit : 0;
+                $organisation->data_pool_youtube_video_limit = $request->data_pool_youtube_video_limit ? $request->data_pool_youtube_video_limit : 0;
+                $organisation->data_pool_youtube_keyword_limit = $request->data_pool_youtube_keyword_limit ? $request->data_pool_youtube_keyword_limit : 0;
+                $organisation->data_pool_twitter_keyword_limit = $request->data_pool_twitter_keyword_limit ? $request->data_pool_twitter_keyword_limit : 0;
+                $organisation->data_pool_twitter_user_limit = $request->data_pool_twitter_user_limit ? $request->data_pool_twitter_user_limit : 0;
+                $organisation->data_pool_instagram_follow_limit = $request->data_pool_instagram_follow_limit ? $request->data_pool_instagram_follow_limit : 0;
+
+                $organisation->unit_price = $calculate['total_price'];
+
+                $organisation->module_real_time = $request->module_real_time ? true : false;
+                $organisation->module_search = $request->module_search ? true : false;
+                $organisation->module_trend = $request->module_trend ? true : false;
+                $organisation->module_compare = $request->module_compare ? true : false;
+                $organisation->module_borsa = $request->module_borsa ? true : false;
+                $organisation->module_report = $request->module_report ? true : false;
+                $organisation->module_alarm = $request->module_alarm ? true : false;
+
+                /*!
                  * modules
                  */
                 foreach (config('system.modules') as $key => $module)
                 {
-                    $source_count = $request->{'data_'.$key} ? ($source_count+1) : $source_count;
+                    $organisation->{'data_'.$key} = $request->{'data_'.$key} ? true : false;
                 }
 
-                if (!$source_count)
-                {
-                    return [
-                        'status' => 'step',
-                        'step' => 2,
-                        'message' => 'Canlı Akış, Arama veya Alarm seçiliyken en az 1 veri kaynağı seçmeniz gerekiyor.'
-                    ];
-                }
-            }
+                $organisation->save();
 
-            $module_count = 0;
-            $module_count = $request->module_real_time ? ($module_count+1) : $module_count;
-            $module_count = $request->module_search ? ($module_count+1) : $module_count;
-            $module_count = $request->module_alarm ? ($module_count+1) : $module_count;
-            $module_count = $request->module_trend ? ($module_count+1) : $module_count;
-            $module_count = $request->module_compare ? ($module_count+1) : $module_count;
-            $module_count = $request->module_borsa ? ($module_count+1) : $module_count;
-            $module_count = $request->module_report ? ($module_count+1) : $module_count;
+                $user->organisation_id = $organisation->id;
+                $user->save();
 
-            if (!$module_count)
-            {
-                return [
-                    'status' => 'step',
-                    'step' => 1,
-                    'message' => 'En az 1 modül seçmeniz gerekiyor.'
+                $message = [
+                    'title' => 'Organizasyon Yükseltildi',
+                    'info' => 'Tebrikler! Organizasyonunuz başarılı bir şekilde yükseltildi.',
+                    'body' => 'Deneme süreniz 1 gün daha uzatıldı. 1 gün sonunda kesintisiz bir şekilde devam edebilmek için lütfen "Organizasyon Ayarları" sayfasından paketinizi uzatın.'
                 ];
-            }
 
-            if ($user->organisation_id)
-            {
-                $organisation = $user->organisation;
-                $organisation->demo = false;
-                $organisation->end_date = date('Y-m-d H:i:s', strtotime('+2 days'));
+                $user->notify((new MessageNotification('Olive: '.$message['title'], $message['info'], $message['body']))->onQueue('email'));
+
+                Activity::push(
+                    $message['title'],
+                    [
+                        'icon' => 'access_time',
+                        'markdown' => $message['body'],
+                        'user_id' => $user->id,
+                        'key' => implode('-', [ $user->id, 'welcome' ])
+                    ]
+                );
+
+                if (!$user->badge(12))
+                {
+                    ### [ organizatör ] ###
+                    $user->addBadge(12);
+                }
+
+                return [
+                    'status' => 'ok'
+                ];
             }
             else
             {
-                $organisation = new Organisation;
-                $organisation->name = $user->name.'-org';
-                $organisation->user_id = $user->id;
-                $organisation->demo = true;
-                $organisation->end_date = date('Y-m-d H:i:s', strtotime('+8 days'));
+                return [
+                    'status' => 'err',
+                    'reason' => 'İşlemi tamamlamadan önce "Hesap Bilgileri -> Mobil" sayfasından bir GSM numarası tanımlayın!'
+                ];
             }
-
-            $calculate = self::calculate($request);
-
-            $organisation->status = true;
-            $organisation->user_capacity = $request->user_capacity;
-            $organisation->start_date = date('Y-m-d H:i:s');
-            $organisation->historical_days = $request->historical_days ? $request->historical_days : 0;
-            $organisation->pin_group_limit = $request->pin_group_limit ? $request->pin_group_limit : 0;
-            $organisation->saved_searches_limit = $request->saved_searches_limit ? $request->saved_searches_limit : 0;
-
-            $organisation->data_pool_youtube_channel_limit = $request->data_pool_youtube_channel_limit ? $request->data_pool_youtube_channel_limit : 0;
-            $organisation->data_pool_youtube_video_limit = $request->data_pool_youtube_video_limit ? $request->data_pool_youtube_video_limit : 0;
-            $organisation->data_pool_youtube_keyword_limit = $request->data_pool_youtube_keyword_limit ? $request->data_pool_youtube_keyword_limit : 0;
-            $organisation->data_pool_twitter_keyword_limit = $request->data_pool_twitter_keyword_limit ? $request->data_pool_twitter_keyword_limit : 0;
-            $organisation->data_pool_twitter_user_limit = $request->data_pool_twitter_user_limit ? $request->data_pool_twitter_user_limit : 0;
-            $organisation->data_pool_instagram_follow_limit = $request->data_pool_instagram_follow_limit ? $request->data_pool_instagram_follow_limit : 0;
-
-            $organisation->unit_price = $calculate['total_price'];
-
-            $organisation->module_real_time = $request->module_real_time ? true : false;
-            $organisation->module_search = $request->module_search ? true : false;
-            $organisation->module_trend = $request->module_trend ? true : false;
-            $organisation->module_compare = $request->module_compare ? true : false;
-            $organisation->module_borsa = $request->module_borsa ? true : false;
-            $organisation->module_report = $request->module_report ? true : false;
-            $organisation->module_alarm = $request->module_alarm ? true : false;
-
-            /*!
-             * modules
-             */
-            foreach (config('system.modules') as $key => $module)
-            {
-                $organisation->{'data_'.$key} = $request->{'data_'.$key} ? true : false;
-            }
-
-            $organisation->save();
-
-            $user->organisation_id = $organisation->id;
-            $user->save();
-
-            $message = [
-                'title' => 'Organizasyon Yükseltildi',
-                'info' => 'Tebrikler! Organizasyonunuz başarılı bir şekilde yükseltildi.',
-                'body' => 'Deneme süreniz 1 gün daha uzatıldı. 1 gün sonunda kesintisiz bir şekilde devam edebilmek için lütfen "Organizasyon Ayarları" sayfasından paketinizi uzatın.'
-            ];
-
-            $user->notify((new MessageNotification('Olive: '.$message['title'], $message['info'], $message['body']))->onQueue('email'));
-
-            Activity::push(
-                $message['title'],
-                [
-                    'icon' => 'access_time',
-                    'markdown' => $message['body'],
-                    'user_id' => $user->id,
-                    'key' => implode('-', [ $user->id, 'welcome' ])
-                ]
-            );
-
-            if (!$user->badge(12))
-            {
-                ### [ organizatör ] ###
-                $user->addBadge(12);
-            }
-
-            return [
-                'status' => 'ok'
-            ];
         }
         else
         {
             return [
                 'status' => 'err',
-                'reason' => 'Lütfen ilk önce "Hesap Bilgileri -> Mobil" sayfasından bir GSM numarası tanımlayın!'
+                'reason' => 'E-posta kayıt aşamalarını tamamlamadan bu işleme devam edemezsiniz!'
             ];
         }
     }
