@@ -153,9 +153,7 @@ class TakerJob implements ShouldQueue
                 if ($crawler->error_count >= $crawler->off_limit)
                 {
                     System::log(
-                        json_encode(
-                            $item->error_reasons
-                        ),
+                        json_encode($item->error_reasons),
                         'App\Jobs\Crawlers\Media\TakerJob::handle(int '.$crawler->id.')',
                         10
                     );

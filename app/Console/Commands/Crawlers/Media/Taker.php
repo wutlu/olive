@@ -71,6 +71,20 @@ class Taker extends Command
             {
                 $this->info($array['_source']['url']);
 
+                $upsert = Document::patch(
+                    $array['_index'],
+                    'article',
+                    $array['_id'],
+                    [
+                        'script' => [
+                            'source' => 'ctx._source.status = params.status;',
+                            'params' => [
+                                'status' => 'take'
+                            ]
+                        ]
+                    ]
+                );
+
                 TakerJob::dispatch($array['_source'])->onQueue('power-crawler')->delay(now()->addSeconds(rand(1, 4)));
             }
         }
