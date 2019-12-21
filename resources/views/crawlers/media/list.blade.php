@@ -82,6 +82,8 @@
                 <div class="item">
                     <small class="grey-text">KUYRUK</small>
                     <span class="d-block" data-elasticsearch data-name="total-docs-buffer">-</span>
+                    <small class="grey-text">TAMPON</small>
+                    <span class="d-block" data-elasticsearch data-name="total-docs-take">-</span>
                 </div>
                 <div class="item">
                     <small class="grey-text">BAŞARILI</small>
@@ -360,6 +362,8 @@
             catch (err) { $('[data-name=total-docs-buffer]').html(es_catch_val) }
             try { $('[data-name=total-size]').html(humanFileSize(obj.data.elasticsearch.data._all.primaries.store.size_in_bytes)) }
             catch (err) { $('[data-name=total-size]').html(es_catch_val) }
+            try { $('[data-name=total-docs-take]').html(number_format(obj.data.count.take.data.count)) }
+            catch (err) { $('[data-name=total-docs-take]').html(es_catch_val) }
 
             window.clearTimeout(statTimer)
 

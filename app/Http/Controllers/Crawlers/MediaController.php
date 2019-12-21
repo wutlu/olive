@@ -150,6 +150,13 @@ class MediaController extends Controller
                                 'status' => 'failed'
                             ]
                         ]
+                    ]),
+                    'take' => $document->count([ 'media', '*' ], 'article', [
+                        'query' => [
+                            'match' => [
+                                'status' => 'take'
+                            ]
+                        ]
                     ])
                 ],
                 'elasticsearch' => Indices::stats([ 'media', '*' ])
