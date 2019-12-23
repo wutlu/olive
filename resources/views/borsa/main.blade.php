@@ -202,7 +202,8 @@
                             text: 'Hisse Normalize (Al-Sat)',
                             style: { color: '#ef5350' }
                         },
-                        max: 1
+                        max: 1,
+                        min: 0
                     }
                 ],
                 xaxis: { categories: obj.categories },
@@ -229,8 +230,8 @@
                             text: 'Hisse Değeri',
                             style: { color: '#ccc' }
                         },
-                        max: obj.datas[obj.datas.length-1].max,
-                        min: obj.datas[obj.datas.length-1].min,
+                        max: parseFloat(obj.datas[obj.datas.length-1].max),
+                        min: parseFloat(obj.datas[obj.datas.length-1].min),
                         offsetX: 10,
                         offsetY: 10
                     }
