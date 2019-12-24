@@ -69,6 +69,12 @@
         z-index: 1;
     }
 
+    @media (max-width: 1024px) {
+        .section {
+            width: 100vw;
+        }
+    }
+
     .section h1,
     .section h2,
     .section h3 {
@@ -277,9 +283,9 @@
                     @else
                         <p class="lead black-text mb-2">Yalnızca markanızı ve kampanyalarınızı değil, aynı zamanda çok sayıda rakip ve segmentin kendisini izleyin ve ölçün.</p>
                         <div class="mb-2">
-                            <a href="{{ route('home', [ 'type' => 'kisiler' ]) }}" class="blue darken-2 white-text text-darken-2 p-1" style="margin: 2px;">Kişiler</a>
-                            <a href="{{ route('home', [ 'type' => 'markalar' ]) }}" class="blue darken-2 white-text text-darken-2 p-1" style="margin: 2px;">Markalar</a>
-                            <a href="{{ route('home', [ 'type' => 'reklam-ajanslari' ]) }}" class="blue darken-2 white-text text-darken-2 p-1" style="margin: 2px;">Reklam Ajansları</a>
+                            <a href="{{ route('home', [ 'type' => 'kisiler' ]) }}" class="blue-text text-darken-2" style="padding: .4rem; margin: 2px;">Kişiler</a>
+                            <a href="{{ route('home', [ 'type' => 'markalar' ]) }}" class="blue-text text-darken-2" style="padding: .4rem; margin: 2px;">Markalar</a>
+                            <a href="{{ route('home', [ 'type' => 'reklam-ajanslari' ]) }}" class="blue-text text-darken-2" style="padding: .4rem; margin: 2px;">Reklam Ajansları</a>
                         </div>
                     @endif
                 </div>
