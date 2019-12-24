@@ -2234,6 +2234,10 @@ body.module-search-active > .search-wrapper {
  */
 main {
   padding: 1rem 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
 }
 
 @media only screen and (max-width: 992px) {
@@ -2247,14 +2251,6 @@ main {
  */
 footer.page-footer {
   padding-top: 2rem;
-  background-color: transparent;
-
-  border-width: 2px 0 0;
-  border-style: solid;
-  border-color: #f0f0f0;
-}
-footer.page-footer > .container > .row > .col > img#vz-logo {
-  max-width: 128px;
 }
 
 /*!
@@ -3188,9 +3184,24 @@ table.table-loading:after {
   -webkit-box-shadow: 0 0 24px 0 rgba(0, 0, 0, .1);
           box-shadow: 0 0 24px 0 rgba(0, 0, 0, .1);
 }
+#main-nav .rounded-menu {
+  -webkit-transition: all 400ms cubic-bezier(.25, .46, .45, .94);
+          transition: all 400ms cubic-bezier(.25, .46, .45, .94);
+}
+#main-nav .fonted-menu {
+  font-size: 18px;
+}
 
 #main-nav.active {
   background-color: rgba(255, 255, 255, 1);
+
+  -webkit-box-shadow: 0 0 0 10px #fff, 0 0 24px 0 rgba(0, 0, 0, .1);
+          box-shadow: 0 0 0 10px #fff, 0 0 24px 0 rgba(0, 0, 0, .1);
+
+  margin: 10px 0;
+}
+#main-nav.active .rounded-menu {
+  border-radius: 4px;
 }
 
 /*!
@@ -4249,8 +4260,6 @@ nav.scrolled.active,
  
    -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  background-color: #111;
 }
 
 /*!
@@ -4433,23 +4442,6 @@ nav.scrolled.active,
 .plane:hover .circle::after {
   background-color: crimson;
   color: crimson;
-}
-
-/*!
- * bb logo
- */
-.bb {
-  width: 110px;
-  height: 110px;
-
-  display: table;
-  margin: 0 auto 2rem;
-
-  background-color: #4b636e;
-  background-image: url('../img/emblem.svg');
-  background-repeat: no-repeat;
-  background-size: 50%/70%;
-  background-position: center;
 }
 
 /*!

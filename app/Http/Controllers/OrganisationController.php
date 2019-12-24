@@ -112,15 +112,17 @@ class OrganisationController extends Controller
      */
     public static function offer()
     {
-        $prices = Option::select('key', 'value')->where('key', 'LIKE', 'unit_price.%')->get()->keyBy('key')->toArray();
-
         $user = auth()->user();
 
         if ($user->verified)
         {
             if ($user->gsm_verified_at)
             {
-                return view('organisation.create.offer', compact('user', 'prices'));
+                $demo = $user->organisation_id && $user->organisation->demo == true && $user->organisation->days() ? true : false;
+
+                $prices = Option::select('key', 'value')->where('key', 'LIKE', 'unit_price.%')->get()->keyBy('key')->toArray();
+
+                return view('organisation.create.offer', compact('user', 'prices', 'demo'));
             }
             else
             {
@@ -263,7 +265,7 @@ class OrganisationController extends Controller
                 $message = [
                     'title' => 'Organizasyon Yükseltildi',
                     'info' => 'Tebrikler! Organizasyonunuz başarılı bir şekilde yükseltildi.',
-                    'body' => 'Deneme süreniz 1 gün daha uzatıldı. 1 gün sonunda kesintisiz bir şekilde devam edebilmek için lütfen "Organizasyon Ayarları" sayfasından paketinizi uzatın.'
+                    'body' => 'Deneme süreniz 1 gün daha uzatıldı. 1 gün sonunda kesintisiz bir şekilde devam edebilmek için lütfen "Organizasyon Ayarları" sayfasından ödeme gerçekleştirin.'
                 ];
 
                 $user->notify((new MessageNotification('Olive: '.$message['title'], $message['info'], $message['body']))->onQueue('email'));
@@ -435,11 +437,13 @@ class OrganisationController extends Controller
     {
         $user = auth()->user();
 
-        if ($user->organisation->demo == true)
+        if ($user->organisation_id && $user->organisation->demo == true && $user->organisation->user_id == $user->id)
         {
+            $demo = $user->organisation_id && $user->organisation->demo == true && $user->organisation->days() ? true : false;
+
             $prices = Option::select('key', 'value')->where('key', 'LIKE', 'unit_price.%')->get()->keyBy('key')->toArray();
 
-            return view('organisation.create.offer', compact('user', 'prices'));
+            return view('organisation.create.offer', compact('user', 'prices', 'demo'));
         }
         else
         {

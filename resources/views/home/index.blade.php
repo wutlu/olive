@@ -1,6 +1,6 @@
 @extends('layouts.app', [
     'title' => [
-        'text' => $type ? $type['title'] : config('app.name')
+        'text' => $type ? $type['title'] : 'Veri Zone Teknoloji'
     ],
     'description' => 'Veri Zone Teknoloji, Büyük Veri Takip ve Raporlama Merkezi!',
     'chat' => true
@@ -75,6 +75,7 @@
         margin: 0;
         padding: 0;
         color: #fff;
+        font-weight: bold;
     }
     .section h1 {
         font-size: 32px;
@@ -90,12 +91,17 @@
         padding: 0;
         color: #fff;
         font-size: 20px;
+        font-weight: bold;
+    }
+
+    .brand-logo {
+        width: 128px;
+        height: auto;
     }
 @endpush
 
 @push('local.scripts')
     var phone_form = false;
-
     $(window).scroll(function() {
         var test_top = ($('.section-test').offset().top) - 96;
         var scroll_top = $(this).scrollTop();
@@ -234,26 +240,46 @@
 @endpush
 
 @section('content')
+    <div class="navbar-fixed">
+        <nav id="main-nav">
+            <div class="container">
+                <div class="nav-wrapper">
+                    <a href="{{ route('home') }}" class="brand-logo left">
+                        <img alt="{{ config('app.name') }}" src="{{ asset('img/veri.zone_logo.svg') }}" />
+                    </a>
+
+                    <ul class="right">
+                        <li class="hide-on-med-and-down">
+                            <a href="#" class="white blue-text text-darken-2 fonted-menu">+90 850 302 16 30</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('user.login') }}" class="blue darken-2 white-text waves-effect">Olive'e Git</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+
     <div class="cookie-alert z-depth-1 hide">
-        <a href="{{ route('page.view', 'cerez-politikasi') }}" class="cyan-text">Çerezler</a> özel bir deneyim sunarak ziyaretçilerimize daha iyi hizmet vermemizi ve daha faydalı bilgiler sunmak üzere kendi dahili amaçlarımız için kullanılacaktır.
+        <a href="{{ route('page.view', 'cerez-politikasi') }}" class="blue-text">Çerezler</a> özel bir deneyim sunarak ziyaretçilerimize daha iyi hizmet vermemizi ve daha faydalı bilgiler sunmak üzere kendi dahili amaçlarımız için kullanılacaktır.
     </div>
 
     <!-- section 1 -->
 
     <section class="section section-header d-flex">
-        <div class="section-overlay"></div>
         <div class="container align-self-center">
             <div class="d-flex flex-wrap row">
                 <div class="col s12 m12 l6 xl8 p-1 align-self-center left-align">
-                    <img alt="Logo" src="{{ asset('img/veri.zone_logo.svg') }}" style="width: 200px;" class="mb-2" />
-                    <h1 class="mb-2">Dijital İtibarınızı Anlık Olarak Takip Edin</h1>
+                    <h1 class="black-text mb-2">Dijital İtibarınızı Anlık Olarak Takip Edin</h1>
                     @if ($type)
-                        <p class="lead mb-1">{{ $type['description'] }}</p>
+                        <p class="lead black-text mb-1">{{ $type['description'] }}</p>
                     @else
+                        <p class="lead black-text mb-2">Yalnızca markanızı ve kampanyalarınızı değil, aynı zamanda çok sayıda rakip ve segmentin kendisini izleyin ve ölçün.</p>
                         <div class="mb-2">
-                            <a href="{{ route('home', [ 'type' => 'kisiler' ]) }}" class="btn-flat btn-opacity waves-effect waves-light" style="margin: 2px;">Kişiler</a>
-                            <a href="{{ route('home', [ 'type' => 'markalar' ]) }}" class="btn-flat btn-opacity waves-effect waves-light" style="margin: 2px;">Markalar</a>
-                            <a href="{{ route('home', [ 'type' => 'reklam-ajanslari' ]) }}" class="btn-flat btn-opacity waves-effect waves-light" style="margin: 2px;">Reklam Ajansları</a>
+                            <a href="{{ route('home', [ 'type' => 'kisiler' ]) }}" class="blue darken-2 white-text text-darken-2 p-1" style="margin: 2px;">Kişiler</a>
+                            <a href="{{ route('home', [ 'type' => 'markalar' ]) }}" class="blue darken-2 white-text text-darken-2 p-1" style="margin: 2px;">Markalar</a>
+                            <a href="{{ route('home', [ 'type' => 'reklam-ajanslari' ]) }}" class="blue darken-2 white-text text-darken-2 p-1" style="margin: 2px;">Reklam Ajansları</a>
                         </div>
                     @endif
                 </div>
@@ -410,19 +436,28 @@
 
     @push('local.styles')
         .section-header {
-            margin: 10vh auto;
-            background-image: url('{{ asset('img/photo/section-home.jpg') }}');
             text-align: center;
+            background-image: url('{{ asset('img/banner.svg') }}');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+        }
+        .section-header h1 {
+            font-size: 48px;
+            text-transform: uppercase;
+            max-width: 400px;
+        }
+        .section-header p.lead {
+            font-size: 24px;
+            max-width: 400px;
         }
 
-        @media (max-width: 1024px) {
-            .section-header {
-                margin: 2vh auto;
-            }
+        .header-logos {
+            opacity: .6;
         }
     @endpush
 
-    <div class="d-flex flex-wrap justify-content-center" style="opacity: .6;">
+    <div class="d-flex flex-wrap justify-content-center header-logos">
         <div class="p-1">
             <a target="_blank" rel="nofollow" href="https://www.btk.gov.tr/">
                 <img alt="Logo" src="{{ asset('img/logo-btk.png') }}" class="brand-logo" />
@@ -738,24 +773,20 @@
     <!-- section 6 -->
 
     <section class="section section-test d-flex with-bg">
-        <div class="section-overlay cyan darken-2"></div>
+        <div class="section-overlay blue darken-2"></div>
         <div class="container align-self-center">
-            <div class="pl-2 lr-2 mb-2">
+            <div class="pl-2 pr-2 mb-2">
                 <h2 class="mb-1">Ücretsiz Deneyin!</h2>
-                <p class="lead mb-2">Olive'i 7 gün boyunca ücretsiz deneyebilirsiniz!<br />Deneme süreniz bittiğinde, bir çok özellikten <span class="white cyan-text text-darken-2">ücretsiz</span> faydalanmaya devam edebileceğinizi de unutmayın!</p>
+                <p class="lead mb-2">Olive'i 7 gün boyunca ücretsiz olarak deneyebilirsiniz!<br />Deneme süreniz bittiğinde, bir çok özellikten <span class="white blue-text text-darken-2">ücretsiz</span> faydalanmaya devam edebileceğinizi de unutmayın!</p>
                 <a href="{{ route('user.login') }}" class="btn-flat btn-large white waves-effect heartbeat">ÜCRETSİZ DENEYİN</a>
             </div>
         </div>
     </section>
+
     @push('local.styles')
         .section-test {
             text-align: center;
             margin: 0 auto 10vh;
-        }
-
-        .brand-logo {
-            width: 128px;
-            height: auto;
         }
     @endpush
 @endsection

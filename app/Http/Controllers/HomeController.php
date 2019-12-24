@@ -386,19 +386,19 @@ class HomeController extends Controller
             'kisiler' => [
                 'key' => 'kisiler',
                 'title' => 'Kişiler İçin',
-                'description' => 'Alanınızdaki rekabeti eş zamanlı takip edin!',
+                'description' => 'Bir Finansal Araştırmacı, Kamu Sektörü Analisti veya Strateji Uzmanı olun, ilgi alanınız hakkında derin ve anlamlı bilgiler edinmek için Olive\'i kullanabilirsiniz.',
                 'image' => asset('img/photo/1500x1500@person.jpg'),
             ],
             'markalar' => [
                 'key' => 'markalar',
                 'title' => 'Markalar İçin',
-                'description' => 'Rakiplerinizi hızlı bir şekilde inceleyin, dijitaldeki itibarınızdan her zaman haberdar olun!',
+                'description' => 'Demografik bilgileri, davranışı, marka tercihlerini, satın alma davranışını ve ilgi grafiğini analiz ederek tüketicilerinizin mikroskobik olarak anlaşılmasını sağlayın.',
                 'image' => asset('img/photo/1500x1500@brand.jpg'),
             ],
             'reklam-ajanslari' => [
                 'key' => 'reklam-ajanslari',
                 'title' => 'Reklam Ajansları İçin',
-                'description' => 'Müşterilerinizin dijital meleği olun!',
+                'description' => 'Ekstra bir iş yapmadan bir marka ve konu portföyünü takip edin. Kampanyalarınızı ve markalarınızı izleyin ve tüketici duyarlılığı ve davranışındaki değişiklikleri ilk keşfeden siz olun.',
                 'image' => asset('img/photo/1500x1500@agency.jpg'),
             ]
         ];
@@ -408,7 +408,9 @@ class HomeController extends Controller
             $type = $types[$type];
         }
 
-        return view('home.index', compact('array', 'type', 'types'));
+        $prices = Option::select('key', 'value')->where('key', 'LIKE', 'unit_price.%')->get()->keyBy('key')->toArray();
+
+        return view('home.index', compact('array', 'type', 'types', 'prices'));
     }
 
     /**

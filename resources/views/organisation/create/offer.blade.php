@@ -10,20 +10,25 @@
 
 @section('content')
     @push('local.scripts')
-        const helpStart = new Driver({
-            allowClose: false
-        })
+        const helpStart = new Driver()
 
         helpStart.defineSteps([
+            @if ($demo)
+            {
+                element: '[data-id=cancel]',
+                popover: {
+                    title: 'Dur!',
+                    description: 'Deneme süren henüz bitmedi! Bu işleme devam edersen deneme modundan çıkarak tam sürüme geçeceksin!',
+                    position: 'top'
+                }
+            },
+            @endif
             {
                 element: '[data-id=price]',
                 popover: {
                     title: 'Hadi Başlayalım!',
                     description: 'Fiyat alanı özellik seçtikçe güncellenir. Unutmadan! "Organizasyon Yükseltme" işleminin sonunda deneme süren sona erecek.',
                     position: 'top'
-                },
-                onHighlightStarted: function() {
-                    $('#string').focus()
                 }
             },
             {
@@ -134,6 +139,7 @@
 
                                     id="{{ $key }}"
                                     value="on"
+                                    checked
                                     type="checkbox" />
                                 <span>{{ $module }}</span>
                             </label>
@@ -141,7 +147,7 @@
                     @endforeach
                 </ul>
                 <div class="card-content d-flex justify-content-between">
-                    <a class="btn red btn-large waves-effect" href="{{ route('dashboard') }}" data-tooltip="Ücretsiz özellikleri kullanmaya devam et!">Vazgeç</a>
+                    <a class="btn red btn-large waves-effect" href="{{ route('dashboard') }}" data-id="cancel" data-tooltip="Ücretsiz özellikleri kullanmaya devam et!">Vazgeç</a>
                     <button type="button" class="btn blue-grey btn-large waves-effect" data-steps="2" data-id="first-next">
                         <i class="material-icons">arrow_forward</i>
                     </button>
@@ -170,6 +176,7 @@
                                     id="data_{{ $key }}"
                                     value="on"
                                     data-unit-price="{{ $prices['unit_price.data_'.$key]['value'] }}"
+                                    checked
                                     type="checkbox" />
                                 <span class="align-self-center">{{ $module }}</span>
                             </label>
@@ -177,7 +184,7 @@
                     @endforeach
                 </ul>
                 <div class="card-content d-flex justify-content-between">
-                    <button type="button" class="btn red lighten-2 btn-large waves-effect" data-steps="1" data-prev="true">
+                    <button type="button" class="btn red btn-large waves-effect" data-steps="1" data-prev="true">
                         <i class="material-icons">arrow_back</i>
                     </button>
                     <button type="button" class="btn blue-grey btn-large waves-effect" data-steps="3">
@@ -260,7 +267,7 @@
                             id="historical_days"
                             max="90"
                             min="0"
-                            value="0"
+                            value="30"
                             type="range" />
                     </div>
 
@@ -295,7 +302,7 @@
                     </div>
                 </div>
                 <div class="card-content d-flex justify-content-between">
-                    <button type="button" class="btn red lighten-2 btn-large waves-effect" data-steps="2" data-prev="true">
+                    <button type="button" class="btn red btn-large waves-effect" data-steps="2" data-prev="true">
                         <i class="material-icons">arrow_back</i>
                     </button>
                     <button type="button" class="btn blue-grey btn-large waves-effect" data-steps="4">
@@ -413,7 +420,7 @@
                     </div>
                 </div>
                 <div class="card-content d-flex justify-content-between">
-                    <button type="button" class="btn red lighten-2 btn-large waves-effect" data-steps="3" data-prev="true">
+                    <button type="button" class="btn red btn-large waves-effect" data-steps="3" data-prev="true">
                         <i class="material-icons">arrow_back</i>
                     </button>
                     <button type="submit" class="btn cyan darken-2 btn-large waves-effect">Yükselt</button>

@@ -43,6 +43,13 @@
         height: 100%;
         background-color: rgba(70, 70, 120, .4);
     }
+
+    img.logo {
+        width: 128px;
+        height: auto;
+        margin: 0 auto 32px;
+        display: table;
+    }
 @endpush
 
 @section('content')
@@ -52,7 +59,7 @@
             <canvas class="overlay bg-overlay" id="bubble"></canvas>
         </div>
         <div class="area flex-fill z-depth-1">
-            <div class="bb"></div>
+            <img alt="Olive" src="{{ asset('img/olive_logo.svg') }}" class="logo" />
             <div class="card card-unstyled mx-auto mb-2">
                 <div class="card-tabs">
                     <ul class="tabs tabs-fixed-width">
@@ -74,19 +81,19 @@
                         <div class="input-field">
                             <input name="value_login" id="value_login" type="text" class="validate" />
                             <label for="value_login">E-posta veya Kullanıcı Adı</label>
-                            <span class="helper-text">E-posta adresiniz veya kullanıcı adınız.</span>
+                            <span class="helper-text">Sisteme kaydolurken kullandığınız<br />e-posta veya kullanıcı adınız.</span>
                         </div>
                         <div class="input-field">
                             <input name="password_login" id="password_login" type="password" class="validate" />
                             <label for="password_login">Şifre</label>
                             <span class="helper-text"></span>
                         </div>
-                        <button type="submit" class="waves-effect waves-light btn blue-grey" style="width: 100%;">Giriş Yap</button>
+                        <button type="submit" class="waves-effect waves-light btn grey darken-2" style="width: 100%;">Giriş Yap</button>
                     </form>
                 </div>
 
                 @if (config('system.user.registration'))
-                    <div class="card-content white" id="tab-kaydol" style="display: none;">
+                    <div class="card-content white" id="tab-kaydol">
                         <form id="register-form" data-callback="__register" action="{{ route('user.register') }}" method="put" class="json" autocomplete="off">
                             <div class="input-field">
                                 <input name="name" id="name" type="text" class="validate" />
@@ -96,31 +103,34 @@
                             <div class="input-field">
                                 <input name="email" id="email" type="email" class="validate" />
                                 <label for="email">E-posta</label>
-                                <span class="helper-text">E-posta adresiniz.</span>
+                                <span class="helper-text">Aktif olarak kullandığınız bir<br />E-posta adresi girin.</span>
                             </div>
                             <div class="input-field">
                                 <input name="password" id="password" type="password" class="validate" />
                                 <label for="password">Şifre</label>
-                                <span class="helper-text">Güçlü bir hesap şifresi oluşturun.</span>
+                                <span class="helper-text">Güçlü bir şifre oluşturun.</span>
                             </div>
                             <div class="input-field">
                                 <div class="captcha" data-id="register-captcha"></div>
                             </div>
+                            <br />
                             <label>
                                 <input name="terms" type="checkbox" value="1" />
                                 <span>
-                                    <a class="blue-grey-text text-darken-2" target="_blank" href="{{ route('page.view', 'kullanim-kosullari') }}">Kullanım Koşulları</a>'nı ve<br />
-                                    <a class="blue-grey-text text-darken-2" target="_blank" href="{{ route('page.view', 'gizlilik-politikasi') }}">Gizlilik Politikası</a>'nı<br />
+                                    <a class="grey-text text-darken-2" target="_blank" href="{{ route('page.view', 'kullanim-kosullari') }}">Kullanım Koşulları</a>'nı ve<br />
+                                    <a class="grey-text text-darken-2" target="_blank" href="{{ route('page.view', 'gizlilik-politikasi') }}">Gizlilik Politikası</a>'nı<br />
                                     okudum ve<br />
                                     kabul ediyorum.
                                 </span>
                             </label>
-                            <button type="submit" class="waves-effect waves-light btn blue-grey mt-1" style="width: 100%;">Ücretsiz Kaydol</button>
+                            <br />
+                            <br />
+                            <button type="submit" class="waves-effect waves-light btn grey darken-2" style="width: 100%;">Ücretsiz Kaydol</button>
                         </form>
                     </div>
                 @endif
 
-                <div class="card-content white" id="tab-sifre" style="display: none;">
+                <div class="card-content white" id="tab-sifre">
                     <form id="password-form" data-callback="__password" action="{{ route('user.password') }}" method="post" class="json">
                         <div class="input-field">
                             <input name="email_password" id="email_password" type="email" class="validate" />
@@ -130,11 +140,12 @@
                         <div class="input-field">
                             <div class="captcha" data-id="password-captcha"></div>
                         </div>
-                        <button type="submit" class="waves-effect waves-light btn blue-grey" style="width: 100%;">Şifre Gönder</button>
+                        <br />
+                        <button type="submit" class="waves-effect waves-light btn grey darken-2" style="width: 100%;">Şifre Gönder</button>
                     </form>
                 </div>
             </div>
-            <p class="blue-grey-text">{{ date('Y') }} © <a href="https://veri.zone/" target="_blank">Veri Zone Teknoloji</a> - Tüm hakları saklıdır.</p>
+            <p class="grey-text">{{ date('Y') }} © <a href="https://veri.zone/" target="_blank">Veri Zone Teknoloji</a><br />Tüm hakları saklıdır.</p>
         </div>
     </div>
 @endsection

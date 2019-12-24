@@ -87,7 +87,7 @@
 @endpush
 
 @section('wildcard')
-    @if ($user->organisation_id)
+    @if ($user->organisation_id && $user->organisation->user_id == $user->id)
         @if (@$user->organisation->demo)
             <div class="upgrade">
                 <h4>Tam Sürüme Yükseltin</h4>
