@@ -302,7 +302,7 @@
                                     <a href="#" class="chip waves-effect waves-light" data-input="#report_subject" data-input-value="Dolar">Dolar</a>
                                     <a href="#" class="chip waves-effect waves-light" data-input="#report_subject" data-input-value="Migros">Migros</a>
                                     <a href="#" class="chip waves-effect waves-light" data-input="#report_subject" data-input-value="Ankara && Deprem" data-tooltip="ve">Ankara && Deprem</a>
-                                    <a href="#" class="chip waves-effect waves-light" data-input="#report_subject" data-input-value="Ankara && Deprem" data-tooltip="veya">Ankara || İstanbul</a>
+                                    <a href="#" class="chip waves-effect waves-light" data-input="#report_subject" data-input-value="Ankara || İstanbul" data-tooltip="veya">Ankara || İstanbul</a>
                                 </div>
                                 <div class="input-field">
                                     <input data-name="report" type="text" name="report_name" data-alias="name" placeholder="Sizin veya Şirketinizin Adı" maxlength="55" />

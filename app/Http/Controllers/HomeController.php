@@ -398,7 +398,7 @@ class HomeController extends Controller
             'reklam-ajanslari' => [
                 'key' => 'reklam-ajanslari',
                 'title' => 'Reklam Ajansları İçin',
-                'description' => 'Ekstra bir iş yapmadan bir marka ve konu portföyünü takip edin. Kampanyalarınızı ve markalarınızı izleyin ve tüketici duyarlılığı ve davranışındaki değişiklikleri ilk keşfeden siz olun.',
+                'description' => 'Ekstra bir iş yapmadan bir marka ve konu portföyünü takip edin. Kampanyalarınızı ve markalarınızı izleyin, tüketici duyarlılığı ve davranışındaki değişiklikleri ilk keşfeden siz olun.',
                 'image' => asset('img/photo/1500x1500@agency.jpg'),
             ]
         ];
