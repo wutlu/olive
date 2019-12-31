@@ -12,6 +12,6 @@
 
         <p class="mb-1">Olive alt alanadını artık kullanmıyoruz. Lütfen VERİ.ZONE ana sayfasından gitmek istediğiniz sayfaya yönelin.</p>
 
-        <a href="{{ route('dashboard') }}" class="btn-flat waves-effect">VERİ.ZONE</a>
+        <a href="https://veri.zone/" class="btn-flat waves-effect">VERİ.ZONE</a>
     </div>
 @endsection
