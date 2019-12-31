@@ -415,7 +415,7 @@ function __joints(o)
                                     'css': { 'font-size': '24px' }
                                 }),
                                 'class': 'align-self-center btn-flat btn-floating waves-effect json',
-                                'data-href': '/arsiv/add',
+                                'data-href': '/arsivler/add',
                                 'data-method': 'post',
                                 'data-include': 'archive_id',
                                 'data-callback': '__pin',

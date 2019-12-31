@@ -216,7 +216,7 @@ Route::prefix('alarm')->group(function () {
     Route::delete('/', 'AlarmController@delete');
 });
 
-Route::prefix('arsiv')->group(function () {
+Route::prefix('arsivler')->group(function () {
     Route::get('/', 'PinController@groups')->name('pin.groups');
     Route::post('/', 'PinController@groupListJson');
 

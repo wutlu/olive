@@ -24,7 +24,7 @@
                     var item = item_model.clone();
                         item.removeClass('model hide').addClass('_tmp d-flex').attr('data-id', o.id)
 
-                        item.find('[data-name=edit]').attr('data-group_id', o.id)
+                        item.find('[data-name=edit]').attr('data-archive_id', o.id)
                         item.find('[data-trigger=pin-go]').html(o.name).attr('data-id', o.id)
                         item.find('[data-name=created-at]').attr('data-time', o.created_at).html(o.created_at)
                         item.find('[data-name=count]').html(o.pins_count + ' pin')
