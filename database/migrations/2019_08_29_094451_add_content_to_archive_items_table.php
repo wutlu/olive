@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddContentToPinsTable extends Migration
+class AddContentToArchiveItemsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class AddContentToPinsTable extends Migration
      */
     public function up()
     {
-        Schema::table('pins', function (Blueprint $table) {
+        Schema::table('archive_items', function (Blueprint $table) {
             $table->json('content')->nullable()->default(null);
         });
     }
@@ -25,7 +25,7 @@ class AddContentToPinsTable extends Migration
      */
     public function down()
     {
-        Schema::table('pins', function (Blueprint $table) {
+        Schema::table('archive_items', function (Blueprint $table) {
             $table->dropColumn('content');
         });
     }

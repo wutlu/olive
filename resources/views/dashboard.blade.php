@@ -210,8 +210,8 @@
                     ],
                     [
                         'route' => route('pin.groups'),
-                        'icon' => 'fiber_pin',
-                        'name' => 'Pin Grupları',
+                        'icon' => 'archive',
+                        'name' => 'Arşivler',
                         'key' => 'pin_group'
                     ],
                     [

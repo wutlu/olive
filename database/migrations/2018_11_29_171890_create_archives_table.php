@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePinGroupsTable extends Migration
+class CreateArchivesGroupsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreatePinGroupsTable extends Migration
      */
     public function up()
     {
-        Schema::create('pin_groups', function (Blueprint $table) {
+        Schema::create('archives', function (Blueprint $table) {
             $table->increments('id')->unsigned();
 
             $table->string('name')->index();
@@ -37,6 +37,6 @@ class CreatePinGroupsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pin_groups');
+        Schema::dropIfExists('archives');
     }
 }

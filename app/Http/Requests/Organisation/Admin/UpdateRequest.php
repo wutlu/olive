@@ -50,7 +50,7 @@ class UpdateRequest extends FormRequest
             'end_date' => 'required|date_format:Y-m-d',
             'historical_days' => 'required|integer|max:90|min:0',
 
-            'pin_group_limit' => 'required|integer|max:12|min:0',
+            'archive_limit' => 'required|integer|max:12|min:0',
             'saved_searches_limit' => 'required|integer|max:12|min:0',
 
             'data_pool_youtube_channel_limit' => 'required|integer|max:100|min:0',

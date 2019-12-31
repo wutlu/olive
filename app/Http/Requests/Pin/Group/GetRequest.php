@@ -24,7 +24,7 @@ class GetRequest extends FormRequest
     public function rules()
     {
         return [
-            'group_id' => 'required|integer|exists:pin_groups,id'
+            'group_id' => 'required|integer|exists:archives,id'
         ];
     }
 }

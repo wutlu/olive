@@ -54,7 +54,7 @@ class PinController extends Controller
     }
 
     /**
-     * Pin Grupları
+     * Arşivler
      *
      * @return view
      */
@@ -64,7 +64,7 @@ class PinController extends Controller
     }
 
     /**
-     * Pin Grupları
+     * Arşivler, Data
      *
      * @return array
      */

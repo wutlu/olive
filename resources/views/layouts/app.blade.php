@@ -235,7 +235,7 @@
             @endauth
 
             @if (@$dock && $dock == true)
-                <div class="menu-alert">
+                <div class="menu-alert hide">
                     <div class="d-flex">
                         <span>Düşük çözünürlüklü ekranlarda bazı şeyleri burada tutuyoruz!</span>
                         <i class="material-icons">arrow_upward</i>
@@ -247,7 +247,7 @@
                 <div class="{{ isset($sidenav_layout) ? '' : (auth()->check() ? 'sidenav-fixed-layout' : 'container') }}">
                     <div class="nav-wrapper">
                         <a href="{{ @$logo_route ? $logo_route : route('dashboard') }}" class="brand-logo center">
-                            <img alt="{{ config('app.name') }}" src="{{ @$logo ? $logo : asset('img/veri.zone_logo.svg?v=1') }}" />
+                            <img alt="{{ config('app.name') }}" src="{{ @$logo ? $logo : asset('img/veri.zone_logo-icon.svg?v=1') }}" />
                         </a>
 
                         @auth
@@ -340,7 +340,7 @@
                                 @isset($pin_group)
                                     <li>
                                         <a href="#" data-class="#pin-groups-dock" data-name="pin-dock-trigger" data-class-toggle="active" data-dock="close">
-                                            <i class="material-icons">fiber_pin</i>
+                                            <i class="material-icons">archive</i>
                                         </a>
                                     </li>
                                 @endisset

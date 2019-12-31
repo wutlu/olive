@@ -33,7 +33,7 @@ class PriceSettingsSaveRequest extends FormRequest
             'data_shopping'                   => 'required|integer|min:0',
             'data_instagram'                  => 'required|integer|min:0',
 
-            'pin_group_limit'                 => 'required|integer|min:0',
+            'archive_limit'                   => 'required|integer|min:0',
             'saved_searches_limit'            => 'required|integer|min:0',
             'historical_days'                 => 'required|integer|min:0',
 

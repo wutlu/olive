@@ -8,7 +8,7 @@ use App\Elasticsearch\Document;
 
 class Pin extends Model
 {
-    protected $table = 'pins';
+    protected $table = 'archive_items';
     protected $primaryKey = 'tmp_id';
     protected $hidden = [
         'index',
@@ -16,7 +16,7 @@ class Pin extends Model
         'id',
 
         'organisation_id',
-        'group_id',
+        'archive_id',
         'user_id'
     ];
     protected $fillable = [
@@ -26,7 +26,7 @@ class Pin extends Model
         'type',
         'id',
 
-        'group_id'
+        'archive_id'
     ];
 
     /**

@@ -229,7 +229,7 @@ class OrganisationController extends Controller
                 $organisation->user_capacity = $request->user_capacity;
                 $organisation->start_date = date('Y-m-d H:i:s');
                 $organisation->historical_days = $request->historical_days ? $request->historical_days : 0;
-                $organisation->pin_group_limit = $request->pin_group_limit ? $request->pin_group_limit : 0;
+                $organisation->archive_limit = $request->archive_limit ? $request->archive_limit : 0;
                 $organisation->saved_searches_limit = $request->saved_searches_limit ? $request->saved_searches_limit : 0;
 
                 $organisation->data_pool_youtube_channel_limit = $request->data_pool_youtube_channel_limit ? $request->data_pool_youtube_channel_limit : 0;
@@ -1242,7 +1242,7 @@ class OrganisationController extends Controller
         Option::updateOrCreate([ 'key' => 'unit_price.data_shopping'                   ], [ 'value' => $request->data_shopping                   ]);
         Option::updateOrCreate([ 'key' => 'unit_price.data_instagram'                  ], [ 'value' => $request->data_instagram                  ]);
 
-        Option::updateOrCreate([ 'key' => 'unit_price.pin_group_limit'                 ], [ 'value' => $request->pin_group_limit                 ]);
+        Option::updateOrCreate([ 'key' => 'unit_price.archive_limit'                   ], [ 'value' => $request->archive_limit                 ]);
         Option::updateOrCreate([ 'key' => 'unit_price.saved_searches_limit'            ], [ 'value' => $request->saved_searches_limit            ]);
         Option::updateOrCreate([ 'key' => 'unit_price.historical_days'                 ], [ 'value' => $request->historical_days                 ]);
 
@@ -1336,7 +1336,7 @@ class OrganisationController extends Controller
     {
         $arr = [
             'historical_days'                  => '*',
-            'pin_group_limit'                  => '*',
+            'archive_limit'                    => '*',
             'saved_searches_limit'             => '*',
 
             'module_real_time'                 => '+',
@@ -1425,7 +1425,7 @@ class OrganisationController extends Controller
         $organisation->status = $request->status ? true : false;
         $organisation->end_date = $request->end_date.' '.$request->end_time;
         $organisation->historical_days = $request->historical_days;
-        $organisation->pin_group_limit = $request->pin_group_limit;
+        $organisation->archive_limit = $request->archive_limit;
         $organisation->saved_searches_limit = $request->saved_searches_limit;
 
         $organisation->data_pool_youtube_channel_limit = $request->data_pool_youtube_channel_limit;
@@ -1780,7 +1780,7 @@ class OrganisationController extends Controller
      ******* ROOT *******
      ********************
      *
-     * Organizasyon, Pin Grupları
+     * Organizasyon, Arşivler
      *
      * @return view
      */
@@ -1796,7 +1796,7 @@ class OrganisationController extends Controller
      ******* ROOT *******
      ********************
      *
-     * Organizasyon, Pin Grupları
+     * Organizasyon, Arşivler, Data
      *
      * @return array
      */

@@ -8,13 +8,13 @@
 <div id="pin-groups-dock">
     <div class="card card-unstyled">
         <div class="card-content">
-            <span class="card-title d-flex">
-                <i class="material-icons align-self-center mr-1">speaker_notes</i>
-                Pin Grupları
+            <span class="card-title d-flex blue-grey-text text-darken-2">
+                <i class="material-icons align-self-center mr-1">archive</i>
+                Arşivler
             </span>
         </div>
         <div class="card-image">
-            <a href="#" class="btn-floating halfway-fab waves-effect cyan darken-2" data-trigger="create-pin_group">
+            <a href="#" class="btn-floating halfway-fab waves-effect blue-grey darken-2" data-trigger="create-pin_group">
                 <i class="material-icons">add</i>
             </a>
         </div>

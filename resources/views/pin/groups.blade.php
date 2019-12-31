@@ -2,7 +2,7 @@
     'sidenav_fixed_layout' => true,
     'breadcrumb' => [
         [
-            'text' => 'Pin Grupları'
+            'text' => 'Arşivler'
         ]
     ],
     'footer_hide' => true
@@ -34,7 +34,7 @@
             }
         }
 
-        $('[data-name=group-count]').html(obj.hits.length + ' / {{ auth()->user()->organisation->pin_group_limit }}')
+        $('[data-name=group-count]').html(obj.hits.length + ' / {{ auth()->user()->organisation->archive_limit }}')
     }
 
     function pin_group_modal()
@@ -210,8 +210,8 @@
         <div class="card-image">
             <img src="{{ asset('img/md-s/21.jpg') }}" alt="Image" />
             <span class="card-title white-text d-flex">
-                <i class="material-icons align-self-center mr-1">speaker_notes</i>
-                Pin Grupları
+                <i class="material-icons align-self-center mr-1">archive</i>
+                Arşivler
             </span>
             <a href="#" class="btn-floating btn-large halfway-fab waves-effect white" data-trigger="create-pin-group">
                 <i class="material-icons grey-text text-darken-2">add</i>

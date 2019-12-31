@@ -13,7 +13,7 @@
             'link' => route('admin.organisation', $organisation->id)
         ],
         [
-            'text' => '🐞 Pin Grupları'
+            'text' => '🐞 Arşivler'
         ]
     ],
     'dock' => true,
@@ -23,7 +23,7 @@
 @section('content')
     <div class="card mb-1">
         <div class="card-content">
-            <span class="card-title">Pin Grupları</span>
+            <span class="card-title">Arşivler</span>
         </div>
         <ul id="pin-groups"
              class="collection collection-unstyled load json-clear" 

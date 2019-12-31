@@ -233,9 +233,9 @@
                     <div class="range-field">
                         <input
                             data-update
-                            data-unit-price="{{ $prices['unit_price.pin_group_limit']['value'] }}"
-                            name="pin_group_limit"
-                            id="pin_group_limit"
+                            data-unit-price="{{ $prices['unit_price.archive_limit']['value'] }}"
+                            name="archive_limit"
+                            id="archive_limit"
                             max="12"
                             min="0"
                             value="0"
@@ -485,7 +485,7 @@
         var pool_inputs = $('input[data-option=pool]');
         var historical_days_input = $('input[name=historical_days]');
         var saved_searches_limit_input = $('input[name=saved_searches_limit]');
-        var pin_group_limit_input = $('input[name=pin_group_limit]');
+        var archive_limit_input = $('input[name=archive_limit]');
 
         var min_data_select = null;
         var min_pool_select = null;
@@ -570,13 +570,13 @@
 
         if (min_pin_groups !== null)
         {
-            pin_group_limit_input.attr('min', min_pin_groups)
-                                 .val(pin_group_limit_input.val() < min_pin_groups ? min_pin_groups : pin_group_limit_input.val())
-                                 .removeAttr('disabled')
+            archive_limit_input.attr('min', min_pin_groups)
+                               .val(archive_limit_input.val() < min_pin_groups ? min_pin_groups : archive_limit_input.val())
+                               .removeAttr('disabled')
         }
         else
         {
-            pin_group_limit_input.attr('min', 0).val(0).attr('disabled', 'disabled')
+            archive_limit_input.attr('min', 0).val(0).attr('disabled', 'disabled')
         }
 
         $('input[type=range]').each(function() {

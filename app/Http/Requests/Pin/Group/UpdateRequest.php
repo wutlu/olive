@@ -24,7 +24,7 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => 'required|integer|exists:pin_groups,id',
+            'id' => 'required|integer|exists:archives,id',
 
             'name' => 'required|string|max:32'
         ];

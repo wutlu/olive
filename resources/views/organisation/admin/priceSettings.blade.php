@@ -77,8 +77,8 @@
                                 <h6>Limitler</h6>
                             </div>
                             <div class="collection-item input-field">
-                                <input required name="pin_group_limit" id="pin_group_limit" min="0" value="{{ $settings['unit_price.pin_group_limit']['value'] }}" type="number" class="validate" />
-                                <small class="helper-text">Pin Grubu</small>
+                                <input required name="archive_limit" id="archive_limit" min="0" value="{{ $settings['unit_price.archive_limit']['value'] }}" type="number" class="validate" />
+                                <small class="helper-text">Arşiv</small>
                             </div>
                             <div class="collection-item input-field">
                                 <input required name="historical_days" id="historical_days" min="0" value="{{ $settings['unit_price.historical_days']['value'] }}" type="number" class="validate" />

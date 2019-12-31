@@ -311,7 +311,7 @@ $arr = [
         'data_youtube_comment'            => 'YouTube Yorum Verileri',
         'data_shopping'                   => 'E-ticaret Verileri',
 
-        'pin_group_limit'                 => 'Pin Grubu Limiti',
+        'archive_limit'                   => 'Arşiv Limiti',
         'historical_days'                 => 'Geriye Dönük Arama Limiti',
         'saved_searches_limit'            => 'Arama Kaydetme Limiti',
 

@@ -14,7 +14,7 @@ class CreateRequest extends FormRequest
 
     public function __construct()
     {
-        $this->max_item = auth()->user()->organisation->pin_group_limit;
+        $this->max_item = auth()->user()->organisation->archive_limit;
     }
 
     /**

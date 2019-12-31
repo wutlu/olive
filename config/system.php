@@ -388,7 +388,7 @@ return [
                 'icon' => 'timeline'
             ],
             2 => [
-                'name' => 'Pin Grupları',
+                'name' => 'Arşivler',
                 'route' => 'pin.groups',
                 'icon' => 'group_work'
             ],

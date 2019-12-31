@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Group extends Model
 {
-    protected $table = 'pin_groups';
+    protected $table = 'archives';
     protected $fillable = [
     	'name'
     ];
@@ -14,7 +14,7 @@ class Group extends Model
     # pins
     public function pins()
     {
-        return $this->hasMany('App\Models\Pin\Pin', 'group_id', 'id');
+        return $this->hasMany('App\Models\Pin\Pin', 'archive_id', 'id');
     }
 
     # organisation

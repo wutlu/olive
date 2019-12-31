@@ -649,6 +649,11 @@ $(document).ready(function() {
         $('.cookie-alert').removeClass('hide')
     }
 
+    if (!getCookie('menu-alert'))
+    {
+        $('.menu-alert').removeClass('hide')
+    }
+
     M.updateTextFields()
 
     $.extend({
@@ -677,6 +682,10 @@ $(document).ready(function() {
     setCookie('cookie-alert', true, 7)
 
     return false;
+}).on('click', '.dock-menu', function() {
+    $('.menu-alert').addClass('hide')
+
+    setCookie('menu-alert', true, 7)
 })
 
 /* --- json (ajax) --- */

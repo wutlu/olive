@@ -138,15 +138,15 @@
                             <div class="collection-item input-field">
                                 <input
                                     data-update
-                                    name="pin_group_limit"
-                                    id="pin_group_limit"
+                                    name="archive_limit"
+                                    id="archive_limit"
                                     max="12"
                                     min="0"
-                                    value="{{ $organisation->pin_group_limit }}"
+                                    value="{{ $organisation->archive_limit }}"
                                     type="number"
-                                    data-unit-price="{{ $prices['unit_price.pin_group_limit']['value'] }}"
+                                    data-unit-price="{{ $prices['unit_price.archive_limit']['value'] }}"
                                     class="validate" />
-                                <small class="helper-text">Pin Grubu</small>
+                                <small class="helper-text">Arşiv</small>
                             </div>
                             <div class="collection-item input-field">
                                 <input

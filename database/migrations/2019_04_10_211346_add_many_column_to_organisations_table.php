@@ -27,7 +27,7 @@ class AddManyColumnToOrganisationsTable extends Migration
             $table->boolean('data_instagram')->default(false);
             $table->boolean('data_blog')->default(false);
 
-            $table->unsignedSmallInteger('pin_group_limit')->default(0);
+            $table->unsignedSmallInteger('archive_limit')->default(0);
 
             $table->unsignedInteger('data_pool_youtube_channel_limit')->default(0);
             $table->unsignedInteger('data_pool_youtube_video_limit')->default(0);
@@ -62,7 +62,7 @@ class AddManyColumnToOrganisationsTable extends Migration
             $table->dropColumn('data_instagram');
             $table->dropColumn('data_blog');
 
-            $table->dropColumn('pin_group_limit');
+            $table->dropColumn('archive_limit');
 
             $table->dropColumn('data_pool_youtube_channel_limit');
             $table->dropColumn('data_pool_youtube_video_limit');

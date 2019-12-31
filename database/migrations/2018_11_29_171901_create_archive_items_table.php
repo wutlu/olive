@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePinsTable extends Migration
+class CreateArchiveItemsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreatePinsTable extends Migration
      */
     public function up()
     {
-        Schema::create('pins', function (Blueprint $table) {
+        Schema::create('archive_items', function (Blueprint $table) {
             $table->increments('tmp_id')->unsigned();
 
             $table->string('comment')->nullable()->default(null);
@@ -22,10 +22,10 @@ class CreatePinsTable extends Migration
             $table->string('type');
             $table->string('id');
 
-            $table->unsignedInteger('group_id')->index();
-            $table->foreign('group_id')->references('id')->on('pin_groups')->onDelete('cascade')->onUpdate('cascade');
+            $table->unsignedInteger('archive_id')->index();
+            $table->foreign('archive_id')->references('id')->on('archives')->onDelete('cascade')->onUpdate('cascade');
 
-            $table->unique([ 'index', 'type', 'id', 'group_id' ]);
+            $table->unique([ 'index', 'type', 'id', 'archive_id' ]);
 
             $table->unsignedInteger('organisation_id')->index();
             $table->foreign('organisation_id')->references('id')->on('organisations')->onDelete('cascade')->onUpdate('cascade');
@@ -44,6 +44,6 @@ class CreatePinsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pins');
+        Schema::dropIfExists('archive_items');
     }
 }

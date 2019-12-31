@@ -386,7 +386,7 @@ class UserController extends Controller
             $organisation->data_facebook = true;
             $organisation->data_instagram = true;
             $organisation->data_blog = true;
-            $organisation->pin_group_limit = 2;
+            $organisation->archive_limit = 2;
             $organisation->data_pool_youtube_channel_limit = 2;
             $organisation->data_pool_youtube_video_limit = 2;
             $organisation->data_pool_youtube_keyword_limit = 2;
@@ -1359,7 +1359,7 @@ class UserController extends Controller
             }
 
             $organisation->historical_days = $request->historical_days;
-            $organisation->pin_group_limit = $request->pin_group_limit;
+            $organisation->archive_limit = $request->archive_limit;
             $organisation->saved_searches_limit = $request->saved_searches_limit;
 
             $organisation->data_pool_youtube_channel_limit = $request->data_pool_youtube_channel_limit;

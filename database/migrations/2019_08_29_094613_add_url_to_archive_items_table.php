@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddUrlToPinsTable extends Migration
+class AddUrlToArchiveItemsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class AddUrlToPinsTable extends Migration
      */
     public function up()
     {
-        Schema::table('pins', function (Blueprint $table) {
+        Schema::table('archive_items', function (Blueprint $table) {
             $table->string('url', 400)->index()->nullable()->default(null);
         });
     }
@@ -25,7 +25,7 @@ class AddUrlToPinsTable extends Migration
      */
     public function down()
     {
-        Schema::table('pins', function (Blueprint $table) {
+        Schema::table('archive_items', function (Blueprint $table) {
             $table->dropColumn('url');
         });
     }
