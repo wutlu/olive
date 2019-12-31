@@ -68,7 +68,7 @@ class PdfRequest extends FormRequest
         {
             $id_rules[] = 'nothing_rule';
 
-            Validator::extend('nothing_rule', false, 'Pin grubuna artık ulaşılamıyor.');
+            Validator::extend('nothing_rule', false, 'Arşive artık ulaşılamıyor.');
         }
 
         return [

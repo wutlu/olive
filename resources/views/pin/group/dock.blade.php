@@ -128,11 +128,11 @@
                             }),
                             $('<label />', {
                                 'for': 'group_name',
-                                'html': 'Grup Adı'
+                                'html': 'Arşiv Adı'
                             }),
                             $('<span />', {
                                 'class': 'helper-text',
-                                'html': 'Pin grubu için isim girin.'
+                                'html': 'Arşiv için isim girin.'
                             })
                         ]
                     })
@@ -176,7 +176,7 @@
 
     $(document).on('click', '[data-trigger=create-pin_group]', function() {
         var mdl = pin_group_modal();
-            mdl.find('.modal-title').html('Grup Oluştur')
+            mdl.find('.modal-title').html('Arşiv Oluştur')
             mdl.find('form#pin-group-form').data('method', 'put')
 
             mdl.find('[name=group_name]').val('').focus()
@@ -189,7 +189,7 @@
         if (obj.status == 'ok')
         {
             var mdl = pin_group_modal();
-                mdl.find('.modal-title').html('Grup Güncelle')
+                mdl.find('.modal-title').html('Arşiv Güncelle')
                 mdl.find('form#pin-group-form').data('id', obj.data.id).data('method', 'patch')
                 mdl.find('[name=group_name]').val(obj.data.name).focus()
 
@@ -218,7 +218,7 @@
             }
 
             M.toast({
-                html: obj.type == 'created' ? 'Pin Grubu Oluşturuldu' : obj.type == 'updated' ? 'Pin Grubu Güncellendi' : 'İşlem Gerçekleşti',
+                html: obj.type == 'created' ? 'Arşiv Oluşturuldu' : obj.type == 'updated' ? 'Arşiv Güncellendi' : 'İşlem Gerçekleşti',
                 classes: 'green darken-2'
             })
         }
@@ -227,7 +227,7 @@
     $(document).on('click', '[data-trigger=delete-pin-group]', function() {
         return modal({
             'id': 'pin-group-alert',
-            'body': 'Pin grubu silinecek?',
+            'body': 'Arşiv silinecek?',
             'size': 'modal-small',
             'title': 'Sil',
             'options': {},
@@ -266,7 +266,7 @@
             }, 200)
 
             M.toast({
-                html: 'Pin Grubu Silindi',
+                html: 'Arşiv Silindi',
                 classes: 'red darken-2'
             })
 
@@ -283,14 +283,14 @@
             $('[data-trigger=create-pin_group]').addClass('pulse')
 
             M.toast({
-                html: 'Önce bir pin grubu oluşturmalısınız.',
+                html: 'Önce bir arşiv oluşturmalısınız.',
                 classes: 'teal darken-2'
             })
         }
         else
         {
             M.toast({
-                html: 'Lütfen bir pin grubu seçin!',
+                html: 'Lütfen bir arşiv seçin!',
                 classes: 'red'
             })
         }

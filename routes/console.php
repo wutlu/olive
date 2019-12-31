@@ -19,7 +19,7 @@ Artisan::command('alarm:control', function () {
 
 Artisan::command('trigger:pdf:pin_groups', function () {
 	PinController::pdfTrigger();
-})->describe('PDF çıktı almak için pin gruplarını tetikler.');
+})->describe('PDF çıktı almak için arşivleri tetikler.');
 
 Artisan::command('forum:notification_trigger', function () {
 	ForumController::threadFollowNotifications();

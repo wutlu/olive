@@ -35,7 +35,7 @@ class CreateRequest extends FormRequest
     public function messages()
     {
         return [
-            'max_item' => 'En fazla '.$this->max_item.' adet pin grubu oluşturabilirsiniz.',
+            'max_item' => 'En fazla '.$this->max_item.' adet arşiv oluşturabilirsiniz.',
         ];
     }
 

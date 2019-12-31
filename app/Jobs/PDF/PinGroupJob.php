@@ -103,7 +103,7 @@ class PinGroupJob implements ShouldQueue
                         Activity::push(
                             'Pinleme PDF dökümü alınırken bir sorun oluştu.',
                             [
-                                'markdown' => 'Pin Grubu PDF dökümünüzü hazırlarken bir problemle karşılaştık. Lütfen tekrar deneyin.',
+                                'markdown' => 'Arşiv dökümünüzü hazırlarken bir problemle karşılaştık. Lütfen tekrar deneyin.',
                                 'push' => true,
                                 'icon' => 'picture_as_pdf',
                                 'user_id' => $user->id,

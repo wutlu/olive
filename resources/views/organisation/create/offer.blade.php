@@ -214,14 +214,14 @@
                     </div>
                     <div class="d-flex justify-content-between">
                         <small class="d-flex">
-                            <span class="align-self-center mr-1">Pin Grubu</span>
+                            <span class="align-self-center mr-1">Arşiv</span>
                             <a
                                 href="#"
                                 class="btn-floating blue-grey pulse align-self-center"
                                 data-tooltip="Bilgi"
                                 data-position="right"
                                 data-trigger="info"
-                                data-title="Pin Grubu">
+                                data-title="Arşiv">
                                 <i class="material-icons black-text" data-id="sample-info">info_outline</i>
                                 <div class="hide" data-helper>
                                     <span style="font-size: 16px;">İlgilendiğin içerikleri gruplar halinde saklayabilir ve istediğin zaman çıktılarını alabilirsin. Bu alan zorunlu değildir.</span>

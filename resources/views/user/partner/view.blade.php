@@ -282,7 +282,7 @@
                                         type="number"
                                         data-unit-price="{{ $prices['unit_price.archive_limit']['value'] }}"
                                         class="validate" />
-                                    <small class="helper-text">Pin Grubu</small>
+                                    <small class="helper-text">Arşiv</small>
                                 </div>
                                 <div class="collection-item input-field">
                                     <input

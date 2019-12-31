@@ -88,7 +88,7 @@ class PinController extends Controller
     }
 
     /**
-     * Pin Grubu Bilgisi
+     * Arşiv Bilgisi
      *
      * @return array
      */
@@ -109,7 +109,7 @@ class PinController extends Controller
     }
 
     /**
-     * Pin Grubu Oluştur
+     * Arşiv Oluştur
      *
      * @return array
      */
@@ -127,7 +127,7 @@ class PinController extends Controller
     }
 
     /**
-     * Pin Grubu Güncelle
+     * Arşiv Güncelle
      *
      * @return array
      */
@@ -152,7 +152,7 @@ class PinController extends Controller
     }
 
     /**
-     * Pin Grubu Sil
+     * Arşiv Sil
      *
      * @return array
      */
@@ -254,7 +254,7 @@ class PinController extends Controller
     }
 
     /**
-     * Pin Grubu, Pinler
+     * Arşiv, Pinler
      *
      * @return view
      */
@@ -268,7 +268,7 @@ class PinController extends Controller
     }
 
     /**
-     * Pin Grubu, Url Çıktı
+     * Arşiv, Url Çıktı
      *
      * @return view
      */
@@ -302,7 +302,7 @@ class PinController extends Controller
     }
 
     /**
-     * Pin Grubu, PDF tetikleyici
+     * Arşiv, PDF tetikleyici
      *
      * @return view
      */
@@ -327,7 +327,7 @@ class PinController extends Controller
      ****** SYSTEM ******
      ********************
      *
-     * Pin Grubu, PDF zaman aşımı tetikleyici
+     * Arşiv, PDF zaman aşımı tetikleyici
      *
      * @return mixed
      */

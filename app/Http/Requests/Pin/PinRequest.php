@@ -28,7 +28,7 @@ class PinRequest extends FormRequest
     public function messages()
     {
         return [
-            'group_have' => 'Seçtiğiniz pin grubu artık yok.'
+            'group_have' => 'Seçtiğiniz arşiv artık yok.'
         ];
     }
 
