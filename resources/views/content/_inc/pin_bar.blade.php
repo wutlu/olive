@@ -17,7 +17,7 @@
             data-id="{{ $document['_id'] }}"
             data-type="{{ $document['_type'] }}"
             data-index="{{ $document['_index'] }}">
-            <i class="material-icons grey-text text-darken-2">add</i>
+            <i class="material-icons grey-text text-darken-2">archive</i>
         </a>
         <span class="p-1"></span>
         <a

@@ -411,7 +411,7 @@ function __joints(o)
                                 'href': '#',
                                 'html': $('<i />', {
                                     'class': 'material-icons',
-                                    'html': 'add',
+                                    'html': 'archive',
                                     'css': { 'font-size': '24px' }
                                 }),
                                 'class': 'align-self-center btn-flat btn-floating waves-effect json',
