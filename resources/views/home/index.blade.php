@@ -214,7 +214,7 @@
     <div class="section section-mockup model-1 d-flex flex-wrap justify-content-between">
         <div class="item align-self-center">
             <div class="browser-mockup z-depth-5">
-                <img src="{{ asset('img/mockup-slide-1.jpg') }}" alt="Mockup 1" />
+                <img src="{{ asset('img/mockup-slide-1.jpg?v=1') }}" alt="Mockup 1" />
             </div>
         </div>
         <div class="item align-self-center">
@@ -232,7 +232,7 @@
         </div>
         <div class="item align-self-center">
             <div class="browser-mockup z-depth-5">
-                <img src="{{ asset('img/mockup-slide-3.jpg') }}" alt="Mockup 3" />
+                <img src="{{ asset('img/mockup-slide-3.jpg?v=2') }}" alt="Mockup 3" />
             </div>
         </div>
     </div>
@@ -242,7 +242,7 @@
     <div class="section section-mockup model-1 d-flex flex-wrap justify-content-between">
         <div class="item align-self-center">
             <div class="browser-mockup z-depth-5">
-                <img src="{{ asset('img/mockup-slide-2.jpg') }}" alt="Mockup 2" />
+                <img src="{{ asset('img/mockup-slide-2.jpg?v=3') }}" alt="Mockup 2" />
             </div>
         </div>
         <div class="item align-self-center">

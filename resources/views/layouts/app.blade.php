@@ -247,7 +247,7 @@
                 <div class="{{ isset($sidenav_layout) ? '' : (auth()->check() ? 'sidenav-fixed-layout' : 'container') }}">
                     <div class="nav-wrapper">
                         <a href="{{ @$logo_route ? $logo_route : route('dashboard') }}" class="brand-logo center">
-                            <img alt="{{ config('app.name') }}" src="{{ @$logo ? $logo : asset('img/veri.zone_logo.svg') }}" />
+                            <img alt="{{ config('app.name') }}" src="{{ @$logo ? $logo : asset('img/veri.zone_logo.svg?v=1') }}" />
                         </a>
 
                         @auth
