@@ -77,7 +77,7 @@ class PinGroupJob implements ShouldQueue
                     foreach ($pg->organisation->users as $user)
                     {
                         Activity::push(
-                            'Pinleme PDF dökümünüz hazırlandı.',
+                            'Arşiv dökümünüz hazırlandı.',
                             [
                                 'push' => true,
                                 'icon' => 'picture_as_pdf',
@@ -101,7 +101,7 @@ class PinGroupJob implements ShouldQueue
                     foreach ($pg->organisation->users as $user)
                     {
                         Activity::push(
-                            'Pinleme PDF dökümü alınırken bir sorun oluştu.',
+                            'Arşiv dökümü alınırken bir sorun oluştu.',
                             [
                                 'markdown' => 'Arşiv dökümünüzü hazırlarken bir problemle karşılaştık. Lütfen tekrar deneyin.',
                                 'push' => true,

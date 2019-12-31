@@ -105,13 +105,7 @@ class Organisation extends Model
         }
     }
 
-    # gerçek zamanlı kelime grupları
-    public function realTimeKeywordGroups()
-    {
-        return $this->hasMany('App\Models\RealTime\KeywordGroup', 'organisation_id', 'id');
-    }
-
-    # gerçek zamanlı kelime grupları
+    # arşivler
     public function pinGroups()
     {
         return $this->hasMany('App\Models\Pin\Group', 'organisation_id', 'id');

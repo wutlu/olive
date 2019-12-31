@@ -415,9 +415,9 @@ function __joints(o)
                                     'css': { 'font-size': '24px' }
                                 }),
                                 'class': 'align-self-center btn-flat btn-floating waves-effect json',
-                                'data-href': '/pinleme/add',
+                                'data-href': '/arsiv/add',
                                 'data-method': 'post',
-                                'data-include': 'group_id',
+                                'data-include': 'archive_id',
                                 'data-callback': '__pin',
                                 'data-error-callback': '__pin_dock',
                                 'data-trigger': 'pin',

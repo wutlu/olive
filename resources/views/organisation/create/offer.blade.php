@@ -224,7 +224,7 @@
                                 data-title="Arşiv">
                                 <i class="material-icons black-text" data-id="sample-info">info_outline</i>
                                 <div class="hide" data-helper>
-                                    <span style="font-size: 16px;">İlgilendiğin içerikleri gruplar halinde saklayabilir ve istediğin zaman çıktılarını alabilirsin. Bu alan zorunlu değildir.</span>
+                                    <span style="font-size: 16px;">İlgilendiğin içerikleri arşivler halinde saklayabilir ve istediğin zaman çıktılarını alabilirsin. Bu alan zorunlu değildir.</span>
                                 </div>
                             </a>
                         </small>

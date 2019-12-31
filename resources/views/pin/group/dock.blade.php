@@ -48,7 +48,7 @@
                     <i class="material-icons grey-text text-darken-2">create</i>        
                 </a>
                 <label class="align-self-center">
-                    <input name="group_id" type="radio" />
+                    <input name="archive_id" type="radio" />
                     <span class="d-flex">
                         <a
                             data-trigger="pin-go"
@@ -70,7 +70,7 @@
         @endcomponent
 
         <div class="card-content center-align">
-            <a href="{{ route('pin.groups') }}" class="btn-flat waves-effect">Tüm Gruplar</a>
+            <a href="{{ route('pin.groups') }}" class="btn-flat waves-effect">Tüm Arşivler</a>
         </div>
     </div>
 </div>
@@ -90,10 +90,10 @@
                     var item = item_model.clone();
                         item.removeClass('model hide').addClass('_tmp d-flex').attr('data-id', o.id)
 
-                        item.find('[data-name=edit]').attr('data-group_id', o.id)
+                        item.find('[data-name=edit]').attr('data-archive_id', o.id)
                         item.find('[data-trigger=pin-go]').html(o.name).attr('data-id', o.id)
                         item.find('[data-name=count]').html(o.pins_count + ' pin')
-                        item.find('[name=group_id]').val(o.id)
+                        item.find('[name=archive_id]').val(o.id)
 
                         item.appendTo(__)
                 })
@@ -326,7 +326,7 @@
                         'data-type': __.data('type'),
                         'data-index': __.data('index'),
                         'data-pin-uuid': __.data('pin-uuid'),
-                        'data-include': 'group_id'
+                        'data-include': 'archive_id'
                     })
                 ]
             });

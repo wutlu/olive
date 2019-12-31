@@ -216,16 +216,14 @@ Route::prefix('alarm')->group(function () {
     Route::delete('/', 'AlarmController@delete');
 });
 
-Route::prefix('pinleme')->group(function () {
-    Route::prefix('gruplar')->group(function () {
-        Route::get('/', 'PinController@groups')->name('pin.groups');
-        Route::post('/', 'PinController@groupListJson');
+Route::prefix('arsiv')->group(function () {
+    Route::get('/', 'PinController@groups')->name('pin.groups');
+    Route::post('/', 'PinController@groupListJson');
 
-        Route::post('grup', 'PinController@groupGet')->name('pin.group');
-        Route::put('grup', 'PinController@groupCreate');
-        Route::patch('grup', 'PinController@groupUpdate');
-        Route::delete('grup', 'PinController@groupDelete');
-    });
+    Route::post('islem', 'PinController@groupGet')->name('pin.group');
+    Route::put('islem', 'PinController@groupCreate');
+    Route::patch('islem', 'PinController@groupUpdate');
+    Route::delete('islem', 'PinController@groupDelete');
 
     Route::get('{id}', 'PinController@pins')->name('pin.pins');
     Route::post('yorum', 'PinController@comment')->name('pin.comment');

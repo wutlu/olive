@@ -219,7 +219,7 @@
         </div>
         <div class="card-content">
             <span class="d-block grey-text text-darken-2" data-name="group-count"></span>
-            <p class="grey-text text-darken-2">İlgilendiğiniz içerikleri pinleyerek daha sonra kullanmak üzere gruplar halinde saklayabilirsiniz.</p>
+            <p class="grey-text text-darken-2">İlgilendiğiniz içerikleri daha sonra kullanmak üzere arşivler halinde saklayabilirsiniz.</p>
         </div>
         <nav class="nav-half mb-0">
             <div class="nav-wrapper">

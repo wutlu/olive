@@ -98,7 +98,7 @@ class PinController extends Controller
             'id',
             'name'
         )->with('pins')->where([
-            'id' => $request->group_id,
+            'id' => $request->archive_id,
             'organisation_id' => auth()->user()->organisation_id
         ])->firstOrFail();
 
@@ -176,7 +176,7 @@ class PinController extends Controller
     }
 
     /**
-     * Pinleme
+     * Arşiv
      *
      * @return array
      */
@@ -192,7 +192,7 @@ class PinController extends Controller
                 'index' => $request->index,
                 'type' => $request->type,
                 'id' => $request->id,
-                'group_id' => $request->group_id
+                'archive_id' => $request->archive_id
             ])->where('organisation_id', $user->organisation_id)->first();
 
             if ($type == 'add')

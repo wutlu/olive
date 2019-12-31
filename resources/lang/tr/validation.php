@@ -228,6 +228,7 @@ $arr = [
         'pin_group'                       => 'Arşiv',
         'keyword_group.*'                 => 'Kelime Grubu',
         'group_id'                        => 'Grup',
+        'archive_id'                      => 'Arşiv',
         'index'                           => 'Indeks',
         'comment'                         => 'Yorum',
         'button_action'                   => 'Aksiyon Adresi',

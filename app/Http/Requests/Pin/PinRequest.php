@@ -53,7 +53,7 @@ class PinRequest extends FormRequest
             'type' => 'required|string|max:64',
             'index' => 'required|string|max:128',
 
-            'group_id' => 'required|integer|group_have'
+            'archive_id' => 'required|integer|group_have'
         ];
     }
 }

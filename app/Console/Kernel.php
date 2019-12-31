@@ -172,7 +172,7 @@ class Kernel extends ConsoleKernel
             $schedule->command('alarm:control')->everyMinute()->timezone(config('app.timezone'))->withoutOverlapping(1);
 
             /**
-             * Pinleme için PDF çıktı modülünün tetiklenmesi.
+             * Arşiv için PDF çıktı modülünün tetiklenmesi.
              */
             $schedule->command('trigger:pdf:pin_groups')->everyMinute()->timezone(config('app.timezone'));
 

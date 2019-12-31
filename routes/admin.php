@@ -92,8 +92,8 @@ Route::prefix('organizasyon-yonetimi')->group(function () {
         Route::get('{id}/alarmlar', 'OrganisationController@alarms')->name('admin.organisation.alarms');
         Route::post('{id}/alarmlar', 'OrganisationController@alarmListJson');
 
-        Route::get('{id}/pin-gruplari', 'OrganisationController@pinGroups')->name('admin.organisation.pin_groups');
-        Route::post('{id}/pin-gruplari', 'OrganisationController@pinGroupListJson');
+        Route::get('{id}/arsivler', 'OrganisationController@pinGroups')->name('admin.organisation.pin_groups');
+        Route::post('{id}/arsivler', 'OrganisationController@pinGroupListJson');
 
         Route::get('{id}/fatura-gecmisi', 'OrganisationController@adminInvoiceHistory')->name('admin.organisation.invoices');
         Route::post('{id}/fatura-onay', 'OrganisationController@adminInvoiceApprove')->name('admin.organisation.invoice.approve');

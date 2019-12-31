@@ -2,7 +2,7 @@
     'sidenav_fixed_layout' => true,
     'breadcrumb' => [
         [
-            'text' => 'Arşivler',
+            'text' => 'Arşiv',
             'link' => route('pin.groups')
         ],
         [
@@ -41,7 +41,7 @@
 @section('wildcard')
     <div class="card wild-background">
         <div class="container">
-            <span class="wildcard-title">Pinlemeler</span>
+            <span class="wildcard-title">{{ $pg->name }}</span>
         </div>
     </div>
 @endsection
@@ -81,7 +81,7 @@
                             data-id="{{ $pin->id }}"
                             data-type="{{ $pin->type }}"
                             data-index="{{ $pin->index }}"
-                            data-group_id="{{ $pg->id }}"
+                            data-archive_id="{{ $pg->id }}"
                             data-callback="__pin">Pin'i Kaldır</a>
                     </li>
                 @endif
@@ -125,7 +125,7 @@
             @slot('cloud_class', 'white-text')
             @slot('text_class', 'grey-text text-darken-2')
             @slot('size', 'small')
-            @slot('text', 'Pinleme Yapılmadı!')
+            @slot('text', 'Arşiv Boş')
         @endcomponent
     @endforelse
 
