@@ -76,7 +76,7 @@ function msie()
 
     if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))
     {
-        M.toast({ html: 'Internet Explorer ile Olive deneyiminiz sorunlu olacaktır. Lütfen Olive için daha güncel bir tarayıcı kullanın. Bkz: Mozilla Firefox, Google Chrome', classes: 'red' })
+        M.toast({ html: 'Internet Explorer ile Veri Zone deneyiminiz sorunlu olacaktır. Lütfen Veri Zone için daha güncel bir tarayıcı kullanın. Bkz: Mozilla Firefox, Google Chrome', classes: 'red' })
     }
 }
 

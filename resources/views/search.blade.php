@@ -3109,7 +3109,7 @@
                                 <span>{{ $module }}</span>
                             </label>
 
-                            <label class="module-label" data-tooltip="Olive, Twitter iyi sonuç algoritması." data-position="left">
+                            <label class="module-label" data-tooltip="Veri Zone, Twitter iyi sonuç algoritması." data-position="left">
                                 <input data-update name="sharp" checked value="on" type="checkbox" />
                                 <span>İyi Sonuç</span>
                             </label>

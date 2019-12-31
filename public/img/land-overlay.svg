@@ -1,0 +1,542 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="400" viewBox="0 0 1000 400">
+  <defs>
+    <style>
+      .cls-1, .cls-11, .cls-13, .cls-15, .cls-17, .cls-19, .cls-21, .cls-23, .cls-25, .cls-27, .cls-29, .cls-3, .cls-31, .cls-33, .cls-35, .cls-37, .cls-39, .cls-41, .cls-43, .cls-45, .cls-47, .cls-49, .cls-5, .cls-7, .cls-9 {
+        fill: #fff;
+      }
+
+      .cls-1 {
+        filter: url(#filter);
+      }
+
+      .cls-2 {
+        fill: url(#linear-gradient);
+      }
+
+      .cls-3 {
+        filter: url(#filter-2);
+      }
+
+      .cls-10, .cls-12, .cls-14, .cls-16, .cls-20, .cls-22, .cls-24, .cls-26, .cls-28, .cls-30, .cls-32, .cls-34, .cls-36, .cls-4, .cls-6, .cls-8 {
+        fill-rule: evenodd;
+      }
+
+      .cls-4 {
+        fill: url(#linear-gradient-2);
+      }
+
+      .cls-5 {
+        filter: url(#filter-3);
+      }
+
+      .cls-6 {
+        fill: url(#linear-gradient-3);
+      }
+
+      .cls-7 {
+        filter: url(#filter-4);
+      }
+
+      .cls-8 {
+        fill: url(#linear-gradient-4);
+      }
+
+      .cls-9 {
+        filter: url(#filter-5);
+      }
+
+      .cls-10 {
+        fill: url(#linear-gradient-5);
+      }
+
+      .cls-11 {
+        filter: url(#filter-6);
+      }
+
+      .cls-12 {
+        fill: url(#linear-gradient-6);
+      }
+
+      .cls-13 {
+        filter: url(#filter-7);
+      }
+
+      .cls-14 {
+        fill: url(#linear-gradient-7);
+      }
+
+      .cls-15 {
+        filter: url(#filter-8);
+      }
+
+      .cls-16 {
+        fill: url(#linear-gradient-8);
+      }
+
+      .cls-17 {
+        filter: url(#filter-9);
+      }
+
+      .cls-18 {
+        fill: url(#linear-gradient-9);
+      }
+
+      .cls-19 {
+        filter: url(#filter-10);
+      }
+
+      .cls-20 {
+        fill: url(#linear-gradient-10);
+      }
+
+      .cls-21 {
+        filter: url(#filter-11);
+      }
+
+      .cls-22 {
+        fill: url(#linear-gradient-11);
+      }
+
+      .cls-23 {
+        filter: url(#filter-12);
+      }
+
+      .cls-24 {
+        fill: url(#linear-gradient-12);
+      }
+
+      .cls-25 {
+        filter: url(#filter-13);
+      }
+
+      .cls-26 {
+        fill: url(#linear-gradient-13);
+      }
+
+      .cls-27 {
+        filter: url(#filter-14);
+      }
+
+      .cls-28 {
+        fill: url(#linear-gradient-14);
+      }
+
+      .cls-29 {
+        filter: url(#filter-15);
+      }
+
+      .cls-30 {
+        fill: url(#linear-gradient-15);
+      }
+
+      .cls-31 {
+        filter: url(#filter-16);
+      }
+
+      .cls-32 {
+        fill: url(#linear-gradient-16);
+      }
+
+      .cls-33 {
+        filter: url(#filter-17);
+      }
+
+      .cls-34 {
+        fill: url(#linear-gradient-17);
+      }
+
+      .cls-35 {
+        filter: url(#filter-18);
+      }
+
+      .cls-36 {
+        fill: url(#linear-gradient-18);
+      }
+
+      .cls-37 {
+        filter: url(#filter-19);
+      }
+
+      .cls-38 {
+        fill: url(#linear-gradient-19);
+      }
+
+      .cls-39 {
+        filter: url(#filter-20);
+      }
+
+      .cls-40 {
+        fill: url(#linear-gradient-20);
+      }
+
+      .cls-41 {
+        filter: url(#filter-21);
+      }
+
+      .cls-42 {
+        fill: url(#linear-gradient-21);
+      }
+
+      .cls-43 {
+        filter: url(#filter-22);
+      }
+
+      .cls-44 {
+        fill: url(#linear-gradient-22);
+      }
+
+      .cls-45 {
+        filter: url(#filter-23);
+      }
+
+      .cls-46 {
+        fill: url(#linear-gradient-23);
+      }
+
+      .cls-47 {
+        filter: url(#filter-24);
+      }
+
+      .cls-48 {
+        fill: url(#linear-gradient-24);
+      }
+
+      .cls-49 {
+        filter: url(#filter-25);
+      }
+
+      .cls-50 {
+        fill: url(#linear-gradient-25);
+      }
+    </style>
+    <filter id="filter" x="38" y="209" width="17" height="17" filterUnits="userSpaceOnUse">
+      <feGaussianBlur result="blur" stdDeviation="2" in="SourceAlpha"/>
+      <feComposite result="composite"/>
+      <feComposite result="composite-2"/>
+      <feComposite result="composite-3"/>
+      <feFlood result="flood" flood-color="#0084ff"/>
+      <feComposite result="composite-4" operator="in" in2="composite-3"/>
+      <feBlend result="blend" mode="screen" in2="SourceGraphic"/>
+      <feBlend result="blend-2" in="SourceGraphic"/>
+    </filter>
+    <linearGradient id="linear-gradient" x1="46" y1="400" x2="46" y2="220" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#005aff" stop-opacity="0"/>
+      <stop offset="0.685" stop-color="#0084ff"/>
+      <stop offset="1" stop-color="#fff"/>
+    </linearGradient>
+    <filter id="filter-2" x="75" y="94" width="14" height="14" filterUnits="userSpaceOnUse">
+      <feGaussianBlur result="blur" stdDeviation="2" in="SourceAlpha"/>
+      <feComposite result="composite"/>
+      <feComposite result="composite-2"/>
+      <feComposite result="composite-3"/>
+      <feFlood result="flood" flood-color="#0084ff"/>
+      <feComposite result="composite-4" operator="in" in2="composite-3"/>
+      <feBlend result="blend" mode="screen" in2="SourceGraphic"/>
+      <feBlend result="blend-2" in="SourceGraphic"/>
+    </filter>
+    <linearGradient id="linear-gradient-2" x1="81.359" y1="183.25" x2="81.359" y2="101.719" xlink:href="#linear-gradient"/>
+    <filter id="filter-3" x="193" y="55" width="14" height="14" filterUnits="userSpaceOnUse">
+      <feGaussianBlur result="blur" stdDeviation="2" in="SourceAlpha"/>
+      <feComposite result="composite"/>
+      <feComposite result="composite-2"/>
+      <feComposite result="composite-3"/>
+      <feFlood result="flood" flood-color="#0084ff"/>
+      <feComposite result="composite-4" operator="in" in2="composite-3"/>
+      <feBlend result="blend" mode="screen" in2="SourceGraphic"/>
+      <feBlend result="blend-2" in="SourceGraphic"/>
+    </filter>
+    <linearGradient id="linear-gradient-3" x1="199.359" y1="144.25" x2="199.359" y2="62.719" xlink:href="#linear-gradient"/>
+    <filter id="filter-4" x="298" y="122" width="14" height="14" filterUnits="userSpaceOnUse">
+      <feGaussianBlur result="blur" stdDeviation="2" in="SourceAlpha"/>
+      <feComposite result="composite"/>
+      <feComposite result="composite-2"/>
+      <feComposite result="composite-3"/>
+      <feFlood result="flood" flood-color="#0084ff"/>
+      <feComposite result="composite-4" operator="in" in2="composite-3"/>
+      <feBlend result="blend" mode="screen" in2="SourceGraphic"/>
+      <feBlend result="blend-2" in="SourceGraphic"/>
+    </filter>
+    <linearGradient id="linear-gradient-4" x1="304.36" y1="211.25" x2="304.36" y2="129.719" xlink:href="#linear-gradient"/>
+    <filter id="filter-5" x="468" y="66" width="14" height="14" filterUnits="userSpaceOnUse">
+      <feGaussianBlur result="blur" stdDeviation="2" in="SourceAlpha"/>
+      <feComposite result="composite"/>
+      <feComposite result="composite-2"/>
+      <feComposite result="composite-3"/>
+      <feFlood result="flood" flood-color="#0084ff"/>
+      <feComposite result="composite-4" operator="in" in2="composite-3"/>
+      <feBlend result="blend" mode="screen" in2="SourceGraphic"/>
+      <feBlend result="blend-2" in="SourceGraphic"/>
+    </filter>
+    <linearGradient id="linear-gradient-5" x1="474.36" y1="155.25" x2="474.36" y2="73.719" xlink:href="#linear-gradient"/>
+    <filter id="filter-6" x="625" y="41" width="14" height="14" filterUnits="userSpaceOnUse">
+      <feGaussianBlur result="blur" stdDeviation="2" in="SourceAlpha"/>
+      <feComposite result="composite"/>
+      <feComposite result="composite-2"/>
+      <feComposite result="composite-3"/>
+      <feFlood result="flood" flood-color="#0084ff"/>
+      <feComposite result="composite-4" operator="in" in2="composite-3"/>
+      <feBlend result="blend" mode="screen" in2="SourceGraphic"/>
+      <feBlend result="blend-2" in="SourceGraphic"/>
+    </filter>
+    <linearGradient id="linear-gradient-6" x1="631.36" y1="130.25" x2="631.36" y2="48.719" xlink:href="#linear-gradient"/>
+    <filter id="filter-7" x="748" y="91" width="14" height="14" filterUnits="userSpaceOnUse">
+      <feGaussianBlur result="blur" stdDeviation="2" in="SourceAlpha"/>
+      <feComposite result="composite"/>
+      <feComposite result="composite-2"/>
+      <feComposite result="composite-3"/>
+      <feFlood result="flood" flood-color="#0084ff"/>
+      <feComposite result="composite-4" operator="in" in2="composite-3"/>
+      <feBlend result="blend" mode="screen" in2="SourceGraphic"/>
+      <feBlend result="blend-2" in="SourceGraphic"/>
+    </filter>
+    <linearGradient id="linear-gradient-7" x1="754.36" y1="180.25" x2="754.36" y2="98.719" xlink:href="#linear-gradient"/>
+    <filter id="filter-8" x="858" y="56" width="14" height="14" filterUnits="userSpaceOnUse">
+      <feGaussianBlur result="blur" stdDeviation="2" in="SourceAlpha"/>
+      <feComposite result="composite"/>
+      <feComposite result="composite-2"/>
+      <feComposite result="composite-3"/>
+      <feFlood result="flood" flood-color="#0084ff"/>
+      <feComposite result="composite-4" operator="in" in2="composite-3"/>
+      <feBlend result="blend" mode="screen" in2="SourceGraphic"/>
+      <feBlend result="blend-2" in="SourceGraphic"/>
+    </filter>
+    <linearGradient id="linear-gradient-8" x1="864.36" y1="145.25" x2="864.36" y2="63.719" xlink:href="#linear-gradient"/>
+    <filter id="filter-9" x="143" y="37" width="17" height="17" filterUnits="userSpaceOnUse">
+      <feGaussianBlur result="blur" stdDeviation="2" in="SourceAlpha"/>
+      <feComposite result="composite"/>
+      <feComposite result="composite-2"/>
+      <feComposite result="composite-3"/>
+      <feFlood result="flood" flood-color="#0084ff"/>
+      <feComposite result="composite-4" operator="in" in2="composite-3"/>
+      <feBlend result="blend" mode="screen" in2="SourceGraphic"/>
+      <feBlend result="blend-2" in="SourceGraphic"/>
+    </filter>
+    <linearGradient id="linear-gradient-9" x1="151" y1="228" x2="151" y2="48" xlink:href="#linear-gradient"/>
+    <filter id="filter-10" x="112" y="91" width="16" height="16" filterUnits="userSpaceOnUse">
+      <feGaussianBlur result="blur" stdDeviation="2" in="SourceAlpha"/>
+      <feComposite result="composite"/>
+      <feComposite result="composite-2"/>
+      <feComposite result="composite-3"/>
+      <feFlood result="flood" flood-color="#0084ff"/>
+      <feComposite result="composite-4" operator="in" in2="composite-3"/>
+      <feBlend result="blend" mode="screen" in2="SourceGraphic"/>
+      <feBlend result="blend-2" in="SourceGraphic"/>
+    </filter>
+    <linearGradient id="linear-gradient-10" x1="119.219" y1="234.031" x2="119.219" y2="100.438" xlink:href="#linear-gradient"/>
+    <filter id="filter-11" x="180" y="146" width="16" height="16" filterUnits="userSpaceOnUse">
+      <feGaussianBlur result="blur" stdDeviation="2" in="SourceAlpha"/>
+      <feComposite result="composite"/>
+      <feComposite result="composite-2"/>
+      <feComposite result="composite-3"/>
+      <feFlood result="flood" flood-color="#0084ff"/>
+      <feComposite result="composite-4" operator="in" in2="composite-3"/>
+      <feBlend result="blend" mode="screen" in2="SourceGraphic"/>
+      <feBlend result="blend-2" in="SourceGraphic"/>
+    </filter>
+    <linearGradient id="linear-gradient-11" x1="187.219" y1="289.031" x2="187.219" y2="155.438" xlink:href="#linear-gradient"/>
+    <filter id="filter-12" x="322" y="69" width="16" height="16" filterUnits="userSpaceOnUse">
+      <feGaussianBlur result="blur" stdDeviation="2" in="SourceAlpha"/>
+      <feComposite result="composite"/>
+      <feComposite result="composite-2"/>
+      <feComposite result="composite-3"/>
+      <feFlood result="flood" flood-color="#0084ff"/>
+      <feComposite result="composite-4" operator="in" in2="composite-3"/>
+      <feBlend result="blend" mode="screen" in2="SourceGraphic"/>
+      <feBlend result="blend-2" in="SourceGraphic"/>
+    </filter>
+    <linearGradient id="linear-gradient-12" x1="329.219" y1="212.031" x2="329.219" y2="78.438" xlink:href="#linear-gradient"/>
+    <filter id="filter-13" x="436" y="119" width="16" height="16" filterUnits="userSpaceOnUse">
+      <feGaussianBlur result="blur" stdDeviation="2" in="SourceAlpha"/>
+      <feComposite result="composite"/>
+      <feComposite result="composite-2"/>
+      <feComposite result="composite-3"/>
+      <feFlood result="flood" flood-color="#0084ff"/>
+      <feComposite result="composite-4" operator="in" in2="composite-3"/>
+      <feBlend result="blend" mode="screen" in2="SourceGraphic"/>
+      <feBlend result="blend-2" in="SourceGraphic"/>
+    </filter>
+    <linearGradient id="linear-gradient-13" x1="443.219" y1="262.031" x2="443.219" y2="128.438" xlink:href="#linear-gradient"/>
+    <filter id="filter-14" x="519" y="67" width="16" height="16" filterUnits="userSpaceOnUse">
+      <feGaussianBlur result="blur" stdDeviation="2" in="SourceAlpha"/>
+      <feComposite result="composite"/>
+      <feComposite result="composite-2"/>
+      <feComposite result="composite-3"/>
+      <feFlood result="flood" flood-color="#0084ff"/>
+      <feComposite result="composite-4" operator="in" in2="composite-3"/>
+      <feBlend result="blend" mode="screen" in2="SourceGraphic"/>
+      <feBlend result="blend-2" in="SourceGraphic"/>
+    </filter>
+    <linearGradient id="linear-gradient-14" x1="526.219" y1="210.031" x2="526.219" y2="76.438" xlink:href="#linear-gradient"/>
+    <filter id="filter-15" x="597" y="165" width="16" height="16" filterUnits="userSpaceOnUse">
+      <feGaussianBlur result="blur" stdDeviation="2" in="SourceAlpha"/>
+      <feComposite result="composite"/>
+      <feComposite result="composite-2"/>
+      <feComposite result="composite-3"/>
+      <feFlood result="flood" flood-color="#0084ff"/>
+      <feComposite result="composite-4" operator="in" in2="composite-3"/>
+      <feBlend result="blend" mode="screen" in2="SourceGraphic"/>
+      <feBlend result="blend-2" in="SourceGraphic"/>
+    </filter>
+    <linearGradient id="linear-gradient-15" x1="604.219" y1="308.031" x2="604.219" y2="174.438" xlink:href="#linear-gradient"/>
+    <filter id="filter-16" x="715" y="87" width="16" height="16" filterUnits="userSpaceOnUse">
+      <feGaussianBlur result="blur" stdDeviation="2" in="SourceAlpha"/>
+      <feComposite result="composite"/>
+      <feComposite result="composite-2"/>
+      <feComposite result="composite-3"/>
+      <feFlood result="flood" flood-color="#0084ff"/>
+      <feComposite result="composite-4" operator="in" in2="composite-3"/>
+      <feBlend result="blend" mode="screen" in2="SourceGraphic"/>
+      <feBlend result="blend-2" in="SourceGraphic"/>
+    </filter>
+    <linearGradient id="linear-gradient-16" x1="722.219" y1="230.031" x2="722.219" y2="96.438" xlink:href="#linear-gradient"/>
+    <filter id="filter-17" x="894" y="175" width="16" height="16" filterUnits="userSpaceOnUse">
+      <feGaussianBlur result="blur" stdDeviation="2" in="SourceAlpha"/>
+      <feComposite result="composite"/>
+      <feComposite result="composite-2"/>
+      <feComposite result="composite-3"/>
+      <feFlood result="flood" flood-color="#0084ff"/>
+      <feComposite result="composite-4" operator="in" in2="composite-3"/>
+      <feBlend result="blend" mode="screen" in2="SourceGraphic"/>
+      <feBlend result="blend-2" in="SourceGraphic"/>
+    </filter>
+    <linearGradient id="linear-gradient-17" x1="901.219" y1="318.031" x2="901.219" y2="184.438" xlink:href="#linear-gradient"/>
+    <filter id="filter-18" x="963" y="223" width="16" height="16" filterUnits="userSpaceOnUse">
+      <feGaussianBlur result="blur" stdDeviation="2" in="SourceAlpha"/>
+      <feComposite result="composite"/>
+      <feComposite result="composite-2"/>
+      <feComposite result="composite-3"/>
+      <feFlood result="flood" flood-color="#0084ff"/>
+      <feComposite result="composite-4" operator="in" in2="composite-3"/>
+      <feBlend result="blend" mode="screen" in2="SourceGraphic"/>
+      <feBlend result="blend-2" in="SourceGraphic"/>
+    </filter>
+    <linearGradient id="linear-gradient-18" x1="970.219" y1="366.031" x2="970.219" y2="232.438" xlink:href="#linear-gradient"/>
+    <filter id="filter-19" x="216" y="119" width="17" height="17" filterUnits="userSpaceOnUse">
+      <feGaussianBlur result="blur" stdDeviation="2" in="SourceAlpha"/>
+      <feComposite result="composite"/>
+      <feComposite result="composite-2"/>
+      <feComposite result="composite-3"/>
+      <feFlood result="flood" flood-color="#0084ff"/>
+      <feComposite result="composite-4" operator="in" in2="composite-3"/>
+      <feBlend result="blend" mode="screen" in2="SourceGraphic"/>
+      <feBlend result="blend-2" in="SourceGraphic"/>
+    </filter>
+    <linearGradient id="linear-gradient-19" x1="224" y1="310" x2="224" y2="130" xlink:href="#linear-gradient"/>
+    <filter id="filter-20" x="386" y="40" width="17" height="17" filterUnits="userSpaceOnUse">
+      <feGaussianBlur result="blur" stdDeviation="2" in="SourceAlpha"/>
+      <feComposite result="composite"/>
+      <feComposite result="composite-2"/>
+      <feComposite result="composite-3"/>
+      <feFlood result="flood" flood-color="#0084ff"/>
+      <feComposite result="composite-4" operator="in" in2="composite-3"/>
+      <feBlend result="blend" mode="screen" in2="SourceGraphic"/>
+      <feBlend result="blend-2" in="SourceGraphic"/>
+    </filter>
+    <linearGradient id="linear-gradient-20" x1="394" y1="231" x2="394" y2="51" xlink:href="#linear-gradient"/>
+    <filter id="filter-21" x="342" y="187" width="17" height="17" filterUnits="userSpaceOnUse">
+      <feGaussianBlur result="blur" stdDeviation="2" in="SourceAlpha"/>
+      <feComposite result="composite"/>
+      <feComposite result="composite-2"/>
+      <feComposite result="composite-3"/>
+      <feFlood result="flood" flood-color="#0084ff"/>
+      <feComposite result="composite-4" operator="in" in2="composite-3"/>
+      <feBlend result="blend" mode="screen" in2="SourceGraphic"/>
+      <feBlend result="blend-2" in="SourceGraphic"/>
+    </filter>
+    <linearGradient id="linear-gradient-21" x1="350" y1="378" x2="350" y2="198" xlink:href="#linear-gradient"/>
+    <filter id="filter-22" x="549" y="63" width="17" height="17" filterUnits="userSpaceOnUse">
+      <feGaussianBlur result="blur" stdDeviation="2" in="SourceAlpha"/>
+      <feComposite result="composite"/>
+      <feComposite result="composite-2"/>
+      <feComposite result="composite-3"/>
+      <feFlood result="flood" flood-color="#0084ff"/>
+      <feComposite result="composite-4" operator="in" in2="composite-3"/>
+      <feBlend result="blend" mode="screen" in2="SourceGraphic"/>
+      <feBlend result="blend-2" in="SourceGraphic"/>
+    </filter>
+    <linearGradient id="linear-gradient-22" x1="557" y1="254" x2="557" y2="74" xlink:href="#linear-gradient"/>
+    <filter id="filter-23" x="678" y="156" width="17" height="17" filterUnits="userSpaceOnUse">
+      <feGaussianBlur result="blur" stdDeviation="2" in="SourceAlpha"/>
+      <feComposite result="composite"/>
+      <feComposite result="composite-2"/>
+      <feComposite result="composite-3"/>
+      <feFlood result="flood" flood-color="#0084ff"/>
+      <feComposite result="composite-4" operator="in" in2="composite-3"/>
+      <feBlend result="blend" mode="screen" in2="SourceGraphic"/>
+      <feBlend result="blend-2" in="SourceGraphic"/>
+    </filter>
+    <linearGradient id="linear-gradient-23" x1="686" y1="347" x2="686" y2="167" xlink:href="#linear-gradient"/>
+    <filter id="filter-24" x="818" y="94" width="17" height="17" filterUnits="userSpaceOnUse">
+      <feGaussianBlur result="blur" stdDeviation="2" in="SourceAlpha"/>
+      <feComposite result="composite"/>
+      <feComposite result="composite-2"/>
+      <feComposite result="composite-3"/>
+      <feFlood result="flood" flood-color="#0084ff"/>
+      <feComposite result="composite-4" operator="in" in2="composite-3"/>
+      <feBlend result="blend" mode="screen" in2="SourceGraphic"/>
+      <feBlend result="blend-2" in="SourceGraphic"/>
+    </filter>
+    <linearGradient id="linear-gradient-24" x1="826" y1="285" x2="826" y2="105" xlink:href="#linear-gradient"/>
+    <filter id="filter-25" x="916" y="43" width="17" height="17" filterUnits="userSpaceOnUse">
+      <feGaussianBlur result="blur" stdDeviation="2" in="SourceAlpha"/>
+      <feComposite result="composite"/>
+      <feComposite result="composite-2"/>
+      <feComposite result="composite-3"/>
+      <feFlood result="flood" flood-color="#0084ff"/>
+      <feComposite result="composite-4" operator="in" in2="composite-3"/>
+      <feBlend result="blend" mode="screen" in2="SourceGraphic"/>
+      <feBlend result="blend-2" in="SourceGraphic"/>
+    </filter>
+    <linearGradient id="linear-gradient-25" x1="924" y1="234" x2="924" y2="54" xlink:href="#linear-gradient"/>
+  </defs>
+  <circle id="circle" class="cls-1" cx="46" cy="217" r="3"/>
+  <rect id="line" class="cls-2" x="45" y="220" width="2" height="180"/>
+  <circle id="circle-2" data-name="circle" class="cls-3" cx="81.359" cy="100.359" r="1.359"/>
+  <path id="line-2" data-name="line" class="cls-4" d="M80.906,101.717h0.906v81.525H80.906V101.717Z"/>
+  <circle id="circle-3" data-name="circle" class="cls-5" cx="199.359" cy="61.359" r="1.359"/>
+  <path id="line-3" data-name="line" class="cls-6" d="M198.906,62.718h0.906v81.524h-0.906V62.718Z"/>
+  <circle id="circle-4" data-name="circle" class="cls-7" cx="304.36" cy="128.359" r="1.359"/>
+  <path id="line-4" data-name="line" class="cls-8" d="M303.906,129.717h0.906v81.525h-0.906V129.717Z"/>
+  <circle id="circle-5" data-name="circle" class="cls-9" cx="474.36" cy="72.359" r="1.359"/>
+  <path id="line-5" data-name="line" class="cls-10" d="M473.906,73.718h0.906v81.524h-0.906V73.718Z"/>
+  <circle id="circle-6" data-name="circle" class="cls-11" cx="631.36" cy="47.359" r="1.36"/>
+  <path id="line-6" data-name="line" class="cls-12" d="M630.906,48.718h0.906v81.524h-0.906V48.718Z"/>
+  <circle id="circle-7" data-name="circle" class="cls-13" cx="754.36" cy="97.359" r="1.36"/>
+  <path id="line-7" data-name="line" class="cls-14" d="M753.906,98.718h0.906v81.524h-0.906V98.718Z"/>
+  <circle id="circle-8" data-name="circle" class="cls-15" cx="864.36" cy="62.359" r="1.36"/>
+  <path id="line-8" data-name="line" class="cls-16" d="M863.906,63.718h0.906v81.524h-0.906V63.718Z"/>
+  <circle id="circle-9" data-name="circle" class="cls-17" cx="151" cy="45" r="3"/>
+  <rect id="line-9" data-name="line" class="cls-18" x="150" y="48" width="2" height="180"/>
+  <circle id="circle-10" data-name="circle" class="cls-19" cx="119.219" cy="98.219" r="2.219"/>
+  <path id="line-10" data-name="line" class="cls-20" d="M118.484,100.452h1.484V234.018h-1.484V100.452Z"/>
+  <circle id="circle-11" data-name="circle" class="cls-21" cx="187.219" cy="153.219" r="2.219"/>
+  <path id="line-11" data-name="line" class="cls-22" d="M186.484,155.452h1.484V289.018h-1.484V155.452Z"/>
+  <circle id="circle-12" data-name="circle" class="cls-23" cx="329.219" cy="76.219" r="2.219"/>
+  <path id="line-12" data-name="line" class="cls-24" d="M328.484,78.452h1.484V212.018h-1.484V78.452Z"/>
+  <circle id="circle-13" data-name="circle" class="cls-25" cx="443.219" cy="126.219" r="2.219"/>
+  <path id="line-13" data-name="line" class="cls-26" d="M442.484,128.452h1.484V262.018h-1.484V128.452Z"/>
+  <circle id="circle-14" data-name="circle" class="cls-27" cx="526.219" cy="74.219" r="2.219"/>
+  <path id="line-14" data-name="line" class="cls-28" d="M525.484,76.452h1.484V210.018h-1.484V76.452Z"/>
+  <circle id="circle-15" data-name="circle" class="cls-29" cx="604.219" cy="172.219" r="2.219"/>
+  <path id="line-15" data-name="line" class="cls-30" d="M603.484,174.452h1.484V308.018h-1.484V174.452Z"/>
+  <circle id="circle-16" data-name="circle" class="cls-31" cx="722.219" cy="94.219" r="2.219"/>
+  <path id="line-16" data-name="line" class="cls-32" d="M721.484,96.452h1.484V230.018h-1.484V96.452Z"/>
+  <circle id="circle-17" data-name="circle" class="cls-33" cx="901.219" cy="182.219" r="2.219"/>
+  <path id="line-17" data-name="line" class="cls-34" d="M900.484,184.452h1.484V318.018h-1.484V184.452Z"/>
+  <circle id="circle-18" data-name="circle" class="cls-35" cx="970.219" cy="230.219" r="2.219"/>
+  <path id="line-18" data-name="line" class="cls-36" d="M969.484,232.452h1.484V366.018h-1.484V232.452Z"/>
+  <circle id="circle-19" data-name="circle" class="cls-37" cx="224" cy="127" r="3"/>
+  <rect id="line-19" data-name="line" class="cls-38" x="223" y="130" width="2" height="180"/>
+  <circle id="circle-20" data-name="circle" class="cls-39" cx="394" cy="48" r="3"/>
+  <rect id="line-20" data-name="line" class="cls-40" x="393" y="51" width="2" height="180"/>
+  <circle id="circle-21" data-name="circle" class="cls-41" cx="350" cy="195" r="3"/>
+  <rect id="line-21" data-name="line" class="cls-42" x="349" y="198" width="2" height="180"/>
+  <circle id="circle-22" data-name="circle" class="cls-43" cx="557" cy="71" r="3"/>
+  <rect id="line-22" data-name="line" class="cls-44" x="556" y="74" width="2" height="180"/>
+  <circle id="circle-23" data-name="circle" class="cls-45" cx="686" cy="164" r="3"/>
+  <rect id="line-23" data-name="line" class="cls-46" x="685" y="167" width="2" height="180"/>
+  <circle id="circle-24" data-name="circle" class="cls-47" cx="826" cy="102" r="3"/>
+  <rect id="line-24" data-name="line" class="cls-48" x="825" y="105" width="2" height="180"/>
+  <circle id="circle-25" data-name="circle" class="cls-49" cx="924" cy="51" r="3"/>
+  <rect id="line-25" data-name="line" class="cls-50" x="923" y="54" width="2" height="180"/>
+</svg>

@@ -45,7 +45,7 @@ class PasswordValidationNotification extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject('Olive: Yeni şifrenizi oluşturun!')
+                    ->subject('Yeni şifrenizi oluşturun!')
                     ->greeting('Merhaba!')
                     ->level('olive')
                     ->line('Hesap şifrenizi unuttuğunuzu bildirdiniz.')

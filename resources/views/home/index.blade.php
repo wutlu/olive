@@ -1,78 +1,22 @@
 @extends('layouts.app', [
     'title' => [
-        'text' => $type ? $type['title'] : 'Veri Zone Teknoloji'
+        'text' => 'VERİ.ZONE'
     ],
-    'description' => 'Veri Zone Teknoloji, Büyük Veri Takip ve Raporlama Merkezi!',
+    'description' => 'VERİ.ZONE, Büyük Veri Takip ve Raporlama Merkezi!',
     'chat' => true
 ])
 
 @push('local.styles')
-    /*!
-     * cookie
-     */
-    .cookie-alert {
-        position: fixed;
-
-        top: 1rem;
-        right: auto;
-        bottom: auto;
-        left: 1rem;
-
-        z-index: 1000;
-
-        background-color: #fff;
-
-        border-radius: 3px;
-
-        padding: 1rem 1.5rem;
-
-        max-width: 300px;
-
-        cursor: pointer;
-    }
-
-    @media (max-width: 576px) {
-        .cookie-alert {
-            max-width: 100%;
-            
-            top: 0;
-            right: 0;
-            bottom: auto;
-            left: 0;
-
-            border-radius: 0;
-        }
-    }
-
     .section {
         margin: 0 auto;
-        padding: 10vh 0;
-        width: 90vw;
-        min-height: 80vh;
-        background-repeat: no-repeat;
-        background-position: center bottom;
-        background-size: cover;
-        background-attachment: fixed;
+        padding: 0;
+        width: 100vw;
         position: relative;
-    }
-    .section > .section-overlay {
-        background-color: rgba(0, 0, 0, .6);
-        position: absolute;
-        z-index: 0;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
     }
     .section > .container {
+        padding: 20vh 0;
         position: relative;
         z-index: 1;
-    }
-
-    @media (max-width: 1024px) {
-        .section {
-            width: 100vw;
-        }
     }
 
     .section h1,
@@ -84,7 +28,8 @@
         font-weight: bold;
     }
     .section h1 {
-        font-size: 32px;
+        font-size: 48px;
+        text-transform: uppercase;
     }
     .section h2 {
         font-size: 32px;
@@ -100,148 +45,16 @@
         font-weight: bold;
     }
 
-    .brand-logo {
-        width: 128px;
-        height: auto;
+    .section .text-container {
+        max-width: 600px;
     }
-@endpush
 
-@push('local.scripts')
-    var phone_form = false;
-    $(window).scroll(function() {
-        var test_top = ($('.section-test').offset().top) - 96;
-        var scroll_top = $(this).scrollTop();
-
-        if (scroll_top >= test_top && phone_form === false)
-        {
-            phone_form = true;
-
-            modal({
-                'id': 'info',
-                'title': 'Telefon Bırakın Sizi Arayalım!',
-                'class': 'with-bg',
-                'body': $('<div />', {
-                    'html': $('<form />', {
-                        'class': 'json',
-                        'method': 'post',
-                        'action': '{{ route('demo.request') }}',
-                        'id': 'phone_form',
-                        'data-callback': '__phone_form',
-                        'html': [
-                            $('<p />', {
-                                'class': 'grey-text mb-0',
-                                'html': 'Sizi anlamak ve daha iyi bir hizmet verebilmek için aramamıza izin verin.'
-                            }),
-                            $('<div />', {
-                                'class': 'd-flex',
-                                'html': [
-                                    $('<div />', {
-                                        'class': 'input-field',
-                                        'css': { 'width': '50%' },
-                                        'html': [
-                                            $('<input />', {
-                                                'type': 'text',
-                                                'class': 'validate',
-                                                'name': 'name',
-                                                'id': 'name',
-                                                'maxlength': 100
-                                            }),
-                                            $('<label />', {
-                                                'for': 'name',
-                                                'html': 'Adınız *'
-                                            }),
-                                            $('<span />', {
-                                                'class': 'helper-text',
-                                                'html': 'Size nasıl hitap edelim?'
-                                            })
-                                        ]
-                                    }),
-                                    $('<div />', {
-                                        'class': 'input-field',
-                                        'css': { 'width': '50%' },
-                                        'html': [
-                                            $('<input />', {
-                                                'type': 'text',
-                                                'class': 'validate',
-                                                'name': 'corporate_name',
-                                                'id': 'corporate_name',
-                                                'maxlength': 100
-                                            }),
-                                            $('<label />', {
-                                                'for': 'corporate_name',
-                                                'html': 'Organizasyon'
-                                            }),
-                                            $('<span />', {
-                                                'class': 'helper-text',
-                                                'html': 'Varsa kurum, şirket veya organizasyon adınız?'
-                                            })
-                                        ]
-                                    })
-                                ]
-                            }),
-                            $('<div />', {
-                                'class': 'input-field',
-                                'html': [
-                                    $('<input />', {
-                                        'type': 'text',
-                                        'class': 'validate',
-                                        'name': 'phone',
-                                        'id': 'phone',
-                                        'maxlength': 32
-                                    }),
-                                    $('<label />', {
-                                        'for': 'phone',
-                                        'html': 'Telefon Numaranız *'
-                                    }),
-                                    $('<span />', {
-                                        'class': 'helper-text',
-                                        'html': 'Size hangi numaradan ulaşalım?'
-                                    })
-                                ]
-                            }),
-                            $('<div />', {
-                                'class': 'input-field',
-                                'html': $('<div />', {
-                                    'class': 'captcha',
-                                    'data-id': 'phone-captcha'
-                                })
-                            })
-                        ]
-                    })
-                }),
-                'size': 'modal-large',
-                'options': {
-                    dismissible: false
-                },
-                'footer': [
-                   $('<a />', {
-                       'href': '#',
-                       'class': 'modal-close waves-effect btn-flat red-text',
-                       'html': keywords.cancel
-                   }),
-                   $('<a />', {
-                       'href': '#',
-                       'class': 'waves-effect btn-flat json',
-                       'html': keywords.send,
-                       'data-json-target': '#phone_form'
-                   })
-                ]
-            })
-
-            captcha()
-            M.updateTextFields()
-            $('input#phone').mask('(999) 999 99 99')
-        }
-    })
-
-    function __phone_form(__, obj)
-    {
-        if (obj.status == 'ok')
-        {
-            flash_alert('Bilgileriniz Kaydedildi. Teşekkürler!', 'green white-text')
-
-            $('#modal-info').modal('close')
-        }
+    .section-text > .container {
+        padding: 10vh 0;
+    }
+    .section-text p.lead {
+        color: #263238;
+        text-align: center;
     }
 @endpush
 
@@ -256,10 +69,10 @@
 
                     <ul class="right">
                         <li class="hide-on-med-and-down">
-                            <a href="#" class="white blue-text text-darken-2 fonted-menu">+90 850 302 16 30</a>
+                            <a href="tel:8503021630" class="white fonted-menu">+90 850 302 16 30</a>
                         </li>
-                        <li>
-                            <a href="{{ route('user.login') }}" class="blue darken-2 white-text waves-effect">Olive'e Git</a>
+                        <li class="btn-li d-flex">
+                            <a href="{{ route('user.login') }}" class="btn blue darken-4 white-text waves-effect align-self-center">Ücretsiz Deneyin</a>
                         </li>
                     </ul>
                 </div>
@@ -267,203 +80,25 @@
         </nav>
     </div>
 
-    <div class="cookie-alert z-depth-1 hide">
-        <a href="{{ route('page.view', 'cerez-politikasi') }}" class="blue-text">Çerezler</a> özel bir deneyim sunarak ziyaretçilerimize daha iyi hizmet vermemizi ve daha faydalı bilgiler sunmak üzere kendi dahili amaçlarımız için kullanılacaktır.
-    </div>
-
     <!-- section 1 -->
 
-    <section class="section section-header d-flex">
-        <div class="container align-self-center">
-            <div class="d-flex flex-wrap row">
-                <div class="col s12 m12 l6 xl8 p-1 align-self-center left-align">
-                    <h1 class="black-text mb-2">Dijital İtibarınızı Anlık Olarak Takip Edin</h1>
-                    @if ($type)
-                        <p class="lead black-text mb-1">{{ $type['description'] }}</p>
-                    @else
-                        <p class="lead black-text mb-2">Yalnızca markanızı ve kampanyalarınızı değil, aynı zamanda çok sayıda rakip ve segmentin kendisini izleyin ve ölçün.</p>
-                        <div class="mb-2">
-                            <a href="{{ route('home', [ 'type' => 'kisiler' ]) }}" class="blue-text text-darken-2" style="padding: .4rem; margin: 2px;">Kişiler</a>
-                            <a href="{{ route('home', [ 'type' => 'markalar' ]) }}" class="blue-text text-darken-2" style="padding: .4rem; margin: 2px;">Markalar</a>
-                            <a href="{{ route('home', [ 'type' => 'reklam-ajanslari' ]) }}" class="blue-text text-darken-2" style="padding: .4rem; margin: 2px;">Reklam Ajansları</a>
-                        </div>
-                    @endif
-                </div>
-                <div class="col s12 m12 l6 xl4 p-1 align-self-center">
-                    <div class="card">
-                        <div class="card-content">
-                            <div class="p-1 left-align">
-                                <div class="input-field">
-                                    <input data-name="report" type="text" name="report_subject" data-alias="subject" id="report_subject" placeholder="Konu" maxlength="155" />
-                                    <span class="helper-text">Rapor almak istediğiniz konuyu belirtin. Bu bir isim de olabilir.</span>
-                                </div>
-                                <div>
-                                    <a href="#" class="chip waves-effect waves-light" data-input="#report_subject" data-input-value='"Ahmet Kural"'>"Ahmet Kural"</a>
-                                    <a href="#" class="chip waves-effect waves-light" data-input="#report_subject" data-input-value="Dolar">Dolar</a>
-                                    <a href="#" class="chip waves-effect waves-light" data-input="#report_subject" data-input-value="Migros">Migros</a>
-                                    <a href="#" class="chip waves-effect waves-light" data-input="#report_subject" data-input-value="Ankara && Deprem" data-tooltip="ve">Ankara && Deprem</a>
-                                    <a href="#" class="chip waves-effect waves-light" data-input="#report_subject" data-input-value="Ankara || İstanbul" data-tooltip="veya">Ankara || İstanbul</a>
-                                </div>
-                                <div class="input-field">
-                                    <input data-name="report" type="text" name="report_name" data-alias="name" placeholder="Sizin veya Şirketinizin Adı" maxlength="55" />
-                                    <span class="helper-text">Size hitap edebilmemiz için bir isim girin.</span>
-                                </div>
-                                <div class="input-field">
-                                    <input data-name="report" type="text" name="report_phone" data-alias="phone" placeholder="GSM" />
-                                    <span class="helper-text">Rapor sonucunu ücretsiz sms olarak göndereceğimiz bir gsm numarası girin.</span>
-                                </div>
-                                <div class="center-align">
-                                    <a href="#" class="btn-flat btn-large align-self-center white waves-effect heartbeat" data-trigger="report">Ücretsiz Rapor Al</a>
-                                    <p class="m-0 grey-text">
-                                        veya <a href="{{ route('user.login') }}">dene!</a>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <section class="section section-header">
+        <div class="container">
+            <div class="text-container">
+                <h1 class="mb-1">Dijital İtibarınızı Anlık Olarak Takip Edin</h1>
+                <p class="lead mb-2">Yalnızca markanızı ve kampanyalarınızı değil, aynı zamanda çok sayıda rakip ve segmenti izleyin ve ölçümleyin.</p>
+                <a href="{{ route('user.login') }}" class="btn btn-large blue darken-4 white-text waves-effect">Ücretsiz Deneyin</a>
             </div>
         </div>
     </section>
 
-    @push('local.scripts')
-        $('input[name=report_phone]').mask('(999) 999 99 99')
+    <div class="d-table mx-auto mt-2">
+        <a href="#" class="btn-floating btn-large blue-grey darken-4 pulse" data-scroll-to=".header-logos">
+            <i class="material-icons">arrow_downward</i>
+        </a>
+    </div>
 
-        function __report_form(__, obj)
-        {
-            if (obj.status == 'ok')
-            {
-                $('[data-name=report]').val('')
-
-                $('#modal-info').modal('close')
-
-                flash_alert('Başarılı!', 'green white-text')
-
-                return modal({
-                    'id': 'alert',
-                    'body': 'Raporunuz sıraya alındı. Hazır olduğunda SMS ile bilgilendirileceksiniz.',
-                    'title': keywords.info,
-                    'size': 'modal-small',
-                    'options': {},
-                    'footer': [
-                       $('<a />', {
-                           'href': '#',
-                           'class': 'modal-close waves-effect btn-flat',
-                           'html': keywords.ok
-                       })
-                    ]
-                })
-            }
-        }
-
-        $(document).on('click', '[data-trigger=report]', function() {
-            modal({
-                'id': 'info',
-                'title': 'Ücretsiz Rapor Al',
-                'body': $('<div />', {
-                    'html': $('<form />', {
-                        'class': 'json',
-                        'method': 'post',
-                        'action': '{{ route('report.request') }}',
-                        'id': 'report_form',
-                        'data-callback': '__report_form',
-                        'data-include': 'report_name,report_subject,report_phone',
-                        'html': [
-                            $('<p />', {
-                                'class': 'mb-1 red-text heartbeat',
-                                'html': 'Raporun iyi bir sonuç vermesi için Olive\'in sizi anlaması gerekiyor. Lütfen anlamlı bir kelime veya isim girdiğinizden emin olun.'
-                            }),
-                            $('<label />', {
-                                'html': [
-                                    $('<input />', {
-                                        'type': 'checkbox',
-                                        'name': 'terms',
-                                        'value': 1
-                                    }),
-                                    $('<span />', {
-                                        'html': [
-                                            $('<a />', {
-                                                'class': 'blue-grey-text text-darken-2',
-                                                'target': '_blank',
-                                                'href': '{{ route('page.view', 'kullanim-kosullari') }}',
-                                                'html': 'Kullanım Koşulları'
-                                            }),
-                                            $('<span />', {
-                                                'html': 've',
-                                                'class': 'pl-1 pr-1'
-                                            }),
-                                            $('<a />', {
-                                                'class': 'blue-grey-text text-darken-2',
-                                                'target': '_blank',
-                                                'href': '{{ route('page.view', 'gizlilik-politikasi') }}',
-                                                'html': 'Gizlilik Politikası'
-                                            }),
-                                            $('<span />', {
-                                                'html': 'şartlarını okudum ve kabul ediyorum.',
-                                                'class': 'pl-1 pr-1'
-                                            })
-                                        ]
-                                    })
-                                ]
-                            }),
-                            $('<div />', {
-                                'class': 'input-field',
-                                'html': $('<div />', {
-                                    'class': 'captcha',
-                                    'data-id': 'phone-captcha'
-                                })
-                            })
-                        ]
-                    })
-                }),
-                'size': 'modal-medium',
-                'options': {
-                    dismissible: false
-                },
-                'footer': [
-                   $('<a />', {
-                       'href': '#',
-                       'class': 'modal-close waves-effect btn-flat red-text',
-                       'html': keywords.cancel
-                   }),
-                   $('<a />', {
-                       'href': '#',
-                       'class': 'waves-effect btn-flat json',
-                       'html': keywords.send,
-                       'data-json-target': '#report_form'
-                   })
-                ]
-            })
-
-            captcha()
-            M.updateTextFields()
-        })
-    @endpush
-
-    @push('local.styles')
-        .section-header {
-            text-align: center;
-            background-image: url('{{ asset('img/banner.svg') }}');
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: contain;
-        }
-        .section-header h1 {
-            font-size: 48px;
-            text-transform: uppercase;
-            max-width: 400px;
-        }
-        .section-header p.lead {
-            font-size: 24px;
-            max-width: 400px;
-        }
-
-        .header-logos {
-            opacity: .6;
-        }
-    @endpush
-
-    <div class="d-flex flex-wrap justify-content-center header-logos">
+    <div class="d-flex flex-wrap justify-content-center header-logos mt-2 mb-2">
         <div class="p-1">
             <a target="_blank" rel="nofollow" href="https://www.btk.gov.tr/">
                 <img alt="Logo" src="{{ asset('img/logo-btk.png') }}" class="brand-logo" />
@@ -477,11 +112,6 @@
         <div class="p-1">
             <a target="_blank" rel="nofollow" href="https://cozone.co/">
                 <img alt="Logo" src="{{ asset('img/logo-cozone.png') }}" class="brand-logo" />
-            </a>
-        </div>
-        <div class="p-1">
-            <a target="_blank" rel="nofollow" href="http://tto.sehir.edu.tr/">
-                <img alt="Logo" src="{{ asset('img/logo-sehir_tto.png') }}" class="brand-logo" />
             </a>
         </div>
         <div class="p-1">
@@ -501,97 +131,268 @@
         </div>
     </div>
 
-    <!-- section 5 -->
+    @push('local.styles')
+        .header-logos {
+            opacity: .6;
+        }
+        .header-logos img.brand-logo {
+            width: 148px;
+            height: auto;
+        }
 
-    <section class="section section-tools d-flex">
-        <div class="container align-self-center">
-            <h2 class="mb-1">İş Zekâsı</h2>
-            <p class="lead mb-2">Çevrimiçi itibarınıza yönelik olası tehditleri herkesten önce fark edin, stratejinizi geliştirin ve harekete geçin.</p>
+        .section-header {
+            background-position: center;
+            background-size: cover;
+            background-color: #263238;
+        }
+        .section-header h1 {
+            color: #fff;
+        }
+        .section-header p.lead {
+            color: #fff;
+        }
+        .section-header > .container {
+            background-repeat: no-repeat;
+            background-position: right 32px center;
+            background-image: url('{{ asset('img/reputation.png') }}');
+            background-size: 400px;
+        }
+        @media (max-width: 1024px) {
+            .section-header > .container {
+                background: none;
+            }
+        }
+    @endpush
 
-            <div class="browser-mockup technology-slider z-depth-5">
-                <div class="owl-carousel">
-                    <img src="https://veri.zone/img/mockup-slide-1.jpg" alt="Olive Mockup 1" />
-                    <img src="https://veri.zone/img/mockup-slide-2.jpg" alt="Olive Mockup 2" />
-                    <img src="https://veri.zone/img/mockup-slide-3.jpg" alt="Olive Mockup 3" />
-                    <img src="https://veri.zone/img/mockup-slide-4.jpg" alt="Olive Mockup 4" />
-                    <img src="https://veri.zone/img/mockup-slide-5.jpg" alt="Olive Mockup 5" />
-                    <img src="https://veri.zone/img/mockup-slide-6.jpg" alt="Olive Mockup 6" />
-                </div>
-            </div>
+    <!-- section 2 -->
+
+    <section class="section section-rebuild blue-grey">
+        <div class="container">
+            <h2 class="mb-1">Bugüne kadar kullandığınız araçları unutun!</h2>
+            <p class="lead mb-1">Eş zamanlı akışlar, trendler ve bulut rapor editörü yeniliklerden sadece birkaçı.</p>
+            <a href="{{ route('home.features') }}" class="btn blue-grey darken-2 waves-effect">Yeniliklere Göz Atın</a>
         </div>
     </section>
 
-    @push('local.scripts')
-        $('.technology-slider').children('.owl-carousel').owlCarousel({
-            responsiveClass: true,
-            smartSpeed: 100,
-            dots: false,
-            nav: false,
-            items: 1,
-            loop: true,
-            autoplay: true,
-            autoplayTimeout: 2000,
-            autoplayHoverPause: true,
-            lazyLoad: true,
-            center: true
-        })
+    @push('local.styles')
+        .section-rebuild > .container {
+            padding: 10vh 0 10vh 348px;
+            background-repeat: no-repeat;
+            background-position: left 32px center;
+            background-image: url('{{ asset('img/rebuild.png') }}');
+            background-size: 256px;
+        }
+        @media (max-width: 1024px) {
+            .section-rebuild > .container {
+                background: none;
+                padding: 10vh 0;
+            }
+        }
     @endpush
 
+    <!-- section 3 -->
+
+    <section class="section section-best center-align">
+        <div class="container">
+            <h2 class="mb-1">Erken Kalkan Yol Alır</h2>
+            <p class="lead">VERİ.ZONE'u dijital itibarına önem verenlerin, kitlelerinin sesini duyabilmeleri için tasarladık.</p>
+        </div>
+    </section>
+
     @push('local.styles')
-        /*!
-         * technology slider
-         */
-        .technology-slider {
-            margin: 0 auto;
-            max-width: 1024px;
+        .section-best > .container {
+            padding: 10vh 0;
         }
-        .technology-slider .owl-stage-outer {
-            margin: 0;
-            padding: 0;
+        .section-best h2,
+        .section-best p.lead {
+            color: #263238;
         }
     @endpush
 
     <!-- section 4 -->
 
-    <section class="section section-realtime d-flex">
-        <div class="section-overlay"></div>
-        <div class="container align-self-center">
-
-            <div class="row">
-                <div class="col m6 s12 right-align">
-                    <h2 class="mb-1">Gerçek Zamanlı</h2>
-                    <p class="lead mb-2">Tam anlamıyla gerçek zamanlı ekranlar!</p>
-
-                    <span class="chip white-text">haber</span>
-                    <span class="chip white-text">+bilgi</span>
-                    <span class="chip white-text">+teknoloji</span>
-                    <span class="chip white-text">+internet</span>
-                    <br />
-                    <span class="chip white-text">+türkiye</span>
-                    <span class="chip white-text">+spor</span>
-                    <span class="chip white-text">+futbol</span>
-                    <span class="chip white-text">+basketbol</span>
-                </div>
-                <div class="col m6 s12">
-                    <div class="browser-mockup mb-2">
-                        <div
-                            class="card card-nb time-line load"
-                            data-href="{{ route('realtime.query.sample') }}"
-                            data-callback="__realtime"
-                            data-method="post">
-                            <ul class="collection">
-                                <li class="collection-item model hide"></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+    <div class="section section-mockup model-1 d-flex flex-wrap justify-content-between">
+        <div class="item align-self-center">
+            <div class="browser-mockup z-depth-5">
+                <img src="{{ asset('img/mockup-slide-1.jpg') }}" alt="Mockup 1" />
             </div>
+        </div>
+        <div class="item align-self-center">
+            <h3 class="mb-1">Özgürce Arama Yapın</h3>
+            <p class="lead">Bir Finansal Araştırmacı, Kamu Sektörü Analisti veya Strateji Uzmanı olun, ilgi alanınız hakkında derin ve anlamlı bilgiler edinmek için VERİ.ZONU'u kullanabilirsiniz.</p>
+        </div>
+    </div>
+
+    <!-- section 5 -->
+
+    <div class="section section-mockup model-2 d-flex flex-wrap justify-content-between">
+        <div class="item align-self-center">
+            <h3 class="mb-1">Eş Zamanlı Trendler</h3>
+            <p class="lead">İnternette olan biten her şeyi <u>eş zamanlı</u> keşfedin.</p>
+        </div>
+        <div class="item align-self-center">
+            <div class="browser-mockup z-depth-5">
+                <img src="{{ asset('img/mockup-slide-3.jpg') }}" alt="Mockup 3" />
+            </div>
+        </div>
+    </div>
+
+    <!-- section 6 -->
+
+    <div class="section section-mockup model-1 d-flex flex-wrap justify-content-between">
+        <div class="item align-self-center">
+            <div class="browser-mockup z-depth-5">
+                <img src="{{ asset('img/mockup-slide-2.jpg') }}" alt="Mockup 2" />
+            </div>
+        </div>
+        <div class="item align-self-center">
+            <h3 class="mb-1">Bulut Rapor Editörü</h3>
+            <p class="lead">Bir konu hakkında, sadece tıklamalarla en detaylı raporları oluşturun. Güne hızlı başlayın!</p>
+        </div>
+    </div>
+
+    @push('local.styles')
+        .section-mockup {
+            max-width: 80%;
+        }
+        .section-mockup > .item {
+            padding: 32px;
+        }
+        .section-mockup.model-1 > .item:first-child,
+        .section-mockup.model-2 > .item:last-child {
+            width: 70%;
+        }
+        .section-mockup.model-1 > .item:last-child,
+        .section-mockup.model-2 > .item:first-child {
+            width: 30%;
+        }
+
+        @media (max-width: 1024px) {
+            .section-mockup > .item {
+                width: 100% !important;
+            }
+        }
+
+        .section-mockup h3 {
+            color: #263238;
+        }
+        .section-mockup p.lead {
+            color: #607d8b;
+            font-weight: 400;
+        }
+    @endpush
+
+    <!-- section 7 -->
+
+    <div class="section section-mockup model-1 d-flex flex-wrap justify-content-between">
+        <div class="item align-self-center">
+            <div class="tr-map">
+                <small class="state state-aydin" data-title="Aydın" style="background-color: rgb(255, 0, 0);">8</small>
+                <small class="state state-kahramanmaras" data-title="Kahramanmaraş" style="background-color: rgb(219, 0, 0);">7</small>
+                <small class="state state-kocaeli" data-title="Kocaeli" style="background-color: rgb(219, 0, 0);">7</small>
+                <small class="state state-istanbul" data-title="İstanbul" style="background-color: rgb(219, 0, 0);">7</small>
+                <small class="state state-izmir" data-title="İzmir" style="background-color: rgb(219, 0, 0);">7</small>
+                <small class="state state-antalya" data-title="Antalya" style="background-color: rgb(146, 0, 0);">5</small>
+                <small class="state state-bursa" data-title="Bursa" style="background-color: rgb(109, 0, 0);">4</small>
+                <small class="state state-konya" data-title="Konya" style="background-color: rgb(109, 0, 0);">4</small>
+                <small class="state state-nevsehir" data-title="Nevşehir" style="background-color: rgb(73, 0, 0);">3</small>
+                <small class="state state-trabzon" data-title="Trabzon" style="background-color: rgb(73, 0, 0);">3</small>
+                <small class="state state-van" data-title="Van" style="background-color: rgb(73, 0, 0);">3</small>
+                <small class="state state-adana" data-title="Adana" style="background-color: rgb(36, 0, 0);">2</small>
+                <small class="state state-erzincan" data-title="Erzincan" style="background-color: rgb(36, 0, 0);">2</small>
+                <small class="state state-kayseri" data-title="Kayseri" style="background-color: rgb(36, 0, 0);">2</small>
+                <small class="state state-kibris" data-title="Kıbrıs" style="background-color: rgb(36, 0, 0);">2</small>
+                <small class="state state-malatya" data-title="Malatya" style="background-color: rgb(36, 0, 0);">2</small>
+                <small class="state state-mus" data-title="Muş" style="background-color: rgb(36, 0, 0);">2</small>
+                <small class="state state-osmaniye" data-title="Osmaniye" style="background-color: rgb(36, 0, 0);">2</small>
+                <small class="state state-rize" data-title="Rize" style="background-color: rgb(36, 0, 0);">2</small>
+                <small class="state state-samsun" data-title="Samsun" style="background-color: rgb(36, 0, 0);">2</small>
+                <small class="state state-amasya" data-title="Amasya" style="background-color: rgb(0, 0, 0);">1</small>
+                <small class="state state-ankara" data-title="Ankara" style="background-color: rgb(0, 0, 0);">1</small>
+                <small class="state state-bolu" data-title="Bolu" style="background-color: rgb(0, 0, 0);">1</small>
+                <small class="state state-diyarbakir" data-title="Diyarbakır" style="background-color: rgb(0, 0, 0);">1</small>
+                <small class="state state-erzurum" data-title="Erzurum" style="background-color: rgb(0, 0, 0);">1</small>
+                <small class="state state-karaman" data-title="Karaman" style="background-color: rgb(0, 0, 0);">1</small>
+                <small class="state state-kars" data-title="Kars" style="background-color: rgb(0, 0, 0);">1</small>
+                <small class="state state-kirsehir" data-title="Kırşehir" style="background-color: rgb(0, 0, 0);">1</small>
+                <small class="state state-sakarya" data-title="Sakarya" style="background-color: rgb(0, 0, 0);">1</small>
+                <small class="state state-yozgat" data-title="Yozgat" style="background-color: rgb(0, 0, 0);">1</small>
+                <small class="state state-sanliurfa" data-title="Şanlıurfa" style="background-color: rgb(0, 0, 0);">1</small>
+            </div>
+        </div>
+        <div class="item align-self-center">
+            <h3 class="mb-1">Yerel Basın ve Demografi</h3>
+            <p class="lead mb-1">Yerel veya genel basın farketmeksizin hakkınızda yazılanları en küçük kaynağına kadar en detaylı şekilde inceleyin.</p>
+            <p class="lead">Tüketicilerinizin demografik bilgileri, davranışları, marka tercihleri ve ilgi grafiklerini analiz ederek mikroskobik olarak anlaşılmalarını sağlayın.</p>
+        </div>
+    </div>
+
+    <!-- section 8 -->
+
+    <section class="section section-realtime d-flex flex-wrap justify-content-center">
+        <div class="item align-self-center p-2">
+            <h2>Tam Anlamıyla Gerçek Zamanlı</h2>
+        </div>
+        <div class="item align-self-center p-2">
+            <p class="lead">VERİ.ZONE dijitalde olan bitenleri; istediğiniz kriterler doğrultusunda, paylaşıldığı an önünüze getirir.</p>
         </div>
     </section>
 
     @push('local.styles')
         .section-realtime {
-            background-image: url('{{ asset('img/photo/section-realtime.jpg') }}');
+            padding: 10vh 0;
+            width: 50%;
+        }
+        .section-realtime > .item {
+            width: 50%;
+        }
+
+        @media (max-width: 1024px) {
+            .section-realtime {
+                width: 100%;
+            }
+        }
+
+        .section-realtime h2,
+        .section-realtime p.lead {
+            color: #263238;
+        }
+        .section-realtime p.lead {
+            font-weight: 400;
+        }
+    @endpush
+
+    <!-- section 9 -->
+
+    <div class="section section-realtime">
+        <div class="center-align pb-1">
+            <span class="chip red white-text">haber</span>
+            <span class="chip">+bilgi</span>
+            <span class="chip">+teknoloji</span>
+            <span class="chip">+internet</span>
+            <span class="chip">+türkiye</span>
+            <span class="chip">+spor</span>
+            <span class="chip">+futbol</span>
+            <span class="chip">+basketbol</span>
+        </div>
+        <div class="p-1">
+            <div class="browser-mockup">
+                <div
+                    class="card card-nb time-line load"
+                    data-href="{{ route('realtime.query.sample') }}"
+                    data-callback="__realtime"
+                    data-method="post">
+                    <ul class="collection">
+                        <li class="collection-item model hide"></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @push('local.styles')
+        .section-realtime {
+            padding: 32px 0;
         }
 
         /*!
@@ -736,73 +537,177 @@
         }
     @endpush
 
-    <!-- section 2 -->
+    <!-- section 10 -->
 
-    <section class="section section-tools d-flex">
-        <div class="container align-self-center">
-            <h2 class="mb-1">En İyi Araçlar</h2>
-            <p class="lead mb-2">Olive araçları sayesinde büyük veri yönetmek çok kolay!</p>
-
-            <div class="row d-flex flex-wrap align-items-stretch mb-2">
-                @foreach ($array as $key => $item)
-                    <div class="col l4 m12 olive-tool {{ $key >= 3 ? 'hide' : '' }}">
-                        <div class="card card-unstyled">
-                            <div class="card-content">
-                                <img alt="Icon" src="{{ $item['icon'] }}" style="width: 48px; height: 48px;" />
-                                <br />
-                                <h3 class="mb-1">{{ $item['title'] }}</h3>
-                                <p class="lead grey-text">{{ $item['text'] }}</p>
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-            <a href="#" class="btn-flat btn-large waves-effect olive-tools" data-class=".olive-tool" data-class-remove="hide" data-class-hide=".olive-tools">Tüm Araçlar</a>
+    <section class="section section-text">
+        <div class="container">
+            <p class="lead">Kitlenizi tanıyın, marka ve kampanyalarınızı izleyin, tüketici duyarlılığı ve davranışındaki değişiklikleri derinlemesine keşfedin.</p>
         </div>
     </section>
 
+    <!-- section 11 -->
+
+    <div class="section section-report d-flex flex-wrap justify-content-center blue-grey darken-2">
+        <div class="item align-self-center">
+            <div class="input-field input-unstyled">
+                <input class="white-text" data-name="report" type="text" name="report_subject" data-alias="subject" id="report_subject" placeholder="Konu" maxlength="155" />
+                <span class="helper-text blue-grey-text text-lighten-4">Rapor almak istediğiniz konuyu belirtin. Bu bir isim de olabilir.</span>
+            </div>
+            <div>
+                <a href="#" class="chip blue-grey lighten-4 waves-effect waves-light" data-input="#report_subject" data-input-value='"Ahmet Kural"'>"Ahmet Kural"</a>
+                <a href="#" class="chip blue-grey lighten-4 waves-effect waves-light" data-input="#report_subject" data-input-value="Dolar">Dolar</a>
+                <a href="#" class="chip blue-grey lighten-4 waves-effect waves-light" data-input="#report_subject" data-input-value="Migros">Migros</a>
+                <a href="#" class="chip blue-grey lighten-4 waves-effect waves-light" data-input="#report_subject" data-input-value="Ankara && Deprem" data-tooltip="ve">Ankara && Deprem</a>
+                <a href="#" class="chip blue-grey lighten-4 waves-effect waves-light" data-input="#report_subject" data-input-value="Ankara || İstanbul" data-tooltip="veya">Ankara || İstanbul</a>
+            </div>
+            <div class="input-field input-unstyled">
+                <input class="white-text" data-name="report" type="text" name="report_name" data-alias="name" placeholder="Sizin veya Şirketinizin Adı" maxlength="55" />
+                <span class="helper-text blue-grey-text text-lighten-4">Size hitap edebilmemiz için bir isim girin.</span>
+            </div>
+            <div class="input-field input-unstyled">
+                <input class="white-text" data-name="report" type="text" name="report_phone" data-alias="phone" placeholder="GSM" />
+                <span class="helper-text blue-grey-text text-lighten-4">Rapor sonucunu ücretsiz sms olarak göndereceğimiz bir gsm numarası girin.</span>
+            </div>
+            <a href="#" class="btn blue-grey darken-4 waves-effect" data-trigger="report">Ücretsiz Rapor Alın</a>
+        </div>
+        <div class="item align-self-center">
+            <h2 class="mb-1 white-text">Üye Olmadan Deneyin</h2>
+            <p class="lead blue-grey-text text-lighten-4">Bu formu doldurarak hızlı bir deneme yapabilirsiniz!</p>
+        </div>
+    </div>
+
     @push('local.styles')
-        .section-tools {
-            text-align: center;
+        .section-report {
+            padding: 10vh 0;
+        }
+        .section-report > .item {
+            max-width: 400px;
+            padding: 32px;
         }
 
-        .section-tools h1,
-        .section-tools h2,
-        .section-tools h3 {
-            color: #111;
-        }
-        .section-tools p.lead {
-            color: #111;
+        @media (max-width: 1024px) {
+            .section-report {
+                width: 100%;
+            }
         }
     @endpush
 
-    <!-- section 6 -->
+    @push('local.scripts')
+        $('input[name=report_phone]').mask('(999) 999 99 99')
 
-    <section class="section section-test d-flex with-bg">
-        <div class="section-overlay blue darken-2"></div>
-        <div class="container align-self-center">
-            <div class="pl-2 pr-2 mb-2">
-                <h2 class="mb-1">Ücretsiz Deneyin!</h2>
-                <p class="lead mb-2">Olive'i 7 gün boyunca ücretsiz olarak deneyebilirsiniz!<br />Deneme süreniz bittiğinde, bir çok özellikten <span class="white blue-text text-darken-2">ücretsiz</span> faydalanmaya devam edebileceğinizi de unutmayın!</p>
-                <a href="{{ route('user.login') }}" class="btn-flat btn-large white waves-effect heartbeat">ÜCRETSİZ DENEYİN</a>
-            </div>
-        </div>
-    </section>
+        function __report_form(__, obj)
+        {
+            if (obj.status == 'ok')
+            {
+                $('[data-name=report]').val('')
 
-    @push('local.styles')
-        .section-test {
-            text-align: center;
-            margin: 0 auto 10vh;
+                $('#modal-info').modal('close')
+
+                flash_alert('Başarılı!', 'green white-text')
+
+                return modal({
+                    'id': 'alert',
+                    'body': 'Raporunuz sıraya alındı. Hazır olduğunda SMS ile bilgilendirileceksiniz.',
+                    'title': keywords.info,
+                    'size': 'modal-small',
+                    'options': {},
+                    'footer': [
+                       $('<a />', {
+                           'href': '#',
+                           'class': 'modal-close waves-effect btn-flat',
+                           'html': keywords.ok
+                       })
+                    ]
+                })
+            }
         }
+
+        $(document).on('click', '[data-trigger=report]', function() {
+            modal({
+                'id': 'info',
+                'title': 'Ücretsiz Rapor Al',
+                'body': $('<div />', {
+                    'html': $('<form />', {
+                        'class': 'json',
+                        'method': 'post',
+                        'action': '{{ route('report.request') }}',
+                        'id': 'report_form',
+                        'data-callback': '__report_form',
+                        'data-include': 'report_name,report_subject,report_phone',
+                        'html': [
+                            $('<p />', {
+                                'class': 'mb-1 red-text heartbeat',
+                                'html': 'Raporun iyi bir sonuç verebilmesi için sizi anlamamız gerekiyor. Lütfen anlamlı bir kelime veya isim girdiğinizden emin olun.'
+                            }),
+                            $('<label />', {
+                                'html': [
+                                    $('<input />', {
+                                        'type': 'checkbox',
+                                        'name': 'terms',
+                                        'value': 1
+                                    }),
+                                    $('<span />', {
+                                        'html': [
+                                            $('<a />', {
+                                                'class': 'blue-grey-text text-darken-2',
+                                                'target': '_blank',
+                                                'href': '{{ route('page.view', 'kullanim-kosullari') }}',
+                                                'html': 'Kullanım Koşulları'
+                                            }),
+                                            $('<span />', {
+                                                'html': 've',
+                                                'class': 'pl-1 pr-1'
+                                            }),
+                                            $('<a />', {
+                                                'class': 'blue-grey-text text-darken-2',
+                                                'target': '_blank',
+                                                'href': '{{ route('page.view', 'gizlilik-politikasi') }}',
+                                                'html': 'Gizlilik Politikası'
+                                            }),
+                                            $('<span />', {
+                                                'html': 'şartlarını okudum ve kabul ediyorum.',
+                                                'class': 'pl-1 pr-1'
+                                            })
+                                        ]
+                                    })
+                                ]
+                            }),
+                            $('<div />', {
+                                'class': 'input-field',
+                                'html': $('<div />', {
+                                    'class': 'captcha',
+                                    'data-id': 'phone-captcha'
+                                })
+                            })
+                        ]
+                    })
+                }),
+                'size': 'modal-medium',
+                'options': {
+                    dismissible: false
+                },
+                'footer': [
+                   $('<a />', {
+                       'href': '#',
+                       'class': 'modal-close waves-effect btn-flat red-text',
+                       'html': keywords.cancel
+                   }),
+                   $('<a />', {
+                       'href': '#',
+                       'class': 'waves-effect btn-flat json',
+                       'html': keywords.send,
+                       'data-json-target': '#report_form'
+                   })
+                ]
+            })
+
+            captcha()
+            M.updateTextFields()
+        })
     @endpush
 @endsection
 
-@push('external.include.header')
-    <link rel="stylesheet" href="{{ asset('css/owl.carousel.min.css?v='.config('system.version')) }}" />
-@endpush
-
 @push('external.include.footer')
-    <script src="{{ asset('js/owl.carousel.min.js?v='.config('system.version')) }}"></script>
     <script src="{{ asset('js/jquery.mark.min.js?v='.config('system.version')) }}" charset="UTF-8"></script>
     <script src="{{ asset('js/jquery.maskedinput.min.js?v='.config('system.version')) }}"></script>
     <script src='//www.google.com/recaptcha/api.js'></script>

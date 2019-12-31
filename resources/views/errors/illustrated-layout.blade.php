@@ -472,7 +472,7 @@
         <div class="w-full md:w-1/2 bg-white flex items-center justify-center">
             <div class="max-w-sm m-8">
                 <div class="text-black text-5xl md:text-15xl font-black">
-                    <img alt="Olive" src="{{ asset('img/olive_logo.png') }}" class="logo" />
+                    <img alt="Veri Zone" src="{{ asset('img/veri.zone_logo.svg') }}" class="logo" />
                 </div>
 
                 <div class="w-16 h-1 bg-indigo-light my-3 md:my-6"></div>

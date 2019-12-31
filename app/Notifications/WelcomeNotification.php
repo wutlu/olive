@@ -45,7 +45,7 @@ class WelcomeNotification extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject('Olive: Hoşgeldiniz!')
+                    ->subject('Hoşgeldiniz!')
                     ->greeting('Tebrikler!')
                     ->level('olive')
                     ->line('Üyeliğiniz Tamamlandı!')

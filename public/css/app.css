@@ -2755,7 +2755,7 @@ footer.page-footer {
  */
 #console {
   overflow-y: auto;
-  background-image: url('../img/olive_logo-opacity.svg');
+  background-image: url('../img/veri.zone_logo-opacity.svg');
   background-repeat: no-repeat;
   background-position: center;
   background-size: 70% auto;
@@ -2825,16 +2825,23 @@ nav .brand-logo > img {
 nav .nav-wrapper > ul > li {
   line-height: 100%;
 }
-nav .nav-wrapper > ul > li > a,
+nav .nav-wrapper > ul > li > a:not(.btn),
 nav .nav-wrapper > ul > li > a > i {
   line-height: 64px;
   color: #666;
 }
 
+nav .nav-wrapper > ul > li.btn-li {
+  height: 64px;
+}
+
 @media only screen and (max-width: 601px) {
-  nav .nav-wrapper > ul > li > a,
+  nav .nav-wrapper > ul > li > a:not(.btn),
   nav .nav-wrapper > ul > li > a > i {
     line-height: 56px;
+  }
+  nav .nav-wrapper > ul > li.btn-li {
+    height: 56px;
   }
 }
 
@@ -3642,8 +3649,8 @@ nav.nav-half {
 }
 
 .align-items-stretch {
-  -ms-flex-align: stretch;
-  align-items: stretch;
+  -ms-flex-align: stretch; 
+  align-items: stretch; 
 }
 
 .align-items-baseline {
@@ -3861,7 +3868,7 @@ nav.nav-half {
  * Olive
  */
 .olive {
-  background-image: url(../img/olive_logo-opacity.svg);
+  background-image: url(../img/veri.zone_logo-opacity.svg);
   background-repeat: no-repeat;
   background-size: 80%;
   background-position: center;
@@ -4266,14 +4273,10 @@ nav.scrolled.active,
  * browser mockup
  */
 .browser-mockup {
-    border-top: 2em solid rgba(200, 200, 200, .8);
-    border-radius: 3px 3px 0 0;
+    border-top: 2em solid #263238;
+    border-radius: 4px 4px 0 0;
 
     position: relative;
-
-    max-width: 512px;
-
-    margin: 0 auto;
 }
 .browser-mockup > img { width: 100%; }
 .browser-mockup:before {
@@ -4299,7 +4302,7 @@ nav.scrolled.active,
     display: block;
     position: absolute;
 
-    content: 'Olive';
+    content: 'Veri Zone';
 
     top: -2em;
     left: 5.5em;

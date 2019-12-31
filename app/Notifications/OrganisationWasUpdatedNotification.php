@@ -52,7 +52,7 @@ class OrganisationWasUpdatedNotification extends Notification implements ShouldQ
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject('Olive: Ödeme Bekliyor')
+                    ->subject('Ödeme Bekliyor')
                     ->greeting('Merhaba, '.$this->name)
                     ->line('Organizasyonunuz başarılı bir şekilde oluşturuldu. Şimdi ödeme yapmanız gerekiyor.')
                     ->line('Havale/EFT yapmak için aşağıdaki IBAN numaralarını kullanabilirsiniz.')

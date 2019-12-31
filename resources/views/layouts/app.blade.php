@@ -247,7 +247,7 @@
                 <div class="{{ isset($sidenav_layout) ? '' : (auth()->check() ? 'sidenav-fixed-layout' : 'container') }}">
                     <div class="nav-wrapper">
                         <a href="{{ @$logo_route ? $logo_route : route('dashboard') }}" class="brand-logo center">
-                            <img alt="{{ config('app.name') }}" src="{{ @$logo ? $logo : asset('img/olive_logo.svg') }}" />
+                            <img alt="{{ config('app.name') }}" src="{{ @$logo ? $logo : asset('img/veri.zone_logo.svg') }}" />
                         </a>
 
                         @auth
@@ -649,7 +649,7 @@
             <nav id="breadcrumb">
                 <div class="{{ isset($sidenav_layout) ? '' : (auth()->check() ? 'sidenav-fixed-layout' : '') }}">
                     <div class="{{ isset($wide) ? 'container container-wide' : 'container' }}">
-                        <a href="{{ route('dashboard') }}" class="breadcrumb">Olive</a>
+                        <a href="{{ route('dashboard') }}" class="breadcrumb">VERİ.ZONE</a>
                         @foreach ($breadcrumb as $key => $row)
                             @if (isset($row['link']))
                                 <a href="{{ $row['link'] }}" class="breadcrumb">{{ $row['text'] }}</a>
@@ -998,7 +998,7 @@
                             </div>
                         </div>
                         <div class="col l4 offset-l2 s12">
-                            <h6 class="m-0 mb-1 white-text">Veri Zone Teknoloji</h6>
+                            <h6 class="m-0 mb-1 white-text">VERİ.ZONE</h6>
                             <ul class="m-0 mb-1">
                                 <li>
                                     <a class="blue-grey-text" href="{{ route('page.view', 'hakkimizda') }}">Hakkımızda</a>
@@ -1008,6 +1008,9 @@
                                 </li>
                                 <li>
                                     <a class="blue-grey-text" href="#">Partnerlik</a>
+                                </li>
+                                <li>
+                                    <a class="blue-grey-text" href="{{ url('forum/yardim') }}">Yardım</a>
                                 </li>
                                 <li>
                                     <a class="blue-grey-text" href="{{ route('page.view', 'iletisim') }}">İletişim</a>

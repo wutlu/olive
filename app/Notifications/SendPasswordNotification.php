@@ -49,9 +49,9 @@ class SendPasswordNotification extends Notification implements ShouldQueue
         $message[] = '| '.$this->email.' | '.$this->password.'    |';
 
         return (new MailMessage)
-                ->subject('Olive: Hesap Bilgileriniz')
+                ->subject('Hesap Bilgileriniz')
                 ->greeting('Merhaba,')
-                ->line('Olive giriş bilgileriniz aşağıdadır. Güvenliğiniz için, oturum açtıktan sonra şifrenizi güncelleyin.')
+                ->line('Veri Zone giriş bilgileriniz aşağıdadır. Güvenliğiniz için, oturum açtıktan sonra şifrenizi güncelleyin.')
                 ->with([
                     'table' => implode(PHP_EOL, $message)
                 ])

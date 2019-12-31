@@ -116,7 +116,7 @@
             <div class="collection collection-unstyled">
                 <div class="collection-item">
                     <div class="input-field">
-                        <input name="name" id="name" value="{{ $user->name }}" type="text" class="validate" />
+                        <input name="name" id="name" value="{{ $user->name }}" type="text" class="validate" autocomplete="off" />
                         <label for="name">Ad</label>
                         <small class="helper-text">Kullanıcı Adı</small>
                     </div>
@@ -131,14 +131,14 @@
                 </div>
                 <div class="collection-item">
                     <div class="input-field">
-                        <input name="password" id="password" type="password" class="validate" />
+                        <input name="password" id="password" type="password" class="validate" autocomplete="off" />
                         <label for="password">Şifre</label>
                         <small class="helper-text">Değiştirmek istemiyorsanız boş bırakın.</small>
                     </div>
                 </div>
                 <div class="collection-item d-flex">
                     <div class="input-field teal-text align-self-center" style="max-width: 240px;">
-                        <input name="email" id="email" value="{{ $user->email }}" type="email" class="validate" />
+                        <input name="email" id="email" value="{{ $user->email }}" type="email" class="validate" autocomplete="off" />
                         <label for="email">E-posta</label>
                         <small class="helper-text">E-posta Adresi</small>
                     </div>
@@ -149,7 +149,7 @@
                 </div>
                 <div class="collection-item">
                     <div class="input-field teal-text" style="max-width: 240px;">
-                        <input name="gsm" id="gsm" value="{{ $user->gsm }}" type="text" class="validate" />
+                        <input name="gsm" id="gsm" value="{{ $user->gsm }}" type="text" class="validate" autocomplete="off" />
                         <label for="gsm">GSM</label>
                         <small class="helper-text">GSM Numarası</small>
                     </div>

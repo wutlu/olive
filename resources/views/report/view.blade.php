@@ -40,7 +40,7 @@
                         <div class="sphere sphere-2"></div>
 
                         <header>
-                            <img class="logo" alt="Logo" src="{{ asset('img/olive_logo.svg') }}" />
+                            <img class="logo" alt="Logo" src="{{ asset('img/veri.zone_logo.svg') }}" />
                             <div class="date">
                                 <small>{{ $report->date_1 ? date('d.m.Y', strtotime($report->date_1)) : '' }}</small>
                                 <small>{{ $report->date_2 ? date('d.m.Y', strtotime($report->date_2)) : '' }}</small>
@@ -74,7 +74,7 @@
                                 <small>{{ $report->date_2 ? date('d.m.Y', strtotime($report->date_2)) : '' }}</small>
                             </div>
                             <div class="logo">
-                                <img alt="Logo" src="{{ asset('img/olive_logo.svg') }}" />
+                                <img alt="Logo" src="{{ asset('img/veri.zone_logo.svg') }}" />
                             </div>
                             <div class="content d-flex justify-content-center align-self-stretch"></div>
                         </div>
@@ -95,9 +95,8 @@
                                 <a href="mailto:bilgi@veri.zone">bilgi@veri.zone</a>
                                 <a href="tel:850-302-1631">(+90) 850 302 16 30</a>
                                 <a href="https://veri.zone/">https://veri.zone</a>
-                                <a href="https://olive.veri.zone/">https://olive.veri.zone</a>
                                 <p>Mustafa Kemal Mh. Dumlupınar Blv. ODTÜ Teknokent Bilişim İnovasyon Merkezi 280/G No: 1260 Alt Zemin Kat Çankaya, Ankara</p>
-                                <img class="logo" alt="Logo" src="{{ asset('img/olive_logo.svg') }}" />
+                                <img class="logo" alt="Logo" src="{{ asset('img/veri.zone_logo.svg') }}" />
                             </div>
                             <div class="ground center">
                                 <img class="logo" alt="Logo" src="{{ asset('img/veri.zone_logo.svg') }}" />
@@ -145,7 +144,7 @@
                                 </div>
                             @endif
                             <div class="d-flex justify-content-between">
-                                <img class="align-self-center" alt="Logo" src="{{ asset('img/olive_logo-grey.svg') }}" style="width: auto; height: 32px;" />
+                                <img class="align-self-center" alt="Logo" src="{{ asset('img/veri.zone_logo-grey.svg') }}" style="width: auto; height: 32px;" />
                                 <button type="submit" class="btn-flat waves-effect align-self-center">Raporu Aç</button>
                             </div>
                         </form>

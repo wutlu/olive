@@ -48,7 +48,7 @@ class SMS extends Model
 
             if ($brand)
             {
-                $arr[] = 'Olive';
+                $arr[] = 'Veri Zone';
                 $arr[] = config('app.url');
             }
 

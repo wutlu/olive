@@ -22,13 +22,11 @@
     <meta property="og:description" content="{{ str_limit($thread->body, 255) }}" />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="{{ url()->full() }}" />
-    <meta property="og:image" content="{{ asset('img/olive-twitter-card.png?v='.config('system.version')) }}" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="{{ url()->full() }}" />
     <meta name="twitter:title" content="{{ $thread->subject }}" />
     <meta name="twitter:description" content="{{ str_limit($thread->body, 255) }}" />
-    <meta name="twitter:image" content="{{ asset('img/olive-twitter-card.png?v='.config('system.version')) }}" />
 
     <link rel="stylesheet" href="{{ asset('css/highlight.min.css?v='.config('system.version')) }}" />
 @endpush

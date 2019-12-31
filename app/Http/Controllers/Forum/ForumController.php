@@ -918,7 +918,7 @@ class ForumController extends Controller
             $message->user->notify(
                 (
                     new MessageNotification(
-                        'Olive: 🌠🌟✨ En İyi Cevap ✨🌟🌠', 'Mesajınız en iyi cevap seçildi.',
+                        '🌠🌟✨ En İyi Cevap ✨🌟🌠', 'Mesajınız en iyi cevap seçildi.',
                         implode(PHP_EOL, $data)
                     )
                 )->onQueue('email')

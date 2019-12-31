@@ -59,16 +59,16 @@
             <canvas class="overlay bg-overlay" id="bubble"></canvas>
         </div>
         <div class="area flex-fill z-depth-1">
-            <img alt="Olive" src="{{ asset('img/olive_logo.svg') }}" class="logo" />
+            <img alt="Veri Zone" src="{{ asset('img/veri.zone_logo.svg') }}" class="logo" />
             <div class="card card-unstyled mx-auto mb-2">
                 <div class="card-tabs">
                     <ul class="tabs tabs-fixed-width">
                         <li class="tab">
-                            <a href="#tab-giris" class="active waves-effect waves-light">Giriş</a>
+                            <a href="#tab-giris" class="waves-effect waves-light">Giriş</a>
                         </li>
                         @if (config('system.user.registration'))
                             <li class="tab">
-                                <a href="#tab-kaydol" class="waves-effect waves-light">Kaydol</a>
+                                <a href="#tab-kaydol" class="waves-effect waves-light active">Kaydol</a>
                             </li>
                         @endif
                         <li class="tab">
@@ -160,7 +160,7 @@
     {
         if (obj.status == 'ok')
         {
-            M.toast({ html: 'Giriş Gerçekleştirildi! Yönlendiriliyorsunuz...', classes: 'teal' })
+            M.toast({ html: 'Giriş Gerçekleştirildi!', classes: 'teal' })
 
             setTimeout(__goDashboard, 1000)
         }

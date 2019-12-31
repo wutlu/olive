@@ -4,7 +4,7 @@ return [
     /**
      * Sistem Versiyonu
      */
-    'version' => '7.2.4',
+    'version' => '8.1',
 
     /**
      * db
@@ -355,7 +355,7 @@ return [
             997 => [
                 'name' => 'Moderatör',
                 'image_src' => 'img/icons/badges/moderator.png',
-                'description' => 'Olive ekibiyle çalışın.'
+                'description' => 'Veri Zone ekibiyle çalışın.'
             ],
             998 => [
                 'name' => 'Sistem Sorumlusu',

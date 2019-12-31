@@ -68,6 +68,134 @@ class HomeController extends Controller
     }
 
     /**
+     * Olive
+     *
+     * @return view
+     */
+    public static function olive()
+    {
+        return view('olive');
+    }
+
+    /**
+     * Features
+     *
+     * @return view
+     */
+    public static function features()
+    {
+        $array = [
+            [
+                'title' => 'Eş Zamanlı Veri Akışları',
+                'text' => 'Bu konuda iddialıyız! Siz paylaşımları okurken, gündemi kaçırmayın diye en iyi aracı geliştirdik.',
+                'icon' => asset('img/icons/realtime.png')
+            ],
+            [
+                'title' => 'Eş Zamanlı Trendler',
+                'text' => 'Ülkemizde olup bitenlere haber ajanslarından daha önce ulaşabilirsiniz.',
+                'icon' => asset('img/icons/trends.png')
+            ],
+            [
+                'title' => 'Eş Zamanlı Arama Motoru',
+                'text' => 'Şimdiyi ve geçmişi tek bir arama motorunda birleştirdik. Bilineni değiştirdik ve gelişmiş bir arama motoru tasarladık.',
+                'icon' => asset('img/icons/search.png')
+            ],
+            [
+                'title' => 'Eş Zamanlı Grafikler',
+                'text' => 'Dün veya geçen haftanın yanında bugünün grafikleri de oluşturabilirsiniz.',
+                'icon' => asset('img/icons/analytics.png')
+            ],
+            [
+                'title' => 'Eş Zamanlı Alarmlar',
+                'text' => 'Olan biteni okumak için vaktiniz yok mu? Alarm kurun, gündemler oluşmadan e-posta bildirimleri alın.',
+                'icon' => asset('img/icons/alarm.png')
+            ],
+            [
+                'title' => 'Rapor Editörü',
+                'text' => 'Araştırma yaparken sadece tıklamalar ile eş zamanlı ve hızlı raporlar oluşturun.',
+                'icon' => asset('img/icons/analytics.png')
+            ],
+            [
+                'title' => 'Hızlı Kayıt',
+                'text' => 'Kullanımı kolay arayüzümüz sayesinde, herhangi bir ekranda gördüğünüz ve daha sonra ilgilenmeniz gereken verileri anında pinleyerek kaydedebilirsiniz.',
+                'icon' => asset('img/icons/pin.png')
+            ],
+            [
+                'title' => 'Sıralamalar',
+                'text' => 'Takipçi sayılarına göre yapılan anlamsız influencer sıralamalarını ilkel buluyoruz. Üstün algoritmalarla daha farklı ve daha anlamlı sıralamalar tasarladık.',
+                'icon' => asset('img/icons/counter.png')
+            ],
+            [
+                'title' => 'Yerel Haberler',
+                'text' => 'Haber kaynaklarını istediğiniz şekilde gruplayarak, ister yerel, ister daha özel haber verileri elde edebilirsiniz.',
+                'icon' => asset('img/icons/news.png')
+            ],
+            [
+                'title' => 'Bloglar ve Sözlükler',
+                'text' => 'Blog ve Sözlük yazarlarının paylaşımlarını da tüm akışa dahil edebilirsiniz.',
+                'icon' => asset('img/icons/microsoft-planner.png')
+            ],
+            [
+                'title' => 'En İyi Filtreler',
+                'text' => 'İster kelime, ister cümle olarak arayın veya 50\'den fazla ve her geçen gün artmakta olan filtrelerle, yapacağınız aramaları istediğiniz kadar daraltın.',
+                'icon' => asset('img/icons/filter.png')
+            ],
+            [
+                'title' => 'Rakip İncelemesi',
+                'text' => 'Rakiplerinizi inceleyin ve performanslarını ölçümleyin, kampanyalarını analiz edin, içgörüler edinin.',
+                'icon' => asset('img/icons/star-trek-symbol.png')
+            ],
+            [
+                'title' => 'Excel Desteği',
+                'text' => 'Analizleri ve grafikleri tek tuşla dışa aktarın! Sonuç ve grafikleri gerektiğinde Excel, gerektiğinde görsel formatında indirebilirsiniz.',
+                'icon' => asset('img/icons/data-sheet.png')
+            ],
+            [
+                'title' => 'Kaynaklar',
+                'text' => 'Araştırmalarınız sonucu elde ettiğiniz değerlerden emin olmak için, tüm verileri tek tek veya gruplar halinde inceleyebilirsiniz.',
+                'icon' => asset('img/icons/innovation.png')
+            ],
+            [
+                'title' => 'Sınırsız Sorgu',
+                'text' => 'Aboneliğiniz boyunca istediğiniz kadar sorgu ve analiz gerçekleştirebilirsiniz.',
+                'icon' => asset('img/icons/infinity.png')
+            ],
+            [
+                'title' => 'Sınırsız Sonuç',
+                'text' => 'Örümceklerimizin ulaştığı tüm verilere hiçbir sınırlama olmaksızın ulaşabilirsiniz.',
+                'icon' => asset('img/icons/report-card.png')
+            ],
+            [
+                'title' => 'Anlamlı Sonuç',
+                'text' => 'İyi Sonuç® algoritmamız ile anlamsız içerikleri arama sonuçlarından çıkartarak veri madenciliğini daha üst seviyelere taşıyabilirsiniz.',
+                'icon' => asset('img/icons/light-on.png')
+            ],
+            [
+                'title' => 'Akıllı Algoritmalar',
+                'text' => 'Sürekli öğrenen algoritmalar sayesinde, arama sonuçlarınız her geçen gün daha iyi hale gelir.',
+                'icon' => asset('img/icons/artificial-intelligence.png')
+            ],
+            [
+                'title' => 'Ortak Veri Havuzu',
+                'text' => 'Veri Zone, veri mecralarını tarar ve elde ettiği verileri bir havuzda toplar. Ulaşamadığımız mecraları belirterek siz de bu havuza katkı sağlayabilirsiniz.',
+                'icon' => asset('img/icons/network.png')
+            ],
+            [
+                'title' => 'Trend Arşivi',
+                'text' => 'Saatlik, Günlük, Haftalık, Aylık ve Yıllık Trendleri arşivliyoruz. Bu arşivlere her an erişebilirsiniz.',
+                'icon' => asset('img/icons/archive.png')
+            ],
+            [
+                'title' => 'Güncel Teknoloji',
+                'text' => 'Her geçen gün yeni modüller ve özellikler üretiyoruz. Tüm özelliklerimizi, güncel teknolojiye ve ihtiyaçlarınıza göre geliştirmeye devam ediyoruz.',
+                'icon' => asset('img/icons/apple-watch.png')
+            ],
+        ];
+
+        return view('home.features', compact('array'));
+    }
+
+    /**
      * ip log
      *
      * @return mixed
@@ -272,145 +400,11 @@ class HomeController extends Controller
      *
      * @return view
      */
-    public static function index(string $type = '')
+    public static function index()
     {
-        $array = [
-            [
-                'title' => 'Eş Zamanlı Veri Akışları',
-                'text' => 'Bu konuda iddialıyız! Siz paylaşımları okurken, gündemi kaçırmayın diye en iyi aracı geliştirdik.',
-                'icon' => asset('img/icons/realtime.png')
-            ],
-            [
-                'title' => 'Eş Zamanlı Trendler',
-                'text' => 'Ülkemizde olup bitenlere haber ajanslarından daha önce ulaşabilirsiniz.',
-                'icon' => asset('img/icons/trends.png')
-            ],
-            [
-                'title' => 'Eş Zamanlı Arama Motoru',
-                'text' => 'Şimdiyi ve geçmişi tek bir arama motorunda birleştirdik. Bilineni değiştirdik ve gelişmiş bir arama motoru tasarladık.',
-                'icon' => asset('img/icons/search.png')
-            ],
-            [
-                'title' => 'Eş Zamanlı Grafikler',
-                'text' => 'Dün veya geçen haftanın yanında bugünün grafikleri de oluşturabilirsiniz.',
-                'icon' => asset('img/icons/analytics.png')
-            ],
-            [
-                'title' => 'Eş Zamanlı Alarmlar',
-                'text' => 'Olan biteni okumak için vaktiniz yok mu? Alarm kurun, gündemler oluşmadan e-posta bildirimleri alın.',
-                'icon' => asset('img/icons/alarm.png')
-            ],
-            [
-                'title' => 'Olive Rapor Editörü',
-                'text' => 'Araştırma yaparken sadece tıklamalar ile eş zamanlı ve hızlı raporlar oluşturun.',
-                'icon' => asset('img/icons/analytics.png')
-            ],
-            [
-                'title' => 'Hızlı Kayıt',
-                'text' => 'Kullanımı kolay arayüzümüz sayesinde, herhangi bir ekranda gördüğünüz ve daha sonra ilgilenmeniz gereken verileri anında pinleyerek kaydedebilirsiniz.',
-                'icon' => asset('img/icons/pin.png')
-            ],
-            [
-                'title' => 'Olive Sıralamaları',
-                'text' => 'Takipçi sayılarına göre yapılan anlamsız influencer sıralamalarını ilkel buluyoruz. Üstün Olive algoritmalarıyla daha farklı ve daha anlamlı sıralamalar tasarladık.',
-                'icon' => asset('img/icons/counter.png')
-            ],
-            [
-                'title' => 'Yerel Haberler',
-                'text' => 'Haber kaynaklarını istediğiniz şekilde gruplayarak, ister yerel, ister daha özel haber verileri elde edebilirsiniz.',
-                'icon' => asset('img/icons/news.png')
-            ],
-            [
-                'title' => 'Bloglar ve Sözlükler',
-                'text' => 'Blog ve Sözlük yazarlarının paylaşımlarını da tüm akışa dahil edebilirsiniz.',
-                'icon' => asset('img/icons/microsoft-planner.png')
-            ],
-            [
-                'title' => 'En İyi Filtreler',
-                'text' => 'İster kelime, ister cümle olarak arayın veya 50\'den fazla ve her geçen gün artmakta olan filtrelerle, yapacağınız aramaları istediğiniz kadar daraltın.',
-                'icon' => asset('img/icons/filter.png')
-            ],
-            [
-                'title' => 'Rakip İncelemesi',
-                'text' => 'Rakiplerinizi inceleyin ve performanslarını ölçümleyin, kampanyalarını analiz edin, içgörüler edinin.',
-                'icon' => asset('img/icons/star-trek-symbol.png')
-            ],
-            [
-                'title' => 'Excel Desteği',
-                'text' => 'Analizleri ve grafikleri tek tuşla dışa aktarın! Sonuç ve grafikleri gerektiğinde Excel, gerektiğinde görsel formatında indirebilirsiniz.',
-                'icon' => asset('img/icons/data-sheet.png')
-            ],
-            [
-                'title' => 'Kaynaklar',
-                'text' => 'Araştırmalarınız sonucu elde ettiğiniz değerlerden emin olmak için, tüm verileri tek tek veya gruplar halinde inceleyebilirsiniz.',
-                'icon' => asset('img/icons/innovation.png')
-            ],
-            [
-                'title' => 'Sınırsız Sorgu',
-                'text' => 'Aboneliğiniz boyunca istediğiniz kadar sorgu ve analiz gerçekleştirebilirsiniz.',
-                'icon' => asset('img/icons/infinity.png')
-            ],
-            [
-                'title' => 'Sınırsız Sonuç',
-                'text' => 'Örümceklerimizin ulaştığı tüm verilere hiçbir sınırlama olmaksızın ulaşabilirsiniz.',
-                'icon' => asset('img/icons/report-card.png')
-            ],
-            [
-                'title' => 'Anlamlı Sonuç',
-                'text' => 'İyi Sonuç® algoritmamız ile anlamsız içerikleri arama sonuçlarından çıkartarak veri madenciliğini daha üst seviyelere taşıyabilirsiniz.',
-                'icon' => asset('img/icons/light-on.png')
-            ],
-            [
-                'title' => 'Akıllı Algoritmalar',
-                'text' => 'Sürekli öğrenen algoritmalar sayesinde, arama sonuçlarınız her geçen gün daha iyi hale gelir.',
-                'icon' => asset('img/icons/artificial-intelligence.png')
-            ],
-            [
-                'title' => 'Ortak Veri Havuzu',
-                'text' => 'Olive, veri mecralarını tarar ve elde ettiği verileri bir havuzda toplar. Ulaşamadığımız mecraları belirterek siz de bu havuza katkı sağlayabilirsiniz.',
-                'icon' => asset('img/icons/network.png')
-            ],
-            [
-                'title' => 'Trend Arşivi',
-                'text' => 'Saatlik, Günlük, Haftalık, Aylık ve Yıllık Trendleri arşivliyoruz. Bu arşivlere her an erişebilirsiniz.',
-                'icon' => asset('img/icons/archive.png')
-            ],
-            [
-                'title' => 'Güncel Teknoloji',
-                'text' => 'Her geçen gün yeni modüller ve özellikler üretiyoruz. Tüm özelliklerimizi, güncel teknolojiye ve ihtiyaçlarınıza göre geliştirmeye devam ediyoruz.',
-                'icon' => asset('img/icons/apple-watch.png')
-            ],
-        ];
-
-        $types = [
-            'kisiler' => [
-                'key' => 'kisiler',
-                'title' => 'Kişiler İçin',
-                'description' => 'Bir Finansal Araştırmacı, Kamu Sektörü Analisti veya Strateji Uzmanı olun, ilgi alanınız hakkında derin ve anlamlı bilgiler edinmek için Olive\'i kullanabilirsiniz.',
-                'image' => asset('img/photo/1500x1500@person.jpg'),
-            ],
-            'markalar' => [
-                'key' => 'markalar',
-                'title' => 'Markalar İçin',
-                'description' => 'Demografik bilgileri, davranışı, marka tercihlerini, satın alma davranışını ve ilgi grafiğini analiz ederek tüketicilerinizin mikroskobik olarak anlaşılmasını sağlayın.',
-                'image' => asset('img/photo/1500x1500@brand.jpg'),
-            ],
-            'reklam-ajanslari' => [
-                'key' => 'reklam-ajanslari',
-                'title' => 'Reklam Ajansları İçin',
-                'description' => 'Ekstra bir iş yapmadan bir marka ve konu portföyünü takip edin. Kampanyalarınızı ve markalarınızı izleyin, tüketici duyarlılığı ve davranışındaki değişiklikleri ilk keşfeden siz olun.',
-                'image' => asset('img/photo/1500x1500@agency.jpg'),
-            ]
-        ];
-
-        if ($type)
-        {
-            $type = $types[$type];
-        }
-
         $prices = Option::select('key', 'value')->where('key', 'LIKE', 'unit_price.%')->get()->keyBy('key')->toArray();
 
-        return view('home.index', compact('array', 'type', 'types', 'prices'));
+        return view('home.index', compact('prices'));
     }
 
     /**

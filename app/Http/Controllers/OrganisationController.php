@@ -268,7 +268,7 @@ class OrganisationController extends Controller
                     'body' => 'Deneme süreniz 1 gün daha uzatıldı. 1 gün sonunda kesintisiz bir şekilde devam edebilmek için lütfen "Organizasyon Ayarları" sayfasından ödeme gerçekleştirin.'
                 ];
 
-                $user->notify((new MessageNotification('Olive: '.$message['title'], $message['info'], $message['body']))->onQueue('email'));
+                $user->notify((new MessageNotification($message['title'], $message['info'], $message['body']))->onQueue('email'));
 
                 Activity::push(
                     $message['title'],
@@ -401,7 +401,7 @@ class OrganisationController extends Controller
                  */
                 $author = $organisation->author;
 
-                $author->notify((new MessageNotification('Olive: '.$message['title'], $message['info'], $message['body']))->onQueue('email'));
+                $author->notify((new MessageNotification($message['title'], $message['info'], $message['body']))->onQueue('email'));
 
                 Activity::push(
                     $message['title'],
@@ -526,7 +526,7 @@ class OrganisationController extends Controller
             $user->notify(
                 (
                     new MessageNotification(
-                        'Olive: '.$title,
+                        $title,
                         'Merhaba, '.$user->name,
                         $message
                     )
@@ -582,7 +582,7 @@ class OrganisationController extends Controller
             $user->notify(
                 (
                     new MessageNotification(
-                        'Olive: '.$title,
+                        $title,
                         'Merhaba, '.$user->name,
                         $message
                     )
@@ -623,7 +623,7 @@ class OrganisationController extends Controller
             $user->notify(
                 (
                     new MessageNotification(
-                        'Olive: '.$title,
+                        $title,
                         'Merhaba, '.$user->name,
                         $message
                     )
@@ -648,7 +648,7 @@ class OrganisationController extends Controller
             $transferred_user->notify(
                 (
                     new MessageNotification(
-                        'Olive: '.$title,
+                        $title,
                         'Merhaba, '.$transferred_user->name,
                         $message
                     )
@@ -701,7 +701,7 @@ class OrganisationController extends Controller
                 $removed_user->notify(
                     (
                         new MessageNotification(
-                            'Olive: '.$title,
+                            $title,
                             'Merhaba, '.$removed_user->name,
                             $message
                         )
@@ -785,10 +785,10 @@ class OrganisationController extends Controller
                 $organisation->end_date = $add_month;
                 $organisation->save();
 
-                $title = 'Olive: Fatura Onayı';
+                $title = 'Fatura Onayı';
                 $greeting = 'Tebrikler! Faturanız Onaylandı.';
                 $message = 'Ödemeniz başarılı bir şekilde gerçekleştirildi ve organizasyonunuz aktif edildi.';
-                $message = 'Olive kullandığınız için teşekkür eder, iyi araştırmalar dileriz.';
+                $message = 'Veri Zone kullandığınız için teşekkür eder, iyi araştırmalar dileriz.';
 
                 $author = $organisation->author;
 
@@ -951,7 +951,7 @@ class OrganisationController extends Controller
                 json_encode(
                     [
                         [
-                            '1 Aylık Olive Aboneliği #'.$organisation->id,
+                            '1 Aylık Veri Zone Aboneliği #'.$organisation->id,
                             $invoice->unit_price,
                             $invoice->month,
                         ]
@@ -1176,7 +1176,7 @@ class OrganisationController extends Controller
                 (
                     new MessageNotification
                     (
-                        'Olive: Fatura İptal Edildi',
+                        'Fatura İptal Edildi',
                         'Faturanızı İptal Ettiniz!',
                         'Organizasyon ödemesi için oluşturduğunuz fatura, ödeme tamamlanmadan iptal edildi.'
                     )
@@ -1695,7 +1695,7 @@ class OrganisationController extends Controller
             $organisation->end_date = $add_month;
             $organisation->save();
 
-            $title = 'Olive: Fatura Onayı';
+            $title = 'Fatura Onayı';
             $greeting = 'Faturanız Onaylandı!';
             $message = 'Organizasyonunuzu aktifleştirdik. İyi araştırmalar dileriz...';
 

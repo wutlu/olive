@@ -74,13 +74,11 @@
         <meta property="og:description" content="{{ str_limit($category->description, 255) }}" />
         <meta property="og:type" content="category" />
         <meta property="og:url" content="{{ url()->full() }}" />
-        <meta property="og:image" content="{{ asset('img/olive-twitter-card.png?v='.config('system.version')) }}" />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="{{ url()->full() }}" />
         <meta name="twitter:title" content="{{ $category->name }}" />
         <meta name="twitter:description" content="{{ str_limit($category->description, 255) }}" />
-        <meta name="twitter:image" content="{{ asset('img/olive-twitter-card.png?v='.config('system.version')) }}" />
     @endpush
 @endisset
 

@@ -94,7 +94,7 @@ class User extends Authenticatable
 
             if ($this->notification('badge'))
             {
-                $this->notify((new MessageNotification('Olive: 🌠🌟✨ Yeni Rozet ✨🌟🌠', $greeting, $message))->onQueue('email'));
+                $this->notify((new MessageNotification('🌠🌟✨ Yeni Rozet ✨🌟🌠', $greeting, $message))->onQueue('email'));
             }
 
             Badge::firstOrCreate([

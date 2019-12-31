@@ -70,7 +70,7 @@ class ServerAlertMail extends Mailable implements ShouldQueue
             break;
         }
 
-        return $this->subject('Olive: '.$this->subject)
+        return $this->subject($this->subject)
                     ->markdown('emails.server.alert', [
                         'subject' => $this->subject,
                         'body' => $this->body

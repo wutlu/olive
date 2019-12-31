@@ -45,8 +45,8 @@ class NewPasswordNotification extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject('Olive: Hesap şifreniz güncellendi!')
-                    ->greeting('Merhaba, ' . $this->name)
+                    ->subject('Hesap şifreniz güncellendi!')
+                    ->greeting('Merhaba, '.$this->name)
                     ->level('olive')
                     ->line('Hesap şifreniz başarılı bir şekilde güncellendi.')
                     ->line($this->text);

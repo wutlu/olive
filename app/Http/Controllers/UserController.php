@@ -1003,7 +1003,7 @@ class UserController extends Controller
             $password = mt_rand(100000, 999999);
 
             $sms = SMS::send(
-                implode(' ', [ 'Olive giriş bilgileriniz,', 'E-posta: '.$user->email, 'Şifre: '.$password ]),
+                implode(' ', [ 'Veri Zone giriş bilgileriniz,', 'E-posta: '.$user->email, 'Şifre: '.$password ]),
                 [ str_replace([ ' ', '(', ')' ], '', $user->gsm) ]
             );
 
@@ -1615,7 +1615,7 @@ class UserController extends Controller
             $user->notify(
                 (
                     new MessageNotification(
-                        'Olive: Bilgiler Güncellendi!',
+                        'Bilgiler Güncellendi!',
                         'Merhaba, '.$user->name,
                         'Hesap bilgieriniz başarılı bir şekilde güncellendi.'
                     )

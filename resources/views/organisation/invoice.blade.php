@@ -316,7 +316,7 @@
         <tbody>
             <tr>
                 <td class="description">
-                    <p>1 Aylık Olive Aboneliği</p>
+                    <p>1 Aylık Veri Zone Aboneliği</p>
                 </td>
                 <td class="quantity">{{ $invoice->month }}</td>
                 <td class="unit-price">

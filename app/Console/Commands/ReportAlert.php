@@ -63,7 +63,7 @@ class ReportAlert extends Command
                     $user->notify(
                         (
                             new MessageNotification(
-                                'Olive: Küçük Bir Hatırlatma 😇',
+                                'Küçük Bir Hatırlatma 😇',
                                 'Merhaba, '.$user->name,
                                 'Tamamlanmamış bir raporunuz var. Unutmadıysanız bu e-postayı dikkate almayın 😅'
                             )

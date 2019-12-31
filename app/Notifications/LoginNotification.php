@@ -45,7 +45,7 @@ class LoginNotification extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject('Olive: Hesabınıza giriş yapıldı!')
+                    ->subject('Hesabınıza giriş yapıldı!')
                     ->greeting('Merhaba, ' . $this->name)
                     ->level('olive')
                     ->line('Aşağıdaki bilgilere sahip bir cihazdan oturum açıldı.')

@@ -192,7 +192,7 @@ $(document).on('click', '.read-aloud', function() {
                                 }),
                                 $('<span />', {
                                     'class': 'align-self-center red-text',
-                                    'html': 'Bu içerik için mevcut sınıflama Olive tarafından oluşturulmuştur. Sınıflandırma doğru değilse, lütfen doğru seçeneği Olive\'e bildirin.'
+                                    'html': 'Bu içerik için mevcut sınıflama Veri Zone tarafından oluşturulmuştur. Sınıflandırma doğru değilse, lütfen doğru seçeneği Veri Zone\'a bildirin.'
                                 })
                             ]
                         })
@@ -2636,7 +2636,7 @@ function __report__page_form(options)
                                 'html': [
                                     $('<img />', {
                                         'alt': 'Logo',
-                                        'src': '/img/olive_logo-grey.svg'
+                                        'src': '/img/veri.zone_logo-grey.svg'
                                     })
                                 ]
                             }),
@@ -2809,11 +2809,11 @@ $(document).on('click', '#report-menu.active [data-report-element=add-page]', fu
     return modal({
         'id': 'info',
         'body': [
-            $('<p />', { 'html': '"Olive Rapor Aracı" sayesinde, araştırmanızı yaparken eş zamanlı olarak raporunuzu da oluşturabilirsiniz.' }),
+            $('<p />', { 'html': '"Veri Zone Rapor Aracı" sayesinde, araştırmanızı yaparken eş zamanlı olarak raporunuzu da oluşturabilirsiniz.' }),
             $('<ol />', {
                 'html': [
-                    $('<li />', { 'html': 'Olive ekranının alt kısmında bulunan menüden "Rapor Başlat" butonuna tıklayın ve rapor adı ile birlikte yeni bir rapor başlatın.' }),
-                    $('<li />', { 'html': 'Rapor başlatıldıktan sonra, diğer Olive araçlarını kullanarak araştırmanıza başlayın.' }),
+                    $('<li />', { 'html': 'Veri Zone ekranının alt kısmında bulunan menüden "Rapor Başlat" butonuna tıklayın ve rapor adı ile birlikte yeni bir rapor başlatın.' }),
+                    $('<li />', { 'html': 'Rapor başlatıldıktan sonra, diğer Veri Zone araçlarını kullanarak araştırmanıza başlayın.' }),
                     $('<li />', { 'html': 'Araştırmanız esnasında elde edeceğiniz önemli verilerin, grafiklerin, tabloların veya göstergelerin etrafında bulunan "Rapora Ekle" butonuna tıklayın.' }),
                     $('<li />', { 'html': 'Açılan pencereden, varsa; başlık, alt başlık veya açıklama gibi seçeneklerinizi girin.' }),
                     $('<li />', { 'html': 'Hazır olan sayfayı kayıt butonuna basarak raporunuza ekleyin.' }),

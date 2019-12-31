@@ -54,7 +54,7 @@
 
 @push('local.styles')
     #console.collection {
-        background-image: url('{{ asset('img/olive_logo-opacity.svg') }}');
+        background-image: url('{{ asset('img/veri.zone_logo-opacity.svg') }}');
         background-repeat: no-repeat;
         background-position: center;
         padding: 1rem 0;
