@@ -218,7 +218,7 @@ class RealTimeController extends Controller
                             'range' => [
                                 'called_at' => [
                                     'format' => 'YYYY-MM-dd HH:mm',
-                                    'gte' => Carbon::now()->subMinutes(10)->format('Y-m-d H:i')
+                                    'gte' => Carbon::now()->subMinutes(2)->format('Y-m-d H:i')
                                 ]
                             ]
                         ]
