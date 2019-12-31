@@ -9,10 +9,9 @@
 ])
 
 @push('local.scripts')
-    function __pin_groups(__, obj)
+    function __archives(__, obj)
     {
-        var ul = $('#pin-groups');
-        var item_model = ul.children('.model');
+        var item_model = __.children('.model');
 
         if (obj.status == 'ok')
         {
@@ -25,11 +24,11 @@
                         item.removeClass('model hide').addClass('_tmp d-flex').attr('data-id', o.id)
 
                         item.find('[data-name=edit]').attr('data-archive_id', o.id)
-                        item.find('[data-trigger=pin-go]').html(o.name).attr('data-id', o.id)
+                        item.find('[data-trigger=archive-go]').html(o.name).attr('data-id', o.id)
                         item.find('[data-name=created-at]').attr('data-time', o.created_at).html(o.created_at)
                         item.find('[data-name=count]').html(o.pins_count + ' pin')
 
-                        item.appendTo(ul)
+                        item.appendTo(__)
                 })
             }
         }
@@ -140,11 +139,11 @@
 
             if (obj.type == 'created')
             {
-                vzAjax($('#pin-groups').data('skip', 0).addClass('json-clear'))
+                vzAjax($('#archives').data('skip', 0).addClass('json-clear'))
             }
             else if (obj.type == 'updated')
             {
-                $('#pin-groups').children('[data-id=' + obj.data.id + ']').find('[data-trigger=pin-go]').html(obj.data.name)
+                $('#archives').children('[data-id=' + obj.data.id + ']').find('[data-trigger=archive-go]').html(obj.data.name)
             }
 
             M.toast({
@@ -187,7 +186,7 @@
     {
         if (obj.status == 'ok')
         {
-            $('#pin-groups').children('[data-id=' + obj.data.id + ']').remove()
+            $('#archives').children('[data-id=' + obj.data.id + ']').remove()
 
             $('#modal-pin-group-alert').modal('close')
 
@@ -200,7 +199,7 @@
                 classes: 'red darken-2'
             })
 
-            vzAjax($('#pin-groups').data('skip', 0).addClass('json-clear'))
+            vzAjax($('#archives').data('skip', 0).addClass('json-clear'))
         }
     }
 @endpush
@@ -228,7 +227,7 @@
                            name="string"
                            type="search"
                            class="validate json json-search"
-                           data-json-target="#pin-groups"
+                           data-json-target="#archives"
                            placeholder="Ara" />
                     <label class="label-icon" for="string">
                         <i class="material-icons">search</i>
@@ -236,14 +235,14 @@
                 </div>
             </div>
         </nav>
-        <ul id="pin-groups"
+        <ul id="archives"
              class="collection load json-clear" 
              data-href="{{ route('pin.groups') }}"
              data-skip="0"
              data-take="5"
              data-include="string"
-             data-more-button="#pin-groups-more_button"
-             data-callback="__pin_groups"
+             data-more-button="#archives-more_button"
+             data-callback="__archives"
              data-method="post"
              data-loader="#home-loader"
              data-nothing>
@@ -267,7 +266,7 @@
                 </span>
                 <span>
                 	<a
-                        data-trigger="pin-go"
+                        data-trigger="archive-go"
                         data-name="pin.pins"
                         data-href="{{ route('route.generate.id') }}"
                         data-method="post"
@@ -289,8 +288,8 @@
 
     <div class="center-align">
         <button class="btn-flat waves-effect hide json"
-                id="pin-groups-more_button"
+                id="archives-more_button"
                 type="button"
-                data-json-target="#pin-groups">Öncekiler</button>
+                data-json-target="#archives">Öncekiler</button>
     </div>
 @endsection
