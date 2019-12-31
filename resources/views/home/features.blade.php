@@ -116,7 +116,7 @@
                 <div class="item align-self-center">
                     <h2>Alper Mutlu Toksöz</h2>
                     <p class="author mb-1">Kurucu, Veri Zone Teknoloji</p>
-                    <p class="lead">Hızla gelişen büyük veri dünyasında sabit özelliklere sahip bir teknoloji düşünülemez. En iyiye ulaşmak için veri madenciliği anlayışını VERİ.ZONE ile yeniden tasarladık. Alanımız için en iyi çözümleri üretiyor, üretmmeye devam ediyoruz.</p>
+                    <p class="lead">Hızla gelişen büyük veri dünyasında sabit özelliklere sahip bir teknoloji düşünülemez. En iyiye ulaşmak için veri madenciliği anlayışını VERİ.ZONE ile yeniden tasarladık. Alanımız için en iyi çözümleri üretiyor, üretmeye devam ediyoruz.</p>
                 </div>
             </div>
         </div>
