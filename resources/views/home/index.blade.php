@@ -72,7 +72,10 @@
                             <a href="tel:8503021630" class="white fonted-menu">+90 850 302 16 30</a>
                         </li>
                         <li class="btn-li d-flex">
-                            <a href="{{ route('user.login') }}" class="btn blue darken-4 white-text waves-effect align-self-center">Ücretsiz Deneyin</a>
+                            <a href="{{ route('user.login') }}" class="btn blue darken-4 white-text waves-effect align-self-center">
+                                <span class="hide-on-med-and-down">Ücretsiz</span>
+                                Deneyin
+                            </a>
                         </li>
                     </ul>
                 </div>
