@@ -1788,7 +1788,7 @@ class OrganisationController extends Controller
     {
         $organisation = Organisation::where('id', $id)->firstOrFail();
 
-        return view('organisation.admin.pinGroups', compact('organisation'));
+        return view('organisation.admin.archives', compact('organisation'));
     }
 
     /**

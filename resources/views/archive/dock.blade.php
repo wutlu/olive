@@ -1,5 +1,5 @@
 @push('local.styles')
-    #pin-groups.collection > .collection-item > label {
+    #archives.collection > .collection-item > label {
         max-width: calc(100% - 48px);
         overflow: hidden;
     }
@@ -22,15 +22,15 @@
             <span data-name="display-pin-group">0</span> / <span data-name="total-pin-group">0</span>
         </div>
 
-        <ul id="pin-groups"
+        <ul id="archives"
             class="collection collection-unstyled load json-clear mb-0" 
             data-href="{{ route('pin.groups') }}"
             data-skip="0"
             data-take="5"
-            data-more-button="#pin-groups-more_button"
+            data-more-button="#archives-more_button"
             data-callback="__archive_groups"
             data-method="post"
-            data-loader="#pin-groups-loader"
+            data-loader="#archives-loader"
             data-nothing>
             <li class="collection-item nothing hide">
                 @component('components.nothing')
@@ -65,7 +65,7 @@
 
         @component('components.loader')
             @slot('color', 'blue-grey')
-            @slot('id', 'pin-groups-loader')
+            @slot('id', 'archives-loader')
             @slot('class', 'card-loader-unstyled')
         @endcomponent
 
@@ -205,7 +205,7 @@
 
             if (obj.type == 'created')
             {
-                vzAjax($('#pin-groups').data('skip', 0).addClass('json-clear'))
+                vzAjax($('#archives').data('skip', 0).addClass('json-clear'))
 
                 if ($('[data-name=total-pin-group]').html() == 0)
                 {
@@ -214,7 +214,7 @@
             }
             else if (obj.type == 'updated')
             {
-                $('#pin-groups').children('[data-id=' + obj.data.id + ']').find('[data-trigger=pin-go]').html(obj.data.name)
+                $('#archives').children('[data-id=' + obj.data.id + ']').find('[data-trigger=pin-go]').html(obj.data.name)
             }
 
             M.toast({
@@ -257,7 +257,7 @@
     {
         if (obj.status == 'ok')
         {
-            $('#pin-groups').children('[data-id=' + obj.data.id + ']').remove()
+            $('#archives').children('[data-id=' + obj.data.id + ']').remove()
 
             $('#modal-pin-group-alert').modal('close')
 
@@ -270,7 +270,7 @@
                 classes: 'red darken-2'
             })
 
-            vzAjax($('#pin-groups').data('skip', 0).addClass('json-clear'))
+            vzAjax($('#archives').data('skip', 0).addClass('json-clear'))
         }
     }
 

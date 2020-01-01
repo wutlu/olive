@@ -25,12 +25,12 @@
         <div class="card-content">
             <span class="card-title">Arşivler</span>
         </div>
-        <ul id="pin-groups"
+        <ul id="archives"
              class="collection collection-unstyled load json-clear" 
              data-href="{{ route('admin.organisation.archives', $organisation->id) }}"
              data-skip="0"
              data-take="5"
-             data-more-button="#pin-groups-more_button"
+             data-more-button="#archives-more_button"
              data-callback="__archive_groups"
              data-method="post"
              data-loader="#home-loader"
@@ -55,9 +55,9 @@
 
     <div class="center-align">
         <button class="btn-flat waves-effect hide json"
-                id="pin-groups-more_button"
+                id="archives-more_button"
                 type="button"
-                data-json-target="#pin-groups">Öncekiler</button>
+                data-json-target="#archives">Öncekiler</button>
     </div>
 @endsection
 
@@ -68,8 +68,7 @@
 @push('local.scripts')
     function __archive_groups(__, obj)
     {
-        var ul = $('#pin-groups');
-        var item_model = ul.children('.model');
+        var item_model = __.children('.model');
 
         if (obj.status == 'ok')
         {
@@ -85,7 +84,7 @@
                         item.find('[data-name=created-at]').attr('data-time', o.created_at).html(o.created_at)
                         item.find('[data-name=count]').html(o.pins_count + ' içerik')
 
-                        item.appendTo(ul)
+                        item.appendTo(__)
                 })
             }
         }
