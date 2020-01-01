@@ -25,7 +25,7 @@
     <div class="divider"></div>
 
     <a href="{{ route('admin.organisation.saved_searches', $organisation->id) }}" class="collection-item waves-effect {{ $active == 'saved.searches' ? 'active' : '' }}">Kayıtlı Aramalar</a>
-    <a href="{{ route('admin.organisation.pin_groups', $organisation->id) }}" class="collection-item waves-effect {{ $active == 'groups.pin' ? 'active' : '' }}">Arşivler</a>
+    <a href="{{ route('admin.organisation.archives', $organisation->id) }}" class="collection-item waves-effect {{ $active == 'groups.pin' ? 'active' : '' }}">Arşivler</a>
     <a href="{{ route('admin.organisation.alarms', $organisation->id) }}" class="collection-item waves-effect {{ $active == 'alarms' ? 'active' : '' }}">Alarmlar</a>
 
     <div class="divider"></div>

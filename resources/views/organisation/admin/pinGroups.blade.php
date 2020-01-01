@@ -27,7 +27,7 @@
         </div>
         <ul id="pin-groups"
              class="collection collection-unstyled load json-clear" 
-             data-href="{{ route('admin.organisation.pin_groups', $organisation->id) }}"
+             data-href="{{ route('admin.organisation.archives', $organisation->id) }}"
              data-skip="0"
              data-take="5"
              data-more-button="#pin-groups-more_button"
@@ -83,7 +83,7 @@
 
                         item.find('[data-name=name]').html(o.name)
                         item.find('[data-name=created-at]').attr('data-time', o.created_at).html(o.created_at)
-                        item.find('[data-name=count]').html(o.pins_count + ' pin')
+                        item.find('[data-name=count]').html(o.pins_count + ' içerik')
 
                         item.appendTo(ul)
                 })

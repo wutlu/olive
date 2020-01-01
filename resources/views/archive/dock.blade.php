@@ -5,7 +5,7 @@
     }
 @endpush
 
-<div id="pin-groups-dock">
+<div id="archive-dock">
     <div class="card card-unstyled">
         <div class="card-content">
             <span class="card-title d-flex blue-grey-text text-darken-2">
@@ -92,7 +92,7 @@
 
                         item.find('[data-name=edit]').attr('data-archive_id', o.id)
                         item.find('[data-trigger=pin-go]').html(o.name).attr('data-id', o.id)
-                        item.find('[data-name=count]').html(o.pins_count + ' pin')
+                        item.find('[data-name=count]').html(o.pins_count + ' içerik')
                         item.find('[name=archive_id]').val(o.id)
 
                         item.appendTo(__)
@@ -276,7 +276,7 @@
 
     function __archive_dock(__)
     {
-        $('#pin-groups-dock').addClass('active')
+        $('#archive-dock').addClass('active')
 
         if ($('[data-name=total-pin-group]').html() == 0)
         {

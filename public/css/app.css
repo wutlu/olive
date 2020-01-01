@@ -3986,9 +3986,9 @@ nav.nav-half {
 }
 
 /*!
- * pin groups
+ * archives
  */
-#pin-groups-dock {
+#archive-dock {
   width: 240px;
 
   position: fixed;
@@ -4007,7 +4007,7 @@ nav.nav-half {
   background-color: #f9f9f9;
 }
 
-#pin-groups-dock.active {
+#archive-dock.active {
   -webkit-transform: translateX(0);
           transform: translateX(0);
 
@@ -4016,7 +4016,7 @@ nav.nav-half {
 }
 
 @media only screen and (max-width: 992px) {
-  #pin-groups-dock {
+  #archive-dock {
     top: 56px;
   }
 }

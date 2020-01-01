@@ -82,7 +82,7 @@
             <span class="red-text">{{ $document['_source']['author'] }}</span>
             <div class="markdown">{!! Term::markdown($document['_source']['entry']) !!}</div>
         </div>
-        @include('content._inc.pin_bar', [
+        @include('content._inc.archive_bar', [
             'document' => $document
         ])
     </div>

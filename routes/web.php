@@ -217,19 +217,19 @@ Route::prefix('alarm')->group(function () {
 });
 
 Route::prefix('arsivler')->group(function () {
-    Route::get('/', 'PinController@groups')->name('pin.groups');
-    Route::post('/', 'PinController@groupListJson');
+    Route::get('/', 'ArchiveController@groups')->name('pin.groups');
+    Route::post('/', 'ArchiveController@groupListJson');
 
-    Route::post('islem', 'PinController@groupGet')->name('pin.group');
-    Route::put('islem', 'PinController@groupCreate');
-    Route::patch('islem', 'PinController@groupUpdate');
-    Route::delete('islem', 'PinController@groupDelete');
+    Route::post('islem', 'ArchiveController@groupGet')->name('pin.group');
+    Route::put('islem', 'ArchiveController@groupCreate');
+    Route::patch('islem', 'ArchiveController@groupUpdate');
+    Route::delete('islem', 'ArchiveController@groupDelete');
 
-    Route::get('{id}', 'PinController@pins')->name('pin.pins');
-    Route::post('yorum', 'PinController@comment')->name('pin.comment');
-    Route::post('pdf', 'PinController@pdf')->name('pin.pdf');
-    Route::post('{type}', 'PinController@pin')->name('pin')->where('type', '(add|remove)');
-    Route::get('url/{id}', 'PinController@pinUrls')->name('pin.urls');
+    Route::get('{id}', 'ArchiveController@pins')->name('pin.pins');
+    Route::post('yorum', 'ArchiveController@comment')->name('pin.comment');
+    Route::post('pdf', 'ArchiveController@pdf')->name('pin.pdf');
+    Route::post('{type}', 'ArchiveController@pin')->name('pin')->where('type', '(add|remove)');
+    Route::get('url/{id}', 'ArchiveController@pinUrls')->name('pin.urls');
 });
 
 Route::prefix('ayarlar')->group(function () {

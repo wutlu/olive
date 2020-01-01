@@ -10,7 +10,7 @@
             class="btn-floating btn-small waves-effect white json align-self-center"
             data-href="{{ route('pin', 'add') }}"
             data-method="post"
-            data-include="group_id"
+            data-include="archive_id"
             data-callback="__archive"
             data-error-callback="__archive_dock"
             data-trigger="pin"

@@ -93,7 +93,7 @@
             <div class="markdown">{!! Term::markdown($document['_source']['description']) !!}</div>
             <a class="green-text" href="{{ $document['_source']['url'] }}" target="_blank">{{ $document['_source']['url'] }}</a>
         </div>
-        @include('content._inc.pin_bar', [
+        @include('content._inc.archive_bar', [
             'document' => $document
         ])
     </div>

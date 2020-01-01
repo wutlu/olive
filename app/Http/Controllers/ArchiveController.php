@@ -27,7 +27,7 @@ use Carbon\Carbon;
 
 use App\Utilities\Term;
 
-class PinController extends Controller
+class ArchiveController extends Controller
 {
     public function __construct()
     {

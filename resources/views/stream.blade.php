@@ -194,9 +194,6 @@
         dotClass: 'hide'
     })
 
-    var group_select = $('select[name=group_id]');
-        group_select.formSelect()
-
     var buffer = [];
     var words = [];
 

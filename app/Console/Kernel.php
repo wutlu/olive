@@ -174,7 +174,7 @@ class Kernel extends ConsoleKernel
             /**
              * Arşiv için PDF çıktı modülünün tetiklenmesi.
              */
-            $schedule->command('trigger:pdf:pin_groups')->everyMinute()->timezone(config('app.timezone'));
+            $schedule->command('trigger:pdf:archives')->everyMinute()->timezone(config('app.timezone'));
 
             /**
              * Sözlük botlarının Tetiklenmesi

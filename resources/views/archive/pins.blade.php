@@ -61,65 +61,65 @@
     </div>
 
     @forelse ($pins as $pin)
-            @php
-            $id = $pin->index.'_'.$pin->type.'_'.$pin->id;
-            @endphp
+        @php
+        $id = $pin->index.'_'.$pin->type.'_'.$pin->id;
+        @endphp
 
-            <ul id="dropdown-{{ $id }}" class="dropdown-content">
+        <ul id="dropdown-{{ $id }}" class="dropdown-content">
+            <li>
+                <a href="{{ route('content', [ 'es_index' => $pin->index, 'es_type' => $pin->type, 'es_id' => $pin->id ]) }}" class="waves-effect">İncele</a>
+            </li>
+
+            @if ($pin->organisation_id == auth()->user()->organisation_id)
+                <li class="divider" tabindex="-1"></li>
                 <li>
-                    <a href="{{ route('content', [ 'es_index' => $pin->index, 'es_type' => $pin->type, 'es_id' => $pin->id ]) }}" class="waves-effect">İncele</a>
+                    <a
+                        href="#"
+                        class="waves-effect json"
+                        data-href="{{ route('pin', 'remove') }}"
+                        data-method="post"
+                        data-id="{{ $pin->id }}"
+                        data-type="{{ $pin->type }}"
+                        data-index="{{ $pin->index }}"
+                        data-archive_id="{{ $archive->id }}"
+                        data-callback="__archive">Pin'i Kaldır</a>
                 </li>
+            @endif
+        </ul>
 
-                @if ($pin->organisation_id == auth()->user()->organisation_id)
-                    <li class="divider" tabindex="-1"></li>
-                    <li>
-                        <a
-                            href="#"
-                            class="waves-effect json"
-                            data-href="{{ route('pin', 'remove') }}"
-                            data-method="post"
-                            data-id="{{ $pin->id }}"
-                            data-type="{{ $pin->type }}"
-                            data-index="{{ $pin->index }}"
-                            data-archive_id="{{ $archive->id }}"
-                            data-callback="__archive">Pin'i Kaldır</a>
-                    </li>
-                @endif
-            </ul>
+        <div class="card card-data {{ $pin->type }} mb-1" data-id="card-{{ $id }}">
+            <div class="card-content">
+                <span class="card-title">
+                    {{ $pin->type }}
+                    <a href="#" class="dropdown-trigger right" data-target="dropdown-{{ $id }}" data-align="right">
+                        <i class="material-icons">more_vert</i>
+                    </a>
+                </span>
 
-            <div class="card card-data {{ $pin->type }} mb-1" data-id="card-{{ $id }}">
-                <div class="card-content">
-                    <span class="card-title">
-                        {{ $pin->type }}
-                        <a href="#" class="dropdown-trigger right" data-target="dropdown-{{ $id }}" data-align="right">
-                            <i class="material-icons">more_vert</i>
-                        </a>
-                    </span>
+                <div class="data-area" id="{{ $pin->id }}"></div>
 
-                    <div class="data-area" id="{{ $pin->id }}"></div>
-
-                    @push('local.scripts')
-                    $('#{{ $pin->id }}').html(_{{ $pin->type }}_({!! json_encode(array_merge($pin->content, [ '_id' => $pin->id, '_type' => $pin->type, '_index' => $pin->index ])) !!}))
-                    @endpush
-                </div>
-
-                @if ($pin->organisation_id == auth()->user()->organisation_id)
-                    <div class="card-comment">
-                        <div class="input-field">
-                            <textarea
-                                id="textarea-{{ $id }}"
-                                name="comment"
-                                class="materialize-textarea json"
-                                data-href="{{ route('pin.comment') }}"
-                                data-method="post"
-                                data-index="{{ $pin->index }}"
-                                data-type="{{ $pin->type }}"
-                                data-id="{{ $pin->id }}">{{ $pin->comment }}</textarea>
-                            <label for="textarea-{{ $id }}">Yorum Girin</label>
-                        </div>
-                    </div>
-                @endif
+                @push('local.scripts')
+                $('#{{ $pin->id }}').html(_{{ $pin->type }}_({!! json_encode(array_merge($pin->content, [ '_id' => $pin->id, '_type' => $pin->type, '_index' => $pin->index ])) !!}))
+                @endpush
             </div>
+
+            @if ($pin->organisation_id == auth()->user()->organisation_id)
+                <div class="card-comment">
+                    <div class="input-field">
+                        <textarea
+                            id="textarea-{{ $id }}"
+                            name="comment"
+                            class="materialize-textarea json"
+                            data-href="{{ route('pin.comment') }}"
+                            data-method="post"
+                            data-index="{{ $pin->index }}"
+                            data-type="{{ $pin->type }}"
+                            data-id="{{ $pin->id }}">{{ $pin->comment }}</textarea>
+                        <label for="textarea-{{ $id }}">Yorum Girin</label>
+                    </div>
+                </div>
+            @endif
+        </div>
     @empty
         @component('components.nothing')
             @slot('cloud_class', 'white-text')

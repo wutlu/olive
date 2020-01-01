@@ -200,7 +200,7 @@
             </ul>
         @endisset
 
-        @include('content._inc.pin_bar', [
+        @include('content._inc.archive_bar', [
             'document' => $document
         ])
     </div>
