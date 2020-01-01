@@ -82,7 +82,7 @@
                             data-type="{{ $pin->type }}"
                             data-index="{{ $pin->index }}"
                             data-archive_id="{{ $pg->id }}"
-                            data-callback="__pin">Pin'i Kaldır</a>
+                            data-callback="__archive">Pin'i Kaldır</a>
                     </li>
                 @endif
             </ul>
@@ -133,7 +133,7 @@
 @endsection
 
 @push('local.scripts')
-    function __pin(__, obj)
+    function __archive(__, obj)
     {
         if (obj.status == 'removed')
         {

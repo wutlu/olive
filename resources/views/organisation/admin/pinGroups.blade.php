@@ -31,7 +31,7 @@
              data-skip="0"
              data-take="5"
              data-more-button="#pin-groups-more_button"
-             data-callback="__pin_groups"
+             data-callback="__archive_groups"
              data-method="post"
              data-loader="#home-loader"
              data-nothing>
@@ -66,7 +66,7 @@
 @endsection
 
 @push('local.scripts')
-    function __pin_groups(__, obj)
+    function __archive_groups(__, obj)
     {
         var ul = $('#pin-groups');
         var item_model = ul.children('.model');

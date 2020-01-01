@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Pin\Group;
+namespace App\Http\Requests\Archive\Group;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateRequest extends FormRequest
+class GetRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,7 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => 'required|integer|exists:archives,id',
-
-            'name' => 'required|string|max:32'
+            'archive_id' => 'required|integer|exists:archives,id'
         ];
     }
 }

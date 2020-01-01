@@ -7,12 +7,12 @@ use Illuminate\Http\Request;
 use App\Http\Requests\IdRequest;
 use App\Http\Requests\SearchRequest;
 
-use App\Http\Requests\Pin\Group\GetRequest as GroupGetRequest;
-use App\Http\Requests\Pin\Group\CreateRequest as GroupCreateRequest;
-use App\Http\Requests\Pin\Group\UpdateRequest as GroupUpdateRequest;
-use App\Http\Requests\Pin\Group\PdfRequest as GrupPdfRequest;
-use App\Http\Requests\Pin\CommentRequest;
-use App\Http\Requests\Pin\PinRequest;
+use App\Http\Requests\Archive\Group\GetRequest as GroupGetRequest;
+use App\Http\Requests\Archive\Group\CreateRequest as GroupCreateRequest;
+use App\Http\Requests\Archive\Group\UpdateRequest as GroupUpdateRequest;
+use App\Http\Requests\Archive\Group\PdfRequest as GrupPdfRequest;
+use App\Http\Requests\Archive\CommentRequest;
+use App\Http\Requests\Archive\PinRequest;
 
 use App\Elasticsearch\Document;
 
@@ -60,7 +60,7 @@ class PinController extends Controller
      */
     public function groups()
     {
-        return view('pin.groups');
+        return view('archive.groups');
     }
 
     /**
@@ -264,7 +264,7 @@ class PinController extends Controller
 
         $pins = $pg->pins()->orderBy('created_at', 'DESC')->paginate(10);
 
-        return view('pin.pins', compact('pg', 'pins'));
+        return view('archive.pins', compact('pg', 'pins'));
     }
 
     /**

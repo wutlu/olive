@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Pin;
+namespace App\Http\Requests\Archive\Group;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CommentRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,11 +24,9 @@ class CommentRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => 'required|regex:/(^([a-zA-Z0-9-_.]+)?$)/u|max:128',
-            'type' => 'required|string|max:64',
-            'index' => 'required|string|max:128',
+            'id' => 'required|integer|exists:archives,id',
 
-            'comment' => 'required|string|max:255'
+            'name' => 'required|string|max:32'
         ];
     }
 }

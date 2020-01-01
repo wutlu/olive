@@ -145,7 +145,7 @@
         @endif
 
         @isset($pin_group)
-            @include('pin.group.dock')
+            @include('archive.group.dock')
         @endisset
     @endauth
 

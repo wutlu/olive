@@ -28,7 +28,7 @@
             data-skip="0"
             data-take="5"
             data-more-button="#pin-groups-more_button"
-            data-callback="__pin_groups"
+            data-callback="__archive_groups"
             data-method="post"
             data-loader="#pin-groups-loader"
             data-nothing>
@@ -43,7 +43,7 @@
                     data-name="edit"
                     data-href="{{ route('pin.group') }}"
                     data-method="post"
-                    data-callback="__get_pin_group"
+                    data-callback="__get_archive_group"
                     href="#">
                     <i class="material-icons grey-text text-darken-2">create</i>        
                 </a>
@@ -76,7 +76,7 @@
 </div>
 
 @push('local.scripts')
-    function __pin_groups(__, obj)
+    function __archive_groups(__, obj)
     {
         var item_model = __.children('.model');
 
@@ -113,7 +113,7 @@
                 'id': 'pin-group-form',
                 'class': 'json',
                 'data-method': 'post',
-                'data-callback': '__pin_group_callback',
+                'data-callback': '__archive_group_callback',
                 'html': [
                     $('<div />', {
                         'class': 'input-field',
@@ -184,7 +184,7 @@
         $('[data-trigger=delete-pin-group]').removeAttr('data-id').addClass('hide')
     })
 
-    function __get_pin_group(__, obj)
+    function __get_archive_group(__, obj)
     {
         if (obj.status == 'ok')
         {
@@ -197,7 +197,7 @@
         }
     }
 
-    function __pin_group_callback(__, obj)
+    function __archive_group_callback(__, obj)
     {
         if (obj.status == 'ok')
         {
@@ -247,13 +247,13 @@
                     'data-href': '{{ route('pin.group') }}',
                     'data-method': 'delete',
                     'data-id': $(this).data('id'),
-                    'data-callback': '__delete_pin_group'
+                    'data-callback': '__delete_archive_group'
                 })
             ]
         })
     })
 
-    function __delete_pin_group(__, obj)
+    function __delete_archive_group(__, obj)
     {
         if (obj.status == 'ok')
         {
@@ -274,7 +274,7 @@
         }
     }
 
-    function __pin_dock(__)
+    function __archive_dock(__)
     {
         $('#pin-groups-dock').addClass('active')
 
@@ -296,13 +296,13 @@
         }
     }
 
-    function __pin(__, obj)
+    function __archive(__, obj)
     {
         if (obj.status == 'removed')
         {
             $('[data-pin-uuid=' + __.attr('data-pin-uuid') + ']').removeClass('on')
 
-            M.toast({ html: 'Pin Kaldırıldı', classes: 'red darken-2' })
+            M.toast({ html: 'Arşivden Çıkarıldı', classes: 'red darken-2' })
         }
         else if (obj.status == 'pinned')
         {
@@ -311,7 +311,7 @@
             var toastHTML = $('<div />', {
                 'html': [
                     $('<span />', {
-                        'html': 'İçerik Pinlendi',
+                        'html': 'Arşivlendi',
                         'class': 'white-text'
                     }),
                     $('<a />', {
@@ -321,7 +321,7 @@
                         'data-undo': 'true',
                         'data-href': '{{ route('pin', 'remove') }}',
                         'data-method': 'post',
-                        'data-callback': '__pin',
+                        'data-callback': '__archive',
                         'data-id': __.data('id'),
                         'data-type': __.data('type'),
                         'data-index': __.data('index'),

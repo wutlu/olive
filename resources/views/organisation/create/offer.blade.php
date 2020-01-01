@@ -491,7 +491,7 @@
         var min_pool_select = null;
         var min_historical_days = null;
         var min_saved_searches = null;
-        var min_pin_groups = null;
+        var min_archive_groups = null;
 
         var module_real_time = $('input[name=module_real_time]:checked');
         var module_search = $('input[name=module_search]:checked');
@@ -503,7 +503,7 @@
             min_pool_select = 1;
             min_historical_days = 1;
             min_saved_searches = 1;
-            min_pin_groups = 0;
+            min_archive_groups = 0;
         }
 
         if (module_search.length)
@@ -512,7 +512,7 @@
             min_pool_select = 1;
             min_historical_days = 1;
             min_saved_searches = 0;
-            min_pin_groups = 0;
+            min_archive_groups = 0;
         }
 
         if (module_alarm.length)
@@ -521,7 +521,7 @@
             min_pool_select = 1;
             min_historical_days = 1;
             min_saved_searches = 1;
-            min_pin_groups = 0;
+            min_archive_groups = 0;
         }
 
         if (min_data_select)
@@ -568,10 +568,10 @@
             saved_searches_limit_input.attr('min', 0).val(0).attr('disabled', 'disabled')
         }
 
-        if (min_pin_groups !== null)
+        if (min_archive_groups !== null)
         {
-            archive_limit_input.attr('min', min_pin_groups)
-                               .val(archive_limit_input.val() < min_pin_groups ? min_pin_groups : archive_limit_input.val())
+            archive_limit_input.attr('min', min_archive_groups)
+                               .val(archive_limit_input.val() < min_archive_groups ? min_archive_groups : archive_limit_input.val())
                                .removeAttr('disabled')
         }
         else

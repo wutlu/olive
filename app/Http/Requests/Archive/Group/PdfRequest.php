@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Pin\Group;
+namespace App\Http\Requests\Archive\Group;
 
 use Illuminate\Foundation\Http\FormRequest;
 

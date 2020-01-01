@@ -45,7 +45,7 @@
                 'id': 'pin-group-form',
                 'class': 'json',
                 'data-method': 'post',
-                'data-callback': '__pin_group_callback',
+                'data-callback': '__archive_group_callback',
                 'html': [
                     $('<div />', {
                         'class': 'input-field',
@@ -117,7 +117,7 @@
         $('[data-trigger=delete-pin-group]').removeAttr('data-id').addClass('hide')
     })
 
-    function __get_pin_group(__, obj)
+    function __get_archive_group(__, obj)
     {
         if (obj.status == 'ok')
         {
@@ -131,7 +131,7 @@
         }
     }
 
-    function __pin_group_callback(__, obj)
+    function __archive_group_callback(__, obj)
     {
         if (obj.status == 'ok')
         {
@@ -176,13 +176,13 @@
                         'data-href': '{{ route('pin.group') }}',
                         'data-method': 'delete',
                         'data-id': $(this).data('id'),
-                        'data-callback': '__delete_pin_group'
+                        'data-callback': '__delete_archive_group'
                     })
                 ]
             });
     })
 
-    function __delete_pin_group(__, obj)
+    function __delete_archive_group(__, obj)
     {
         if (obj.status == 'ok')
         {
@@ -259,7 +259,7 @@
                         data-name="edit"
                         data-href="{{ route('pin.group') }}"
                         data-method="post"
-                        data-callback="__get_pin_group"
+                        data-callback="__get_archive_group"
                         href="#">
                         <i class="material-icons">create</i>        
                     </a>

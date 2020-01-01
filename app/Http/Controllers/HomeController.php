@@ -117,7 +117,7 @@ class HomeController extends Controller
             ],
             [
                 'title' => 'Hızlı Kayıt',
-                'text' => 'Kullanımı kolay arayüzümüz sayesinde, herhangi bir ekranda gördüğünüz ve daha sonra ilgilenmeniz gereken verileri anında pinleyerek kaydedebilirsiniz.',
+                'text' => 'Kullanımı kolay arayüzümüz sayesinde, herhangi bir ekranda gördüğünüz ve daha sonra ilgilenmeniz gereken verileri anında arşivleyebilirsiniz.',
                 'icon' => asset('img/icons/pin.png')
             ],
             [
