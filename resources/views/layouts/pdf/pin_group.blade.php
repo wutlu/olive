@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
     <head>
-        <title>{{ $pg->name }}</title>
+        <title>{{ $archive->name }}</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <style>
             body {
@@ -82,7 +82,7 @@
             <time>{{ date('d.m.Y H:i') }}</time>
         </div>
     </div>
-    <h1>{{ $pg->name }}</h1>
+    <h1>{{ $archive->name }}</h1>
 </header>
 
 @foreach ($pins as $pin)

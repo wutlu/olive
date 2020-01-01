@@ -62,7 +62,7 @@ class PinController extends Controller
      */
     public function groups()
     {
-        return view('archive.groups');
+        return view('archive.dashboard');
     }
 
     /**
@@ -262,11 +262,10 @@ class PinController extends Controller
      */
     public function pins(int $id)
     {
-        $pg = Archive::where('id', $id)->where('organisation_id', auth()->user()->organisation_id)->firstOrFail();
+        $archive = Archive::where('id', $id)->where('organisation_id', auth()->user()->organisation_id)->firstOrFail();
+        $pins = $archive->pins()->orderBy('created_at', 'DESC')->paginate(10);
 
-        $pins = $pg->pins()->orderBy('created_at', 'DESC')->paginate(10);
-
-        return view('archive.pins', compact('pg', 'pins'));
+        return view('archive.pins', compact('archive', 'pins'));
     }
 
     /**
@@ -276,9 +275,9 @@ class PinController extends Controller
      */
     public function pinUrls(int $id)
     {
-        $pg = Archive::where('id', $id)->where('organisation_id', auth()->user()->organisation_id)->firstOrFail();
+        $archive = Archive::where('id', $id)->where('organisation_id', auth()->user()->organisation_id)->firstOrFail();
 
-        $pins = $pg->pins()->orderBy('type', 'ASC')->orderBy('created_at', 'DESC')->get();
+        $pins = $archive->pins()->orderBy('type', 'ASC')->orderBy('created_at', 'DESC')->get();
 
         if (count($pins))
         {
@@ -296,7 +295,7 @@ class PinController extends Controller
 
         $headers = [
           'Content-type' => 'text/csv', 
-          'Content-Disposition' => sprintf('attachment; filename="%s"', 'olive-'.str_slug($pg->name).'.csv'),
+          'Content-Disposition' => sprintf('attachment; filename="%s"', 'olive-'.str_slug($archive->name).'.csv'),
           'Cache-Control' => 'max-age=0'
         ];
 
@@ -310,13 +309,13 @@ class PinController extends Controller
      */
     public function pdf(PdfRequest $request)
     {
-        $pg = Archive::where('id', $request->id)->where('organisation_id', auth()->user()->organisation_id)->first();
+        $archive = Archive::where('id', $request->id)->where('organisation_id', auth()->user()->organisation_id)->first();
 
-        $pg->html_to_pdf = 'process';
-        $pg->updated_at = date('Y-m-d H:i:s');
-        $pg->save();
+        $archive->html_to_pdf = 'process';
+        $archive->updated_at = date('Y-m-d H:i:s');
+        $archive->save();
 
-        ArchiveJob::dispatch($pg->id)->onQueue('process');
+        ArchiveJob::dispatch($archive->id)->onQueue('process');
 
         return [
             'status' => 'ok'
@@ -336,29 +335,29 @@ class PinController extends Controller
     public static function pdfTrigger()
     {
         $date = Carbon::now()->subMinutes(10)->format('Y-m-d H:i:s');
-        $groups = Archive::where('html_to_pdf', 'process')->where('updated_at', '<', $date)->get();
+        $archives = Archive::where('html_to_pdf', 'process')->where('updated_at', '<', $date)->get();
 
-        if (count($groups))
+        if (count($archives))
         {
-            foreach ($groups as $group)
+            foreach ($archives as $archive)
             {
-                $pins = $group->pins()->count();
+                $pins = $archive->pins()->count();
 
                 if ($pins > 100)
                 {
                     echo Term::line('failed: many pins');
 
-                    $pg->html_to_pdf = null;
+                    $archive->html_to_pdf = null;
                 }
                 else
                 {
-                    echo Term::line('['.$group->organisation->name.']['.$group->name.']');
+                    echo Term::line('['.$archive->organisation->name.']['.$archive->name.']');
 
-                    ArchiveJob::dispatch($group->id)->onQueue('process');
+                    ArchiveJob::dispatch($archive->id)->onQueue('process');
                 }
 
-                $group->updated_at = date('Y-m-d H:i:s');
-                $group->save();
+                $archive->updated_at = date('Y-m-d H:i:s');
+                $archive->save();
             }
         }
     }

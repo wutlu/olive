@@ -6,7 +6,7 @@
             'link' => route('pin.groups')
         ],
         [
-            'text' => $pg->name
+            'text' => $archive->name
         ]
     ],
     'footer_hide' => true
@@ -32,7 +32,7 @@
         data-tooltip="Pdf Dökümü Al"
         data-position="left"
         data-href="{{ route('pin.pdf') }}"
-        data-id="{{ $pg->id }}"
+        data-id="{{ $archive->id }}"
         data-method="post"
         data-callback="__pdf"
         style="background-image: url('{{ asset('img/icons/pdf.png') }}');"></a>
@@ -41,7 +41,7 @@
 @section('wildcard')
     <div class="card wild-background">
         <div class="container">
-            <span class="wildcard-title">{{ $pg->name }}</span>
+            <span class="wildcard-title">{{ $archive->name }}</span>
         </div>
     </div>
 @endsection
@@ -50,12 +50,12 @@
     <div class="card card-unstyled mb-1">
         <div class="card-contenet">
             <div class="d-flex justify-content-end">
-                @if ($pg->html_to_pdf == 'success')
-                    <span class="align-self-center grey-text">{{ date('d.m.Y H:i', strtotime($pg->completed_at)) }}</span>
-                    <a href="{{ url($pg->pdf_path).'?v='.date('dmyHi', strtotime($pg->completed_at)) }}" class="btn-flat waves-effect align-self-center ml-1">Pdf İndir</a>
+                @if ($archive->html_to_pdf == 'success')
+                    <span class="align-self-center grey-text">{{ date('d.m.Y H:i', strtotime($archive->completed_at)) }}</span>
+                    <a href="{{ url($archive->pdf_path).'?v='.date('dmyHi', strtotime($archive->completed_at)) }}" class="btn-flat waves-effect align-self-center ml-1">Pdf İndir</a>
                 @endif
 
-                <a href="{{ route('pin.urls', $pg->id) }}" class="btn-flat waves-effect align-self-center ml-1">URL Listesi (csv)</a>
+                <a href="{{ route('pin.urls', $archive->id) }}" class="btn-flat waves-effect align-self-center ml-1">URL Listesi (csv)</a>
             </div>
         </div>
     </div>
@@ -81,7 +81,7 @@
                             data-id="{{ $pin->id }}"
                             data-type="{{ $pin->type }}"
                             data-index="{{ $pin->index }}"
-                            data-archive_id="{{ $pg->id }}"
+                            data-archive_id="{{ $archive->id }}"
                             data-callback="__archive">Pin'i Kaldır</a>
                     </li>
                 @endif

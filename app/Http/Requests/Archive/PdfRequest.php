@@ -36,11 +36,11 @@ class PdfRequest extends FormRequest
 
         $user = auth()->user();
 
-        $pg = Archive::where('id', $request->id)->first();
+        $archive = Archive::where('id', $request->id)->first();
 
-        if (@$pg)
+        if (@$archive)
         {
-            if ($pg->html_to_pdf == 'process')
+            if ($archive->html_to_pdf == 'process')
             {
                 $id_rules[] = 'process_rule';
 
@@ -48,7 +48,7 @@ class PdfRequest extends FormRequest
             }
             else
             {
-                $pins = $pg->pins()->count();
+                $pins = $archive->pins()->count();
 
                 if ($pins < 1)
                 {

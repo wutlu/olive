@@ -38,23 +38,23 @@ class ArchiveJob implements ShouldQueue
      */
     public function handle()
     {
-        $pg = Archive::where('id', $this->id)->first();
+        $archive = Archive::where('id', $this->id)->first();
 
-        if (@$pg)
+        if (@$archive)
         {
-            $pins = $pg->pins;
+            $pins = $archive->pins;
 
             if (count($pins) >= 1 && count($pins) <= 100)
             {
                 $name = implode('.', [
                     $this->id,
-                    $pg->organisation_id,
+                    $archive->organisation_id,
                     date('ymdhis'),
                     str_random(32)
                 ]);
 
-                $html_path = $pg->html_path ? $pg->html_path : 'storage/outputs/html/'.$name.'.html';
-                $pdf_path = $pg->pdf_path ? $pg->pdf_path : 'storage/outputs/pdf/'.$name.'.pdf';
+                $html_path = $archive->html_path ? $archive->html_path : 'storage/outputs/html/'.$name.'.html';
+                $pdf_path = $archive->pdf_path ? $archive->pdf_path : 'storage/outputs/pdf/'.$name.'.pdf';
 
                 if (file_exists(public_path($pdf_path)))
                 {
@@ -65,16 +65,16 @@ class ArchiveJob implements ShouldQueue
 
                 file_put_contents(public_path($html_path), $view, LOCK_EX);
 
-                $pg->html_path = $html_path;
-                $pg->pdf_path = $pdf_path;
+                $archive->html_path = $html_path;
+                $archive->pdf_path = $pdf_path;
 
                 try
                 {
                     $pdf = PDF::loadFile(public_path($html_path))->save(public_path($pdf_path));
 
-                    $pg->html_to_pdf = 'success';
+                    $archive->html_to_pdf = 'success';
 
-                    foreach ($pg->organisation->users as $user)
+                    foreach ($archive->organisation->users as $user)
                     {
                         Activity::push(
                             'Arşiv dökümünüz hazırlandı.',
@@ -82,11 +82,11 @@ class ArchiveJob implements ShouldQueue
                                 'push' => true,
                                 'icon' => 'picture_as_pdf',
                                 'user_id' => $user->id,
-                                'key' => implode('-', [ $user->id, 'pdf', 'export', $pg->id ]),
+                                'key' => implode('-', [ $user->id, 'pdf', 'export', $archive->id ]),
                                 'button' => [
                                     'type' => 'http',
                                     'method' => 'GET',
-                                    'action' => url($pg->pdf_path).'?v='.date('dmyHi'),
+                                    'action' => url($archive->pdf_path).'?v='.date('dmyHi'),
                                     'class' => 'btn-flat waves-effect',
                                     'text' => 'İndir'
                                 ]
@@ -98,7 +98,7 @@ class ArchiveJob implements ShouldQueue
                 {
                     System::log(json_encode([ $e->getMessage() ]), 'App\Jobs\PDF\ArchiveJob::handle('.$this->id.')', 10);
 
-                    foreach ($pg->organisation->users as $user)
+                    foreach ($archive->organisation->users as $user)
                     {
                         Activity::push(
                             'Arşiv dökümü alınırken bir sorun oluştu.',
@@ -107,15 +107,15 @@ class ArchiveJob implements ShouldQueue
                                 'push' => true,
                                 'icon' => 'picture_as_pdf',
                                 'user_id' => $user->id,
-                                'key' => implode('-', [ $user->id, 'pdf', 'export', $pg->id ])
+                                'key' => implode('-', [ $user->id, 'pdf', 'export', $archive->id ])
                             ]
                         );
                     }
                 }
             }
 
-            $pg->completed_at = date('Y-m-d H:i:s');
-            $pg->save();
+            $archive->completed_at = date('Y-m-d H:i:s');
+            $archive->save();
         }
     }
 }
