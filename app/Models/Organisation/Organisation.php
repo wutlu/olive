@@ -108,6 +108,6 @@ class Organisation extends Model
     # arşivler
     public function pinGroups()
     {
-        return $this->hasMany('App\Models\Archive\Group', 'organisation_id', 'id');
+        return $this->hasMany('App\Models\Archive\Archive', 'organisation_id', 'id');
     }
 }

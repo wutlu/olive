@@ -1,4 +1,4 @@
-Models\Archive<?php
+<?php
 
 namespace App\Jobs\PDF;
 
@@ -15,7 +15,7 @@ use System;
 
 use App\Utilities\UserActivityUtility as Activity;
 
-class PinGroupJob implements ShouldQueue
+class ArchiveJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -96,7 +96,7 @@ class PinGroupJob implements ShouldQueue
                 }
                 catch (\Exception $e)
                 {
-                    System::log(json_encode([ $e->getMessage() ]), 'App\Jobs\PDF\PinGroupJob::handle('.$this->id.')', 10);
+                    System::log(json_encode([ $e->getMessage() ]), 'App\Jobs\PDF\ArchiveJob::handle('.$this->id.')', 10);
 
                     foreach ($pg->organisation->users as $user)
                     {

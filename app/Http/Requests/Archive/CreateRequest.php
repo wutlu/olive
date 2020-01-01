@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Archive\Group;
+namespace App\Http\Requests\Archive;
 
 use Illuminate\Foundation\Http\FormRequest;
 

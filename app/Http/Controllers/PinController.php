@@ -7,11 +7,13 @@ use Illuminate\Http\Request;
 use App\Http\Requests\IdRequest;
 use App\Http\Requests\SearchRequest;
 
-use App\Http\Requests\Archive\Group\GetRequest as GroupGetRequest;
-use App\Http\Requests\Archive\Group\CreateRequest as GroupCreateRequest;
-use App\Http\Requests\Archive\Group\UpdateRequest as GroupUpdateRequest;
-use App\Http\Requests\Archive\Group\PdfRequest as GrupPdfRequest;
+use App\Http\Requests\Archive\GetRequest;
+use App\Http\Requests\Archive\CreateRequest;
+use App\Http\Requests\Archive\UpdateRequest;
+
+use App\Http\Requests\Archive\PdfRequest;
 use App\Http\Requests\Archive\CommentRequest;
+
 use App\Http\Requests\Archive\ArchiveRequest;
 
 use App\Elasticsearch\Document;
@@ -19,7 +21,7 @@ use App\Elasticsearch\Document;
 use App\Models\Archive\Archive;
 use App\Models\Archive\Pin;
 
-use App\Jobs\PDF\PinGroupJob as PinGroupPdfJob;
+use App\Jobs\PDF\ArchiveJob;
 
 use Carbon\Carbon;
 
@@ -92,7 +94,7 @@ class PinController extends Controller
      *
      * @return array
      */
-    public function groupGet(GroupGetRequest $request)
+    public function groupGet(GetRequest $request)
     {
         $data = Archive::select(
             'id',
@@ -113,7 +115,7 @@ class PinController extends Controller
      *
      * @return array
      */
-    public function groupCreate(GroupCreateRequest $request)
+    public function groupCreate(CreateRequest $request)
     {
         $data = new Archive;
         $data->organisation_id = auth()->user()->organisation_id;
@@ -131,7 +133,7 @@ class PinController extends Controller
      *
      * @return array
      */
-    public function groupUpdate(GroupUpdateRequest $request)
+    public function groupUpdate(UpdateRequest $request)
     {
         $data = Archive::where([
             'id' => $request->id,
@@ -306,7 +308,7 @@ class PinController extends Controller
      *
      * @return view
      */
-    public function pdf(GrupPdfRequest $request)
+    public function pdf(PdfRequest $request)
     {
         $pg = Archive::where('id', $request->id)->where('organisation_id', auth()->user()->organisation_id)->first();
 
@@ -314,7 +316,7 @@ class PinController extends Controller
         $pg->updated_at = date('Y-m-d H:i:s');
         $pg->save();
 
-        PinGroupPdfJob::dispatch($pg->id)->onQueue('process');
+        ArchiveJob::dispatch($pg->id)->onQueue('process');
 
         return [
             'status' => 'ok'
@@ -352,7 +354,7 @@ class PinController extends Controller
                 {
                     echo Term::line('['.$group->organisation->name.']['.$group->name.']');
 
-                    PinGroupPdfJob::dispatch($group->id)->onQueue('process');
+                    ArchiveJob::dispatch($group->id)->onQueue('process');
                 }
 
                 $group->updated_at = date('Y-m-d H:i:s');
