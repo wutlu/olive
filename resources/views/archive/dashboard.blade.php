@@ -26,7 +26,7 @@
                         item.find('[data-name=edit]').attr('data-archive_id', o.id)
                         item.find('[data-trigger=archive-go]').html(o.name).attr('data-id', o.id)
                         item.find('[data-name=created-at]').attr('data-time', o.created_at).html(o.created_at)
-                        item.find('[data-name=count]').html(o.pins_count + ' içerik')
+                        item.find('[data-name=count]').html(o.items_count + ' içerik')
 
                         item.appendTo(__)
                 })
@@ -36,7 +36,7 @@
         $('[data-name=group-count]').html(obj.hits.length + ' / {{ auth()->user()->organisation->archive_limit }}')
     }
 
-    function pin_group_modal()
+    function archive_modal()
     {
         var mdl = modal({
             'id': 'pin-group',
@@ -108,7 +108,7 @@
     }
 
     $(document).on('click', '[data-trigger=create-pin-group]', function() {
-        var mdl = pin_group_modal();
+        var mdl = archive_modal();
             mdl.find('.modal-title').html('Arşiv Oluştur')
             mdl.find('form#pin-group-form').data('method', 'put')
 
@@ -121,7 +121,7 @@
     {
         if (obj.status == 'ok')
         {
-            var mdl = pin_group_modal();
+            var mdl = archive_modal();
                 mdl.find('.modal-title').html('Arşiv Güncelle')
                 mdl.find('form#pin-group-form').data('id', obj.data.id)
                                                .data('method', 'patch')

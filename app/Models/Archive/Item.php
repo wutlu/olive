@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 use App\Elasticsearch\Document;
 
-class Pin extends Model
+class Item extends Model
 {
     protected $table = 'archive_items';
     protected $primaryKey = 'tmp_id';

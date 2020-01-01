@@ -144,7 +144,7 @@
             @endif
         @endif
 
-        @isset($pin_group)
+        @isset($archive_dock)
             @include('archive.dock')
         @endisset
     @endauth
@@ -337,7 +337,7 @@
                                     @endif
                                 @endisset
 
-                                @isset($pin_group)
+                                @isset($archive_dock)
                                     <li>
                                         <a href="#" data-class="#archive-dock" data-name="pin-dock-trigger" data-class-toggle="active" data-dock="close">
                                             <i class="material-icons">archive</i>

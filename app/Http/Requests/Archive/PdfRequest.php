@@ -48,15 +48,15 @@ class PdfRequest extends FormRequest
             }
             else
             {
-                $pins = $archive->pins()->count();
+                $items = $archive->items()->count();
 
-                if ($pins < 1)
+                if ($items < 1)
                 {
                     $id_rules[] = 'min_rule';
 
                     Validator::extend('min_rule', false, 'PDF alabilmek için grupta en az 1 içerik olması gerekiyor.');
                 }
-                else if ($pins > 100)
+                else if ($items > 100)
                 {
                     $id_rules[] = 'max_rule';
 

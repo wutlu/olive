@@ -7,7 +7,7 @@
         ]
     ],
     'wide' => true,
-    'pin_group' => true,
+    'archive_dock' => true,
     'dock' => true,
     'report_menu' => true,
     'help' => 'helpStart.start()'

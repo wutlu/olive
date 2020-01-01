@@ -14,7 +14,7 @@
             </span>
         </div>
         <div class="card-image">
-            <a href="#" class="btn-floating halfway-fab waves-effect blue-grey darken-2" data-trigger="create-pin_group">
+            <a href="#" class="btn-floating halfway-fab waves-effect blue-grey darken-2" data-trigger="create-archive">
                 <i class="material-icons">add</i>
             </a>
         </div>
@@ -92,7 +92,7 @@
 
                         item.find('[data-name=edit]').attr('data-archive_id', o.id)
                         item.find('[data-trigger=pin-go]').html(o.name).attr('data-id', o.id)
-                        item.find('[data-name=count]').html(o.pins_count + ' içerik')
+                        item.find('[data-name=count]').html(o.items_count + ' içerik')
                         item.find('[name=archive_id]').val(o.id)
 
                         item.appendTo(__)
@@ -104,7 +104,7 @@
         }
     }
 
-    function pin_group_modal()
+    function archive_modal()
     {
         var mdl = modal({
             'id': 'pin-group',
@@ -174,8 +174,8 @@
         return mdl;
     }
 
-    $(document).on('click', '[data-trigger=create-pin_group]', function() {
-        var mdl = pin_group_modal();
+    $(document).on('click', '[data-trigger=create-archive]', function() {
+        var mdl = archive_modal();
             mdl.find('.modal-title').html('Arşiv Oluştur')
             mdl.find('form#pin-group-form').data('method', 'put')
 
@@ -188,7 +188,7 @@
     {
         if (obj.status == 'ok')
         {
-            var mdl = pin_group_modal();
+            var mdl = archive_modal();
                 mdl.find('.modal-title').html('Arşiv Güncelle')
                 mdl.find('form#pin-group-form').data('id', obj.data.id).data('method', 'patch')
                 mdl.find('[name=group_name]').val(obj.data.name).focus()
@@ -209,7 +209,7 @@
 
                 if ($('[data-name=total-pin-group]').html() == 0)
                 {
-                    $('[data-trigger=create-pin_group]').removeClass('pulse')
+                    $('[data-trigger=create-archive]').removeClass('pulse')
                 }
             }
             else if (obj.type == 'updated')
@@ -280,7 +280,7 @@
 
         if ($('[data-name=total-pin-group]').html() == 0)
         {
-            $('[data-trigger=create-pin_group]').addClass('pulse')
+            $('[data-trigger=create-archive]').addClass('pulse')
 
             M.toast({
                 html: 'Önce bir arşiv oluşturmalısınız.',

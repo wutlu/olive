@@ -6,7 +6,7 @@
         ]
     ],
     'dock' => true,
-    'pin_group' => true,
+    'archive_dock' => true,
     'footer_hide' => true,
     'report_menu' => true
 ])

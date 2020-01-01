@@ -6,7 +6,7 @@
         ]
     ],
     'dock' => true,
-    'pin_group' => true,
+    'archive_dock' => true,
     'wide' => true,
     'delete' => [
         'id' => $document['_id'],

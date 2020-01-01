@@ -212,7 +212,7 @@
                         'route' => route('pin.groups'),
                         'icon' => 'archive',
                         'name' => 'Arşivler',
-                        'key' => 'pin_group'
+                        'key' => 'archive'
                     ],
                     [
                         'route' => route('data_pool.dashboard'),

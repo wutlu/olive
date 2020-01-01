@@ -11,10 +11,10 @@ class Archive extends Model
     	'name'
     ];
 
-    # pins
-    public function pins()
+    # items
+    public function items()
     {
-        return $this->hasMany('App\Models\Archive\Pin', 'archive_id', 'id');
+        return $this->hasMany('App\Models\Archive\Item', 'archive_id', 'id');
     }
 
     # organisation

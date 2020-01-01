@@ -19,7 +19,7 @@ use App\Http\Requests\Archive\ArchiveRequest;
 use App\Elasticsearch\Document;
 
 use App\Models\Archive\Archive;
-use App\Models\Archive\Pin;
+use App\Models\Archive\Item;
 
 use App\Jobs\PDF\ArchiveJob;
 
@@ -75,7 +75,7 @@ class ArchiveController extends Controller
         $take = $request->take;
         $skip = $request->skip;
 
-        $query = Archive::withCount('pins');
+        $query = Archive::withCount('items');
         $query = $query->where('organisation_id', auth()->user()->organisation_id);
         $query = $request->string ? $query->where('name', 'ILIKE', '%'.$request->string.'%') : $query;
         $query = $query->skip($skip)
@@ -99,7 +99,7 @@ class ArchiveController extends Controller
         $data = Archive::select(
             'id',
             'name'
-        )->with('pins')->where([
+        )->with('items')->where([
             'id' => $request->archive_id,
             'organisation_id' => auth()->user()->organisation_id
         ])->firstOrFail();
@@ -190,7 +190,7 @@ class ArchiveController extends Controller
 
         try
         {
-            $pin = Pin::where([
+            $item = Item::where([
                 'index' => $request->index,
                 'type' => $request->type,
                 'id' => $request->id,
@@ -199,9 +199,9 @@ class ArchiveController extends Controller
 
             if ($type == 'add')
             {
-                if (@$pin)
+                if (@$item)
                 {
-                    $pin->delete();
+                    $item->delete();
                     $status = 'removed';
                 }
                 else
@@ -226,7 +226,7 @@ class ArchiveController extends Controller
                             default: $url = ''; break;
                         }
 
-                        $p = new Pin;
+                        $p = new Item;
                         $p->fill($request->all());
                         $p->user_id = $user->id;
                         $p->url = $url;
@@ -238,9 +238,9 @@ class ArchiveController extends Controller
             }
             else if ($type == 'remove')
             {
-                if (@$pin)
+                if (@$item)
                 {
-                    $pin->delete();
+                    $item->delete();
                     $status = 'removed';
                 }
             }
@@ -263,7 +263,7 @@ class ArchiveController extends Controller
     public function pins(int $id)
     {
         $archive = Archive::where('id', $id)->where('organisation_id', auth()->user()->organisation_id)->firstOrFail();
-        $pins = $archive->pins()->orderBy('created_at', 'DESC')->paginate(10);
+        $pins = $archive->items()->orderBy('created_at', 'DESC')->paginate(10);
 
         return view('archive.items', compact('archive', 'pins'));
     }
@@ -277,20 +277,20 @@ class ArchiveController extends Controller
     {
         $archive = Archive::where('id', $id)->where('organisation_id', auth()->user()->organisation_id)->firstOrFail();
 
-        $pins = $archive->pins()->orderBy('type', 'ASC')->orderBy('created_at', 'DESC')->get();
+        $items = $archive->items()->orderBy('type', 'ASC')->orderBy('created_at', 'DESC')->get();
 
-        if (count($pins))
+        if (count($items))
         {
             $content = [];
 
-            foreach ($pins as $pin)
+            foreach ($items as $item)
             {
-                $content[] = implode([ $pin->url ], '  ');
+                $content[] = implode([ $item->url ], '  ');
             }
         }
         else
         {
-            $content = [ 'Hiç içerik pinlenmedi.' ];
+            $content = [ 'Hiç içerik arşivlenmedi.' ];
         }
 
         $headers = [
@@ -341,11 +341,11 @@ class ArchiveController extends Controller
         {
             foreach ($archives as $archive)
             {
-                $pins = $archive->pins()->count();
+                $items = $archive->items()->count();
 
-                if ($pins > 100)
+                if ($items > 100)
                 {
-                    echo Term::line('failed: many pins');
+                    echo Term::line('failed: many items');
 
                     $archive->html_to_pdf = null;
                 }
@@ -371,15 +371,15 @@ class ArchiveController extends Controller
     {
         $user = auth()->user();
 
-        $pin = Pin::where([
+        $item = Item::where([
             'index' => $request->index,
             'type' => $request->type,
             'id' => $request->id,
             'archive_id' => $request->archive_id
         ])->where('organisation_id', $user->organisation_id)->firstOrFail();
 
-        $pin->comment = $request->comment;
-        $pin->save();
+        $item->comment = $request->comment;
+        $item->save();
 
         return [
             'status' => 'ok'

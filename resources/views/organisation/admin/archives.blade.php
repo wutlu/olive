@@ -82,7 +82,7 @@
 
                         item.find('[data-name=name]').html(o.name)
                         item.find('[data-name=created-at]').attr('data-time', o.created_at).html(o.created_at)
-                        item.find('[data-name=count]').html(o.pins_count + ' içerik')
+                        item.find('[data-name=count]').html(o.items_count + ' içerik')
 
                         item.appendTo(__)
                 })

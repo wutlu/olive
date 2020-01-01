@@ -42,9 +42,9 @@ class ArchiveJob implements ShouldQueue
 
         if (@$archive)
         {
-            $pins = $archive->pins;
+            $items = $archive->items;
 
-            if (count($pins) >= 1 && count($pins) <= 100)
+            if (count($items) >= 1 && count($items) <= 100)
             {
                 $name = implode('.', [
                     $this->id,
@@ -61,7 +61,7 @@ class ArchiveJob implements ShouldQueue
                     unlink(public_path($pdf_path));
                 }
 
-                $view = view('layouts.pdf.pin_group', compact('pg', 'pins'));
+                $view = view('layouts.pdf.archive', compact('archive', 'items'));
 
                 file_put_contents(public_path($html_path), $view, LOCK_EX);
 

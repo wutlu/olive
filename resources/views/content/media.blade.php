@@ -5,7 +5,7 @@
             'text' => $title
         ]
     ],
-    'pin_group' => true,
+    'archive_dock' => true,
     'delete' => [
         'id' => $document['_id'],
         'type' => $document['_type'],
