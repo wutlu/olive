@@ -112,6 +112,7 @@
                             class="materialize-textarea json"
                             data-href="{{ route('pin.comment') }}"
                             data-method="post"
+                            data-archive_id="{{ $archive->id }}"
                             data-index="{{ $pin->index }}"
                             data-type="{{ $pin->type }}"
                             data-id="{{ $pin->id }}">{{ $pin->comment }}</textarea>

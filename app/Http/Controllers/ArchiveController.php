@@ -265,7 +265,7 @@ class ArchiveController extends Controller
         $archive = Archive::where('id', $id)->where('organisation_id', auth()->user()->organisation_id)->firstOrFail();
         $pins = $archive->pins()->orderBy('created_at', 'DESC')->paginate(10);
 
-        return view('archive.pins', compact('archive', 'pins'));
+        return view('archive.items', compact('archive', 'pins'));
     }
 
     /**
@@ -374,7 +374,8 @@ class ArchiveController extends Controller
         $pin = Pin::where([
             'index' => $request->index,
             'type' => $request->type,
-            'id' => $request->id
+            'id' => $request->id,
+            'archive_id' => $request->archive_id
         ])->where('organisation_id', $user->organisation_id)->firstOrFail();
 
         $pin->comment = $request->comment;
