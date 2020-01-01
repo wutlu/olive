@@ -46,12 +46,7 @@ class ArchiveJob implements ShouldQueue
 
             if (count($items) >= 1 && count($items) <= 100)
             {
-                $name = implode('.', [
-                    $this->id,
-                    $archive->organisation_id,
-                    date('ymdhis'),
-                    str_random(32)
-                ]);
+                $name = implode('.', [ $this->id, $archive->organisation_id, date('ymdhis'), str_random(32) ]);
 
                 $html_path = $archive->html_path ? $archive->html_path : 'storage/outputs/html/'.$name.'.html';
                 $pdf_path = $archive->pdf_path ? $archive->pdf_path : 'storage/outputs/pdf/'.$name.'.pdf';
