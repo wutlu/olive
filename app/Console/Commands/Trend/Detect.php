@@ -752,7 +752,7 @@ class Detect extends Command
                             ]
                         ],
                         [
-                            [ 'range' => [ 'counts.hashtag' => [ 'lte' => 5 ] ] ]
+                            [ 'range' => [ 'counts.hashtag' => [ 'lte' => 10 ] ] ]
                         ]
                     ],
                     'must' => [
