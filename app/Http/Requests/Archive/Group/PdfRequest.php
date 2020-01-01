@@ -4,7 +4,7 @@ namespace App\Http\Requests\Archive\Group;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-use App\Models\Pin\Group as PinGroup;
+use App\Models\Archive\Archive;
 
 use Validator;
 
@@ -36,7 +36,7 @@ class PdfRequest extends FormRequest
 
         $user = auth()->user();
 
-        $pg = PinGroup::where('id', $request->id)->first();
+        $pg = Archive::where('id', $request->id)->first();
 
         if (@$pg)
         {

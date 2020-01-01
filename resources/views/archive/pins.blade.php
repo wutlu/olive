@@ -2,7 +2,7 @@
     'sidenav_fixed_layout' => true,
     'breadcrumb' => [
         [
-            'text' => 'Arşiv',
+            'text' => 'Arşivler',
             'link' => route('pin.groups')
         ],
         [

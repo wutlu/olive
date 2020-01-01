@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Models\Pin;
+namespace App\Models\Archive;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Group extends Model
+class Archive extends Model
 {
     protected $table = 'archives';
     protected $fillable = [
@@ -14,7 +14,7 @@ class Group extends Model
     # pins
     public function pins()
     {
-        return $this->hasMany('App\Models\Pin\Pin', 'archive_id', 'id');
+        return $this->hasMany('App\Models\Archive\Pin', 'archive_id', 'id');
     }
 
     # organisation

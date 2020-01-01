@@ -13,7 +13,7 @@ use App\Models\User\User;
 use App\Models\User\PartnerPayment;
 use App\Models\User\UserNotification;
 use App\Models\RealTime\KeywordGroup;
-use App\Models\Pin\Group as PinGroup;
+use App\Models\Archive\Archive;
 use App\Models\BillingInformation;
 use App\Models\Alarm;
 use App\Models\Option;
@@ -1807,7 +1807,7 @@ class OrganisationController extends Controller
         $take = $request->take;
         $skip = $request->skip;
 
-        $query = PinGroup::withCount('pins');
+        $query = Archive::withCount('pins');
         $query = $query->where('organisation_id', $organisation->id);
         $query = $request->string ? $query->where('name', 'ILIKE', '%'.$request->string.'%') : $query;
         $query = $query->skip($skip)

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Pin;
+namespace App\Models\Archive;
 
 use Illuminate\Database\Eloquent\Model;
 

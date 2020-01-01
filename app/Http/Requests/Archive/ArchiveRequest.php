@@ -4,7 +4,7 @@ namespace App\Http\Requests\Archive;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-use App\Models\Pin\Group as PinGroup;
+use App\Models\Archive\Archive;
 
 use Validator;
 
@@ -42,7 +42,7 @@ class ArchiveRequest extends FormRequest
         $user = auth()->user();
 
         Validator::extend('group_have', function($attribute, $id) use ($user) {
-            return PinGroup::where([
+            return Archive::where([
                 'id' => $id,
                 'organisation_id' => $user->organisation_id
             ])->exists();

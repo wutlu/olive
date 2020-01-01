@@ -1,4 +1,4 @@
-<?php
+Models\Archive<?php
 
 namespace App\Jobs\PDF;
 
@@ -8,7 +8,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
-use App\Models\Pin\Group as PinGroup;
+use App\Models\Archive\Archive;
 
 use PDF;
 use System;
@@ -38,7 +38,7 @@ class PinGroupJob implements ShouldQueue
      */
     public function handle()
     {
-        $pg = PinGroup::where('id', $this->id)->first();
+        $pg = Archive::where('id', $this->id)->first();
 
         if (@$pg)
         {

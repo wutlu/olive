@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 use Validator;
 
-use App\Models\Pin\Group as PinGroup;
+use App\Models\Archive\Archive;
 
 class CreateRequest extends FormRequest
 {
@@ -47,7 +47,7 @@ class CreateRequest extends FormRequest
     public function rules()
     {
         Validator::extend('max_item', function($attribute) {
-            return PinGroup::where('organisation_id', auth()->user()->organisation_id)->count() < $this->max_item;
+            return Archive::where('organisation_id', auth()->user()->organisation_id)->count() < $this->max_item;
         });
 
         return [

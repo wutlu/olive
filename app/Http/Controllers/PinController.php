@@ -16,8 +16,8 @@ use App\Http\Requests\Archive\ArchiveRequest;
 
 use App\Elasticsearch\Document;
 
-use App\Models\Pin\Group as PinGroup;
-use App\Models\Pin\Pin;
+use App\Models\Archive\Archive;
+use App\Models\Archive\Pin;
 
 use App\Jobs\PDF\PinGroupJob as PinGroupPdfJob;
 
@@ -73,7 +73,7 @@ class PinController extends Controller
         $take = $request->take;
         $skip = $request->skip;
 
-        $query = PinGroup::withCount('pins');
+        $query = Archive::withCount('pins');
         $query = $query->where('organisation_id', auth()->user()->organisation_id);
         $query = $request->string ? $query->where('name', 'ILIKE', '%'.$request->string.'%') : $query;
         $query = $query->skip($skip)
@@ -94,7 +94,7 @@ class PinController extends Controller
      */
     public function groupGet(GroupGetRequest $request)
     {
-        $data = PinGroup::select(
+        $data = Archive::select(
             'id',
             'name'
         )->with('pins')->where([
@@ -115,7 +115,7 @@ class PinController extends Controller
      */
     public function groupCreate(GroupCreateRequest $request)
     {
-        $data = new PinGroup;
+        $data = new Archive;
         $data->organisation_id = auth()->user()->organisation_id;
         $data->name = $request->name;
         $data->save();
@@ -133,7 +133,7 @@ class PinController extends Controller
      */
     public function groupUpdate(GroupUpdateRequest $request)
     {
-        $data = PinGroup::where([
+        $data = Archive::where([
             'id' => $request->id,
             'organisation_id' => auth()->user()->organisation_id
         ])->firstOrFail();
@@ -158,7 +158,7 @@ class PinController extends Controller
      */
     public function groupDelete(IdRequest $request)
     {
-        $data = PinGroup::where([
+        $data = Archive::where([
             'id' => $request->id,
             'organisation_id' => auth()->user()->organisation_id
         ])->firstOrFail();
@@ -260,7 +260,7 @@ class PinController extends Controller
      */
     public function pins(int $id)
     {
-        $pg = PinGroup::where('id', $id)->where('organisation_id', auth()->user()->organisation_id)->firstOrFail();
+        $pg = Archive::where('id', $id)->where('organisation_id', auth()->user()->organisation_id)->firstOrFail();
 
         $pins = $pg->pins()->orderBy('created_at', 'DESC')->paginate(10);
 
@@ -274,7 +274,7 @@ class PinController extends Controller
      */
     public function pinUrls(int $id)
     {
-        $pg = PinGroup::where('id', $id)->where('organisation_id', auth()->user()->organisation_id)->firstOrFail();
+        $pg = Archive::where('id', $id)->where('organisation_id', auth()->user()->organisation_id)->firstOrFail();
 
         $pins = $pg->pins()->orderBy('type', 'ASC')->orderBy('created_at', 'DESC')->get();
 
@@ -308,7 +308,7 @@ class PinController extends Controller
      */
     public function pdf(GrupPdfRequest $request)
     {
-        $pg = PinGroup::where('id', $request->id)->where('organisation_id', auth()->user()->organisation_id)->first();
+        $pg = Archive::where('id', $request->id)->where('organisation_id', auth()->user()->organisation_id)->first();
 
         $pg->html_to_pdf = 'process';
         $pg->updated_at = date('Y-m-d H:i:s');
@@ -334,7 +334,7 @@ class PinController extends Controller
     public static function pdfTrigger()
     {
         $date = Carbon::now()->subMinutes(10)->format('Y-m-d H:i:s');
-        $groups = PinGroup::where('html_to_pdf', 'process')->where('updated_at', '<', $date)->get();
+        $groups = Archive::where('html_to_pdf', 'process')->where('updated_at', '<', $date)->get();
 
         if (count($groups))
         {
