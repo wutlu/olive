@@ -12,7 +12,7 @@ use App\Http\Requests\Archive\Group\CreateRequest as GroupCreateRequest;
 use App\Http\Requests\Archive\Group\UpdateRequest as GroupUpdateRequest;
 use App\Http\Requests\Archive\Group\PdfRequest as GrupPdfRequest;
 use App\Http\Requests\Archive\CommentRequest;
-use App\Http\Requests\Archive\PinRequest;
+use App\Http\Requests\Archive\ArchiveRequest;
 
 use App\Elasticsearch\Document;
 
@@ -180,7 +180,7 @@ class PinController extends Controller
      *
      * @return array
      */
-    public function pin(string $type, PinRequest $request)
+    public function pin(string $type, ArchiveRequest $request)
     {
         $user = auth()->user();
 

@@ -8,7 +8,7 @@ use App\Models\Pin\Group as PinGroup;
 
 use Validator;
 
-class PinRequest extends FormRequest
+class ArchiveRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
