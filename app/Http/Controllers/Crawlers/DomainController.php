@@ -225,6 +225,7 @@ class DomainController extends Controller
                         '.haberText p:nth-child(1)',
                         '#haberdetaybaslik > h2',
                         'h1.news-detail-title',
+                        '.post-content > p:nth-child(1)',
                         '.td-post-content > p:nth-child(1)',
                         '.td-post-content p:nth-child(1)',
                         '#singleContent > p:nth-child(1)',
