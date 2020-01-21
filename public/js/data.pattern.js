@@ -1837,9 +1837,9 @@ function __report__pattern(obj, form, type, method)
                     })
                 )
 
-                if (obj.stats.twitter.reach)
+                if (obj.stats.counts.twitter_retweet)
                 {
-                    form.find('.report-stats').children('.twitter').append($('<span />', { 'html': number_format(obj.stats.twitter.reach) + ' etkileşim hariç', 'class': 'd-table' }))
+                    form.find('.report-stats').children('.twitter').append($('<span />', { 'html': number_format(obj.stats.counts.twitter_retweet) + ' retweet', 'class': 'd-table' }))
                 }
 
                 if (obj.stats.twitter.unique_users)

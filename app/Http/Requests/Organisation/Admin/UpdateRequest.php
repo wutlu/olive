@@ -61,6 +61,7 @@ class UpdateRequest extends FormRequest
             'data_pool_instagram_follow_limit' => 'required|integer|max:1000000|min:0',
 
             'module_real_time' => 'nullable|string|in:on',
+            'module_crm' => 'nullable|string|in:on',
             'module_search' => 'nullable|string|in:on',
             'module_trend' => 'nullable|string|in:on',
             'module_compare' => 'nullable|string|in:on',

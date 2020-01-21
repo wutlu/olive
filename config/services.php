@@ -67,7 +67,7 @@ return [
         'access_token' => env('TWITTER_ACCESS_TOKEN'),
         'access_token_secret' => env('TWITTER_ACCESS_TOKEN_SECRET'),
 
-        'redirect' => 'https://veri.zone/twitter/oauth/callback',
+        'redirect' => 'http://localhost/oturum/twitter/callback',
 
         'api' => [
             'trend' => [

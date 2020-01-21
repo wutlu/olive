@@ -343,6 +343,10 @@ Route::prefix('oturum')->group(function () {
     Route::post('sifre', 'UserController@passwordGetPost')->name('user.password');
     Route::get('sifre/{user_id}/{sid}', 'UserController@passwordNew')->name('user.password.new');
     Route::patch('sifre/{user_id}/{sid}', 'UserController@passwordNewPatch');
+
+    Route::get('{provider}/callback', 'CRMController@providerCallback')->name('provider.callback')->where('provider', '(twitter)');
+    Route::get('{provider}/redirect', 'CRMController@providerRedirect')->name('provider.redirect')->where('provider', '(twitter)');
+    Route::get('{provider}/{id}/drop', 'CRMController@providerDrop')->name('provider.drop')->where('provider', '(twitter)');
 });
 
 Route::get('/', 'HomeController@index')->name('home');

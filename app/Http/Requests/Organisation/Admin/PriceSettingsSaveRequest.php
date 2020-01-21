@@ -45,6 +45,7 @@ class PriceSettingsSaveRequest extends FormRequest
             'data_pool_instagram_follow_limit' => 'required|integer|min:0',
 
             'module_real_time'                => 'required|integer|min:0',
+            'module_crm'                      => 'required|integer|min:0',
             'module_search'                   => 'required|integer|min:0',
             'module_trend'                    => 'required|integer|min:0',
             'module_compare'                  => 'required|integer|min:0',

@@ -41,6 +41,15 @@
                 }
             },
             {
+                element: '[data-id=module_crm]',
+                showButtons: true,
+                popover: {
+                    title: 'CRM',
+                    description: 'Sosyal mecralar için sistem üzerinden planlı veya plansız cevaplar verebilirsiniz.',
+                    position: 'bottom'
+                }
+            },
+            {
                 element: '[data-id=module_search]',
                 showButtons: true,
                 popover: {
@@ -133,7 +142,7 @@
                                     data-unit-price="{{ $prices['unit_price.'.$key]['value'] }}"
                                     name="{{ $key }}"
 
-                                    @if ($key == 'module_real_time' || $key == 'module_compare' || $key == 'module_alarm')
+                                    @if ($key == 'module_real_time' || $key == 'module_compare' || $key == 'module_alarm' || $key == 'module_crm')
                                         data-requirement="module_search"
                                     @endif
 
@@ -494,6 +503,8 @@
         var min_archive_groups = null;
 
         var module_real_time = $('input[name=module_real_time]:checked');
+        var module_crm = $('input[name=module_crm]:checked');
+        var module_compare = $('input[name=module_compare]:checked');
         var module_search = $('input[name=module_search]:checked');
         var module_alarm = $('input[name=module_alarm]:checked');
 
@@ -504,6 +515,12 @@
             min_historical_days = 1;
             min_saved_searches = 1;
             min_archive_groups = 0;
+        }
+
+        if (module_crm.length)
+        {
+            min_historical_days = 1;
+            min_saved_searches = 1;
         }
 
         if (module_search.length)
@@ -522,6 +539,11 @@
             min_historical_days = 1;
             min_saved_searches = 1;
             min_archive_groups = 0;
+        }
+
+        if (module_compare.length)
+        {
+            min_saved_searches = 2;
         }
 
         if (min_data_select)

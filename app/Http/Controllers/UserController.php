@@ -397,6 +397,7 @@ class UserController extends Controller
             $organisation->data_pool_instagram_follow_limit = 2;
             $organisation->historical_days = 7;
             $organisation->module_real_time = true;
+            $organisation->module_crm = true;
             $organisation->module_search = true;
             $organisation->module_trend = true;
             $organisation->module_alarm = true;
@@ -1378,6 +1379,7 @@ class UserController extends Controller
             $organisation->unit_price = $calculate['total_price'];
 
             $organisation->module_real_time = $request->module_real_time ? true : false;
+            $organisation->module_crm = $request->module_crm ? true : false;
             $organisation->module_search = $request->module_search ? true : false;
             $organisation->module_trend = $request->module_trend ? true : false;
             $organisation->module_compare = $request->module_compare ? true : false;

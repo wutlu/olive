@@ -495,7 +495,6 @@
             value="{{ $q }}"
             placeholder="Arayın"
             class="json-search"
-            autocomplete="off"
             data-json-target="ul#search" />
     </div>
     <div id="search-operators" class="hide-on-med-and-down">
@@ -865,7 +864,6 @@
                 if ($('input[name=modules][value=twitter]').is(':checked'))
                 {
                     $('[data-name=twitter-unique_users]').html(number_format(obj.stats.twitter.unique_users)).closest('p').removeClass(obj.stats.twitter.unique_users ? 'hide' : '');
-                    $('[data-name=twitter-reach]').html(number_format(obj.stats.twitter.reach)).closest('p').removeClass(obj.stats.twitter.reach ? 'hide' : '');
                     $('[data-name=twitter-verified_users]').html(number_format(obj.stats.twitter.verified_users)).closest('p').removeClass(obj.stats.twitter.verified_users ? 'hide' : '');
                     $('[data-name=twitter-followers]').html(obj.stats.twitter.followers ? number_format((obj.stats.twitter.followers).toFixed(0)) : 0).closest('p').removeClass(obj.stats.twitter.followers ? 'hide' : '');
                     $('[data-name=twitter-hashtags]').html(number_format(obj.stats.twitter.hashtags)).closest('p').removeClass(obj.stats.twitter.hashtags ? 'hide' : '');
@@ -932,6 +930,7 @@
                 $('[data-stat]').addClass('hide')
 
                 $('[data-name=twitter-tweet]').html(number_format(obj.stats.counts.twitter_tweet)).attr('data-count', obj.stats.counts.twitter_tweet);
+                $('[data-name=twitter-retweet]').html(number_format(obj.stats.counts.twitter_retweet)).attr('data-count', obj.stats.counts.twitter_retweet);
                 $('[data-name=instagram-media]').html(number_format(obj.stats.counts.instagram_media)).attr('data-count', obj.stats.counts.instagram_media);
                 $('[data-name=sozluk-entry]').html(number_format(obj.stats.counts.sozluk_entry)).attr('data-count', obj.stats.counts.sozluk_entry);
                 $('[data-name=media-article]').html(number_format(obj.stats.counts.media_article)).attr('data-count', obj.stats.counts.media_article);
@@ -2750,8 +2749,10 @@
                     <tbody>
                         <tr>
                             <td style="font-size: 20px; text-transform: uppercase;" class="pb-0 right-align">
-                                <strong data-name="twitter-tweet" style="font-weight: bold;">0</strong>
-                                <span class="grey-text">tweet</span>
+                                <p class="mb-0">
+                                    <strong data-name="twitter-tweet" style="font-weight: bold;">0</strong> / <strong data-tooltip="ReTweet" data-position="top" data-name="twitter-retweet" style="font-weight: bold;">0</strong>
+                                    <span class="grey-text">tweet</span>
+                                </p>
                             </td>
                             <td style="font-size: 20px; text-transform: uppercase;" class="pb-0 right-align">
                                 <strong data-name="instagram-media" style="font-weight: bold;">0</strong>
@@ -2760,12 +2761,6 @@
                         </tr>
                         <tr>
                             <td style="padding: 0; text-transform: uppercase; vertical-align: top;" class="right-align">
-                                <p class="mb-0 hide" data-stat>
-                                    <span class="d-flex justify-content-end">
-                                        <small class="grey-text">TEKİL İÇERİK</small>
-                                        <small class="pl-1" data-name="twitter-reach">0</small>
-                                    </span>
-                                </p>
                                 <p class="mb-0 hide" data-stat>
                                     <span class="d-flex justify-content-end">
                                         <small class="grey-text">TEKİL KULLANICI</small>

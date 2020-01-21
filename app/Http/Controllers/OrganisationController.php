@@ -162,7 +162,7 @@ class OrganisationController extends Controller
         {
             if ($user->gsm_verified_at)
             {
-                if ($request->module_real_time || $request->module_search || $request->module_alarm)
+                if ($request->module_real_time || $request->module_search || $request->module_alarm || $request->module_crm)
                 {
                     $source_count = 0;
 
@@ -186,6 +186,7 @@ class OrganisationController extends Controller
 
                 $module_count = 0;
                 $module_count = $request->module_real_time ? ($module_count+1) : $module_count;
+                $module_count = $request->module_crm ? ($module_count+1) : $module_count;
                 $module_count = $request->module_search ? ($module_count+1) : $module_count;
                 $module_count = $request->module_alarm ? ($module_count+1) : $module_count;
                 $module_count = $request->module_trend ? ($module_count+1) : $module_count;
@@ -242,6 +243,7 @@ class OrganisationController extends Controller
                 $organisation->unit_price = $calculate['total_price'];
 
                 $organisation->module_real_time = $request->module_real_time ? true : false;
+                $organisation->module_crm = $request->module_crm ? true : false;
                 $organisation->module_search = $request->module_search ? true : false;
                 $organisation->module_trend = $request->module_trend ? true : false;
                 $organisation->module_compare = $request->module_compare ? true : false;
@@ -1254,6 +1256,7 @@ class OrganisationController extends Controller
         Option::updateOrCreate([ 'key' => 'unit_price.data_pool_instagram_follow_limit' ], [ 'value' => $request->data_pool_instagram_follow_limit ]);
 
         Option::updateOrCreate([ 'key' => 'unit_price.module_real_time'                ], [ 'value' => $request->module_real_time                ]);
+        Option::updateOrCreate([ 'key' => 'unit_price.module_crm'                      ], [ 'value' => $request->module_crm                ]);
         Option::updateOrCreate([ 'key' => 'unit_price.module_search'                   ], [ 'value' => $request->module_search                   ]);
         Option::updateOrCreate([ 'key' => 'unit_price.module_trend'                    ], [ 'value' => $request->module_trend                    ]);
         Option::updateOrCreate([ 'key' => 'unit_price.module_compare'                  ], [ 'value' => $request->module_compare                  ]);
@@ -1340,6 +1343,7 @@ class OrganisationController extends Controller
             'saved_searches_limit'             => '*',
 
             'module_real_time'                 => '+',
+            'module_crm'                       => '+',
             'module_search'                    => '+',
             'module_trend'                     => '+',
             'module_compare'                   => '+',
@@ -1438,6 +1442,7 @@ class OrganisationController extends Controller
         $organisation->unit_price = $calculate['total_price'];
 
         $organisation->module_real_time = $request->module_real_time ? true : false;
+        $organisation->module_crm = $request->module_crm ? true : false;
         $organisation->module_search = $request->module_search ? true : false;
         $organisation->module_trend = $request->module_trend ? true : false;
         $organisation->module_compare = $request->module_compare ? true : false;
