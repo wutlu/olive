@@ -170,6 +170,7 @@ class ReportJob implements ShouldQueue
             'hits' => 0,
             'counts' => [
                 'twitter_tweet' => 0,
+                'twitter_retweet' => 0,
                 'sozluk_entry' => 0,
                 'youtube_video' => 0,
                 'youtube_comment' => 0,
@@ -255,6 +256,7 @@ class ReportJob implements ShouldQueue
                         $twitter_q['aggs']['followers'] = [ 'avg' => [ 'field' => 'user.counts.followers' ] ];
                         $twitter_q['aggs']['reach'] = [ 'terms' => [ 'field' => 'external.id' ] ];
                         $twitter_q['aggs']['total'] = [ 'value_count' => [ 'field' => 'id' ] ];
+                        $twitter_q['aggs']['total_rt'] = [ 'sum' => [ 'field' => 'counts.retweet' ] ];
                         $twitter_q['aggs']['place'] = [ 'terms' => [ 'field' => 'place.name', 'size' => 15 ] ];
                         $twitter_q['aggs']['platform'] = [ 'terms' => [ 'field' => 'platform', 'size' => 10 ] ];
                         $twitter_q['aggs']['gender'] = [ 'terms' => [ 'field' => 'user.gender' ] ];
@@ -405,6 +407,7 @@ class ReportJob implements ShouldQueue
 
                             $stats['hits'] = $stats['hits'] + $tweet_data['aggs']['total']['value'];
                             $stats['counts']['twitter_tweet'] = $tweet_data['aggs']['total']['value'];
+                            $stats['counts']['twitter_retweet'] = $tweet_data['aggs']['total_rt']['value'];
                         }
                     }
                 break;

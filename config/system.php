@@ -247,6 +247,7 @@ return [
      */
     'static_modules' => [
         'module_real_time' => 'Canlı Akış',
+        'module_crm' => 'CRM',
         'module_search' => 'Arama',
         'module_trend' => 'Trend',
         'module_alarm' => 'Alarm',

@@ -295,7 +295,7 @@ class SearchController extends Controller
                                     $data[] = self::shopping($search, $shopping_q)['aggs'];
                                 }
                             break;
-                    }
+                        }
                     }
 
                     foreach ($data as $dt)
@@ -680,6 +680,7 @@ class SearchController extends Controller
             'hits' => 0,
             'counts' => [
                 'twitter_tweet' => 0,
+                'twitter_retweet' => 0,
                 'sozluk_entry' => 0,
                 'youtube_video' => 0,
                 'youtube_comment' => 0,
@@ -716,7 +717,6 @@ class SearchController extends Controller
                             $twitter_q['aggs']['unique_users'] = [ 'cardinality' => [ 'field' => 'user.id' ] ];
                             $twitter_q['aggs']['verified_users'] = [ 'filter' => [ 'exists' => [ 'field' => 'user.verified' ] ] ];
                             $twitter_q['aggs']['followers'] = [ 'avg' => [ 'field' => 'user.counts.followers' ] ];
-                            $twitter_q['aggs']['reach'] = [ 'terms' => [ 'field' => 'external.id' ] ];
                             $twitter_q['aggs']['total'] = [ 'value_count' => [ 'field' => 'id' ] ];
                         }
 
@@ -729,11 +729,11 @@ class SearchController extends Controller
                             $stats['twitter']['unique_users'] = @$tweet_data['aggs']['unique_users']['value'];
                             $stats['twitter']['verified_users'] = @$tweet_data['aggs']['verified_users']['doc_count'];
                             $stats['twitter']['followers'] = @$tweet_data['aggs']['followers']['value'];
-                            $stats['twitter']['reach'] = @$tweet_data['aggs']['reach']['sum_other_doc_count'];
                         }
 
                         $stats['hits'] = $stats['hits'] + ($request->aggs ? $tweet_data['aggs']['total']['value'] : $tweet_data['stats']['total']);
                         $stats['counts']['twitter_tweet'] = $request->aggs ? $tweet_data['aggs']['total']['value'] : $tweet_data['stats']['total'];
+                        $stats['counts']['twitter_retweet'] = $tweet_data['stats']['total_rt'];
 
                         $data = array_merge($data, $tweet_data['data']);
                     }
@@ -969,7 +969,10 @@ class SearchController extends Controller
     {
         $aggs = [];
         $data = [];
-        $stats = [ 'total' => 0 ];
+        $stats = [
+            'total' => 0,
+            'total_rt' => 0
+        ];
 
         if ($search->gender != 'all')
         {
@@ -985,6 +988,9 @@ class SearchController extends Controller
             $q['query']['bool']['must'][] = [ 'range' => [ 'illegal.bet' => [ 'lte' => 0.4 ] ] ];
         }
 
+        $q['aggs']['unique_tweets'] = [ 'value_count' => [ 'field' => 'id' ] ];
+        $q['aggs']['all_retweets'] = [ 'sum' => [ 'field' => 'counts.retweet' ] ];
+
         $query = Document::search([ 'twitter', 'tweets', '*' ], 'tweet', $q);
 
         if (@$query->data['aggregations'])
@@ -992,10 +998,11 @@ class SearchController extends Controller
             $aggs = $query->data['aggregations'];
         }
 
+        $stats['total'] = $query->data['aggregations']['unique_tweets']['value'];
+        $stats['total_rt'] = $query->data['aggregations']['all_retweets']['value'];
+
         if (@$query->data['hits']['hits'])
         {
-            $stats['total'] = $query->data['hits']['total'];
-
             foreach ($query->data['hits']['hits'] as $object)
             {
                 $arr = self::result_default($object);

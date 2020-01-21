@@ -327,6 +327,7 @@ $arr = [
         'unit_price'                      => 'Birim Fiyat',
 
         'module_real_time'                => 'Gerçek Zamanlı Modülü',
+        'module_crm'                      => 'CRM Modülü',
         'module_search'                   => 'Arama Modülü',
         'module_trend'                    => 'Trend Modülü',
         'module_compare'                  => 'Veri Kıyaslama Modülü',
