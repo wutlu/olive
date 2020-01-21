@@ -692,7 +692,7 @@ class UserController extends Controller
                 $data = implode(PHP_EOL, $data);
 
                 UserActivityUtility::push(
-                    'Hesabınıza yeni bir ip\'den giriş yapıldı.',
+                    'Hesabınıza farklı bir ip ile giriş yapıldı.',
                     [
                         'key'       => implode('-', [ 'user', 'auth', $info->ip, $user->id ]),
                         'icon'      => 'accessibility',

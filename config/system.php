@@ -624,6 +624,18 @@ return [
                 'route' => 'borsa.main',
                 'icon' => 'money'
             ],
+            39 => [
+                'name' => 'Gazete Ayarları',
+                'route' => 'crawlers.newspaper.settings',
+                'root' => true,
+                'icon' => 'public'
+            ],
+            40 => [
+                'name' => 'Hosts Dosyası',
+                'route' => 'admin.hosts.file',
+                'root' => true,
+                'icon' => 'dialer_sip'
+            ]
         ]
     ],
 ];

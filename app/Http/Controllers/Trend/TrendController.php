@@ -313,7 +313,7 @@ class TrendController extends Controller
         }
 
         $year = $request->year ? $request->year : date('Y');
-        $month = $request->month ? $request->month : date('m');
+        $month = $request->month ? (strlen($request->month) == 1 ? '0'.$request->month : $request->month) : date('m');
 
         $data = $data->where('month_key', $year.$month);
         $data = $data->where($request->sort ? $request->sort : 'trend_hit', '>=', 2);

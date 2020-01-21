@@ -78,7 +78,7 @@ class UpdateRequest extends FormRequest
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'required|date_format:H:i|after:start_time',
 
-            'interval' => 'required|integer|min:1|max:720',
+            'interval' => 'required|integer|min:1|max:1440',
 
             'report' => 'nullable|string|in:on',
 
@@ -91,7 +91,7 @@ class UpdateRequest extends FormRequest
 
         if ($request->report)
         {
-            $arr['interval'] = 'required|integer|min:1|max:720|min_interval_by_report';
+            $arr['interval'] = 'required|integer|min:1|max:1440|min_interval_by_report';
         }
 
         return $arr;

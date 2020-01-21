@@ -253,7 +253,7 @@
                                                     'type': 'number',
                                                     'value': '5',
                                                     'min': '1',
-                                                    'max': '720',
+                                                    'max': '1440',
                                                     'class': 'validate'
                                                 })
                                             }),

@@ -14,6 +14,12 @@
 ])
 
 @push('local.styles')
+    @media only screen and (max-width:992px) {
+        .hide-on-med-and-down {
+            display: none !important;
+        }
+    }
+
     .cloud-content {
         height: 200px;
     }
@@ -464,7 +470,10 @@
 
 @section('wildcard')
     <div class="d-flex" id="search-area">
-        <a href="#" class="flex-fill d-flex" data-trigger="clear">
+        <a
+            href="#"
+            class="flex-fill d-flex hide-on-med-and-down"
+            data-trigger="clear">
             <i class="material-icons align-self-center">clear</i>
         </a>
         <a
@@ -475,7 +484,7 @@
         </a>
         <a
             href="#"
-            class="flex-fill d-flex"
+            class="flex-fill d-flex hide-on-med-and-down"
             data-trigger="info">
             <i class="material-icons align-self-center">help</i>
         </a>
@@ -486,9 +495,10 @@
             value="{{ $q }}"
             placeholder="Arayın"
             class="json-search"
+            autocomplete="off"
             data-json-target="ul#search" />
     </div>
-    <div id="search-operators">
+    <div id="search-operators" class="hide-on-med-and-down">
         <div class="d-flex flex-wrap">
             <div class="p-1">
                 <span class="grey-text">Genel</span>
@@ -2693,6 +2703,7 @@
                                 @php
                                     $hints = [
                                         'Bir Twitter kullanıcısını aramak için, <span class="green darken-2 white-text">@KullaniciAdı</span> olarak arama gerçekleştirebilirsiniz. Büyük/Küçük harf duyarlılığına ve tarih aralığının geniş olmasına da dikkat edin!',
+                                        'Mobilde bazı detayları gizliyoruz. Daha iyi bir araştırma yapmak için geniş ekran kullanmanızı öneririz.'
                                     ];
 
                                     shuffle($hints);

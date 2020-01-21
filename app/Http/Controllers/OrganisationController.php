@@ -1807,7 +1807,7 @@ class OrganisationController extends Controller
         $take = $request->take;
         $skip = $request->skip;
 
-        $query = Archive::withCount('pins');
+        $query = Archive::withCount('items');
         $query = $query->where('organisation_id', $organisation->id);
         $query = $request->string ? $query->where('name', 'ILIKE', '%'.$request->string.'%') : $query;
         $query = $query->skip($skip)

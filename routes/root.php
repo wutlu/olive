@@ -221,6 +221,13 @@ Route::prefix('bot-yonetimi')->namespace('Crawlers')->group(function () {
     });
 
     # 
+    # MEDYA
+    # 
+    Route::prefix('gazete-ayarlari')->group(function () {
+        Route::get('/', 'NewspaperController@dashboard')->name('crawlers.newspaper.settings');
+    });
+
+    # 
     # BLOG
     # 
     Route::prefix('blog-forum-botlari')->group(function () {

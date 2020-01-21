@@ -388,87 +388,6 @@
                     </li>
                     <li>
                         <div class="collapsible-header waves-effect">
-                            <i class="material-icons">settings</i>
-                            <span>Bot Yönetimi</span>
-                            <i class="material-icons arrow">keyboard_arrow_down</i>
-                        </div>
-                        <div class="collapsible-body">
-                            <ul>
-                                <li class="tiny">
-                                    <a class="waves-effect" href="{{ route('crawlers.media.list') }}">
-                                        <i class="material-icons">widgets</i>
-                                        Medya Botları
-                                    </a>
-                                </li>
-                                <li class="tiny">
-                                    <a class="waves-effect" href="{{ route('crawlers.sozluk.list') }}">
-                                        <i class="material-icons">widgets</i>
-                                        Sözlük Botları
-                                    </a>
-                                </li>
-                                <li class="tiny">
-                                    <a class="waves-effect" href="{{ route('crawlers.shopping.list') }}">
-                                        <i class="material-icons">widgets</i>
-                                        E-ticaret Botları
-                                    </a>
-                                </li>
-                                <li class="tiny">
-                                    <a class="waves-effect" href="{{ route('crawlers.blog.list') }}">
-                                        <i class="material-icons">widgets</i>
-                                        Blog & Forum Botları
-                                    </a>
-                                </li>
-                                <li class="divider"></li>
-                                <li class="tiny">
-                                    <a class="waves-effect" href="{{ route('admin.twitter.settings') }}">
-                                        <i class="material-icons">widgets</i>
-                                        Twitter Ayarları
-                                    </a>
-                                </li>
-                                <li class="tiny">
-                                    <a class="waves-effect" href="{{ route('admin.youtube.settings') }}">
-                                        <i class="material-icons">widgets</i>
-                                        YouTube Ayarları
-                                    </a>
-                                </li>
-                                <li class="tiny">
-                                    <a class="waves-effect" href="{{ route('admin.instagram.settings') }}">
-                                        <i class="material-icons">widgets</i>
-                                        Instagram Ayarları
-                                    </a>
-                                </li>
-                                <li class="tiny" style="opacity: 0.4;">
-                                    <a class="waves-effect" href="#">
-                                        <i class="material-icons">widgets</i>
-                                        Facebook Ayarları
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="subheader">Genel Ayarlar</a>
-                                </li>
-                                <li class="tiny">
-                                    <a class="waves-effect" href="{{ route('admin.trend.settings') }}">
-                                        <i class="material-icons">widgets</i>
-                                        Trend Ayarları
-                                    </a>
-                                </li>
-                                <li class="tiny">
-                                    <a class="waves-effect" href="{{ route('admin.proxies') }}">
-                                        <i class="material-icons">vpn_key</i>
-                                        Vekil Sunucu Yönetimi
-                                    </a>
-                                </li>
-                                <li class="tiny">
-                                    <a class="waves-effect" href="{{ route('admin.hosts.file') }}">
-                                        <i class="material-icons">location_searching</i>
-                                        Hosts Dosyası
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="collapsible-header waves-effect">
                             <i class="material-icons">computer</i>
                             <span>Sistem İzleme</span>
                             <i class="material-icons arrow">keyboard_arrow_down</i>
@@ -729,7 +648,7 @@
         @isset($search_hide)
 
         @else
-            <div class="fixed-action-btn">
+            <div class="fixed-action-btn {{ auth()->user()->root() || auth()->user()->admin() ? '' : 'hide-on-med-and-down' }}">
                 <a data-trigger="module-search" id="search-trigger" class="btn-floating btn-large white waves-effect" data-tooltip="Modül Ara (CTRL + G)" data-position="left">
                     <i class="material-icons grey-text text-darken-4">search</i>
                 </a>

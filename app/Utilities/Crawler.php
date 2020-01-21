@@ -39,6 +39,9 @@ class Crawler
             $data = [];
 
             $starts_with = [
+                'mobilsite',
+                'libtrc',
+                'div',
                 'device-width',
                 'initial-scale',
                 'user-scalable',
@@ -53,7 +56,9 @@ class Crawler
                 'googlesyndication',
                 'navbar',
                 'wordpress',
+                'all-in-one-seo-pack',
                 'comments',
+                'ana-sayfa',
                 'collection',
                 'analytics',
                 'gazete-mansetleri',
