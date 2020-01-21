@@ -946,6 +946,9 @@
                                     <a class="blue-grey-text" href="{{ route('page.view', 'kullanim-kosullari') }}">Kullanım Koşulları</a>
                                 </li>
                                 <li>
+                                    <a class="blue-grey-text" href="{{ route('page.view', 'kvk-protokolu') }}">KVK Protokolü</a>
+                                </li>
+                                <li>
                                     <a class="blue-grey-text" href="{{ route('page.view', 'cerez-politikasi') }}">Çerez Politikası</a>
                                 </li>
                             </ul>
