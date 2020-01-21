@@ -91,7 +91,7 @@
                 <h1 class="mb-1">Dijital İtibarınızı Anlık Olarak Takip Edin</h1>
                 <p class="lead mb-2">Yalnızca markanızı ve kampanyalarınızı değil, aynı zamanda çok sayıda rakip ve segmenti izleyin ve ölçümleyin.</p>
                 <a href="{{ route('user.login') }}" class="btn btn-large blue darken-4 white-text waves-effect">Ücretsiz Dene</a>
-                <a href="{{ route('user.login') }}" class="btn-flat btn-large blue-grey darken-4 white-text waves-effect">Giriş Yap</a>
+                <a href="{{ route('user.login') }}?q=giris" class="btn-flat btn-large blue-grey darken-4 white-text waves-effect">Giriş Yap</a>
             </div>
         </div>
     </section>

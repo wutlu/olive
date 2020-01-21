@@ -526,8 +526,14 @@ class UserController extends Controller
      *
      * @return view
      */
-    public static function loginView()
+    public static function loginView(Request $request)
     {
+        $request->validate(
+            [
+                'q' => 'string|in:giris,sifre,kaydol'
+            ]
+        );
+
         $photos = [
             [
                 'img' => asset('img/photo/galata.jpeg'),
@@ -543,7 +549,7 @@ class UserController extends Controller
 
         $photo = $photos[0];
 
-    	return view('user.logister', compact('photo'));
+    	return view('user.logister', compact('photo', 'request'));
     }
 
     /**

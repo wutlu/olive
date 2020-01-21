@@ -64,18 +64,19 @@
                 <div class="card-tabs">
                     <ul class="tabs tabs-fixed-width">
                         <li class="tab">
-                            <a href="#tab-giris" class="waves-effect waves-light">Giriş</a>
+                            <a href="#tab-giris" class="waves-effect waves-light {{ $request->q == 'giris' ? 'active' : '' }}">Giriş</a>
                         </li>
                         @if (config('system.user.registration'))
                             <li class="tab">
-                                <a href="#tab-kaydol" class="waves-effect waves-light active">Kaydol</a>
+                                <a href="#tab-kaydol" class="waves-effect waves-light {{ $request->q == 'kaydol' || $request->q == '' ? 'active' : '' }}">Kaydol</a>
                             </li>
                         @endif
                         <li class="tab">
-                            <a href="#tab-sifre" class="waves-effect waves-light">Şifre</a>
+                            <a href="#tab-sifre" class="waves-effect waves-light {{ $request->q == 'sifre' ? 'active' : '' }}">Şifre</a>
                         </li>
                     </ul>
                 </div>
+
                 <div class="card-content white" id="tab-giris">
                     <form id="login-form" data-callback="__login" action="{{ route('user.login') }}" method="post" class="json">
                         <div class="input-field">
