@@ -90,7 +90,8 @@
             <div class="text-container">
                 <h1 class="mb-1">Dijital İtibarınızı Anlık Olarak Takip Edin</h1>
                 <p class="lead mb-2">Yalnızca markanızı ve kampanyalarınızı değil, aynı zamanda çok sayıda rakip ve segmenti izleyin ve ölçümleyin.</p>
-                <a href="{{ route('user.login') }}" class="btn btn-large blue darken-4 white-text waves-effect">Ücretsiz Deneyin</a>
+                <a href="{{ route('user.login') }}" class="btn btn-large blue darken-4 white-text waves-effect">Ücretsiz Dene</a>
+                <a href="{{ route('user.login') }}" class="btn-flat btn-large blue-grey darken-4 white-text waves-effect">Giriş Yap</a>
             </div>
         </div>
     </section>
@@ -198,7 +199,7 @@
     <section class="section section-best center-align">
         <div class="container">
             <h2 class="mb-1">Erken Kalkan Yol Alır</h2>
-            <p class="lead">VERİ.ZONE'u dijital itibarına önem verenlerin, kitlelerinin sesini duyabilmeleri için tasarladık.</p>
+            <p class="lead">Hızlı davranın, ilgilendiğiniz konulardan ilk siz haberdar olun!</p>
         </div>
     </section>
 
