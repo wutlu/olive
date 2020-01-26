@@ -378,12 +378,11 @@ class Crawler
     public static function articleDetection(
         string $site,
         string $page,
-        string $title_selector,
-        string $description_selector,
+        string $title_selector = null,
+        string $description_selector = null,
         bool $standard,
         bool $proxy,
-        bool $cookie,
-        bool $tr_char
+        bool $cookie
     )
     {
         $data = [
@@ -440,12 +439,12 @@ class Crawler
                 ],
                 $dom
             );
-
+/*
             if ($tr_char)
             {
                 $dom = mb_convert_encoding($dom, 'UTF-8', 'ISO-8859-9');
             }
-
+*/
             Email::detector($dom);
 
             $saw = new Wrawler($dom);

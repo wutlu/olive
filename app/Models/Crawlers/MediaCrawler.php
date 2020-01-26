@@ -25,7 +25,6 @@ class MediaCrawler extends Model
         'error_count',
         'proxy',
         'cookie',
-        'tr_char',
         'count',
     ];
 

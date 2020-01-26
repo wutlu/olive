@@ -54,8 +54,7 @@ class TakerJob implements ShouldQueue
                 $crawler->selector_description ? $crawler->selector_description : null,
                 $crawler->standard,
                 $crawler->proxy,
-                $crawler->cookie,
-                $crawler->tr_char,
+                $crawler->cookie
             );
 
             if ($item->status == 'ok')
