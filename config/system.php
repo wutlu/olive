@@ -4,7 +4,7 @@ return [
     /**
      * Sistem Versiyonu
      */
-    'version' => '8.2',
+    'version' => '8.2.3',
 
     /**
      * db
@@ -636,7 +636,13 @@ return [
                 'route' => 'admin.hosts.file',
                 'root' => true,
                 'icon' => 'dialer_sip'
-            ]
+            ],
+            41 => [
+                'name' => 'Instagram Ayarları',
+                'route' => 'admin.instagram.settings',
+                'root' => true,
+                'icon' => 'widgets'
+            ],
         ]
     ],
 ];

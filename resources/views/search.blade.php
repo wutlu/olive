@@ -864,6 +864,7 @@
                 if ($('input[name=modules][value=twitter]').is(':checked'))
                 {
                     $('[data-name=twitter-unique_users]').html(number_format(obj.stats.twitter.unique_users)).closest('p').removeClass(obj.stats.twitter.unique_users ? 'hide' : '');
+                    $('[data-name=twitter-retweets]').html(number_format(obj.stats.counts.twitter_retweet)).closest('p').removeClass(obj.stats.counts.twitter_retweet ? 'hide' : '');
                     $('[data-name=twitter-verified_users]').html(number_format(obj.stats.twitter.verified_users)).closest('p').removeClass(obj.stats.twitter.verified_users ? 'hide' : '');
                     $('[data-name=twitter-followers]').html(obj.stats.twitter.followers ? number_format((obj.stats.twitter.followers).toFixed(0)) : 0).closest('p').removeClass(obj.stats.twitter.followers ? 'hide' : '');
                     $('[data-name=twitter-hashtags]').html(number_format(obj.stats.twitter.hashtags)).closest('p').removeClass(obj.stats.twitter.hashtags ? 'hide' : '');
@@ -2750,7 +2751,7 @@
                         <tr>
                             <td style="font-size: 20px; text-transform: uppercase;" class="pb-0 right-align">
                                 <p class="mb-0">
-                                    <strong data-name="twitter-tweet" style="font-weight: bold;">0</strong> / <strong data-tooltip="ReTweet" data-position="top" data-name="twitter-retweet" style="font-weight: bold;">0</strong>
+                                    <strong data-name="twitter-tweet" style="font-weight: bold;">0</strong>
                                     <span class="grey-text">tweet</span>
                                 </p>
                             </td>
@@ -2761,6 +2762,12 @@
                         </tr>
                         <tr>
                             <td style="padding: 0; text-transform: uppercase; vertical-align: top;" class="right-align">
+                                <p class="mb-0 hide" data-stat>
+                                    <span class="d-flex justify-content-end">
+                                        <small class="grey-text">RETWEET</small>
+                                        <small class="pl-1" data-name="twitter-retweets">0</small>
+                                    </span>
+                                </p>
                                 <p class="mb-0 hide" data-stat>
                                     <span class="d-flex justify-content-end">
                                         <small class="grey-text">TEKİL KULLANICI</small>

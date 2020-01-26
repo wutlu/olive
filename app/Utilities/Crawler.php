@@ -41,7 +41,14 @@ class Crawler
             $starts_with = [
                 'mobilsite',
                 'libtrc',
+                'td-composer',
                 'div',
+                'block-editor',
+                'wpfc-minified',
+                'magnific-popup',
+                'block-library',
+                'privacy-policy',
+                'gizlilik-sozlesmesi',
                 'device-width',
                 'initial-scale',
                 'user-scalable',
@@ -287,8 +294,7 @@ class Crawler
 
         if ($cookie)
         {
-            $file_path = storage_path('app/cookies/.'.str_slug($site).'.txt');
-
+            $file_path = storage_path('app/cookies/'.str_replace([ 'https://', 'http://', 'www.' ], '', $site).'.json');
             $client_arr['cookies'] = new FileCookieJar($file_path, true);
         }
 
@@ -301,7 +307,7 @@ class Crawler
                 'connect_timeout' => 5,
                 'headers' => [
                     'User-Agent' => config('crawler.user_agents')[array_rand(config('crawler.user_agents'))],
-                    'Accept-Language' => 'tr-TR;q=0.6,tr;q=0.4'
+                    'Accept-Language' => 'tr-TR, tr;q=0.9, en;q=0.8, de;q=0.7, *;q=0.5'
                 ],
                 'curl' => [
                     CURLOPT_REFERER => $site,
@@ -369,7 +375,16 @@ class Crawler
      *
      * @return object
      */
-    public static function articleDetection(string $site, string $page, string $title_selector = null, string $description_selector = null, bool $standard, bool $proxy, bool $cookie)
+    public static function articleDetection(
+        string $site,
+        string $page,
+        string $title_selector,
+        string $description_selector,
+        bool $standard,
+        bool $proxy,
+        bool $cookie,
+        bool $tr_char
+    )
     {
         $data = [
             'page' => $page,
@@ -383,7 +398,7 @@ class Crawler
 
         if ($cookie)
         {
-            $file_path = storage_path('app/cookies/.'.str_slug($site).'.txt');
+            $file_path = storage_path('app/cookies/'.str_replace([ 'https://', 'http://', 'www.' ], '', $site).'.json');
             $client_arr['cookies'] = new FileCookieJar($file_path, true);
         }
 
@@ -416,8 +431,20 @@ class Crawler
             }
 
             $dom = $client->get($page, $arr)->getBody();
+            $dom = str_replace(
+                [
+                    '&nbsp;'
+                ],
+                [
+                    ' '
+                ],
+                $dom
+            );
 
-            $dom = str_replace('&nbsp;', ' ', $dom);
+            if ($tr_char)
+            {
+                $dom = mb_convert_encoding($dom, 'UTF-8', 'ISO-8859-9');
+            }
 
             Email::detector($dom);
 

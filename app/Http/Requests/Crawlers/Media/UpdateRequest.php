@@ -39,6 +39,7 @@ class UpdateRequest extends FormRequest
             'proxy'                => 'nullable|string|in:on',
             'standard'             => 'nullable|string|in:on',
             'cookie'               => 'nullable|string|in:on',
+            'tr_char'              => 'nullable|string|in:on',
         ];
     }
 }

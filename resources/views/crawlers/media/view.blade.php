@@ -382,6 +382,15 @@
                             {{ $crawler->cookie ? 'checked' : '' }} />
                         <span>Çerezleri Kabul Et</span>
                     </label>
+                    <label class="collection-item waves-effect d-block">
+                        <input
+                            name="tr_char"
+                            id="tr_char"
+                            value="on"
+                            type="checkbox"
+                            {{ $crawler->tr_char ? 'checked' : '' }} />
+                        <span>Karakter Fix</span>
+                    </label>
                 </div>
             </div>
             <div class="card-content yellow lighten-4">Bu aşamada girilen değerler test edilir. Test sonucu olumlu olmadığı sürece değerler kaydedilmeyecektir.</div>

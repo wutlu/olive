@@ -718,6 +718,7 @@ class SearchController extends Controller
                             $twitter_q['aggs']['verified_users'] = [ 'filter' => [ 'exists' => [ 'field' => 'user.verified' ] ] ];
                             $twitter_q['aggs']['followers'] = [ 'avg' => [ 'field' => 'user.counts.followers' ] ];
                             $twitter_q['aggs']['total'] = [ 'value_count' => [ 'field' => 'id' ] ];
+                            $twitter_q['aggs']['all_retweets'] = [ 'sum' => [ 'field' => 'counts.retweet' ] ];
                         }
 
                         $tweet_data = self::tweet($request, $twitter_q);
@@ -729,11 +730,11 @@ class SearchController extends Controller
                             $stats['twitter']['unique_users'] = @$tweet_data['aggs']['unique_users']['value'];
                             $stats['twitter']['verified_users'] = @$tweet_data['aggs']['verified_users']['doc_count'];
                             $stats['twitter']['followers'] = @$tweet_data['aggs']['followers']['value'];
+                            $stats['counts']['twitter_retweet'] = @$tweet_data['aggs']['all_retweets']['value'];
                         }
 
                         $stats['hits'] = $stats['hits'] + ($request->aggs ? $tweet_data['aggs']['total']['value'] : $tweet_data['stats']['total']);
                         $stats['counts']['twitter_tweet'] = $request->aggs ? $tweet_data['aggs']['total']['value'] : $tweet_data['stats']['total'];
-                        $stats['counts']['twitter_retweet'] = $tweet_data['stats']['total_rt'];
 
                         $data = array_merge($data, $tweet_data['data']);
                     }
@@ -989,7 +990,6 @@ class SearchController extends Controller
         }
 
         $q['aggs']['unique_tweets'] = [ 'value_count' => [ 'field' => 'id' ] ];
-        $q['aggs']['all_retweets'] = [ 'sum' => [ 'field' => 'counts.retweet' ] ];
 
         $query = Document::search([ 'twitter', 'tweets', '*' ], 'tweet', $q);
 
@@ -999,7 +999,7 @@ class SearchController extends Controller
         }
 
         $stats['total'] = $query->data['aggregations']['unique_tweets']['value'];
-        $stats['total_rt'] = $query->data['aggregations']['all_retweets']['value'];
+        //$stats['total_rt'] = $query->data['aggregations']['all_retweets']['value'];
 
         if (@$query->data['hits']['hits'])
         {
