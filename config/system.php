@@ -636,7 +636,13 @@ return [
                 'route' => 'admin.hosts.file',
                 'root' => true,
                 'icon' => 'dialer_sip'
-            ]
+            ],
+            41 => [
+                'name' => 'Instagram Ayarları',
+                'route' => 'admin.instagram.settings',
+                'root' => true,
+                'icon' => 'widgets'
+            ],
         ]
     ],
 ];

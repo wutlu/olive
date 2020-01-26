@@ -460,7 +460,8 @@ class MediaController extends Controller
                         $request->selector_description ? $request->selector_description : null,
                         $request->standard ? true : false,
                         $request->proxy ? true : false,
-                        $request->cookie ? true : false
+                        $request->cookie ? true : false,
+                        $request->tr_char ? true : false
                     );
 
                     $data['items'][] = $item;
@@ -483,6 +484,7 @@ class MediaController extends Controller
                 $crawler->error_count = 0;
                 $crawler->off_reason = null;
                 $crawler->cookie = $request->cookie ? true : false;
+                $crawler->tr_char = $request->tr_char ? true : false;
 
                 $data['status'] = 'ok';
             }

@@ -448,7 +448,8 @@ class BlogController extends Controller
                         $request->selector_description ? $request->selector_description : null,
                         $request->standard ? true : false,
                         $request->proxy ? true : false,
-                        $request->cookie ? true : false
+                        $request->cookie ? true : false,
+                        $request->tr_char ? true : false
                     );
 
                     $data['items'][] = $item;
