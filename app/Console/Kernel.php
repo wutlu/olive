@@ -195,7 +195,6 @@ class Kernel extends ConsoleKernel
             /**
              * Trendlerin hazırlanması.
              */
-
             foreach ([
                 'trend.status.twitter_tweet' => 'twitter_tweet',
                 'trend.status.twitter_favorite' => 'twitter_favorite',

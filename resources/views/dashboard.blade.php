@@ -9,27 +9,6 @@
         fullWidth: true,
         indicators: true
     })
-
-    $('.carousel-news').owlCarousel({
-        responsiveClass: true,
-        autoWidth: true,
-        dotClass: 'hide',
-        navText: [
-            '<div class="nav-btn prev-slide d-flex"><i class="material-icons align-self-center">keyboard_arrow_left</i></div>',
-            '<div class="nav-btn next-slide d-flex"><i class="material-icons align-self-center">keyboard_arrow_right</i></div>'
-        ],
-        nav: true,
-        loop: true,
-        responsive: {
-            0: { items: 1 },
-            800: { items: 2 },
-            1400: { items: 3 }
-        },
-        autoplay: true,
-        autoplayTimeout: 2000,
-        autoplayHoverPause: true,
-        lazyLoad: true
-    })
 @endpush
 
 @push('local.styles')
@@ -45,25 +24,6 @@
         .carousel-slider {
             margin: 1rem 0 0;
         }
-    }
-
-    .carousel-news {
-        display: none;
-        height: 92px;
-        overflow: hidden;
-
-        -webkit-box-shadow: 0 0 24px 0 rgba(0, 0, 0, .1);
-                box-shadow: 0 0 24px 0 rgba(0, 0, 0, .1);
-    }
-    .carousel-news [data-name=item] > img {
-        width: auto;
-        height: 64px;
-    }
-    .carousel-news [data-name=item] > span {
-        max-height: 64px;
-        max-width: 200px;
-        padding: 0 1rem;
-        overflow: hidden;
     }
 
     .indicators > .indicator-item {
@@ -107,18 +67,6 @@
                 </div>
             @endif
         @endif
-    @endif
-    @if (count($news))
-        <div class="carousel-news owl-carousel">
-            @foreach ($news as $item)
-                <a href="{{ route('search.dashboard').'?q="'.$item->data->title.'"' }}" class="d-flex" data-name="item">
-                    @isset($item->data->image)
-                        <!--<img class="align-self-center" alt="{{ $item->data->title }}" src="{{ $item->data->image }}" />-->
-                    @endisset
-                    <span class="align-self-center">{{ $item->data->title }}</span>
-                </a>
-            @endforeach
-        </div>
     @endif
 @endsection
 
@@ -485,83 +433,6 @@
             </div>
         </div>
     </div>
-
-    <ul class="card">
-        <li class="card-content">
-            <span class="card-title">Güncel Forum Konuları</span>
-            <small class="grey-text">İlgili kategorilerde özgürce yardımlaşabilirsiniz.</small>
-        </li> 
-        @forelse ($threads as $thread)
-            @php
-                $color_light = '';
-                $color_dark = '';
-
-                if ($thread->static)
-                {
-                    $color_light = 'white lighten-2 grey-text';
-                    $color_dark = 'grey lighten-2';
-                }
-            @endphp
-            <li class="card-content {{ $color_dark }}">
-                <div class="d-flex">
-                    <span class="align-self-center center-align" style="margin: 0 1rem 0 0;">
-                        <a class="d-block" data-tooltip="{{ $thread->user->name }}" data-position="right" href="{{ route('user.profile', $thread->user_id) }}">
-                            <img alt="Avatar" src="{{ $thread->user->avatar() }}" class="circle" style="width: 64px; height: 64px;" />
-                        </a>
-                    </span>
-                    <div class="align-self-center">
-                        <div class="d-flex">
-                            @if ($thread->closed)
-                                <i class="material-icons grey-text text-darken-2 tiny" data-tooltip="Kapalı">lock</i>
-                            @endif
-
-                            @if ($thread->static)
-                                <i class="material-icons grey-text text-darken-2 tiny" data-tooltip="Sabit">terrain</i>
-                            @endif
-
-                            @if ($thread->question == 'solved')
-                                <i class="material-icons grey-text text-darken-2 tiny" data-tooltip="Çözüldü">check</i>
-                            @elseif ($thread->question == 'unsolved')
-                                <i class="material-icons grey-text text-darken-2 tiny" data-tooltip="Soru">help</i>
-                            @endif
-                        </div>
-                        <a href="{{ $thread->route() }}" class="d-flex">
-                            <span class="card-title card-title-small align-self-center mb-0">{{ $thread->subject }}</span>
-                        </a>
-                        <p class="grey-text">
-                            @if (count($thread->replies))
-                                <time class="timeago grey-text text-darken-2" data-time="{{ $thread->updated_at }}">{{ date('d.m.Y H:i', strtotime($thread->updated_at)) }}</time>
-                                <span>yanıtladı</span>
-                                <a href="{{ route('user.profile', $thread->replies->last()->user->id) }}">{{ '@'.$thread->replies->last()->user->name }}</a>
-                            @else
-                                <time class="timeago grey-text text-darken-2" data-time="{{ $thread->created_at }}">{{ date('d.m.Y H:i', strtotime($thread->created_at)) }}</time>
-                                <span>yazdı</span>
-                                <a href="{{ route('user.profile', $thread->user_id) }}">{{ '@'.$thread->user->name }}</a>
-                            @endif
-                        </p>
-                        @if (count($thread->replies))
-                            {!! $thread->replies()->paginate(10)->onEachSide(1)->setPath($thread->route())->links('vendor.pagination.materializecss_in') !!}
-                        @endif
-                    </div>
-                    <div class="align-self-center ml-auto hide-on-med-and-down">
-                        <a href="{{ route('forum.category', $thread->category->slug) }}" class="chip waves-effect center-align {{ $color_light }}">{{ $thread->category->name }}</a>
-                        <span class="badge d-flex grey-text justify-content-end">
-                            <span class="align-self-center">{{ count($thread->replies) }}</span>
-                            <i class="material-icons align-self-center" style="margin: 0 0 0 .4rem;">reply</i>
-                        </span>
-                        <span class="badge d-flex grey-text justify-content-end">
-                            <span class="align-self-center">{{ $thread->hit }}</span>
-                            <i class="material-icons align-self-center" style="margin: 0 0 0 .4rem;">remove_red_eye</i>
-                        </span>
-                    </div>
-                </div>
-            </li>
-        @empty
-            <li class="card-content grey-text">
-                Üzgünüm, daha fazla içerik yok.
-            </li>
-        @endforelse
-    </ul>
 @endsection
 
 @push('local.scripts')

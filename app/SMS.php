@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use SoapClient;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;

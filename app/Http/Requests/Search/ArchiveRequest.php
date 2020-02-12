@@ -51,7 +51,7 @@ class ArchiveRequest extends FormRequest
         });
 
         return [
-            'string' => 'nullable|string|max:255',
+            'string' => 'nullable|string|max:500',
             'skip' => 'required|integer',
             'take' => 'required|integer|max:100',
             'start_date' => 'required|date|date_limit',

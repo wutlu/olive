@@ -151,11 +151,9 @@ $ sudo supervisorctl start olive-email:*
 $ sudo supervisorctl start olive-crawler:*
 ~~~~
 
-### Zamanlanmış Görevler Yapılandırması
-
 ~~~~
 
-Elasticsearch keywords.txt güncelleme komutları:
+### Elasticsearch keywords.txt güncelleme komutları:
 
 $ cp -R /var/www/veri.zone/database/analysis/keywords.txt /data/elasticsearch-n1/config/analysis/keywords.txt
 $ cp -R /var/www/veri.zone/database/analysis/keywords.txt /data/elasticsearch-n2/config/analysis/keywords.txt
