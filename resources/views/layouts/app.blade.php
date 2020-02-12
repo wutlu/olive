@@ -516,9 +516,9 @@
                 @endif
 
                 <li class="tiny">
-                    <a class="waves-effect" href="{{ route('forum.index') }}">
-                        <i class="material-icons">forum</i>
-                        Forum
+                    <a class="waves-effect" href="{{ route('dashboard') }}">
+                        <i class="material-icons">home</i>
+                        Ana Sayfa
                     </a>
                 </li>
                 <li class="divider"></li>

@@ -2085,7 +2085,7 @@ body.module-search-active > .search-wrapper {
   -webkit-transition: all 200ms cubic-bezier(.25, .46, .45, .94);
           transition: all 200ms cubic-bezier(.25, .46, .45, .94);
 
-  width: 20%;
+  width: 25%;
 }
 .fast-menu > a:hover {
   padding: 2rem 1rem;

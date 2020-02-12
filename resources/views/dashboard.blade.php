@@ -127,18 +127,6 @@
             <div class="fast-menu">
                 @foreach ([
                     [
-                        'route' => route('compare.dashboard'),
-                        'icon' => 'pie_chart',
-                        'name' => 'Veri Kıyasla',
-                        'key' => 'pool'
-                    ],
-                    [
-                        'route' => route('trend.live'),
-                        'icon' => 'trending_up',
-                        'name' => 'Canlı Trend',
-                        'key' => 'trend'
-                    ],
-                    [
                         'route' => route('search.dashboard'),
                         'icon' => 'youtube_searched_for',
                         'name' => 'Arama Motoru',
@@ -151,16 +139,22 @@
                         'key' => 'stream'
                     ],
                     [
+                        'route' => route('trend.live'),
+                        'icon' => 'trending_up',
+                        'name' => 'Canlı Trend',
+                        'key' => 'trend'
+                    ],
+                    [
+                        'route' => route('compare.dashboard'),
+                        'icon' => 'pie_chart',
+                        'name' => 'Veri Kıyasla',
+                        'key' => 'pool'
+                    ],
+                    [
                         'route' => route('alarm.dashboard'),
                         'icon' => 'access_alarm',
                         'name' => 'Alarmlar',
                         'key' => 'alarm'
-                    ],
-                    [
-                        'route' => route('pin.groups'),
-                        'icon' => 'archive',
-                        'name' => 'Arşivler',
-                        'key' => 'archive'
                     ],
                     [
                         'route' => route('data_pool.dashboard'),
@@ -173,18 +167,6 @@
                         'icon' => 'money',
                         'name' => 'Kalabalığın Düşüncesi (Borsa)',
                         'key' => 'borsa'
-                    ],
-                    [
-                        'route' => route('trend.archive'),
-                        'icon' => 'archive',
-                        'name' => 'Trend Arşivi',
-                        'key' => 'archive'
-                    ],
-                    [
-                        'route' => route('trend.popular'),
-                        'icon' => 'people',
-                        'name' => 'Popüler Kaynaklar',
-                        'key' => 'popular_sources'
                     ],
                 ] as $key => $item)
                     <a href="{{ $item['route'] }}" id="fast_menu-module-{{ $item['key'] }}">
