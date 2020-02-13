@@ -16,7 +16,6 @@ use App\Models\User\PartnerPayment;
 use App\Models\Option;
 use App\Models\Carousel;
 use App\Models\Ticket;
-use App\Models\Forum\Message;
 use App\Models\Organisation\Organisation;
 use App\Models\Organisation\OrganisationInvoice;
 use App\Models\ReportedContents;
@@ -434,8 +433,6 @@ class HomeController extends Controller
         $carousels = Carousel::where('carousel', true)->orderBy('updated_at', 'DESC')->get();
         $modals = Carousel::where('modal', true)->orderBy('updated_at', 'DESC')->get();
 
-        $threads = Message::whereNull('message_id')->orderBy('updated_at', 'DESC')->simplePaginate($pager);
-
         $photos = [
             [
                 'img' => asset('img/photo/galata.jpeg'),
@@ -451,8 +448,6 @@ class HomeController extends Controller
 
         $photo = $photos[0];
 
-        $news = json_decode(RedisCache::get(implode(':', [ config('system.db.alias'), 'trends', 'news' ])));
-
         $discount_with_year = Option::where('key', 'formal.discount_with_year')->value('value');
 
         $user = auth()->user();
@@ -463,8 +458,6 @@ class HomeController extends Controller
                 'carousels',
                 'modals',
                 'photo',
-                'threads',
-                'news',
                 'discount_with_year',
                 'user'
             )

@@ -24,7 +24,7 @@ class SearchRequest extends FormRequest
     public function rules()
     {
         return [
-            'string' => 'nullable|string|min:2|max:255',
+            'string' => 'nullable|string|min:2|max:500',
             'skip' => 'required|integer',
             'take' => 'required|integer|max:100',
             'status' => 'nullable|string|in:on,off,success,pending,cancelled',

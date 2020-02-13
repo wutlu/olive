@@ -2078,20 +2078,30 @@ body.module-search-active > .search-wrapper {
   -ms-flex: 1 1 auto !important;
       flex: 1 1 auto !important;
 
-  padding: 3rem 1rem;
+  padding: .5rem;
+
+  margin: 1rem;
 
   text-align: center;
 
   -webkit-transition: all 200ms cubic-bezier(.25, .46, .45, .94);
           transition: all 200ms cubic-bezier(.25, .46, .45, .94);
 
-  width: 20%;
+  width: 25%;
+
+  border-radius: .5rem;
+  background-color: #fff;
+
+  -webkit-box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.14);
+          box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.14);
 }
 .fast-menu > a:hover {
-  padding: 2rem 1rem;
+  background-color: rgba(0, 0, 0, .1);
 }
 .fast-menu > a:active {
-  padding: 3rem 1rem;
+
+  -webkit-box-shadow: inset 2px 2px 4px 0 rgba(0, 0, 0, 0.14);
+          box-shadow: inset 2px 2px 4px 0 rgba(0, 0, 0, 0.14);
 }
 
 @media only screen and (max-width: 1440px) {

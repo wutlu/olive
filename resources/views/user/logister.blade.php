@@ -120,7 +120,7 @@
                                 <span>
                                     <a class="grey-text text-darken-2" target="_blank" href="{{ route('page.view', 'kullanim-kosullari') }}">Kullanım Koşulları</a>'nı,<br />
                                     <a class="grey-text text-darken-2" target="_blank" href="{{ route('page.view', 'gizlilik-politikasi') }}">Gizlilik Politikası</a>'nı ve<br />
-                                    <a class="grey-text text-darken-2" target="_blank" href="{{ route('page.view', 'kvk-protokolu') }}">KVK Protokolünü</a>'nü<br />
+                                    <a class="grey-text text-darken-2" target="_blank" href="{{ route('page.view', 'kvk-protokolu') }}">KVK Protokolü</a>'nü<br />
                                     okudum ve<br />
                                     kabul ediyorum.
                                 </span>

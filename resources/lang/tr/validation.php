@@ -139,7 +139,6 @@ $arr = [
         'password'                        => 'Şifre',
         'password_login'                  => 'Şifre',
         'terms'                           => 'Kurallar',
-        'gRecaptchaResponse'              => 'Güvenlik Doğrulaması',
         'g-recaptcha-response'            => 'Güvenlik Doğrulaması',
         'month'                           => 'Ay',
         'address'                         => 'Adres',
