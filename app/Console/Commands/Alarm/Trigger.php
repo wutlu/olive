@@ -80,6 +80,7 @@ class Trigger extends Command
 
                 if (count($es_data['data']))
                 {
+                    $stats = [];
                     $stats[] = '| '.implode(' | ', [ '_Platform_', '_Mention_', '_Hashtag_', '_Tekil_', '_Tahmini Ulaşılan_' ]).' |';
                     $stats[] = '|---:|---:|---:|---:|---:|---:|';
                     foreach ($es_data['stats'] as $key => $platform)
@@ -93,6 +94,7 @@ class Trigger extends Command
                         ]).' |';
                     }
 
+                    $sources = [];
                     $sources[] = '| '.implode(' | ', [ '_Platform_', '_İçerik_' ]).' |';
                     $sources[] = '|:---|---:|';
 
