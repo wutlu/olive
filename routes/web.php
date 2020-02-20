@@ -23,6 +23,31 @@ Route::prefix('kullanici')->group(function () {
     Route::get('{id}', 'UserController@profile')->name('user.profile');
 });
 
+Route::namespace('Forum')->prefix('forum')->group(function () {
+    Route::get('/', 'ForumController@index')->name('forum.index');
+    Route::post('kategoriler', 'ForumController@categoryJson')->name('forum.categories');
+
+    Route::get('konu/{id?}', 'ForumController@threadForm')->name('forum.thread.form');
+    Route::post('konu', 'ForumController@threadSave');
+    Route::post('cevap', 'ForumController@replySave')->name('forum.reply.submit');
+
+    Route::post('cevap/{id}', 'ForumController@replyGet')->name('forum.reply.get');
+    Route::post('cevap/guncelle', 'ForumController@replyUpdate')->name('forum.reply.update');
+
+    Route::post('durum', 'ForumController@threadStatus')->name('forum.thread.status');
+    Route::post('sabit', 'ForumController@threadStatic')->name('forum.thread.static');
+    Route::delete('sil', 'ForumController@messageDelete')->name('forum.message.delete');
+    Route::post('en-iyi-cevap', 'ForumController@messageBestAnswer')->name('forum.message.best');
+    Route::post('puan', 'ForumController@messageVote')->name('forum.message.vote');
+    Route::post('spam', 'ForumController@messageSpam')->name('forum.message.spam');
+    Route::post('tasi', 'ForumController@threadMove')->name('forum.thread.move');
+    Route::post('takip', 'ForumController@threadFollow')->name('forum.thread.follow');
+
+    Route::get('{group}:{section}/{id?}', 'ForumController@group')->name('forum.group')->where([ 'group' => '[a-zA-Z0-9-]+', 'section' => '[a-zA-Z0-9-]+' ]);
+    Route::get('{slug}', 'ForumController@category')->name('forum.category');
+    Route::get('{slug}/{fake_slug}-{id}', 'ForumController@thread')->name('forum.thread');
+});
+
 Route::prefix('raporlar')->group(function () {
     Route::get('/', 'ReportController@dashboard')->name('report.dashboard');
     Route::get('rapor/{id}/duzenle', 'ReportController@edit')->name('report.edit');
