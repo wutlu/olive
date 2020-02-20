@@ -100,7 +100,7 @@
                             </div>
                             <div class="ground center">
                                 <img class="logo" alt="Logo" src="{{ asset('img/8vz.net_logo.svg') }}" />
-                                <span>v e r i . z o n e . t e k n o l o j i</span>
+                                <span>8vz</span>
                             </div>
                             <div class="ground right">
                                 <a target="_blank" href="https://twitter.com/verizonetek">Twitter @verizonetek</a>
