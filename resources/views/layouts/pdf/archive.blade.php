@@ -75,7 +75,7 @@
     <div class="clearfix">
         <div class="left">
             <a href="{{ config('app.url') }}" target="_blank">
-                <img class="logo" alt="Logo" src="{{ asset('img/veri.zone_logo.svg') }}" />
+                <img class="logo" alt="Logo" src="{{ asset('img/8vz.net_logo.svg') }}" />
             </a>
         </div>
         <div class="right">

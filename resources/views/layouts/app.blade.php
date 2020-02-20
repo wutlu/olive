@@ -95,7 +95,7 @@
 
         @if (isset($email) != 'hide')
             @push('local.scripts')
-                @if (auth()->user()->email == 'anonymous@veri.zone')
+                @if (auth()->user()->email == 'anonymous@8vz.net')
                     modal({
                         'title': 'E-posta',
                         'id': 'modal-registration',
@@ -247,7 +247,7 @@
                 <div class="{{ isset($sidenav_layout) ? '' : (auth()->check() ? 'sidenav-fixed-layout' : 'container') }}">
                     <div class="nav-wrapper">
                         <a href="{{ @$logo_route ? $logo_route : route('dashboard') }}" class="brand-logo center">
-                            <img alt="{{ config('app.name') }}" src="{{ @$logo ? $logo : asset('img/veri.zone_logo-icon.svg?v=1') }}" />
+                            <img alt="{{ config('app.name') }}" src="{{ @$logo ? $logo : asset('img/8vz.net_logo-icon.svg?v=1') }}" />
                         </a>
 
                         @auth
@@ -555,7 +555,7 @@
                 @isset($footer_hide)
                     <li class="divider"></li>
                     <li class="copyright">
-                        <p class="grey-text">{{ date('Y') }} © <a href="https://veri.zone/" class="grey-text">Veri Zone Teknoloji</a></p>
+                        <p class="grey-text">{{ date('Y') }} © <a href="https://8vz.net/" class="grey-text">8vz</a></p>
                     </li>
                 @endisset
             </ul>
@@ -568,7 +568,7 @@
             <nav id="breadcrumb">
                 <div class="{{ isset($sidenav_layout) ? '' : (auth()->check() ? 'sidenav-fixed-layout' : '') }}">
                     <div class="{{ isset($wide) ? 'container container-wide' : 'container' }}">
-                        <a href="{{ route('dashboard') }}" class="breadcrumb">VERİ.ZONE</a>
+                        <a href="{{ route('dashboard') }}" class="breadcrumb">8vz</a>
                         @foreach ($breadcrumb as $key => $row)
                             @if (isset($row['link']))
                                 <a href="{{ $row['link'] }}" class="breadcrumb">{{ $row['text'] }}</a>
@@ -894,7 +894,7 @@
                 <div class="{{ isset($wide) ? 'container container-wide' : 'container' }} pt-2 pb-2">
                     <div class="row">
                         <div class="col l4 s12">
-                            <p class="m-0 blue-grey-text">© {{ date('Y') }} <a href="https://veri.zone/" class="white-text">Veri Zone Teknoloji</a> | Tüm hakları saklıdır.</p>
+                            <p class="m-0 blue-grey-text">© {{ date('Y') }} <a href="https://8vz.net/" class="white-text">8vz</a> | Tüm hakları saklıdır.</p>
                             <p class="m-0 blue-grey-text">Mustafa Kemal Mh. Dumlupınar Blv. ODTÜ Teknokent Bilişim İnovasyon Merkezi 280/G No:1260<br />Alt Zemin Kat Çankaya, Ankara</p>
                             <!--
                             <i class="social-icon icon-tumblr">&#xe800;</i>
@@ -903,7 +903,6 @@
                             <i class="social-icon icon-skype">&#xe804;</i>
                             <i class="social-icon icon-call">&#xe806;</i>
                             <i class="social-icon icon-facebook">&#xe807;</i>
-                            -->
                             <div class="pt-1 mb-1">
                                 <a target="_blank" href="https://twitter.com/verizonetek" class="btn-flat btn-small btn-floating">
                                     <i class="social-icon icon-twitter">&#xe803;</i>
@@ -915,9 +914,10 @@
                                     <i class="social-icon icon-instagram">&#xe808;</i>
                                 </a>
                             </div>
+                            -->
                         </div>
                         <div class="col l4 offset-l2 s12">
-                            <h6 class="m-0 mb-1 white-text">VERİ.ZONE</h6>
+                            <h6 class="m-0 mb-1 white-text">8vz</h6>
                             <ul class="m-0 mb-1">
                                 <li>
                                     <a class="blue-grey-text" href="{{ route('page.view', 'hakkimizda') }}">Hakkımızda</a>
@@ -927,9 +927,6 @@
                                 </li>
                                 <li>
                                     <a class="blue-grey-text" href="#">Partnerlik</a>
-                                </li>
-                                <li>
-                                    <a class="blue-grey-text" href="{{ url('forum/yardim') }}">Yardım</a>
                                 </li>
                                 <li>
                                     <a class="blue-grey-text" href="{{ route('page.view', 'iletisim') }}">İletişim</a>

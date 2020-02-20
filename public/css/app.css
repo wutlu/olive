@@ -1,8 +1,8 @@
 /*!
  |-------------------------------
- | veri.zone 1.0
+ | 8vz.net 1.0
  |-------------------------------
- | (c) 2019 - veri.zone
+ | (c) 2019 - 8vz.net
  |-------------------------------
  */
 
@@ -2765,7 +2765,7 @@ footer.page-footer {
  */
 #console {
   overflow-y: auto;
-  background-image: url('../img/veri.zone_logo-opacity.svg');
+  background-image: url('../img/8vz.net_logo-opacity.svg');
   background-repeat: no-repeat;
   background-position: center;
   background-size: 70% auto;
@@ -3878,7 +3878,7 @@ nav.nav-half {
  * Olive
  */
 .olive {
-  background-image: url(../img/veri.zone_logo-opacity.svg);
+  background-image: url(../img/8vz.net_logo-opacity.svg);
   background-repeat: no-repeat;
   background-size: 80%;
   background-position: center;
@@ -4312,7 +4312,7 @@ nav.scrolled.active,
     display: block;
     position: absolute;
 
-    content: 'Veri Zone';
+    content: '8vz';
 
     top: -2em;
     left: 5.5em;

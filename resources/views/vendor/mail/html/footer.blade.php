@@ -7,8 +7,8 @@
                     <br />
                     {{ Illuminate\Mail\Markdown::parse($slot) }}
                     <br />
-			        <a href="https://veri.zone">
-			            <img width="100" height="27" alt="veri.zone" src="{{ secure_asset('img/veri.zone_logo-sm-grey.png') }}" />
+			        <a href="https://8vz.net">
+			            <img width="100" height="27" alt="8vz.net" src="{{ secure_asset('img/8vz.net_logo-sm-grey.png') }}" />
 			        </a>
 			    </td>
 			</tr>

@@ -5,7 +5,7 @@ return [
     'currency_text' => 'TL',
     'tax_name' => 'K.D.V.',
     'company' => [
-        'logo' => 'img/veri.zone_logo.svg',
+        'logo' => 'img/8vz.net_logo.svg',
         'name' => 'Veri Zone Teknoloji',
         'address' => [
             'Mustafa Kemal Mh. Dumlupınar Blv.',
@@ -13,8 +13,8 @@ return [
             '280/G No:1260 Alt Zemin Kat Çankaya, Ankara'
         ],
         'contact' => [
-            'www.veri.zone',
-            'bilgi@veri.zone',
+            'www.8vz.net',
+            'bilgi@8vz.net',
             '+90 850 302 1630'
         ],
         'tradeRegisterNo' => '10942289746',

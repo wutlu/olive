@@ -21,7 +21,7 @@
     {{-- Footer --}}
     @slot('footer')
         @component('mail::footer')
-            &copy; {{ date('Y') }} Veri Zone Teknoloji | Tüm hakları saklıdır.
+            &copy; {{ date('Y') }} 8vz | Tüm hakları saklıdır.
         @endcomponent
     @endslot
 @endcomponent

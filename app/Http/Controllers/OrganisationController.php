@@ -790,7 +790,7 @@ class OrganisationController extends Controller
                 $title = 'Fatura Onayı';
                 $greeting = 'Tebrikler! Faturanız Onaylandı.';
                 $message = 'Ödemeniz başarılı bir şekilde gerçekleştirildi ve organizasyonunuz aktif edildi.';
-                $message = 'Veri Zone kullandığınız için teşekkür eder, iyi araştırmalar dileriz.';
+                $message = '8vz kullandığınız için teşekkür eder, iyi araştırmalar dileriz.';
 
                 $author = $organisation->author;
 
@@ -953,7 +953,7 @@ class OrganisationController extends Controller
                 json_encode(
                     [
                         [
-                            '1 Aylık Veri Zone Aboneliği #'.$organisation->id,
+                            '1 Aylık 8vz Aboneliği #'.$organisation->id,
                             $invoice->unit_price,
                             $invoice->month,
                         ]

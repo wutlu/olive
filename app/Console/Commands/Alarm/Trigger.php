@@ -103,6 +103,8 @@ class Trigger extends Command
                         $sources[] = '| '.config('system.modules')[$module].' | '.number_format(intval(@$es_data['data'][$module]['count'])).' |';
                     }
 
+                    $data = [];
+
                     foreach ($es_data['data'] as $item)
                     {
                         $data[] = implode(

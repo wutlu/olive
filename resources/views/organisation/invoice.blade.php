@@ -192,7 +192,7 @@
 
         @if ($invoice->paid_at)
             <div class="row-col seal">
-                <img id="seal" alt="veri.zone-logo" src="{{ asset('img/maliye-damga.svg') }}" />
+                <img id="seal" alt="8vz.net-logo" src="{{ asset('img/maliye-damga.svg') }}" />
                 <small style="display: table; margin: 0 auto; max-width: 100px; opacity: .4;">Bu fatura sayfasının resmi bir geçerliliği yoktur. Gerçeğini temsil eder. Gerçek fatura adresinize gönderilmiştir.</small>
             </div>
         @endif
@@ -316,7 +316,7 @@
         <tbody>
             <tr>
                 <td class="description">
-                    <p>1 Aylık Veri Zone Aboneliği</p>
+                    <p>1 Aylık 8vz Aboneliği</p>
                 </td>
                 <td class="quantity">{{ $invoice->month }}</td>
                 <td class="unit-price">

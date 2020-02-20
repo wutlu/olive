@@ -1,8 +1,8 @@
 @extends('layouts.app', [
     'title' => [
-        'text' => 'VERİ.ZONE'
+        'text' => '8vz'
     ],
-    'description' => 'VERİ.ZONE, Büyük Veri Takip ve Raporlama Merkezi!',
+    'description' => '8vz, Büyük Veri Takip ve Raporlama Merkezi!',
     'chat' => true
 ])
 
@@ -64,7 +64,7 @@
             <div class="container">
                 <div class="nav-wrapper">
                     <a href="{{ route('home') }}" class="brand-logo left">
-                        <img alt="{{ config('app.name') }}" src="{{ asset('img/veri.zone_logo.svg') }}" />
+                        <img alt="{{ config('app.name') }}" src="{{ asset('img/8vz.net_logo.svg') }}" />
                     </a>
 
                     <ul class="right">
@@ -338,7 +338,7 @@
             <h2>Tam Anlamıyla Gerçek Zamanlı</h2>
         </div>
         <div class="item align-self-center p-2">
-            <p class="lead">VERİ.ZONE dijitalde olan bitenleri; istediğiniz kriterler doğrultusunda, paylaşıldığı an önünüze getirir.</p>
+            <p class="lead">8vz dijitalde olan bitenleri; istediğiniz kriterler doğrultusunda, paylaşıldığı an önünüze getirir.</p>
         </div>
     </section>
 

@@ -54,7 +54,7 @@
                 showButtons: true,
                 popover: {
                     title: 'Arama Motoru',
-                    description: 'Kitle ölçümlemeleri, web araştırmaları ve çeşitli analizler üretebileceğin Veri Zone ana modülü. <br /><br /><a href="{{ asset('img/search.jpg') }}" target="_blank"><img alt="Image" src="{{ asset('img/search.jpg') }}" class="responsive-img" /></a>',
+                    description: 'Kitle ölçümlemeleri, web araştırmaları ve çeşitli analizler üretebileceğin 8vz ana modülü. <br /><br /><a href="{{ asset('img/search.jpg') }}" target="_blank"><img alt="Image" src="{{ asset('img/search.jpg') }}" class="responsive-img" /></a>',
                     position: 'bottom'
                 }
             },
@@ -99,7 +99,7 @@
                 showButtons: true,
                 popover: {
                     title: 'Raporlama',
-                    description: 'İster otomatik, ister Veri Zone Rapor editörünü kullanarak hızlı, anlamlı ve iyi görünümlü raporlar oluşturabilirsin.',
+                    description: 'İster otomatik, ister 8vz Rapor editörünü kullanarak hızlı, anlamlı ve iyi görünümlü raporlar oluşturabilirsin.',
                     position: 'bottom'
                 }
             },
@@ -173,7 +173,7 @@
                         @slot('text', 'Seçtiğin modül(ler) veri kaynağına ihtiyaç duymuyor.')
                     @endcomponent
                 </div>
-                <div class="card-content info-bg" data-id="data-sources">Veri Zone örümcekleri tıpkı Google'ın yaptığı gibi fakat Google'dan biraz daha hızlı bir şekilde web'de gezinerek çeşitli mecralardan veri elde eder. Bu veri türlerinden erişmek istediklerinizi seçin. <strong>Ayrıca Veri Zone'a sonradan eklenecek veri kaynaklarına da bir sonraki fatura döneminize kadar ücretsiz erişebilirsiniz.</strong></div>
+                <div class="card-content info-bg" data-id="data-sources">8vz örümcekleri tıpkı Google'ın yaptığı gibi fakat Google'dan biraz daha hızlı bir şekilde web'de gezinerek çeşitli mecralardan veri elde eder. Bu veri türlerinden erişmek istediklerinizi seçin. <strong>Ayrıca 8vz'ye sonradan eklenecek veri kaynaklarına da bir sonraki fatura döneminize kadar ücretsiz erişebilirsiniz.</strong></div>
                 <ul class="collection collection-hoverable" data-tab="source">
                     @foreach (config('system.modules') as $key => $module)
                         <li class="collection-item">
@@ -324,7 +324,7 @@
                     <span class="step">4/4</span>
                     <span class="title">Kaynak Takibi</span>
                 </div>
-                <div class="card-content info-bg" data-id="data-limits">Bazı içerikler Veri Zone örümceklerinin gözünden kaçabilir. Bu gibi durumlar için takip edilmesini istediğin özel kaynakları belirtebilirsin.</div>
+                <div class="card-content info-bg" data-id="data-limits">Bazı içerikler 8vz örümceklerinin gözünden kaçabilir. Bu gibi durumlar için takip edilmesini istediğin özel kaynakları belirtebilirsin.</div>
                 <div class="card-content">
                     <div class="d-flex justify-content-between">
                         <small>YouTube Kanal Takibi</small>

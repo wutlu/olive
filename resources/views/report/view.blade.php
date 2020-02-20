@@ -40,7 +40,7 @@
                         <div class="sphere sphere-2"></div>
 
                         <header>
-                            <img class="logo" alt="Logo" src="{{ asset('img/veri.zone_logo.svg') }}" />
+                            <img class="logo" alt="Logo" src="{{ asset('img/8vz.net_logo.svg') }}" />
                             <div class="date">
                                 <small>{{ $report->date_1 ? date('d.m.Y', strtotime($report->date_1)) : '' }}</small>
                                 <small>{{ $report->date_2 ? date('d.m.Y', strtotime($report->date_2)) : '' }}</small>
@@ -56,10 +56,10 @@
                             <br />
 
                             <small style="width: 600px;" class="grey-text d-table mx-auto">Bu raporda yeralan tüm istatistikler, internette paylaşılan kamuya açık verilerden derlenmiştir.</small>
-                            <small style="width: 600px;" class="grey-text d-table mx-auto">Bu raporun tüm yayın hakları Veri Zone Teknoloji'ye aittir. Yazılı izin alınmadan herkese açık kaynaklarda kısmen veya tamamen alıntı yapılamaz, hiçbir şekilde kopya edilemez, çoğaltılamaz ve yayınlanamaz.</small>
+                            <small style="width: 600px;" class="grey-text d-table mx-auto">Bu raporun tüm yayın hakları 8vz'ye aittir. Yazılı izin alınmadan herkese açık kaynaklarda kısmen veya tamamen alıntı yapılamaz, hiçbir şekilde kopya edilemez, çoğaltılamaz ve yayınlanamaz.</small>
                         </header>
 
-                        <img class="logo" alt="Logo" src="{{ asset('img/veri.zone_logo.svg') }}" />
+                        <img class="logo" alt="Logo" src="{{ asset('img/8vz.net_logo.svg') }}" />
                     </div>
                 </div>
             </div>
@@ -74,7 +74,7 @@
                                 <small>{{ $report->date_2 ? date('d.m.Y', strtotime($report->date_2)) : '' }}</small>
                             </div>
                             <div class="logo">
-                                <img alt="Logo" src="{{ asset('img/veri.zone_logo.svg') }}" />
+                                <img alt="Logo" src="{{ asset('img/8vz.net_logo.svg') }}" />
                             </div>
                             <div class="content d-flex justify-content-center align-self-stretch"></div>
                         </div>
@@ -92,14 +92,14 @@
 
                         <footer>
                             <div class="ground left">
-                                <a href="mailto:bilgi@veri.zone">bilgi@veri.zone</a>
+                                <a href="mailto:bilgi@8vz.net">bilgi@8vz.net</a>
                                 <a href="tel:850-302-1631">(+90) 850 302 16 30</a>
-                                <a href="https://veri.zone/">https://veri.zone</a>
+                                <a href="https://8vz.net/">https://8vz.net</a>
                                 <p>Mustafa Kemal Mh. Dumlupınar Blv. ODTÜ Teknokent Bilişim İnovasyon Merkezi 280/G No: 1260 Alt Zemin Kat Çankaya, Ankara</p>
-                                <img class="logo" alt="Logo" src="{{ asset('img/veri.zone_logo.svg') }}" />
+                                <img class="logo" alt="Logo" src="{{ asset('img/8vz.net_logo.svg') }}" />
                             </div>
                             <div class="ground center">
-                                <img class="logo" alt="Logo" src="{{ asset('img/veri.zone_logo.svg') }}" />
+                                <img class="logo" alt="Logo" src="{{ asset('img/8vz.net_logo.svg') }}" />
                                 <span>v e r i . z o n e . t e k n o l o j i</span>
                             </div>
                             <div class="ground right">
@@ -107,9 +107,9 @@
                                 <a target="_blank" href="https://www.linkedin.com/company/verizonetek/">Linkedin @verizonetek</a>
                                 <a target="_blank" href="https://www.instagram.com/verizonetek/">Instagram @verizonetek</a>
                                 <br />
-                                <p class="red-text">Bu rapor Veri Zone Teknoloji; Gizlilik Politikası ve Kullanım Koşulları sözleşmeleri dahilinde üretilmiştir. Bu sözleşmelere aşağıdaki bağlantılardan ulaşabilirsiniz.</p>
-                                <a href="https://veri.zone/gizlilik-politikasi" target="_blank" class="d-block red-text">https://veri.zone/gizlilik-politikasi</a>
-                                <a href="https://veri.zone/kullanim-kosullari" target="_blank" class="d-block red-text">https://veri.zone/kullanim-kosullari</a>
+                                <p class="red-text">Bu rapor 8vz; Gizlilik Politikası ve Kullanım Koşulları sözleşmeleri dahilinde üretilmiştir. Bu sözleşmelere aşağıdaki bağlantılardan ulaşabilirsiniz.</p>
+                                <a href="https://8vz.net/gizlilik-politikasi" target="_blank" class="d-block red-text">https://8vz.net/gizlilik-politikasi</a>
+                                <a href="https://8vz.net/kullanim-kosullari" target="_blank" class="d-block red-text">https://8vz.net/kullanim-kosullari</a>
                             </div>
                         </footer>
                     </div>
@@ -144,13 +144,13 @@
                                 </div>
                             @endif
                             <div class="d-flex justify-content-between">
-                                <img class="align-self-center" alt="Logo" src="{{ asset('img/veri.zone_logo-grey.svg') }}" style="width: auto; height: 32px;" />
+                                <img class="align-self-center" alt="Logo" src="{{ asset('img/8vz.net_logo-grey.svg') }}" style="width: auto; height: 32px;" />
                                 <button type="submit" class="btn-flat waves-effect align-self-center">Raporu Aç</button>
                             </div>
                         </form>
                     </div>
                 </div>
-                <p class="grey-text center-align">{{ date('Y') }} © <a href="https://veri.zone/" class="grey-text">Veri Zone Teknoloji</a></p>
+                <p class="grey-text center-align">{{ date('Y') }} © <a href="https://8vz.net/" class="grey-text">8vz</a></p>
             </div>
         @endif
     </div>

@@ -176,7 +176,7 @@ class HomeController extends Controller
             ],
             [
                 'title' => 'Ortak Veri Havuzu',
-                'text' => 'Veri Zone, veri mecralarını tarar ve elde ettiği verileri bir havuzda toplar. Ulaşamadığımız mecraları belirterek siz de bu havuza katkı sağlayabilirsiniz.',
+                'text' => '8vz, veri mecralarını tarar ve elde ettiği verileri bir havuzda toplar. Ulaşamadığımız mecraları belirterek siz de bu havuza katkı sağlayabilirsiniz.',
                 'icon' => asset('img/icons/network.png')
             ],
             [
