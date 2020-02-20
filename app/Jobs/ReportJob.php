@@ -1062,7 +1062,7 @@ class ReportJob implements ShouldQueue
             $insert = new ReportPage;
             $insert->report_id = $report->id;
             $insert->title = 'Otomatik Rapor';
-            $insert->subtitle = 'Bu rapor Veri Zone tarafından '.sprintf('%0.2f', $totaltime).' saniyede otomatik olarak oluşturulmuştur.';
+            $insert->subtitle = 'Bu rapor 8vz tarafından '.sprintf('%0.2f', $totaltime).' saniyede otomatik olarak oluşturulmuştur.';
             $insert->sort = 0;
             $insert->type = 'page.title';
             $insert->save();
@@ -1149,8 +1149,8 @@ class ReportJob implements ShouldQueue
 
             $insert = new ReportPage;
             $insert->report_id = $report->id;
-            $insert->title = 'Daha fazlası için Veri Zone\'u ziyaret edin!';
-            $insert->subtitle = 'Veri Zone ekranlarıyla gündemin olan bitenlerini eş zamanlı takip edebilirsiniz.';
+            $insert->title = 'Daha fazlası için 8vz\'yi ziyaret edin!';
+            $insert->subtitle = '8vz ekranlarıyla gündemin olan bitenlerini eş zamanlı takip edebilirsiniz.';
             $insert->sort = $sort++;
             $insert->type = 'page.title';
             $insert->save();

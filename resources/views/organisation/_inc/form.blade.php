@@ -30,7 +30,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>1 Aylık Veri Zone Aboneliği</td>
+                        <td>1 Aylık 8vz Aboneliği</td>
                         <td data-name="unit-price">{{ $user->organisation->unit_price }}</td>
                         <td class="right-align">{{ config('formal.currency') }}</td>
                         <td class="right-align">

@@ -1,8 +1,8 @@
 /*!
  |-------------------------------
- | veri.zone 1.0
+ | 8vz.net 1.0
  |-------------------------------
- | (c) 2019 - veri.zone
+ | (c) 2019 - 8vz.net
  |-------------------------------
  */
 
@@ -76,7 +76,7 @@ function msie()
 
     if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))
     {
-        M.toast({ html: 'Internet Explorer ile Veri Zone deneyiminiz sorunlu olacaktır. Lütfen Veri Zone için daha güncel bir tarayıcı kullanın. Bkz: Mozilla Firefox, Google Chrome', classes: 'red' })
+        M.toast({ html: 'Internet Explorer ile 8vz deneyiminiz sorunlu olacaktır. Lütfen 8vz için daha güncel bir tarayıcı kullanın. Bkz: Mozilla Firefox, Google Chrome', classes: 'red' })
     }
 }
 

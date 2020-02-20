@@ -142,7 +142,7 @@
                                 element: '#' + gsm.attr('id'),
                                 popover: {
                                     title: 'GSM Ekleyin',
-                                    description: '{{ $user->organisation_id ? 'Size daha iyi hizmet verebilmemiz için lütfen bir GSM numaranızı bırakın.' : 'Numaranızı ekledikten sonra Veri Zone\'u hemen denemeye başlayabilirsiniz.' }}',
+                                    description: '{{ $user->organisation_id ? 'Size daha iyi hizmet verebilmemiz için lütfen bir GSM numaranızı bırakın.' : 'Numaranızı ekledikten sonra 8vz\'yi hemen denemeye başlayabilirsiniz.' }}',
                                 }
                             })
 

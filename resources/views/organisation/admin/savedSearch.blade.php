@@ -180,7 +180,7 @@
                                             <span>{{ $module }}</span>
                                         </label>
 
-                                        <label class="module-label" data-tooltip="Veri Zone, Twitter iyi sonuç algoritması." data-position="left">
+                                        <label class="module-label" data-tooltip="8vz, Twitter iyi sonuç algoritması." data-position="left">
                                             <input name="sharp" value="on" type="checkbox" {{ @$search->sharp ? 'checked' : '' }} />
                                             <span>İyi Sonuç</span>
                                         </label>

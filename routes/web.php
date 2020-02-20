@@ -1,10 +1,10 @@
 <?php
 
-Route::domain('olive.'.config('app.domain'))->group(function () {
-    Route::get('/', 'HomeController@olive');
-});
+Route::domain('veri.zone')->group(function () { Route::get('/', function() { return redirect()->away('https://8vz.net'); }); });
+Route::domain('www.veri.zone')->group(function () { Route::get('/', function() { return redirect()->away('https://8vz.net'); }); });
+Route::domain('olive.veri.zone')->group(function () { Route::get('/', function() { return redirect()->away('https://8vz.net'); }); });
 
-Route::get('/lobi', 'HomeController@dashboard')->name('dashboard');
+Route::get('/', 'HomeController@dashboard')->name('dashboard');
 
 Route::get('uyari', 'HomeController@alert')->name('alert');
 
@@ -16,31 +16,6 @@ Route::post('markdown/onizleme', 'MarkdownController@preview')->name('markdown.p
 Route::post('veri-sayac', 'HomeController@dataCounter')->name('home.data.counter');
 
 Route::post('kabul-et', 'HomeController@termVersion')->name('term.version');
-
-Route::namespace('Forum')->prefix('forum')->group(function () {
-    Route::get('/', 'ForumController@index')->name('forum.index');
-    Route::post('kategoriler', 'ForumController@categoryJson')->name('forum.categories');
-
-    Route::get('konu/{id?}', 'ForumController@threadForm')->name('forum.thread.form');
-    Route::post('konu', 'ForumController@threadSave');
-    Route::post('cevap', 'ForumController@replySave')->name('forum.reply.submit');
-
-    Route::post('cevap/{id}', 'ForumController@replyGet')->name('forum.reply.get');
-    Route::post('cevap/guncelle', 'ForumController@replyUpdate')->name('forum.reply.update');
-
-    Route::post('durum', 'ForumController@threadStatus')->name('forum.thread.status');
-    Route::post('sabit', 'ForumController@threadStatic')->name('forum.thread.static');
-    Route::delete('sil', 'ForumController@messageDelete')->name('forum.message.delete');
-    Route::post('en-iyi-cevap', 'ForumController@messageBestAnswer')->name('forum.message.best');
-    Route::post('puan', 'ForumController@messageVote')->name('forum.message.vote');
-    Route::post('spam', 'ForumController@messageSpam')->name('forum.message.spam');
-    Route::post('tasi', 'ForumController@threadMove')->name('forum.thread.move');
-    Route::post('takip', 'ForumController@threadFollow')->name('forum.thread.follow');
-
-    Route::get('{group}:{section}/{id?}', 'ForumController@group')->name('forum.group')->where([ 'group' => '[a-zA-Z0-9-]+', 'section' => '[a-zA-Z0-9-]+' ]);
-    Route::get('{slug}', 'ForumController@category')->name('forum.category');
-    Route::get('{slug}/{fake_slug}-{id}', 'ForumController@thread')->name('forum.thread');
-});
 
 Route::get('kaynaklar', 'HomeController@sources')->name('sources');
 
@@ -349,7 +324,6 @@ Route::prefix('oturum')->group(function () {
     Route::get('{provider}/{id}/drop', 'CRMController@providerDrop')->name('provider.drop')->where('provider', '(twitter)');
 });
 
-Route::get('/', 'HomeController@index')->name('home');
 Route::get('yenilikler', 'HomeController@features')->name('home.features');
 
 Route::post('demo-istek', 'HomeController@demoRequest')->name('demo.request');

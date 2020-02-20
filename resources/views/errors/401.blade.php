@@ -17,6 +17,6 @@
         <p class="mb-1">Üzgünüm, bu bölüme erişiminiz kısıtlanmış gibi görünüyor.</p>
         <p>- Bulunduğunuz organizasyonun süresi bitmiş olabilir.</p>
         <p>- Bulunduğunuz organizasyon bu alanı kapsamıyor olabilir.</p>
-        <p>- Veri Zone yönetimiyle ilgili bir alana girmeyi deniyor olabilirsiniz.</p>
+        <p>- 8vz yönetimiyle ilgili bir alana girmeyi deniyor olabilirsiniz.</p>
     </div>
 @endsection

@@ -253,6 +253,6 @@ class User extends Authenticatable
 
     public function getEmailAttribute($value)
     {
-        return $value ? $value : 'anonymous@veri.zone';
+        return $value ? $value : 'anonymous@8vz.net';
     }
 }

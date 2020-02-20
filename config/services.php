@@ -59,7 +59,7 @@ return [
     ],
 
     'twitter' => [
-        'name' => 'veri.zone',
+        'name' => '8vz.net',
         'screen_name' => 'bigverizone',
 
         'client_id' => env('TWITTER_CONSUMER_KEY'),

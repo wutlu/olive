@@ -15,7 +15,7 @@ class UserTableSeeder extends Seeder
     {
         User::firstOrCreate(
             [
-                'email' => 'alper@veri.zone'
+                'email' => 'alper@8vz.net'
             ],
             [
                 'name' => 'qhudabaksh',

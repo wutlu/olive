@@ -54,7 +54,7 @@
         <div class="container">
             <div class="nav-wrapper">
                 <a href="{{ route('home') }}" class="brand-logo left">
-                    <img alt="{{ config('app.name') }}" src="{{ asset('img/veri.zone_logo.svg') }}" />
+                    <img alt="{{ config('app.name') }}" src="{{ asset('img/8vz.net_logo.svg') }}" />
                 </a>
 
                 <ul class="right">
@@ -75,7 +75,7 @@
         <div class="container">
             <div class="text-container">
                 <h1 class="mb-1">Değişim Başlıyor</h1>
-                <p class="lead">Veri madenciliğinin geleceği için VERİ.ZONE'u nasıl tasarladığımızı görün!</p>
+                <p class="lead">Veri madenciliğinin geleceği için 8vz'yi nasıl tasarladığımızı görün!</p>
             </div>
         </div>
     </section>
@@ -115,8 +115,8 @@
                 <img alt="Mutlu" src="{{ asset('img/team-mutlu.jpg') }}" class="team align-self-center" />
                 <div class="item align-self-center">
                     <h2>Alper Mutlu Toksöz</h2>
-                    <p class="author mb-1">Kurucu, Veri Zone Teknoloji</p>
-                    <p class="lead">Hızla gelişen büyük veri dünyasında sabit özelliklere sahip bir teknoloji düşünülemez. En iyiye ulaşmak için veri madenciliği anlayışını VERİ.ZONE ile yeniden tasarladık. Alanımız için en iyi çözümleri üretiyor, üretmeye devam ediyoruz.</p>
+                    <p class="author mb-1">Kurucu, 8vz Teknoloji</p>
+                    <p class="lead">Hızla gelişen büyük veri dünyasında sabit özelliklere sahip bir teknoloji düşünülemez. En iyiye ulaşmak için veri madenciliği anlayışını 8vz ile yeniden tasarladık. Alanımız için en iyi çözümleri üretiyor, üretmeye devam ediyoruz.</p>
                 </div>
             </div>
         </div>

@@ -1,8 +1,8 @@
 /*!
  |-------------------------------
- | veri.zone 1.0
+ | 8vz.net 1.0
  |-------------------------------
- | (c) 2019 - veri.zone
+ | (c) 2019 - 8vz.net
  |-------------------------------
  */
 
@@ -192,7 +192,7 @@ $(document).on('click', '.read-aloud', function() {
                                 }),
                                 $('<span />', {
                                     'class': 'align-self-center red-text',
-                                    'html': 'Bu içerik için mevcut sınıflama Veri Zone tarafından oluşturulmuştur. Sınıflandırma doğru değilse, lütfen doğru seçeneği Veri Zone\'a bildirin.'
+                                    'html': 'Bu içerik için mevcut sınıflama 8vz tarafından oluşturulmuştur. Sınıflandırma doğru değilse, lütfen doğru seçeneği 8vz\'ye bildirin.'
                                 })
                             ]
                         })
@@ -2636,7 +2636,7 @@ function __report__page_form(options)
                                 'html': [
                                     $('<img />', {
                                         'alt': 'Logo',
-                                        'src': '/img/veri.zone_logo-grey.svg'
+                                        'src': '/img/8vz.net_logo-grey.svg'
                                     })
                                 ]
                             }),
@@ -2809,11 +2809,11 @@ $(document).on('click', '#report-menu.active [data-report-element=add-page]', fu
     return modal({
         'id': 'info',
         'body': [
-            $('<p />', { 'html': '"Veri Zone Rapor Aracı" sayesinde, araştırmanızı yaparken eş zamanlı olarak raporunuzu da oluşturabilirsiniz.' }),
+            $('<p />', { 'html': '"8vz Rapor Aracı" sayesinde, araştırmanızı yaparken eş zamanlı olarak raporunuzu da oluşturabilirsiniz.' }),
             $('<ol />', {
                 'html': [
-                    $('<li />', { 'html': 'Veri Zone ekranının alt kısmında bulunan menüden "Rapor Başlat" butonuna tıklayın ve rapor adı ile birlikte yeni bir rapor başlatın.' }),
-                    $('<li />', { 'html': 'Rapor başlatıldıktan sonra, diğer Veri Zone araçlarını kullanarak araştırmanıza başlayın.' }),
+                    $('<li />', { 'html': '8vz ekranının alt kısmında bulunan menüden "Rapor Başlat" butonuna tıklayın ve rapor adı ile birlikte yeni bir rapor başlatın.' }),
+                    $('<li />', { 'html': 'Rapor başlatıldıktan sonra, diğer 8vz araçlarını kullanarak araştırmanıza başlayın.' }),
                     $('<li />', { 'html': 'Araştırmanız esnasında elde edeceğiniz önemli verilerin, grafiklerin, tabloların veya göstergelerin etrafında bulunan "Rapora Ekle" butonuna tıklayın.' }),
                     $('<li />', { 'html': 'Açılan pencereden, varsa; başlık, alt başlık veya açıklama gibi seçeneklerinizi girin.' }),
                     $('<li />', { 'html': 'Hazır olan sayfayı kayıt butonuna basarak raporunuza ekleyin.' }),

@@ -58,8 +58,8 @@ host    all             all              ::/0                            md5
 
 $ sudo apt-get update
 $ sudo apt-get install openssl
-$ openssl genrsa -out veri.zone.key 2048
-$ openssl req -new -sha256 -key veri.zone.key -out veri.zone.csr
+$ openssl genrsa -out 8vz.net.key 2048
+$ openssl req -new -sha256 -key 8vz.net.key -out 8vz.net.csr
 
 ~~~~
 
@@ -86,21 +86,21 @@ $ sudo apt install elasticsearch -y
 ### Sistemin Kurulumu Öncesi Yapılandırma
 
 ~~~~
-$ mkdir /var/www/veri.zone
-$ nano /etc/apache2/sites-available/veri.zone.conf
+$ mkdir /var/www/8vz.net
+$ nano /etc/apache2/sites-available/8vz.net.conf
 <VirtualHost *:80>
-        ServerName veri.zone
-        ServerAlias olive.veri.zone
-        ServerAlias www.veri.zone
+        ServerName 8vz.net
+        ServerAlias olive.8vz.net
+        ServerAlias www.8vz.net
 
         ServerAdmin webmaster@localhost
-        DocumentRoot /var/www/veri.zone/public
+        DocumentRoot /var/www/8vz.net/public
 
         ErrorLog ${APACHE_LOG_DIR}/error.log
         CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
 
-$ sudo a2ensite veri.zone.conf
+$ sudo a2ensite 8vz.net.conf
 
 $ nano /etc/apache2/apache2.conf
 <Directory /var/www/>
@@ -118,8 +118,8 @@ $ sudo swapoff -a
 ~~~~
 $ cd /var/www/
 $ git clone https://www.github.com/qhudabaksh/olive
-$ mv olive veri.zone
-$ cd veri.zone
+$ mv olive 8vz.net
+$ cd 8vz.net
 $ composer install
 $ cp .env-example .env
 $ php artisan key:generate
@@ -129,14 +129,14 @@ $ chmod 777 -R storage
 $ chmod 777 -R /etc/hosts
 
 // Kelimelerde güncelleme yapılırsa bu işlem tekrarlanmalı.
-$ cp -R /var/www/veri.zone/database/analysis /data/elasticsearch-n1/config
-$ cp -R /var/www/veri.zone/database/analysis /data/elasticsearch-n2/config
+$ cp -R /var/www/8vz.net/database/analysis /data/elasticsearch-n1/config
+$ cp -R /var/www/8vz.net/database/analysis /data/elasticsearch-n2/config
 
 // Otomatik işlemler için Supervisor yapılandırması.
 $ nano /etc/supervisor/supervisord.conf
 
 // [include] programının altına ekleyin.
-files = /var/www/veri.zone/supervisor/olive-worker.conf
+files = /var/www/8vz.net/supervisor/olive-worker.conf
 
 $ sudo supervisorctl reread
 $ sudo supervisorctl reload
@@ -155,8 +155,8 @@ $ sudo supervisorctl start olive-crawler:*
 
 ### Elasticsearch keywords.txt güncelleme komutları:
 
-$ cp -R /var/www/veri.zone/database/analysis/keywords.txt /data/elasticsearch-n1/config/analysis/keywords.txt
-$ cp -R /var/www/veri.zone/database/analysis/keywords.txt /data/elasticsearch-n2/config/analysis/keywords.txt
+$ cp -R /var/www/8vz.net/database/analysis/keywords.txt /data/elasticsearch-n1/config/analysis/keywords.txt
+$ cp -R /var/www/8vz.net/database/analysis/keywords.txt /data/elasticsearch-n2/config/analysis/keywords.txt
 
 ~~~~
 
@@ -164,7 +164,7 @@ $ cp -R /var/www/veri.zone/database/analysis/keywords.txt /data/elasticsearch-n2
 
 ~~~~
 $ crontab -e
-*/1 * * * * php /var/www/veri.zone/artisan schedule:run >> /dev/null 2>&1
+*/1 * * * * php /var/www/8vz.net/artisan schedule:run >> /dev/null 2>&1
 
 @reboot nohup su - elasticsearch /data/elasticsearch-n1/bin/elasticsearch >> /data/elasticsearch-n1/logs/start.out 2>&1 &
 ~~~~
@@ -173,5 +173,5 @@ $ crontab -e
 
 ~~~~
 ** Callback Adresi **
-- https://olive.veri.zone/api/payment/callback
+- https://olive.8vz.net/api/payment/callback
 ~~~~

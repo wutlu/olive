@@ -371,7 +371,7 @@
         min-height: 200px;
         max-height: calc(100vh);
         overflow: auto;
-        background-image: url(../img/veri.zone_logo-opacity.svg);
+        background-image: url(../img/8vz.net_logo-opacity.svg);
         background-repeat: no-repeat;
         background-position: center;
         background-size: 50%;
@@ -484,7 +484,7 @@
                                     <a href="#" target="_blank" class="collection-item" data-name="link-olive">
                                         <span class="d-flex">
                                             <i class="material-icons align-self-center mr-1">link</i>
-                                            <span class="align-self-center">Veri Zone'da göster</span>
+                                            <span class="align-self-center">8vz'de göster</span>
                                         </span>
                                     </a>
                                     <a href="#" target="_blank" class="collection-item hide" data-name="link-google">

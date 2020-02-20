@@ -1010,7 +1010,7 @@ class UserController extends Controller
             $password = mt_rand(100000, 999999);
 
             $sms = SMS::send(
-                implode(' ', [ 'Veri Zone giriş bilgileriniz,', 'E-posta: '.$user->email, 'Şifre: '.$password ]),
+                implode(' ', [ '8vz giriş bilgileriniz,', 'E-posta: '.$user->email, 'Şifre: '.$password ]),
                 [ str_replace([ ' ', '(', ')' ], '', $user->gsm) ]
             );
 

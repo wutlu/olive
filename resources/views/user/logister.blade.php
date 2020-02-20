@@ -59,7 +59,7 @@
             <canvas class="overlay bg-overlay" id="bubble"></canvas>
         </div>
         <div class="area flex-fill z-depth-1">
-            <img alt="Veri Zone" src="{{ asset('img/veri.zone_logo.svg') }}" class="logo" />
+            <img alt="8vz" src="{{ asset('img/8vz.net_logo.svg') }}" class="logo" />
             <div class="card card-unstyled mx-auto mb-2">
                 <div class="card-tabs">
                     <ul class="tabs tabs-fixed-width">
@@ -147,7 +147,7 @@
                     </form>
                 </div>
             </div>
-            <p class="grey-text">{{ date('Y') }} © <a href="https://veri.zone/" target="_blank">Veri Zone Teknoloji</a><br />Tüm hakları saklıdır.</p>
+            <p class="grey-text">{{ date('Y') }} © <a href="https://8vz.net/" target="_blank">8vz</a><br />Tüm hakları saklıdır.</p>
         </div>
     </div>
 @endsection
