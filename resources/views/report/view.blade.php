@@ -58,8 +58,6 @@
                             <small style="width: 600px;" class="grey-text d-table mx-auto">Bu raporda yeralan tüm istatistikler, internette paylaşılan kamuya açık verilerden derlenmiştir.</small>
                             <small style="width: 600px;" class="grey-text d-table mx-auto">Bu raporun tüm yayın hakları 8vz'ye aittir. Yazılı izin alınmadan herkese açık kaynaklarda kısmen veya tamamen alıntı yapılamaz, hiçbir şekilde kopya edilemez, çoğaltılamaz ve yayınlanamaz.</small>
                         </header>
-
-                        <img class="logo" alt="Logo" src="{{ asset('img/8vz.net_logo.svg') }}" />
                     </div>
                 </div>
             </div>
