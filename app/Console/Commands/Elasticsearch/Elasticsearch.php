@@ -240,6 +240,7 @@ class Elasticsearch extends Command
                                     'number_of_replicas' => @$item['settings']['index']['number_of_replicas'],
                                     'read_only_allow_delete' => @$item['settings']['index']['blocks']['read_only_allow_delete'],
                                     'refresh_interval' => @$item['settings']['index']['refresh_interval'],
+                                    'max_result_window' => @$item['settings']['index']['max_result_window'],
                                 ];
 
                                 $this->info(json_encode($settings, JSON_PRETTY_PRINT));
@@ -266,6 +267,9 @@ class Elasticsearch extends Command
 
                         $refresh_interval = $this->ask('refresh_interval: (string bkz: 5s)');
                         if ($refresh_interval) $settings['refresh_interval'] = $refresh_interval;
+
+                        $max_result_window = $this->ask('max_result_window: (string bkz: 50000)');
+                        if ($max_result_window) $settings['max_result_window'] = $max_result_window;
 
                         $this->info(json_encode($settings, JSON_PRETTY_PRINT));
 
